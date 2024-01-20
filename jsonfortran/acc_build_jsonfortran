@@ -1,0 +1,101 @@
+#!/bin/bash
+# vi: sw=4 ts=4 sts=4 expandtab
+
+# Script to make the jsonfortran library.
+# Exit Codes found in /usr/include/sysexits.h
+
+# Adding ACC_SET_GMAKE_JOBS to build as requested in RT#67548
+
+#set -x
+
+# Function to configure, make and then install the Package - contains Package Specific build configuration
+
+func_configure_make_install() {
+    echo "Oh hi there from acc_build_jsonfortran"
+
+    [ "${BUILD_TYPE}" == "debug" ] &&
+        CMAKE_BUILD_TYPE="Debug" ||
+        CMAKE_BUILD_TYPE="Release"
+
+    [ -d ${UTIL_DIR}/bin ] &&
+        PATH=${UTIL_DIR}/bin${PATH:+:${PATH}}
+
+    [ "${CMAKE_BINARY}" ] ||
+        CMAKE_BINARY=cmake
+
+    cd ${WORK_DIR}
+
+    export FORTRAN="${FC}"
+    export LOADER="${FC}"
+
+    # Removed incompatable nofor_main LDFLAGS for SHARED library builds, as requested in RT#54929
+    [ "${FC}" == "ifort" ] && FFLAGS="-nofor_main ${FFLAGS}" && LDFLAGS=" ${LDFLAGS}"
+
+    export OPTS="${FFLAGS}"
+    export DRVOPTS=${OPTS}
+    export NOOPT=${OPTS}
+    export LOADOPTS=${LDFLAGS}
+    export BUILD_DEPRECATED="Yes"
+
+    if [ ! -e ALREADY_BUILT ]; then
+
+        mkdir lib
+
+        [ -d ${BUILD_TYPE} ] || ln -s ../../${BUILD_TYPE} ${BUILD_TYPE}
+
+        func_print_compiler_linker_flags
+
+        echo -e "Building SHARED Libraries...\n"
+
+        mkdir BUILD
+
+        cd BUILD
+
+        ${CMAKE_BINARY} \
+            -DCMAKE_INSTALL_PREFIX=${OUTPUT_DIR} \
+            -DBUILD_SHARED_LIBS=ON \
+            -DSKIP_DOC_GEN=TRUE \
+            -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+            -DCMAKE_INSTALL_LIBDIR=${OUTPUT_DIR}/lib \
+            -DMODULE_DIR=${OUTPUT_DIR}/modules \
+            -DCMAKE_Fortran_MODULE_DIRECTORY=${OUTPUT_DIR}/modules \
+            -DCMAKE_Fortran_COMPILER=${FC} \
+            -DCMAKE_Fortran_COMPILER_WORKS=TRUE \
+            ../
+
+        ${CMAKE_BINARY} --build . -j ${ACC_SET_GMAKE_JOBS} --target install
+
+        export RETVAL=$?
+
+    fi
+
+    if [ "${ARGUMENTS[1]}" == "-test" ]; then
+        echo -e "\nBuilding tests for $(echo ${PACKAGE_VERSION})...\n"
+
+        [ ${BUILD_SHARED} ] && ctest || ${GMAKE} test
+
+        export RETVAL=$?
+
+    fi
+
+    if ([ $(uname) == "Darwin" ] && [ "${FC}" == "ifort" ] && [ "${RETVAL}" -eq 0 ]); then ln -s /opt/intel/lib/* ${OUTPUT_DIR}/lib/ &>/dev/null 2>&1; fi
+
+    unset FORTRAN
+    unset LOADER
+    unset OPTS
+    unset DRVOPTS
+    unset NOOPT
+    unset LOADOPTS
+}
+
+# Function that contains Package Specific files and directories to be cleaned up
+
+func_remove_package() {
+
+    rm -f ${OUTPUT_DIR}/include/jsonfortran*
+    rm -rf ${OUTPUT_DIR}/lib/cmake/jsonfortran*
+    rm -f ${OUTPUT_DIR}/lib/libjsonfortran.*
+    rm -f $(pwd)/bin
+    rm -rf ${BUILD_TYPE}
+}
+
