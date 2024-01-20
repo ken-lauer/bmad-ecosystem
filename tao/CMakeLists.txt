@@ -20,6 +20,7 @@ SET (EXE_SPECS
 SET (SHARED_DEPS
   bmad
   sim_utils
+  jsonfortran
   ${PLOT_LINK_LIBS}
   $ENV{ACC_BMAD_LINK_LIBS}
   gomp
