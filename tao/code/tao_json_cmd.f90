@@ -63,7 +63,8 @@ use opti_de_mod, only: opti_de_param
 use rad_6d_mod, only: emit_6d
 
 use json_module
-use json_string_utilities
+use json_string_utilities, only: integer_to_string
+
 
 implicit none
 
@@ -240,7 +241,10 @@ call string_trim(line(ix+1:), line, ix_line)
 !   x_axis_type (variable parameter)
 
 call match_word (cmd, [character(40) :: &
-          'foobar', &
+          'global', &
+          'plot_page', &
+          'lattice_model', &
+          'universe', &
           'plot_curve', 'plot_graph', 'plot_histogram', 'plot_lat_layout', 'plot_line', &
           'plot_template_manage', 'plot_graph_manage', 'plot_curve_manage', &
           'plot_list', 'plot_symbol', 'plot_transfer', 'plot1' &
@@ -274,41 +278,30 @@ nl_ptr => nl   ! To get around ifort bug
 
 select case (command)
 
-    case ('foobar')
-      call out_io (s_error$, r_name, 'json foobar handler, oh boy')
-      ! obj = {key3: 5, key4: 6}
-      call json%create_object(json_obj,'sub')
-      call json%add(json_obj, 'key3', 5)
-      call json%add(json_obj, 'key4', 6)
+  case ('plot_page')
+    call tao_jsonify_tao_plot_page_struct(s%plot_page, json_root)
+    call json%print(json_root)
+    call json%destroy(json_root)
+    nullify(json_root)
 
-      call json%create_array(json_arr,'array')
-      call json%create_integer(json_val, 1, '')
-      call json%add(json_arr, json_val)
-      call json%create_integer(json_val, 2, '')
-      call json%add(json_arr, json_val)
-      call json%create_integer(json_val, 2, '')
-      call json%add(json_arr, json_val)
+  case ('universe')
+    call tao_jsonify_tao_super_universe_struct(s, json_root)
+    call json%print(json_root)
+    call json%destroy(json_root)
+    nullify(json_root)
 
-      ! root = {key1: 5, key2: 6}
-      call json%create_object(json_root,'')
-      call json%add(json_root, 'key1', 5)
-      call json%add(json_root, 'key2', 6)
-      ! call json%add(json_root, 'sub', json_obj)
+  case ('lattice_model')
+    u => point_to_uni(line, .false., err); if (err) return
+    call tao_jsonify_tao_lattice_struct(u%model, json_root)
+    call json%print(json_root)
+    call json%destroy(json_root)
+    nullify(json_root)
 
-      call json%add(json_root, json_arr)
-      call json%add(json_root, json_obj)
-
-      call out_io (s_error$, r_name, 'root')
-      call json%print(json_root)
-      call out_io (s_error$, r_name, 'obj')
-      call json%print(json_obj)
-      call json%print(json_root, "json_root.json")
-      call json%print(json_obj, "json_obj.json")
-      call out_io (s_error$, r_name, 'done')
-
-      call json%destroy(json_root)
-      nullify(json_obj)
-      nullify(json_root)
+  case ('global')
+    call tao_jsonify_tao_global_struct(s%global, json_root)
+    call json%print(json_root)
+    call json%destroy(json_root)
+    nullify(json_root)
 
 !------------------------------------------------------------------------------------------------
 !------------------------------------------------------------------------------------------------
@@ -2437,5 +2430,7 @@ case (3)
 end select
 
 end subroutine write_this_ele_floor
+
+#include "tao_json_cmd_autogen.inc"
 
 end subroutine tao_json_cmd
