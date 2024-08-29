@@ -4,10 +4,8 @@ on:
   # Run on demand
   workflow_dispatch:
 
-  # Run on push to main
+  # Run on pushes to branches
   push:
-    branches:
-      - "main"
 
   # Run on pull requests
   pull_request:
@@ -46,7 +44,6 @@ jobs:
         openmp_mpi: ["N", "Y"]
 
     steps:
-      # Check out the code from GitHub
       - uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup-dependencies
@@ -61,3 +58,14 @@ jobs:
 
       - name: Run Tests
         run: .github/scripts/run_tests.sh
+
+      - name: Assemble Tarball
+        run: |
+          mkdir -p ~/bmad_dist
+          cp -r $GITHUB_WORKSPACE/*  ~/bmad_dist
+          tar --exclude .git --exclude .github --exclude .gitignore -czf bmad_dist.tar.gz -C ~/bmad_dist .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bmad-built-${{ matrix.os }}-${{ matrix.shared }}-${{ matrix.openmp_mpi }}-${{ github.sha }}
+          path: bmad_dist.tar.gz

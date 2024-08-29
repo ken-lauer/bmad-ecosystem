@@ -1,13 +1,14 @@
 name: PyTao tests
 
 on:
-  push:
-  pull_request:
-  workflow_dispatch:
+  workflow_run:
+    workflows: [Bmad Ecosystem - Build & Test]
+    types:
+      - completed
 
 jobs:
   build:
-    name: ${{ matrix.os }} Python ${{ matrix.python-version }}
+    name: PyTao tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
     runs-on: ${{ matrix.os }}
     defaults:
       run:
@@ -20,17 +21,21 @@ jobs:
         shared: ["Y"]
         openmp_mpi: ["N"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: bmad-built-${{ matrix.os }}-${{ matrix.shared }}-${{ matrix.openmp_mpi }}-${{ github.sha }}
+          path: bmad_dist.tar.gz
+          run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Extract the artifact
+        shell: bash -l {0}
+        working-directory: ./pytao
+        run: |
+          tar xf bmad_dist.tar.gz
 
       - uses: ./.github/actions/setup-dependencies
         with:
           external-packages-version: ${{ env.EXTERNAL_PACKAGES_VERSION }}
-
-      - name: Build Bmad
-        env:
-          USE_MPI: ${{ matrix.openmp_mpi }}
-          SHARED: ${{ matrix.shared }}
-        run: .github/scripts/install_bmad.sh
 
       - uses: actions/checkout@v4
         with:
