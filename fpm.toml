@@ -1,0 +1,56 @@
+# NOTES:
+#
+# Soft link to flatten source code - only once. This could probably be redone with more fpm.toml files:
+# (cd bmad && bash link.sh)
+# (cd bsim && bash link.sh)
+# (cd sim_utils && bash link.sh)
+#
+# export FPM_FFLAGS="$FFLAGS -I$CONDA_PREFIX/include -I$CONDA_PREFIX/include/xraylib -I$CONDA_PREFIX/include/fgsl -cpp -fno-range-check -fdollar-ok -fbacktrace -Bstatic -ffree-line-length-none --verbose"
+# export FPM_CFLAGS="$CFLAGS -Df2cFortran -O0 -D_POSIX -D_REENTRANT -Wall -fPIC -Wno-trigraphs -Wno-unused -std=gnu99"
+# export FPM_CXXFLAGS="$CXXFLAGS"
+#
+# NOTE: macos/conda only (probably): remove '-fopenmp'
+# export FPM_CXX=$PWD/sim_utils/clang++_no_openmp.sh
+# export FPM_CC=$PWD/sim_utils/clang_no_openmp.sh
+#
+# fpm build
+# cd tao
+# fpm build
+
+name = "bmad"
+version = "0.1.0"
+
+[fortran]
+implicit-external = true
+
+[build]
+external-modules = ["xraylib", "la_precision", "h5lt"]
+
+[library]
+source-dir = "bmad/all_code"
+# NOTE: this is not supported: https://github.com/fortran-lang/fpm/pull/847
+# source-dir = [
+#   "bmad/code",
+#   "bmad/geometry",
+#   "bmad/interface",
+#   "bmad/modules",
+#   "bmad/multiparticle",
+#   "bmad/output",
+#   "bmad/ptc",
+#   "bmad/photon",
+#   "bmad/parsing",
+#   "bmad/low_level",
+#   "bmad/hdf5",
+#   "bmad/space_charge",
+#   "bmad/spin",
+# ]
+# include-dir = "bmad/include"
+#
+[dependencies]
+# openmp = "*"
+# mpi = "*"
+bmad-forest = { path = "./forest" }
+bmad-sim-utils = { path = "./sim_utils" }
+
+# [[executable]]
+# name = "compute-pi-openmp"

@@ -1,0 +1,48 @@
+name = "tao"
+
+[fortran]
+implicit-external = true
+
+[build]
+link = [
+  "blas",
+  "fftw3",
+  "fftw3_omp",
+  "fgsl",
+  "forest",
+  "gsl",
+  "gslcblas",
+  "hdf5",
+  "hdf5_fortran",
+  "hdf5_hl",
+  "hdf5hl_fortran",
+  "lapack",
+  "lapack95",
+  "xrl",
+  "xrlf03",
+  "readline",
+]
+
+[library]
+source-dir = "code"
+# NOTE: this is not supported: https://github.com/fortran-lang/fpm/pull/847
+# source-dir = [
+#   "bmad/code",
+
+[dependencies]
+# openmp = "*"
+# mpi = "*"
+# bmad-forest = { path = "../forest" }
+bmad-sim-utils = { path = "../sim_utils" }
+bmad = { path = "../" }
+
+[[executable]]
+name = "tao"
+
+[preprocess]
+[preprocess.cpp]
+
+# NOTE: noplot version
+macros = ["CESR_NOPLOT"]
+# macros = ["CESR_PGPLOT"]
+# macros = ["CESR_PLPLOT"]

@@ -1,0 +1,60 @@
+name = "bmad-sim-utils"
+
+[dependencies]
+openmp = "*"
+# hdf5
+# fftw
+# lapack
+# lapack95
+# gsl
+# fgsl
+
+[fortran]
+implicit-external = true
+
+[build]
+external-modules = [
+  "hdf5",
+  "fftw",
+  "f95_lapack",
+  "lapack",
+  "lapack95",
+  "gsl",
+  "fgsl",
+  "plplot",
+]
+# link = "hdf5 fftw lapack lapack95 gsl fgsl"
+
+# [dependencies.toml-f]
+# git = "https://github.com/toml-f/toml-f"
+# rev = "2f5eaba864ff630ba0c3791126a3f811b6e437f3"
+#
+[library]
+source-dir = "code"
+# NOTE: this is not supported: https://github.com/fortran-lang/fpm/pull/847
+# source-dir = [
+#   "file",
+#   "interfaces",
+#   "io",
+#   "math",
+#   "matrix",
+#   "misc",
+#   "optimizers",
+#   "plot",
+#   "string",
+#   "geodesic_lm",
+#   "special_functions",
+# ]
+include-dir = "include"
+
+# [[executable]]
+# name = "compute-pi-openmp"
+
+
+[preprocess]
+[preprocess.cpp]
+
+# NOTE: noplot version
+macros = ["CESR_NOPLOT"]
+# macros = ["CESR_PGPLOT"]
+# macros = ["CESR_PLPLOT"]
