@@ -2,6 +2,8 @@ name = "bmad-sim-utils"
 
 [dependencies]
 openmp = "*"
+# TODO: any others available on the fpm registry? As-is, these will come from the
+# system - or the current conda env as in my testing
 # hdf5
 # fftw
 # lapack
@@ -11,6 +13,7 @@ openmp = "*"
 
 [fortran]
 implicit-external = true
+source-form = "default"  # default: "free" - but we have some fixed .f files along with free .f90 files
 
 [build]
 external-modules = [
@@ -23,12 +26,11 @@ external-modules = [
   "fgsl",
   "plplot",
 ]
-# link = "hdf5 fftw lapack lapack95 gsl fgsl"
 
 # [dependencies.toml-f]
 # git = "https://github.com/toml-f/toml-f"
 # rev = "2f5eaba864ff630ba0c3791126a3f811b6e437f3"
-#
+
 [library]
 source-dir = "code"
 # NOTE: this is not supported: https://github.com/fortran-lang/fpm/pull/847
@@ -47,14 +49,11 @@ source-dir = "code"
 # ]
 include-dir = "include"
 
-# [[executable]]
-# name = "compute-pi-openmp"
-
-
 [preprocess]
 [preprocess.cpp]
 
 # NOTE: noplot version
-macros = ["CESR_NOPLOT"]
+# macros = ["CESR_NOPLOT"]
 # macros = ["CESR_PGPLOT"]
 # macros = ["CESR_PLPLOT"]
+suffixes = ["f90"]

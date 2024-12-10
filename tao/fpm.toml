@@ -2,6 +2,8 @@ name = "tao"
 
 [fortran]
 implicit-external = true
+# required for 'mpi' dependency
+implicit-typing = true
 
 [build]
 link = [
@@ -22,6 +24,13 @@ link = [
   "xrlf03",
   "readline",
 ]
+external-modules = [
+  # These aren't technically external, but the source seems to be inspected
+  # prior to parsing which finds a 'use pgplot_interface' that should be
+  # excluded by an #if
+  "pgplot_interface",
+  "plplot_interface",
+]
 
 [library]
 source-dir = "code"
@@ -30,19 +39,35 @@ source-dir = "code"
 #   "bmad/code",
 
 [dependencies]
-# openmp = "*"
-# mpi = "*"
-# bmad-forest = { path = "../forest" }
-bmad-sim-utils = { path = "../sim_utils" }
+openmp = "*"
+mpi = "*"
 bmad = { path = "../" }
 
 [[executable]]
-name = "tao"
+name = "tao-noplot"
+
+[executable.dependencies]
+bmad-sim-utils = { path = "../sim_utils", preprocess.cpp.macros = [
+  "CESR_NOPLOT",
+] }
+
+[[executable]]
+name = "tao-pgplot"
+link = "pgplot"
+
+[executable.dependencies]
+bmad-sim-utils = { path = "../sim_utils", preprocess.cpp.macros = [
+  "CESR_PGPLOT",
+] }
+bmad-sim-utils-plot-pgplot = { path = "../sim_utils/plot/pgplot", preprocess.cpp.macros = [
+  "CESR_PGPLOT",
+] }
 
 [preprocess]
 [preprocess.cpp]
 
 # NOTE: noplot version
-macros = ["CESR_NOPLOT"]
+# macros = ["CESR_NOPLOT"]
 # macros = ["CESR_PGPLOT"]
 # macros = ["CESR_PLPLOT"]
+# suffixes = ["f90"]

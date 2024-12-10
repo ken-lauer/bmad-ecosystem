@@ -525,6 +525,11 @@ subroutine qp_close_page_basic ()
 implicit none
 end subroutine
 
+subroutine qp_wait_to_flush_basic(wait)
+implicit none
+logical wait
+end subroutine qp_wait_to_flush_basic
+
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
