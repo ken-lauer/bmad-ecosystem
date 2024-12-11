@@ -1,0 +1,51 @@
+name = "tao-pgplot"
+
+[fortran]
+implicit-external = true
+# required for 'mpi' dependency
+implicit-typing = true
+
+[build]
+link = [
+  "blas",
+  "fftw3",
+  "fftw3_omp",
+  "fgsl",
+  "forest",
+  "gsl",
+  "gslcblas",
+  "hdf5",
+  "hdf5_fortran",
+  "hdf5_hl",
+  "hdf5hl_fortran",
+  "lapack",
+  "lapack95",
+  "xrl",
+  "xrlf03",
+  "readline",
+  "pgplot",
+]
+external-modules = []
+
+[library]
+source-dir = ".."
+
+[dependencies]
+bmad = { path = "../../" }
+bmad-sim-utils = { path = "../../sim_utils", preprocess.cpp.macros = [
+  "CESR_PGPLOT",
+] }
+openmp = "*"
+mpi = "*"
+
+[[executable]]
+name = "tao"
+# link = "pgplot"
+
+[preprocess]
+[preprocess.cpp]
+
+macros = ["CESR_PGPLOT"]
+# macros = ["CESR_PGPLOT"]
+# macros = ["CESR_PLPLOT"]
+suffixes = ["f90"]

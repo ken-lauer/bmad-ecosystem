@@ -25,34 +25,17 @@ external-modules = [
   "gsl",
   "fgsl",
   "plplot",
+  "mpi",
 ]
 
-# [dependencies.toml-f]
-# git = "https://github.com/toml-f/toml-f"
-# rev = "2f5eaba864ff630ba0c3791126a3f811b6e437f3"
-
 [library]
-source-dir = "code"
-# NOTE: this is not supported: https://github.com/fortran-lang/fpm/pull/847
-# source-dir = [
-#   "file",
-#   "interfaces",
-#   "io",
-#   "math",
-#   "matrix",
-#   "misc",
-#   "optimizers",
-#   "plot",
-#   "string",
-#   "geodesic_lm",
-#   "special_functions",
-# ]
+source-dir = "."
 include-dir = "include"
 
 [preprocess]
 [preprocess.cpp]
 
-# NOTE: noplot version
+# NOTE: this is to be set by the user/fpm
 # macros = ["CESR_NOPLOT"]
 # macros = ["CESR_PGPLOT"]
 # macros = ["CESR_PLPLOT"]

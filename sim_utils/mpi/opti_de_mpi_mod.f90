@@ -1,3 +1,5 @@
+#ifdef USE_OPTI_DE_MPI_MOD
+
 module opti_de_mpi_mod
 
 use opti_de_mod
@@ -370,3 +372,5 @@ endif
 end subroutine this_merit_calc
 
 end module
+
+#endif

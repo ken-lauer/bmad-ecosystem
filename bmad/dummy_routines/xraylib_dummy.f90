@@ -10,6 +10,7 @@
 ! Note: This module is OBSOLETE since xraylib is now part of the Bmad Distribution.
 !-
 
+#ifdef USE_XRAYLIB_DUMMY
 module xraylib
 
 use iso_c_binding
@@ -99,3 +100,5 @@ nullify (compound)
 end subroutine
 
 end module
+
+#endif

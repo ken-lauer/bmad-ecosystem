@@ -1,3 +1,5 @@
+#ifdef USE_TAO_MPI_MOD
+
 module tao_mpi_mod
 
 use tao_struct
@@ -186,3 +188,4 @@ end subroutine tao_mpi_finalize
 
 
 end module
+#endif
