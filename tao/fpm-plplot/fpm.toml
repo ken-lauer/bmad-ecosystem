@@ -11,7 +11,6 @@ link = [
   "fftw3",
   "fftw3_omp",
   "fgsl",
-  "forest",
   "gsl",
   "gslcblas",
   "hdf5",
