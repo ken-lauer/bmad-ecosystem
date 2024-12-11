@@ -40,13 +40,11 @@ void read_line_(char* tag, char* str, char* hist_file, int tag_len, int str_len,
         char* name = malloc(hist_len + home_len - 1);
         memcpy (name, home, home_len);
         memcpy (name + home_len, hist_file+1, hist_len-1);  // copy with out leading "~".
-        // TODO
-        // int stat = append_history(1, name);
+        int stat = append_history(1, name);
         free(name);
 
       } else {
-        // TODO
-        // int stat = append_history(1, hist_file);
+        int stat = append_history(1, hist_file);
       }
     }
   }
