@@ -1,0 +1,7 @@
+options install --prefix "conda-build-macos"
+options --compiler $CONDA_PREFIX/bin/gfortran
+options --c-compiler $CONDA_PREFIX/bin/clang
+options --cxx-compiler $CONDA_PREFIX/bin/clang++
+options --flag "$FFLAGS -I$CONDA_PREFIX/include -I$CONDA_PREFIX/include/xraylib -I$CONDA_PREFIX/include/fgsl -I$CONDA_PREFIX/lib/fortran/modules/plplot -cpp -fno-range-check -fdollar-ok -fbacktrace -Bstatic -ffree-line-length-none -fimplicit-none"
+options --c-flag "$CFLAGS -Df2cFortran -O0 -D_POSIX -D_REENTRANT -Wall -fPIC -Wno-trigraphs -Wno-unused -std=gnu99 "
+options --cxx-flag "$CXXFLAGS"
