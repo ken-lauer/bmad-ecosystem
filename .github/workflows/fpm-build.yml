@@ -29,6 +29,7 @@ jobs:
           environment-file: .github/fpm-env.yaml
 
       - name: Build Tao
+        shell: bash -l {0}
         working-directory: ./tao/fpm-noplot
         run: |
           fpm @${FPM_TARGET}
