@@ -1,0 +1,34 @@
+name: FPM Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            env:
+              - FPM_TARGET=conda-macos
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/conda-setup
+        with:
+          python-version: 3.12
+          environment-file: .github/fpm-env.yaml
+
+      - name: Build Tao
+        working-directory: ./tao/fpm-noplot
+        run: |
+          fpm @${FPM_TARGET}

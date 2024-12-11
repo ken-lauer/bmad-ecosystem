@@ -114,3 +114,4 @@ production
 debug
 linux_lib
 
+tao/fpm*/conda-*

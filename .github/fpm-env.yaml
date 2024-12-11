@@ -1,0 +1,26 @@
+# conda env create -f environment.yml
+name: pytao
+channels:
+  - conda-forge
+dependencies:
+  - fpm
+  - compilers
+  # - libacl # [linux]
+  - fftw * mpi_openmpi*
+  - fgsl
+  - gsl
+  - hdf5 * mpi_openmpi*
+  - lapack95
+  - libblas * *openblas
+  - libcblas
+  - liblapack
+  - openblas
+  - openmpi
+  - pango
+  - pgplot
+  - readline
+  - xorg-libx11
+  - xorg-libxt
+  - xorg-xproto
+  - xorg-xproto
+  - xraylib

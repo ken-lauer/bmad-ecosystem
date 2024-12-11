@@ -18,12 +18,12 @@ conda activate fpm
 ### Conda on MacOS
 
 ```
-fpm @./conda-build-macos.resp
+fpm @conda-macos
 ```
 
 The binary should be available here:
 
 ```
-ls -l ./conda-build-macos/tao
-./conda-build-macos/tao
+ls -l ./conda-macos/tao
+./conda-macos/tao
 ```

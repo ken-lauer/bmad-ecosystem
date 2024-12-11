@@ -1,4 +1,5 @@
-options install --prefix "conda-build-macos"
+@conda-macos
+options install --prefix "conda-macos"
 options --compiler $CONDA_PREFIX/bin/gfortran
 options --c-compiler $CONDA_PREFIX/bin/clang
 options --cxx-compiler $CONDA_PREFIX/bin/clang++
