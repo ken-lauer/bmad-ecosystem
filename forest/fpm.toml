@@ -14,15 +14,7 @@ implicit-external = true
 
 [build]
 external-modules = ["hdf5", "fftw", "lapack", "lapack95", "gsl", "fgsl"]
-# link = "hdf5 fftw lapack lapack95 gsl fgsl"
 
-# [dependencies.toml-f]
-# git = "https://github.com/toml-f/toml-f"
-# rev = "2f5eaba864ff630ba0c3791126a3f811b6e437f3"
-#
 [library]
 source-dir = "code"
 include-dir = "include"
-
-# [[executable]]
-# name = "compute-pi-openmp"

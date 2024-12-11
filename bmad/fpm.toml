@@ -1,15 +1,4 @@
-# NOTES:
-#
-# export FPM_FFLAGS="$FFLAGS -I$CONDA_PREFIX/include -I$CONDA_PREFIX/include/xraylib -I$CONDA_PREFIX/include/fgsl -cpp -fno-range-check -fdollar-ok -fbacktrace -Bstatic -ffree-line-length-none --verbose"
-# export FPM_CFLAGS="$CFLAGS -Df2cFortran -O0 -D_POSIX -D_REENTRANT -Wall -fPIC -Wno-trigraphs -Wno-unused -std=gnu99"
-# export FPM_CXXFLAGS="$CXXFLAGS"
-#
-# fpm build
-# cd tao
-# fpm build
-
 name = "bmad"
-version = "0.1.0"
 
 [fortran]
 implicit-external = true
@@ -20,29 +9,9 @@ external-modules = ["xraylib", "la_precision", "h5lt"]
 
 [library]
 source-dir = "."
-# NOTE: this is not supported: https://github.com/fortran-lang/fpm/pull/847
-# source-dir = [
-#   "bmad/code",
-#   "bmad/geometry",
-#   "bmad/interface",
-#   "bmad/modules",
-#   "bmad/multiparticle",
-#   "bmad/output",
-#   "bmad/ptc",
-#   "bmad/photon",
-#   "bmad/parsing",
-#   "bmad/low_level",
-#   "bmad/hdf5",
-#   "bmad/space_charge",
-#   "bmad/spin",
-# ]
-# include-dir = "bmad/include"
-#
+
 [dependencies]
 # openmp = "*"
 # mpi = "*"
 bmad-forest = { path = "../forest" }
 bmad-sim-utils = { path = "../sim_utils" }
-
-# [[executable]]
-# name = "compute-pi-openmp"
