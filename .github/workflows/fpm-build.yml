@@ -1,4 +1,4 @@
-name: FPM Build
+name: fpm Build
 
 on:
   push:
@@ -31,5 +31,9 @@ jobs:
       - name: Build Tao
         shell: bash -l {0}
         working-directory: ./tao/fpm-noplot
-        run: |
-          fpm @${FPM_TARGET}
+        run: fpm '@conda-macos'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release
+          path: ./tao/fpm-noplot/conda-macos/
