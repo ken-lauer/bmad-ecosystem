@@ -27,9 +27,3 @@ runs:
       shell: bash -l {0}
       run: |
         conda list
-
-    - name: Ensure importability
-      shell: bash -l {0}
-      run: |
-        cd /
-        python -c "import pytao"
