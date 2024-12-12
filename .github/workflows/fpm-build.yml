@@ -20,10 +20,10 @@ jobs:
             plot_variant: noplot
             fpm_target: conda-macos
           - os: macos-latest
-            plot_variant: plplot
+            plot_variant: pgplot
             fpm_target: conda-macos
           # - os: macos-latest
-          #   plot_variant: pgplot
+          #   plot_variant: plplot
           #   fpm_target: conda-macos
           - os: ubuntu-latest
             plot_variant: noplot
