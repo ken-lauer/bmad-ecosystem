@@ -26,6 +26,7 @@ link = [
   "plplotfortran",
   "csirocsa",
   "qsastime",
+  "X11",
 ]
 external-modules = [
   "tao_var_mod", # bug?
