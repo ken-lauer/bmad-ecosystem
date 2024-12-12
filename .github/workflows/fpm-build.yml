@@ -19,21 +19,29 @@ jobs:
           - os: macos-latest
             plot_variant: noplot
             fpm_target: conda-macos
+            extra_packages:
           - os: macos-latest
             plot_variant: pgplot
             fpm_target: conda-macos
+            extra_packages:
           # - os: macos-latest
           #   plot_variant: plplot
           #   fpm_target: conda-macos
           - os: ubuntu-latest
             plot_variant: noplot
             fpm_target: conda-linux
+            extra_packages:
           - os: ubuntu-latest
             plot_variant: plplot
             fpm_target: conda-linux
+            extra_packages: plplot
           - os: ubuntu-latest
             plot_variant: pgplot
             fpm_target: conda-linux
+            extra_packages:
+          # - os: windows-latest
+          #   plot_variant: noplot
+          #   fpm_target: conda-windows
 
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +59,12 @@ jobs:
         run: |
           echo "FPM_TARGET=${FPM_TARGET}" >> $GITHUB_ENV
           echo "PLOT_VARIANT=${PLOT_VARIANT}" >> $GITHUB_ENV
+
+      - name: Install extra packages
+        shell: bash -l {0}
+        if: ${{ matrix.extra_packages != '' }}
+        run: |
+          conda install -y ${{ matrix.extra_packages }}
 
       - name: Build Tao (${{ matrix.plot_variant }})
         shell: bash -l {0}
