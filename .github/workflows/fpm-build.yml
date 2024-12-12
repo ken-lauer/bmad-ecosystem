@@ -17,8 +17,7 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            env:
-              - FPM_TARGET=conda-macos
+            fpm_target: conda-macos
 
     steps:
       - uses: actions/checkout@v4
@@ -28,12 +27,29 @@ jobs:
           python-version: 3.12
           environment-file: .github/fpm-env.yaml
 
-      - name: Build Tao
+      - name: Set environment variables
+        env:
+          FPM_TARGET: ${{ matrix.fpm_target }}
+        shell: bash -l {0}
+        run: |
+          echo "FPM_TARGET=${FPM_TARGET}" >> $GITHUB_ENV
+
+      - name: Build Tao (noplot)
         shell: bash -l {0}
         working-directory: ./tao/fpm-noplot
-        run: fpm '@conda-macos'
+        run: "fpm @${FPM_TARGET}"
+
+      - name: Build Tao (pgplot)
+        shell: bash -l {0}
+        working-directory: ./tao/fpm-pgplot
+        run: "fpm @${FPM_TARGET}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: release
-          path: ./tao/fpm-noplot/conda-macos/
+          name: "${{ matrix.fpm_target }}-noplot"
+          path: ./tao/fpm-noplot/${{ matrix.fpm_target }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: "${{ matrix.fpm_target }}-pgplot"
+          path: ./tao/fpm-pgplot/${{ matrix.fpm_target }}
