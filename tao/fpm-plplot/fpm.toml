@@ -27,13 +27,15 @@ link = [
   "csirocsa",
   "qsastime",
 ]
-external-modules = []
+external-modules = [
+  "tao_var_mod", # bug?
+]
 
 [library]
 source-dir = ".."
 
 [dependencies]
-bmad = { path = "../../" }
+bmad = { path = "../../bmad" }
 bmad-sim-utils = { path = "../../sim_utils", preprocess.cpp.macros = [
   "CESR_PLPLOT",
 ] }

@@ -17,7 +17,23 @@ jobs:
       matrix:
         include:
           - os: macos-latest
+            plot_variant: noplot
             fpm_target: conda-macos
+          - os: macos-latest
+            plot_variant: plplot
+            fpm_target: conda-macos
+          # - os: macos-latest
+          #   plot_variant: pgplot
+          #   fpm_target: conda-macos
+          - os: ubuntu-latest
+            plot_variant: noplot
+            fpm_target: conda-linux
+          - os: ubuntu-latest
+            plot_variant: plplot
+            fpm_target: conda-linux
+          - os: ubuntu-latest
+            plot_variant: pgplot
+            fpm_target: conda-linux
 
     steps:
       - uses: actions/checkout@v4
@@ -30,26 +46,18 @@ jobs:
       - name: Set environment variables
         env:
           FPM_TARGET: ${{ matrix.fpm_target }}
+          PLOT_VARIANT: ${{ matrix.plot_variant }}
         shell: bash -l {0}
         run: |
           echo "FPM_TARGET=${FPM_TARGET}" >> $GITHUB_ENV
+          echo "PLOT_VARIANT=${PLOT_VARIANT}" >> $GITHUB_ENV
 
-      - name: Build Tao (noplot)
+      - name: Build Tao (${{ matrix.plot_variant }})
         shell: bash -l {0}
-        working-directory: ./tao/fpm-noplot
-        run: "fpm @${FPM_TARGET}"
-
-      - name: Build Tao (pgplot)
-        shell: bash -l {0}
-        working-directory: ./tao/fpm-pgplot
+        working-directory: ./tao/fpm-${{ matrix.plot_variant }}
         run: "fpm @${FPM_TARGET}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: "${{ matrix.fpm_target }}-noplot"
-          path: ./tao/fpm-noplot/${{ matrix.fpm_target }}
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: "${{ matrix.fpm_target }}-pgplot"
-          path: ./tao/fpm-pgplot/${{ matrix.fpm_target }}
+          name: "${{ matrix.fpm_target }}-${{ matrix.plot_variant }}"
+          path: ./tao/fpm-${{ matrix.plot_variant }}/${{ matrix.fpm_target }}

@@ -1,4 +1,4 @@
-name = "tao-noplot"
+name = "tao-pgplot"
 
 [fortran]
 implicit-external = true

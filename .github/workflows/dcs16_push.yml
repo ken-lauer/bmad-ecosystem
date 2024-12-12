@@ -3,6 +3,7 @@
 name: dcs16_push
 
 on:
+  workflow_dispatch:
   push:
     branches-ignore: main
 
