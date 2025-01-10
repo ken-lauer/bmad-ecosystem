@@ -4479,6 +4479,7 @@ case ('global')
   nl=incr(nl); write (li(nl), amt) 'phase_units;ENUM;T;',                     trim(angle_units_name(s%global%phase_units))
   nl=incr(nl); write (li(nl), imt) 'bunch_to_plot;INT;T;',                    s%global%bunch_to_plot
   nl=incr(nl); write (li(nl), imt) 'random_seed;INT;T;',                      s%global%random_seed
+  nl=incr(nl); write (li(nl), imt) 'n_threads;INT;T;',                        s%global%n_threads
   nl=incr(nl); write (li(nl), imt) 'n_top10_merit;INT;T;',                    s%global%n_top10_merit
   nl=incr(nl); write (li(nl), imt) 'n_opti_loops;INT;T;',                     s%global%n_opti_loops
   nl=incr(nl); write (li(nl), imt) 'n_opti_cycles;INT;T;',                    s%global%n_opti_cycles
@@ -6314,7 +6315,7 @@ case ('ring_general')
                                                   pz = tao_branch%orbit(0)%vec(6), ix_branch = branch%ix_branch)
   call calc_z_tune(branch)
   call radiation_integrals (branch%lat, tao_branch%orbit, tao_branch%modes_ri, tao_branch%ix_rad_int_cache, branch%ix_branch)
-  call emit_6d(branch%ele(0), .true., tao_branch%modes_6d, mat6, tao_branch%orbit)
+  call emit_6d(branch%ele(0), .true., tao_branch%modes_6d, mat6, tao_branch%orbit, tao_lat%rad_int_by_ele_6d)
   n = branch%n_ele_track
   time1 = branch%ele(n)%ref_time
   gamma = branch%ele(0)%value(e_tot$) / mass_of(branch%param%particle)
