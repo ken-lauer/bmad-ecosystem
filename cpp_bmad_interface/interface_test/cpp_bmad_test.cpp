@@ -1036,7 +1036,7 @@ void set_CPP_wake_sr_test_pattern (CPP_wake_sr& C, int ix_patt) {
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.file.resize(200);
+  C.file.resize(400);
   for (unsigned int i = 0; i < C.file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[type, 0, NOT]
@@ -1212,7 +1212,7 @@ void set_CPP_wake_lr_test_pattern (CPP_wake_lr& C, int ix_patt) {
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.file.resize(200);
+  C.file.resize(400);
   for (unsigned int i = 0; i < C.file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[type, 1, ALLOC]
@@ -1696,7 +1696,7 @@ void set_CPP_cartesian_map_term_test_pattern (CPP_cartesian_map_term& C, int ix_
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.file.resize(200);
+  C.file.resize(400);
   for (unsigned int i = 0; i < C.file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[integer, 0, NOT]
@@ -1884,7 +1884,7 @@ void set_CPP_cylindrical_map_term_test_pattern (CPP_cylindrical_map_term& C, int
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.file.resize(200);
+  C.file.resize(400);
   for (unsigned int i = 0; i < C.file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[integer, 0, NOT]
@@ -2084,7 +2084,7 @@ void set_CPP_grid_field_pt_test_pattern (CPP_grid_field_pt& C, int ix_patt) {
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.file.resize(200);
+  C.file.resize(400);
   for (unsigned int i = 0; i < C.file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[integer, 0, NOT]
@@ -2846,7 +2846,7 @@ void set_CPP_gen_grad_map_test_pattern (CPP_gen_grad_map& C, int ix_patt) {
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.file.resize(200);
+  C.file.resize(400);
   for (unsigned int i = 0; i < C.file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[type, 1, ALLOC]
@@ -4656,7 +4656,7 @@ void set_CPP_beam_init_test_pattern (CPP_beam_init& C, int ix_patt) {
   int rhs, offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
-  C.position_file.resize(200);
+  C.position_file.resize(400);
   for (unsigned int i = 0; i < C.position_file.size(); i++)
     {int rhs = 101 + i + 1 + offset; C.position_file[i] = 'a' + rhs % 26;}
   // c_side.test_pat[character, 1, NOT]
@@ -4992,7 +4992,7 @@ void set_CPP_pre_tracker_test_pattern (CPP_pre_tracker& C, int ix_patt) {
   rhs = 3 + offset; C.ix_ele_end = rhs;
 
   // c_side.test_pat[character, 0, NOT]
-  C.input_file.resize(200);
+  C.input_file.resize(400);
   for (unsigned int i = 0; i < C.input_file.size(); i++)
     {int rhs = 101 + i + 4 + offset; C.input_file[i] = 'a' + rhs % 26;}
 
@@ -5589,7 +5589,7 @@ void set_CPP_space_charge_common_test_pattern (CPP_space_charge_common& C, int i
   rhs = 16 + offset; C.debug = (rhs % 2 == 0);
 
   // c_side.test_pat[character, 0, NOT]
-  C.diagnostic_output_file.resize(200);
+  C.diagnostic_output_file.resize(400);
   for (unsigned int i = 0; i < C.diagnostic_output_file.size(); i++)
     {int rhs = 101 + i + 17 + offset; C.diagnostic_output_file[i] = 'a' + rhs % 26;}
 
@@ -6664,7 +6664,7 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
   for (unsigned int i = 0; i < C.machine.size(); i++)
     {int rhs = 101 + i + 3 + offset; C.machine[i] = 'a' + rhs % 26;}
   // c_side.test_pat[character, 0, NOT]
-  C.input_file_name.resize(200);
+  C.input_file_name.resize(400);
   for (unsigned int i = 0; i < C.input_file_name.size(); i++)
     {int rhs = 101 + i + 4 + offset; C.input_file_name[i] = 'a' + rhs % 26;}
   // c_side.test_pat[character, 0, NOT]
