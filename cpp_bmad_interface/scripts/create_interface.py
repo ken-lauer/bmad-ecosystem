@@ -176,6 +176,7 @@ class f_side_trans_class:
     size_var: list[str] = field(
         default_factory=list
     )  # For communicating the size of allocatable and pointer variables
+    test_value: str = ""
 
 
 @dataclass
@@ -378,188 +379,188 @@ test_pat3 = jd1_loop + jd2_loop + jd3_loop + rhs3 + set3 + "enddo; enddo; enddo\
 
 n_str = {0: "", 1: "1", 2: "2", 3: "3"}
 
-f_side_trans = {}
 
-for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
-    for dim in range(4):
-        f_side_trans[type, dim, NOT] = copy.deepcopy(f_side_trans_class())
-        f = f_side_trans[type, dim, NOT]
+def make_f_side_trans_basic(type: str, dim: int):
+    f_side_trans[type, dim, NOT] = f_side_trans_class()
+    f = f_side_trans[type, dim, NOT]
 
-        if type == REAL:
-            f.to_c2_type = "real(c_double)"
-            test_value = "rhs"
+    if type == REAL:
+        f.to_c2_type = "real(c_double)"
+        f.test_value = "rhs"
 
-        if type == CMPLX:
-            f.to_c2_type = "complex(c_double_complex)"
-            test_value = "cmplx(rhs, 100+rhs)"
+    if type == CMPLX:
+        f.to_c2_type = "complex(c_double_complex)"
+        f.test_value = "cmplx(rhs, 100+rhs)"
 
-        if type == INT:
-            f.to_c2_type = "integer(c_int)"
-            test_value = "rhs"
+    if type == INT:
+        f.to_c2_type = "integer(c_int)"
+        f.test_value = "rhs"
 
-        if type == INT8:
-            f.to_c2_type = "integer(c_long)"
-            test_value = "rhs"
+    if type == INT8:
+        f.to_c2_type = "integer(c_long)"
+        f.test_value = "rhs"
 
+    if type == LOGIC:
+        f.to_c2_type = "logical(c_bool)"
+        f.test_value = "(modulo(rhs, 2) == 0)"
+
+    if type == STRUCT:
+        f.to_c2_type = "type(c_ptr)"
+        f.test_value = "TEST_VALUE"
+
+    if type == SIZE:
+        f.to_c2_call = "NAME"
+        f.to_c2_type = "integer(c_int), value"
+        f.to_c2_name = "NAME"
+        f.to_f2_type = "integer(c_int), value"
+        f.to_f2_name = "NAME"
+        f.to_f2_trans = ""
+        f.to_c2_f2_sub_arg = "NAME"
+        f.to_c_var = ["integer(c_int) :: NAME"]
+        f.test_value = ""
+        return
+
+    # -----------------------------------------------
+
+    if dim == 0:
+        f.to_c2_name = "z_NAME"
+        f.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
+        f.to_c2_call = "F%NAME"
+        f.test_pat = f.test_pat
         if type == LOGIC:
-            f.to_c2_type = "logical(c_bool)"
-            test_value = "(modulo(rhs, 2) == 0)"
-
+            f.to_c2_call = "c_logic(F%NAME)"
+            f.to_f2_trans = "F%NAME = f_logic(z_NAME)"
+            f.equality_test = f.equality_test.replace("==", ".eqv.")
         if type == STRUCT:
-            f.to_c2_type = "type(c_ptr)"
-            test_value = "TEST_VALUE"
+            f.to_c2_type = "type(c_ptr), value"
+            f.to_c2_call = "c_loc(F%NAME)"
+            f.to_f2_trans = "call KIND_to_f(z_NAME, c_loc(F%NAME))"
+            f.test_pat = "call set_KIND_test_pattern (F%NAME, ix_patt)\n"
 
-        if type == SIZE:
-            f.to_c2_call = "NAME"
-            f.to_c2_type = "integer(c_int), value"
-            f.to_c2_name = "NAME"
-            f.to_f2_type = "integer(c_int), value"
-            f.to_f2_name = "NAME"
-            f.to_f2_trans = ""
-            f.to_c2_f2_sub_arg = "NAME"
-            f.to_c_var = ["integer(c_int) :: NAME"]
-            f.test_value = ""
-            continue
+    # -----------------------------------------------
 
-        # -----------------------------------------------
+    if dim == 1:
+        f.to_c2_call = "fvec2vec(F%NAME, DIM1)"
+        f.to_c2_name = "z_NAME(*)"
+        f.to_f2_trans = "F%NAME = z_NAME(1:DIM1)"
+        f.test_pat = test_pat1
+        if type == LOGIC:
+            f.to_f2_trans = "call vec2fvec (z_NAME, F%NAME)"
+            f.equality_test = f.equality_test.replace("==", ".eqv.")
+        if type == STRUCT:
+            f.to_c2_call = "z_NAME"
+            f.to_f2_trans = (
+                jd1_loop
+                + "  call KIND_to_f(z_NAME(jd1), c_loc(F%NAME(jd1+lb1)))\nenddo"
+            )
+            f.test_pat = (
+                jd1_loop
+                + rhs1
+                + "  call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\n"
+                + "enddo\n"
+            )
+            f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1)"]
+            f.to_c_trans = jd1_loop + "  z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))\nenddo\n"
 
-        if dim == 0:
-            f.to_c2_name = "z_NAME"
-            f.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
-            f.to_c2_call = "F%NAME"
-            f.test_pat = f.test_pat
-            if type == LOGIC:
-                f.to_c2_call = "c_logic(F%NAME)"
-                f.to_f2_trans = "F%NAME = f_logic(z_NAME)"
-                f.equality_test = f.equality_test.replace("==", ".eqv.")
-            if type == STRUCT:
-                f.to_c2_type = "type(c_ptr), value"
-                f.to_c2_call = "c_loc(F%NAME)"
-                f.to_f2_trans = "call KIND_to_f(z_NAME, c_loc(F%NAME))"
-                f.test_pat = "call set_KIND_test_pattern (F%NAME, ix_patt)\n"
+    # -----------------------------------------------
 
-        # -----------------------------------------------
+    if dim == 2:
+        f.to_f2_trans = "call vec2mat(z_NAME, F%NAME)"
+        f.to_c2_call = "mat2vec(F%NAME, DIM2)"
+        f.to_c2_name = "z_NAME(*)"
+        f.test_pat = test_pat2
+        if type == LOGIC:
+            f.equality_test = f.equality_test.replace("==", ".eqv.")
+        if type == STRUCT:
+            f.to_c2_call = "z_NAME"
+            f.to_f2_trans = (
+                jd1_loop
+                + jd2_loop
+                + "  call KIND_to_f(z_NAME(DIM2*(jd1-1) + jd2), c_loc(F%NAME(jd1+lb1,jd2+lb2)))\n"
+                + "enddo; enddo\n"
+            )
+            f.test_pat = (
+                jd1_loop
+                + jd2_loop
+                + rhs2
+                + "  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)\n"
+                + "enddo; enddo\n"
+            )
+            f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2)"]
+            f.to_c_trans = (
+                jd1_loop
+                + jd2_loop
+                + "  z_NAME(DIM2*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1,jd2+lb2))\n"
+                + "enddo; enddo\n"
+            )
 
-        if dim == 1:
-            f.to_c2_call = "fvec2vec(F%NAME, DIM1)"
-            f.to_c2_name = "z_NAME(*)"
-            f.to_f2_trans = "F%NAME = z_NAME(1:DIM1)"
-            f.test_pat = test_pat1
-            if type == LOGIC:
-                f.to_f2_trans = "call vec2fvec (z_NAME, F%NAME)"
-                f.equality_test = f.equality_test.replace("==", ".eqv.")
-            if type == STRUCT:
-                f.to_c2_call = "z_NAME"
-                f.to_f2_trans = (
-                    jd1_loop
-                    + "  call KIND_to_f(z_NAME(jd1), c_loc(F%NAME(jd1+lb1)))\nenddo"
-                )
-                f.test_pat = (
-                    jd1_loop
-                    + rhs1
-                    + "  call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\n"
-                    + "enddo\n"
-                )
-                f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1)"]
-                f.to_c_trans = (
-                    jd1_loop + "  z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))\nenddo\n"
-                )
+    # -----------------------------------------------
 
-        # -----------------------------------------------
+    if dim == 3:
+        f.to_f2_trans = "call vec2tensor(z_NAME, F%NAME)"
+        f.to_c2_call = "tensor2vec(F%NAME, DIM3)"
+        f.to_c2_name = "z_NAME(*)"
+        f.test_pat = test_pat3
+        if type == LOGIC:
+            f.equality_test = f.equality_test.replace("==", ".eqv.")
+        if type == STRUCT:
+            f.to_c2_call = "z_NAME"
+            f.to_f2_trans = (
+                jd1_loop
+                + jd2_loop
+                + jd3_loop
+                + "  call KIND_to_f(z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3), c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3)))\n"
+                + "enddo; enddo; enddo\n"
+            )
+            f.test_pat = (
+                jd1_loop
+                + jd2_loop
+                + jd3_loop
+                + rhs3
+                + "  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)\n"
+                + "enddo; enddo; enddo\n"
+            )
+            f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2*DIM3)"]
+            f.to_c_trans = (
+                jd1_loop
+                + jd2_loop
+                + jd3_loop
+                + "  z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3))\n"
+                + "enddo; enddo; enddo\n"
+            )
 
-        if dim == 2:
-            f.to_f2_trans = "call vec2mat(z_NAME, F%NAME)"
-            f.to_c2_call = "mat2vec(F%NAME, DIM2)"
-            f.to_c2_name = "z_NAME(*)"
-            f.test_pat = test_pat2
-            if type == LOGIC:
-                f.equality_test = f.equality_test.replace("==", ".eqv.")
-            if type == STRUCT:
-                f.to_c2_call = "z_NAME"
-                f.to_f2_trans = (
-                    jd1_loop
-                    + jd2_loop
-                    + "  call KIND_to_f(z_NAME(DIM2*(jd1-1) + jd2), c_loc(F%NAME(jd1+lb1,jd2+lb2)))\n"
-                    + "enddo; enddo\n"
-                )
-                f.test_pat = (
-                    jd1_loop
-                    + jd2_loop
-                    + rhs2
-                    + "  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)\n"
-                    + "enddo; enddo\n"
-                )
-                f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2)"]
-                f.to_c_trans = (
-                    jd1_loop
-                    + jd2_loop
-                    + "  z_NAME(DIM2*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1,jd2+lb2))\n"
-                    + "enddo; enddo\n"
-                )
+    # -------------------------
 
-        # -----------------------------------------------
+    f.test_pat = f.test_pat.replace("TEST_VALUE", f.test_value)
+    if f.to_f2_type == "":
+        f.to_f2_type = f.to_c2_type
+    if f.to_f2_name == "":
+        f.to_f2_name = f.to_c2_name
+    return f
 
-        if dim == 3:
-            f.to_f2_trans = "call vec2tensor(z_NAME, F%NAME)"
-            f.to_c2_call = "tensor2vec(F%NAME, DIM3)"
-            f.to_c2_name = "z_NAME(*)"
-            f.test_pat = test_pat3
-            if type == LOGIC:
-                f.equality_test = f.equality_test.replace("==", ".eqv.")
-            if type == STRUCT:
-                f.to_c2_call = "z_NAME"
-                f.to_f2_trans = (
-                    jd1_loop
-                    + jd2_loop
-                    + jd3_loop
-                    + "  call KIND_to_f(z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3), c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3)))\n"
-                    + "enddo; enddo; enddo\n"
-                )
-                f.test_pat = (
-                    jd1_loop
-                    + jd2_loop
-                    + jd3_loop
-                    + rhs3
-                    + "  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)\n"
-                    + "enddo; enddo; enddo\n"
-                )
-                f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2*DIM3)"]
-                f.to_c_trans = (
-                    jd1_loop
-                    + jd2_loop
-                    + jd3_loop
-                    + "  z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3))\n"
-                    + "enddo; enddo; enddo\n"
-                )
 
-        # -------------------------
+def make_f_side_trans_ptr(type: str, dim: int):
+    # ---------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
+    # Pointers
+    f = f_side_trans[type, dim, NOT]
 
-        f.test_pat = f.test_pat.replace("TEST_VALUE", test_value)
-        if f.to_f2_type == "":
-            f.to_f2_type = f.to_c2_type
-        if f.to_f2_name == "":
-            f.to_f2_name = f.to_c2_name
+    f_side_trans[type, dim, PTR] = f_side_trans_class()
+    fp = f_side_trans[type, dim, PTR]
+    fp.to_c2_type = f.to_c2_type
+    fp.to_c2_name = "z_NAME(*)"
+    fp.to_f2_type = "type(c_ptr), value"
+    fp.to_f2_name = "z_NAME"
+    fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME(:)"]
 
-        # ---------------------------------------------------------------------------------------------
-        # ---------------------------------------------------------------------------------------------
-        # Pointers
+    # ---------------------
+    # Pointer, dim = 0
 
-        f_side_trans[type, dim, PTR] = f_side_trans_class()
-        fp = f_side_trans[type, dim, PTR]
-        fp.to_c2_type = f.to_c2_type
-        fp.to_c2_name = "z_NAME(*)"
-        fp.to_f2_type = "type(c_ptr), value"
-        fp.to_f2_name = "z_NAME"
-        fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME(:)"]
-
-        # ---------------------
-        # Pointer, dim = 0
-
-        if dim == 0:
-            fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME"]
-            fp.to_c2_name = "z_NAME"
-            fp.to_c2_call = "F%NAME"
-            fp.to_f2_trans = """\
+    if dim == 0:
+        fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME"]
+        fp.to_c2_name = "z_NAME"
+        fp.to_c2_call = "F%NAME"
+        fp.to_f2_trans = """\
 if (n_NAME == 0) then                                                                                  
   if (associated(F%NAME)) deallocate(F%NAME)                                                           
 else                                                                                                   
@@ -569,18 +570,18 @@ else
 endif                                                                                                  
 """
 
-            fp.to_c_trans = """\
+        fp.to_c_trans = """\
 n_NAME = 0
 if (associated(F%NAME)) n_NAME = 1
 """
 
-            fp.equality_test = """
+        fp.equality_test = """
 is_eq = is_eq .and. (associated(f1%NAME) .eqv. associated(f2%NAME))
 if (.not. is_eq) return
 if (associated(f1%NAME)) is_eq = (f1%NAME == f2%NAME)
 """
 
-            test_pat = """\
+        test_pat = """\
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
@@ -590,22 +591,22 @@ else
 endif
 """
 
-            fp.test_pat = test_pat.replace("SET", "F%NAME = " + test_value)
+        fp.test_pat = test_pat.replace("SET", "F%NAME = " + f.test_value)
 
-            if type == LOGIC:
-                fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-                fp.to_f2_trans = fp.to_f2_trans.replace("= f_NAME", "= f_logic(f_NAME)")
-                fp.to_c2_call = "fscalar2scalar(F%NAME, n_NAME)"
-                fp.to_c2_type = "logical(c_bool)"
+        if type == LOGIC:
+            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
+            fp.to_f2_trans = fp.to_f2_trans.replace("= f_NAME", "= f_logic(f_NAME)")
+            fp.to_c2_call = "fscalar2scalar(F%NAME, n_NAME)"
+            fp.to_c2_type = "logical(c_bool)"
 
-            if type == STRUCT:
-                fp.to_c2_call = "c_loc(F%NAME)"
-                fp.to_c2_type = "type(c_ptr), value"
-                fp.to_f2_var = ["type(KIND_struct), pointer :: f_NAME"]
-                fp.test_pat = test_pat.replace(
-                    "SET", "call set_KIND_test_pattern (F%NAME, ix_patt)"
-                )
-                fp.to_f2_trans = """\
+        if type == STRUCT:
+            fp.to_c2_call = "c_loc(F%NAME)"
+            fp.to_c2_type = "type(c_ptr), value"
+            fp.to_f2_var = ["type(KIND_struct), pointer :: f_NAME"]
+            fp.test_pat = test_pat.replace(
+                "SET", "call set_KIND_test_pattern (F%NAME, ix_patt)"
+            )
+            fp.to_f2_trans = """\
 if (n_NAME == 0) then
   if (associated(F%NAME)) deallocate(F%NAME)
 else
@@ -614,70 +615,70 @@ else
 endif
 """
 
-        # ---------------------
-        # Pointer, dim = 1
+    # ---------------------
+    # Pointer, dim = 1
 
-        if dim == 1:
-            fp.to_c2_call = "fvec2vec(F%NAME, n1_NAME)"
-            fp.to_f2_trans = (
-                to_f2_trans_pointer.replace("DIMS", "n1_NAME")
-                .replace("TOTDIM", "n1_NAME")
-                .replace("SET", "F%NAME = f_NAME(1:n1_NAME)")
-            )
-            fp.equality_test = equality_test_pointer
+    if dim == 1:
+        fp.to_c2_call = "fvec2vec(F%NAME, n1_NAME)"
+        fp.to_f2_trans = (
+            to_f2_trans_pointer.replace("DIMS", "n1_NAME")
+            .replace("TOTDIM", "n1_NAME")
+            .replace("SET", "F%NAME = f_NAME(1:n1_NAME)")
+        )
+        fp.equality_test = equality_test_pointer
 
-            fp.to_c_trans = """\
+        fp.to_c_trans = """\
 n1_NAME = 0
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME, 1)
 endif
 """
-            tp1 = """
+        tp1 = """
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
   if (.not. associated(F%NAME)) allocate (F%NAME(-1:1))
 """
 
-            fp.test_pat = "".join(
-                (
-                    tp1,
-                    x2,
-                    jd1_loop,
-                    x2,
-                    rhs1,
-                    x2,
-                    set1.replace("TEST_VALUE", test_value),
-                    "  enddo\n",
-                    "endif\n",
-                )
+        fp.test_pat = "".join(
+            (
+                tp1,
+                x2,
+                jd1_loop,
+                x2,
+                rhs1,
+                x2,
+                set1.replace("TEST_VALUE", f.test_value),
+                "  enddo\n",
+                "endif\n",
+            )
+        )
+
+        if type == LOGIC:
+            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
+            fp.to_f2_trans = fp.to_f2_trans.replace(
+                "F%NAME = f_NAME(1:n1_NAME)", "call vec2fvec (f_NAME, F%NAME)"
             )
 
-            if type == LOGIC:
-                fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-                fp.to_f2_trans = fp.to_f2_trans.replace(
-                    "F%NAME = f_NAME(1:n1_NAME)", "call vec2fvec (f_NAME, F%NAME)"
-                )
-
-            if type == STRUCT:
-                fp.to_c2_call = "z_NAME"
-                fp.to_c2_type = "type(c_ptr)"
-                fp.to_c2_name = "z_NAME(*)"
-                fp.to_f2_type = fp.to_c2_type
-                fp.to_f2_name = fp.to_c2_name
-                fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
-                fp.to_f2_var = []
-                fp.test_pat = (
-                    tp1
-                    + x2
-                    + jd1_loop
-                    + x4
-                    + "call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\n"
-                    + "  enddo\n"
-                    + "endif\n"
-                )
-                ## fp.equality_test = fp.equality_test.replace
-                fp.to_c_trans = """ \
+        if type == STRUCT:
+            fp.to_c2_call = "z_NAME"
+            fp.to_c2_type = "type(c_ptr)"
+            fp.to_c2_name = "z_NAME(*)"
+            fp.to_f2_type = fp.to_c2_type
+            fp.to_f2_name = fp.to_c2_name
+            fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
+            fp.to_f2_var = []
+            fp.test_pat = (
+                tp1
+                + x2
+                + jd1_loop
+                + x4
+                + "call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\n"
+                + "  enddo\n"
+                + "endif\n"
+            )
+            ## fp.equality_test = fp.equality_test.replace
+            fp.to_c_trans = """ \
 n1_NAME = 0
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME); lb1 = lbound(F%NAME, 1) - 1
@@ -687,7 +688,7 @@ if (associated(F%NAME)) then
   enddo
 endif
 """
-                fp.to_f2_trans = """\
+            fp.to_f2_trans = """\
 if (n1_NAME == 0) then
   if (associated(F%NAME)) deallocate(F%NAME)
 else
@@ -702,19 +703,19 @@ else
 endif
 """
 
-        # ---------------------
-        # Pointer, dim = 2
+    # ---------------------
+    # Pointer, dim = 2
 
-        if dim == 2:
-            fp.to_c2_call = "mat2vec(F%NAME, n1_NAME*n2_NAME)"
-            fp.to_f2_trans = (
-                to_f2_trans_pointer.replace("DIMS", "n1_NAME, n2_NAME")
-                .replace("TOTDIM", "n1_NAME*n2_NAME")
-                .replace("SET", "call vec2mat(f_NAME, F%NAME)")
-            )
-            fp.equality_test = equality_test_pointer
+    if dim == 2:
+        fp.to_c2_call = "mat2vec(F%NAME, n1_NAME*n2_NAME)"
+        fp.to_f2_trans = (
+            to_f2_trans_pointer.replace("DIMS", "n1_NAME, n2_NAME")
+            .replace("TOTDIM", "n1_NAME*n2_NAME")
+            .replace("SET", "call vec2mat(f_NAME, F%NAME)")
+        )
+        fp.equality_test = equality_test_pointer
 
-            fp.to_c_trans = """\
+        fp.to_c_trans = """\
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME, 1)
   n2_NAME = size(F%NAME, 2)
@@ -722,51 +723,51 @@ else
   n1_NAME = 0; n2_NAME = 0
 endif
 """
-            tp2 = """
+        tp2 = """
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
   if (.not. associated(F%NAME)) allocate (F%NAME(-1:1, 2))
 """
+        fp.test_pat = (
+            tp2
+            + x2
+            + jd1_loop
+            + x2
+            + jd2_loop
+            + x2
+            + rhs2
+            + x2
+            + set2.replace("TEST_VALUE", f.test_value)
+            + "  enddo; enddo\n"
+            + "endif\n"
+        )
+
+        if type == LOGIC:
+            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
+
+        if type == STRUCT:
+            fp.to_c2_call = "z_NAME"
+            fp.to_c2_type = "type(c_ptr)"
+            fp.to_c2_name = "z_NAME(*)"
+            fp.to_f2_type = fp.to_c2_type
+            fp.to_f2_name = fp.to_c2_name
+            fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
+            fp.to_f2_var = []
             fp.test_pat = (
                 tp2
                 + x2
                 + jd1_loop
                 + x2
                 + jd2_loop
-                + x2
-                + rhs2
-                + x2
-                + set2.replace("TEST_VALUE", test_value)
-                + "  enddo; enddo\n"
+                + x4
+                + "call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)\n"
+                + "  enddo\n"
+                + "  enddo\n"
                 + "endif\n"
             )
-
-            if type == LOGIC:
-                fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-
-            if type == STRUCT:
-                fp.to_c2_call = "z_NAME"
-                fp.to_c2_type = "type(c_ptr)"
-                fp.to_c2_name = "z_NAME(*)"
-                fp.to_f2_type = fp.to_c2_type
-                fp.to_f2_name = fp.to_c2_name
-                fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
-                fp.to_f2_var = []
-                fp.test_pat = (
-                    tp2
-                    + x2
-                    + jd1_loop
-                    + x2
-                    + jd2_loop
-                    + x4
-                    + "call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)\n"
-                    + "  enddo\n"
-                    + "  enddo\n"
-                    + "endif\n"
-                )
-                ## fp.equality_test = fp.equality_test.replace
-                fp.to_c_trans = """\
+            ## fp.equality_test = fp.equality_test.replace
+            fp.to_c_trans = """\
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME, 1); lb1 = lbound(F%NAME, 1) - 1
   n2_NAME = size(F%NAME, 2); lb2 = lbound(F%NAME, 2) - 1
@@ -778,7 +779,7 @@ else
   n1_NAME = 0; n2_NAME = 0
 endif
 """
-                fp.to_f2_trans = """\
+            fp.to_f2_trans = """\
 if (n1_NAME == 0) then
   if (associated(F%NAME)) deallocate(F%NAME)
 else
@@ -795,19 +796,19 @@ else
 endif
 """
 
-        # ---------------------
-        # Pointer, dim = 3
+    # ---------------------
+    # Pointer, dim = 3
 
-        if dim == 3:
-            fp.to_c2_call = "tensor2vec(F%NAME, n1_NAME*n2_NAME*n3_NAME)"
-            fp.to_f2_trans = (
-                to_f2_trans_pointer.replace("DIMS", "n1_NAME, n2_NAME, n3_NAME")
-                .replace("TOTDIM", "n1_NAME*n2_NAME*n3_NAME")
-                .replace("SET", "call vec2tensor(f_NAME, F%NAME)")
-            )
-            fp.equality_test = equality_test_pointer
+    if dim == 3:
+        fp.to_c2_call = "tensor2vec(F%NAME, n1_NAME*n2_NAME*n3_NAME)"
+        fp.to_f2_trans = (
+            to_f2_trans_pointer.replace("DIMS", "n1_NAME, n2_NAME, n3_NAME")
+            .replace("TOTDIM", "n1_NAME*n2_NAME*n3_NAME")
+            .replace("SET", "call vec2tensor(f_NAME, F%NAME)")
+        )
+        fp.equality_test = equality_test_pointer
 
-            fp.to_c_trans = """\
+        fp.to_c_trans = """\
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME, 1)
   n2_NAME = size(F%NAME, 2)
@@ -817,12 +818,39 @@ else
 endif
 """
 
-            tp3 = """\
+        tp3 = """\
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
   if (.not. associated(F%NAME)) allocate (F%NAME(-1:1, 2, 1))
 """
+        fp.test_pat = (
+            tp3
+            + x2
+            + jd1_loop
+            + x2
+            + jd2_loop
+            + x2
+            + jd3_loop
+            + x2
+            + rhs3
+            + x2
+            + set3.replace("TEST_VALUE", f.test_value)
+            + "  enddo; enddo; enddo\n"
+            + "endif\n"
+        )
+
+        if type == LOGIC:
+            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
+
+        if type == STRUCT:
+            fp.to_c2_call = "z_NAME"
+            fp.to_c2_type = "type(c_ptr)"
+            fp.to_c2_name = "z_NAME(*)"
+            fp.to_f2_type = fp.to_c2_type
+            fp.to_f2_name = fp.to_c2_name
+            fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
+            fp.to_f2_var = []
             fp.test_pat = (
                 tp3
                 + x2
@@ -831,42 +859,15 @@ else
                 + jd2_loop
                 + x2
                 + jd3_loop
-                + x2
-                + rhs3
-                + x2
-                + set3.replace("TEST_VALUE", test_value)
-                + "  enddo; enddo; enddo\n"
+                + x4
+                + "call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+2*jd2+3*jd3)\n"
+                + "  enddo\n"
+                + "  enddo\n"
+                + "  enddo\n"
                 + "endif\n"
             )
-
-            if type == LOGIC:
-                fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-
-            if type == STRUCT:
-                fp.to_c2_call = "z_NAME"
-                fp.to_c2_type = "type(c_ptr)"
-                fp.to_c2_name = "z_NAME(*)"
-                fp.to_f2_type = fp.to_c2_type
-                fp.to_f2_name = fp.to_c2_name
-                fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
-                fp.to_f2_var = []
-                fp.test_pat = (
-                    tp3
-                    + x2
-                    + jd1_loop
-                    + x2
-                    + jd2_loop
-                    + x2
-                    + jd3_loop
-                    + x4
-                    + "call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+2*jd2+3*jd3)\n"
-                    + "  enddo\n"
-                    + "  enddo\n"
-                    + "  enddo\n"
-                    + "endif\n"
-                )
-                ## fp.equality_test = fp.equality_test.replace
-                fp.to_c_trans = """\
+            ## fp.equality_test = fp.equality_test.replace
+            fp.to_c_trans = """\
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME, 1); lb1 = lbound(F%NAME, 1) - 1
   n2_NAME = size(F%NAME, 2); lb2 = lbound(F%NAME, 2) - 1
@@ -879,7 +880,7 @@ else
   n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
 endif
 """
-                fp.to_f2_trans = """\
+            fp.to_f2_trans = """\
 if (n1_NAME == 0) then
   if (associated(F%NAME)) deallocate(F%NAME)
 else
@@ -893,6 +894,16 @@ else
   enddo;  enddo;  enddo
 endif
 """
+    return fp
+
+
+f_side_trans: dict[tuple[str, int, str], f_side_trans_class] = {}
+
+for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
+    for dim in range(4):
+        make_f_side_trans_basic(type, dim)
+        make_f_side_trans_ptr(type, dim)
+
 
 # ---------------------------
 # CHAR 0 NOT
