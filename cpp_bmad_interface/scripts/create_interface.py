@@ -34,8 +34,6 @@ CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
 N_CHAR_MAX = 95
 DEBUG = False  # Change to True to enable printout
 
-##################################################################################
-##################################################################################
 # Constants
 
 NOT = "NOT"
@@ -310,10 +308,6 @@ class struct_def_class:
     def __str__(self) -> str:
         return "[name: %s, #arg: %i]" % (self.short_name, len(self.arg))
 
-
-##################################################################################
-##################################################################################
-# Fortran side translation
 
 x2 = " " * 2
 x4 = " " * 4
@@ -1260,7 +1254,9 @@ def configure_pointer(
     cp.test_pat = cp.test_pat.replace("TEST_VALUE", c.test_value)
 
 
-def configure_pointer_dim0(cp: c_side_trans_class, c, c_type, type):
+def configure_pointer_dim0(
+    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
+):
     """Configure pointer for dimension 0"""
     cp.c_class_suffix = "*"
     cp.constructor = "NAME(NULL)"
@@ -1296,7 +1292,9 @@ def configure_pointer_dim0(cp: c_side_trans_class, c, c_type, type):
         cp.to_c2_set = cp.to_c2_set.replace("SET", "*C.NAME = *z_NAME;")
 
 
-def configure_pointer_dim1(cp: c_side_trans_class, c, c_type, type):
+def configure_pointer_dim1(
+    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
+):
     """Configure pointer for dimension 1"""
     cp.constructor = cp.constructor.replace("DIM1", "0")
     cp.to_f2_call = "z_NAME"
@@ -1337,7 +1335,9 @@ def configure_pointer_dim1(cp: c_side_trans_class, c, c_type, type):
         cp.to_f_cleanup = " delete[] z_NAME;\n"
 
 
-def configure_pointer_dim2(cp: c_side_trans_class, c, c_type, type):
+def configure_pointer_dim2(
+    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
+):
     """Configure pointer for dimension 2"""
     cp.constructor = cp.constructor.replace("DIM1", "0").replace("DIM2", "0")
     cp.to_c2_set = """\
@@ -1395,7 +1395,9 @@ def configure_pointer_dim2(cp: c_side_trans_class, c, c_type, type):
 """.replace("TYPE", c_type)
 
 
-def configure_pointer_dim3(cp: c_side_trans_class, c, c_type, type):
+def configure_pointer_dim3(
+    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
+):
     """Configure pointer for dimension 3"""
     cp.constructor = (
         cp.constructor.replace("DIM1", "0").replace("DIM2", "0").replace("DIM3", "0")
@@ -1763,13 +1765,10 @@ def parse_file(
             if len(split_line) < 2 or split_line[0] != "type":
                 continue
 
-            found = False
             for struct in struct_definitions:
                 if struct.f_name == split_line[1]:
-                    found = True
                     break
-
-            if not found:
+            else:
                 continue
 
             struct.short_name = struct.f_name[:-7]  # Remove '_struct' suffix
@@ -2032,6 +2031,8 @@ def parse_init_value(arg: arg_class, split_line: list) -> tuple:
     if len(split_line) > 1 and (split_line[1] == "(" or split_line[1] == "["):
         split0 = split_line[0] + split_line[1]
         n_parens = 1
+
+        ix = 0
         for ix, char in enumerate(split_line[2]):
             split0 = split0 + char
             if char == "(" or char == "[":
@@ -2057,11 +2058,6 @@ def parse_init_value(arg: arg_class, split_line: list) -> tuple:
         split_line.pop(0)
 
     return arg, split_line
-
-
-##################################################################################
-##################################################################################
-# Add Fortran and C++ side translation info.
 
 
 def remove_untranslated(struct: struct_def_class) -> None:
@@ -2093,11 +2089,6 @@ def remove_untranslated(struct: struct_def_class) -> None:
         # Apply translations
         arg.f_side = copy.deepcopy(f_side_trans[translation_key])
         arg.c_side = copy.deepcopy(c_side_trans[translation_key])
-
-
-##################################################################################
-##################################################################################
-# Add array bound info for pointer structure components
 
 
 def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> None:
@@ -2142,10 +2133,6 @@ def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> Non
 
                 struct.arg.insert(ia, size_arg)
                 ia += 1
-
-
-##################################################################################
-##################################################################################
 
 
 def fix_struct_arg_placeholders(struct: struct_def_class, arg: arg_class) -> None:
@@ -2356,8 +2343,6 @@ def check_missing():
         sys.exit(1)
 
 
-##################################################################################
-##################################################################################
 def create_fortran_interface(struct_definitions, params, f_face):
     # Create Fortran side of interface...
 
@@ -2582,11 +2567,6 @@ end subroutine {s_name}_to_f2
     f_face.write("end module\n")
 
 
-##################################################################################
-##################################################################################
-# Create Fortran struct equality check code
-
-
 def create_fortran_equality_check_code():
     f_equ.write(
         f"""\
@@ -2691,11 +2671,6 @@ endif
 
 end program
 """)
-
-
-##################################################################################
-##################################################################################
-# Create Fortran side check code
 
 
 def write_tests_mod(f_test):
@@ -2821,11 +2796,6 @@ end module
 """)
 
 
-##################################################################################
-##################################################################################
-# Create C++ class
-
-
 def write_cpp_classes(file):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     file.write("""
@@ -2927,11 +2897,6 @@ bool operator== (const CPP_{struct.short_name}&, const CPP_{struct.short_name}&)
 """)
 
 
-##################################################################################
-##################################################################################
-# Create C++ side of interface
-
-
 def write_cpp_convert(file):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     file.write("""
@@ -3025,11 +2990,6 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             file.write(f"{arg.c_side.to_c2_set}\n")
 
         file.write("}\n")
-
-
-##################################################################################
-##################################################################################
-# Create C++ class equality check code
 
 
 def write_cpp_equality(file):
@@ -3131,11 +3091,6 @@ template bool is_all_equal (const Int_TENSOR&,      const Int_TENSOR&);
         file.write(
             f"template bool is_all_equal (const CPP_{struct.short_name}_MATRIX&, const CPP_{struct.short_name}_MATRIX&);\n"
         )
-
-
-##################################################################################
-##################################################################################
-# Create C++ side code check
 
 
 def write_cpp_test(file):
