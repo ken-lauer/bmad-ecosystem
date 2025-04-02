@@ -148,6 +148,7 @@ class c_side_trans_class:
     destructor: str = ""
     equality_test: str = "  is_eq = is_eq && (x.NAME == y.NAME);\n"
     test_pat: str = "  rhs = XXX + offset; C.NAME = TEST_VALUE;\n"
+    test_value: str = ""
 
     def __repr__(self):
         return "{},  {},  {},  {}".format(
@@ -156,7 +157,6 @@ class c_side_trans_class:
             self.to_f2_call,
             self.to_c2_arg,
         )
-        self.size_var = []  # For communicating the size of allocatable and pointer variables
 
 
 @dataclass
@@ -1106,79 +1106,72 @@ def configure_c_side_trans_by_type(
     type: str,
     dim: int,
     pointer_type: str,
-    c_side_trans_obj: c_side_trans_class,
-    test_value: str,
+    c: c_side_trans_class,
 ):
     """Configure a c_side_trans object based on type, dimension, and pointer type."""
     if type == REAL:
         c_type = "Real"
         c_arg = "c_Real"
-        test_value = "rhs"
-        c_side_trans_obj.construct_value = "0.0"
+        c.test_value = "rhs"
+        c.construct_value = "0.0"
     elif type == CMPLX:
         c_type = "Complex"
         c_arg = "c_Complex"
-        test_value = "Complex(rhs, 100+rhs)"
-        c_side_trans_obj.construct_value = "0.0"
+        c.test_value = "Complex(rhs, 100+rhs)"
+        c.construct_value = "0.0"
     elif type == INT:
         c_type = "Int"
         c_arg = "c_Int"
-        test_value = "rhs"
-        c_side_trans_obj.construct_value = "0"
+        c.test_value = "rhs"
+        c.construct_value = "0"
     elif type == INT8:
         c_type = "Int8"
         c_arg = "c_Int8"
-        test_value = "rhs"
-        c_side_trans_obj.construct_value = "0"
+        c.test_value = "rhs"
+        c.construct_value = "0"
     elif type == LOGIC:
         c_type = "Bool"
         c_arg = "c_Bool"
-        test_value = "(rhs % 2 == 0)"
-        c_side_trans_obj.construct_value = "false"
+        c.test_value = "(rhs % 2 == 0)"
+        c.construct_value = "false"
     elif type == STRUCT:
         c_type = "CPP_KIND"
         c_arg = "const CPP_KIND"
-        test_value = ""
-        c_side_trans_obj.construct_value = ""
+        c.test_value = ""
+        c.construct_value = ""
     elif type == SIZE:
-        c_side_trans_obj.to_f2_arg = "Int"
-        c_side_trans_obj.to_f2_call = "NAME"
-        c_side_trans_obj.to_c2_arg = "Int NAME"
+        c.to_f2_arg = "Int"
+        c.to_f2_call = "NAME"
+        c.to_c2_arg = "Int NAME"
         return
     else:
         raise NotImplementedError(type)
 
     # Configure based on dimension
     if dim == 0:
-        configure_dim0(c_side_trans_obj, c_type, c_arg, type)
+        configure_dim0(c, c_type, c_arg, type)
     elif dim == 1:
-        configure_dim1(c_side_trans_obj, c_type, c_arg, type, test_value)
+        configure_dim1(c, c_type, c_arg, type)
     elif dim == 2:
-        configure_dim2(c_side_trans_obj, c_type, c_arg, type, test_value)
+        configure_dim2(c, c_type, c_arg, type)
     elif dim == 3:
-        configure_dim3(c_side_trans_obj, c_type, c_arg, type, test_value)
+        configure_dim3(c, c_type, c_arg, type)
 
     # Apply test pattern
-    c_side_trans_obj.test_pat = c_side_trans_obj.test_pat.replace(
-        "TEST_VALUE", test_value
-    )
+    c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
 
     # Special handling for STRUCT type
     if type == STRUCT:
-        c_side_trans_obj.to_c2_arg = "const Opaque_KIND_class* z_NAME"
+        c.to_c2_arg = "const Opaque_KIND_class* z_NAME"
         if dim > 0:
-            c_side_trans_obj.to_f2_arg = c_side_trans_obj.to_f2_arg.replace("Arr", "**")
-            c_side_trans_obj.to_c2_arg = "const Opaque_KIND_class** z_NAME"
-            c_side_trans_obj.to_f2_call = "z_NAME"
+            c.to_f2_arg = c.to_f2_arg.replace("Arr", "**")
+            c.to_c2_arg = "const Opaque_KIND_class** z_NAME"
+            c.to_f2_call = "z_NAME"
 
     # Configure pointer version if needed
     if pointer_type == PTR:
-        configure_pointer(
-            c_side_trans_obj, c_side_trans_obj, dim, type, c_type, c_arg, test_value
-        )
-        c_side_trans_obj.test_pat = c_side_trans_obj.test_pat.replace(
-            "TEST_VALUE", test_value
-        )
+        configure_pointer(c, c, dim, type, c_type, c_arg)
+        c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
 
 
 def configure_dim0(c, c_type, c_arg, type):
@@ -1194,7 +1187,7 @@ def configure_dim0(c, c_type, c_arg, type):
         c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
 
 
-def configure_dim1(c, c_type, c_arg, type, test_value):
+def configure_dim1(c, c_type, c_arg, type):
     """Configure for dimension 1"""
     c.c_class = c_type + "_ARRAY"
     c.to_f2_arg = c_arg + "Arr"
@@ -1218,7 +1211,7 @@ def configure_dim1(c, c_type, c_arg, type, test_value):
 """
 
 
-def configure_dim2(c, c_type, c_arg, type, test_value):
+def configure_dim2(c, c_type, c_arg, type):
     """Configure for dimension 2"""
     c.c_class = c_type + "_MATRIX"
     c.to_f2_arg = c_arg + "Arr"
@@ -1251,7 +1244,7 @@ def configure_dim2(c, c_type, c_arg, type, test_value):
         )
 
 
-def configure_dim3(c, c_type, c_arg, type, test_value):
+def configure_dim3(c, c_type, c_arg, type):
     """Configure for dimension 3"""
     c.c_class = c_type + "_TENSOR"
     c.to_f2_arg = c_arg + "Arr"
@@ -1297,7 +1290,6 @@ def configure_pointer(
     type: str,
     c_type: str,
     c_arg: str,
-    test_value: str,
 ):
     """Configure pointer version of the class"""
     # Copy the original configuration
@@ -1321,7 +1313,7 @@ def configure_pointer(
     else:
         raise NotImplementedError(dim)
 
-    cp.test_pat = cp.test_pat.replace("TEST_VALUE", test_value)
+    cp.test_pat = cp.test_pat.replace("TEST_VALUE", c.test_value)
 
 
 def configure_pointer_dim0(cp: c_side_trans_class, c, c_type, type):
@@ -1560,22 +1552,7 @@ def setup_common_c_side_trans():
             c_side_trans[type_val, dim, NOT] = c_side_trans_class()
             c = c_side_trans[type_val, dim, NOT]
 
-            # Determine test_value
-            if type_val == REAL:
-                test_value = "rhs"
-            elif type_val == CMPLX:
-                test_value = "Complex(rhs, 100+rhs)"
-            elif type_val == INT or type_val == INT8:
-                test_value = "rhs"
-            elif type_val == LOGIC:
-                test_value = "(rhs % 2 == 0)"
-            elif type_val == STRUCT:
-                test_value = ""
-            else:
-                test_value = ""
-
-            # Configure the object
-            configure_c_side_trans_by_type(type_val, dim, NOT, c, test_value)
+            configure_c_side_trans_by_type(type_val, dim, NOT, c)
 
             # Create and configure pointer version (except for SIZE type)
             if type_val != SIZE:
@@ -1591,7 +1568,6 @@ def setup_common_c_side_trans():
                     type_val,
                     get_c_type(type_val),
                     get_c_arg(type_val),
-                    test_value,
                 )
 
     return c_side_trans
