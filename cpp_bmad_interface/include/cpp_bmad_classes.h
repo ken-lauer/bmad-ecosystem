@@ -11,475 +11,475 @@
 #ifndef CPP_BMAD_CLASSES
 
 #include <string>
-#include <valarray>
+#include <vector>
 #include <complex>
 #include "bmad_enums.h"
 #include "bmad_std_typedef.h"
 
 class CPP_spline;
-typedef valarray<CPP_spline>          CPP_spline_ARRAY;
-typedef valarray<CPP_spline_ARRAY>    CPP_spline_MATRIX;
-typedef valarray<CPP_spline_MATRIX>   CPP_spline_TENSOR;
+typedef vector<CPP_spline>          CPP_spline_ARRAY;
+typedef vector<CPP_spline_ARRAY>    CPP_spline_MATRIX;
+typedef vector<CPP_spline_MATRIX>   CPP_spline_TENSOR;
 
 class CPP_spin_polar;
-typedef valarray<CPP_spin_polar>          CPP_spin_polar_ARRAY;
-typedef valarray<CPP_spin_polar_ARRAY>    CPP_spin_polar_MATRIX;
-typedef valarray<CPP_spin_polar_MATRIX>   CPP_spin_polar_TENSOR;
+typedef vector<CPP_spin_polar>          CPP_spin_polar_ARRAY;
+typedef vector<CPP_spin_polar_ARRAY>    CPP_spin_polar_MATRIX;
+typedef vector<CPP_spin_polar_MATRIX>   CPP_spin_polar_TENSOR;
 
 class CPP_ac_kicker_time;
-typedef valarray<CPP_ac_kicker_time>          CPP_ac_kicker_time_ARRAY;
-typedef valarray<CPP_ac_kicker_time_ARRAY>    CPP_ac_kicker_time_MATRIX;
-typedef valarray<CPP_ac_kicker_time_MATRIX>   CPP_ac_kicker_time_TENSOR;
+typedef vector<CPP_ac_kicker_time>          CPP_ac_kicker_time_ARRAY;
+typedef vector<CPP_ac_kicker_time_ARRAY>    CPP_ac_kicker_time_MATRIX;
+typedef vector<CPP_ac_kicker_time_MATRIX>   CPP_ac_kicker_time_TENSOR;
 
 class CPP_ac_kicker_freq;
-typedef valarray<CPP_ac_kicker_freq>          CPP_ac_kicker_freq_ARRAY;
-typedef valarray<CPP_ac_kicker_freq_ARRAY>    CPP_ac_kicker_freq_MATRIX;
-typedef valarray<CPP_ac_kicker_freq_MATRIX>   CPP_ac_kicker_freq_TENSOR;
+typedef vector<CPP_ac_kicker_freq>          CPP_ac_kicker_freq_ARRAY;
+typedef vector<CPP_ac_kicker_freq_ARRAY>    CPP_ac_kicker_freq_MATRIX;
+typedef vector<CPP_ac_kicker_freq_MATRIX>   CPP_ac_kicker_freq_TENSOR;
 
 class CPP_ac_kicker;
-typedef valarray<CPP_ac_kicker>          CPP_ac_kicker_ARRAY;
-typedef valarray<CPP_ac_kicker_ARRAY>    CPP_ac_kicker_MATRIX;
-typedef valarray<CPP_ac_kicker_MATRIX>   CPP_ac_kicker_TENSOR;
+typedef vector<CPP_ac_kicker>          CPP_ac_kicker_ARRAY;
+typedef vector<CPP_ac_kicker_ARRAY>    CPP_ac_kicker_MATRIX;
+typedef vector<CPP_ac_kicker_MATRIX>   CPP_ac_kicker_TENSOR;
 
 class CPP_interval1_coef;
-typedef valarray<CPP_interval1_coef>          CPP_interval1_coef_ARRAY;
-typedef valarray<CPP_interval1_coef_ARRAY>    CPP_interval1_coef_MATRIX;
-typedef valarray<CPP_interval1_coef_MATRIX>   CPP_interval1_coef_TENSOR;
+typedef vector<CPP_interval1_coef>          CPP_interval1_coef_ARRAY;
+typedef vector<CPP_interval1_coef_ARRAY>    CPP_interval1_coef_MATRIX;
+typedef vector<CPP_interval1_coef_MATRIX>   CPP_interval1_coef_TENSOR;
 
 class CPP_photon_reflect_table;
-typedef valarray<CPP_photon_reflect_table>          CPP_photon_reflect_table_ARRAY;
-typedef valarray<CPP_photon_reflect_table_ARRAY>    CPP_photon_reflect_table_MATRIX;
-typedef valarray<CPP_photon_reflect_table_MATRIX>   CPP_photon_reflect_table_TENSOR;
+typedef vector<CPP_photon_reflect_table>          CPP_photon_reflect_table_ARRAY;
+typedef vector<CPP_photon_reflect_table_ARRAY>    CPP_photon_reflect_table_MATRIX;
+typedef vector<CPP_photon_reflect_table_MATRIX>   CPP_photon_reflect_table_TENSOR;
 
 class CPP_photon_reflect_surface;
-typedef valarray<CPP_photon_reflect_surface>          CPP_photon_reflect_surface_ARRAY;
-typedef valarray<CPP_photon_reflect_surface_ARRAY>    CPP_photon_reflect_surface_MATRIX;
-typedef valarray<CPP_photon_reflect_surface_MATRIX>   CPP_photon_reflect_surface_TENSOR;
+typedef vector<CPP_photon_reflect_surface>          CPP_photon_reflect_surface_ARRAY;
+typedef vector<CPP_photon_reflect_surface_ARRAY>    CPP_photon_reflect_surface_MATRIX;
+typedef vector<CPP_photon_reflect_surface_MATRIX>   CPP_photon_reflect_surface_TENSOR;
 
 class CPP_coord;
-typedef valarray<CPP_coord>          CPP_coord_ARRAY;
-typedef valarray<CPP_coord_ARRAY>    CPP_coord_MATRIX;
-typedef valarray<CPP_coord_MATRIX>   CPP_coord_TENSOR;
+typedef vector<CPP_coord>          CPP_coord_ARRAY;
+typedef vector<CPP_coord_ARRAY>    CPP_coord_MATRIX;
+typedef vector<CPP_coord_MATRIX>   CPP_coord_TENSOR;
 
 class CPP_coord_array;
-typedef valarray<CPP_coord_array>          CPP_coord_array_ARRAY;
-typedef valarray<CPP_coord_array_ARRAY>    CPP_coord_array_MATRIX;
-typedef valarray<CPP_coord_array_MATRIX>   CPP_coord_array_TENSOR;
+typedef vector<CPP_coord_array>          CPP_coord_array_ARRAY;
+typedef vector<CPP_coord_array_ARRAY>    CPP_coord_array_MATRIX;
+typedef vector<CPP_coord_array_MATRIX>   CPP_coord_array_TENSOR;
 
 class CPP_bpm_phase_coupling;
-typedef valarray<CPP_bpm_phase_coupling>          CPP_bpm_phase_coupling_ARRAY;
-typedef valarray<CPP_bpm_phase_coupling_ARRAY>    CPP_bpm_phase_coupling_MATRIX;
-typedef valarray<CPP_bpm_phase_coupling_MATRIX>   CPP_bpm_phase_coupling_TENSOR;
+typedef vector<CPP_bpm_phase_coupling>          CPP_bpm_phase_coupling_ARRAY;
+typedef vector<CPP_bpm_phase_coupling_ARRAY>    CPP_bpm_phase_coupling_MATRIX;
+typedef vector<CPP_bpm_phase_coupling_MATRIX>   CPP_bpm_phase_coupling_TENSOR;
 
 class CPP_expression_atom;
-typedef valarray<CPP_expression_atom>          CPP_expression_atom_ARRAY;
-typedef valarray<CPP_expression_atom_ARRAY>    CPP_expression_atom_MATRIX;
-typedef valarray<CPP_expression_atom_MATRIX>   CPP_expression_atom_TENSOR;
+typedef vector<CPP_expression_atom>          CPP_expression_atom_ARRAY;
+typedef vector<CPP_expression_atom_ARRAY>    CPP_expression_atom_MATRIX;
+typedef vector<CPP_expression_atom_MATRIX>   CPP_expression_atom_TENSOR;
 
 class CPP_wake_sr_z_long;
-typedef valarray<CPP_wake_sr_z_long>          CPP_wake_sr_z_long_ARRAY;
-typedef valarray<CPP_wake_sr_z_long_ARRAY>    CPP_wake_sr_z_long_MATRIX;
-typedef valarray<CPP_wake_sr_z_long_MATRIX>   CPP_wake_sr_z_long_TENSOR;
+typedef vector<CPP_wake_sr_z_long>          CPP_wake_sr_z_long_ARRAY;
+typedef vector<CPP_wake_sr_z_long_ARRAY>    CPP_wake_sr_z_long_MATRIX;
+typedef vector<CPP_wake_sr_z_long_MATRIX>   CPP_wake_sr_z_long_TENSOR;
 
 class CPP_wake_sr_mode;
-typedef valarray<CPP_wake_sr_mode>          CPP_wake_sr_mode_ARRAY;
-typedef valarray<CPP_wake_sr_mode_ARRAY>    CPP_wake_sr_mode_MATRIX;
-typedef valarray<CPP_wake_sr_mode_MATRIX>   CPP_wake_sr_mode_TENSOR;
+typedef vector<CPP_wake_sr_mode>          CPP_wake_sr_mode_ARRAY;
+typedef vector<CPP_wake_sr_mode_ARRAY>    CPP_wake_sr_mode_MATRIX;
+typedef vector<CPP_wake_sr_mode_MATRIX>   CPP_wake_sr_mode_TENSOR;
 
 class CPP_wake_sr;
-typedef valarray<CPP_wake_sr>          CPP_wake_sr_ARRAY;
-typedef valarray<CPP_wake_sr_ARRAY>    CPP_wake_sr_MATRIX;
-typedef valarray<CPP_wake_sr_MATRIX>   CPP_wake_sr_TENSOR;
+typedef vector<CPP_wake_sr>          CPP_wake_sr_ARRAY;
+typedef vector<CPP_wake_sr_ARRAY>    CPP_wake_sr_MATRIX;
+typedef vector<CPP_wake_sr_MATRIX>   CPP_wake_sr_TENSOR;
 
 class CPP_wake_lr_mode;
-typedef valarray<CPP_wake_lr_mode>          CPP_wake_lr_mode_ARRAY;
-typedef valarray<CPP_wake_lr_mode_ARRAY>    CPP_wake_lr_mode_MATRIX;
-typedef valarray<CPP_wake_lr_mode_MATRIX>   CPP_wake_lr_mode_TENSOR;
+typedef vector<CPP_wake_lr_mode>          CPP_wake_lr_mode_ARRAY;
+typedef vector<CPP_wake_lr_mode_ARRAY>    CPP_wake_lr_mode_MATRIX;
+typedef vector<CPP_wake_lr_mode_MATRIX>   CPP_wake_lr_mode_TENSOR;
 
 class CPP_wake_lr;
-typedef valarray<CPP_wake_lr>          CPP_wake_lr_ARRAY;
-typedef valarray<CPP_wake_lr_ARRAY>    CPP_wake_lr_MATRIX;
-typedef valarray<CPP_wake_lr_MATRIX>   CPP_wake_lr_TENSOR;
+typedef vector<CPP_wake_lr>          CPP_wake_lr_ARRAY;
+typedef vector<CPP_wake_lr_ARRAY>    CPP_wake_lr_MATRIX;
+typedef vector<CPP_wake_lr_MATRIX>   CPP_wake_lr_TENSOR;
 
 class CPP_lat_ele_loc;
-typedef valarray<CPP_lat_ele_loc>          CPP_lat_ele_loc_ARRAY;
-typedef valarray<CPP_lat_ele_loc_ARRAY>    CPP_lat_ele_loc_MATRIX;
-typedef valarray<CPP_lat_ele_loc_MATRIX>   CPP_lat_ele_loc_TENSOR;
+typedef vector<CPP_lat_ele_loc>          CPP_lat_ele_loc_ARRAY;
+typedef vector<CPP_lat_ele_loc_ARRAY>    CPP_lat_ele_loc_MATRIX;
+typedef vector<CPP_lat_ele_loc_MATRIX>   CPP_lat_ele_loc_TENSOR;
 
 class CPP_wake;
-typedef valarray<CPP_wake>          CPP_wake_ARRAY;
-typedef valarray<CPP_wake_ARRAY>    CPP_wake_MATRIX;
-typedef valarray<CPP_wake_MATRIX>   CPP_wake_TENSOR;
+typedef vector<CPP_wake>          CPP_wake_ARRAY;
+typedef vector<CPP_wake_ARRAY>    CPP_wake_MATRIX;
+typedef vector<CPP_wake_MATRIX>   CPP_wake_TENSOR;
 
 class CPP_taylor_term;
-typedef valarray<CPP_taylor_term>          CPP_taylor_term_ARRAY;
-typedef valarray<CPP_taylor_term_ARRAY>    CPP_taylor_term_MATRIX;
-typedef valarray<CPP_taylor_term_MATRIX>   CPP_taylor_term_TENSOR;
+typedef vector<CPP_taylor_term>          CPP_taylor_term_ARRAY;
+typedef vector<CPP_taylor_term_ARRAY>    CPP_taylor_term_MATRIX;
+typedef vector<CPP_taylor_term_MATRIX>   CPP_taylor_term_TENSOR;
 
 class CPP_taylor;
-typedef valarray<CPP_taylor>          CPP_taylor_ARRAY;
-typedef valarray<CPP_taylor_ARRAY>    CPP_taylor_MATRIX;
-typedef valarray<CPP_taylor_MATRIX>   CPP_taylor_TENSOR;
+typedef vector<CPP_taylor>          CPP_taylor_ARRAY;
+typedef vector<CPP_taylor_ARRAY>    CPP_taylor_MATRIX;
+typedef vector<CPP_taylor_MATRIX>   CPP_taylor_TENSOR;
 
 class CPP_em_taylor_term;
-typedef valarray<CPP_em_taylor_term>          CPP_em_taylor_term_ARRAY;
-typedef valarray<CPP_em_taylor_term_ARRAY>    CPP_em_taylor_term_MATRIX;
-typedef valarray<CPP_em_taylor_term_MATRIX>   CPP_em_taylor_term_TENSOR;
+typedef vector<CPP_em_taylor_term>          CPP_em_taylor_term_ARRAY;
+typedef vector<CPP_em_taylor_term_ARRAY>    CPP_em_taylor_term_MATRIX;
+typedef vector<CPP_em_taylor_term_MATRIX>   CPP_em_taylor_term_TENSOR;
 
 class CPP_em_taylor;
-typedef valarray<CPP_em_taylor>          CPP_em_taylor_ARRAY;
-typedef valarray<CPP_em_taylor_ARRAY>    CPP_em_taylor_MATRIX;
-typedef valarray<CPP_em_taylor_MATRIX>   CPP_em_taylor_TENSOR;
+typedef vector<CPP_em_taylor>          CPP_em_taylor_ARRAY;
+typedef vector<CPP_em_taylor_ARRAY>    CPP_em_taylor_MATRIX;
+typedef vector<CPP_em_taylor_MATRIX>   CPP_em_taylor_TENSOR;
 
 class CPP_cartesian_map_term1;
-typedef valarray<CPP_cartesian_map_term1>          CPP_cartesian_map_term1_ARRAY;
-typedef valarray<CPP_cartesian_map_term1_ARRAY>    CPP_cartesian_map_term1_MATRIX;
-typedef valarray<CPP_cartesian_map_term1_MATRIX>   CPP_cartesian_map_term1_TENSOR;
+typedef vector<CPP_cartesian_map_term1>          CPP_cartesian_map_term1_ARRAY;
+typedef vector<CPP_cartesian_map_term1_ARRAY>    CPP_cartesian_map_term1_MATRIX;
+typedef vector<CPP_cartesian_map_term1_MATRIX>   CPP_cartesian_map_term1_TENSOR;
 
 class CPP_cartesian_map_term;
-typedef valarray<CPP_cartesian_map_term>          CPP_cartesian_map_term_ARRAY;
-typedef valarray<CPP_cartesian_map_term_ARRAY>    CPP_cartesian_map_term_MATRIX;
-typedef valarray<CPP_cartesian_map_term_MATRIX>   CPP_cartesian_map_term_TENSOR;
+typedef vector<CPP_cartesian_map_term>          CPP_cartesian_map_term_ARRAY;
+typedef vector<CPP_cartesian_map_term_ARRAY>    CPP_cartesian_map_term_MATRIX;
+typedef vector<CPP_cartesian_map_term_MATRIX>   CPP_cartesian_map_term_TENSOR;
 
 class CPP_cartesian_map;
-typedef valarray<CPP_cartesian_map>          CPP_cartesian_map_ARRAY;
-typedef valarray<CPP_cartesian_map_ARRAY>    CPP_cartesian_map_MATRIX;
-typedef valarray<CPP_cartesian_map_MATRIX>   CPP_cartesian_map_TENSOR;
+typedef vector<CPP_cartesian_map>          CPP_cartesian_map_ARRAY;
+typedef vector<CPP_cartesian_map_ARRAY>    CPP_cartesian_map_MATRIX;
+typedef vector<CPP_cartesian_map_MATRIX>   CPP_cartesian_map_TENSOR;
 
 class CPP_cylindrical_map_term1;
-typedef valarray<CPP_cylindrical_map_term1>          CPP_cylindrical_map_term1_ARRAY;
-typedef valarray<CPP_cylindrical_map_term1_ARRAY>    CPP_cylindrical_map_term1_MATRIX;
-typedef valarray<CPP_cylindrical_map_term1_MATRIX>   CPP_cylindrical_map_term1_TENSOR;
+typedef vector<CPP_cylindrical_map_term1>          CPP_cylindrical_map_term1_ARRAY;
+typedef vector<CPP_cylindrical_map_term1_ARRAY>    CPP_cylindrical_map_term1_MATRIX;
+typedef vector<CPP_cylindrical_map_term1_MATRIX>   CPP_cylindrical_map_term1_TENSOR;
 
 class CPP_cylindrical_map_term;
-typedef valarray<CPP_cylindrical_map_term>          CPP_cylindrical_map_term_ARRAY;
-typedef valarray<CPP_cylindrical_map_term_ARRAY>    CPP_cylindrical_map_term_MATRIX;
-typedef valarray<CPP_cylindrical_map_term_MATRIX>   CPP_cylindrical_map_term_TENSOR;
+typedef vector<CPP_cylindrical_map_term>          CPP_cylindrical_map_term_ARRAY;
+typedef vector<CPP_cylindrical_map_term_ARRAY>    CPP_cylindrical_map_term_MATRIX;
+typedef vector<CPP_cylindrical_map_term_MATRIX>   CPP_cylindrical_map_term_TENSOR;
 
 class CPP_cylindrical_map;
-typedef valarray<CPP_cylindrical_map>          CPP_cylindrical_map_ARRAY;
-typedef valarray<CPP_cylindrical_map_ARRAY>    CPP_cylindrical_map_MATRIX;
-typedef valarray<CPP_cylindrical_map_MATRIX>   CPP_cylindrical_map_TENSOR;
+typedef vector<CPP_cylindrical_map>          CPP_cylindrical_map_ARRAY;
+typedef vector<CPP_cylindrical_map_ARRAY>    CPP_cylindrical_map_MATRIX;
+typedef vector<CPP_cylindrical_map_MATRIX>   CPP_cylindrical_map_TENSOR;
 
 class CPP_grid_field_pt1;
-typedef valarray<CPP_grid_field_pt1>          CPP_grid_field_pt1_ARRAY;
-typedef valarray<CPP_grid_field_pt1_ARRAY>    CPP_grid_field_pt1_MATRIX;
-typedef valarray<CPP_grid_field_pt1_MATRIX>   CPP_grid_field_pt1_TENSOR;
+typedef vector<CPP_grid_field_pt1>          CPP_grid_field_pt1_ARRAY;
+typedef vector<CPP_grid_field_pt1_ARRAY>    CPP_grid_field_pt1_MATRIX;
+typedef vector<CPP_grid_field_pt1_MATRIX>   CPP_grid_field_pt1_TENSOR;
 
 class CPP_grid_field_pt;
-typedef valarray<CPP_grid_field_pt>          CPP_grid_field_pt_ARRAY;
-typedef valarray<CPP_grid_field_pt_ARRAY>    CPP_grid_field_pt_MATRIX;
-typedef valarray<CPP_grid_field_pt_MATRIX>   CPP_grid_field_pt_TENSOR;
+typedef vector<CPP_grid_field_pt>          CPP_grid_field_pt_ARRAY;
+typedef vector<CPP_grid_field_pt_ARRAY>    CPP_grid_field_pt_MATRIX;
+typedef vector<CPP_grid_field_pt_MATRIX>   CPP_grid_field_pt_TENSOR;
 
 class CPP_grid_field;
-typedef valarray<CPP_grid_field>          CPP_grid_field_ARRAY;
-typedef valarray<CPP_grid_field_ARRAY>    CPP_grid_field_MATRIX;
-typedef valarray<CPP_grid_field_MATRIX>   CPP_grid_field_TENSOR;
+typedef vector<CPP_grid_field>          CPP_grid_field_ARRAY;
+typedef vector<CPP_grid_field_ARRAY>    CPP_grid_field_MATRIX;
+typedef vector<CPP_grid_field_MATRIX>   CPP_grid_field_TENSOR;
 
 class CPP_floor_position;
-typedef valarray<CPP_floor_position>          CPP_floor_position_ARRAY;
-typedef valarray<CPP_floor_position_ARRAY>    CPP_floor_position_MATRIX;
-typedef valarray<CPP_floor_position_MATRIX>   CPP_floor_position_TENSOR;
+typedef vector<CPP_floor_position>          CPP_floor_position_ARRAY;
+typedef vector<CPP_floor_position_ARRAY>    CPP_floor_position_MATRIX;
+typedef vector<CPP_floor_position_MATRIX>   CPP_floor_position_TENSOR;
 
 class CPP_high_energy_space_charge;
-typedef valarray<CPP_high_energy_space_charge>          CPP_high_energy_space_charge_ARRAY;
-typedef valarray<CPP_high_energy_space_charge_ARRAY>    CPP_high_energy_space_charge_MATRIX;
-typedef valarray<CPP_high_energy_space_charge_MATRIX>   CPP_high_energy_space_charge_TENSOR;
+typedef vector<CPP_high_energy_space_charge>          CPP_high_energy_space_charge_ARRAY;
+typedef vector<CPP_high_energy_space_charge_ARRAY>    CPP_high_energy_space_charge_MATRIX;
+typedef vector<CPP_high_energy_space_charge_MATRIX>   CPP_high_energy_space_charge_TENSOR;
 
 class CPP_xy_disp;
-typedef valarray<CPP_xy_disp>          CPP_xy_disp_ARRAY;
-typedef valarray<CPP_xy_disp_ARRAY>    CPP_xy_disp_MATRIX;
-typedef valarray<CPP_xy_disp_MATRIX>   CPP_xy_disp_TENSOR;
+typedef vector<CPP_xy_disp>          CPP_xy_disp_ARRAY;
+typedef vector<CPP_xy_disp_ARRAY>    CPP_xy_disp_MATRIX;
+typedef vector<CPP_xy_disp_MATRIX>   CPP_xy_disp_TENSOR;
 
 class CPP_twiss;
-typedef valarray<CPP_twiss>          CPP_twiss_ARRAY;
-typedef valarray<CPP_twiss_ARRAY>    CPP_twiss_MATRIX;
-typedef valarray<CPP_twiss_MATRIX>   CPP_twiss_TENSOR;
+typedef vector<CPP_twiss>          CPP_twiss_ARRAY;
+typedef vector<CPP_twiss_ARRAY>    CPP_twiss_MATRIX;
+typedef vector<CPP_twiss_MATRIX>   CPP_twiss_TENSOR;
 
 class CPP_mode3;
-typedef valarray<CPP_mode3>          CPP_mode3_ARRAY;
-typedef valarray<CPP_mode3_ARRAY>    CPP_mode3_MATRIX;
-typedef valarray<CPP_mode3_MATRIX>   CPP_mode3_TENSOR;
+typedef vector<CPP_mode3>          CPP_mode3_ARRAY;
+typedef vector<CPP_mode3_ARRAY>    CPP_mode3_MATRIX;
+typedef vector<CPP_mode3_MATRIX>   CPP_mode3_TENSOR;
 
 class CPP_bookkeeping_state;
-typedef valarray<CPP_bookkeeping_state>          CPP_bookkeeping_state_ARRAY;
-typedef valarray<CPP_bookkeeping_state_ARRAY>    CPP_bookkeeping_state_MATRIX;
-typedef valarray<CPP_bookkeeping_state_MATRIX>   CPP_bookkeeping_state_TENSOR;
+typedef vector<CPP_bookkeeping_state>          CPP_bookkeeping_state_ARRAY;
+typedef vector<CPP_bookkeeping_state_ARRAY>    CPP_bookkeeping_state_MATRIX;
+typedef vector<CPP_bookkeeping_state_MATRIX>   CPP_bookkeeping_state_TENSOR;
 
 class CPP_rad_map;
-typedef valarray<CPP_rad_map>          CPP_rad_map_ARRAY;
-typedef valarray<CPP_rad_map_ARRAY>    CPP_rad_map_MATRIX;
-typedef valarray<CPP_rad_map_MATRIX>   CPP_rad_map_TENSOR;
+typedef vector<CPP_rad_map>          CPP_rad_map_ARRAY;
+typedef vector<CPP_rad_map_ARRAY>    CPP_rad_map_MATRIX;
+typedef vector<CPP_rad_map_MATRIX>   CPP_rad_map_TENSOR;
 
 class CPP_rad_map_ele;
-typedef valarray<CPP_rad_map_ele>          CPP_rad_map_ele_ARRAY;
-typedef valarray<CPP_rad_map_ele_ARRAY>    CPP_rad_map_ele_MATRIX;
-typedef valarray<CPP_rad_map_ele_MATRIX>   CPP_rad_map_ele_TENSOR;
+typedef vector<CPP_rad_map_ele>          CPP_rad_map_ele_ARRAY;
+typedef vector<CPP_rad_map_ele_ARRAY>    CPP_rad_map_ele_MATRIX;
+typedef vector<CPP_rad_map_ele_MATRIX>   CPP_rad_map_ele_TENSOR;
 
 class CPP_gen_grad1;
-typedef valarray<CPP_gen_grad1>          CPP_gen_grad1_ARRAY;
-typedef valarray<CPP_gen_grad1_ARRAY>    CPP_gen_grad1_MATRIX;
-typedef valarray<CPP_gen_grad1_MATRIX>   CPP_gen_grad1_TENSOR;
+typedef vector<CPP_gen_grad1>          CPP_gen_grad1_ARRAY;
+typedef vector<CPP_gen_grad1_ARRAY>    CPP_gen_grad1_MATRIX;
+typedef vector<CPP_gen_grad1_MATRIX>   CPP_gen_grad1_TENSOR;
 
 class CPP_gen_grad_map;
-typedef valarray<CPP_gen_grad_map>          CPP_gen_grad_map_ARRAY;
-typedef valarray<CPP_gen_grad_map_ARRAY>    CPP_gen_grad_map_MATRIX;
-typedef valarray<CPP_gen_grad_map_MATRIX>   CPP_gen_grad_map_TENSOR;
+typedef vector<CPP_gen_grad_map>          CPP_gen_grad_map_ARRAY;
+typedef vector<CPP_gen_grad_map_ARRAY>    CPP_gen_grad_map_MATRIX;
+typedef vector<CPP_gen_grad_map_MATRIX>   CPP_gen_grad_map_TENSOR;
 
 class CPP_surface_segmented_pt;
-typedef valarray<CPP_surface_segmented_pt>          CPP_surface_segmented_pt_ARRAY;
-typedef valarray<CPP_surface_segmented_pt_ARRAY>    CPP_surface_segmented_pt_MATRIX;
-typedef valarray<CPP_surface_segmented_pt_MATRIX>   CPP_surface_segmented_pt_TENSOR;
+typedef vector<CPP_surface_segmented_pt>          CPP_surface_segmented_pt_ARRAY;
+typedef vector<CPP_surface_segmented_pt_ARRAY>    CPP_surface_segmented_pt_MATRIX;
+typedef vector<CPP_surface_segmented_pt_MATRIX>   CPP_surface_segmented_pt_TENSOR;
 
 class CPP_surface_segmented;
-typedef valarray<CPP_surface_segmented>          CPP_surface_segmented_ARRAY;
-typedef valarray<CPP_surface_segmented_ARRAY>    CPP_surface_segmented_MATRIX;
-typedef valarray<CPP_surface_segmented_MATRIX>   CPP_surface_segmented_TENSOR;
+typedef vector<CPP_surface_segmented>          CPP_surface_segmented_ARRAY;
+typedef vector<CPP_surface_segmented_ARRAY>    CPP_surface_segmented_MATRIX;
+typedef vector<CPP_surface_segmented_MATRIX>   CPP_surface_segmented_TENSOR;
 
 class CPP_surface_h_misalign_pt;
-typedef valarray<CPP_surface_h_misalign_pt>          CPP_surface_h_misalign_pt_ARRAY;
-typedef valarray<CPP_surface_h_misalign_pt_ARRAY>    CPP_surface_h_misalign_pt_MATRIX;
-typedef valarray<CPP_surface_h_misalign_pt_MATRIX>   CPP_surface_h_misalign_pt_TENSOR;
+typedef vector<CPP_surface_h_misalign_pt>          CPP_surface_h_misalign_pt_ARRAY;
+typedef vector<CPP_surface_h_misalign_pt_ARRAY>    CPP_surface_h_misalign_pt_MATRIX;
+typedef vector<CPP_surface_h_misalign_pt_MATRIX>   CPP_surface_h_misalign_pt_TENSOR;
 
 class CPP_surface_h_misalign;
-typedef valarray<CPP_surface_h_misalign>          CPP_surface_h_misalign_ARRAY;
-typedef valarray<CPP_surface_h_misalign_ARRAY>    CPP_surface_h_misalign_MATRIX;
-typedef valarray<CPP_surface_h_misalign_MATRIX>   CPP_surface_h_misalign_TENSOR;
+typedef vector<CPP_surface_h_misalign>          CPP_surface_h_misalign_ARRAY;
+typedef vector<CPP_surface_h_misalign_ARRAY>    CPP_surface_h_misalign_MATRIX;
+typedef vector<CPP_surface_h_misalign_MATRIX>   CPP_surface_h_misalign_TENSOR;
 
 class CPP_surface_displacement_pt;
-typedef valarray<CPP_surface_displacement_pt>          CPP_surface_displacement_pt_ARRAY;
-typedef valarray<CPP_surface_displacement_pt_ARRAY>    CPP_surface_displacement_pt_MATRIX;
-typedef valarray<CPP_surface_displacement_pt_MATRIX>   CPP_surface_displacement_pt_TENSOR;
+typedef vector<CPP_surface_displacement_pt>          CPP_surface_displacement_pt_ARRAY;
+typedef vector<CPP_surface_displacement_pt_ARRAY>    CPP_surface_displacement_pt_MATRIX;
+typedef vector<CPP_surface_displacement_pt_MATRIX>   CPP_surface_displacement_pt_TENSOR;
 
 class CPP_surface_displacement;
-typedef valarray<CPP_surface_displacement>          CPP_surface_displacement_ARRAY;
-typedef valarray<CPP_surface_displacement_ARRAY>    CPP_surface_displacement_MATRIX;
-typedef valarray<CPP_surface_displacement_MATRIX>   CPP_surface_displacement_TENSOR;
+typedef vector<CPP_surface_displacement>          CPP_surface_displacement_ARRAY;
+typedef vector<CPP_surface_displacement_ARRAY>    CPP_surface_displacement_MATRIX;
+typedef vector<CPP_surface_displacement_MATRIX>   CPP_surface_displacement_TENSOR;
 
 class CPP_target_point;
-typedef valarray<CPP_target_point>          CPP_target_point_ARRAY;
-typedef valarray<CPP_target_point_ARRAY>    CPP_target_point_MATRIX;
-typedef valarray<CPP_target_point_MATRIX>   CPP_target_point_TENSOR;
+typedef vector<CPP_target_point>          CPP_target_point_ARRAY;
+typedef vector<CPP_target_point_ARRAY>    CPP_target_point_MATRIX;
+typedef vector<CPP_target_point_MATRIX>   CPP_target_point_TENSOR;
 
 class CPP_surface_curvature;
-typedef valarray<CPP_surface_curvature>          CPP_surface_curvature_ARRAY;
-typedef valarray<CPP_surface_curvature_ARRAY>    CPP_surface_curvature_MATRIX;
-typedef valarray<CPP_surface_curvature_MATRIX>   CPP_surface_curvature_TENSOR;
+typedef vector<CPP_surface_curvature>          CPP_surface_curvature_ARRAY;
+typedef vector<CPP_surface_curvature_ARRAY>    CPP_surface_curvature_MATRIX;
+typedef vector<CPP_surface_curvature_MATRIX>   CPP_surface_curvature_TENSOR;
 
 class CPP_photon_target;
-typedef valarray<CPP_photon_target>          CPP_photon_target_ARRAY;
-typedef valarray<CPP_photon_target_ARRAY>    CPP_photon_target_MATRIX;
-typedef valarray<CPP_photon_target_MATRIX>   CPP_photon_target_TENSOR;
+typedef vector<CPP_photon_target>          CPP_photon_target_ARRAY;
+typedef vector<CPP_photon_target_ARRAY>    CPP_photon_target_MATRIX;
+typedef vector<CPP_photon_target_MATRIX>   CPP_photon_target_TENSOR;
 
 class CPP_photon_material;
-typedef valarray<CPP_photon_material>          CPP_photon_material_ARRAY;
-typedef valarray<CPP_photon_material_ARRAY>    CPP_photon_material_MATRIX;
-typedef valarray<CPP_photon_material_MATRIX>   CPP_photon_material_TENSOR;
+typedef vector<CPP_photon_material>          CPP_photon_material_ARRAY;
+typedef vector<CPP_photon_material_ARRAY>    CPP_photon_material_MATRIX;
+typedef vector<CPP_photon_material_MATRIX>   CPP_photon_material_TENSOR;
 
 class CPP_pixel_pt;
-typedef valarray<CPP_pixel_pt>          CPP_pixel_pt_ARRAY;
-typedef valarray<CPP_pixel_pt_ARRAY>    CPP_pixel_pt_MATRIX;
-typedef valarray<CPP_pixel_pt_MATRIX>   CPP_pixel_pt_TENSOR;
+typedef vector<CPP_pixel_pt>          CPP_pixel_pt_ARRAY;
+typedef vector<CPP_pixel_pt_ARRAY>    CPP_pixel_pt_MATRIX;
+typedef vector<CPP_pixel_pt_MATRIX>   CPP_pixel_pt_TENSOR;
 
 class CPP_pixel_detec;
-typedef valarray<CPP_pixel_detec>          CPP_pixel_detec_ARRAY;
-typedef valarray<CPP_pixel_detec_ARRAY>    CPP_pixel_detec_MATRIX;
-typedef valarray<CPP_pixel_detec_MATRIX>   CPP_pixel_detec_TENSOR;
+typedef vector<CPP_pixel_detec>          CPP_pixel_detec_ARRAY;
+typedef vector<CPP_pixel_detec_ARRAY>    CPP_pixel_detec_MATRIX;
+typedef vector<CPP_pixel_detec_MATRIX>   CPP_pixel_detec_TENSOR;
 
 class CPP_photon_element;
-typedef valarray<CPP_photon_element>          CPP_photon_element_ARRAY;
-typedef valarray<CPP_photon_element_ARRAY>    CPP_photon_element_MATRIX;
-typedef valarray<CPP_photon_element_MATRIX>   CPP_photon_element_TENSOR;
+typedef vector<CPP_photon_element>          CPP_photon_element_ARRAY;
+typedef vector<CPP_photon_element_ARRAY>    CPP_photon_element_MATRIX;
+typedef vector<CPP_photon_element_MATRIX>   CPP_photon_element_TENSOR;
 
 class CPP_wall3d_vertex;
-typedef valarray<CPP_wall3d_vertex>          CPP_wall3d_vertex_ARRAY;
-typedef valarray<CPP_wall3d_vertex_ARRAY>    CPP_wall3d_vertex_MATRIX;
-typedef valarray<CPP_wall3d_vertex_MATRIX>   CPP_wall3d_vertex_TENSOR;
+typedef vector<CPP_wall3d_vertex>          CPP_wall3d_vertex_ARRAY;
+typedef vector<CPP_wall3d_vertex_ARRAY>    CPP_wall3d_vertex_MATRIX;
+typedef vector<CPP_wall3d_vertex_MATRIX>   CPP_wall3d_vertex_TENSOR;
 
 class CPP_wall3d_section;
-typedef valarray<CPP_wall3d_section>          CPP_wall3d_section_ARRAY;
-typedef valarray<CPP_wall3d_section_ARRAY>    CPP_wall3d_section_MATRIX;
-typedef valarray<CPP_wall3d_section_MATRIX>   CPP_wall3d_section_TENSOR;
+typedef vector<CPP_wall3d_section>          CPP_wall3d_section_ARRAY;
+typedef vector<CPP_wall3d_section_ARRAY>    CPP_wall3d_section_MATRIX;
+typedef vector<CPP_wall3d_section_MATRIX>   CPP_wall3d_section_TENSOR;
 
 class CPP_wall3d;
-typedef valarray<CPP_wall3d>          CPP_wall3d_ARRAY;
-typedef valarray<CPP_wall3d_ARRAY>    CPP_wall3d_MATRIX;
-typedef valarray<CPP_wall3d_MATRIX>   CPP_wall3d_TENSOR;
+typedef vector<CPP_wall3d>          CPP_wall3d_ARRAY;
+typedef vector<CPP_wall3d_ARRAY>    CPP_wall3d_MATRIX;
+typedef vector<CPP_wall3d_MATRIX>   CPP_wall3d_TENSOR;
 
 class CPP_ramper_lord;
-typedef valarray<CPP_ramper_lord>          CPP_ramper_lord_ARRAY;
-typedef valarray<CPP_ramper_lord_ARRAY>    CPP_ramper_lord_MATRIX;
-typedef valarray<CPP_ramper_lord_MATRIX>   CPP_ramper_lord_TENSOR;
+typedef vector<CPP_ramper_lord>          CPP_ramper_lord_ARRAY;
+typedef vector<CPP_ramper_lord_ARRAY>    CPP_ramper_lord_MATRIX;
+typedef vector<CPP_ramper_lord_MATRIX>   CPP_ramper_lord_TENSOR;
 
 class CPP_control;
-typedef valarray<CPP_control>          CPP_control_ARRAY;
-typedef valarray<CPP_control_ARRAY>    CPP_control_MATRIX;
-typedef valarray<CPP_control_MATRIX>   CPP_control_TENSOR;
+typedef vector<CPP_control>          CPP_control_ARRAY;
+typedef vector<CPP_control_ARRAY>    CPP_control_MATRIX;
+typedef vector<CPP_control_MATRIX>   CPP_control_TENSOR;
 
 class CPP_control_var1;
-typedef valarray<CPP_control_var1>          CPP_control_var1_ARRAY;
-typedef valarray<CPP_control_var1_ARRAY>    CPP_control_var1_MATRIX;
-typedef valarray<CPP_control_var1_MATRIX>   CPP_control_var1_TENSOR;
+typedef vector<CPP_control_var1>          CPP_control_var1_ARRAY;
+typedef vector<CPP_control_var1_ARRAY>    CPP_control_var1_MATRIX;
+typedef vector<CPP_control_var1_MATRIX>   CPP_control_var1_TENSOR;
 
 class CPP_control_ramp1;
-typedef valarray<CPP_control_ramp1>          CPP_control_ramp1_ARRAY;
-typedef valarray<CPP_control_ramp1_ARRAY>    CPP_control_ramp1_MATRIX;
-typedef valarray<CPP_control_ramp1_MATRIX>   CPP_control_ramp1_TENSOR;
+typedef vector<CPP_control_ramp1>          CPP_control_ramp1_ARRAY;
+typedef vector<CPP_control_ramp1_ARRAY>    CPP_control_ramp1_MATRIX;
+typedef vector<CPP_control_ramp1_MATRIX>   CPP_control_ramp1_TENSOR;
 
 class CPP_controller;
-typedef valarray<CPP_controller>          CPP_controller_ARRAY;
-typedef valarray<CPP_controller_ARRAY>    CPP_controller_MATRIX;
-typedef valarray<CPP_controller_MATRIX>   CPP_controller_TENSOR;
+typedef vector<CPP_controller>          CPP_controller_ARRAY;
+typedef vector<CPP_controller_ARRAY>    CPP_controller_MATRIX;
+typedef vector<CPP_controller_MATRIX>   CPP_controller_TENSOR;
 
 class CPP_ellipse_beam_init;
-typedef valarray<CPP_ellipse_beam_init>          CPP_ellipse_beam_init_ARRAY;
-typedef valarray<CPP_ellipse_beam_init_ARRAY>    CPP_ellipse_beam_init_MATRIX;
-typedef valarray<CPP_ellipse_beam_init_MATRIX>   CPP_ellipse_beam_init_TENSOR;
+typedef vector<CPP_ellipse_beam_init>          CPP_ellipse_beam_init_ARRAY;
+typedef vector<CPP_ellipse_beam_init_ARRAY>    CPP_ellipse_beam_init_MATRIX;
+typedef vector<CPP_ellipse_beam_init_MATRIX>   CPP_ellipse_beam_init_TENSOR;
 
 class CPP_kv_beam_init;
-typedef valarray<CPP_kv_beam_init>          CPP_kv_beam_init_ARRAY;
-typedef valarray<CPP_kv_beam_init_ARRAY>    CPP_kv_beam_init_MATRIX;
-typedef valarray<CPP_kv_beam_init_MATRIX>   CPP_kv_beam_init_TENSOR;
+typedef vector<CPP_kv_beam_init>          CPP_kv_beam_init_ARRAY;
+typedef vector<CPP_kv_beam_init_ARRAY>    CPP_kv_beam_init_MATRIX;
+typedef vector<CPP_kv_beam_init_MATRIX>   CPP_kv_beam_init_TENSOR;
 
 class CPP_grid_beam_init;
-typedef valarray<CPP_grid_beam_init>          CPP_grid_beam_init_ARRAY;
-typedef valarray<CPP_grid_beam_init_ARRAY>    CPP_grid_beam_init_MATRIX;
-typedef valarray<CPP_grid_beam_init_MATRIX>   CPP_grid_beam_init_TENSOR;
+typedef vector<CPP_grid_beam_init>          CPP_grid_beam_init_ARRAY;
+typedef vector<CPP_grid_beam_init_ARRAY>    CPP_grid_beam_init_MATRIX;
+typedef vector<CPP_grid_beam_init_MATRIX>   CPP_grid_beam_init_TENSOR;
 
 class CPP_beam_init;
-typedef valarray<CPP_beam_init>          CPP_beam_init_ARRAY;
-typedef valarray<CPP_beam_init_ARRAY>    CPP_beam_init_MATRIX;
-typedef valarray<CPP_beam_init_MATRIX>   CPP_beam_init_TENSOR;
+typedef vector<CPP_beam_init>          CPP_beam_init_ARRAY;
+typedef vector<CPP_beam_init_ARRAY>    CPP_beam_init_MATRIX;
+typedef vector<CPP_beam_init_MATRIX>   CPP_beam_init_TENSOR;
 
 class CPP_lat_param;
-typedef valarray<CPP_lat_param>          CPP_lat_param_ARRAY;
-typedef valarray<CPP_lat_param_ARRAY>    CPP_lat_param_MATRIX;
-typedef valarray<CPP_lat_param_MATRIX>   CPP_lat_param_TENSOR;
+typedef vector<CPP_lat_param>          CPP_lat_param_ARRAY;
+typedef vector<CPP_lat_param_ARRAY>    CPP_lat_param_MATRIX;
+typedef vector<CPP_lat_param_MATRIX>   CPP_lat_param_TENSOR;
 
 class CPP_mode_info;
-typedef valarray<CPP_mode_info>          CPP_mode_info_ARRAY;
-typedef valarray<CPP_mode_info_ARRAY>    CPP_mode_info_MATRIX;
-typedef valarray<CPP_mode_info_MATRIX>   CPP_mode_info_TENSOR;
+typedef vector<CPP_mode_info>          CPP_mode_info_ARRAY;
+typedef vector<CPP_mode_info_ARRAY>    CPP_mode_info_MATRIX;
+typedef vector<CPP_mode_info_MATRIX>   CPP_mode_info_TENSOR;
 
 class CPP_pre_tracker;
-typedef valarray<CPP_pre_tracker>          CPP_pre_tracker_ARRAY;
-typedef valarray<CPP_pre_tracker_ARRAY>    CPP_pre_tracker_MATRIX;
-typedef valarray<CPP_pre_tracker_MATRIX>   CPP_pre_tracker_TENSOR;
+typedef vector<CPP_pre_tracker>          CPP_pre_tracker_ARRAY;
+typedef vector<CPP_pre_tracker_ARRAY>    CPP_pre_tracker_MATRIX;
+typedef vector<CPP_pre_tracker_MATRIX>   CPP_pre_tracker_TENSOR;
 
 class CPP_anormal_mode;
-typedef valarray<CPP_anormal_mode>          CPP_anormal_mode_ARRAY;
-typedef valarray<CPP_anormal_mode_ARRAY>    CPP_anormal_mode_MATRIX;
-typedef valarray<CPP_anormal_mode_MATRIX>   CPP_anormal_mode_TENSOR;
+typedef vector<CPP_anormal_mode>          CPP_anormal_mode_ARRAY;
+typedef vector<CPP_anormal_mode_ARRAY>    CPP_anormal_mode_MATRIX;
+typedef vector<CPP_anormal_mode_MATRIX>   CPP_anormal_mode_TENSOR;
 
 class CPP_linac_normal_mode;
-typedef valarray<CPP_linac_normal_mode>          CPP_linac_normal_mode_ARRAY;
-typedef valarray<CPP_linac_normal_mode_ARRAY>    CPP_linac_normal_mode_MATRIX;
-typedef valarray<CPP_linac_normal_mode_MATRIX>   CPP_linac_normal_mode_TENSOR;
+typedef vector<CPP_linac_normal_mode>          CPP_linac_normal_mode_ARRAY;
+typedef vector<CPP_linac_normal_mode_ARRAY>    CPP_linac_normal_mode_MATRIX;
+typedef vector<CPP_linac_normal_mode_MATRIX>   CPP_linac_normal_mode_TENSOR;
 
 class CPP_normal_modes;
-typedef valarray<CPP_normal_modes>          CPP_normal_modes_ARRAY;
-typedef valarray<CPP_normal_modes_ARRAY>    CPP_normal_modes_MATRIX;
-typedef valarray<CPP_normal_modes_MATRIX>   CPP_normal_modes_TENSOR;
+typedef vector<CPP_normal_modes>          CPP_normal_modes_ARRAY;
+typedef vector<CPP_normal_modes_ARRAY>    CPP_normal_modes_MATRIX;
+typedef vector<CPP_normal_modes_MATRIX>   CPP_normal_modes_TENSOR;
 
 class CPP_em_field;
-typedef valarray<CPP_em_field>          CPP_em_field_ARRAY;
-typedef valarray<CPP_em_field_ARRAY>    CPP_em_field_MATRIX;
-typedef valarray<CPP_em_field_MATRIX>   CPP_em_field_TENSOR;
+typedef vector<CPP_em_field>          CPP_em_field_ARRAY;
+typedef vector<CPP_em_field_ARRAY>    CPP_em_field_MATRIX;
+typedef vector<CPP_em_field_MATRIX>   CPP_em_field_TENSOR;
 
 class CPP_strong_beam;
-typedef valarray<CPP_strong_beam>          CPP_strong_beam_ARRAY;
-typedef valarray<CPP_strong_beam_ARRAY>    CPP_strong_beam_MATRIX;
-typedef valarray<CPP_strong_beam_MATRIX>   CPP_strong_beam_TENSOR;
+typedef vector<CPP_strong_beam>          CPP_strong_beam_ARRAY;
+typedef vector<CPP_strong_beam_ARRAY>    CPP_strong_beam_MATRIX;
+typedef vector<CPP_strong_beam_MATRIX>   CPP_strong_beam_TENSOR;
 
 class CPP_track_point;
-typedef valarray<CPP_track_point>          CPP_track_point_ARRAY;
-typedef valarray<CPP_track_point_ARRAY>    CPP_track_point_MATRIX;
-typedef valarray<CPP_track_point_MATRIX>   CPP_track_point_TENSOR;
+typedef vector<CPP_track_point>          CPP_track_point_ARRAY;
+typedef vector<CPP_track_point_ARRAY>    CPP_track_point_MATRIX;
+typedef vector<CPP_track_point_MATRIX>   CPP_track_point_TENSOR;
 
 class CPP_track;
-typedef valarray<CPP_track>          CPP_track_ARRAY;
-typedef valarray<CPP_track_ARRAY>    CPP_track_MATRIX;
-typedef valarray<CPP_track_MATRIX>   CPP_track_TENSOR;
+typedef vector<CPP_track>          CPP_track_ARRAY;
+typedef vector<CPP_track_ARRAY>    CPP_track_MATRIX;
+typedef vector<CPP_track_MATRIX>   CPP_track_TENSOR;
 
 class CPP_space_charge_common;
-typedef valarray<CPP_space_charge_common>          CPP_space_charge_common_ARRAY;
-typedef valarray<CPP_space_charge_common_ARRAY>    CPP_space_charge_common_MATRIX;
-typedef valarray<CPP_space_charge_common_MATRIX>   CPP_space_charge_common_TENSOR;
+typedef vector<CPP_space_charge_common>          CPP_space_charge_common_ARRAY;
+typedef vector<CPP_space_charge_common_ARRAY>    CPP_space_charge_common_MATRIX;
+typedef vector<CPP_space_charge_common_MATRIX>   CPP_space_charge_common_TENSOR;
 
 class CPP_bmad_common;
-typedef valarray<CPP_bmad_common>          CPP_bmad_common_ARRAY;
-typedef valarray<CPP_bmad_common_ARRAY>    CPP_bmad_common_MATRIX;
-typedef valarray<CPP_bmad_common_MATRIX>   CPP_bmad_common_TENSOR;
+typedef vector<CPP_bmad_common>          CPP_bmad_common_ARRAY;
+typedef vector<CPP_bmad_common_ARRAY>    CPP_bmad_common_MATRIX;
+typedef vector<CPP_bmad_common_MATRIX>   CPP_bmad_common_TENSOR;
 
 class CPP_rad_int1;
-typedef valarray<CPP_rad_int1>          CPP_rad_int1_ARRAY;
-typedef valarray<CPP_rad_int1_ARRAY>    CPP_rad_int1_MATRIX;
-typedef valarray<CPP_rad_int1_MATRIX>   CPP_rad_int1_TENSOR;
+typedef vector<CPP_rad_int1>          CPP_rad_int1_ARRAY;
+typedef vector<CPP_rad_int1_ARRAY>    CPP_rad_int1_MATRIX;
+typedef vector<CPP_rad_int1_MATRIX>   CPP_rad_int1_TENSOR;
 
 class CPP_rad_int_branch;
-typedef valarray<CPP_rad_int_branch>          CPP_rad_int_branch_ARRAY;
-typedef valarray<CPP_rad_int_branch_ARRAY>    CPP_rad_int_branch_MATRIX;
-typedef valarray<CPP_rad_int_branch_MATRIX>   CPP_rad_int_branch_TENSOR;
+typedef vector<CPP_rad_int_branch>          CPP_rad_int_branch_ARRAY;
+typedef vector<CPP_rad_int_branch_ARRAY>    CPP_rad_int_branch_MATRIX;
+typedef vector<CPP_rad_int_branch_MATRIX>   CPP_rad_int_branch_TENSOR;
 
 class CPP_rad_int_all_ele;
-typedef valarray<CPP_rad_int_all_ele>          CPP_rad_int_all_ele_ARRAY;
-typedef valarray<CPP_rad_int_all_ele_ARRAY>    CPP_rad_int_all_ele_MATRIX;
-typedef valarray<CPP_rad_int_all_ele_MATRIX>   CPP_rad_int_all_ele_TENSOR;
+typedef vector<CPP_rad_int_all_ele>          CPP_rad_int_all_ele_ARRAY;
+typedef vector<CPP_rad_int_all_ele_ARRAY>    CPP_rad_int_all_ele_MATRIX;
+typedef vector<CPP_rad_int_all_ele_MATRIX>   CPP_rad_int_all_ele_TENSOR;
 
 class CPP_ele;
-typedef valarray<CPP_ele>          CPP_ele_ARRAY;
-typedef valarray<CPP_ele_ARRAY>    CPP_ele_MATRIX;
-typedef valarray<CPP_ele_MATRIX>   CPP_ele_TENSOR;
+typedef vector<CPP_ele>          CPP_ele_ARRAY;
+typedef vector<CPP_ele_ARRAY>    CPP_ele_MATRIX;
+typedef vector<CPP_ele_MATRIX>   CPP_ele_TENSOR;
 
 class CPP_complex_taylor_term;
-typedef valarray<CPP_complex_taylor_term>          CPP_complex_taylor_term_ARRAY;
-typedef valarray<CPP_complex_taylor_term_ARRAY>    CPP_complex_taylor_term_MATRIX;
-typedef valarray<CPP_complex_taylor_term_MATRIX>   CPP_complex_taylor_term_TENSOR;
+typedef vector<CPP_complex_taylor_term>          CPP_complex_taylor_term_ARRAY;
+typedef vector<CPP_complex_taylor_term_ARRAY>    CPP_complex_taylor_term_MATRIX;
+typedef vector<CPP_complex_taylor_term_MATRIX>   CPP_complex_taylor_term_TENSOR;
 
 class CPP_complex_taylor;
-typedef valarray<CPP_complex_taylor>          CPP_complex_taylor_ARRAY;
-typedef valarray<CPP_complex_taylor_ARRAY>    CPP_complex_taylor_MATRIX;
-typedef valarray<CPP_complex_taylor_MATRIX>   CPP_complex_taylor_TENSOR;
+typedef vector<CPP_complex_taylor>          CPP_complex_taylor_ARRAY;
+typedef vector<CPP_complex_taylor_ARRAY>    CPP_complex_taylor_MATRIX;
+typedef vector<CPP_complex_taylor_MATRIX>   CPP_complex_taylor_TENSOR;
 
 class CPP_branch;
-typedef valarray<CPP_branch>          CPP_branch_ARRAY;
-typedef valarray<CPP_branch_ARRAY>    CPP_branch_MATRIX;
-typedef valarray<CPP_branch_MATRIX>   CPP_branch_TENSOR;
+typedef vector<CPP_branch>          CPP_branch_ARRAY;
+typedef vector<CPP_branch_ARRAY>    CPP_branch_MATRIX;
+typedef vector<CPP_branch_MATRIX>   CPP_branch_TENSOR;
 
 class CPP_lat;
-typedef valarray<CPP_lat>          CPP_lat_ARRAY;
-typedef valarray<CPP_lat_ARRAY>    CPP_lat_MATRIX;
-typedef valarray<CPP_lat_MATRIX>   CPP_lat_TENSOR;
+typedef vector<CPP_lat>          CPP_lat_ARRAY;
+typedef vector<CPP_lat_ARRAY>    CPP_lat_MATRIX;
+typedef vector<CPP_lat_MATRIX>   CPP_lat_TENSOR;
 
 class CPP_bunch;
-typedef valarray<CPP_bunch>          CPP_bunch_ARRAY;
-typedef valarray<CPP_bunch_ARRAY>    CPP_bunch_MATRIX;
-typedef valarray<CPP_bunch_MATRIX>   CPP_bunch_TENSOR;
+typedef vector<CPP_bunch>          CPP_bunch_ARRAY;
+typedef vector<CPP_bunch_ARRAY>    CPP_bunch_MATRIX;
+typedef vector<CPP_bunch_MATRIX>   CPP_bunch_TENSOR;
 
 class CPP_bunch_params;
-typedef valarray<CPP_bunch_params>          CPP_bunch_params_ARRAY;
-typedef valarray<CPP_bunch_params_ARRAY>    CPP_bunch_params_MATRIX;
-typedef valarray<CPP_bunch_params_MATRIX>   CPP_bunch_params_TENSOR;
+typedef vector<CPP_bunch_params>          CPP_bunch_params_ARRAY;
+typedef vector<CPP_bunch_params_ARRAY>    CPP_bunch_params_MATRIX;
+typedef vector<CPP_bunch_params_MATRIX>   CPP_bunch_params_TENSOR;
 
 class CPP_beam;
-typedef valarray<CPP_beam>          CPP_beam_ARRAY;
-typedef valarray<CPP_beam_ARRAY>    CPP_beam_MATRIX;
-typedef valarray<CPP_beam_MATRIX>   CPP_beam_TENSOR;
+typedef vector<CPP_beam>          CPP_beam_ARRAY;
+typedef vector<CPP_beam_ARRAY>    CPP_beam_MATRIX;
+typedef vector<CPP_beam_MATRIX>   CPP_beam_TENSOR;
 
 class CPP_aperture_point;
-typedef valarray<CPP_aperture_point>          CPP_aperture_point_ARRAY;
-typedef valarray<CPP_aperture_point_ARRAY>    CPP_aperture_point_MATRIX;
-typedef valarray<CPP_aperture_point_MATRIX>   CPP_aperture_point_TENSOR;
+typedef vector<CPP_aperture_point>          CPP_aperture_point_ARRAY;
+typedef vector<CPP_aperture_point_ARRAY>    CPP_aperture_point_MATRIX;
+typedef vector<CPP_aperture_point_MATRIX>   CPP_aperture_point_TENSOR;
 
 class CPP_aperture_param;
-typedef valarray<CPP_aperture_param>          CPP_aperture_param_ARRAY;
-typedef valarray<CPP_aperture_param_ARRAY>    CPP_aperture_param_MATRIX;
-typedef valarray<CPP_aperture_param_MATRIX>   CPP_aperture_param_TENSOR;
+typedef vector<CPP_aperture_param>          CPP_aperture_param_ARRAY;
+typedef vector<CPP_aperture_param_ARRAY>    CPP_aperture_param_MATRIX;
+typedef vector<CPP_aperture_param_MATRIX>   CPP_aperture_param_TENSOR;
 
 class CPP_aperture_scan;
-typedef valarray<CPP_aperture_scan>          CPP_aperture_scan_ARRAY;
-typedef valarray<CPP_aperture_scan_ARRAY>    CPP_aperture_scan_MATRIX;
-typedef valarray<CPP_aperture_scan_MATRIX>   CPP_aperture_scan_TENSOR;
+typedef vector<CPP_aperture_scan>          CPP_aperture_scan_ARRAY;
+typedef vector<CPP_aperture_scan_ARRAY>    CPP_aperture_scan_MATRIX;
+typedef vector<CPP_aperture_scan_MATRIX>   CPP_aperture_scan_TENSOR;
 
 //--------------------------------------------------------------------
 // CPP_spline
@@ -497,7 +497,7 @@ public:
     x0(0.0),
     y0(0.0),
     x1(0.0),
-    coef(0.0, 4)
+    coef(4, 0.0)
     {}
 
   ~CPP_spline() {
@@ -610,8 +610,8 @@ public:
   CPP_ac_kicker_freq_ARRAY frequency;
 
   CPP_ac_kicker() :
-    amp_vs_time(CPP_ac_kicker_time_ARRAY(CPP_ac_kicker_time(), 0)),
-    frequency(CPP_ac_kicker_freq_ARRAY(CPP_ac_kicker_freq(), 0))
+    amp_vs_time(CPP_ac_kicker_time_ARRAY(0)),
+    frequency(CPP_ac_kicker_freq_ARRAY(0))
     {}
 
   ~CPP_ac_kicker() {
@@ -669,13 +669,13 @@ public:
   Real_ARRAY bragg_angle;
 
   CPP_photon_reflect_table() :
-    angle(0.0, 0),
-    energy(0.0, 0),
-    int1(CPP_interval1_coef_ARRAY(CPP_interval1_coef(), 0)),
-    p_reflect(Real_ARRAY(0.0, 0), 0),
+    angle(0, 0.0),
+    energy(0, 0.0),
+    int1(CPP_interval1_coef_ARRAY(0)),
+    p_reflect(Real_MATRIX(0, Real_ARRAY(0))),
     max_energy(-1),
-    p_reflect_scratch(0.0, 0),
-    bragg_angle(0.0, 0)
+    p_reflect_scratch(0, 0.0),
+    bragg_angle(0, 0.0)
     {}
 
   ~CPP_photon_reflect_table() {
@@ -708,7 +708,7 @@ public:
     name(),
     description(),
     reflectivity_file(),
-    table(CPP_photon_reflect_table_ARRAY(CPP_photon_reflect_table(), 0)),
+    table(CPP_photon_reflect_table_ARRAY(0)),
     surface_roughness_rms(0.0),
     roughness_correlation_len(0.0),
     ix_surface(-1)
@@ -755,12 +755,12 @@ public:
   Int location;
 
   CPP_coord() :
-    vec(0.0, 6),
+    vec(6, 0.0),
     s(0.0),
     t(0.0),
-    spin(0.0, 3),
-    field(0.0, 2),
-    phase(0.0, 2),
+    spin(3, 0.0),
+    field(2, 0.0),
+    phase(2, 0.0),
     charge(0.0),
     dt_ref(0.0),
     r(0.0),
@@ -799,7 +799,7 @@ public:
   CPP_coord_ARRAY orbit;
 
   CPP_coord_array() :
-    orbit(CPP_coord_ARRAY(CPP_coord(), 0))
+    orbit(CPP_coord_ARRAY(0))
     {}
 
   ~CPP_coord_array() {
@@ -901,10 +901,10 @@ public:
   Bool time_based;
 
   CPP_wake_sr_z_long() :
-    w(0.0, 0),
-    fw(0.0, 0),
-    fbunch(0.0, 0),
-    w_out(0.0, 0),
+    w(0, 0.0),
+    fw(0, 0.0),
+    fbunch(0, 0.0),
+    w_out(0, 0.0),
     dz(0.0),
     z0(0.0),
     smoothing_sigma(0.0),
@@ -986,8 +986,8 @@ public:
   CPP_wake_sr() :
     file(),
     z_long(),
-    long_wake(CPP_wake_sr_mode_ARRAY(CPP_wake_sr_mode(), 0)),
-    trans_wake(CPP_wake_sr_mode_ARRAY(CPP_wake_sr_mode(), 0)),
+    long_wake(CPP_wake_sr_mode_ARRAY(0)),
+    trans_wake(CPP_wake_sr_mode_ARRAY(0)),
     z_ref_long(0.0),
     z_ref_trans(0.0),
     z_max(0.0),
@@ -1072,7 +1072,7 @@ public:
 
   CPP_wake_lr() :
     file(),
-    mode(CPP_wake_lr_mode_ARRAY(CPP_wake_lr_mode(), 0)),
+    mode(CPP_wake_lr_mode_ARRAY(0)),
     t_ref(0.0),
     freq_spread(0.0),
     amp_scale(1),
@@ -1155,7 +1155,7 @@ public:
 
   CPP_taylor_term() :
     coef(0.0),
-    expn(0, 6)
+    expn(6, 0)
     {}
 
   ~CPP_taylor_term() {
@@ -1181,7 +1181,7 @@ public:
 
   CPP_taylor() :
     ref(0.0),
-    term(CPP_taylor_term_ARRAY(CPP_taylor_term(), 0))
+    term(CPP_taylor_term_ARRAY(0))
     {}
 
   ~CPP_taylor() {
@@ -1207,7 +1207,7 @@ public:
 
   CPP_em_taylor_term() :
     coef(0.0),
-    expn(0, 2)
+    expn(2, 0)
     {}
 
   ~CPP_em_taylor_term() {
@@ -1233,7 +1233,7 @@ public:
 
   CPP_em_taylor() :
     ref(0.0),
-    term(CPP_em_taylor_term_ARRAY(CPP_em_taylor_term(), 0))
+    term(CPP_em_taylor_term_ARRAY(0))
     {}
 
   ~CPP_em_taylor() {
@@ -1301,7 +1301,7 @@ public:
   CPP_cartesian_map_term() :
     file(),
     n_link(1),
-    term(CPP_cartesian_map_term1_ARRAY(CPP_cartesian_map_term1(), 0))
+    term(CPP_cartesian_map_term1_ARRAY(0))
     {}
 
   ~CPP_cartesian_map_term() {
@@ -1331,7 +1331,7 @@ public:
 
   CPP_cartesian_map() :
     field_scale(1),
-    r0(0.0, 3),
+    r0(3, 0.0),
     master_parameter(0),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     field_type(Bmad::MAGNETIC),
@@ -1339,7 +1339,7 @@ public:
     {}
 
   ~CPP_cartesian_map() {
-    delete ptr;
+    if (ptr) delete ptr;
   }
 
 };   // End Class
@@ -1390,7 +1390,7 @@ public:
   CPP_cylindrical_map_term() :
     file(),
     n_link(1),
-    term(CPP_cylindrical_map_term1_ARRAY(CPP_cylindrical_map_term1(), 0))
+    term(CPP_cylindrical_map_term1_ARRAY(0))
     {}
 
   ~CPP_cylindrical_map_term() {
@@ -1431,12 +1431,12 @@ public:
     master_parameter(0),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     dz(0.0),
-    r0(0.0, 3),
+    r0(3, 0.0),
     ptr(NULL)
     {}
 
   ~CPP_cylindrical_map() {
-    delete ptr;
+    if (ptr) delete ptr;
   }
 
 };   // End Class
@@ -1458,8 +1458,8 @@ public:
   Complex_ARRAY b;
 
   CPP_grid_field_pt1() :
-    e(0.0, 3),
-    b(0.0, 3)
+    e(3, 0.0),
+    b(3, 0.0)
     {}
 
   ~CPP_grid_field_pt1() {
@@ -1487,7 +1487,7 @@ public:
   CPP_grid_field_pt() :
     file(),
     n_link(1),
-    pt(CPP_grid_field_pt1_MATRIX(CPP_grid_field_pt1_ARRAY(CPP_grid_field_pt1(), 0), 0), 0)
+    pt(CPP_grid_field_pt1_TENSOR(0, CPP_grid_field_pt1_MATRIX(0, CPP_grid_field_pt1_ARRAY(0))))
     {}
 
   ~CPP_grid_field_pt() {
@@ -1530,14 +1530,14 @@ public:
     master_parameter(0),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     interpolation_order(1),
-    dr(0.0, 3),
-    r0(0.0, 3),
+    dr(3, 0.0),
+    r0(3, 0.0),
     curved_ref_frame(false),
     ptr(NULL)
     {}
 
   ~CPP_grid_field() {
-    delete ptr;
+    if (ptr) delete ptr;
   }
 
 };   // End Class
@@ -1562,8 +1562,8 @@ public:
   Real psi;
 
   CPP_floor_position() :
-    r(0.0, 3),
-    w(Real_ARRAY(0.0, 3), 3),
+    r(3, 0.0),
+    w(Real_MATRIX(3, Real_ARRAY(3))),
     theta(0.0),
     phi(0.0),
     psi(0.0)
@@ -1707,7 +1707,7 @@ public:
   CPP_twiss y;
 
   CPP_mode3() :
-    v(Real_ARRAY(0.0, 6), 6),
+    v(Real_MATRIX(6, Real_ARRAY(6))),
     a(),
     b(),
     c(),
@@ -1780,11 +1780,11 @@ public:
   Real_MATRIX stoc_mat;
 
   CPP_rad_map() :
-    ref_orb(-1, 6),
-    damp_dmat(Real_ARRAY(0.0, 6), 6),
-    xfer_damp_vec(0.0, 6),
-    xfer_damp_mat(Real_ARRAY(0.0, 6), 6),
-    stoc_mat(Real_ARRAY(0.0, 6), 6)
+    ref_orb(6, -1),
+    damp_dmat(Real_MATRIX(6, Real_ARRAY(6))),
+    xfer_damp_vec(6, 0.0),
+    xfer_damp_mat(Real_MATRIX(6, Real_ARRAY(6))),
+    stoc_mat(Real_MATRIX(6, Real_ARRAY(6)))
     {}
 
   ~CPP_rad_map() {
@@ -1842,7 +1842,7 @@ public:
     m(0),
     sincos(0),
     n_deriv_max(-1),
-    deriv(Real_ARRAY(0.0, 0), 0)
+    deriv(Real_MATRIX(0, Real_ARRAY(0)))
     {}
 
   ~CPP_gen_grad1() {
@@ -1877,13 +1877,13 @@ public:
 
   CPP_gen_grad_map() :
     file(),
-    gg(CPP_gen_grad1_ARRAY(CPP_gen_grad1(), 0)),
+    gg(CPP_gen_grad1_ARRAY(0)),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     field_type(Bmad::MAGNETIC),
     iz0(Bmad::INT_GARBAGE),
     iz1(Bmad::INT_GARBAGE),
     dz(0.0),
-    r0(0.0, 3),
+    r0(3, 0.0),
     field_scale(1),
     master_parameter(0),
     curved_ref_frame(false)
@@ -1946,9 +1946,9 @@ public:
 
   CPP_surface_segmented() :
     active(false),
-    dr(0.0, 2),
-    r0(0.0, 2),
-    pt(CPP_surface_segmented_pt_ARRAY(CPP_surface_segmented_pt(), 0), 0)
+    dr(2, 0.0),
+    r0(2, 0.0),
+    pt(CPP_surface_segmented_pt_MATRIX(0, CPP_surface_segmented_pt_ARRAY(0)))
     {}
 
   ~CPP_surface_segmented() {
@@ -2010,9 +2010,9 @@ public:
 
   CPP_surface_h_misalign() :
     active(false),
-    dr(0.0, 2),
-    r0(0.0, 2),
-    pt(CPP_surface_h_misalign_pt_ARRAY(CPP_surface_h_misalign_pt(), 0), 0)
+    dr(2, 0.0),
+    r0(2, 0.0),
+    pt(CPP_surface_h_misalign_pt_MATRIX(0, CPP_surface_h_misalign_pt_ARRAY(0)))
     {}
 
   ~CPP_surface_h_misalign() {
@@ -2074,9 +2074,9 @@ public:
 
   CPP_surface_displacement() :
     active(false),
-    dr(0.0, 2),
-    r0(0.0, 2),
-    pt(CPP_surface_displacement_pt_ARRAY(CPP_surface_displacement_pt(), 0), 0)
+    dr(2, 0.0),
+    r0(2, 0.0),
+    pt(CPP_surface_displacement_pt_MATRIX(0, CPP_surface_displacement_pt_ARRAY(0)))
     {}
 
   ~CPP_surface_displacement() {
@@ -2100,7 +2100,7 @@ public:
   Real_ARRAY r;
 
   CPP_target_point() :
-    r(0.0, 3)
+    r(3, 0.0)
     {}
 
   ~CPP_target_point() {
@@ -2127,9 +2127,9 @@ public:
   Bool has_curvature;
 
   CPP_surface_curvature() :
-    xy(Real_ARRAY(0.0, 7), 7),
+    xy(Real_MATRIX(7, Real_ARRAY(7))),
     spherical(0.0),
-    elliptical(0.0, 3),
+    elliptical(3, 0.0),
     has_curvature(false)
     {}
 
@@ -2161,7 +2161,7 @@ public:
     type(Bmad::OFF),
     n_corner(0),
     ele_loc(),
-    corner(CPP_target_point_ARRAY(CPP_target_point(), 8)),
+    corner(CPP_target_point_ARRAY(8)),
     center()
     {}
 
@@ -2199,8 +2199,8 @@ public:
     f_h(0.0),
     f_hbar(0.0),
     f_hkl(0.0),
-    h_norm(0.0, 3),
-    l_ref(0.0, 3)
+    h_norm(3, 0.0),
+    l_ref(3, 0.0)
     {}
 
   ~CPP_photon_material() {
@@ -2239,10 +2239,10 @@ public:
     intensity_x(0.0),
     intensity_y(0.0),
     intensity(0.0),
-    orbit(0.0, 6),
-    orbit_rms(0.0, 6),
-    init_orbit(0.0, 6),
-    init_orbit_rms(0.0, 6)
+    orbit(6, 0.0),
+    orbit_rms(6, 0.0),
+    init_orbit(6, 0.0),
+    init_orbit_rms(6, 0.0)
     {}
 
   ~CPP_pixel_pt() {
@@ -2271,12 +2271,12 @@ public:
   CPP_pixel_pt_MATRIX pt;
 
   CPP_pixel_detec() :
-    dr(0.0, 2),
-    r0(0.0, 2),
+    dr(2, 0.0),
+    r0(2, 0.0),
     n_track_tot(0),
     n_hit_detec(0),
     n_hit_pixel(0),
-    pt(CPP_pixel_pt_ARRAY(CPP_pixel_pt(), 0), 0)
+    pt(CPP_pixel_pt_MATRIX(0, CPP_pixel_pt_ARRAY(0)))
     {}
 
   ~CPP_pixel_detec() {
@@ -2321,8 +2321,8 @@ public:
     reflectivity_table_type(Bmad::NOT_SET),
     reflectivity_table_sigma(),
     reflectivity_table_pi(),
-    init_energy_prob(CPP_spline_ARRAY(CPP_spline(), 0)),
-    integrated_init_energy_prob(0.0, 0)
+    init_energy_prob(CPP_spline_ARRAY(0)),
+    integrated_init_energy_prob(0, 0.0)
     {}
 
   ~CPP_photon_element() {
@@ -2407,7 +2407,7 @@ public:
   CPP_wall3d_section() :
     name(),
     material(),
-    v(CPP_wall3d_vertex_ARRAY(CPP_wall3d_vertex(), 0)),
+    v(CPP_wall3d_vertex_ARRAY(0)),
     surface(NULL),
     type(Bmad::NORMAL),
     n_vertex_input(0),
@@ -2417,18 +2417,18 @@ public:
     patch_in_region(false),
     thickness(-1),
     s(0.0),
-    r0(0.0, 2),
+    r0(2, 0.0),
     dx0_ds(0.0),
     dy0_ds(0.0),
-    x0_coef(0.0, 4),
-    y0_coef(0.0, 4),
+    x0_coef(4, 0.0),
+    y0_coef(4, 0.0),
     dr_ds(Bmad::REAL_GARBAGE),
-    p1_coef(0.0, 3),
-    p2_coef(0.0, 3)
+    p1_coef(3, 0.0),
+    p2_coef(3, 0.0)
     {}
 
   ~CPP_wall3d_section() {
-    delete surface;
+    if (surface) delete surface;
   }
 
 };   // End Class
@@ -2467,7 +2467,7 @@ public:
     opaque_material(),
     superimpose(false),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
-    section(CPP_wall3d_section_ARRAY(CPP_wall3d_section(), 0))
+    section(CPP_wall3d_section_ARRAY(0))
     {}
 
   ~CPP_wall3d() {
@@ -2499,7 +2499,7 @@ public:
     {}
 
   ~CPP_ramper_lord() {
-    delete attrib_ptr;
+    if (attrib_ptr) delete attrib_ptr;
   }
 
 };   // End Class
@@ -2528,8 +2528,8 @@ public:
 
   CPP_control() :
     value(0.0),
-    y_knot(0.0, 0),
-    stack(CPP_expression_atom_ARRAY(CPP_expression_atom(), 0)),
+    y_knot(0, 0.0),
+    stack(CPP_expression_atom_ARRAY(0)),
     slave(),
     lord(),
     slave_name(),
@@ -2590,8 +2590,8 @@ public:
   Bool is_controller;
 
   CPP_control_ramp1() :
-    y_knot(0.0, 0),
-    stack(CPP_expression_atom_ARRAY(CPP_expression_atom(), 0)),
+    y_knot(0, 0.0),
+    stack(CPP_expression_atom_ARRAY(0)),
     attribute(),
     slave_name(),
     is_controller(false)
@@ -2621,10 +2621,10 @@ public:
   Real_ARRAY x_knot;
 
   CPP_controller() :
-    var(CPP_control_var1_ARRAY(CPP_control_var1(), 0)),
-    ramp(CPP_control_ramp1_ARRAY(CPP_control_ramp1(), 0)),
-    ramper_lord(CPP_ramper_lord_ARRAY(CPP_ramper_lord(), 0)),
-    x_knot(0.0, 0)
+    var(CPP_control_var1_ARRAY(0)),
+    ramp(CPP_control_ramp1_ARRAY(0)),
+    ramper_lord(CPP_ramper_lord_ARRAY(0)),
+    x_knot(0, 0.0)
     {}
 
   ~CPP_controller() {
@@ -2678,7 +2678,7 @@ public:
   Real a;
 
   CPP_kv_beam_init() :
-    part_per_phi(0, 2),
+    part_per_phi(2, 0),
     n_i2(0),
     a(0.0)
     {}
@@ -2773,13 +2773,13 @@ public:
 
   CPP_beam_init() :
     position_file(),
-    distribution_type(String_ARRAY(string(), 3)),
-    spin(0.0, 3),
-    ellipse(CPP_ellipse_beam_init_ARRAY(CPP_ellipse_beam_init(), 3)),
+    distribution_type(String_ARRAY(3)),
+    spin(3, 0.0),
+    ellipse(CPP_ellipse_beam_init_ARRAY(3)),
     kv(),
-    grid(CPP_grid_beam_init_ARRAY(CPP_grid_beam_init(), 3)),
-    center_jitter(0.0, 6),
-    emit_jitter(0.0, 2),
+    grid(CPP_grid_beam_init_ARRAY(3)),
+    center_jitter(6, 0.0),
+    emit_jitter(2, 0.0),
     sig_z_jitter(0.0),
     sig_pz_jitter(0.0),
     n_particle(0),
@@ -2793,7 +2793,7 @@ public:
     a_emit(0.0),
     b_emit(0.0),
     dpz_dz(0.0),
-    center(0.0, 6),
+    center(6, 0.0),
     t_offset(0.0),
     dt_bunch(0.0),
     sig_z(0.0),
@@ -2849,8 +2849,8 @@ public:
     n_part(0.0),
     total_length(0.0),
     unstable_factor(0.0),
-    t1_with_rf(Real_ARRAY(0.0, 6), 6),
-    t1_no_rf(Real_ARRAY(0.0, 6), 6),
+    t1_with_rf(Real_MATRIX(6, Real_ARRAY(6))),
+    t1_no_rf(Real_MATRIX(6, Real_ARRAY(6))),
     spin_tune(0.0),
     particle(Bmad::NOT_SET),
     default_tracking_species(Bmad::REF_PARTICLE),
@@ -2958,7 +2958,7 @@ public:
   CPP_anormal_mode() :
     emittance(0.0),
     emittance_no_vert(0.0),
-    synch_int(0.0, 3),
+    synch_int(3, 0.0),
     j_damp(0.0),
     alpha_damp(0.0),
     chrom(0.0),
@@ -3034,7 +3034,7 @@ public:
   CPP_linac_normal_mode lin;
 
   CPP_normal_modes() :
-    synch_int(0.0, 4),
+    synch_int(4, 0.0),
     sige_e(0.0),
     sig_z(0.0),
     e_loss(0.0),
@@ -3076,13 +3076,13 @@ public:
   Real_ARRAY a;
 
   CPP_em_field() :
-    e(0.0, 3),
-    b(0.0, 3),
-    de(Real_ARRAY(0.0, 3), 3),
-    db(Real_ARRAY(0.0, 3), 3),
+    e(3, 0.0),
+    b(3, 0.0),
+    de(Real_MATRIX(3, Real_ARRAY(3))),
+    db(Real_MATRIX(3, Real_ARRAY(3))),
     phi(0.0),
     phi_b(0.0),
-    a(0.0, 3)
+    a(3, 0.0)
     {}
 
   ~CPP_em_field() {
@@ -3151,8 +3151,8 @@ public:
     orb(),
     field(),
     strong_beam(),
-    vec0(0.0, 6),
-    mat6(Real_ARRAY(0.0, 6), 6)
+    vec0(6, 0.0),
+    mat6(Real_MATRIX(6, Real_ARRAY(6)))
     {}
 
   ~CPP_track_point() {
@@ -3180,7 +3180,7 @@ public:
   Int n_ok;
 
   CPP_track() :
-    pt(CPP_track_point_ARRAY(CPP_track_point(), 0)),
+    pt(CPP_track_point_ARRAY(0)),
     ds_save(1e-3),
     n_pt(-1),
     n_bad(0),
@@ -3232,8 +3232,8 @@ public:
     beam_chamber_height(0.0),
     lsc_sigma_cutoff(0.1),
     particle_sigma_cutoff(-1),
-    space_charge_mesh_size(32, 3),
-    csr3d_mesh_size(32, 3),
+    space_charge_mesh_size(3, 32),
+    csr3d_mesh_size(3, 32),
     n_bin(0),
     particle_bin_span(2),
     n_shield_images(0),
@@ -3304,7 +3304,7 @@ public:
 
   CPP_bmad_common() :
     max_aperture_limit(1e3),
-    d_orb(1e-5, 6),
+    d_orb(6, 1e-5),
     default_ds_step(0.0),
     significant_length(1e-10),
     rel_tol_tracking(1e-9),
@@ -3424,7 +3424,7 @@ public:
   CPP_rad_int1_ARRAY ele;
 
   CPP_rad_int_branch() :
-    ele(CPP_rad_int1_ARRAY(CPP_rad_int1(), 0))
+    ele(CPP_rad_int1_ARRAY(0))
     {}
 
   ~CPP_rad_int_branch() {
@@ -3448,7 +3448,7 @@ public:
   CPP_rad_int_branch_ARRAY branch;
 
   CPP_rad_int_all_ele() :
-    branch(CPP_rad_int_branch_ARRAY(CPP_rad_int_branch(), 0))
+    branch(CPP_rad_int_branch_ARRAY(0))
     {}
 
   ~CPP_rad_int_all_ele() {
@@ -3597,35 +3597,35 @@ public:
     mode3(NULL),
     photon(NULL),
     rad_map(NULL),
-    taylor(CPP_taylor_ARRAY(CPP_taylor(), 6)),
-    spin_taylor_ref_orb_in(Bmad::REAL_GARBAGE, 6),
-    spin_taylor(CPP_taylor_ARRAY(CPP_taylor(), 4)),
+    taylor(CPP_taylor_ARRAY(6)),
+    spin_taylor_ref_orb_in(6, Bmad::REAL_GARBAGE),
+    spin_taylor(CPP_taylor_ARRAY(4)),
     wake(NULL),
-    wall3d(CPP_wall3d_ARRAY(CPP_wall3d(), 0)),
-    cartesian_map(CPP_cartesian_map_ARRAY(CPP_cartesian_map(), 0)),
-    cylindrical_map(CPP_cylindrical_map_ARRAY(CPP_cylindrical_map(), 0)),
-    gen_grad_map(CPP_gen_grad_map_ARRAY(CPP_gen_grad_map(), 0)),
-    grid_field(CPP_grid_field_ARRAY(CPP_grid_field(), 0)),
+    wall3d(CPP_wall3d_ARRAY(0)),
+    cartesian_map(CPP_cartesian_map_ARRAY(0)),
+    cylindrical_map(CPP_cylindrical_map_ARRAY(0)),
+    gen_grad_map(CPP_gen_grad_map_ARRAY(0)),
+    grid_field(CPP_grid_field_ARRAY(0)),
     map_ref_orb_in(),
     map_ref_orb_out(),
     time_ref_orb_in(),
     time_ref_orb_out(),
-    value(double(0), Bmad::NUM_ELE_ATTRIB+1),
-    old_value(double(0), Bmad::NUM_ELE_ATTRIB+1),
-    spin_q(Real_ARRAY(Bmad::REAL_GARBAGE, 7), 4),
-    vec0(0.0, 6),
-    mat6(Real_ARRAY(0.0, 6), 6),
-    c_mat(Real_ARRAY(0.0, 2), 2),
+    value(Bmad::NUM_ELE_ATTRIB+1, double(0)),
+    old_value(Bmad::NUM_ELE_ATTRIB+1, double(0)),
+    spin_q(Real_MATRIX(7, Real_ARRAY(4))),
+    vec0(6, 0.0),
+    mat6(Real_MATRIX(6, Real_ARRAY(6))),
+    c_mat(Real_MATRIX(2, Real_ARRAY(2))),
     gamma_c(1),
     s_start(0.0),
     s(0.0),
     ref_time(0.0),
-    a_pole(0.0, 0),
-    b_pole(0.0, 0),
-    a_pole_elec(0.0, 0),
-    b_pole_elec(0.0, 0),
-    custom(0.0, 0),
-    r(Real_MATRIX(Real_ARRAY(0.0, 0), 0), 0),
+    a_pole(0, 0.0),
+    b_pole(0, 0.0),
+    a_pole_elec(0, 0.0),
+    b_pole_elec(0, 0.0),
+    custom(0, 0.0),
+    r(Real_TENSOR(0, Real_MATRIX(0, Real_ARRAY(0)))),
     key(key_),
     sub_key(0),
     ix_ele(-1),
@@ -3671,14 +3671,14 @@ public:
 
 
   ~CPP_ele() {
-    delete descrip;
-    delete ac_kick;
-    delete control;
-    delete high_energy_space_charge;
-    delete mode3;
-    delete photon;
-    delete rad_map;
-    delete wake;
+    if (descrip) delete descrip;
+    if (ac_kick) delete ac_kick;
+    if (control) delete control;
+    if (high_energy_space_charge) delete high_energy_space_charge;
+    if (mode3) delete mode3;
+    if (photon) delete photon;
+    if (rad_map) delete rad_map;
+    if (wake) delete wake;
   }
 
 };   // End Class
@@ -3701,7 +3701,7 @@ public:
 
   CPP_complex_taylor_term() :
     coef(0.0),
-    expn(0, 6)
+    expn(6, 0)
     {}
 
   ~CPP_complex_taylor_term() {
@@ -3727,7 +3727,7 @@ public:
 
   CPP_complex_taylor() :
     ref(0.0),
-    term(CPP_complex_taylor_term_ARRAY(CPP_complex_taylor_term(), 0))
+    term(CPP_complex_taylor_term_ARRAY(0))
     {}
 
   ~CPP_complex_taylor() {
@@ -3773,9 +3773,9 @@ public:
     a(),
     b(),
     z(),
-    ele(CPP_ele_ARRAY(CPP_ele(), 0)),
+    ele(CPP_ele_ARRAY(0)),
     param(),
-    wall3d(CPP_wall3d_ARRAY(CPP_wall3d(), 0))
+    wall3d(CPP_wall3d_ARRAY(0))
     {}
 
   ~CPP_branch() {
@@ -3833,21 +3833,21 @@ public:
     machine(),
     input_file_name(),
     title(),
-    print_str(String_ARRAY(string(), 0)),
-    constant(CPP_expression_atom_ARRAY(CPP_expression_atom(), 0)),
+    print_str(String_ARRAY(0)),
+    constant(CPP_expression_atom_ARRAY(0)),
     a(NULL),
     b(NULL),
     z(NULL),
     param(NULL),
     lord_state(),
     ele_init(),
-    ele(CPP_ele_ARRAY(CPP_ele(), 0)),
-    branch(CPP_branch_ARRAY(CPP_branch(), 0)),
-    control(CPP_control_ARRAY(CPP_control(), 0)),
+    ele(CPP_ele_ARRAY(0)),
+    branch(CPP_branch_ARRAY(0)),
+    control(CPP_control_ARRAY(0)),
     particle_start(),
     beam_init(),
     pre_tracker(),
-    custom(0.0, 0),
+    custom(0, 0.0),
     version(-1),
     n_ele_track(NULL),
     n_ele_max(NULL),
@@ -3861,12 +3861,12 @@ public:
     {}
 
   ~CPP_lat() {
-    delete a;
-    delete b;
-    delete z;
-    delete param;
-    delete n_ele_track;
-    delete n_ele_max;
+    if (a) delete a;
+    if (b) delete b;
+    if (z) delete z;
+    if (param) delete param;
+    if (n_ele_track) delete n_ele_track;
+    if (n_ele_max) delete n_ele_max;
   }
 
 };   // End Class
@@ -3900,7 +3900,7 @@ public:
   Int n_bad;
 
   CPP_bunch() :
-    particle(CPP_coord_ARRAY(CPP_coord(), 0)),
+    particle(CPP_coord_ARRAY(0)),
     ix_z(0, 0),
     charge_tot(0.0),
     charge_live(0.0),
@@ -3966,9 +3966,9 @@ public:
     a(),
     b(),
     c(),
-    sigma(Real_ARRAY(0.0, 6), 6),
-    rel_max(0.0, 7),
-    rel_min(0.0, 7),
+    sigma(Real_MATRIX(6, Real_ARRAY(6))),
+    rel_max(7, 0.0),
+    rel_min(7, 0.0),
     s(-1),
     t(-1),
     sigma_t(0.0),
@@ -4005,7 +4005,7 @@ public:
   CPP_bunch_ARRAY bunch;
 
   CPP_beam() :
-    bunch(CPP_bunch_ARRAY(CPP_bunch(), 0))
+    bunch(CPP_bunch_ARRAY(0))
     {}
 
   ~CPP_beam() {
@@ -4103,7 +4103,7 @@ public:
   Real pz_start;
 
   CPP_aperture_scan() :
-    point(CPP_aperture_point_ARRAY(CPP_aperture_point(), 0)),
+    point(CPP_aperture_point_ARRAY(0)),
     ref_orb(),
     pz_start(0.0)
     {}

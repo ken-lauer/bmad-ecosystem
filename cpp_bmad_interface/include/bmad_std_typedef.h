@@ -23,21 +23,24 @@ typedef const double*            c_RealArr;
 typedef const int*               c_IntArr;
 typedef const long int*          c_Int8Arr;
 
-typedef valarray<bool>           Bool_ARRAY;
-typedef valarray<Complex>        Complex_ARRAY;
-typedef valarray<double>         Real_ARRAY;
-typedef valarray<int>            Int_ARRAY;
-typedef valarray<string>         String_ARRAY;
+// ARRAY: 1D
+typedef vector<bool>           Bool_ARRAY;
+typedef vector<Complex>        Complex_ARRAY;
+typedef vector<double>         Real_ARRAY;
+typedef vector<int>            Int_ARRAY;
+typedef vector<string>         String_ARRAY;
 
-typedef valarray<Bool_ARRAY>     Bool_MATRIX;
-typedef valarray<Complex_ARRAY>  Complex_MATRIX;
-typedef valarray<Real_ARRAY>     Real_MATRIX;
-typedef valarray<Int_ARRAY>      Int_MATRIX;
+// MATRIX: 2D
+typedef vector<Bool_ARRAY>     Bool_MATRIX;
+typedef vector<Complex_ARRAY>  Complex_MATRIX;
+typedef vector<Real_ARRAY>     Real_MATRIX;
+typedef vector<Int_ARRAY>      Int_MATRIX;
 
-typedef valarray<Bool_MATRIX>      Bool_TENSOR;
-typedef valarray<Complex_MATRIX>   Complex_TENSOR;
-typedef valarray<Real_MATRIX>      Real_TENSOR;
-typedef valarray<Int_MATRIX>       Int_TENSOR;
+// TENSOR: 3D
+typedef vector<Bool_MATRIX>      Bool_TENSOR;
+typedef vector<Complex_MATRIX>   Complex_TENSOR;
+typedef vector<Real_MATRIX>      Real_TENSOR;
+typedef vector<Int_MATRIX>       Int_TENSOR;
 
 #define BMAD_STD_TYPEDEF
 #endif

@@ -1,18 +1,18 @@
 #ifndef CONVERTER_TEMPLATES
 
 #include <string>
-#include <valarray>
+#include <vector>
 #include <complex>
 #include "bmad_std_typedef.h"
 
 //---------------------------------------------------------------------------
 
-template <class T> void operator<< (valarray<T>& arr, const T* ptr) {
+template <class T> void operator<< (vector<T>& arr, const T* ptr) {
   unsigned int n = arr.size();
   for (unsigned int i = 0; i < n; i++) arr[i] = ptr[i];
 }
 
-template <class T> void operator<< (valarray< valarray<T> >& mat, const T* ptr) {
+template <class T> void operator<< (vector< vector<T> >& mat, const T* ptr) {
   unsigned int n1 = mat.size();
   if (n1 == 0) return;
   unsigned int n2 = mat[0].size();
@@ -23,7 +23,7 @@ template <class T> void operator<< (valarray< valarray<T> >& mat, const T* ptr) 
   }
 }
 
-template <class T> void operator<< (valarray< valarray< valarray<T> > >& tensor, const T* ptr) {
+template <class T> void operator<< (vector< vector< vector<T> > >& tensor, const T* ptr) {
   unsigned int n1 = tensor.size();
   if (n1 == 0) return;
   unsigned int n2 = tensor[0].size();
@@ -37,14 +37,14 @@ template <class T> void operator<< (valarray< valarray< valarray<T> > >& tensor,
   }
 }
 
-template <class T> void operator<< (valarray<T>& arr1, const valarray<T>& arr2) {
+template <class T> void operator<< (vector<T>& arr1, const vector<T>& arr2) {
   unsigned int n1 = arr1.size(), n2 = arr2.size();
   if (n1 != n2) arr1.resize(n2);
   arr1 = arr2;
 }
 
-template <class T> void operator<< (valarray< valarray<T> >& mat1, 
-                              const valarray< valarray<T> >& mat2) {
+template <class T> void operator<< (vector< vector<T> >& mat1, 
+                              const vector< vector<T> >& mat2) {
   unsigned int n1_1 = mat1.size(), n2_1 = mat2.size();
   unsigned int n1_2 = 0, n2_2 = 0;
   if (n1_1 > 0) n1_2 = mat1[0].size();
@@ -54,7 +54,7 @@ template <class T> void operator<< (valarray< valarray<T> >& mat1,
   mat1 = mat2;
 }
 
-template <class T> void matrix_to_vec (const valarray< valarray<T> >& mat, T* vec) {
+template <class T> void matrix_to_vec (const vector< vector<T> >& mat, T* vec) {
   unsigned int n1 = mat.size();
   if (n1 == 0) return;
   unsigned int n2 = mat[0].size();
@@ -65,7 +65,7 @@ template <class T> void matrix_to_vec (const valarray< valarray<T> >& mat, T* ve
   }
 }
 
-template <class T> void tensor_to_vec (const valarray< valarray< valarray<T> > >& tensor, T* vec) {
+template <class T> void tensor_to_vec (const vector< vector< vector<T> > >& tensor, T* vec) {
   unsigned int n1 = tensor.size();
   if (n1 == 0) return;
   unsigned int n2 = tensor[0].size();

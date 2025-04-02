@@ -16,7 +16,7 @@ using namespace std;
 
 //---------------------------------------------------
 
-template <class T> bool is_all_equal (const valarray<T>& vec1, const valarray<T>& vec2) {
+template <class T> bool is_all_equal (const vector<T>& vec1, const vector<T>& vec2) {
   bool is_eq = true;
   if (vec1.size() != vec2.size()) return false;
   for (unsigned int i = 0; i < vec1.size(); i++) {
@@ -25,7 +25,7 @@ template <class T> bool is_all_equal (const valarray<T>& vec1, const valarray<T>
   return is_eq;
 }
 
-template <class T> bool is_all_equal (const valarray< valarray<T> >& mat1, const valarray< valarray<T> >& mat2) {
+template <class T> bool is_all_equal (const vector< vector<T> >& mat1, const vector< vector<T> >& mat2) {
   bool is_eq = true;
   if (mat1.size() != mat2.size()) return false;
   for (unsigned int i = 0; i < mat1.size(); i++) {
@@ -37,7 +37,7 @@ template <class T> bool is_all_equal (const valarray< valarray<T> >& mat1, const
   return is_eq;
 };
 
-template <class T> bool is_all_equal (const valarray< valarray< valarray<T> > >& tensor1, const valarray< valarray< valarray<T> > >& tensor2) {
+template <class T> bool is_all_equal (const vector< vector< vector<T> > >& tensor1, const vector< vector< vector<T> > >& tensor2) {
   bool is_eq = true;
   if (tensor1.size() != tensor2.size()) return false;
   for (unsigned int i = 0; i < tensor1.size(); i++) {

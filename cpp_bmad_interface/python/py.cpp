@@ -1370,7 +1370,36 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_taylor &self) { return self.ref; },
             [](CPP_taylor &self, double val) { self.ref = val; },
             "Property from Fortran struct")
-        // Skipping term: pointer to struct type
+        // Array property: term, type: CPP_taylor_term_ARRAY
+        .def_property("term",
+            [](const CPP_taylor &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.term;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_taylor &self, py::object obj) {
+                // Set term from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.term;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_taylor_term>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_taylor_term objects");
+                }
+                
+            },
+            "Property from Fortran struct")
         ;
 
     py::class_<CPP_em_taylor_term>(m, "em_taylor_term", "Fortran struct: em_taylor_term_struct")
@@ -1593,7 +1622,7 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_cartesian_map &self) { return self.field_type; },
             [](CPP_cartesian_map &self, int val) { self.field_type = val; },
             "or electric$")
-        // Skipping ptr: pointer to struct type
+        // TODO Skipping ptr: pointer to struct type (CPP_cartesian_map_term)
         ;
 
     py::class_<CPP_cylindrical_map_term1>(m, "cylindrical_map_term1", "Fortran struct: cylindrical_map_term1_struct")
@@ -1721,7 +1750,7 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Field origin offset.")
-        // Skipping ptr: pointer to struct type
+        // TODO Skipping ptr: pointer to struct type (CPP_cylindrical_map_term)
         ;
 
     py::class_<CPP_grid_field_pt1>(m, "grid_field_pt1", "Fortran struct: grid_field_pt1_struct")
@@ -1937,7 +1966,7 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_grid_field &self) { return self.curved_ref_frame; },
             [](CPP_grid_field &self, bool val) { self.curved_ref_frame = val; },
             "Property from Fortran struct")
-        // Skipping ptr: pointer to struct type
+        // TODO Skipping ptr: pointer to struct type (CPP_grid_field_pt)
         ;
 
     py::class_<CPP_floor_position>(m, "floor_position", "Fortran struct: floor_position_struct")
@@ -3895,7 +3924,7 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Array of vertices. Always stored relative.")
-        // Skipping surface: pointer to struct type
+        // TODO Skipping surface: pointer to struct type (CPP_photon_reflect_surface)
         .def_property("type",
             [](const CPP_wall3d_section &self) { return self.type; },
             [](CPP_wall3d_section &self, int val) { self.type = val; },
@@ -6296,20 +6325,20 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_ele &self) { return self.y; },
             [](CPP_ele &self, CPP_xy_disp val) { self.y = val; },
             "Projected dispersions.")
-        // Skipping ac_kick: pointer to struct type
+        // TODO Skipping ac_kick: pointer to struct type (CPP_ac_kicker)
         .def_property("bookkeeping_state",
             [](const CPP_ele &self) { return self.bookkeeping_state; },
             [](CPP_ele &self, CPP_bookkeeping_state val) { self.bookkeeping_state = val; },
             "Attribute bookkeeping")
-        // Skipping control: pointer to struct type
+        // TODO Skipping control: pointer to struct type (CPP_controller)
         .def_property("floor",
             [](const CPP_ele &self) { return self.floor; },
             [](CPP_ele &self, CPP_floor_position val) { self.floor = val; },
             "Property from Fortran struct")
-        // Skipping high_energy_space_charge: pointer to struct type
-        // Skipping mode3: pointer to struct type
-        // Skipping photon: pointer to struct type
-        // Skipping rad_map: pointer to struct type
+        // TODO Skipping high_energy_space_charge: pointer to struct type (CPP_high_energy_space_charge)
+        // TODO Skipping mode3: pointer to struct type (CPP_mode3)
+        // TODO Skipping photon: pointer to struct type (CPP_photon_element)
+        // TODO Skipping rad_map: pointer to struct type (CPP_rad_map_ele)
         // Array property: taylor, type: CPP_taylor_ARRAY
         .def_property("taylor",
             [](const CPP_ele &self) {
@@ -6407,12 +6436,157 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Quaternion Spin Taylor map.")
-        // Skipping wake: pointer to struct type
-        // Skipping wall3d: pointer to struct type
-        // Skipping cartesian_map: pointer to struct type
-        // Skipping cylindrical_map: pointer to struct type
-        // Skipping gen_grad_map: pointer to struct type
-        // Skipping grid_field: pointer to struct type
+        // TODO Skipping wake: pointer to struct type (CPP_wake)
+        // Array property: wall3d, type: CPP_wall3d_ARRAY
+        .def_property("wall3d",
+            [](const CPP_ele &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.wall3d;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_ele &self, py::object obj) {
+                // Set wall3d from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.wall3d;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_wall3d>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_wall3d objects");
+                }
+                
+            },
+            "Chamber or capillary wall")
+        // Array property: cartesian_map, type: CPP_cartesian_map_ARRAY
+        .def_property("cartesian_map",
+            [](const CPP_ele &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.cartesian_map;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_ele &self, py::object obj) {
+                // Set cartesian_map from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.cartesian_map;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_cartesian_map>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_cartesian_map objects");
+                }
+                
+            },
+            "Used to define E/M fields")
+        // Array property: cylindrical_map, type: CPP_cylindrical_map_ARRAY
+        .def_property("cylindrical_map",
+            [](const CPP_ele &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.cylindrical_map;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_ele &self, py::object obj) {
+                // Set cylindrical_map from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.cylindrical_map;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_cylindrical_map>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_cylindrical_map objects");
+                }
+                
+            },
+            "Used to define E/M fields")
+        // Array property: gen_grad_map, type: CPP_gen_grad_map_ARRAY
+        .def_property("gen_grad_map",
+            [](const CPP_ele &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.gen_grad_map;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_ele &self, py::object obj) {
+                // Set gen_grad_map from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.gen_grad_map;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_gen_grad_map>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_gen_grad_map objects");
+                }
+                
+            },
+            "Used to define E/M fields.")
+        // Array property: grid_field, type: CPP_grid_field_ARRAY
+        .def_property("grid_field",
+            [](const CPP_ele &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.grid_field;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_ele &self, py::object obj) {
+                // Set grid_field from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.grid_field;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_grid_field>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_grid_field objects");
+                }
+                
+            },
+            "Used to define E/M fields.")
         .def_property("map_ref_orb_in",
             [](const CPP_ele &self) { return self.map_ref_orb_in; },
             [](CPP_ele &self, CPP_coord val) { self.map_ref_orb_in = val; },
@@ -7155,7 +7329,36 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_complex_taylor &self) { return self.ref; },
             [](CPP_complex_taylor &self, std::complex<double> val) { self.ref = val; },
             "Property from Fortran struct")
-        // Skipping term: pointer to struct type
+        // Array property: term, type: CPP_complex_taylor_term_ARRAY
+        .def_property("term",
+            [](const CPP_complex_taylor &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.term;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_complex_taylor &self, py::object obj) {
+                // Set term from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.term;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_complex_taylor_term>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_complex_taylor_term objects");
+                }
+                
+            },
+            "Property from Fortran struct")
         ;
 
     py::class_<CPP_branch>(m, "branch", "Fortran struct: branch_struct")
@@ -7200,12 +7403,70 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_branch &self) { return self.z; },
             [](CPP_branch &self, CPP_mode_info val) { self.z = val; },
             "Note: Tunes are the fractional part.")
-        // Skipping ele: pointer to struct type
+        // Array property: ele, type: CPP_ele_ARRAY
+        .def_property("ele",
+            [](const CPP_branch &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.ele;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_branch &self, py::object obj) {
+                // Set ele from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.ele;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_ele>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_ele objects");
+                }
+                
+            },
+            "Property from Fortran struct")
         .def_property("param",
             [](const CPP_branch &self) { return self.param; },
             [](CPP_branch &self, CPP_lat_param val) { self.param = val; },
             "Property from Fortran struct")
-        // Skipping wall3d: pointer to struct type
+        // Array property: wall3d, type: CPP_wall3d_ARRAY
+        .def_property("wall3d",
+            [](const CPP_branch &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.wall3d;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_branch &self, py::object obj) {
+                // Set wall3d from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.wall3d;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_wall3d>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_wall3d objects");
+                }
+                
+            },
+            "Property from Fortran struct")
         ;
 
     py::class_<CPP_lat>(m, "lat", "Fortran struct: lat_struct")
@@ -7279,10 +7540,10 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Constants defined in the lattice")
-        // Skipping a: pointer to struct type
-        // Skipping b: pointer to struct type
-        // Skipping z: pointer to struct type
-        // Skipping param: pointer to struct type
+        // TODO Skipping a: pointer to struct type (CPP_mode_info)
+        // TODO Skipping b: pointer to struct type (CPP_mode_info)
+        // TODO Skipping z: pointer to struct type (CPP_mode_info)
+        // TODO Skipping param: pointer to struct type (CPP_lat_param)
         .def_property("lord_state",
             [](const CPP_lat &self) { return self.lord_state; },
             [](CPP_lat &self, CPP_bookkeeping_state val) { self.lord_state = val; },
@@ -7291,7 +7552,36 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_lat &self) { return self.ele_init; },
             [](CPP_lat &self, CPP_ele val) { self.ele_init = val; },
             "For use by any program")
-        // Skipping ele: pointer to struct type
+        // Array property: ele, type: CPP_ele_ARRAY
+        .def_property("ele",
+            [](const CPP_lat &self) {
+                // Get list of struct objects
+                
+                const auto& arr = self.ele;
+                py::list result;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    result.append(py::cast(arr[i]));
+                }
+                return result;
+                
+            },
+            [](CPP_lat &self, py::object obj) {
+                // Set ele from list of structs
+                
+                try {
+                    py::list list = obj.cast<py::list>();
+                    auto& arr = self.ele;
+                    arr.resize(list.size());
+                    
+                    for (size_t i = 0; i < list.size(); ++i) {
+                        arr[i] = list[i].cast<CPP_ele>();
+                    }
+                } catch (const py::cast_error& e) {
+                    throw std::runtime_error("Expected a list of CPP_ele objects");
+                }
+                
+            },
+            "Array of elements [=> branch(0)].")
         // Array property: branch, type: CPP_branch_ARRAY
         .def_property("branch",
             [](const CPP_lat &self) {

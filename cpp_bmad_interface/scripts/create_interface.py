@@ -998,42 +998,38 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             c_arg = "c_Real"
             test_value = "rhs"
             c.construct_value = "0.0"
-
-        if type == CMPLX:
+        elif type == CMPLX:
             c_type = "Complex"
             c_arg = "c_Complex"
             test_value = "Complex(rhs, 100+rhs)"
             c.construct_value = "0.0"
-
-        if type == INT:
+        elif type == INT:
             c_type = "Int"
             c_arg = "c_Int"
             test_value = "rhs"
             c.construct_value = "0"
-
-        if type == INT8:
+        elif type == INT8:
             c_type = "Int8"
             c_arg = "c_Int8"
             test_value = "rhs"
             c.construct_value = "0"
-
-        if type == LOGIC:
+        elif type == LOGIC:
             c_type = "Bool"
             c_arg = "c_Bool"
             test_value = "(rhs % 2 == 0)"
             c.construct_value = "false"
-
-        if type == STRUCT:
+        elif type == STRUCT:
             c_type = "CPP_KIND"
             c_arg = "const CPP_KIND"
             test_value = ""
             c.construct_value = ""
-
-        if type == SIZE:
+        elif type == SIZE:
             c.to_f2_arg = "Int"
             c.to_f2_call = "NAME"
             c.to_c2_arg = "Int NAME"
             continue
+        else:
+            raise NotImplementedError(type)
 
         # -------------------------------------------------------
 
@@ -1056,13 +1052,13 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             c.to_f2_arg = c_arg + "Arr"
             c.to_f2_call = "&C.NAME[0]"
             c.to_c2_arg = c_arg + "Arr z_NAME"
-            c.constructor = "NAME(VALUE, DIM1)"
+            c.constructor = "NAME(DIM1, VALUE)"
             c.to_c2_set = "  C.NAME << z_NAME;"
             c.test_pat = test_pat1
             c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
             if type == STRUCT:
-                c.constructor = "NAME(CPP_KIND_ARRAY(CPP_KIND(), DIM1))"
+                c.constructor = "NAME(CPP_KIND_ARRAY(DIM1))"
                 c.to_c2_set = for1 + " KIND_to_c(z_NAME[i], C.NAME[i]);"
                 c.test_pat = test_pat1.replace(
                     "C.NAME[i] = NNN",
@@ -1080,7 +1076,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             c.to_f2_arg = c_arg + "Arr"
             c.to_f2_call = "z_NAME"
             c.to_c2_arg = c_arg + "Arr z_NAME"
-            c.constructor = "NAME(" + c_type + "_ARRAY(VALUE, DIM2), DIM1)"
+            c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
             c.to_c2_set = "  C.NAME << z_NAME;"
             c.test_pat = test_pat2
             c.to_f_setup = (
@@ -1089,7 +1085,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
             if type == STRUCT:
-                c.constructor = "NAME(CPP_KIND_ARRAY(CPP_KIND(), DIM2), DIM1)"
+                c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
                 c.to_c2_set = (
                     for1
                     + for2
@@ -1113,13 +1109,10 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             c.to_f2_arg = c_arg + "Arr"
             c.to_f2_call = "z_NAME"
             c.to_c2_arg = c_arg + "Arr z_NAME"
-            c.constructor = (
-                "NAME("
-                + c_type
-                + "_MATRIX("
-                + c_type
-                + "_ARRAY(VALUE, DIM3), DIM2), DIM1)"
-            )
+            c.constructor = f"NAME({c_type}_TENSOR(DIM3, {c_type}_MATRIX(DIM2, {c_type}_ARRAY(DIM1))))"
+            # c.constructor = (
+            #     f"NAME({c_type}_TENSOR(0, {c_type}_MATRIX(0, {c_type}_ARRAY(0))))"
+            # )
             c.to_c2_set = "  C.NAME << z_NAME;"
             c.test_pat = test_pat3
             c.to_f_setup = (
@@ -1130,7 +1123,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
             if type == STRUCT:
-                c.constructor = "NAME(CPP_KIND_MATRIX(CPP_KIND_ARRAY(CPP_KIND(), DIM3), DIM2), DIM1)"
+                c.constructor = "NAME(CPP_KIND_TENSOR(DIM3, CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1))))"
                 c.to_c2_set = (
                     for1
                     + for2
@@ -1179,7 +1172,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
         if dim == 0:
             cp.c_class_suffix = "*"
             cp.constructor = "NAME(NULL)"
-            cp.destructor = "delete NAME;"
+            cp.destructor = "if (NAME) delete NAME;"
             cp.test_pat = (
                 test_pat_pointer0
                 + "    C.NAME = new "
@@ -1236,7 +1229,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
 """.replace("TYPE", c_type)
 
             if type == STRUCT:
-                cp.constructor = "NAME(CPP_KIND_ARRAY(CPP_KIND(), 0))"
+                cp.constructor = "NAME(CPP_KIND_ARRAY(0))"
                 cp.test_pat = (
                     test_pat_pointer1
                     + x2
@@ -1287,7 +1280,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
             cp.to_f_cleanup = "  delete[] z_NAME;\n"
 
             if type == STRUCT:
-                cp.constructor = "NAME(CPP_KIND_ARRAY(CPP_KIND(), 0), 0)"
+                cp.constructor = "NAME(CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0)))"
                 cp.test_pat = (
                     test_pat_pointer1
                     + """\
@@ -1386,8 +1379,9 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
 
             if type == STRUCT:
                 cp.constructor = (
-                    "NAME(CPP_KIND_MATRIX(CPP_KIND_ARRAY(CPP_KIND(), 0), 0), 0)"
+                    "NAME(CPP_KIND_TENSOR(0, CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0))))"
                 )
+
                 cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) {
@@ -1450,7 +1444,7 @@ c_side_trans[CHAR, 0, PTR] = copy.deepcopy(c_side_trans[STRUCT, 0, PTR])
 cc = c_side_trans[CHAR, 0, PTR]
 cc.c_class = "string"
 cc.constructor = "NAME(NULL)"
-cc.destructor = "delete NAME;"
+cc.destructor = "if (NAME) delete NAME;"
 cc.to_f2_call = "z_NAME"
 cc.to_f2_arg = "c_Char"
 cc.to_f_setup = """\
@@ -1500,7 +1494,7 @@ cc.test_pat = (
   }
 """
 )
-cc.constructor = "NAME(String_ARRAY(string(), DIM1))"
+cc.constructor = "NAME(String_ARRAY(DIM1))"
 cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 cc.to_f2_call = c_side_trans[STRUCT, 1, NOT].to_f2_call
 cc.to_c2_set = for1 + " C.NAME[i] = z_NAME[i];"
@@ -1510,7 +1504,7 @@ cc.to_c2_set = for1 + " C.NAME[i] = z_NAME[i];"
 c_side_trans[CHAR, 1, PTR] = copy.deepcopy(c_side_trans[STRUCT, 1, PTR])
 cc = c_side_trans[CHAR, 1, PTR]
 cc.c_class = "String_ARRAY"
-cc.constructor = "NAME(String_ARRAY(string(), 0))"
+cc.constructor = "NAME(String_ARRAY(0))"
 cc.destructor = ""
 cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 cc.to_f2_arg = "c_Char*"
@@ -2050,7 +2044,12 @@ for struct in struct_definitions:
 
         arg.c_side.constructor = arg.c_side.constructor.replace(
             "VALUE", arg.c_side.construct_value
+        ).replace(
+            # TODO: this is in the wrong spot; what happened here?
+            "CPP_KIND",
+            arg.c_side.c_class.replace("_MATRIX", "").replace("_ARRAY", ""),
         )
+
 
 ##################################################################################
 ##################################################################################
@@ -2632,7 +2631,7 @@ f_class.write("""
 #ifndef CPP_BMAD_CLASSES
 
 #include <string>
-#include <valarray>
+#include <vector>
 #include <complex>
 """)
 
@@ -2643,9 +2642,9 @@ for struct in struct_definitions:
     f_class.write(
         """
 class CPP_ZZZ;
-typedef valarray<CPP_ZZZ>          CPP_ZZZ_ARRAY;
-typedef valarray<CPP_ZZZ_ARRAY>    CPP_ZZZ_MATRIX;
-typedef valarray<CPP_ZZZ_MATRIX>   CPP_ZZZ_TENSOR;
+typedef vector<CPP_ZZZ>          CPP_ZZZ_ARRAY;
+typedef vector<CPP_ZZZ_ARRAY>    CPP_ZZZ_MATRIX;
+typedef vector<CPP_ZZZ_MATRIX>   CPP_ZZZ_TENSOR;
 """.replace("ZZZ", struct.short_name)
     )
 
@@ -2881,7 +2880,7 @@ using namespace std;
 
 //---------------------------------------------------
 
-template <class T> bool is_all_equal (const valarray<T>& vec1, const valarray<T>& vec2) {
+template <class T> bool is_all_equal (const vector<T>& vec1, const vector<T>& vec2) {
   bool is_eq = true;
   if (vec1.size() != vec2.size()) return false;
   for (unsigned int i = 0; i < vec1.size(); i++) {
@@ -2890,7 +2889,7 @@ template <class T> bool is_all_equal (const valarray<T>& vec1, const valarray<T>
   return is_eq;
 }
 
-template <class T> bool is_all_equal (const valarray< valarray<T> >& mat1, const valarray< valarray<T> >& mat2) {
+template <class T> bool is_all_equal (const vector< vector<T> >& mat1, const vector< vector<T> >& mat2) {
   bool is_eq = true;
   if (mat1.size() != mat2.size()) return false;
   for (unsigned int i = 0; i < mat1.size(); i++) {
@@ -2902,7 +2901,7 @@ template <class T> bool is_all_equal (const valarray< valarray<T> >& mat1, const
   return is_eq;
 };
 
-template <class T> bool is_all_equal (const valarray< valarray< valarray<T> > >& tensor1, const valarray< valarray< valarray<T> > >& tensor2) {
+template <class T> bool is_all_equal (const vector< vector< vector<T> > >& tensor1, const vector< vector< vector<T> > >& tensor2) {
   bool is_eq = true;
   if (tensor1.size() != tensor2.size()) return false;
   for (unsigned int i = 0; i < tensor1.size(); i++) {

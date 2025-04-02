@@ -1,4 +1,4 @@
-import pathlib
+from __future__ import annotations
 from create_interface import (
     ALLOC,
     CHAR,
@@ -10,11 +10,13 @@ from create_interface import (
     REAL,
     SIZE,
     STRUCT,
+    SCRIPTS_PATH,
+    arg_class,
+    struct_def_class,
     struct_definitions,
 )
 
 
-SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 OUTPUT_PATH = SCRIPTS_PATH.parent / "python" / "py.cpp"
 
 
@@ -91,7 +93,83 @@ def get_struct_array_setter_code(arg):
     return "// Unsupported dimensions for struct arrays"
 
 
-def generate_pybind11_module(struct_definitions):
+def handle_array(cpp_class_name: str, property_doc: str, arg: arg_class):
+    cpp_type = get_cpp_array_type(arg)
+
+    code = []
+    code.append(f"        // Array property: {arg.c_name}, type: {cpp_type}")
+    # Handle arrays of structs differently
+    if arg.type.lower() == STRUCT:
+        # Arrays of structs need special handling
+        code.append(f'        .def_property("{arg.c_name}",')
+        code.append(f"            [](const {cpp_class_name} &self) {{")
+        code.append("                // Get list of struct objects")
+        code.append(f"                {get_struct_array_return_code(arg)}")
+        code.append("            },")
+        code.append(f"            []({cpp_class_name} &self, py::object obj) {{")
+        code.append(f"                // Set {arg.c_name} from list of structs")
+        code.append(f"                {get_struct_array_setter_code(arg)}")
+        code.append("            },")
+        code.append(f"            {property_doc})")
+    # Handle different array types for primitive types
+    elif "ARRAY" in cpp_type:
+        # 1D array
+        code.append(f'        .def_property("{arg.c_name}",')
+        code.append(f"            [](const {cpp_class_name} &self) {{")
+        code.append(f"                // Get numpy array from {cpp_type}")
+        code.append(f"                const auto& arr = self.{arg.c_name};")
+        code.append("                auto size = arr.size();")
+        code.append(f"                {get_numpy_return_code_for_array(arg, 1)}")
+        code.append("            },")
+        code.append(f"            []({cpp_class_name} &self, py::array arr) {{")
+        code.append(f"                // Set {arg.c_name} from numpy array")
+        code.append(
+            f"                {get_numpy_to_array_code(arg, 'self.' + arg.c_name, 1)}"
+        )
+        code.append("            },")
+        code.append(f"            {property_doc})")
+    elif "MATRIX" in cpp_type:
+        # 2D array (matrix)
+        code.append(f'        .def_property("{arg.c_name}",')
+        code.append(f"            [](const {cpp_class_name} &self) {{")
+        code.append(f"                // Get numpy array from {cpp_type}")
+        code.append(f"                const auto& matrix = self.{arg.c_name};")
+        code.append(f"                {get_numpy_return_code_for_array(arg, 2)}")
+        code.append("            },")
+        code.append(f"            []({cpp_class_name} &self, py::array arr) {{")
+        code.append(f"                // Set {arg.c_name} from numpy array")
+        code.append(
+            f"                {get_numpy_to_array_code(arg, 'self.' + arg.c_name, 2)}"
+        )
+        code.append("            },")
+        code.append(f"            {property_doc})")
+    elif "TENSOR" in cpp_type:
+        # 3D array (tensor)
+        code.append(f'        .def_property("{arg.c_name}",')
+        code.append(f"            [](const {cpp_class_name} &self) {{")
+        code.append(f"                // Get numpy array from {cpp_type}")
+        code.append(f"                const auto& tensor = self.{arg.c_name};")
+        code.append(f"                {get_numpy_return_code_for_array(arg, 3)}")
+        code.append("            },")
+        code.append(f"            []({cpp_class_name} &self, py::array arr) {{")
+        code.append(f"                // Set {arg.c_name} from numpy array")
+        code.append(
+            f"                {get_numpy_to_array_code(arg, 'self.' + arg.c_name, 3)}"
+        )
+        code.append("            },")
+        code.append(f"            {property_doc})")
+    else:
+        # Raw pointer arrays (c_RealArr, etc.)
+        code.append(f'        .def_property_readonly("{arg.c_name}",')
+        code.append(f"            [](const {cpp_class_name} &self) {{")
+        code.append("                // Get numpy array from pointer array")
+        code.append(f"                {get_numpy_return_code_for_ptr_array(arg)}")
+        code.append("            },")
+        code.append(f"            {property_doc})")
+    return code
+
+
+def generate_pybind11_module(struct_definitions: list[struct_def_class]):
     """
     Generate pybind11 module code from a list of struct definitions.
 
@@ -139,151 +217,65 @@ def generate_pybind11_module(struct_definitions):
         else:
             code.append("        .def(py::init<>())")
 
-        # Add properties (class members)
         for arg in struct_def.arg:
-            if arg.is_component:
-                comment = arg.comment.replace('"', "'") if arg.comment else ""
-                property_doc = (
-                    f'"{comment}"' if comment else '"Property from Fortran struct"'
-                )
+            if not arg.is_component:
+                continue
+            comment = arg.comment.replace('"', "'") if arg.comment else ""
+            property_doc = (
+                f'"{comment}"' if comment else '"Property from Fortran struct"'
+            )
 
-                # Skip pointer types to structs
-                if arg.pointer_type == PTR and "_struct" in arg.kind:
+            # Skip pointer types to structs
+            # Handle arrays vs scalar properties
+            if arg.array:
+                code.extend(
+                    handle_array(
+                        cpp_class_name=cpp_class_name,
+                        property_doc=property_doc,
+                        arg=arg,
+                    )
+                )
+            elif arg.pointer_type == PTR and "_struct" in arg.kind:
+                property_type = get_cpp_type_for_property(arg)
+                if arg.c_name in (
+                    "a",
+                    "ac_kick",
+                    "b",
+                    "control",
+                    "high_energy_space_charge",
+                    "mode3",
+                    "param",
+                    "ptr",
+                    "photon",
+                    "rad_map",
+                    "surface",
+                    "wake",
+                    "z",
+                ):
                     code.append(
-                        f"        // Skipping {arg.c_name}: pointer to struct type"
+                        f"        // TODO Skipping {arg.c_name}: pointer to struct type ({property_type})"
                     )
                     continue
 
-                # Handle arrays vs scalar properties
-                if arg.array:
-                    # Use c_side if available for more precise typing
-                    cpp_type = get_cpp_array_type(arg)
-                    code.append(
-                        f"        // Array property: {arg.c_name}, type: {cpp_type}"
-                    )
-
-                    # Handle arrays of structs differently
-                    if arg.type.lower() == STRUCT:
-                        # Arrays of structs need special handling
-                        code.append(f'        .def_property("{arg.c_name}",')
-                        code.append(f"            [](const {cpp_class_name} &self) {{")
-                        code.append("                // Get list of struct objects")
-                        code.append(
-                            f"                {get_struct_array_return_code(arg)}"
-                        )
-                        code.append("            },")
-                        code.append(
-                            f"            []({cpp_class_name} &self, py::object obj) {{"
-                        )
-                        code.append(
-                            f"                // Set {arg.c_name} from list of structs"
-                        )
-                        code.append(
-                            f"                {get_struct_array_setter_code(arg)}"
-                        )
-                        code.append("            },")
-                        code.append(f"            {property_doc})")
-                    # Handle different array types for primitive types
-                    elif "ARRAY" in cpp_type:
-                        # 1D array
-                        code.append(f'        .def_property("{arg.c_name}",')
-                        code.append(f"            [](const {cpp_class_name} &self) {{")
-                        code.append(
-                            f"                // Get numpy array from {cpp_type}"
-                        )
-                        code.append(
-                            f"                const auto& arr = self.{arg.c_name};"
-                        )
-                        code.append("                auto size = arr.size();")
-                        code.append(
-                            f"                {get_numpy_return_code_for_array(arg, 1)}"
-                        )
-                        code.append("            },")
-                        code.append(
-                            f"            []({cpp_class_name} &self, py::array arr) {{"
-                        )
-                        code.append(
-                            f"                // Set {arg.c_name} from numpy array"
-                        )
-                        code.append(
-                            f"                {get_numpy_to_array_code(arg, 'self.' + arg.c_name, 1)}"
-                        )
-                        code.append("            },")
-                        code.append(f"            {property_doc})")
-                    elif "MATRIX" in cpp_type:
-                        # 2D array (matrix)
-                        code.append(f'        .def_property("{arg.c_name}",')
-                        code.append(f"            [](const {cpp_class_name} &self) {{")
-                        code.append(
-                            f"                // Get numpy array from {cpp_type}"
-                        )
-                        code.append(
-                            f"                const auto& matrix = self.{arg.c_name};"
-                        )
-                        code.append(
-                            f"                {get_numpy_return_code_for_array(arg, 2)}"
-                        )
-                        code.append("            },")
-                        code.append(
-                            f"            []({cpp_class_name} &self, py::array arr) {{"
-                        )
-                        code.append(
-                            f"                // Set {arg.c_name} from numpy array"
-                        )
-                        code.append(
-                            f"                {get_numpy_to_array_code(arg, 'self.' + arg.c_name, 2)}"
-                        )
-                        code.append("            },")
-                        code.append(f"            {property_doc})")
-                    elif "TENSOR" in cpp_type:
-                        # 3D array (tensor)
-                        code.append(f'        .def_property("{arg.c_name}",')
-                        code.append(f"            [](const {cpp_class_name} &self) {{")
-                        code.append(
-                            f"                // Get numpy array from {cpp_type}"
-                        )
-                        code.append(
-                            f"                const auto& tensor = self.{arg.c_name};"
-                        )
-                        code.append(
-                            f"                {get_numpy_return_code_for_array(arg, 3)}"
-                        )
-                        code.append("            },")
-                        code.append(
-                            f"            []({cpp_class_name} &self, py::array arr) {{"
-                        )
-                        code.append(
-                            f"                // Set {arg.c_name} from numpy array"
-                        )
-                        code.append(
-                            f"                {get_numpy_to_array_code(arg, 'self.' + arg.c_name, 3)}"
-                        )
-                        code.append("            },")
-                        code.append(f"            {property_doc})")
-                    else:
-                        # Raw pointer arrays (c_RealArr, etc.)
-                        code.append(f'        .def_property_readonly("{arg.c_name}",')
-                        code.append(f"            [](const {cpp_class_name} &self) {{")
-                        code.append(
-                            "                // Get numpy array from pointer array"
-                        )
-                        code.append(
-                            f"                {get_numpy_return_code_for_ptr_array(arg)}"
-                        )
-                        code.append("            },")
-                        code.append(f"            {property_doc})")
-
-                else:
-                    # Simple property for scalar values
-                    property_type = get_cpp_type_for_property(arg)
-                    code.append(f'        .def_property("{arg.c_name}",')
-                    code.append(
-                        f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
-                    )
-                    code.append(
-                        f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
-                    )
-                    code.append(f"            {property_doc})")
+                code.append(f'        .def_property("{arg.c_name}",')
+                code.append(
+                    f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
+                )
+                code.append(
+                    f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
+                )
+                code.append(f"            {property_doc})")
+            else:
+                # Simple property for scalar values
+                property_type = get_cpp_type_for_property(arg)
+                code.append(f'        .def_property("{arg.c_name}",')
+                code.append(
+                    f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
+                )
+                code.append(
+                    f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
+                )
+                code.append(f"            {property_doc})")
 
         # Add any custom methods
         if struct_def.c_extra_methods:
