@@ -13,6 +13,7 @@
 # scalar struct component is an array whose length is zero if the Fortran component
 # is nullified and whose length is 1 otherwise.
 
+from __future__ import annotations
 import copy
 import os
 import pathlib
@@ -40,12 +41,8 @@ master_input_file = "interface_input_params"
 n_char_max = 95
 debug = False  # Change to True to enable printout
 
-##################################################################################
-##################################################################################
-# Deciding if something is a number
 
-
-def is_number(s):
+def is_number(s: str) -> bool:
     try:
         float(s.replace("d", "e").replace("D", "e"))
         return True
@@ -53,19 +50,35 @@ def is_number(s):
         return False
 
 
-##################################################################################
-##################################################################################
-# For printing of intermediate steps, etc.
-
-
 def wrap_line(line, indent, cont_char):
+    """Wrap a line of text to a maximum width with appropriate indentation and continuation character.
+
+    Parameters
+    ----------
+    line : str
+        The text line to wrap
+    indent : str
+        String to use for initial indentation
+    cont_char : str
+        Character to append to continued lines
+
+    Returns
+    -------
+    str
+        A string with the wrapped line
+    """
     lines = textwrap.wrap(
-        line, n_char_max, initial_indent=indent, subsequent_indent=indent + "    "
+        line, width=n_char_max, initial_indent=indent, subsequent_indent=indent + "    "
     )
-    for i in range(len(lines) - 1):
-        lines[i] += cont_char + "\n"
-    lines[-1] += "\n"
-    return "".join(lines)
+
+    result = []
+    for i, wrapped_line in enumerate(lines):
+        if i < len(lines) - 1:
+            result.append(wrapped_line + cont_char + "\n")
+        else:
+            result.append(wrapped_line + "\n")
+
+    return "".join(result)
 
 
 def print_debug(line):
@@ -73,12 +86,12 @@ def print_debug(line):
         print(line, file=sys.stderr)
 
 
-def indent(string, numspace):
-    x = " " * numspace
-    if string[-1] == "\n":
-        return x + string[:-1].replace("\n", "\n" + x) + "\n"
-    else:
-        return x + string.replace("\n", "\n" + x)
+def indent(string: str, numspace: int) -> str:
+    """Indent each line of the string by numspace spaces."""
+    prefix = " " * numspace
+    lines = string.splitlines(keepends=True)
+    indented_lines = [prefix + line for line in lines]
+    return "".join(indented_lines)
 
 
 ##################################################################################
@@ -118,24 +131,55 @@ NOT, PTR, ALLOC = (
 
 @dataclass
 class arg_class:
-    is_component: bool = (
-        True  # Is a structure component? If not, then will be array bound.
-    )
-    f_name: str = ""  # Fortran side name of argument. Will be lower case
-    c_name: str = ""  # C++ side name of argument. May be mangled to avoid reserved word conflicts.
-    type: str = (
-        ""  # Fortran type without '(...)'. EG: 'real', 'type', 'character', etc.
-    )
-    kind: str = ""  # Fortran kind. EG: '', 'rp', 'coord_struct', etc.
-    pointer_type: str = NOT  # NOT, PTR, or ALLOC
-    array: List[str] = field(default_factory=list)  # EG: [':', ':'] or ['0:6', '3']
-    full_array: str = ""  # EG: '(:,:)', '(0:6, 3)'
+    """
+    Represents an argument or component in the Fortran to C++ interface.
+
+    Attributes
+    ----------
+    is_component : bool
+        Whether this is a structure component. If False, it's an array bound.
+    f_name : str
+        Fortran side name of argument (lowercase).
+    c_name : str
+        C++ side name of argument, potentially mangled to avoid reserved word conflicts.
+    type : str
+        Fortran type without parameters, e.g., 'real', 'type', 'character'.
+    kind : str
+        Fortran kind, e.g., '', 'rp', 'coord_struct'.
+    pointer_type : str
+        Pointer type: NOT, PTR, or ALLOC.
+    array : List[str]
+        Array dimension specifications, e.g., [':', ':'] or ['0:6', '3'].
+    full_array : str
+        Complete array specification, e.g., '(:,:)', '(0:6, 3)'.
+    lbound : List[Any]
+        Lower bounds for each array dimension.
+    ubound : List[Any]
+        Upper bounds for each array dimension.
+    init_value : str
+        Initialization value.
+    comment : str
+        Comment from the Fortran structure definition.
+    f_side : int
+        Fortran side translation.
+    c_side : int
+        C++ side translation.
+    """
+
+    is_component: bool = True
+    f_name: str = ""
+    c_name: str = ""
+    type: str = ""
+    kind: str = ""
+    pointer_type: str = NOT
+    array: List[str] = field(default_factory=list)
+    full_array: str = ""
     lbound: List[Any] = field(default_factory=list)
     ubound: List[Any] = field(default_factory=list)
-    init_value: str = ""  # Initialization value
-    comment: str = ""  # Comment with Fortran structure def.
-    f_side: int = 0
-    c_side: int = 0
+    init_value: str = ""
+    comment: str = ""
+    f_side: f_side_trans_class | None = None
+    c_side: c_side_trans_class | None = None
 
     def full_repr(self) -> str:
         return '["%s(%s)", "%s", "%s", %s, "%s" %s %s "%s"]' % (
@@ -180,7 +224,7 @@ class f_side_trans_class:
     to_f2_type: str = ""
     to_f2_name: str = ""
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
-    test_pat: str = "rhs = XXX + offset; F%NAME = NNN\n"
+    test_pat: str = "rhs = XXX + offset; F%NAME = TEST_VALUE\n"
     to_c2_f2_sub_arg: str = "z_NAME"
     to_f2_trans: str = "F%NAME = z_NAME"
     to_f2_var: List[str] = field(default_factory=list)
@@ -228,9 +272,9 @@ rhs1 = "  rhs = 100 + jd1 + XXX + offset\n"
 rhs2 = "  rhs = 100 + jd1 + 10*jd2 + XXX + offset\n"
 rhs3 = "  rhs = 100 + jd1 + 10*jd2 + 100*jd3 + XXX + offset\n"
 
-set1 = "  F%NAME(jd1+lb1) = NNN\n"
-set2 = "  F%NAME(jd1+lb1,jd2+lb2) = NNN\n"
-set3 = "  F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = NNN\n"
+set1 = "  F%NAME(jd1+lb1) = TEST_VALUE\n"
+set2 = "  F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE\n"
+set3 = "  F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE\n"
 
 test_pat1 = jd1_loop + rhs1 + set1 + "enddo\n"
 test_pat2 = jd1_loop + jd2_loop + rhs2 + set2 + "enddo; enddo\n"
@@ -267,7 +311,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
 
         if type == STRUCT:
             f.to_c2_type = "type(c_ptr)"
-            test_value = "NNN"
+            test_value = "TEST_VALUE"
 
         if type == SIZE:
             f.to_c2_call = "NAME"
@@ -394,7 +438,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
 
         # -------------------------
 
-        f.test_pat = f.test_pat.replace("NNN", test_value)
+        f.test_pat = f.test_pat.replace("TEST_VALUE", test_value)
         if f.to_f2_type == "":
             f.to_f2_type = f.to_c2_type
         if f.to_f2_name == "":
@@ -499,16 +543,18 @@ else
   if (.not. associated(F%NAME)) allocate (F%NAME(-1:1))
 """
 
-            fp.test_pat = (
-                tp1
-                + x2
-                + jd1_loop
-                + x2
-                + rhs1
-                + x2
-                + set1.replace("NNN", test_value)
-                + "  enddo\n"
-                + "endif\n"
+            fp.test_pat = "".join(
+                (
+                    tp1,
+                    x2,
+                    jd1_loop,
+                    x2,
+                    rhs1,
+                    x2,
+                    set1.replace("TEST_VALUE", test_value),
+                    "  enddo\n",
+                    "endif\n",
+                )
             )
 
             if type == LOGIC:
@@ -595,7 +641,7 @@ else
                 + x2
                 + rhs2
                 + x2
-                + set2.replace("NNN", test_value)
+                + set2.replace("TEST_VALUE", test_value)
                 + "  enddo; enddo\n"
                 + "endif\n"
             )
@@ -692,7 +738,7 @@ else
                 + x2
                 + rhs3
                 + x2
-                + set3.replace("NNN", test_value)
+                + set3.replace("TEST_VALUE", test_value)
                 + "  enddo; enddo; enddo\n"
                 + "endif\n"
             )
@@ -922,7 +968,7 @@ class c_side_trans_class:
         self.construct_value = "0"
         self.destructor = ""
         self.equality_test = "  is_eq = is_eq && (x.NAME == y.NAME);\n"
-        self.test_pat = "  rhs = XXX + offset; C.NAME = NNN;\n"
+        self.test_pat = "  rhs = XXX + offset; C.NAME = TEST_VALUE;\n"
 
     def __repr__(self):
         return "%s,  %s,  %s,  %s" % (
@@ -959,11 +1005,11 @@ for1 = "  for (unsigned int i = 0; i < C.NAME.size(); i++)"
 for2 = "  for (unsigned int j = 0; j < C.NAME[0].size(); j++) "
 for3 = "  for (unsigned int k = 0; k < C.NAME[0][0].size(); k++)"
 
-test_pat1 = for1 + "\n    {int rhs = 101 + i + XXX + offset; C.NAME[i] = NNN;}"
+test_pat1 = for1 + "\n    {int rhs = 101 + i + XXX + offset; C.NAME[i] = TEST_VALUE;}"
 test_pat2 = (
     for1
     + for2
-    + "\n    {int rhs = 101 + i + 10*(j+1) + XXX + offset; C.NAME[i][j] = NNN;}"
+    + "\n    {int rhs = 101 + i + 10*(j+1) + XXX + offset; C.NAME[i][j] = TEST_VALUE;}"
 )
 test_pat3 = (
     for1
@@ -971,214 +1017,252 @@ test_pat3 = (
     + for3
     + "\n"
     + x4
-    + "{int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = NNN;}"
+    + "{int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = TEST_VALUE;}"
 )
 
-c_side_trans = {}
 
-for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
-    for dim in range(4):
-        c_side_trans[type, dim, NOT] = c_side_trans_class()
-        c = c_side_trans[type, dim, NOT]
+def configure_c_side_trans(
+    type: str,
+    dim: int,
+    pointer_type: str,
+    c_side_trans_obj: c_side_trans_class,
+    test_value: str,
+):
+    """Configure a c_side_trans object based on type, dimension, and pointer type."""
+    if type == REAL:
+        c_type = "Real"
+        c_arg = "c_Real"
+        test_value = "rhs"
+        c_side_trans_obj.construct_value = "0.0"
+    elif type == CMPLX:
+        c_type = "Complex"
+        c_arg = "c_Complex"
+        test_value = "Complex(rhs, 100+rhs)"
+        c_side_trans_obj.construct_value = "0.0"
+    elif type == INT:
+        c_type = "Int"
+        c_arg = "c_Int"
+        test_value = "rhs"
+        c_side_trans_obj.construct_value = "0"
+    elif type == INT8:
+        c_type = "Int8"
+        c_arg = "c_Int8"
+        test_value = "rhs"
+        c_side_trans_obj.construct_value = "0"
+    elif type == LOGIC:
+        c_type = "Bool"
+        c_arg = "c_Bool"
+        test_value = "(rhs % 2 == 0)"
+        c_side_trans_obj.construct_value = "false"
+    elif type == STRUCT:
+        c_type = "CPP_KIND"
+        c_arg = "const CPP_KIND"
+        test_value = ""
+        c_side_trans_obj.construct_value = ""
+    elif type == SIZE:
+        c_side_trans_obj.to_f2_arg = "Int"
+        c_side_trans_obj.to_f2_call = "NAME"
+        c_side_trans_obj.to_c2_arg = "Int NAME"
+        return
+    else:
+        raise NotImplementedError(type)
 
-        if type == REAL:
-            c_type = "Real"
-            c_arg = "c_Real"
-            test_value = "rhs"
-            c.construct_value = "0.0"
-        elif type == CMPLX:
-            c_type = "Complex"
-            c_arg = "c_Complex"
-            test_value = "Complex(rhs, 100+rhs)"
-            c.construct_value = "0.0"
-        elif type == INT:
-            c_type = "Int"
-            c_arg = "c_Int"
-            test_value = "rhs"
-            c.construct_value = "0"
-        elif type == INT8:
-            c_type = "Int8"
-            c_arg = "c_Int8"
-            test_value = "rhs"
-            c.construct_value = "0"
-        elif type == LOGIC:
-            c_type = "Bool"
-            c_arg = "c_Bool"
-            test_value = "(rhs % 2 == 0)"
-            c.construct_value = "false"
-        elif type == STRUCT:
-            c_type = "CPP_KIND"
-            c_arg = "const CPP_KIND"
-            test_value = ""
-            c.construct_value = ""
-        elif type == SIZE:
-            c.to_f2_arg = "Int"
-            c.to_f2_call = "NAME"
-            c.to_c2_arg = "Int NAME"
-            continue
-        else:
-            raise NotImplementedError(type)
+    # Configure based on dimension
+    if dim == 0:
+        configure_dim0(c_side_trans_obj, c_type, c_arg, type)
+    elif dim == 1:
+        configure_dim1(c_side_trans_obj, c_type, c_arg, type, test_value)
+    elif dim == 2:
+        configure_dim2(c_side_trans_obj, c_type, c_arg, type, test_value)
+    elif dim == 3:
+        configure_dim3(c_side_trans_obj, c_type, c_arg, type, test_value)
 
-        # -------------------------------------------------------
+    # Apply test pattern
+    c_side_trans_obj.test_pat = c_side_trans_obj.test_pat.replace(
+        "TEST_VALUE", test_value
+    )
 
-        if dim == 0:
-            c.c_class = c_type
-            c.to_f2_arg = c_arg + "&"
-            c.to_f2_call = "C.NAME"
-            c.to_c2_arg = c_arg + "& z_NAME"
-            c.test_pat = c.test_pat
+    # Special handling for STRUCT type
+    if type == STRUCT:
+        c_side_trans_obj.to_c2_arg = "const Opaque_KIND_class* z_NAME"
+        if dim > 0:
+            c_side_trans_obj.to_f2_arg = c_side_trans_obj.to_f2_arg.replace("Arr", "**")
+            c_side_trans_obj.to_c2_arg = "const Opaque_KIND_class** z_NAME"
+            c_side_trans_obj.to_f2_call = "z_NAME"
 
-            if type == STRUCT:
-                c.constructor = "NAME()"
-                c.to_c2_set = "  KIND_to_c(z_NAME, C.NAME);"
-                c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
+    # Configure pointer version if needed
+    if pointer_type == PTR:
+        configure_pointer(
+            c_side_trans_obj, c_side_trans_obj, dim, type, c_type, c_arg, test_value
+        )
+        c_side_trans_obj.test_pat = c_side_trans_obj.test_pat.replace(
+            "TEST_VALUE", test_value
+        )
 
-        # -------------------------------------------------------
 
-        if dim == 1:
-            c.c_class = c_type + "_ARRAY"
-            c.to_f2_arg = c_arg + "Arr"
-            c.to_f2_call = "&C.NAME[0]"
-            c.to_c2_arg = c_arg + "Arr z_NAME"
-            c.constructor = "NAME(DIM1, VALUE)"
-            c.to_c2_set = "  C.NAME << z_NAME;"
-            c.test_pat = test_pat1
-            c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+def configure_dim0(c, c_type, c_arg, type):
+    """Configure for dimension 0"""
+    c.c_class = c_type
+    c.to_f2_arg = c_arg + "&"
+    c.to_f2_call = "C.NAME"
+    c.to_c2_arg = c_arg + "& z_NAME"
 
-            if type == STRUCT:
-                c.constructor = "NAME(CPP_KIND_ARRAY(DIM1))"
-                c.to_c2_set = for1 + " KIND_to_c(z_NAME[i], C.NAME[i]);"
-                c.test_pat = test_pat1.replace(
-                    "C.NAME[i] = NNN",
-                    "set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1)",
-                )
-                c.to_f_setup = """\
+    if type == STRUCT:
+        c.constructor = "NAME()"
+        c.to_c2_set = "  KIND_to_c(z_NAME, C.NAME);"
+        c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
+
+
+def configure_dim1(c, c_type, c_arg, type, test_value):
+    """Configure for dimension 1"""
+    c.c_class = c_type + "_ARRAY"
+    c.to_f2_arg = c_arg + "Arr"
+    c.to_f2_call = "&C.NAME[0]"
+    c.to_c2_arg = c_arg + "Arr z_NAME"
+    c.constructor = "NAME(DIM1, VALUE)"
+    c.to_c2_set = "  C.NAME << z_NAME;"
+    c.test_pat = test_pat1
+    c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+
+    if type == STRUCT:
+        c.constructor = "NAME(CPP_KIND_ARRAY(DIM1))"
+        c.to_c2_set = for1 + " KIND_to_c(z_NAME[i], C.NAME[i]);"
+        c.test_pat = test_pat1.replace(
+            "C.NAME[i] = TEST_VALUE",
+            "set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1)",
+        )
+        c.to_f_setup = """\
   const CPP_KIND* z_NAME[DIM1];
   for (int i = 0; i < DIM1; i++) {z_NAME[i] = &C.NAME[i];}
 """
 
-        # -------------------------------------------------------
 
-        if dim == 2:
-            c.c_class = c_type + "_MATRIX"
-            c.to_f2_arg = c_arg + "Arr"
-            c.to_f2_call = "z_NAME"
-            c.to_c2_arg = c_arg + "Arr z_NAME"
-            c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
-            c.to_c2_set = "  C.NAME << z_NAME;"
-            c.test_pat = test_pat2
-            c.to_f_setup = (
-                "  " + c_type + " z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);\n"
-            )
-            c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+def configure_dim2(c, c_type, c_arg, type, test_value):
+    """Configure for dimension 2"""
+    c.c_class = c_type + "_MATRIX"
+    c.to_f2_arg = c_arg + "Arr"
+    c.to_f2_call = "z_NAME"
+    c.to_c2_arg = c_arg + "Arr z_NAME"
+    c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
+    c.to_c2_set = "  C.NAME << z_NAME;"
+    c.test_pat = test_pat2
+    c.to_f_setup = (
+        "  " + c_type + " z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);\n"
+    )
+    c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
-            if type == STRUCT:
-                c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
-                c.to_c2_set = (
-                    for1
-                    + for2
-                    + "\n    {int m = DIM2*i + j; KIND_to_c(z_NAME[m], C.NAME[i][j]);}"
-                )
-                c.test_pat = test_pat2.replace(
-                    "C.NAME[i][j] = NNN",
-                    "set_CPP_KIND_test_pattern(C.NAME[i][j], ix_patt+i+1+10*(j+1))",
-                )
-                c.to_f_setup = (
-                    "  const CPP_KIND* z_NAME[DIM1*DIM2];\n"
-                    + for1
-                    + for2
-                    + "\n    {int m = DIM2*i + j; z_NAME[m] = &C.NAME[i][j];}\n"
-                )
+    if type == STRUCT:
+        c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
+        c.to_c2_set = (
+            for1
+            + for2
+            + "\n    {int m = DIM2*i + j; KIND_to_c(z_NAME[m], C.NAME[i][j]);}"
+        )
+        c.test_pat = test_pat2.replace(
+            "C.NAME[i][j] = TEST_VALUE",
+            "set_CPP_KIND_test_pattern(C.NAME[i][j], ix_patt+i+1+10*(j+1))",
+        )
+        c.to_f_setup = (
+            "  const CPP_KIND* z_NAME[DIM1*DIM2];\n"
+            + for1
+            + for2
+            + "\n    {int m = DIM2*i + j; z_NAME[m] = &C.NAME[i][j];}\n"
+        )
 
-        # -------------------------------------------------------
 
-        if dim == 3:
-            c.c_class = c_type + "_TENSOR"
-            c.to_f2_arg = c_arg + "Arr"
-            c.to_f2_call = "z_NAME"
-            c.to_c2_arg = c_arg + "Arr z_NAME"
-            c.constructor = f"NAME({c_type}_TENSOR(DIM3, {c_type}_MATRIX(DIM2, {c_type}_ARRAY(DIM1))))"
-            # c.constructor = (
-            #     f"NAME({c_type}_TENSOR(0, {c_type}_MATRIX(0, {c_type}_ARRAY(0))))"
-            # )
-            c.to_c2_set = "  C.NAME << z_NAME;"
-            c.test_pat = test_pat3
-            c.to_f_setup = (
-                "  "
-                + c_type
-                + " z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);\n"
-            )
-            c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+def configure_dim3(c, c_type, c_arg, type, test_value):
+    """Configure for dimension 3"""
+    c.c_class = c_type + "_TENSOR"
+    c.to_f2_arg = c_arg + "Arr"
+    c.to_f2_call = "z_NAME"
+    c.to_c2_arg = c_arg + "Arr z_NAME"
+    c.constructor = (
+        f"NAME({c_type}_TENSOR(DIM3, {c_type}_MATRIX(DIM2, {c_type}_ARRAY(DIM1))))"
+    )
+    c.to_c2_set = "  C.NAME << z_NAME;"
+    c.test_pat = test_pat3
+    c.to_f_setup = (
+        "  " + c_type + " z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);\n"
+    )
+    c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
-            if type == STRUCT:
-                c.constructor = "NAME(CPP_KIND_TENSOR(DIM3, CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1))))"
-                c.to_c2_set = (
-                    for1
-                    + for2
-                    + for3
-                    + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], C.NAME[i][j][k]);}"
-                )
-                c.test_pat = test_pat3.replace(
-                    "C.NAME[i][j][k] = NNN",
-                    "set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+1+10*(j+1)+100*(k+1))",
-                )
-                c.to_f_setup = (
-                    "  const CPP_KIND* z_NAME[DIM1*DIM2*DIM3];\n"
-                    + for1
-                    + for2
-                    + for3
-                    + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = &C.NAME[i][j][k];}\n"
-                )
+    if type == STRUCT:
+        c.constructor = (
+            "NAME(CPP_KIND_TENSOR(DIM3, CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1))))"
+        )
+        c.to_c2_set = (
+            for1
+            + for2
+            + for3
+            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], C.NAME[i][j][k]);}"
+        )
+        c.test_pat = c.test_pat.replace(
+            "C.NAME[i][j][k] = TEST_VALUE",
+            "set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+1+10*(j+1)+100*(k+1))",
+        )
+        c.to_f_setup = (
+            "  const CPP_KIND* z_NAME[DIM1*DIM2*DIM3];\n"
+            + for1
+            + for2
+            + for3
+            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = &C.NAME[i][j][k];}\n"
+        )
 
-        # -------------------------------------------------------
 
-        c.test_pat = c.test_pat.replace("NNN", test_value)
+def configure_pointer(
+    cp: c_side_trans_class,
+    c: c_side_trans_class,
+    dim: int,
+    type: str,
+    c_type: str,
+    c_arg: str,
+    test_value: str,
+):
+    """Configure pointer version of the class"""
+    # Copy the original configuration
+    cp.destructor = ""
 
-        if type == STRUCT:
-            c.to_c2_arg = "const Opaque_KIND_class* z_NAME"
-            if dim > 0:
-                c.to_f2_arg = c.to_f2_arg.replace("Arr", "**")
-                c.to_c2_arg = "const Opaque_KIND_class** z_NAME"
-                c.to_f2_call = "z_NAME"
+    if type == STRUCT:
+        cp.to_c2_arg = "Opaque_KIND_class** z_NAME"
+    else:
+        cp.to_f2_arg = c_arg + "Arr"
+        cp.to_c2_arg = cp.to_f2_arg + " z_NAME"
 
-        # -------------------------------------------------------
-        # Pointers
+    # Dimension-specific pointer configuration
+    if dim == 0:
+        configure_pointer_dim0(cp, c, c_type, type)
+    elif dim == 1:
+        configure_pointer_dim1(cp, c, c_type, type)
+    elif dim == 2:
+        configure_pointer_dim2(cp, c, c_type, type)
+    elif dim == 3:
+        configure_pointer_dim3(cp, c, c_type, type)
+    else:
+        raise NotImplementedError(dim)
 
-        c_side_trans[type, dim, PTR] = copy.deepcopy(c)
-        cp = c_side_trans[type, dim, PTR]
-        cp.destructor = ""
+    cp.test_pat = cp.test_pat.replace("TEST_VALUE", test_value)
 
-        if type == STRUCT:
-            cp.to_c2_arg = "Opaque_KIND_class** z_NAME"
-        else:
-            cp.to_f2_arg = c_arg + "Arr"
-            cp.to_c2_arg = cp.to_f2_arg + " z_NAME"
 
-        # ------------------------------
-        # Pointer, dim = 0
-
-        if dim == 0:
-            cp.c_class_suffix = "*"
-            cp.constructor = "NAME(NULL)"
-            cp.destructor = "if (NAME) delete NAME;"
-            cp.test_pat = (
-                test_pat_pointer0
-                + "    C.NAME = new "
-                + c_type
-                + ";\n"
-                + indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2)
-                + "  }\n"
-            )
-            cp.to_f_setup = (
-                "  unsigned int n_NAME = 0; if (C.NAME != NULL) n_NAME = 1;\n"
-            )
-            cp.equality_test = """\
+def configure_pointer_dim0(cp: c_side_trans_class, c, c_type, type):
+    """Configure pointer for dimension 0"""
+    cp.c_class_suffix = "*"
+    cp.constructor = "NAME(NULL)"
+    cp.destructor = "if (NAME) delete NAME;"
+    cp.test_pat = (
+        test_pat_pointer0
+        + "    C.NAME = new "
+        + c_type
+        + ";\n"
+        + indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2)
+        + "  }\n"
+    )
+    cp.to_f_setup = "  unsigned int n_NAME = 0; if (C.NAME != NULL) n_NAME = 1;\n"
+    cp.equality_test = """\
   is_eq = is_eq && ((x.NAME == NULL) == (y.NAME == NULL));
   if (!is_eq) return false;
   if (x.NAME != NULL) is_eq = (*x.NAME == *y.NAME);
 """
-
-            cp.to_c2_set = """\
+    cp.to_c2_set = """\
   if (n_NAME == 0)
     delete C.NAME;
   else {
@@ -1187,28 +1271,24 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
   }
 """.replace("KIND", c_type)
 
-            if type == STRUCT:
-                cp.test_pat = cp.test_pat
-                cp.to_f2_call = "*C.NAME"
-                cp.to_c2_arg = "Opaque_KIND_class* z_NAME"
-                cp.to_c2_set = cp.to_c2_set.replace(
-                    "SET", "KIND_to_c(z_NAME, *C.NAME);"
-                )
-            else:
-                cp.to_c2_set = cp.to_c2_set.replace("SET", "*C.NAME = *z_NAME;")
+    if type == STRUCT:
+        cp.to_f2_call = "*C.NAME"
+        cp.to_c2_arg = "Opaque_KIND_class* z_NAME"
+        cp.to_c2_set = cp.to_c2_set.replace("SET", "KIND_to_c(z_NAME, *C.NAME);")
+    else:
+        cp.to_c2_set = cp.to_c2_set.replace("SET", "*C.NAME = *z_NAME;")
 
-        # ------------------------------
-        # Pointer, dim = 1
 
-        if dim == 1:
-            cp.constructor = cp.constructor.replace("DIM1", "0")
-            cp.to_f2_call = "z_NAME"
-            cp.to_c2_set = """
+def configure_pointer_dim1(cp: c_side_trans_class, c, c_type, type):
+    """Configure pointer for dimension 1"""
+    cp.constructor = cp.constructor.replace("DIM1", "0")
+    cp.to_f2_call = "z_NAME"
+    cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
   C.NAME << z_NAME;
 """
-            cp.test_pat = test_pat_pointer1 + indent(c.test_pat, 2) + "  }\n"
-            cp.to_f_setup = """\
+    cp.test_pat = test_pat_pointer1 + indent(c.test_pat, 2) + "  }\n"
+    cp.to_f_setup = """\
   int n1_NAME = C.NAME.size();
   c_TYPEArr z_NAME = NULL;
   if (n1_NAME > 0) {
@@ -1216,17 +1296,16 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
   }
 """.replace("TYPE", c_type)
 
-            if type == STRUCT:
-                cp.constructor = "NAME(CPP_KIND_ARRAY(0))"
-                cp.test_pat = (
-                    test_pat_pointer1
-                    + x2
-                    + for1
-                    + "  {set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1);}\n"
-                    + "  }\n"
-                )
-                cp.to_f_setup = c.to_f_setup
-                cp.to_f_setup = """\
+    if type == STRUCT:
+        cp.constructor = "NAME(CPP_KIND_ARRAY(0))"
+        cp.test_pat = (
+            test_pat_pointer1
+            + x2
+            + for1
+            + "  {set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1);}\n"
+            + "  }\n"
+        )
+        cp.to_f_setup = """\
   int n1_NAME = C.NAME.size();
   const CPP_KIND** z_NAME = NULL;
   if (n1_NAME != 0) {
@@ -1234,29 +1313,28 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
     for (int i = 0; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
   }
 """
-                cp.to_c2_set = """\
+        cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) KIND_to_c(z_NAME[i], C.NAME[i]);
 """
-                cp.to_f_cleanup = " delete[] z_NAME;\n"
+        cp.to_f_cleanup = " delete[] z_NAME;\n"
 
-        # ------------------------------
-        # Pointer, dim = 2
 
-        if dim == 2:
-            cp.constructor = cp.constructor.replace("DIM1", "0").replace("DIM2", "0")
-            cp.to_c2_set = """\
+def configure_pointer_dim2(cp: c_side_trans_class, c, c_type, type):
+    """Configure pointer for dimension 2"""
+    cp.constructor = cp.constructor.replace("DIM1", "0").replace("DIM2", "0")
+    cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
   C.NAME << z_NAME;
 """
-            cp.test_pat = (
-                test_pat_pointer1
-                + indent((for1 + "\n    C.NAME[i].resize(2);\n" + c.test_pat), 2)
-                + "  }\n"
-            )
-            cp.to_f_cleanup = "  delete z_NAME;\n"
-            cp.to_f_setup = """\
+    cp.test_pat = (
+        test_pat_pointer1
+        + indent((for1 + "\n    C.NAME[i].resize(2);\n" + c.test_pat), 2)
+        + "  }\n"
+    )
+    cp.to_f_cleanup = "  delete z_NAME;\n"
+    cp.to_f_setup = """\
   int n1_NAME = C.NAME.size(), n2_NAME = 0;
   TYPE* z_NAME = NULL;
   if (n1_NAME > 0) {
@@ -1265,13 +1343,13 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
     matrix_to_vec (C.NAME, z_NAME);
   }
 """.replace("TYPE", c_type)
-            cp.to_f_cleanup = "  delete[] z_NAME;\n"
+    cp.to_f_cleanup = "  delete[] z_NAME;\n"
 
-            if type == STRUCT:
-                cp.constructor = "NAME(CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0)))"
-                cp.test_pat = (
-                    test_pat_pointer1
-                    + """\
+    if type == STRUCT:
+        cp.constructor = "NAME(CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0)))"
+        cp.test_pat = (
+            test_pat_pointer1
+            + """\
     for (unsigned int i = 0; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);\n
       for (unsigned int j = 0; j < C.NAME[0].size(); j++) {
@@ -1280,15 +1358,15 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
     }
   }
 """
-                )
-                cp.to_c2_set = """\
+        )
+        cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
     for (int j = 0; j < n2_NAME; j++) KIND_to_c(z_NAME[n2_NAME*i+j], C.NAME[i][j]);
   }
 """
-                cp.to_f_setup = """
+        cp.to_f_setup = """
   int n1_NAME = C.NAME.size(), n2_NAME = 0;
   const TYPE** z_NAME = NULL;
   if (n1_NAME > 0) {
@@ -1299,33 +1377,14 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
   }
 """.replace("TYPE", c_type)
 
-        # ------------------------------
-        # Pointer, dim = 3
 
-        if dim == 3:
-            cp.constructor = (
-                cp.constructor.replace("DIM1", "0")
-                .replace("DIM2", "0")
-                .replace("DIM3", "0")
-            )
-            s = (
-                "C.NAME.resize(n1_NAME);\n"
-                + x2
-                + for1
-                + "{\n"
-                + "      C.NAME[i].resize(n2_NAME);\n"
-                + x4
-                + for2
-                + "\n"
-                + x6
-                + "C.NAME[i][j].resize(n3_NAME);\n"
-                + x4
-                + "}\n"
-                + x4
-                + "C.NAME << z_NAME;\n"
-            )
+def configure_pointer_dim3(cp: c_side_trans_class, c, c_type, type):
+    """Configure pointer for dimension 3"""
+    cp.constructor = (
+        cp.constructor.replace("DIM1", "0").replace("DIM2", "0").replace("DIM3", "0")
+    )
 
-            cp.to_c2_set = """\
+    cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
   for (unsigned int i = 0; i < C.NAME.size(); i++) {
     C.NAME[i].resize(n2_NAME);
@@ -1335,7 +1394,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
   C.NAME << z_NAME;
 """
 
-            cp.test_pat = """\
+    cp.test_pat = """\
   if (ix_patt < 3) 
     C.NAME.resize(0);
   else {
@@ -1345,15 +1404,15 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
       for (unsigned int j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
         for (unsigned int k = 0; k < C.NAME[0][0].size(); k++) {
-          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = NNN;
+          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = TEST_VALUE;
         }
       }
     }
   }
 """
 
-            cp.to_f_cleanup = "  delete z_NAME;\n"
-            cp.to_f_setup = """
+    cp.to_f_cleanup = "  delete z_NAME;\n"
+    cp.to_f_setup = """
   int n1_NAME = C.NAME.size(), n2_NAME = 0, n3_NAME = 0;
   TYPE* z_NAME = NULL;
   if (n1_NAME > 0) {
@@ -1363,14 +1422,14 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
     tensor_to_vec (C.NAME, z_NAME);
   }
 """.replace("TYPE", c_type)
-            cp.to_f_cleanup = "  delete[] z_NAME;\n"
+    cp.to_f_cleanup = "  delete[] z_NAME;\n"
 
-            if type == STRUCT:
-                cp.constructor = (
-                    "NAME(CPP_KIND_TENSOR(0, CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0))))"
-                )
+    if type == STRUCT:
+        cp.constructor = (
+            "NAME(CPP_KIND_TENSOR(0, CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0))))"
+        )
 
-                cp.to_c2_set = """
+        cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
@@ -1380,7 +1439,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
         KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], C.NAME[i][j][k]);
     } } }
 """
-                cp.test_pat = """\
+        cp.test_pat = """\
   if (ix_patt < 3) 
     C.NAME.resize(0);
   else {
@@ -1394,7 +1453,7 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
     } } }
   }
 """
-                cp.to_f_setup = """
+        cp.to_f_setup = """
   int n1_NAME = C.NAME.size(), n2_NAME = 0, n3_NAME = 0;
   const TYPE** z_NAME = NULL;
   if (n1_NAME > 0) {
@@ -1409,9 +1468,92 @@ for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
   }
 """.replace("TYPE", c_type)
 
-        # ------------------------------
 
-        cp.test_pat = cp.test_pat.replace("NNN", test_value)
+def setup_c_side_trans():
+    """Initialize the c_side_trans dictionary with configured objects for all combinations."""
+    c_side_trans = {}
+
+    for type_val in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
+        for dim in range(4):
+            # Create and configure non-pointer version
+            c_side_trans[type_val, dim, NOT] = c_side_trans_class()
+            c = c_side_trans[type_val, dim, NOT]
+
+            # Determine test_value
+            if type_val == REAL:
+                test_value = "rhs"
+            elif type_val == CMPLX:
+                test_value = "Complex(rhs, 100+rhs)"
+            elif type_val == INT or type_val == INT8:
+                test_value = "rhs"
+            elif type_val == LOGIC:
+                test_value = "(rhs % 2 == 0)"
+            elif type_val == STRUCT:
+                test_value = ""
+            else:
+                test_value = ""
+
+            # Configure the object
+            configure_c_side_trans(type_val, dim, NOT, c, test_value)
+
+            # Create and configure pointer version (except for SIZE type)
+            if type_val != SIZE:
+                # Create a deep copy of the non-pointer version
+                c_side_trans[type_val, dim, PTR] = copy.deepcopy(c)
+                cp = c_side_trans[type_val, dim, PTR]
+
+                # Configure pointer-specific attributes
+                configure_pointer(
+                    cp,
+                    c,
+                    dim,
+                    type_val,
+                    get_c_type(type_val),
+                    get_c_arg(type_val),
+                    test_value,
+                )
+
+    return c_side_trans
+
+
+def get_c_type(type_val):
+    """Get the C++ type string for a given type value"""
+    if type_val == REAL:
+        return "Real"
+    if type_val == CMPLX:
+        return "Complex"
+    if type_val == INT:
+        return "Int"
+    if type_val == INT8:
+        return "Int8"
+    if type_val == LOGIC:
+        return "Bool"
+    if type_val == STRUCT:
+        return "CPP_KIND"
+    else:
+        raise ValueError(f"Unknown type: {type_val}")
+
+
+def get_c_arg(type_val: str) -> str:
+    """Get the C++ argument type string for a given type value"""
+    if type_val == REAL:
+        return "c_Real"
+    if type_val == CMPLX:
+        return "c_Complex"
+    if type_val == INT:
+        return "c_Int"
+    if type_val == INT8:
+        return "c_Int8"
+    if type_val == LOGIC:
+        return "c_Bool"
+    if type_val == STRUCT:
+        return "const CPP_KIND"
+    else:
+        raise ValueError(f"Unknown type: {type_val}")
+
+
+c_side_trans = setup_c_side_trans()
+
 
 # ----------------------------------------------------------------------
 # CHAR, 0, NOT
@@ -1422,7 +1564,7 @@ c_side_trans[CHAR, 0, NOT].to_f2_arg = "c_Char"
 c_side_trans[CHAR, 0, NOT].to_f2_call = "C.NAME.c_str()"
 c_side_trans[CHAR, 0, NOT].to_c2_arg = "c_Char z_NAME"
 c_side_trans[CHAR, 0, NOT].test_pat = "  C.NAME.resize(STR_LEN);\n" + test_pat1.replace(
-    "NNN", "'a' + rhs % 26"
+    "TEST_VALUE", "'a' + rhs % 26"
 )
 c_side_trans[CHAR, 0, NOT].constructor = "NAME()"
 
