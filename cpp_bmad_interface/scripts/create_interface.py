@@ -27,23 +27,41 @@ from typing import Any
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
 
-# NOTE: the script is meant to be run from '/cpp_bmad_interface'.
-os.chdir(CPP_INTERFACE_ROOT)
-
-if not os.path.exists("include"):
-    os.makedirs("include")
-
-if len(sys.argv) > 1:
-    master_input_file = sys.argv[1]
-    params = __import__(sys.argv[1])
-else:
-    master_input_file = "interface_input_params"
-    import interface_input_params as params
-
-print("Input file: " + master_input_file, file=sys.stderr)
+##################################################################################
+##################################################################################
+# Settings
 
 N_CHAR_MAX = 95
 DEBUG = False  # Change to True to enable printout
+
+##################################################################################
+##################################################################################
+# Constants
+
+NOT = "NOT"
+PTR = "PTR"
+ALLOC = "ALLOC"
+
+T = True
+F = False
+
+REAL = "real"
+CMPLX = "complex"
+INT = "integer"
+INT8 = "integer8"
+LOGIC = "logical"
+CHAR = "character"
+STRUCT = "type"
+SIZE = "size"
+
+NOT, PTR, ALLOC = (
+    "NOT",
+    "PTR",
+    "ALLOC",
+)
+
+##################################################################################
+##################################################################################
 
 
 def is_number(s: str) -> bool:
@@ -55,7 +73,8 @@ def is_number(s: str) -> bool:
 
 
 def wrap_line(line, indent, cont_char):
-    """Wrap a line of text to a maximum width with appropriate indentation and continuation character.
+    """
+    Wrap a line of text to a maximum width with appropriate indentation and continuation character.
 
     Parameters
     ----------
@@ -96,41 +115,6 @@ def indent(string: str, numspace: int) -> str:
     lines = string.splitlines(keepends=True)
     indented_lines = [prefix + line for line in lines]
     return "".join(indented_lines)
-
-
-##################################################################################
-##################################################################################
-# Constants
-
-NOT = "NOT"
-PTR = "PTR"
-ALLOC = "ALLOC"
-
-T = True
-F = False
-
-REAL = "real"
-CMPLX = "complex"
-INT = "integer"
-INT8 = "integer8"
-LOGIC = "logical"
-CHAR = "character"
-STRUCT = "type"
-SIZE = "size"
-
-##################################################################################
-##################################################################################
-# struct_def_class
-# Class for a structure
-# Note: The .arg array will contain, in addtion to the structure components, the
-# array bounds for allocatable and pointer structure components.
-
-
-NOT, PTR, ALLOC = (
-    "NOT",
-    "PTR",
-    "ALLOC",
-)  # Assuming these constants are defined elsewhere
 
 
 @dataclass
@@ -331,35 +315,10 @@ class struct_def_class:
 ##################################################################################
 # Fortran side translation
 
-
-# --------------------------------------
-
 x2 = " " * 2
 x4 = " " * 4
 x6 = " " * 6
 x8 = " " * 8
-
-to_f2_trans_pointer = """\
-if (associated(F%NAME)) then
-  if (n1_NAME == 0 .or. any(shape(F%NAME) /= [DIMS])) deallocate(F%NAME)
-  if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
-endif
-if (n1_NAME /= 0) then
-  call c_f_pointer (z_NAME, f_NAME, [TOTDIM])
-  if (.not. associated(F%NAME)) allocate(F%NAME(DIMS))
-  SET
-else
-  if (associated(F%NAME)) deallocate(F%NAME)
-endif
-"""
-
-equality_test_pointer = """\
-is_eq = is_eq .and. (associated(f1%NAME) .eqv. associated(f2%NAME))
-if (.not. is_eq) return
-if (associated(f1%NAME)) is_eq = all(shape(f1%NAME) == shape(f2%NAME))
-if (.not. is_eq) return
-if (associated(f1%NAME)) is_eq = all(f1%NAME == f2%NAME)
-"""
 
 jd1_loop = "do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1\n"
 jd2_loop = "do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1\n"
@@ -373,42 +332,49 @@ set1 = "  F%NAME(jd1+lb1) = TEST_VALUE\n"
 set2 = "  F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE\n"
 set3 = "  F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE\n"
 
-test_pat1 = jd1_loop + rhs1 + set1 + "enddo\n"
-test_pat2 = jd1_loop + jd2_loop + rhs2 + set2 + "enddo; enddo\n"
-test_pat3 = jd1_loop + jd2_loop + jd3_loop + rhs3 + set3 + "enddo; enddo; enddo\n"
 
-n_str = {0: "", 1: "1", 2: "2", 3: "3"}
+def initialize_f_side_trans() -> dict[tuple[str, int, str], f_side_trans_class]:
+    f_side_trans: dict[tuple[str, int, str], f_side_trans_class] = {}
+
+    for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
+        for dim in range(4):
+            f_side_trans[type, dim, NOT] = make_f_side_trans_basic(type, dim)
+            f_side_trans[type, dim, PTR] = make_f_side_trans_ptr(
+                f_side_trans[type, dim, NOT], type, dim
+            )
+
+    make_special_f_trans(f_side_trans)
+    return f_side_trans
 
 
+# --------------------------------------
 def make_f_side_trans_basic(type: str, dim: int):
-    f_side_trans[type, dim, NOT] = f_side_trans_class()
-    f = f_side_trans[type, dim, NOT]
+    test_pat1 = f"{jd1_loop}{rhs1}{set1}enddo\n"
+    test_pat2 = f"{jd1_loop}{jd2_loop}{rhs2}{set2}enddo; enddo\n"
+    test_pat3 = f"{jd1_loop}{jd2_loop}{jd3_loop}{rhs3}{set3}enddo; enddo; enddo\n"
 
+    f = f_side_trans_class()
+
+    # Set type-specific properties
     if type == REAL:
         f.to_c2_type = "real(c_double)"
         f.test_value = "rhs"
-
-    if type == CMPLX:
+    elif type == CMPLX:
         f.to_c2_type = "complex(c_double_complex)"
         f.test_value = "cmplx(rhs, 100+rhs)"
-
-    if type == INT:
+    elif type == INT:
         f.to_c2_type = "integer(c_int)"
         f.test_value = "rhs"
-
-    if type == INT8:
+    elif type == INT8:
         f.to_c2_type = "integer(c_long)"
         f.test_value = "rhs"
-
-    if type == LOGIC:
+    elif type == LOGIC:
         f.to_c2_type = "logical(c_bool)"
         f.test_value = "(modulo(rhs, 2) == 0)"
-
-    if type == STRUCT:
+    elif type == STRUCT:
         f.to_c2_type = "type(c_ptr)"
         f.test_value = "TEST_VALUE"
-
-    if type == SIZE:
+    elif type == SIZE:
         f.to_c2_call = "NAME"
         f.to_c2_type = "integer(c_int), value"
         f.to_c2_name = "NAME"
@@ -418,135 +384,123 @@ def make_f_side_trans_basic(type: str, dim: int):
         f.to_c2_f2_sub_arg = "NAME"
         f.to_c_var = ["integer(c_int) :: NAME"]
         f.test_value = ""
-        return
+        return f
 
-    # -----------------------------------------------
-
+    # Dimension-specific properties
     if dim == 0:
         f.to_c2_name = "z_NAME"
         f.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
         f.to_c2_call = "F%NAME"
-        f.test_pat = f.test_pat
+
         if type == LOGIC:
             f.to_c2_call = "c_logic(F%NAME)"
             f.to_f2_trans = "F%NAME = f_logic(z_NAME)"
             f.equality_test = f.equality_test.replace("==", ".eqv.")
-        if type == STRUCT:
+        elif type == STRUCT:
             f.to_c2_type = "type(c_ptr), value"
             f.to_c2_call = "c_loc(F%NAME)"
             f.to_f2_trans = "call KIND_to_f(z_NAME, c_loc(F%NAME))"
             f.test_pat = "call set_KIND_test_pattern (F%NAME, ix_patt)\n"
 
-    # -----------------------------------------------
-
-    if dim == 1:
+    elif dim == 1:
         f.to_c2_call = "fvec2vec(F%NAME, DIM1)"
         f.to_c2_name = "z_NAME(*)"
         f.to_f2_trans = "F%NAME = z_NAME(1:DIM1)"
         f.test_pat = test_pat1
+
         if type == LOGIC:
             f.to_f2_trans = "call vec2fvec (z_NAME, F%NAME)"
             f.equality_test = f.equality_test.replace("==", ".eqv.")
-        if type == STRUCT:
+        elif type == STRUCT:
             f.to_c2_call = "z_NAME"
-            f.to_f2_trans = (
-                jd1_loop
-                + "  call KIND_to_f(z_NAME(jd1), c_loc(F%NAME(jd1+lb1)))\nenddo"
-            )
-            f.test_pat = (
-                jd1_loop
-                + rhs1
-                + "  call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\n"
-                + "enddo\n"
-            )
+            f.to_f2_trans = f"{jd1_loop}  call KIND_to_f(z_NAME(jd1), c_loc(F%NAME(jd1+lb1)))\nenddo"
+            f.test_pat = f"{jd1_loop}{rhs1}  call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\nenddo\n"
             f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1)"]
-            f.to_c_trans = jd1_loop + "  z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))\nenddo\n"
+            f.to_c_trans = f"{jd1_loop}  z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))\nenddo\n"
 
-    # -----------------------------------------------
-
-    if dim == 2:
+    elif dim == 2:
         f.to_f2_trans = "call vec2mat(z_NAME, F%NAME)"
         f.to_c2_call = "mat2vec(F%NAME, DIM2)"
         f.to_c2_name = "z_NAME(*)"
         f.test_pat = test_pat2
+
         if type == LOGIC:
             f.equality_test = f.equality_test.replace("==", ".eqv.")
-        if type == STRUCT:
+        elif type == STRUCT:
             f.to_c2_call = "z_NAME"
             f.to_f2_trans = (
-                jd1_loop
-                + jd2_loop
-                + "  call KIND_to_f(z_NAME(DIM2*(jd1-1) + jd2), c_loc(F%NAME(jd1+lb1,jd2+lb2)))\n"
-                + "enddo; enddo\n"
+                f"{jd1_loop}{jd2_loop}  call KIND_to_f(z_NAME(DIM2*(jd1-1) + jd2), "
+                f"c_loc(F%NAME(jd1+lb1,jd2+lb2)))\nenddo; enddo\n"
             )
             f.test_pat = (
-                jd1_loop
-                + jd2_loop
-                + rhs2
-                + "  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)\n"
-                + "enddo; enddo\n"
+                f"{jd1_loop}{jd2_loop}{rhs2}  call set_KIND_test_pattern "
+                f"(F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)\nenddo; enddo\n"
             )
             f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2)"]
             f.to_c_trans = (
-                jd1_loop
-                + jd2_loop
-                + "  z_NAME(DIM2*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1,jd2+lb2))\n"
-                + "enddo; enddo\n"
+                f"{jd1_loop}{jd2_loop}  z_NAME(DIM2*(jd1-1) + jd2) = "
+                f"c_loc(F%NAME(jd1+lb1,jd2+lb2))\nenddo; enddo\n"
             )
 
-    # -----------------------------------------------
-
-    if dim == 3:
+    elif dim == 3:
         f.to_f2_trans = "call vec2tensor(z_NAME, F%NAME)"
         f.to_c2_call = "tensor2vec(F%NAME, DIM3)"
         f.to_c2_name = "z_NAME(*)"
         f.test_pat = test_pat3
+
         if type == LOGIC:
             f.equality_test = f.equality_test.replace("==", ".eqv.")
-        if type == STRUCT:
+        elif type == STRUCT:
             f.to_c2_call = "z_NAME"
             f.to_f2_trans = (
-                jd1_loop
-                + jd2_loop
-                + jd3_loop
-                + "  call KIND_to_f(z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3), c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3)))\n"
-                + "enddo; enddo; enddo\n"
+                f"{jd1_loop}{jd2_loop}{jd3_loop}  call KIND_to_f(z_NAME(DIM3*DIM2*(jd1-1) + "
+                f"DIM3*(jd2-1) + jd3), c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3)))\n"
+                f"enddo; enddo; enddo\n"
             )
             f.test_pat = (
-                jd1_loop
-                + jd2_loop
-                + jd3_loop
-                + rhs3
-                + "  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)\n"
-                + "enddo; enddo; enddo\n"
+                f"{jd1_loop}{jd2_loop}{jd3_loop}{rhs3}  call set_KIND_test_pattern "
+                f"(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)\n"
+                f"enddo; enddo; enddo\n"
             )
             f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2*DIM3)"]
             f.to_c_trans = (
-                jd1_loop
-                + jd2_loop
-                + jd3_loop
-                + "  z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3))\n"
-                + "enddo; enddo; enddo\n"
+                f"{jd1_loop}{jd2_loop}{jd3_loop}  z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3) = "
+                f"c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3))\nenddo; enddo; enddo\n"
             )
 
-    # -------------------------
-
+    # Final processing
     f.test_pat = f.test_pat.replace("TEST_VALUE", f.test_value)
     if f.to_f2_type == "":
         f.to_f2_type = f.to_c2_type
     if f.to_f2_name == "":
         f.to_f2_name = f.to_c2_name
+
     return f
 
 
-def make_f_side_trans_ptr(type: str, dim: int):
-    # ---------------------------------------------------------------------------------------------
-    # ---------------------------------------------------------------------------------------------
-    # Pointers
-    f = f_side_trans[type, dim, NOT]
+def make_f_side_trans_ptr(f: f_side_trans_class, type: str, dim: int):
+    equality_test_pointer = """\
+is_eq = is_eq .and. (associated(f1%NAME) .eqv. associated(f2%NAME))
+if (.not. is_eq) return
+if (associated(f1%NAME)) is_eq = all(shape(f1%NAME) == shape(f2%NAME))
+if (.not. is_eq) return
+if (associated(f1%NAME)) is_eq = all(f1%NAME == f2%NAME)
+"""
+    to_f2_trans_pointer = """\
+if (associated(F%NAME)) then
+  if (n1_NAME == 0 .or. any(shape(F%NAME) /= [DIMS])) deallocate(F%NAME)
+  if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
+endif
+if (n1_NAME /= 0) then
+  call c_f_pointer (z_NAME, f_NAME, [TOTDIM])
+  if (.not. associated(F%NAME)) allocate(F%NAME(DIMS))
+  SET
+else
+  if (associated(F%NAME)) deallocate(F%NAME)
+endif
+"""
 
-    f_side_trans[type, dim, PTR] = f_side_trans_class()
-    fp = f_side_trans[type, dim, PTR]
+    fp = f_side_trans_class()
     fp.to_c2_type = f.to_c2_type
     fp.to_c2_name = "z_NAME(*)"
     fp.to_f2_type = "type(c_ptr), value"
@@ -897,37 +851,34 @@ endif
     return fp
 
 
-f_side_trans: dict[tuple[str, int, str], f_side_trans_class] = {}
+def make_special_f_trans(f_side_trans):
+    # ---------------------------
+    # CHAR 0 NOT - Character scalar, not a pointer/allocatable
 
-for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
-    for dim in range(4):
-        make_f_side_trans_basic(type, dim)
-        make_f_side_trans_ptr(type, dim)
+    f_side_trans[CHAR, 0, NOT] = f_side_trans_class()
+    fc = f_side_trans[CHAR, 0, NOT]
+    fc.to_c2_call = "trim(F%NAME) // c_null_char"
+    fc.to_c2_type = "character(c_char)"
+    fc.to_c2_name = "z_NAME(*)"
+    fc.to_f2_type = fc.to_c2_type
+    fc.to_f2_name = fc.to_c2_name
+    fc.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
+    fc.test_pat = (
+        "do jd1 = 1, len(F%NAME)\n"
+        '  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+XXX+offset+jd1, 26))\n'
+        "enddo\n"
+    )
+    fc.to_f2_trans = "call to_f_str(z_NAME, F%NAME)"
 
+    # CHAR 0 PTR - Character scalar pointer
 
-# ---------------------------
-# CHAR 0 NOT
-
-f_side_trans[CHAR, 0, NOT] = f_side_trans_class()
-fc = f_side_trans[CHAR, 0, NOT]
-fc.to_c2_call = "trim(F%NAME) // c_null_char"
-fc.to_c2_type = "character(c_char)"
-fc.to_c2_name = "z_NAME(*)"
-fc.to_f2_type = fc.to_c2_type
-fc.to_f2_name = fc.to_c2_name
-fc.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
-fc.test_pat = 'do jd1 = 1, len(F%NAME)\n  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+XXX+offset+jd1, 26))\nenddo\n'
-fc.to_f2_trans = "call to_f_str(z_NAME, F%NAME)"
-
-# CHAR 0 PTR
-
-f_side_trans[CHAR, 0, PTR] = copy.deepcopy(f_side_trans[INT, 0, PTR])
-fc = f_side_trans[CHAR, 0, PTR]
-fc.to_c2_type = "character(c_char)"
-fc.to_c2_name = "z_NAME(*)"
-fc.to_f2_type = fc.to_c2_type
-fc.to_f2_name = fc.to_c2_name
-fc.to_f2_trans = """\
+    f_side_trans[CHAR, 0, PTR] = copy.deepcopy(f_side_trans[INT, 0, PTR])
+    fc = f_side_trans[CHAR, 0, PTR]
+    fc.to_c2_type = "character(c_char)"
+    fc.to_c2_name = "z_NAME(*)"
+    fc.to_f2_type = fc.to_c2_type
+    fc.to_f2_name = fc.to_c2_name
+    fc.to_f2_trans = """\
 if (n_NAME == 0) then
   if (associated(F%NAME)) deallocate(F%NAME)
 else
@@ -935,19 +886,16 @@ else
   call to_f_str(z_NAME, F%NAME)
 endif
 """
-
-fc.to_c_var = ["character(STR_LEN+1), target :: f_NAME"]
-fc.to_c_trans = """\
+    fc.to_c_var = ["character(STR_LEN+1), target :: f_NAME"]
+    fc.to_c_trans = """\
 n_NAME = 0
 if (associated(F%NAME)) then
   n_NAME = 1
   f_NAME = trim(F%NAME) // c_null_char 
 endif
 """
-
-fc.to_c2_call = "f_NAME"
-
-fc.test_pat = """\
+    fc.to_c2_call = "f_NAME"
+    fc.test_pat = """\
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
@@ -958,50 +906,53 @@ else
 endif
 """
 
-# CHAR 1 NOT
+    # CHAR 1 NOT - Character array, not a pointer/allocatable
 
-f_side_trans[CHAR, 1, NOT] = copy.deepcopy(f_side_trans[STRUCT, 1, NOT])
-fc = f_side_trans[CHAR, 1, NOT]
-fc.to_c2_name = "z_NAME(*)"
-fc.to_f2_type = fc.to_c2_type
-fc.to_f2_name = fc.to_c2_name
-fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
-fc.test_pat = """\
+    f_side_trans[CHAR, 1, NOT] = copy.deepcopy(f_side_trans[STRUCT, 1, NOT])
+    fc = f_side_trans[CHAR, 1, NOT]
+    fc.to_c2_name = "z_NAME(*)"
+    fc.to_f2_type = fc.to_c2_type
+    fc.to_f2_name = fc.to_c2_name
+    fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
+    fc.test_pat = """\
 do jd1 = lbound(F%NAME, 1), ubound(F%NAME, 1)
   do jd = 1, len(F%NAME(jd1))
     F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+XXX+offset+10*jd+jd1, 26))
   enddo
 enddo
 """
-fc.to_f2_trans = (
-    jd1_loop
-    + """\
-  call c_f_pointer (z_NAME(jd1), f_NAME)
-  call to_f_str(f_NAME, F%NAME(jd1+lb1))
-enddo
-"""
-)
-fc.to_c_trans = (
-    jd1_loop
-    + """\
-  a_NAME(jd1) = trim(F%NAME(jd1+lb1)) // c_null_char
-  z_NAME(jd1) = c_loc(a_NAME(jd1))
-enddo
-"""
-)
-fc.to_c_var += ["character(STR_LEN+1), target :: a_NAME(DIM1)"]
+    fc.to_f2_trans = "\n".join(
+        [
+            jd1_loop.rstrip(),
+            "  call c_f_pointer (z_NAME(jd1), f_NAME)",
+            "  call to_f_str(f_NAME, F%NAME(jd1+lb1))",
+            "enddo",
+            "",
+        ]
+    )
 
-# CHAR 1 PTR
+    fc.to_c_trans = "\n".join(
+        [
+            jd1_loop.rstrip(),
+            "  a_NAME(jd1) = trim(F%NAME(jd1+lb1)) // c_null_char",
+            "  z_NAME(jd1) = c_loc(a_NAME(jd1))",
+            "enddo",
+            "",
+        ]
+    )
+    fc.to_c_var += ["character(STR_LEN+1), target :: a_NAME(DIM1)"]
 
-f_side_trans[CHAR, 1, PTR] = copy.deepcopy(f_side_trans[STRUCT, 1, PTR])
-fc = f_side_trans[CHAR, 1, PTR]
-fc.to_c2_type = "type(c_ptr)"
-fc.to_c2_name = "z_NAME(*)"
-fc.to_f2_type = fc.to_c2_type
-fc.to_f2_name = fc.to_c2_name
-fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
-fc.to_f2_trans = fc.to_f2_trans.replace("ZZZ", "string")
-fc.test_pat = """\
+    # CHAR 1 PTR - Character array pointer
+
+    f_side_trans[CHAR, 1, PTR] = copy.deepcopy(f_side_trans[STRUCT, 1, PTR])
+    fc = f_side_trans[CHAR, 1, PTR]
+    fc.to_c2_type = "type(c_ptr)"
+    fc.to_c2_name = "z_NAME(*)"
+    fc.to_f2_type = fc.to_c2_type
+    fc.to_f2_name = fc.to_c2_name
+    fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
+    fc.to_f2_trans = fc.to_f2_trans.replace("ZZZ", "string")
+    fc.test_pat = """\
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
@@ -1012,8 +963,7 @@ else
   enddo; enddo
 endif
 """
-
-fc.to_f2_trans = """\
+    fc.to_f2_trans = """\
 if (n1_NAME == 0) then
   if (associated(F%NAME)) deallocate(F%NAME)
 else
@@ -1028,8 +978,7 @@ else
   enddo
 endif
 """
-
-fc.to_c_trans = """\
+    fc.to_c_trans = """\
 n1_NAME = 0
 if (associated(F%NAME)) then
   n1_NAME = size(F%NAME); lb1 = lbound(F%NAME, 1) - 1
@@ -1041,27 +990,22 @@ if (associated(F%NAME)) then
   enddo
 endif
 """
+    fc.to_c_var += ["character(STR_LEN+1), allocatable, target :: a_NAME(:)"]
 
-fc.to_c_var += ["character(STR_LEN+1), allocatable, target :: a_NAME(:)"]
+    # --------------------------------------------------------------------------------------
+    # Allocatable components are very similar to pointer components
+    # with the simple replacement of 'associated' for 'allocated'.
 
-# --------------------------------------------------------------------------------------
-# Allocatable components are very similar to pointer components
-# with the simple replacement of 'allocated' for 'associated'.
+    for trans in list(f_side_trans.keys()):
+        if trans[2] == PTR:
+            trans_alloc = (trans[0], trans[1], ALLOC)
+            f_side_trans[trans_alloc] = copy.deepcopy(f_side_trans[trans])
+            t = f_side_trans[trans_alloc]
+            t.to_f2_trans = t.to_f2_trans.replace("associated", "allocated")
+            t.to_c_trans = t.to_c_trans.replace("associated", "allocated")
+            t.test_pat = t.test_pat.replace("associated", "allocated")
+            t.equality_test = t.equality_test.replace("associated", "allocated")
 
-for trans in list(f_side_trans.keys()):
-    if trans[2] == PTR:
-        trans_alloc = (trans[0], trans[1], ALLOC)
-        f_side_trans[trans_alloc] = copy.deepcopy(f_side_trans[trans])
-        t = f_side_trans[trans_alloc]
-        t.to_f2_trans = t.to_f2_trans.replace("associated", "allocated")
-        t.to_c_trans = t.to_c_trans.replace("associated", "allocated")
-        t.test_pat = t.test_pat.replace("associated", "allocated")
-        t.equality_test = t.equality_test.replace("associated", "allocated")
-
-#############################################################
-
-
-# ------------------
 
 test_pat_pointer0 = """\
   if (ix_patt < 3) 
@@ -1149,13 +1093,13 @@ def configure_c_side_trans_by_type(
 
     # Configure based on dimension
     if dim == 0:
-        configure_dim0(c, c_type, c_arg, type)
+        configure_c_dim0(c, c_type, c_arg, type)
     elif dim == 1:
-        configure_dim1(c, c_type, c_arg, type)
+        configure_c_dim1(c, c_type, c_arg, type)
     elif dim == 2:
-        configure_dim2(c, c_type, c_arg, type)
+        configure_c_dim2(c, c_type, c_arg, type)
     elif dim == 3:
-        configure_dim3(c, c_type, c_arg, type)
+        configure_c_dim3(c, c_type, c_arg, type)
 
     # Apply test pattern
     c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
@@ -1174,7 +1118,7 @@ def configure_c_side_trans_by_type(
         c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
 
 
-def configure_dim0(c, c_type, c_arg, type):
+def configure_c_dim0(c, c_type, c_arg, type):
     """Configure for dimension 0"""
     c.c_class = c_type
     c.to_f2_arg = c_arg + "&"
@@ -1187,7 +1131,7 @@ def configure_dim0(c, c_type, c_arg, type):
         c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
 
 
-def configure_dim1(c, c_type, c_arg, type):
+def configure_c_dim1(c, c_type, c_arg, type):
     """Configure for dimension 1"""
     c.c_class = c_type + "_ARRAY"
     c.to_f2_arg = c_arg + "Arr"
@@ -1211,7 +1155,7 @@ def configure_dim1(c, c_type, c_arg, type):
 """
 
 
-def configure_dim2(c, c_type, c_arg, type):
+def configure_c_dim2(c, c_type, c_arg, type):
     """Configure for dimension 2"""
     c.c_class = c_type + "_MATRIX"
     c.to_f2_arg = c_arg + "Arr"
@@ -1244,7 +1188,7 @@ def configure_dim2(c, c_type, c_arg, type):
         )
 
 
-def configure_dim3(c, c_type, c_arg, type):
+def configure_c_dim3(c, c_type, c_arg, type):
     """Configure for dimension 3"""
     c.c_class = c_type + "_TENSOR"
     c.to_f2_arg = c_arg + "Arr"
@@ -1733,7 +1677,7 @@ def setup_allocatable_components(c_side_trans):
             c_side_trans[trans_alloc] = copy.deepcopy(c_side_trans[trans])
 
 
-def initialize_c_side_trans():
+def initialize_c_side_trans() -> dict[tuple[str, int, str], c_side_trans_class]:
     """Initialize the c_side_trans dictionary with all required translations."""
     c_side_trans = setup_common_c_side_trans()
 
@@ -1749,17 +1693,10 @@ def initialize_c_side_trans():
     return c_side_trans
 
 
-# Generate the c_side_trans dictionary
-c_side_trans = initialize_c_side_trans()
-
 ##################################################################################
 ##################################################################################
 # Get the list of structs
 # See test_interface_input.py (or whatever file is used).
-
-struct_definitions = []
-for name in params.struct_list:
-    struct_definitions.append(struct_def_class(name))
 
 # Regular expressions for parsing
 re_end_type = re.compile(r"^\s*end\s*type")  # Match to: 'end type'
@@ -2122,8 +2059,6 @@ def parse_init_value(arg: arg_class, split_line: list) -> tuple:
     return arg, split_line
 
 
-parse_structure_definitions(struct_definitions, params)
-
 ##################################################################################
 ##################################################################################
 # Add Fortran and C++ side translation info.
@@ -2158,10 +2093,6 @@ def remove_untranslated(struct: struct_def_class) -> None:
         # Apply translations
         arg.f_side = copy.deepcopy(f_side_trans[translation_key])
         arg.c_side = copy.deepcopy(c_side_trans[translation_key])
-
-
-for struct in struct_definitions:
-    remove_untranslated(struct)
 
 
 ##################################################################################
@@ -2212,9 +2143,6 @@ def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> Non
                 struct.arg.insert(ia, size_arg)
                 ia += 1
 
-
-for struct in struct_definitions:
-    add_array_bound_info_for_pointer_structures(struct)
 
 ##################################################################################
 ##################################################################################
@@ -2379,23 +2307,6 @@ def _handle_init_values(arg: arg_class) -> None:
     )
 
 
-for struct in struct_definitions:
-    print_debug("\nStruct: " + str(struct))
-    for arg in struct.arg:
-        fix_struct_arg_placeholders(struct, arg)
-
-
-##################################################################################
-##################################################################################
-# Customize the interface code
-
-params.customize(struct_definitions)
-
-##################################################################################
-##################################################################################
-# As a check, write results to file.
-
-
 def write_parsed_structures(struct_definitions, fn):
     """
     Write parsed structure definitions to a file.
@@ -2406,20 +2317,6 @@ def write_parsed_structures(struct_definitions, fn):
             f_out.write(f"{struct.f_name}    {len(struct.arg)}\n")
             for arg in struct.arg:
                 f_out.write(f"    {arg.original_repr()}\n")
-
-
-if DEBUG:
-    write_parsed_structures(struct_definitions, "f_structs.parsed")
-
-# ------
-
-# Count and report structs with and without short_names
-n_found = sum(1 for struct in struct_definitions if struct.short_name != "")
-n_total = len(struct_definitions)
-
-# Print diagnostics
-print(f"Number of structs in input list: {n_total}", file=sys.stderr)
-print(f"Number of structs found:         {n_found}", file=sys.stderr)
 
 
 def check_missing():
@@ -2457,9 +2354,6 @@ def check_missing():
         for error_message in missing_struct_definitions:
             print(error_message, file=sys.stderr)
         sys.exit(1)
-
-
-check_missing()
 
 
 ##################################################################################
@@ -2688,10 +2582,6 @@ end subroutine {s_name}_to_f2
     f_face.write("end module\n")
 
 
-with open(params.code_dir + "/bmad_cpp_convert_mod.f90", "w") as f_face:
-    create_fortran_interface(struct_definitions, params, f_face)
-
-
 ##################################################################################
 ##################################################################################
 # Create Fortran struct equality check code
@@ -2769,19 +2659,6 @@ is_eq = .true.
         f_equ.write(f"\nend function eq_{struct.short_name}\n")
 
     f_equ.write("end module\n")
-
-
-with open(
-    os.path.join(params.equality_mod_dir, params.equality_mod_file + ".f90"), "w"
-) as f_equ:
-    create_fortran_equality_check_code()
-
-##################################################################################
-##################################################################################
-# Create code check main program
-
-if not os.path.exists(params.test_dir):
-    sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
 
 
 def write_tests_main(f_test):
@@ -2944,20 +2821,14 @@ end module
 """)
 
 
-with open(os.path.join(params.test_dir, "main.f90"), "w") as f_test:
-    write_tests_main(f_test)
-
-with open(os.path.join(params.test_dir, "bmad_cpp_test_mod.f90"), "w") as f_test:
-    write_tests_mod(f_test)
-
 ##################################################################################
 ##################################################################################
 # Create C++ class
 
 
-def write_cpp_classes(fp):
+def write_cpp_classes(file):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
-    fp.write("""
+    file.write("""
 //+
 // C++ classes definitions for Bmad / C++ structure interface.
 //
@@ -2976,11 +2847,11 @@ def write_cpp_classes(fp):
 
     # Include additional header files
     for line in params.include_header_files:
-        fp.write(f"{line}\n")
+        file.write(f"{line}\n")
 
     # Write array/matrix/tensor typedefs for each struct
     for struct in struct_definitions:
-        fp.write(f"""
+        file.write(f"""
 class CPP_{struct.short_name};
 typedef vector<CPP_{struct.short_name}>          CPP_{struct.short_name}_ARRAY;
 typedef vector<CPP_{struct.short_name}_ARRAY>    CPP_{struct.short_name}_MATRIX;
@@ -2989,7 +2860,7 @@ typedef vector<CPP_{struct.short_name}_MATRIX>   CPP_{struct.short_name}_TENSOR;
 
     # Write class definitions for each struct
     for struct in struct_definitions:
-        fp.write(f"""
+        file.write(f"""
 //--------------------------------------------------------------------
 // CPP_{struct.short_name}
 
@@ -3003,15 +2874,15 @@ public:
         for arg in struct.arg:
             if not arg.is_component:
                 continue
-            fp.write(
+            file.write(
                 f"  {arg.c_side.c_class.replace('ZZZ', struct.short_name)}{arg.c_side.c_class_suffix} {arg.c_name};\n"
             )
 
         # Extra methods
-        fp.write(struct.c_extra_methods)
+        file.write(struct.c_extra_methods)
 
         # Constructor declaration
-        fp.write(f"""
+        file.write(f"""
   CPP_{struct.short_name}({struct.c_constructor_arg_list}) :
 """)
 
@@ -3022,22 +2893,22 @@ public:
                 continue
             construct_list.append(arg.c_side.constructor)
 
-        fp.write(f"    {',\n    '.join(construct_list)}\n")
-        fp.write(f"    {struct.c_constructor_body}\n\n")
+        file.write(f"    {',\n    '.join(construct_list)}\n")
+        file.write(f"    {struct.c_constructor_body}\n\n")
 
         # Destructor
-        fp.write(f"  ~CPP_{struct.short_name}() {{\n")
+        file.write(f"  ~CPP_{struct.short_name}() {{\n")
         for arg in struct.arg:
             if arg.c_side.destructor == "":
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            fp.write(f"    {arg.c_side.destructor}\n")
+            file.write(f"    {arg.c_side.destructor}\n")
 
-        fp.write("  }\n")
+        file.write("  }\n")
 
         # End class and write extern C functions and operators
-        fp.write(f"""
+        file.write(f"""
 }};   // End Class
 
 extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, CPP_{struct.short_name}&);
@@ -3048,7 +2919,7 @@ bool operator== (const CPP_{struct.short_name}&, const CPP_{struct.short_name}&)
 """)
 
     # Write end of file
-    fp.write("""
+    file.write("""
 //--------------------------------------------------------------------
 
 #define CPP_BMAD_CLASSES
@@ -3056,17 +2927,14 @@ bool operator== (const CPP_{struct.short_name}&, const CPP_{struct.short_name}&)
 """)
 
 
-with open("include/cpp_bmad_classes.h", "w") as fp:
-    write_cpp_classes(fp)
-
 ##################################################################################
 ##################################################################################
 # Create C++ side of interface
 
 
-def write_cpp_convert(fp):
+def write_cpp_convert(file):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
-    fp.write("""
+    file.write("""
 //+
 // C++ side of the Bmad / C++ structure interface.
 //
@@ -3084,7 +2952,7 @@ def write_cpp_convert(fp):
 
     for struct in struct_definitions:
         # ZZZ_to_f2
-        fp.write(f"""
+        file.write(f"""
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
 // CPP_{struct.short_name}
@@ -3093,82 +2961,79 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
 """)
 
-        fp.write("// c_side.to_f2_arg\n")
+        file.write("// c_side.to_f2_arg\n")
 
         line = f'extern "C" void {struct.short_name}_to_f2 (Opaque_{struct.short_name}_class*'
         for arg in struct.arg:
             line += f", {arg.c_side.to_f2_arg.replace('ZZZ', struct.short_name)}"
         line += ");"
 
-        fp.write(wrap_line(line, "", ""))
+        file.write(wrap_line(line, "", ""))
 
         # ZZZ_to_f
-        fp.write("\n")
-        fp.write(
+        file.write("\n")
+        file.write(
             f'extern "C" void {struct.short_name}_to_f (const CPP_{struct.short_name}& C, Opaque_{struct.short_name}_class* F) {{\n'
         )
 
         for arg in struct.arg:
             if arg.c_side.to_f_setup == "":
                 continue
-            fp.write(
+            file.write(
                 f"  // c_side.to_f_setup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            fp.write(arg.c_side.to_f_setup)
+            file.write(arg.c_side.to_f_setup)
 
-        fp.write("\n")
-        fp.write("  // c_side.to_f2_call\n")
+        file.write("\n")
+        file.write("  // c_side.to_f2_call\n")
 
         line = f"{struct.short_name}_to_f2 (F"
         for arg in struct.arg:
             line += f", {arg.c_side.to_f2_call}"
         line += ");"
-        fp.write(wrap_line(line, "  ", ""))
+        file.write(wrap_line(line, "  ", ""))
 
-        fp.write("\n")
+        file.write("\n")
 
         for arg in struct.arg:
             if arg.c_side.to_f_cleanup == "":
                 continue
-            fp.write(
+            file.write(
                 f"  // c_side.to_f_cleanup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            fp.write(arg.c_side.to_f_cleanup)
+            file.write(arg.c_side.to_f_cleanup)
 
-        fp.write("}\n")
+        file.write("}\n")
 
         # ZZZ_to_c2
-        fp.write("\n")
-        fp.write("// c_side.to_c2_arg\n")
+        file.write("\n")
+        file.write("// c_side.to_c2_arg\n")
 
         line = f'extern "C" void {struct.short_name}_to_c2 (CPP_{struct.short_name}& C'
         for arg in struct.arg:
             line += f", {arg.c_side.to_c2_arg.replace('ZZZ', struct.short_name)}"
         line += ") {"
-        fp.write(wrap_line(line, "", ""))
+        file.write(wrap_line(line, "", ""))
 
-        fp.write("\n")
+        file.write("\n")
         for arg in struct.arg:
             if not arg.is_component:
                 continue
-            fp.write(
+            file.write(
                 f"  // c_side.to_c2_set[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            fp.write(f"{arg.c_side.to_c2_set}\n")
+            file.write(f"{arg.c_side.to_c2_set}\n")
 
-        fp.write("}\n")
+        file.write("}\n")
 
-
-with open(os.path.join(params.code_dir, "cpp_bmad_convert.cpp"), "w") as fp:
-    write_cpp_convert(fp)
 
 ##################################################################################
 ##################################################################################
 # Create C++ class equality check code
 
 
-def write_cpp_equality(fp):
-    fp.write("""
+def write_cpp_equality(file):
+    file.write("""
 //+
 // C++ equality functions for Bmad / C++ structure interface.
 //
@@ -3242,42 +3107,39 @@ template bool is_all_equal (const Int_TENSOR&,      const Int_TENSOR&);
 """)
 
     for struct in struct_definitions:
-        fp.write(
+        file.write(
             "\n//--------------------------------------------------------------\n\n"
         )
-        fp.write(
+        file.write(
             f"bool operator== (const CPP_{struct.short_name}& x, const CPP_{struct.short_name}& y) {{\n"
         )
-        fp.write("  bool is_eq = true;\n")
+        file.write("  bool is_eq = true;\n")
 
         for arg in struct.arg:
             if not arg.is_component:
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            fp.write(arg.c_side.equality_test)
+            file.write(arg.c_side.equality_test)
 
-        fp.write("  return is_eq;\n")
-        fp.write("};\n\n")
+        file.write("  return is_eq;\n")
+        file.write("};\n\n")
 
-        fp.write(
+        file.write(
             f"template bool is_all_equal (const CPP_{struct.short_name}_ARRAY&, const CPP_{struct.short_name}_ARRAY&);\n"
         )
-        fp.write(
+        file.write(
             f"template bool is_all_equal (const CPP_{struct.short_name}_MATRIX&, const CPP_{struct.short_name}_MATRIX&);\n"
         )
 
-
-with open(os.path.join(params.code_dir, "cpp_equality.cpp"), "w") as fp:
-    write_cpp_equality(fp)
 
 ##################################################################################
 ##################################################################################
 # Create C++ side code check
 
 
-def write_cpp_test(fp):
-    fp.write("""
+def write_cpp_test(file):
+    file.write("""
 //+
 // C++ classes definitions for Bmad / C++ structure interface.
 //
@@ -3296,10 +3158,10 @@ using namespace std;
 
     for struct in params.structs_defined_externally:
         head = struct.replace("_struct", "")
-        fp.write(f"void set_CPP_{head}_test_pattern (CPP_{head}& C, int ix_patt);\n")
+        file.write(f"void set_CPP_{head}_test_pattern (CPP_{head}& C, int ix_patt);\n")
 
     for struct in struct_definitions:
-        fp.write(f"""
+        file.write(f"""
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 
@@ -3316,12 +3178,12 @@ void set_CPP_{struct.short_name}_test_pattern (CPP_{struct.short_name}& C, int i
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            fp.write(
+            file.write(
                 f"  // c_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            fp.write(arg.c_side.test_pat.replace("XXX", str(i)) + "\n")
+            file.write(arg.c_side.test_pat.replace("XXX", str(i)) + "\n")
 
-        fp.write(f"""
+        file.write(f"""
 }}
 
 //--------------------------------------------------------------
@@ -3362,5 +3224,77 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 """)
 
 
-with open(os.path.join(params.test_dir, "cpp_bmad_test.cpp"), "w") as fp:
-    write_cpp_test(fp)
+if __name__ == "__main__":
+    # NOTE: the script is meant to be run from '/cpp_bmad_interface'.
+    os.chdir(CPP_INTERFACE_ROOT)
+
+    if not os.path.exists("include"):
+        os.makedirs("include")
+
+    if len(sys.argv) > 1:
+        master_input_file = sys.argv[1]
+        params = __import__(sys.argv[1])
+    else:
+        master_input_file = "interface_input_params"
+        import interface_input_params as params
+
+    print("Input file: " + master_input_file, file=sys.stderr)
+
+    if not os.path.exists(params.test_dir):
+        sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
+
+    f_side_trans = initialize_f_side_trans()
+    c_side_trans = initialize_c_side_trans()
+
+    struct_definitions = []
+    for name in params.struct_list:
+        struct_definitions.append(struct_def_class(name))
+
+    parse_structure_definitions(struct_definitions, params)
+
+    for struct in struct_definitions:
+        remove_untranslated(struct)
+
+    for struct in struct_definitions:
+        add_array_bound_info_for_pointer_structures(struct)
+
+    for struct in struct_definitions:
+        print_debug("\nStruct: " + str(struct))
+        for arg in struct.arg:
+            fix_struct_arg_placeholders(struct, arg)
+
+    ##################################################################################
+    # Customize the interface code
+
+    params.customize(struct_definitions)
+
+    if DEBUG:
+        write_parsed_structures(struct_definitions, "f_structs.parsed")
+
+    n_found = sum(1 for struct in struct_definitions if struct.short_name != "")
+    n_total = len(struct_definitions)
+
+    # Print diagnostics
+    print(f"Number of structs in input list: {n_total}", file=sys.stderr)
+    print(f"Number of structs found:         {n_found}", file=sys.stderr)
+
+    check_missing()
+
+    with open(params.code_dir + "/bmad_cpp_convert_mod.f90", "w") as file:
+        create_fortran_interface(struct_definitions, params, file)
+    with open(
+        os.path.join(params.equality_mod_dir, params.equality_mod_file + ".f90"), "w"
+    ) as f_equ:
+        create_fortran_equality_check_code()
+    with open(os.path.join(params.test_dir, "main.f90"), "w") as file:
+        write_tests_main(file)
+    with open(os.path.join(params.test_dir, "bmad_cpp_test_mod.f90"), "w") as file:
+        write_tests_mod(file)
+    with open(os.path.join("include", "cpp_bmad_classes.h"), "w") as file:
+        write_cpp_classes(file)
+    with open(os.path.join(params.code_dir, "cpp_bmad_convert.cpp"), "w") as file:
+        write_cpp_convert(file)
+    with open(os.path.join(params.code_dir, "cpp_equality.cpp"), "w") as file:
+        write_cpp_equality(file)
+    with open(os.path.join(params.test_dir, "cpp_bmad_test.cpp"), "w") as file:
+        write_cpp_test(file)
