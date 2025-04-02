@@ -137,16 +137,6 @@ class arg_class:
     f_side: int = 0
     c_side: int = 0
 
-    def __str__(self) -> str:
-        return '["%s(%s)", "%s", "%s", %s, "%s"]' % (
-            self.type,
-            self.kind,
-            self.pointer_type,
-            self.f_name,
-            self.array,
-            self.init_value,
-        )
-
     def full_repr(self) -> str:
         return '["%s(%s)", "%s", "%s", %s, "%s" %s %s "%s"]' % (
             self.type,
@@ -182,25 +172,23 @@ class struct_def_class:
 # Fortran side translation
 
 
+@dataclass
 class f_side_trans_class:
-    def __init__(self):
-        self.to_c2_call = ""
-        self.to_c2_type = ""
-        self.to_c2_name = ""
-        self.to_f2_type = ""
-        self.to_f2_name = ""
-        self.equality_test = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
-        self.test_pat = "rhs = XXX + offset; F%NAME = NNN\n"
-        self.to_c2_f2_sub_arg = "z_NAME"
-        self.to_f2_trans = "F%NAME = z_NAME"
-        self.to_f2_var = []
-        self.to_c_var = []
-        self.to_c_trans = ""
-        self.size_var = []  # For communicating the size of allocatable and pointer variables
-
-    # def __repr__(self):
-    #   return '%s,  %s,  %s :: %s' % (self.to_c2_call, self.to_c2_type, self.to_c2_name,
-    #                                  self.to_f2_trans, self.to_f2_type, self.to_f2_name)
+    to_c2_call: str = ""
+    to_c2_type: str = ""
+    to_c2_name: str = ""
+    to_f2_type: str = ""
+    to_f2_name: str = ""
+    equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
+    test_pat: str = "rhs = XXX + offset; F%NAME = NNN\n"
+    to_c2_f2_sub_arg: str = "z_NAME"
+    to_f2_trans: str = "F%NAME = z_NAME"
+    to_f2_var: List[str] = field(default_factory=list)
+    to_c_var: List[str] = field(default_factory=list)
+    to_c_trans: str = ""
+    size_var: List[str] = field(
+        default_factory=list
+    )  # For communicating the size of allocatable and pointer variables
 
 
 # --------------------------------------
