@@ -1155,7 +1155,7 @@ def configure_c_dim2(c, c_type, c_arg, type):
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
+    c.constructor = "NAME(CPP_KIND_MATRIX(DIM1, CPP_KIND_ARRAY(DIM2)))"
     c.to_c2_set = "  C.NAME << z_NAME;"
     c.test_pat = test_pat2
     c.to_f_setup = (
@@ -1164,7 +1164,7 @@ def configure_c_dim2(c, c_type, c_arg, type):
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
-        c.constructor = "NAME(CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1)))"
+        c.constructor = "NAME(CPP_KIND_MATRIX(DIM1, CPP_KIND_ARRAY(DIM2)))"
         c.to_c2_set = (
             for1
             + for2
@@ -1189,7 +1189,7 @@ def configure_c_dim3(c, c_type, c_arg, type):
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
     c.constructor = (
-        f"NAME({c_type}_TENSOR(DIM3, {c_type}_MATRIX(DIM2, {c_type}_ARRAY(DIM1))))"
+        f"NAME({c_type}_TENSOR(DIM1, {c_type}_MATRIX(DIM2, {c_type}_ARRAY(DIM3))))"
     )
     c.to_c2_set = "  C.NAME << z_NAME;"
     c.test_pat = test_pat3
@@ -1200,7 +1200,7 @@ def configure_c_dim3(c, c_type, c_arg, type):
 
     if type == STRUCT:
         c.constructor = (
-            "NAME(CPP_KIND_TENSOR(DIM3, CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM1))))"
+            "NAME(CPP_KIND_TENSOR(DIM1, CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM3))))"
         )
         c.to_c2_set = (
             for1
@@ -2634,6 +2634,7 @@ is_eq = .true.
             f_equ.write(
                 f"!! f_side.equality_test[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
+
             f_equ.write(arg.f_side.equality_test)
 
         f_equ.write(f"\nend function eq_{struct.short_name}\n")

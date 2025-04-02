@@ -3612,7 +3612,7 @@ public:
     time_ref_orb_out(),
     value(Bmad::NUM_ELE_ATTRIB+1, double(0)),
     old_value(Bmad::NUM_ELE_ATTRIB+1, double(0)),
-    spin_q(Real_MATRIX(7, Real_ARRAY(4))),
+    spin_q(Real_MATRIX(4, Real_ARRAY(7))),
     vec0(6, 0.0),
     mat6(Real_MATRIX(6, Real_ARRAY(6))),
     c_mat(Real_MATRIX(2, Real_ARRAY(2))),
