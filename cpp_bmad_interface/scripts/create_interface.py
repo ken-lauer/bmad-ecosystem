@@ -22,7 +22,7 @@ import sys
 import textwrap
 
 from dataclasses import dataclass, field
-from typing import List, Any
+from typing import Any
 
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
@@ -172,17 +172,18 @@ class arg_class:
     type: str = ""
     kind: str = ""
     pointer_type: str = NOT
-    array: List[str] = field(default_factory=list)
+    array: list[str] = field(default_factory=list)
     full_array: str = ""
-    lbound: List[Any] = field(default_factory=list)
-    ubound: List[Any] = field(default_factory=list)
+    lbound: list[Any] = field(default_factory=list)
+    ubound: list[Any] = field(default_factory=list)
     init_value: str = ""
     comment: str = ""
     f_side: f_side_trans_class | None = None
     c_side: c_side_trans_class | None = None
+    split_line: list[str] = field(default_factory=list)
 
-    def full_repr(self) -> str:
-        return '["%s(%s)", "%s", "%s", %s, "%s" %s %s "%s"]' % (
+    def original_repr(self) -> str:
+        return '["{}({})", "{}", "{}", {}, "{}" {} {} "{}"]'.format(
             self.type,
             self.kind,
             self.pointer_type,
@@ -200,7 +201,7 @@ class struct_def_class:
     f_name: str = ""  # Struct name on Fortran side
     short_name: str = ""  # Struct name without trailing '_struct'. Note: C++ name is 'CPP_<short_name>'
     cpp_class: str = ""  # C++ name.
-    arg: List[arg_class] = field(
+    arg: list[arg_class] = field(
         default_factory=list
     )  # Array of arg_class. List of structrure components + array bound dimensions.
     c_constructor_arg_list: str = ""
@@ -227,10 +228,10 @@ class f_side_trans_class:
     test_pat: str = "rhs = XXX + offset; F%NAME = TEST_VALUE\n"
     to_c2_f2_sub_arg: str = "z_NAME"
     to_f2_trans: str = "F%NAME = z_NAME"
-    to_f2_var: List[str] = field(default_factory=list)
-    to_c_var: List[str] = field(default_factory=list)
+    to_f2_var: list[str] = field(default_factory=list)
+    to_c_var: list[str] = field(default_factory=list)
     to_c_trans: str = ""
-    size_var: List[str] = field(
+    size_var: list[str] = field(
         default_factory=list
     )  # For communicating the size of allocatable and pointer variables
 
@@ -971,7 +972,7 @@ class c_side_trans_class:
         self.test_pat = "  rhs = XXX + offset; C.NAME = TEST_VALUE;\n"
 
     def __repr__(self):
-        return "%s,  %s,  %s,  %s" % (
+        return "{},  {},  {},  {}".format(
             self.c_class,
             self.to_f2_arg,
             self.to_f2_call,
@@ -1021,7 +1022,7 @@ test_pat3 = (
 )
 
 
-def configure_c_side_trans(
+def configure_c_side_trans_by_type(
     type: str,
     dim: int,
     pointer_type: str,
@@ -1469,7 +1470,7 @@ def configure_pointer_dim3(cp: c_side_trans_class, c, c_type, type):
 """.replace("TYPE", c_type)
 
 
-def setup_c_side_trans():
+def setup_common_c_side_trans():
     """Initialize the c_side_trans dictionary with configured objects for all combinations."""
     c_side_trans = {}
 
@@ -1494,7 +1495,7 @@ def setup_c_side_trans():
                 test_value = ""
 
             # Configure the object
-            configure_c_side_trans(type_val, dim, NOT, c, test_value)
+            configure_c_side_trans_by_type(type_val, dim, NOT, c, test_value)
 
             # Create and configure pointer version (except for SIZE type)
             if type_val != SIZE:
@@ -1516,68 +1517,64 @@ def setup_c_side_trans():
     return c_side_trans
 
 
-def get_c_type(type_val):
+def get_c_type(type_val: str) -> str:
     """Get the C++ type string for a given type value"""
-    if type_val == REAL:
-        return "Real"
-    if type_val == CMPLX:
-        return "Complex"
-    if type_val == INT:
-        return "Int"
-    if type_val == INT8:
-        return "Int8"
-    if type_val == LOGIC:
-        return "Bool"
-    if type_val == STRUCT:
-        return "CPP_KIND"
-    else:
-        raise ValueError(f"Unknown type: {type_val}")
+    type_mapping = {
+        REAL: "Real",
+        CMPLX: "Complex",
+        INT: "Int",
+        INT8: "Int8",
+        LOGIC: "Bool",
+        STRUCT: "CPP_KIND",
+    }
+
+    if type_val in type_mapping:
+        return type_mapping[type_val]
+
+    raise NotImplementedError(f"Unknown type: {type_val}")
 
 
 def get_c_arg(type_val: str) -> str:
     """Get the C++ argument type string for a given type value"""
-    if type_val == REAL:
-        return "c_Real"
-    if type_val == CMPLX:
-        return "c_Complex"
-    if type_val == INT:
-        return "c_Int"
-    if type_val == INT8:
-        return "c_Int8"
-    if type_val == LOGIC:
-        return "c_Bool"
-    if type_val == STRUCT:
-        return "const CPP_KIND"
-    else:
-        raise ValueError(f"Unknown type: {type_val}")
+    type_mapping = {
+        REAL: "c_Real",
+        CMPLX: "c_Complex",
+        INT: "c_Int",
+        INT8: "c_Int8",
+        LOGIC: "c_Bool",
+        STRUCT: "const CPP_KIND",
+    }
+
+    if type_val in type_mapping:
+        return type_mapping[type_val]
+
+    raise NotImplementedError(f"Unknown type: {type_val}")
 
 
-c_side_trans = setup_c_side_trans()
+def setup_char_not_pointer(c_side_trans):
+    """Set up translation for CHAR, 0, NOT (character scalar, not pointer)."""
+    c_side_trans[CHAR, 0, NOT] = c_side_trans_class()
+    c_side_trans[CHAR, 0, NOT].c_class = "string"
+    c_side_trans[CHAR, 0, NOT].to_f2_arg = "c_Char"
+    c_side_trans[CHAR, 0, NOT].to_f2_call = "C.NAME.c_str()"
+    c_side_trans[CHAR, 0, NOT].to_c2_arg = "c_Char z_NAME"
+    c_side_trans[CHAR, 0, NOT].test_pat = (
+        "  C.NAME.resize(STR_LEN);\n"
+        + test_pat1.replace("TEST_VALUE", "'a' + rhs % 26")
+    )
+    c_side_trans[CHAR, 0, NOT].constructor = "NAME()"
 
 
-# ----------------------------------------------------------------------
-# CHAR, 0, NOT
-
-c_side_trans[CHAR, 0, NOT] = c_side_trans_class()
-c_side_trans[CHAR, 0, NOT].c_class = "string"
-c_side_trans[CHAR, 0, NOT].to_f2_arg = "c_Char"
-c_side_trans[CHAR, 0, NOT].to_f2_call = "C.NAME.c_str()"
-c_side_trans[CHAR, 0, NOT].to_c2_arg = "c_Char z_NAME"
-c_side_trans[CHAR, 0, NOT].test_pat = "  C.NAME.resize(STR_LEN);\n" + test_pat1.replace(
-    "TEST_VALUE", "'a' + rhs % 26"
-)
-c_side_trans[CHAR, 0, NOT].constructor = "NAME()"
-
-# CHAR, 0, PTR
-
-c_side_trans[CHAR, 0, PTR] = copy.deepcopy(c_side_trans[STRUCT, 0, PTR])
-cc = c_side_trans[CHAR, 0, PTR]
-cc.c_class = "string"
-cc.constructor = "NAME(NULL)"
-cc.destructor = "if (NAME) delete NAME;"
-cc.to_f2_call = "z_NAME"
-cc.to_f2_arg = "c_Char"
-cc.to_f_setup = """\
+def setup_char_pointer(c_side_trans):
+    """Set up translation for CHAR, 0, PTR (character scalar pointer)."""
+    c_side_trans[CHAR, 0, PTR] = copy.deepcopy(c_side_trans[STRUCT, 0, PTR])
+    cc = c_side_trans[CHAR, 0, PTR]
+    cc.c_class = "string"
+    cc.constructor = "NAME(NULL)"
+    cc.destructor = "if (NAME) delete NAME;"
+    cc.to_f2_call = "z_NAME"
+    cc.to_f2_arg = "c_Char"
+    cc.to_f_setup = """\
   unsigned int n_NAME = 0;
   const char* z_NAME = NULL;  
   if (C.NAME != NULL) {
@@ -1585,8 +1582,8 @@ cc.to_f_setup = """\
     n_NAME = 1;
   }
 """
-cc.to_c2_arg = "c_Char z_NAME"
-cc.to_c2_set = """\
+    cc.to_c2_arg = "c_Char z_NAME"
+    cc.to_c2_set = """\
   if (n_NAME == 0) 
     delete C.NAME;
   else {
@@ -1594,7 +1591,7 @@ cc.to_c2_set = """\
     *(C.NAME) = z_NAME;
   }
 """
-cc.test_pat = """\
+    cc.test_pat = """\
   if (ix_patt < 3) 
     C.NAME == NULL;
   else {
@@ -1604,42 +1601,44 @@ cc.test_pat = """\
   }
 """
 
-# CHAR, 1, NOT
 
-c_side_trans[CHAR, 1, NOT] = c_side_trans_class()
-cc = c_side_trans[CHAR, 1, NOT]
-cc.c_class = "String_ARRAY"
-cc.to_f2_arg = "c_Char*"
-cc.to_f_setup = """\
+def setup_char_array(c_side_trans):
+    """Set up translation for CHAR, 1, NOT (character array, not pointer)."""
+    c_side_trans[CHAR, 1, NOT] = c_side_trans_class()
+    cc = c_side_trans[CHAR, 1, NOT]
+    cc.c_class = "String_ARRAY"
+    cc.to_f2_arg = "c_Char*"
+    cc.to_f_setup = """\
   c_Char z_NAME[DIM1];
   for (int i = 0; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
 """
-cc.to_c2_arg = "c_Char* z_NAME"
-cc.test_pat = (
-    for1
-    + """ {
+    cc.to_c2_arg = "c_Char* z_NAME"
+    cc.test_pat = (
+        for1
+        + """ {
     C.NAME[i].resize(STR_LEN);
     for (unsigned int j = 0; j < C.NAME[i].size(); j++) 
       {C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + XXX + offset) % 26;}
   }
 """
-)
-cc.constructor = "NAME(String_ARRAY(DIM1))"
-cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-cc.to_f2_call = c_side_trans[STRUCT, 1, NOT].to_f2_call
-cc.to_c2_set = for1 + " C.NAME[i] = z_NAME[i];"
+    )
+    cc.constructor = "NAME(String_ARRAY(DIM1))"
+    cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+    cc.to_f2_call = c_side_trans[STRUCT, 1, NOT].to_f2_call
+    cc.to_c2_set = for1 + " C.NAME[i] = z_NAME[i];"
 
-# CHAR, 1, PTR
 
-c_side_trans[CHAR, 1, PTR] = copy.deepcopy(c_side_trans[STRUCT, 1, PTR])
-cc = c_side_trans[CHAR, 1, PTR]
-cc.c_class = "String_ARRAY"
-cc.constructor = "NAME(String_ARRAY(0))"
-cc.destructor = ""
-cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-cc.to_f2_arg = "c_Char*"
-cc.to_c2_arg = "c_Char* z_NAME"
-cc.to_f_setup = """\
+def setup_char_array_pointer(c_side_trans):
+    """Set up translation for CHAR, 1, PTR (character array pointer)."""
+    c_side_trans[CHAR, 1, PTR] = copy.deepcopy(c_side_trans[STRUCT, 1, PTR])
+    cc = c_side_trans[CHAR, 1, PTR]
+    cc.c_class = "String_ARRAY"
+    cc.constructor = "NAME(String_ARRAY(0))"
+    cc.destructor = ""
+    cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+    cc.to_f2_arg = "c_Char*"
+    cc.to_c2_arg = "c_Char* z_NAME"
+    cc.to_f_setup = """\
   int n1_NAME = C.NAME.size();
   c_Char* z_NAME = NULL;
   if (n1_NAME != 0) {
@@ -1647,35 +1646,55 @@ cc.to_f_setup = """\
     for (int i = 0; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].c_str();
   }
 """
-cc.to_c2_set = """\
+    cc.to_c2_set = """\
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) C.NAME[i] = z_NAME[i];
 """
-cc.test_pat = (
-    test_pat_pointer1
-    + x2
-    + for1
-    + "{\n"
-    + x6
-    + "C.NAME[i].resize(STR_LEN);\n"
-    + x4
-    + for2
-    + "{\n"
-    + x8
-    + "C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + XXX + offset) % 26;\n"
-    + x4
-    + "} }\n"
-    + x2
-    + "}\n"
-)
+    cc.test_pat = (
+        test_pat_pointer1
+        + x2
+        + for1
+        + "{\n"
+        + x6
+        + "C.NAME[i].resize(STR_LEN);\n"
+        + x4
+        + for2
+        + "{\n"
+        + x8
+        + "C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + XXX + offset) % 26;\n"
+        + x4
+        + "} }\n"
+        + x2
+        + "}\n"
+    )
 
 
-# Allocatable components on the C side are the same as pointer components.
+def setup_allocatable_components(c_side_trans):
+    """Set up allocatable components based on pointer components."""
+    for trans in list(c_side_trans.keys()):
+        if trans[2] == PTR:
+            trans_alloc = (trans[0], trans[1], ALLOC)
+            c_side_trans[trans_alloc] = copy.deepcopy(c_side_trans[trans])
 
-for trans in list(c_side_trans.keys()):
-    if trans[2] == PTR:
-        trans_alloc = (trans[0], trans[1], ALLOC)
-        c_side_trans[trans_alloc] = copy.deepcopy(c_side_trans[trans])
+
+def initialize_c_side_trans():
+    """Initialize the c_side_trans dictionary with all required translations."""
+    c_side_trans = setup_common_c_side_trans()
+
+    # Set up different character type handlers
+    setup_char_not_pointer(c_side_trans)
+    setup_char_pointer(c_side_trans)
+    setup_char_array(c_side_trans)
+    setup_char_array_pointer(c_side_trans)
+
+    # Set up allocatable components
+    setup_allocatable_components(c_side_trans)
+
+    return c_side_trans
+
+
+# Generate the c_side_trans dictionary
+c_side_trans = initialize_c_side_trans()
 
 ##################################################################################
 ##################################################################################
@@ -1692,242 +1711,368 @@ struct_definitions = []
 for name in params.struct_list:
     struct_definitions.append(struct_def_class(name))
 
-##################################################################################
-##################################################################################
-# Parse structure definitions
-
-# Examples:
-#  1) "type(abc), pointer :: a(:,:),b(7) = 23 ! Comment"
-#  2) "integer abc"
-# Notice that only in example 2 is space significant.
-
-# Current restrictions. That is, syntax to avoid:
-#   1) Line continuations: '&'
-#   2) Dimensions: "integer, dimension(7) :: abc"
-#   3) Kind: "integer(kind = 8) abc"
-#   4) Variable inits using "," or "(" characters: "real abc(2) = [1, 2]"
-
+# Regular expressions for parsing
 re_end_type = re.compile(r"^\s*end\s*type")  # Match to: 'end type'
+# Regular expression for initial parsing splits
 re_match1 = re.compile(r"([,(]|::|\s+)")  # Match to: ',', '::', '(', ' '
+# Regular expression for additional parsing splits
 re_match2 = re.compile("([=[,(]|::)")  # Match to: ',', '::', '(', '[', '='
+#    Regular expression to match 'contains' statement
 re_contains = re.compile(
     r"^\s*contains"
 )  # Match to: 'contains' (indicating type procedures are defined.)
 
-for file_name in params.struct_def_files:
-    f_module_file = open(file_name)
+
+##################################################################################
+##################################################################################
+def parse_structure_definitions(struct_definitions, params):
+    """
+    Parse Fortran structure definitions from specified files.
+
+    Parameters
+    ----------
+    struct_definitions : list
+        List to store structure definitions
+    params : object
+        Parameters containing file paths and translation dictionaries
+
+    Notes
+    -----
+    Parsing handles various Fortran type definitions. Current restrictions to avoid:
+      1) Line continuations: '&'
+      2) Dimensions: "integer, dimension(7) :: abc"
+      3) Kind: "integer(kind = 8) abc"
+      4) Variable inits using "," or "(" characters: "real abc(2) = [1, 2]"
+    """
+
+    for file_name in params.struct_def_files:
+        parse_file(
+            file_name,
+            struct_definitions,
+            params,
+        )
+
+
+def parse_file(
+    file_name: str,
+    struct_definitions: list,
+    params,
+) -> None:
+    """
+    Parse a single Fortran module file for structure definitions.
+
+    Parameters
+    ----------
+    file_name : str
+        Path to the Fortran module file
+    struct_definitions : list
+        List to store structure definitions
+    params : object
+        Parameters containing name translation dictionaries
+    """
+    with open(file_name) as f_module_file:
+        for line in f_module_file:
+            split_line = line.lower().split()
+            if len(split_line) < 2 or split_line[0] != "type":
+                continue
+
+            found = False
+            for struct in struct_definitions:
+                if struct.f_name == split_line[1]:
+                    found = True
+                    break
+
+            if not found:
+                continue
+
+            struct.short_name = struct.f_name[:-7]  # Remove '_struct' suffix
+            struct.cpp_class = "CPP_" + struct.short_name
+
+            # Collect the struct components
+            parse_struct_components(
+                f_module_file,
+                struct,
+                params,
+            )
+
+
+def parse_struct_components(f_module_file, struct, params) -> None:
+    """
+    Parse components of a Fortran structure.
+
+    Parameters
+    ----------
+    f_module_file : file
+        Open file handle to the Fortran module file
+    struct : object
+        Structure object to populate with component information
+    params : object
+        Parameters containing name translation dictionaries
+    """
+    found_contains_statement = False
 
     for line in f_module_file:
-        split_line = line.lower().split()
-        if len(split_line) < 2:
-            continue
-        if split_line[0] != "type":
+        if re_end_type.match(line):
+            break
+        if re_contains.match(line):
+            found_contains_statement = True
+        if found_contains_statement:
             continue
 
-        found = False
+        print_debug("\nStart: " + line.strip())
 
-        for struct in struct_definitions:
-            if struct.f_name != split_line[1]:
-                continue
-            found = True
+        # Remove comments
+        part = line.partition("!")
+        comment = part[2].strip()
+        line = part[0].strip()
+
+        if not line:
+            continue  # Blank line
+
+        print_debug("P1: " + line.strip())
+
+        base_arg = parse_component_line(line, comment)
+        if base_arg:
+            # Process all components on this line
+            process_components(base_arg, line, struct, params)
+
+
+def parse_component_line(line: str, comment: str) -> arg_class:
+    """
+    Parse a single line containing Fortran structure component definitions.
+
+    Parameters
+    ----------
+    line : str
+        Line of Fortran code (comments removed)
+    comment : str
+        Comment for this line
+
+    Returns
+    -------
+    arg_class
+        Base argument with type information parsed
+    """
+    base_arg = arg_class()
+    base_arg.comment = comment
+
+    # Get base_arg.type
+    split_line = re_match1.split(line, 1)
+    print_debug("P2: " + str(split_line))
+
+    base_arg.type = split_line.pop(0)
+    if base_arg.type == "integer" and split_line[0][0] == "(":
+        base_arg.type = "integer8"
+
+    if split_line[0][0] == " ":
+        split_line = re_match2.split(split_line[1], 1)
+        if split_line[0] == "":
+            split_line.pop(0)
+
+    print_debug("P3: " + str(split_line))
+
+    # Add type information if there is more...
+    if split_line[0] == "(":
+        split_line = split_line[1].partition(")")
+        base_arg.kind = split_line[0].strip()
+        split_line = re_match2.split(split_line[2].lstrip(), 1)
+        if split_line[0] == "":
+            split_line.pop(0)  # EG: "real(rp) :: ..."
+
+    print_debug("P4: " + str(split_line))
+
+    if split_line[0] == ",":
+        split_line = split_line[1].partition("::")
+
+        if split_line[0].strip() == "allocatable":
+            base_arg.pointer_type = ALLOC
+        elif split_line[0].strip() == "pointer":
+            base_arg.pointer_type = PTR
+
+        split_line = [split_line[2].lstrip()]
+
+    if split_line[0] == "::":
+        split_line.pop(0)
+
+    # Join split_line into one string so that we are starting from a definite state
+    if len(split_line) > 1:
+        split_line = ["".join(split_line)]
+
+    print_debug("P5: " + str(split_line))
+
+    base_arg.split_line = split_line
+    return base_arg
+
+
+def process_components(base_arg: arg_class, line: str, struct, params) -> None:
+    """
+    Process all components defined on a single line.
+
+    Parameters
+    ----------
+    base_arg : arg_class
+        Base argument with type information
+    line : str
+        Original line of Fortran code
+    struct : object
+        Structure object to add components to
+    params : object
+        Parameters containing name translation dictionaries
+    """
+    split_line = base_arg.split_line
+
+    while True:
+        print_debug("L1: " + str(split_line))
+
+        if len(split_line) > 1:
+            print(
+                "Confused parsing of struct component: "
+                + line.strip()
+                + " in: "
+                + struct.f_name,
+                file=sys.stderr,
+            )
+
+        split_line = re_match2.split(split_line[0], 1)
+        print_debug("L2: " + str(split_line))
+
+        arg = copy.deepcopy(base_arg)
+        arg.f_name = split_line.pop(0).strip().lower()
+
+        # Handle reserved words on the C++ side
+        full_name = struct.f_name + "%" + arg.f_name
+        if full_name in params.c_side_name_translation:
+            arg.c_name = params.c_side_name_translation[full_name]
+        else:
+            arg.c_name = arg.f_name
+
+        if len(split_line) == 0:
+            struct.arg.append(arg)
             break
 
-        if not found:
-            continue
+        # Get array bounds
+        if split_line[0] == "(":
+            arg = parse_array_bounds(arg, split_line)
+            split_line = arg.split_line
 
-        struct.short_name = struct.f_name[:-7]  # Remove '_struct' suffix
-        struct.cpp_class = "CPP_" + struct.short_name
+        print_debug("L3: " + str(split_line))
 
-        # Now collect the struct components
+        if len(split_line) == 0:
+            struct.arg.append(arg)
+            break
 
-        found_contains_statement = False
+        # Get initial value
+        if split_line[0] == "=":
+            arg, split_line = parse_init_value(arg, split_line)
 
-        for line in f_module_file:
-            if re_end_type.match(line):
+        print_debug("L4: " + str(split_line))
+
+        struct.arg.append(arg)
+        if len(split_line) == 0 or split_line[0] == "":
+            break
+
+        if split_line[0] != ",":
+            print(
+                'Expected "," while parsing: ' + line.strip() + " in: " + struct.f_name,
+                file=sys.stderr,
+            )
+
+        split_line.pop(0)
+
+
+def parse_array_bounds(arg: arg_class, split_line: list) -> arg_class:
+    """
+    Parse array bounds from a component definition.
+
+    Parameters
+    ----------
+    arg : arg_class
+        Argument to update with array information
+    split_line : list
+        Current split line being processed
+
+    Returns
+    -------
+    arg_class
+        Updated argument with array bounds
+    """
+    split_line = split_line[1].lstrip().partition(")")
+    arg.full_array = "(" + split_line[0].strip().replace(" ", "") + ")"
+    arg.array = arg.full_array[1:-1].split(",")
+
+    print_debug("L2p1: " + str(split_line))
+
+    split_line = re_match2.split(split_line[2].lstrip(), 1)
+    print_debug("L2p2: " + str(split_line))
+
+    if split_line[0] == "":
+        split_line.pop(0)  # Needed for EG: "integer aaa(5)"
+
+    if arg.array[0] != ":":  # If has explicit bounds...
+        for dim in arg.array:
+            if ":" in dim:
+                arg.lbound.append(dim.partition(":")[0])
+                arg.ubound.append(dim.partition(":")[2])
+            else:
+                arg.lbound.append("1")
+                arg.ubound.append(dim)
+
+    arg.split_line = split_line
+    return arg
+
+
+def parse_init_value(arg: arg_class, split_line: list) -> tuple:
+    """
+    Parse initialization value from a component definition.
+
+    Parameters
+    ----------
+    arg : arg_class
+        Argument to update with initialization information
+    split_line : list
+        Current split line being processed
+
+    Returns
+    -------
+    tuple
+        (updated arg, updated split_line)
+    """
+    split_line = re_match2.split(split_line[1].lstrip(), 1)
+    print_debug("L3p1: " + str(split_line))
+
+    # If have EG: "b(2) = [3, 4], c => null()" need to
+    # combine back "(...)" or "[...]" construct which is part of init string.
+    if len(split_line) > 1 and (split_line[1] == "(" or split_line[1] == "["):
+        split0 = split_line[0] + split_line[1]
+        n_parens = 1
+        for ix, char in enumerate(split_line[2]):
+            split0 = split0 + char
+            if char == "(" or char == "[":
+                n_parens = n_parens + 1
+            if char == ")" or char == "]":
+                n_parens = n_parens - 1
+            if n_parens == 0:
                 break
-            if re_contains.match(line):
-                found_contains_statement = True
-            if found_contains_statement:
-                continue
+        split1 = split_line[2][ix + 1 :]
+        if split1 == "":
+            split_line = [split0]
+        elif split1[0] == ",":
+            split_line = [split0, ",", split1[1:]]
+        else:
+            raise RuntimeError(f"Parse init value failed: {split_line}")
 
-            print_debug("\nStart: " + line.strip())
-            base_arg = arg_class()
+    print_debug("L3p2: " + str(split_line))
 
-            part = line.partition("!")
+    arg.init_value = split_line[0]
+    if len(split_line) == 1:
+        split_line[0] = ""
+    else:
+        split_line.pop(0)
 
-            base_arg.comment = part[2].strip()
-            line = part[0].strip()
-            if len(line) == 0:
-                continue  # Blank line.
-            print_debug("P1: " + line.strip())
+    return arg, split_line
 
-            # Get base_arg.type
 
-            split_line = re_match1.split(line, 1)
-            print_debug("P2: " + str(split_line))
-            base_arg.type = split_line.pop(0)
-            if base_arg.type == "integer" and split_line[0][0] == "(":
-                base_arg.type = "integer8"
-
-            if split_line[0][0] == " ":
-                split_line = re_match2.split(split_line[1], 1)
-                if split_line[0] == "":
-                    split_line.pop(0)
-
-            print_debug("P3: " + str(split_line))
-
-            # Now split_line[0] is a delimiter or component name
-            # Add type information if there is more...
-
-            if split_line[0] == "(":
-                split_line = split_line[1].partition(")")
-                base_arg.kind = split_line[0].strip()
-                split_line = re_match2.split(split_line[2].lstrip(), 1)
-                if split_line[0] == "":
-                    split_line.pop(0)  # EG: "real(rp) :: ..."
-
-            print_debug("P4: " + str(split_line))
-
-            if split_line[0] == ",":
-                split_line = split_line[1].partition("::")
-
-                if split_line[0].strip() == "allocatable":
-                    base_arg.pointer_type = ALLOC
-                elif split_line[0].strip() == "pointer":
-                    base_arg.pointer_type = PTR
-
-                split_line = [split_line[2].lstrip()]
-
-            if split_line[0] == "::":
-                split_line.pop(0)
-
-            # Join split_line into one string so that we are starting from a definite state.
-
-            if len(split_line) > 1:
-                split_line = ["".join(split_line)]
-            print_debug("P5: " + str(split_line))
-
-            # Now len(split_line) = 1 and the first word in split_line[0] is the structure component name.
-            # There may be multiple components defined so loop over all instances.
-
-            while True:
-                print_debug("L1: " + str(split_line))
-
-                if len(split_line) > 1:
-                    print(
-                        "Confused parsing of struct component: "
-                        + line.strip()
-                        + " in: "
-                        + struct.f_name,
-                        file=sys.stderr,
-                    )
-
-                split_line = re_match2.split(split_line[0], 1)
-
-                print_debug("L2: " + str(split_line))
-
-                arg = copy.deepcopy(base_arg)
-                arg.f_name = split_line.pop(0).strip().lower()
-
-                # Sometimes must avoid reserved words on the C++ side.
-                # This is handled on a case-by-case basis by params.c_side_name_translation
-
-                full_name = struct.f_name + "%" + arg.f_name
-                if full_name in params.c_side_name_translation:
-                    arg.c_name = params.c_side_name_translation[full_name]
-                else:
-                    arg.c_name = arg.f_name
-
-                if len(split_line) == 0:
-                    struct.arg.append(arg)
-                    break
-
-                # Get array bounds
-
-                if split_line[0] == "(":
-                    split_line = split_line[1].lstrip().partition(")")
-                    arg.full_array = "(" + split_line[0].strip().replace(" ", "") + ")"
-                    arg.array = arg.full_array[1:-1].split(",")
-                    print_debug("L2p1: " + str(split_line))
-                    split_line = re_match2.split(split_line[2].lstrip(), 1)
-                    print_debug("L2p2: " + str(split_line))
-                    if split_line[0] == "":
-                        split_line.pop(0)  # Needed for EG: "integer aaa(5)"
-
-                    if arg.array[0] != ":":  # If has explicit bounds...
-                        for dim in arg.array:
-                            if ":" in dim:
-                                arg.lbound.append(dim.partition(":")[0])
-                                arg.ubound.append(dim.partition(":")[2])
-                            else:
-                                arg.lbound.append("1")
-                                arg.ubound.append(dim)
-
-                print_debug("L3: " + str(split_line))
-
-                if len(split_line) == 0:
-                    struct.arg.append(arg)
-                    break
-
-                # Get initial value
-
-                if split_line[0] == "=":
-                    split_line = re_match2.split(split_line[1].lstrip(), 1)
-                    print_debug("L3p1: " + str(split_line))
-
-                    # If have EG: "b(2) = [3, 4], c => null()" need to
-                    # combine back "(...)" or "[...]" construct which is part of init string.
-
-                    if len(split_line) > 1 and (
-                        split_line[1] == "(" or split_line[1] == "["
-                    ):
-                        split0 = split_line[0] + split_line[1]
-                        n_parens = 1
-                        for ix, char in enumerate(split_line[2]):
-                            split0 = split0 + char
-                            if char == "(" or char == "[":
-                                n_parens = n_parens + 1
-                            if char == ")" or char == "]":
-                                n_parens = n_parens - 1
-                            if n_parens == 0:
-                                break
-                        split1 = split_line[2][ix + 1 :]
-                        if split1 == "":
-                            split_line = [split0]
-                        elif split1[0] == ",":
-                            split_line = [split0, ",", split1[1:]]
-                        else:
-                            print("?????")
-                            sys.exit()
-
-                    print_debug("L3p2: " + str(split_line))
-
-                    arg.init_value = split_line[0]
-                    if len(split_line) == 1:
-                        split_line[0] = ""
-                    else:
-                        split_line.pop(0)
-
-                print_debug("L4: " + str(split_line))
-
-                struct.arg.append(arg)
-                if len(split_line) == 0 or split_line[0] == "":
-                    break
-
-                if split_line[0] != ",":
-                    print(
-                        'Expected "," while parsing: '
-                        + line.strip()
-                        + " in: "
-                        + struct.f_name,
-                        file=sys.stderr,
-                    )
-
-                split_line.pop(0)
-
-    # End of parsing
-
-    f_module_file.close()
+parse_structure_definitions(struct_definitions, params)
 
 ##################################################################################
 ##################################################################################
@@ -2197,7 +2342,7 @@ if debug:
         f_out.write("******************************************\n")
         f_out.write(struct.f_name + "    " + str(len(struct.arg)) + "\n")
         for arg in struct.arg:
-            f_out.write("    " + arg.full_repr() + "\n")
+            f_out.write("    " + arg.original_repr() + "\n")
 
     f_out.close()
 
@@ -2218,7 +2363,7 @@ print("Number of structs found:         " + str(n_found), file=sys.stderr)
 if len(struct_definitions) != n_found:
     sys.exit("COULD NOT FIND ALL THE STRUCTS! STOPPING HERE!")
 
-struct_names = set([struct.f_name for struct in struct_definitions])
+struct_names = {struct.f_name for struct in struct_definitions}
 
 err = False
 
