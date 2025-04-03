@@ -4,7 +4,6 @@
 #include <pybind11/complex.h>
 #include <string>
 #include <vector>
-#include <valarray>
 #include <complex>
 #include <optional>
 #include <iostream>
@@ -37,15 +36,18 @@ py::object bmad_parser_wrapper(
 ) {
     auto lat_ptr = new CPP_lat;
     // auto lat_ptr = std::make_shared<CPP_lat>();
+    // CPP_lat *lat_raw_ptr = nullptr;
     void* parse_lat_ptr = nullptr;
     
     bool make_mats6 = make_mats6_obj.is_none() ? false : make_mats6_obj.cast<bool>();
     bool digested_read_ok = digested_read_ok_obj.is_none() ? true : digested_read_ok_obj.cast<bool>();
     const char* use_line = use_line_obj.is_none() ? nullptr : use_line_obj.cast<std::string>().c_str();
-    
+   
+    // lat_raw_ptr = (CPP_lat*)lat_ptr.get();
+
     bool error = cpp_bmad_parser(
         lat_file.c_str(), 
-        static_cast<void*>(&lat_ptr)
+        lat_ptr
         // , make_mats6, 
         // digested_read_ok, 
         // use_line, 
@@ -1622,7 +1624,9 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_cartesian_map &self) { return self.field_type; },
             [](CPP_cartesian_map &self, int val) { self.field_type = val; },
             "or electric$")
-        // TODO Skipping ptr: pointer to struct type (CPP_cartesian_map_term)
+        .def_property_readonly("ptr",
+            [](const CPP_cartesian_map &self) { return self.ptr; },
+            "Property from Fortran struct")
         ;
 
     py::class_<CPP_cylindrical_map_term1>(m, "cylindrical_map_term1", "Fortran struct: cylindrical_map_term1_struct")
@@ -1750,7 +1754,9 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Field origin offset.")
-        // TODO Skipping ptr: pointer to struct type (CPP_cylindrical_map_term)
+        .def_property_readonly("ptr",
+            [](const CPP_cylindrical_map &self) { return self.ptr; },
+            "Property from Fortran struct")
         ;
 
     py::class_<CPP_grid_field_pt1>(m, "grid_field_pt1", "Fortran struct: grid_field_pt1_struct")
@@ -1966,7 +1972,9 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_grid_field &self) { return self.curved_ref_frame; },
             [](CPP_grid_field &self, bool val) { self.curved_ref_frame = val; },
             "Property from Fortran struct")
-        // TODO Skipping ptr: pointer to struct type (CPP_grid_field_pt)
+        .def_property_readonly("ptr",
+            [](const CPP_grid_field &self) { return self.ptr; },
+            "Property from Fortran struct")
         ;
 
     py::class_<CPP_floor_position>(m, "floor_position", "Fortran struct: floor_position_struct")
@@ -3924,7 +3932,9 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Array of vertices. Always stored relative.")
-        // TODO Skipping surface: pointer to struct type (CPP_photon_reflect_surface)
+        .def_property_readonly("surface",
+            [](const CPP_wall3d_section &self) { return self.surface; },
+            "Property from Fortran struct")
         .def_property("type",
             [](const CPP_wall3d_section &self) { return self.type; },
             [](CPP_wall3d_section &self, int val) { self.type = val; },
@@ -6325,20 +6335,32 @@ PYBIND11_MODULE(bmad, m) {
             [](const CPP_ele &self) { return self.y; },
             [](CPP_ele &self, CPP_xy_disp val) { self.y = val; },
             "Projected dispersions.")
-        // TODO Skipping ac_kick: pointer to struct type (CPP_ac_kicker)
+        .def_property_readonly("ac_kick",
+            [](const CPP_ele &self) { return self.ac_kick; },
+            "ac_kicker element parameters.")
         .def_property("bookkeeping_state",
             [](const CPP_ele &self) { return self.bookkeeping_state; },
             [](CPP_ele &self, CPP_bookkeeping_state val) { self.bookkeeping_state = val; },
             "Attribute bookkeeping")
-        // TODO Skipping control: pointer to struct type (CPP_controller)
+        .def_property_readonly("control",
+            [](const CPP_ele &self) { return self.control; },
+            "group & overlay variables.")
         .def_property("floor",
             [](const CPP_ele &self) { return self.floor; },
             [](CPP_ele &self, CPP_floor_position val) { self.floor = val; },
             "Property from Fortran struct")
-        // TODO Skipping high_energy_space_charge: pointer to struct type (CPP_high_energy_space_charge)
-        // TODO Skipping mode3: pointer to struct type (CPP_mode3)
-        // TODO Skipping photon: pointer to struct type (CPP_photon_element)
-        // TODO Skipping rad_map: pointer to struct type (CPP_rad_map_ele)
+        .def_property_readonly("high_energy_space_charge",
+            [](const CPP_ele &self) { return self.high_energy_space_charge; },
+            "Property from Fortran struct")
+        .def_property_readonly("mode3",
+            [](const CPP_ele &self) { return self.mode3; },
+            "6D normal mode structure.")
+        .def_property_readonly("photon",
+            [](const CPP_ele &self) { return self.photon; },
+            "Property from Fortran struct")
+        .def_property_readonly("rad_map",
+            [](const CPP_ele &self) { return self.rad_map; },
+            "Radiation kick parameters")
         // Array property: taylor, type: CPP_taylor_ARRAY
         .def_property("taylor",
             [](const CPP_ele &self) {
@@ -6436,7 +6458,9 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Quaternion Spin Taylor map.")
-        // TODO Skipping wake: pointer to struct type (CPP_wake)
+        .def_property_readonly("wake",
+            [](const CPP_ele &self) { return self.wake; },
+            "Wakes")
         // Array property: wall3d, type: CPP_wall3d_ARRAY
         .def_property("wall3d",
             [](const CPP_ele &self) {
@@ -7540,10 +7564,18 @@ PYBIND11_MODULE(bmad, m) {
                 
             },
             "Constants defined in the lattice")
-        // TODO Skipping a: pointer to struct type (CPP_mode_info)
-        // TODO Skipping b: pointer to struct type (CPP_mode_info)
-        // TODO Skipping z: pointer to struct type (CPP_mode_info)
-        // TODO Skipping param: pointer to struct type (CPP_lat_param)
+        .def_property_readonly("a",
+            [](const CPP_lat &self) { return self.a; },
+            "Tunes (fractional part), etc.")
+        .def_property_readonly("b",
+            [](const CPP_lat &self) { return self.b; },
+            "Tunes (fractional part), etc.")
+        .def_property_readonly("z",
+            [](const CPP_lat &self) { return self.z; },
+            "Tunes (fractional part), etc.")
+        .def_property_readonly("param",
+            [](const CPP_lat &self) { return self.param; },
+            "Parameters")
         .def_property("lord_state",
             [](const CPP_lat &self) { return self.lord_state; },
             [](CPP_lat &self, CPP_bookkeeping_state val) { self.lord_state = val; },

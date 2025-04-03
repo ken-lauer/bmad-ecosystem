@@ -252,19 +252,24 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
                     "wake",
                     "z",
                 ):
+                    code.append(f'        .def_property_readonly("{arg.c_name}",')
                     code.append(
-                        f"        // TODO Skipping {arg.c_name}: pointer to struct type ({property_type})"
+                        f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
                     )
-                    continue
-
-                code.append(f'        .def_property("{arg.c_name}",')
-                code.append(
-                    f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
-                )
-                code.append(
-                    f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
-                )
-                code.append(f"            {property_doc})")
+                    # TODO setter?
+                    # code.append(
+                    #     f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
+                    # )
+                    code.append(f"            {property_doc})")
+                else:
+                    code.append(f'        .def_property("{arg.c_name}",')
+                    code.append(
+                        f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
+                    )
+                    code.append(
+                        f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
+                    )
+                    code.append(f"            {property_doc})")
             else:
                 # Simple property for scalar values
                 property_type = get_cpp_type_for_property(arg)
@@ -346,8 +351,7 @@ def get_cpp_array_type(arg):
     elif base_type == CHAR:
         return "String_ARRAY"  # Only 1D defined in the typedefs
 
-    # Fallback for other types
-    return f"std::valarray<{get_cpp_type_for_property(arg)}>"
+    raise NotImplementedError(base_type)
 
 
 def get_cpp_type_for_property(arg):

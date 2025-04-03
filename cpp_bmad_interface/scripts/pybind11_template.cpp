@@ -4,7 +4,6 @@
 #include <pybind11/complex.h>
 #include <string>
 #include <vector>
-#include <valarray>
 #include <complex>
 #include <optional>
 #include <iostream>
@@ -37,15 +36,18 @@ py::object bmad_parser_wrapper(
 ) {
     auto lat_ptr = new CPP_lat;
     // auto lat_ptr = std::make_shared<CPP_lat>();
+    // CPP_lat *lat_raw_ptr = nullptr;
     void* parse_lat_ptr = nullptr;
     
     bool make_mats6 = make_mats6_obj.is_none() ? false : make_mats6_obj.cast<bool>();
     bool digested_read_ok = digested_read_ok_obj.is_none() ? true : digested_read_ok_obj.cast<bool>();
     const char* use_line = use_line_obj.is_none() ? nullptr : use_line_obj.cast<std::string>().c_str();
-    
+   
+    // lat_raw_ptr = (CPP_lat*)lat_ptr.get();
+
     bool error = cpp_bmad_parser(
         lat_file.c_str(), 
-        static_cast<void*>(&lat_ptr)
+        lat_ptr
         // , make_mats6, 
         // digested_read_ok, 
         // use_line, 

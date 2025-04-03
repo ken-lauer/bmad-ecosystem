@@ -1139,9 +1139,12 @@ extern "C" void cartesian_map_to_c2 (CPP_cartesian_map& C, c_Real& z_field_scale
   // c_side.to_c2_set[integer, 0, NOT]
   C.field_type = z_field_type;
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_ptr == 0)
-    delete C.ptr;
-  else {
+  if (n_ptr == 0) {
+    if (C.ptr) {
+      delete C.ptr;
+      C.ptr = nullptr;
+    }
+  } else {
     C.ptr = new CPP_cartesian_map_term;
     cartesian_map_term_to_c(z_ptr, *C.ptr);
   }
@@ -1261,9 +1264,12 @@ extern "C" void cylindrical_map_to_c2 (CPP_cylindrical_map& C, c_Int& z_m, c_Int
   // c_side.to_c2_set[real, 1, NOT]
   C.r0 << z_r0;
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_ptr == 0)
-    delete C.ptr;
-  else {
+  if (n_ptr == 0) {
+    if (C.ptr) {
+      delete C.ptr;
+      C.ptr = nullptr;
+    }
+  } else {
     C.ptr = new CPP_cylindrical_map_term;
     cylindrical_map_term_to_c(z_ptr, *C.ptr);
   }
@@ -1402,9 +1408,12 @@ extern "C" void grid_field_to_c2 (CPP_grid_field& C, c_Int& z_geometry, c_Int& z
   // c_side.to_c2_set[logical, 0, NOT]
   C.curved_ref_frame = z_curved_ref_frame;
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_ptr == 0)
-    delete C.ptr;
-  else {
+  if (n_ptr == 0) {
+    if (C.ptr) {
+      delete C.ptr;
+      C.ptr = nullptr;
+    }
+  } else {
     C.ptr = new CPP_grid_field_pt;
     grid_field_pt_to_c(z_ptr, *C.ptr);
   }
@@ -2473,9 +2482,12 @@ extern "C" void wall3d_section_to_c2 (CPP_wall3d_section& C, c_Char z_name, c_Ch
   for (int i = 0; i < n1_v; i++) wall3d_vertex_to_c(z_v[i], C.v[i]);
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_surface == 0)
-    delete C.surface;
-  else {
+  if (n_surface == 0) {
+    if (C.surface) {
+      delete C.surface;
+      C.surface = nullptr;
+    }
+  } else {
     C.surface = new CPP_photon_reflect_surface;
     photon_reflect_surface_to_c(z_surface, *C.surface);
   }
@@ -2599,9 +2611,12 @@ extern "C" void ramper_lord_to_c2 (CPP_ramper_lord& C, c_Int& z_ix_ele, c_Int& z
   // c_side.to_c2_set[integer, 0, NOT]
   C.ix_con = z_ix_con;
   // c_side.to_c2_set[real, 0, PTR]
-  if (n_attrib_ptr == 0)
-    delete C.attrib_ptr;
-  else {
+  if (n_attrib_ptr == 0) {
+    if (C.attrib_ptr) {
+      delete C.attrib_ptr;
+      C.attrib_ptr = nullptr;
+    }
+  } else {
     C.attrib_ptr = new Real;
     *C.attrib_ptr = *z_attrib_ptr;
   }
@@ -4012,8 +4027,12 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   // c_side.to_c2_set[character, 0, NOT]
   C.component_name = z_component_name;
   // c_side.to_c2_set[character, 0, PTR]
-  if (n_descrip == 0) 
-    delete C.descrip;
+  if (n_descrip == 0) {
+    if (C.descrip) {
+      delete C.descrip;
+      C.descrip = nullptr;
+    }
+  }
   else {
     C.descrip = new string;
     *(C.descrip) = z_descrip;
@@ -4030,9 +4049,12 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   // c_side.to_c2_set[type, 0, NOT]
   xy_disp_to_c(z_y, C.y);
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_ac_kick == 0)
-    delete C.ac_kick;
-  else {
+  if (n_ac_kick == 0) {
+    if (C.ac_kick) {
+      delete C.ac_kick;
+      C.ac_kick = nullptr;
+    }
+  } else {
     C.ac_kick = new CPP_ac_kicker;
     ac_kicker_to_c(z_ac_kick, *C.ac_kick);
   }
@@ -4040,9 +4062,12 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   // c_side.to_c2_set[type, 0, NOT]
   bookkeeping_state_to_c(z_bookkeeping_state, C.bookkeeping_state);
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_control == 0)
-    delete C.control;
-  else {
+  if (n_control == 0) {
+    if (C.control) {
+      delete C.control;
+      C.control = nullptr;
+    }
+  } else {
     C.control = new CPP_controller;
     controller_to_c(z_control, *C.control);
   }
@@ -4050,33 +4075,45 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   // c_side.to_c2_set[type, 0, NOT]
   floor_position_to_c(z_floor, C.floor);
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_high_energy_space_charge == 0)
-    delete C.high_energy_space_charge;
-  else {
+  if (n_high_energy_space_charge == 0) {
+    if (C.high_energy_space_charge) {
+      delete C.high_energy_space_charge;
+      C.high_energy_space_charge = nullptr;
+    }
+  } else {
     C.high_energy_space_charge = new CPP_high_energy_space_charge;
     high_energy_space_charge_to_c(z_high_energy_space_charge, *C.high_energy_space_charge);
   }
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_mode3 == 0)
-    delete C.mode3;
-  else {
+  if (n_mode3 == 0) {
+    if (C.mode3) {
+      delete C.mode3;
+      C.mode3 = nullptr;
+    }
+  } else {
     C.mode3 = new CPP_mode3;
     mode3_to_c(z_mode3, *C.mode3);
   }
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_photon == 0)
-    delete C.photon;
-  else {
+  if (n_photon == 0) {
+    if (C.photon) {
+      delete C.photon;
+      C.photon = nullptr;
+    }
+  } else {
     C.photon = new CPP_photon_element;
     photon_element_to_c(z_photon, *C.photon);
   }
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_rad_map == 0)
-    delete C.rad_map;
-  else {
+  if (n_rad_map == 0) {
+    if (C.rad_map) {
+      delete C.rad_map;
+      C.rad_map = nullptr;
+    }
+  } else {
     C.rad_map = new CPP_rad_map_ele;
     rad_map_ele_to_c(z_rad_map, *C.rad_map);
   }
@@ -4088,9 +4125,12 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   // c_side.to_c2_set[type, 1, NOT]
   for (unsigned int i = 0; i < C.spin_taylor.size(); i++) taylor_to_c(z_spin_taylor[i], C.spin_taylor[i]);
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_wake == 0)
-    delete C.wake;
-  else {
+  if (n_wake == 0) {
+    if (C.wake) {
+      delete C.wake;
+      C.wake = nullptr;
+    }
+  } else {
     C.wake = new CPP_wake;
     wake_to_c(z_wake, *C.wake);
   }
@@ -4533,33 +4573,45 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   for (int i = 0; i < n1_constant; i++) expression_atom_to_c(z_constant[i], C.constant[i]);
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_a == 0)
-    delete C.a;
-  else {
+  if (n_a == 0) {
+    if (C.a) {
+      delete C.a;
+      C.a = nullptr;
+    }
+  } else {
     C.a = new CPP_mode_info;
     mode_info_to_c(z_a, *C.a);
   }
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_b == 0)
-    delete C.b;
-  else {
+  if (n_b == 0) {
+    if (C.b) {
+      delete C.b;
+      C.b = nullptr;
+    }
+  } else {
     C.b = new CPP_mode_info;
     mode_info_to_c(z_b, *C.b);
   }
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_z == 0)
-    delete C.z;
-  else {
+  if (n_z == 0) {
+    if (C.z) {
+      delete C.z;
+      C.z = nullptr;
+    }
+  } else {
     C.z = new CPP_mode_info;
     mode_info_to_c(z_z, *C.z);
   }
 
   // c_side.to_c2_set[type, 0, PTR]
-  if (n_param == 0)
-    delete C.param;
-  else {
+  if (n_param == 0) {
+    if (C.param) {
+      delete C.param;
+      C.param = nullptr;
+    }
+  } else {
     C.param = new CPP_lat_param;
     lat_param_to_c(z_param, *C.param);
   }
@@ -4594,17 +4646,23 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   // c_side.to_c2_set[integer, 0, NOT]
   C.version = z_version;
   // c_side.to_c2_set[integer, 0, PTR]
-  if (n_n_ele_track == 0)
-    delete C.n_ele_track;
-  else {
+  if (n_n_ele_track == 0) {
+    if (C.n_ele_track) {
+      delete C.n_ele_track;
+      C.n_ele_track = nullptr;
+    }
+  } else {
     C.n_ele_track = new Int;
     *C.n_ele_track = *z_n_ele_track;
   }
 
   // c_side.to_c2_set[integer, 0, PTR]
-  if (n_n_ele_max == 0)
-    delete C.n_ele_max;
-  else {
+  if (n_n_ele_max == 0) {
+    if (C.n_ele_max) {
+      delete C.n_ele_max;
+      C.n_ele_max = nullptr;
+    }
+  } else {
     C.n_ele_max = new Int;
     *C.n_ele_max = *z_n_ele_max;
   }

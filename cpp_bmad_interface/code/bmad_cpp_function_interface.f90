@@ -50,7 +50,9 @@ contains
     character(len=1000) :: f_lat_file
 
     call to_f_str(lat_file, f_lat_file)
-  
+ 
+    print *, "(f) lat_file=", f_lat_file
+
     if (.not. c_associated(lat)) then
       err_flag = .true.
       return
@@ -58,7 +60,7 @@ contains
 
     call bmad_parser(f_lat_file, f_lat, make_mats6, digested_read_ok, use_line, err_flag, f_parse_lat)
 
-   ptr_f_lat = c_loc(f_lat)
+    ptr_f_lat = c_loc(f_lat)
 
     if (.not. c_associated(ptr_f_lat)) then
       err_flag = .true.

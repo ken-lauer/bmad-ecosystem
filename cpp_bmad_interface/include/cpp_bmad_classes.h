@@ -10,9 +10,10 @@
 
 #ifndef CPP_BMAD_CLASSES
 
+#include <complex>
+#include <memory>
 #include <string>
 #include <vector>
-#include <complex>
 #include "bmad_enums.h"
 #include "bmad_std_typedef.h"
 
