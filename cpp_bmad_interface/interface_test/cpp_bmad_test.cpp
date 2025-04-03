@@ -1781,7 +1781,6 @@ void set_CPP_cartesian_map_test_pattern (CPP_cartesian_map& C, int ix_patt) {
     set_CPP_cartesian_map_term_test_pattern((*C.ptr), ix_patt);
   }
 
-
 }
 
 //--------------------------------------------------------------
@@ -1980,7 +1979,6 @@ void set_CPP_cylindrical_map_test_pattern (CPP_cylindrical_map& C, int ix_patt) 
     C.ptr = new CPP_cylindrical_map_term;
     set_CPP_cylindrical_map_term_test_pattern((*C.ptr), ix_patt);
   }
-
 
 }
 
@@ -2192,7 +2190,6 @@ void set_CPP_grid_field_test_pattern (CPP_grid_field& C, int ix_patt) {
     C.ptr = new CPP_grid_field_pt;
     set_CPP_grid_field_pt_test_pattern((*C.ptr), ix_patt);
   }
-
 
 }
 
@@ -3933,7 +3930,6 @@ void set_CPP_wall3d_section_test_pattern (CPP_wall3d_section& C, int ix_patt) {
     C.surface = new CPP_photon_reflect_surface;
     set_CPP_photon_reflect_surface_test_pattern((*C.surface), ix_patt);
   }
-
   // c_side.test_pat[integer, 0, NOT]
   rhs = 7 + offset; C.type = rhs;
 
@@ -4129,7 +4125,6 @@ void set_CPP_ramper_lord_test_pattern (CPP_ramper_lord& C, int ix_patt) {
     C.attrib_ptr = new Real;
     rhs = 3 + offset; (*C.attrib_ptr) = rhs;
   }
-
 
 }
 
@@ -6069,7 +6064,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.ac_kick = new CPP_ac_kicker;
     set_CPP_ac_kicker_test_pattern((*C.ac_kick), ix_patt);
   }
-
   // c_side.test_pat[type, 0, NOT]
   set_CPP_bookkeeping_state_test_pattern(C.bookkeeping_state, ix_patt);
 
@@ -6080,7 +6074,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.control = new CPP_controller;
     set_CPP_controller_test_pattern((*C.control), ix_patt);
   }
-
   // c_side.test_pat[type, 0, NOT]
   set_CPP_floor_position_test_pattern(C.floor, ix_patt);
 
@@ -6091,7 +6084,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.high_energy_space_charge = new CPP_high_energy_space_charge;
     set_CPP_high_energy_space_charge_test_pattern((*C.high_energy_space_charge), ix_patt);
   }
-
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.mode3 = NULL;
@@ -6099,7 +6091,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.mode3 = new CPP_mode3;
     set_CPP_mode3_test_pattern((*C.mode3), ix_patt);
   }
-
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.photon = NULL;
@@ -6107,7 +6098,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.photon = new CPP_photon_element;
     set_CPP_photon_element_test_pattern((*C.photon), ix_patt);
   }
-
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.rad_map = NULL;
@@ -6115,7 +6105,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.rad_map = new CPP_rad_map_ele;
     set_CPP_rad_map_ele_test_pattern((*C.rad_map), ix_patt);
   }
-
   // c_side.test_pat[type, 1, NOT]
   for (unsigned int i = 0; i < C.taylor.size(); i++)
     {int rhs = 101 + i + 26 + offset; set_CPP_taylor_test_pattern(C.taylor[i], ix_patt+i+1);}
@@ -6132,7 +6121,6 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.wake = new CPP_wake;
     set_CPP_wake_test_pattern((*C.wake), ix_patt);
   }
-
   // c_side.test_pat[type, 1, PTR]
   if (ix_patt < 3) 
     C.wall3d.resize(0);
@@ -6698,7 +6686,6 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.a = new CPP_mode_info;
     set_CPP_mode_info_test_pattern((*C.a), ix_patt);
   }
-
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.b = NULL;
@@ -6706,7 +6693,6 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.b = new CPP_mode_info;
     set_CPP_mode_info_test_pattern((*C.b), ix_patt);
   }
-
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.z = NULL;
@@ -6714,7 +6700,6 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.z = new CPP_mode_info;
     set_CPP_mode_info_test_pattern((*C.z), ix_patt);
   }
-
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.param = NULL;
@@ -6722,7 +6707,6 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.param = new CPP_lat_param;
     set_CPP_lat_param_test_pattern((*C.param), ix_patt);
   }
-
   // c_side.test_pat[type, 0, NOT]
   set_CPP_bookkeeping_state_test_pattern(C.lord_state, ix_patt);
 
@@ -6780,7 +6764,6 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.n_ele_track = new Int;
     rhs = 32 + offset; (*C.n_ele_track) = rhs;
   }
-
   // c_side.test_pat[integer, 0, PTR]
   if (ix_patt < 3) 
     C.n_ele_max = NULL;
@@ -6788,7 +6771,6 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.n_ele_max = new Int;
     rhs = 34 + offset; (*C.n_ele_max) = rhs;
   }
-
   // c_side.test_pat[integer, 0, NOT]
   rhs = 36 + offset; C.n_control_max = rhs;
 

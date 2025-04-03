@@ -1002,12 +1002,6 @@ endif
             t.equality_test = t.equality_test.replace("associated", "allocated")
 
 
-test_pat_pointer0 = """\
-  if (ix_patt < 3) 
-    C.NAME = NULL;
-  else {
-"""
-
 test_pat_pointer1 = """\
   if (ix_patt < 3) 
     C.NAME.resize(0);
@@ -1044,10 +1038,9 @@ test_pat3 = (
 def configure_c_side_trans_by_type(
     type: str,
     dim: int,
-    pointer_type: str,
     c: c_side_trans_class,
 ):
-    """Configure a c_side_trans object based on type, dimension, and pointer type."""
+    """Configure a c_side_trans object based on type, dimension. Not a pointer type."""
     if type == REAL:
         c_type = "Real"
         c_arg = "c_Real"
@@ -1257,13 +1250,14 @@ def configure_pointer_dim0(
     cp.c_class_suffix = "*"
     cp.constructor = "NAME(NULL)"
     cp.destructor = "if (NAME) delete NAME;"
-    cp.test_pat = (
-        test_pat_pointer0
-        + "    C.NAME = new "
-        + c_type
-        + ";\n"
-        + indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2)
-        + "  }\n"
+    cp.test_pat = "\n".join(
+        (
+            "  if (ix_patt < 3) ",
+            "    C.NAME = NULL;",
+            "  else {",
+            f"    C.NAME = new {c_type};",
+            indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2) + "  }",
+        )
     )
     cp.to_f_setup = "  unsigned int n_NAME = 0; if (C.NAME != NULL) n_NAME = 1;\n"
     cp.equality_test = """\
@@ -1497,7 +1491,7 @@ def setup_common_c_side_trans():
             c_side_trans[type_val, dim, NOT] = c_side_trans_class()
             c = c_side_trans[type_val, dim, NOT]
 
-            configure_c_side_trans_by_type(type_val, dim, NOT, c)
+            configure_c_side_trans_by_type(type_val, dim, c)
 
             # Create and configure pointer version (except for SIZE type)
             if type_val != SIZE:
