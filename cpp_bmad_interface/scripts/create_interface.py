@@ -119,17 +119,48 @@ def indent(string: str, numspace: int) -> str:
 class c_side_trans_class:
     c_class: str = ""  # EG: 'CPP_ele_Array'
     c_class_suffix: str = ""  # EG: '*'
+
+    # C++ --> Fortran
+    # |   C++     |    Fortran |
+    # obj_to_f() -> obj_to_f2()
+    #
+    # (C) handles obj_to_f()  - picks out class members
+    # (F) handles obj_to_f2() - takes flattened class members to reconstruct a new Fortran structure
+
+    # C -> F setup code:
     to_f_setup: str = ""
+    # C -> F cleanup code:
     to_f_cleanup: str = ""
+    # C -> F2 argument type:
     to_f2_arg: str = ""
+    # C -> F2 how to pass the argument when calling f2 (F) from C
     to_f2_call: str = ""
+
+    # Fortran --> C++
+    # | Fortran   |  C++       |
+    # obj_to_c() -> obj_to_c2()
+    #
+    # (F) handles obj_to_c()  - picks out structure members
+    # (C) handles obj_to_c2() - takes flattened class members to reconstruct a new C++ class instance
+
+    # C2 function: parameter type
     to_c2_arg: str = ""
+    # C2 function: how to set the value on the new instance
     to_c2_set: str = "  C.NAME = z_NAME;"
+
+    # C++ class constructor initializer list item
     constructor: str = "NAME(VALUE)"
+    # C++ class constructor initializer value ("VALUE" gets replaced with this)
     construct_value: str = "0"
+    # C++ class destructor code
     destructor: str = ""
+
+    # How to compare instances of this type
     equality_test: str = "  is_eq = is_eq && (x.NAME == y.NAME);\n"
+    # The pattern to be used in the test suite to fill this instance
     test_pat: str = "  rhs = XXX + offset; C.NAME = TEST_VALUE;\n"
+    # The pattern to be used in the test suite to fill this instance
+    # "TEST_VALUE" in "test_pat" gets replaced with this.
     test_value: str = ""
 
     def __repr__(self):
@@ -143,18 +174,41 @@ class c_side_trans_class:
 
 @dataclass
 class f_side_trans_class:
+    # Fortran -> C++:
+    #
+    # | Fortran   |  C++       |
+    # obj_to_c() -> obj_to_c2()
+    #
+    # (F) handles obj_to_c()  - picks out structure members
+    # (C) handles obj_to_c2() - takes flattened class members to reconstruct a new C++ class instance
+    #
+    # F -> C: variable list: defines for the obj_to_c function
+    to_c_var: list[str] = field(default_factory=list)
+    # F -> C: how to translate the Fortran value to C
+    to_c_trans: str = ""
+    # F -> C2: how to call obj_to_c2() from fortran with the argument
     to_c2_call: str = ""
+    # F -> C2: how to define the local variable in to_c to call to_c2:
     to_c2_type: str = ""
+    # F -> C2: the name for the fortran variable in to_c:
     to_c2_name: str = ""
+    # F -> C2: the Fortran subroutine argument specification of to_c2:
+    to_c2_f2_sub_arg: str = "z_NAME"
+
+    # C++ -> Fortran:
+    #
+    # |   C++     |    Fortran |
+    # obj_to_f() -> obj_to_f2()
+    #
+    # (C) handles obj_to_f()  - picks out class members
+    # (F) handles obj_to_f2() - takes flattened class members to reconstruct a new Fortran structure
     to_f2_type: str = ""
     to_f2_name: str = ""
-    equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
-    test_pat: str = "rhs = XXX + offset; F%NAME = TEST_VALUE\n"
-    to_c2_f2_sub_arg: str = "z_NAME"
     to_f2_trans: str = "F%NAME = z_NAME"
     to_f2_var: list[str] = field(default_factory=list)
-    to_c_var: list[str] = field(default_factory=list)
-    to_c_trans: str = ""
+
+    equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
+    test_pat: str = "rhs = XXX + offset; F%NAME = TEST_VALUE\n"
     size_var: list[str] = field(
         default_factory=list
     )  # For communicating the size of allocatable and pointer variables
