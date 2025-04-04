@@ -28,7 +28,7 @@ extern "C" bool cpp_bmad_parser(
 namespace py = pybind11;
 
 // Wrapper function that handles Python types and optional arguments
-py::object bmad_parser_wrapper(
+shared_ptr<CPP_lat> bmad_parser_wrapper(
     const std::string& lat_file,
     py::object make_mats6_obj = py::none(),
     py::object digested_read_ok_obj = py::none(),
@@ -49,18 +49,20 @@ py::object bmad_parser_wrapper(
         // use_line, 
         // &parse_lat_ptr
     );
-   
-    py::dict result;
-    result["error"] = error;
-    result["lattice"] = lat;
+  
+    return lat;
 
-    if (parse_lat_ptr) {
-        result["parse_lattice"] = parse_lat_ptr;
-    } else {
-        result["parse_lattice"] = py::none();
-    }
-    
-    return result;
+    // py::dict result;
+    // result["error"] = error;
+    // result["lattice"] = lat;
+    //
+    // if (parse_lat_ptr) {
+    //     result["parse_lattice"] = parse_lat_ptr;
+    // } else {
+    //     result["parse_lattice"] = py::none();
+    // }
+    //
+    // return result;
 }
 
 
@@ -3015,7 +3017,9 @@ PYBIND11_MODULE(bmad, m) {
                 // Get numpy array from String_ARRAY
                 const auto& arr = self.distribution_type;
                 auto size = arr.size();
-                return py::cast(std::vector<std::string>(std::begin(arr), std::end(arr)));
+                
+                return arr;
+                
             },
             [](CPP_beam_init &self, py::array arr) {
                 // Set distribution_type from numpy array
@@ -4788,7 +4792,9 @@ PYBIND11_MODULE(bmad, m) {
                 // Get numpy array from String_ARRAY
                 const auto& arr = self.print_str;
                 auto size = arr.size();
-                return py::cast(std::vector<std::string>(std::begin(arr), std::end(arr)));
+                
+                return arr;
+                
             },
             [](CPP_lat &self, py::array arr) {
                 // Set print_str from numpy array

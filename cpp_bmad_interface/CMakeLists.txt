@@ -4,12 +4,19 @@ project(ACC)
 set (LIBNAME cpp_bmad_interface)
 SET (CREATE_SHARED true)
 
+execute_process(
+  COMMAND python3 -m pybind11 --includes
+  OUTPUT_VARIABLE PYBIND11_INCLUDES
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+string(REPLACE "-I" "" PYBIND11_INCLUDES "${PYBIND11_INCLUDES}")
+string(REPLACE " " ";" PYBIND11_INCLUDES "${PYBIND11_INCLUDES}")
+
 set(INC_DIRS 
   include
   $ENV{ACC_CONDA_PATH}/include
-  $ENV{ACC_CONDA_PATH}/include/python3.12
+  ${PYBIND11_INCLUDES}
 )
-# TODO: python3 -m pybind11 --includes
 
 set(SRC_DIRS
   code

@@ -6035,7 +6035,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     {int rhs = 101 + i + 4 + offset; C.component_name[i] = 'a' + rhs % 26;}
   // c_side.test_pat[character, 0, PTR]
   if (ix_patt < 3) 
-    C.descrip == NULL;
+    C.descrip = nullptr;
   else {
     C.descrip = make_shared<string>(200, ' ');
     for (size_t i = 0; i < C.descrip->size(); i++) {

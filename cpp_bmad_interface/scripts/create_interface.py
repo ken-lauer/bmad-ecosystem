@@ -1646,7 +1646,7 @@ def setup_char_pointer(c_side_trans):
 """
     cc.test_pat = """\
   if (ix_patt < 3) 
-    C.NAME == NULL;
+    C.NAME = nullptr;
   else {
     C.NAME = make_shared<string>(STR_LEN, ' ');
     for (size_t i = 0; i < C.NAME->size(); i++) {
