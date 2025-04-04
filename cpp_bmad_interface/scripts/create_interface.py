@@ -356,8 +356,7 @@ class struct_def_class:
         default_factory=list
     )  # Array of arg_class. List of structrure components + array bound dimensions.
     c_constructor_arg_list: str = ""
-    c_constructor_body: str = "{}"  # Body of the C++ constructor
-    # if DEBUG: "{ cout << "NAME(): " << this << endl; }"
+    c_constructor_body: str = ""  # Body of the C++ constructor
     c_extra_methods: str = ""  # Additional custom methods
 
     def __str__(self) -> str:
@@ -1069,9 +1068,9 @@ equality_test_pointer = """\
   if (x.NAME != NULL) is_eq = TEST;
 """
 
-for1 = "  for (unsigned int i = 0; i < C.NAME.size(); i++)"
-for2 = "  for (unsigned int j = 0; j < C.NAME[0].size(); j++) "
-for3 = "  for (unsigned int k = 0; k < C.NAME[0][0].size(); k++)"
+for1 = "  for (size_t i = 0; i < C.NAME.size(); i++)"
+for2 = "  for (size_t j = 0; j < C.NAME[0].size(); j++) "
+for3 = "  for (size_t k = 0; k < C.NAME[0][0].size(); k++)"
 
 test_pat1 = for1 + "\n    {int rhs = 101 + i + XXX + offset; C.NAME[i] = TEST_VALUE;}"
 test_pat2 = (
@@ -1174,22 +1173,28 @@ def configure_c_dim1(c, c_type, c_arg, type):
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "&C.NAME[0]"
     c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.constructor = "NAME(DIM1, VALUE)"
-    c.to_c2_set = "  C.NAME << z_NAME;"
-    c.test_pat = test_pat1
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
         c.constructor = "NAME(CPP_KIND_ARRAY(DIM1))"
-        c.to_c2_set = for1 + " KIND_to_c(z_NAME[i], C.NAME[i]);"
+        c.to_c2_set = "\n".join(
+            (
+                "for (size_t i = 0; i < C.NAME.size(); i++)",
+                "{ C.NAME[i] = make_shared<CPP_KIND>(); KIND_to_c(z_NAME[i], *C.NAME[i]); }",
+            )
+        )
         c.test_pat = test_pat1.replace(
             "C.NAME[i] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1)",
+            "set_CPP_KIND_test_pattern(*C.NAME[i], ix_patt+i+1)",
         )
         c.to_f_setup = """\
   const CPP_KIND* z_NAME[DIM1];
-  for (int i = 0; i < DIM1; i++) {z_NAME[i] = &C.NAME[i];}
+  for (int i = 0; i < DIM1; i++) {z_NAME[i] = C.NAME[i].get();}
 """
+    else:
+        c.constructor = "NAME(DIM1, VALUE)"
+        c.to_c2_set = "  C.NAME << z_NAME;"
+        c.test_pat = test_pat1
 
 
 def configure_c_dim2(c, c_type, c_arg, type):
@@ -1211,17 +1216,17 @@ def configure_c_dim2(c, c_type, c_arg, type):
         c.to_c2_set = (
             for1
             + for2
-            + "\n    {int m = DIM2*i + j; KIND_to_c(z_NAME[m], C.NAME[i][j]);}"
+            + "\n    {int m = DIM2*i + j; KIND_to_c(z_NAME[m], *C.NAME[i][j].get());}"
         )
         c.test_pat = test_pat2.replace(
             "C.NAME[i][j] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(C.NAME[i][j], ix_patt+i+1+10*(j+1))",
+            "set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt+i+1+10*(j+1))",
         )
         c.to_f_setup = (
             "  const CPP_KIND* z_NAME[DIM1*DIM2];\n"
             + for1
             + for2
-            + "\n    {int m = DIM2*i + j; z_NAME[m] = &C.NAME[i][j];}\n"
+            + "\n    {int m = DIM2*i + j; z_NAME[m] = C.NAME[i][j].get();}\n"
         )
 
 
@@ -1249,18 +1254,18 @@ def configure_c_dim3(c, c_type, c_arg, type):
             for1
             + for2
             + for3
-            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], C.NAME[i][j][k]);}"
+            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], *C.NAME[i][j][k].get());}"
         )
         c.test_pat = c.test_pat.replace(
             "C.NAME[i][j][k] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+1+10*(j+1)+100*(k+1))",
+            "set_CPP_KIND_test_pattern(*C.NAME[i][j][k], ix_patt+i+1+10*(j+1)+100*(k+1))",
         )
         c.to_f_setup = (
             "  const CPP_KIND* z_NAME[DIM1*DIM2*DIM3];\n"
             + for1
             + for2
             + for3
-            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = &C.NAME[i][j][k];}\n"
+            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = C.NAME[i][j][k].get();}\n"
         )
 
 
@@ -1301,19 +1306,20 @@ def configure_pointer_dim0(
     cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
 ):
     """Configure pointer for dimension 0"""
-    cp.c_class_suffix = "*"
+    cp.c_class = f"shared_ptr<{cp.c_class}>"
+    # cp.c_class_suffix = ""
     cp.constructor = "NAME(NULL)"
-    cp.destructor = "if (NAME) delete NAME;"
+    cp.destructor = ""
     cp.test_pat = "\n".join(
         (
             "  if (ix_patt < 3) ",
             "    C.NAME = NULL;",
             "  else {",
-            f"    C.NAME = new {c_type};",
+            f"    C.NAME = make_shared<{c_type}>();",
             indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2) + "  }",
         )
     )
-    cp.to_f_setup = "  unsigned int n_NAME = 0; if (C.NAME != NULL) n_NAME = 1;\n"
+    cp.to_f_setup = "  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;\n"
     cp.equality_test = """\
   is_eq = is_eq && ((x.NAME == NULL) == (y.NAME == NULL));
   if (!is_eq) return false;
@@ -1321,12 +1327,9 @@ def configure_pointer_dim0(
 """
     cp.to_c2_set = """\
   if (n_NAME == 0) {
-    if (C.NAME) {
-      delete C.NAME;
-      C.NAME = nullptr;
-    }
+    C.NAME = nullptr;
   } else {
-    C.NAME = new KIND;
+    C.NAME = make_shared<KIND>();
     SET
   }
 """.replace("KIND", c_type)
@@ -1336,6 +1339,7 @@ def configure_pointer_dim0(
         cp.to_c2_arg = "Opaque_KIND_class* z_NAME"
         cp.to_c2_set = cp.to_c2_set.replace("SET", "KIND_to_c(z_NAME, *C.NAME);")
     else:
+        cp.to_f2_call = "C.NAME.get()"
         cp.to_c2_set = cp.to_c2_set.replace("SET", "*C.NAME = *z_NAME;")
 
 
@@ -1364,7 +1368,7 @@ def configure_pointer_dim1(
             test_pat_pointer1
             + x2
             + for1
-            + "  {set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1);}\n"
+            + "  {set_CPP_KIND_test_pattern(*C.NAME[i], ix_patt+i+1);}\n"
             + "  }\n"
         )
         cp.to_f_setup = """\
@@ -1372,12 +1376,12 @@ def configure_pointer_dim1(
   const CPP_KIND** z_NAME = NULL;
   if (n1_NAME != 0) {
     z_NAME = new const CPP_KIND*[n1_NAME];
-    for (int i = 0; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
+    for (int i = 0; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].get();
   }
 """
         cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) KIND_to_c(z_NAME[i], C.NAME[i]);
+  for (int i = 0; i < n1_NAME; i++) { C.NAME[i] = make_shared<CPP_KIND>(); KIND_to_c(z_NAME[i], *C.NAME[i]); }
 """
         cp.to_f_cleanup = " delete[] z_NAME;\n"
 
@@ -1414,10 +1418,10 @@ def configure_pointer_dim2(
         cp.test_pat = (
             test_pat_pointer1
             + """\
-    for (unsigned int i = 0; i < C.NAME.size(); i++) {
+    for (size_t i = 0; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);\n
-      for (unsigned int j = 0; j < C.NAME[0].size(); j++) {
-        set_CPP_KIND_test_pattern(C.NAME[i][j], ix_patt+i+2*j+3);
+      for (size_t j = 0; j < C.NAME[0].size(); j++) {
+        set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt+i+2*j+3);
       }
     }
   }
@@ -1427,7 +1431,7 @@ def configure_pointer_dim2(
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (int j = 0; j < n2_NAME; j++) KIND_to_c(z_NAME[n2_NAME*i+j], C.NAME[i][j]);
+    for (int j = 0; j < n2_NAME; j++) KIND_to_c(z_NAME[n2_NAME*i+j], *C.NAME[i][j].get());
   }
 """
         cp.to_f_setup = """
@@ -1437,7 +1441,7 @@ def configure_pointer_dim2(
     n2_NAME = C.NAME[0].size();
     z_NAME = new const TYPE* [n1_NAME*n2_NAME];
     for (int i = 0; i < n1_NAME; i++) {
-      for (int j = 0; j < n2_NAME; j++) z_NAME[i*n2_NAME + j] = &C.NAME[i][j];}
+      for (int j = 0; j < n2_NAME; j++) z_NAME[i*n2_NAME + j] = C.NAME[i][j].get();}
   }
 """.replace("TYPE", c_type)
 
@@ -1452,9 +1456,9 @@ def configure_pointer_dim3(
 
     cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (unsigned int i = 0; i < C.NAME.size(); i++) {
+  for (size_t i = 0; i < C.NAME.size(); i++) {
     C.NAME[i].resize(n2_NAME);
-    for (unsigned int j = 0; j < C.NAME[0].size(); j++)
+    for (size_t j = 0; j < C.NAME[0].size(); j++)
       C.NAME[i][j].resize(n3_NAME);
   }
   C.NAME << z_NAME;
@@ -1465,11 +1469,11 @@ def configure_pointer_dim3(
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (unsigned int i = 0; i < C.NAME.size(); i++) {
+    for (size_t i = 0; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
-      for (unsigned int j = 0; j < C.NAME[0].size(); j++) {
+      for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
-        for (unsigned int k = 0; k < C.NAME[0][0].size(); k++) {
+        for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
           int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = TEST_VALUE;
         }
       }
@@ -1502,7 +1506,7 @@ def configure_pointer_dim3(
     for (int j = 0; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
       for (int k = 0; k < n3_NAME; k++) {
-        KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], C.NAME[i][j][k]);
+        KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], *C.NAME[i][j][k].get());
     } } }
 """
         cp.test_pat = """\
@@ -1510,12 +1514,12 @@ def configure_pointer_dim3(
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (unsigned int i = 0; i < C.NAME.size(); i++) {
+    for (size_t i = 0; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
-      for (unsigned int j = 0; j < C.NAME[0].size(); j++) {
+      for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
-        for (unsigned int k = 0; k < C.NAME[0][0].size(); k++) {
-          set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
+        for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
+          set_CPP_KIND_test_pattern(*C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
     } } }
   }
 """
@@ -1529,7 +1533,7 @@ def configure_pointer_dim3(
     for (int i = 0; i < n1_NAME; i++) {
       for (int j = 0; j < n2_NAME; j++) {
         for (int k = 0; k < n3_NAME; k++) {
-          z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = &C.NAME[i][j][k];
+          z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = C.NAME[i][j][k].get();
     } } }
   }
 """.replace("TYPE", c_type)
@@ -1618,13 +1622,13 @@ def setup_char_pointer(c_side_trans):
     """Set up translation for CHAR, 0, PTR (character scalar pointer)."""
     c_side_trans[CHAR, 0, PTR] = copy.deepcopy(c_side_trans[STRUCT, 0, PTR])
     cc = c_side_trans[CHAR, 0, PTR]
-    cc.c_class = "string"
+    cc.c_class = "shared_ptr<string>"
     cc.constructor = "NAME(NULL)"
-    cc.destructor = "if (NAME) delete NAME;"
+    cc.destructor = ""
     cc.to_f2_call = "z_NAME"
     cc.to_f2_arg = "c_Char"
     cc.to_f_setup = """\
-  unsigned int n_NAME = 0;
+  size_t n_NAME = 0;
   const char* z_NAME = NULL;  
   if (C.NAME != NULL) {
     z_NAME = C.NAME->c_str();
@@ -1634,22 +1638,18 @@ def setup_char_pointer(c_side_trans):
     cc.to_c2_arg = "c_Char z_NAME"
     cc.to_c2_set = """\
   if (n_NAME == 0) {
-    if (C.NAME) {
-      delete C.NAME;
-      C.NAME = nullptr;
-    }
+    C.NAME = nullptr;
   }
   else {
-    C.NAME = new string;
-    *(C.NAME) = z_NAME;
+    C.NAME = make_shared<string>(z_NAME);
   }
 """
     cc.test_pat = """\
   if (ix_patt < 3) 
     C.NAME == NULL;
   else {
-    C.NAME = new string(STR_LEN, ' ');
-    for (unsigned int i = 0; i < C.NAME->size(); i++) {
+    C.NAME = make_shared<string>(STR_LEN, ' ');
+    for (size_t i = 0; i < C.NAME->size(); i++) {
       (*C.NAME)[i] = 'a' + (101 + i + XXX + offset) % 26; }
   }
 """
@@ -1670,7 +1670,7 @@ def setup_char_array(c_side_trans):
         for1
         + """ {
     C.NAME[i].resize(STR_LEN);
-    for (unsigned int j = 0; j < C.NAME[i].size(); j++) 
+    for (size_t j = 0; j < C.NAME[i].size(); j++) 
       {C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + XXX + offset) % 26;}
   }
 """
@@ -2863,6 +2863,7 @@ def write_cpp_classes(file):
 #ifndef CPP_BMAD_CLASSES
 
 #include <complex>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -2876,7 +2877,7 @@ def write_cpp_classes(file):
     for struct in struct_definitions:
         file.write(f"""
 class CPP_{struct.short_name};
-typedef vector<CPP_{struct.short_name}>          CPP_{struct.short_name}_ARRAY;
+typedef vector<shared_ptr<CPP_{struct.short_name}>>          CPP_{struct.short_name}_ARRAY;
 typedef vector<CPP_{struct.short_name}_ARRAY>    CPP_{struct.short_name}_MATRIX;
 typedef vector<CPP_{struct.short_name}_MATRIX>   CPP_{struct.short_name}_TENSOR;
 """)
@@ -2917,15 +2918,23 @@ public:
             construct_list.append(arg.c_side.constructor)
 
         file.write(f"    {',\n    '.join(construct_list)}\n")
-
         constructor_body = struct.c_constructor_body.replace("NAME", struct.cpp_class)
-        file.write(f"    {constructor_body}\n\n")
+
+        # if DEBUG:
+        debug_constructed = (
+            f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
+        )
+        if constructor_body:
+            constructor_body = "\n".join((debug_constructed, constructor_body))
+        else:
+            constructor_body = debug_constructed
+        file.write(f"    {{{constructor_body}}}\n\n")
 
         # Destructor
         file.write(f"  ~CPP_{struct.short_name}() {{\n")
 
-        if DEBUG:
-            file.write(f'  cout << "~{struct.cpp_class}(): " << this << endl;\n')
+        # if DEBUG:
+        file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
 
         for arg in struct.arg:
             if arg.c_side.destructor == "":
@@ -3010,6 +3019,12 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         file.write("\n")
         file.write("  // c_side.to_f2_call\n")
+
+        if DEBUG:
+            for arg in struct.arg:
+                file.write(
+                    f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.type} {len(arg.array)} {arg.pointer_type}\n"
+                )
 
         line = f"{struct.short_name}_to_f2 (F"
         for arg in struct.arg:

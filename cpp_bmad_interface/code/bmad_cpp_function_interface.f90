@@ -32,7 +32,10 @@ contains
     use, intrinsic :: iso_c_binding, only: c_char, c_ptr, c_bool
     implicit none
     character(kind=c_char), intent(in) :: lat_file(*)
-    type (c_ptr), intent(in) :: lat
+    type (c_ptr), intent(in), value :: lat
+    ! ref: https://gcc.gnu.org/onlinedocs/gcc-4.7.1/gfortran/Working-with-Pointers.html
+    ! type(c_ptr) matches with 'void**'
+    ! type(c_ptr), value matches with 'void*'
     type (c_ptr) :: parse_lat
     type (lat_struct), target :: f_lat
     type (lat_struct) :: f_parse_lat
@@ -52,8 +55,10 @@ contains
     call to_f_str(lat_file, f_lat_file)
  
     print *, "(f) lat_file=", f_lat_file
+    print *, "(f) lat=", lat
 
     if (.not. c_associated(lat)) then
+      print *, "(f) lat NULL? error"
       err_flag = .true.
       return
     endIf
@@ -63,6 +68,7 @@ contains
     ptr_f_lat = c_loc(f_lat)
 
     if (.not. c_associated(ptr_f_lat)) then
+      print *, "(f) f_lat NULL? error"
       err_flag = .true.
       return
     endIf

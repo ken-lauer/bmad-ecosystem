@@ -34,20 +34,16 @@ py::object bmad_parser_wrapper(
     py::object digested_read_ok_obj = py::none(),
     py::object use_line_obj = py::none()
 ) {
-    auto lat_ptr = new CPP_lat;
-    // auto lat_ptr = std::make_shared<CPP_lat>();
-    // CPP_lat *lat_raw_ptr = nullptr;
+    auto lat = std::make_shared<CPP_lat>();
     void* parse_lat_ptr = nullptr;
     
     bool make_mats6 = make_mats6_obj.is_none() ? false : make_mats6_obj.cast<bool>();
     bool digested_read_ok = digested_read_ok_obj.is_none() ? true : digested_read_ok_obj.cast<bool>();
-    const char* use_line = use_line_obj.is_none() ? nullptr : use_line_obj.cast<std::string>().c_str();
+    // const char* use_line = use_line_obj.is_none() ? nullptr : use_line_obj.cast<std::string>().c_str();
    
-    // lat_raw_ptr = (CPP_lat*)lat_ptr.get();
-
     bool error = cpp_bmad_parser(
         lat_file.c_str(), 
-        lat_ptr
+        lat.get()
         // , make_mats6, 
         // digested_read_ok, 
         // use_line, 
@@ -56,12 +52,7 @@ py::object bmad_parser_wrapper(
    
     py::dict result;
     result["error"] = error;
-    
-    if (lat_ptr) {
-        result["lattice"] = lat_ptr;
-    } else {
-        result["lattice"] = py::none();
-    }
+    result["lattice"] = lat;
 
     if (parse_lat_ptr) {
         result["parse_lattice"] = parse_lat_ptr;

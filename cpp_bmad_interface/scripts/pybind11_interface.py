@@ -26,25 +26,21 @@ def get_struct_array_return_code(arg):
 
     if dimensions == 1:
         return f"""
-                const auto& arr = self.{arg.c_name};
-                py::list result;
-                for (size_t i = 0; i < arr.size(); ++i) {{
-                    result.append(py::cast(arr[i]));
-                }}
-                return result;
+                return self.{arg.c_name};
                 """
     if dimensions == 2:
         return f"""
-                const auto& matrix = self.{arg.c_name};
-                py::list result;
-                for (size_t i = 0; i < matrix.size(); ++i) {{
-                    py::list row;
-                    for (size_t j = 0; j < matrix[i].size(); ++j) {{
-                        row.append(py::cast(matrix[i][j]));
-                    }}
-                    result.append(row);
-                }}
-                return result;
+                return self.{arg.c_name};
+                // const auto& matrix = self.{arg.c_name};
+                // py::list result;
+                // for (size_t i = 0; i < matrix.size(); ++i) {{
+                //     py::list row;
+                //     for (size_t j = 0; j < matrix[i].size(); ++j) {{
+                //         row.append(py::cast(matrix[i][j]));
+                //     }}
+                //     result.append(row);
+                // }}
+                // return result;
                 """
     return "return py::list(); // Unsupported dimensions for struct arrays"
 
@@ -59,36 +55,39 @@ def get_struct_array_setter_code(arg):
 
     if dimensions == 1:
         return f"""
-                try {{
-                    py::list list = obj.cast<py::list>();
-                    auto& arr = self.{arg.c_name};
-                    arr.resize(list.size());
-                    
-                    for (size_t i = 0; i < list.size(); ++i) {{
-                        arr[i] = list[i].cast<{cpp_class_name}>();
-                    }}
-                }} catch (const py::cast_error& e) {{
-                    throw std::runtime_error("Expected a list of {cpp_class_name} objects");
-                }}
+                throw std::runtime_error("Not implemented (dim1)");
+                // try {{
+                //     py::list list = obj.cast<py::list>();
+                //     auto& arr = self.{arg.c_name};
+                //     arr.resize(list.size());
+
+                //     for (size_t i = 0; i < list.size(); ++i) {{
+                //         arr[i] = list[i].cast<shared_ptr<{cpp_class_name}>>();
+                //     }}
+                // }} catch (const py::cast_error& e) {{
+                //     throw std::runtime_error("Expected a list of {cpp_class_name} objects");
+                // }}
                 """
     if dimensions == 2:
         return f"""
-                try {{
-                    py::list outer_list = obj.cast<py::list>();
-                    auto& matrix = self.{arg.c_name};
-                    matrix.resize(outer_list.size());
-                    
-                    for (size_t i = 0; i < outer_list.size(); ++i) {{
-                        py::list inner_list = outer_list[i].cast<py::list>();
-                        matrix[i].resize(inner_list.size());
-                        
-                        for (size_t j = 0; j < inner_list.size(); ++j) {{
-                            matrix[i][j] = inner_list[j].cast<{cpp_class_name}>();
-                        }}
-                    }}
-                }} catch (const py::cast_error& e) {{
-                    throw std::runtime_error("Expected a list of lists of {cpp_class_name} objects");
-                }}
+                throw std::runtime_error("Not implemented (dim2)");
+                // try {{
+                //     py::list outer_list = obj.cast<py::list>();
+                //     auto& matrix = self.{arg.c_name};
+                //     matrix.resize(outer_list.size());
+                //     
+                //     for (size_t i = 0; i < outer_list.size(); ++i) {{
+                //         py::list inner_list = outer_list[i].cast<py::list>();
+                //         matrix[i].resize(inner_list.size());
+                //         
+                //         for (size_t j = 0; j < inner_list.size(); ++j) {{
+                //             // matrix[i][j] = inner_list[j];
+                //             // TODO
+                //         }}
+                //     }}
+                // }} catch (const py::cast_error& e) {{
+                //     throw std::runtime_error("Expected a list of lists of {cpp_class_name} objects");
+                // }}
                 """
     return "// Unsupported dimensions for struct arrays"
 
@@ -270,16 +269,32 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
                         f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
                     )
                     code.append(f"            {property_doc})")
+            elif arg.pointer_type == PTR:
+                property_type = get_cpp_type_for_property(arg)
+                var = f"self.{arg.c_name}"
+                # TODO setter
+                # code.append(f'        .def_property("{arg.c_name}",')
+                code.append(f'        .def_property_readonly("{arg.c_name}",')
+                code.append(
+                    f"            [](const {cpp_class_name} &self) {{ return {var} ? py::cast(*{var}) : py::none(); }},"
+                )
+                # code.append(
+                #     f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
+                # )
+                code.append(f"            {property_doc})")
+
             else:
                 # Simple property for scalar values
                 property_type = get_cpp_type_for_property(arg)
-                code.append(f'        .def_property("{arg.c_name}",')
+                # TODO setter
+                # code.append(f'        .def_property("{arg.c_name}",')
+                code.append(f'        .def_property_readonly("{arg.c_name}",')
                 code.append(
                     f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
                 )
-                code.append(
-                    f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
-                )
+                # code.append(
+                #     f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
+                # )
                 code.append(f"            {property_doc})")
 
         # Add any custom methods
@@ -399,100 +414,114 @@ def get_cpp_type_for_property(arg):
 
 def get_numpy_return_code_for_array(arg, dimensions):
     """Generate code to convert various array types to numpy arrays"""
-    base_type = arg.type.lower()
+    # base_type = arg.type.lower()
 
-    if base_type == REAL:
-        dtype = "py::dtype::of<double>()"
-        ctype = "double"
-    elif base_type == CMPLX:
-        dtype = "py::dtype::of<std::complex<double>>()"
-        ctype = "std::complex<double>"
-    elif base_type == INT:
-        dtype = "py::dtype::of<int>()"
-        ctype = "int"
-    elif base_type == INT8:
-        dtype = "py::dtype::of<int64_t>()"
-        ctype = "int64_t"
-    elif base_type == LOGIC:
-        dtype = "py::dtype::of<bool>()"
-        ctype = "bool"
-    elif base_type == CHAR:
-        # Strings need special handling
-        return (
-            "return py::cast(std::vector<std::string>(std::begin(arr), std::end(arr)));"
-        )
-    else:
-        # Default case
-        dtype = "py::dtype::of<double>()"
-        ctype = "double"
+    # if base_type == REAL:
+    #     dtype = "py::dtype::of<double>()"
+    #     ctype = "double"
+    # elif base_type == CMPLX:
+    #     dtype = "py::dtype::of<std::complex<double>>()"
+    #     ctype = "std::complex<double>"
+    # elif base_type == INT:
+    #     dtype = "py::dtype::of<int>()"
+    #     ctype = "int"
+    # elif base_type == INT8:
+    #     dtype = "py::dtype::of<int64_t>()"
+    #     ctype = "int64_t"
+    # elif base_type == LOGIC:
+    #     dtype = "py::dtype::of<bool>()"
+    #     ctype = "bool"
+    # elif base_type == CHAR:
+    #     # Strings need special handling
+    #     return (
+    #         "return py::cast(std::vector<std::string>(std::begin(arr), std::end(arr)));"
+    #     )
+    # else:
+    #     # Default case
+    #     dtype = "py::dtype::of<double>()"
+    #     ctype = "double"
 
     if dimensions == 1:
-        return f"""
-                // Copy data to avoid lifetime issues
-                auto* data = new {ctype}[size];
-                for (size_t i = 0; i < size; ++i) {{
-                    data[i] = arr[i];
-                }}
-                
-                // Create a capsule to manage the memory
-                auto capsule = py::capsule(data, [](void *p) {{ delete[] static_cast<{ctype}*>(p); }});
-                
-                // Return numpy array
-                return py::array({dtype}, {{size}}, {{sizeof({ctype})}}, data, capsule);
+        return """
+                return arr;
                 """
-    elif dimensions == 2:
-        return f"""
-                if (matrix.size() == 0) return py::array({dtype}, {{0, 0}});
-                
-                size_t rows = matrix.size();
-                size_t cols = rows > 0 ? matrix[0].size() : 0;
-                
-                // Copy data to avoid lifetime issues
-                auto* data = new {ctype}[rows * cols];
-                for (size_t i = 0; i < rows; ++i) {{
-                    for (size_t j = 0; j < cols; ++j) {{
-                        data[i*cols + j] = matrix[i][j];
-                    }}
-                }}
-                
-                // Create a capsule to manage the memory
-                auto capsule = py::capsule(data, [](void *p) {{ delete[] static_cast<{ctype}*>(p); }});
-                
-                // Return numpy array
-                return py::array({dtype}, {{rows, cols}}, {{cols * sizeof({ctype}), sizeof({ctype})}}, data, capsule);
-                """
-    elif dimensions == 3:
-        return f"""
-                if (tensor.size() == 0) return py::array({dtype}, {{0, 0, 0}});
-                
-                size_t depth = tensor.size();
-                size_t rows = depth > 0 ? tensor[0].size() : 0;
-                size_t cols = (depth > 0 && rows > 0) ? tensor[0][0].size() : 0;
-                
-                // Copy data to avoid lifetime issues
-                auto* data = new {ctype}[depth * rows * cols];
-                for (size_t i = 0; i < depth; ++i) {{
-                    for (size_t j = 0; j < rows; ++j) {{
-                        for (size_t k = 0; k < cols; ++k) {{
-                            data[i*(rows*cols) + j*cols + k] = tensor[i][j][k];
-                        }}
-                    }}
-                }}
-                
-                // Create a capsule to manage the memory
-                auto capsule = py::capsule(data, [](void *p) {{ delete[] static_cast<{ctype}*>(p); }});
-                
-                // Return numpy array
-                return py::array({dtype}, {{depth, rows, cols}}, 
-                                {{rows * cols * sizeof({ctype}), cols * sizeof({ctype}), sizeof({ctype})}}, 
-                                data, capsule);
-                """
+
+        #
+        #       // // Copy data to avoid lifetime issues
+        #       // auto* data = new {ctype}[size];
+        #       // for (size_t i = 0; i < size; ++i) {{
+        #       //     data[i] = arr[i];
+        #       // }}
+        #       //
+        #       // // Create a capsule to manage the memory
+        #       // auto capsule = py::capsule(data, [](void *p) {{ delete[] static_cast<{ctype}*>(p); }});
+        #       //
+        #       // // Return numpy array
+        #       // return py::array({dtype}, {{size}}, {{sizeof({ctype})}}, data, capsule);
     else:
-        return "return py::array(); // Unsupported dimensions"
+        return """
+                return py::str("not implemented");
+        """
+
+        # elif dimensions == 2:
+        #     return f"""
+        #             return py::str("not implemented");
+        #             // if (matrix.size() == 0) return py::array({dtype}, {{0, 0}});
+        #             //
+        #             // size_t rows = matrix.size();
+        #             // size_t cols = rows > 0 ? matrix[0].size() : 0;
+        #             //
+        #             // // Copy data to avoid lifetime issues
+        #             // auto* data = new {ctype}[rows * cols];
+        #             // for (size_t i = 0; i < rows; ++i) {{
+        #             //     for (size_t j = 0; j < cols; ++j) {{
+        #             //         data[i*cols + j] = matrix[i][j];
+        #             //     }}
+        #             // }}
+        #             //
+        #             // // Create a capsule to manage the memory
+        #             // auto capsule = py::capsule(data, [](void *p) {{ delete[] static_cast<{ctype}*>(p); }});
+        #             //
+        #             // // Return numpy array
+        #             // return py::array({dtype}, {{rows, cols}}, {{cols * sizeof({ctype}), sizeof({ctype})}}, data, capsule);
+        #             """
+        # elif dimensions == 3:
+        #     return f"""
+        #             return py::str("not implemented");
+        #             //if (tensor.size() == 0) return py::array({dtype}, {{0, 0, 0}});
+        #             //
+        #             //size_t depth = tensor.size();
+        #             //size_t rows = depth > 0 ? tensor[0].size() : 0;
+        #             //size_t cols = (depth > 0 && rows > 0) ? tensor[0][0].size() : 0;
+        #             //
+        #             //// Copy data to avoid lifetime issues
+        #             //auto* data = new {ctype}[depth * rows * cols];
+        #             //for (size_t i = 0; i < depth; ++i) {{
+        #             //    for (size_t j = 0; j < rows; ++j) {{
+        #             //        for (size_t k = 0; k < cols; ++k) {{
+        #             //            data[i*(rows*cols) + j*cols + k] = tensor[i][j][k];
+        #             //        }}
+        #             //    }}
+        #             //}}
+        #             //
+        #             //// Create a capsule to manage the memory
+        #             //auto capsule = py::capsule(data, [](void *p) {{ delete[] static_cast<{ctype}*>(p); }});
+        #             //
+        #             //// Return numpy array
+        #             //return py::array({dtype}, {{depth, rows, cols}},
+        #             //                {{rows * cols * sizeof({ctype}), cols * sizeof({ctype}), sizeof({ctype})}},
+        #             //                data, capsule);
+        #             """
+        # else:
+        #     return "return py::array(); // Unsupported dimensions"
 
 
 def get_numpy_return_code_for_ptr_array(arg):
     """Generate code to handle const pointer arrays (c_RealArr, etc.)"""
+    return f"""
+            const auto* data_ptr = self.{arg.c_name};
+    """
+
     base_type = arg.type.lower()
 
     if base_type == REAL:
@@ -525,90 +554,95 @@ def get_numpy_return_code_for_ptr_array(arg):
 
 def get_numpy_to_array_code(arg, target_var, dimensions):
     """Generate code to convert numpy array to various array types"""
-    base_type = arg.type.lower()
 
-    if base_type == REAL:
-        ctype = "double"
-    elif base_type == CMPLX:
-        ctype = "std::complex<double>"
-    elif base_type == INT:
-        ctype = "int"
-    elif base_type == INT8:
-        ctype = "int64_t"
-    elif base_type == LOGIC:
-        ctype = "bool"
-    elif base_type == CHAR:
-        # Strings need special handling
-        return f"""
-                py::list string_list = arr.cast<py::list>();
-                {target_var}.resize(string_list.size());
-                for (size_t i = 0; i < string_list.size(); ++i) {{
-                    {target_var}[i] = string_list[i].cast<std::string>();
-                }}
-                """
-    else:
-        ctype = "double"  # Default
+    return """
+                return arr;
+    """
 
-    if dimensions == 1:
-        return f"""
-                py::buffer_info info = arr.request();
-                if (info.ndim != 1) throw std::runtime_error("Expected a 1D array");
-                
-                // Resize and copy data
-                size_t size = static_cast<size_t>(info.shape[0]);
-                {target_var}.resize(size);
-                auto* data = static_cast<{ctype}*>(info.ptr);
-                
-                for (size_t i = 0; i < size; ++i) {{
-                    {target_var}[i] = data[i];
-                }}
-                """
-    elif dimensions == 2:
-        return f"""
-                py::buffer_info info = arr.request();
-                if (info.ndim != 2) throw std::runtime_error("Expected a 2D array");
-                
-                // Resize and copy data
-                size_t rows = static_cast<size_t>(info.shape[0]);
-                size_t cols = static_cast<size_t>(info.shape[1]);
-                
-                {target_var}.resize(rows);
-                auto* data = static_cast<{ctype}*>(info.ptr);
-                
-                for (size_t i = 0; i < rows; ++i) {{
-                    {target_var}[i].resize(cols);
-                    for (size_t j = 0; j < cols; ++j) {{
-                        {target_var}[i][j] = data[i * info.strides[0]/sizeof({ctype}) + j * info.strides[1]/sizeof({ctype})];
-                    }}
-                }}
-                """
-    elif dimensions == 3:
-        return f"""
-                py::buffer_info info = arr.request();
-                if (info.ndim != 3) throw std::runtime_error("Expected a 3D array");
-                
-                // Resize and copy data
-                size_t depth = static_cast<size_t>(info.shape[0]);
-                size_t rows = static_cast<size_t>(info.shape[1]);
-                size_t cols = static_cast<size_t>(info.shape[2]);
-                
-                {target_var}.resize(depth);
-                auto* data = static_cast<{ctype}*>(info.ptr);
-                
-                for (size_t i = 0; i < depth; ++i) {{
-                    {target_var}[i].resize(rows);
-                    for (size_t j = 0; j < rows; ++j) {{
-                        {target_var}[i][j].resize(cols);
-                        for (size_t k = 0; k < cols; ++k) {{
-                            {target_var}[i][j][k] = data[i * info.strides[0]/sizeof({ctype}) + 
-                                                         j * info.strides[1]/sizeof({ctype}) + 
-                                                         k * info.strides[2]/sizeof({ctype})];
-                        }}
-                    }}
-                }}
-                """
-    else:
-        return "// Unsupported dimensions"
+    # base_type = arg.type.lower()
+    # if base_type == REAL:
+    #     ctype = "double"
+    # elif base_type == CMPLX:
+    #     ctype = "std::complex<double>"
+    # elif base_type == INT:
+    #     ctype = "int"
+    # elif base_type == INT8:
+    #     ctype = "int64_t"
+    # elif base_type == LOGIC:
+    #     ctype = "bool"
+    # elif base_type == CHAR:
+    #     # Strings need special handling
+    #     return f"""
+    #             // py::list string_list = arr.cast<py::list>();
+    #             // {target_var}.resize(string_list.size());
+    #             // for (size_t i = 0; i < string_list.size(); ++i) {{
+    #             //     {target_var}[i] = string_list[i].cast<std::string>();
+    #             // }}
+    #             """
+    # else:
+    #     ctype = "double"  # Default
+
+    # if dimensions == 1:
+    #     return f"""
+    #             return arr;
+    #             // py::buffer_info info = arr.request();
+    #             // if (info.ndim != 1) throw std::runtime_error("Expected a 1D array");
+    #             //
+    #             // // Resize and copy data
+    #             // size_t size = static_cast<size_t>(info.shape[0]);
+    #             // {target_var}.resize(size);
+    #             // auto* data = static_cast<{ctype}*>(info.ptr);
+    #             //
+    #             // for (size_t i = 0; i < size; ++i) {{
+    #             //     {target_var}[i] = data[i];
+    #             // }}
+    #             """
+    # elif dimensions == 2:
+    #     return f"""
+    #             py::buffer_info info = arr.request();
+    #             if (info.ndim != 2) throw std::runtime_error("Expected a 2D array");
+    #
+    #             // Resize and copy data
+    #             size_t rows = static_cast<size_t>(info.shape[0]);
+    #             size_t cols = static_cast<size_t>(info.shape[1]);
+    #
+    #             {target_var}.resize(rows);
+    #             auto* data = static_cast<{ctype}*>(info.ptr);
+    #
+    #             for (size_t i = 0; i < rows; ++i) {{
+    #                 {target_var}[i].resize(cols);
+    #                 for (size_t j = 0; j < cols; ++j) {{
+    #                     {target_var}[i][j] = data[i * info.strides[0]/sizeof({ctype}) + j * info.strides[1]/sizeof({ctype})];
+    #                 }}
+    #             }}
+    #             """
+    # elif dimensions == 3:
+    #     return f"""
+    #             py::buffer_info info = arr.request();
+    #             if (info.ndim != 3) throw std::runtime_error("Expected a 3D array");
+    #
+    #             // Resize and copy data
+    #             size_t depth = static_cast<size_t>(info.shape[0]);
+    #             size_t rows = static_cast<size_t>(info.shape[1]);
+    #             size_t cols = static_cast<size_t>(info.shape[2]);
+    #
+    #             {target_var}.resize(depth);
+    #             auto* data = static_cast<{ctype}*>(info.ptr);
+    #
+    #             for (size_t i = 0; i < depth; ++i) {{
+    #                 {target_var}[i].resize(rows);
+    #                 for (size_t j = 0; j < rows; ++j) {{
+    #                     {target_var}[i][j].resize(cols);
+    #                     for (size_t k = 0; k < cols; ++k) {{
+    #                         {target_var}[i][j][k] = data[i * info.strides[0]/sizeof({ctype}) +
+    #                                                      j * info.strides[1]/sizeof({ctype}) +
+    #                                                      k * info.strides[2]/sizeof({ctype})];
+    #                     }}
+    #                 }}
+    #             }}
+    #             """
+    # else:
+    #     return "// Unsupported dimensions"
 
 
 if __name__ == "__main__":
