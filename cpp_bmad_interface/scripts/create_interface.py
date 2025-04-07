@@ -1505,6 +1505,7 @@ def configure_pointer_dim3(
     for (int j = 0; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
       for (int k = 0; k < n3_NAME; k++) {
+        C.NAME[i][j][k] = make_shared<CPP_KIND>();
         KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], *C.NAME[i][j][k].get());
     } } }
 """
@@ -1518,6 +1519,7 @@ def configure_pointer_dim3(
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
         for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
+          C.NAME[i][j][k] = make_shared<CPP_KIND>();
           set_CPP_KIND_test_pattern(*C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
     } } }
   }
@@ -2927,28 +2929,30 @@ public:
         file.write(f"    {',\n    '.join(construct_list)}\n")
         constructor_body = struct.c_constructor_body.replace("NAME", struct.cpp_class)
 
-        # if DEBUG:
-        debug_constructed = (
-            f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
-        )
-        if constructor_body:
-            constructor_body = "\n".join((debug_constructed, constructor_body))
-        else:
-            constructor_body = debug_constructed
-        file.write(f"    {{{constructor_body}}}\n\n")
+        if DEBUG:
+            debug_constructed = (
+                f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
+            )
 
-        file.write(
-            f"  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}"
-        )
+            if constructor_body:
+                constructor_body = "\n".join((debug_constructed, constructor_body))
+            else:
+                constructor_body = debug_constructed
+
+        file.write(f"    {{{constructor_body}}}\n\n")
 
         # TODO: copy constructor, move constructor, ... = default?
         #
         # Destructor
         file.write("\n")
-        file.write(f"  ~{struct.cpp_class}() {{\n")
+        # file.write(f"  {struct.cpp_class}({struct.cpp_class}&&) = default;\n")
+        # file.write(f"  {struct.cpp_class}({struct.cpp_class}&) = default;\n")
 
-        # if DEBUG:
-        file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
+        file.write("\n")
+        file.write(f"  virtual ~{struct.cpp_class}() {{\n")
+
+        # # if DEBUG:
+        #     file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
 
         for arg in struct.arg:
             if arg.c_side.destructor == "":
@@ -2958,6 +2962,10 @@ public:
             file.write(f"    {arg.c_side.destructor}\n")
 
         file.write("  }\n")
+
+        file.write(
+            f"  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}\n"
+        )
 
         # End class and write extern C functions and operators
         file.write(f"""

@@ -508,12 +508,13 @@ public:
     y0(0.0),
     x1(0.0),
     coef(4, 0.0)
-    {std::cout << "CPP_spline(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_spline> getptr() { return shared_from_this(); }
-  ~CPP_spline() {
-  std::cout << "~CPP_spline(): " << this << std::endl;
+
+
+  virtual ~CPP_spline() {
   }
+  std::shared_ptr<CPP_spline> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -540,12 +541,13 @@ public:
     theta(0.0),
     phi(0.0),
     xi(0.0)
-    {std::cout << "CPP_spin_polar(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_spin_polar> getptr() { return shared_from_this(); }
-  ~CPP_spin_polar() {
-  std::cout << "~CPP_spin_polar(): " << this << std::endl;
+
+
+  virtual ~CPP_spin_polar() {
   }
+  std::shared_ptr<CPP_spin_polar> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -570,12 +572,13 @@ public:
     amp(0.0),
     time(0.0),
     spline()
-    {std::cout << "CPP_ac_kicker_time(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_ac_kicker_time> getptr() { return shared_from_this(); }
-  ~CPP_ac_kicker_time() {
-  std::cout << "~CPP_ac_kicker_time(): " << this << std::endl;
+
+
+  virtual ~CPP_ac_kicker_time() {
   }
+  std::shared_ptr<CPP_ac_kicker_time> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -602,12 +605,13 @@ public:
     amp(0.0),
     phi(0.0),
     rf_clock_harmonic(0)
-    {std::cout << "CPP_ac_kicker_freq(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_ac_kicker_freq> getptr() { return shared_from_this(); }
-  ~CPP_ac_kicker_freq() {
-  std::cout << "~CPP_ac_kicker_freq(): " << this << std::endl;
+
+
+  virtual ~CPP_ac_kicker_freq() {
   }
+  std::shared_ptr<CPP_ac_kicker_freq> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -630,12 +634,13 @@ public:
   CPP_ac_kicker() :
     amp_vs_time(CPP_ac_kicker_time_ARRAY(0)),
     frequency(CPP_ac_kicker_freq_ARRAY(0))
-    {std::cout << "CPP_ac_kicker(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_ac_kicker> getptr() { return shared_from_this(); }
-  ~CPP_ac_kicker() {
-  std::cout << "~CPP_ac_kicker(): " << this << std::endl;
+
+
+  virtual ~CPP_ac_kicker() {
   }
+  std::shared_ptr<CPP_ac_kicker> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -660,12 +665,13 @@ public:
     c0(0.0),
     c1(0.0),
     n_exp(0.0)
-    {std::cout << "CPP_interval1_coef(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_interval1_coef> getptr() { return shared_from_this(); }
-  ~CPP_interval1_coef() {
-  std::cout << "~CPP_interval1_coef(): " << this << std::endl;
+
+
+  virtual ~CPP_interval1_coef() {
   }
+  std::shared_ptr<CPP_interval1_coef> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -698,12 +704,13 @@ public:
     max_energy(-1),
     p_reflect_scratch(0, 0.0),
     bragg_angle(0, 0.0)
-    {std::cout << "CPP_photon_reflect_table(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_photon_reflect_table> getptr() { return shared_from_this(); }
-  ~CPP_photon_reflect_table() {
-  std::cout << "~CPP_photon_reflect_table(): " << this << std::endl;
+
+
+  virtual ~CPP_photon_reflect_table() {
   }
+  std::shared_ptr<CPP_photon_reflect_table> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -736,12 +743,13 @@ public:
     surface_roughness_rms(0.0),
     roughness_correlation_len(0.0),
     ix_surface(-1)
-    {std::cout << "CPP_photon_reflect_surface(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_photon_reflect_surface> getptr() { return shared_from_this(); }
-  ~CPP_photon_reflect_surface() {
-  std::cout << "~CPP_photon_reflect_surface(): " << this << std::endl;
+
+
+  virtual ~CPP_photon_reflect_surface() {
   }
+  std::shared_ptr<CPP_photon_reflect_surface> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -802,12 +810,13 @@ public:
     time_dir(1),
     species(Bmad::NOT_SET),
     location(Bmad::UPSTREAM_END)
-    {std::cout << "CPP_coord(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_coord> getptr() { return shared_from_this(); }
-  ~CPP_coord() {
-  std::cout << "~CPP_coord(): " << this << std::endl;
+
+
+  virtual ~CPP_coord() {
   }
+  std::shared_ptr<CPP_coord> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -828,12 +837,13 @@ public:
 
   CPP_coord_array() :
     orbit(CPP_coord_ARRAY(0))
-    {std::cout << "CPP_coord_array(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_coord_array> getptr() { return shared_from_this(); }
-  ~CPP_coord_array() {
-  std::cout << "~CPP_coord_array(): " << this << std::endl;
+
+
+  virtual ~CPP_coord_array() {
   }
+  std::shared_ptr<CPP_coord_array> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -872,12 +882,13 @@ public:
     cbar12_b(0.0),
     phi_a(0.0),
     phi_b(0.0)
-    {std::cout << "CPP_bpm_phase_coupling(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_bpm_phase_coupling> getptr() { return shared_from_this(); }
-  ~CPP_bpm_phase_coupling() {
-  std::cout << "~CPP_bpm_phase_coupling(): " << this << std::endl;
+
+
+  virtual ~CPP_bpm_phase_coupling() {
   }
+  std::shared_ptr<CPP_bpm_phase_coupling> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -902,12 +913,13 @@ public:
     name(),
     type(0),
     value(0.0)
-    {std::cout << "CPP_expression_atom(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_expression_atom> getptr() { return shared_from_this(); }
-  ~CPP_expression_atom() {
-  std::cout << "~CPP_expression_atom(): " << this << std::endl;
+
+
+  virtual ~CPP_expression_atom() {
   }
+  std::shared_ptr<CPP_expression_atom> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -944,12 +956,13 @@ public:
     smoothing_sigma(0.0),
     position_dependence(Bmad::NONE),
     time_based(false)
-    {std::cout << "CPP_wake_sr_z_long(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wake_sr_z_long> getptr() { return shared_from_this(); }
-  ~CPP_wake_sr_z_long() {
-  std::cout << "~CPP_wake_sr_z_long(): " << this << std::endl;
+
+
+  virtual ~CPP_wake_sr_z_long() {
   }
+  std::shared_ptr<CPP_wake_sr_z_long> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -988,12 +1001,13 @@ public:
     a_cos(0.0),
     polarization(Bmad::NONE),
     position_dependence(Bmad::NOT_SET)
-    {std::cout << "CPP_wake_sr_mode(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wake_sr_mode> getptr() { return shared_from_this(); }
-  ~CPP_wake_sr_mode() {
-  std::cout << "~CPP_wake_sr_mode(): " << this << std::endl;
+
+
+  virtual ~CPP_wake_sr_mode() {
   }
+  std::shared_ptr<CPP_wake_sr_mode> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1032,12 +1046,13 @@ public:
     amp_scale(1),
     z_scale(1),
     scale_with_length(true)
-    {std::cout << "CPP_wake_sr(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wake_sr> getptr() { return shared_from_this(); }
-  ~CPP_wake_sr() {
-  std::cout << "~CPP_wake_sr(): " << this << std::endl;
+
+
+  virtual ~CPP_wake_sr() {
   }
+  std::shared_ptr<CPP_wake_sr> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1082,12 +1097,13 @@ public:
     a_cos(0.0),
     m(0),
     polarized(false)
-    {std::cout << "CPP_wake_lr_mode(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wake_lr_mode> getptr() { return shared_from_this(); }
-  ~CPP_wake_lr_mode() {
-  std::cout << "~CPP_wake_lr_mode(): " << this << std::endl;
+
+
+  virtual ~CPP_wake_lr_mode() {
   }
+  std::shared_ptr<CPP_wake_lr_mode> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1120,12 +1136,13 @@ public:
     amp_scale(1),
     time_scale(1),
     self_wake_on(true)
-    {std::cout << "CPP_wake_lr(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wake_lr> getptr() { return shared_from_this(); }
-  ~CPP_wake_lr() {
-  std::cout << "~CPP_wake_lr(): " << this << std::endl;
+
+
+  virtual ~CPP_wake_lr() {
   }
+  std::shared_ptr<CPP_wake_lr> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1148,12 +1165,13 @@ public:
   CPP_lat_ele_loc() :
     ix_ele(-1),
     ix_branch(0)
-    {std::cout << "CPP_lat_ele_loc(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_lat_ele_loc> getptr() { return shared_from_this(); }
-  ~CPP_lat_ele_loc() {
-  std::cout << "~CPP_lat_ele_loc(): " << this << std::endl;
+
+
+  virtual ~CPP_lat_ele_loc() {
   }
+  std::shared_ptr<CPP_lat_ele_loc> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1176,12 +1194,13 @@ public:
   CPP_wake() :
     sr(),
     lr()
-    {std::cout << "CPP_wake(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wake> getptr() { return shared_from_this(); }
-  ~CPP_wake() {
-  std::cout << "~CPP_wake(): " << this << std::endl;
+
+
+  virtual ~CPP_wake() {
   }
+  std::shared_ptr<CPP_wake> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1204,12 +1223,13 @@ public:
   CPP_taylor_term() :
     coef(0.0),
     expn(6, 0)
-    {std::cout << "CPP_taylor_term(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_taylor_term> getptr() { return shared_from_this(); }
-  ~CPP_taylor_term() {
-  std::cout << "~CPP_taylor_term(): " << this << std::endl;
+
+
+  virtual ~CPP_taylor_term() {
   }
+  std::shared_ptr<CPP_taylor_term> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1232,12 +1252,13 @@ public:
   CPP_taylor() :
     ref(0.0),
     term(CPP_taylor_term_ARRAY(0))
-    {std::cout << "CPP_taylor(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_taylor> getptr() { return shared_from_this(); }
-  ~CPP_taylor() {
-  std::cout << "~CPP_taylor(): " << this << std::endl;
+
+
+  virtual ~CPP_taylor() {
   }
+  std::shared_ptr<CPP_taylor> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1260,12 +1281,13 @@ public:
   CPP_em_taylor_term() :
     coef(0.0),
     expn(2, 0)
-    {std::cout << "CPP_em_taylor_term(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_em_taylor_term> getptr() { return shared_from_this(); }
-  ~CPP_em_taylor_term() {
-  std::cout << "~CPP_em_taylor_term(): " << this << std::endl;
+
+
+  virtual ~CPP_em_taylor_term() {
   }
+  std::shared_ptr<CPP_em_taylor_term> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1288,12 +1310,13 @@ public:
   CPP_em_taylor() :
     ref(0.0),
     term(CPP_em_taylor_term_ARRAY(0))
-    {std::cout << "CPP_em_taylor(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_em_taylor> getptr() { return shared_from_this(); }
-  ~CPP_em_taylor() {
-  std::cout << "~CPP_em_taylor(): " << this << std::endl;
+
+
+  virtual ~CPP_em_taylor() {
   }
+  std::shared_ptr<CPP_em_taylor> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1330,12 +1353,13 @@ public:
     phi_z(0.0),
     family(0),
     form(0)
-    {std::cout << "CPP_cartesian_map_term1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_cartesian_map_term1> getptr() { return shared_from_this(); }
-  ~CPP_cartesian_map_term1() {
-  std::cout << "~CPP_cartesian_map_term1(): " << this << std::endl;
+
+
+  virtual ~CPP_cartesian_map_term1() {
   }
+  std::shared_ptr<CPP_cartesian_map_term1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1360,12 +1384,13 @@ public:
     file(),
     n_link(1),
     term(CPP_cartesian_map_term1_ARRAY(0))
-    {std::cout << "CPP_cartesian_map_term(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_cartesian_map_term> getptr() { return shared_from_this(); }
-  ~CPP_cartesian_map_term() {
-  std::cout << "~CPP_cartesian_map_term(): " << this << std::endl;
+
+
+  virtual ~CPP_cartesian_map_term() {
   }
+  std::shared_ptr<CPP_cartesian_map_term> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1396,12 +1421,13 @@ public:
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     field_type(Bmad::MAGNETIC),
     ptr(NULL)
-    {std::cout << "CPP_cartesian_map(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_cartesian_map> getptr() { return shared_from_this(); }
-  ~CPP_cartesian_map() {
-  std::cout << "~CPP_cartesian_map(): " << this << std::endl;
+
+
+  virtual ~CPP_cartesian_map() {
   }
+  std::shared_ptr<CPP_cartesian_map> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1424,12 +1450,13 @@ public:
   CPP_cylindrical_map_term1() :
     e_coef(0.0),
     b_coef(0.0)
-    {std::cout << "CPP_cylindrical_map_term1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_cylindrical_map_term1> getptr() { return shared_from_this(); }
-  ~CPP_cylindrical_map_term1() {
-  std::cout << "~CPP_cylindrical_map_term1(): " << this << std::endl;
+
+
+  virtual ~CPP_cylindrical_map_term1() {
   }
+  std::shared_ptr<CPP_cylindrical_map_term1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1454,12 +1481,13 @@ public:
     file(),
     n_link(1),
     term(CPP_cylindrical_map_term1_ARRAY(0))
-    {std::cout << "CPP_cylindrical_map_term(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_cylindrical_map_term> getptr() { return shared_from_this(); }
-  ~CPP_cylindrical_map_term() {
-  std::cout << "~CPP_cylindrical_map_term(): " << this << std::endl;
+
+
+  virtual ~CPP_cylindrical_map_term() {
   }
+  std::shared_ptr<CPP_cylindrical_map_term> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1498,12 +1526,13 @@ public:
     dz(0.0),
     r0(3, 0.0),
     ptr(NULL)
-    {std::cout << "CPP_cylindrical_map(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_cylindrical_map> getptr() { return shared_from_this(); }
-  ~CPP_cylindrical_map() {
-  std::cout << "~CPP_cylindrical_map(): " << this << std::endl;
+
+
+  virtual ~CPP_cylindrical_map() {
   }
+  std::shared_ptr<CPP_cylindrical_map> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1526,12 +1555,13 @@ public:
   CPP_grid_field_pt1() :
     e(3, 0.0),
     b(3, 0.0)
-    {std::cout << "CPP_grid_field_pt1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_grid_field_pt1> getptr() { return shared_from_this(); }
-  ~CPP_grid_field_pt1() {
-  std::cout << "~CPP_grid_field_pt1(): " << this << std::endl;
+
+
+  virtual ~CPP_grid_field_pt1() {
   }
+  std::shared_ptr<CPP_grid_field_pt1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1556,12 +1586,13 @@ public:
     file(),
     n_link(1),
     pt(CPP_grid_field_pt1_TENSOR(0, CPP_grid_field_pt1_MATRIX(0, CPP_grid_field_pt1_ARRAY(0))))
-    {std::cout << "CPP_grid_field_pt(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_grid_field_pt> getptr() { return shared_from_this(); }
-  ~CPP_grid_field_pt() {
-  std::cout << "~CPP_grid_field_pt(): " << this << std::endl;
+
+
+  virtual ~CPP_grid_field_pt() {
   }
+  std::shared_ptr<CPP_grid_field_pt> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1604,12 +1635,13 @@ public:
     r0(3, 0.0),
     curved_ref_frame(false),
     ptr(NULL)
-    {std::cout << "CPP_grid_field(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_grid_field> getptr() { return shared_from_this(); }
-  ~CPP_grid_field() {
-  std::cout << "~CPP_grid_field(): " << this << std::endl;
+
+
+  virtual ~CPP_grid_field() {
   }
+  std::shared_ptr<CPP_grid_field> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1638,12 +1670,13 @@ public:
     theta(0.0),
     phi(0.0),
     psi(0.0)
-    {std::cout << "CPP_floor_position(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_floor_position> getptr() { return shared_from_this(); }
-  ~CPP_floor_position() {
-  std::cout << "~CPP_floor_position(): " << this << std::endl;
+
+
+  virtual ~CPP_floor_position() {
   }
+  std::shared_ptr<CPP_floor_position> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1678,12 +1711,13 @@ public:
     sin_phi(0.0),
     cos_phi(0.0),
     sig_z(0.0)
-    {std::cout << "CPP_high_energy_space_charge(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_high_energy_space_charge> getptr() { return shared_from_this(); }
-  ~CPP_high_energy_space_charge() {
-  std::cout << "~CPP_high_energy_space_charge(): " << this << std::endl;
+
+
+  virtual ~CPP_high_energy_space_charge() {
   }
+  std::shared_ptr<CPP_high_energy_space_charge> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1710,12 +1744,13 @@ public:
     etap(0.0),
     deta_ds(0.0),
     sigma(0.0)
-    {std::cout << "CPP_xy_disp(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_xy_disp> getptr() { return shared_from_this(); }
-  ~CPP_xy_disp() {
-  std::cout << "~CPP_xy_disp(): " << this << std::endl;
+
+
+  virtual ~CPP_xy_disp() {
   }
+  std::shared_ptr<CPP_xy_disp> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1756,12 +1791,13 @@ public:
     sigma_p(0.0),
     emit(0.0),
     norm_emit(0.0)
-    {std::cout << "CPP_twiss(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_twiss> getptr() { return shared_from_this(); }
-  ~CPP_twiss() {
-  std::cout << "~CPP_twiss(): " << this << std::endl;
+
+
+  virtual ~CPP_twiss() {
   }
+  std::shared_ptr<CPP_twiss> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1792,12 +1828,13 @@ public:
     c(),
     x(),
     y()
-    {std::cout << "CPP_mode3(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_mode3> getptr() { return shared_from_this(); }
-  ~CPP_mode3() {
-  std::cout << "~CPP_mode3(): " << this << std::endl;
+
+
+  virtual ~CPP_mode3() {
   }
+  std::shared_ptr<CPP_mode3> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1834,12 +1871,13 @@ public:
     rad_int(Bmad::STALE),
     ptc(Bmad::STALE),
     has_misalign(false)
-    {std::cout << "CPP_bookkeeping_state(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_bookkeeping_state> getptr() { return shared_from_this(); }
-  ~CPP_bookkeeping_state() {
-  std::cout << "~CPP_bookkeeping_state(): " << this << std::endl;
+
+
+  virtual ~CPP_bookkeeping_state() {
   }
+  std::shared_ptr<CPP_bookkeeping_state> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1868,12 +1906,13 @@ public:
     xfer_damp_vec(6, 0.0),
     xfer_damp_mat(Real_MATRIX(6, Real_ARRAY(6))),
     stoc_mat(Real_MATRIX(6, Real_ARRAY(6)))
-    {std::cout << "CPP_rad_map(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_rad_map> getptr() { return shared_from_this(); }
-  ~CPP_rad_map() {
-  std::cout << "~CPP_rad_map(): " << this << std::endl;
+
+
+  virtual ~CPP_rad_map() {
   }
+  std::shared_ptr<CPP_rad_map> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1898,12 +1937,13 @@ public:
     rm0(),
     rm1(),
     stale(true)
-    {std::cout << "CPP_rad_map_ele(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_rad_map_ele> getptr() { return shared_from_this(); }
-  ~CPP_rad_map_ele() {
-  std::cout << "~CPP_rad_map_ele(): " << this << std::endl;
+
+
+  virtual ~CPP_rad_map_ele() {
   }
+  std::shared_ptr<CPP_rad_map_ele> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1930,12 +1970,13 @@ public:
     sincos(0),
     n_deriv_max(-1),
     deriv(Real_MATRIX(0, Real_ARRAY(0)))
-    {std::cout << "CPP_gen_grad1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_gen_grad1> getptr() { return shared_from_this(); }
-  ~CPP_gen_grad1() {
-  std::cout << "~CPP_gen_grad1(): " << this << std::endl;
+
+
+  virtual ~CPP_gen_grad1() {
   }
+  std::shared_ptr<CPP_gen_grad1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -1976,12 +2017,13 @@ public:
     field_scale(1),
     master_parameter(0),
     curved_ref_frame(false)
-    {std::cout << "CPP_gen_grad_map(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_gen_grad_map> getptr() { return shared_from_this(); }
-  ~CPP_gen_grad_map() {
-  std::cout << "~CPP_gen_grad_map(): " << this << std::endl;
+
+
+  virtual ~CPP_gen_grad_map() {
   }
+  std::shared_ptr<CPP_gen_grad_map> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2010,12 +2052,13 @@ public:
     z0(0.0),
     dz_dx(0.0),
     dz_dy(0.0)
-    {std::cout << "CPP_surface_segmented_pt(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_segmented_pt> getptr() { return shared_from_this(); }
-  ~CPP_surface_segmented_pt() {
-  std::cout << "~CPP_surface_segmented_pt(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_segmented_pt() {
   }
+  std::shared_ptr<CPP_surface_segmented_pt> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2042,12 +2085,13 @@ public:
     dr(2, 0.0),
     r0(2, 0.0),
     pt(CPP_surface_segmented_pt_MATRIX(0, CPP_surface_segmented_pt_ARRAY(0)))
-    {std::cout << "CPP_surface_segmented(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_segmented> getptr() { return shared_from_this(); }
-  ~CPP_surface_segmented() {
-  std::cout << "~CPP_surface_segmented(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_segmented() {
   }
+  std::shared_ptr<CPP_surface_segmented> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2078,12 +2122,13 @@ public:
     rot_t(0.0),
     rot_y_rms(0.0),
     rot_t_rms(0.0)
-    {std::cout << "CPP_surface_h_misalign_pt(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_h_misalign_pt> getptr() { return shared_from_this(); }
-  ~CPP_surface_h_misalign_pt() {
-  std::cout << "~CPP_surface_h_misalign_pt(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_h_misalign_pt() {
   }
+  std::shared_ptr<CPP_surface_h_misalign_pt> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2110,12 +2155,13 @@ public:
     dr(2, 0.0),
     r0(2, 0.0),
     pt(CPP_surface_h_misalign_pt_MATRIX(0, CPP_surface_h_misalign_pt_ARRAY(0)))
-    {std::cout << "CPP_surface_h_misalign(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_h_misalign> getptr() { return shared_from_this(); }
-  ~CPP_surface_h_misalign() {
-  std::cout << "~CPP_surface_h_misalign(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_h_misalign() {
   }
+  std::shared_ptr<CPP_surface_h_misalign> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2146,12 +2192,13 @@ public:
     dz_dx(0.0),
     dz_dy(0.0),
     d2z_dxdy(0.0)
-    {std::cout << "CPP_surface_displacement_pt(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_displacement_pt> getptr() { return shared_from_this(); }
-  ~CPP_surface_displacement_pt() {
-  std::cout << "~CPP_surface_displacement_pt(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_displacement_pt() {
   }
+  std::shared_ptr<CPP_surface_displacement_pt> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2178,12 +2225,13 @@ public:
     dr(2, 0.0),
     r0(2, 0.0),
     pt(CPP_surface_displacement_pt_MATRIX(0, CPP_surface_displacement_pt_ARRAY(0)))
-    {std::cout << "CPP_surface_displacement(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_displacement> getptr() { return shared_from_this(); }
-  ~CPP_surface_displacement() {
-  std::cout << "~CPP_surface_displacement(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_displacement() {
   }
+  std::shared_ptr<CPP_surface_displacement> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2204,12 +2252,13 @@ public:
 
   CPP_target_point() :
     r(3, 0.0)
-    {std::cout << "CPP_target_point(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_target_point> getptr() { return shared_from_this(); }
-  ~CPP_target_point() {
-  std::cout << "~CPP_target_point(): " << this << std::endl;
+
+
+  virtual ~CPP_target_point() {
   }
+  std::shared_ptr<CPP_target_point> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2236,12 +2285,13 @@ public:
     spherical(0.0),
     elliptical(3, 0.0),
     has_curvature(false)
-    {std::cout << "CPP_surface_curvature(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_surface_curvature> getptr() { return shared_from_this(); }
-  ~CPP_surface_curvature() {
-  std::cout << "~CPP_surface_curvature(): " << this << std::endl;
+
+
+  virtual ~CPP_surface_curvature() {
   }
+  std::shared_ptr<CPP_surface_curvature> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2270,12 +2320,13 @@ public:
     ele_loc(),
     corner(CPP_target_point_ARRAY(8)),
     center()
-    {std::cout << "CPP_photon_target(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_photon_target> getptr() { return shared_from_this(); }
-  ~CPP_photon_target() {
-  std::cout << "~CPP_photon_target(): " << this << std::endl;
+
+
+  virtual ~CPP_photon_target() {
   }
+  std::shared_ptr<CPP_photon_target> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2310,12 +2361,13 @@ public:
     f_hkl(0.0),
     h_norm(3, 0.0),
     l_ref(3, 0.0)
-    {std::cout << "CPP_photon_material(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_photon_material> getptr() { return shared_from_this(); }
-  ~CPP_photon_material() {
-  std::cout << "~CPP_photon_material(): " << this << std::endl;
+
+
+  virtual ~CPP_photon_material() {
   }
+  std::shared_ptr<CPP_photon_material> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2354,12 +2406,13 @@ public:
     orbit_rms(6, 0.0),
     init_orbit(6, 0.0),
     init_orbit_rms(6, 0.0)
-    {std::cout << "CPP_pixel_pt(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_pixel_pt> getptr() { return shared_from_this(); }
-  ~CPP_pixel_pt() {
-  std::cout << "~CPP_pixel_pt(): " << this << std::endl;
+
+
+  virtual ~CPP_pixel_pt() {
   }
+  std::shared_ptr<CPP_pixel_pt> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2390,12 +2443,13 @@ public:
     n_hit_detec(0),
     n_hit_pixel(0),
     pt(CPP_pixel_pt_MATRIX(0, CPP_pixel_pt_ARRAY(0)))
-    {std::cout << "CPP_pixel_detec(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_pixel_detec> getptr() { return shared_from_this(); }
-  ~CPP_pixel_detec() {
-  std::cout << "~CPP_pixel_detec(): " << this << std::endl;
+
+
+  virtual ~CPP_pixel_detec() {
   }
+  std::shared_ptr<CPP_pixel_detec> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2438,12 +2492,13 @@ public:
     reflectivity_table_pi(),
     init_energy_prob(CPP_spline_ARRAY(0)),
     integrated_init_energy_prob(0, 0.0)
-    {std::cout << "CPP_photon_element(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_photon_element> getptr() { return shared_from_this(); }
-  ~CPP_photon_element() {
-  std::cout << "~CPP_photon_element(): " << this << std::endl;
+
+
+  virtual ~CPP_photon_element() {
   }
+  std::shared_ptr<CPP_photon_element> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2480,12 +2535,13 @@ public:
     x0(0.0),
     y0(0.0),
     type(Bmad::NORMAL)
-    {std::cout << "CPP_wall3d_vertex(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wall3d_vertex> getptr() { return shared_from_this(); }
-  ~CPP_wall3d_vertex() {
-  std::cout << "~CPP_wall3d_vertex(): " << this << std::endl;
+
+
+  virtual ~CPP_wall3d_vertex() {
   }
+  std::shared_ptr<CPP_wall3d_vertex> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2544,12 +2600,13 @@ public:
     dr_ds(Bmad::REAL_GARBAGE),
     p1_coef(3, 0.0),
     p2_coef(3, 0.0)
-    {std::cout << "CPP_wall3d_section(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wall3d_section> getptr() { return shared_from_this(); }
-  ~CPP_wall3d_section() {
-  std::cout << "~CPP_wall3d_section(): " << this << std::endl;
+
+
+  virtual ~CPP_wall3d_section() {
   }
+  std::shared_ptr<CPP_wall3d_section> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2588,12 +2645,13 @@ public:
     superimpose(false),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     section(CPP_wall3d_section_ARRAY(0))
-    {std::cout << "CPP_wall3d(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_wall3d> getptr() { return shared_from_this(); }
-  ~CPP_wall3d() {
-  std::cout << "~CPP_wall3d(): " << this << std::endl;
+
+
+  virtual ~CPP_wall3d() {
   }
+  std::shared_ptr<CPP_wall3d> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2618,12 +2676,13 @@ public:
     ix_ele(0),
     ix_con(0),
     attrib_ptr(NULL)
-    {std::cout << "CPP_ramper_lord(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_ramper_lord> getptr() { return shared_from_this(); }
-  ~CPP_ramper_lord() {
-  std::cout << "~CPP_ramper_lord(): " << this << std::endl;
+
+
+  virtual ~CPP_ramper_lord() {
   }
+  std::shared_ptr<CPP_ramper_lord> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2658,12 +2717,13 @@ public:
     slave_name(),
     attribute(),
     ix_attrib(-1)
-    {std::cout << "CPP_control(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_control> getptr() { return shared_from_this(); }
-  ~CPP_control() {
-  std::cout << "~CPP_control(): " << this << std::endl;
+
+
+  virtual ~CPP_control() {
   }
+  std::shared_ptr<CPP_control> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2688,12 +2748,13 @@ public:
     name(),
     value(0.0),
     old_value(0.0)
-    {std::cout << "CPP_control_var1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_control_var1> getptr() { return shared_from_this(); }
-  ~CPP_control_var1() {
-  std::cout << "~CPP_control_var1(): " << this << std::endl;
+
+
+  virtual ~CPP_control_var1() {
   }
+  std::shared_ptr<CPP_control_var1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2722,12 +2783,13 @@ public:
     attribute(),
     slave_name(),
     is_controller(false)
-    {std::cout << "CPP_control_ramp1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_control_ramp1> getptr() { return shared_from_this(); }
-  ~CPP_control_ramp1() {
-  std::cout << "~CPP_control_ramp1(): " << this << std::endl;
+
+
+  virtual ~CPP_control_ramp1() {
   }
+  std::shared_ptr<CPP_control_ramp1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2754,12 +2816,13 @@ public:
     ramp(CPP_control_ramp1_ARRAY(0)),
     ramper_lord(CPP_ramper_lord_ARRAY(0)),
     x_knot(0, 0.0)
-    {std::cout << "CPP_controller(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_controller> getptr() { return shared_from_this(); }
-  ~CPP_controller() {
-  std::cout << "~CPP_controller(): " << this << std::endl;
+
+
+  virtual ~CPP_controller() {
   }
+  std::shared_ptr<CPP_controller> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2784,12 +2847,13 @@ public:
     part_per_ellipse(0),
     n_ellipse(1),
     sigma_cutoff(0.0)
-    {std::cout << "CPP_ellipse_beam_init(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_ellipse_beam_init> getptr() { return shared_from_this(); }
-  ~CPP_ellipse_beam_init() {
-  std::cout << "~CPP_ellipse_beam_init(): " << this << std::endl;
+
+
+  virtual ~CPP_ellipse_beam_init() {
   }
+  std::shared_ptr<CPP_ellipse_beam_init> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2814,12 +2878,13 @@ public:
     part_per_phi(2, 0),
     n_i2(0),
     a(0.0)
-    {std::cout << "CPP_kv_beam_init(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_kv_beam_init> getptr() { return shared_from_this(); }
-  ~CPP_kv_beam_init() {
-  std::cout << "~CPP_kv_beam_init(): " << this << std::endl;
+
+
+  virtual ~CPP_kv_beam_init() {
   }
+  std::shared_ptr<CPP_kv_beam_init> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2850,12 +2915,13 @@ public:
     x_max(0.0),
     px_min(0.0),
     px_max(0.0)
-    {std::cout << "CPP_grid_beam_init(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_grid_beam_init> getptr() { return shared_from_this(); }
-  ~CPP_grid_beam_init() {
-  std::cout << "~CPP_grid_beam_init(): " << this << std::endl;
+
+
+  virtual ~CPP_grid_beam_init() {
   }
+  std::shared_ptr<CPP_grid_beam_init> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -2944,12 +3010,13 @@ public:
     use_t_coords(false),
     use_z_as_t(false),
     file_name()
-    {std::cout << "CPP_beam_init(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_beam_init> getptr() { return shared_from_this(); }
-  ~CPP_beam_init() {
-  std::cout << "~CPP_beam_init(): " << this << std::endl;
+
+
+  virtual ~CPP_beam_init() {
   }
+  std::shared_ptr<CPP_beam_init> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3002,12 +3069,13 @@ public:
     g3_integral(-1),
     bookkeeping_state(),
     beam_init()
-    {std::cout << "CPP_lat_param(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_lat_param> getptr() { return shared_from_this(); }
-  ~CPP_lat_param() {
-  std::cout << "~CPP_lat_param(): " << this << std::endl;
+
+
+  virtual ~CPP_lat_param() {
   }
+  std::shared_ptr<CPP_lat_param> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3038,12 +3106,13 @@ public:
     chrom(0.0),
     sigma(0.0),
     sigmap(0.0)
-    {std::cout << "CPP_mode_info(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_mode_info> getptr() { return shared_from_this(); }
-  ~CPP_mode_info() {
-  std::cout << "~CPP_mode_info(): " << this << std::endl;
+
+
+  virtual ~CPP_mode_info() {
   }
+  std::shared_ptr<CPP_mode_info> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3070,12 +3139,13 @@ public:
     ix_ele_start(0),
     ix_ele_end(0),
     input_file()
-    {std::cout << "CPP_pre_tracker(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_pre_tracker> getptr() { return shared_from_this(); }
-  ~CPP_pre_tracker() {
-  std::cout << "~CPP_pre_tracker(): " << this << std::endl;
+
+
+  virtual ~CPP_pre_tracker() {
   }
+  std::shared_ptr<CPP_pre_tracker> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3108,12 +3178,13 @@ public:
     alpha_damp(0.0),
     chrom(0.0),
     tune(0.0)
-    {std::cout << "CPP_anormal_mode(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_anormal_mode> getptr() { return shared_from_this(); }
-  ~CPP_anormal_mode() {
-  std::cout << "~CPP_anormal_mode(): " << this << std::endl;
+
+
+  virtual ~CPP_anormal_mode() {
   }
+  std::shared_ptr<CPP_anormal_mode> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3146,12 +3217,13 @@ public:
     sig_e1(0.0),
     a_emittance_end(0.0),
     b_emittance_end(0.0)
-    {std::cout << "CPP_linac_normal_mode(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_linac_normal_mode> getptr() { return shared_from_this(); }
-  ~CPP_linac_normal_mode() {
-  std::cout << "~CPP_linac_normal_mode(): " << this << std::endl;
+
+
+  virtual ~CPP_linac_normal_mode() {
   }
+  std::shared_ptr<CPP_linac_normal_mode> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3196,12 +3268,13 @@ public:
     b(),
     z(),
     lin()
-    {std::cout << "CPP_normal_modes(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_normal_modes> getptr() { return shared_from_this(); }
-  ~CPP_normal_modes() {
-  std::cout << "~CPP_normal_modes(): " << this << std::endl;
+
+
+  virtual ~CPP_normal_modes() {
   }
+  std::shared_ptr<CPP_normal_modes> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3234,12 +3307,13 @@ public:
     phi(0.0),
     phi_b(0.0),
     a(3, 0.0)
-    {std::cout << "CPP_em_field(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_em_field> getptr() { return shared_from_this(); }
-  ~CPP_em_field() {
-  std::cout << "~CPP_em_field(): " << this << std::endl;
+
+
+  virtual ~CPP_em_field() {
   }
+  std::shared_ptr<CPP_em_field> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3272,12 +3346,13 @@ public:
     y_sigma(0.0),
     dx(0.0),
     dy(0.0)
-    {std::cout << "CPP_strong_beam(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_strong_beam> getptr() { return shared_from_this(); }
-  ~CPP_strong_beam() {
-  std::cout << "~CPP_strong_beam(): " << this << std::endl;
+
+
+  virtual ~CPP_strong_beam() {
   }
+  std::shared_ptr<CPP_strong_beam> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3308,12 +3383,13 @@ public:
     strong_beam(),
     vec0(6, 0.0),
     mat6(Real_MATRIX(6, Real_ARRAY(6)))
-    {std::cout << "CPP_track_point(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_track_point> getptr() { return shared_from_this(); }
-  ~CPP_track_point() {
-  std::cout << "~CPP_track_point(): " << this << std::endl;
+
+
+  virtual ~CPP_track_point() {
   }
+  std::shared_ptr<CPP_track_point> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3342,12 +3418,13 @@ public:
     n_pt(-1),
     n_bad(0),
     n_ok(0)
-    {std::cout << "CPP_track(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_track> getptr() { return shared_from_this(); }
-  ~CPP_track() {
-  std::cout << "~CPP_track(): " << this << std::endl;
+
+
+  virtual ~CPP_track() {
   }
+  std::shared_ptr<CPP_track> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3400,12 +3477,13 @@ public:
     lsc_kick_transverse_dependence(false),
     debug(false),
     diagnostic_output_file()
-    {std::cout << "CPP_space_charge_common(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_space_charge_common> getptr() { return shared_from_this(); }
-  ~CPP_space_charge_common() {
-  std::cout << "~CPP_space_charge_common(): " << this << std::endl;
+
+
+  virtual ~CPP_space_charge_common() {
   }
+  std::shared_ptr<CPP_space_charge_common> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3504,12 +3582,13 @@ public:
     convert_to_kinetic_momentum(false),
     aperture_limit_on(true),
     debug(false)
-    {std::cout << "CPP_bmad_common(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_bmad_common> getptr() { return shared_from_this(); }
-  ~CPP_bmad_common() {
-  std::cout << "~CPP_bmad_common(): " << this << std::endl;
+
+
+  virtual ~CPP_bmad_common() {
   }
+  std::shared_ptr<CPP_bmad_common> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3564,12 +3643,13 @@ public:
     lin_norm_emit_b(0.0),
     lin_sig_e(0.0),
     n_steps(0.0)
-    {std::cout << "CPP_rad_int1(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_rad_int1> getptr() { return shared_from_this(); }
-  ~CPP_rad_int1() {
-  std::cout << "~CPP_rad_int1(): " << this << std::endl;
+
+
+  virtual ~CPP_rad_int1() {
   }
+  std::shared_ptr<CPP_rad_int1> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3590,12 +3670,13 @@ public:
 
   CPP_rad_int_branch() :
     ele(CPP_rad_int1_ARRAY(0))
-    {std::cout << "CPP_rad_int_branch(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_rad_int_branch> getptr() { return shared_from_this(); }
-  ~CPP_rad_int_branch() {
-  std::cout << "~CPP_rad_int_branch(): " << this << std::endl;
+
+
+  virtual ~CPP_rad_int_branch() {
   }
+  std::shared_ptr<CPP_rad_int_branch> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3616,12 +3697,13 @@ public:
 
   CPP_rad_int_all_ele() :
     branch(CPP_rad_int_branch_ARRAY(0))
-    {std::cout << "CPP_rad_int_all_ele(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_rad_int_all_ele> getptr() { return shared_from_this(); }
-  ~CPP_rad_int_all_ele() {
-  std::cout << "~CPP_rad_int_all_ele(): " << this << std::endl;
+
+
+  virtual ~CPP_rad_int_all_ele() {
   }
+  std::shared_ptr<CPP_rad_int_all_ele> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3834,16 +3916,16 @@ public:
     bmad_logic(false),
     select(false),
     offset_moves_aperture(false)
-    {std::cout << "CPP_ele(): " << this << std::endl;
-    {
+    {    {
       class_init(key);
     }
 }
 
-  std::shared_ptr<CPP_ele> getptr() { return shared_from_this(); }
-  ~CPP_ele() {
-  std::cout << "~CPP_ele(): " << this << std::endl;
+
+
+  virtual ~CPP_ele() {
   }
+  std::shared_ptr<CPP_ele> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3866,12 +3948,13 @@ public:
   CPP_complex_taylor_term() :
     coef(0.0),
     expn(6, 0)
-    {std::cout << "CPP_complex_taylor_term(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_complex_taylor_term> getptr() { return shared_from_this(); }
-  ~CPP_complex_taylor_term() {
-  std::cout << "~CPP_complex_taylor_term(): " << this << std::endl;
+
+
+  virtual ~CPP_complex_taylor_term() {
   }
+  std::shared_ptr<CPP_complex_taylor_term> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3894,12 +3977,13 @@ public:
   CPP_complex_taylor() :
     ref(0.0),
     term(CPP_complex_taylor_term_ARRAY(0))
-    {std::cout << "CPP_complex_taylor(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_complex_taylor> getptr() { return shared_from_this(); }
-  ~CPP_complex_taylor() {
-  std::cout << "~CPP_complex_taylor(): " << this << std::endl;
+
+
+  virtual ~CPP_complex_taylor() {
   }
+  std::shared_ptr<CPP_complex_taylor> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -3944,12 +4028,13 @@ public:
     ele(CPP_ele_ARRAY(0)),
     param(),
     wall3d(CPP_wall3d_ARRAY(0))
-    {std::cout << "CPP_branch(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_branch> getptr() { return shared_from_this(); }
-  ~CPP_branch() {
-  std::cout << "~CPP_branch(): " << this << std::endl;
+
+
+  virtual ~CPP_branch() {
   }
+  std::shared_ptr<CPP_branch> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4028,12 +4113,13 @@ public:
     photon_type(Bmad::INCOHERENT),
     creation_hash(0),
     ramper_slave_bookkeeping(Bmad::STALE)
-    {std::cout << "CPP_lat(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_lat> getptr() { return shared_from_this(); }
-  ~CPP_lat() {
-  std::cout << "~CPP_lat(): " << this << std::endl;
+
+
+  virtual ~CPP_lat() {
   }
+  std::shared_ptr<CPP_lat> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4080,12 +4166,13 @@ public:
     n_live(0),
     n_good(0),
     n_bad(0)
-    {std::cout << "CPP_bunch(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_bunch> getptr() { return shared_from_this(); }
-  ~CPP_bunch() {
-  std::cout << "~CPP_bunch(): " << this << std::endl;
+
+
+  virtual ~CPP_bunch() {
   }
+  std::shared_ptr<CPP_bunch> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4150,12 +4237,13 @@ public:
     ix_ele(-1),
     location(Bmad::NOT_SET),
     twiss_valid(false)
-    {std::cout << "CPP_bunch_params(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_bunch_params> getptr() { return shared_from_this(); }
-  ~CPP_bunch_params() {
-  std::cout << "~CPP_bunch_params(): " << this << std::endl;
+
+
+  virtual ~CPP_bunch_params() {
   }
+  std::shared_ptr<CPP_bunch_params> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4176,12 +4264,13 @@ public:
 
   CPP_beam() :
     bunch(CPP_bunch_ARRAY(0))
-    {std::cout << "CPP_beam(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_beam> getptr() { return shared_from_this(); }
-  ~CPP_beam() {
-  std::cout << "~CPP_beam(): " << this << std::endl;
+
+
+  virtual ~CPP_beam() {
   }
+  std::shared_ptr<CPP_beam> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4210,12 +4299,13 @@ public:
     plane(0),
     ix_ele(0),
     i_turn(0)
-    {std::cout << "CPP_aperture_point(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_aperture_point> getptr() { return shared_from_this(); }
-  ~CPP_aperture_point() {
-  std::cout << "~CPP_aperture_point(): " << this << std::endl;
+
+
+  virtual ~CPP_aperture_point() {
   }
+  std::shared_ptr<CPP_aperture_point> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4252,12 +4342,13 @@ public:
     rel_accuracy(0.0),
     abs_accuracy(0.0),
     start_ele()
-    {std::cout << "CPP_aperture_param(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_aperture_param> getptr() { return shared_from_this(); }
-  ~CPP_aperture_param() {
-  std::cout << "~CPP_aperture_param(): " << this << std::endl;
+
+
+  virtual ~CPP_aperture_param() {
   }
+  std::shared_ptr<CPP_aperture_param> getptr() { return shared_from_this(); }
 
 };   // End Class
 
@@ -4282,12 +4373,13 @@ public:
     point(CPP_aperture_point_ARRAY(0)),
     ref_orb(),
     pz_start(0.0)
-    {std::cout << "CPP_aperture_scan(): " << this << std::endl;}
+    {}
 
-  std::shared_ptr<CPP_aperture_scan> getptr() { return shared_from_this(); }
-  ~CPP_aperture_scan() {
-  std::cout << "~CPP_aperture_scan(): " << this << std::endl;
+
+
+  virtual ~CPP_aperture_scan() {
   }
+  std::shared_ptr<CPP_aperture_scan> getptr() { return shared_from_this(); }
 
 };   // End Class
 

@@ -1346,6 +1346,7 @@ extern "C" void grid_field_pt_to_c2 (CPP_grid_field_pt& C, c_Char z_file, c_Int&
     for (int j = 0; j < n2_pt; j++) {
       C.pt[i][j].resize(n3_pt);
       for (int k = 0; k < n3_pt; k++) {
+        C.pt[i][j][k] = make_shared<CPP_grid_field_pt1>();
         grid_field_pt1_to_c(z_pt[n3_pt*n2_pt*i+n3_pt*j+k], *C.pt[i][j][k].get());
     } } }
 

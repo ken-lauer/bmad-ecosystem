@@ -2098,6 +2098,7 @@ void set_CPP_grid_field_pt_test_pattern (CPP_grid_field_pt& C, int ix_patt) {
       for (size_t j = 0; j < C.pt[0].size(); j++) {
         C.pt[i][j].resize(1);
         for (size_t k = 0; k < C.pt[0][0].size(); k++) {
+          C.pt[i][j][k] = make_shared<CPP_grid_field_pt1>();
           set_CPP_grid_field_pt1_test_pattern(*C.pt[i][j][k], ix_patt+i+2*j+3*k+6);
     } } }
   }

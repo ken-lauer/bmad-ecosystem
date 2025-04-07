@@ -54,11 +54,7 @@ contains
 
     call to_f_str(lat_file, f_lat_file)
  
-    print *, "(f) lat_file=", f_lat_file
-    print *, "(f) lat=", lat
-
     if (.not. c_associated(lat)) then
-      print *, "(f) lat NULL? error"
       err_flag = .true.
       return
     endIf
@@ -68,7 +64,6 @@ contains
     ptr_f_lat = c_loc(f_lat)
 
     if (.not. c_associated(ptr_f_lat)) then
-      print *, "(f) f_lat NULL? error"
       err_flag = .true.
       return
     endIf
