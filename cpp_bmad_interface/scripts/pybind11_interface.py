@@ -26,7 +26,8 @@ def get_struct_array_return_code(arg):
 
     if dimensions == 1:
         return f"""
-                return self.{arg.c_name};
+                return py::none();
+                // return self.{arg.c_name};
                 """
     if dimensions == 2:
         return f"""
@@ -109,6 +110,7 @@ def handle_array(cpp_class_name: str, property_doc: str, arg: arg_class):
         code.append(f"                // Set {arg.c_name} from list of structs")
         code.append(f"                {get_struct_array_setter_code(arg)}")
         code.append("            },")
+        code.append("            py::return_value_policy::copy,")
         code.append(f"            {property_doc})")
     # Handle different array types for primitive types
     elif "ARRAY" in cpp_type:
@@ -201,7 +203,7 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
 
         # Add class with docstring
         code.append(
-            f'    py::class_<{cpp_class_name}>(m, "{py_class_name}", "Fortran struct: {struct_def.f_name}")'
+            f'    py::class_<{cpp_class_name}, std::shared_ptr<{cpp_class_name}>>(m, "{py_class_name}", "Fortran struct: {struct_def.f_name}")'
         )
 
         # Add constructor if available
@@ -224,6 +226,9 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
                 f'"{comment}"' if comment else '"Property from Fortran struct"'
             )
 
+            code.append(
+                f"        // {struct_def.cpp_class}.{arg.c_name}: {arg.pointer_type} {arg.kind=} {arg=}"
+            )
             # Skip pointer types to structs
             # Handle arrays vs scalar properties
             if arg.array:
@@ -235,42 +240,18 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
                     )
                 )
             elif arg.pointer_type == PTR and "_struct" in arg.kind:
-                property_type = get_cpp_type_for_property(arg)
-                if arg.c_name in (
-                    "a",
-                    "ac_kick",
-                    "b",
-                    "control",
-                    "high_energy_space_charge",
-                    "mode3",
-                    "param",
-                    "ptr",
-                    "photon",
-                    "rad_map",
-                    "surface",
-                    "wake",
-                    "z",
-                ):
-                    code.append(f'        .def_property_readonly("{arg.c_name}",')
-                    code.append(
-                        f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
-                    )
-                    # TODO setter?
-                    # code.append(
-                    #     f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
-                    # )
-                    code.append(f"            {property_doc})")
-                else:
-                    code.append(f'        .def_property("{arg.c_name}",')
-                    code.append(
-                        f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
-                    )
-                    code.append(
-                        f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
-                    )
-                    code.append(f"            {property_doc})")
+                # property_type = get_cpp_type_for_property(arg)
+                code.append(f'        .def_property_readonly("{arg.c_name}",')
+                code.append(
+                    f"            [](const {cpp_class_name} &self) {{ return self.{arg.c_name}; }},"
+                )
+                # code.append(
+                #     f"            []({cpp_class_name} &self, {property_type} &val) {{ self.{arg.c_name} = val; }},"
+                # )
+                code.append("            py::return_value_policy::copy,")
+                code.append(f"            {property_doc})")
             elif arg.pointer_type == PTR:
-                property_type = get_cpp_type_for_property(arg)
+                # property_type = get_cpp_type_for_property(arg)
                 var = f"self.{arg.c_name}"
                 # TODO setter
                 # code.append(f'        .def_property("{arg.c_name}",')
@@ -281,11 +262,12 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
                 # code.append(
                 #     f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
                 # )
+                code.append("            py::return_value_policy::copy,")
                 code.append(f"            {property_doc})")
 
             else:
                 # Simple property for scalar values
-                property_type = get_cpp_type_for_property(arg)
+                # property_type = get_cpp_type_for_property(arg)
                 # TODO setter
                 # code.append(f'        .def_property("{arg.c_name}",')
                 code.append(f'        .def_property_readonly("{arg.c_name}",')
@@ -295,6 +277,7 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
                 # code.append(
                 #     f"            []({cpp_class_name} &self, {property_type} val) {{ self.{arg.c_name} = val; }},"
                 # )
+                code.append("            py::return_value_policy::copy,")
                 code.append(f"            {property_doc})")
 
         # Add any custom methods

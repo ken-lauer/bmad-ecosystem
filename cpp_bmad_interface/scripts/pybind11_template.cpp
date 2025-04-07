@@ -27,14 +27,13 @@ extern "C" bool cpp_bmad_parser(
 
 namespace py = pybind11;
 
-// Wrapper function that handles Python types and optional arguments
-shared_ptr<CPP_lat> bmad_parser_wrapper(
+unique_ptr<CPP_lat> bmad_parser_wrapper(
     const std::string& lat_file,
     py::object make_mats6_obj = py::none(),
     py::object digested_read_ok_obj = py::none(),
     py::object use_line_obj = py::none()
 ) {
-    auto lat = std::make_shared<CPP_lat>();
+    auto lat = unique_ptr<CPP_lat>(new CPP_lat {});
     void* parse_lat_ptr = nullptr;
     
     bool make_mats6 = make_mats6_obj.is_none() ? false : make_mats6_obj.cast<bool>();
@@ -71,7 +70,7 @@ PYBIND11_MODULE(bmad, m) {
 
     // insert classes here //
 
-    m.def("bmad_parser", &bmad_parser_wrapper, 
+    m.def("bmad_parser", &bmad_parser_wrapper, py::return_value_policy::move,
         py::arg("lat_file"),
         py::arg("make_mats6") = py::none(),
         py::arg("digested_read_ok") = py::none(), 

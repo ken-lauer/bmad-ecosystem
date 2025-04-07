@@ -999,7 +999,6 @@ enddo
     fc.to_f2_type = fc.to_c2_type
     fc.to_f2_name = fc.to_c2_name
     fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
-    fc.to_f2_trans = fc.to_f2_trans.replace("ZZZ", "string")
     fc.test_pat = """\
 if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
@@ -2867,6 +2866,14 @@ def write_cpp_classes(file):
 #include <memory>
 #include <string>
 #include <vector>
+
+template<typename T>
+using Array = std::vector<std::shared_ptr<T>>;
+template<typename T>
+using Matrix  = std::vector<Array<T>>;
+template<typename T>
+using Tensor  = std::vector<Matrix<T>>;
+
 """)
 
     # Include additional header files
@@ -2876,21 +2883,21 @@ def write_cpp_classes(file):
     # Write array/matrix/tensor typedefs for each struct
     for struct in struct_definitions:
         file.write(f"""
-class CPP_{struct.short_name};
-typedef vector<shared_ptr<CPP_{struct.short_name}>>          CPP_{struct.short_name}_ARRAY;
-typedef vector<CPP_{struct.short_name}_ARRAY>    CPP_{struct.short_name}_MATRIX;
-typedef vector<CPP_{struct.short_name}_MATRIX>   CPP_{struct.short_name}_TENSOR;
+class {struct.cpp_class};
+using {struct.cpp_class}_ARRAY  = vector<shared_ptr<{struct.cpp_class}>>;
+using {struct.cpp_class}_MATRIX = vector<{struct.cpp_class}_ARRAY>;
+using {struct.cpp_class}_TENSOR = vector<{struct.cpp_class}_MATRIX>;
 """)
 
     # Write class definitions for each struct
     for struct in struct_definitions:
         file.write(f"""
 //--------------------------------------------------------------------
-// CPP_{struct.short_name}
+// {struct.cpp_class}
 
 class Opaque_{struct.short_name}_class {{}};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_{struct.short_name} {{
+class {struct.cpp_class} : public std::enable_shared_from_this<{struct.cpp_class}> {{
 public:
 """)
 
@@ -2899,7 +2906,7 @@ public:
             if not arg.is_component:
                 continue
             file.write(
-                f"  {arg.c_side.c_class.replace('ZZZ', struct.short_name)}{arg.c_side.c_class_suffix} {arg.c_name};\n"
+                f"  {arg.c_side.c_class}{arg.c_side.c_class_suffix} {arg.c_name};\n"
             )
 
         # Extra methods
@@ -2907,7 +2914,7 @@ public:
 
         # Constructor declaration
         file.write(f"""
-  CPP_{struct.short_name}({struct.c_constructor_arg_list}) :
+  {struct.cpp_class}({struct.c_constructor_arg_list}) :
 """)
 
         # Constructor initialization list
@@ -2930,8 +2937,15 @@ public:
             constructor_body = debug_constructed
         file.write(f"    {{{constructor_body}}}\n\n")
 
+        file.write(
+            f"  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}"
+        )
+
+        # TODO: copy constructor, move constructor, ... = default?
+        #
         # Destructor
-        file.write(f"  ~CPP_{struct.short_name}() {{\n")
+        file.write("\n")
+        file.write(f"  ~{struct.cpp_class}() {{\n")
 
         # if DEBUG:
         file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
@@ -2949,10 +2963,10 @@ public:
         file.write(f"""
 }};   // End Class
 
-extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, CPP_{struct.short_name}&);
-extern "C" void {struct.short_name}_to_f (const CPP_{struct.short_name}&, Opaque_{struct.short_name}_class*);
+extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, {struct.cpp_class}&);
+extern "C" void {struct.short_name}_to_f (const {struct.cpp_class}&, Opaque_{struct.short_name}_class*);
 
-bool operator== (const CPP_{struct.short_name}&, const CPP_{struct.short_name}&);
+bool operator== (const {struct.cpp_class}&, const {struct.cpp_class}&);
 
 """)
 
@@ -2988,9 +3002,9 @@ def write_cpp_convert(file):
         file.write(f"""
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
-// CPP_{struct.short_name}
+// {struct.cpp_class}
 
-extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, CPP_{struct.short_name}&);
+extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, {struct.cpp_class}&);
 
 """)
 
@@ -2998,7 +3012,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         line = f'extern "C" void {struct.short_name}_to_f2 (Opaque_{struct.short_name}_class*'
         for arg in struct.arg:
-            line += f", {arg.c_side.to_f2_arg.replace('ZZZ', struct.short_name)}"
+            line += f", {arg.c_side.to_f2_arg}"
         line += ");"
 
         file.write(wrap_line(line, "", ""))
@@ -3006,7 +3020,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         # ZZZ_to_f
         file.write("\n")
         file.write(
-            f'extern "C" void {struct.short_name}_to_f (const CPP_{struct.short_name}& C, Opaque_{struct.short_name}_class* F) {{\n'
+            f'extern "C" void {struct.short_name}_to_f (const {struct.cpp_class}& C, Opaque_{struct.short_name}_class* F) {{\n'
         )
 
         for arg in struct.arg:
@@ -3048,9 +3062,9 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("\n")
         file.write("// c_side.to_c2_arg\n")
 
-        line = f'extern "C" void {struct.short_name}_to_c2 (CPP_{struct.short_name}& C'
+        line = f'extern "C" void {struct.short_name}_to_c2 ({struct.cpp_class}& C'
         for arg in struct.arg:
-            line += f", {arg.c_side.to_c2_arg.replace('ZZZ', struct.short_name)}"
+            line += f", {arg.c_side.to_c2_arg}"
         line += ") {"
         file.write(wrap_line(line, "", ""))
 
@@ -3074,7 +3088,7 @@ def write_cpp_equality(header: str, file):
             "\n//--------------------------------------------------------------\n\n"
         )
         file.write(
-            f"bool operator== (const CPP_{struct.short_name}& x, const CPP_{struct.short_name}& y) {{\n"
+            f"bool operator== (const {struct.cpp_class}& x, const {struct.cpp_class}& y) {{\n"
         )
         file.write("  bool is_eq = true;\n")
 
@@ -3089,10 +3103,10 @@ def write_cpp_equality(header: str, file):
         file.write("};\n\n")
 
         file.write(
-            f"template bool is_all_equal (const CPP_{struct.short_name}_ARRAY&, const CPP_{struct.short_name}_ARRAY&);\n"
+            f"template bool is_all_equal (const {struct.cpp_class}_ARRAY&, const {struct.cpp_class}_ARRAY&);\n"
         )
         file.write(
-            f"template bool is_all_equal (const CPP_{struct.short_name}_MATRIX&, const CPP_{struct.short_name}_MATRIX&);\n"
+            f"template bool is_all_equal (const {struct.cpp_class}_MATRIX&, const {struct.cpp_class}_MATRIX&);\n"
         )
 
 
@@ -3123,9 +3137,9 @@ using namespace std;
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 
-extern "C" void test2_f_{struct.short_name} (CPP_{struct.short_name}&, bool&);
+extern "C" void test2_f_{struct.short_name} ({struct.cpp_class}&, bool&);
 
-void set_CPP_{struct.short_name}_test_pattern (CPP_{struct.short_name}& C, int ix_patt) {{
+void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
 
   int rhs, offset = 100 * ix_patt;
 
@@ -3148,12 +3162,12 @@ void set_CPP_{struct.short_name}_test_pattern (CPP_{struct.short_name}& C, int i
 
 extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F, bool& c_ok) {{
 
-  CPP_{struct.short_name} C, C2;
+  {struct.cpp_class} C, C2;
 
   c_ok = true;
 
   {struct.short_name}_to_c (F, C);
-  set_CPP_{struct.short_name}_test_pattern (C2, 1);
+  set_{struct.cpp_class}_test_pattern (C2, 1);
 
   if (C == C2) {{
     cout << " {struct.short_name}: C side convert F->C: Good" << endl;
@@ -3162,12 +3176,12 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     c_ok = false;
   }}
 
-  set_CPP_{struct.short_name}_test_pattern (C2, 2);
+  set_{struct.cpp_class}_test_pattern (C2, 2);
   bool c_ok2;
   test2_f_{struct.short_name} (C2, c_ok2);
   if (!c_ok2) c_ok = false;
 
-  set_CPP_{struct.short_name}_test_pattern (C, 3);
+  set_{struct.cpp_class}_test_pattern (C, 3);
   if (C == C2) {{
     cout << " {struct.short_name}: F side convert F->C: Good" << endl;
   }} else {{
@@ -3175,7 +3189,7 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     c_ok = false;
   }}
 
-  set_CPP_{struct.short_name}_test_pattern (C2, 4);
+  set_{struct.cpp_class}_test_pattern (C2, 4);
   {struct.short_name}_to_f (C2, F);
 
 }}
