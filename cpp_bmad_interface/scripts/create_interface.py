@@ -15,6 +15,8 @@
 
 from __future__ import annotations
 
+# TODO: CPP_ele grid_field grid_field_to_c takes majority of ele/lat conversion time
+
 import copy
 import os
 import pathlib
@@ -163,7 +165,7 @@ class c_side_trans_class:
     # "TEST_VALUE" in "test_pat" gets replaced with this.
     test_value: str = ""
 
-    def __repr__(self):
+    def __str__(self):
         return "{},  {},  {},  {}".format(
             self.c_class,
             self.to_f2_arg,
@@ -1133,13 +1135,13 @@ def configure_c_side_trans_by_type(
 
     # Configure based on dimension
     if dim == 0:
-        configure_c_dim0(c, c_type, c_arg, type)
+        configure_c_dim0_non_ptr(c, c_type, c_arg, type)
     elif dim == 1:
-        configure_c_dim1(c, c_type, c_arg, type)
+        configure_c_dim1_non_ptr(c, c_type, c_arg, type)
     elif dim == 2:
-        configure_c_dim2(c, c_type, c_arg, type)
+        configure_c_dim2_non_ptr(c, c_type, c_arg, type)
     elif dim == 3:
-        configure_c_dim3(c, c_type, c_arg, type)
+        configure_c_dim3_non_ptr(c, c_type, c_arg, type)
 
     # Apply test pattern
     c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
@@ -1153,7 +1155,7 @@ def configure_c_side_trans_by_type(
             c.to_f2_call = "z_NAME"
 
 
-def configure_c_dim0(c, c_type, c_arg, type):
+def configure_c_dim0_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 0"""
     c.c_class = c_type
     c.to_f2_arg = c_arg + "&"
@@ -1161,25 +1163,28 @@ def configure_c_dim0(c, c_type, c_arg, type):
     c.to_c2_arg = c_arg + "& z_NAME"
 
     if type == STRUCT:
-        c.constructor = "NAME()"
+        # c.constructor = "NAME()"
+        c.constructor = ""
         c.to_c2_set = "  KIND_to_c(z_NAME, C.NAME);"
         c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
 
 
-def configure_c_dim1(c, c_type, c_arg, type):
+def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 1"""
-    c.c_class = c_type + "_ARRAY"
+    c.c_class = f"Array<{c_type}>"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "&C.NAME[0]"
     c.to_c2_arg = c_arg + "Arr z_NAME"
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
-        c.constructor = "NAME(CPP_KIND_ARRAY(DIM1))"
+        c.c_class = f"Array<{c_type}>"
+        # c.constructor = f"NAME(BmadArray<{c_type}>(DIM1))"
+        c.constructor = ""
         c.to_c2_set = "\n".join(
             (
                 "for (size_t i = 0; i < C.NAME.size(); i++)",
-                "{ C.NAME[i] = make_shared<CPP_KIND>(); KIND_to_c(z_NAME[i], *C.NAME[i]); }",
+                "{ KIND_to_c(z_NAME[i], C.NAME[i]); }",
             )
         )
         c.test_pat = test_pat1.replace(
@@ -1188,7 +1193,7 @@ def configure_c_dim1(c, c_type, c_arg, type):
         )
         c.to_f_setup = """\
   const CPP_KIND* z_NAME[DIM1];
-  for (int i = 0; i < DIM1; i++) {z_NAME[i] = C.NAME[i].get();}
+  for (int i = 0; i < DIM1; i++) {z_NAME[i] = &C.NAME[i];}
 """
     else:
         c.constructor = "NAME(DIM1, VALUE)"
@@ -1196,13 +1201,16 @@ def configure_c_dim1(c, c_type, c_arg, type):
         c.test_pat = test_pat1
 
 
-def configure_c_dim2(c, c_type, c_arg, type):
+def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 2"""
     c.c_class = c_type + "_MATRIX"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.constructor = "NAME(CPP_KIND_MATRIX(DIM1, CPP_KIND_ARRAY(DIM2)))"
+    # c.constructor = (
+    #     f"NAME(BmadMatrix<{c_type}>(DIM1, BmadArray<{c_type}>(DIM2, VALUE)))"
+    # )
+    c.constructor = ""
     c.to_c2_set = "  C.NAME << z_NAME;"
     c.test_pat = test_pat2
     c.to_f_setup = (
@@ -1211,7 +1219,10 @@ def configure_c_dim2(c, c_type, c_arg, type):
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
-        c.constructor = "NAME(CPP_KIND_MATRIX(DIM1, CPP_KIND_ARRAY(DIM2)))"
+        c.c_class = f"SharedMatrix<{c_type}>"
+        c.constructor = (
+            "NAME(SharedMatrix<CPP_KIND>(DIM1, SharedArray<CPP_KIND>(DIM2)))"
+        )
         c.to_c2_set = (
             for1
             + for2
@@ -1229,7 +1240,7 @@ def configure_c_dim2(c, c_type, c_arg, type):
         )
 
 
-def configure_c_dim3(c, c_type, c_arg, type):
+def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 3"""
     c.c_class = c_type + "_TENSOR"
     c.to_f2_arg = c_arg + "Arr"
@@ -1246,9 +1257,8 @@ def configure_c_dim3(c, c_type, c_arg, type):
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
-        c.constructor = (
-            "NAME(CPP_KIND_TENSOR(DIM1, CPP_KIND_MATRIX(DIM2, CPP_KIND_ARRAY(DIM3))))"
-        )
+        c.c_class = f"SharedTensor<{c_type}>"
+        c.constructor = "NAME(SharedTensor<CPP_KIND>(DIM1, SharedMatrix<CPP_KIND>(DIM2, SharedArray<CPP_KIND>(DIM3))))"
         c.to_c2_set = (
             for1
             + for2
@@ -1362,7 +1372,8 @@ def configure_pointer_dim1(
 """.replace("TYPE", c_type)
 
     if type == STRUCT:
-        cp.constructor = "NAME(CPP_KIND_ARRAY(0))"
+        # cp.constructor = "NAME(SharedArray<CPP_KIND>())"
+        cp.constructor = ""
         cp.test_pat = (
             test_pat_pointer1
             + x2
@@ -1375,14 +1386,14 @@ def configure_pointer_dim1(
   const CPP_KIND** z_NAME = NULL;
   if (n1_NAME != 0) {
     z_NAME = new const CPP_KIND*[n1_NAME];
-    for (int i = 0; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].get();
+    for (int i = 0; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
   }
 """
         cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) { C.NAME[i] = make_shared<CPP_KIND>(); KIND_to_c(z_NAME[i], *C.NAME[i]); }
+  for (int i = 0; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
 """
-        cp.to_f_cleanup = " delete[] z_NAME;\n"
+        cp.to_f_cleanup = " if (z_NAME) delete[] z_NAME;\n"
 
 
 def configure_pointer_dim2(
@@ -1410,10 +1421,10 @@ def configure_pointer_dim2(
     matrix_to_vec (C.NAME, z_NAME);
   }
 """.replace("TYPE", c_type)
-    cp.to_f_cleanup = "  delete[] z_NAME;\n"
+    cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
 
     if type == STRUCT:
-        cp.constructor = "NAME(CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0)))"
+        cp.constructor = "NAME(SharedMatrix<CPP_KIND>(0, SharedArray<CPP_KIND>(0)))"
         cp.test_pat = (
             test_pat_pointer1
             + """\
@@ -1491,12 +1502,10 @@ def configure_pointer_dim3(
     tensor_to_vec (C.NAME, z_NAME);
   }
 """.replace("TYPE", c_type)
-    cp.to_f_cleanup = "  delete[] z_NAME;\n"
+    cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
 
     if type == STRUCT:
-        cp.constructor = (
-            "NAME(CPP_KIND_TENSOR(0, CPP_KIND_MATRIX(0, CPP_KIND_ARRAY(0))))"
-        )
+        cp.constructor = "NAME(SharedTensor<CPP_KIND>(0, SharedMatrix<CPP_KIND>(0, SharedArray<CPP_KIND>(0))))"
 
         cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
@@ -2867,14 +2876,6 @@ def write_cpp_classes(file):
 #include <iostream>
 #include <memory>
 #include <string>
-#include <vector>
-
-template<typename T>
-using Array = std::vector<std::shared_ptr<T>>;
-template<typename T>
-using Matrix  = std::vector<Array<T>>;
-template<typename T>
-using Tensor  = std::vector<Matrix<T>>;
 
 """)
 
@@ -2882,13 +2883,9 @@ using Tensor  = std::vector<Matrix<T>>;
     for line in params.include_header_files:
         file.write(f"{line}\n")
 
-    # Write array/matrix/tensor typedefs for each struct
-    for struct in struct_definitions:
-        file.write(f"""
-class {struct.cpp_class};
-using {struct.cpp_class}_ARRAY  = vector<shared_ptr<{struct.cpp_class}>>;
-using {struct.cpp_class}_MATRIX = vector<{struct.cpp_class}_ARRAY>;
-using {struct.cpp_class}_TENSOR = vector<{struct.cpp_class}_MATRIX>;
+    file.write("""
+using namespace Bmad;
+using std::shared_ptr, std::make_shared;
 """)
 
     # Write class definitions for each struct
@@ -2916,16 +2913,20 @@ public:
 
         # Constructor declaration
         file.write(f"""
-  {struct.cpp_class}({struct.c_constructor_arg_list}) :
-""")
+  {struct.cpp_class}({struct.c_constructor_arg_list}) """)
 
         # Constructor initialization list
         construct_list = []
         for arg in struct.arg:
             if not arg.is_component:
                 continue
-            construct_list.append(arg.c_side.constructor)
+            # if DEBUG:
+            #   construct_list.append(f"    // {arg.c_side!r}")
+            if arg.c_side.constructor:
+                construct_list.append(arg.c_side.constructor)
 
+        if any(not con.strip().startswith("//") for con in construct_list):
+            file.write(":\n")
         file.write(f"    {',\n    '.join(construct_list)}\n")
         constructor_body = struct.c_constructor_body.replace("NAME", struct.cpp_class)
 
@@ -3003,6 +3004,8 @@ def write_cpp_convert(file):
 #include "converter_templates.h"
 #include "cpp_bmad_classes.h"
 
+using namespace Bmad;
+
 """)
 
     for struct in struct_definitions:
@@ -3035,7 +3038,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             if arg.c_side.to_f_setup == "":
                 continue
             file.write(
-                f"  // c_side.to_f_setup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
+                f"  // c_side.to_f_setup[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
             )
             file.write(arg.c_side.to_f_setup)
 
@@ -3081,7 +3084,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             if not arg.is_component:
                 continue
             file.write(
-                f"  // c_side.to_c2_set[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
+                f"  // c_side.to_c2_set[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
             )
             file.write(f"{arg.c_side.to_c2_set}\n")
 
@@ -3111,10 +3114,10 @@ def write_cpp_equality(header: str, file):
         file.write("};\n\n")
 
         file.write(
-            f"template bool is_all_equal (const {struct.cpp_class}_ARRAY&, const {struct.cpp_class}_ARRAY&);\n"
+            f"template bool is_all_equal (const Array<{struct.cpp_class}>&, const Array<{struct.cpp_class}>&);\n"
         )
         file.write(
-            f"template bool is_all_equal (const {struct.cpp_class}_MATRIX&, const {struct.cpp_class}_MATRIX&);\n"
+            f"template bool is_all_equal (const Matrix<{struct.cpp_class}>&, const Matrix<{struct.cpp_class}>&);\n"
         )
 
 
@@ -3134,6 +3137,7 @@ def write_cpp_test(file):
 #include "cpp_bmad_classes.h"
 
 using namespace std;
+using namespace Bmad;
 """)
 
     for struct in params.structs_defined_externally:

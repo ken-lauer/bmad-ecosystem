@@ -1,46 +1,70 @@
+#include <memory>
+#include <vector>
+
 #ifndef BMAD_STD_TYPEDEF
 
-using namespace std;
+using std::vector;
+using std::string;
+using std::complex;
 
-typedef bool               Bool;
-typedef complex<double>    Complex;
-typedef double             Real;
-typedef int                Int;
-typedef long int           Int8;
-typedef char*              Char;
+namespace Bmad {
 
-typedef const bool               c_Bool;
-typedef const Complex            c_Complex;
-typedef const double             c_Real;
-typedef const int                c_Int;
-typedef const long int           c_Int8;
-typedef const string             c_String;
-typedef const char*              c_Char;
+  using Bool = bool;
+  using Complex = complex<double>;
+  using Real = double;
+  using Int = int;
+  using Int8 = long int;
+  using Char = char*;
 
-typedef const bool*              c_BoolArr;
-typedef const Complex*           c_ComplexArr;
-typedef const double*            c_RealArr;
-typedef const int*               c_IntArr;
-typedef const long int*          c_Int8Arr;
+  using c_Bool = const bool;
+  using c_Complex = const Complex;
+  using c_Real = const double;
+  using c_Int = const int;
+  using c_Int8 = const long int;
+  using c_String = const string;
+  using c_Char = const char*;
 
-// ARRAY: 1D
-typedef vector<bool>           Bool_ARRAY;
-typedef vector<Complex>        Complex_ARRAY;
-typedef vector<double>         Real_ARRAY;
-typedef vector<int>            Int_ARRAY;
-typedef vector<string>         String_ARRAY;
+  using c_BoolArr = const bool*;
+  using c_ComplexArr = const Complex*;
+  using c_RealArr = const double*;
+  using c_IntArr = const int*;
+  using c_Int8Arr = const long int*;
 
-// MATRIX: 2D
-typedef vector<Bool_ARRAY>     Bool_MATRIX;
-typedef vector<Complex_ARRAY>  Complex_MATRIX;
-typedef vector<Real_ARRAY>     Real_MATRIX;
-typedef vector<Int_ARRAY>      Int_MATRIX;
+  template<typename T>
+  using Array = std::vector<T>;
+  template<typename T>
+  using Matrix  = std::vector<Array<T>>;
+  template<typename T>
+  using Tensor  = std::vector<Matrix<T>>;
 
-// TENSOR: 3D
-typedef vector<Bool_MATRIX>      Bool_TENSOR;
-typedef vector<Complex_MATRIX>   Complex_TENSOR;
-typedef vector<Real_MATRIX>      Real_TENSOR;
-typedef vector<Int_MATRIX>       Int_TENSOR;
+  // Back-compat:
+  // ARRAY: 1D
+  using Bool_ARRAY = Array<bool>;
+  using Complex_ARRAY = Array<Complex>;
+  using Real_ARRAY = Array<double>;
+  using Int_ARRAY = Array<int>;
+  using String_ARRAY = Array<string>;
+
+  // MATRIX: 2D
+  using Bool_MATRIX = Matrix<Bool>;
+  using Complex_MATRIX = Matrix<Complex>;
+  using Real_MATRIX = Matrix<Real>;
+  using Int_MATRIX = Matrix<Int>;
+
+  // TENSOR: 3D
+  using Bool_TENSOR = Tensor<Bool>;
+  using Complex_TENSOR = Tensor<Complex>;
+  using Real_TENSOR = Tensor<Real>;
+  using Int_TENSOR = Tensor<Int>;
+
+  template<typename T>
+  using SharedArray = std::vector<std::shared_ptr<T>>;
+  template<typename T>
+  using SharedMatrix  = std::vector<SharedArray<T>>;
+  template<typename T>
+  using SharedTensor  = std::vector<SharedMatrix<T>>;
+
+}
 
 #define BMAD_STD_TYPEDEF
 #endif

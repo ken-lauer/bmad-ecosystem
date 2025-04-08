@@ -14,482 +14,12 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <vector>
-
-template<typename T>
-using Array = std::vector<std::shared_ptr<T>>;
-template<typename T>
-using Matrix  = std::vector<Array<T>>;
-template<typename T>
-using Tensor  = std::vector<Matrix<T>>;
 
 #include "bmad_enums.h"
 #include "bmad_std_typedef.h"
 
-class CPP_spline;
-using CPP_spline_ARRAY  = vector<shared_ptr<CPP_spline>>;
-using CPP_spline_MATRIX = vector<CPP_spline_ARRAY>;
-using CPP_spline_TENSOR = vector<CPP_spline_MATRIX>;
-
-class CPP_spin_polar;
-using CPP_spin_polar_ARRAY  = vector<shared_ptr<CPP_spin_polar>>;
-using CPP_spin_polar_MATRIX = vector<CPP_spin_polar_ARRAY>;
-using CPP_spin_polar_TENSOR = vector<CPP_spin_polar_MATRIX>;
-
-class CPP_ac_kicker_time;
-using CPP_ac_kicker_time_ARRAY  = vector<shared_ptr<CPP_ac_kicker_time>>;
-using CPP_ac_kicker_time_MATRIX = vector<CPP_ac_kicker_time_ARRAY>;
-using CPP_ac_kicker_time_TENSOR = vector<CPP_ac_kicker_time_MATRIX>;
-
-class CPP_ac_kicker_freq;
-using CPP_ac_kicker_freq_ARRAY  = vector<shared_ptr<CPP_ac_kicker_freq>>;
-using CPP_ac_kicker_freq_MATRIX = vector<CPP_ac_kicker_freq_ARRAY>;
-using CPP_ac_kicker_freq_TENSOR = vector<CPP_ac_kicker_freq_MATRIX>;
-
-class CPP_ac_kicker;
-using CPP_ac_kicker_ARRAY  = vector<shared_ptr<CPP_ac_kicker>>;
-using CPP_ac_kicker_MATRIX = vector<CPP_ac_kicker_ARRAY>;
-using CPP_ac_kicker_TENSOR = vector<CPP_ac_kicker_MATRIX>;
-
-class CPP_interval1_coef;
-using CPP_interval1_coef_ARRAY  = vector<shared_ptr<CPP_interval1_coef>>;
-using CPP_interval1_coef_MATRIX = vector<CPP_interval1_coef_ARRAY>;
-using CPP_interval1_coef_TENSOR = vector<CPP_interval1_coef_MATRIX>;
-
-class CPP_photon_reflect_table;
-using CPP_photon_reflect_table_ARRAY  = vector<shared_ptr<CPP_photon_reflect_table>>;
-using CPP_photon_reflect_table_MATRIX = vector<CPP_photon_reflect_table_ARRAY>;
-using CPP_photon_reflect_table_TENSOR = vector<CPP_photon_reflect_table_MATRIX>;
-
-class CPP_photon_reflect_surface;
-using CPP_photon_reflect_surface_ARRAY  = vector<shared_ptr<CPP_photon_reflect_surface>>;
-using CPP_photon_reflect_surface_MATRIX = vector<CPP_photon_reflect_surface_ARRAY>;
-using CPP_photon_reflect_surface_TENSOR = vector<CPP_photon_reflect_surface_MATRIX>;
-
-class CPP_coord;
-using CPP_coord_ARRAY  = vector<shared_ptr<CPP_coord>>;
-using CPP_coord_MATRIX = vector<CPP_coord_ARRAY>;
-using CPP_coord_TENSOR = vector<CPP_coord_MATRIX>;
-
-class CPP_coord_array;
-using CPP_coord_array_ARRAY  = vector<shared_ptr<CPP_coord_array>>;
-using CPP_coord_array_MATRIX = vector<CPP_coord_array_ARRAY>;
-using CPP_coord_array_TENSOR = vector<CPP_coord_array_MATRIX>;
-
-class CPP_bpm_phase_coupling;
-using CPP_bpm_phase_coupling_ARRAY  = vector<shared_ptr<CPP_bpm_phase_coupling>>;
-using CPP_bpm_phase_coupling_MATRIX = vector<CPP_bpm_phase_coupling_ARRAY>;
-using CPP_bpm_phase_coupling_TENSOR = vector<CPP_bpm_phase_coupling_MATRIX>;
-
-class CPP_expression_atom;
-using CPP_expression_atom_ARRAY  = vector<shared_ptr<CPP_expression_atom>>;
-using CPP_expression_atom_MATRIX = vector<CPP_expression_atom_ARRAY>;
-using CPP_expression_atom_TENSOR = vector<CPP_expression_atom_MATRIX>;
-
-class CPP_wake_sr_z_long;
-using CPP_wake_sr_z_long_ARRAY  = vector<shared_ptr<CPP_wake_sr_z_long>>;
-using CPP_wake_sr_z_long_MATRIX = vector<CPP_wake_sr_z_long_ARRAY>;
-using CPP_wake_sr_z_long_TENSOR = vector<CPP_wake_sr_z_long_MATRIX>;
-
-class CPP_wake_sr_mode;
-using CPP_wake_sr_mode_ARRAY  = vector<shared_ptr<CPP_wake_sr_mode>>;
-using CPP_wake_sr_mode_MATRIX = vector<CPP_wake_sr_mode_ARRAY>;
-using CPP_wake_sr_mode_TENSOR = vector<CPP_wake_sr_mode_MATRIX>;
-
-class CPP_wake_sr;
-using CPP_wake_sr_ARRAY  = vector<shared_ptr<CPP_wake_sr>>;
-using CPP_wake_sr_MATRIX = vector<CPP_wake_sr_ARRAY>;
-using CPP_wake_sr_TENSOR = vector<CPP_wake_sr_MATRIX>;
-
-class CPP_wake_lr_mode;
-using CPP_wake_lr_mode_ARRAY  = vector<shared_ptr<CPP_wake_lr_mode>>;
-using CPP_wake_lr_mode_MATRIX = vector<CPP_wake_lr_mode_ARRAY>;
-using CPP_wake_lr_mode_TENSOR = vector<CPP_wake_lr_mode_MATRIX>;
-
-class CPP_wake_lr;
-using CPP_wake_lr_ARRAY  = vector<shared_ptr<CPP_wake_lr>>;
-using CPP_wake_lr_MATRIX = vector<CPP_wake_lr_ARRAY>;
-using CPP_wake_lr_TENSOR = vector<CPP_wake_lr_MATRIX>;
-
-class CPP_lat_ele_loc;
-using CPP_lat_ele_loc_ARRAY  = vector<shared_ptr<CPP_lat_ele_loc>>;
-using CPP_lat_ele_loc_MATRIX = vector<CPP_lat_ele_loc_ARRAY>;
-using CPP_lat_ele_loc_TENSOR = vector<CPP_lat_ele_loc_MATRIX>;
-
-class CPP_wake;
-using CPP_wake_ARRAY  = vector<shared_ptr<CPP_wake>>;
-using CPP_wake_MATRIX = vector<CPP_wake_ARRAY>;
-using CPP_wake_TENSOR = vector<CPP_wake_MATRIX>;
-
-class CPP_taylor_term;
-using CPP_taylor_term_ARRAY  = vector<shared_ptr<CPP_taylor_term>>;
-using CPP_taylor_term_MATRIX = vector<CPP_taylor_term_ARRAY>;
-using CPP_taylor_term_TENSOR = vector<CPP_taylor_term_MATRIX>;
-
-class CPP_taylor;
-using CPP_taylor_ARRAY  = vector<shared_ptr<CPP_taylor>>;
-using CPP_taylor_MATRIX = vector<CPP_taylor_ARRAY>;
-using CPP_taylor_TENSOR = vector<CPP_taylor_MATRIX>;
-
-class CPP_em_taylor_term;
-using CPP_em_taylor_term_ARRAY  = vector<shared_ptr<CPP_em_taylor_term>>;
-using CPP_em_taylor_term_MATRIX = vector<CPP_em_taylor_term_ARRAY>;
-using CPP_em_taylor_term_TENSOR = vector<CPP_em_taylor_term_MATRIX>;
-
-class CPP_em_taylor;
-using CPP_em_taylor_ARRAY  = vector<shared_ptr<CPP_em_taylor>>;
-using CPP_em_taylor_MATRIX = vector<CPP_em_taylor_ARRAY>;
-using CPP_em_taylor_TENSOR = vector<CPP_em_taylor_MATRIX>;
-
-class CPP_cartesian_map_term1;
-using CPP_cartesian_map_term1_ARRAY  = vector<shared_ptr<CPP_cartesian_map_term1>>;
-using CPP_cartesian_map_term1_MATRIX = vector<CPP_cartesian_map_term1_ARRAY>;
-using CPP_cartesian_map_term1_TENSOR = vector<CPP_cartesian_map_term1_MATRIX>;
-
-class CPP_cartesian_map_term;
-using CPP_cartesian_map_term_ARRAY  = vector<shared_ptr<CPP_cartesian_map_term>>;
-using CPP_cartesian_map_term_MATRIX = vector<CPP_cartesian_map_term_ARRAY>;
-using CPP_cartesian_map_term_TENSOR = vector<CPP_cartesian_map_term_MATRIX>;
-
-class CPP_cartesian_map;
-using CPP_cartesian_map_ARRAY  = vector<shared_ptr<CPP_cartesian_map>>;
-using CPP_cartesian_map_MATRIX = vector<CPP_cartesian_map_ARRAY>;
-using CPP_cartesian_map_TENSOR = vector<CPP_cartesian_map_MATRIX>;
-
-class CPP_cylindrical_map_term1;
-using CPP_cylindrical_map_term1_ARRAY  = vector<shared_ptr<CPP_cylindrical_map_term1>>;
-using CPP_cylindrical_map_term1_MATRIX = vector<CPP_cylindrical_map_term1_ARRAY>;
-using CPP_cylindrical_map_term1_TENSOR = vector<CPP_cylindrical_map_term1_MATRIX>;
-
-class CPP_cylindrical_map_term;
-using CPP_cylindrical_map_term_ARRAY  = vector<shared_ptr<CPP_cylindrical_map_term>>;
-using CPP_cylindrical_map_term_MATRIX = vector<CPP_cylindrical_map_term_ARRAY>;
-using CPP_cylindrical_map_term_TENSOR = vector<CPP_cylindrical_map_term_MATRIX>;
-
-class CPP_cylindrical_map;
-using CPP_cylindrical_map_ARRAY  = vector<shared_ptr<CPP_cylindrical_map>>;
-using CPP_cylindrical_map_MATRIX = vector<CPP_cylindrical_map_ARRAY>;
-using CPP_cylindrical_map_TENSOR = vector<CPP_cylindrical_map_MATRIX>;
-
-class CPP_grid_field_pt1;
-using CPP_grid_field_pt1_ARRAY  = vector<shared_ptr<CPP_grid_field_pt1>>;
-using CPP_grid_field_pt1_MATRIX = vector<CPP_grid_field_pt1_ARRAY>;
-using CPP_grid_field_pt1_TENSOR = vector<CPP_grid_field_pt1_MATRIX>;
-
-class CPP_grid_field_pt;
-using CPP_grid_field_pt_ARRAY  = vector<shared_ptr<CPP_grid_field_pt>>;
-using CPP_grid_field_pt_MATRIX = vector<CPP_grid_field_pt_ARRAY>;
-using CPP_grid_field_pt_TENSOR = vector<CPP_grid_field_pt_MATRIX>;
-
-class CPP_grid_field;
-using CPP_grid_field_ARRAY  = vector<shared_ptr<CPP_grid_field>>;
-using CPP_grid_field_MATRIX = vector<CPP_grid_field_ARRAY>;
-using CPP_grid_field_TENSOR = vector<CPP_grid_field_MATRIX>;
-
-class CPP_floor_position;
-using CPP_floor_position_ARRAY  = vector<shared_ptr<CPP_floor_position>>;
-using CPP_floor_position_MATRIX = vector<CPP_floor_position_ARRAY>;
-using CPP_floor_position_TENSOR = vector<CPP_floor_position_MATRIX>;
-
-class CPP_high_energy_space_charge;
-using CPP_high_energy_space_charge_ARRAY  = vector<shared_ptr<CPP_high_energy_space_charge>>;
-using CPP_high_energy_space_charge_MATRIX = vector<CPP_high_energy_space_charge_ARRAY>;
-using CPP_high_energy_space_charge_TENSOR = vector<CPP_high_energy_space_charge_MATRIX>;
-
-class CPP_xy_disp;
-using CPP_xy_disp_ARRAY  = vector<shared_ptr<CPP_xy_disp>>;
-using CPP_xy_disp_MATRIX = vector<CPP_xy_disp_ARRAY>;
-using CPP_xy_disp_TENSOR = vector<CPP_xy_disp_MATRIX>;
-
-class CPP_twiss;
-using CPP_twiss_ARRAY  = vector<shared_ptr<CPP_twiss>>;
-using CPP_twiss_MATRIX = vector<CPP_twiss_ARRAY>;
-using CPP_twiss_TENSOR = vector<CPP_twiss_MATRIX>;
-
-class CPP_mode3;
-using CPP_mode3_ARRAY  = vector<shared_ptr<CPP_mode3>>;
-using CPP_mode3_MATRIX = vector<CPP_mode3_ARRAY>;
-using CPP_mode3_TENSOR = vector<CPP_mode3_MATRIX>;
-
-class CPP_bookkeeping_state;
-using CPP_bookkeeping_state_ARRAY  = vector<shared_ptr<CPP_bookkeeping_state>>;
-using CPP_bookkeeping_state_MATRIX = vector<CPP_bookkeeping_state_ARRAY>;
-using CPP_bookkeeping_state_TENSOR = vector<CPP_bookkeeping_state_MATRIX>;
-
-class CPP_rad_map;
-using CPP_rad_map_ARRAY  = vector<shared_ptr<CPP_rad_map>>;
-using CPP_rad_map_MATRIX = vector<CPP_rad_map_ARRAY>;
-using CPP_rad_map_TENSOR = vector<CPP_rad_map_MATRIX>;
-
-class CPP_rad_map_ele;
-using CPP_rad_map_ele_ARRAY  = vector<shared_ptr<CPP_rad_map_ele>>;
-using CPP_rad_map_ele_MATRIX = vector<CPP_rad_map_ele_ARRAY>;
-using CPP_rad_map_ele_TENSOR = vector<CPP_rad_map_ele_MATRIX>;
-
-class CPP_gen_grad1;
-using CPP_gen_grad1_ARRAY  = vector<shared_ptr<CPP_gen_grad1>>;
-using CPP_gen_grad1_MATRIX = vector<CPP_gen_grad1_ARRAY>;
-using CPP_gen_grad1_TENSOR = vector<CPP_gen_grad1_MATRIX>;
-
-class CPP_gen_grad_map;
-using CPP_gen_grad_map_ARRAY  = vector<shared_ptr<CPP_gen_grad_map>>;
-using CPP_gen_grad_map_MATRIX = vector<CPP_gen_grad_map_ARRAY>;
-using CPP_gen_grad_map_TENSOR = vector<CPP_gen_grad_map_MATRIX>;
-
-class CPP_surface_segmented_pt;
-using CPP_surface_segmented_pt_ARRAY  = vector<shared_ptr<CPP_surface_segmented_pt>>;
-using CPP_surface_segmented_pt_MATRIX = vector<CPP_surface_segmented_pt_ARRAY>;
-using CPP_surface_segmented_pt_TENSOR = vector<CPP_surface_segmented_pt_MATRIX>;
-
-class CPP_surface_segmented;
-using CPP_surface_segmented_ARRAY  = vector<shared_ptr<CPP_surface_segmented>>;
-using CPP_surface_segmented_MATRIX = vector<CPP_surface_segmented_ARRAY>;
-using CPP_surface_segmented_TENSOR = vector<CPP_surface_segmented_MATRIX>;
-
-class CPP_surface_h_misalign_pt;
-using CPP_surface_h_misalign_pt_ARRAY  = vector<shared_ptr<CPP_surface_h_misalign_pt>>;
-using CPP_surface_h_misalign_pt_MATRIX = vector<CPP_surface_h_misalign_pt_ARRAY>;
-using CPP_surface_h_misalign_pt_TENSOR = vector<CPP_surface_h_misalign_pt_MATRIX>;
-
-class CPP_surface_h_misalign;
-using CPP_surface_h_misalign_ARRAY  = vector<shared_ptr<CPP_surface_h_misalign>>;
-using CPP_surface_h_misalign_MATRIX = vector<CPP_surface_h_misalign_ARRAY>;
-using CPP_surface_h_misalign_TENSOR = vector<CPP_surface_h_misalign_MATRIX>;
-
-class CPP_surface_displacement_pt;
-using CPP_surface_displacement_pt_ARRAY  = vector<shared_ptr<CPP_surface_displacement_pt>>;
-using CPP_surface_displacement_pt_MATRIX = vector<CPP_surface_displacement_pt_ARRAY>;
-using CPP_surface_displacement_pt_TENSOR = vector<CPP_surface_displacement_pt_MATRIX>;
-
-class CPP_surface_displacement;
-using CPP_surface_displacement_ARRAY  = vector<shared_ptr<CPP_surface_displacement>>;
-using CPP_surface_displacement_MATRIX = vector<CPP_surface_displacement_ARRAY>;
-using CPP_surface_displacement_TENSOR = vector<CPP_surface_displacement_MATRIX>;
-
-class CPP_target_point;
-using CPP_target_point_ARRAY  = vector<shared_ptr<CPP_target_point>>;
-using CPP_target_point_MATRIX = vector<CPP_target_point_ARRAY>;
-using CPP_target_point_TENSOR = vector<CPP_target_point_MATRIX>;
-
-class CPP_surface_curvature;
-using CPP_surface_curvature_ARRAY  = vector<shared_ptr<CPP_surface_curvature>>;
-using CPP_surface_curvature_MATRIX = vector<CPP_surface_curvature_ARRAY>;
-using CPP_surface_curvature_TENSOR = vector<CPP_surface_curvature_MATRIX>;
-
-class CPP_photon_target;
-using CPP_photon_target_ARRAY  = vector<shared_ptr<CPP_photon_target>>;
-using CPP_photon_target_MATRIX = vector<CPP_photon_target_ARRAY>;
-using CPP_photon_target_TENSOR = vector<CPP_photon_target_MATRIX>;
-
-class CPP_photon_material;
-using CPP_photon_material_ARRAY  = vector<shared_ptr<CPP_photon_material>>;
-using CPP_photon_material_MATRIX = vector<CPP_photon_material_ARRAY>;
-using CPP_photon_material_TENSOR = vector<CPP_photon_material_MATRIX>;
-
-class CPP_pixel_pt;
-using CPP_pixel_pt_ARRAY  = vector<shared_ptr<CPP_pixel_pt>>;
-using CPP_pixel_pt_MATRIX = vector<CPP_pixel_pt_ARRAY>;
-using CPP_pixel_pt_TENSOR = vector<CPP_pixel_pt_MATRIX>;
-
-class CPP_pixel_detec;
-using CPP_pixel_detec_ARRAY  = vector<shared_ptr<CPP_pixel_detec>>;
-using CPP_pixel_detec_MATRIX = vector<CPP_pixel_detec_ARRAY>;
-using CPP_pixel_detec_TENSOR = vector<CPP_pixel_detec_MATRIX>;
-
-class CPP_photon_element;
-using CPP_photon_element_ARRAY  = vector<shared_ptr<CPP_photon_element>>;
-using CPP_photon_element_MATRIX = vector<CPP_photon_element_ARRAY>;
-using CPP_photon_element_TENSOR = vector<CPP_photon_element_MATRIX>;
-
-class CPP_wall3d_vertex;
-using CPP_wall3d_vertex_ARRAY  = vector<shared_ptr<CPP_wall3d_vertex>>;
-using CPP_wall3d_vertex_MATRIX = vector<CPP_wall3d_vertex_ARRAY>;
-using CPP_wall3d_vertex_TENSOR = vector<CPP_wall3d_vertex_MATRIX>;
-
-class CPP_wall3d_section;
-using CPP_wall3d_section_ARRAY  = vector<shared_ptr<CPP_wall3d_section>>;
-using CPP_wall3d_section_MATRIX = vector<CPP_wall3d_section_ARRAY>;
-using CPP_wall3d_section_TENSOR = vector<CPP_wall3d_section_MATRIX>;
-
-class CPP_wall3d;
-using CPP_wall3d_ARRAY  = vector<shared_ptr<CPP_wall3d>>;
-using CPP_wall3d_MATRIX = vector<CPP_wall3d_ARRAY>;
-using CPP_wall3d_TENSOR = vector<CPP_wall3d_MATRIX>;
-
-class CPP_ramper_lord;
-using CPP_ramper_lord_ARRAY  = vector<shared_ptr<CPP_ramper_lord>>;
-using CPP_ramper_lord_MATRIX = vector<CPP_ramper_lord_ARRAY>;
-using CPP_ramper_lord_TENSOR = vector<CPP_ramper_lord_MATRIX>;
-
-class CPP_control;
-using CPP_control_ARRAY  = vector<shared_ptr<CPP_control>>;
-using CPP_control_MATRIX = vector<CPP_control_ARRAY>;
-using CPP_control_TENSOR = vector<CPP_control_MATRIX>;
-
-class CPP_control_var1;
-using CPP_control_var1_ARRAY  = vector<shared_ptr<CPP_control_var1>>;
-using CPP_control_var1_MATRIX = vector<CPP_control_var1_ARRAY>;
-using CPP_control_var1_TENSOR = vector<CPP_control_var1_MATRIX>;
-
-class CPP_control_ramp1;
-using CPP_control_ramp1_ARRAY  = vector<shared_ptr<CPP_control_ramp1>>;
-using CPP_control_ramp1_MATRIX = vector<CPP_control_ramp1_ARRAY>;
-using CPP_control_ramp1_TENSOR = vector<CPP_control_ramp1_MATRIX>;
-
-class CPP_controller;
-using CPP_controller_ARRAY  = vector<shared_ptr<CPP_controller>>;
-using CPP_controller_MATRIX = vector<CPP_controller_ARRAY>;
-using CPP_controller_TENSOR = vector<CPP_controller_MATRIX>;
-
-class CPP_ellipse_beam_init;
-using CPP_ellipse_beam_init_ARRAY  = vector<shared_ptr<CPP_ellipse_beam_init>>;
-using CPP_ellipse_beam_init_MATRIX = vector<CPP_ellipse_beam_init_ARRAY>;
-using CPP_ellipse_beam_init_TENSOR = vector<CPP_ellipse_beam_init_MATRIX>;
-
-class CPP_kv_beam_init;
-using CPP_kv_beam_init_ARRAY  = vector<shared_ptr<CPP_kv_beam_init>>;
-using CPP_kv_beam_init_MATRIX = vector<CPP_kv_beam_init_ARRAY>;
-using CPP_kv_beam_init_TENSOR = vector<CPP_kv_beam_init_MATRIX>;
-
-class CPP_grid_beam_init;
-using CPP_grid_beam_init_ARRAY  = vector<shared_ptr<CPP_grid_beam_init>>;
-using CPP_grid_beam_init_MATRIX = vector<CPP_grid_beam_init_ARRAY>;
-using CPP_grid_beam_init_TENSOR = vector<CPP_grid_beam_init_MATRIX>;
-
-class CPP_beam_init;
-using CPP_beam_init_ARRAY  = vector<shared_ptr<CPP_beam_init>>;
-using CPP_beam_init_MATRIX = vector<CPP_beam_init_ARRAY>;
-using CPP_beam_init_TENSOR = vector<CPP_beam_init_MATRIX>;
-
-class CPP_lat_param;
-using CPP_lat_param_ARRAY  = vector<shared_ptr<CPP_lat_param>>;
-using CPP_lat_param_MATRIX = vector<CPP_lat_param_ARRAY>;
-using CPP_lat_param_TENSOR = vector<CPP_lat_param_MATRIX>;
-
-class CPP_mode_info;
-using CPP_mode_info_ARRAY  = vector<shared_ptr<CPP_mode_info>>;
-using CPP_mode_info_MATRIX = vector<CPP_mode_info_ARRAY>;
-using CPP_mode_info_TENSOR = vector<CPP_mode_info_MATRIX>;
-
-class CPP_pre_tracker;
-using CPP_pre_tracker_ARRAY  = vector<shared_ptr<CPP_pre_tracker>>;
-using CPP_pre_tracker_MATRIX = vector<CPP_pre_tracker_ARRAY>;
-using CPP_pre_tracker_TENSOR = vector<CPP_pre_tracker_MATRIX>;
-
-class CPP_anormal_mode;
-using CPP_anormal_mode_ARRAY  = vector<shared_ptr<CPP_anormal_mode>>;
-using CPP_anormal_mode_MATRIX = vector<CPP_anormal_mode_ARRAY>;
-using CPP_anormal_mode_TENSOR = vector<CPP_anormal_mode_MATRIX>;
-
-class CPP_linac_normal_mode;
-using CPP_linac_normal_mode_ARRAY  = vector<shared_ptr<CPP_linac_normal_mode>>;
-using CPP_linac_normal_mode_MATRIX = vector<CPP_linac_normal_mode_ARRAY>;
-using CPP_linac_normal_mode_TENSOR = vector<CPP_linac_normal_mode_MATRIX>;
-
-class CPP_normal_modes;
-using CPP_normal_modes_ARRAY  = vector<shared_ptr<CPP_normal_modes>>;
-using CPP_normal_modes_MATRIX = vector<CPP_normal_modes_ARRAY>;
-using CPP_normal_modes_TENSOR = vector<CPP_normal_modes_MATRIX>;
-
-class CPP_em_field;
-using CPP_em_field_ARRAY  = vector<shared_ptr<CPP_em_field>>;
-using CPP_em_field_MATRIX = vector<CPP_em_field_ARRAY>;
-using CPP_em_field_TENSOR = vector<CPP_em_field_MATRIX>;
-
-class CPP_strong_beam;
-using CPP_strong_beam_ARRAY  = vector<shared_ptr<CPP_strong_beam>>;
-using CPP_strong_beam_MATRIX = vector<CPP_strong_beam_ARRAY>;
-using CPP_strong_beam_TENSOR = vector<CPP_strong_beam_MATRIX>;
-
-class CPP_track_point;
-using CPP_track_point_ARRAY  = vector<shared_ptr<CPP_track_point>>;
-using CPP_track_point_MATRIX = vector<CPP_track_point_ARRAY>;
-using CPP_track_point_TENSOR = vector<CPP_track_point_MATRIX>;
-
-class CPP_track;
-using CPP_track_ARRAY  = vector<shared_ptr<CPP_track>>;
-using CPP_track_MATRIX = vector<CPP_track_ARRAY>;
-using CPP_track_TENSOR = vector<CPP_track_MATRIX>;
-
-class CPP_space_charge_common;
-using CPP_space_charge_common_ARRAY  = vector<shared_ptr<CPP_space_charge_common>>;
-using CPP_space_charge_common_MATRIX = vector<CPP_space_charge_common_ARRAY>;
-using CPP_space_charge_common_TENSOR = vector<CPP_space_charge_common_MATRIX>;
-
-class CPP_bmad_common;
-using CPP_bmad_common_ARRAY  = vector<shared_ptr<CPP_bmad_common>>;
-using CPP_bmad_common_MATRIX = vector<CPP_bmad_common_ARRAY>;
-using CPP_bmad_common_TENSOR = vector<CPP_bmad_common_MATRIX>;
-
-class CPP_rad_int1;
-using CPP_rad_int1_ARRAY  = vector<shared_ptr<CPP_rad_int1>>;
-using CPP_rad_int1_MATRIX = vector<CPP_rad_int1_ARRAY>;
-using CPP_rad_int1_TENSOR = vector<CPP_rad_int1_MATRIX>;
-
-class CPP_rad_int_branch;
-using CPP_rad_int_branch_ARRAY  = vector<shared_ptr<CPP_rad_int_branch>>;
-using CPP_rad_int_branch_MATRIX = vector<CPP_rad_int_branch_ARRAY>;
-using CPP_rad_int_branch_TENSOR = vector<CPP_rad_int_branch_MATRIX>;
-
-class CPP_rad_int_all_ele;
-using CPP_rad_int_all_ele_ARRAY  = vector<shared_ptr<CPP_rad_int_all_ele>>;
-using CPP_rad_int_all_ele_MATRIX = vector<CPP_rad_int_all_ele_ARRAY>;
-using CPP_rad_int_all_ele_TENSOR = vector<CPP_rad_int_all_ele_MATRIX>;
-
-class CPP_ele;
-using CPP_ele_ARRAY  = vector<shared_ptr<CPP_ele>>;
-using CPP_ele_MATRIX = vector<CPP_ele_ARRAY>;
-using CPP_ele_TENSOR = vector<CPP_ele_MATRIX>;
-
-class CPP_complex_taylor_term;
-using CPP_complex_taylor_term_ARRAY  = vector<shared_ptr<CPP_complex_taylor_term>>;
-using CPP_complex_taylor_term_MATRIX = vector<CPP_complex_taylor_term_ARRAY>;
-using CPP_complex_taylor_term_TENSOR = vector<CPP_complex_taylor_term_MATRIX>;
-
-class CPP_complex_taylor;
-using CPP_complex_taylor_ARRAY  = vector<shared_ptr<CPP_complex_taylor>>;
-using CPP_complex_taylor_MATRIX = vector<CPP_complex_taylor_ARRAY>;
-using CPP_complex_taylor_TENSOR = vector<CPP_complex_taylor_MATRIX>;
-
-class CPP_branch;
-using CPP_branch_ARRAY  = vector<shared_ptr<CPP_branch>>;
-using CPP_branch_MATRIX = vector<CPP_branch_ARRAY>;
-using CPP_branch_TENSOR = vector<CPP_branch_MATRIX>;
-
-class CPP_lat;
-using CPP_lat_ARRAY  = vector<shared_ptr<CPP_lat>>;
-using CPP_lat_MATRIX = vector<CPP_lat_ARRAY>;
-using CPP_lat_TENSOR = vector<CPP_lat_MATRIX>;
-
-class CPP_bunch;
-using CPP_bunch_ARRAY  = vector<shared_ptr<CPP_bunch>>;
-using CPP_bunch_MATRIX = vector<CPP_bunch_ARRAY>;
-using CPP_bunch_TENSOR = vector<CPP_bunch_MATRIX>;
-
-class CPP_bunch_params;
-using CPP_bunch_params_ARRAY  = vector<shared_ptr<CPP_bunch_params>>;
-using CPP_bunch_params_MATRIX = vector<CPP_bunch_params_ARRAY>;
-using CPP_bunch_params_TENSOR = vector<CPP_bunch_params_MATRIX>;
-
-class CPP_beam;
-using CPP_beam_ARRAY  = vector<shared_ptr<CPP_beam>>;
-using CPP_beam_MATRIX = vector<CPP_beam_ARRAY>;
-using CPP_beam_TENSOR = vector<CPP_beam_MATRIX>;
-
-class CPP_aperture_point;
-using CPP_aperture_point_ARRAY  = vector<shared_ptr<CPP_aperture_point>>;
-using CPP_aperture_point_MATRIX = vector<CPP_aperture_point_ARRAY>;
-using CPP_aperture_point_TENSOR = vector<CPP_aperture_point_MATRIX>;
-
-class CPP_aperture_param;
-using CPP_aperture_param_ARRAY  = vector<shared_ptr<CPP_aperture_param>>;
-using CPP_aperture_param_MATRIX = vector<CPP_aperture_param_ARRAY>;
-using CPP_aperture_param_TENSOR = vector<CPP_aperture_param_MATRIX>;
-
-class CPP_aperture_scan;
-using CPP_aperture_scan_ARRAY  = vector<shared_ptr<CPP_aperture_scan>>;
-using CPP_aperture_scan_MATRIX = vector<CPP_aperture_scan_ARRAY>;
-using CPP_aperture_scan_TENSOR = vector<CPP_aperture_scan_MATRIX>;
+using namespace Bmad;
+using std::shared_ptr, std::make_shared;
 
 //--------------------------------------------------------------------
 // CPP_spline
@@ -501,7 +31,7 @@ public:
   Real x0;
   Real y0;
   Real x1;
-  Real_ARRAY coef;
+  Array<Real> coef;
 
   CPP_spline() :
     x0(0.0),
@@ -570,8 +100,7 @@ public:
 
   CPP_ac_kicker_time() :
     amp(0.0),
-    time(0.0),
-    spline()
+    time(0.0)
     {}
 
 
@@ -628,12 +157,10 @@ class Opaque_ac_kicker_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_ac_kicker : public std::enable_shared_from_this<CPP_ac_kicker> {
 public:
-  CPP_ac_kicker_time_ARRAY amp_vs_time;
-  CPP_ac_kicker_freq_ARRAY frequency;
+  Array<CPP_ac_kicker_time> amp_vs_time;
+  Array<CPP_ac_kicker_freq> frequency;
 
-  CPP_ac_kicker() :
-    amp_vs_time(CPP_ac_kicker_time_ARRAY(0)),
-    frequency(CPP_ac_kicker_freq_ARRAY(0))
+  CPP_ac_kicker()     
     {}
 
 
@@ -688,19 +215,17 @@ class Opaque_photon_reflect_table_class {};  // Opaque class for pointers to cor
 
 class CPP_photon_reflect_table : public std::enable_shared_from_this<CPP_photon_reflect_table> {
 public:
-  Real_ARRAY angle;
-  Real_ARRAY energy;
-  CPP_interval1_coef_ARRAY int1;
+  Array<Real> angle;
+  Array<Real> energy;
+  Array<CPP_interval1_coef> int1;
   Real_MATRIX p_reflect;
   Real max_energy;
-  Real_ARRAY p_reflect_scratch;
-  Real_ARRAY bragg_angle;
+  Array<Real> p_reflect_scratch;
+  Array<Real> bragg_angle;
 
   CPP_photon_reflect_table() :
     angle(0, 0.0),
     energy(0, 0.0),
-    int1(CPP_interval1_coef_ARRAY(0)),
-    p_reflect(Real_MATRIX(0, Real_ARRAY(0))),
     max_energy(-1),
     p_reflect_scratch(0, 0.0),
     bragg_angle(0, 0.0)
@@ -730,7 +255,7 @@ public:
   string name;
   string description;
   string reflectivity_file;
-  CPP_photon_reflect_table_ARRAY table;
+  Array<CPP_photon_reflect_table> table;
   Real surface_roughness_rms;
   Real roughness_correlation_len;
   Int ix_surface;
@@ -739,7 +264,6 @@ public:
     name(),
     description(),
     reflectivity_file(),
-    table(CPP_photon_reflect_table_ARRAY(0)),
     surface_roughness_rms(0.0),
     roughness_correlation_len(0.0),
     ix_surface(-1)
@@ -766,12 +290,12 @@ class Opaque_coord_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_coord : public std::enable_shared_from_this<CPP_coord> {
 public:
-  Real_ARRAY vec;
+  Array<Real> vec;
   Real s;
   Real t;
-  Real_ARRAY spin;
-  Real_ARRAY field;
-  Real_ARRAY phase;
+  Array<Real> spin;
+  Array<Real> field;
+  Array<Real> phase;
   Real charge;
   Real dt_ref;
   Real r;
@@ -833,10 +357,9 @@ class Opaque_coord_array_class {};  // Opaque class for pointers to correspondin
 
 class CPP_coord_array : public std::enable_shared_from_this<CPP_coord_array> {
 public:
-  CPP_coord_ARRAY orbit;
+  Array<CPP_coord> orbit;
 
-  CPP_coord_array() :
-    orbit(CPP_coord_ARRAY(0))
+  CPP_coord_array()     
     {}
 
 
@@ -936,10 +459,10 @@ class Opaque_wake_sr_z_long_class {};  // Opaque class for pointers to correspon
 
 class CPP_wake_sr_z_long : public std::enable_shared_from_this<CPP_wake_sr_z_long> {
 public:
-  Real_ARRAY w;
-  Complex_ARRAY fw;
-  Complex_ARRAY fbunch;
-  Complex_ARRAY w_out;
+  Array<Real> w;
+  Array<Complex> fw;
+  Array<Complex> fbunch;
+  Array<Complex> w_out;
   Real dz;
   Real z0;
   Real smoothing_sigma;
@@ -1026,8 +549,8 @@ class CPP_wake_sr : public std::enable_shared_from_this<CPP_wake_sr> {
 public:
   string file;
   CPP_wake_sr_z_long z_long;
-  CPP_wake_sr_mode_ARRAY long_wake;
-  CPP_wake_sr_mode_ARRAY trans_wake;
+  Array<CPP_wake_sr_mode> long_wake;
+  Array<CPP_wake_sr_mode> trans_wake;
   Real z_ref_long;
   Real z_ref_trans;
   Real z_max;
@@ -1037,9 +560,6 @@ public:
 
   CPP_wake_sr() :
     file(),
-    z_long(),
-    long_wake(CPP_wake_sr_mode_ARRAY(0)),
-    trans_wake(CPP_wake_sr_mode_ARRAY(0)),
     z_ref_long(0.0),
     z_ref_trans(0.0),
     z_max(0.0),
@@ -1121,7 +641,7 @@ class Opaque_wake_lr_class {};  // Opaque class for pointers to corresponding fo
 class CPP_wake_lr : public std::enable_shared_from_this<CPP_wake_lr> {
 public:
   string file;
-  CPP_wake_lr_mode_ARRAY mode;
+  Array<CPP_wake_lr_mode> mode;
   Real t_ref;
   Real freq_spread;
   Real amp_scale;
@@ -1130,7 +650,6 @@ public:
 
   CPP_wake_lr() :
     file(),
-    mode(CPP_wake_lr_mode_ARRAY(0)),
     t_ref(0.0),
     freq_spread(0.0),
     amp_scale(1),
@@ -1191,9 +710,7 @@ public:
   CPP_wake_sr sr;
   CPP_wake_lr lr;
 
-  CPP_wake() :
-    sr(),
-    lr()
+  CPP_wake()     
     {}
 
 
@@ -1218,7 +735,7 @@ class Opaque_taylor_term_class {};  // Opaque class for pointers to correspondin
 class CPP_taylor_term : public std::enable_shared_from_this<CPP_taylor_term> {
 public:
   Real coef;
-  Int_ARRAY expn;
+  Array<Int> expn;
 
   CPP_taylor_term() :
     coef(0.0),
@@ -1247,11 +764,10 @@ class Opaque_taylor_class {};  // Opaque class for pointers to corresponding for
 class CPP_taylor : public std::enable_shared_from_this<CPP_taylor> {
 public:
   Real ref;
-  CPP_taylor_term_ARRAY term;
+  Array<CPP_taylor_term> term;
 
   CPP_taylor() :
-    ref(0.0),
-    term(CPP_taylor_term_ARRAY(0))
+    ref(0.0)
     {}
 
 
@@ -1276,7 +792,7 @@ class Opaque_em_taylor_term_class {};  // Opaque class for pointers to correspon
 class CPP_em_taylor_term : public std::enable_shared_from_this<CPP_em_taylor_term> {
 public:
   Real coef;
-  Int_ARRAY expn;
+  Array<Int> expn;
 
   CPP_em_taylor_term() :
     coef(0.0),
@@ -1305,11 +821,10 @@ class Opaque_em_taylor_class {};  // Opaque class for pointers to corresponding 
 class CPP_em_taylor : public std::enable_shared_from_this<CPP_em_taylor> {
 public:
   Real ref;
-  CPP_em_taylor_term_ARRAY term;
+  Array<CPP_em_taylor_term> term;
 
   CPP_em_taylor() :
-    ref(0.0),
-    term(CPP_em_taylor_term_ARRAY(0))
+    ref(0.0)
     {}
 
 
@@ -1378,12 +893,11 @@ class CPP_cartesian_map_term : public std::enable_shared_from_this<CPP_cartesian
 public:
   string file;
   Int n_link;
-  CPP_cartesian_map_term1_ARRAY term;
+  Array<CPP_cartesian_map_term1> term;
 
   CPP_cartesian_map_term() :
     file(),
-    n_link(1),
-    term(CPP_cartesian_map_term1_ARRAY(0))
+    n_link(1)
     {}
 
 
@@ -1408,7 +922,7 @@ class Opaque_cartesian_map_class {};  // Opaque class for pointers to correspond
 class CPP_cartesian_map : public std::enable_shared_from_this<CPP_cartesian_map> {
 public:
   Real field_scale;
-  Real_ARRAY r0;
+  Array<Real> r0;
   Int master_parameter;
   Int ele_anchor_pt;
   Int field_type;
@@ -1475,12 +989,11 @@ class CPP_cylindrical_map_term : public std::enable_shared_from_this<CPP_cylindr
 public:
   string file;
   Int n_link;
-  CPP_cylindrical_map_term1_ARRAY term;
+  Array<CPP_cylindrical_map_term1> term;
 
   CPP_cylindrical_map_term() :
     file(),
-    n_link(1),
-    term(CPP_cylindrical_map_term1_ARRAY(0))
+    n_link(1)
     {}
 
 
@@ -1512,7 +1025,7 @@ public:
   Int master_parameter;
   Int ele_anchor_pt;
   Real dz;
-  Real_ARRAY r0;
+  Array<Real> r0;
   shared_ptr<CPP_cylindrical_map_term> ptr;
 
   CPP_cylindrical_map() :
@@ -1549,8 +1062,8 @@ class Opaque_grid_field_pt1_class {};  // Opaque class for pointers to correspon
 
 class CPP_grid_field_pt1 : public std::enable_shared_from_this<CPP_grid_field_pt1> {
 public:
-  Complex_ARRAY e;
-  Complex_ARRAY b;
+  Array<Complex> e;
+  Array<Complex> b;
 
   CPP_grid_field_pt1() :
     e(3, 0.0),
@@ -1580,12 +1093,12 @@ class CPP_grid_field_pt : public std::enable_shared_from_this<CPP_grid_field_pt>
 public:
   string file;
   Int n_link;
-  CPP_grid_field_pt1_TENSOR pt;
+  SharedTensor<CPP_grid_field_pt1> pt;
 
   CPP_grid_field_pt() :
     file(),
     n_link(1),
-    pt(CPP_grid_field_pt1_TENSOR(0, CPP_grid_field_pt1_MATRIX(0, CPP_grid_field_pt1_ARRAY(0))))
+    pt(SharedTensor<CPP_grid_field_pt1>(0, SharedMatrix<CPP_grid_field_pt1>(0, SharedArray<CPP_grid_field_pt1>(0))))
     {}
 
 
@@ -1617,8 +1130,8 @@ public:
   Int master_parameter;
   Int ele_anchor_pt;
   Int interpolation_order;
-  Real_ARRAY dr;
-  Real_ARRAY r0;
+  Array<Real> dr;
+  Array<Real> r0;
   Bool curved_ref_frame;
   shared_ptr<CPP_grid_field_pt> ptr;
 
@@ -1658,7 +1171,7 @@ class Opaque_floor_position_class {};  // Opaque class for pointers to correspon
 
 class CPP_floor_position : public std::enable_shared_from_this<CPP_floor_position> {
 public:
-  Real_ARRAY r;
+  Array<Real> r;
   Real_MATRIX w;
   Real theta;
   Real phi;
@@ -1666,7 +1179,6 @@ public:
 
   CPP_floor_position() :
     r(3, 0.0),
-    w(Real_MATRIX(3, Real_ARRAY(3))),
     theta(0.0),
     phi(0.0),
     psi(0.0)
@@ -1703,7 +1215,6 @@ public:
   Real sig_z;
 
   CPP_high_energy_space_charge() :
-    closed_orb(),
     kick_const(0.0),
     sig_x(0.0),
     sig_y(0.0),
@@ -1821,13 +1332,7 @@ public:
   CPP_twiss x;
   CPP_twiss y;
 
-  CPP_mode3() :
-    v(Real_MATRIX(6, Real_ARRAY(6))),
-    a(),
-    b(),
-    c(),
-    x(),
-    y()
+  CPP_mode3()     
     {}
 
 
@@ -1894,18 +1399,15 @@ class Opaque_rad_map_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_rad_map : public std::enable_shared_from_this<CPP_rad_map> {
 public:
-  Real_ARRAY ref_orb;
+  Array<Real> ref_orb;
   Real_MATRIX damp_dmat;
-  Real_ARRAY xfer_damp_vec;
+  Array<Real> xfer_damp_vec;
   Real_MATRIX xfer_damp_mat;
   Real_MATRIX stoc_mat;
 
   CPP_rad_map() :
     ref_orb(6, -1),
-    damp_dmat(Real_MATRIX(6, Real_ARRAY(6))),
-    xfer_damp_vec(6, 0.0),
-    xfer_damp_mat(Real_MATRIX(6, Real_ARRAY(6))),
-    stoc_mat(Real_MATRIX(6, Real_ARRAY(6)))
+    xfer_damp_vec(6, 0.0)
     {}
 
 
@@ -1934,8 +1436,6 @@ public:
   Bool stale;
 
   CPP_rad_map_ele() :
-    rm0(),
-    rm1(),
     stale(true)
     {}
 
@@ -1968,8 +1468,7 @@ public:
   CPP_gen_grad1() :
     m(0),
     sincos(0),
-    n_deriv_max(-1),
-    deriv(Real_MATRIX(0, Real_ARRAY(0)))
+    n_deriv_max(-1)
     {}
 
 
@@ -1994,20 +1493,19 @@ class Opaque_gen_grad_map_class {};  // Opaque class for pointers to correspondi
 class CPP_gen_grad_map : public std::enable_shared_from_this<CPP_gen_grad_map> {
 public:
   string file;
-  CPP_gen_grad1_ARRAY gg;
+  Array<CPP_gen_grad1> gg;
   Int ele_anchor_pt;
   Int field_type;
   Int iz0;
   Int iz1;
   Real dz;
-  Real_ARRAY r0;
+  Array<Real> r0;
   Real field_scale;
   Int master_parameter;
   Bool curved_ref_frame;
 
   CPP_gen_grad_map() :
     file(),
-    gg(CPP_gen_grad1_ARRAY(0)),
     ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
     field_type(Bmad::MAGNETIC),
     iz0(Bmad::INT_GARBAGE),
@@ -2076,15 +1574,15 @@ class Opaque_surface_segmented_class {};  // Opaque class for pointers to corres
 class CPP_surface_segmented : public std::enable_shared_from_this<CPP_surface_segmented> {
 public:
   Bool active;
-  Real_ARRAY dr;
-  Real_ARRAY r0;
-  CPP_surface_segmented_pt_MATRIX pt;
+  Array<Real> dr;
+  Array<Real> r0;
+  SharedMatrix<CPP_surface_segmented_pt> pt;
 
   CPP_surface_segmented() :
     active(false),
     dr(2, 0.0),
     r0(2, 0.0),
-    pt(CPP_surface_segmented_pt_MATRIX(0, CPP_surface_segmented_pt_ARRAY(0)))
+    pt(SharedMatrix<CPP_surface_segmented_pt>(0, SharedArray<CPP_surface_segmented_pt>(0)))
     {}
 
 
@@ -2146,15 +1644,15 @@ class Opaque_surface_h_misalign_class {};  // Opaque class for pointers to corre
 class CPP_surface_h_misalign : public std::enable_shared_from_this<CPP_surface_h_misalign> {
 public:
   Bool active;
-  Real_ARRAY dr;
-  Real_ARRAY r0;
-  CPP_surface_h_misalign_pt_MATRIX pt;
+  Array<Real> dr;
+  Array<Real> r0;
+  SharedMatrix<CPP_surface_h_misalign_pt> pt;
 
   CPP_surface_h_misalign() :
     active(false),
     dr(2, 0.0),
     r0(2, 0.0),
-    pt(CPP_surface_h_misalign_pt_MATRIX(0, CPP_surface_h_misalign_pt_ARRAY(0)))
+    pt(SharedMatrix<CPP_surface_h_misalign_pt>(0, SharedArray<CPP_surface_h_misalign_pt>(0)))
     {}
 
 
@@ -2216,15 +1714,15 @@ class Opaque_surface_displacement_class {};  // Opaque class for pointers to cor
 class CPP_surface_displacement : public std::enable_shared_from_this<CPP_surface_displacement> {
 public:
   Bool active;
-  Real_ARRAY dr;
-  Real_ARRAY r0;
-  CPP_surface_displacement_pt_MATRIX pt;
+  Array<Real> dr;
+  Array<Real> r0;
+  SharedMatrix<CPP_surface_displacement_pt> pt;
 
   CPP_surface_displacement() :
     active(false),
     dr(2, 0.0),
     r0(2, 0.0),
-    pt(CPP_surface_displacement_pt_MATRIX(0, CPP_surface_displacement_pt_ARRAY(0)))
+    pt(SharedMatrix<CPP_surface_displacement_pt>(0, SharedArray<CPP_surface_displacement_pt>(0)))
     {}
 
 
@@ -2248,7 +1746,7 @@ class Opaque_target_point_class {};  // Opaque class for pointers to correspondi
 
 class CPP_target_point : public std::enable_shared_from_this<CPP_target_point> {
 public:
-  Real_ARRAY r;
+  Array<Real> r;
 
   CPP_target_point() :
     r(3, 0.0)
@@ -2277,11 +1775,10 @@ class CPP_surface_curvature : public std::enable_shared_from_this<CPP_surface_cu
 public:
   Real_MATRIX xy;
   Real spherical;
-  Real_ARRAY elliptical;
+  Array<Real> elliptical;
   Bool has_curvature;
 
   CPP_surface_curvature() :
-    xy(Real_MATRIX(7, Real_ARRAY(7))),
     spherical(0.0),
     elliptical(3, 0.0),
     has_curvature(false)
@@ -2311,15 +1808,12 @@ public:
   Int type;
   Int n_corner;
   CPP_lat_ele_loc ele_loc;
-  CPP_target_point_ARRAY corner;
+  Array<CPP_target_point> corner;
   CPP_target_point center;
 
   CPP_photon_target() :
     type(Bmad::OFF),
-    n_corner(0),
-    ele_loc(),
-    corner(CPP_target_point_ARRAY(8)),
-    center()
+    n_corner(0)
     {}
 
 
@@ -2349,8 +1843,8 @@ public:
   Complex f_h;
   Complex f_hbar;
   Complex f_hkl;
-  Real_ARRAY h_norm;
-  Real_ARRAY l_ref;
+  Array<Real> h_norm;
+  Array<Real> l_ref;
 
   CPP_photon_material() :
     f0_m1(0.0),
@@ -2390,10 +1884,10 @@ public:
   Real intensity_x;
   Real intensity_y;
   Real intensity;
-  Real_ARRAY orbit;
-  Real_ARRAY orbit_rms;
-  Real_ARRAY init_orbit;
-  Real_ARRAY init_orbit_rms;
+  Array<Real> orbit;
+  Array<Real> orbit_rms;
+  Array<Real> init_orbit;
+  Array<Real> init_orbit_rms;
 
   CPP_pixel_pt() :
     n_photon(0),
@@ -2429,12 +1923,12 @@ class Opaque_pixel_detec_class {};  // Opaque class for pointers to correspondin
 
 class CPP_pixel_detec : public std::enable_shared_from_this<CPP_pixel_detec> {
 public:
-  Real_ARRAY dr;
-  Real_ARRAY r0;
+  Array<Real> dr;
+  Array<Real> r0;
   Int8 n_track_tot;
   Int8 n_hit_detec;
   Int8 n_hit_pixel;
-  CPP_pixel_pt_MATRIX pt;
+  SharedMatrix<CPP_pixel_pt> pt;
 
   CPP_pixel_detec() :
     dr(2, 0.0),
@@ -2442,7 +1936,7 @@ public:
     n_track_tot(0),
     n_hit_detec(0),
     n_hit_pixel(0),
-    pt(CPP_pixel_pt_MATRIX(0, CPP_pixel_pt_ARRAY(0)))
+    pt(SharedMatrix<CPP_pixel_pt>(0, SharedArray<CPP_pixel_pt>(0)))
     {}
 
 
@@ -2476,21 +1970,11 @@ public:
   Int reflectivity_table_type;
   CPP_photon_reflect_table reflectivity_table_sigma;
   CPP_photon_reflect_table reflectivity_table_pi;
-  CPP_spline_ARRAY init_energy_prob;
-  Real_ARRAY integrated_init_energy_prob;
+  Array<CPP_spline> init_energy_prob;
+  Array<Real> integrated_init_energy_prob;
 
   CPP_photon_element() :
-    curvature(),
-    target(),
-    material(),
-    segmented(),
-    h_misalign(),
-    displacement(),
-    pixel(),
     reflectivity_table_type(Bmad::NOT_SET),
-    reflectivity_table_sigma(),
-    reflectivity_table_pi(),
-    init_energy_prob(CPP_spline_ARRAY(0)),
     integrated_init_energy_prob(0, 0.0)
     {}
 
@@ -2560,7 +2044,7 @@ class CPP_wall3d_section : public std::enable_shared_from_this<CPP_wall3d_sectio
 public:
   string name;
   string material;
-  CPP_wall3d_vertex_ARRAY v;
+  Array<CPP_wall3d_vertex> v;
   shared_ptr<CPP_photon_reflect_surface> surface;
   Int type;
   Int n_vertex_input;
@@ -2570,19 +2054,18 @@ public:
   Bool patch_in_region;
   Real thickness;
   Real s;
-  Real_ARRAY r0;
+  Array<Real> r0;
   Real dx0_ds;
   Real dy0_ds;
-  Real_ARRAY x0_coef;
-  Real_ARRAY y0_coef;
+  Array<Real> x0_coef;
+  Array<Real> y0_coef;
   Real dr_ds;
-  Real_ARRAY p1_coef;
-  Real_ARRAY p2_coef;
+  Array<Real> p1_coef;
+  Array<Real> p2_coef;
 
   CPP_wall3d_section() :
     name(),
     material(),
-    v(CPP_wall3d_vertex_ARRAY(0)),
     surface(NULL),
     type(Bmad::NORMAL),
     n_vertex_input(0),
@@ -2632,7 +2115,7 @@ public:
   string opaque_material;
   Bool superimpose;
   Int ele_anchor_pt;
-  CPP_wall3d_section_ARRAY section;
+  Array<CPP_wall3d_section> section;
 
   CPP_wall3d() :
     name(),
@@ -2643,8 +2126,7 @@ public:
     clear_material(),
     opaque_material(),
     superimpose(false),
-    ele_anchor_pt(Bmad::ANCHOR_BEGINNING),
-    section(CPP_wall3d_section_ARRAY(0))
+    ele_anchor_pt(Bmad::ANCHOR_BEGINNING)
     {}
 
 
@@ -2700,8 +2182,8 @@ class Opaque_control_class {};  // Opaque class for pointers to corresponding fo
 class CPP_control : public std::enable_shared_from_this<CPP_control> {
 public:
   Real value;
-  Real_ARRAY y_knot;
-  CPP_expression_atom_ARRAY stack;
+  Array<Real> y_knot;
+  Array<CPP_expression_atom> stack;
   CPP_lat_ele_loc slave;
   CPP_lat_ele_loc lord;
   string slave_name;
@@ -2711,9 +2193,6 @@ public:
   CPP_control() :
     value(0.0),
     y_knot(0, 0.0),
-    stack(CPP_expression_atom_ARRAY(0)),
-    slave(),
-    lord(),
     slave_name(),
     attribute(),
     ix_attrib(-1)
@@ -2771,15 +2250,14 @@ class Opaque_control_ramp1_class {};  // Opaque class for pointers to correspond
 
 class CPP_control_ramp1 : public std::enable_shared_from_this<CPP_control_ramp1> {
 public:
-  Real_ARRAY y_knot;
-  CPP_expression_atom_ARRAY stack;
+  Array<Real> y_knot;
+  Array<CPP_expression_atom> stack;
   string attribute;
   string slave_name;
   Bool is_controller;
 
   CPP_control_ramp1() :
     y_knot(0, 0.0),
-    stack(CPP_expression_atom_ARRAY(0)),
     attribute(),
     slave_name(),
     is_controller(false)
@@ -2806,15 +2284,12 @@ class Opaque_controller_class {};  // Opaque class for pointers to corresponding
 
 class CPP_controller : public std::enable_shared_from_this<CPP_controller> {
 public:
-  CPP_control_var1_ARRAY var;
-  CPP_control_ramp1_ARRAY ramp;
-  CPP_ramper_lord_ARRAY ramper_lord;
-  Real_ARRAY x_knot;
+  Array<CPP_control_var1> var;
+  Array<CPP_control_ramp1> ramp;
+  Array<CPP_ramper_lord> ramper_lord;
+  Array<Real> x_knot;
 
   CPP_controller() :
-    var(CPP_control_var1_ARRAY(0)),
-    ramp(CPP_control_ramp1_ARRAY(0)),
-    ramper_lord(CPP_ramper_lord_ARRAY(0)),
     x_knot(0, 0.0)
     {}
 
@@ -2870,7 +2345,7 @@ class Opaque_kv_beam_init_class {};  // Opaque class for pointers to correspondi
 
 class CPP_kv_beam_init : public std::enable_shared_from_this<CPP_kv_beam_init> {
 public:
-  Int_ARRAY part_per_phi;
+  Array<Int> part_per_phi;
   Int n_i2;
   Real a;
 
@@ -2940,12 +2415,12 @@ class CPP_beam_init : public std::enable_shared_from_this<CPP_beam_init> {
 public:
   string position_file;
   String_ARRAY distribution_type;
-  Real_ARRAY spin;
-  CPP_ellipse_beam_init_ARRAY ellipse;
+  Array<Real> spin;
+  Array<CPP_ellipse_beam_init> ellipse;
   CPP_kv_beam_init kv;
-  CPP_grid_beam_init_ARRAY grid;
-  Real_ARRAY center_jitter;
-  Real_ARRAY emit_jitter;
+  Array<CPP_grid_beam_init> grid;
+  Array<Real> center_jitter;
+  Array<Real> emit_jitter;
   Real sig_z_jitter;
   Real sig_pz_jitter;
   Int n_particle;
@@ -2959,7 +2434,7 @@ public:
   Real a_emit;
   Real b_emit;
   Real dpz_dz;
-  Real_ARRAY center;
+  Array<Real> center;
   Real t_offset;
   Real dt_bunch;
   Real sig_z;
@@ -2978,9 +2453,6 @@ public:
     position_file(),
     distribution_type(String_ARRAY(3)),
     spin(3, 0.0),
-    ellipse(CPP_ellipse_beam_init_ARRAY(3)),
-    kv(),
-    grid(CPP_grid_beam_init_ARRAY(3)),
     center_jitter(6, 0.0),
     emit_jitter(2, 0.0),
     sig_z_jitter(0.0),
@@ -3055,8 +2527,6 @@ public:
     n_part(0.0),
     total_length(0.0),
     unstable_factor(0.0),
-    t1_with_rf(Real_MATRIX(6, Real_ARRAY(6))),
-    t1_no_rf(Real_MATRIX(6, Real_ARRAY(6))),
     spin_tune(0.0),
     particle(Bmad::NOT_SET),
     default_tracking_species(Bmad::REF_PARTICLE),
@@ -3066,9 +2536,7 @@ public:
     live_branch(true),
     g1_integral(-1),
     g2_integral(-1),
-    g3_integral(-1),
-    bookkeeping_state(),
-    beam_init()
+    g3_integral(-1)
     {}
 
 
@@ -3164,7 +2632,7 @@ class CPP_anormal_mode : public std::enable_shared_from_this<CPP_anormal_mode> {
 public:
   Real emittance;
   Real emittance_no_vert;
-  Real_ARRAY synch_int;
+  Array<Real> synch_int;
   Real j_damp;
   Real alpha_damp;
   Real chrom;
@@ -3240,7 +2708,7 @@ class Opaque_normal_modes_class {};  // Opaque class for pointers to correspondi
 
 class CPP_normal_modes : public std::enable_shared_from_this<CPP_normal_modes> {
 public:
-  Real_ARRAY synch_int;
+  Array<Real> synch_int;
   Real sige_e;
   Real sig_z;
   Real e_loss;
@@ -3263,11 +2731,7 @@ public:
     pz_aperture(0.0),
     pz_average(0.0),
     momentum_compaction(0.0),
-    dpz_damp(0.0),
-    a(),
-    b(),
-    z(),
-    lin()
+    dpz_damp(0.0)
     {}
 
 
@@ -3291,19 +2755,17 @@ class Opaque_em_field_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_em_field : public std::enable_shared_from_this<CPP_em_field> {
 public:
-  Real_ARRAY e;
-  Real_ARRAY b;
+  Array<Real> e;
+  Array<Real> b;
   Real_MATRIX de;
   Real_MATRIX db;
   Real phi;
   Real phi_b;
-  Real_ARRAY a;
+  Array<Real> a;
 
   CPP_em_field() :
     e(3, 0.0),
     b(3, 0.0),
-    de(Real_MATRIX(3, Real_ARRAY(3))),
-    db(Real_MATRIX(3, Real_ARRAY(3))),
     phi(0.0),
     phi_b(0.0),
     a(3, 0.0)
@@ -3373,16 +2835,12 @@ public:
   CPP_coord orb;
   CPP_em_field field;
   CPP_strong_beam strong_beam;
-  Real_ARRAY vec0;
+  Array<Real> vec0;
   Real_MATRIX mat6;
 
   CPP_track_point() :
     s_body(0.0),
-    orb(),
-    field(),
-    strong_beam(),
-    vec0(6, 0.0),
-    mat6(Real_MATRIX(6, Real_ARRAY(6)))
+    vec0(6, 0.0)
     {}
 
 
@@ -3406,14 +2864,13 @@ class Opaque_track_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_track : public std::enable_shared_from_this<CPP_track> {
 public:
-  CPP_track_point_ARRAY pt;
+  Array<CPP_track_point> pt;
   Real ds_save;
   Int n_pt;
   Int n_bad;
   Int n_ok;
 
   CPP_track() :
-    pt(CPP_track_point_ARRAY(0)),
     ds_save(1e-3),
     n_pt(-1),
     n_bad(0),
@@ -3449,8 +2906,8 @@ public:
   Real beam_chamber_height;
   Real lsc_sigma_cutoff;
   Real particle_sigma_cutoff;
-  Int_ARRAY space_charge_mesh_size;
-  Int_ARRAY csr3d_mesh_size;
+  Array<Int> space_charge_mesh_size;
+  Array<Int> csr3d_mesh_size;
   Int n_bin;
   Int particle_bin_span;
   Int n_shield_images;
@@ -3501,7 +2958,7 @@ class Opaque_bmad_common_class {};  // Opaque class for pointers to correspondin
 class CPP_bmad_common : public std::enable_shared_from_this<CPP_bmad_common> {
 public:
   Real max_aperture_limit;
-  Real_ARRAY d_orb;
+  Array<Real> d_orb;
   Real default_ds_step;
   Real significant_length;
   Real rel_tol_tracking;
@@ -3666,10 +3123,9 @@ class Opaque_rad_int_branch_class {};  // Opaque class for pointers to correspon
 
 class CPP_rad_int_branch : public std::enable_shared_from_this<CPP_rad_int_branch> {
 public:
-  CPP_rad_int1_ARRAY ele;
+  Array<CPP_rad_int1> ele;
 
-  CPP_rad_int_branch() :
-    ele(CPP_rad_int1_ARRAY(0))
+  CPP_rad_int_branch()     
     {}
 
 
@@ -3693,10 +3149,9 @@ class Opaque_rad_int_all_ele_class {};  // Opaque class for pointers to correspo
 
 class CPP_rad_int_all_ele : public std::enable_shared_from_this<CPP_rad_int_all_ele> {
 public:
-  CPP_rad_int_branch_ARRAY branch;
+  Array<CPP_rad_int_branch> branch;
 
-  CPP_rad_int_all_ele() :
-    branch(CPP_rad_int_branch_ARRAY(0))
+  CPP_rad_int_all_ele()     
     {}
 
 
@@ -3738,34 +3193,34 @@ public:
   shared_ptr<CPP_mode3> mode3;
   shared_ptr<CPP_photon_element> photon;
   shared_ptr<CPP_rad_map_ele> rad_map;
-  CPP_taylor_ARRAY taylor;
-  Real_ARRAY spin_taylor_ref_orb_in;
-  CPP_taylor_ARRAY spin_taylor;
+  Array<CPP_taylor> taylor;
+  Array<Real> spin_taylor_ref_orb_in;
+  Array<CPP_taylor> spin_taylor;
   shared_ptr<CPP_wake> wake;
-  CPP_wall3d_ARRAY wall3d;
-  CPP_cartesian_map_ARRAY cartesian_map;
-  CPP_cylindrical_map_ARRAY cylindrical_map;
-  CPP_gen_grad_map_ARRAY gen_grad_map;
-  CPP_grid_field_ARRAY grid_field;
+  Array<CPP_wall3d> wall3d;
+  Array<CPP_cartesian_map> cartesian_map;
+  Array<CPP_cylindrical_map> cylindrical_map;
+  Array<CPP_gen_grad_map> gen_grad_map;
+  Array<CPP_grid_field> grid_field;
   CPP_coord map_ref_orb_in;
   CPP_coord map_ref_orb_out;
   CPP_coord time_ref_orb_in;
   CPP_coord time_ref_orb_out;
-  Real_ARRAY value;
-  Real_ARRAY old_value;
+  Array<Real> value;
+  Array<Real> old_value;
   Real_MATRIX spin_q;
-  Real_ARRAY vec0;
+  Array<Real> vec0;
   Real_MATRIX mat6;
   Real_MATRIX c_mat;
   Real gamma_c;
   Real s_start;
   Real s;
   Real ref_time;
-  Real_ARRAY a_pole;
-  Real_ARRAY b_pole;
-  Real_ARRAY a_pole_elec;
-  Real_ARRAY b_pole_elec;
-  Real_ARRAY custom;
+  Array<Real> a_pole;
+  Array<Real> b_pole;
+  Array<Real> a_pole_elec;
+  Array<Real> b_pole_elec;
+  Array<Real> custom;
   Real_TENSOR r;
   Int key;
   Int sub_key;
@@ -3835,38 +3290,17 @@ public:
     alias(),
     component_name(),
     descrip(NULL),
-    a(),
-    b(),
-    z(),
-    x(),
-    y(),
     ac_kick(NULL),
-    bookkeeping_state(),
     control(NULL),
-    floor(),
     high_energy_space_charge(NULL),
     mode3(NULL),
     photon(NULL),
     rad_map(NULL),
-    taylor(CPP_taylor_ARRAY(6)),
     spin_taylor_ref_orb_in(6, Bmad::REAL_GARBAGE),
-    spin_taylor(CPP_taylor_ARRAY(4)),
     wake(NULL),
-    wall3d(CPP_wall3d_ARRAY(0)),
-    cartesian_map(CPP_cartesian_map_ARRAY(0)),
-    cylindrical_map(CPP_cylindrical_map_ARRAY(0)),
-    gen_grad_map(CPP_gen_grad_map_ARRAY(0)),
-    grid_field(CPP_grid_field_ARRAY(0)),
-    map_ref_orb_in(),
-    map_ref_orb_out(),
-    time_ref_orb_in(),
-    time_ref_orb_out(),
     value(Bmad::NUM_ELE_ATTRIB+1, double(0)),
     old_value(Bmad::NUM_ELE_ATTRIB+1, double(0)),
-    spin_q(Real_MATRIX(4, Real_ARRAY(7))),
     vec0(6, 0.0),
-    mat6(Real_MATRIX(6, Real_ARRAY(6))),
-    c_mat(Real_MATRIX(2, Real_ARRAY(2))),
     gamma_c(1),
     s_start(0.0),
     s(0.0),
@@ -3943,7 +3377,7 @@ class Opaque_complex_taylor_term_class {};  // Opaque class for pointers to corr
 class CPP_complex_taylor_term : public std::enable_shared_from_this<CPP_complex_taylor_term> {
 public:
   Complex coef;
-  Int_ARRAY expn;
+  Array<Int> expn;
 
   CPP_complex_taylor_term() :
     coef(0.0),
@@ -3972,11 +3406,10 @@ class Opaque_complex_taylor_class {};  // Opaque class for pointers to correspon
 class CPP_complex_taylor : public std::enable_shared_from_this<CPP_complex_taylor> {
 public:
   Complex ref;
-  CPP_complex_taylor_term_ARRAY term;
+  Array<CPP_complex_taylor_term> term;
 
   CPP_complex_taylor() :
-    ref(0.0),
-    term(CPP_complex_taylor_term_ARRAY(0))
+    ref(0.0)
     {}
 
 
@@ -4010,9 +3443,9 @@ public:
   CPP_mode_info a;
   CPP_mode_info b;
   CPP_mode_info z;
-  CPP_ele_ARRAY ele;
+  Array<CPP_ele> ele;
   CPP_lat_param param;
-  CPP_wall3d_ARRAY wall3d;
+  Array<CPP_wall3d> wall3d;
 
   CPP_branch() :
     name(),
@@ -4021,13 +3454,7 @@ public:
     ix_from_ele(-1),
     ix_to_ele(-1),
     n_ele_track(0),
-    n_ele_max(0),
-    a(),
-    b(),
-    z(),
-    ele(CPP_ele_ARRAY(0)),
-    param(),
-    wall3d(CPP_wall3d_ARRAY(0))
+    n_ele_max(0)
     {}
 
 
@@ -4057,27 +3484,27 @@ public:
   string input_file_name;
   string title;
   String_ARRAY print_str;
-  CPP_expression_atom_ARRAY constant;
+  Array<CPP_expression_atom> constant;
   shared_ptr<CPP_mode_info> a;
   shared_ptr<CPP_mode_info> b;
   shared_ptr<CPP_mode_info> z;
   shared_ptr<CPP_lat_param> param;
   CPP_bookkeeping_state lord_state;
   CPP_ele ele_init;
-  CPP_ele_ARRAY ele;
-  CPP_branch_ARRAY branch;
-  CPP_control_ARRAY control;
+  Array<CPP_ele> ele;
+  Array<CPP_branch> branch;
+  Array<CPP_control> control;
   CPP_coord particle_start;
   CPP_beam_init beam_init;
   CPP_pre_tracker pre_tracker;
-  Real_ARRAY custom;
+  Array<Real> custom;
   Int version;
   shared_ptr<Int> n_ele_track;
   shared_ptr<Int> n_ele_max;
   Int n_control_max;
   Int n_ic_max;
   Int input_taylor_order;
-  Int_ARRAY ic;
+  Array<Int> ic;
   Int photon_type;
   Int creation_hash;
   Int ramper_slave_bookkeeping;
@@ -4089,19 +3516,10 @@ public:
     input_file_name(),
     title(),
     print_str(String_ARRAY(0)),
-    constant(CPP_expression_atom_ARRAY(0)),
     a(NULL),
     b(NULL),
     z(NULL),
     param(NULL),
-    lord_state(),
-    ele_init(),
-    ele(CPP_ele_ARRAY(0)),
-    branch(CPP_branch_ARRAY(0)),
-    control(CPP_control_ARRAY(0)),
-    particle_start(),
-    beam_init(),
-    pre_tracker(),
     custom(0, 0.0),
     version(-1),
     n_ele_track(NULL),
@@ -4136,8 +3554,8 @@ class Opaque_bunch_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_bunch : public std::enable_shared_from_this<CPP_bunch> {
 public:
-  CPP_coord_ARRAY particle;
-  Int_ARRAY ix_z;
+  Array<CPP_coord> particle;
+  Array<Int> ix_z;
   Real charge_tot;
   Real charge_live;
   Real z_center;
@@ -4152,7 +3570,6 @@ public:
   Int n_bad;
 
   CPP_bunch() :
-    particle(CPP_coord_ARRAY(0)),
     ix_z(0, 0),
     charge_tot(0.0),
     charge_live(0.0),
@@ -4197,8 +3614,8 @@ public:
   CPP_twiss b;
   CPP_twiss c;
   Real_MATRIX sigma;
-  Real_ARRAY rel_max;
-  Real_ARRAY rel_min;
+  Array<Real> rel_max;
+  Array<Real> rel_min;
   Real s;
   Real t;
   Real sigma_t;
@@ -4214,14 +3631,6 @@ public:
   Bool twiss_valid;
 
   CPP_bunch_params() :
-    centroid(),
-    x(),
-    y(),
-    z(),
-    a(),
-    b(),
-    c(),
-    sigma(Real_MATRIX(6, Real_ARRAY(6))),
     rel_max(7, 0.0),
     rel_min(7, 0.0),
     s(-1),
@@ -4260,10 +3669,9 @@ class Opaque_beam_class {};  // Opaque class for pointers to corresponding fortr
 
 class CPP_beam : public std::enable_shared_from_this<CPP_beam> {
 public:
-  CPP_bunch_ARRAY bunch;
+  Array<CPP_bunch> bunch;
 
-  CPP_beam() :
-    bunch(CPP_bunch_ARRAY(0))
+  CPP_beam()     
     {}
 
 
@@ -4365,13 +3773,11 @@ class Opaque_aperture_scan_class {};  // Opaque class for pointers to correspond
 
 class CPP_aperture_scan : public std::enable_shared_from_this<CPP_aperture_scan> {
 public:
-  CPP_aperture_point_ARRAY point;
+  Array<CPP_aperture_point> point;
   CPP_coord ref_orb;
   Real pz_start;
 
   CPP_aperture_scan() :
-    point(CPP_aperture_point_ARRAY(0)),
-    ref_orb(),
     pz_start(0.0)
     {}
 

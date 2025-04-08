@@ -7,6 +7,8 @@
 
 //---------------------------------------------------------------------------
 
+using std::vector;
+
 template <class T> void operator<< (vector<T>& arr, const T* ptr) {
   unsigned int n = arr.size();
   for (unsigned int i = 0; i < n; i++) arr[i] = ptr[i];
@@ -82,46 +84,46 @@ template <class T> void tensor_to_vec (const vector< vector< vector<T> > >& tens
 //---------------------------------------------------------------------------
 // Instantiate instances for conversion from array to C++ structure.
 
-template void operator<< (Bool_ARRAY&,  c_Bool*);
-template void operator<< (Bool_MATRIX&, c_Bool*);
+template void operator<< (Bmad::Bool_ARRAY&,  Bmad::c_Bool*);
+template void operator<< (Bmad::Bool_MATRIX&, Bmad::c_Bool*);
 
-template void operator<< (Real_ARRAY&,  c_Real*);
-template void operator<< (Real_MATRIX&, c_Real*);
-template void operator<< (Real_TENSOR&, c_Real*);
+template void operator<< (Bmad::Real_ARRAY&,  Bmad::c_Real*);
+template void operator<< (Bmad::Real_MATRIX&, Bmad::c_Real*);
+template void operator<< (Bmad::Real_TENSOR&, Bmad::c_Real*);
 
-template void operator<< (Complex_ARRAY&,  c_Complex*);
-template void operator<< (Complex_MATRIX&, c_Complex*);
-template void operator<< (Complex_TENSOR&, c_Complex*);
+template void operator<< (Bmad::Complex_ARRAY&,  Bmad::c_Complex*);
+template void operator<< (Bmad::Complex_MATRIX&, Bmad::c_Complex*);
+template void operator<< (Bmad::Complex_TENSOR&, Bmad::c_Complex*);
 
-template void operator<< (Int_ARRAY&,  c_Int*);
-template void operator<< (Int_MATRIX&, c_Int*);
-template void operator<< (Int_TENSOR&, c_Int*);
+template void operator<< (Bmad::Int_ARRAY&,  Bmad::c_Int*);
+template void operator<< (Bmad::Int_MATRIX&, Bmad::c_Int*);
+template void operator<< (Bmad::Int_TENSOR&, Bmad::c_Int*);
 
 //---------------------------------------------------------------------------
 // Instantiate instances for transfer
 
-template void operator<< (Real_ARRAY&,  const Real_ARRAY&);
-template void operator<< (Real_MATRIX&, const Real_MATRIX&);
-template void operator<< (Real_TENSOR&, const Real_TENSOR&);
+template void operator<< (Bmad::Real_ARRAY&,  const Bmad::Real_ARRAY&);
+template void operator<< (Bmad::Real_MATRIX&, const Bmad::Real_MATRIX&);
+template void operator<< (Bmad::Real_TENSOR&, const Bmad::Real_TENSOR&);
 
-template void operator<< (Complex_ARRAY&,  const Complex_ARRAY&);
-template void operator<< (Complex_MATRIX&, const Complex_MATRIX&);
-template void operator<< (Complex_TENSOR&, const Complex_TENSOR&);
+template void operator<< (Bmad::Complex_ARRAY&,  const Bmad::Complex_ARRAY&);
+template void operator<< (Bmad::Complex_MATRIX&, const Bmad::Complex_MATRIX&);
+template void operator<< (Bmad::Complex_TENSOR&, const Bmad::Complex_TENSOR&);
 
-template void operator<< (Int_ARRAY&,  const Int_ARRAY&);
-template void operator<< (Int_MATRIX&, const Int_MATRIX&);
-template void operator<< (Int_TENSOR&, const Int_TENSOR&);
+template void operator<< (Bmad::Int_ARRAY&,  const Bmad::Int_ARRAY&);
+template void operator<< (Bmad::Int_MATRIX&, const Bmad::Int_MATRIX&);
+template void operator<< (Bmad::Int_TENSOR&, const Bmad::Int_TENSOR&);
 
 //---------------------------------------------------------------------------
 
-template void matrix_to_vec (const Bool_MATRIX&,     Bool*);
-template void matrix_to_vec (const Complex_MATRIX&,  Complex*);
-template void matrix_to_vec (const Real_MATRIX&,     Real*);
-template void matrix_to_vec (const Int_MATRIX&,      Int*);
+template void matrix_to_vec (const Bmad::Bool_MATRIX&,     Bmad::Bool*);
+template void matrix_to_vec (const Bmad::Complex_MATRIX&,  Bmad::Complex*);
+template void matrix_to_vec (const Bmad::Real_MATRIX&,     Bmad::Real*);
+template void matrix_to_vec (const Bmad::Int_MATRIX&,      Bmad::Int*);
 
-template void tensor_to_vec (const Complex_TENSOR&,  Complex*);
-template void tensor_to_vec (const Real_TENSOR&,     Real*);
-template void tensor_to_vec (const Int_TENSOR&,      Int*);
+template void tensor_to_vec (const Bmad::Complex_TENSOR&,  Bmad::Complex*);
+template void tensor_to_vec (const Bmad::Real_TENSOR&,     Bmad::Real*);
+template void tensor_to_vec (const Bmad::Int_TENSOR&,      Bmad::Int*);
 
 #define CONVERTER_TEMPLATES
 #endif
