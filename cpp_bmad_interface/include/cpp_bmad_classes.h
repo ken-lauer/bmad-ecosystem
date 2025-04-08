@@ -218,7 +218,7 @@ public:
   Array<Real> angle;
   Array<Real> energy;
   Array<CPP_interval1_coef> int1;
-  Real_MATRIX p_reflect;
+  Matrix<Real> p_reflect;
   Real max_energy;
   Array<Real> p_reflect_scratch;
   Array<Real> bragg_angle;
@@ -1172,7 +1172,7 @@ class Opaque_floor_position_class {};  // Opaque class for pointers to correspon
 class CPP_floor_position : public std::enable_shared_from_this<CPP_floor_position> {
 public:
   Array<Real> r;
-  Real_MATRIX w;
+  Matrix<Real> w;
   Real theta;
   Real phi;
   Real psi;
@@ -1325,7 +1325,7 @@ class Opaque_mode3_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_mode3 : public std::enable_shared_from_this<CPP_mode3> {
 public:
-  Real_MATRIX v;
+  Matrix<Real> v;
   CPP_twiss a;
   CPP_twiss b;
   CPP_twiss c;
@@ -1400,10 +1400,10 @@ class Opaque_rad_map_class {};  // Opaque class for pointers to corresponding fo
 class CPP_rad_map : public std::enable_shared_from_this<CPP_rad_map> {
 public:
   Array<Real> ref_orb;
-  Real_MATRIX damp_dmat;
+  Matrix<Real> damp_dmat;
   Array<Real> xfer_damp_vec;
-  Real_MATRIX xfer_damp_mat;
-  Real_MATRIX stoc_mat;
+  Matrix<Real> xfer_damp_mat;
+  Matrix<Real> stoc_mat;
 
   CPP_rad_map() :
     ref_orb(6, -1),
@@ -1463,7 +1463,7 @@ public:
   Int m;
   Int sincos;
   Int n_deriv_max;
-  Real_MATRIX deriv;
+  Matrix<Real> deriv;
 
   CPP_gen_grad1() :
     m(0),
@@ -1773,7 +1773,7 @@ class Opaque_surface_curvature_class {};  // Opaque class for pointers to corres
 
 class CPP_surface_curvature : public std::enable_shared_from_this<CPP_surface_curvature> {
 public:
-  Real_MATRIX xy;
+  Matrix<Real> xy;
   Real spherical;
   Array<Real> elliptical;
   Bool has_curvature;
@@ -2508,8 +2508,8 @@ public:
   Real n_part;
   Real total_length;
   Real unstable_factor;
-  Real_MATRIX t1_with_rf;
-  Real_MATRIX t1_no_rf;
+  Matrix<Real> t1_with_rf;
+  Matrix<Real> t1_no_rf;
   Real spin_tune;
   Int particle;
   Int default_tracking_species;
@@ -2757,8 +2757,8 @@ class CPP_em_field : public std::enable_shared_from_this<CPP_em_field> {
 public:
   Array<Real> e;
   Array<Real> b;
-  Real_MATRIX de;
-  Real_MATRIX db;
+  Matrix<Real> de;
+  Matrix<Real> db;
   Real phi;
   Real phi_b;
   Array<Real> a;
@@ -2836,7 +2836,7 @@ public:
   CPP_em_field field;
   CPP_strong_beam strong_beam;
   Array<Real> vec0;
-  Real_MATRIX mat6;
+  Matrix<Real> mat6;
 
   CPP_track_point() :
     s_body(0.0),
@@ -3208,10 +3208,10 @@ public:
   CPP_coord time_ref_orb_out;
   Array<Real> value;
   Array<Real> old_value;
-  Real_MATRIX spin_q;
+  Matrix<Real> spin_q;
   Array<Real> vec0;
-  Real_MATRIX mat6;
-  Real_MATRIX c_mat;
+  Matrix<Real> mat6;
+  Matrix<Real> c_mat;
   Real gamma_c;
   Real s_start;
   Real s;
@@ -3221,7 +3221,7 @@ public:
   Array<Real> a_pole_elec;
   Array<Real> b_pole_elec;
   Array<Real> custom;
-  Real_TENSOR r;
+  Tensor<Real> r;
   Int key;
   Int sub_key;
   Int ix_ele;
@@ -3613,7 +3613,7 @@ public:
   CPP_twiss a;
   CPP_twiss b;
   CPP_twiss c;
-  Real_MATRIX sigma;
+  Matrix<Real> sigma;
   Array<Real> rel_max;
   Array<Real> rel_min;
   Real s;

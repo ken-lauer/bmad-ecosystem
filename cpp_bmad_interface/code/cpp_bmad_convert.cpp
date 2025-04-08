@@ -244,7 +244,7 @@ extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Op
     z_int1 = new const CPP_interval1_coef*[n1_int1];
     for (int i = 0; i < n1_int1; i++) z_int1[i] = &C.int1[i];
   }
-  // c_side.to_f_setup[real, 2, ALLOC] Real_MATRIX
+  // c_side.to_f_setup[real, 2, ALLOC] Matrix<Real>
   int n1_p_reflect = C.p_reflect.size(), n2_p_reflect = 0;
   Real* z_p_reflect = NULL;
   if (n1_p_reflect > 0) {
@@ -297,7 +297,7 @@ extern "C" void photon_reflect_table_to_c2 (CPP_photon_reflect_table& C, c_RealA
   C.int1.resize(n1_int1);
   for (int i = 0; i < n1_int1; i++) { interval1_coef_to_c(z_int1[i], C.int1[i]); }
 
-  // c_side.to_c2_set[real, 2, ALLOC] Real_MATRIX
+  // c_side.to_c2_set[real, 2, ALLOC] Matrix<Real>
   C.p_reflect.resize(n1_p_reflect);
   for (int i = 0; i < n1_p_reflect; i++) C.p_reflect[i].resize(n2_p_reflect);
   C.p_reflect << z_p_reflect;
@@ -1425,7 +1425,7 @@ extern "C" void floor_position_to_f2 (Opaque_floor_position_class*, c_RealArr, c
     c_Real&, c_Real&, c_Real&);
 
 extern "C" void floor_position_to_f (const CPP_floor_position& C, Opaque_floor_position_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_w[3*3]; matrix_to_vec(C.w, z_w);
 
   // c_side.to_f2_call
@@ -1439,7 +1439,7 @@ extern "C" void floor_position_to_c2 (CPP_floor_position& C, c_RealArr z_r, c_Re
 
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.r << z_r;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.w << z_w;
   // c_side.to_c2_set[real, 0, NOT] Real
   C.theta = z_theta;
@@ -1578,7 +1578,7 @@ extern "C" void mode3_to_f2 (Opaque_mode3_class*, c_RealArr, const CPP_twiss&, c
     CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_twiss&);
 
 extern "C" void mode3_to_f (const CPP_mode3& C, Opaque_mode3_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_v[6*6]; matrix_to_vec(C.v, z_v);
 
   // c_side.to_f2_call
@@ -1591,7 +1591,7 @@ extern "C" void mode3_to_c2 (CPP_mode3& C, c_RealArr z_v, const Opaque_twiss_cla
     Opaque_twiss_class* z_b, const Opaque_twiss_class* z_c, const Opaque_twiss_class* z_x,
     const Opaque_twiss_class* z_y) {
 
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.v << z_v;
   // c_side.to_c2_set[type, 0, NOT] CPP_twiss
   twiss_to_c(z_a, C.a);
@@ -1659,11 +1659,11 @@ extern "C" void rad_map_to_f2 (Opaque_rad_map_class*, c_RealArr, c_RealArr, c_Re
     c_RealArr, c_RealArr);
 
 extern "C" void rad_map_to_f (const CPP_rad_map& C, Opaque_rad_map_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_damp_dmat[6*6]; matrix_to_vec(C.damp_dmat, z_damp_dmat);
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_xfer_damp_mat[6*6]; matrix_to_vec(C.xfer_damp_mat, z_xfer_damp_mat);
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_stoc_mat[6*6]; matrix_to_vec(C.stoc_mat, z_stoc_mat);
 
   // c_side.to_f2_call
@@ -1678,13 +1678,13 @@ extern "C" void rad_map_to_c2 (CPP_rad_map& C, c_RealArr z_ref_orb, c_RealArr z_
 
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.ref_orb << z_ref_orb;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.damp_dmat << z_damp_dmat;
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.xfer_damp_vec << z_xfer_damp_vec;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.xfer_damp_mat << z_xfer_damp_mat;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.stoc_mat << z_stoc_mat;
 }
 
@@ -1728,7 +1728,7 @@ extern "C" void gen_grad1_to_f2 (Opaque_gen_grad1_class*, c_Int&, c_Int&, c_Int&
     Int, Int);
 
 extern "C" void gen_grad1_to_f (const CPP_gen_grad1& C, Opaque_gen_grad1_class* F) {
-  // c_side.to_f_setup[real, 2, ALLOC] Real_MATRIX
+  // c_side.to_f_setup[real, 2, ALLOC] Matrix<Real>
   int n1_deriv = C.deriv.size(), n2_deriv = 0;
   Real* z_deriv = NULL;
   if (n1_deriv > 0) {
@@ -1754,7 +1754,7 @@ extern "C" void gen_grad1_to_c2 (CPP_gen_grad1& C, c_Int& z_m, c_Int& z_sincos, 
   C.sincos = z_sincos;
   // c_side.to_c2_set[integer, 0, NOT] Int
   C.n_deriv_max = z_n_deriv_max;
-  // c_side.to_c2_set[real, 2, ALLOC] Real_MATRIX
+  // c_side.to_c2_set[real, 2, ALLOC] Matrix<Real>
   C.deriv.resize(n1_deriv);
   for (int i = 0; i < n1_deriv; i++) C.deriv[i].resize(n2_deriv);
   C.deriv << z_deriv;
@@ -2103,7 +2103,7 @@ extern "C" void surface_curvature_to_f2 (Opaque_surface_curvature_class*, c_Real
     c_RealArr, c_Bool&);
 
 extern "C" void surface_curvature_to_f (const CPP_surface_curvature& C, Opaque_surface_curvature_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_xy[7*7]; matrix_to_vec(C.xy, z_xy);
 
   // c_side.to_f2_call
@@ -2115,7 +2115,7 @@ extern "C" void surface_curvature_to_f (const CPP_surface_curvature& C, Opaque_s
 extern "C" void surface_curvature_to_c2 (CPP_surface_curvature& C, c_RealArr z_xy, c_Real&
     z_spherical, c_RealArr z_elliptical, c_Bool& z_has_curvature) {
 
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.xy << z_xy;
   // c_side.to_c2_set[real, 0, NOT] Real
   C.spherical = z_spherical;
@@ -3059,9 +3059,9 @@ extern "C" void lat_param_to_f2 (Opaque_lat_param_class*, c_Real&, c_Real&, c_Re
     c_Real&, const CPP_bookkeeping_state&, const CPP_beam_init&);
 
 extern "C" void lat_param_to_f (const CPP_lat_param& C, Opaque_lat_param_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_t1_with_rf[6*6]; matrix_to_vec(C.t1_with_rf, z_t1_with_rf);
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_t1_no_rf[6*6]; matrix_to_vec(C.t1_no_rf, z_t1_no_rf);
 
   // c_side.to_f2_call
@@ -3086,9 +3086,9 @@ extern "C" void lat_param_to_c2 (CPP_lat_param& C, c_Real& z_n_part, c_Real& z_t
   C.total_length = z_total_length;
   // c_side.to_c2_set[real, 0, NOT] Real
   C.unstable_factor = z_unstable_factor;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.t1_with_rf << z_t1_with_rf;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.t1_no_rf << z_t1_no_rf;
   // c_side.to_c2_set[real, 0, NOT] Real
   C.spin_tune = z_spin_tune;
@@ -3324,9 +3324,9 @@ extern "C" void em_field_to_f2 (Opaque_em_field_class*, c_RealArr, c_RealArr, c_
     c_RealArr, c_Real&, c_Real&, c_RealArr);
 
 extern "C" void em_field_to_f (const CPP_em_field& C, Opaque_em_field_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_de[3*3]; matrix_to_vec(C.de, z_de);
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_db[3*3]; matrix_to_vec(C.db, z_db);
 
   // c_side.to_f2_call
@@ -3342,9 +3342,9 @@ extern "C" void em_field_to_c2 (CPP_em_field& C, c_RealArr z_e, c_RealArr z_b, c
   C.e << z_e;
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.b << z_b;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.de << z_de;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.db << z_db;
   // c_side.to_c2_set[real, 0, NOT] Real
   C.phi = z_phi;
@@ -3402,7 +3402,7 @@ extern "C" void track_point_to_f2 (Opaque_track_point_class*, c_Real&, const CPP
     CPP_em_field&, const CPP_strong_beam&, c_RealArr, c_RealArr);
 
 extern "C" void track_point_to_f (const CPP_track_point& C, Opaque_track_point_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_mat6[6*6]; matrix_to_vec(C.mat6, z_mat6);
 
   // c_side.to_f2_call
@@ -3425,7 +3425,7 @@ extern "C" void track_point_to_c2 (CPP_track_point& C, c_Real& z_s_body, const
   strong_beam_to_c(z_strong_beam, C.strong_beam);
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.vec0 << z_vec0;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.mat6 << z_mat6;
 }
 
@@ -3894,11 +3894,11 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     z_grid_field = new const CPP_grid_field*[n1_grid_field];
     for (int i = 0; i < n1_grid_field; i++) z_grid_field[i] = &C.grid_field[i];
   }
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_spin_q[4*7]; matrix_to_vec(C.spin_q, z_spin_q);
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_mat6[6*6]; matrix_to_vec(C.mat6, z_mat6);
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_c_mat[2*2]; matrix_to_vec(C.c_mat, z_c_mat);
   // c_side.to_f_setup[real, 1, PTR] Array<Real>
   int n1_a_pole = C.a_pole.size();
@@ -3930,7 +3930,7 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
   if (n1_custom > 0) {
     z_custom = &C.custom[0];
   }
-  // c_side.to_f_setup[real, 3, PTR] Real_TENSOR
+  // c_side.to_f_setup[real, 3, PTR] Tensor<Real>
 
   int n1_r = C.r.size(), n2_r = 0, n3_r = 0;
   Real* z_r = NULL;
@@ -4139,13 +4139,13 @@ for (size_t i = 0; i < C.spin_taylor.size(); i++)
   C.old_value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.old_value[i] = z_old_value[i-1];
 
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.spin_q << z_spin_q;
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.vec0 << z_vec0;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.mat6 << z_mat6;
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.c_mat << z_c_mat;
   // c_side.to_c2_set[real, 0, NOT] Real
   C.gamma_c = z_gamma_c;
@@ -4180,7 +4180,7 @@ for (size_t i = 0; i < C.spin_taylor.size(); i++)
   C.custom.resize(n1_custom);
   C.custom << z_custom;
 
-  // c_side.to_c2_set[real, 3, PTR] Real_TENSOR
+  // c_side.to_c2_set[real, 3, PTR] Tensor<Real>
   C.r.resize(n1_r);
   for (size_t i = 0; i < C.r.size(); i++) {
     C.r[i].resize(n2_r);
@@ -4727,7 +4727,7 @@ extern "C" void bunch_params_to_f2 (Opaque_bunch_params_class*, const CPP_coord&
     c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Bool&);
 
 extern "C" void bunch_params_to_f (const CPP_bunch_params& C, Opaque_bunch_params_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] Real_MATRIX
+  // c_side.to_f_setup[real, 2, NOT] Matrix<Real>
   Real z_sigma[6*6]; matrix_to_vec(C.sigma, z_sigma);
 
   // c_side.to_f2_call
@@ -4762,7 +4762,7 @@ extern "C" void bunch_params_to_c2 (CPP_bunch_params& C, const Opaque_coord_clas
   twiss_to_c(z_b, C.b);
   // c_side.to_c2_set[type, 0, NOT] CPP_twiss
   twiss_to_c(z_c, C.c);
-  // c_side.to_c2_set[real, 2, NOT] Real_MATRIX
+  // c_side.to_c2_set[real, 2, NOT] Matrix<Real>
   C.sigma << z_sigma;
   // c_side.to_c2_set[real, 1, NOT] Array<Real>
   C.rel_max << z_rel_max;

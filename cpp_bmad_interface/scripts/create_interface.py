@@ -60,6 +60,10 @@ NOT, PTR, ALLOC = (
     "ALLOC",
 )
 
+do_not_share_classes = {
+    "CPP_grid_field_pt1",
+}
+
 ##################################################################################
 ##################################################################################
 
@@ -1189,7 +1193,7 @@ def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
         )
         c.test_pat = test_pat1.replace(
             "C.NAME[i] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(*C.NAME[i], ix_patt+i+1)",
+            "set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1)",
         )
         c.to_f_setup = """\
   const CPP_KIND* z_NAME[DIM1];
@@ -1203,7 +1207,7 @@ def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
 
 def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 2"""
-    c.c_class = c_type + "_MATRIX"
+    c.c_class = f"Matrix<{c_type}>"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
@@ -1242,7 +1246,7 @@ def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
 
 def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 3"""
-    c.c_class = c_type + "_TENSOR"
+    c.c_class = f"Tensor<{c_type}>"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
@@ -1255,6 +1259,10 @@ def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
         "  " + c_type + " z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);\n"
     )
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
+
+    print(c_type)
+    if c_type in do_not_share_classes:
+        raise
 
     if type == STRUCT:
         c.c_class = f"SharedTensor<{c_type}>"
@@ -1378,7 +1386,7 @@ def configure_pointer_dim1(
             test_pat_pointer1
             + x2
             + for1
-            + "  {set_CPP_KIND_test_pattern(*C.NAME[i], ix_patt+i+1);}\n"
+            + "  {set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1);}\n"
             + "  }\n"
         )
         cp.to_f_setup = """\
@@ -2842,7 +2850,7 @@ offset = 100 * ix_patt
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
             f_test.write(
-                f"!! f_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
+                f"!! f_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
             )
 
             f_test.write(arg.f_side.test_pat.replace("XXX", str(i)))

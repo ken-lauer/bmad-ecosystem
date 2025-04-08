@@ -266,7 +266,7 @@ void set_CPP_ac_kicker_test_pattern (CPP_ac_kicker& C, int ix_patt) {
     C.amp_vs_time.resize(0);
   else {
     C.amp_vs_time.resize(3);
-    for (size_t i = 0; i < C.amp_vs_time.size(); i++)  {set_CPP_ac_kicker_time_test_pattern(*C.amp_vs_time[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.amp_vs_time.size(); i++)  {set_CPP_ac_kicker_time_test_pattern(C.amp_vs_time[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, ALLOC]
@@ -274,7 +274,7 @@ void set_CPP_ac_kicker_test_pattern (CPP_ac_kicker& C, int ix_patt) {
     C.frequency.resize(0);
   else {
     C.frequency.resize(3);
-    for (size_t i = 0; i < C.frequency.size(); i++)  {set_CPP_ac_kicker_freq_test_pattern(*C.frequency[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.frequency.size(); i++)  {set_CPP_ac_kicker_freq_test_pattern(C.frequency[i], ix_patt+i+1);}
   }
 
 
@@ -403,7 +403,7 @@ void set_CPP_photon_reflect_table_test_pattern (CPP_photon_reflect_table& C, int
     C.int1.resize(0);
   else {
     C.int1.resize(3);
-    for (size_t i = 0; i < C.int1.size(); i++)  {set_CPP_interval1_coef_test_pattern(*C.int1[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.int1.size(); i++)  {set_CPP_interval1_coef_test_pattern(C.int1[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 2, ALLOC]
@@ -500,7 +500,7 @@ void set_CPP_photon_reflect_surface_test_pattern (CPP_photon_reflect_surface& C,
     C.table.resize(0);
   else {
     C.table.resize(3);
-    for (size_t i = 0; i < C.table.size(); i++)  {set_CPP_photon_reflect_table_test_pattern(*C.table[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.table.size(); i++)  {set_CPP_photon_reflect_table_test_pattern(C.table[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 0, NOT]
@@ -676,7 +676,7 @@ void set_CPP_coord_array_test_pattern (CPP_coord_array& C, int ix_patt) {
     C.orbit.resize(0);
   else {
     C.orbit.resize(3);
-    for (size_t i = 0; i < C.orbit.size(); i++)  {set_CPP_coord_test_pattern(*C.orbit[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.orbit.size(); i++)  {set_CPP_coord_test_pattern(C.orbit[i], ix_patt+i+1);}
   }
 
 
@@ -1048,7 +1048,7 @@ void set_CPP_wake_sr_test_pattern (CPP_wake_sr& C, int ix_patt) {
     C.long_wake.resize(0);
   else {
     C.long_wake.resize(3);
-    for (size_t i = 0; i < C.long_wake.size(); i++)  {set_CPP_wake_sr_mode_test_pattern(*C.long_wake[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.long_wake.size(); i++)  {set_CPP_wake_sr_mode_test_pattern(C.long_wake[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, ALLOC]
@@ -1056,7 +1056,7 @@ void set_CPP_wake_sr_test_pattern (CPP_wake_sr& C, int ix_patt) {
     C.trans_wake.resize(0);
   else {
     C.trans_wake.resize(3);
-    for (size_t i = 0; i < C.trans_wake.size(); i++)  {set_CPP_wake_sr_mode_test_pattern(*C.trans_wake[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.trans_wake.size(); i++)  {set_CPP_wake_sr_mode_test_pattern(C.trans_wake[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 0, NOT]
@@ -1221,7 +1221,7 @@ void set_CPP_wake_lr_test_pattern (CPP_wake_lr& C, int ix_patt) {
     C.mode.resize(0);
   else {
     C.mode.resize(3);
-    for (size_t i = 0; i < C.mode.size(); i++)  {set_CPP_wake_lr_mode_test_pattern(*C.mode[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.mode.size(); i++)  {set_CPP_wake_lr_mode_test_pattern(C.mode[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 0, NOT]
@@ -1457,7 +1457,7 @@ void set_CPP_taylor_test_pattern (CPP_taylor& C, int ix_patt) {
     C.term.resize(0);
   else {
     C.term.resize(3);
-    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_taylor_term_test_pattern(*C.term[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_taylor_term_test_pattern(C.term[i], ix_patt+i+1);}
   }
 
 
@@ -1570,7 +1570,7 @@ void set_CPP_em_taylor_test_pattern (CPP_em_taylor& C, int ix_patt) {
     C.term.resize(0);
   else {
     C.term.resize(3);
-    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_em_taylor_term_test_pattern(*C.term[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_em_taylor_term_test_pattern(C.term[i], ix_patt+i+1);}
   }
 
 
@@ -1708,7 +1708,7 @@ void set_CPP_cartesian_map_term_test_pattern (CPP_cartesian_map_term& C, int ix_
     C.term.resize(0);
   else {
     C.term.resize(3);
-    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_cartesian_map_term1_test_pattern(*C.term[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_cartesian_map_term1_test_pattern(C.term[i], ix_patt+i+1);}
   }
 
 
@@ -1895,7 +1895,7 @@ void set_CPP_cylindrical_map_term_test_pattern (CPP_cylindrical_map_term& C, int
     C.term.resize(0);
   else {
     C.term.resize(3);
-    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_cylindrical_map_term1_test_pattern(*C.term[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_cylindrical_map_term1_test_pattern(C.term[i], ix_patt+i+1);}
   }
 
 
@@ -2853,7 +2853,7 @@ void set_CPP_gen_grad_map_test_pattern (CPP_gen_grad_map& C, int ix_patt) {
     C.gg.resize(0);
   else {
     C.gg.resize(3);
-    for (size_t i = 0; i < C.gg.size(); i++)  {set_CPP_gen_grad1_test_pattern(*C.gg[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.gg.size(); i++)  {set_CPP_gen_grad1_test_pattern(C.gg[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[integer, 0, NOT]
@@ -3461,7 +3461,7 @@ void set_CPP_photon_target_test_pattern (CPP_photon_target& C, int ix_patt) {
 
   // c_side.test_pat[type, 1, NOT]
   for (size_t i = 0; i < C.corner.size(); i++)
-    {int rhs = 101 + i + 4 + offset; set_CPP_target_point_test_pattern(*C.corner[i], ix_patt+i+1);}
+    {int rhs = 101 + i + 4 + offset; set_CPP_target_point_test_pattern(C.corner[i], ix_patt+i+1);}
   // c_side.test_pat[type, 0, NOT]
   set_CPP_target_point_test_pattern(C.center, ix_patt);
 
@@ -3775,7 +3775,7 @@ void set_CPP_photon_element_test_pattern (CPP_photon_element& C, int ix_patt) {
     C.init_energy_prob.resize(0);
   else {
     C.init_energy_prob.resize(3);
-    for (size_t i = 0; i < C.init_energy_prob.size(); i++)  {set_CPP_spline_test_pattern(*C.init_energy_prob[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.init_energy_prob.size(); i++)  {set_CPP_spline_test_pattern(C.init_energy_prob[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 1, ALLOC]
@@ -3922,7 +3922,7 @@ void set_CPP_wall3d_section_test_pattern (CPP_wall3d_section& C, int ix_patt) {
     C.v.resize(0);
   else {
     C.v.resize(3);
-    for (size_t i = 0; i < C.v.size(); i++)  {set_CPP_wall3d_vertex_test_pattern(*C.v[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.v.size(); i++)  {set_CPP_wall3d_vertex_test_pattern(C.v[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, PTR]
@@ -4063,7 +4063,7 @@ void set_CPP_wall3d_test_pattern (CPP_wall3d& C, int ix_patt) {
     C.section.resize(0);
   else {
     C.section.resize(3);
-    for (size_t i = 0; i < C.section.size(); i++)  {set_CPP_wall3d_section_test_pattern(*C.section[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.section.size(); i++)  {set_CPP_wall3d_section_test_pattern(C.section[i], ix_patt+i+1);}
   }
 
 
@@ -4191,7 +4191,7 @@ void set_CPP_control_test_pattern (CPP_control& C, int ix_patt) {
     C.stack.resize(0);
   else {
     C.stack.resize(3);
-    for (size_t i = 0; i < C.stack.size(); i++)  {set_CPP_expression_atom_test_pattern(*C.stack[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.stack.size(); i++)  {set_CPP_expression_atom_test_pattern(C.stack[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, NOT]
@@ -4330,7 +4330,7 @@ void set_CPP_control_ramp1_test_pattern (CPP_control_ramp1& C, int ix_patt) {
     C.stack.resize(0);
   else {
     C.stack.resize(3);
-    for (size_t i = 0; i < C.stack.size(); i++)  {set_CPP_expression_atom_test_pattern(*C.stack[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.stack.size(); i++)  {set_CPP_expression_atom_test_pattern(C.stack[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[character, 0, NOT]
@@ -4397,7 +4397,7 @@ void set_CPP_controller_test_pattern (CPP_controller& C, int ix_patt) {
     C.var.resize(0);
   else {
     C.var.resize(3);
-    for (size_t i = 0; i < C.var.size(); i++)  {set_CPP_control_var1_test_pattern(*C.var[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.var.size(); i++)  {set_CPP_control_var1_test_pattern(C.var[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, ALLOC]
@@ -4405,7 +4405,7 @@ void set_CPP_controller_test_pattern (CPP_controller& C, int ix_patt) {
     C.ramp.resize(0);
   else {
     C.ramp.resize(3);
-    for (size_t i = 0; i < C.ramp.size(); i++)  {set_CPP_control_ramp1_test_pattern(*C.ramp[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.ramp.size(); i++)  {set_CPP_control_ramp1_test_pattern(C.ramp[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, ALLOC]
@@ -4413,7 +4413,7 @@ void set_CPP_controller_test_pattern (CPP_controller& C, int ix_patt) {
     C.ramper_lord.resize(0);
   else {
     C.ramper_lord.resize(3);
-    for (size_t i = 0; i < C.ramper_lord.size(); i++)  {set_CPP_ramper_lord_test_pattern(*C.ramper_lord[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.ramper_lord.size(); i++)  {set_CPP_ramper_lord_test_pattern(C.ramper_lord[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 1, ALLOC]
@@ -4668,13 +4668,13 @@ void set_CPP_beam_init_test_pattern (CPP_beam_init& C, int ix_patt) {
     {int rhs = 101 + i + 3 + offset; C.spin[i] = rhs;}
   // c_side.test_pat[type, 1, NOT]
   for (size_t i = 0; i < C.ellipse.size(); i++)
-    {int rhs = 101 + i + 4 + offset; set_CPP_ellipse_beam_init_test_pattern(*C.ellipse[i], ix_patt+i+1);}
+    {int rhs = 101 + i + 4 + offset; set_CPP_ellipse_beam_init_test_pattern(C.ellipse[i], ix_patt+i+1);}
   // c_side.test_pat[type, 0, NOT]
   set_CPP_kv_beam_init_test_pattern(C.kv, ix_patt);
 
   // c_side.test_pat[type, 1, NOT]
   for (size_t i = 0; i < C.grid.size(); i++)
-    {int rhs = 101 + i + 6 + offset; set_CPP_grid_beam_init_test_pattern(*C.grid[i], ix_patt+i+1);}
+    {int rhs = 101 + i + 6 + offset; set_CPP_grid_beam_init_test_pattern(C.grid[i], ix_patt+i+1);}
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.center_jitter.size(); i++)
     {int rhs = 101 + i + 7 + offset; C.center_jitter[i] = rhs;}
@@ -5474,7 +5474,7 @@ void set_CPP_track_test_pattern (CPP_track& C, int ix_patt) {
     C.pt.resize(0);
   else {
     C.pt.resize(3);
-    for (size_t i = 0; i < C.pt.size(); i++)  {set_CPP_track_point_test_pattern(*C.pt[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.pt.size(); i++)  {set_CPP_track_point_test_pattern(C.pt[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[real, 0, NOT]
@@ -5912,7 +5912,7 @@ void set_CPP_rad_int_branch_test_pattern (CPP_rad_int_branch& C, int ix_patt) {
     C.ele.resize(0);
   else {
     C.ele.resize(3);
-    for (size_t i = 0; i < C.ele.size(); i++)  {set_CPP_rad_int1_test_pattern(*C.ele[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.ele.size(); i++)  {set_CPP_rad_int1_test_pattern(C.ele[i], ix_patt+i+1);}
   }
 
 
@@ -5968,7 +5968,7 @@ void set_CPP_rad_int_all_ele_test_pattern (CPP_rad_int_all_ele& C, int ix_patt) 
     C.branch.resize(0);
   else {
     C.branch.resize(3);
-    for (size_t i = 0; i < C.branch.size(); i++)  {set_CPP_rad_int_branch_test_pattern(*C.branch[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.branch.size(); i++)  {set_CPP_rad_int_branch_test_pattern(C.branch[i], ix_patt+i+1);}
   }
 
 
@@ -6109,13 +6109,13 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
   }
   // c_side.test_pat[type, 1, NOT]
   for (size_t i = 0; i < C.taylor.size(); i++)
-    {int rhs = 101 + i + 26 + offset; set_CPP_taylor_test_pattern(*C.taylor[i], ix_patt+i+1);}
+    {int rhs = 101 + i + 26 + offset; set_CPP_taylor_test_pattern(C.taylor[i], ix_patt+i+1);}
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.spin_taylor_ref_orb_in.size(); i++)
     {int rhs = 101 + i + 27 + offset; C.spin_taylor_ref_orb_in[i] = rhs;}
   // c_side.test_pat[type, 1, NOT]
   for (size_t i = 0; i < C.spin_taylor.size(); i++)
-    {int rhs = 101 + i + 28 + offset; set_CPP_taylor_test_pattern(*C.spin_taylor[i], ix_patt+i+1);}
+    {int rhs = 101 + i + 28 + offset; set_CPP_taylor_test_pattern(C.spin_taylor[i], ix_patt+i+1);}
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
     C.wake = NULL;
@@ -6128,7 +6128,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.wall3d.resize(0);
   else {
     C.wall3d.resize(3);
-    for (size_t i = 0; i < C.wall3d.size(); i++)  {set_CPP_wall3d_test_pattern(*C.wall3d[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.wall3d.size(); i++)  {set_CPP_wall3d_test_pattern(C.wall3d[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, PTR]
@@ -6136,7 +6136,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.cartesian_map.resize(0);
   else {
     C.cartesian_map.resize(3);
-    for (size_t i = 0; i < C.cartesian_map.size(); i++)  {set_CPP_cartesian_map_test_pattern(*C.cartesian_map[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.cartesian_map.size(); i++)  {set_CPP_cartesian_map_test_pattern(C.cartesian_map[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, PTR]
@@ -6144,7 +6144,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.cylindrical_map.resize(0);
   else {
     C.cylindrical_map.resize(3);
-    for (size_t i = 0; i < C.cylindrical_map.size(); i++)  {set_CPP_cylindrical_map_test_pattern(*C.cylindrical_map[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.cylindrical_map.size(); i++)  {set_CPP_cylindrical_map_test_pattern(C.cylindrical_map[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, PTR]
@@ -6152,7 +6152,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.gen_grad_map.resize(0);
   else {
     C.gen_grad_map.resize(3);
-    for (size_t i = 0; i < C.gen_grad_map.size(); i++)  {set_CPP_gen_grad_map_test_pattern(*C.gen_grad_map[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.gen_grad_map.size(); i++)  {set_CPP_gen_grad_map_test_pattern(C.gen_grad_map[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, PTR]
@@ -6160,7 +6160,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.grid_field.resize(0);
   else {
     C.grid_field.resize(3);
-    for (size_t i = 0; i < C.grid_field.size(); i++)  {set_CPP_grid_field_test_pattern(*C.grid_field[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.grid_field.size(); i++)  {set_CPP_grid_field_test_pattern(C.grid_field[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, NOT]
@@ -6492,7 +6492,7 @@ void set_CPP_complex_taylor_test_pattern (CPP_complex_taylor& C, int ix_patt) {
     C.term.resize(0);
   else {
     C.term.resize(3);
-    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_complex_taylor_term_test_pattern(*C.term[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.term.size(); i++)  {set_CPP_complex_taylor_term_test_pattern(C.term[i], ix_patt+i+1);}
   }
 
 
@@ -6579,7 +6579,7 @@ void set_CPP_branch_test_pattern (CPP_branch& C, int ix_patt) {
     C.ele.resize(0);
   else {
     C.ele.resize(3);
-    for (size_t i = 0; i < C.ele.size(); i++)  {set_CPP_ele_test_pattern(*C.ele[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.ele.size(); i++)  {set_CPP_ele_test_pattern(C.ele[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, NOT]
@@ -6590,7 +6590,7 @@ void set_CPP_branch_test_pattern (CPP_branch& C, int ix_patt) {
     C.wall3d.resize(0);
   else {
     C.wall3d.resize(3);
-    for (size_t i = 0; i < C.wall3d.size(); i++)  {set_CPP_wall3d_test_pattern(*C.wall3d[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.wall3d.size(); i++)  {set_CPP_wall3d_test_pattern(C.wall3d[i], ix_patt+i+1);}
   }
 
 
@@ -6678,7 +6678,7 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.constant.resize(0);
   else {
     C.constant.resize(3);
-    for (size_t i = 0; i < C.constant.size(); i++)  {set_CPP_expression_atom_test_pattern(*C.constant[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.constant.size(); i++)  {set_CPP_expression_atom_test_pattern(C.constant[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, PTR]
@@ -6720,7 +6720,7 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.ele.resize(0);
   else {
     C.ele.resize(3);
-    for (size_t i = 0; i < C.ele.size(); i++)  {set_CPP_ele_test_pattern(*C.ele[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.ele.size(); i++)  {set_CPP_ele_test_pattern(C.ele[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, ALLOC]
@@ -6728,7 +6728,7 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.branch.resize(0);
   else {
     C.branch.resize(3);
-    for (size_t i = 0; i < C.branch.size(); i++)  {set_CPP_branch_test_pattern(*C.branch[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.branch.size(); i++)  {set_CPP_branch_test_pattern(C.branch[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 1, ALLOC]
@@ -6736,7 +6736,7 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.control.resize(0);
   else {
     C.control.resize(3);
-    for (size_t i = 0; i < C.control.size(); i++)  {set_CPP_control_test_pattern(*C.control[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.control.size(); i++)  {set_CPP_control_test_pattern(C.control[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, NOT]
@@ -6852,7 +6852,7 @@ void set_CPP_bunch_test_pattern (CPP_bunch& C, int ix_patt) {
     C.particle.resize(0);
   else {
     C.particle.resize(3);
-    for (size_t i = 0; i < C.particle.size(); i++)  {set_CPP_coord_test_pattern(*C.particle[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.particle.size(); i++)  {set_CPP_coord_test_pattern(C.particle[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[integer, 1, ALLOC]
@@ -7069,7 +7069,7 @@ void set_CPP_beam_test_pattern (CPP_beam& C, int ix_patt) {
     C.bunch.resize(0);
   else {
     C.bunch.resize(3);
-    for (size_t i = 0; i < C.bunch.size(); i++)  {set_CPP_bunch_test_pattern(*C.bunch[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.bunch.size(); i++)  {set_CPP_bunch_test_pattern(C.bunch[i], ix_patt+i+1);}
   }
 
 
@@ -7264,7 +7264,7 @@ void set_CPP_aperture_scan_test_pattern (CPP_aperture_scan& C, int ix_patt) {
     C.point.resize(0);
   else {
     C.point.resize(3);
-    for (size_t i = 0; i < C.point.size(); i++)  {set_CPP_aperture_point_test_pattern(*C.point[i], ix_patt+i+1);}
+    for (size_t i = 0; i < C.point.size(); i++)  {set_CPP_aperture_point_test_pattern(C.point[i], ix_patt+i+1);}
   }
 
   // c_side.test_pat[type, 0, NOT]
