@@ -12,7 +12,7 @@ from create_interface import (
     STRUCT,
     SCRIPTS_PATH,
     Argument,
-    struct_def_class,
+    Structure,
     struct_definitions,
 )
 
@@ -171,13 +171,13 @@ def handle_array(cpp_class_name: str, property_doc: str, arg: Argument):
     return code
 
 
-def generate_pybind11_module(struct_definitions: list[struct_def_class]):
+def generate_pybind11_module(struct_definitions: list[Structure]):
     """
     Generate pybind11 module code from a list of struct definitions.
 
     Parameters:
     -----------
-    struct_definitions : list of struct_def_class
+    struct_definitions : list of Structure
         The C++ struct/class definitions to expose to Python
 
     Returns:

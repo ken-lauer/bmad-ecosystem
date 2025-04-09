@@ -1,4 +1,5 @@
 #ifndef CONVERTER_TEMPLATES
+#define CONVERTER_TEMPLATES
 
 #include "bmad_std_typedef.h"
 #include <complex>
@@ -145,50 +146,78 @@ void tensor_to_vec(const Bmad::FixedArray3D<T, DIM1, DIM2, DIM3> &tensor,
   }
 }
 
-//---------------------------------------------------------------------------
-// Instantiate instances for conversion from array to C++ structure.
+template <typename T, std::size_t DIM1>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::FixedArray1D<T, DIM1> &obj) {
+  for (std::size_t i = 0; i < DIM1; ++i) {
+    os << "[" << i << "]: " << obj[i] << "\n";
+  }
+  return os;
+}
 
-// template void operator<<(&, Bmad::c_Bool *);
-// template void operator<<(Bmad::Bool_MATRIX &, Bmad::c_Bool *);
-//
-// template void operator<<(&, Bmad::c_Real *);
-// template void operator<<(Bmad::Real_MATRIX &, Bmad::c_Real *);
-// template void operator<<(Bmad::Real_TENSOR &, Bmad::c_Real *);
-//
-// template void operator<<(&, Bmad::c_Complex *);
-// template void operator<<(Bmad::Complex_MATRIX &, Bmad::c_Complex *);
-// template void operator<<(Bmad::Complex_TENSOR &, Bmad::c_Complex *);
-//
-// template void operator<<(&, Bmad::c_Int *);
-// template void operator<<(Bmad::Int_MATRIX &, Bmad::c_Int *);
-// template void operator<<(Bmad::Int_TENSOR &, Bmad::c_Int *);
+template <typename T, std::size_t DIM1, std::size_t DIM2>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::FixedArray2D<T, DIM1, DIM2> &obj) {
+  for (std::size_t i = 0; i < DIM1; ++i) {
+    for (std::size_t j = 0; j < DIM2; ++j) {
+      os << "[" << i << "," << j << "]: " << obj[i][j] << "\n";
+    }
+  }
+  return os;
+}
 
-//---------------------------------------------------------------------------
-// Instantiate instances for transfer
+template <typename T, std::size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::FixedArray3D<T, DIM1, DIM2, DIM3> &obj) {
+  for (std::size_t i = 0; i < DIM1; ++i) {
+    for (std::size_t j = 0; j < DIM2; ++j) {
+      for (std::size_t k = 0; k < DIM3; ++k) {
+        os << "[" << i << "," << j << "," << k << "]: " << obj[i][j][k] << "\n";
+      }
+    }
+  }
+  return os;
+}
 
-// template void operator<<(Bmad::Real_ARRAY &, const Bmad::Real_ARRAY &);
-// template void operator<<(Bmad::Real_MATRIX &, const Bmad::Real_MATRIX &);
-// template void operator<<(Bmad::Real_TENSOR &, const Bmad::Real_TENSOR &);
-//
-// template void operator<<(Bmad::Complex_ARRAY &, const Bmad::Complex_ARRAY &);
-// template void operator<<(Bmad::Complex_MATRIX &, const Bmad::Complex_MATRIX
-// &); template void operator<<(Bmad::Complex_TENSOR &, const
-// Bmad::Complex_TENSOR &);
-//
-// template void operator<<(Bmad::Int_ARRAY &, const Bmad::Int_ARRAY &);
-// template void operator<<(Bmad::Int_MATRIX &, const Bmad::Int_MATRIX &);
-// template void operator<<(Bmad::Int_TENSOR &, const Bmad::Int_TENSOR &);
+template <typename T>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::VariableArray1D<T> &obj) {
+  os << "[";
+  for (size_t i = 0; i < obj.size(); ++i) {
+    os << obj[i];
+    if (i < obj.size() - 1) {
+      os << "\n";
+    }
+  }
+  os << "]";
+  return os;
+}
 
-//---------------------------------------------------------------------------
+template <typename T>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::VariableArray2D<T> &obj) {
+  os << "[";
+  for (size_t i = 0; i < obj.size(); ++i) {
+    os << obj[i];
+    if (i < obj.size() - 1) {
+      os << "\n";
+    }
+  }
+  os << "]";
+  return os;
+}
 
-// template void matrix_to_vec(const Bmad::Bool_MATRIX &, Bmad::Bool *);
-// template void matrix_to_vec(const Bmad::Complex_MATRIX &, Bmad::Complex *);
-// template void matrix_to_vec(const Bmad::Real_MATRIX &, Bmad::Real *);
-// template void matrix_to_vec(const Bmad::Int_MATRIX &, Bmad::Int *);
-//
-// template void tensor_to_vec(const Bmad::Complex_TENSOR &, Bmad::Complex *);
-// template void tensor_to_vec(const Bmad::Real_TENSOR &, Bmad::Real *);
-// template void tensor_to_vec(const Bmad::Int_TENSOR &, Bmad::Int *);
-
-#define CONVERTER_TEMPLATES
+template <typename T>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::VariableArray3D<T> &obj) {
+  os << "[";
+  for (size_t i = 0; i < obj.size(); ++i) {
+    os << obj[i];
+    if (i < obj.size() - 1) {
+      os << "\n";
+    }
+  }
+  os << "]";
+  return os;
+}
 #endif

@@ -21,10 +21,11 @@ import copy
 import os
 import pathlib
 import re
+import string
 import sys
 import textwrap
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Literal
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
@@ -38,13 +39,6 @@ DEBUG = False  # Change to True to enable printout
 
 # Constants
 
-NOT = "NOT"
-PTR = "PTR"
-ALLOC = "ALLOC"
-
-T = True
-F = False
-
 REAL = "real"
 CMPLX = "complex"
 INT = "integer"
@@ -53,15 +47,23 @@ LOGIC = "logical"
 CHAR = "character"
 STRUCT = "type"
 SIZE = "size"
+ArgumentType = Literal[
+    "real", "complex", "integer", "integer8", "logical", "character", "type", "size"
+]
 
-NOT, PTR, ALLOC = (
-    "NOT",
-    "PTR",
-    "ALLOC",
-)
+NOT = "NOT"
+PTR = "PTR"
+ALLOC = "ALLOC"
+PointerType = Literal["NOT", "PTR", "ALLOC"]
 
 do_not_share_classes = {
-    "CPP_grid_field_pt1",
+    # "CPP_grid_field_pt",
+    # "CPP_grid_field_pt1",
+    # "CPP_surface_segmented_pt",
+    # "CPP_pixel_pt",
+    # "CPP_surface_displacement_pt",
+    # "CPP_surface_h_misalign_pt",
+    # "CPP_surface_segmented_pt",
 }
 
 ##################################################################################
@@ -164,7 +166,7 @@ class c_side_trans_class:
     # How to compare instances of this type
     equality_test: str = "  is_eq = is_eq && (x.NAME == y.NAME);\n"
     # The pattern to be used in the test suite to fill this instance
-    test_pat: str = "  rhs = XXX + offset; C.NAME = TEST_VALUE;\n"
+    test_pat: str = "  rhs = ARGIDX + offset; C.NAME = TEST_VALUE;\n"
     # The pattern to be used in the test suite to fill this instance
     # "TEST_VALUE" in "test_pat" gets replaced with this.
     test_value: str = ""
@@ -214,7 +216,7 @@ class f_side_trans_class:
     to_f2_var: list[str] = field(default_factory=list)
 
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
-    test_pat: str = "rhs = XXX + offset; F%NAME = TEST_VALUE\n"
+    test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
     size_var: list[str] = field(
         default_factory=list
     )  # For communicating the size of allocatable and pointer variables
@@ -261,9 +263,9 @@ class Argument:
     is_component: bool = True
     f_name: str = ""
     c_name: str = ""
-    type: str = ""
+    type: ArgumentType = "real"
     kind: str = ""
-    pointer_type: str = NOT
+    pointer_type: PointerType = NOT
     array: list[str] = field(default_factory=list)
     full_array: str = ""
     lbound: list[Any] = field(default_factory=list)
@@ -360,7 +362,7 @@ class Argument:
             var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
         ]
 
-    def _handle_lbound(self, struct: struct_def_class) -> None:
+    def _handle_lbound(self, struct: Structure) -> None:
         """Handle the lower bound replacement."""
         id_name = struct.short_name + "%" + self.f_name
         lbound = params.f_side_lbound(id_name)
@@ -495,7 +497,7 @@ class Argument:
             "VALUE", self.c_side.construct_value
         ).replace("CPP_KIND", self.c_side.c_class)
 
-    def fix_struct_arg_placeholders(self, struct: struct_def_class) -> None:
+    def fix_struct_arg_placeholders(self, struct: Structure) -> None:
         """
         Substitute placeholder names in argument patterns with actual values.
 
@@ -504,7 +506,7 @@ class Argument:
 
         Parameters
         ----------
-        struct : struct_def_class
+        struct : Structure
             The structure definition containing the argument
         """
         print_debug("self: " + str(self))
@@ -554,7 +556,7 @@ class Argument:
 
 
 @dataclass
-class struct_def_class:
+class Structure:
     f_name: str = ""  # Struct name on Fortran side
     short_name: str = ""  # Struct name without trailing '_struct'. Note: C++ name is 'CPP_<short_name>'
     cpp_class: str = ""  # C++ name.
@@ -578,9 +580,9 @@ jd1_loop = "do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1\n"
 jd2_loop = "do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1\n"
 jd3_loop = "do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1\n"
 
-rhs1 = "  rhs = 100 + jd1 + XXX + offset\n"
-rhs2 = "  rhs = 100 + jd1 + 10*jd2 + XXX + offset\n"
-rhs3 = "  rhs = 100 + jd1 + 10*jd2 + 100*jd3 + XXX + offset\n"
+rhs1 = "  rhs = 100 + jd1 + ARGIDX + offset\n"
+rhs2 = "  rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset\n"
+rhs3 = "  rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset\n"
 
 set1 = "  F%NAME(jd1+lb1) = TEST_VALUE\n"
 set2 = "  F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE\n"
@@ -794,7 +796,7 @@ if (ix_patt < 3) then
   if (associated(F%NAME)) deallocate (F%NAME)
 else
   if (.not. associated(F%NAME)) allocate (F%NAME)
-  rhs = XXX + offset
+  rhs = ARGIDX + offset
   SET
 endif
 """
@@ -1119,7 +1121,7 @@ def make_special_f_trans(f_side_trans):
     fc.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
     fc.test_pat = (
         "do jd1 = 1, len(F%NAME)\n"
-        '  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+XXX+offset+jd1, 26))\n'
+        '  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))\n'
         "enddo\n"
     )
     fc.to_f2_trans = "call to_f_str(z_NAME, F%NAME)"
@@ -1155,7 +1157,7 @@ if (ix_patt < 3) then
 else
   if (.not. associated(F%NAME)) allocate (F%NAME)
   do jd1 = 1, len(F%NAME)
-    F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+XXX+offset+jd1, 26))
+    F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))
   enddo
 endif
 """
@@ -1171,7 +1173,7 @@ endif
     fc.test_pat = """\
 do jd1 = lbound(F%NAME, 1), ubound(F%NAME, 1)
   do jd = 1, len(F%NAME(jd1))
-    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+XXX+offset+10*jd+jd1, 26))
+    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
   enddo
 enddo
 """
@@ -1212,7 +1214,7 @@ else
   if (.not. associated(F%NAME)) allocate (F%NAME(3))
   do jd1 = 1, 3
   do jd = 1, len(F%NAME)
-    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+XXX+offset+10*jd+jd1, 26))
+    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
   enddo; enddo
 endif
 """
@@ -1277,11 +1279,13 @@ for1 = "  for (size_t i = 0; i < C.NAME.size(); i++)"
 for2 = "  for (size_t j = 0; j < C.NAME[0].size(); j++) "
 for3 = "  for (size_t k = 0; k < C.NAME[0][0].size(); k++)"
 
-test_pat1 = for1 + "\n    {int rhs = 101 + i + XXX + offset; C.NAME[i] = TEST_VALUE;}"
+test_pat1 = (
+    for1 + "\n    {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = TEST_VALUE;}"
+)
 test_pat2 = (
     for1
     + for2
-    + "\n    {int rhs = 101 + i + 10*(j+1) + XXX + offset; C.NAME[i][j] = TEST_VALUE;}"
+    + "\n    {int rhs = 101 + i + 10*(j+1) + ARGIDX + offset; C.NAME[i][j] = TEST_VALUE;}"
 )
 test_pat3 = (
     for1
@@ -1289,7 +1293,7 @@ test_pat3 = (
     + for3
     + "\n"
     + x4
-    + "{int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = TEST_VALUE;}"
+    + "{int rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset; C.NAME[i][j][k] = TEST_VALUE;}"
 )
 
 
@@ -1375,7 +1379,7 @@ def configure_c_dim0_non_ptr(c, c_type, c_arg, type):
 def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 1"""
     c.c_class = f"FixedArray1D<{c_type}, DIM1>"
-    c.c_instantiation_suffix = "= {VALUE}"
+    c.c_instantiation_suffix = "{VALUE}"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "&C.NAME[0]"
     c.to_c2_arg = c_arg + "Arr z_NAME"
@@ -1696,7 +1700,7 @@ def configure_c_dim3_ptr(
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
         for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-          auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset;
+          auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset;
           C.NAME[i][j][k] = TEST_VALUE;
         }
       }
@@ -1878,7 +1882,7 @@ def setup_char_pointer(c_side_trans):
   else {
     C.NAME = make_shared<string>(STR_LEN, ' ');
     for (size_t i = 0; i < C.NAME->size(); i++) {
-      (*C.NAME)[i] = 'a' + (101 + i + XXX + offset) % 26; }
+      (*C.NAME)[i] = 'a' + (101 + i + ARGIDX + offset) % 26; }
   }
 """
 
@@ -1899,7 +1903,7 @@ def setup_char_array(c_side_trans):
         + """ {
     C.NAME[i].resize(STR_LEN);
     for (size_t j = 0; j < C.NAME[i].size(); j++) 
-      {C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + XXX + offset) % 26;}
+      {C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + ARGIDX + offset) % 26;}
   }
 """
     )
@@ -1940,7 +1944,7 @@ def setup_char_array_pointer(c_side_trans):
         + for2
         + "{\n"
         + x8
-        + "C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + XXX + offset) % 26;\n"
+        + "C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + ARGIDX + offset) % 26;\n"
         + x4
         + "} }\n"
         + x2
@@ -2337,7 +2341,7 @@ def parse_init_value(arg: Argument, split_line: list) -> tuple:
     return arg, split_line
 
 
-def remove_untranslated(struct: struct_def_class) -> None:
+def remove_untranslated(struct: Structure) -> None:
     # Throw out any sub-structures that are not to be translated
     struct.arg = [
         arg
@@ -2377,7 +2381,7 @@ def remove_untranslated(struct: struct_def_class) -> None:
             arg.c_side = copy.deepcopy(c_side_trans[translation_key])
 
 
-def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> None:
+def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
     ia = 0
     while ia < len(struct.arg):
         arg = struct.arg[ia]
@@ -2912,7 +2916,7 @@ offset = 100 * ix_patt
                 f"!! f_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
             )
 
-            f_test.write(arg.f_side.test_pat.replace("XXX", str(i)))
+            f_test.write(arg.f_side.test_pat.replace("ARGIDX", str(i)))
 
         f_test.write(
             f"""
@@ -2925,166 +2929,181 @@ end module
 """)
 
 
-def write_cpp_classes(file):
-    """Write C++ classes definitions for Bmad / C++ structure interface."""
-    file.write("""
-//+
-// C++ classes definitions for Bmad / C++ structure interface.
-//
-// This file is generated as part of the Bmad/C++ interface code generation.
-// The code generation files can be found in cpp_bmad_interface.
-//
-// DO NOT EDIT THIS FILE DIRECTLY! 
-//-
+def get_class_repr(struct: Structure) -> str:
+    lines = []
 
-#ifndef CPP_BMAD_CLASSES
+    for arg in struct.arg:
+        if not arg.is_component:
+            continue
 
-#include <iostream>
-#include <memory>
-
-""")
-
-    # Include additional header files
-    for line in params.include_header_files:
-        file.write(f"{line}\n")
-
-    file.write("""
-using namespace Bmad;
-using std::shared_ptr, std::make_shared;
-
-""")
-
-    # Write class definitions for each struct
-    for struct in struct_definitions:
-        is_shared = struct.cpp_class not in do_not_share_classes
-
-        if is_shared:
-            maybe_shared = f": public std::enable_shared_from_this<{struct.cpp_class}> "
+        if arg.pointer_type == "PTR" and not arg.array:
+            lines.append(
+                f'oss << "{arg.c_name}="; if ({arg.c_name} == nullptr) {{ oss << "nullptr"; }} else {{ oss << {arg.c_name}; }}; oss << ", ";'
+            )
         else:
-            maybe_shared = ""
+            lines.append(f'oss << "{arg.c_name}=" << {arg.c_name} << ", ";')
 
-        file.write(f"""
-//--------------------------------------------------------------------
-// {struct.cpp_class}
+    if lines:
+        lines[-1] = lines[-1].replace('oss << ", ";', "")
+        lines[-1] = lines[-1].replace(' << ", "', "")
 
-class Opaque_{struct.short_name}_class {{}};  // Opaque class for pointers to corresponding fortran structs.
+    return string.Template("""
+  friend ostream& operator<<(ostream& os, const ${cpp_class}& obj) {
+    os << obj.repr();
+    return os;
+  }
 
-class {struct.cpp_class}{maybe_shared} {{
-public:
-""")
+  std::string repr() const {
+    std::ostringstream oss;
+    oss << "${cpp_class}{";
+    ${lines}
+    oss << "}";
+    return oss.str();
+  }
+    """).substitute(
+        cpp_class=struct.cpp_class,
+        lines=indent("\n".join(lines), 4).lstrip(),
+    )
 
-        # Write class member variables
+
+def get_class_lines(struct: Structure) -> list[str]:
+    is_shared = struct.cpp_class not in do_not_share_classes
+    maybe_shared = (
+        f": public std::enable_shared_from_this<{struct.cpp_class}> "
+        if is_shared
+        else ""
+    )
+
+    # Build class member variables
+    member_vars = []
+    for arg in struct.arg:
+        if not arg.is_component:
+            continue
+        init = (
+            f" = {arg.c_side.class_initializer}" if arg.c_side.class_initializer else ""
+        )
+        member_vars.append(f"  {arg.c_side.c_class} {arg.c_name}{init};")
+
+    # Build constructor body
+    constructor_body = ""
+    if DEBUG:
+        debug_constructed = (
+            f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
+        )
+        constructor_body = debug_constructed
+
+    # Build destructor content
+    destructor_content = ""
+    if is_shared:
+        destructor_lines = []
         for arg in struct.arg:
-            if not arg.is_component:
+            if arg.c_side.destructor == "":
                 continue
-            if arg.c_side.class_initializer:
-                init = f" = {arg.c_side.class_initializer}"
-            else:
-                init = ""
-            file.write(f"  {arg.c_side.c_class} {arg.c_name}{init};\n")
-            # assert "DIM1" not in line
+            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
+                continue
+            destructor_lines.append(f"    {arg.c_side.destructor}")
+        destructor_content = "\n".join(destructor_lines)
 
-        # Extra methods
-        file.write(struct.c_extra_methods)
-
-        # class_initializer declaration
-        file.write(f"""
-  {struct.cpp_class}({struct.c_constructor_arg_list})""")
-
-        # # class_initializer initialization list
-        # construct_list = []
-        # for arg in struct.arg:
-        #     if not arg.is_component:
-        #         continue
-        #     # if DEBUG:
-        #     #   construct_list.append(f"    // {arg.c_side!r}")
-        #     if arg.c_side.class_initializer:
-        #         construct_list.append(arg.c_side.class_initializer)
-        #
-        # if any(not con.strip().startswith("//") for con in construct_list):
-        #     file.write(":\n")
-        # file.write(f"    {',\n    '.join(construct_list)}\n")
-        # constructor_body = struct.c_constructor_body.replace("NAME", struct.cpp_class)
-        constructor_body = ""
-
-        if DEBUG:
-            debug_constructed = (
-                f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
-            )
-
-            if constructor_body:
-                constructor_body = "\n".join((debug_constructed, constructor_body))
-            else:
-                constructor_body = debug_constructed
-
-        file.write(f"    {{{constructor_body}}}\n")
-
-        # TODO: copy class_initializer, move class_initializer, ... = default?
-        #
-        # Destructor
-        # file.write("\n")
-        # file.write(f"  {struct.cpp_class}({struct.cpp_class}&&) = default;\n")
-        # file.write(f"  {struct.cpp_class}({struct.cpp_class}&) = default;\n")
-
-        file.write("\n")
-
-        if is_shared:
-            file.write(f"  virtual ~{struct.cpp_class}() {{\n")
-
-            # # if DEBUG:
-            #     file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
-
-            for arg in struct.arg:
-                if arg.c_side.destructor == "":
-                    continue
-                if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
-                    continue
-                file.write(f"    {arg.c_side.destructor}\n")
-
-            file.write("  }\n")
-            file.write(
-                f"  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}\n"
-            )
-
-        # End class and write extern C functions and operators
-        file.write(f"""
-}};   // End Class
-
-extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, {struct.cpp_class}&);
-extern "C" void {struct.short_name}_to_f (const {struct.cpp_class}&, Opaque_{struct.short_name}_class*);
-
-bool operator== (const {struct.cpp_class}&, const {struct.cpp_class}&);
-
-""")
-
-    # Write end of file
-    file.write("""
-//--------------------------------------------------------------------
-
-#define CPP_BMAD_CLASSES
-#endif
-""")
+    repr_lines = get_class_repr(struct).splitlines()
+    template = string.Template(
+        textwrap.dedent("""\
+        //--------------------------------------------------------------------
+        // ${cpp_class}
+        
+        class Opaque_${short_name}_class {};  // Opaque class for pointers to corresponding fortran structs.
+        
+        class ${cpp_class}${maybe_shared} {
+        public:
+        ${member_vars}
+        ${c_extra_methods}
+          ${cpp_class}(${c_constructor_arg_list}) {
+          ${constructor_body}
+          }
+        ${destructor}${repr_methods}
+        };
+        
+        // std::ostream& operator<<(std::ostream& os, const ${cpp_class}& obj) {
+        //   return os << obj.repr();  // Reuse the repr method
+        // }
+        extern "C" void ${short_name}_to_c (const Opaque_${short_name}_class*, ${cpp_class}&);
+        extern "C" void ${short_name}_to_f (const ${cpp_class}&, Opaque_${short_name}_class*);
+        
+        bool operator== (const ${cpp_class}&, const ${cpp_class}&);
+        """)
+    )
+    return template.substitute(
+        cpp_class=struct.cpp_class,
+        short_name=struct.short_name,
+        maybe_shared=maybe_shared,
+        member_vars="\n".join(member_vars),
+        c_extra_methods=struct.c_extra_methods,
+        c_constructor_arg_list=struct.c_constructor_arg_list,
+        constructor_body=constructor_body,
+        destructor=f"""
+  virtual ~{struct.cpp_class}() {{ {destructor_content} }}
+  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}
+"""
+        if is_shared
+        else "",
+        repr_methods="\n".join(repr_lines),
+    ).splitlines()
 
 
-def write_cpp_convert(file):
+def write_cpp_classes(file) -> None:
     """Write C++ classes definitions for Bmad / C++ structure interface."""
-    file.write("""
-//+
-// C++ side of the Bmad / C++ structure interface.
-//
-// This file is generated as part of the Bmad/C++ interface code generation.
-// The code generation files can be found in cpp_bmad_interface.
-//
-// DO NOT EDIT THIS FILE DIRECTLY! 
-//-
+    header_template = string.Template(
+        textwrap.dedent(
+            """\
+            //+
+            // C++ classes definitions for Bmad / C++ structure interface.
+            //
+            // This file is generated as part of the Bmad/C++ interface code generation.
+            // The code generation files can be found in cpp_bmad_interface.
+            //
+            // DO NOT EDIT THIS FILE DIRECTLY! 
+            //-
+            
+            #ifndef CPP_BMAD_CLASSES
+            
+            #include <iostream>
+            #include <memory>
+            
+            #include "converter_templates.h"
+            ${include_headers}
+            
+            using namespace Bmad;
+            using std::shared_ptr, std::make_shared;
+            using std::ostream;
+            
+            ${class_definitions}
+            
+            //--------------------------------------------------------------------
+            
+            #define CPP_BMAD_CLASSES
+            #endif
+            """
+        )
+    )
 
-#include <iostream>
-#include "converter_templates.h"
-#include "cpp_bmad_classes.h"
+    # Build the include headers string
+    include_headers = "\n".join(params.include_header_files)
 
-using namespace Bmad;
+    # Build the class definitions string
+    class_definitions = "\n".join(
+        "\n".join(get_class_lines(struct)) for struct in struct_definitions
+    )
 
-""")
+    # Write the file content at once
+    file.write(
+        header_template.substitute(
+            include_headers=include_headers, class_definitions=class_definitions
+        )
+    )
+
+
+def write_cpp_convert(header: str, file):
+    """Write C++ classes definitions for Bmad / C++ structure interface."""
+    file.write(header)
 
     for struct in struct_definitions:
         # ZZZ_to_f2
@@ -3248,7 +3267,7 @@ void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
             file.write(
                 f"  // c_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            file.write(arg.c_side.test_pat.replace("XXX", str(i)) + "\n")
+            file.write(arg.c_side.test_pat.replace("ARGIDX", str(i)) + "\n")
 
         file.write(f"""
 }}
@@ -3269,6 +3288,8 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [1] {struct.short_name}: C side convert F->C: Good" << endl;
   }} else {{
     cout << " [1] {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] C  = " << C << endl;
+    cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }}
 
@@ -3282,6 +3303,8 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [3] {struct.short_name}: F side convert F->C: Good" << endl;
   }} else {{
     cout << " [3] {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] C  = " << C << endl;
+    cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }}
 
@@ -3316,9 +3339,9 @@ c_side_trans = initialize_c_side_trans()
 c_side_trans_custom_overrides = {}
 f_side_trans_custom_overrides = {}
 
-struct_definitions: list[struct_def_class] = []
+struct_definitions: list[Structure] = []
 for name in params.struct_list:
-    struct_definitions.append(struct_def_class(name))
+    struct_definitions.append(Structure(name))
 
 parse_structure_definitions(struct_definitions, params)
 
@@ -3362,8 +3385,10 @@ with open(os.path.join(params.test_dir, "bmad_cpp_test_mod.f90"), "w") as file:
     write_tests_mod(file)
 with open(os.path.join("include", "cpp_bmad_classes.h"), "w") as file:
     write_cpp_classes(file)
+with open(SCRIPTS_PATH / "convert_template.cpp", "r") as file:
+    convert_header = file.read()
 with open(os.path.join(params.code_dir, "cpp_bmad_convert.cpp"), "w") as file:
-    write_cpp_convert(file)
+    write_cpp_convert(convert_header, file)
 with open(SCRIPTS_PATH / "equality_template.cpp", "r") as file:
     equality_header = file.read()
 with open(os.path.join(params.code_dir, "cpp_equality.cpp"), "w") as file:

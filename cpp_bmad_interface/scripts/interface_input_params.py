@@ -276,7 +276,7 @@ def customize(struct_definitions):
                 arg.c_side.test_pat = """\
   C.NAME[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++)
-    {int rhs = 100 + i + XXX + offset; C.NAME[i] = rhs;}
+    {int rhs = 100 + i + ARGIDX + offset; C.NAME[i] = rhs;}
 """.replace("NAME", arg.f_name)
 
                 arg.f_side.to_f2_trans = "F%NAME = z_NAME(2:num_ele_attrib$+1)".replace(
