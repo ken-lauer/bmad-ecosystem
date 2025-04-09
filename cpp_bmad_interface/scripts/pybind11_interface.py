@@ -11,7 +11,7 @@ from create_interface import (
     SIZE,
     STRUCT,
     SCRIPTS_PATH,
-    arg_class,
+    Argument,
     struct_def_class,
     struct_definitions,
 )
@@ -92,7 +92,7 @@ def get_struct_array_setter_code(arg):
     return "// Unsupported dimensions for struct arrays"
 
 
-def handle_array(cpp_class_name: str, property_doc: str, arg: arg_class):
+def handle_array(cpp_class_name: str, property_doc: str, arg: Argument):
     cpp_type = get_cpp_array_type(arg)
 
     code = []
@@ -300,7 +300,7 @@ def generate_pybind11_module(struct_definitions: list[struct_def_class]):
 
 def get_cpp_array_type(arg):
     """
-    Determine the C++ array type based on arg_class information.
+    Determine the C++ array type based on Argument information.
     Prefers using c_side if available.
     """
     # If c_side is available and set, use it directly
@@ -363,7 +363,7 @@ def get_cpp_type_for_property(arg):
 
     Parameters:
     -----------
-    arg : arg_class
+    arg : Argument
         The argument to convert
 
     Returns:

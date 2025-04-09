@@ -124,7 +124,7 @@ def indent(string: str, numspace: int) -> str:
 @dataclass
 class c_side_trans_class:
     c_class: str = ""  # EG: 'CPP_ele_Array'
-    c_class_suffix: str = ""  # EG: '*'
+    c_instantiation_suffix: str = ""  # EG: '[]'
 
     # C++ --> Fortran
     # |   C++     |    Fortran |
@@ -154,9 +154,9 @@ class c_side_trans_class:
     # C2 function: how to set the value on the new instance
     to_c2_set: str = "  C.NAME = z_NAME;"
 
-    # C++ class constructor initializer list item
-    constructor: str = "NAME(VALUE)"
-    # C++ class constructor initializer value ("VALUE" gets replaced with this)
+    # C++ class class_initializer initializer list item
+    class_initializer: str = "{ VALUE }"
+    # C++ class class_initializer initializer value ("VALUE" gets replaced with this)
     construct_value: str = "0"
     # C++ class destructor code
     destructor: str = ""
@@ -222,7 +222,7 @@ class f_side_trans_class:
 
 
 @dataclass
-class arg_class:
+class Argument:
     """
     Represents an argument or component in the Fortran to C++ interface.
 
@@ -287,6 +287,18 @@ class arg_class:
         return f_dim1, c_dim1
 
     @property
+    def c_dims(self):
+        if not self.array:
+            return ()
+        if len(self.array) == 1:
+            return (self.c_dim1,)
+        if len(self.array) == 2:
+            return (self.c_dim1, self.dim2)
+        if len(self.array) == 3:
+            return (self.c_dim1, self.dim2, self.dim3)
+        raise NotImplementedError(len(self.array))
+
+    @property
     def c_dim1(self) -> str:
         _, c_dim1 = self.get_dim1()
         return c_dim1
@@ -336,8 +348,196 @@ class arg_class:
             "NAME", self.c_name
         )
         self.c_side.test_pat = self.c_side.test_pat.replace("NAME", self.c_name)
-        self.c_side.constructor = self.c_side.constructor.replace("NAME", self.c_name)
+        self.c_side.class_initializer = self.c_side.class_initializer.replace(
+            "NAME", self.c_name
+        )
         self.c_side.destructor = self.c_side.destructor.replace("NAME", self.c_name)
+
+    def _replace_string_length_placeholders(self) -> None:
+        """Replace STR_LEN placeholders with the argument's kind."""
+        self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
+        self.f_side.to_c_var = [
+            var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
+        ]
+
+    def _handle_lbound(self, struct: struct_def_class) -> None:
+        """Handle the lower bound replacement."""
+        id_name = struct.short_name + "%" + self.f_name
+        lbound = params.f_side_lbound(id_name)
+        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("LBOUND", lbound)
+
+    def _handle_type_argument(self) -> None:
+        """Process 'type' arguments by replacing KIND placeholders."""
+        kind = self.kind[:-7]
+        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("KIND", kind)
+        self.f_side.to_f2_var = [
+            var.replace("KIND", kind) for var in self.f_side.to_f2_var
+        ]
+        self.f_side.test_pat = self.f_side.test_pat.replace("KIND", kind)
+        self.c_side.test_pat = self.c_side.test_pat.replace("KIND", kind)
+        self.c_side.c_class = self.c_side.c_class.replace("KIND", kind)
+        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("KIND", kind)
+        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("KIND", kind)
+        self.c_side.to_f2_arg = self.c_side.to_f2_arg.replace("KIND", kind)
+        self.c_side.to_c2_arg = self.c_side.to_c2_arg.replace("KIND", kind)
+        self.c_side.class_initializer = self.c_side.class_initializer.replace(
+            "KIND", kind
+        )
+
+    def _handle_first_dimension(self) -> None:
+        """Handle the first dimension of an array argument."""
+        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM1", self.c_dim1)
+        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM1", self.f_dim1)
+        self.f_side.test_pat = self.f_side.test_pat.replace("DIM1", self.f_dim1)
+        self.f_side.to_c_var = [
+            var.replace("DIM1", self.f_dim1) for var in self.f_side.to_c_var
+        ]
+        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM1", self.f_dim1)
+        self.f_side.to_c2_call = self.f_side.to_c2_call.replace("DIM1", self.f_dim1)
+        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM1", self.c_dim1)
+        self.c_side.class_initializer = self.c_side.class_initializer.replace(
+            "DIM1", self.c_dim1
+        )
+        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
+            "DIM1", self.c_dim1
+        )
+        self.c_side.c_class = self.c_side.c_class.replace("DIM1", self.c_dim1)
+
+    def _handle_second_dimension(self) -> None:
+        """Handle the second dimension of an array argument."""
+        dim2 = str(self.dim2)
+        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM2", dim2)
+        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM2", dim2)
+        self.f_side.test_pat = self.f_side.test_pat.replace("DIM2", dim2)
+        self.f_side.to_c_var = [
+            var.replace("DIM2", dim2) for var in self.f_side.to_c_var
+        ]
+        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM2", dim2)
+        self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
+            "DIM2", self.f_dim1 + "*" + dim2
+        )
+        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM2", dim2)
+        self.c_side.class_initializer = self.c_side.class_initializer.replace(
+            "DIM2", dim2
+        )
+        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
+            "DIM2", dim2
+        )
+        self.c_side.c_class = self.c_side.c_class.replace("DIM2", str(self.dim2))
+
+    def _handle_third_dimension(self) -> None:
+        """Handle the third dimension of an array argument."""
+        dim3 = str(self.dim3)
+        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM3", dim3)
+        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM3", dim3)
+        self.f_side.test_pat = self.f_side.test_pat.replace("DIM3", dim3)
+        self.f_side.to_c_var = [
+            var.replace("DIM3", dim3) for var in self.f_side.to_c_var
+        ]
+        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM3", dim3)
+        self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
+            "DIM3", f"{self.f_dim1}*{self.dim2}*{dim3}"
+        )
+        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM3", dim3)
+        self.c_side.class_initializer = self.c_side.class_initializer.replace(
+            "DIM3", dim3
+        )
+        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
+            "DIM3", dim3
+        )
+        self.c_side.c_class = self.c_side.c_class.replace("DIM3", str(self.dim3))
+
+    def _handle_init_values(self) -> None:
+        """
+        Process initialization values for the argument.
+
+        Handles Fortran to C++ initialization value conversion.
+        """
+        # On Fortran side "complex abc(2) = 0" is allowed but on C++ side want "0.0" for init value.
+        # Therefore, ignore "0" as an init value.
+
+        if self.init_value == "":
+            pass
+        elif self.init_value == "0":
+            pass
+        elif self.init_value[0] == ">":  # Pointer: '=> null()'
+            pass
+        elif "_rp" in self.init_value:
+            self.init_value = self.init_value.replace("_rp", "")
+        elif self.init_value == ".true.":
+            self.c_side.construct_value = "true"
+        elif self.init_value == ".false.":
+            self.c_side.construct_value = "false"
+        elif self.init_value.startswith("'"):
+            self.c_side.construct_value = self.init_value.replace("'", '"')
+        elif self.init_value == "pi":
+            self.c_side.construct_value = "Bmad::pi"
+        elif "$" in self.init_value:
+            self.c_side.construct_value = "Bmad::" + self.init_value[:-1].upper()
+        elif ("d" in self.init_value or "D" in self.init_value) and is_number(
+            self.init_value
+        ):
+            self.c_side.construct_value = self.init_value.replace("d", "e").replace(
+                "D", "e"
+            )
+        else:
+            self.c_side.construct_value = self.init_value
+
+        # If there is an array of values, just use first one.
+        if (
+            len(self.c_side.construct_value) > 0
+            and self.c_side.construct_value[0] == "["
+        ):
+            self.c_side.construct_value = self.c_side.construct_value[1:].split(",")[0]
+
+        # Replace class_initializer value and CPP_KIND placeholders
+        self.c_side.class_initializer = self.c_side.class_initializer.replace(
+            "VALUE", self.c_side.construct_value
+        ).replace("CPP_KIND", self.c_side.c_class)
+
+    def fix_struct_arg_placeholders(self, struct: struct_def_class) -> None:
+        """
+        Substitute placeholder names in argument patterns with actual values.
+
+        This function processes an argument object, replacing placeholders like "NAME", "DIM1", etc.,
+        with the actual values relevant to the structure and argument.
+
+        Parameters
+        ----------
+        struct : struct_def_class
+            The structure definition containing the argument
+        """
+        print_debug("self: " + str(self))
+        p_type = self.pointer_type
+
+        # Replace string length placeholders
+        self._replace_string_length_placeholders()
+
+        # Handle array bounds
+        self._handle_lbound(struct)
+
+        # Handle 'type' arguments
+        if self.type == "type":
+            self._handle_type_argument()
+
+        # Handle array dimensions
+        if p_type == NOT:
+            # not a pointer/dynamically allocated type;
+            # replace DIM1, DIM2, DIM3 here
+            if len(self.array) >= 1:
+                self._handle_first_dimension()
+
+            if len(self.array) >= 2:
+                self._handle_second_dimension()
+
+            if len(self.array) >= 3:
+                self._handle_third_dimension()
+
+        # Replace name placeholders
+        self.replace_name_placeholders()
+
+        # Handle initialization values
+        self._handle_init_values()
 
     def original_repr(self) -> str:
         return '["{}({})", "{}", "{}", {}, "{}" {} {} "{}"]'.format(
@@ -358,11 +558,11 @@ class struct_def_class:
     f_name: str = ""  # Struct name on Fortran side
     short_name: str = ""  # Struct name without trailing '_struct'. Note: C++ name is 'CPP_<short_name>'
     cpp_class: str = ""  # C++ name.
-    arg: list[arg_class] = field(
+    arg: list[Argument] = field(
         default_factory=list
-    )  # Array of arg_class. List of structrure components + array bound dimensions.
+    )  # List of structrure components + array bound dimensions.
     c_constructor_arg_list: str = ""
-    c_constructor_body: str = ""  # Body of the C++ constructor
+    c_constructor_body: str = ""  # Body of the C++ class_initializer
     c_extra_methods: str = ""  # Additional custom methods
 
     def __str__(self) -> str:
@@ -1167,24 +1367,22 @@ def configure_c_dim0_non_ptr(c, c_type, c_arg, type):
     c.to_c2_arg = c_arg + "& z_NAME"
 
     if type == STRUCT:
-        # c.constructor = "NAME()"
-        c.constructor = ""
+        c.class_initializer = ""
         c.to_c2_set = "  KIND_to_c(z_NAME, C.NAME);"
         c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
 
 
 def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 1"""
-    c.c_class = f"Array<{c_type}>"
+    c.c_class = f"FixedArray1D<{c_type}, DIM1>"
+    c.c_instantiation_suffix = "= {VALUE}"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "&C.NAME[0]"
     c.to_c2_arg = c_arg + "Arr z_NAME"
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
-        c.c_class = f"Array<{c_type}>"
-        # c.constructor = f"NAME(BmadArray<{c_type}>(DIM1))"
-        c.constructor = ""
+        c.class_initializer = ""
         c.to_c2_set = "\n".join(
             (
                 "for (size_t i = 0; i < C.NAME.size(); i++)",
@@ -1200,21 +1398,17 @@ def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
   for (int i = 0; i < DIM1; i++) {z_NAME[i] = &C.NAME[i];}
 """
     else:
-        c.constructor = "NAME(DIM1, VALUE)"
         c.to_c2_set = "  C.NAME << z_NAME;"
         c.test_pat = test_pat1
 
 
 def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 2"""
-    c.c_class = f"Matrix<{c_type}>"
+    c.c_class = f"FixedArray2D<{c_type}, DIM1, DIM2>"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
-    # c.constructor = (
-    #     f"NAME(BmadMatrix<{c_type}>(DIM1, BmadArray<{c_type}>(DIM2, VALUE)))"
-    # )
-    c.constructor = ""
+    c.class_initializer = ""
     c.to_c2_set = "  C.NAME << z_NAME;"
     c.test_pat = test_pat2
     c.to_f_setup = (
@@ -1223,10 +1417,7 @@ def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
     if type == STRUCT:
-        c.c_class = f"SharedMatrix<{c_type}>"
-        c.constructor = (
-            "NAME(SharedMatrix<CPP_KIND>(DIM1, SharedArray<CPP_KIND>(DIM2)))"
-        )
+        c.c_class = f"SharedVector2D<{c_type}>"
         c.to_c2_set = (
             for1
             + for2
@@ -1246,13 +1437,11 @@ def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
 
 def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
     """Configure for dimension 3"""
-    c.c_class = f"Tensor<{c_type}>"
+    c.c_class = f"FixedArray3D<{c_type}, DIM1, DIM2, DIM3>"
     c.to_f2_arg = c_arg + "Arr"
     c.to_f2_call = "z_NAME"
     c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.constructor = (
-        f"NAME({c_type}_TENSOR(DIM1, {c_type}_MATRIX(DIM2, {c_type}_ARRAY(DIM3))))"
-    )
+    c.class_initializer = ""
     c.to_c2_set = "  C.NAME << z_NAME;"
     c.test_pat = test_pat3
     c.to_f_setup = (
@@ -1260,13 +1449,8 @@ def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
     )
     c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
 
-    print(c_type)
-    if c_type in do_not_share_classes:
-        raise
-
     if type == STRUCT:
-        c.c_class = f"SharedTensor<{c_type}>"
-        c.constructor = "NAME(SharedTensor<CPP_KIND>(DIM1, SharedMatrix<CPP_KIND>(DIM2, SharedArray<CPP_KIND>(DIM3))))"
+        c.c_class = f"SharedVector3D<{c_type}>"
         c.to_c2_set = (
             for1
             + for2
@@ -1306,26 +1490,25 @@ def configure_c_pointer(
 
     # Dimension-specific pointer configuration
     if dim == 0:
-        configure_pointer_dim0(cp, c, c_type, type)
+        configure_c_dim0_ptr(cp, c, c_type, type)
     elif dim == 1:
-        configure_pointer_dim1(cp, c, c_type, type)
+        configure_c_dim1_ptr(cp, c, c_type, type)
     elif dim == 2:
-        configure_pointer_dim2(cp, c, c_type, type)
+        configure_c_dim2_ptr(cp, c, c_type, type)
     elif dim == 3:
-        configure_pointer_dim3(cp, c, c_type, type)
+        configure_c_dim3_ptr(cp, c, c_type, type)
     else:
         raise NotImplementedError(dim)
 
     cp.test_pat = cp.test_pat.replace("TEST_VALUE", c.test_value)
 
 
-def configure_pointer_dim0(
+def configure_c_dim0_ptr(
     cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
 ):
     """Configure pointer for dimension 0"""
     cp.c_class = f"shared_ptr<{cp.c_class}>"
-    # cp.c_class_suffix = ""
-    cp.constructor = "NAME(NULL)"
+    cp.class_initializer = "nullptr"
     cp.destructor = ""
     cp.test_pat = "\n".join(
         (
@@ -1360,11 +1543,13 @@ def configure_pointer_dim0(
         cp.to_c2_set = cp.to_c2_set.replace("SET", "*C.NAME = *z_NAME;")
 
 
-def configure_pointer_dim1(
+def configure_c_dim1_ptr(
     cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
 ):
     """Configure pointer for dimension 1"""
-    cp.constructor = cp.constructor.replace("DIM1", "0")
+    cp.c_class = f"VariableArray1D<{c_type}>"
+    cp.class_initializer = cp.class_initializer.replace("DIM1", "0")
+    cp.c_instantiation_suffix = ""
     cp.to_f2_call = "z_NAME"
     cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
@@ -1380,8 +1565,7 @@ def configure_pointer_dim1(
 """.replace("TYPE", c_type)
 
     if type == STRUCT:
-        # cp.constructor = "NAME(SharedArray<CPP_KIND>())"
-        cp.constructor = ""
+        cp.class_initializer = ""
         cp.test_pat = (
             test_pat_pointer1
             + x2
@@ -1404,11 +1588,15 @@ def configure_pointer_dim1(
         cp.to_f_cleanup = " if (z_NAME) delete[] z_NAME;\n"
 
 
-def configure_pointer_dim2(
+def configure_c_dim2_ptr(
     cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
 ):
     """Configure pointer for dimension 2"""
-    cp.constructor = cp.constructor.replace("DIM1", "0").replace("DIM2", "0")
+    cp.c_class = f"VariableArray2D<{c_type}>"
+    cp.class_initializer = cp.class_initializer.replace("DIM1", "0").replace(
+        "DIM2", "0"
+    )
+    cp.c_instantiation_suffix = ""
     cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
@@ -1432,14 +1620,16 @@ def configure_pointer_dim2(
     cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
 
     if type == STRUCT:
-        cp.constructor = "NAME(SharedMatrix<CPP_KIND>(0, SharedArray<CPP_KIND>(0)))"
         cp.test_pat = (
             test_pat_pointer1
             + """\
     for (size_t i = 0; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);\n
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
-        set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt+i+2*j+3);
+        // auto item = make_shared<CPP_KIND>();
+        // C.NAME[i][j] = item;
+        auto item = C.NAME[i][j];
+        set_CPP_KIND_test_pattern(item, ix_patt+i+2*j+3);
       }
     }
   }
@@ -1449,7 +1639,12 @@ def configure_pointer_dim2(
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (int j = 0; j < n2_NAME; j++) KIND_to_c(z_NAME[n2_NAME*i+j], *C.NAME[i][j].get());
+    for (int j = 0; j < n2_NAME; j++) {
+        // auto item = make_shared<CPP_KIND>();
+        // C.NAME[i][j] = item;
+        auto item = C.NAME[i][j];
+        KIND_to_c(z_NAME[n2_NAME*i+j], item);
+    }
   }
 """
         cp.to_f_setup = """
@@ -1459,17 +1654,24 @@ def configure_pointer_dim2(
     n2_NAME = C.NAME[0].size();
     z_NAME = new const TYPE* [n1_NAME*n2_NAME];
     for (int i = 0; i < n1_NAME; i++) {
-      for (int j = 0; j < n2_NAME; j++) z_NAME[i*n2_NAME + j] = C.NAME[i][j].get();}
+      for (int j = 0; j < n2_NAME; j++) {
+        z_NAME[i*n2_NAME + j] = &C.NAME[i][j];
+      }
+    }
   }
 """.replace("TYPE", c_type)
 
 
-def configure_pointer_dim3(
+def configure_c_dim3_ptr(
     cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
 ):
     """Configure pointer for dimension 3"""
-    cp.constructor = (
-        cp.constructor.replace("DIM1", "0").replace("DIM2", "0").replace("DIM3", "0")
+    cp.c_class = f"VariableArray3D<{c_type}>"
+    cp.c_instantiation_suffix = ""
+    cp.class_initializer = (
+        cp.class_initializer.replace("DIM1", "0")
+        .replace("DIM2", "0")
+        .replace("DIM3", "0")
     )
 
     cp.to_c2_set = """\
@@ -1492,7 +1694,8 @@ def configure_pointer_dim3(
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
         for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset; C.NAME[i][j][k] = TEST_VALUE;
+          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset;
+          C.NAME[i][j][k] = TEST_VALUE;
         }
       }
     }
@@ -1513,8 +1716,6 @@ def configure_pointer_dim3(
     cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
 
     if type == STRUCT:
-        cp.constructor = "NAME(SharedTensor<CPP_KIND>(0, SharedMatrix<CPP_KIND>(0, SharedArray<CPP_KIND>(0))))"
-
         cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
   for (int i = 0; i < n1_NAME; i++) {
@@ -1522,8 +1723,8 @@ def configure_pointer_dim3(
     for (int j = 0; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
       for (int k = 0; k < n3_NAME; k++) {
-        C.NAME[i][j][k] = make_shared<CPP_KIND>();
-        KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], *C.NAME[i][j][k].get());
+        // C.NAME[i][j][k] = make_shared<CPP_KIND>();
+        KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], C.NAME[i][j][k]);
     } } }
 """
         cp.test_pat = """\
@@ -1536,9 +1737,11 @@ def configure_pointer_dim3(
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
         for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-          C.NAME[i][j][k] = make_shared<CPP_KIND>();
-          set_CPP_KIND_test_pattern(*C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
-    } } }
+          // C.NAME[i][j][k] = make_shared<CPP_KIND>();
+          set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
+        }
+      }
+    }
   }
 """
         cp.to_f_setup = """
@@ -1551,8 +1754,10 @@ def configure_pointer_dim3(
     for (int i = 0; i < n1_NAME; i++) {
       for (int j = 0; j < n2_NAME; j++) {
         for (int k = 0; k < n3_NAME; k++) {
-          z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = C.NAME[i][j][k].get();
-    } } }
+          z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = &C.NAME[i][j][k];
+        }
+      }
+    }
   }
 """.replace("TYPE", c_type)
 
@@ -1633,7 +1838,7 @@ def setup_char_not_pointer(c_side_trans):
         "  C.NAME.resize(STR_LEN);\n"
         + test_pat1.replace("TEST_VALUE", "'a' + rhs % 26")
     )
-    c_side_trans[CHAR, 0, NOT].constructor = "NAME()"
+    # c_side_trans[CHAR, 0, NOT].class_initializer = ""
 
 
 def setup_char_pointer(c_side_trans):
@@ -1641,7 +1846,6 @@ def setup_char_pointer(c_side_trans):
     c_side_trans[CHAR, 0, PTR] = copy.deepcopy(c_side_trans[STRUCT, 0, PTR])
     cc = c_side_trans[CHAR, 0, PTR]
     cc.c_class = "shared_ptr<string>"
-    cc.constructor = "NAME(NULL)"
     cc.destructor = ""
     cc.to_f2_call = "z_NAME"
     cc.to_f2_arg = "c_Char"
@@ -1677,7 +1881,7 @@ def setup_char_array(c_side_trans):
     """Set up translation for CHAR, 1, NOT (character array, not pointer)."""
     c_side_trans[CHAR, 1, NOT] = c_side_trans_class()
     cc = c_side_trans[CHAR, 1, NOT]
-    cc.c_class = "String_ARRAY"
+    cc.c_class = "FixedArray1D<string, DIM1>"
     cc.to_f2_arg = "c_Char*"
     cc.to_f_setup = """\
   c_Char z_NAME[DIM1];
@@ -1693,7 +1897,6 @@ def setup_char_array(c_side_trans):
   }
 """
     )
-    cc.constructor = "NAME(String_ARRAY(DIM1))"
     cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
     cc.to_f2_call = c_side_trans[STRUCT, 1, NOT].to_f2_call
     cc.to_c2_set = for1 + " C.NAME[i] = z_NAME[i];"
@@ -1703,8 +1906,7 @@ def setup_char_array_pointer(c_side_trans):
     """Set up translation for CHAR, 1, PTR (character array pointer)."""
     c_side_trans[CHAR, 1, PTR] = copy.deepcopy(c_side_trans[STRUCT, 1, PTR])
     cc = c_side_trans[CHAR, 1, PTR]
-    cc.c_class = "String_ARRAY"
-    cc.constructor = "NAME(String_ARRAY(0))"
+    cc.c_class = "VariableArray1D<string>"
     cc.destructor = ""
     cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
     cc.to_f2_arg = "c_Char*"
@@ -1892,7 +2094,7 @@ def parse_struct_components(f_module_file, struct, params) -> None:
             process_components(base_arg, line, struct, params)
 
 
-def parse_component_line(line: str, comment: str) -> arg_class:
+def parse_component_line(line: str, comment: str) -> Argument:
     """
     Parse a single line containing Fortran structure component definitions.
 
@@ -1908,7 +2110,7 @@ def parse_component_line(line: str, comment: str) -> arg_class:
     arg_class
         Base argument with type information parsed
     """
-    base_arg = arg_class()
+    base_arg = Argument()
     base_arg.comment = comment
 
     # Get base_arg.type
@@ -1959,13 +2161,13 @@ def parse_component_line(line: str, comment: str) -> arg_class:
     return base_arg
 
 
-def process_components(base_arg: arg_class, line: str, struct, params) -> None:
+def process_components(base_arg: Argument, line: str, struct, params) -> None:
     """
     Process all components defined on a single line.
 
     Parameters
     ----------
-    base_arg : arg_class
+    base_arg : Argument
         Base argument with type information
     line : str
         Original line of Fortran code
@@ -2035,20 +2237,20 @@ def process_components(base_arg: arg_class, line: str, struct, params) -> None:
         split_line.pop(0)
 
 
-def parse_array_bounds(arg: arg_class, split_line: list) -> arg_class:
+def parse_array_bounds(arg: Argument, split_line: list) -> Argument:
     """
     Parse array bounds from a component definition.
 
     Parameters
     ----------
-    arg : arg_class
+    arg : Argument
         Argument to update with array information
     split_line : list
         Current split line being processed
 
     Returns
     -------
-    arg_class
+    Argument
         Updated argument with array bounds
     """
     split_line = split_line[1].lstrip().partition(")")
@@ -2076,13 +2278,13 @@ def parse_array_bounds(arg: arg_class, split_line: list) -> arg_class:
     return arg
 
 
-def parse_init_value(arg: arg_class, split_line: list) -> tuple:
+def parse_init_value(arg: Argument, split_line: list) -> tuple:
     """
     Parse initialization value from a component definition.
 
     Parameters
     ----------
-    arg : arg_class
+    arg : Argument
         Argument to update with initialization information
     split_line : list
         Current split line being processed
@@ -2156,8 +2358,17 @@ def remove_untranslated(struct: struct_def_class) -> None:
             continue
 
         # Apply translations
-        arg.f_side = copy.deepcopy(f_side_trans[translation_key])
-        arg.c_side = copy.deepcopy(c_side_trans[translation_key])
+
+        arg_full_name = f"{struct.f_name}%{arg.f_name}"
+
+        try:
+            arg.f_side = f_side_trans_custom_overrides[arg_full_name]
+        except KeyError:
+            arg.f_side = copy.deepcopy(f_side_trans[translation_key])
+        try:
+            arg.c_side = c_side_trans_custom_overrides[arg_full_name]
+        except KeyError:
+            arg.c_side = copy.deepcopy(c_side_trans[translation_key])
 
 
 def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> None:
@@ -2174,7 +2385,7 @@ def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> Non
         if len(arg.array) == 0:
             if "n_" in arg.c_side.to_f_setup:
                 # Insert size parameter for the scalar pointer
-                size_arg = arg_class()
+                size_arg = Argument()
                 size_arg.is_component = False
                 size_arg.type = "integer"
                 size_arg.f_side = copy.deepcopy(f_side_trans[SIZE, 1, NOT])
@@ -2192,7 +2403,7 @@ def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> Non
             for dim in range(
                 1, min(len(arg.array) + 1, 4)
             ):  # Support up to 3 dimensions
-                size_arg = arg_class()
+                size_arg = Argument()
                 size_arg.is_component = False
                 size_arg.type = "integer"
                 size_arg.f_side = copy.deepcopy(f_side_trans[SIZE, dim, NOT])
@@ -2202,165 +2413,6 @@ def add_array_bound_info_for_pointer_structures(struct: struct_def_class) -> Non
 
                 struct.arg.insert(ia, size_arg)
                 ia += 1
-
-
-def fix_struct_arg_placeholders(struct: struct_def_class, arg: arg_class) -> None:
-    """
-    Substitute placeholder names in argument patterns with actual values.
-
-    This function processes an argument object, replacing placeholders like "NAME", "DIM1", etc.,
-    with the actual values relevant to the structure and argument.
-
-    Parameters
-    ----------
-    struct : struct_def_class
-        The structure definition containing the argument
-    arg : arg_class
-        The argument to process
-    """
-    print_debug("Arg: " + str(arg))
-    p_type = arg.pointer_type
-
-    # Replace string length placeholders
-    _replace_string_length_placeholders(arg)
-
-    # Handle array bounds
-    _handle_lbound(struct, arg)
-
-    # Handle 'type' arguments
-    if arg.type == "type":
-        _handle_type_argument(arg)
-
-    # Handle array dimensions
-    if len(arg.array) >= 1 and p_type == NOT:
-        _handle_first_dimension(arg)
-
-    if len(arg.array) >= 2 and p_type == NOT:
-        _handle_second_dimension(arg)
-
-    if len(arg.array) >= 3 and p_type == NOT:
-        _handle_third_dimension(arg)
-
-    # Replace name placeholders
-    arg.replace_name_placeholders()
-
-    # Handle initialization values
-    _handle_init_values(arg)
-
-
-def _replace_string_length_placeholders(arg: arg_class) -> None:
-    """Replace STR_LEN placeholders with the argument's kind."""
-    arg.c_side.test_pat = arg.c_side.test_pat.replace("STR_LEN", arg.kind)
-    arg.f_side.to_c_var = [
-        var.replace("STR_LEN", arg.kind) for var in arg.f_side.to_c_var
-    ]
-
-
-def _handle_lbound(struct: struct_def_class, arg: arg_class) -> None:
-    """Handle the lower bound replacement."""
-    id_name = struct.short_name + "%" + arg.f_name
-    lbound = params.f_side_lbound(id_name)
-    arg.f_side.to_f2_trans = arg.f_side.to_f2_trans.replace("LBOUND", lbound)
-
-
-def _handle_type_argument(arg: arg_class) -> None:
-    """Process 'type' arguments by replacing KIND placeholders."""
-    kind = arg.kind[:-7]
-    arg.f_side.to_f2_trans = arg.f_side.to_f2_trans.replace("KIND", kind)
-    arg.f_side.to_f2_var = [var.replace("KIND", kind) for var in arg.f_side.to_f2_var]
-    arg.f_side.test_pat = arg.f_side.test_pat.replace("KIND", kind)
-    arg.c_side.test_pat = arg.c_side.test_pat.replace("KIND", kind)
-    arg.c_side.c_class = arg.c_side.c_class.replace("KIND", kind)
-    arg.c_side.to_c2_set = arg.c_side.to_c2_set.replace("KIND", kind)
-    arg.c_side.to_f_setup = arg.c_side.to_f_setup.replace("KIND", kind)
-    arg.c_side.to_f2_arg = arg.c_side.to_f2_arg.replace("KIND", kind)
-    arg.c_side.to_c2_arg = arg.c_side.to_c2_arg.replace("KIND", kind)
-    arg.c_side.constructor = arg.c_side.constructor.replace("KIND", kind)
-
-
-def _handle_first_dimension(arg: arg_class) -> None:
-    """Handle the first dimension of an array argument."""
-    arg.c_side.to_f_setup = arg.c_side.to_f_setup.replace("DIM1", arg.c_dim1)
-    arg.f_side.to_f2_trans = arg.f_side.to_f2_trans.replace("DIM1", arg.f_dim1)
-    arg.f_side.test_pat = arg.f_side.test_pat.replace("DIM1", arg.f_dim1)
-    arg.f_side.to_c_var = [
-        var.replace("DIM1", arg.f_dim1) for var in arg.f_side.to_c_var
-    ]
-    arg.f_side.to_c_trans = arg.f_side.to_c_trans.replace("DIM1", arg.f_dim1)
-    arg.f_side.to_c2_call = arg.f_side.to_c2_call.replace("DIM1", arg.f_dim1)
-    arg.c_side.to_c2_set = arg.c_side.to_c2_set.replace("DIM1", arg.c_dim1)
-    arg.c_side.constructor = arg.c_side.constructor.replace("DIM1", arg.c_dim1)
-
-
-def _handle_second_dimension(arg: arg_class) -> None:
-    """Handle the second dimension of an array argument."""
-    dim2 = str(arg.dim2)
-    arg.c_side.to_f_setup = arg.c_side.to_f_setup.replace("DIM2", dim2)
-    arg.f_side.to_f2_trans = arg.f_side.to_f2_trans.replace("DIM2", dim2)
-    arg.f_side.test_pat = arg.f_side.test_pat.replace("DIM2", dim2)
-    arg.f_side.to_c_var = [var.replace("DIM2", dim2) for var in arg.f_side.to_c_var]
-    arg.f_side.to_c_trans = arg.f_side.to_c_trans.replace("DIM2", dim2)
-    arg.f_side.to_c2_call = arg.f_side.to_c2_call.replace(
-        "DIM2", arg.f_dim1 + "*" + dim2
-    )
-    arg.c_side.to_c2_set = arg.c_side.to_c2_set.replace("DIM2", dim2)
-    arg.c_side.constructor = arg.c_side.constructor.replace("DIM2", dim2)
-
-
-def _handle_third_dimension(arg: arg_class) -> None:
-    """Handle the third dimension of an array argument."""
-    dim3 = str(arg.dim3)
-    arg.c_side.to_f_setup = arg.c_side.to_f_setup.replace("DIM3", dim3)
-    arg.f_side.to_f2_trans = arg.f_side.to_f2_trans.replace("DIM3", dim3)
-    arg.f_side.test_pat = arg.f_side.test_pat.replace("DIM3", dim3)
-    arg.f_side.to_c_var = [var.replace("DIM3", dim3) for var in arg.f_side.to_c_var]
-    arg.f_side.to_c_trans = arg.f_side.to_c_trans.replace("DIM3", dim3)
-    arg.f_side.to_c2_call = arg.f_side.to_c2_call.replace(
-        "DIM3", f"{arg.f_dim1}*{arg.dim2}*{dim3}"
-    )
-    arg.c_side.to_c2_set = arg.c_side.to_c2_set.replace("DIM3", dim3)
-    arg.c_side.constructor = arg.c_side.constructor.replace("DIM3", dim3)
-
-
-def _handle_init_values(arg: arg_class) -> None:
-    """
-    Process initialization values for the argument.
-
-    Handles Fortran to C++ initialization value conversion.
-    """
-    # On Fortran side "complex abc(2) = 0" is allowed but on C++ side want "0.0" for init value.
-    # Therefore, ignore "0" as an init value.
-
-    if arg.init_value == "":
-        pass
-    elif arg.init_value == "0":
-        pass
-    elif arg.init_value[0] == ">":  # Pointer: '=> null()'
-        pass
-    elif "_rp" in arg.init_value:
-        arg.init_value = arg.init_value.replace("_rp", "")
-    elif arg.init_value == ".true.":
-        arg.c_side.construct_value = "true"
-    elif arg.init_value == ".false.":
-        arg.c_side.construct_value = "false"
-    elif "$" in arg.init_value:
-        arg.c_side.construct_value = "Bmad::" + arg.init_value[:-1].upper()
-    elif ("d" in arg.init_value or "D" in arg.init_value) and is_number(arg.init_value):
-        arg.c_side.construct_value = arg.init_value.replace("d", "e").replace("D", "e")
-    else:
-        arg.c_side.construct_value = arg.init_value
-
-    # If there is an array of values, just use first one.
-    if len(arg.c_side.construct_value) > 0 and arg.c_side.construct_value[0] == "[":
-        arg.c_side.construct_value = arg.c_side.construct_value[1:].split(",")[0]
-
-    # Replace constructor value and CPP_KIND placeholders
-    arg.c_side.constructor = arg.c_side.constructor.replace(
-        "VALUE", arg.c_side.construct_value
-    ).replace(
-        "CPP_KIND",
-        arg.c_side.c_class.replace("_MATRIX", "").replace("_ARRAY", ""),
-    )
 
 
 def write_parsed_structures(struct_definitions, fn):
@@ -2705,6 +2757,7 @@ is_eq = .true.
             )
 
             f_equ.write(arg.f_side.equality_test)
+            # f_equ.write('std::cout << ')
 
         f_equ.write(f"\nend function eq_{struct.short_name}\n")
 
@@ -2880,10 +2933,8 @@ def write_cpp_classes(file):
 
 #ifndef CPP_BMAD_CLASSES
 
-#include <complex>
 #include <iostream>
 #include <memory>
-#include <string>
 
 """)
 
@@ -2894,17 +2945,25 @@ def write_cpp_classes(file):
     file.write("""
 using namespace Bmad;
 using std::shared_ptr, std::make_shared;
+
 """)
 
     # Write class definitions for each struct
     for struct in struct_definitions:
+        is_shared = struct.cpp_class not in do_not_share_classes
+
+        if is_shared:
+            maybe_shared = f": public std::enable_shared_from_this<{struct.cpp_class}> "
+        else:
+            maybe_shared = ""
+
         file.write(f"""
 //--------------------------------------------------------------------
 // {struct.cpp_class}
 
 class Opaque_{struct.short_name}_class {{}};  // Opaque class for pointers to corresponding fortran structs.
 
-class {struct.cpp_class} : public std::enable_shared_from_this<{struct.cpp_class}> {{
+class {struct.cpp_class}{maybe_shared} {{
 public:
 """)
 
@@ -2912,31 +2971,35 @@ public:
         for arg in struct.arg:
             if not arg.is_component:
                 continue
-            file.write(
-                f"  {arg.c_side.c_class}{arg.c_side.c_class_suffix} {arg.c_name};\n"
-            )
+            if arg.c_side.class_initializer:
+                init = f" = {arg.c_side.class_initializer}"
+            else:
+                init = ""
+            file.write(f"  {arg.c_side.c_class} {arg.c_name}{init};\n")
+            # assert "DIM1" not in line
 
         # Extra methods
         file.write(struct.c_extra_methods)
 
-        # Constructor declaration
+        # class_initializer declaration
         file.write(f"""
-  {struct.cpp_class}({struct.c_constructor_arg_list}) """)
+  {struct.cpp_class}({struct.c_constructor_arg_list})""")
 
-        # Constructor initialization list
-        construct_list = []
-        for arg in struct.arg:
-            if not arg.is_component:
-                continue
-            # if DEBUG:
-            #   construct_list.append(f"    // {arg.c_side!r}")
-            if arg.c_side.constructor:
-                construct_list.append(arg.c_side.constructor)
-
-        if any(not con.strip().startswith("//") for con in construct_list):
-            file.write(":\n")
-        file.write(f"    {',\n    '.join(construct_list)}\n")
-        constructor_body = struct.c_constructor_body.replace("NAME", struct.cpp_class)
+        # # class_initializer initialization list
+        # construct_list = []
+        # for arg in struct.arg:
+        #     if not arg.is_component:
+        #         continue
+        #     # if DEBUG:
+        #     #   construct_list.append(f"    // {arg.c_side!r}")
+        #     if arg.c_side.class_initializer:
+        #         construct_list.append(arg.c_side.class_initializer)
+        #
+        # if any(not con.strip().startswith("//") for con in construct_list):
+        #     file.write(":\n")
+        # file.write(f"    {',\n    '.join(construct_list)}\n")
+        # constructor_body = struct.c_constructor_body.replace("NAME", struct.cpp_class)
+        constructor_body = ""
 
         if DEBUG:
             debug_constructed = (
@@ -2948,33 +3011,34 @@ public:
             else:
                 constructor_body = debug_constructed
 
-        file.write(f"    {{{constructor_body}}}\n\n")
+        file.write(f"    {{{constructor_body}}}\n")
 
-        # TODO: copy constructor, move constructor, ... = default?
+        # TODO: copy class_initializer, move class_initializer, ... = default?
         #
         # Destructor
-        file.write("\n")
+        # file.write("\n")
         # file.write(f"  {struct.cpp_class}({struct.cpp_class}&&) = default;\n")
         # file.write(f"  {struct.cpp_class}({struct.cpp_class}&) = default;\n")
 
         file.write("\n")
-        file.write(f"  virtual ~{struct.cpp_class}() {{\n")
 
-        # # if DEBUG:
-        #     file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
+        if is_shared:
+            file.write(f"  virtual ~{struct.cpp_class}() {{\n")
 
-        for arg in struct.arg:
-            if arg.c_side.destructor == "":
-                continue
-            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
-                continue
-            file.write(f"    {arg.c_side.destructor}\n")
+            # # if DEBUG:
+            #     file.write(f'  std::cout << "~{struct.cpp_class}(): " << this << std::endl;\n')
 
-        file.write("  }\n")
+            for arg in struct.arg:
+                if arg.c_side.destructor == "":
+                    continue
+                if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
+                    continue
+                file.write(f"    {arg.c_side.destructor}\n")
 
-        file.write(
-            f"  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}\n"
-        )
+            file.write("  }\n")
+            file.write(
+                f"  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}\n"
+            )
 
         # End class and write extern C functions and operators
         file.write(f"""
@@ -3121,12 +3185,12 @@ def write_cpp_equality(header: str, file):
         file.write("  return is_eq;\n")
         file.write("};\n\n")
 
-        file.write(
-            f"template bool is_all_equal (const Array<{struct.cpp_class}>&, const Array<{struct.cpp_class}>&);\n"
-        )
-        file.write(
-            f"template bool is_all_equal (const Matrix<{struct.cpp_class}>&, const Matrix<{struct.cpp_class}>&);\n"
-        )
+        # file.write(
+        #     f"template bool is_all_equal (const FixedArray1D<{struct.cpp_class}>&, const FixedArray1D<{struct.cpp_class}>&);\n"
+        # )
+        # file.write(
+        #     f"template bool is_all_equal (const Matrix<{struct.cpp_class}>&, const Matrix<{struct.cpp_class}>&);\n"
+        # )
 
 
 def write_cpp_test(file):
@@ -3237,6 +3301,9 @@ if not os.path.exists(params.test_dir):
 f_side_trans = initialize_f_side_trans()
 c_side_trans = initialize_c_side_trans()
 
+c_side_trans_custom_overrides = {}
+f_side_trans_custom_overrides = {}
+
 struct_definitions: list[struct_def_class] = []
 for name in params.struct_list:
     struct_definitions.append(struct_def_class(name))
@@ -3252,7 +3319,7 @@ for struct in struct_definitions:
 for struct in struct_definitions:
     print_debug("\nStruct: " + str(struct))
     for arg in struct.arg:
-        fix_struct_arg_placeholders(struct, arg)
+        arg.fix_struct_arg_placeholders(struct)
 
 ##################################################################################
 # Customize the interface code

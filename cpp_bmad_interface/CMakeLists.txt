@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION $ENV{ACC_CMAKE_VERSION})
 project(ACC)
 
-set (LIBNAME cpp_bmad_interface)
-SET (CREATE_SHARED true)
+set(LIBNAME cpp_bmad_interface)
+set(CREATE_SHARED true)
+set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 execute_process(
   COMMAND python3 -m pybind11 --includes
@@ -12,7 +13,7 @@ execute_process(
 string(REPLACE "-I" "" PYBIND11_INCLUDES "${PYBIND11_INCLUDES}")
 string(REPLACE " " ";" PYBIND11_INCLUDES "${PYBIND11_INCLUDES}")
 
-set(INC_DIRS 
+set(INC_DIRS
   include
   $ENV{ACC_CONDA_PATH}/include
   ${PYBIND11_INCLUDES}
@@ -23,11 +24,11 @@ set(SRC_DIRS
   python
 )
 
-set(EXE_SPECS 
+set(EXE_SPECS
   cmake.cpp_bmad_interface_test
 )
 
-SET (SHARED_DEPS
+set(SHARED_DEPS
   bmad
   sim_utils
 )

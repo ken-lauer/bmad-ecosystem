@@ -95,7 +95,7 @@ rhs = 1 + offset; F%x0 = rhs
 rhs = 2 + offset; F%y0 = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 3 + offset; F%x1 = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%coef,1); lb1 = lbound(F%coef,1) - 1
   rhs = 100 + jd1 + 4 + offset
   F%coef(jd1+lb1) = rhs
@@ -458,7 +458,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_ac_kicker_time>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_time>
 
 if (ix_patt < 3) then
   if (allocated(F%amp_vs_time)) deallocate (F%amp_vs_time)
@@ -468,7 +468,7 @@ else
     call set_ac_kicker_time_test_pattern (F%amp_vs_time(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_ac_kicker_freq>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_freq>
 
 if (ix_patt < 3) then
   if (allocated(F%frequency)) deallocate (F%frequency)
@@ -652,7 +652,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%angle)) deallocate (F%angle)
@@ -663,7 +663,7 @@ else
     F%angle(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%energy)) deallocate (F%energy)
@@ -674,7 +674,7 @@ else
     F%energy(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_interval1_coef>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_interval1_coef>
 
 if (ix_patt < 3) then
   if (allocated(F%int1)) deallocate (F%int1)
@@ -684,7 +684,7 @@ else
     call set_interval1_coef_test_pattern (F%int1(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 2, ALLOC] Matrix<Real>
+!! f_side.test_pat[real, 2, ALLOC] VariableArray2D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%p_reflect)) deallocate (F%p_reflect)
@@ -698,7 +698,7 @@ else
 endif
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 10 + offset; F%max_energy = rhs
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%p_reflect_scratch)) deallocate (F%p_reflect_scratch)
@@ -709,7 +709,7 @@ else
     F%p_reflect_scratch(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%bragg_angle)) deallocate (F%bragg_angle)
@@ -816,7 +816,7 @@ enddo
 do jd1 = 1, len(F%reflectivity_file)
   F%reflectivity_file(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_photon_reflect_table>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_photon_reflect_table>
 
 if (ix_patt < 3) then
   if (allocated(F%table)) deallocate (F%table)
@@ -916,7 +916,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec,1); lb1 = lbound(F%vec,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%vec(jd1+lb1) = rhs
@@ -925,17 +925,17 @@ enddo
 rhs = 2 + offset; F%s = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 3 + offset; F%t = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1
   rhs = 100 + jd1 + 4 + offset
   F%spin(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%field,1); lb1 = lbound(F%field,1) - 1
   rhs = 100 + jd1 + 5 + offset
   F%field(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%phase,1); lb1 = lbound(F%phase,1) - 1
   rhs = 100 + jd1 + 6 + offset
   F%phase(jd1+lb1) = rhs
@@ -1054,7 +1054,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_coord>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_coord>
 
 if (ix_patt < 3) then
   if (allocated(F%orbit)) deallocate (F%orbit)
@@ -1344,7 +1344,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%w)) deallocate (F%w)
@@ -1355,7 +1355,7 @@ else
     F%w(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[complex, 1, ALLOC] Array<Complex>
+!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<Complex>
 
 if (ix_patt < 3) then
   if (allocated(F%fw)) deallocate (F%fw)
@@ -1366,7 +1366,7 @@ else
     F%fw(jd1+lb1) = cmplx(rhs, 100+rhs)
   enddo
 endif
-!! f_side.test_pat[complex, 1, ALLOC] Array<Complex>
+!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<Complex>
 
 if (ix_patt < 3) then
   if (allocated(F%fbunch)) deallocate (F%fbunch)
@@ -1377,7 +1377,7 @@ else
     F%fbunch(jd1+lb1) = cmplx(rhs, 100+rhs)
   enddo
 endif
-!! f_side.test_pat[complex, 1, ALLOC] Array<Complex>
+!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<Complex>
 
 if (ix_patt < 3) then
   if (allocated(F%w_out)) deallocate (F%w_out)
@@ -1592,7 +1592,7 @@ do jd1 = 1, len(F%file)
 enddo
 !! f_side.test_pat[type, 0, NOT] CPP_wake_sr_z_long
 call set_wake_sr_z_long_test_pattern (F%z_long, ix_patt)
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_wake_sr_mode>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
 
 if (ix_patt < 3) then
   if (allocated(F%long)) deallocate (F%long)
@@ -1602,7 +1602,7 @@ else
     call set_wake_sr_mode_test_pattern (F%long(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_wake_sr_mode>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
 
 if (ix_patt < 3) then
   if (allocated(F%trans)) deallocate (F%trans)
@@ -1822,7 +1822,7 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_wake_lr_mode>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wake_lr_mode>
 
 if (ix_patt < 3) then
   if (allocated(F%mode)) deallocate (F%mode)
@@ -2104,7 +2104,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%coef = rhs
-!! f_side.test_pat[integer, 1, NOT] Array<Int>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 6>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%expn(jd1+lb1) = rhs
@@ -2195,7 +2195,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%ref = rhs
-!! f_side.test_pat[type, 1, PTR] Array<CPP_taylor_term>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_taylor_term>
 
 if (ix_patt < 3) then
   if (associated(F%term)) deallocate (F%term)
@@ -2291,7 +2291,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%coef = rhs
-!! f_side.test_pat[integer, 1, NOT] Array<Int>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 2>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%expn(jd1+lb1) = rhs
@@ -2382,7 +2382,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%ref = rhs
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_em_taylor_term>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_em_taylor_term>
 
 if (ix_patt < 3) then
   if (allocated(F%term)) deallocate (F%term)
@@ -2584,7 +2584,7 @@ do jd1 = 1, len(F%file)
 enddo
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 2 + offset; F%n_link = rhs
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_cartesian_map_term1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_cartesian_map_term1>
 
 if (ix_patt < 3) then
   if (allocated(F%term)) deallocate (F%term)
@@ -2680,7 +2680,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%field_scale = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%r0(jd1+lb1) = rhs
@@ -2877,7 +2877,7 @@ do jd1 = 1, len(F%file)
 enddo
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 2 + offset; F%n_link = rhs
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_cylindrical_map_term1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_cylindrical_map_term1>
 
 if (ix_patt < 3) then
   if (allocated(F%term)) deallocate (F%term)
@@ -2987,7 +2987,7 @@ rhs = 6 + offset; F%master_parameter = rhs
 rhs = 7 + offset; F%ele_anchor_pt = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 8 + offset; F%dz = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 9 + offset
   F%r0(jd1+lb1) = rhs
@@ -3084,12 +3084,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[complex, 1, NOT] Array<Complex>
+!! f_side.test_pat[complex, 1, NOT] FixedArray1D<Complex, 3>
 do jd1 = 1, size(F%e,1); lb1 = lbound(F%e,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%e(jd1+lb1) = cmplx(rhs, 100+rhs)
 enddo
-!! f_side.test_pat[complex, 1, NOT] Array<Complex>
+!! f_side.test_pat[complex, 1, NOT] FixedArray1D<Complex, 3>
 do jd1 = 1, size(F%b,1); lb1 = lbound(F%b,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%b(jd1+lb1) = cmplx(rhs, 100+rhs)
@@ -3184,19 +3184,6 @@ do jd1 = 1, len(F%file)
 enddo
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 2 + offset; F%n_link = rhs
-!! f_side.test_pat[type, 3, ALLOC] SharedTensor<CPP_grid_field_pt1>
-if (ix_patt < 3) then
-  if (allocated(F%pt)) deallocate (F%pt)
-else
-  if (.not. allocated(F%pt)) allocate (F%pt(-1:1, 2, 1))
-  do jd1 = 1, size(F%pt,1); lb1 = lbound(F%pt,1) - 1
-  do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
-  do jd3 = 1, size(F%pt,3); lb3 = lbound(F%pt,3) - 1
-    call set_grid_field_pt1_test_pattern (F%pt(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+2*jd2+3*jd3)
-  enddo
-  enddo
-  enddo
-endif
 
 end subroutine set_grid_field_pt_test_pattern
 
@@ -3297,12 +3284,12 @@ rhs = 6 + offset; F%master_parameter = rhs
 rhs = 7 + offset; F%ele_anchor_pt = rhs
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 8 + offset; F%interpolation_order = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 9 + offset
   F%dr(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 10 + offset
   F%r0(jd1+lb1) = rhs
@@ -3401,12 +3388,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%r(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 3, 3>
 do jd1 = 1, size(F%w,1); lb1 = lbound(F%w,1) - 1
 do jd2 = 1, size(F%w,2); lb2 = lbound(F%w,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 2 + offset
@@ -3800,7 +3787,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%v,1); lb1 = lbound(F%v,1) - 1
 do jd2 = 1, size(F%v,2); lb2 = lbound(F%v,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 1 + offset
@@ -4002,29 +3989,29 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%ref_orb,1); lb1 = lbound(F%ref_orb,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%ref_orb(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%damp_dmat,1); lb1 = lbound(F%damp_dmat,1) - 1
 do jd2 = 1, size(F%damp_dmat,2); lb2 = lbound(F%damp_dmat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 2 + offset
   F%damp_dmat(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%xfer_damp_vec,1); lb1 = lbound(F%xfer_damp_vec,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%xfer_damp_vec(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%xfer_damp_mat,1); lb1 = lbound(F%xfer_damp_mat,1) - 1
 do jd2 = 1, size(F%xfer_damp_mat,2); lb2 = lbound(F%xfer_damp_mat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 4 + offset
   F%xfer_damp_mat(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%stoc_mat,1); lb1 = lbound(F%stoc_mat,1) - 1
 do jd2 = 1, size(F%stoc_mat,2); lb2 = lbound(F%stoc_mat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 5 + offset
@@ -4210,7 +4197,7 @@ rhs = 1 + offset; F%m = rhs
 rhs = 2 + offset; F%sincos = rhs
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 3 + offset; F%n_deriv_max = rhs
-!! f_side.test_pat[real, 2, ALLOC] Matrix<Real>
+!! f_side.test_pat[real, 2, ALLOC] VariableArray2D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%deriv)) deallocate (F%deriv)
@@ -4310,7 +4297,7 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_gen_grad1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_gen_grad1>
 
 if (ix_patt < 3) then
   if (allocated(F%gg)) deallocate (F%gg)
@@ -4330,7 +4317,7 @@ rhs = 6 + offset; F%iz0 = rhs
 rhs = 7 + offset; F%iz1 = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 8 + offset; F%dz = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 9 + offset
   F%r0(jd1+lb1) = rhs
@@ -4521,17 +4508,17 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[logical, 0, NOT] Bool
 rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%dr(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%r0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[type, 2, ALLOC] SharedMatrix<CPP_surface_segmented_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_surface_segmented_pt>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -4725,17 +4712,17 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[logical, 0, NOT] Bool
 rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%dr(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%r0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[type, 2, ALLOC] SharedMatrix<CPP_surface_h_misalign_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_surface_h_misalign_pt>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -4929,17 +4916,17 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[logical, 0, NOT] Bool
 rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%dr(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%r0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[type, 2, ALLOC] SharedMatrix<CPP_surface_displacement_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_surface_displacement_pt>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -5035,7 +5022,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%r(jd1+lb1) = rhs
@@ -5124,7 +5111,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 7, 7>
 do jd1 = 1, size(F%xy,1); lb1 = lbound(F%xy,1) - 1
 do jd2 = 1, size(F%xy,2); lb2 = lbound(F%xy,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 1 + offset
@@ -5132,7 +5119,7 @@ do jd2 = 1, size(F%xy,2); lb2 = lbound(F%xy,2) - 1
 enddo; enddo
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 2 + offset; F%spherical = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%elliptical,1); lb1 = lbound(F%elliptical,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%elliptical(jd1+lb1) = rhs
@@ -5229,7 +5216,7 @@ rhs = 1 + offset; F%type = rhs
 rhs = 2 + offset; F%n_corner = rhs
 !! f_side.test_pat[type, 0, NOT] CPP_lat_ele_loc
 call set_lat_ele_loc_test_pattern (F%ele_loc, ix_patt)
-!! f_side.test_pat[type, 1, NOT] Array<CPP_target_point>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_target_point, 8>
 do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
   rhs = 100 + jd1 + 4 + offset
   call set_target_point_test_pattern (F%corner(jd1+lb1), ix_patt+jd1)
@@ -5332,12 +5319,12 @@ rhs = 4 + offset; F%f_h = cmplx(rhs, 100+rhs)
 rhs = 5 + offset; F%f_hbar = cmplx(rhs, 100+rhs)
 !! f_side.test_pat[complex, 0, NOT] Complex
 rhs = 6 + offset; F%f_hkl = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%h_norm,1); lb1 = lbound(F%h_norm,1) - 1
   rhs = 100 + jd1 + 7 + offset
   F%h_norm(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%l_ref,1); lb1 = lbound(F%l_ref,1) - 1
   rhs = 100 + jd1 + 8 + offset
   F%l_ref(jd1+lb1) = rhs
@@ -5438,22 +5425,22 @@ rhs = 4 + offset; F%intensity_x = rhs
 rhs = 5 + offset; F%intensity_y = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 6 + offset; F%intensity = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%orbit,1); lb1 = lbound(F%orbit,1) - 1
   rhs = 100 + jd1 + 7 + offset
   F%orbit(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%orbit_rms,1); lb1 = lbound(F%orbit_rms,1) - 1
   rhs = 100 + jd1 + 8 + offset
   F%orbit_rms(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%init_orbit,1); lb1 = lbound(F%init_orbit,1) - 1
   rhs = 100 + jd1 + 9 + offset
   F%init_orbit(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%init_orbit_rms,1); lb1 = lbound(F%init_orbit_rms,1) - 1
   rhs = 100 + jd1 + 10 + offset
   F%init_orbit_rms(jd1+lb1) = rhs
@@ -5542,12 +5529,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%dr(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%r0(jd1+lb1) = rhs
@@ -5558,7 +5545,7 @@ rhs = 3 + offset; F%n_track_tot = rhs
 rhs = 4 + offset; F%n_hit_detec = rhs
 !! f_side.test_pat[integer8, 0, NOT] Int8
 rhs = 5 + offset; F%n_hit_pixel = rhs
-!! f_side.test_pat[type, 2, ALLOC] SharedMatrix<CPP_pixel_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_pixel_pt>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -5674,7 +5661,7 @@ rhs = 8 + offset; F%reflectivity_table_type = rhs
 call set_photon_reflect_table_test_pattern (F%reflectivity_table_sigma, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_photon_reflect_table
 call set_photon_reflect_table_test_pattern (F%reflectivity_table_pi, ix_patt)
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_spline>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_spline>
 
 if (ix_patt < 3) then
   if (allocated(F%init_energy_prob)) deallocate (F%init_energy_prob)
@@ -5684,7 +5671,7 @@ else
     call set_spline_test_pattern (F%init_energy_prob(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%integrated_init_energy_prob)) deallocate (F%integrated_init_energy_prob)
@@ -5889,7 +5876,7 @@ enddo
 do jd1 = 1, len(F%material)
   F%material(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_wall3d_vertex>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wall3d_vertex>
 
 if (ix_patt < 3) then
   if (allocated(F%v)) deallocate (F%v)
@@ -5923,7 +5910,7 @@ rhs = 12 + offset; F%patch_in_region = (modulo(rhs, 2) == 0)
 rhs = 13 + offset; F%thickness = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 14 + offset; F%s = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 15 + offset
   F%r0(jd1+lb1) = rhs
@@ -5932,24 +5919,24 @@ enddo
 rhs = 16 + offset; F%dx0_ds = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 17 + offset; F%dy0_ds = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%x0_coef,1); lb1 = lbound(F%x0_coef,1) - 1
   rhs = 100 + jd1 + 18 + offset
   F%x0_coef(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%y0_coef,1); lb1 = lbound(F%y0_coef,1) - 1
   rhs = 100 + jd1 + 19 + offset
   F%y0_coef(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 20 + offset; F%dr_ds = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%p1_coef,1); lb1 = lbound(F%p1_coef,1) - 1
   rhs = 100 + jd1 + 21 + offset
   F%p1_coef(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%p2_coef,1); lb1 = lbound(F%p2_coef,1) - 1
   rhs = 100 + jd1 + 22 + offset
   F%p2_coef(jd1+lb1) = rhs
@@ -6062,7 +6049,7 @@ enddo
 rhs = 8 + offset; F%superimpose = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 9 + offset; F%ele_anchor_pt = rhs
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_wall3d_section>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wall3d_section>
 
 if (ix_patt < 3) then
   if (allocated(F%section)) deallocate (F%section)
@@ -6254,7 +6241,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%value = rhs
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%y_knot)) deallocate (F%y_knot)
@@ -6265,7 +6252,7 @@ else
     F%y_knot(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_expression_atom>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
 
 if (ix_patt < 3) then
   if (allocated(F%stack)) deallocate (F%stack)
@@ -6465,7 +6452,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%y_knot)) deallocate (F%y_knot)
@@ -6476,7 +6463,7 @@ else
     F%y_knot(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_expression_atom>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
 
 if (ix_patt < 3) then
   if (allocated(F%stack)) deallocate (F%stack)
@@ -6580,7 +6567,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_control_var1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_control_var1>
 
 if (ix_patt < 3) then
   if (allocated(F%var)) deallocate (F%var)
@@ -6590,7 +6577,7 @@ else
     call set_control_var1_test_pattern (F%var(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_control_ramp1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_control_ramp1>
 
 if (ix_patt < 3) then
   if (allocated(F%ramp)) deallocate (F%ramp)
@@ -6600,7 +6587,7 @@ else
     call set_control_ramp1_test_pattern (F%ramp(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_ramper_lord>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_ramper_lord>
 
 if (ix_patt < 3) then
   if (allocated(F%ramper_lord)) deallocate (F%ramper_lord)
@@ -6610,7 +6597,7 @@ else
     call set_ramper_lord_test_pattern (F%ramper_lord(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%x_knot)) deallocate (F%x_knot)
@@ -6795,7 +6782,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 1, NOT] Array<Int>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 2>
 do jd1 = 1, size(F%part_per_phi,1); lb1 = lbound(F%part_per_phi,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%part_per_phi(jd1+lb1) = rhs
@@ -6988,35 +6975,35 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%position_file)
   F%position_file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[character, 1, NOT] String_ARRAY
+!! f_side.test_pat[character, 1, NOT] FixedArray1D<string, 3>
 do jd1 = lbound(F%distribution_type, 1), ubound(F%distribution_type, 1)
   do jd = 1, len(F%distribution_type(jd1))
     F%distribution_type(jd1)(jd:jd) = char(ichar("a") + modulo(100+2+offset+10*jd+jd1, 26))
   enddo
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%spin(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[type, 1, NOT] Array<CPP_ellipse_beam_init>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_ellipse_beam_init, 3>
 do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
   rhs = 100 + jd1 + 4 + offset
   call set_ellipse_beam_init_test_pattern (F%ellipse(jd1+lb1), ix_patt+jd1)
 enddo
 !! f_side.test_pat[type, 0, NOT] CPP_kv_beam_init
 call set_kv_beam_init_test_pattern (F%kv, ix_patt)
-!! f_side.test_pat[type, 1, NOT] Array<CPP_grid_beam_init>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_grid_beam_init, 3>
 do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
   rhs = 100 + jd1 + 6 + offset
   call set_grid_beam_init_test_pattern (F%grid(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%center_jitter,1); lb1 = lbound(F%center_jitter,1) - 1
   rhs = 100 + jd1 + 7 + offset
   F%center_jitter(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%emit_jitter,1); lb1 = lbound(F%emit_jitter,1) - 1
   rhs = 100 + jd1 + 8 + offset
   F%emit_jitter(jd1+lb1) = rhs
@@ -7051,7 +7038,7 @@ rhs = 19 + offset; F%a_emit = rhs
 rhs = 20 + offset; F%b_emit = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 21 + offset; F%dpz_dz = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%center,1); lb1 = lbound(F%center,1) - 1
   rhs = 100 + jd1 + 22 + offset
   F%center(jd1+lb1) = rhs
@@ -7176,13 +7163,13 @@ rhs = 1 + offset; F%n_part = rhs
 rhs = 2 + offset; F%total_length = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 3 + offset; F%unstable_factor = rhs
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%t1_with_rf,1); lb1 = lbound(F%t1_with_rf,1) - 1
 do jd2 = 1, size(F%t1_with_rf,2); lb2 = lbound(F%t1_with_rf,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 4 + offset
   F%t1_with_rf(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%t1_no_rf,1); lb1 = lbound(F%t1_no_rf,1) - 1
 do jd2 = 1, size(F%t1_no_rf,2); lb2 = lbound(F%t1_no_rf,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 5 + offset
@@ -7490,7 +7477,7 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%emittance = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 2 + offset; F%emittance_no_vert = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%synch_int,1); lb1 = lbound(F%synch_int,1) - 1
   rhs = 100 + jd1 + 3 + offset
   F%synch_int(jd1+lb1) = rhs
@@ -7685,7 +7672,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%synch_int,1); lb1 = lbound(F%synch_int,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%synch_int(jd1+lb1) = rhs
@@ -7798,23 +7785,23 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%e,1); lb1 = lbound(F%e,1) - 1
   rhs = 100 + jd1 + 1 + offset
   F%e(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%b,1); lb1 = lbound(F%b,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%b(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 3, 3>
 do jd1 = 1, size(F%de,1); lb1 = lbound(F%de,1) - 1
 do jd2 = 1, size(F%de,2); lb2 = lbound(F%de,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 3 + offset
   F%de(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 3, 3>
 do jd1 = 1, size(F%db,1); lb1 = lbound(F%db,1) - 1
 do jd2 = 1, size(F%db,2); lb2 = lbound(F%db,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 4 + offset
@@ -7824,7 +7811,7 @@ enddo; enddo
 rhs = 5 + offset; F%phi = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 6 + offset; F%phi_b = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%a,1); lb1 = lbound(F%a,1) - 1
   rhs = 100 + jd1 + 7 + offset
   F%a(jd1+lb1) = rhs
@@ -8019,12 +8006,12 @@ call set_coord_test_pattern (F%orb, ix_patt)
 call set_em_field_test_pattern (F%field, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_strong_beam
 call set_strong_beam_test_pattern (F%strong_beam, ix_patt)
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
   rhs = 100 + jd1 + 5 + offset
   F%vec0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
 do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 6 + offset
@@ -8114,7 +8101,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_track_point>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_track_point>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -8232,12 +8219,12 @@ rhs = 6 + offset; F%beam_chamber_height = rhs
 rhs = 7 + offset; F%lsc_sigma_cutoff = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 8 + offset; F%particle_sigma_cutoff = rhs
-!! f_side.test_pat[integer, 1, NOT] Array<Int>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 3>
 do jd1 = 1, size(F%space_charge_mesh_size,1); lb1 = lbound(F%space_charge_mesh_size,1) - 1
   rhs = 100 + jd1 + 9 + offset
   F%space_charge_mesh_size(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[integer, 1, NOT] Array<Int>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 3>
 do jd1 = 1, size(F%csr3d_mesh_size,1); lb1 = lbound(F%csr3d_mesh_size,1) - 1
   rhs = 100 + jd1 + 10 + offset
   F%csr3d_mesh_size(jd1+lb1) = rhs
@@ -8344,7 +8331,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 1 + offset; F%max_aperture_limit = rhs
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%d_orb,1); lb1 = lbound(F%d_orb,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%d_orb(jd1+lb1) = rhs
@@ -8629,7 +8616,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_rad_int1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_rad_int1>
 
 if (ix_patt < 3) then
   if (allocated(F%ele)) deallocate (F%ele)
@@ -8723,7 +8710,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_rad_int_branch>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_rad_int_branch>
 
 if (ix_patt < 3) then
   if (allocated(F%branch)) deallocate (F%branch)
@@ -8904,17 +8891,17 @@ else
   rhs = 24 + offset
   call set_rad_map_ele_test_pattern (F%rad_map, ix_patt)
 endif
-!! f_side.test_pat[type, 1, NOT] Array<CPP_taylor>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_taylor, 6>
 do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
   rhs = 100 + jd1 + 26 + offset
   call set_taylor_test_pattern (F%taylor(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%spin_taylor_ref_orb_in,1); lb1 = lbound(F%spin_taylor_ref_orb_in,1) - 1
   rhs = 100 + jd1 + 27 + offset
   F%spin_taylor_ref_orb_in(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[type, 1, NOT] Array<CPP_taylor>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_taylor, 4>
 do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
   rhs = 100 + jd1 + 28 + offset
   call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
@@ -8927,7 +8914,7 @@ else
   rhs = 29 + offset
   call set_wake_test_pattern (F%wake, ix_patt)
 endif
-!! f_side.test_pat[type, 1, PTR] Array<CPP_wall3d>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_wall3d>
 
 if (ix_patt < 3) then
   if (associated(F%wall3d)) deallocate (F%wall3d)
@@ -8937,7 +8924,7 @@ else
     call set_wall3d_test_pattern (F%wall3d(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] Array<CPP_cartesian_map>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_cartesian_map>
 
 if (ix_patt < 3) then
   if (associated(F%cartesian_map)) deallocate (F%cartesian_map)
@@ -8947,7 +8934,7 @@ else
     call set_cartesian_map_test_pattern (F%cartesian_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] Array<CPP_cylindrical_map>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_cylindrical_map>
 
 if (ix_patt < 3) then
   if (associated(F%cylindrical_map)) deallocate (F%cylindrical_map)
@@ -8957,7 +8944,7 @@ else
     call set_cylindrical_map_test_pattern (F%cylindrical_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] Array<CPP_gen_grad_map>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_gen_grad_map>
 
 if (ix_patt < 3) then
   if (associated(F%gen_grad_map)) deallocate (F%gen_grad_map)
@@ -8967,7 +8954,7 @@ else
     call set_gen_grad_map_test_pattern (F%gen_grad_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] Array<CPP_grid_field>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_grid_field>
 
 if (ix_patt < 3) then
   if (associated(F%grid_field)) deallocate (F%grid_field)
@@ -8985,34 +8972,34 @@ call set_coord_test_pattern (F%map_ref_orb_out, ix_patt)
 call set_coord_test_pattern (F%time_ref_orb_in, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_coord
 call set_coord_test_pattern (F%time_ref_orb_out, ix_patt)
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB>
 do jd1 = 1, size(F%value,1); lb1 = lbound(F%value,1) - 1
   rhs = 100 + jd1 + 45 + offset
   F%value(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB>
 do jd1 = 1, size(F%old_value,1); lb1 = lbound(F%old_value,1) - 1
   rhs = 100 + jd1 + 46 + offset
   F%old_value(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 4, 7>
 do jd1 = 1, size(F%spin_q,1); lb1 = lbound(F%spin_q,1) - 1
 do jd2 = 1, size(F%spin_q,2); lb2 = lbound(F%spin_q,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 47 + offset
   F%spin_q(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
   rhs = 100 + jd1 + 48 + offset
   F%vec0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
 do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 49 + offset
   F%mat6(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 2, 2>
 do jd1 = 1, size(F%c_mat,1); lb1 = lbound(F%c_mat,1) - 1
 do jd2 = 1, size(F%c_mat,2); lb2 = lbound(F%c_mat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 50 + offset
@@ -9026,7 +9013,7 @@ rhs = 52 + offset; F%s_start = rhs
 rhs = 53 + offset; F%s = rhs
 !! f_side.test_pat[real, 0, NOT] Real
 rhs = 54 + offset; F%ref_time = rhs
-!! f_side.test_pat[real, 1, PTR] Array<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (associated(F%a_pole)) deallocate (F%a_pole)
@@ -9037,7 +9024,7 @@ else
     F%a_pole(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] Array<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (associated(F%b_pole)) deallocate (F%b_pole)
@@ -9048,7 +9035,7 @@ else
     F%b_pole(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] Array<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (associated(F%a_pole_elec)) deallocate (F%a_pole_elec)
@@ -9059,7 +9046,7 @@ else
     F%a_pole_elec(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] Array<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (associated(F%b_pole_elec)) deallocate (F%b_pole_elec)
@@ -9070,7 +9057,7 @@ else
     F%b_pole_elec(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] Array<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (associated(F%custom)) deallocate (F%custom)
@@ -9081,7 +9068,7 @@ else
     F%custom(jd1+lb1) = rhs
   enddo
 endif
-!! f_side.test_pat[real, 3, PTR] Tensor<Real>
+!! f_side.test_pat[real, 3, PTR] VariableArray3D<Real>
 if (ix_patt < 3) then
   if (associated(F%r)) deallocate (F%r)
 else
@@ -9257,7 +9244,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[complex, 0, NOT] Complex
 rhs = 1 + offset; F%coef = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[integer, 1, NOT] Array<Int>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 6>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
   rhs = 100 + jd1 + 2 + offset
   F%expn(jd1+lb1) = rhs
@@ -9348,7 +9335,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[complex, 0, NOT] Complex
 rhs = 1 + offset; F%ref = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[type, 1, PTR] Array<CPP_complex_taylor_term>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_complex_taylor_term>
 
 if (ix_patt < 3) then
   if (associated(F%term)) deallocate (F%term)
@@ -9464,7 +9451,7 @@ call set_mode_info_test_pattern (F%a, ix_patt)
 call set_mode_info_test_pattern (F%b, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_mode_info
 call set_mode_info_test_pattern (F%z, ix_patt)
-!! f_side.test_pat[type, 1, PTR] Array<CPP_ele>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_ele>
 
 if (ix_patt < 3) then
   if (associated(F%ele)) deallocate (F%ele)
@@ -9476,7 +9463,7 @@ else
 endif
 !! f_side.test_pat[type, 0, NOT] CPP_lat_param
 call set_lat_param_test_pattern (F%param, ix_patt)
-!! f_side.test_pat[type, 1, PTR] Array<CPP_wall3d>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_wall3d>
 
 if (ix_patt < 3) then
   if (associated(F%wall3d)) deallocate (F%wall3d)
@@ -9590,7 +9577,7 @@ enddo
 do jd1 = 1, len(F%title)
   F%title(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
 enddo
-!! f_side.test_pat[character, 1, ALLOC] String_ARRAY
+!! f_side.test_pat[character, 1, ALLOC] VariableArray1D<string>
 if (ix_patt < 3) then
   if (allocated(F%print_str)) deallocate (F%print_str)
 else
@@ -9600,7 +9587,7 @@ else
     F%print_str(jd1)(jd:jd) = char(ichar("a") + modulo(100+6+offset+10*jd+jd1, 26))
   enddo; enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_expression_atom>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
 
 if (ix_patt < 3) then
   if (allocated(F%constant)) deallocate (F%constant)
@@ -9646,7 +9633,7 @@ endif
 call set_bookkeeping_state_test_pattern (F%lord_state, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_ele
 call set_ele_test_pattern (F%ele_init, ix_patt)
-!! f_side.test_pat[type, 1, PTR] Array<CPP_ele>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_ele>
 
 if (ix_patt < 3) then
   if (associated(F%ele)) deallocate (F%ele)
@@ -9656,7 +9643,7 @@ else
     call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_branch>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_branch>
 
 if (ix_patt < 3) then
   if (allocated(F%branch)) deallocate (F%branch)
@@ -9666,7 +9653,7 @@ else
     call set_branch_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_control>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_control>
 
 if (ix_patt < 3) then
   if (allocated(F%control)) deallocate (F%control)
@@ -9682,7 +9669,7 @@ call set_coord_test_pattern (F%particle_start, ix_patt)
 call set_beam_init_test_pattern (F%beam_init, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_pre_tracker
 call set_pre_tracker_test_pattern (F%pre_tracker, ix_patt)
-!! f_side.test_pat[real, 1, ALLOC] Array<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
 
 if (ix_patt < 3) then
   if (allocated(F%custom)) deallocate (F%custom)
@@ -9717,7 +9704,7 @@ rhs = 36 + offset; F%n_control_max = rhs
 rhs = 37 + offset; F%n_ic_max = rhs
 !! f_side.test_pat[integer, 0, NOT] Int
 rhs = 38 + offset; F%input_taylor_order = rhs
-!! f_side.test_pat[integer, 1, ALLOC] Array<Int>
+!! f_side.test_pat[integer, 1, ALLOC] VariableArray1D<Int>
 
 if (ix_patt < 3) then
   if (allocated(F%ic)) deallocate (F%ic)
@@ -9818,7 +9805,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_coord>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_coord>
 
 if (ix_patt < 3) then
   if (allocated(F%particle)) deallocate (F%particle)
@@ -9828,7 +9815,7 @@ else
     call set_coord_test_pattern (F%particle(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[integer, 1, ALLOC] Array<Int>
+!! f_side.test_pat[integer, 1, ALLOC] VariableArray1D<Int>
 
 if (ix_patt < 3) then
   if (allocated(F%ix_z)) deallocate (F%ix_z)
@@ -9961,18 +9948,18 @@ call set_twiss_test_pattern (F%a, ix_patt)
 call set_twiss_test_pattern (F%b, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_twiss
 call set_twiss_test_pattern (F%c, ix_patt)
-!! f_side.test_pat[real, 2, NOT] Matrix<Real>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%sigma,1); lb1 = lbound(F%sigma,1) - 1
 do jd2 = 1, size(F%sigma,2); lb2 = lbound(F%sigma,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 8 + offset
   F%sigma(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 7>
 do jd1 = 1, size(F%rel_max,1); lb1 = lbound(F%rel_max,1) - 1
   rhs = 100 + jd1 + 9 + offset
   F%rel_max(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] Array<Real>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 7>
 do jd1 = 1, size(F%rel_min,1); lb1 = lbound(F%rel_min,1) - 1
   rhs = 100 + jd1 + 10 + offset
   F%rel_min(jd1+lb1) = rhs
@@ -10087,7 +10074,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_bunch>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_bunch>
 
 if (ix_patt < 3) then
   if (allocated(F%bunch)) deallocate (F%bunch)
@@ -10379,7 +10366,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] Array<CPP_aperture_point>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_aperture_point>
 
 if (ix_patt < 3) then
   if (allocated(F%point)) deallocate (F%point)

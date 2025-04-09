@@ -8,11 +8,11 @@
 //-
 
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "cpp_bmad_classes.h"
 #include "bmad_std_typedef.h"
+#include "cpp_bmad_classes.h"
 
 using namespace std;
 
@@ -21,7 +21,8 @@ using std::vector, std::string;
 //---------------------------------------------------
 
 template <class T>
-bool is_all_equal(const vector<T> &vec1, const vector<T> &vec2) {
+bool is_all_equal(const VariableArray1D<T> &vec1,
+                  const VariableArray1D<T> &vec2) {
   if (vec1.size() != vec2.size())
     return false;
   for (size_t i = 0; i < vec1.size(); i++) {
@@ -67,19 +68,69 @@ bool is_all_equal(const vector<vector<vector<T>>> &tensor1,
   return true;
 }
 
+template <typename T, std::size_t DIM1>
+bool is_all_equal(const FixedArray1D<T, DIM1> &arr1,
+                  const FixedArray1D<T, DIM1> &arr2) {
+  // No need to check sizes since they're fixed at compile time
+  for (std::size_t i = 0; i < DIM1; i++) {
+    if (!(arr1[i] == arr2[i]))
+      return false;
+  }
+  return true;
+}
+
+template <typename T, std::size_t DIM1, std::size_t DIM2>
+bool is_all_equal(const FixedArray2D<T, DIM1, DIM2> &arr1,
+                  const FixedArray2D<T, DIM1, DIM2> &arr2) {
+  // No need to check sizes since they're fixed at compile time
+  for (std::size_t i = 0; i < DIM1; i++) {
+    for (std::size_t j = 0; j < DIM2; j++) {
+      if (!(arr1[i][j] == arr2[i][j]))
+        return false;
+    }
+  }
+  return true;
+}
+
+template <typename T, std::size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+bool is_all_equal(const FixedArray3D<T, DIM1, DIM2, DIM3> &arr1,
+                  const FixedArray3D<T, DIM1, DIM2, DIM3> &arr2) {
+  // No need to check sizes since they're fixed at compile time
+  for (std::size_t i = 0; i < DIM1; i++) {
+    for (std::size_t j = 0; j < DIM2; j++) {
+      for (std::size_t k = 0; k < DIM3; k++) {
+        if (!(arr1[i][j][k] == arr2[i][j][k]))
+          return false;
+      }
+    }
+  }
+  return true;
+}
 //---------------------------------------------------
 
-template bool is_all_equal(const Array<Bool> &, const Array<Bool> &);
-template bool is_all_equal(const Array<Complex> &, const Array<Complex> &);
-template bool is_all_equal(const Array<Real> &, const Array<Real> &);
-template bool is_all_equal(const Array<Int> &, const Array<Int> &);
-template bool is_all_equal(const Array<string> &, const Array<string> &);
+template bool is_all_equal(const VariableArray1D<Bool> &,
+                           const VariableArray1D<Bool> &);
+template bool is_all_equal(const VariableArray1D<Complex> &,
+                           const VariableArray1D<Complex> &);
+template bool is_all_equal(const VariableArray1D<Real> &,
+                           const VariableArray1D<Real> &);
+template bool is_all_equal(const VariableArray1D<Int> &,
+                           const VariableArray1D<Int> &);
+template bool is_all_equal(const VariableArray1D<string> &,
+                           const VariableArray1D<string> &);
 
-template bool is_all_equal(const Matrix<Bool> &, const Matrix<Bool> &);
-template bool is_all_equal(const Matrix<Complex> &, const Matrix<Complex> &);
-template bool is_all_equal(const Matrix<Real> &, const Matrix<Real> &);
-template bool is_all_equal(const Matrix<Int> &, const Matrix<Int> &);
+template bool is_all_equal(const VariableArray2D<Bool> &,
+                           const VariableArray2D<Bool> &);
+template bool is_all_equal(const VariableArray2D<Complex> &,
+                           const VariableArray2D<Complex> &);
+template bool is_all_equal(const VariableArray2D<Real> &,
+                           const VariableArray2D<Real> &);
+template bool is_all_equal(const VariableArray2D<Int> &,
+                           const VariableArray2D<Int> &);
 
-template bool is_all_equal(const Tensor<Complex> &, const Tensor<Complex> &);
-template bool is_all_equal(const Tensor<Real> &, const Tensor<Real> &);
-template bool is_all_equal(const Tensor<Int> &, const Tensor<Int> &);
+template bool is_all_equal(const VariableArray3D<Complex> &,
+                           const VariableArray3D<Complex> &);
+template bool is_all_equal(const VariableArray3D<Real> &,
+                           const VariableArray3D<Real> &);
+template bool is_all_equal(const VariableArray3D<Int> &,
+                           const VariableArray3D<Int> &);

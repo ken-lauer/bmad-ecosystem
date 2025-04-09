@@ -1,70 +1,57 @@
+#include <array>
+#include <complex>
 #include <memory>
 #include <vector>
 
 #ifndef BMAD_STD_TYPEDEF
 
-using std::vector;
-using std::string;
+using std::array;
 using std::complex;
+using std::string;
+using std::vector;
 
 namespace Bmad {
 
-  using Bool = bool;
-  using Complex = complex<double>;
-  using Real = double;
-  using Int = int;
-  using Int8 = long int;
-  using Char = char*;
+// Believe it or not, this is not in C++ until C++20:
+constexpr double pi = 3.14159265358979323846;
 
-  using c_Bool = const bool;
-  using c_Complex = const Complex;
-  using c_Real = const double;
-  using c_Int = const int;
-  using c_Int8 = const long int;
-  using c_String = const string;
-  using c_Char = const char*;
+using Bool = bool;
+using Complex = complex<double>;
+using Real = double;
+using Int = int;
+using Int8 = long int;
+using Char = char *;
 
-  using c_BoolArr = const bool*;
-  using c_ComplexArr = const Complex*;
-  using c_RealArr = const double*;
-  using c_IntArr = const int*;
-  using c_Int8Arr = const long int*;
+using c_Bool = const bool;
+using c_Complex = const Complex;
+using c_Real = const double;
+using c_Int = const int;
+using c_Int8 = const long int;
+using c_String = const string;
+using c_Char = const char *;
 
-  template<typename T>
-  using Array = std::vector<T>;
-  template<typename T>
-  using Matrix  = std::vector<Array<T>>;
-  template<typename T>
-  using Tensor  = std::vector<Matrix<T>>;
+using c_BoolArr = const bool *;
+using c_ComplexArr = const Complex *;
+using c_RealArr = const double *;
+using c_IntArr = const int *;
+using c_Int8Arr = const long int *;
 
-  // Back-compat:
-  // ARRAY: 1D
-  using Bool_ARRAY = Array<bool>;
-  using Complex_ARRAY = Array<Complex>;
-  using Real_ARRAY = Array<double>;
-  using Int_ARRAY = Array<int>;
-  using String_ARRAY = Array<string>;
+template <typename T, std::size_t DIM1>
+using FixedArray1D = std::array<T, DIM1>;
+template <typename T, std::size_t DIM1, std::size_t DIM2>
+using FixedArray2D = std::array<std::array<T, DIM2>, DIM1>;
+template <typename T, std::size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+using FixedArray3D = std::array<std::array<std::array<T, DIM3>, DIM2>, DIM1>;
 
-  // MATRIX: 2D
-  using Bool_MATRIX = Matrix<Bool>;
-  using Complex_MATRIX = Matrix<Complex>;
-  using Real_MATRIX = Matrix<Real>;
-  using Int_MATRIX = Matrix<Int>;
+template <typename T> using VariableArray1D = std::vector<T>;
+template <typename T> using VariableArray2D = std::vector<VariableArray1D<T>>;
+template <typename T> using VariableArray3D = std::vector<VariableArray2D<T>>;
 
-  // TENSOR: 3D
-  using Bool_TENSOR = Tensor<Bool>;
-  using Complex_TENSOR = Tensor<Complex>;
-  using Real_TENSOR = Tensor<Real>;
-  using Int_TENSOR = Tensor<Int>;
+template <typename T> using SharedVector1D = std::vector<std::shared_ptr<T>>;
+template <typename T> using SharedVector2D = std::vector<SharedVector1D<T>>;
+template <typename T> using SharedVector3D = std::vector<SharedVector2D<T>>;
 
-  template<typename T>
-  using SharedArray = std::vector<std::shared_ptr<T>>;
-  template<typename T>
-  using SharedMatrix  = std::vector<SharedArray<T>>;
-  template<typename T>
-  using SharedTensor  = std::vector<SharedMatrix<T>>;
-
-}
+} // namespace Bmad
 
 #define BMAD_STD_TYPEDEF
 #endif

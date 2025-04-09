@@ -136,6 +136,7 @@ component_no_translate_list = set(
         "normal_form_struct",
         "grid_field_struct%bi_coef",
         "grid_field_struct%tri_coef",
+        "grid_field_pt_struct%pt",  # NOTE: this can be massive for large lattices
     ]
 )
 

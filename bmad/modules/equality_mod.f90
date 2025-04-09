@@ -954,12 +954,6 @@ is_eq = .true.
 is_eq = is_eq .and. (f1%file == f2%file)
 !! f_side.equality_test[integer, 0, NOT]
 is_eq = is_eq .and. (f1%n_link == f2%n_link)
-!! f_side.equality_test[type, 3, ALLOC]
-is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
-if (.not. is_eq) return
-if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
-if (.not. is_eq) return
-if (allocated(f1%pt)) is_eq = all(f1%pt == f2%pt)
 
 end function eq_grid_field_pt
 

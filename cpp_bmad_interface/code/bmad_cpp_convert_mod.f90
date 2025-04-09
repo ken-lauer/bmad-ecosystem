@@ -4131,14 +4131,12 @@ implicit none
 
 interface
   !! f_side.to_c2_f2_sub_arg
-  subroutine grid_field_pt_to_c2 (C, z_file, z_n_link, z_pt, n1_pt, n2_pt, n3_pt) bind(c)
+  subroutine grid_field_pt_to_c2 (C, z_file, z_n_link) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     character(c_char) :: z_file(*)
     integer(c_int) :: z_n_link
-    type(c_ptr) :: z_pt(*)
-    integer(c_int), value :: n1_pt, n2_pt, n3_pt
   end subroutine
 end interface
 
@@ -4147,30 +4145,14 @@ type(c_ptr), value :: C
 type(grid_field_pt_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_pt(:)
-integer(c_int) :: n1_pt
-integer(c_int) :: n2_pt
-integer(c_int) :: n3_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 3, ALLOC]
-if (allocated(F%pt)) then
-  n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
-  n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
-  n3_pt = size(F%pt, 3); lb3 = lbound(F%pt, 3) - 1
-  allocate (z_pt(n1_pt * n2_pt * n3_pt))
-  do jd1 = 1, n1_pt; do jd2 = 1, n2_pt; do jd3 = 1, n3_pt
-    z_pt(n3_pt*n2_pt*(jd1-1) + n3_pt*(jd2-1) + jd3) = c_loc(F%pt(jd1+lb1, jd2+lb2, jd3+lb3))
-  enddo;  enddo; enddo
-else
-  n1_pt = 0; n2_pt = 0; n3_pt = 0
-endif
 
 !! f_side.to_c2_call
-call grid_field_pt_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_pt, n1_pt, n2_pt, n3_pt)
+call grid_field_pt_to_c2 (C, trim(F%file) // c_null_char, F%n_link)
 
 end subroutine grid_field_pt_to_c
 
@@ -4190,7 +4172,7 @@ end subroutine grid_field_pt_to_c
 !-
 
 !! f_side.to_c2_f2_sub_arg
-subroutine grid_field_pt_to_f2 (Fp, z_file, z_n_link, z_pt, n1_pt, n2_pt, n3_pt) bind(c)
+subroutine grid_field_pt_to_f2 (Fp, z_file, z_n_link) bind(c)
 
 
 implicit none
@@ -4201,8 +4183,6 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 character(c_char) :: z_file(*)
 integer(c_int) :: z_n_link
-type(c_ptr) :: z_pt(*)
-integer(c_int), value :: n1_pt, n2_pt, n3_pt
 
 call c_f_pointer (Fp, F)
 
@@ -4210,20 +4190,6 @@ call c_f_pointer (Fp, F)
 call to_f_str(z_file, F%file)
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%n_link = z_n_link
-!! f_side.to_f2_trans[type, 3, ALLOC]
-if (n1_pt == 0) then
-  if (allocated(F%pt)) deallocate(F%pt)
-else
-  if (allocated(F%pt)) then
-    if (n1_pt == 0 .or. any(shape(F%pt) /= [n1_pt, n2_pt, n3_pt])) deallocate(F%pt)
-    if (any(lbound(F%pt) /= 1)) deallocate(F%pt)
-  endif
-  if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1, 1:n2_pt+1-1, 1:n3_pt+1-1))
-  do jd1 = 1, n1_pt;  do jd2 = 1, n2_pt;  do jd3 = 1, n3_pt
-    call grid_field_pt1_to_f (z_pt(n3_pt*n2_pt*(jd1-1) + n3_pt*(jd2-1) + jd3), c_loc(F%pt(jd1+1-1,jd2+1-1,jd3+1-1)))
-  enddo;  enddo;  enddo
-endif
-
 
 end subroutine grid_field_pt_to_f2
 

@@ -2089,21 +2089,6 @@ void set_CPP_grid_field_pt_test_pattern (CPP_grid_field_pt& C, int ix_patt) {
   // c_side.test_pat[integer, 0, NOT]
   rhs = 2 + offset; C.n_link = rhs;
 
-  // c_side.test_pat[type, 3, ALLOC]
-  if (ix_patt < 3) 
-    C.pt.resize(0);
-  else {
-    C.pt.resize(3);
-    for (size_t i = 0; i < C.pt.size(); i++) {
-      C.pt[i].resize(2);
-      for (size_t j = 0; j < C.pt[0].size(); j++) {
-        C.pt[i][j].resize(1);
-        for (size_t k = 0; k < C.pt[0][0].size(); k++) {
-          C.pt[i][j][k] = make_shared<CPP_grid_field_pt1>();
-          set_CPP_grid_field_pt1_test_pattern(*C.pt[i][j][k], ix_patt+i+2*j+3*k+6);
-    } } }
-  }
-
 
 }
 
@@ -3012,7 +2997,10 @@ void set_CPP_surface_segmented_test_pattern (CPP_surface_segmented& C, int ix_pa
       C.pt[i].resize(2);
 
       for (size_t j = 0; j < C.pt[0].size(); j++) {
-        set_CPP_surface_segmented_pt_test_pattern(*C.pt[i][j], ix_patt+i+2*j+3);
+        // auto item = make_shared<CPP_surface_segmented_pt>();
+        // C.pt[i][j] = item;
+        auto item = C.pt[i][j];
+        set_CPP_surface_segmented_pt_test_pattern(item, ix_patt+i+2*j+3);
       }
     }
   }
@@ -3149,7 +3137,10 @@ void set_CPP_surface_h_misalign_test_pattern (CPP_surface_h_misalign& C, int ix_
       C.pt[i].resize(2);
 
       for (size_t j = 0; j < C.pt[0].size(); j++) {
-        set_CPP_surface_h_misalign_pt_test_pattern(*C.pt[i][j], ix_patt+i+2*j+3);
+        // auto item = make_shared<CPP_surface_h_misalign_pt>();
+        // C.pt[i][j] = item;
+        auto item = C.pt[i][j];
+        set_CPP_surface_h_misalign_pt_test_pattern(item, ix_patt+i+2*j+3);
       }
     }
   }
@@ -3286,7 +3277,10 @@ void set_CPP_surface_displacement_test_pattern (CPP_surface_displacement& C, int
       C.pt[i].resize(2);
 
       for (size_t j = 0; j < C.pt[0].size(); j++) {
-        set_CPP_surface_displacement_pt_test_pattern(*C.pt[i][j], ix_patt+i+2*j+3);
+        // auto item = make_shared<CPP_surface_displacement_pt>();
+        // C.pt[i][j] = item;
+        auto item = C.pt[i][j];
+        set_CPP_surface_displacement_pt_test_pattern(item, ix_patt+i+2*j+3);
       }
     }
   }
@@ -3687,7 +3681,10 @@ void set_CPP_pixel_detec_test_pattern (CPP_pixel_detec& C, int ix_patt) {
       C.pt[i].resize(2);
 
       for (size_t j = 0; j < C.pt[0].size(); j++) {
-        set_CPP_pixel_pt_test_pattern(*C.pt[i][j], ix_patt+i+2*j+3);
+        // auto item = make_shared<CPP_pixel_pt>();
+        // C.pt[i][j] = item;
+        auto item = C.pt[i][j];
+        set_CPP_pixel_pt_test_pattern(item, ix_patt+i+2*j+3);
       }
     }
   }
@@ -6259,7 +6256,8 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
       for (size_t j = 0; j < C.r[0].size(); j++) {
         C.r[i][j].resize(1);
         for (size_t k = 0; k < C.r[0][0].size(); k++) {
-          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + 65 + offset; C.r[i][j][k] = rhs;
+          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + 65 + offset;
+          C.r[i][j][k] = rhs;
         }
       }
     }

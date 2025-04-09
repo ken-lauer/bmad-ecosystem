@@ -8,11 +8,11 @@
 //-
 
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "cpp_bmad_classes.h"
 #include "bmad_std_typedef.h"
+#include "cpp_bmad_classes.h"
 
 using namespace std;
 
@@ -21,7 +21,8 @@ using std::vector, std::string;
 //---------------------------------------------------
 
 template <class T>
-bool is_all_equal(const vector<T> &vec1, const vector<T> &vec2) {
+bool is_all_equal(const VariableArray1D<T> &vec1,
+                  const VariableArray1D<T> &vec2) {
   if (vec1.size() != vec2.size())
     return false;
   for (size_t i = 0; i < vec1.size(); i++) {
@@ -67,22 +68,72 @@ bool is_all_equal(const vector<vector<vector<T>>> &tensor1,
   return true;
 }
 
+template <typename T, std::size_t DIM1>
+bool is_all_equal(const FixedArray1D<T, DIM1> &arr1,
+                  const FixedArray1D<T, DIM1> &arr2) {
+  // No need to check sizes since they're fixed at compile time
+  for (std::size_t i = 0; i < DIM1; i++) {
+    if (!(arr1[i] == arr2[i]))
+      return false;
+  }
+  return true;
+}
+
+template <typename T, std::size_t DIM1, std::size_t DIM2>
+bool is_all_equal(const FixedArray2D<T, DIM1, DIM2> &arr1,
+                  const FixedArray2D<T, DIM1, DIM2> &arr2) {
+  // No need to check sizes since they're fixed at compile time
+  for (std::size_t i = 0; i < DIM1; i++) {
+    for (std::size_t j = 0; j < DIM2; j++) {
+      if (!(arr1[i][j] == arr2[i][j]))
+        return false;
+    }
+  }
+  return true;
+}
+
+template <typename T, std::size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+bool is_all_equal(const FixedArray3D<T, DIM1, DIM2, DIM3> &arr1,
+                  const FixedArray3D<T, DIM1, DIM2, DIM3> &arr2) {
+  // No need to check sizes since they're fixed at compile time
+  for (std::size_t i = 0; i < DIM1; i++) {
+    for (std::size_t j = 0; j < DIM2; j++) {
+      for (std::size_t k = 0; k < DIM3; k++) {
+        if (!(arr1[i][j][k] == arr2[i][j][k]))
+          return false;
+      }
+    }
+  }
+  return true;
+}
 //---------------------------------------------------
 
-template bool is_all_equal(const Array<Bool> &, const Array<Bool> &);
-template bool is_all_equal(const Array<Complex> &, const Array<Complex> &);
-template bool is_all_equal(const Array<Real> &, const Array<Real> &);
-template bool is_all_equal(const Array<Int> &, const Array<Int> &);
-template bool is_all_equal(const Array<string> &, const Array<string> &);
+template bool is_all_equal(const VariableArray1D<Bool> &,
+                           const VariableArray1D<Bool> &);
+template bool is_all_equal(const VariableArray1D<Complex> &,
+                           const VariableArray1D<Complex> &);
+template bool is_all_equal(const VariableArray1D<Real> &,
+                           const VariableArray1D<Real> &);
+template bool is_all_equal(const VariableArray1D<Int> &,
+                           const VariableArray1D<Int> &);
+template bool is_all_equal(const VariableArray1D<string> &,
+                           const VariableArray1D<string> &);
 
-template bool is_all_equal(const Matrix<Bool> &, const Matrix<Bool> &);
-template bool is_all_equal(const Matrix<Complex> &, const Matrix<Complex> &);
-template bool is_all_equal(const Matrix<Real> &, const Matrix<Real> &);
-template bool is_all_equal(const Matrix<Int> &, const Matrix<Int> &);
+template bool is_all_equal(const VariableArray2D<Bool> &,
+                           const VariableArray2D<Bool> &);
+template bool is_all_equal(const VariableArray2D<Complex> &,
+                           const VariableArray2D<Complex> &);
+template bool is_all_equal(const VariableArray2D<Real> &,
+                           const VariableArray2D<Real> &);
+template bool is_all_equal(const VariableArray2D<Int> &,
+                           const VariableArray2D<Int> &);
 
-template bool is_all_equal(const Tensor<Complex> &, const Tensor<Complex> &);
-template bool is_all_equal(const Tensor<Real> &, const Tensor<Real> &);
-template bool is_all_equal(const Tensor<Int> &, const Tensor<Int> &);
+template bool is_all_equal(const VariableArray3D<Complex> &,
+                           const VariableArray3D<Complex> &);
+template bool is_all_equal(const VariableArray3D<Real> &,
+                           const VariableArray3D<Real> &);
+template bool is_all_equal(const VariableArray3D<Int> &,
+                           const VariableArray3D<Int> &);
 
 //--------------------------------------------------------------
 
@@ -95,8 +146,6 @@ bool operator== (const CPP_spline& x, const CPP_spline& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_spline>&, const Array<CPP_spline>&);
-template bool is_all_equal (const Matrix<CPP_spline>&, const Matrix<CPP_spline>&);
 
 //--------------------------------------------------------------
 
@@ -109,8 +158,6 @@ bool operator== (const CPP_spin_polar& x, const CPP_spin_polar& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_spin_polar>&, const Array<CPP_spin_polar>&);
-template bool is_all_equal (const Matrix<CPP_spin_polar>&, const Matrix<CPP_spin_polar>&);
 
 //--------------------------------------------------------------
 
@@ -122,8 +169,6 @@ bool operator== (const CPP_ac_kicker_time& x, const CPP_ac_kicker_time& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_ac_kicker_time>&, const Array<CPP_ac_kicker_time>&);
-template bool is_all_equal (const Matrix<CPP_ac_kicker_time>&, const Matrix<CPP_ac_kicker_time>&);
 
 //--------------------------------------------------------------
 
@@ -136,8 +181,6 @@ bool operator== (const CPP_ac_kicker_freq& x, const CPP_ac_kicker_freq& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_ac_kicker_freq>&, const Array<CPP_ac_kicker_freq>&);
-template bool is_all_equal (const Matrix<CPP_ac_kicker_freq>&, const Matrix<CPP_ac_kicker_freq>&);
 
 //--------------------------------------------------------------
 
@@ -148,8 +191,6 @@ bool operator== (const CPP_ac_kicker& x, const CPP_ac_kicker& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_ac_kicker>&, const Array<CPP_ac_kicker>&);
-template bool is_all_equal (const Matrix<CPP_ac_kicker>&, const Matrix<CPP_ac_kicker>&);
 
 //--------------------------------------------------------------
 
@@ -161,8 +202,6 @@ bool operator== (const CPP_interval1_coef& x, const CPP_interval1_coef& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_interval1_coef>&, const Array<CPP_interval1_coef>&);
-template bool is_all_equal (const Matrix<CPP_interval1_coef>&, const Matrix<CPP_interval1_coef>&);
 
 //--------------------------------------------------------------
 
@@ -178,8 +217,6 @@ bool operator== (const CPP_photon_reflect_table& x, const CPP_photon_reflect_tab
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_photon_reflect_table>&, const Array<CPP_photon_reflect_table>&);
-template bool is_all_equal (const Matrix<CPP_photon_reflect_table>&, const Matrix<CPP_photon_reflect_table>&);
 
 //--------------------------------------------------------------
 
@@ -195,8 +232,6 @@ bool operator== (const CPP_photon_reflect_surface& x, const CPP_photon_reflect_s
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_photon_reflect_surface>&, const Array<CPP_photon_reflect_surface>&);
-template bool is_all_equal (const Matrix<CPP_photon_reflect_surface>&, const Matrix<CPP_photon_reflect_surface>&);
 
 //--------------------------------------------------------------
 
@@ -226,8 +261,6 @@ bool operator== (const CPP_coord& x, const CPP_coord& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_coord>&, const Array<CPP_coord>&);
-template bool is_all_equal (const Matrix<CPP_coord>&, const Matrix<CPP_coord>&);
 
 //--------------------------------------------------------------
 
@@ -237,8 +270,6 @@ bool operator== (const CPP_coord_array& x, const CPP_coord_array& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_coord_array>&, const Array<CPP_coord_array>&);
-template bool is_all_equal (const Matrix<CPP_coord_array>&, const Matrix<CPP_coord_array>&);
 
 //--------------------------------------------------------------
 
@@ -257,8 +288,6 @@ bool operator== (const CPP_bpm_phase_coupling& x, const CPP_bpm_phase_coupling& 
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_bpm_phase_coupling>&, const Array<CPP_bpm_phase_coupling>&);
-template bool is_all_equal (const Matrix<CPP_bpm_phase_coupling>&, const Matrix<CPP_bpm_phase_coupling>&);
 
 //--------------------------------------------------------------
 
@@ -270,8 +299,6 @@ bool operator== (const CPP_expression_atom& x, const CPP_expression_atom& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_expression_atom>&, const Array<CPP_expression_atom>&);
-template bool is_all_equal (const Matrix<CPP_expression_atom>&, const Matrix<CPP_expression_atom>&);
 
 //--------------------------------------------------------------
 
@@ -289,8 +316,6 @@ bool operator== (const CPP_wake_sr_z_long& x, const CPP_wake_sr_z_long& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wake_sr_z_long>&, const Array<CPP_wake_sr_z_long>&);
-template bool is_all_equal (const Matrix<CPP_wake_sr_z_long>&, const Matrix<CPP_wake_sr_z_long>&);
 
 //--------------------------------------------------------------
 
@@ -309,8 +334,6 @@ bool operator== (const CPP_wake_sr_mode& x, const CPP_wake_sr_mode& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wake_sr_mode>&, const Array<CPP_wake_sr_mode>&);
-template bool is_all_equal (const Matrix<CPP_wake_sr_mode>&, const Matrix<CPP_wake_sr_mode>&);
 
 //--------------------------------------------------------------
 
@@ -329,8 +352,6 @@ bool operator== (const CPP_wake_sr& x, const CPP_wake_sr& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wake_sr>&, const Array<CPP_wake_sr>&);
-template bool is_all_equal (const Matrix<CPP_wake_sr>&, const Matrix<CPP_wake_sr>&);
 
 //--------------------------------------------------------------
 
@@ -352,8 +373,6 @@ bool operator== (const CPP_wake_lr_mode& x, const CPP_wake_lr_mode& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wake_lr_mode>&, const Array<CPP_wake_lr_mode>&);
-template bool is_all_equal (const Matrix<CPP_wake_lr_mode>&, const Matrix<CPP_wake_lr_mode>&);
 
 //--------------------------------------------------------------
 
@@ -369,8 +388,6 @@ bool operator== (const CPP_wake_lr& x, const CPP_wake_lr& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wake_lr>&, const Array<CPP_wake_lr>&);
-template bool is_all_equal (const Matrix<CPP_wake_lr>&, const Matrix<CPP_wake_lr>&);
 
 //--------------------------------------------------------------
 
@@ -381,8 +398,6 @@ bool operator== (const CPP_lat_ele_loc& x, const CPP_lat_ele_loc& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_lat_ele_loc>&, const Array<CPP_lat_ele_loc>&);
-template bool is_all_equal (const Matrix<CPP_lat_ele_loc>&, const Matrix<CPP_lat_ele_loc>&);
 
 //--------------------------------------------------------------
 
@@ -393,8 +408,6 @@ bool operator== (const CPP_wake& x, const CPP_wake& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wake>&, const Array<CPP_wake>&);
-template bool is_all_equal (const Matrix<CPP_wake>&, const Matrix<CPP_wake>&);
 
 //--------------------------------------------------------------
 
@@ -405,8 +418,6 @@ bool operator== (const CPP_taylor_term& x, const CPP_taylor_term& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_taylor_term>&, const Array<CPP_taylor_term>&);
-template bool is_all_equal (const Matrix<CPP_taylor_term>&, const Matrix<CPP_taylor_term>&);
 
 //--------------------------------------------------------------
 
@@ -417,8 +428,6 @@ bool operator== (const CPP_taylor& x, const CPP_taylor& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_taylor>&, const Array<CPP_taylor>&);
-template bool is_all_equal (const Matrix<CPP_taylor>&, const Matrix<CPP_taylor>&);
 
 //--------------------------------------------------------------
 
@@ -429,8 +438,6 @@ bool operator== (const CPP_em_taylor_term& x, const CPP_em_taylor_term& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_em_taylor_term>&, const Array<CPP_em_taylor_term>&);
-template bool is_all_equal (const Matrix<CPP_em_taylor_term>&, const Matrix<CPP_em_taylor_term>&);
 
 //--------------------------------------------------------------
 
@@ -441,8 +448,6 @@ bool operator== (const CPP_em_taylor& x, const CPP_em_taylor& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_em_taylor>&, const Array<CPP_em_taylor>&);
-template bool is_all_equal (const Matrix<CPP_em_taylor>&, const Matrix<CPP_em_taylor>&);
 
 //--------------------------------------------------------------
 
@@ -460,8 +465,6 @@ bool operator== (const CPP_cartesian_map_term1& x, const CPP_cartesian_map_term1
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_cartesian_map_term1>&, const Array<CPP_cartesian_map_term1>&);
-template bool is_all_equal (const Matrix<CPP_cartesian_map_term1>&, const Matrix<CPP_cartesian_map_term1>&);
 
 //--------------------------------------------------------------
 
@@ -473,8 +476,6 @@ bool operator== (const CPP_cartesian_map_term& x, const CPP_cartesian_map_term& 
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_cartesian_map_term>&, const Array<CPP_cartesian_map_term>&);
-template bool is_all_equal (const Matrix<CPP_cartesian_map_term>&, const Matrix<CPP_cartesian_map_term>&);
 
 //--------------------------------------------------------------
 
@@ -491,8 +492,6 @@ bool operator== (const CPP_cartesian_map& x, const CPP_cartesian_map& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_cartesian_map>&, const Array<CPP_cartesian_map>&);
-template bool is_all_equal (const Matrix<CPP_cartesian_map>&, const Matrix<CPP_cartesian_map>&);
 
 //--------------------------------------------------------------
 
@@ -503,8 +502,6 @@ bool operator== (const CPP_cylindrical_map_term1& x, const CPP_cylindrical_map_t
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_cylindrical_map_term1>&, const Array<CPP_cylindrical_map_term1>&);
-template bool is_all_equal (const Matrix<CPP_cylindrical_map_term1>&, const Matrix<CPP_cylindrical_map_term1>&);
 
 //--------------------------------------------------------------
 
@@ -516,8 +513,6 @@ bool operator== (const CPP_cylindrical_map_term& x, const CPP_cylindrical_map_te
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_cylindrical_map_term>&, const Array<CPP_cylindrical_map_term>&);
-template bool is_all_equal (const Matrix<CPP_cylindrical_map_term>&, const Matrix<CPP_cylindrical_map_term>&);
 
 //--------------------------------------------------------------
 
@@ -538,8 +533,6 @@ bool operator== (const CPP_cylindrical_map& x, const CPP_cylindrical_map& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_cylindrical_map>&, const Array<CPP_cylindrical_map>&);
-template bool is_all_equal (const Matrix<CPP_cylindrical_map>&, const Matrix<CPP_cylindrical_map>&);
 
 //--------------------------------------------------------------
 
@@ -550,8 +543,6 @@ bool operator== (const CPP_grid_field_pt1& x, const CPP_grid_field_pt1& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_grid_field_pt1>&, const Array<CPP_grid_field_pt1>&);
-template bool is_all_equal (const Matrix<CPP_grid_field_pt1>&, const Matrix<CPP_grid_field_pt1>&);
 
 //--------------------------------------------------------------
 
@@ -559,12 +550,9 @@ bool operator== (const CPP_grid_field_pt& x, const CPP_grid_field_pt& y) {
   bool is_eq = true;
   is_eq = is_eq && (x.file == y.file);
   is_eq = is_eq && (x.n_link == y.n_link);
-  is_eq = is_eq && is_all_equal(x.pt, y.pt);
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_grid_field_pt>&, const Array<CPP_grid_field_pt>&);
-template bool is_all_equal (const Matrix<CPP_grid_field_pt>&, const Matrix<CPP_grid_field_pt>&);
 
 //--------------------------------------------------------------
 
@@ -587,8 +575,6 @@ bool operator== (const CPP_grid_field& x, const CPP_grid_field& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_grid_field>&, const Array<CPP_grid_field>&);
-template bool is_all_equal (const Matrix<CPP_grid_field>&, const Matrix<CPP_grid_field>&);
 
 //--------------------------------------------------------------
 
@@ -602,8 +588,6 @@ bool operator== (const CPP_floor_position& x, const CPP_floor_position& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_floor_position>&, const Array<CPP_floor_position>&);
-template bool is_all_equal (const Matrix<CPP_floor_position>&, const Matrix<CPP_floor_position>&);
 
 //--------------------------------------------------------------
 
@@ -620,8 +604,6 @@ bool operator== (const CPP_high_energy_space_charge& x, const CPP_high_energy_sp
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_high_energy_space_charge>&, const Array<CPP_high_energy_space_charge>&);
-template bool is_all_equal (const Matrix<CPP_high_energy_space_charge>&, const Matrix<CPP_high_energy_space_charge>&);
 
 //--------------------------------------------------------------
 
@@ -634,8 +616,6 @@ bool operator== (const CPP_xy_disp& x, const CPP_xy_disp& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_xy_disp>&, const Array<CPP_xy_disp>&);
-template bool is_all_equal (const Matrix<CPP_xy_disp>&, const Matrix<CPP_xy_disp>&);
 
 //--------------------------------------------------------------
 
@@ -655,8 +635,6 @@ bool operator== (const CPP_twiss& x, const CPP_twiss& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_twiss>&, const Array<CPP_twiss>&);
-template bool is_all_equal (const Matrix<CPP_twiss>&, const Matrix<CPP_twiss>&);
 
 //--------------------------------------------------------------
 
@@ -671,8 +649,6 @@ bool operator== (const CPP_mode3& x, const CPP_mode3& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_mode3>&, const Array<CPP_mode3>&);
-template bool is_all_equal (const Matrix<CPP_mode3>&, const Matrix<CPP_mode3>&);
 
 //--------------------------------------------------------------
 
@@ -690,8 +666,6 @@ bool operator== (const CPP_bookkeeping_state& x, const CPP_bookkeeping_state& y)
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_bookkeeping_state>&, const Array<CPP_bookkeeping_state>&);
-template bool is_all_equal (const Matrix<CPP_bookkeeping_state>&, const Matrix<CPP_bookkeeping_state>&);
 
 //--------------------------------------------------------------
 
@@ -705,8 +679,6 @@ bool operator== (const CPP_rad_map& x, const CPP_rad_map& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_rad_map>&, const Array<CPP_rad_map>&);
-template bool is_all_equal (const Matrix<CPP_rad_map>&, const Matrix<CPP_rad_map>&);
 
 //--------------------------------------------------------------
 
@@ -718,8 +690,6 @@ bool operator== (const CPP_rad_map_ele& x, const CPP_rad_map_ele& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_rad_map_ele>&, const Array<CPP_rad_map_ele>&);
-template bool is_all_equal (const Matrix<CPP_rad_map_ele>&, const Matrix<CPP_rad_map_ele>&);
 
 //--------------------------------------------------------------
 
@@ -732,8 +702,6 @@ bool operator== (const CPP_gen_grad1& x, const CPP_gen_grad1& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_gen_grad1>&, const Array<CPP_gen_grad1>&);
-template bool is_all_equal (const Matrix<CPP_gen_grad1>&, const Matrix<CPP_gen_grad1>&);
 
 //--------------------------------------------------------------
 
@@ -753,8 +721,6 @@ bool operator== (const CPP_gen_grad_map& x, const CPP_gen_grad_map& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_gen_grad_map>&, const Array<CPP_gen_grad_map>&);
-template bool is_all_equal (const Matrix<CPP_gen_grad_map>&, const Matrix<CPP_gen_grad_map>&);
 
 //--------------------------------------------------------------
 
@@ -768,8 +734,6 @@ bool operator== (const CPP_surface_segmented_pt& x, const CPP_surface_segmented_
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_segmented_pt>&, const Array<CPP_surface_segmented_pt>&);
-template bool is_all_equal (const Matrix<CPP_surface_segmented_pt>&, const Matrix<CPP_surface_segmented_pt>&);
 
 //--------------------------------------------------------------
 
@@ -782,8 +746,6 @@ bool operator== (const CPP_surface_segmented& x, const CPP_surface_segmented& y)
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_segmented>&, const Array<CPP_surface_segmented>&);
-template bool is_all_equal (const Matrix<CPP_surface_segmented>&, const Matrix<CPP_surface_segmented>&);
 
 //--------------------------------------------------------------
 
@@ -798,8 +760,6 @@ bool operator== (const CPP_surface_h_misalign_pt& x, const CPP_surface_h_misalig
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_h_misalign_pt>&, const Array<CPP_surface_h_misalign_pt>&);
-template bool is_all_equal (const Matrix<CPP_surface_h_misalign_pt>&, const Matrix<CPP_surface_h_misalign_pt>&);
 
 //--------------------------------------------------------------
 
@@ -812,8 +772,6 @@ bool operator== (const CPP_surface_h_misalign& x, const CPP_surface_h_misalign& 
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_h_misalign>&, const Array<CPP_surface_h_misalign>&);
-template bool is_all_equal (const Matrix<CPP_surface_h_misalign>&, const Matrix<CPP_surface_h_misalign>&);
 
 //--------------------------------------------------------------
 
@@ -828,8 +786,6 @@ bool operator== (const CPP_surface_displacement_pt& x, const CPP_surface_displac
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_displacement_pt>&, const Array<CPP_surface_displacement_pt>&);
-template bool is_all_equal (const Matrix<CPP_surface_displacement_pt>&, const Matrix<CPP_surface_displacement_pt>&);
 
 //--------------------------------------------------------------
 
@@ -842,8 +798,6 @@ bool operator== (const CPP_surface_displacement& x, const CPP_surface_displaceme
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_displacement>&, const Array<CPP_surface_displacement>&);
-template bool is_all_equal (const Matrix<CPP_surface_displacement>&, const Matrix<CPP_surface_displacement>&);
 
 //--------------------------------------------------------------
 
@@ -853,8 +807,6 @@ bool operator== (const CPP_target_point& x, const CPP_target_point& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_target_point>&, const Array<CPP_target_point>&);
-template bool is_all_equal (const Matrix<CPP_target_point>&, const Matrix<CPP_target_point>&);
 
 //--------------------------------------------------------------
 
@@ -867,8 +819,6 @@ bool operator== (const CPP_surface_curvature& x, const CPP_surface_curvature& y)
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_surface_curvature>&, const Array<CPP_surface_curvature>&);
-template bool is_all_equal (const Matrix<CPP_surface_curvature>&, const Matrix<CPP_surface_curvature>&);
 
 //--------------------------------------------------------------
 
@@ -882,8 +832,6 @@ bool operator== (const CPP_photon_target& x, const CPP_photon_target& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_photon_target>&, const Array<CPP_photon_target>&);
-template bool is_all_equal (const Matrix<CPP_photon_target>&, const Matrix<CPP_photon_target>&);
 
 //--------------------------------------------------------------
 
@@ -900,8 +848,6 @@ bool operator== (const CPP_photon_material& x, const CPP_photon_material& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_photon_material>&, const Array<CPP_photon_material>&);
-template bool is_all_equal (const Matrix<CPP_photon_material>&, const Matrix<CPP_photon_material>&);
 
 //--------------------------------------------------------------
 
@@ -920,8 +866,6 @@ bool operator== (const CPP_pixel_pt& x, const CPP_pixel_pt& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_pixel_pt>&, const Array<CPP_pixel_pt>&);
-template bool is_all_equal (const Matrix<CPP_pixel_pt>&, const Matrix<CPP_pixel_pt>&);
 
 //--------------------------------------------------------------
 
@@ -936,8 +880,6 @@ bool operator== (const CPP_pixel_detec& x, const CPP_pixel_detec& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_pixel_detec>&, const Array<CPP_pixel_detec>&);
-template bool is_all_equal (const Matrix<CPP_pixel_detec>&, const Matrix<CPP_pixel_detec>&);
 
 //--------------------------------------------------------------
 
@@ -958,8 +900,6 @@ bool operator== (const CPP_photon_element& x, const CPP_photon_element& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_photon_element>&, const Array<CPP_photon_element>&);
-template bool is_all_equal (const Matrix<CPP_photon_element>&, const Matrix<CPP_photon_element>&);
 
 //--------------------------------------------------------------
 
@@ -977,8 +917,6 @@ bool operator== (const CPP_wall3d_vertex& x, const CPP_wall3d_vertex& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wall3d_vertex>&, const Array<CPP_wall3d_vertex>&);
-template bool is_all_equal (const Matrix<CPP_wall3d_vertex>&, const Matrix<CPP_wall3d_vertex>&);
 
 //--------------------------------------------------------------
 
@@ -1009,8 +947,6 @@ bool operator== (const CPP_wall3d_section& x, const CPP_wall3d_section& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wall3d_section>&, const Array<CPP_wall3d_section>&);
-template bool is_all_equal (const Matrix<CPP_wall3d_section>&, const Matrix<CPP_wall3d_section>&);
 
 //--------------------------------------------------------------
 
@@ -1029,8 +965,6 @@ bool operator== (const CPP_wall3d& x, const CPP_wall3d& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_wall3d>&, const Array<CPP_wall3d>&);
-template bool is_all_equal (const Matrix<CPP_wall3d>&, const Matrix<CPP_wall3d>&);
 
 //--------------------------------------------------------------
 
@@ -1044,8 +978,6 @@ bool operator== (const CPP_ramper_lord& x, const CPP_ramper_lord& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_ramper_lord>&, const Array<CPP_ramper_lord>&);
-template bool is_all_equal (const Matrix<CPP_ramper_lord>&, const Matrix<CPP_ramper_lord>&);
 
 //--------------------------------------------------------------
 
@@ -1062,8 +994,6 @@ bool operator== (const CPP_control& x, const CPP_control& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_control>&, const Array<CPP_control>&);
-template bool is_all_equal (const Matrix<CPP_control>&, const Matrix<CPP_control>&);
 
 //--------------------------------------------------------------
 
@@ -1075,8 +1005,6 @@ bool operator== (const CPP_control_var1& x, const CPP_control_var1& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_control_var1>&, const Array<CPP_control_var1>&);
-template bool is_all_equal (const Matrix<CPP_control_var1>&, const Matrix<CPP_control_var1>&);
 
 //--------------------------------------------------------------
 
@@ -1090,8 +1018,6 @@ bool operator== (const CPP_control_ramp1& x, const CPP_control_ramp1& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_control_ramp1>&, const Array<CPP_control_ramp1>&);
-template bool is_all_equal (const Matrix<CPP_control_ramp1>&, const Matrix<CPP_control_ramp1>&);
 
 //--------------------------------------------------------------
 
@@ -1104,8 +1030,6 @@ bool operator== (const CPP_controller& x, const CPP_controller& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_controller>&, const Array<CPP_controller>&);
-template bool is_all_equal (const Matrix<CPP_controller>&, const Matrix<CPP_controller>&);
 
 //--------------------------------------------------------------
 
@@ -1117,8 +1041,6 @@ bool operator== (const CPP_ellipse_beam_init& x, const CPP_ellipse_beam_init& y)
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_ellipse_beam_init>&, const Array<CPP_ellipse_beam_init>&);
-template bool is_all_equal (const Matrix<CPP_ellipse_beam_init>&, const Matrix<CPP_ellipse_beam_init>&);
 
 //--------------------------------------------------------------
 
@@ -1130,8 +1052,6 @@ bool operator== (const CPP_kv_beam_init& x, const CPP_kv_beam_init& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_kv_beam_init>&, const Array<CPP_kv_beam_init>&);
-template bool is_all_equal (const Matrix<CPP_kv_beam_init>&, const Matrix<CPP_kv_beam_init>&);
 
 //--------------------------------------------------------------
 
@@ -1146,8 +1066,6 @@ bool operator== (const CPP_grid_beam_init& x, const CPP_grid_beam_init& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_grid_beam_init>&, const Array<CPP_grid_beam_init>&);
-template bool is_all_equal (const Matrix<CPP_grid_beam_init>&, const Matrix<CPP_grid_beam_init>&);
 
 //--------------------------------------------------------------
 
@@ -1191,8 +1109,6 @@ bool operator== (const CPP_beam_init& x, const CPP_beam_init& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_beam_init>&, const Array<CPP_beam_init>&);
-template bool is_all_equal (const Matrix<CPP_beam_init>&, const Matrix<CPP_beam_init>&);
 
 //--------------------------------------------------------------
 
@@ -1218,8 +1134,6 @@ bool operator== (const CPP_lat_param& x, const CPP_lat_param& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_lat_param>&, const Array<CPP_lat_param>&);
-template bool is_all_equal (const Matrix<CPP_lat_param>&, const Matrix<CPP_lat_param>&);
 
 //--------------------------------------------------------------
 
@@ -1234,8 +1148,6 @@ bool operator== (const CPP_mode_info& x, const CPP_mode_info& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_mode_info>&, const Array<CPP_mode_info>&);
-template bool is_all_equal (const Matrix<CPP_mode_info>&, const Matrix<CPP_mode_info>&);
 
 //--------------------------------------------------------------
 
@@ -1248,8 +1160,6 @@ bool operator== (const CPP_pre_tracker& x, const CPP_pre_tracker& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_pre_tracker>&, const Array<CPP_pre_tracker>&);
-template bool is_all_equal (const Matrix<CPP_pre_tracker>&, const Matrix<CPP_pre_tracker>&);
 
 //--------------------------------------------------------------
 
@@ -1265,8 +1175,6 @@ bool operator== (const CPP_anormal_mode& x, const CPP_anormal_mode& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_anormal_mode>&, const Array<CPP_anormal_mode>&);
-template bool is_all_equal (const Matrix<CPP_anormal_mode>&, const Matrix<CPP_anormal_mode>&);
 
 //--------------------------------------------------------------
 
@@ -1282,8 +1190,6 @@ bool operator== (const CPP_linac_normal_mode& x, const CPP_linac_normal_mode& y)
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_linac_normal_mode>&, const Array<CPP_linac_normal_mode>&);
-template bool is_all_equal (const Matrix<CPP_linac_normal_mode>&, const Matrix<CPP_linac_normal_mode>&);
 
 //--------------------------------------------------------------
 
@@ -1305,8 +1211,6 @@ bool operator== (const CPP_normal_modes& x, const CPP_normal_modes& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_normal_modes>&, const Array<CPP_normal_modes>&);
-template bool is_all_equal (const Matrix<CPP_normal_modes>&, const Matrix<CPP_normal_modes>&);
 
 //--------------------------------------------------------------
 
@@ -1322,8 +1226,6 @@ bool operator== (const CPP_em_field& x, const CPP_em_field& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_em_field>&, const Array<CPP_em_field>&);
-template bool is_all_equal (const Matrix<CPP_em_field>&, const Matrix<CPP_em_field>&);
 
 //--------------------------------------------------------------
 
@@ -1339,8 +1241,6 @@ bool operator== (const CPP_strong_beam& x, const CPP_strong_beam& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_strong_beam>&, const Array<CPP_strong_beam>&);
-template bool is_all_equal (const Matrix<CPP_strong_beam>&, const Matrix<CPP_strong_beam>&);
 
 //--------------------------------------------------------------
 
@@ -1355,8 +1255,6 @@ bool operator== (const CPP_track_point& x, const CPP_track_point& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_track_point>&, const Array<CPP_track_point>&);
-template bool is_all_equal (const Matrix<CPP_track_point>&, const Matrix<CPP_track_point>&);
 
 //--------------------------------------------------------------
 
@@ -1370,8 +1268,6 @@ bool operator== (const CPP_track& x, const CPP_track& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_track>&, const Array<CPP_track>&);
-template bool is_all_equal (const Matrix<CPP_track>&, const Matrix<CPP_track>&);
 
 //--------------------------------------------------------------
 
@@ -1397,8 +1293,6 @@ bool operator== (const CPP_space_charge_common& x, const CPP_space_charge_common
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_space_charge_common>&, const Array<CPP_space_charge_common>&);
-template bool is_all_equal (const Matrix<CPP_space_charge_common>&, const Matrix<CPP_space_charge_common>&);
 
 //--------------------------------------------------------------
 
@@ -1447,8 +1341,6 @@ bool operator== (const CPP_bmad_common& x, const CPP_bmad_common& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_bmad_common>&, const Array<CPP_bmad_common>&);
-template bool is_all_equal (const Matrix<CPP_bmad_common>&, const Matrix<CPP_bmad_common>&);
 
 //--------------------------------------------------------------
 
@@ -1475,8 +1367,6 @@ bool operator== (const CPP_rad_int1& x, const CPP_rad_int1& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_rad_int1>&, const Array<CPP_rad_int1>&);
-template bool is_all_equal (const Matrix<CPP_rad_int1>&, const Matrix<CPP_rad_int1>&);
 
 //--------------------------------------------------------------
 
@@ -1486,8 +1376,6 @@ bool operator== (const CPP_rad_int_branch& x, const CPP_rad_int_branch& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_rad_int_branch>&, const Array<CPP_rad_int_branch>&);
-template bool is_all_equal (const Matrix<CPP_rad_int_branch>&, const Matrix<CPP_rad_int_branch>&);
 
 //--------------------------------------------------------------
 
@@ -1497,8 +1385,6 @@ bool operator== (const CPP_rad_int_all_ele& x, const CPP_rad_int_all_ele& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_rad_int_all_ele>&, const Array<CPP_rad_int_all_ele>&);
-template bool is_all_equal (const Matrix<CPP_rad_int_all_ele>&, const Matrix<CPP_rad_int_all_ele>&);
 
 //--------------------------------------------------------------
 
@@ -1609,8 +1495,6 @@ bool operator== (const CPP_ele& x, const CPP_ele& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_ele>&, const Array<CPP_ele>&);
-template bool is_all_equal (const Matrix<CPP_ele>&, const Matrix<CPP_ele>&);
 
 //--------------------------------------------------------------
 
@@ -1621,8 +1505,6 @@ bool operator== (const CPP_complex_taylor_term& x, const CPP_complex_taylor_term
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_complex_taylor_term>&, const Array<CPP_complex_taylor_term>&);
-template bool is_all_equal (const Matrix<CPP_complex_taylor_term>&, const Matrix<CPP_complex_taylor_term>&);
 
 //--------------------------------------------------------------
 
@@ -1633,8 +1515,6 @@ bool operator== (const CPP_complex_taylor& x, const CPP_complex_taylor& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_complex_taylor>&, const Array<CPP_complex_taylor>&);
-template bool is_all_equal (const Matrix<CPP_complex_taylor>&, const Matrix<CPP_complex_taylor>&);
 
 //--------------------------------------------------------------
 
@@ -1656,8 +1536,6 @@ bool operator== (const CPP_branch& x, const CPP_branch& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_branch>&, const Array<CPP_branch>&);
-template bool is_all_equal (const Matrix<CPP_branch>&, const Matrix<CPP_branch>&);
 
 //--------------------------------------------------------------
 
@@ -1708,8 +1586,6 @@ bool operator== (const CPP_lat& x, const CPP_lat& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_lat>&, const Array<CPP_lat>&);
-template bool is_all_equal (const Matrix<CPP_lat>&, const Matrix<CPP_lat>&);
 
 //--------------------------------------------------------------
 
@@ -1732,8 +1608,6 @@ bool operator== (const CPP_bunch& x, const CPP_bunch& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_bunch>&, const Array<CPP_bunch>&);
-template bool is_all_equal (const Matrix<CPP_bunch>&, const Matrix<CPP_bunch>&);
 
 //--------------------------------------------------------------
 
@@ -1765,8 +1639,6 @@ bool operator== (const CPP_bunch_params& x, const CPP_bunch_params& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_bunch_params>&, const Array<CPP_bunch_params>&);
-template bool is_all_equal (const Matrix<CPP_bunch_params>&, const Matrix<CPP_bunch_params>&);
 
 //--------------------------------------------------------------
 
@@ -1776,8 +1648,6 @@ bool operator== (const CPP_beam& x, const CPP_beam& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_beam>&, const Array<CPP_beam>&);
-template bool is_all_equal (const Matrix<CPP_beam>&, const Matrix<CPP_beam>&);
 
 //--------------------------------------------------------------
 
@@ -1791,8 +1661,6 @@ bool operator== (const CPP_aperture_point& x, const CPP_aperture_point& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_aperture_point>&, const Array<CPP_aperture_point>&);
-template bool is_all_equal (const Matrix<CPP_aperture_point>&, const Matrix<CPP_aperture_point>&);
 
 //--------------------------------------------------------------
 
@@ -1810,8 +1678,6 @@ bool operator== (const CPP_aperture_param& x, const CPP_aperture_param& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_aperture_param>&, const Array<CPP_aperture_param>&);
-template bool is_all_equal (const Matrix<CPP_aperture_param>&, const Matrix<CPP_aperture_param>&);
 
 //--------------------------------------------------------------
 
@@ -1823,5 +1689,3 @@ bool operator== (const CPP_aperture_scan& x, const CPP_aperture_scan& y) {
   return is_eq;
 };
 
-template bool is_all_equal (const Array<CPP_aperture_scan>&, const Array<CPP_aperture_scan>&);
-template bool is_all_equal (const Matrix<CPP_aperture_scan>&, const Matrix<CPP_aperture_scan>&);

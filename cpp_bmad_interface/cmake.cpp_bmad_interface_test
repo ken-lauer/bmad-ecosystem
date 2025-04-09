@@ -1,4 +1,5 @@
-set (EXENAME cpp_bmad_interface_test)
+set(EXENAME cpp_bmad_interface_test)
+set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 file (GLOB SRC_FILES interface_test/*.f90 interface_test/*.cpp)
 
