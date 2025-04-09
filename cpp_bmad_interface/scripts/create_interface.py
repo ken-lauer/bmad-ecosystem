@@ -254,9 +254,9 @@ class Argument:
         Initialization value.
     comment : str
         Comment from the Fortran structure definition.
-    f_side : int
+    f_side : f_side_trans_class
         Fortran side translation.
-    c_side : int
+    c_side : c_side_trans_class
         C++ side translation.
     """
 
@@ -275,6 +275,10 @@ class Argument:
     f_side: f_side_trans_class = field(default_factory=f_side_trans_class)
     c_side: c_side_trans_class = field(default_factory=c_side_trans_class)
     split_line: list[str] = field(default_factory=list)
+
+    # Only for routine parameters:
+    intent: Literal["inout", "in", "out", ""] = ""
+    optional: bool = False
 
     def get_dim1(self) -> tuple[str, str]:
         if self.ubound[0][-1] == "$":
@@ -569,6 +573,17 @@ class Structure:
 
     def __str__(self) -> str:
         return "[name: %s, #arg: %i]" % (self.short_name, len(self.arg))
+
+    @property
+    def by_f_name(self) -> dict[str, Argument]:
+        return {arg.f_name for arg in self.arguments}
+
+
+@dataclass
+class Subroutine(Structure):
+    # Reusing Structure as a base class, for better or worse...
+    arg_order: list[str] = field(default_factory=list)  # arguments, as defined in the
+    result_arg: str = ""
 
 
 x2 = " " * 2
@@ -1978,7 +1993,9 @@ def initialize_c_side_trans() -> dict[tuple[str, int, str], c_side_trans_class]:
 # See test_interface_input.py (or whatever file is used).
 
 # Regular expressions for parsing
-re_end_type = re.compile(r"^\s*end\s*type")  # Match to: 'end type'
+re_end_type = re.compile(
+    r"^\s*end\s+(type|subroutine)"
+)  # Match to: 'end type' or 'end subroutine'
 # Regular expression for initial parsing splits
 re_match1 = re.compile(r"([,(]|::|\s+)")  # Match to: ',', '::', '(', ' '
 # Regular expression for additional parsing splits
@@ -2012,14 +2029,14 @@ def parse_structure_definitions(struct_definitions, params):
     """
 
     for file_name in params.struct_def_files:
-        parse_file(
+        parse_struct_file(
             file_name,
             struct_definitions,
             params,
         )
 
 
-def parse_file(
+def parse_struct_file(
     file_name: str,
     struct_definitions: list,
     params,
@@ -2057,15 +2074,16 @@ def parse_file(
                 struct,
                 params,
             )
+            remove_untranslated(struct)
 
 
-def parse_struct_components(f_module_file, struct, params) -> None:
+def parse_struct_components(lines, struct, params) -> None:
     """
     Parse components of a Fortran structure.
 
     Parameters
     ----------
-    f_module_file : file
+    lines : list of str or file obj
         Open file handle to the Fortran module file
     struct : object
         Structure object to populate with component information
@@ -2074,7 +2092,7 @@ def parse_struct_components(f_module_file, struct, params) -> None:
     """
     found_contains_statement = False
 
-    for line in f_module_file:
+    for line in lines:
         if re_end_type.match(line):
             break
         if re_contains.match(line):
@@ -2118,6 +2136,21 @@ def parse_component_line(line: str, comment: str) -> Argument:
     """
     base_arg = Argument()
     base_arg.comment = comment
+
+    if ", optional" in line:
+        line = line.replace(", optional", "")
+        base_arg.optional = True
+    else:
+        base_arg.optional = False
+
+    for intent in ("in", "out", "inout"):
+        intent_attr = f", intent({intent})"
+        if intent_attr in line:
+            line = line.replace(intent_attr, "")
+            base_arg.intent = intent
+            break
+    else:
+        base_arg.intent = ""
 
     # Get base_arg.type
     split_line = re_match1.split(line, 1)
@@ -2421,6 +2454,89 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
                 ia += 1
 
 
+def parse_bmad_routine_file(fortran_code):
+    """
+    Parse a Fortran file containing subroutines and return a dictionary
+    mapping subroutine names to their content.
+    """
+    subroutine_blocks = {}
+
+    # Split the code into lines
+    lines = fortran_code.strip().split("\n")
+
+    current_subroutine = None
+    current_content = []
+
+    for line in lines:
+        line = line.strip()
+        lower = line.lower()
+        if lower.startswith("subroutine ") or lower.startswith("recursive subroutine "):
+            if lower.startswith("recursive "):
+                lower = lower.removeprefix("recursive ")
+            # If we were already collecting a subroutine, save it before starting a new one
+            if current_subroutine:
+                subroutine_blocks[current_subroutine] = "\n".join(current_content)
+
+            subroutine_name = line.split()[1].split("(")[0]
+            arguments = tuple(
+                arg.strip() for arg in line.split("(")[1].rstrip(")").split(",")
+            )
+            current_subroutine = (subroutine_name, arguments)
+            current_content = [line]
+        elif line.lower().startswith("end subroutine"):
+            current_content.append(line)
+            assert current_subroutine is not None
+            subroutine_blocks[current_subroutine] = "\n".join(current_content)
+            current_subroutine = None
+            current_content = []
+        elif current_subroutine:
+            current_content.append(line)
+
+    # In case there's a final subroutine without an explicit end
+    if current_subroutine:
+        subroutine_blocks[current_subroutine] = "\n".join(current_content)
+
+    return subroutine_blocks
+
+
+def parse_bmad_routines(params):
+    subroutines = {}
+
+    for fn in params.routine_interface_files:
+        fortran_code = pathlib.Path(fn).read_text()
+        lines = fortran_code.splitlines()
+        lines = lines[lines.index("interface") :]
+        lines = lines[: lines.index("end interface")]
+        name_to_subroutine_contents = parse_bmad_routine_file("\n".join(lines))
+
+        for (name, args), contents in name_to_subroutine_contents.items():
+            subroutine = Subroutine(name, arg_order=args)
+            parse_struct_components(
+                lines=[
+                    line.strip()
+                    for line in contents.splitlines()[1:]
+                    if line.strip() and line.strip() not in ("import", "implicit none")
+                ],
+                struct=subroutine,
+                params=params,
+            )
+            for arg in subroutine.arg:
+                if arg.pointer_type == "NOT" and arg.array:
+                    arg.pointer_type = "ALLOC"
+                    # arg.c_side.c_class = f"{arg.c_side.c_class}*"
+
+            remove_untranslated(subroutine)
+            for arg in subroutine.arg:
+                arg.fix_struct_arg_placeholders(struct)
+            subroutines[name] = subroutine
+    return subroutines
+
+
+# ******************************************************************************
+# ******************************************************************************
+# ******************************************************************************
+# Output portion
+#
 def write_parsed_structures(struct_definitions, fn):
     """
     Write parsed structure definitions to a file.
@@ -3342,9 +3458,6 @@ for name in params.struct_list:
 parse_structure_definitions(struct_definitions, params)
 
 for struct in struct_definitions:
-    remove_untranslated(struct)
-
-for struct in struct_definitions:
     add_array_bound_info_for_pointer_structures(struct)
 
 for struct in struct_definitions:
@@ -3352,10 +3465,11 @@ for struct in struct_definitions:
     for arg in struct.arg:
         arg.fix_struct_arg_placeholders(struct)
 
-##################################################################################
-# Customize the interface code
+# *Customization hook*
 
 params.customize(struct_definitions)
+
+routines = parse_bmad_routines(params)
 
 if DEBUG:
     write_parsed_structures(struct_definitions, "f_structs.parsed")

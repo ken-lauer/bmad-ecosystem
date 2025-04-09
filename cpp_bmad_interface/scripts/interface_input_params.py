@@ -8,6 +8,8 @@ struct_def_files = [
     "../bmad/modules/complex_taylor_mod.f90",
 ]
 
+routine_interface_files = ["../bmad/modules/bmad_routine_interface.f90"]
+
 # List of use statements needed in various Fortran modules.
 
 conversion_use_statements = ["use bmad_struct"]

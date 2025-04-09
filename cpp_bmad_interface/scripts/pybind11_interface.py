@@ -1,4 +1,5 @@
 from __future__ import annotations
+import string
 from create_interface import (
     ALLOC,
     CHAR,
@@ -13,7 +14,9 @@ from create_interface import (
     SCRIPTS_PATH,
     Argument,
     Structure,
+    Subroutine,
     struct_definitions,
+    routines,
 )
 
 
@@ -171,6 +174,27 @@ def handle_array(cpp_class_name: str, property_doc: str, arg: Argument):
     return code
 
 
+def get_forward_declaration(routine: Subroutine) -> str:
+    # TODO
+    return_type = "void"  # functions
+
+    args = ", ".join(
+        f"{arg.c_side.to_f2_arg} {arg.c_name}"
+        for arg in routine.arg
+        if arg.intent != "out"
+    )
+    out_args = "\n// -> " + ", ".join(
+        f"{arg.c_side.to_f2_arg} {arg.c_name}"
+        for arg in routine.arg
+        if arg.intent == "out"
+    )
+    return f'// extern "C" {return_type} {routine.f_name}({args}); {out_args}'
+
+
+def get_forward_declarations() -> str:
+    return "\n".join(get_forward_declaration(routine) for routine in routines.values())
+
+
 def generate_pybind11_module(struct_definitions: list[Structure]):
     """
     Generate pybind11 module code from a list of struct definitions.
@@ -185,9 +209,6 @@ def generate_pybind11_module(struct_definitions: list[Structure]):
     str
         Complete pybind11 module C++ code
     """
-    # Start with the necessary includes
-    with open(SCRIPTS_PATH / "pybind11_template.cpp") as fp:
-        template = fp.read()
 
     code = []
     for struct_def in struct_definitions:
@@ -295,7 +316,17 @@ def generate_pybind11_module(struct_definitions: list[Structure]):
         code.append("")
 
     class_code = "\n".join(code)
-    return template.replace("    // insert classes here //", class_code)
+
+    template_text = (SCRIPTS_PATH / "pybind11_template.cpp").read_text()
+    template_text = template_text.replace(
+        "// ${", "${"
+    )  # ensure the template is still valid C++ code
+    template = string.Template(template_text)
+
+    forward_declarations = get_forward_declarations()
+    return template.substitute(
+        forward_declarations=forward_declarations, pybind11_definitions=class_code
+    )
 
 
 def get_cpp_array_type(arg):
