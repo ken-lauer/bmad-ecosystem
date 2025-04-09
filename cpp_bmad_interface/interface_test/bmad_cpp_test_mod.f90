@@ -38,9 +38,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_spline_test_pattern (f_spline, 4)
 if (f_spline == f2_spline) then
-  print *, 'spline: C side convert C->F: Good'
+  print *, '[4] spline: C side convert C->F: Good'
 else
-  print *, 'spline: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] spline: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -64,9 +64,9 @@ call spline_to_f (c_spline, c_loc(f_spline))
 
 call set_spline_test_pattern (f2_spline, 2)
 if (f_spline == f2_spline) then
-  print *, 'spline: F side convert C->F: Good'
+  print *, '[2] spline: F side convert C->F: Good'
 else
-  print *, 'spline: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] spline: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -133,9 +133,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_spin_polar_test_pattern (f_spin_polar, 4)
 if (f_spin_polar == f2_spin_polar) then
-  print *, 'spin_polar: C side convert C->F: Good'
+  print *, '[4] spin_polar: C side convert C->F: Good'
 else
-  print *, 'spin_polar: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] spin_polar: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -159,9 +159,9 @@ call spin_polar_to_f (c_spin_polar, c_loc(f_spin_polar))
 
 call set_spin_polar_test_pattern (f2_spin_polar, 2)
 if (f_spin_polar == f2_spin_polar) then
-  print *, 'spin_polar: F side convert C->F: Good'
+  print *, '[2] spin_polar: F side convert C->F: Good'
 else
-  print *, 'spin_polar: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] spin_polar: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -225,9 +225,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_ac_kicker_time_test_pattern (f_ac_kicker_time, 4)
 if (f_ac_kicker_time == f2_ac_kicker_time) then
-  print *, 'ac_kicker_time: C side convert C->F: Good'
+  print *, '[4] ac_kicker_time: C side convert C->F: Good'
 else
-  print *, 'ac_kicker_time: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] ac_kicker_time: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -251,9 +251,9 @@ call ac_kicker_time_to_f (c_ac_kicker_time, c_loc(f_ac_kicker_time))
 
 call set_ac_kicker_time_test_pattern (f2_ac_kicker_time, 2)
 if (f_ac_kicker_time == f2_ac_kicker_time) then
-  print *, 'ac_kicker_time: F side convert C->F: Good'
+  print *, '[2] ac_kicker_time: F side convert C->F: Good'
 else
-  print *, 'ac_kicker_time: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] ac_kicker_time: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -315,9 +315,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_ac_kicker_freq_test_pattern (f_ac_kicker_freq, 4)
 if (f_ac_kicker_freq == f2_ac_kicker_freq) then
-  print *, 'ac_kicker_freq: C side convert C->F: Good'
+  print *, '[4] ac_kicker_freq: C side convert C->F: Good'
 else
-  print *, 'ac_kicker_freq: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] ac_kicker_freq: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -341,9 +341,9 @@ call ac_kicker_freq_to_f (c_ac_kicker_freq, c_loc(f_ac_kicker_freq))
 
 call set_ac_kicker_freq_test_pattern (f2_ac_kicker_freq, 2)
 if (f_ac_kicker_freq == f2_ac_kicker_freq) then
-  print *, 'ac_kicker_freq: F side convert C->F: Good'
+  print *, '[2] ac_kicker_freq: F side convert C->F: Good'
 else
-  print *, 'ac_kicker_freq: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] ac_kicker_freq: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -407,9 +407,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_ac_kicker_test_pattern (f_ac_kicker, 4)
 if (f_ac_kicker == f2_ac_kicker) then
-  print *, 'ac_kicker: C side convert C->F: Good'
+  print *, '[4] ac_kicker: C side convert C->F: Good'
 else
-  print *, 'ac_kicker: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] ac_kicker: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -433,9 +433,9 @@ call ac_kicker_to_f (c_ac_kicker, c_loc(f_ac_kicker))
 
 call set_ac_kicker_test_pattern (f2_ac_kicker, 2)
 if (f_ac_kicker == f2_ac_kicker) then
-  print *, 'ac_kicker: F side convert C->F: Good'
+  print *, '[2] ac_kicker: F side convert C->F: Good'
 else
-  print *, 'ac_kicker: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] ac_kicker: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -511,9 +511,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_interval1_coef_test_pattern (f_interval1_coef, 4)
 if (f_interval1_coef == f2_interval1_coef) then
-  print *, 'interval1_coef: C side convert C->F: Good'
+  print *, '[4] interval1_coef: C side convert C->F: Good'
 else
-  print *, 'interval1_coef: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] interval1_coef: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -537,9 +537,9 @@ call interval1_coef_to_f (c_interval1_coef, c_loc(f_interval1_coef))
 
 call set_interval1_coef_test_pattern (f2_interval1_coef, 2)
 if (f_interval1_coef == f2_interval1_coef) then
-  print *, 'interval1_coef: F side convert C->F: Good'
+  print *, '[2] interval1_coef: F side convert C->F: Good'
 else
-  print *, 'interval1_coef: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] interval1_coef: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -601,9 +601,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_photon_reflect_table_test_pattern (f_photon_reflect_table, 4)
 if (f_photon_reflect_table == f2_photon_reflect_table) then
-  print *, 'photon_reflect_table: C side convert C->F: Good'
+  print *, '[4] photon_reflect_table: C side convert C->F: Good'
 else
-  print *, 'photon_reflect_table: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] photon_reflect_table: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -627,9 +627,9 @@ call photon_reflect_table_to_f (c_photon_reflect_table, c_loc(f_photon_reflect_t
 
 call set_photon_reflect_table_test_pattern (f2_photon_reflect_table, 2)
 if (f_photon_reflect_table == f2_photon_reflect_table) then
-  print *, 'photon_reflect_table: F side convert C->F: Good'
+  print *, '[2] photon_reflect_table: F side convert C->F: Good'
 else
-  print *, 'photon_reflect_table: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] photon_reflect_table: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -753,9 +753,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_photon_reflect_surface_test_pattern (f_photon_reflect_surface, 4)
 if (f_photon_reflect_surface == f2_photon_reflect_surface) then
-  print *, 'photon_reflect_surface: C side convert C->F: Good'
+  print *, '[4] photon_reflect_surface: C side convert C->F: Good'
 else
-  print *, 'photon_reflect_surface: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] photon_reflect_surface: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -779,9 +779,9 @@ call photon_reflect_surface_to_f (c_photon_reflect_surface, c_loc(f_photon_refle
 
 call set_photon_reflect_surface_test_pattern (f2_photon_reflect_surface, 2)
 if (f_photon_reflect_surface == f2_photon_reflect_surface) then
-  print *, 'photon_reflect_surface: F side convert C->F: Good'
+  print *, '[2] photon_reflect_surface: F side convert C->F: Good'
 else
-  print *, 'photon_reflect_surface: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] photon_reflect_surface: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -865,9 +865,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_coord_test_pattern (f_coord, 4)
 if (f_coord == f2_coord) then
-  print *, 'coord: C side convert C->F: Good'
+  print *, '[4] coord: C side convert C->F: Good'
 else
-  print *, 'coord: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] coord: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -891,9 +891,9 @@ call coord_to_f (c_coord, c_loc(f_coord))
 
 call set_coord_test_pattern (f2_coord, 2)
 if (f_coord == f2_coord) then
-  print *, 'coord: F side convert C->F: Good'
+  print *, '[2] coord: F side convert C->F: Good'
 else
-  print *, 'coord: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] coord: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1003,9 +1003,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_coord_array_test_pattern (f_coord_array, 4)
 if (f_coord_array == f2_coord_array) then
-  print *, 'coord_array: C side convert C->F: Good'
+  print *, '[4] coord_array: C side convert C->F: Good'
 else
-  print *, 'coord_array: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] coord_array: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1029,9 +1029,9 @@ call coord_array_to_f (c_coord_array, c_loc(f_coord_array))
 
 call set_coord_array_test_pattern (f2_coord_array, 2)
 if (f_coord_array == f2_coord_array) then
-  print *, 'coord_array: F side convert C->F: Good'
+  print *, '[2] coord_array: F side convert C->F: Good'
 else
-  print *, 'coord_array: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] coord_array: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1097,9 +1097,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_bpm_phase_coupling_test_pattern (f_bpm_phase_coupling, 4)
 if (f_bpm_phase_coupling == f2_bpm_phase_coupling) then
-  print *, 'bpm_phase_coupling: C side convert C->F: Good'
+  print *, '[4] bpm_phase_coupling: C side convert C->F: Good'
 else
-  print *, 'bpm_phase_coupling: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] bpm_phase_coupling: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1123,9 +1123,9 @@ call bpm_phase_coupling_to_f (c_bpm_phase_coupling, c_loc(f_bpm_phase_coupling))
 
 call set_bpm_phase_coupling_test_pattern (f2_bpm_phase_coupling, 2)
 if (f_bpm_phase_coupling == f2_bpm_phase_coupling) then
-  print *, 'bpm_phase_coupling: F side convert C->F: Good'
+  print *, '[2] bpm_phase_coupling: F side convert C->F: Good'
 else
-  print *, 'bpm_phase_coupling: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] bpm_phase_coupling: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1201,9 +1201,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_expression_atom_test_pattern (f_expression_atom, 4)
 if (f_expression_atom == f2_expression_atom) then
-  print *, 'expression_atom: C side convert C->F: Good'
+  print *, '[4] expression_atom: C side convert C->F: Good'
 else
-  print *, 'expression_atom: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] expression_atom: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1227,9 +1227,9 @@ call expression_atom_to_f (c_expression_atom, c_loc(f_expression_atom))
 
 call set_expression_atom_test_pattern (f2_expression_atom, 2)
 if (f_expression_atom == f2_expression_atom) then
-  print *, 'expression_atom: F side convert C->F: Good'
+  print *, '[2] expression_atom: F side convert C->F: Good'
 else
-  print *, 'expression_atom: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] expression_atom: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1293,9 +1293,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wake_sr_z_long_test_pattern (f_wake_sr_z_long, 4)
 if (f_wake_sr_z_long == f2_wake_sr_z_long) then
-  print *, 'wake_sr_z_long: C side convert C->F: Good'
+  print *, '[4] wake_sr_z_long: C side convert C->F: Good'
 else
-  print *, 'wake_sr_z_long: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wake_sr_z_long: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1319,9 +1319,9 @@ call wake_sr_z_long_to_f (c_wake_sr_z_long, c_loc(f_wake_sr_z_long))
 
 call set_wake_sr_z_long_test_pattern (f2_wake_sr_z_long, 2)
 if (f_wake_sr_z_long == f2_wake_sr_z_long) then
-  print *, 'wake_sr_z_long: F side convert C->F: Good'
+  print *, '[2] wake_sr_z_long: F side convert C->F: Good'
 else
-  print *, 'wake_sr_z_long: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wake_sr_z_long: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1431,9 +1431,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wake_sr_mode_test_pattern (f_wake_sr_mode, 4)
 if (f_wake_sr_mode == f2_wake_sr_mode) then
-  print *, 'wake_sr_mode: C side convert C->F: Good'
+  print *, '[4] wake_sr_mode: C side convert C->F: Good'
 else
-  print *, 'wake_sr_mode: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wake_sr_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1457,9 +1457,9 @@ call wake_sr_mode_to_f (c_wake_sr_mode, c_loc(f_wake_sr_mode))
 
 call set_wake_sr_mode_test_pattern (f2_wake_sr_mode, 2)
 if (f_wake_sr_mode == f2_wake_sr_mode) then
-  print *, 'wake_sr_mode: F side convert C->F: Good'
+  print *, '[2] wake_sr_mode: F side convert C->F: Good'
 else
-  print *, 'wake_sr_mode: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wake_sr_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1535,9 +1535,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wake_sr_test_pattern (f_wake_sr, 4)
 if (f_wake_sr == f2_wake_sr) then
-  print *, 'wake_sr: C side convert C->F: Good'
+  print *, '[4] wake_sr: C side convert C->F: Good'
 else
-  print *, 'wake_sr: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wake_sr: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1561,9 +1561,9 @@ call wake_sr_to_f (c_wake_sr, c_loc(f_wake_sr))
 
 call set_wake_sr_test_pattern (f2_wake_sr, 2)
 if (f_wake_sr == f2_wake_sr) then
-  print *, 'wake_sr: F side convert C->F: Good'
+  print *, '[2] wake_sr: F side convert C->F: Good'
 else
-  print *, 'wake_sr: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wake_sr: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1657,9 +1657,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wake_lr_mode_test_pattern (f_wake_lr_mode, 4)
 if (f_wake_lr_mode == f2_wake_lr_mode) then
-  print *, 'wake_lr_mode: C side convert C->F: Good'
+  print *, '[4] wake_lr_mode: C side convert C->F: Good'
 else
-  print *, 'wake_lr_mode: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wake_lr_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1683,9 +1683,9 @@ call wake_lr_mode_to_f (c_wake_lr_mode, c_loc(f_wake_lr_mode))
 
 call set_wake_lr_mode_test_pattern (f2_wake_lr_mode, 2)
 if (f_wake_lr_mode == f2_wake_lr_mode) then
-  print *, 'wake_lr_mode: F side convert C->F: Good'
+  print *, '[2] wake_lr_mode: F side convert C->F: Good'
 else
-  print *, 'wake_lr_mode: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wake_lr_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1767,9 +1767,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wake_lr_test_pattern (f_wake_lr, 4)
 if (f_wake_lr == f2_wake_lr) then
-  print *, 'wake_lr: C side convert C->F: Good'
+  print *, '[4] wake_lr: C side convert C->F: Good'
 else
-  print *, 'wake_lr: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wake_lr: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1793,9 +1793,9 @@ call wake_lr_to_f (c_wake_lr, c_loc(f_wake_lr))
 
 call set_wake_lr_test_pattern (f2_wake_lr, 2)
 if (f_wake_lr == f2_wake_lr) then
-  print *, 'wake_lr: F side convert C->F: Good'
+  print *, '[2] wake_lr: F side convert C->F: Good'
 else
-  print *, 'wake_lr: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wake_lr: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1875,9 +1875,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_lat_ele_loc_test_pattern (f_lat_ele_loc, 4)
 if (f_lat_ele_loc == f2_lat_ele_loc) then
-  print *, 'lat_ele_loc: C side convert C->F: Good'
+  print *, '[4] lat_ele_loc: C side convert C->F: Good'
 else
-  print *, 'lat_ele_loc: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] lat_ele_loc: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1901,9 +1901,9 @@ call lat_ele_loc_to_f (c_lat_ele_loc, c_loc(f_lat_ele_loc))
 
 call set_lat_ele_loc_test_pattern (f2_lat_ele_loc, 2)
 if (f_lat_ele_loc == f2_lat_ele_loc) then
-  print *, 'lat_ele_loc: F side convert C->F: Good'
+  print *, '[2] lat_ele_loc: F side convert C->F: Good'
 else
-  print *, 'lat_ele_loc: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] lat_ele_loc: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -1963,9 +1963,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wake_test_pattern (f_wake, 4)
 if (f_wake == f2_wake) then
-  print *, 'wake: C side convert C->F: Good'
+  print *, '[4] wake: C side convert C->F: Good'
 else
-  print *, 'wake: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wake: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -1989,9 +1989,9 @@ call wake_to_f (c_wake, c_loc(f_wake))
 
 call set_wake_test_pattern (f2_wake, 2)
 if (f_wake == f2_wake) then
-  print *, 'wake: F side convert C->F: Good'
+  print *, '[2] wake: F side convert C->F: Good'
 else
-  print *, 'wake: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wake: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2051,9 +2051,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_taylor_term_test_pattern (f_taylor_term, 4)
 if (f_taylor_term == f2_taylor_term) then
-  print *, 'taylor_term: C side convert C->F: Good'
+  print *, '[4] taylor_term: C side convert C->F: Good'
 else
-  print *, 'taylor_term: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] taylor_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2077,9 +2077,9 @@ call taylor_term_to_f (c_taylor_term, c_loc(f_taylor_term))
 
 call set_taylor_term_test_pattern (f2_taylor_term, 2)
 if (f_taylor_term == f2_taylor_term) then
-  print *, 'taylor_term: F side convert C->F: Good'
+  print *, '[2] taylor_term: F side convert C->F: Good'
 else
-  print *, 'taylor_term: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] taylor_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2142,9 +2142,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_taylor_test_pattern (f_taylor, 4)
 if (f_taylor == f2_taylor) then
-  print *, 'taylor: C side convert C->F: Good'
+  print *, '[4] taylor: C side convert C->F: Good'
 else
-  print *, 'taylor: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] taylor: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2168,9 +2168,9 @@ call taylor_to_f (c_taylor, c_loc(f_taylor))
 
 call set_taylor_test_pattern (f2_taylor, 2)
 if (f_taylor == f2_taylor) then
-  print *, 'taylor: F side convert C->F: Good'
+  print *, '[2] taylor: F side convert C->F: Good'
 else
-  print *, 'taylor: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] taylor: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2238,9 +2238,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_em_taylor_term_test_pattern (f_em_taylor_term, 4)
 if (f_em_taylor_term == f2_em_taylor_term) then
-  print *, 'em_taylor_term: C side convert C->F: Good'
+  print *, '[4] em_taylor_term: C side convert C->F: Good'
 else
-  print *, 'em_taylor_term: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] em_taylor_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2264,9 +2264,9 @@ call em_taylor_term_to_f (c_em_taylor_term, c_loc(f_em_taylor_term))
 
 call set_em_taylor_term_test_pattern (f2_em_taylor_term, 2)
 if (f_em_taylor_term == f2_em_taylor_term) then
-  print *, 'em_taylor_term: F side convert C->F: Good'
+  print *, '[2] em_taylor_term: F side convert C->F: Good'
 else
-  print *, 'em_taylor_term: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] em_taylor_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2329,9 +2329,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_em_taylor_test_pattern (f_em_taylor, 4)
 if (f_em_taylor == f2_em_taylor) then
-  print *, 'em_taylor: C side convert C->F: Good'
+  print *, '[4] em_taylor: C side convert C->F: Good'
 else
-  print *, 'em_taylor: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] em_taylor: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2355,9 +2355,9 @@ call em_taylor_to_f (c_em_taylor, c_loc(f_em_taylor))
 
 call set_em_taylor_test_pattern (f2_em_taylor, 2)
 if (f_em_taylor == f2_em_taylor) then
-  print *, 'em_taylor: F side convert C->F: Good'
+  print *, '[2] em_taylor: F side convert C->F: Good'
 else
-  print *, 'em_taylor: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] em_taylor: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2425,9 +2425,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_cartesian_map_term1_test_pattern (f_cartesian_map_term1, 4)
 if (f_cartesian_map_term1 == f2_cartesian_map_term1) then
-  print *, 'cartesian_map_term1: C side convert C->F: Good'
+  print *, '[4] cartesian_map_term1: C side convert C->F: Good'
 else
-  print *, 'cartesian_map_term1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] cartesian_map_term1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2451,9 +2451,9 @@ call cartesian_map_term1_to_f (c_cartesian_map_term1, c_loc(f_cartesian_map_term
 
 call set_cartesian_map_term1_test_pattern (f2_cartesian_map_term1, 2)
 if (f_cartesian_map_term1 == f2_cartesian_map_term1) then
-  print *, 'cartesian_map_term1: F side convert C->F: Good'
+  print *, '[2] cartesian_map_term1: F side convert C->F: Good'
 else
-  print *, 'cartesian_map_term1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] cartesian_map_term1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2527,9 +2527,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_cartesian_map_term_test_pattern (f_cartesian_map_term, 4)
 if (f_cartesian_map_term == f2_cartesian_map_term) then
-  print *, 'cartesian_map_term: C side convert C->F: Good'
+  print *, '[4] cartesian_map_term: C side convert C->F: Good'
 else
-  print *, 'cartesian_map_term: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] cartesian_map_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2553,9 +2553,9 @@ call cartesian_map_term_to_f (c_cartesian_map_term, c_loc(f_cartesian_map_term))
 
 call set_cartesian_map_term_test_pattern (f2_cartesian_map_term, 2)
 if (f_cartesian_map_term == f2_cartesian_map_term) then
-  print *, 'cartesian_map_term: F side convert C->F: Good'
+  print *, '[2] cartesian_map_term: F side convert C->F: Good'
 else
-  print *, 'cartesian_map_term: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] cartesian_map_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2627,9 +2627,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_cartesian_map_test_pattern (f_cartesian_map, 4)
 if (f_cartesian_map == f2_cartesian_map) then
-  print *, 'cartesian_map: C side convert C->F: Good'
+  print *, '[4] cartesian_map: C side convert C->F: Good'
 else
-  print *, 'cartesian_map: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] cartesian_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2653,9 +2653,9 @@ call cartesian_map_to_f (c_cartesian_map, c_loc(f_cartesian_map))
 
 call set_cartesian_map_test_pattern (f2_cartesian_map, 2)
 if (f_cartesian_map == f2_cartesian_map) then
-  print *, 'cartesian_map: F side convert C->F: Good'
+  print *, '[2] cartesian_map: F side convert C->F: Good'
 else
-  print *, 'cartesian_map: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] cartesian_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2732,9 +2732,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_cylindrical_map_term1_test_pattern (f_cylindrical_map_term1, 4)
 if (f_cylindrical_map_term1 == f2_cylindrical_map_term1) then
-  print *, 'cylindrical_map_term1: C side convert C->F: Good'
+  print *, '[4] cylindrical_map_term1: C side convert C->F: Good'
 else
-  print *, 'cylindrical_map_term1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] cylindrical_map_term1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2758,9 +2758,9 @@ call cylindrical_map_term1_to_f (c_cylindrical_map_term1, c_loc(f_cylindrical_ma
 
 call set_cylindrical_map_term1_test_pattern (f2_cylindrical_map_term1, 2)
 if (f_cylindrical_map_term1 == f2_cylindrical_map_term1) then
-  print *, 'cylindrical_map_term1: F side convert C->F: Good'
+  print *, '[2] cylindrical_map_term1: F side convert C->F: Good'
 else
-  print *, 'cylindrical_map_term1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] cylindrical_map_term1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2820,9 +2820,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_cylindrical_map_term_test_pattern (f_cylindrical_map_term, 4)
 if (f_cylindrical_map_term == f2_cylindrical_map_term) then
-  print *, 'cylindrical_map_term: C side convert C->F: Good'
+  print *, '[4] cylindrical_map_term: C side convert C->F: Good'
 else
-  print *, 'cylindrical_map_term: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] cylindrical_map_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2846,9 +2846,9 @@ call cylindrical_map_term_to_f (c_cylindrical_map_term, c_loc(f_cylindrical_map_
 
 call set_cylindrical_map_term_test_pattern (f2_cylindrical_map_term, 2)
 if (f_cylindrical_map_term == f2_cylindrical_map_term) then
-  print *, 'cylindrical_map_term: F side convert C->F: Good'
+  print *, '[2] cylindrical_map_term: F side convert C->F: Good'
 else
-  print *, 'cylindrical_map_term: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] cylindrical_map_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -2920,9 +2920,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_cylindrical_map_test_pattern (f_cylindrical_map, 4)
 if (f_cylindrical_map == f2_cylindrical_map) then
-  print *, 'cylindrical_map: C side convert C->F: Good'
+  print *, '[4] cylindrical_map: C side convert C->F: Good'
 else
-  print *, 'cylindrical_map: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] cylindrical_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2946,9 +2946,9 @@ call cylindrical_map_to_f (c_cylindrical_map, c_loc(f_cylindrical_map))
 
 call set_cylindrical_map_test_pattern (f2_cylindrical_map, 2)
 if (f_cylindrical_map == f2_cylindrical_map) then
-  print *, 'cylindrical_map: F side convert C->F: Good'
+  print *, '[2] cylindrical_map: F side convert C->F: Good'
 else
-  print *, 'cylindrical_map: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] cylindrical_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3033,9 +3033,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_grid_field_pt1_test_pattern (f_grid_field_pt1, 4)
 if (f_grid_field_pt1 == f2_grid_field_pt1) then
-  print *, 'grid_field_pt1: C side convert C->F: Good'
+  print *, '[4] grid_field_pt1: C side convert C->F: Good'
 else
-  print *, 'grid_field_pt1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] grid_field_pt1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3059,9 +3059,9 @@ call grid_field_pt1_to_f (c_grid_field_pt1, c_loc(f_grid_field_pt1))
 
 call set_grid_field_pt1_test_pattern (f2_grid_field_pt1, 2)
 if (f_grid_field_pt1 == f2_grid_field_pt1) then
-  print *, 'grid_field_pt1: F side convert C->F: Good'
+  print *, '[2] grid_field_pt1: F side convert C->F: Good'
 else
-  print *, 'grid_field_pt1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] grid_field_pt1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3127,9 +3127,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_grid_field_pt_test_pattern (f_grid_field_pt, 4)
 if (f_grid_field_pt == f2_grid_field_pt) then
-  print *, 'grid_field_pt: C side convert C->F: Good'
+  print *, '[4] grid_field_pt: C side convert C->F: Good'
 else
-  print *, 'grid_field_pt: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] grid_field_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3153,9 +3153,9 @@ call grid_field_pt_to_f (c_grid_field_pt, c_loc(f_grid_field_pt))
 
 call set_grid_field_pt_test_pattern (f2_grid_field_pt, 2)
 if (f_grid_field_pt == f2_grid_field_pt) then
-  print *, 'grid_field_pt: F side convert C->F: Good'
+  print *, '[2] grid_field_pt: F side convert C->F: Good'
 else
-  print *, 'grid_field_pt: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] grid_field_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3217,9 +3217,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_grid_field_test_pattern (f_grid_field, 4)
 if (f_grid_field == f2_grid_field) then
-  print *, 'grid_field: C side convert C->F: Good'
+  print *, '[4] grid_field: C side convert C->F: Good'
 else
-  print *, 'grid_field: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] grid_field: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3243,9 +3243,9 @@ call grid_field_to_f (c_grid_field, c_loc(f_grid_field))
 
 call set_grid_field_test_pattern (f2_grid_field, 2)
 if (f_grid_field == f2_grid_field) then
-  print *, 'grid_field: F side convert C->F: Good'
+  print *, '[2] grid_field: F side convert C->F: Good'
 else
-  print *, 'grid_field: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] grid_field: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3337,9 +3337,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_floor_position_test_pattern (f_floor_position, 4)
 if (f_floor_position == f2_floor_position) then
-  print *, 'floor_position: C side convert C->F: Good'
+  print *, '[4] floor_position: C side convert C->F: Good'
 else
-  print *, 'floor_position: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] floor_position: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3363,9 +3363,9 @@ call floor_position_to_f (c_floor_position, c_loc(f_floor_position))
 
 call set_floor_position_test_pattern (f2_floor_position, 2)
 if (f_floor_position == f2_floor_position) then
-  print *, 'floor_position: F side convert C->F: Good'
+  print *, '[2] floor_position: F side convert C->F: Good'
 else
-  print *, 'floor_position: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] floor_position: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3438,9 +3438,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_high_energy_space_charge_test_pattern (f_high_energy_space_charge, 4)
 if (f_high_energy_space_charge == f2_high_energy_space_charge) then
-  print *, 'high_energy_space_charge: C side convert C->F: Good'
+  print *, '[4] high_energy_space_charge: C side convert C->F: Good'
 else
-  print *, 'high_energy_space_charge: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] high_energy_space_charge: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3464,9 +3464,9 @@ call high_energy_space_charge_to_f (c_high_energy_space_charge, c_loc(f_high_ene
 
 call set_high_energy_space_charge_test_pattern (f2_high_energy_space_charge, 2)
 if (f_high_energy_space_charge == f2_high_energy_space_charge) then
-  print *, 'high_energy_space_charge: F side convert C->F: Good'
+  print *, '[2] high_energy_space_charge: F side convert C->F: Good'
 else
-  print *, 'high_energy_space_charge: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] high_energy_space_charge: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3538,9 +3538,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_xy_disp_test_pattern (f_xy_disp, 4)
 if (f_xy_disp == f2_xy_disp) then
-  print *, 'xy_disp: C side convert C->F: Good'
+  print *, '[4] xy_disp: C side convert C->F: Good'
 else
-  print *, 'xy_disp: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] xy_disp: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3564,9 +3564,9 @@ call xy_disp_to_f (c_xy_disp, c_loc(f_xy_disp))
 
 call set_xy_disp_test_pattern (f2_xy_disp, 2)
 if (f_xy_disp == f2_xy_disp) then
-  print *, 'xy_disp: F side convert C->F: Good'
+  print *, '[2] xy_disp: F side convert C->F: Good'
 else
-  print *, 'xy_disp: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] xy_disp: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3630,9 +3630,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_twiss_test_pattern (f_twiss, 4)
 if (f_twiss == f2_twiss) then
-  print *, 'twiss: C side convert C->F: Good'
+  print *, '[4] twiss: C side convert C->F: Good'
 else
-  print *, 'twiss: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] twiss: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3656,9 +3656,9 @@ call twiss_to_f (c_twiss, c_loc(f_twiss))
 
 call set_twiss_test_pattern (f2_twiss, 2)
 if (f_twiss == f2_twiss) then
-  print *, 'twiss: F side convert C->F: Good'
+  print *, '[2] twiss: F side convert C->F: Good'
 else
-  print *, 'twiss: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] twiss: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3736,9 +3736,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_mode3_test_pattern (f_mode3, 4)
 if (f_mode3 == f2_mode3) then
-  print *, 'mode3: C side convert C->F: Good'
+  print *, '[4] mode3: C side convert C->F: Good'
 else
-  print *, 'mode3: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] mode3: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3762,9 +3762,9 @@ call mode3_to_f (c_mode3, c_loc(f_mode3))
 
 call set_mode3_test_pattern (f2_mode3, 2)
 if (f_mode3 == f2_mode3) then
-  print *, 'mode3: F side convert C->F: Good'
+  print *, '[2] mode3: F side convert C->F: Good'
 else
-  print *, 'mode3: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] mode3: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3836,9 +3836,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_bookkeeping_state_test_pattern (f_bookkeeping_state, 4)
 if (f_bookkeeping_state == f2_bookkeeping_state) then
-  print *, 'bookkeeping_state: C side convert C->F: Good'
+  print *, '[4] bookkeeping_state: C side convert C->F: Good'
 else
-  print *, 'bookkeeping_state: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] bookkeeping_state: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3862,9 +3862,9 @@ call bookkeeping_state_to_f (c_bookkeeping_state, c_loc(f_bookkeeping_state))
 
 call set_bookkeeping_state_test_pattern (f2_bookkeeping_state, 2)
 if (f_bookkeeping_state == f2_bookkeeping_state) then
-  print *, 'bookkeeping_state: F side convert C->F: Good'
+  print *, '[2] bookkeeping_state: F side convert C->F: Good'
 else
-  print *, 'bookkeeping_state: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] bookkeeping_state: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3938,9 +3938,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_rad_map_test_pattern (f_rad_map, 4)
 if (f_rad_map == f2_rad_map) then
-  print *, 'rad_map: C side convert C->F: Good'
+  print *, '[4] rad_map: C side convert C->F: Good'
 else
-  print *, 'rad_map: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] rad_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -3964,9 +3964,9 @@ call rad_map_to_f (c_rad_map, c_loc(f_rad_map))
 
 call set_rad_map_test_pattern (f2_rad_map, 2)
 if (f_rad_map == f2_rad_map) then
-  print *, 'rad_map: F side convert C->F: Good'
+  print *, '[2] rad_map: F side convert C->F: Good'
 else
-  print *, 'rad_map: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] rad_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4050,9 +4050,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_rad_map_ele_test_pattern (f_rad_map_ele, 4)
 if (f_rad_map_ele == f2_rad_map_ele) then
-  print *, 'rad_map_ele: C side convert C->F: Good'
+  print *, '[4] rad_map_ele: C side convert C->F: Good'
 else
-  print *, 'rad_map_ele: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] rad_map_ele: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4076,9 +4076,9 @@ call rad_map_ele_to_f (c_rad_map_ele, c_loc(f_rad_map_ele))
 
 call set_rad_map_ele_test_pattern (f2_rad_map_ele, 2)
 if (f_rad_map_ele == f2_rad_map_ele) then
-  print *, 'rad_map_ele: F side convert C->F: Good'
+  print *, '[2] rad_map_ele: F side convert C->F: Good'
 else
-  print *, 'rad_map_ele: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] rad_map_ele: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4140,9 +4140,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_gen_grad1_test_pattern (f_gen_grad1, 4)
 if (f_gen_grad1 == f2_gen_grad1) then
-  print *, 'gen_grad1: C side convert C->F: Good'
+  print *, '[4] gen_grad1: C side convert C->F: Good'
 else
-  print *, 'gen_grad1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] gen_grad1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4166,9 +4166,9 @@ call gen_grad1_to_f (c_gen_grad1, c_loc(f_gen_grad1))
 
 call set_gen_grad1_test_pattern (f2_gen_grad1, 2)
 if (f_gen_grad1 == f2_gen_grad1) then
-  print *, 'gen_grad1: F side convert C->F: Good'
+  print *, '[2] gen_grad1: F side convert C->F: Good'
 else
-  print *, 'gen_grad1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] gen_grad1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4242,9 +4242,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_gen_grad_map_test_pattern (f_gen_grad_map, 4)
 if (f_gen_grad_map == f2_gen_grad_map) then
-  print *, 'gen_grad_map: C side convert C->F: Good'
+  print *, '[4] gen_grad_map: C side convert C->F: Good'
 else
-  print *, 'gen_grad_map: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] gen_grad_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4268,9 +4268,9 @@ call gen_grad_map_to_f (c_gen_grad_map, c_loc(f_gen_grad_map))
 
 call set_gen_grad_map_test_pattern (f2_gen_grad_map, 2)
 if (f_gen_grad_map == f2_gen_grad_map) then
-  print *, 'gen_grad_map: F side convert C->F: Good'
+  print *, '[2] gen_grad_map: F side convert C->F: Good'
 else
-  print *, 'gen_grad_map: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] gen_grad_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4361,9 +4361,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_segmented_pt_test_pattern (f_surface_segmented_pt, 4)
 if (f_surface_segmented_pt == f2_surface_segmented_pt) then
-  print *, 'surface_segmented_pt: C side convert C->F: Good'
+  print *, '[4] surface_segmented_pt: C side convert C->F: Good'
 else
-  print *, 'surface_segmented_pt: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_segmented_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4387,9 +4387,9 @@ call surface_segmented_pt_to_f (c_surface_segmented_pt, c_loc(f_surface_segmente
 
 call set_surface_segmented_pt_test_pattern (f2_surface_segmented_pt, 2)
 if (f_surface_segmented_pt == f2_surface_segmented_pt) then
-  print *, 'surface_segmented_pt: F side convert C->F: Good'
+  print *, '[2] surface_segmented_pt: F side convert C->F: Good'
 else
-  print *, 'surface_segmented_pt: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_segmented_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4455,9 +4455,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_segmented_test_pattern (f_surface_segmented, 4)
 if (f_surface_segmented == f2_surface_segmented) then
-  print *, 'surface_segmented: C side convert C->F: Good'
+  print *, '[4] surface_segmented: C side convert C->F: Good'
 else
-  print *, 'surface_segmented: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_segmented: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4481,9 +4481,9 @@ call surface_segmented_to_f (c_surface_segmented, c_loc(f_surface_segmented))
 
 call set_surface_segmented_test_pattern (f2_surface_segmented, 2)
 if (f_surface_segmented == f2_surface_segmented) then
-  print *, 'surface_segmented: F side convert C->F: Good'
+  print *, '[2] surface_segmented: F side convert C->F: Good'
 else
-  print *, 'surface_segmented: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_segmented: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4563,9 +4563,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_h_misalign_pt_test_pattern (f_surface_h_misalign_pt, 4)
 if (f_surface_h_misalign_pt == f2_surface_h_misalign_pt) then
-  print *, 'surface_h_misalign_pt: C side convert C->F: Good'
+  print *, '[4] surface_h_misalign_pt: C side convert C->F: Good'
 else
-  print *, 'surface_h_misalign_pt: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_h_misalign_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4589,9 +4589,9 @@ call surface_h_misalign_pt_to_f (c_surface_h_misalign_pt, c_loc(f_surface_h_misa
 
 call set_surface_h_misalign_pt_test_pattern (f2_surface_h_misalign_pt, 2)
 if (f_surface_h_misalign_pt == f2_surface_h_misalign_pt) then
-  print *, 'surface_h_misalign_pt: F side convert C->F: Good'
+  print *, '[2] surface_h_misalign_pt: F side convert C->F: Good'
 else
-  print *, 'surface_h_misalign_pt: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_h_misalign_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4659,9 +4659,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_h_misalign_test_pattern (f_surface_h_misalign, 4)
 if (f_surface_h_misalign == f2_surface_h_misalign) then
-  print *, 'surface_h_misalign: C side convert C->F: Good'
+  print *, '[4] surface_h_misalign: C side convert C->F: Good'
 else
-  print *, 'surface_h_misalign: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_h_misalign: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4685,9 +4685,9 @@ call surface_h_misalign_to_f (c_surface_h_misalign, c_loc(f_surface_h_misalign))
 
 call set_surface_h_misalign_test_pattern (f2_surface_h_misalign, 2)
 if (f_surface_h_misalign == f2_surface_h_misalign) then
-  print *, 'surface_h_misalign: F side convert C->F: Good'
+  print *, '[2] surface_h_misalign: F side convert C->F: Good'
 else
-  print *, 'surface_h_misalign: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_h_misalign: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4767,9 +4767,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_displacement_pt_test_pattern (f_surface_displacement_pt, 4)
 if (f_surface_displacement_pt == f2_surface_displacement_pt) then
-  print *, 'surface_displacement_pt: C side convert C->F: Good'
+  print *, '[4] surface_displacement_pt: C side convert C->F: Good'
 else
-  print *, 'surface_displacement_pt: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_displacement_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4793,9 +4793,9 @@ call surface_displacement_pt_to_f (c_surface_displacement_pt, c_loc(f_surface_di
 
 call set_surface_displacement_pt_test_pattern (f2_surface_displacement_pt, 2)
 if (f_surface_displacement_pt == f2_surface_displacement_pt) then
-  print *, 'surface_displacement_pt: F side convert C->F: Good'
+  print *, '[2] surface_displacement_pt: F side convert C->F: Good'
 else
-  print *, 'surface_displacement_pt: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_displacement_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4863,9 +4863,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_displacement_test_pattern (f_surface_displacement, 4)
 if (f_surface_displacement == f2_surface_displacement) then
-  print *, 'surface_displacement: C side convert C->F: Good'
+  print *, '[4] surface_displacement: C side convert C->F: Good'
 else
-  print *, 'surface_displacement: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_displacement: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4889,9 +4889,9 @@ call surface_displacement_to_f (c_surface_displacement, c_loc(f_surface_displace
 
 call set_surface_displacement_test_pattern (f2_surface_displacement, 2)
 if (f_surface_displacement == f2_surface_displacement) then
-  print *, 'surface_displacement: F side convert C->F: Good'
+  print *, '[2] surface_displacement: F side convert C->F: Good'
 else
-  print *, 'surface_displacement: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_displacement: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -4971,9 +4971,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_target_point_test_pattern (f_target_point, 4)
 if (f_target_point == f2_target_point) then
-  print *, 'target_point: C side convert C->F: Good'
+  print *, '[4] target_point: C side convert C->F: Good'
 else
-  print *, 'target_point: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] target_point: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -4997,9 +4997,9 @@ call target_point_to_f (c_target_point, c_loc(f_target_point))
 
 call set_target_point_test_pattern (f2_target_point, 2)
 if (f_target_point == f2_target_point) then
-  print *, 'target_point: F side convert C->F: Good'
+  print *, '[2] target_point: F side convert C->F: Good'
 else
-  print *, 'target_point: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] target_point: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5060,9 +5060,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_surface_curvature_test_pattern (f_surface_curvature, 4)
 if (f_surface_curvature == f2_surface_curvature) then
-  print *, 'surface_curvature: C side convert C->F: Good'
+  print *, '[4] surface_curvature: C side convert C->F: Good'
 else
-  print *, 'surface_curvature: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] surface_curvature: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5086,9 +5086,9 @@ call surface_curvature_to_f (c_surface_curvature, c_loc(f_surface_curvature))
 
 call set_surface_curvature_test_pattern (f2_surface_curvature, 2)
 if (f_surface_curvature == f2_surface_curvature) then
-  print *, 'surface_curvature: F side convert C->F: Good'
+  print *, '[2] surface_curvature: F side convert C->F: Good'
 else
-  print *, 'surface_curvature: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] surface_curvature: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5159,9 +5159,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_photon_target_test_pattern (f_photon_target, 4)
 if (f_photon_target == f2_photon_target) then
-  print *, 'photon_target: C side convert C->F: Good'
+  print *, '[4] photon_target: C side convert C->F: Good'
 else
-  print *, 'photon_target: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] photon_target: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5185,9 +5185,9 @@ call photon_target_to_f (c_photon_target, c_loc(f_photon_target))
 
 call set_photon_target_test_pattern (f2_photon_target, 2)
 if (f_photon_target == f2_photon_target) then
-  print *, 'photon_target: F side convert C->F: Good'
+  print *, '[2] photon_target: F side convert C->F: Good'
 else
-  print *, 'photon_target: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] photon_target: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5256,9 +5256,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_photon_material_test_pattern (f_photon_material, 4)
 if (f_photon_material == f2_photon_material) then
-  print *, 'photon_material: C side convert C->F: Good'
+  print *, '[4] photon_material: C side convert C->F: Good'
 else
-  print *, 'photon_material: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] photon_material: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5282,9 +5282,9 @@ call photon_material_to_f (c_photon_material, c_loc(f_photon_material))
 
 call set_photon_material_test_pattern (f2_photon_material, 2)
 if (f_photon_material == f2_photon_material) then
-  print *, 'photon_material: F side convert C->F: Good'
+  print *, '[2] photon_material: F side convert C->F: Good'
 else
-  print *, 'photon_material: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] photon_material: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5362,9 +5362,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_pixel_pt_test_pattern (f_pixel_pt, 4)
 if (f_pixel_pt == f2_pixel_pt) then
-  print *, 'pixel_pt: C side convert C->F: Good'
+  print *, '[4] pixel_pt: C side convert C->F: Good'
 else
-  print *, 'pixel_pt: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] pixel_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5388,9 +5388,9 @@ call pixel_pt_to_f (c_pixel_pt, c_loc(f_pixel_pt))
 
 call set_pixel_pt_test_pattern (f2_pixel_pt, 2)
 if (f_pixel_pt == f2_pixel_pt) then
-  print *, 'pixel_pt: F side convert C->F: Good'
+  print *, '[2] pixel_pt: F side convert C->F: Good'
 else
-  print *, 'pixel_pt: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] pixel_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5478,9 +5478,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_pixel_detec_test_pattern (f_pixel_detec, 4)
 if (f_pixel_detec == f2_pixel_detec) then
-  print *, 'pixel_detec: C side convert C->F: Good'
+  print *, '[4] pixel_detec: C side convert C->F: Good'
 else
-  print *, 'pixel_detec: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] pixel_detec: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5504,9 +5504,9 @@ call pixel_detec_to_f (c_pixel_detec, c_loc(f_pixel_detec))
 
 call set_pixel_detec_test_pattern (f2_pixel_detec, 2)
 if (f_pixel_detec == f2_pixel_detec) then
-  print *, 'pixel_detec: F side convert C->F: Good'
+  print *, '[2] pixel_detec: F side convert C->F: Good'
 else
-  print *, 'pixel_detec: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] pixel_detec: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5590,9 +5590,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_photon_element_test_pattern (f_photon_element, 4)
 if (f_photon_element == f2_photon_element) then
-  print *, 'photon_element: C side convert C->F: Good'
+  print *, '[4] photon_element: C side convert C->F: Good'
 else
-  print *, 'photon_element: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] photon_element: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5616,9 +5616,9 @@ call photon_element_to_f (c_photon_element, c_loc(f_photon_element))
 
 call set_photon_element_test_pattern (f2_photon_element, 2)
 if (f_photon_element == f2_photon_element) then
-  print *, 'photon_element: F side convert C->F: Good'
+  print *, '[2] photon_element: F side convert C->F: Good'
 else
-  print *, 'photon_element: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] photon_element: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5715,9 +5715,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wall3d_vertex_test_pattern (f_wall3d_vertex, 4)
 if (f_wall3d_vertex == f2_wall3d_vertex) then
-  print *, 'wall3d_vertex: C side convert C->F: Good'
+  print *, '[4] wall3d_vertex: C side convert C->F: Good'
 else
-  print *, 'wall3d_vertex: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wall3d_vertex: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5741,9 +5741,9 @@ call wall3d_vertex_to_f (c_wall3d_vertex, c_loc(f_wall3d_vertex))
 
 call set_wall3d_vertex_test_pattern (f2_wall3d_vertex, 2)
 if (f_wall3d_vertex == f2_wall3d_vertex) then
-  print *, 'wall3d_vertex: F side convert C->F: Good'
+  print *, '[2] wall3d_vertex: F side convert C->F: Good'
 else
-  print *, 'wall3d_vertex: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wall3d_vertex: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5817,9 +5817,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wall3d_section_test_pattern (f_wall3d_section, 4)
 if (f_wall3d_section == f2_wall3d_section) then
-  print *, 'wall3d_section: C side convert C->F: Good'
+  print *, '[4] wall3d_section: C side convert C->F: Good'
 else
-  print *, 'wall3d_section: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wall3d_section: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -5843,9 +5843,9 @@ call wall3d_section_to_f (c_wall3d_section, c_loc(f_wall3d_section))
 
 call set_wall3d_section_test_pattern (f2_wall3d_section, 2)
 if (f_wall3d_section == f2_wall3d_section) then
-  print *, 'wall3d_section: F side convert C->F: Good'
+  print *, '[2] wall3d_section: F side convert C->F: Good'
 else
-  print *, 'wall3d_section: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wall3d_section: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -5974,9 +5974,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_wall3d_test_pattern (f_wall3d, 4)
 if (f_wall3d == f2_wall3d) then
-  print *, 'wall3d: C side convert C->F: Good'
+  print *, '[4] wall3d: C side convert C->F: Good'
 else
-  print *, 'wall3d: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] wall3d: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6000,9 +6000,9 @@ call wall3d_to_f (c_wall3d, c_loc(f_wall3d))
 
 call set_wall3d_test_pattern (f2_wall3d, 2)
 if (f_wall3d == f2_wall3d) then
-  print *, 'wall3d: F side convert C->F: Good'
+  print *, '[2] wall3d: F side convert C->F: Good'
 else
-  print *, 'wall3d: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] wall3d: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6092,9 +6092,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_ramper_lord_test_pattern (f_ramper_lord, 4)
 if (f_ramper_lord == f2_ramper_lord) then
-  print *, 'ramper_lord: C side convert C->F: Good'
+  print *, '[4] ramper_lord: C side convert C->F: Good'
 else
-  print *, 'ramper_lord: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] ramper_lord: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6118,9 +6118,9 @@ call ramper_lord_to_f (c_ramper_lord, c_loc(f_ramper_lord))
 
 call set_ramper_lord_test_pattern (f2_ramper_lord, 2)
 if (f_ramper_lord == f2_ramper_lord) then
-  print *, 'ramper_lord: F side convert C->F: Good'
+  print *, '[2] ramper_lord: F side convert C->F: Good'
 else
-  print *, 'ramper_lord: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] ramper_lord: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6188,9 +6188,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_control_test_pattern (f_control, 4)
 if (f_control == f2_control) then
-  print *, 'control: C side convert C->F: Good'
+  print *, '[4] control: C side convert C->F: Good'
 else
-  print *, 'control: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] control: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6214,9 +6214,9 @@ call control_to_f (c_control, c_loc(f_control))
 
 call set_control_test_pattern (f2_control, 2)
 if (f_control == f2_control) then
-  print *, 'control: F side convert C->F: Good'
+  print *, '[2] control: F side convert C->F: Good'
 else
-  print *, 'control: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] control: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6309,9 +6309,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_control_var1_test_pattern (f_control_var1, 4)
 if (f_control_var1 == f2_control_var1) then
-  print *, 'control_var1: C side convert C->F: Good'
+  print *, '[4] control_var1: C side convert C->F: Good'
 else
-  print *, 'control_var1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] control_var1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6335,9 +6335,9 @@ call control_var1_to_f (c_control_var1, c_loc(f_control_var1))
 
 call set_control_var1_test_pattern (f2_control_var1, 2)
 if (f_control_var1 == f2_control_var1) then
-  print *, 'control_var1: F side convert C->F: Good'
+  print *, '[2] control_var1: F side convert C->F: Good'
 else
-  print *, 'control_var1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] control_var1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6401,9 +6401,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_control_ramp1_test_pattern (f_control_ramp1, 4)
 if (f_control_ramp1 == f2_control_ramp1) then
-  print *, 'control_ramp1: C side convert C->F: Good'
+  print *, '[4] control_ramp1: C side convert C->F: Good'
 else
-  print *, 'control_ramp1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] control_ramp1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6427,9 +6427,9 @@ call control_ramp1_to_f (c_control_ramp1, c_loc(f_control_ramp1))
 
 call set_control_ramp1_test_pattern (f2_control_ramp1, 2)
 if (f_control_ramp1 == f2_control_ramp1) then
-  print *, 'control_ramp1: F side convert C->F: Good'
+  print *, '[2] control_ramp1: F side convert C->F: Good'
 else
-  print *, 'control_ramp1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] control_ramp1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6516,9 +6516,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_controller_test_pattern (f_controller, 4)
 if (f_controller == f2_controller) then
-  print *, 'controller: C side convert C->F: Good'
+  print *, '[4] controller: C side convert C->F: Good'
 else
-  print *, 'controller: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] controller: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6542,9 +6542,9 @@ call controller_to_f (c_controller, c_loc(f_controller))
 
 call set_controller_test_pattern (f2_controller, 2)
 if (f_controller == f2_controller) then
-  print *, 'controller: F side convert C->F: Good'
+  print *, '[2] controller: F side convert C->F: Good'
 else
-  print *, 'controller: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] controller: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6641,9 +6641,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_ellipse_beam_init_test_pattern (f_ellipse_beam_init, 4)
 if (f_ellipse_beam_init == f2_ellipse_beam_init) then
-  print *, 'ellipse_beam_init: C side convert C->F: Good'
+  print *, '[4] ellipse_beam_init: C side convert C->F: Good'
 else
-  print *, 'ellipse_beam_init: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] ellipse_beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6667,9 +6667,9 @@ call ellipse_beam_init_to_f (c_ellipse_beam_init, c_loc(f_ellipse_beam_init))
 
 call set_ellipse_beam_init_test_pattern (f2_ellipse_beam_init, 2)
 if (f_ellipse_beam_init == f2_ellipse_beam_init) then
-  print *, 'ellipse_beam_init: F side convert C->F: Good'
+  print *, '[2] ellipse_beam_init: F side convert C->F: Good'
 else
-  print *, 'ellipse_beam_init: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] ellipse_beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6731,9 +6731,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_kv_beam_init_test_pattern (f_kv_beam_init, 4)
 if (f_kv_beam_init == f2_kv_beam_init) then
-  print *, 'kv_beam_init: C side convert C->F: Good'
+  print *, '[4] kv_beam_init: C side convert C->F: Good'
 else
-  print *, 'kv_beam_init: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] kv_beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6757,9 +6757,9 @@ call kv_beam_init_to_f (c_kv_beam_init, c_loc(f_kv_beam_init))
 
 call set_kv_beam_init_test_pattern (f2_kv_beam_init, 2)
 if (f_kv_beam_init == f2_kv_beam_init) then
-  print *, 'kv_beam_init: F side convert C->F: Good'
+  print *, '[2] kv_beam_init: F side convert C->F: Good'
 else
-  print *, 'kv_beam_init: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] kv_beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6824,9 +6824,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_grid_beam_init_test_pattern (f_grid_beam_init, 4)
 if (f_grid_beam_init == f2_grid_beam_init) then
-  print *, 'grid_beam_init: C side convert C->F: Good'
+  print *, '[4] grid_beam_init: C side convert C->F: Good'
 else
-  print *, 'grid_beam_init: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] grid_beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6850,9 +6850,9 @@ call grid_beam_init_to_f (c_grid_beam_init, c_loc(f_grid_beam_init))
 
 call set_grid_beam_init_test_pattern (f2_grid_beam_init, 2)
 if (f_grid_beam_init == f2_grid_beam_init) then
-  print *, 'grid_beam_init: F side convert C->F: Good'
+  print *, '[2] grid_beam_init: F side convert C->F: Good'
 else
-  print *, 'grid_beam_init: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] grid_beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -6920,9 +6920,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_beam_init_test_pattern (f_beam_init, 4)
 if (f_beam_init == f2_beam_init) then
-  print *, 'beam_init: C side convert C->F: Good'
+  print *, '[4] beam_init: C side convert C->F: Good'
 else
-  print *, 'beam_init: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -6946,9 +6946,9 @@ call beam_init_to_f (c_beam_init, c_loc(f_beam_init))
 
 call set_beam_init_test_pattern (f2_beam_init, 2)
 if (f_beam_init == f2_beam_init) then
-  print *, 'beam_init: F side convert C->F: Good'
+  print *, '[2] beam_init: F side convert C->F: Good'
 else
-  print *, 'beam_init: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7106,9 +7106,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_lat_param_test_pattern (f_lat_param, 4)
 if (f_lat_param == f2_lat_param) then
-  print *, 'lat_param: C side convert C->F: Good'
+  print *, '[4] lat_param: C side convert C->F: Good'
 else
-  print *, 'lat_param: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] lat_param: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7132,9 +7132,9 @@ call lat_param_to_f (c_lat_param, c_loc(f_lat_param))
 
 call set_lat_param_test_pattern (f2_lat_param, 2)
 if (f_lat_param == f2_lat_param) then
-  print *, 'lat_param: F side convert C->F: Good'
+  print *, '[2] lat_param: F side convert C->F: Good'
 else
-  print *, 'lat_param: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] lat_param: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7232,9 +7232,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_mode_info_test_pattern (f_mode_info, 4)
 if (f_mode_info == f2_mode_info) then
-  print *, 'mode_info: C side convert C->F: Good'
+  print *, '[4] mode_info: C side convert C->F: Good'
 else
-  print *, 'mode_info: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] mode_info: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7258,9 +7258,9 @@ call mode_info_to_f (c_mode_info, c_loc(f_mode_info))
 
 call set_mode_info_test_pattern (f2_mode_info, 2)
 if (f_mode_info == f2_mode_info) then
-  print *, 'mode_info: F side convert C->F: Good'
+  print *, '[2] mode_info: F side convert C->F: Good'
 else
-  print *, 'mode_info: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] mode_info: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7328,9 +7328,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_pre_tracker_test_pattern (f_pre_tracker, 4)
 if (f_pre_tracker == f2_pre_tracker) then
-  print *, 'pre_tracker: C side convert C->F: Good'
+  print *, '[4] pre_tracker: C side convert C->F: Good'
 else
-  print *, 'pre_tracker: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] pre_tracker: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7354,9 +7354,9 @@ call pre_tracker_to_f (c_pre_tracker, c_loc(f_pre_tracker))
 
 call set_pre_tracker_test_pattern (f2_pre_tracker, 2)
 if (f_pre_tracker == f2_pre_tracker) then
-  print *, 'pre_tracker: F side convert C->F: Good'
+  print *, '[2] pre_tracker: F side convert C->F: Good'
 else
-  print *, 'pre_tracker: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] pre_tracker: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7422,9 +7422,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_anormal_mode_test_pattern (f_anormal_mode, 4)
 if (f_anormal_mode == f2_anormal_mode) then
-  print *, 'anormal_mode: C side convert C->F: Good'
+  print *, '[4] anormal_mode: C side convert C->F: Good'
 else
-  print *, 'anormal_mode: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] anormal_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7448,9 +7448,9 @@ call anormal_mode_to_f (c_anormal_mode, c_loc(f_anormal_mode))
 
 call set_anormal_mode_test_pattern (f2_anormal_mode, 2)
 if (f_anormal_mode == f2_anormal_mode) then
-  print *, 'anormal_mode: F side convert C->F: Good'
+  print *, '[2] anormal_mode: F side convert C->F: Good'
 else
-  print *, 'anormal_mode: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] anormal_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7523,9 +7523,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_linac_normal_mode_test_pattern (f_linac_normal_mode, 4)
 if (f_linac_normal_mode == f2_linac_normal_mode) then
-  print *, 'linac_normal_mode: C side convert C->F: Good'
+  print *, '[4] linac_normal_mode: C side convert C->F: Good'
 else
-  print *, 'linac_normal_mode: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] linac_normal_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7549,9 +7549,9 @@ call linac_normal_mode_to_f (c_linac_normal_mode, c_loc(f_linac_normal_mode))
 
 call set_linac_normal_mode_test_pattern (f2_linac_normal_mode, 2)
 if (f_linac_normal_mode == f2_linac_normal_mode) then
-  print *, 'linac_normal_mode: F side convert C->F: Good'
+  print *, '[2] linac_normal_mode: F side convert C->F: Good'
 else
-  print *, 'linac_normal_mode: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] linac_normal_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7621,9 +7621,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_normal_modes_test_pattern (f_normal_modes, 4)
 if (f_normal_modes == f2_normal_modes) then
-  print *, 'normal_modes: C side convert C->F: Good'
+  print *, '[4] normal_modes: C side convert C->F: Good'
 else
-  print *, 'normal_modes: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] normal_modes: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7647,9 +7647,9 @@ call normal_modes_to_f (c_normal_modes, c_loc(f_normal_modes))
 
 call set_normal_modes_test_pattern (f2_normal_modes, 2)
 if (f_normal_modes == f2_normal_modes) then
-  print *, 'normal_modes: F side convert C->F: Good'
+  print *, '[2] normal_modes: F side convert C->F: Good'
 else
-  print *, 'normal_modes: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] normal_modes: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7734,9 +7734,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_em_field_test_pattern (f_em_field, 4)
 if (f_em_field == f2_em_field) then
-  print *, 'em_field: C side convert C->F: Good'
+  print *, '[4] em_field: C side convert C->F: Good'
 else
-  print *, 'em_field: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] em_field: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7760,9 +7760,9 @@ call em_field_to_f (c_em_field, c_loc(f_em_field))
 
 call set_em_field_test_pattern (f2_em_field, 2)
 if (f_em_field == f2_em_field) then
-  print *, 'em_field: F side convert C->F: Good'
+  print *, '[2] em_field: F side convert C->F: Good'
 else
-  print *, 'em_field: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] em_field: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7849,9 +7849,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_strong_beam_test_pattern (f_strong_beam, 4)
 if (f_strong_beam == f2_strong_beam) then
-  print *, 'strong_beam: C side convert C->F: Good'
+  print *, '[4] strong_beam: C side convert C->F: Good'
 else
-  print *, 'strong_beam: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] strong_beam: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7875,9 +7875,9 @@ call strong_beam_to_f (c_strong_beam, c_loc(f_strong_beam))
 
 call set_strong_beam_test_pattern (f2_strong_beam, 2)
 if (f_strong_beam == f2_strong_beam) then
-  print *, 'strong_beam: F side convert C->F: Good'
+  print *, '[2] strong_beam: F side convert C->F: Good'
 else
-  print *, 'strong_beam: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] strong_beam: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -7947,9 +7947,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_track_point_test_pattern (f_track_point, 4)
 if (f_track_point == f2_track_point) then
-  print *, 'track_point: C side convert C->F: Good'
+  print *, '[4] track_point: C side convert C->F: Good'
 else
-  print *, 'track_point: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] track_point: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -7973,9 +7973,9 @@ call track_point_to_f (c_track_point, c_loc(f_track_point))
 
 call set_track_point_test_pattern (f2_track_point, 2)
 if (f_track_point == f2_track_point) then
-  print *, 'track_point: F side convert C->F: Good'
+  print *, '[2] track_point: F side convert C->F: Good'
 else
-  print *, 'track_point: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] track_point: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8050,9 +8050,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_track_test_pattern (f_track, 4)
 if (f_track == f2_track) then
-  print *, 'track: C side convert C->F: Good'
+  print *, '[4] track: C side convert C->F: Good'
 else
-  print *, 'track: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] track: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8076,9 +8076,9 @@ call track_to_f (c_track, c_loc(f_track))
 
 call set_track_test_pattern (f2_track, 2)
 if (f_track == f2_track) then
-  print *, 'track: F side convert C->F: Good'
+  print *, '[2] track: F side convert C->F: Good'
 else
-  print *, 'track: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] track: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8152,9 +8152,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_space_charge_common_test_pattern (f_space_charge_common, 4)
 if (f_space_charge_common == f2_space_charge_common) then
-  print *, 'space_charge_common: C side convert C->F: Good'
+  print *, '[4] space_charge_common: C side convert C->F: Good'
 else
-  print *, 'space_charge_common: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] space_charge_common: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8178,9 +8178,9 @@ call space_charge_common_to_f (c_space_charge_common, c_loc(f_space_charge_commo
 
 call set_space_charge_common_test_pattern (f2_space_charge_common, 2)
 if (f_space_charge_common == f2_space_charge_common) then
-  print *, 'space_charge_common: F side convert C->F: Good'
+  print *, '[2] space_charge_common: F side convert C->F: Good'
 else
-  print *, 'space_charge_common: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] space_charge_common: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8278,9 +8278,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_bmad_common_test_pattern (f_bmad_common, 4)
 if (f_bmad_common == f2_bmad_common) then
-  print *, 'bmad_common: C side convert C->F: Good'
+  print *, '[4] bmad_common: C side convert C->F: Good'
 else
-  print *, 'bmad_common: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] bmad_common: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8304,9 +8304,9 @@ call bmad_common_to_f (c_bmad_common, c_loc(f_bmad_common))
 
 call set_bmad_common_test_pattern (f2_bmad_common, 2)
 if (f_bmad_common == f2_bmad_common) then
-  print *, 'bmad_common: F side convert C->F: Good'
+  print *, '[2] bmad_common: F side convert C->F: Good'
 else
-  print *, 'bmad_common: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] bmad_common: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8445,9 +8445,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_rad_int1_test_pattern (f_rad_int1, 4)
 if (f_rad_int1 == f2_rad_int1) then
-  print *, 'rad_int1: C side convert C->F: Good'
+  print *, '[4] rad_int1: C side convert C->F: Good'
 else
-  print *, 'rad_int1: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] rad_int1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8471,9 +8471,9 @@ call rad_int1_to_f (c_rad_int1, c_loc(f_rad_int1))
 
 call set_rad_int1_test_pattern (f2_rad_int1, 2)
 if (f_rad_int1 == f2_rad_int1) then
-  print *, 'rad_int1: F side convert C->F: Good'
+  print *, '[2] rad_int1: F side convert C->F: Good'
 else
-  print *, 'rad_int1: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] rad_int1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8565,9 +8565,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_rad_int_branch_test_pattern (f_rad_int_branch, 4)
 if (f_rad_int_branch == f2_rad_int_branch) then
-  print *, 'rad_int_branch: C side convert C->F: Good'
+  print *, '[4] rad_int_branch: C side convert C->F: Good'
 else
-  print *, 'rad_int_branch: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] rad_int_branch: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8591,9 +8591,9 @@ call rad_int_branch_to_f (c_rad_int_branch, c_loc(f_rad_int_branch))
 
 call set_rad_int_branch_test_pattern (f2_rad_int_branch, 2)
 if (f_rad_int_branch == f2_rad_int_branch) then
-  print *, 'rad_int_branch: F side convert C->F: Good'
+  print *, '[2] rad_int_branch: F side convert C->F: Good'
 else
-  print *, 'rad_int_branch: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] rad_int_branch: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8659,9 +8659,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_rad_int_all_ele_test_pattern (f_rad_int_all_ele, 4)
 if (f_rad_int_all_ele == f2_rad_int_all_ele) then
-  print *, 'rad_int_all_ele: C side convert C->F: Good'
+  print *, '[4] rad_int_all_ele: C side convert C->F: Good'
 else
-  print *, 'rad_int_all_ele: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] rad_int_all_ele: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8685,9 +8685,9 @@ call rad_int_all_ele_to_f (c_rad_int_all_ele, c_loc(f_rad_int_all_ele))
 
 call set_rad_int_all_ele_test_pattern (f2_rad_int_all_ele, 2)
 if (f_rad_int_all_ele == f2_rad_int_all_ele) then
-  print *, 'rad_int_all_ele: F side convert C->F: Good'
+  print *, '[2] rad_int_all_ele: F side convert C->F: Good'
 else
-  print *, 'rad_int_all_ele: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] rad_int_all_ele: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -8753,9 +8753,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_ele_test_pattern (f_ele, 4)
 if (f_ele == f2_ele) then
-  print *, 'ele: C side convert C->F: Good'
+  print *, '[4] ele: C side convert C->F: Good'
 else
-  print *, 'ele: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] ele: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -8779,9 +8779,9 @@ call ele_to_f (c_ele, c_loc(f_ele))
 
 call set_ele_test_pattern (f2_ele, 2)
 if (f_ele == f2_ele) then
-  print *, 'ele: F side convert C->F: Good'
+  print *, '[2] ele: F side convert C->F: Good'
 else
-  print *, 'ele: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] ele: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -9191,9 +9191,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_complex_taylor_term_test_pattern (f_complex_taylor_term, 4)
 if (f_complex_taylor_term == f2_complex_taylor_term) then
-  print *, 'complex_taylor_term: C side convert C->F: Good'
+  print *, '[4] complex_taylor_term: C side convert C->F: Good'
 else
-  print *, 'complex_taylor_term: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] complex_taylor_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -9217,9 +9217,9 @@ call complex_taylor_term_to_f (c_complex_taylor_term, c_loc(f_complex_taylor_ter
 
 call set_complex_taylor_term_test_pattern (f2_complex_taylor_term, 2)
 if (f_complex_taylor_term == f2_complex_taylor_term) then
-  print *, 'complex_taylor_term: F side convert C->F: Good'
+  print *, '[2] complex_taylor_term: F side convert C->F: Good'
 else
-  print *, 'complex_taylor_term: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] complex_taylor_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -9282,9 +9282,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_complex_taylor_test_pattern (f_complex_taylor, 4)
 if (f_complex_taylor == f2_complex_taylor) then
-  print *, 'complex_taylor: C side convert C->F: Good'
+  print *, '[4] complex_taylor: C side convert C->F: Good'
 else
-  print *, 'complex_taylor: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] complex_taylor: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -9308,9 +9308,9 @@ call complex_taylor_to_f (c_complex_taylor, c_loc(f_complex_taylor))
 
 call set_complex_taylor_test_pattern (f2_complex_taylor, 2)
 if (f_complex_taylor == f2_complex_taylor) then
-  print *, 'complex_taylor: F side convert C->F: Good'
+  print *, '[2] complex_taylor: F side convert C->F: Good'
 else
-  print *, 'complex_taylor: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] complex_taylor: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -9378,9 +9378,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_branch_test_pattern (f_branch, 4)
 if (f_branch == f2_branch) then
-  print *, 'branch: C side convert C->F: Good'
+  print *, '[4] branch: C side convert C->F: Good'
 else
-  print *, 'branch: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] branch: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -9404,9 +9404,9 @@ call branch_to_f (c_branch, c_loc(f_branch))
 
 call set_branch_test_pattern (f2_branch, 2)
 if (f_branch == f2_branch) then
-  print *, 'branch: F side convert C->F: Good'
+  print *, '[2] branch: F side convert C->F: Good'
 else
-  print *, 'branch: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] branch: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -9506,9 +9506,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_lat_test_pattern (f_lat, 4)
 if (f_lat == f2_lat) then
-  print *, 'lat: C side convert C->F: Good'
+  print *, '[4] lat: C side convert C->F: Good'
 else
-  print *, 'lat: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] lat: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -9532,9 +9532,9 @@ call lat_to_f (c_lat, c_loc(f_lat))
 
 call set_lat_test_pattern (f2_lat, 2)
 if (f_lat == f2_lat) then
-  print *, 'lat: F side convert C->F: Good'
+  print *, '[2] lat: F side convert C->F: Good'
 else
-  print *, 'lat: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] lat: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -9754,9 +9754,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_bunch_test_pattern (f_bunch, 4)
 if (f_bunch == f2_bunch) then
-  print *, 'bunch: C side convert C->F: Good'
+  print *, '[4] bunch: C side convert C->F: Good'
 else
-  print *, 'bunch: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] bunch: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -9780,9 +9780,9 @@ call bunch_to_f (c_bunch, c_loc(f_bunch))
 
 call set_bunch_test_pattern (f2_bunch, 2)
 if (f_bunch == f2_bunch) then
-  print *, 'bunch: F side convert C->F: Good'
+  print *, '[2] bunch: F side convert C->F: Good'
 else
-  print *, 'bunch: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] bunch: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -9883,9 +9883,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_bunch_params_test_pattern (f_bunch_params, 4)
 if (f_bunch_params == f2_bunch_params) then
-  print *, 'bunch_params: C side convert C->F: Good'
+  print *, '[4] bunch_params: C side convert C->F: Good'
 else
-  print *, 'bunch_params: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] bunch_params: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -9909,9 +9909,9 @@ call bunch_params_to_f (c_bunch_params, c_loc(f_bunch_params))
 
 call set_bunch_params_test_pattern (f2_bunch_params, 2)
 if (f_bunch_params == f2_bunch_params) then
-  print *, 'bunch_params: F side convert C->F: Good'
+  print *, '[2] bunch_params: F side convert C->F: Good'
 else
-  print *, 'bunch_params: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] bunch_params: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -10023,9 +10023,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_beam_test_pattern (f_beam, 4)
 if (f_beam == f2_beam) then
-  print *, 'beam: C side convert C->F: Good'
+  print *, '[4] beam: C side convert C->F: Good'
 else
-  print *, 'beam: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] beam: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -10049,9 +10049,9 @@ call beam_to_f (c_beam, c_loc(f_beam))
 
 call set_beam_test_pattern (f2_beam, 2)
 if (f_beam == f2_beam) then
-  print *, 'beam: F side convert C->F: Good'
+  print *, '[2] beam: F side convert C->F: Good'
 else
-  print *, 'beam: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] beam: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -10117,9 +10117,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_aperture_point_test_pattern (f_aperture_point, 4)
 if (f_aperture_point == f2_aperture_point) then
-  print *, 'aperture_point: C side convert C->F: Good'
+  print *, '[4] aperture_point: C side convert C->F: Good'
 else
-  print *, 'aperture_point: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] aperture_point: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -10143,9 +10143,9 @@ call aperture_point_to_f (c_aperture_point, c_loc(f_aperture_point))
 
 call set_aperture_point_test_pattern (f2_aperture_point, 2)
 if (f_aperture_point == f2_aperture_point) then
-  print *, 'aperture_point: F side convert C->F: Good'
+  print *, '[2] aperture_point: F side convert C->F: Good'
 else
-  print *, 'aperture_point: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] aperture_point: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -10211,9 +10211,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_aperture_param_test_pattern (f_aperture_param, 4)
 if (f_aperture_param == f2_aperture_param) then
-  print *, 'aperture_param: C side convert C->F: Good'
+  print *, '[4] aperture_param: C side convert C->F: Good'
 else
-  print *, 'aperture_param: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] aperture_param: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -10237,9 +10237,9 @@ call aperture_param_to_f (c_aperture_param, c_loc(f_aperture_param))
 
 call set_aperture_param_test_pattern (f2_aperture_param, 2)
 if (f_aperture_param == f2_aperture_param) then
-  print *, 'aperture_param: F side convert C->F: Good'
+  print *, '[2] aperture_param: F side convert C->F: Good'
 else
-  print *, 'aperture_param: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] aperture_param: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -10315,9 +10315,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_aperture_scan_test_pattern (f_aperture_scan, 4)
 if (f_aperture_scan == f2_aperture_scan) then
-  print *, 'aperture_scan: C side convert C->F: Good'
+  print *, '[4] aperture_scan: C side convert C->F: Good'
 else
-  print *, 'aperture_scan: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] aperture_scan: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -10341,9 +10341,9 @@ call aperture_scan_to_f (c_aperture_scan, c_loc(f_aperture_scan))
 
 call set_aperture_scan_test_pattern (f2_aperture_scan, 2)
 if (f_aperture_scan == f2_aperture_scan) then
-  print *, 'aperture_scan: F side convert C->F: Good'
+  print *, '[2] aperture_scan: F side convert C->F: Good'
 else
-  print *, 'aperture_scan: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] aperture_scan: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 

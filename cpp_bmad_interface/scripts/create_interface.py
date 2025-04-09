@@ -1421,7 +1421,7 @@ def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
         c.to_c2_set = (
             for1
             + for2
-            + "\n    {int m = DIM2*i + j; KIND_to_c(z_NAME[m], *C.NAME[i][j].get());}"
+            + "\n    {auto m = DIM2*i + j; KIND_to_c(z_NAME[m], *C.NAME[i][j].get());}"
         )
         c.test_pat = test_pat2.replace(
             "C.NAME[i][j] = TEST_VALUE",
@@ -1431,7 +1431,7 @@ def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
             "  const CPP_KIND* z_NAME[DIM1*DIM2];\n"
             + for1
             + for2
-            + "\n    {int m = DIM2*i + j; z_NAME[m] = C.NAME[i][j].get();}\n"
+            + "\n    {auto m = DIM2*i + j; z_NAME[m] = C.NAME[i][j].get();}\n"
         )
 
 
@@ -1455,7 +1455,7 @@ def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
             for1
             + for2
             + for3
-            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], *C.NAME[i][j][k].get());}"
+            + "\n    {auto m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], *C.NAME[i][j][k].get());}"
         )
         c.test_pat = c.test_pat.replace(
             "C.NAME[i][j][k] = TEST_VALUE",
@@ -1466,7 +1466,7 @@ def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
             + for1
             + for2
             + for3
-            + "\n    {int m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = C.NAME[i][j][k].get();}\n"
+            + "\n    {auto m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = C.NAME[i][j][k].get();}\n"
         )
 
 
@@ -1513,7 +1513,7 @@ def configure_c_dim0_ptr(
     cp.test_pat = "\n".join(
         (
             "  if (ix_patt < 3) ",
-            "    C.NAME = NULL;",
+            "    C.NAME = nullptr;",
             "  else {",
             f"    C.NAME = make_shared<{c_type}>();",
             indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2) + "  }",
@@ -1557,8 +1557,8 @@ def configure_c_dim1_ptr(
 """
     cp.test_pat = test_pat_pointer1 + indent(c.test_pat, 2) + "  }\n"
     cp.to_f_setup = """\
-  int n1_NAME = C.NAME.size();
-  c_TYPEArr z_NAME = NULL;
+  auto n1_NAME = C.NAME.size();
+  c_TYPEArr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
   }
@@ -1574,16 +1574,16 @@ def configure_c_dim1_ptr(
             + "  }\n"
         )
         cp.to_f_setup = """\
-  int n1_NAME = C.NAME.size();
-  const CPP_KIND** z_NAME = NULL;
+  auto n1_NAME = C.NAME.size();
+  const CPP_KIND** z_NAME = nullptr;
   if (n1_NAME != 0) {
     z_NAME = new const CPP_KIND*[n1_NAME];
-    for (int i = 0; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
+    for (auto i = 0; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
   }
 """
         cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
+  for (auto i = 0; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
 """
         cp.to_f_cleanup = " if (z_NAME) delete[] z_NAME;\n"
 
@@ -1599,7 +1599,7 @@ def configure_c_dim2_ptr(
     cp.c_instantiation_suffix = ""
     cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
+  for (auto i = 0; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
   C.NAME << z_NAME;
 """
     cp.test_pat = (
@@ -1609,8 +1609,9 @@ def configure_c_dim2_ptr(
     )
     cp.to_f_cleanup = "  delete z_NAME;\n"
     cp.to_f_setup = """\
-  int n1_NAME = C.NAME.size(), n2_NAME = 0;
-  TYPE* z_NAME = NULL;
+  auto n1_NAME { C.NAME.size() };
+  auto n2_NAME { std::size_t{0} };
+  TYPE* z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     z_NAME = new TYPE [n1_NAME*n2_NAME];
@@ -1637,9 +1638,9 @@ def configure_c_dim2_ptr(
         )
         cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) {
+  for (auto i = 0; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (int j = 0; j < n2_NAME; j++) {
+    for (auto j = 0; j < n2_NAME; j++) {
         // auto item = make_shared<CPP_KIND>();
         // C.NAME[i][j] = item;
         auto item = C.NAME[i][j];
@@ -1648,13 +1649,14 @@ def configure_c_dim2_ptr(
   }
 """
         cp.to_f_setup = """
-  int n1_NAME = C.NAME.size(), n2_NAME = 0;
-  const TYPE** z_NAME = NULL;
+  auto n1_NAME { C.NAME.size() };
+  auto n2_NAME { std::size_t{0} };
+  const TYPE** z_NAME { nullptr };
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     z_NAME = new const TYPE* [n1_NAME*n2_NAME];
-    for (int i = 0; i < n1_NAME; i++) {
-      for (int j = 0; j < n2_NAME; j++) {
+    for (auto i = 0; i < n1_NAME; i++) {
+      for (auto j = 0; j < n2_NAME; j++) {
         z_NAME[i*n2_NAME + j] = &C.NAME[i][j];
       }
     }
@@ -1694,7 +1696,7 @@ def configure_c_dim3_ptr(
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
         for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset;
+          auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + XXX + offset;
           C.NAME[i][j][k] = TEST_VALUE;
         }
       }
@@ -1704,8 +1706,10 @@ def configure_c_dim3_ptr(
 
     cp.to_f_cleanup = "  delete z_NAME;\n"
     cp.to_f_setup = """
-  int n1_NAME = C.NAME.size(), n2_NAME = 0, n3_NAME = 0;
-  TYPE* z_NAME = NULL;
+  auto n1_NAME { C.NAME.size() };
+  auto n2_NAME { std::size_t{0} };
+  auto n3_NAME { std::size_t{0} };
+  TYPE* z_NAME { nullptr };
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
@@ -1718,11 +1722,11 @@ def configure_c_dim3_ptr(
     if type == STRUCT:
         cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) {
+  for (auto i = 0; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (int j = 0; j < n2_NAME; j++) {
+    for (auto j = 0; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
-      for (int k = 0; k < n3_NAME; k++) {
+      for (auto k = 0; k < n3_NAME; k++) {
         // C.NAME[i][j][k] = make_shared<CPP_KIND>();
         KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], C.NAME[i][j][k]);
     } } }
@@ -1745,15 +1749,17 @@ def configure_c_dim3_ptr(
   }
 """
         cp.to_f_setup = """
-  int n1_NAME = C.NAME.size(), n2_NAME = 0, n3_NAME = 0;
-  const TYPE** z_NAME = NULL;
+  auto n1_NAME { C.NAME.size() };
+  auto n2_NAME { std::size_t{0} };
+  auto n3_NAME { std::size_t{0} };
+  const TYPE** z_NAME { nullptr };
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
     z_NAME = new const TYPE* [n1_NAME*n2_NAME*n3_NAME];
-    for (int i = 0; i < n1_NAME; i++) {
-      for (int j = 0; j < n2_NAME; j++) {
-        for (int k = 0; k < n3_NAME; k++) {
+    for (auto i = 0; i < n1_NAME; i++) {
+      for (auto j = 0; j < n2_NAME; j++) {
+        for (auto k = 0; k < n3_NAME; k++) {
           z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = &C.NAME[i][j][k];
         }
       }
@@ -1851,7 +1857,7 @@ def setup_char_pointer(c_side_trans):
     cc.to_f2_arg = "c_Char"
     cc.to_f_setup = """\
   size_t n_NAME = 0;
-  const char* z_NAME = NULL;  
+  const char* z_NAME = nullptr;
   if (C.NAME != NULL) {
     z_NAME = C.NAME->c_str();
     n_NAME = 1;
@@ -1885,7 +1891,7 @@ def setup_char_array(c_side_trans):
     cc.to_f2_arg = "c_Char*"
     cc.to_f_setup = """\
   c_Char z_NAME[DIM1];
-  for (int i = 0; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
+  for (auto i = 0; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
 """
     cc.to_c2_arg = "c_Char* z_NAME"
     cc.test_pat = (
@@ -1912,16 +1918,16 @@ def setup_char_array_pointer(c_side_trans):
     cc.to_f2_arg = "c_Char*"
     cc.to_c2_arg = "c_Char* z_NAME"
     cc.to_f_setup = """\
-  int n1_NAME = C.NAME.size();
-  c_Char* z_NAME = NULL;
+  auto n1_NAME = C.NAME.size();
+  c_Char* z_NAME = nullptr;
   if (n1_NAME != 0) {
     z_NAME = new c_Char[n1_NAME];
-    for (int i = 0; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].c_str();
+    for (auto i = 0; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].c_str();
   }
 """
     cc.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (int i = 0; i < n1_NAME; i++) C.NAME[i] = z_NAME[i];
+  for (auto i = 0; i < n1_NAME; i++) C.NAME[i] = z_NAME[i];
 """
     cc.test_pat = (
         test_pat_pointer1
@@ -2843,9 +2849,9 @@ if (.not. f_logic(c_ok)) ok = .false.
 
 call set_{struct.short_name}_test_pattern (f_{struct.short_name}, 4)
 if (f_{struct.short_name} == f2_{struct.short_name}) then
-  print *, '{struct.short_name}: C side convert C->F: Good'
+  print *, '[4] {struct.short_name}: C side convert C->F: Good'
 else
-  print *, '{struct.short_name}: C SIDE CONVERT C->F: FAILED!'
+  print *, '[4] {struct.short_name}: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
 endif
 
@@ -2869,9 +2875,9 @@ call {struct.short_name}_to_f (c_{struct.short_name}, c_loc(f_{struct.short_name
 
 call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 2)
 if (f_{struct.short_name} == f2_{struct.short_name}) then
-  print *, '{struct.short_name}: F side convert C->F: Good'
+  print *, '[2] {struct.short_name}: F side convert C->F: Good'
 else
-  print *, '{struct.short_name}: F SIDE CONVERT C->F: FAILED!'
+  print *, '[2] {struct.short_name}: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
 endif
 
@@ -3181,6 +3187,10 @@ def write_cpp_equality(header: str, file):
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
             file.write(arg.c_side.equality_test)
+            if DEBUG:
+                file.write(
+                    f'  if (!is_eq) {{ std::cout << "not equal: {struct.cpp_class}.{arg.c_name}" << "\\n"; }}\n'
+                )
 
         file.write("  return is_eq;\n")
         file.write("};\n\n")
@@ -3225,7 +3235,8 @@ extern "C" void test2_f_{struct.short_name} ({struct.cpp_class}&, bool&);
 
 void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
 """)
 
@@ -3253,10 +3264,11 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
   {struct.short_name}_to_c (F, C);
   set_{struct.cpp_class}_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {{
-    cout << " {struct.short_name}: C side convert F->C: Good" << endl;
+    cout << " [1] {struct.short_name}: C side convert F->C: Good" << endl;
   }} else {{
-    cout << " {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }}
 
@@ -3267,9 +3279,9 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 
   set_{struct.cpp_class}_test_pattern (C, 3);
   if (C == C2) {{
-    cout << " {struct.short_name}: F side convert F->C: Good" << endl;
+    cout << " [3] {struct.short_name}: F side convert F->C: Good" << endl;
   }} else {{
-    cout << " {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }}
 

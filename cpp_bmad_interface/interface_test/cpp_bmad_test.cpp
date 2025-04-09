@@ -22,7 +22,8 @@ extern "C" void test2_f_spline (CPP_spline&, bool&);
 
 void set_CPP_spline_test_pattern (CPP_spline& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.x0 = rhs;
@@ -50,10 +51,11 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
   spline_to_c (F, C);
   set_CPP_spline_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " spline: C side convert F->C: Good" << endl;
+    cout << " [1] spline: C side convert F->C: Good" << endl;
   } else {
-    cout << " spline: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] spline: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -64,9 +66,9 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
 
   set_CPP_spline_test_pattern (C, 3);
   if (C == C2) {
-    cout << " spline: F side convert F->C: Good" << endl;
+    cout << " [3] spline: F side convert F->C: Good" << endl;
   } else {
-    cout << " spline: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] spline: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -82,7 +84,8 @@ extern "C" void test2_f_spin_polar (CPP_spin_polar&, bool&);
 
 void set_CPP_spin_polar_test_pattern (CPP_spin_polar& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.polarization = rhs;
@@ -110,10 +113,11 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
   spin_polar_to_c (F, C);
   set_CPP_spin_polar_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " spin_polar: C side convert F->C: Good" << endl;
+    cout << " [1] spin_polar: C side convert F->C: Good" << endl;
   } else {
-    cout << " spin_polar: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] spin_polar: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -124,9 +128,9 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
 
   set_CPP_spin_polar_test_pattern (C, 3);
   if (C == C2) {
-    cout << " spin_polar: F side convert F->C: Good" << endl;
+    cout << " [3] spin_polar: F side convert F->C: Good" << endl;
   } else {
-    cout << " spin_polar: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] spin_polar: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -142,7 +146,8 @@ extern "C" void test2_f_ac_kicker_time (CPP_ac_kicker_time&, bool&);
 
 void set_CPP_ac_kicker_time_test_pattern (CPP_ac_kicker_time& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.amp = rhs;
@@ -167,10 +172,11 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
   ac_kicker_time_to_c (F, C);
   set_CPP_ac_kicker_time_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " ac_kicker_time: C side convert F->C: Good" << endl;
+    cout << " [1] ac_kicker_time: C side convert F->C: Good" << endl;
   } else {
-    cout << " ac_kicker_time: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] ac_kicker_time: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -181,9 +187,9 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
 
   set_CPP_ac_kicker_time_test_pattern (C, 3);
   if (C == C2) {
-    cout << " ac_kicker_time: F side convert F->C: Good" << endl;
+    cout << " [3] ac_kicker_time: F side convert F->C: Good" << endl;
   } else {
-    cout << " ac_kicker_time: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] ac_kicker_time: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -199,7 +205,8 @@ extern "C" void test2_f_ac_kicker_freq (CPP_ac_kicker_freq&, bool&);
 
 void set_CPP_ac_kicker_freq_test_pattern (CPP_ac_kicker_freq& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.f = rhs;
@@ -227,10 +234,11 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
   ac_kicker_freq_to_c (F, C);
   set_CPP_ac_kicker_freq_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " ac_kicker_freq: C side convert F->C: Good" << endl;
+    cout << " [1] ac_kicker_freq: C side convert F->C: Good" << endl;
   } else {
-    cout << " ac_kicker_freq: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] ac_kicker_freq: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -241,9 +249,9 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
 
   set_CPP_ac_kicker_freq_test_pattern (C, 3);
   if (C == C2) {
-    cout << " ac_kicker_freq: F side convert F->C: Good" << endl;
+    cout << " [3] ac_kicker_freq: F side convert F->C: Good" << endl;
   } else {
-    cout << " ac_kicker_freq: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] ac_kicker_freq: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -259,7 +267,8 @@ extern "C" void test2_f_ac_kicker (CPP_ac_kicker&, bool&);
 
 void set_CPP_ac_kicker_test_pattern (CPP_ac_kicker& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -291,10 +300,11 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
   ac_kicker_to_c (F, C);
   set_CPP_ac_kicker_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " ac_kicker: C side convert F->C: Good" << endl;
+    cout << " [1] ac_kicker: C side convert F->C: Good" << endl;
   } else {
-    cout << " ac_kicker: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] ac_kicker: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -305,9 +315,9 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
 
   set_CPP_ac_kicker_test_pattern (C, 3);
   if (C == C2) {
-    cout << " ac_kicker: F side convert F->C: Good" << endl;
+    cout << " [3] ac_kicker: F side convert F->C: Good" << endl;
   } else {
-    cout << " ac_kicker: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] ac_kicker: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -323,7 +333,8 @@ extern "C" void test2_f_interval1_coef (CPP_interval1_coef&, bool&);
 
 void set_CPP_interval1_coef_test_pattern (CPP_interval1_coef& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.c0 = rhs;
@@ -348,10 +359,11 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
   interval1_coef_to_c (F, C);
   set_CPP_interval1_coef_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " interval1_coef: C side convert F->C: Good" << endl;
+    cout << " [1] interval1_coef: C side convert F->C: Good" << endl;
   } else {
-    cout << " interval1_coef: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] interval1_coef: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -362,9 +374,9 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
 
   set_CPP_interval1_coef_test_pattern (C, 3);
   if (C == C2) {
-    cout << " interval1_coef: F side convert F->C: Good" << endl;
+    cout << " [3] interval1_coef: F side convert F->C: Good" << endl;
   } else {
-    cout << " interval1_coef: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] interval1_coef: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -380,7 +392,8 @@ extern "C" void test2_f_photon_reflect_table (CPP_photon_reflect_table&, bool&);
 
 void set_CPP_photon_reflect_table_test_pattern (CPP_photon_reflect_table& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, ALLOC]
   if (ix_patt < 3) 
@@ -449,10 +462,11 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
   photon_reflect_table_to_c (F, C);
   set_CPP_photon_reflect_table_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " photon_reflect_table: C side convert F->C: Good" << endl;
+    cout << " [1] photon_reflect_table: C side convert F->C: Good" << endl;
   } else {
-    cout << " photon_reflect_table: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] photon_reflect_table: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -463,9 +477,9 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
 
   set_CPP_photon_reflect_table_test_pattern (C, 3);
   if (C == C2) {
-    cout << " photon_reflect_table: F side convert F->C: Good" << endl;
+    cout << " [3] photon_reflect_table: F side convert F->C: Good" << endl;
   } else {
-    cout << " photon_reflect_table: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] photon_reflect_table: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -481,7 +495,8 @@ extern "C" void test2_f_photon_reflect_surface (CPP_photon_reflect_surface&, boo
 
 void set_CPP_photon_reflect_surface_test_pattern (CPP_photon_reflect_surface& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -526,10 +541,11 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
   photon_reflect_surface_to_c (F, C);
   set_CPP_photon_reflect_surface_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " photon_reflect_surface: C side convert F->C: Good" << endl;
+    cout << " [1] photon_reflect_surface: C side convert F->C: Good" << endl;
   } else {
-    cout << " photon_reflect_surface: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] photon_reflect_surface: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -540,9 +556,9 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
 
   set_CPP_photon_reflect_surface_test_pattern (C, 3);
   if (C == C2) {
-    cout << " photon_reflect_surface: F side convert F->C: Good" << endl;
+    cout << " [3] photon_reflect_surface: F side convert F->C: Good" << endl;
   } else {
-    cout << " photon_reflect_surface: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] photon_reflect_surface: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -558,7 +574,8 @@ extern "C" void test2_f_coord (CPP_coord&, bool&);
 
 void set_CPP_coord_test_pattern (CPP_coord& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.vec.size(); i++)
@@ -637,10 +654,11 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
   coord_to_c (F, C);
   set_CPP_coord_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " coord: C side convert F->C: Good" << endl;
+    cout << " [1] coord: C side convert F->C: Good" << endl;
   } else {
-    cout << " coord: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] coord: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -651,9 +669,9 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
 
   set_CPP_coord_test_pattern (C, 3);
   if (C == C2) {
-    cout << " coord: F side convert F->C: Good" << endl;
+    cout << " [3] coord: F side convert F->C: Good" << endl;
   } else {
-    cout << " coord: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] coord: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -669,7 +687,8 @@ extern "C" void test2_f_coord_array (CPP_coord_array&, bool&);
 
 void set_CPP_coord_array_test_pattern (CPP_coord_array& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -693,10 +712,11 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
   coord_array_to_c (F, C);
   set_CPP_coord_array_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " coord_array: C side convert F->C: Good" << endl;
+    cout << " [1] coord_array: C side convert F->C: Good" << endl;
   } else {
-    cout << " coord_array: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] coord_array: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -707,9 +727,9 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
 
   set_CPP_coord_array_test_pattern (C, 3);
   if (C == C2) {
-    cout << " coord_array: F side convert F->C: Good" << endl;
+    cout << " [3] coord_array: F side convert F->C: Good" << endl;
   } else {
-    cout << " coord_array: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] coord_array: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -725,7 +745,8 @@ extern "C" void test2_f_bpm_phase_coupling (CPP_bpm_phase_coupling&, bool&);
 
 void set_CPP_bpm_phase_coupling_test_pattern (CPP_bpm_phase_coupling& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.k_22a = rhs;
@@ -771,10 +792,11 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
   bpm_phase_coupling_to_c (F, C);
   set_CPP_bpm_phase_coupling_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " bpm_phase_coupling: C side convert F->C: Good" << endl;
+    cout << " [1] bpm_phase_coupling: C side convert F->C: Good" << endl;
   } else {
-    cout << " bpm_phase_coupling: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] bpm_phase_coupling: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -785,9 +807,9 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
 
   set_CPP_bpm_phase_coupling_test_pattern (C, 3);
   if (C == C2) {
-    cout << " bpm_phase_coupling: F side convert F->C: Good" << endl;
+    cout << " [3] bpm_phase_coupling: F side convert F->C: Good" << endl;
   } else {
-    cout << " bpm_phase_coupling: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] bpm_phase_coupling: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -803,7 +825,8 @@ extern "C" void test2_f_expression_atom (CPP_expression_atom&, bool&);
 
 void set_CPP_expression_atom_test_pattern (CPP_expression_atom& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -829,10 +852,11 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
   expression_atom_to_c (F, C);
   set_CPP_expression_atom_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " expression_atom: C side convert F->C: Good" << endl;
+    cout << " [1] expression_atom: C side convert F->C: Good" << endl;
   } else {
-    cout << " expression_atom: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] expression_atom: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -843,9 +867,9 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
 
   set_CPP_expression_atom_test_pattern (C, 3);
   if (C == C2) {
-    cout << " expression_atom: F side convert F->C: Good" << endl;
+    cout << " [3] expression_atom: F side convert F->C: Good" << endl;
   } else {
-    cout << " expression_atom: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] expression_atom: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -861,7 +885,8 @@ extern "C" void test2_f_wake_sr_z_long (CPP_wake_sr_z_long&, bool&);
 
 void set_CPP_wake_sr_z_long_test_pattern (CPP_wake_sr_z_long& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, ALLOC]
   if (ix_patt < 3) 
@@ -924,10 +949,11 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
   wake_sr_z_long_to_c (F, C);
   set_CPP_wake_sr_z_long_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wake_sr_z_long: C side convert F->C: Good" << endl;
+    cout << " [1] wake_sr_z_long: C side convert F->C: Good" << endl;
   } else {
-    cout << " wake_sr_z_long: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wake_sr_z_long: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -938,9 +964,9 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
 
   set_CPP_wake_sr_z_long_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wake_sr_z_long: F side convert F->C: Good" << endl;
+    cout << " [3] wake_sr_z_long: F side convert F->C: Good" << endl;
   } else {
-    cout << " wake_sr_z_long: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wake_sr_z_long: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -956,7 +982,8 @@ extern "C" void test2_f_wake_sr_mode (CPP_wake_sr_mode&, bool&);
 
 void set_CPP_wake_sr_mode_test_pattern (CPP_wake_sr_mode& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.amp = rhs;
@@ -1002,10 +1029,11 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
   wake_sr_mode_to_c (F, C);
   set_CPP_wake_sr_mode_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wake_sr_mode: C side convert F->C: Good" << endl;
+    cout << " [1] wake_sr_mode: C side convert F->C: Good" << endl;
   } else {
-    cout << " wake_sr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wake_sr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1016,9 +1044,9 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
 
   set_CPP_wake_sr_mode_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wake_sr_mode: F side convert F->C: Good" << endl;
+    cout << " [3] wake_sr_mode: F side convert F->C: Good" << endl;
   } else {
-    cout << " wake_sr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wake_sr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1034,7 +1062,8 @@ extern "C" void test2_f_wake_sr (CPP_wake_sr&, bool&);
 
 void set_CPP_wake_sr_test_pattern (CPP_wake_sr& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.file.resize(400);
@@ -1091,10 +1120,11 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
   wake_sr_to_c (F, C);
   set_CPP_wake_sr_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wake_sr: C side convert F->C: Good" << endl;
+    cout << " [1] wake_sr: C side convert F->C: Good" << endl;
   } else {
-    cout << " wake_sr: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wake_sr: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1105,9 +1135,9 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
 
   set_CPP_wake_sr_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wake_sr: F side convert F->C: Good" << endl;
+    cout << " [3] wake_sr: F side convert F->C: Good" << endl;
   } else {
-    cout << " wake_sr: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wake_sr: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1123,7 +1153,8 @@ extern "C" void test2_f_wake_lr_mode (CPP_wake_lr_mode&, bool&);
 
 void set_CPP_wake_lr_mode_test_pattern (CPP_wake_lr_mode& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.freq = rhs;
@@ -1178,10 +1209,11 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
   wake_lr_mode_to_c (F, C);
   set_CPP_wake_lr_mode_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wake_lr_mode: C side convert F->C: Good" << endl;
+    cout << " [1] wake_lr_mode: C side convert F->C: Good" << endl;
   } else {
-    cout << " wake_lr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wake_lr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1192,9 +1224,9 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
 
   set_CPP_wake_lr_mode_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wake_lr_mode: F side convert F->C: Good" << endl;
+    cout << " [3] wake_lr_mode: F side convert F->C: Good" << endl;
   } else {
-    cout << " wake_lr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wake_lr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1210,7 +1242,8 @@ extern "C" void test2_f_wake_lr (CPP_wake_lr&, bool&);
 
 void set_CPP_wake_lr_test_pattern (CPP_wake_lr& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.file.resize(400);
@@ -1253,10 +1286,11 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
   wake_lr_to_c (F, C);
   set_CPP_wake_lr_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wake_lr: C side convert F->C: Good" << endl;
+    cout << " [1] wake_lr: C side convert F->C: Good" << endl;
   } else {
-    cout << " wake_lr: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wake_lr: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1267,9 +1301,9 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
 
   set_CPP_wake_lr_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wake_lr: F side convert F->C: Good" << endl;
+    cout << " [3] wake_lr: F side convert F->C: Good" << endl;
   } else {
-    cout << " wake_lr: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wake_lr: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1285,7 +1319,8 @@ extern "C" void test2_f_lat_ele_loc (CPP_lat_ele_loc&, bool&);
 
 void set_CPP_lat_ele_loc_test_pattern (CPP_lat_ele_loc& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.ix_ele = rhs;
@@ -1307,10 +1342,11 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
   lat_ele_loc_to_c (F, C);
   set_CPP_lat_ele_loc_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " lat_ele_loc: C side convert F->C: Good" << endl;
+    cout << " [1] lat_ele_loc: C side convert F->C: Good" << endl;
   } else {
-    cout << " lat_ele_loc: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] lat_ele_loc: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1321,9 +1357,9 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
 
   set_CPP_lat_ele_loc_test_pattern (C, 3);
   if (C == C2) {
-    cout << " lat_ele_loc: F side convert F->C: Good" << endl;
+    cout << " [3] lat_ele_loc: F side convert F->C: Good" << endl;
   } else {
-    cout << " lat_ele_loc: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] lat_ele_loc: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1339,7 +1375,8 @@ extern "C" void test2_f_wake (CPP_wake&, bool&);
 
 void set_CPP_wake_test_pattern (CPP_wake& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 0, NOT]
   set_CPP_wake_sr_test_pattern(C.sr, ix_patt);
@@ -1361,10 +1398,11 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
   wake_to_c (F, C);
   set_CPP_wake_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wake: C side convert F->C: Good" << endl;
+    cout << " [1] wake: C side convert F->C: Good" << endl;
   } else {
-    cout << " wake: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wake: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1375,9 +1413,9 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
 
   set_CPP_wake_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wake: F side convert F->C: Good" << endl;
+    cout << " [3] wake: F side convert F->C: Good" << endl;
   } else {
-    cout << " wake: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wake: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1393,7 +1431,8 @@ extern "C" void test2_f_taylor_term (CPP_taylor_term&, bool&);
 
 void set_CPP_taylor_term_test_pattern (CPP_taylor_term& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.coef = rhs;
@@ -1415,10 +1454,11 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
   taylor_term_to_c (F, C);
   set_CPP_taylor_term_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " taylor_term: C side convert F->C: Good" << endl;
+    cout << " [1] taylor_term: C side convert F->C: Good" << endl;
   } else {
-    cout << " taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1429,9 +1469,9 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
 
   set_CPP_taylor_term_test_pattern (C, 3);
   if (C == C2) {
-    cout << " taylor_term: F side convert F->C: Good" << endl;
+    cout << " [3] taylor_term: F side convert F->C: Good" << endl;
   } else {
-    cout << " taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1447,7 +1487,8 @@ extern "C" void test2_f_taylor (CPP_taylor&, bool&);
 
 void set_CPP_taylor_test_pattern (CPP_taylor& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.ref = rhs;
@@ -1474,10 +1515,11 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
   taylor_to_c (F, C);
   set_CPP_taylor_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " taylor: C side convert F->C: Good" << endl;
+    cout << " [1] taylor: C side convert F->C: Good" << endl;
   } else {
-    cout << " taylor: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] taylor: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1488,9 +1530,9 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
 
   set_CPP_taylor_test_pattern (C, 3);
   if (C == C2) {
-    cout << " taylor: F side convert F->C: Good" << endl;
+    cout << " [3] taylor: F side convert F->C: Good" << endl;
   } else {
-    cout << " taylor: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] taylor: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1506,7 +1548,8 @@ extern "C" void test2_f_em_taylor_term (CPP_em_taylor_term&, bool&);
 
 void set_CPP_em_taylor_term_test_pattern (CPP_em_taylor_term& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.coef = rhs;
@@ -1528,10 +1571,11 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
   em_taylor_term_to_c (F, C);
   set_CPP_em_taylor_term_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " em_taylor_term: C side convert F->C: Good" << endl;
+    cout << " [1] em_taylor_term: C side convert F->C: Good" << endl;
   } else {
-    cout << " em_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] em_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1542,9 +1586,9 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
 
   set_CPP_em_taylor_term_test_pattern (C, 3);
   if (C == C2) {
-    cout << " em_taylor_term: F side convert F->C: Good" << endl;
+    cout << " [3] em_taylor_term: F side convert F->C: Good" << endl;
   } else {
-    cout << " em_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] em_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1560,7 +1604,8 @@ extern "C" void test2_f_em_taylor (CPP_em_taylor&, bool&);
 
 void set_CPP_em_taylor_test_pattern (CPP_em_taylor& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.ref = rhs;
@@ -1587,10 +1632,11 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
   em_taylor_to_c (F, C);
   set_CPP_em_taylor_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " em_taylor: C side convert F->C: Good" << endl;
+    cout << " [1] em_taylor: C side convert F->C: Good" << endl;
   } else {
-    cout << " em_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] em_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1601,9 +1647,9 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
 
   set_CPP_em_taylor_test_pattern (C, 3);
   if (C == C2) {
-    cout << " em_taylor: F side convert F->C: Good" << endl;
+    cout << " [3] em_taylor: F side convert F->C: Good" << endl;
   } else {
-    cout << " em_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] em_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1619,7 +1665,8 @@ extern "C" void test2_f_cartesian_map_term1 (CPP_cartesian_map_term1&, bool&);
 
 void set_CPP_cartesian_map_term1_test_pattern (CPP_cartesian_map_term1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.coef = rhs;
@@ -1662,10 +1709,11 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
   cartesian_map_term1_to_c (F, C);
   set_CPP_cartesian_map_term1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " cartesian_map_term1: C side convert F->C: Good" << endl;
+    cout << " [1] cartesian_map_term1: C side convert F->C: Good" << endl;
   } else {
-    cout << " cartesian_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] cartesian_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1676,9 +1724,9 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
 
   set_CPP_cartesian_map_term1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " cartesian_map_term1: F side convert F->C: Good" << endl;
+    cout << " [3] cartesian_map_term1: F side convert F->C: Good" << endl;
   } else {
-    cout << " cartesian_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] cartesian_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1694,7 +1742,8 @@ extern "C" void test2_f_cartesian_map_term (CPP_cartesian_map_term&, bool&);
 
 void set_CPP_cartesian_map_term_test_pattern (CPP_cartesian_map_term& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.file.resize(400);
@@ -1725,10 +1774,11 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
   cartesian_map_term_to_c (F, C);
   set_CPP_cartesian_map_term_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " cartesian_map_term: C side convert F->C: Good" << endl;
+    cout << " [1] cartesian_map_term: C side convert F->C: Good" << endl;
   } else {
-    cout << " cartesian_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] cartesian_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1739,9 +1789,9 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
 
   set_CPP_cartesian_map_term_test_pattern (C, 3);
   if (C == C2) {
-    cout << " cartesian_map_term: F side convert F->C: Good" << endl;
+    cout << " [3] cartesian_map_term: F side convert F->C: Good" << endl;
   } else {
-    cout << " cartesian_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] cartesian_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1757,7 +1807,8 @@ extern "C" void test2_f_cartesian_map (CPP_cartesian_map&, bool&);
 
 void set_CPP_cartesian_map_test_pattern (CPP_cartesian_map& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.field_scale = rhs;
@@ -1776,7 +1827,7 @@ void set_CPP_cartesian_map_test_pattern (CPP_cartesian_map& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.ptr = NULL;
+    C.ptr = nullptr;
   else {
     C.ptr = make_shared<CPP_cartesian_map_term>();
     set_CPP_cartesian_map_term_test_pattern((*C.ptr), ix_patt);
@@ -1795,10 +1846,11 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
   cartesian_map_to_c (F, C);
   set_CPP_cartesian_map_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " cartesian_map: C side convert F->C: Good" << endl;
+    cout << " [1] cartesian_map: C side convert F->C: Good" << endl;
   } else {
-    cout << " cartesian_map: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] cartesian_map: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1809,9 +1861,9 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
 
   set_CPP_cartesian_map_test_pattern (C, 3);
   if (C == C2) {
-    cout << " cartesian_map: F side convert F->C: Good" << endl;
+    cout << " [3] cartesian_map: F side convert F->C: Good" << endl;
   } else {
-    cout << " cartesian_map: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] cartesian_map: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1827,7 +1879,8 @@ extern "C" void test2_f_cylindrical_map_term1 (CPP_cylindrical_map_term1&, bool&
 
 void set_CPP_cylindrical_map_term1_test_pattern (CPP_cylindrical_map_term1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[complex, 0, NOT]
   rhs = 1 + offset; C.e_coef = Complex(rhs, 100+rhs);
@@ -1849,10 +1902,11 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
   cylindrical_map_term1_to_c (F, C);
   set_CPP_cylindrical_map_term1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " cylindrical_map_term1: C side convert F->C: Good" << endl;
+    cout << " [1] cylindrical_map_term1: C side convert F->C: Good" << endl;
   } else {
-    cout << " cylindrical_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] cylindrical_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1863,9 +1917,9 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
 
   set_CPP_cylindrical_map_term1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " cylindrical_map_term1: F side convert F->C: Good" << endl;
+    cout << " [3] cylindrical_map_term1: F side convert F->C: Good" << endl;
   } else {
-    cout << " cylindrical_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] cylindrical_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1881,7 +1935,8 @@ extern "C" void test2_f_cylindrical_map_term (CPP_cylindrical_map_term&, bool&);
 
 void set_CPP_cylindrical_map_term_test_pattern (CPP_cylindrical_map_term& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.file.resize(400);
@@ -1912,10 +1967,11 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
   cylindrical_map_term_to_c (F, C);
   set_CPP_cylindrical_map_term_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " cylindrical_map_term: C side convert F->C: Good" << endl;
+    cout << " [1] cylindrical_map_term: C side convert F->C: Good" << endl;
   } else {
-    cout << " cylindrical_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] cylindrical_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1926,9 +1982,9 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
 
   set_CPP_cylindrical_map_term_test_pattern (C, 3);
   if (C == C2) {
-    cout << " cylindrical_map_term: F side convert F->C: Good" << endl;
+    cout << " [3] cylindrical_map_term: F side convert F->C: Good" << endl;
   } else {
-    cout << " cylindrical_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] cylindrical_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -1944,7 +2000,8 @@ extern "C" void test2_f_cylindrical_map (CPP_cylindrical_map&, bool&);
 
 void set_CPP_cylindrical_map_test_pattern (CPP_cylindrical_map& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.m = rhs;
@@ -1975,7 +2032,7 @@ void set_CPP_cylindrical_map_test_pattern (CPP_cylindrical_map& C, int ix_patt) 
     {int rhs = 101 + i + 9 + offset; C.r0[i] = rhs;}
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.ptr = NULL;
+    C.ptr = nullptr;
   else {
     C.ptr = make_shared<CPP_cylindrical_map_term>();
     set_CPP_cylindrical_map_term_test_pattern((*C.ptr), ix_patt);
@@ -1994,10 +2051,11 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
   cylindrical_map_to_c (F, C);
   set_CPP_cylindrical_map_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " cylindrical_map: C side convert F->C: Good" << endl;
+    cout << " [1] cylindrical_map: C side convert F->C: Good" << endl;
   } else {
-    cout << " cylindrical_map: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] cylindrical_map: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2008,9 +2066,9 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
 
   set_CPP_cylindrical_map_test_pattern (C, 3);
   if (C == C2) {
-    cout << " cylindrical_map: F side convert F->C: Good" << endl;
+    cout << " [3] cylindrical_map: F side convert F->C: Good" << endl;
   } else {
-    cout << " cylindrical_map: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] cylindrical_map: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2026,7 +2084,8 @@ extern "C" void test2_f_grid_field_pt1 (CPP_grid_field_pt1&, bool&);
 
 void set_CPP_grid_field_pt1_test_pattern (CPP_grid_field_pt1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[complex, 1, NOT]
   for (size_t i = 0; i < C.e.size(); i++)
@@ -2048,10 +2107,11 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
   grid_field_pt1_to_c (F, C);
   set_CPP_grid_field_pt1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " grid_field_pt1: C side convert F->C: Good" << endl;
+    cout << " [1] grid_field_pt1: C side convert F->C: Good" << endl;
   } else {
-    cout << " grid_field_pt1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] grid_field_pt1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2062,9 +2122,9 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
 
   set_CPP_grid_field_pt1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " grid_field_pt1: F side convert F->C: Good" << endl;
+    cout << " [3] grid_field_pt1: F side convert F->C: Good" << endl;
   } else {
-    cout << " grid_field_pt1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] grid_field_pt1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2080,7 +2140,8 @@ extern "C" void test2_f_grid_field_pt (CPP_grid_field_pt&, bool&);
 
 void set_CPP_grid_field_pt_test_pattern (CPP_grid_field_pt& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.file.resize(400);
@@ -2103,10 +2164,11 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
   grid_field_pt_to_c (F, C);
   set_CPP_grid_field_pt_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " grid_field_pt: C side convert F->C: Good" << endl;
+    cout << " [1] grid_field_pt: C side convert F->C: Good" << endl;
   } else {
-    cout << " grid_field_pt: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] grid_field_pt: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2117,9 +2179,9 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
 
   set_CPP_grid_field_pt_test_pattern (C, 3);
   if (C == C2) {
-    cout << " grid_field_pt: F side convert F->C: Good" << endl;
+    cout << " [3] grid_field_pt: F side convert F->C: Good" << endl;
   } else {
-    cout << " grid_field_pt: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] grid_field_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2135,7 +2197,8 @@ extern "C" void test2_f_grid_field (CPP_grid_field&, bool&);
 
 void set_CPP_grid_field_test_pattern (CPP_grid_field& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.geometry = rhs;
@@ -2172,7 +2235,7 @@ void set_CPP_grid_field_test_pattern (CPP_grid_field& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.ptr = NULL;
+    C.ptr = nullptr;
   else {
     C.ptr = make_shared<CPP_grid_field_pt>();
     set_CPP_grid_field_pt_test_pattern((*C.ptr), ix_patt);
@@ -2191,10 +2254,11 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
   grid_field_to_c (F, C);
   set_CPP_grid_field_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " grid_field: C side convert F->C: Good" << endl;
+    cout << " [1] grid_field: C side convert F->C: Good" << endl;
   } else {
-    cout << " grid_field: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] grid_field: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2205,9 +2269,9 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
 
   set_CPP_grid_field_test_pattern (C, 3);
   if (C == C2) {
-    cout << " grid_field: F side convert F->C: Good" << endl;
+    cout << " [3] grid_field: F side convert F->C: Good" << endl;
   } else {
-    cout << " grid_field: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] grid_field: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2223,7 +2287,8 @@ extern "C" void test2_f_floor_position (CPP_floor_position&, bool&);
 
 void set_CPP_floor_position_test_pattern (CPP_floor_position& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.r.size(); i++)
@@ -2254,10 +2319,11 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
   floor_position_to_c (F, C);
   set_CPP_floor_position_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " floor_position: C side convert F->C: Good" << endl;
+    cout << " [1] floor_position: C side convert F->C: Good" << endl;
   } else {
-    cout << " floor_position: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] floor_position: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2268,9 +2334,9 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
 
   set_CPP_floor_position_test_pattern (C, 3);
   if (C == C2) {
-    cout << " floor_position: F side convert F->C: Good" << endl;
+    cout << " [3] floor_position: F side convert F->C: Good" << endl;
   } else {
-    cout << " floor_position: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] floor_position: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2286,7 +2352,8 @@ extern "C" void test2_f_high_energy_space_charge (CPP_high_energy_space_charge&,
 
 void set_CPP_high_energy_space_charge_test_pattern (CPP_high_energy_space_charge& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 0, NOT]
   set_CPP_coord_test_pattern(C.closed_orb, ix_patt);
@@ -2326,10 +2393,11 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
   high_energy_space_charge_to_c (F, C);
   set_CPP_high_energy_space_charge_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " high_energy_space_charge: C side convert F->C: Good" << endl;
+    cout << " [1] high_energy_space_charge: C side convert F->C: Good" << endl;
   } else {
-    cout << " high_energy_space_charge: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] high_energy_space_charge: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2340,9 +2408,9 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
 
   set_CPP_high_energy_space_charge_test_pattern (C, 3);
   if (C == C2) {
-    cout << " high_energy_space_charge: F side convert F->C: Good" << endl;
+    cout << " [3] high_energy_space_charge: F side convert F->C: Good" << endl;
   } else {
-    cout << " high_energy_space_charge: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] high_energy_space_charge: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2358,7 +2426,8 @@ extern "C" void test2_f_xy_disp (CPP_xy_disp&, bool&);
 
 void set_CPP_xy_disp_test_pattern (CPP_xy_disp& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.eta = rhs;
@@ -2386,10 +2455,11 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
   xy_disp_to_c (F, C);
   set_CPP_xy_disp_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " xy_disp: C side convert F->C: Good" << endl;
+    cout << " [1] xy_disp: C side convert F->C: Good" << endl;
   } else {
-    cout << " xy_disp: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] xy_disp: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2400,9 +2470,9 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
 
   set_CPP_xy_disp_test_pattern (C, 3);
   if (C == C2) {
-    cout << " xy_disp: F side convert F->C: Good" << endl;
+    cout << " [3] xy_disp: F side convert F->C: Good" << endl;
   } else {
-    cout << " xy_disp: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] xy_disp: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2418,7 +2488,8 @@ extern "C" void test2_f_twiss (CPP_twiss&, bool&);
 
 void set_CPP_twiss_test_pattern (CPP_twiss& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.beta = rhs;
@@ -2467,10 +2538,11 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
   twiss_to_c (F, C);
   set_CPP_twiss_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " twiss: C side convert F->C: Good" << endl;
+    cout << " [1] twiss: C side convert F->C: Good" << endl;
   } else {
-    cout << " twiss: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] twiss: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2481,9 +2553,9 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
 
   set_CPP_twiss_test_pattern (C, 3);
   if (C == C2) {
-    cout << " twiss: F side convert F->C: Good" << endl;
+    cout << " [3] twiss: F side convert F->C: Good" << endl;
   } else {
-    cout << " twiss: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] twiss: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2499,7 +2571,8 @@ extern "C" void test2_f_mode3 (CPP_mode3&, bool&);
 
 void set_CPP_mode3_test_pattern (CPP_mode3& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 2, NOT]
   for (size_t i = 0; i < C.v.size(); i++)  for (size_t j = 0; j < C.v[0].size(); j++) 
@@ -2533,10 +2606,11 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
   mode3_to_c (F, C);
   set_CPP_mode3_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " mode3: C side convert F->C: Good" << endl;
+    cout << " [1] mode3: C side convert F->C: Good" << endl;
   } else {
-    cout << " mode3: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] mode3: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2547,9 +2621,9 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
 
   set_CPP_mode3_test_pattern (C, 3);
   if (C == C2) {
-    cout << " mode3: F side convert F->C: Good" << endl;
+    cout << " [3] mode3: F side convert F->C: Good" << endl;
   } else {
-    cout << " mode3: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] mode3: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2565,7 +2639,8 @@ extern "C" void test2_f_bookkeeping_state (CPP_bookkeeping_state&, bool&);
 
 void set_CPP_bookkeeping_state_test_pattern (CPP_bookkeeping_state& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.attributes = rhs;
@@ -2608,10 +2683,11 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
   bookkeeping_state_to_c (F, C);
   set_CPP_bookkeeping_state_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " bookkeeping_state: C side convert F->C: Good" << endl;
+    cout << " [1] bookkeeping_state: C side convert F->C: Good" << endl;
   } else {
-    cout << " bookkeeping_state: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] bookkeeping_state: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2622,9 +2698,9 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
 
   set_CPP_bookkeeping_state_test_pattern (C, 3);
   if (C == C2) {
-    cout << " bookkeeping_state: F side convert F->C: Good" << endl;
+    cout << " [3] bookkeeping_state: F side convert F->C: Good" << endl;
   } else {
-    cout << " bookkeeping_state: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] bookkeeping_state: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2640,7 +2716,8 @@ extern "C" void test2_f_rad_map (CPP_rad_map&, bool&);
 
 void set_CPP_rad_map_test_pattern (CPP_rad_map& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.ref_orb.size(); i++)
@@ -2671,10 +2748,11 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
   rad_map_to_c (F, C);
   set_CPP_rad_map_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " rad_map: C side convert F->C: Good" << endl;
+    cout << " [1] rad_map: C side convert F->C: Good" << endl;
   } else {
-    cout << " rad_map: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] rad_map: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2685,9 +2763,9 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
 
   set_CPP_rad_map_test_pattern (C, 3);
   if (C == C2) {
-    cout << " rad_map: F side convert F->C: Good" << endl;
+    cout << " [3] rad_map: F side convert F->C: Good" << endl;
   } else {
-    cout << " rad_map: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] rad_map: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2703,7 +2781,8 @@ extern "C" void test2_f_rad_map_ele (CPP_rad_map_ele&, bool&);
 
 void set_CPP_rad_map_ele_test_pattern (CPP_rad_map_ele& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 0, NOT]
   set_CPP_rad_map_test_pattern(C.rm0, ix_patt);
@@ -2728,10 +2807,11 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
   rad_map_ele_to_c (F, C);
   set_CPP_rad_map_ele_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " rad_map_ele: C side convert F->C: Good" << endl;
+    cout << " [1] rad_map_ele: C side convert F->C: Good" << endl;
   } else {
-    cout << " rad_map_ele: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] rad_map_ele: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2742,9 +2822,9 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
 
   set_CPP_rad_map_ele_test_pattern (C, 3);
   if (C == C2) {
-    cout << " rad_map_ele: F side convert F->C: Good" << endl;
+    cout << " [3] rad_map_ele: F side convert F->C: Good" << endl;
   } else {
-    cout << " rad_map_ele: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] rad_map_ele: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2760,7 +2840,8 @@ extern "C" void test2_f_gen_grad1 (CPP_gen_grad1&, bool&);
 
 void set_CPP_gen_grad1_test_pattern (CPP_gen_grad1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.m = rhs;
@@ -2795,10 +2876,11 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
   gen_grad1_to_c (F, C);
   set_CPP_gen_grad1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " gen_grad1: C side convert F->C: Good" << endl;
+    cout << " [1] gen_grad1: C side convert F->C: Good" << endl;
   } else {
-    cout << " gen_grad1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] gen_grad1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2809,9 +2891,9 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
 
   set_CPP_gen_grad1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " gen_grad1: F side convert F->C: Good" << endl;
+    cout << " [3] gen_grad1: F side convert F->C: Good" << endl;
   } else {
-    cout << " gen_grad1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] gen_grad1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2827,7 +2909,8 @@ extern "C" void test2_f_gen_grad_map (CPP_gen_grad_map&, bool&);
 
 void set_CPP_gen_grad_map_test_pattern (CPP_gen_grad_map& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.file.resize(400);
@@ -2882,10 +2965,11 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
   gen_grad_map_to_c (F, C);
   set_CPP_gen_grad_map_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " gen_grad_map: C side convert F->C: Good" << endl;
+    cout << " [1] gen_grad_map: C side convert F->C: Good" << endl;
   } else {
-    cout << " gen_grad_map: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] gen_grad_map: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2896,9 +2980,9 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
 
   set_CPP_gen_grad_map_test_pattern (C, 3);
   if (C == C2) {
-    cout << " gen_grad_map: F side convert F->C: Good" << endl;
+    cout << " [3] gen_grad_map: F side convert F->C: Good" << endl;
   } else {
-    cout << " gen_grad_map: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] gen_grad_map: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2914,7 +2998,8 @@ extern "C" void test2_f_surface_segmented_pt (CPP_surface_segmented_pt&, bool&);
 
 void set_CPP_surface_segmented_pt_test_pattern (CPP_surface_segmented_pt& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.x0 = rhs;
@@ -2945,10 +3030,11 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
   surface_segmented_pt_to_c (F, C);
   set_CPP_surface_segmented_pt_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_segmented_pt: C side convert F->C: Good" << endl;
+    cout << " [1] surface_segmented_pt: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_segmented_pt: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_segmented_pt: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2959,9 +3045,9 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
 
   set_CPP_surface_segmented_pt_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_segmented_pt: F side convert F->C: Good" << endl;
+    cout << " [3] surface_segmented_pt: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_segmented_pt: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_segmented_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -2977,7 +3063,8 @@ extern "C" void test2_f_surface_segmented (CPP_surface_segmented&, bool&);
 
 void set_CPP_surface_segmented_test_pattern (CPP_surface_segmented& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[logical, 0, NOT]
   rhs = 1 + offset; C.active = (rhs % 2 == 0);
@@ -3019,10 +3106,11 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
   surface_segmented_to_c (F, C);
   set_CPP_surface_segmented_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_segmented: C side convert F->C: Good" << endl;
+    cout << " [1] surface_segmented: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_segmented: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_segmented: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3033,9 +3121,9 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
 
   set_CPP_surface_segmented_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_segmented: F side convert F->C: Good" << endl;
+    cout << " [3] surface_segmented: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_segmented: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_segmented: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3051,7 +3139,8 @@ extern "C" void test2_f_surface_h_misalign_pt (CPP_surface_h_misalign_pt&, bool&
 
 void set_CPP_surface_h_misalign_pt_test_pattern (CPP_surface_h_misalign_pt& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.x0 = rhs;
@@ -3085,10 +3174,11 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
   surface_h_misalign_pt_to_c (F, C);
   set_CPP_surface_h_misalign_pt_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_h_misalign_pt: C side convert F->C: Good" << endl;
+    cout << " [1] surface_h_misalign_pt: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_h_misalign_pt: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_h_misalign_pt: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3099,9 +3189,9 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
 
   set_CPP_surface_h_misalign_pt_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_h_misalign_pt: F side convert F->C: Good" << endl;
+    cout << " [3] surface_h_misalign_pt: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_h_misalign_pt: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_h_misalign_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3117,7 +3207,8 @@ extern "C" void test2_f_surface_h_misalign (CPP_surface_h_misalign&, bool&);
 
 void set_CPP_surface_h_misalign_test_pattern (CPP_surface_h_misalign& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[logical, 0, NOT]
   rhs = 1 + offset; C.active = (rhs % 2 == 0);
@@ -3159,10 +3250,11 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
   surface_h_misalign_to_c (F, C);
   set_CPP_surface_h_misalign_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_h_misalign: C side convert F->C: Good" << endl;
+    cout << " [1] surface_h_misalign: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_h_misalign: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_h_misalign: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3173,9 +3265,9 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
 
   set_CPP_surface_h_misalign_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_h_misalign: F side convert F->C: Good" << endl;
+    cout << " [3] surface_h_misalign: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_h_misalign: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_h_misalign: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3191,7 +3283,8 @@ extern "C" void test2_f_surface_displacement_pt (CPP_surface_displacement_pt&, b
 
 void set_CPP_surface_displacement_pt_test_pattern (CPP_surface_displacement_pt& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.x0 = rhs;
@@ -3225,10 +3318,11 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
   surface_displacement_pt_to_c (F, C);
   set_CPP_surface_displacement_pt_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_displacement_pt: C side convert F->C: Good" << endl;
+    cout << " [1] surface_displacement_pt: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_displacement_pt: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_displacement_pt: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3239,9 +3333,9 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
 
   set_CPP_surface_displacement_pt_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_displacement_pt: F side convert F->C: Good" << endl;
+    cout << " [3] surface_displacement_pt: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_displacement_pt: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_displacement_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3257,7 +3351,8 @@ extern "C" void test2_f_surface_displacement (CPP_surface_displacement&, bool&);
 
 void set_CPP_surface_displacement_test_pattern (CPP_surface_displacement& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[logical, 0, NOT]
   rhs = 1 + offset; C.active = (rhs % 2 == 0);
@@ -3299,10 +3394,11 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
   surface_displacement_to_c (F, C);
   set_CPP_surface_displacement_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_displacement: C side convert F->C: Good" << endl;
+    cout << " [1] surface_displacement: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_displacement: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_displacement: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3313,9 +3409,9 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
 
   set_CPP_surface_displacement_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_displacement: F side convert F->C: Good" << endl;
+    cout << " [3] surface_displacement: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_displacement: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_displacement: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3331,7 +3427,8 @@ extern "C" void test2_f_target_point (CPP_target_point&, bool&);
 
 void set_CPP_target_point_test_pattern (CPP_target_point& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.r.size(); i++)
@@ -3350,10 +3447,11 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
   target_point_to_c (F, C);
   set_CPP_target_point_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " target_point: C side convert F->C: Good" << endl;
+    cout << " [1] target_point: C side convert F->C: Good" << endl;
   } else {
-    cout << " target_point: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] target_point: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3364,9 +3462,9 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
 
   set_CPP_target_point_test_pattern (C, 3);
   if (C == C2) {
-    cout << " target_point: F side convert F->C: Good" << endl;
+    cout << " [3] target_point: F side convert F->C: Good" << endl;
   } else {
-    cout << " target_point: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] target_point: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3382,7 +3480,8 @@ extern "C" void test2_f_surface_curvature (CPP_surface_curvature&, bool&);
 
 void set_CPP_surface_curvature_test_pattern (CPP_surface_curvature& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 2, NOT]
   for (size_t i = 0; i < C.xy.size(); i++)  for (size_t j = 0; j < C.xy[0].size(); j++) 
@@ -3410,10 +3509,11 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
   surface_curvature_to_c (F, C);
   set_CPP_surface_curvature_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " surface_curvature: C side convert F->C: Good" << endl;
+    cout << " [1] surface_curvature: C side convert F->C: Good" << endl;
   } else {
-    cout << " surface_curvature: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] surface_curvature: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3424,9 +3524,9 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
 
   set_CPP_surface_curvature_test_pattern (C, 3);
   if (C == C2) {
-    cout << " surface_curvature: F side convert F->C: Good" << endl;
+    cout << " [3] surface_curvature: F side convert F->C: Good" << endl;
   } else {
-    cout << " surface_curvature: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] surface_curvature: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3442,7 +3542,8 @@ extern "C" void test2_f_photon_target (CPP_photon_target&, bool&);
 
 void set_CPP_photon_target_test_pattern (CPP_photon_target& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.type = rhs;
@@ -3473,10 +3574,11 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
   photon_target_to_c (F, C);
   set_CPP_photon_target_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " photon_target: C side convert F->C: Good" << endl;
+    cout << " [1] photon_target: C side convert F->C: Good" << endl;
   } else {
-    cout << " photon_target: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] photon_target: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3487,9 +3589,9 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
 
   set_CPP_photon_target_test_pattern (C, 3);
   if (C == C2) {
-    cout << " photon_target: F side convert F->C: Good" << endl;
+    cout << " [3] photon_target: F side convert F->C: Good" << endl;
   } else {
-    cout << " photon_target: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] photon_target: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3505,7 +3607,8 @@ extern "C" void test2_f_photon_material (CPP_photon_material&, bool&);
 
 void set_CPP_photon_material_test_pattern (CPP_photon_material& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[complex, 0, NOT]
   rhs = 1 + offset; C.f0_m1 = Complex(rhs, 100+rhs);
@@ -3545,10 +3648,11 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
   photon_material_to_c (F, C);
   set_CPP_photon_material_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " photon_material: C side convert F->C: Good" << endl;
+    cout << " [1] photon_material: C side convert F->C: Good" << endl;
   } else {
-    cout << " photon_material: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] photon_material: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3559,9 +3663,9 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
 
   set_CPP_photon_material_test_pattern (C, 3);
   if (C == C2) {
-    cout << " photon_material: F side convert F->C: Good" << endl;
+    cout << " [3] photon_material: F side convert F->C: Good" << endl;
   } else {
-    cout << " photon_material: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] photon_material: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3577,7 +3681,8 @@ extern "C" void test2_f_pixel_pt (CPP_pixel_pt&, bool&);
 
 void set_CPP_pixel_pt_test_pattern (CPP_pixel_pt& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer8, 0, NOT]
   rhs = 1 + offset; C.n_photon = rhs;
@@ -3623,10 +3728,11 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
   pixel_pt_to_c (F, C);
   set_CPP_pixel_pt_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " pixel_pt: C side convert F->C: Good" << endl;
+    cout << " [1] pixel_pt: C side convert F->C: Good" << endl;
   } else {
-    cout << " pixel_pt: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] pixel_pt: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3637,9 +3743,9 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
 
   set_CPP_pixel_pt_test_pattern (C, 3);
   if (C == C2) {
-    cout << " pixel_pt: F side convert F->C: Good" << endl;
+    cout << " [3] pixel_pt: F side convert F->C: Good" << endl;
   } else {
-    cout << " pixel_pt: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] pixel_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3655,7 +3761,8 @@ extern "C" void test2_f_pixel_detec (CPP_pixel_detec&, bool&);
 
 void set_CPP_pixel_detec_test_pattern (CPP_pixel_detec& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.dr.size(); i++)
@@ -3703,10 +3810,11 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
   pixel_detec_to_c (F, C);
   set_CPP_pixel_detec_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " pixel_detec: C side convert F->C: Good" << endl;
+    cout << " [1] pixel_detec: C side convert F->C: Good" << endl;
   } else {
-    cout << " pixel_detec: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] pixel_detec: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3717,9 +3825,9 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
 
   set_CPP_pixel_detec_test_pattern (C, 3);
   if (C == C2) {
-    cout << " pixel_detec: F side convert F->C: Good" << endl;
+    cout << " [3] pixel_detec: F side convert F->C: Good" << endl;
   } else {
-    cout << " pixel_detec: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] pixel_detec: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3735,7 +3843,8 @@ extern "C" void test2_f_photon_element (CPP_photon_element&, bool&);
 
 void set_CPP_photon_element_test_pattern (CPP_photon_element& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 0, NOT]
   set_CPP_surface_curvature_test_pattern(C.curvature, ix_patt);
@@ -3797,10 +3906,11 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
   photon_element_to_c (F, C);
   set_CPP_photon_element_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " photon_element: C side convert F->C: Good" << endl;
+    cout << " [1] photon_element: C side convert F->C: Good" << endl;
   } else {
-    cout << " photon_element: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] photon_element: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3811,9 +3921,9 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
 
   set_CPP_photon_element_test_pattern (C, 3);
   if (C == C2) {
-    cout << " photon_element: F side convert F->C: Good" << endl;
+    cout << " [3] photon_element: F side convert F->C: Good" << endl;
   } else {
-    cout << " photon_element: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] photon_element: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3829,7 +3939,8 @@ extern "C" void test2_f_wall3d_vertex (CPP_wall3d_vertex&, bool&);
 
 void set_CPP_wall3d_vertex_test_pattern (CPP_wall3d_vertex& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.x = rhs;
@@ -3872,10 +3983,11 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
   wall3d_vertex_to_c (F, C);
   set_CPP_wall3d_vertex_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wall3d_vertex: C side convert F->C: Good" << endl;
+    cout << " [1] wall3d_vertex: C side convert F->C: Good" << endl;
   } else {
-    cout << " wall3d_vertex: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wall3d_vertex: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3886,9 +3998,9 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
 
   set_CPP_wall3d_vertex_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wall3d_vertex: F side convert F->C: Good" << endl;
+    cout << " [3] wall3d_vertex: F side convert F->C: Good" << endl;
   } else {
-    cout << " wall3d_vertex: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wall3d_vertex: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -3904,7 +4016,8 @@ extern "C" void test2_f_wall3d_section (CPP_wall3d_section&, bool&);
 
 void set_CPP_wall3d_section_test_pattern (CPP_wall3d_section& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -3924,7 +4037,7 @@ void set_CPP_wall3d_section_test_pattern (CPP_wall3d_section& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.surface = NULL;
+    C.surface = nullptr;
   else {
     C.surface = make_shared<CPP_photon_reflect_surface>();
     set_CPP_photon_reflect_surface_test_pattern((*C.surface), ix_patt);
@@ -3991,10 +4104,11 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
   wall3d_section_to_c (F, C);
   set_CPP_wall3d_section_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wall3d_section: C side convert F->C: Good" << endl;
+    cout << " [1] wall3d_section: C side convert F->C: Good" << endl;
   } else {
-    cout << " wall3d_section: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wall3d_section: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4005,9 +4119,9 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
 
   set_CPP_wall3d_section_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wall3d_section: F side convert F->C: Good" << endl;
+    cout << " [3] wall3d_section: F side convert F->C: Good" << endl;
   } else {
-    cout << " wall3d_section: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wall3d_section: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4023,7 +4137,8 @@ extern "C" void test2_f_wall3d (CPP_wall3d&, bool&);
 
 void set_CPP_wall3d_test_pattern (CPP_wall3d& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -4077,10 +4192,11 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
   wall3d_to_c (F, C);
   set_CPP_wall3d_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " wall3d: C side convert F->C: Good" << endl;
+    cout << " [1] wall3d: C side convert F->C: Good" << endl;
   } else {
-    cout << " wall3d: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] wall3d: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4091,9 +4207,9 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
 
   set_CPP_wall3d_test_pattern (C, 3);
   if (C == C2) {
-    cout << " wall3d: F side convert F->C: Good" << endl;
+    cout << " [3] wall3d: F side convert F->C: Good" << endl;
   } else {
-    cout << " wall3d: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] wall3d: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4109,7 +4225,8 @@ extern "C" void test2_f_ramper_lord (CPP_ramper_lord&, bool&);
 
 void set_CPP_ramper_lord_test_pattern (CPP_ramper_lord& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.ix_ele = rhs;
@@ -4119,7 +4236,7 @@ void set_CPP_ramper_lord_test_pattern (CPP_ramper_lord& C, int ix_patt) {
 
   // c_side.test_pat[real, 0, PTR]
   if (ix_patt < 3) 
-    C.attrib_ptr = NULL;
+    C.attrib_ptr = nullptr;
   else {
     C.attrib_ptr = make_shared<Real>();
     rhs = 3 + offset; (*C.attrib_ptr) = rhs;
@@ -4138,10 +4255,11 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
   ramper_lord_to_c (F, C);
   set_CPP_ramper_lord_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " ramper_lord: C side convert F->C: Good" << endl;
+    cout << " [1] ramper_lord: C side convert F->C: Good" << endl;
   } else {
-    cout << " ramper_lord: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] ramper_lord: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4152,9 +4270,9 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
 
   set_CPP_ramper_lord_test_pattern (C, 3);
   if (C == C2) {
-    cout << " ramper_lord: F side convert F->C: Good" << endl;
+    cout << " [3] ramper_lord: F side convert F->C: Good" << endl;
   } else {
-    cout << " ramper_lord: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] ramper_lord: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4170,7 +4288,8 @@ extern "C" void test2_f_control (CPP_control&, bool&);
 
 void set_CPP_control_test_pattern (CPP_control& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.value = rhs;
@@ -4222,10 +4341,11 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
   control_to_c (F, C);
   set_CPP_control_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " control: C side convert F->C: Good" << endl;
+    cout << " [1] control: C side convert F->C: Good" << endl;
   } else {
-    cout << " control: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] control: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4236,9 +4356,9 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
 
   set_CPP_control_test_pattern (C, 3);
   if (C == C2) {
-    cout << " control: F side convert F->C: Good" << endl;
+    cout << " [3] control: F side convert F->C: Good" << endl;
   } else {
-    cout << " control: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] control: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4254,7 +4374,8 @@ extern "C" void test2_f_control_var1 (CPP_control_var1&, bool&);
 
 void set_CPP_control_var1_test_pattern (CPP_control_var1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -4280,10 +4401,11 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
   control_var1_to_c (F, C);
   set_CPP_control_var1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " control_var1: C side convert F->C: Good" << endl;
+    cout << " [1] control_var1: C side convert F->C: Good" << endl;
   } else {
-    cout << " control_var1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] control_var1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4294,9 +4416,9 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
 
   set_CPP_control_var1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " control_var1: F side convert F->C: Good" << endl;
+    cout << " [3] control_var1: F side convert F->C: Good" << endl;
   } else {
-    cout << " control_var1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] control_var1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4312,7 +4434,8 @@ extern "C" void test2_f_control_ramp1 (CPP_control_ramp1&, bool&);
 
 void set_CPP_control_ramp1_test_pattern (CPP_control_ramp1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, ALLOC]
   if (ix_patt < 3) 
@@ -4355,10 +4478,11 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
   control_ramp1_to_c (F, C);
   set_CPP_control_ramp1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " control_ramp1: C side convert F->C: Good" << endl;
+    cout << " [1] control_ramp1: C side convert F->C: Good" << endl;
   } else {
-    cout << " control_ramp1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] control_ramp1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4369,9 +4493,9 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
 
   set_CPP_control_ramp1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " control_ramp1: F side convert F->C: Good" << endl;
+    cout << " [3] control_ramp1: F side convert F->C: Good" << endl;
   } else {
-    cout << " control_ramp1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] control_ramp1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4387,7 +4511,8 @@ extern "C" void test2_f_controller (CPP_controller&, bool&);
 
 void set_CPP_controller_test_pattern (CPP_controller& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -4435,10 +4560,11 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
   controller_to_c (F, C);
   set_CPP_controller_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " controller: C side convert F->C: Good" << endl;
+    cout << " [1] controller: C side convert F->C: Good" << endl;
   } else {
-    cout << " controller: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] controller: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4449,9 +4575,9 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
 
   set_CPP_controller_test_pattern (C, 3);
   if (C == C2) {
-    cout << " controller: F side convert F->C: Good" << endl;
+    cout << " [3] controller: F side convert F->C: Good" << endl;
   } else {
-    cout << " controller: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] controller: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4467,7 +4593,8 @@ extern "C" void test2_f_ellipse_beam_init (CPP_ellipse_beam_init&, bool&);
 
 void set_CPP_ellipse_beam_init_test_pattern (CPP_ellipse_beam_init& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.part_per_ellipse = rhs;
@@ -4492,10 +4619,11 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
   ellipse_beam_init_to_c (F, C);
   set_CPP_ellipse_beam_init_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " ellipse_beam_init: C side convert F->C: Good" << endl;
+    cout << " [1] ellipse_beam_init: C side convert F->C: Good" << endl;
   } else {
-    cout << " ellipse_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] ellipse_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4506,9 +4634,9 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
 
   set_CPP_ellipse_beam_init_test_pattern (C, 3);
   if (C == C2) {
-    cout << " ellipse_beam_init: F side convert F->C: Good" << endl;
+    cout << " [3] ellipse_beam_init: F side convert F->C: Good" << endl;
   } else {
-    cout << " ellipse_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] ellipse_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4524,7 +4652,8 @@ extern "C" void test2_f_kv_beam_init (CPP_kv_beam_init&, bool&);
 
 void set_CPP_kv_beam_init_test_pattern (CPP_kv_beam_init& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 1, NOT]
   for (size_t i = 0; i < C.part_per_phi.size(); i++)
@@ -4549,10 +4678,11 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
   kv_beam_init_to_c (F, C);
   set_CPP_kv_beam_init_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " kv_beam_init: C side convert F->C: Good" << endl;
+    cout << " [1] kv_beam_init: C side convert F->C: Good" << endl;
   } else {
-    cout << " kv_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] kv_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4563,9 +4693,9 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
 
   set_CPP_kv_beam_init_test_pattern (C, 3);
   if (C == C2) {
-    cout << " kv_beam_init: F side convert F->C: Good" << endl;
+    cout << " [3] kv_beam_init: F side convert F->C: Good" << endl;
   } else {
-    cout << " kv_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] kv_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4581,7 +4711,8 @@ extern "C" void test2_f_grid_beam_init (CPP_grid_beam_init&, bool&);
 
 void set_CPP_grid_beam_init_test_pattern (CPP_grid_beam_init& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.n_x = rhs;
@@ -4615,10 +4746,11 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
   grid_beam_init_to_c (F, C);
   set_CPP_grid_beam_init_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " grid_beam_init: C side convert F->C: Good" << endl;
+    cout << " [1] grid_beam_init: C side convert F->C: Good" << endl;
   } else {
-    cout << " grid_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] grid_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4629,9 +4761,9 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
 
   set_CPP_grid_beam_init_test_pattern (C, 3);
   if (C == C2) {
-    cout << " grid_beam_init: F side convert F->C: Good" << endl;
+    cout << " [3] grid_beam_init: F side convert F->C: Good" << endl;
   } else {
-    cout << " grid_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] grid_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4647,7 +4779,8 @@ extern "C" void test2_f_beam_init (CPP_beam_init&, bool&);
 
 void set_CPP_beam_init_test_pattern (CPP_beam_init& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.position_file.resize(400);
@@ -4777,10 +4910,11 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
   beam_init_to_c (F, C);
   set_CPP_beam_init_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " beam_init: C side convert F->C: Good" << endl;
+    cout << " [1] beam_init: C side convert F->C: Good" << endl;
   } else {
-    cout << " beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4791,9 +4925,9 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
 
   set_CPP_beam_init_test_pattern (C, 3);
   if (C == C2) {
-    cout << " beam_init: F side convert F->C: Good" << endl;
+    cout << " [3] beam_init: F side convert F->C: Good" << endl;
   } else {
-    cout << " beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4809,7 +4943,8 @@ extern "C" void test2_f_lat_param (CPP_lat_param&, bool&);
 
 void set_CPP_lat_param_test_pattern (CPP_lat_param& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.n_part = rhs;
@@ -4876,10 +5011,11 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
   lat_param_to_c (F, C);
   set_CPP_lat_param_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " lat_param: C side convert F->C: Good" << endl;
+    cout << " [1] lat_param: C side convert F->C: Good" << endl;
   } else {
-    cout << " lat_param: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] lat_param: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4890,9 +5026,9 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
 
   set_CPP_lat_param_test_pattern (C, 3);
   if (C == C2) {
-    cout << " lat_param: F side convert F->C: Good" << endl;
+    cout << " [3] lat_param: F side convert F->C: Good" << endl;
   } else {
-    cout << " lat_param: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] lat_param: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4908,7 +5044,8 @@ extern "C" void test2_f_mode_info (CPP_mode_info&, bool&);
 
 void set_CPP_mode_info_test_pattern (CPP_mode_info& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[logical, 0, NOT]
   rhs = 1 + offset; C.stable = (rhs % 2 == 0);
@@ -4942,10 +5079,11 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
   mode_info_to_c (F, C);
   set_CPP_mode_info_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " mode_info: C side convert F->C: Good" << endl;
+    cout << " [1] mode_info: C side convert F->C: Good" << endl;
   } else {
-    cout << " mode_info: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] mode_info: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4956,9 +5094,9 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
 
   set_CPP_mode_info_test_pattern (C, 3);
   if (C == C2) {
-    cout << " mode_info: F side convert F->C: Good" << endl;
+    cout << " [3] mode_info: F side convert F->C: Good" << endl;
   } else {
-    cout << " mode_info: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] mode_info: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -4974,7 +5112,8 @@ extern "C" void test2_f_pre_tracker (CPP_pre_tracker&, bool&);
 
 void set_CPP_pre_tracker_test_pattern (CPP_pre_tracker& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.who = rhs;
@@ -5003,10 +5142,11 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
   pre_tracker_to_c (F, C);
   set_CPP_pre_tracker_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " pre_tracker: C side convert F->C: Good" << endl;
+    cout << " [1] pre_tracker: C side convert F->C: Good" << endl;
   } else {
-    cout << " pre_tracker: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] pre_tracker: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5017,9 +5157,9 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
 
   set_CPP_pre_tracker_test_pattern (C, 3);
   if (C == C2) {
-    cout << " pre_tracker: F side convert F->C: Good" << endl;
+    cout << " [3] pre_tracker: F side convert F->C: Good" << endl;
   } else {
-    cout << " pre_tracker: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] pre_tracker: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5035,7 +5175,8 @@ extern "C" void test2_f_anormal_mode (CPP_anormal_mode&, bool&);
 
 void set_CPP_anormal_mode_test_pattern (CPP_anormal_mode& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.emittance = rhs;
@@ -5072,10 +5213,11 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
   anormal_mode_to_c (F, C);
   set_CPP_anormal_mode_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " anormal_mode: C side convert F->C: Good" << endl;
+    cout << " [1] anormal_mode: C side convert F->C: Good" << endl;
   } else {
-    cout << " anormal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] anormal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5086,9 +5228,9 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
 
   set_CPP_anormal_mode_test_pattern (C, 3);
   if (C == C2) {
-    cout << " anormal_mode: F side convert F->C: Good" << endl;
+    cout << " [3] anormal_mode: F side convert F->C: Good" << endl;
   } else {
-    cout << " anormal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] anormal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5104,7 +5246,8 @@ extern "C" void test2_f_linac_normal_mode (CPP_linac_normal_mode&, bool&);
 
 void set_CPP_linac_normal_mode_test_pattern (CPP_linac_normal_mode& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.i2_e4 = rhs;
@@ -5141,10 +5284,11 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
   linac_normal_mode_to_c (F, C);
   set_CPP_linac_normal_mode_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " linac_normal_mode: C side convert F->C: Good" << endl;
+    cout << " [1] linac_normal_mode: C side convert F->C: Good" << endl;
   } else {
-    cout << " linac_normal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] linac_normal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5155,9 +5299,9 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
 
   set_CPP_linac_normal_mode_test_pattern (C, 3);
   if (C == C2) {
-    cout << " linac_normal_mode: F side convert F->C: Good" << endl;
+    cout << " [3] linac_normal_mode: F side convert F->C: Good" << endl;
   } else {
-    cout << " linac_normal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] linac_normal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5173,7 +5317,8 @@ extern "C" void test2_f_normal_modes (CPP_normal_modes&, bool&);
 
 void set_CPP_normal_modes_test_pattern (CPP_normal_modes& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.synch_int.size(); i++)
@@ -5228,10 +5373,11 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
   normal_modes_to_c (F, C);
   set_CPP_normal_modes_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " normal_modes: C side convert F->C: Good" << endl;
+    cout << " [1] normal_modes: C side convert F->C: Good" << endl;
   } else {
-    cout << " normal_modes: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] normal_modes: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5242,9 +5388,9 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
 
   set_CPP_normal_modes_test_pattern (C, 3);
   if (C == C2) {
-    cout << " normal_modes: F side convert F->C: Good" << endl;
+    cout << " [3] normal_modes: F side convert F->C: Good" << endl;
   } else {
-    cout << " normal_modes: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] normal_modes: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5260,7 +5406,8 @@ extern "C" void test2_f_em_field (CPP_em_field&, bool&);
 
 void set_CPP_em_field_test_pattern (CPP_em_field& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 1, NOT]
   for (size_t i = 0; i < C.e.size(); i++)
@@ -5297,10 +5444,11 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
   em_field_to_c (F, C);
   set_CPP_em_field_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " em_field: C side convert F->C: Good" << endl;
+    cout << " [1] em_field: C side convert F->C: Good" << endl;
   } else {
-    cout << " em_field: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] em_field: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5311,9 +5459,9 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
 
   set_CPP_em_field_test_pattern (C, 3);
   if (C == C2) {
-    cout << " em_field: F side convert F->C: Good" << endl;
+    cout << " [3] em_field: F side convert F->C: Good" << endl;
   } else {
-    cout << " em_field: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] em_field: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5329,7 +5477,8 @@ extern "C" void test2_f_strong_beam (CPP_strong_beam&, bool&);
 
 void set_CPP_strong_beam_test_pattern (CPP_strong_beam& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[integer, 0, NOT]
   rhs = 1 + offset; C.ix_slice = rhs;
@@ -5366,10 +5515,11 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
   strong_beam_to_c (F, C);
   set_CPP_strong_beam_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " strong_beam: C side convert F->C: Good" << endl;
+    cout << " [1] strong_beam: C side convert F->C: Good" << endl;
   } else {
-    cout << " strong_beam: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] strong_beam: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5380,9 +5530,9 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
 
   set_CPP_strong_beam_test_pattern (C, 3);
   if (C == C2) {
-    cout << " strong_beam: F side convert F->C: Good" << endl;
+    cout << " [3] strong_beam: F side convert F->C: Good" << endl;
   } else {
-    cout << " strong_beam: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] strong_beam: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5398,7 +5548,8 @@ extern "C" void test2_f_track_point (CPP_track_point&, bool&);
 
 void set_CPP_track_point_test_pattern (CPP_track_point& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.s_body = rhs;
@@ -5432,10 +5583,11 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
   track_point_to_c (F, C);
   set_CPP_track_point_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " track_point: C side convert F->C: Good" << endl;
+    cout << " [1] track_point: C side convert F->C: Good" << endl;
   } else {
-    cout << " track_point: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] track_point: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5446,9 +5598,9 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
 
   set_CPP_track_point_test_pattern (C, 3);
   if (C == C2) {
-    cout << " track_point: F side convert F->C: Good" << endl;
+    cout << " [3] track_point: F side convert F->C: Good" << endl;
   } else {
-    cout << " track_point: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] track_point: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5464,7 +5616,8 @@ extern "C" void test2_f_track (CPP_track&, bool&);
 
 void set_CPP_track_test_pattern (CPP_track& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -5500,10 +5653,11 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
   track_to_c (F, C);
   set_CPP_track_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " track: C side convert F->C: Good" << endl;
+    cout << " [1] track: C side convert F->C: Good" << endl;
   } else {
-    cout << " track: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] track: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5514,9 +5668,9 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
 
   set_CPP_track_test_pattern (C, 3);
   if (C == C2) {
-    cout << " track: F side convert F->C: Good" << endl;
+    cout << " [3] track: F side convert F->C: Good" << endl;
   } else {
-    cout << " track: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] track: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5532,7 +5686,8 @@ extern "C" void test2_f_space_charge_common (CPP_space_charge_common&, bool&);
 
 void set_CPP_space_charge_common_test_pattern (CPP_space_charge_common& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.ds_track_step = rhs;
@@ -5600,10 +5755,11 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
   space_charge_common_to_c (F, C);
   set_CPP_space_charge_common_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " space_charge_common: C side convert F->C: Good" << endl;
+    cout << " [1] space_charge_common: C side convert F->C: Good" << endl;
   } else {
-    cout << " space_charge_common: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] space_charge_common: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5614,9 +5770,9 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
 
   set_CPP_space_charge_common_test_pattern (C, 3);
   if (C == C2) {
-    cout << " space_charge_common: F side convert F->C: Good" << endl;
+    cout << " [3] space_charge_common: F side convert F->C: Good" << endl;
   } else {
-    cout << " space_charge_common: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] space_charge_common: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5632,7 +5788,8 @@ extern "C" void test2_f_bmad_common (CPP_bmad_common&, bool&);
 
 void set_CPP_bmad_common_test_pattern (CPP_bmad_common& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.max_aperture_limit = rhs;
@@ -5768,10 +5925,11 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
   bmad_common_to_c (F, C);
   set_CPP_bmad_common_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " bmad_common: C side convert F->C: Good" << endl;
+    cout << " [1] bmad_common: C side convert F->C: Good" << endl;
   } else {
-    cout << " bmad_common: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] bmad_common: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5782,9 +5940,9 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
 
   set_CPP_bmad_common_test_pattern (C, 3);
   if (C == C2) {
-    cout << " bmad_common: F side convert F->C: Good" << endl;
+    cout << " [3] bmad_common: F side convert F->C: Good" << endl;
   } else {
-    cout << " bmad_common: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] bmad_common: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5800,7 +5958,8 @@ extern "C" void test2_f_rad_int1 (CPP_rad_int1&, bool&);
 
 void set_CPP_rad_int1_test_pattern (CPP_rad_int1& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.i0 = rhs;
@@ -5870,10 +6029,11 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
   rad_int1_to_c (F, C);
   set_CPP_rad_int1_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " rad_int1: C side convert F->C: Good" << endl;
+    cout << " [1] rad_int1: C side convert F->C: Good" << endl;
   } else {
-    cout << " rad_int1: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] rad_int1: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5884,9 +6044,9 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
 
   set_CPP_rad_int1_test_pattern (C, 3);
   if (C == C2) {
-    cout << " rad_int1: F side convert F->C: Good" << endl;
+    cout << " [3] rad_int1: F side convert F->C: Good" << endl;
   } else {
-    cout << " rad_int1: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] rad_int1: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5902,7 +6062,8 @@ extern "C" void test2_f_rad_int_branch (CPP_rad_int_branch&, bool&);
 
 void set_CPP_rad_int_branch_test_pattern (CPP_rad_int_branch& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -5926,10 +6087,11 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
   rad_int_branch_to_c (F, C);
   set_CPP_rad_int_branch_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " rad_int_branch: C side convert F->C: Good" << endl;
+    cout << " [1] rad_int_branch: C side convert F->C: Good" << endl;
   } else {
-    cout << " rad_int_branch: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] rad_int_branch: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5940,9 +6102,9 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
 
   set_CPP_rad_int_branch_test_pattern (C, 3);
   if (C == C2) {
-    cout << " rad_int_branch: F side convert F->C: Good" << endl;
+    cout << " [3] rad_int_branch: F side convert F->C: Good" << endl;
   } else {
-    cout << " rad_int_branch: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] rad_int_branch: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5958,7 +6120,8 @@ extern "C" void test2_f_rad_int_all_ele (CPP_rad_int_all_ele&, bool&);
 
 void set_CPP_rad_int_all_ele_test_pattern (CPP_rad_int_all_ele& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -5982,10 +6145,11 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
   rad_int_all_ele_to_c (F, C);
   set_CPP_rad_int_all_ele_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " rad_int_all_ele: C side convert F->C: Good" << endl;
+    cout << " [1] rad_int_all_ele: C side convert F->C: Good" << endl;
   } else {
-    cout << " rad_int_all_ele: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] rad_int_all_ele: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -5996,9 +6160,9 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
 
   set_CPP_rad_int_all_ele_test_pattern (C, 3);
   if (C == C2) {
-    cout << " rad_int_all_ele: F side convert F->C: Good" << endl;
+    cout << " [3] rad_int_all_ele: F side convert F->C: Good" << endl;
   } else {
-    cout << " rad_int_all_ele: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] rad_int_all_ele: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6014,7 +6178,8 @@ extern "C" void test2_f_ele (CPP_ele&, bool&);
 
 void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -6058,7 +6223,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.ac_kick = NULL;
+    C.ac_kick = nullptr;
   else {
     C.ac_kick = make_shared<CPP_ac_kicker>();
     set_CPP_ac_kicker_test_pattern((*C.ac_kick), ix_patt);
@@ -6068,7 +6233,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.control = NULL;
+    C.control = nullptr;
   else {
     C.control = make_shared<CPP_controller>();
     set_CPP_controller_test_pattern((*C.control), ix_patt);
@@ -6078,28 +6243,28 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.high_energy_space_charge = NULL;
+    C.high_energy_space_charge = nullptr;
   else {
     C.high_energy_space_charge = make_shared<CPP_high_energy_space_charge>();
     set_CPP_high_energy_space_charge_test_pattern((*C.high_energy_space_charge), ix_patt);
   }
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.mode3 = NULL;
+    C.mode3 = nullptr;
   else {
     C.mode3 = make_shared<CPP_mode3>();
     set_CPP_mode3_test_pattern((*C.mode3), ix_patt);
   }
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.photon = NULL;
+    C.photon = nullptr;
   else {
     C.photon = make_shared<CPP_photon_element>();
     set_CPP_photon_element_test_pattern((*C.photon), ix_patt);
   }
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.rad_map = NULL;
+    C.rad_map = nullptr;
   else {
     C.rad_map = make_shared<CPP_rad_map_ele>();
     set_CPP_rad_map_ele_test_pattern((*C.rad_map), ix_patt);
@@ -6115,7 +6280,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     {int rhs = 101 + i + 28 + offset; set_CPP_taylor_test_pattern(C.spin_taylor[i], ix_patt+i+1);}
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.wake = NULL;
+    C.wake = nullptr;
   else {
     C.wake = make_shared<CPP_wake>();
     set_CPP_wake_test_pattern((*C.wake), ix_patt);
@@ -6256,7 +6421,7 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
       for (size_t j = 0; j < C.r[0].size(); j++) {
         C.r[i][j].resize(1);
         for (size_t k = 0; k < C.r[0][0].size(); k++) {
-          int rhs = 101 + i + 10*(j+1) + 100*(k+1) + 65 + offset;
+          auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + 65 + offset;
           C.r[i][j][k] = rhs;
         }
       }
@@ -6394,10 +6559,11 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
   ele_to_c (F, C);
   set_CPP_ele_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " ele: C side convert F->C: Good" << endl;
+    cout << " [1] ele: C side convert F->C: Good" << endl;
   } else {
-    cout << " ele: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] ele: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6408,9 +6574,9 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
 
   set_CPP_ele_test_pattern (C, 3);
   if (C == C2) {
-    cout << " ele: F side convert F->C: Good" << endl;
+    cout << " [3] ele: F side convert F->C: Good" << endl;
   } else {
-    cout << " ele: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] ele: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6426,7 +6592,8 @@ extern "C" void test2_f_complex_taylor_term (CPP_complex_taylor_term&, bool&);
 
 void set_CPP_complex_taylor_term_test_pattern (CPP_complex_taylor_term& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[complex, 0, NOT]
   rhs = 1 + offset; C.coef = Complex(rhs, 100+rhs);
@@ -6448,10 +6615,11 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
   complex_taylor_term_to_c (F, C);
   set_CPP_complex_taylor_term_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " complex_taylor_term: C side convert F->C: Good" << endl;
+    cout << " [1] complex_taylor_term: C side convert F->C: Good" << endl;
   } else {
-    cout << " complex_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] complex_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6462,9 +6630,9 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
 
   set_CPP_complex_taylor_term_test_pattern (C, 3);
   if (C == C2) {
-    cout << " complex_taylor_term: F side convert F->C: Good" << endl;
+    cout << " [3] complex_taylor_term: F side convert F->C: Good" << endl;
   } else {
-    cout << " complex_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] complex_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6480,7 +6648,8 @@ extern "C" void test2_f_complex_taylor (CPP_complex_taylor&, bool&);
 
 void set_CPP_complex_taylor_test_pattern (CPP_complex_taylor& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[complex, 0, NOT]
   rhs = 1 + offset; C.ref = Complex(rhs, 100+rhs);
@@ -6507,10 +6676,11 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
   complex_taylor_to_c (F, C);
   set_CPP_complex_taylor_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " complex_taylor: C side convert F->C: Good" << endl;
+    cout << " [1] complex_taylor: C side convert F->C: Good" << endl;
   } else {
-    cout << " complex_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] complex_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6521,9 +6691,9 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
 
   set_CPP_complex_taylor_test_pattern (C, 3);
   if (C == C2) {
-    cout << " complex_taylor: F side convert F->C: Good" << endl;
+    cout << " [3] complex_taylor: F side convert F->C: Good" << endl;
   } else {
-    cout << " complex_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] complex_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6539,7 +6709,8 @@ extern "C" void test2_f_branch (CPP_branch&, bool&);
 
 void set_CPP_branch_test_pattern (CPP_branch& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.name.resize(40);
@@ -6605,10 +6776,11 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
   branch_to_c (F, C);
   set_CPP_branch_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " branch: C side convert F->C: Good" << endl;
+    cout << " [1] branch: C side convert F->C: Good" << endl;
   } else {
-    cout << " branch: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] branch: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6619,9 +6791,9 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
 
   set_CPP_branch_test_pattern (C, 3);
   if (C == C2) {
-    cout << " branch: F side convert F->C: Good" << endl;
+    cout << " [3] branch: F side convert F->C: Good" << endl;
   } else {
-    cout << " branch: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] branch: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6637,7 +6809,8 @@ extern "C" void test2_f_lat (CPP_lat&, bool&);
 
 void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[character, 0, NOT]
   C.use_name.resize(200);
@@ -6681,28 +6854,28 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
 
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.a = NULL;
+    C.a = nullptr;
   else {
     C.a = make_shared<CPP_mode_info>();
     set_CPP_mode_info_test_pattern((*C.a), ix_patt);
   }
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.b = NULL;
+    C.b = nullptr;
   else {
     C.b = make_shared<CPP_mode_info>();
     set_CPP_mode_info_test_pattern((*C.b), ix_patt);
   }
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.z = NULL;
+    C.z = nullptr;
   else {
     C.z = make_shared<CPP_mode_info>();
     set_CPP_mode_info_test_pattern((*C.z), ix_patt);
   }
   // c_side.test_pat[type, 0, PTR]
   if (ix_patt < 3) 
-    C.param = NULL;
+    C.param = nullptr;
   else {
     C.param = make_shared<CPP_lat_param>();
     set_CPP_lat_param_test_pattern((*C.param), ix_patt);
@@ -6759,14 +6932,14 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
 
   // c_side.test_pat[integer, 0, PTR]
   if (ix_patt < 3) 
-    C.n_ele_track = NULL;
+    C.n_ele_track = nullptr;
   else {
     C.n_ele_track = make_shared<Int>();
     rhs = 32 + offset; (*C.n_ele_track) = rhs;
   }
   // c_side.test_pat[integer, 0, PTR]
   if (ix_patt < 3) 
-    C.n_ele_max = NULL;
+    C.n_ele_max = nullptr;
   else {
     C.n_ele_max = make_shared<Int>();
     rhs = 34 + offset; (*C.n_ele_max) = rhs;
@@ -6811,10 +6984,11 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
   lat_to_c (F, C);
   set_CPP_lat_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " lat: C side convert F->C: Good" << endl;
+    cout << " [1] lat: C side convert F->C: Good" << endl;
   } else {
-    cout << " lat: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] lat: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6825,9 +6999,9 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
 
   set_CPP_lat_test_pattern (C, 3);
   if (C == C2) {
-    cout << " lat: F side convert F->C: Good" << endl;
+    cout << " [3] lat: F side convert F->C: Good" << endl;
   } else {
-    cout << " lat: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] lat: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6843,7 +7017,8 @@ extern "C" void test2_f_bunch (CPP_bunch&, bool&);
 
 void set_CPP_bunch_test_pattern (CPP_bunch& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -6911,10 +7086,11 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
   bunch_to_c (F, C);
   set_CPP_bunch_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " bunch: C side convert F->C: Good" << endl;
+    cout << " [1] bunch: C side convert F->C: Good" << endl;
   } else {
-    cout << " bunch: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] bunch: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6925,9 +7101,9 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
 
   set_CPP_bunch_test_pattern (C, 3);
   if (C == C2) {
-    cout << " bunch: F side convert F->C: Good" << endl;
+    cout << " [3] bunch: F side convert F->C: Good" << endl;
   } else {
-    cout << " bunch: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] bunch: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -6943,7 +7119,8 @@ extern "C" void test2_f_bunch_params (CPP_bunch_params&, bool&);
 
 void set_CPP_bunch_params_test_pattern (CPP_bunch_params& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 0, NOT]
   set_CPP_coord_test_pattern(C.centroid, ix_patt);
@@ -7028,10 +7205,11 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
   bunch_params_to_c (F, C);
   set_CPP_bunch_params_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " bunch_params: C side convert F->C: Good" << endl;
+    cout << " [1] bunch_params: C side convert F->C: Good" << endl;
   } else {
-    cout << " bunch_params: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] bunch_params: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7042,9 +7220,9 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
 
   set_CPP_bunch_params_test_pattern (C, 3);
   if (C == C2) {
-    cout << " bunch_params: F side convert F->C: Good" << endl;
+    cout << " [3] bunch_params: F side convert F->C: Good" << endl;
   } else {
-    cout << " bunch_params: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] bunch_params: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7060,7 +7238,8 @@ extern "C" void test2_f_beam (CPP_beam&, bool&);
 
 void set_CPP_beam_test_pattern (CPP_beam& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -7084,10 +7263,11 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
   beam_to_c (F, C);
   set_CPP_beam_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " beam: C side convert F->C: Good" << endl;
+    cout << " [1] beam: C side convert F->C: Good" << endl;
   } else {
-    cout << " beam: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] beam: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7098,9 +7278,9 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
 
   set_CPP_beam_test_pattern (C, 3);
   if (C == C2) {
-    cout << " beam: F side convert F->C: Good" << endl;
+    cout << " [3] beam: F side convert F->C: Good" << endl;
   } else {
-    cout << " beam: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] beam: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7116,7 +7296,8 @@ extern "C" void test2_f_aperture_point (CPP_aperture_point&, bool&);
 
 void set_CPP_aperture_point_test_pattern (CPP_aperture_point& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.x = rhs;
@@ -7147,10 +7328,11 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
   aperture_point_to_c (F, C);
   set_CPP_aperture_point_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " aperture_point: C side convert F->C: Good" << endl;
+    cout << " [1] aperture_point: C side convert F->C: Good" << endl;
   } else {
-    cout << " aperture_point: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] aperture_point: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7161,9 +7343,9 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
 
   set_CPP_aperture_point_test_pattern (C, 3);
   if (C == C2) {
-    cout << " aperture_point: F side convert F->C: Good" << endl;
+    cout << " [3] aperture_point: F side convert F->C: Good" << endl;
   } else {
-    cout << " aperture_point: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] aperture_point: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7179,7 +7361,8 @@ extern "C" void test2_f_aperture_param (CPP_aperture_param&, bool&);
 
 void set_CPP_aperture_param_test_pattern (CPP_aperture_param& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[real, 0, NOT]
   rhs = 1 + offset; C.min_angle = rhs;
@@ -7223,10 +7406,11 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
   aperture_param_to_c (F, C);
   set_CPP_aperture_param_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " aperture_param: C side convert F->C: Good" << endl;
+    cout << " [1] aperture_param: C side convert F->C: Good" << endl;
   } else {
-    cout << " aperture_param: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] aperture_param: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7237,9 +7421,9 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
 
   set_CPP_aperture_param_test_pattern (C, 3);
   if (C == C2) {
-    cout << " aperture_param: F side convert F->C: Good" << endl;
+    cout << " [3] aperture_param: F side convert F->C: Good" << endl;
   } else {
-    cout << " aperture_param: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] aperture_param: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7255,7 +7439,8 @@ extern "C" void test2_f_aperture_scan (CPP_aperture_scan&, bool&);
 
 void set_CPP_aperture_scan_test_pattern (CPP_aperture_scan& C, int ix_patt) {
 
-  int rhs, offset = 100 * ix_patt;
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
 
   // c_side.test_pat[type, 1, ALLOC]
   if (ix_patt < 3) 
@@ -7285,10 +7470,11 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
   aperture_scan_to_c (F, C);
   set_CPP_aperture_scan_test_pattern (C2, 1);
 
+  cout << "" << endl;
   if (C == C2) {
-    cout << " aperture_scan: C side convert F->C: Good" << endl;
+    cout << " [1] aperture_scan: C side convert F->C: Good" << endl;
   } else {
-    cout << " aperture_scan: C SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [1] aperture_scan: C SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 
@@ -7299,9 +7485,9 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
 
   set_CPP_aperture_scan_test_pattern (C, 3);
   if (C == C2) {
-    cout << " aperture_scan: F side convert F->C: Good" << endl;
+    cout << " [3] aperture_scan: F side convert F->C: Good" << endl;
   } else {
-    cout << " aperture_scan: F SIDE CONVERT F->C: FAILED!" << endl;
+    cout << " [3] aperture_scan: F SIDE CONVERT F->C: FAILED!" << endl;
     c_ok = false;
   }
 

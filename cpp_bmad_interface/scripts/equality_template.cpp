@@ -107,30 +107,3 @@ bool is_all_equal(const FixedArray3D<T, DIM1, DIM2, DIM3> &arr1,
   return true;
 }
 //---------------------------------------------------
-
-template bool is_all_equal(const VariableArray1D<Bool> &,
-                           const VariableArray1D<Bool> &);
-template bool is_all_equal(const VariableArray1D<Complex> &,
-                           const VariableArray1D<Complex> &);
-template bool is_all_equal(const VariableArray1D<Real> &,
-                           const VariableArray1D<Real> &);
-template bool is_all_equal(const VariableArray1D<Int> &,
-                           const VariableArray1D<Int> &);
-template bool is_all_equal(const VariableArray1D<string> &,
-                           const VariableArray1D<string> &);
-
-template bool is_all_equal(const VariableArray2D<Bool> &,
-                           const VariableArray2D<Bool> &);
-template bool is_all_equal(const VariableArray2D<Complex> &,
-                           const VariableArray2D<Complex> &);
-template bool is_all_equal(const VariableArray2D<Real> &,
-                           const VariableArray2D<Real> &);
-template bool is_all_equal(const VariableArray2D<Int> &,
-                           const VariableArray2D<Int> &);
-
-template bool is_all_equal(const VariableArray3D<Complex> &,
-                           const VariableArray3D<Complex> &);
-template bool is_all_equal(const VariableArray3D<Real> &,
-                           const VariableArray3D<Real> &);
-template bool is_all_equal(const VariableArray3D<Int> &,
-                           const VariableArray3D<Int> &);
