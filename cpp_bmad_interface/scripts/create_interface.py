@@ -1582,12 +1582,12 @@ def configure_c_dim1_ptr(
   const CPP_KIND** z_NAME = nullptr;
   if (n1_NAME != 0) {
     z_NAME = new const CPP_KIND*[n1_NAME];
-    for (auto i = 0; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
+    for (auto i{0}; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
   }
 """
         cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (auto i = 0; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
+  for (auto i{0}; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
 """
         cp.to_f_cleanup = " if (z_NAME) delete[] z_NAME;\n"
 
@@ -1603,7 +1603,7 @@ def configure_c_dim2_ptr(
     cp.c_instantiation_suffix = ""
     cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (auto i = 0; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
+  for (auto i{0}; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
   C.NAME << z_NAME;
 """
     cp.test_pat = (
@@ -1631,9 +1631,7 @@ def configure_c_dim2_ptr(
     for (size_t i = 0; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);\n
       for (size_t j = 0; j < C.NAME[0].size(); j++) {
-        // auto item = make_shared<CPP_KIND>();
-        // C.NAME[i][j] = item;
-        auto item = C.NAME[i][j];
+        auto &item = C.NAME[i][j];
         set_CPP_KIND_test_pattern(item, ix_patt+i+2*j+3);
       }
     }
@@ -1642,12 +1640,10 @@ def configure_c_dim2_ptr(
         )
         cp.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (auto i = 0; i < n1_NAME; i++) {
+  for (auto i{0}; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (auto j = 0; j < n2_NAME; j++) {
-        // auto item = make_shared<CPP_KIND>();
-        // C.NAME[i][j] = item;
-        auto item = C.NAME[i][j];
+    for (auto j{0}; j < n2_NAME; j++) {
+        auto &item = C.NAME[i][j];
         KIND_to_c(z_NAME[n2_NAME*i+j], item);
     }
   }
@@ -1659,8 +1655,8 @@ def configure_c_dim2_ptr(
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     z_NAME = new const TYPE* [n1_NAME*n2_NAME];
-    for (auto i = 0; i < n1_NAME; i++) {
-      for (auto j = 0; j < n2_NAME; j++) {
+    for (auto i{0}; i < n1_NAME; i++) {
+      for (auto j{0}; j < n2_NAME; j++) {
         z_NAME[i*n2_NAME + j] = &C.NAME[i][j];
       }
     }
@@ -1726,11 +1722,11 @@ def configure_c_dim3_ptr(
     if type == STRUCT:
         cp.to_c2_set = """
   C.NAME.resize(n1_NAME);
-  for (auto i = 0; i < n1_NAME; i++) {
+  for (auto i{0}; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (auto j = 0; j < n2_NAME; j++) {
+    for (auto j{0}; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
-      for (auto k = 0; k < n3_NAME; k++) {
+      for (auto k{0}; k < n3_NAME; k++) {
         // C.NAME[i][j][k] = make_shared<CPP_KIND>();
         KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], C.NAME[i][j][k]);
     } } }
@@ -1761,9 +1757,9 @@ def configure_c_dim3_ptr(
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
     z_NAME = new const TYPE* [n1_NAME*n2_NAME*n3_NAME];
-    for (auto i = 0; i < n1_NAME; i++) {
-      for (auto j = 0; j < n2_NAME; j++) {
-        for (auto k = 0; k < n3_NAME; k++) {
+    for (auto i{0}; i < n1_NAME; i++) {
+      for (auto j{0}; j < n2_NAME; j++) {
+        for (auto k{0}; k < n3_NAME; k++) {
           z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = &C.NAME[i][j][k];
         }
       }
@@ -1895,7 +1891,7 @@ def setup_char_array(c_side_trans):
     cc.to_f2_arg = "c_Char*"
     cc.to_f_setup = """\
   c_Char z_NAME[DIM1];
-  for (auto i = 0; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
+  for (auto i{0}; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
 """
     cc.to_c2_arg = "c_Char* z_NAME"
     cc.test_pat = (
@@ -1922,16 +1918,16 @@ def setup_char_array_pointer(c_side_trans):
     cc.to_f2_arg = "c_Char*"
     cc.to_c2_arg = "c_Char* z_NAME"
     cc.to_f_setup = """\
-  auto n1_NAME = C.NAME.size();
+  auto n1_NAME{ C.NAME.size() };
   c_Char* z_NAME = nullptr;
   if (n1_NAME != 0) {
     z_NAME = new c_Char[n1_NAME];
-    for (auto i = 0; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].c_str();
+    for (auto i{0}; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].c_str();
   }
 """
     cc.to_c2_set = """\
   C.NAME.resize(n1_NAME);
-  for (auto i = 0; i < n1_NAME; i++) C.NAME[i] = z_NAME[i];
+  for (auto i{0}; i < n1_NAME; i++) C.NAME[i] = z_NAME[i];
 """
     cc.test_pat = (
         test_pat_pointer1

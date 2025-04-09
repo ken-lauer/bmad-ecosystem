@@ -151,14 +151,14 @@ extern "C" void ac_kicker_to_f (const CPP_ac_kicker& C, Opaque_ac_kicker_class* 
   const CPP_ac_kicker_time** z_amp_vs_time = nullptr;
   if (n1_amp_vs_time != 0) {
     z_amp_vs_time = new const CPP_ac_kicker_time*[n1_amp_vs_time];
-    for (auto i = 0; i < n1_amp_vs_time; i++) z_amp_vs_time[i] = &C.amp_vs_time[i];
+    for (auto i{0}; i < n1_amp_vs_time; i++) z_amp_vs_time[i] = &C.amp_vs_time[i];
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_freq>
   auto n1_frequency = C.frequency.size();
   const CPP_ac_kicker_freq** z_frequency = nullptr;
   if (n1_frequency != 0) {
     z_frequency = new const CPP_ac_kicker_freq*[n1_frequency];
-    for (auto i = 0; i < n1_frequency; i++) z_frequency[i] = &C.frequency[i];
+    for (auto i{0}; i < n1_frequency; i++) z_frequency[i] = &C.frequency[i];
   }
 
   // c_side.to_f2_call
@@ -176,11 +176,11 @@ extern "C" void ac_kicker_to_c2 (CPP_ac_kicker& C, Opaque_ac_kicker_time_class**
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_time>
   C.amp_vs_time.resize(n1_amp_vs_time);
-  for (auto i = 0; i < n1_amp_vs_time; i++) { ac_kicker_time_to_c(z_amp_vs_time[i], C.amp_vs_time[i]); }
+  for (auto i{0}; i < n1_amp_vs_time; i++) { ac_kicker_time_to_c(z_amp_vs_time[i], C.amp_vs_time[i]); }
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_freq>
   C.frequency.resize(n1_frequency);
-  for (auto i = 0; i < n1_frequency; i++) { ac_kicker_freq_to_c(z_frequency[i], C.frequency[i]); }
+  for (auto i{0}; i < n1_frequency; i++) { ac_kicker_freq_to_c(z_frequency[i], C.frequency[i]); }
 
 }
 
@@ -241,7 +241,7 @@ extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Op
   const CPP_interval1_coef** z_int1 = nullptr;
   if (n1_int1 != 0) {
     z_int1 = new const CPP_interval1_coef*[n1_int1];
-    for (auto i = 0; i < n1_int1; i++) z_int1[i] = &C.int1[i];
+    for (auto i{0}; i < n1_int1; i++) z_int1[i] = &C.int1[i];
   }
   // c_side.to_f_setup[real, 2, ALLOC] VariableArray2D<Real>
   auto n1_p_reflect { C.p_reflect.size() };
@@ -295,11 +295,11 @@ extern "C" void photon_reflect_table_to_c2 (CPP_photon_reflect_table& C, c_RealA
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_interval1_coef>
   C.int1.resize(n1_int1);
-  for (auto i = 0; i < n1_int1; i++) { interval1_coef_to_c(z_int1[i], C.int1[i]); }
+  for (auto i{0}; i < n1_int1; i++) { interval1_coef_to_c(z_int1[i], C.int1[i]); }
 
   // c_side.to_c2_set[real, 2, ALLOC] VariableArray2D<Real>
   C.p_reflect.resize(n1_p_reflect);
-  for (auto i = 0; i < n1_p_reflect; i++) C.p_reflect[i].resize(n2_p_reflect);
+  for (auto i{0}; i < n1_p_reflect; i++) C.p_reflect[i].resize(n2_p_reflect);
   C.p_reflect << z_p_reflect;
 
   // c_side.to_c2_set[real, 0, NOT] Real
@@ -332,7 +332,7 @@ extern "C" void photon_reflect_surface_to_f (const CPP_photon_reflect_surface& C
   const CPP_photon_reflect_table** z_table = nullptr;
   if (n1_table != 0) {
     z_table = new const CPP_photon_reflect_table*[n1_table];
-    for (auto i = 0; i < n1_table; i++) z_table[i] = &C.table[i];
+    for (auto i{0}; i < n1_table; i++) z_table[i] = &C.table[i];
   }
 
   // c_side.to_f2_call
@@ -358,7 +358,7 @@ extern "C" void photon_reflect_surface_to_c2 (CPP_photon_reflect_surface& C, c_C
   C.reflectivity_file = z_reflectivity_file;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_photon_reflect_table>
   C.table.resize(n1_table);
-  for (auto i = 0; i < n1_table; i++) { photon_reflect_table_to_c(z_table[i], C.table[i]); }
+  for (auto i{0}; i < n1_table; i++) { photon_reflect_table_to_c(z_table[i], C.table[i]); }
 
   // c_side.to_c2_set[real, 0, NOT] Real
   C.surface_roughness_rms = z_surface_roughness_rms;
@@ -454,7 +454,7 @@ extern "C" void coord_array_to_f (const CPP_coord_array& C, Opaque_coord_array_c
   const CPP_coord** z_orbit = nullptr;
   if (n1_orbit != 0) {
     z_orbit = new const CPP_coord*[n1_orbit];
-    for (auto i = 0; i < n1_orbit; i++) z_orbit[i] = &C.orbit[i];
+    for (auto i{0}; i < n1_orbit; i++) z_orbit[i] = &C.orbit[i];
   }
 
   // c_side.to_f2_call
@@ -470,7 +470,7 @@ extern "C" void coord_array_to_c2 (CPP_coord_array& C, Opaque_coord_class** z_or
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_coord>
   C.orbit.resize(n1_orbit);
-  for (auto i = 0; i < n1_orbit; i++) { coord_to_c(z_orbit[i], C.orbit[i]); }
+  for (auto i{0}; i < n1_orbit; i++) { coord_to_c(z_orbit[i], C.orbit[i]); }
 
 }
 
@@ -690,14 +690,14 @@ extern "C" void wake_sr_to_f (const CPP_wake_sr& C, Opaque_wake_sr_class* F) {
   const CPP_wake_sr_mode** z_long_wake = nullptr;
   if (n1_long_wake != 0) {
     z_long_wake = new const CPP_wake_sr_mode*[n1_long_wake];
-    for (auto i = 0; i < n1_long_wake; i++) z_long_wake[i] = &C.long_wake[i];
+    for (auto i{0}; i < n1_long_wake; i++) z_long_wake[i] = &C.long_wake[i];
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
   auto n1_trans_wake = C.trans_wake.size();
   const CPP_wake_sr_mode** z_trans_wake = nullptr;
   if (n1_trans_wake != 0) {
     z_trans_wake = new const CPP_wake_sr_mode*[n1_trans_wake];
-    for (auto i = 0; i < n1_trans_wake; i++) z_trans_wake[i] = &C.trans_wake[i];
+    for (auto i{0}; i < n1_trans_wake; i++) z_trans_wake[i] = &C.trans_wake[i];
   }
 
   // c_side.to_f2_call
@@ -724,11 +724,11 @@ extern "C" void wake_sr_to_c2 (CPP_wake_sr& C, c_Char z_file, const
   wake_sr_z_long_to_c(z_z_long, C.z_long);
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
   C.long_wake.resize(n1_long_wake);
-  for (auto i = 0; i < n1_long_wake; i++) { wake_sr_mode_to_c(z_long_wake[i], C.long_wake[i]); }
+  for (auto i{0}; i < n1_long_wake; i++) { wake_sr_mode_to_c(z_long_wake[i], C.long_wake[i]); }
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
   C.trans_wake.resize(n1_trans_wake);
-  for (auto i = 0; i < n1_trans_wake; i++) { wake_sr_mode_to_c(z_trans_wake[i], C.trans_wake[i]); }
+  for (auto i{0}; i < n1_trans_wake; i++) { wake_sr_mode_to_c(z_trans_wake[i], C.trans_wake[i]); }
 
   // c_side.to_c2_set[real, 0, NOT] Real
   C.z_ref_long = z_z_ref_long;
@@ -812,7 +812,7 @@ extern "C" void wake_lr_to_f (const CPP_wake_lr& C, Opaque_wake_lr_class* F) {
   const CPP_wake_lr_mode** z_mode = nullptr;
   if (n1_mode != 0) {
     z_mode = new const CPP_wake_lr_mode*[n1_mode];
-    for (auto i = 0; i < n1_mode; i++) z_mode[i] = &C.mode[i];
+    for (auto i{0}; i < n1_mode; i++) z_mode[i] = &C.mode[i];
   }
 
   // c_side.to_f2_call
@@ -832,7 +832,7 @@ extern "C" void wake_lr_to_c2 (CPP_wake_lr& C, c_Char z_file, Opaque_wake_lr_mod
   C.file = z_file;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wake_lr_mode>
   C.mode.resize(n1_mode);
-  for (auto i = 0; i < n1_mode; i++) { wake_lr_mode_to_c(z_mode[i], C.mode[i]); }
+  for (auto i{0}; i < n1_mode; i++) { wake_lr_mode_to_c(z_mode[i], C.mode[i]); }
 
   // c_side.to_c2_set[real, 0, NOT] Real
   C.t_ref = z_t_ref;
@@ -937,7 +937,7 @@ extern "C" void taylor_to_f (const CPP_taylor& C, Opaque_taylor_class* F) {
   const CPP_taylor_term** z_term = nullptr;
   if (n1_term != 0) {
     z_term = new const CPP_taylor_term*[n1_term];
-    for (auto i = 0; i < n1_term; i++) z_term[i] = &C.term[i];
+    for (auto i{0}; i < n1_term; i++) z_term[i] = &C.term[i];
   }
 
   // c_side.to_f2_call
@@ -955,7 +955,7 @@ extern "C" void taylor_to_c2 (CPP_taylor& C, c_Real& z_ref, Opaque_taylor_term_c
   C.ref = z_ref;
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_taylor_term>
   C.term.resize(n1_term);
-  for (auto i = 0; i < n1_term; i++) { taylor_term_to_c(z_term[i], C.term[i]); }
+  for (auto i{0}; i < n1_term; i++) { taylor_term_to_c(z_term[i], C.term[i]); }
 
 }
 
@@ -1000,7 +1000,7 @@ extern "C" void em_taylor_to_f (const CPP_em_taylor& C, Opaque_em_taylor_class* 
   const CPP_em_taylor_term** z_term = nullptr;
   if (n1_term != 0) {
     z_term = new const CPP_em_taylor_term*[n1_term];
-    for (auto i = 0; i < n1_term; i++) z_term[i] = &C.term[i];
+    for (auto i{0}; i < n1_term; i++) z_term[i] = &C.term[i];
   }
 
   // c_side.to_f2_call
@@ -1018,7 +1018,7 @@ extern "C" void em_taylor_to_c2 (CPP_em_taylor& C, c_Real& z_ref, Opaque_em_tayl
   C.ref = z_ref;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_em_taylor_term>
   C.term.resize(n1_term);
-  for (auto i = 0; i < n1_term; i++) { em_taylor_term_to_c(z_term[i], C.term[i]); }
+  for (auto i{0}; i < n1_term; i++) { em_taylor_term_to_c(z_term[i], C.term[i]); }
 
 }
 
@@ -1081,7 +1081,7 @@ extern "C" void cartesian_map_term_to_f (const CPP_cartesian_map_term& C, Opaque
   const CPP_cartesian_map_term1** z_term = nullptr;
   if (n1_term != 0) {
     z_term = new const CPP_cartesian_map_term1*[n1_term];
-    for (auto i = 0; i < n1_term; i++) z_term[i] = &C.term[i];
+    for (auto i{0}; i < n1_term; i++) z_term[i] = &C.term[i];
   }
 
   // c_side.to_f2_call
@@ -1101,7 +1101,7 @@ extern "C" void cartesian_map_term_to_c2 (CPP_cartesian_map_term& C, c_Char z_fi
   C.n_link = z_n_link;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_cartesian_map_term1>
   C.term.resize(n1_term);
-  for (auto i = 0; i < n1_term; i++) { cartesian_map_term1_to_c(z_term[i], C.term[i]); }
+  for (auto i{0}; i < n1_term; i++) { cartesian_map_term1_to_c(z_term[i], C.term[i]); }
 
 }
 
@@ -1193,7 +1193,7 @@ extern "C" void cylindrical_map_term_to_f (const CPP_cylindrical_map_term& C, Op
   const CPP_cylindrical_map_term1** z_term = nullptr;
   if (n1_term != 0) {
     z_term = new const CPP_cylindrical_map_term1*[n1_term];
-    for (auto i = 0; i < n1_term; i++) z_term[i] = &C.term[i];
+    for (auto i{0}; i < n1_term; i++) z_term[i] = &C.term[i];
   }
 
   // c_side.to_f2_call
@@ -1213,7 +1213,7 @@ extern "C" void cylindrical_map_term_to_c2 (CPP_cylindrical_map_term& C, c_Char 
   C.n_link = z_n_link;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_cylindrical_map_term1>
   C.term.resize(n1_term);
-  for (auto i = 0; i < n1_term; i++) { cylindrical_map_term1_to_c(z_term[i], C.term[i]); }
+  for (auto i{0}; i < n1_term; i++) { cylindrical_map_term1_to_c(z_term[i], C.term[i]); }
 
 }
 
@@ -1727,7 +1727,7 @@ extern "C" void gen_grad1_to_c2 (CPP_gen_grad1& C, c_Int& z_m, c_Int& z_sincos, 
   C.n_deriv_max = z_n_deriv_max;
   // c_side.to_c2_set[real, 2, ALLOC] VariableArray2D<Real>
   C.deriv.resize(n1_deriv);
-  for (auto i = 0; i < n1_deriv; i++) C.deriv[i].resize(n2_deriv);
+  for (auto i{0}; i < n1_deriv; i++) C.deriv[i].resize(n2_deriv);
   C.deriv << z_deriv;
 
 }
@@ -1748,7 +1748,7 @@ extern "C" void gen_grad_map_to_f (const CPP_gen_grad_map& C, Opaque_gen_grad_ma
   const CPP_gen_grad1** z_gg = nullptr;
   if (n1_gg != 0) {
     z_gg = new const CPP_gen_grad1*[n1_gg];
-    for (auto i = 0; i < n1_gg; i++) z_gg[i] = &C.gg[i];
+    for (auto i{0}; i < n1_gg; i++) z_gg[i] = &C.gg[i];
   }
 
   // c_side.to_f2_call
@@ -1769,7 +1769,7 @@ extern "C" void gen_grad_map_to_c2 (CPP_gen_grad_map& C, c_Char z_file,
   C.file = z_file;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_gen_grad1>
   C.gg.resize(n1_gg);
-  for (auto i = 0; i < n1_gg; i++) { gen_grad1_to_c(z_gg[i], C.gg[i]); }
+  for (auto i{0}; i < n1_gg; i++) { gen_grad1_to_c(z_gg[i], C.gg[i]); }
 
   // c_side.to_c2_set[integer, 0, NOT] Int
   C.ele_anchor_pt = z_ele_anchor_pt;
@@ -1843,8 +1843,8 @@ extern "C" void surface_segmented_to_f (const CPP_surface_segmented& C, Opaque_s
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
     z_pt = new const CPP_surface_segmented_pt* [n1_pt*n2_pt];
-    for (auto i = 0; i < n1_pt; i++) {
-      for (auto j = 0; j < n2_pt; j++) {
+    for (auto i{0}; i < n1_pt; i++) {
+      for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
       }
     }
@@ -1869,12 +1869,10 @@ extern "C" void surface_segmented_to_c2 (CPP_surface_segmented& C, c_Bool& z_act
   C.r0 << z_r0;
   // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_surface_segmented_pt>
   C.pt.resize(n1_pt);
-  for (auto i = 0; i < n1_pt; i++) {
+  for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
-    for (auto j = 0; j < n2_pt; j++) {
-        // auto item = make_shared<CPP_surface_segmented_pt>();
-        // C.pt[i][j] = item;
-        auto item = C.pt[i][j];
+    for (auto j{0}; j < n2_pt; j++) {
+        auto &item = C.pt[i][j];
         surface_segmented_pt_to_c(z_pt[n2_pt*i+j], item);
     }
   }
@@ -1935,8 +1933,8 @@ extern "C" void surface_h_misalign_to_f (const CPP_surface_h_misalign& C, Opaque
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
     z_pt = new const CPP_surface_h_misalign_pt* [n1_pt*n2_pt];
-    for (auto i = 0; i < n1_pt; i++) {
-      for (auto j = 0; j < n2_pt; j++) {
+    for (auto i{0}; i < n1_pt; i++) {
+      for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
       }
     }
@@ -1962,12 +1960,10 @@ extern "C" void surface_h_misalign_to_c2 (CPP_surface_h_misalign& C, c_Bool& z_a
   C.r0 << z_r0;
   // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_surface_h_misalign_pt>
   C.pt.resize(n1_pt);
-  for (auto i = 0; i < n1_pt; i++) {
+  for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
-    for (auto j = 0; j < n2_pt; j++) {
-        // auto item = make_shared<CPP_surface_h_misalign_pt>();
-        // C.pt[i][j] = item;
-        auto item = C.pt[i][j];
+    for (auto j{0}; j < n2_pt; j++) {
+        auto &item = C.pt[i][j];
         surface_h_misalign_pt_to_c(z_pt[n2_pt*i+j], item);
     }
   }
@@ -2028,8 +2024,8 @@ extern "C" void surface_displacement_to_f (const CPP_surface_displacement& C, Op
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
     z_pt = new const CPP_surface_displacement_pt* [n1_pt*n2_pt];
-    for (auto i = 0; i < n1_pt; i++) {
-      for (auto j = 0; j < n2_pt; j++) {
+    for (auto i{0}; i < n1_pt; i++) {
+      for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
       }
     }
@@ -2055,12 +2051,10 @@ extern "C" void surface_displacement_to_c2 (CPP_surface_displacement& C, c_Bool&
   C.r0 << z_r0;
   // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_surface_displacement_pt>
   C.pt.resize(n1_pt);
-  for (auto i = 0; i < n1_pt; i++) {
+  for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
-    for (auto j = 0; j < n2_pt; j++) {
-        // auto item = make_shared<CPP_surface_displacement_pt>();
-        // C.pt[i][j] = item;
-        auto item = C.pt[i][j];
+    for (auto j{0}; j < n2_pt; j++) {
+        auto &item = C.pt[i][j];
         surface_displacement_pt_to_c(z_pt[n2_pt*i+j], item);
     }
   }
@@ -2267,8 +2261,8 @@ extern "C" void pixel_detec_to_f (const CPP_pixel_detec& C, Opaque_pixel_detec_c
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
     z_pt = new const CPP_pixel_pt* [n1_pt*n2_pt];
-    for (auto i = 0; i < n1_pt; i++) {
-      for (auto j = 0; j < n2_pt; j++) {
+    for (auto i{0}; i < n1_pt; i++) {
+      for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
       }
     }
@@ -2299,12 +2293,10 @@ extern "C" void pixel_detec_to_c2 (CPP_pixel_detec& C, c_RealArr z_dr, c_RealArr
   C.n_hit_pixel = z_n_hit_pixel;
   // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_pixel_pt>
   C.pt.resize(n1_pt);
-  for (auto i = 0; i < n1_pt; i++) {
+  for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
-    for (auto j = 0; j < n2_pt; j++) {
-        // auto item = make_shared<CPP_pixel_pt>();
-        // C.pt[i][j] = item;
-        auto item = C.pt[i][j];
+    for (auto j{0}; j < n2_pt; j++) {
+        auto &item = C.pt[i][j];
         pixel_pt_to_c(z_pt[n2_pt*i+j], item);
     }
   }
@@ -2330,7 +2322,7 @@ extern "C" void photon_element_to_f (const CPP_photon_element& C, Opaque_photon_
   const CPP_spline** z_init_energy_prob = nullptr;
   if (n1_init_energy_prob != 0) {
     z_init_energy_prob = new const CPP_spline*[n1_init_energy_prob];
-    for (auto i = 0; i < n1_init_energy_prob; i++) z_init_energy_prob[i] = &C.init_energy_prob[i];
+    for (auto i{0}; i < n1_init_energy_prob; i++) z_init_energy_prob[i] = &C.init_energy_prob[i];
   }
   // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
   auto n1_integrated_init_energy_prob = C.integrated_init_energy_prob.size();
@@ -2382,7 +2374,7 @@ extern "C" void photon_element_to_c2 (CPP_photon_element& C, const
   photon_reflect_table_to_c(z_reflectivity_table_pi, C.reflectivity_table_pi);
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_spline>
   C.init_energy_prob.resize(n1_init_energy_prob);
-  for (auto i = 0; i < n1_init_energy_prob; i++) { spline_to_c(z_init_energy_prob[i], C.init_energy_prob[i]); }
+  for (auto i{0}; i < n1_init_energy_prob; i++) { spline_to_c(z_init_energy_prob[i], C.init_energy_prob[i]); }
 
   // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
 
@@ -2452,7 +2444,7 @@ extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_
   const CPP_wall3d_vertex** z_v = nullptr;
   if (n1_v != 0) {
     z_v = new const CPP_wall3d_vertex*[n1_v];
-    for (auto i = 0; i < n1_v; i++) z_v[i] = &C.v[i];
+    for (auto i{0}; i < n1_v; i++) z_v[i] = &C.v[i];
   }
   // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_photon_reflect_surface>
   size_t n_surface = 0; if (C.surface != nullptr) n_surface = 1;
@@ -2481,7 +2473,7 @@ extern "C" void wall3d_section_to_c2 (CPP_wall3d_section& C, c_Char z_name, c_Ch
   C.material = z_material;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wall3d_vertex>
   C.v.resize(n1_v);
-  for (auto i = 0; i < n1_v; i++) { wall3d_vertex_to_c(z_v[i], C.v[i]); }
+  for (auto i{0}; i < n1_v; i++) { wall3d_vertex_to_c(z_v[i], C.v[i]); }
 
   // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_photon_reflect_surface>
   if (n_surface == 0) {
@@ -2541,7 +2533,7 @@ extern "C" void wall3d_to_f (const CPP_wall3d& C, Opaque_wall3d_class* F) {
   const CPP_wall3d_section** z_section = nullptr;
   if (n1_section != 0) {
     z_section = new const CPP_wall3d_section*[n1_section];
-    for (auto i = 0; i < n1_section; i++) z_section[i] = &C.section[i];
+    for (auto i{0}; i < n1_section; i++) z_section[i] = &C.section[i];
   }
 
   // c_side.to_f2_call
@@ -2579,7 +2571,7 @@ extern "C" void wall3d_to_c2 (CPP_wall3d& C, c_Char z_name, c_Int& z_type, c_Int
   C.ele_anchor_pt = z_ele_anchor_pt;
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wall3d_section>
   C.section.resize(n1_section);
-  for (auto i = 0; i < n1_section; i++) { wall3d_section_to_c(z_section[i], C.section[i]); }
+  for (auto i{0}; i < n1_section; i++) { wall3d_section_to_c(z_section[i], C.section[i]); }
 
 }
 
@@ -2642,7 +2634,7 @@ extern "C" void control_to_f (const CPP_control& C, Opaque_control_class* F) {
   const CPP_expression_atom** z_stack = nullptr;
   if (n1_stack != 0) {
     z_stack = new const CPP_expression_atom*[n1_stack];
-    for (auto i = 0; i < n1_stack; i++) z_stack[i] = &C.stack[i];
+    for (auto i{0}; i < n1_stack; i++) z_stack[i] = &C.stack[i];
   }
 
   // c_side.to_f2_call
@@ -2668,7 +2660,7 @@ extern "C" void control_to_c2 (CPP_control& C, c_Real& z_value, c_RealArr z_y_kn
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
   C.stack.resize(n1_stack);
-  for (auto i = 0; i < n1_stack; i++) { expression_atom_to_c(z_stack[i], C.stack[i]); }
+  for (auto i{0}; i < n1_stack; i++) { expression_atom_to_c(z_stack[i], C.stack[i]); }
 
   // c_side.to_c2_set[type, 0, NOT] CPP_lat_ele_loc
   lat_ele_loc_to_c(z_slave, C.slave);
@@ -2732,7 +2724,7 @@ extern "C" void control_ramp1_to_f (const CPP_control_ramp1& C, Opaque_control_r
   const CPP_expression_atom** z_stack = nullptr;
   if (n1_stack != 0) {
     z_stack = new const CPP_expression_atom*[n1_stack];
-    for (auto i = 0; i < n1_stack; i++) z_stack[i] = &C.stack[i];
+    for (auto i{0}; i < n1_stack; i++) z_stack[i] = &C.stack[i];
   }
 
   // c_side.to_f2_call
@@ -2755,7 +2747,7 @@ extern "C" void control_ramp1_to_c2 (CPP_control_ramp1& C, c_RealArr z_y_knot, I
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
   C.stack.resize(n1_stack);
-  for (auto i = 0; i < n1_stack; i++) { expression_atom_to_c(z_stack[i], C.stack[i]); }
+  for (auto i{0}; i < n1_stack; i++) { expression_atom_to_c(z_stack[i], C.stack[i]); }
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.attribute = z_attribute;
@@ -2781,21 +2773,21 @@ extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_clas
   const CPP_control_var1** z_var = nullptr;
   if (n1_var != 0) {
     z_var = new const CPP_control_var1*[n1_var];
-    for (auto i = 0; i < n1_var; i++) z_var[i] = &C.var[i];
+    for (auto i{0}; i < n1_var; i++) z_var[i] = &C.var[i];
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_control_ramp1>
   auto n1_ramp = C.ramp.size();
   const CPP_control_ramp1** z_ramp = nullptr;
   if (n1_ramp != 0) {
     z_ramp = new const CPP_control_ramp1*[n1_ramp];
-    for (auto i = 0; i < n1_ramp; i++) z_ramp[i] = &C.ramp[i];
+    for (auto i{0}; i < n1_ramp; i++) z_ramp[i] = &C.ramp[i];
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_ramper_lord>
   auto n1_ramper_lord = C.ramper_lord.size();
   const CPP_ramper_lord** z_ramper_lord = nullptr;
   if (n1_ramper_lord != 0) {
     z_ramper_lord = new const CPP_ramper_lord*[n1_ramper_lord];
-    for (auto i = 0; i < n1_ramper_lord; i++) z_ramper_lord[i] = &C.ramper_lord[i];
+    for (auto i{0}; i < n1_ramper_lord; i++) z_ramper_lord[i] = &C.ramper_lord[i];
   }
   // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
   auto n1_x_knot = C.x_knot.size();
@@ -2823,15 +2815,15 @@ extern "C" void controller_to_c2 (CPP_controller& C, Opaque_control_var1_class**
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_control_var1>
   C.var.resize(n1_var);
-  for (auto i = 0; i < n1_var; i++) { control_var1_to_c(z_var[i], C.var[i]); }
+  for (auto i{0}; i < n1_var; i++) { control_var1_to_c(z_var[i], C.var[i]); }
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_control_ramp1>
   C.ramp.resize(n1_ramp);
-  for (auto i = 0; i < n1_ramp; i++) { control_ramp1_to_c(z_ramp[i], C.ramp[i]); }
+  for (auto i{0}; i < n1_ramp; i++) { control_ramp1_to_c(z_ramp[i], C.ramp[i]); }
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_ramper_lord>
   C.ramper_lord.resize(n1_ramper_lord);
-  for (auto i = 0; i < n1_ramper_lord; i++) { ramper_lord_to_c(z_ramper_lord[i], C.ramper_lord[i]); }
+  for (auto i{0}; i < n1_ramper_lord; i++) { ramper_lord_to_c(z_ramper_lord[i], C.ramper_lord[i]); }
 
   // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
 
@@ -2948,7 +2940,7 @@ extern "C" void beam_init_to_f2 (Opaque_beam_init_class*, c_Char, c_Char*, c_Rea
 extern "C" void beam_init_to_f (const CPP_beam_init& C, Opaque_beam_init_class* F) {
   // c_side.to_f_setup[character, 1, NOT] FixedArray1D<string, 3>
   c_Char z_distribution_type[3];
-  for (auto i = 0; i < 3; i++) {z_distribution_type[i] = C.distribution_type[i].c_str();}
+  for (auto i{0}; i < 3; i++) {z_distribution_type[i] = C.distribution_type[i].c_str();}
   // c_side.to_f_setup[type, 1, NOT] FixedArray1D<CPP_ellipse_beam_init, 3>
   const CPP_ellipse_beam_init* z_ellipse[3];
   for (int i = 0; i < 3; i++) {z_ellipse[i] = &C.ellipse[i];}
@@ -3452,7 +3444,7 @@ extern "C" void track_to_f (const CPP_track& C, Opaque_track_class* F) {
   const CPP_track_point** z_pt = nullptr;
   if (n1_pt != 0) {
     z_pt = new const CPP_track_point*[n1_pt];
-    for (auto i = 0; i < n1_pt; i++) z_pt[i] = &C.pt[i];
+    for (auto i{0}; i < n1_pt; i++) z_pt[i] = &C.pt[i];
   }
 
   // c_side.to_f2_call
@@ -3468,7 +3460,7 @@ extern "C" void track_to_c2 (CPP_track& C, Opaque_track_point_class** z_pt, Int 
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_track_point>
   C.pt.resize(n1_pt);
-  for (auto i = 0; i < n1_pt; i++) { track_point_to_c(z_pt[i], C.pt[i]); }
+  for (auto i{0}; i < n1_pt; i++) { track_point_to_c(z_pt[i], C.pt[i]); }
 
   // c_side.to_c2_set[real, 0, NOT] Real
   C.ds_save = z_ds_save;
@@ -3759,7 +3751,7 @@ extern "C" void rad_int_branch_to_f (const CPP_rad_int_branch& C, Opaque_rad_int
   const CPP_rad_int1** z_ele = nullptr;
   if (n1_ele != 0) {
     z_ele = new const CPP_rad_int1*[n1_ele];
-    for (auto i = 0; i < n1_ele; i++) z_ele[i] = &C.ele[i];
+    for (auto i{0}; i < n1_ele; i++) z_ele[i] = &C.ele[i];
   }
 
   // c_side.to_f2_call
@@ -3775,7 +3767,7 @@ extern "C" void rad_int_branch_to_c2 (CPP_rad_int_branch& C, Opaque_rad_int1_cla
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_rad_int1>
   C.ele.resize(n1_ele);
-  for (auto i = 0; i < n1_ele; i++) { rad_int1_to_c(z_ele[i], C.ele[i]); }
+  for (auto i{0}; i < n1_ele; i++) { rad_int1_to_c(z_ele[i], C.ele[i]); }
 
 }
 
@@ -3795,7 +3787,7 @@ extern "C" void rad_int_all_ele_to_f (const CPP_rad_int_all_ele& C, Opaque_rad_i
   const CPP_rad_int_branch** z_branch = nullptr;
   if (n1_branch != 0) {
     z_branch = new const CPP_rad_int_branch*[n1_branch];
-    for (auto i = 0; i < n1_branch; i++) z_branch[i] = &C.branch[i];
+    for (auto i{0}; i < n1_branch; i++) z_branch[i] = &C.branch[i];
   }
 
   // c_side.to_f2_call
@@ -3811,7 +3803,7 @@ extern "C" void rad_int_all_ele_to_c2 (CPP_rad_int_all_ele& C, Opaque_rad_int_br
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_rad_int_branch>
   C.branch.resize(n1_branch);
-  for (auto i = 0; i < n1_branch; i++) { rad_int_branch_to_c(z_branch[i], C.branch[i]); }
+  for (auto i{0}; i < n1_branch; i++) { rad_int_branch_to_c(z_branch[i], C.branch[i]); }
 
 }
 
@@ -3871,35 +3863,35 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
   const CPP_wall3d** z_wall3d = nullptr;
   if (n1_wall3d != 0) {
     z_wall3d = new const CPP_wall3d*[n1_wall3d];
-    for (auto i = 0; i < n1_wall3d; i++) z_wall3d[i] = &C.wall3d[i];
+    for (auto i{0}; i < n1_wall3d; i++) z_wall3d[i] = &C.wall3d[i];
   }
   // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_cartesian_map>
   auto n1_cartesian_map = C.cartesian_map.size();
   const CPP_cartesian_map** z_cartesian_map = nullptr;
   if (n1_cartesian_map != 0) {
     z_cartesian_map = new const CPP_cartesian_map*[n1_cartesian_map];
-    for (auto i = 0; i < n1_cartesian_map; i++) z_cartesian_map[i] = &C.cartesian_map[i];
+    for (auto i{0}; i < n1_cartesian_map; i++) z_cartesian_map[i] = &C.cartesian_map[i];
   }
   // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_cylindrical_map>
   auto n1_cylindrical_map = C.cylindrical_map.size();
   const CPP_cylindrical_map** z_cylindrical_map = nullptr;
   if (n1_cylindrical_map != 0) {
     z_cylindrical_map = new const CPP_cylindrical_map*[n1_cylindrical_map];
-    for (auto i = 0; i < n1_cylindrical_map; i++) z_cylindrical_map[i] = &C.cylindrical_map[i];
+    for (auto i{0}; i < n1_cylindrical_map; i++) z_cylindrical_map[i] = &C.cylindrical_map[i];
   }
   // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_gen_grad_map>
   auto n1_gen_grad_map = C.gen_grad_map.size();
   const CPP_gen_grad_map** z_gen_grad_map = nullptr;
   if (n1_gen_grad_map != 0) {
     z_gen_grad_map = new const CPP_gen_grad_map*[n1_gen_grad_map];
-    for (auto i = 0; i < n1_gen_grad_map; i++) z_gen_grad_map[i] = &C.gen_grad_map[i];
+    for (auto i{0}; i < n1_gen_grad_map; i++) z_gen_grad_map[i] = &C.gen_grad_map[i];
   }
   // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_grid_field>
   auto n1_grid_field = C.grid_field.size();
   const CPP_grid_field** z_grid_field = nullptr;
   if (n1_grid_field != 0) {
     z_grid_field = new const CPP_grid_field*[n1_grid_field];
-    for (auto i = 0; i < n1_grid_field; i++) z_grid_field[i] = &C.grid_field[i];
+    for (auto i{0}; i < n1_grid_field; i++) z_grid_field[i] = &C.grid_field[i];
   }
   // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 4, 7>
   Real z_spin_q[4*7]; matrix_to_vec(C.spin_q, z_spin_q);
@@ -4114,23 +4106,23 @@ for (size_t i = 0; i < C.spin_taylor.size(); i++)
 
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_wall3d>
   C.wall3d.resize(n1_wall3d);
-  for (auto i = 0; i < n1_wall3d; i++) { wall3d_to_c(z_wall3d[i], C.wall3d[i]); }
+  for (auto i{0}; i < n1_wall3d; i++) { wall3d_to_c(z_wall3d[i], C.wall3d[i]); }
 
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_cartesian_map>
   C.cartesian_map.resize(n1_cartesian_map);
-  for (auto i = 0; i < n1_cartesian_map; i++) { cartesian_map_to_c(z_cartesian_map[i], C.cartesian_map[i]); }
+  for (auto i{0}; i < n1_cartesian_map; i++) { cartesian_map_to_c(z_cartesian_map[i], C.cartesian_map[i]); }
 
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_cylindrical_map>
   C.cylindrical_map.resize(n1_cylindrical_map);
-  for (auto i = 0; i < n1_cylindrical_map; i++) { cylindrical_map_to_c(z_cylindrical_map[i], C.cylindrical_map[i]); }
+  for (auto i{0}; i < n1_cylindrical_map; i++) { cylindrical_map_to_c(z_cylindrical_map[i], C.cylindrical_map[i]); }
 
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_gen_grad_map>
   C.gen_grad_map.resize(n1_gen_grad_map);
-  for (auto i = 0; i < n1_gen_grad_map; i++) { gen_grad_map_to_c(z_gen_grad_map[i], C.gen_grad_map[i]); }
+  for (auto i{0}; i < n1_gen_grad_map; i++) { gen_grad_map_to_c(z_gen_grad_map[i], C.gen_grad_map[i]); }
 
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_grid_field>
   C.grid_field.resize(n1_grid_field);
-  for (auto i = 0; i < n1_grid_field; i++) { grid_field_to_c(z_grid_field[i], C.grid_field[i]); }
+  for (auto i{0}; i < n1_grid_field; i++) { grid_field_to_c(z_grid_field[i], C.grid_field[i]); }
 
   // c_side.to_c2_set[type, 0, NOT] CPP_coord
   coord_to_c(z_map_ref_orb_in, C.map_ref_orb_in);
@@ -4321,7 +4313,7 @@ extern "C" void complex_taylor_to_f (const CPP_complex_taylor& C, Opaque_complex
   const CPP_complex_taylor_term** z_term = nullptr;
   if (n1_term != 0) {
     z_term = new const CPP_complex_taylor_term*[n1_term];
-    for (auto i = 0; i < n1_term; i++) z_term[i] = &C.term[i];
+    for (auto i{0}; i < n1_term; i++) z_term[i] = &C.term[i];
   }
 
   // c_side.to_f2_call
@@ -4339,7 +4331,7 @@ extern "C" void complex_taylor_to_c2 (CPP_complex_taylor& C, c_Complex& z_ref,
   C.ref = z_ref;
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_complex_taylor_term>
   C.term.resize(n1_term);
-  for (auto i = 0; i < n1_term; i++) { complex_taylor_term_to_c(z_term[i], C.term[i]); }
+  for (auto i{0}; i < n1_term; i++) { complex_taylor_term_to_c(z_term[i], C.term[i]); }
 
 }
 
@@ -4360,14 +4352,14 @@ extern "C" void branch_to_f (const CPP_branch& C, Opaque_branch_class* F) {
   const CPP_ele** z_ele = nullptr;
   if (n1_ele != 0) {
     z_ele = new const CPP_ele*[n1_ele];
-    for (auto i = 0; i < n1_ele; i++) z_ele[i] = &C.ele[i];
+    for (auto i{0}; i < n1_ele; i++) z_ele[i] = &C.ele[i];
   }
   // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_wall3d>
   auto n1_wall3d = C.wall3d.size();
   const CPP_wall3d** z_wall3d = nullptr;
   if (n1_wall3d != 0) {
     z_wall3d = new const CPP_wall3d*[n1_wall3d];
-    for (auto i = 0; i < n1_wall3d; i++) z_wall3d[i] = &C.wall3d[i];
+    for (auto i{0}; i < n1_wall3d; i++) z_wall3d[i] = &C.wall3d[i];
   }
 
   // c_side.to_f2_call
@@ -4409,13 +4401,13 @@ extern "C" void branch_to_c2 (CPP_branch& C, c_Char z_name, c_Int& z_ix_branch, 
   mode_info_to_c(z_z, C.z);
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_ele>
   C.ele.resize(n1_ele);
-  for (auto i = 0; i < n1_ele; i++) { ele_to_c(z_ele[i], C.ele[i]); }
+  for (auto i{0}; i < n1_ele; i++) { ele_to_c(z_ele[i], C.ele[i]); }
 
   // c_side.to_c2_set[type, 0, NOT] CPP_lat_param
   lat_param_to_c(z_param, C.param);
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_wall3d>
   C.wall3d.resize(n1_wall3d);
-  for (auto i = 0; i < n1_wall3d; i++) { wall3d_to_c(z_wall3d[i], C.wall3d[i]); }
+  for (auto i{0}; i < n1_wall3d; i++) { wall3d_to_c(z_wall3d[i], C.wall3d[i]); }
 
 }
 
@@ -4436,18 +4428,18 @@ extern "C" void lat_to_f2 (Opaque_lat_class*, c_Char, c_Char, c_Char, c_Char, c_
 
 extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
   // c_side.to_f_setup[character, 1, ALLOC] VariableArray1D<string>
-  auto n1_print_str = C.print_str.size();
+  auto n1_print_str{ C.print_str.size() };
   c_Char* z_print_str = nullptr;
   if (n1_print_str != 0) {
     z_print_str = new c_Char[n1_print_str];
-    for (auto i = 0; i < n1_print_str; i++) z_print_str[i] = C.print_str[i].c_str();
+    for (auto i{0}; i < n1_print_str; i++) z_print_str[i] = C.print_str[i].c_str();
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
   auto n1_constant = C.constant.size();
   const CPP_expression_atom** z_constant = nullptr;
   if (n1_constant != 0) {
     z_constant = new const CPP_expression_atom*[n1_constant];
-    for (auto i = 0; i < n1_constant; i++) z_constant[i] = &C.constant[i];
+    for (auto i{0}; i < n1_constant; i++) z_constant[i] = &C.constant[i];
   }
   // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_mode_info>
   size_t n_a = 0; if (C.a != nullptr) n_a = 1;
@@ -4462,21 +4454,21 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
   const CPP_ele** z_ele = nullptr;
   if (n1_ele != 0) {
     z_ele = new const CPP_ele*[n1_ele];
-    for (auto i = 0; i < n1_ele; i++) z_ele[i] = &C.ele[i];
+    for (auto i{0}; i < n1_ele; i++) z_ele[i] = &C.ele[i];
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_branch>
   auto n1_branch = C.branch.size();
   const CPP_branch** z_branch = nullptr;
   if (n1_branch != 0) {
     z_branch = new const CPP_branch*[n1_branch];
-    for (auto i = 0; i < n1_branch; i++) z_branch[i] = &C.branch[i];
+    for (auto i{0}; i < n1_branch; i++) z_branch[i] = &C.branch[i];
   }
   // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_control>
   auto n1_control = C.control.size();
   const CPP_control** z_control = nullptr;
   if (n1_control != 0) {
     z_control = new const CPP_control*[n1_control];
-    for (auto i = 0; i < n1_control; i++) z_control[i] = &C.control[i];
+    for (auto i{0}; i < n1_control; i++) z_control[i] = &C.control[i];
   }
   // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
   auto n1_custom = C.custom.size();
@@ -4544,11 +4536,11 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   C.title = z_title;
   // c_side.to_c2_set[character, 1, ALLOC] VariableArray1D<string>
   C.print_str.resize(n1_print_str);
-  for (auto i = 0; i < n1_print_str; i++) C.print_str[i] = z_print_str[i];
+  for (auto i{0}; i < n1_print_str; i++) C.print_str[i] = z_print_str[i];
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
   C.constant.resize(n1_constant);
-  for (auto i = 0; i < n1_constant; i++) { expression_atom_to_c(z_constant[i], C.constant[i]); }
+  for (auto i{0}; i < n1_constant; i++) { expression_atom_to_c(z_constant[i], C.constant[i]); }
 
   // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_mode_info>
   if (n_a == 0) {
@@ -4588,15 +4580,15 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   ele_to_c(z_ele_init, C.ele_init);
   // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_ele>
   C.ele.resize(n1_ele);
-  for (auto i = 0; i < n1_ele; i++) { ele_to_c(z_ele[i], C.ele[i]); }
+  for (auto i{0}; i < n1_ele; i++) { ele_to_c(z_ele[i], C.ele[i]); }
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_branch>
   C.branch.resize(n1_branch);
-  for (auto i = 0; i < n1_branch; i++) { branch_to_c(z_branch[i], C.branch[i]); }
+  for (auto i{0}; i < n1_branch; i++) { branch_to_c(z_branch[i], C.branch[i]); }
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_control>
   C.control.resize(n1_control);
-  for (auto i = 0; i < n1_control; i++) { control_to_c(z_control[i], C.control[i]); }
+  for (auto i{0}; i < n1_control; i++) { control_to_c(z_control[i], C.control[i]); }
 
   // c_side.to_c2_set[type, 0, NOT] CPP_coord
   coord_to_c(z_particle_start, C.particle_start);
@@ -4663,7 +4655,7 @@ extern "C" void bunch_to_f (const CPP_bunch& C, Opaque_bunch_class* F) {
   const CPP_coord** z_particle = nullptr;
   if (n1_particle != 0) {
     z_particle = new const CPP_coord*[n1_particle];
-    for (auto i = 0; i < n1_particle; i++) z_particle[i] = &C.particle[i];
+    for (auto i{0}; i < n1_particle; i++) z_particle[i] = &C.particle[i];
   }
   // c_side.to_f_setup[integer, 1, ALLOC] VariableArray1D<Int>
   auto n1_ix_z = C.ix_z.size();
@@ -4690,7 +4682,7 @@ extern "C" void bunch_to_c2 (CPP_bunch& C, Opaque_coord_class** z_particle, Int 
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_coord>
   C.particle.resize(n1_particle);
-  for (auto i = 0; i < n1_particle; i++) { coord_to_c(z_particle[i], C.particle[i]); }
+  for (auto i{0}; i < n1_particle; i++) { coord_to_c(z_particle[i], C.particle[i]); }
 
   // c_side.to_c2_set[integer, 1, ALLOC] VariableArray1D<Int>
 
@@ -4820,7 +4812,7 @@ extern "C" void beam_to_f (const CPP_beam& C, Opaque_beam_class* F) {
   const CPP_bunch** z_bunch = nullptr;
   if (n1_bunch != 0) {
     z_bunch = new const CPP_bunch*[n1_bunch];
-    for (auto i = 0; i < n1_bunch; i++) z_bunch[i] = &C.bunch[i];
+    for (auto i{0}; i < n1_bunch; i++) z_bunch[i] = &C.bunch[i];
   }
 
   // c_side.to_f2_call
@@ -4835,7 +4827,7 @@ extern "C" void beam_to_c2 (CPP_beam& C, Opaque_bunch_class** z_bunch, Int n1_bu
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_bunch>
   C.bunch.resize(n1_bunch);
-  for (auto i = 0; i < n1_bunch; i++) { bunch_to_c(z_bunch[i], C.bunch[i]); }
+  for (auto i{0}; i < n1_bunch; i++) { bunch_to_c(z_bunch[i], C.bunch[i]); }
 
 }
 
@@ -4931,7 +4923,7 @@ extern "C" void aperture_scan_to_f (const CPP_aperture_scan& C, Opaque_aperture_
   const CPP_aperture_point** z_point = nullptr;
   if (n1_point != 0) {
     z_point = new const CPP_aperture_point*[n1_point];
-    for (auto i = 0; i < n1_point; i++) z_point[i] = &C.point[i];
+    for (auto i{0}; i < n1_point; i++) z_point[i] = &C.point[i];
   }
 
   // c_side.to_f2_call
@@ -4947,7 +4939,7 @@ extern "C" void aperture_scan_to_c2 (CPP_aperture_scan& C, Opaque_aperture_point
 
   // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_aperture_point>
   C.point.resize(n1_point);
-  for (auto i = 0; i < n1_point; i++) { aperture_point_to_c(z_point[i], C.point[i]); }
+  for (auto i{0}; i < n1_point; i++) { aperture_point_to_c(z_point[i], C.point[i]); }
 
   // c_side.to_c2_set[type, 0, NOT] CPP_coord
   coord_to_c(z_ref_orb, C.ref_orb);

@@ -150,7 +150,10 @@ template <typename T, std::size_t DIM1>
 std::ostream &operator<<(std::ostream &os,
                          const Bmad::FixedArray1D<T, DIM1> &obj) {
   for (std::size_t i = 0; i < DIM1; ++i) {
-    os << "[" << i << "]: " << obj[i] << "\n";
+    os << obj[i];
+    if (i < DIM1 - 1) {
+      os << ", ";
+    }
   }
   return os;
 }
@@ -160,7 +163,10 @@ std::ostream &operator<<(std::ostream &os,
                          const Bmad::FixedArray2D<T, DIM1, DIM2> &obj) {
   for (std::size_t i = 0; i < DIM1; ++i) {
     for (std::size_t j = 0; j < DIM2; ++j) {
-      os << "[" << i << "," << j << "]: " << obj[i][j] << "\n";
+      os << "(" << i << "," << j << ")=" << obj[i][j];
+      if (j < DIM2 - 1) {
+        os << ", ";
+      }
     }
   }
   return os;
@@ -172,7 +178,10 @@ std::ostream &operator<<(std::ostream &os,
   for (std::size_t i = 0; i < DIM1; ++i) {
     for (std::size_t j = 0; j < DIM2; ++j) {
       for (std::size_t k = 0; k < DIM3; ++k) {
-        os << "[" << i << "," << j << "," << k << "]: " << obj[i][j][k] << "\n";
+        os << "(" << i << "," << j << "," << k << ")=" << obj[i][j][k];
+        if (k < DIM2 - 1) {
+          os << ", ";
+        }
       }
     }
   }
@@ -186,7 +195,7 @@ std::ostream &operator<<(std::ostream &os,
   for (size_t i = 0; i < obj.size(); ++i) {
     os << obj[i];
     if (i < obj.size() - 1) {
-      os << "\n";
+      os << ", ";
     }
   }
   os << "]";
