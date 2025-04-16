@@ -8,6 +8,7 @@ SET (LINK_LIBS
   tao 
   bmad
   sim_utils
+  jsonfortran
   ${PLOT_LINK_LIBS}
   ${ACC_BMAD_LINK_LIBS}
 )

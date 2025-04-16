@@ -519,6 +519,7 @@ foreach (dir ${INC_DIRS})
   ENDIF ()
 endforeach(dir)
 
+MESSAGE("Master include directories : ${MASTER_INC_DIRS}")
 
 LIST (REMOVE_DUPLICATES MASTER_INC_DIRS)
 INCLUDE_DIRECTORIES (${MASTER_INC_DIRS})
