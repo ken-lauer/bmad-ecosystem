@@ -1,0 +1,24 @@
+sources:
+  - source_dir: ${ACC_ROOT_DIR}/sim_utils
+    yaml_filename: yaml/sim_utils_structs.yaml
+    python_filename: python/sim_utils_structs.py
+    python_import_name: sim_utils_structs
+    function_prefix: sim_utils_
+
+  - source_dir: ${ACC_ROOT_DIR}/bmad
+    yaml_filename: yaml/bmad_structs.yaml
+    python_filename: python/bmad_structs.py
+    python_import_name: bmad_structs
+    function_prefix: bmad_
+
+  - source_dir: ${ACC_ROOT_DIR}/tao
+    yaml_filename: yaml/tao_structs.yaml
+    python_filename: python/tao_structs.py
+    python_import_name: tao_structs
+    function_prefix: tao_
+
+  - source_dir: ${ACC_ROOT_DIR}/forest
+    yaml_filename: yaml/forest_structs.yaml
+    python_filename: python/forest_structs.py
+    python_import_name: forest_structs
+    function_prefix: forest_

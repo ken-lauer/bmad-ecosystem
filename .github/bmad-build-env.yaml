@@ -13,6 +13,7 @@ dependencies:
   - gnuconfig # [unix]
   - gsl
   - hdf5
+  - json-fortran >=9
   - lapack95
   - libblas * *openblas
   - libcblas
@@ -33,3 +34,9 @@ dependencies:
   - xorg-libxt
   - xorg-xproto
   - xraylib
+  # TODO: should we separate python deps for json/structs?
+  - pydantic >=2
+  - jinja2
+  - pytest
+  - pyyaml
+  - ipython # TODO remove

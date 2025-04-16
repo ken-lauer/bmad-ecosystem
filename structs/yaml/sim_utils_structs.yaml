@@ -1,0 +1,4597 @@
+/Users/klauer/Repos/bmad/sim_utils/debug/CMakeFiles/hdf5/cmake_hdf5_test.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/calc_file_number.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/change_file_number.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/directory_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/file_directorizer.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/file_get.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/file_get_open.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/file_suffixer.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/filename_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/get_file_number.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/get_file_time_stamp.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/increment_file_number.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/object_model_mod.f90:
+  object_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/file/object_model_mod.f90
+    info:
+      class_name: ObjectStruct
+      comment: ''
+      members:
+        child:
+          comment: Array of subobjects
+          default: null
+          default_factory: ''
+          definition: 'type (object_struct), pointer :: child(:) => null()'
+          dimension: ':'
+          fortran_default: null()
+          line: 68
+          name: child
+          python_name: child
+          python_type: ObjectStruct
+          size: null
+          type: object_struct
+        n_child:
+          comment: Number of subobjects.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: n_child = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 69
+          name: n_child
+          python_name: n_child
+          python_type: int
+          size: null
+          type: integer
+        n_token:
+          comment: Number of tokens.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: n_token = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 70
+          name: n_token
+          python_name: n_token
+          python_type: int
+          size: null
+          type: integer
+        name:
+          comment: ''
+          default: ''
+          default_factory: ''
+          definition: 'character(:), allocatable :: name'
+          dimension: ''
+          fortran_default: null
+          line: 65
+          name: name
+          python_name: name
+          python_type: str
+          size: null
+          type: character
+        parent:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (object_struct), pointer :: parent => null()'
+          dimension: ''
+          fortran_default: null()
+          line: 66
+          name: parent
+          python_name: parent
+          python_type: ObjectStruct
+          size: null
+          type: object_struct
+        token:
+          comment: Array of tokens
+          default: null
+          default_factory: ''
+          definition: 'type (var_length_string_struct), allocatable :: token(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 67
+          name: token
+          python_name: token
+          python_type: VarLengthStringStruct
+          size: null
+          type: var_length_string_struct
+    line: 64
+    name: object_struct
+  temp_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/file/object_model_mod.f90
+    info:
+      class_name: TempStruct
+      comment: ''
+      members:
+        str:
+          comment: ''
+          default: ''
+          default_factory: ''
+          definition: 'character(40) :: str = '''''
+          dimension: ''
+          fortran_default: ''''''
+          line: 61
+          name: str
+          python_name: str_
+          python_type: str
+          size: '40'
+          type: character
+    line: 60
+    name: temp_struct
+/Users/klauer/Repos/bmad/sim_utils/file/real_path.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/skip_header.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/file/type_this_file.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/accept.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/converge.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/fdavv.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/fdjac.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/geodesic_lm.f90:
+  geodesic_lm_param_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/geodesic_lm/geodesic_lm.f90
+    info:
+      class_name: GeodesicLmParamStruct
+      comment: ''
+      members:
+        Cgoal:
+          comment: Cost lower limit (ends when falls below)
+          default: 1.0e-23
+          default_factory: ''
+          definition: 'real(rp) :: Cgoal  = 1.E-23'
+          dimension: ''
+          fortran_default: '1.E-23'
+          line: 24
+          name: Cgoal
+          python_name: cgoal
+          python_type: float
+          size: null
+          type: real
+        analytic_avv:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: analytic_avv = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 35
+          name: analytic_avv
+          python_name: analytic_avv
+          python_type: bool
+          size: null
+          type: logical
+        analytic_jac:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: analytic_jac = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 34
+          name: analytic_jac
+          python_name: analytic_jac
+          python_type: bool
+          size: null
+          type: logical
+        artol:
+          comment: cos of angle between residual and tangent plane
+          default: 0.001
+          default_factory: ''
+          definition: 'real(rp) :: artol = 1.E-3'
+          dimension: ''
+          fortran_default: '1.E-3'
+          line: 23
+          name: artol
+          python_name: artol
+          python_type: float
+          size: null
+          type: real
+        avmax:
+          comment: limits geo accel w.r.t. velocity
+          default: 0.8
+          default_factory: ''
+          definition: 'real(rp) :: avmax = 0.8'
+          dimension: ''
+          fortran_default: '0.8'
+          line: 33
+          name: avmax
+          python_name: avmax
+          python_type: float
+          size: null
+          type: real
+        center_diff:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: center_diff = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 36
+          name: center_diff
+          python_name: center_diff
+          python_type: bool
+          size: null
+          type: logical
+        factoraccept:
+          comment: (if imethod=0 or 10) adjusts initialfactor
+          default: 5.0
+          default_factory: ''
+          definition: 'real(rp) :: factoraccept  = 5.'
+          dimension: ''
+          fortran_default: '5.'
+          line: 31
+          name: factoraccept
+          python_name: factoraccept
+          python_type: float
+          size: null
+          type: real
+        factorreject:
+          comment: adjusts initialfactor for rejected step
+          default: 2.0
+          default_factory: ''
+          definition: 'real(rp) :: factorreject  = 2.'
+          dimension: ''
+          fortran_default: '2.'
+          line: 32
+          name: factorreject
+          python_name: factorreject
+          python_type: float
+          size: null
+          type: real
+        frtol:
+          comment: relative consecutive cost diff ll
+          default: 1.5e-08
+          default_factory: ''
+          definition: 'real(rp) :: frtol = 1.5E-8'
+          dimension: ''
+          fortran_default: '1.5E-8'
+          line: 29
+          name: frtol
+          python_name: frtol
+          python_type: float
+          size: null
+          type: real
+        ftol:
+          comment: consecutive cost difference ll
+          default: 1.5e-08
+          default_factory: ''
+          definition: 'real(rp) :: ftol = 1.5E-8'
+          dimension: ''
+          fortran_default: '1.5E-8'
+          line: 28
+          name: ftol
+          python_name: ftol
+          python_type: float
+          size: null
+          type: real
+        geo_hit_limit:
+          comment: flag for when limits are hit
+          default: false
+          default_factory: ''
+          definition: 'logical :: geo_hit_limit= .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 37
+          name: geo_hit_limit
+          python_name: geo_hit_limit
+          python_type: bool
+          size: null
+          type: logical
+        gtol:
+          comment: gradient lower limit
+          default: 1.5e-08
+          default_factory: ''
+          definition: 'real(rp) :: gtol  = 1.5E-8'
+          dimension: ''
+          fortran_default: '1.5E-8'
+          line: 25
+          name: gtol
+          python_name: gtol
+          python_type: float
+          size: null
+          type: real
+        h1:
+          comment: controls step sizes for finite diff derivatives
+          default: 1.0e-06
+          default_factory: ''
+          definition: 'real(rp) :: h1=1.D-6,h2=1.D-1'
+          dimension: ''
+          fortran_default: 1.D-6
+          line: 18
+          name: h1
+          python_name: h1
+          python_type: float
+          size: null
+          type: real
+        h2:
+          comment: controls step sizes for finite diff derivatives h1 for jacobian,
+            h2 for dir second deriv ! Stopping criterion
+          default: 0.1
+          default_factory: ''
+          definition: 'real(rp) :: h1=1.D-6,h2=1.D-1'
+          dimension: ''
+          fortran_default: 1.D-1
+          line: 18
+          name: h2
+          python_name: h2
+          python_type: float
+          size: null
+          type: real
+        iaccel:
+          comment: use geodesic acceleration or not
+          default: 1
+          default_factory: ''
+          definition: 'integer :: iaccel = 1'
+          dimension: ''
+          fortran_default: '1'
+          line: 14
+          name: iaccel
+          python_name: iaccel
+          python_type: int
+          size: null
+          type: integer
+        ibold:
+          comment: '''boldness'' in accepting uphill (0-4) with 0->downhill'
+          default: 0
+          default_factory: ''
+          definition: 'integer :: ibold = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 15
+          name: ibold
+          python_name: ibold
+          python_type: int
+          size: null
+          type: integer
+        ibroyden:
+          comment: 'number of iterations using approximate jacobian !!!real(rp) ::
+            eps = 1.5E-6      ! function evaluation precision'
+          default: 0
+          default_factory: ''
+          definition: 'integer :: ibroyden = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 16
+          name: ibroyden
+          python_name: ibroyden
+          python_type: int
+          size: null
+          type: integer
+        imethod:
+          comment: method choice for updating LM parameter
+          default: 10
+          default_factory: ''
+          definition: 'integer :: imethod = 10'
+          dimension: ''
+          fortran_default: '10'
+          line: 13
+          name: imethod
+          python_name: imethod
+          python_type: int
+          size: null
+          type: integer
+        initialfactor:
+          comment: initial LM param or step size
+          default: 1.0
+          default_factory: ''
+          definition: 'real(rp) :: initialfactor = 1.'
+          dimension: ''
+          fortran_default: '1.'
+          line: 30
+          name: initialfactor
+          python_name: initialfactor
+          python_type: float
+          size: null
+          type: real
+        maxaev:
+          comment: max number of dir second derivs (0->no limit)
+          default: 0
+          default_factory: ''
+          definition: 'integer :: maxaev = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 10
+          name: maxaev
+          python_name: maxaev
+          python_type: int
+          size: null
+          type: integer
+        maxfev:
+          comment: 'max # of func evals (0-> no limit)'
+          default: 0
+          default_factory: ''
+          definition: 'integer :: maxfev = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 8
+          name: maxfev
+          python_name: maxfev
+          python_type: int
+          size: null
+          type: integer
+        maxiter:
+          comment: 'max # of routine iterations'
+          default: 500
+          default_factory: ''
+          definition: 'integer :: maxiter = 500'
+          dimension: ''
+          fortran_default: '500'
+          line: 7
+          name: maxiter
+          python_name: maxiter
+          python_type: int
+          size: null
+          type: integer
+        maxjev:
+          comment: max number of jac evals (0->no limit)
+          default: 0
+          default_factory: ''
+          definition: 'integer :: maxjev = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 9
+          name: maxjev
+          python_name: maxjev
+          python_type: int
+          size: null
+          type: integer
+        maxlam:
+          comment: maximum limit on damping term lambda (if <0 no limit)
+          default: 10000000.0
+          default_factory: ''
+          definition: 'real(rp) :: maxlam = 1E7'
+          dimension: ''
+          fortran_default: 1E7
+          line: 21
+          name: maxlam
+          python_name: maxlam
+          python_type: float
+          size: null
+          type: real
+        minlam:
+          comment: minimum limit on damping term lambda (if <0 no limit)
+          default: -1.0
+          default_factory: ''
+          definition: 'real(rp) :: minlam = -1.0'
+          dimension: ''
+          fortran_default: '-1.0'
+          line: 22
+          name: minlam
+          python_name: minlam
+          python_type: float
+          size: null
+          type: real
+        mode:
+          comment: LM damping matrix. 0->id, 1->dynamic jacob-based
+          default: 0
+          default_factory: ''
+          definition: 'integer :: mode = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 6
+          name: mode
+          python_name: mode
+          python_type: int
+          size: null
+          type: integer
+        print_level:
+          comment: how many details to be printed (0-5)
+          default: 3
+          default_factory: ''
+          definition: 'integer :: print_level = 3'
+          dimension: ''
+          fortran_default: '3'
+          line: 11
+          name: print_level
+          python_name: print_level
+          python_type: int
+          size: null
+          type: integer
+        print_unit:
+          comment: unit number details written to
+          default: 6
+          default_factory: ''
+          definition: 'integer :: print_unit = 6'
+          dimension: ''
+          fortran_default: '6'
+          line: 12
+          name: print_unit
+          python_name: print_unit
+          python_type: int
+          size: null
+          type: integer
+        xrtol:
+          comment: relative parameter change ll
+          default: 1.5e-08
+          default_factory: ''
+          definition: 'real(rp) :: xrtol = 1.5E-8'
+          dimension: ''
+          fortran_default: '1.5E-8'
+          line: 27
+          name: xrtol
+          python_name: xrtol
+          python_type: float
+          size: null
+          type: real
+        xtol:
+          comment: step size lower limit (ll)
+          default: 1.0e-10
+          default_factory: ''
+          definition: 'real(rp) :: xtol = 1.E-10'
+          dimension: ''
+          fortran_default: '1.E-10'
+          line: 26
+          name: xtol
+          python_name: xtol
+          python_type: float
+          size: null
+          type: real
+    line: 5
+    name: geodesic_lm_param_struct
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/lambda.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/leastsq.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/updatejac.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/geodesic_lm/user_signal.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/interfaces/parallel_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/interfaces/particle_species_mod.f90:
+  atom_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/particle_species_mod.f90
+    info:
+      class_name: AtomStruct
+      comment: ''
+      members:
+        i_offset:
+          comment: isotope number offset
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_offset'
+          dimension: ''
+          fortran_default: null
+          line: 127
+          name: i_offset
+          python_name: i_offset
+          python_type: int
+          size: null
+          type: integer
+        mass:
+          comment: isotope masses in units of the unified atomic mass unit. mass(0)
+            is the standard atomic weight mass(n) is the mass of isotope n + i_offset
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: mass(0:46) = no_iso'
+          dimension: 0:46
+          fortran_default: no_iso
+          line: 128
+          name: mass
+          python_name: mass
+          python_type: float
+          size: null
+          type: real
+        name:
+          comment: Element name
+          default: ''
+          default_factory: list
+          definition: 'character(2) :: name'
+          dimension: ''
+          fortran_default: null
+          line: 126
+          name: name
+          python_name: name
+          python_type: str
+          size: '2'
+          type: character
+        z:
+          comment: Number of protons
+          default: 0
+          default_factory: ''
+          definition: 'integer :: z'
+          dimension: ''
+          fortran_default: null
+          line: 125
+          name: z
+          python_name: z
+          python_type: int
+          size: null
+          type: integer
+    line: 124
+    name: atom_struct
+/Users/klauer/Repos/bmad/sim_utils/interfaces/physical_constants.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/interfaces/precision_def.f90:
+  global_common_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/precision_def.f90
+    info:
+      class_name: GlobalCommonStruct
+      comment: ''
+      members:
+        debug:
+          comment: Used for debugging purpeses
+          default: 0
+          default_factory: ''
+          definition: 'integer :: debug = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 11
+          name: debug
+          python_name: debug
+          python_type: int
+          size: null
+          type: integer
+        exit_on_error:
+          comment: Exit program on error?
+          default: true
+          default_factory: ''
+          definition: 'logical :: exit_on_error  = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 10
+          name: exit_on_error
+          python_name: exit_on_error
+          python_type: bool
+          size: null
+          type: logical
+        mp_threading_is_safe:
+          comment: Can threading be used with MP? EG ramping is not thread safe.
+          default: true
+          default_factory: ''
+          definition: 'logical :: mp_threading_is_safe = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 9
+          name: mp_threading_is_safe
+          python_name: mp_threading_is_safe
+          python_type: bool
+          size: null
+          type: logical
+    line: 8
+    name: global_common_struct
+  named_number_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/precision_def.f90
+    info:
+      class_name: NamedNumberStruct
+      comment: ''
+      members:
+        name:
+          comment: ''
+          default: ''
+          default_factory: ''
+          definition: 'character(40) :: name = '''''
+          dimension: ''
+          fortran_default: ''''''
+          line: 17
+          name: name
+          python_name: name
+          python_type: str
+          size: '40'
+          type: character
+        value:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: value = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 18
+          name: value
+          python_name: value
+          python_type: float
+          size: null
+          type: real
+    line: 16
+    name: named_number_struct
+/Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_interface.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90:
+  all_pointer_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
+    info:
+      class_name: AllPointerStruct
+      comment: ''
+      members:
+        i:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer, pointer :: i => null()'
+          dimension: ''
+          fortran_default: null()
+          line: 47
+          name: i
+          python_name: i
+          python_type: int
+          size: null
+          type: integer, pointer
+        i1:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer, pointer :: i1(:) => null()'
+          dimension: ':'
+          fortran_default: null()
+          line: 50
+          name: i1
+          python_name: i1
+          python_type: int
+          size: null
+          type: integer, pointer
+        l:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical, pointer :: l => null()'
+          dimension: ''
+          fortran_default: null()
+          line: 48
+          name: l
+          python_name: L
+          python_type: bool
+          size: null
+          type: logical, pointer
+        r:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), pointer :: r => null()'
+          dimension: ''
+          fortran_default: null()
+          line: 46
+          name: r
+          python_name: r
+          python_type: float
+          size: null
+          type: real
+        r1:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), pointer :: r1(:) => null()'
+          dimension: ':'
+          fortran_default: null()
+          line: 49
+          name: r1
+          python_name: r1
+          python_type: float
+          size: null
+          type: real
+    line: 45
+    name: all_pointer_struct
+  molecular_component_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
+    info:
+      class_name: MolecularComponentStruct
+      comment: ''
+      members:
+        atom:
+          comment: ''
+          default: ''
+          default_factory: ''
+          definition: 'character(2) :: atom = '''''
+          dimension: ''
+          fortran_default: ''''''
+          line: 78
+          name: atom
+          python_name: atom
+          python_type: str
+          size: '2'
+          type: character
+        number:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: number = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 79
+          name: number
+          python_name: number
+          python_type: int
+          size: null
+          type: integer
+    line: 77
+    name: molecular_component_struct
+  nametable_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
+    info:
+      class_name: NametableStruct
+      comment: ''
+      members:
+        index:
+          comment: Sorted index for names(:) array. names(an_index(i)) is in alphabetical
+            order.
+          default: 0
+          default_factory: ''
+          definition: 'integer, allocatable :: index(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 36
+          name: index
+          python_name: index
+          python_type: int
+          size: null
+          type: integer, allocatable
+        n_max:
+          comment: Use only names(n_min:n_max) part of array.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: n_max = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 39
+          name: n_max
+          python_name: n_max
+          python_type: int
+          size: null
+          type: integer
+        n_min:
+          comment: Set to 0 for use in a lattice.
+          default: 1
+          default_factory: ''
+          definition: 'integer :: n_min = 1'
+          dimension: ''
+          fortran_default: '1'
+          line: 38
+          name: n_min
+          python_name: n_min
+          python_type: int
+          size: null
+          type: integer
+        name:
+          comment: Array of names.
+          default: ''
+          default_factory: list
+          definition: 'character(40), allocatable :: name(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 35
+          name: name
+          python_name: name
+          python_type: str
+          size: '40'
+          type: character
+    line: 34
+    name: nametable_struct
+  str_index_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
+    info:
+      class_name: StrIndexStruct
+      comment: ''
+      members:
+        index:
+          comment: Sorted index for names(:) array. names(an_index(i)) is in alphabetical
+            order.
+          default: 0
+          default_factory: ''
+          definition: 'integer, allocatable :: index(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 20
+          name: index
+          python_name: index
+          python_type: int
+          size: null
+          type: integer, allocatable
+        n_max:
+          comment: Use only names(n_min:n_max) part of array.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: n_max = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 23
+          name: n_max
+          python_name: n_max
+          python_type: int
+          size: null
+          type: integer
+        n_min:
+          comment: ''
+          default: 1
+          default_factory: ''
+          definition: 'integer :: n_min = 1'
+          dimension: ''
+          fortran_default: '1'
+          line: 22
+          name: n_min
+          python_name: n_min
+          python_type: int
+          size: null
+          type: integer
+        name:
+          comment: Array of names.
+          default: null
+          default_factory: ''
+          definition: 'type (var_length_string_struct), allocatable :: name(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 19
+          name: name
+          python_name: name
+          python_type: VarLengthStringStruct
+          size: null
+          type: var_length_string_struct
+    line: 18
+    name: str_index_struct
+  var_length_string_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
+    info:
+      class_name: VarLengthStringStruct
+      comment: ''
+      members:
+        str:
+          comment: ''
+          default: ''
+          default_factory: ''
+          definition: 'character(:), allocatable :: str'
+          dimension: ''
+          fortran_default: null
+          line: 15
+          name: str
+          python_name: str_
+          python_type: str
+          size: null
+          type: character
+    line: 14
+    name: var_length_string_struct
+/Users/klauer/Repos/bmad/sim_utils/io/command_line_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/input_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/lunget.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/out_io_called.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/out_io_end.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/out_io_line.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/output_mod.f90:
+  out_io_mod_com_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/io/output_mod.f90
+    info:
+      class_name: OutIoModComStruct
+      comment: ''
+      members:
+        buffer:
+          comment: ''
+          default: ''
+          default_factory: list
+          definition: 'character(300), allocatable :: buffer(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 38
+          name: buffer
+          python_name: buffer
+          python_type: str
+          size: '300'
+          type: character
+        capture_lines_null_terminated:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: capture_lines_null_terminated = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 36
+          name: capture_lines_null_terminated
+          python_name: capture_lines_null_terminated
+          python_type: bool
+          size: null
+          type: logical
+        capture_state:
+          comment: See out_io_print_and_capture_setup
+          default: 'OFF'
+          default_factory: ''
+          definition: 'character(16) :: capture_state = ''OFF'''
+          dimension: ''
+          fortran_default: '''OFF'''
+          line: 39
+          name: capture_state
+          python_name: capture_state
+          python_type: str
+          size: '16'
+          type: character
+        indent_num:
+          comment: ''
+          default:
+          - 0
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          default_factory: ''
+          definition: 'integer :: indent_num(-1:10) = [0, 4, 4, 4, 4, 4, 4, 4, 4,
+            4, 4, 4]'
+          dimension: '-1:10'
+          fortran_default: '[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]'
+          line: 34
+          name: indent_num
+          python_name: indent_num
+          python_type: int
+          size: null
+          type: integer
+        n_buffer_lines:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: n_buffer_lines = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 37
+          name: n_buffer_lines
+          python_name: n_buffer_lines
+          python_type: int
+          size: null
+          type: integer
+        print_on:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: print_on = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 35
+          name: print_on
+          python_name: print_on
+          python_type: bool
+          size: null
+          type: logical
+    line: 33
+    name: out_io_mod_com_struct
+  out_io_output_direct_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/io/output_mod.f90
+    info:
+      class_name: OutIoOutputDirectStruct
+      comment: ''
+      members:
+        file_unit:
+          comment: ''
+          default: -1
+          default_factory: ''
+          definition: 'integer :: file_unit(-1:10) = -1'
+          dimension: '-1:10'
+          fortran_default: '-1'
+          line: 30
+          name: file_unit
+          python_name: file_unit
+          python_type: int
+          size: null
+          type: integer
+        print_and_capture:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: print_and_capture(-1:10) = .true.'
+          dimension: '-1:10'
+          fortran_default: .true.
+          line: 29
+          name: print_and_capture
+          python_name: print_and_capture
+          python_type: bool
+          size: null
+          type: logical
+    line: 28
+    name: out_io_output_direct_struct
+/Users/klauer/Repos/bmad/sim_utils/io/system_command.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/io/ttychr.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/all_phase_fft.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/bin_mod.f90:
+  bin_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/bin_mod.f90
+    info:
+      class_name: BinStruct
+      comment: ''
+      members:
+        count:
+          comment: Counts (or weight) in each bin
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: count(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 10
+          name: count
+          python_name: count
+          python_type: float
+          size: null
+          type: real
+        delta:
+          comment: Size of a bin
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: delta'
+          dimension: ''
+          fortran_default: null
+          line: 13
+          name: delta
+          python_name: delta
+          python_type: float
+          size: null
+          type: real
+        max:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: max'
+          dimension: ''
+          fortran_default: null
+          line: 12
+          name: max
+          python_name: max
+          python_type: float
+          size: null
+          type: real
+        min:
+          comment: Bounds for the bins
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: min'
+          dimension: ''
+          fortran_default: null
+          line: 11
+          name: min
+          python_name: min
+          python_type: float
+          size: null
+          type: real
+        n:
+          comment: Number of bins
+          default: 0
+          default_factory: ''
+          definition: 'integer  :: n'
+          dimension: ''
+          fortran_default: null
+          line: 14
+          name: n
+          python_name: n
+          python_type: int
+          size: null
+          type: integer
+    line: 9
+    name: bin_struct
+  general_bin_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/bin_mod.f90
+    info:
+      class_name: GeneralBinStruct
+      comment: ''
+      members:
+        count:
+          comment: Counts (or weight) in each bin
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: count(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 18
+          name: count
+          python_name: count
+          python_type: float
+          size: null
+          type: real
+        delta:
+          comment: Size of a bin
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: delta(3)'
+          dimension: '3'
+          fortran_default: null
+          line: 21
+          name: delta
+          python_name: delta
+          python_type: float
+          size: null
+          type: real
+        dim:
+          comment: Number of dimensions
+          default: 3
+          default_factory: ''
+          definition: 'integer  :: dim = 3'
+          dimension: ''
+          fortran_default: '3'
+          line: 22
+          name: dim
+          python_name: dim
+          python_type: int
+          size: null
+          type: integer
+        max:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: max(3)'
+          dimension: '3'
+          fortran_default: null
+          line: 20
+          name: max
+          python_name: max
+          python_type: float
+          size: null
+          type: real
+        min:
+          comment: Bounds for the bins
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: min(3)'
+          dimension: '3'
+          fortran_default: null
+          line: 19
+          name: min
+          python_name: min
+          python_type: float
+          size: null
+          type: real
+        n:
+          comment: number of bins in each dimension
+          default: 1
+          default_factory: ''
+          definition: 'integer  :: n(3) = 1'
+          dimension: '3'
+          fortran_default: '1'
+          line: 23
+          name: n
+          python_name: n
+          python_type: int
+          size: null
+          type: integer
+    line: 17
+    name: general_bin_struct
+/Users/klauer/Repos/bmad/sim_utils/math/bit_set_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/bracket_index.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/bracket_index2.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/bracket_index_int.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/cross_product.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90:
+  bicubic_cmplx_coef_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: BicubicCmplxCoefStruct
+      comment: ''
+      members:
+        coef:
+          comment: Coefs
+          default: 0
+          default_factory: ''
+          definition: 'complex(rp) :: coef(0:3,0:3) = 0'
+          dimension: 0:3,0:3
+          fortran_default: '0'
+          line: 71
+          name: coef
+          python_name: coef
+          python_type: Complex
+          size: null
+          type: complex
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(2) = int_garbage$'
+          dimension: '2'
+          fortran_default: int_garbage$
+          line: 72
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+    line: 70
+    name: bicubic_cmplx_coef_struct
+  bicubic_coef_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: BicubicCoefStruct
+      comment: ''
+      members:
+        coef:
+          comment: Coefs
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: coef(0:3,0:3) = 0'
+          dimension: 0:3,0:3
+          fortran_default: '0'
+          line: 44
+          name: coef
+          python_name: coef
+          python_type: float
+          size: null
+          type: real
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(2) = int_garbage$'
+          dimension: '2'
+          fortran_default: int_garbage$
+          line: 45
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+    line: 43
+    name: bicubic_coef_struct
+  cmplx_field1_at_2D_pt_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: CmplxField1At2dPtStruct
+      comment: ''
+      members:
+        d2f_dxdy:
+          comment: Normalized field 2nd derivative
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) d2f_dxdy
+          dimension: ''
+          fortran_default: null
+          line: 58
+          name: d2f_dxdy
+          python_name: d2f_dxdy
+          python_type: Complex
+          size: null
+          type: complex
+        df_dx:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) df_dx, df_dy
+          dimension: ''
+          fortran_default: null
+          line: 57
+          name: df_dx
+          python_name: df_dx
+          python_type: Complex
+          size: null
+          type: complex
+        df_dy:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) df_dx, df_dy
+          dimension: ''
+          fortran_default: null
+          line: 57
+          name: df_dy
+          python_name: df_dy
+          python_type: Complex
+          size: null
+          type: complex
+        f:
+          comment: Field
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) f
+          dimension: ''
+          fortran_default: null
+          line: 56
+          name: f
+          python_name: f
+          python_type: Complex
+          size: null
+          type: complex
+    line: 55
+    name: cmplx_field1_at_2D_pt_struct
+  cmplx_field1_at_3D_pt_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: CmplxField1At3dPtStruct
+      comment: ''
+      members:
+        d2f_dxdy:
+          comment: Normalized field 2nd derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) d2f_dxdy, d2f_dxdz, d2f_dydz
+          dimension: ''
+          fortran_default: null
+          line: 113
+          name: d2f_dxdy
+          python_name: d2f_dxdy
+          python_type: Complex
+          size: null
+          type: complex
+        d2f_dxdz:
+          comment: Normalized field 2nd derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) d2f_dxdy, d2f_dxdz, d2f_dydz
+          dimension: ''
+          fortran_default: null
+          line: 113
+          name: d2f_dxdz
+          python_name: d2f_dxdz
+          python_type: Complex
+          size: null
+          type: complex
+        d2f_dydz:
+          comment: Normalized field 2nd derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) d2f_dxdy, d2f_dxdz, d2f_dydz
+          dimension: ''
+          fortran_default: null
+          line: 113
+          name: d2f_dydz
+          python_name: d2f_dydz
+          python_type: Complex
+          size: null
+          type: complex
+        d3f_dxdydz:
+          comment: Normalized field 3rd derivative
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) d3f_dxdydz
+          dimension: ''
+          fortran_default: null
+          line: 114
+          name: d3f_dxdydz
+          python_name: d3f_dxdydz
+          python_type: Complex
+          size: null
+          type: complex
+        df_dx:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) df_dx, df_dy, df_dz
+          dimension: ''
+          fortran_default: null
+          line: 112
+          name: df_dx
+          python_name: df_dx
+          python_type: Complex
+          size: null
+          type: complex
+        df_dy:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) df_dx, df_dy, df_dz
+          dimension: ''
+          fortran_default: null
+          line: 112
+          name: df_dy
+          python_name: df_dy
+          python_type: Complex
+          size: null
+          type: complex
+        df_dz:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) df_dx, df_dy, df_dz
+          dimension: ''
+          fortran_default: null
+          line: 112
+          name: df_dz
+          python_name: df_dz
+          python_type: Complex
+          size: null
+          type: complex
+        f:
+          comment: Field
+          default: 0.0
+          default_factory: ''
+          definition: complex(rp) f
+          dimension: ''
+          fortran_default: null
+          line: 111
+          name: f
+          python_name: f
+          python_type: Complex
+          size: null
+          type: complex
+    line: 110
+    name: cmplx_field1_at_3D_pt_struct
+  cmplx_field_at_2D_box_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: CmplxFieldAt2dBoxStruct
+      comment: ''
+      members:
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(2) = int_garbage$'
+          dimension: '2'
+          fortran_default: int_garbage$
+          line: 65
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+        pt:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (cmplx_field1_at_2D_pt_struct) pt(0:1, 0:1)
+          dimension: 0:1, 0:1
+          fortran_default: null
+          line: 64
+          name: pt
+          python_name: pt
+          python_type: CmplxField1At2dPtStruct
+          size: null
+          type: cmplx_field1_at_2D_pt_struct
+    line: 63
+    name: cmplx_field_at_2D_box_struct
+  cmplx_field_at_3D_box_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: CmplxFieldAt3dBoxStruct
+      comment: ''
+      members:
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(3) = int_garbage$'
+          dimension: '3'
+          fortran_default: int_garbage$
+          line: 121
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+        pt:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (cmplx_field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)
+          dimension: 0:1, 0:1, 0:1
+          fortran_default: null
+          line: 120
+          name: pt
+          python_name: pt
+          python_type: CmplxField1At3dPtStruct
+          size: null
+          type: cmplx_field1_at_3D_pt_struct
+    line: 119
+    name: cmplx_field_at_3D_box_struct
+  field1_at_2D_pt_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: Field1At2dPtStruct
+      comment: ''
+      members:
+        d2f_dxdy:
+          comment: Normalized field 2nd derivative
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) d2f_dxdy
+          dimension: ''
+          fortran_default: null
+          line: 31
+          name: d2f_dxdy
+          python_name: d2f_dxdy
+          python_type: float
+          size: null
+          type: real
+        df_dx:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) df_dx, df_dy
+          dimension: ''
+          fortran_default: null
+          line: 30
+          name: df_dx
+          python_name: df_dx
+          python_type: float
+          size: null
+          type: real
+        df_dy:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) df_dx, df_dy
+          dimension: ''
+          fortran_default: null
+          line: 30
+          name: df_dy
+          python_name: df_dy
+          python_type: float
+          size: null
+          type: real
+        f:
+          comment: Field
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) f
+          dimension: ''
+          fortran_default: null
+          line: 29
+          name: f
+          python_name: f
+          python_type: float
+          size: null
+          type: real
+    line: 28
+    name: field1_at_2D_pt_struct
+  field1_at_3D_pt_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: Field1At3dPtStruct
+      comment: ''
+      members:
+        d2f_dxdy:
+          comment: Normalized field 2nd derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) d2f_dxdy, d2f_dxdz, d2f_dydz
+          dimension: ''
+          fortran_default: null
+          line: 85
+          name: d2f_dxdy
+          python_name: d2f_dxdy
+          python_type: float
+          size: null
+          type: real
+        d2f_dxdz:
+          comment: Normalized field 2nd derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) d2f_dxdy, d2f_dxdz, d2f_dydz
+          dimension: ''
+          fortran_default: null
+          line: 85
+          name: d2f_dxdz
+          python_name: d2f_dxdz
+          python_type: float
+          size: null
+          type: real
+        d2f_dydz:
+          comment: Normalized field 2nd derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) d2f_dxdy, d2f_dxdz, d2f_dydz
+          dimension: ''
+          fortran_default: null
+          line: 85
+          name: d2f_dydz
+          python_name: d2f_dydz
+          python_type: float
+          size: null
+          type: real
+        d3f_dxdydz:
+          comment: Normalized field 3rd derivative
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) d3f_dxdydz
+          dimension: ''
+          fortran_default: null
+          line: 86
+          name: d3f_dxdydz
+          python_name: d3f_dxdydz
+          python_type: float
+          size: null
+          type: real
+        df_dx:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) df_dx, df_dy, df_dz
+          dimension: ''
+          fortran_default: null
+          line: 84
+          name: df_dx
+          python_name: df_dx
+          python_type: float
+          size: null
+          type: real
+        df_dy:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) df_dx, df_dy, df_dz
+          dimension: ''
+          fortran_default: null
+          line: 84
+          name: df_dy
+          python_name: df_dy
+          python_type: float
+          size: null
+          type: real
+        df_dz:
+          comment: Normalized field 1st derivatives
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) df_dx, df_dy, df_dz
+          dimension: ''
+          fortran_default: null
+          line: 84
+          name: df_dz
+          python_name: df_dz
+          python_type: float
+          size: null
+          type: real
+        f:
+          comment: Field
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) f
+          dimension: ''
+          fortran_default: null
+          line: 83
+          name: f
+          python_name: f
+          python_type: float
+          size: null
+          type: real
+    line: 82
+    name: field1_at_3D_pt_struct
+  field_at_2D_box_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: FieldAt2dBoxStruct
+      comment: ''
+      members:
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(2) = int_garbage$'
+          dimension: '2'
+          fortran_default: int_garbage$
+          line: 38
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+        pt:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (field1_at_2D_pt_struct) pt(0:1, 0:1)
+          dimension: 0:1, 0:1
+          fortran_default: null
+          line: 37
+          name: pt
+          python_name: pt
+          python_type: Field1At2dPtStruct
+          size: null
+          type: field1_at_2D_pt_struct
+    line: 36
+    name: field_at_2D_box_struct
+  field_at_3D_box_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: FieldAt3dBoxStruct
+      comment: ''
+      members:
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(3) = int_garbage$'
+          dimension: '3'
+          fortran_default: int_garbage$
+          line: 93
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+        pt:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)
+          dimension: 0:1, 0:1, 0:1
+          fortran_default: null
+          line: 92
+          name: pt
+          python_name: pt
+          python_type: Field1At3dPtStruct
+          size: null
+          type: field1_at_3D_pt_struct
+    line: 91
+    name: field_at_3D_box_struct
+  m16_matrix_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: M16MatrixStruct
+      comment: ''
+      members:
+        row:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (m16_row_struct) row(16)
+          dimension: '16'
+          fortran_default: null
+          line: 138
+          name: row
+          python_name: row
+          python_type: M16RowStruct
+          size: null
+          type: m16_row_struct
+    line: 137
+    name: m16_matrix_struct
+  m16_row_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: M16RowStruct
+      comment: ''
+      members:
+        pt:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: integer pt(16)
+          dimension: '16'
+          fortran_default: null
+          line: 134
+          name: pt
+          python_name: pt
+          python_type: int
+          size: null
+          type: integer
+    line: 133
+    name: m16_row_struct
+  m64_matrix_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: M64MatrixStruct
+      comment: ''
+      members:
+        row:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (m64_row_struct) row(64)
+          dimension: '64'
+          fortran_default: null
+          line: 166
+          name: row
+          python_name: row
+          python_type: M64RowStruct
+          size: null
+          type: m64_row_struct
+    line: 165
+    name: m64_matrix_struct
+  m64_row_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: M64RowStruct
+      comment: ''
+      members:
+        pt:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: integer pt(64)
+          dimension: '64'
+          fortran_default: null
+          line: 162
+          name: pt
+          python_name: pt
+          python_type: int
+          size: null
+          type: integer
+    line: 161
+    name: m64_row_struct
+  tricubic_cmplx_coef_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: TricubicCmplxCoefStruct
+      comment: ''
+      members:
+        coef:
+          comment: Coefs
+          default: 0
+          default_factory: ''
+          definition: 'complex(rp) :: coef(0:3,0:3,0:3) = 0'
+          dimension: 0:3,0:3,0:3
+          fortran_default: '0'
+          line: 127
+          name: coef
+          python_name: coef
+          python_type: Complex
+          size: null
+          type: complex
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(3) = int_garbage$'
+          dimension: '3'
+          fortran_default: int_garbage$
+          line: 128
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+    line: 126
+    name: tricubic_cmplx_coef_struct
+  tricubic_coef_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
+    info:
+      class_name: TricubicCoefStruct
+      comment: ''
+      members:
+        coef:
+          comment: Coefs
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: coef(0:3,0:3,0:3) = 0'
+          dimension: 0:3,0:3,0:3
+          fortran_default: '0'
+          line: 99
+          name: coef
+          python_name: coef
+          python_type: float
+          size: null
+          type: real
+        i_box:
+          comment: index at lower box corner.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: i_box(3) = int_garbage$'
+          dimension: '3'
+          fortran_default: int_garbage$
+          line: 100
+          name: i_box
+          python_name: i_box
+          python_type: int
+          size: null
+          type: integer
+    line: 98
+    name: tricubic_coef_struct
+/Users/klauer/Repos/bmad/sim_utils/math/da2_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/fft_1d.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/find_location.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/fourier_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/inverse.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/is_decreasing_sequence.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/is_increasing_sequence.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/linear_fit.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/linear_fit_2d.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/max_nonzero.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/n_spline_create.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/naff.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/outer_product.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/poly_eval.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/probability_funct.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/quadratic_roots.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/random_mod.f90:
+  random_state_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/random_mod.f90
+    info:
+      class_name: RandomStateStruct
+      comment: ''
+      members:
+        am:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(sp) :: am = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 35
+          name: am
+          python_name: am
+          python_type: float
+          size: null
+          type: real
+        engine:
+          comment: Params
+          default: 0
+          default_factory: ''
+          definition: 'integer :: engine = pseudo_random$'
+          dimension: ''
+          fortran_default: pseudo_random$
+          line: 32
+          name: engine
+          python_name: engine
+          python_type: int
+          size: null
+          type: integer
+        gauss_converter:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: gauss_converter = exact_gaussian$'
+          dimension: ''
+          fortran_default: exact_gaussian$
+          line: 36
+          name: gauss_converter
+          python_name: gauss_converter
+          python_type: int
+          size: null
+          type: integer
+        gauss_sigma_cut:
+          comment: Only used if positive.
+          default: -1
+          default_factory: ''
+          definition: 'real(rp) :: gauss_sigma_cut = -1'
+          dimension: ''
+          fortran_default: '-1'
+          line: 37
+          name: gauss_sigma_cut
+          python_name: gauss_sigma_cut
+          python_type: float
+          size: null
+          type: real
+        h_saved:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: h_saved = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 31
+          name: h_saved
+          python_name: h_saved
+          python_type: float
+          size: null
+          type: real
+        in_sobseq:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer(i4_b) :: in_sobseq = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 38
+          name: in_sobseq
+          python_name: in_sobseq
+          python_type: int
+          size: null
+          type: integer
+        ix:
+          comment: ''
+          default: -1
+          default_factory: ''
+          definition: 'integer(kr4b) :: ix = -1, iy = -1'
+          dimension: ''
+          fortran_default: '-1'
+          line: 29
+          name: ix
+          python_name: ix
+          python_type: int
+          size: null
+          type: integer
+        ix_sobseq:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0'
+          dimension: sobseq_maxdim
+          fortran_default: '0'
+          line: 39
+          name: ix_sobseq
+          python_name: ix_sobseq
+          python_type: int
+          size: null
+          type: integer
+        iy:
+          comment: ''
+          default: -1
+          default_factory: ''
+          definition: 'integer(kr4b) :: ix = -1, iy = -1'
+          dimension: ''
+          fortran_default: '-1'
+          line: 29
+          name: iy
+          python_name: iy
+          python_type: int
+          size: null
+          type: integer
+        number_stored:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: number_stored = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 30
+          name: number_stored
+          python_name: number_stored
+          python_type: bool
+          size: null
+          type: logical
+        seed:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: seed = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 34
+          name: seed
+          python_name: seed
+          python_type: int
+          size: null
+          type: integer
+        x_sobseq:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x_sobseq(sobseq_maxdim) = 0'
+          dimension: sobseq_maxdim
+          fortran_default: '0'
+          line: 40
+          name: x_sobseq
+          python_name: x_sobseq
+          python_type: float
+          size: null
+          type: real
+    line: 28
+    name: random_state_struct
+/Users/klauer/Repos/bmad/sim_utils/math/rms_value.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/rot_2d.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/rotation_3d_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/math/spline_mod.f90:
+  spline_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/spline_mod.f90
+    info:
+      class_name: SplineStruct
+      comment: ''
+      members:
+        coef:
+          comment: coefficients for cubic spline
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: coef(0:3) = 0'
+          dimension: 0:3
+          fortran_default: '0'
+          line: 21
+          name: coef
+          python_name: coef
+          python_type: float
+          size: null
+          type: real
+        x0:
+          comment: Point at start of spline
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x0 = 0, y0 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 19
+          name: x0
+          python_name: x0
+          python_type: float
+          size: null
+          type: real
+        x1:
+          comment: Point at end of spline
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x1 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 20
+          name: x1
+          python_name: x1
+          python_type: float
+          size: null
+          type: real
+        y0:
+          comment: Point at start of spline
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x0 = 0, y0 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 19
+          name: y0
+          python_name: y0
+          python_type: float
+          size: null
+          type: real
+    line: 18
+    name: spline_struct
+/Users/klauer/Repos/bmad/sim_utils/math/super_recipes_mod.f90:
+  super_mrqmin_storage_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/super_recipes_mod.f90
+    info:
+      class_name: SuperMrqminStorageStruct
+      comment: ''
+      members:
+        alpha:
+          comment: Curvature matrix. See mrqmin in NR for more details.
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: alpha(:, :)'
+          dimension: ':, :'
+          fortran_default: null
+          line: 16
+          name: alpha
+          python_name: alpha
+          python_type: float
+          size: null
+          type: real
+        atry:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: atry(:), beta(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 17
+          name: atry
+          python_name: atry
+          python_type: float
+          size: null
+          type: real
+        beta:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: atry(:), beta(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 17
+          name: beta
+          python_name: beta
+          python_type: float
+          size: null
+          type: real
+        covar:
+          comment: Covariance matrix. See mrqmin in NR for more details.
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: covar(:, :)'
+          dimension: ':, :'
+          fortran_default: null
+          line: 15
+          name: covar
+          python_name: covar
+          python_type: float
+          size: null
+          type: real
+        da:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: da(:,:)'
+          dimension: ':,:'
+          fortran_default: null
+          line: 18
+          name: da
+          python_name: da
+          python_type: float
+          size: null
+          type: real
+        dy:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 23
+          name: dy
+          python_name: dy
+          python_type: float
+          size: null
+          type: real
+        dyda:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: dyda(:, :)'
+          dimension: ':, :'
+          fortran_default: null
+          line: 22
+          name: dyda
+          python_name: dyda
+          python_type: float
+          size: null
+          type: real
+        mask:
+          comment: Used by super_mrqcof
+          default: false
+          default_factory: ''
+          definition: 'logical, allocatable :: mask(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 20
+          name: mask
+          python_name: mask
+          python_type: bool
+          size: null
+          type: logical, allocatable
+        ochisq:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: ochisq'
+          dimension: ''
+          fortran_default: null
+          line: 19
+          name: ochisq
+          python_name: ochisq
+          python_type: float
+          size: null
+          type: real
+        old_dy:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 23
+          name: old_dy
+          python_name: old_dy
+          python_type: float
+          size: null
+          type: real
+        wt:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 23
+          name: wt
+          python_name: wt
+          python_type: float
+          size: null
+          type: real
+        ymod:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 23
+          name: ymod
+          python_name: ymod
+          python_type: float
+          size: null
+          type: real
+    line: 13
+    name: super_mrqmin_storage_struct
+/Users/klauer/Repos/bmad/sim_utils/math/windowLS.f90:
+  wls_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/math/windowLS.f90
+    info:
+      class_name: WlsStruct
+      comment: ''
+      members:
+        N:
+          comment: number of data points to fit to
+          default: 0
+          default_factory: ''
+          definition: 'INTEGER :: N'
+          dimension: ''
+          fortran_default: null
+          line: 42
+          name: N
+          python_name: n
+          python_type: int
+          size: null
+          type: INTEGER
+        Q1:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'REAL(rp), ALLOCATABLE :: Q1(:,:)'
+          dimension: ':,:'
+          fortran_default: null
+          line: 41
+          name: Q1
+          python_name: q1
+          python_type: float
+          size: null
+          type: REAL
+        R1:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'REAL(rp), ALLOCATABLE :: R1(:,:)'
+          dimension: ':,:'
+          fortran_default: null
+          line: 40
+          name: R1
+          python_name: r1
+          python_type: float
+          size: null
+          type: REAL
+        der:
+          comment: order of derivative to be returned by fixedWindowLS
+          default: 0
+          default_factory: ''
+          definition: 'INTEGER :: der'
+          dimension: ''
+          fortran_default: null
+          line: 44
+          name: der
+          python_name: der
+          python_type: int
+          size: null
+          type: INTEGER
+        order:
+          comment: order of fit polynomial
+          default: 0
+          default_factory: ''
+          definition: 'INTEGER :: order'
+          dimension: ''
+          fortran_default: null
+          line: 43
+          name: order
+          python_name: order
+          python_type: int
+          size: null
+          type: INTEGER
+        xend:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'REAL(rp) :: xend'
+          dimension: ''
+          fortran_default: null
+          line: 45
+          name: xend
+          python_name: xend
+          python_type: float
+          size: null
+          type: REAL
+        y:
+          comment: holds data
+          default: 0.0
+          default_factory: ''
+          definition: 'REAL(rp), ALLOCATABLE :: y(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 46
+          name: y
+          python_name: y
+          python_type: float
+          size: null
+          type: REAL
+    line: 39
+    name: wls_struct
+/Users/klauer/Repos/bmad/sim_utils/matrix/cplx_mat_inverse.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/cplx_mat_make_unit.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/determinant.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_eigen.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_inverse.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_make_unit.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_pseudoinverse.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_rotation.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_scale_p0.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_symp_conj.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_symp_conj_i.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_symp_error.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_symplectify.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/mat_type.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/qr_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/matrix/svd_fit.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/assert_equal.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/csr_bell.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/err_exit.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/fortran_cpp_utils.f90:
+  c_dummy_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/misc/fortran_cpp_utils.f90
+    info:
+      class_name: CDummyStruct
+      comment: ''
+      members:
+        dummy:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) dummy
+          dimension: ''
+          fortran_default: null
+          line: 7
+          name: dummy
+          python_name: dummy
+          python_type: float
+          size: null
+          type: real
+    line: 6
+    name: c_dummy_struct
+/Users/klauer/Repos/bmad/sim_utils/misc/logical_is_garbage.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/milli_sleep.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/re_allocate_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/run_timer.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/set_logical_to_garbage.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/set_parameter.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/swap_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/transfer_logical.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/utilities_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/virtual_memory_usage.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/mpi/mpi.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/mpi/opti_de_mpi_mod.f90:
+  solution_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/mpi/opti_de_mpi_mod.f90
+    info:
+      class_name: SolutionStruct
+      comment: ''
+      members:
+        merit:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) merit
+          dimension: ''
+          fortran_default: null
+          line: 7
+          name: merit
+          python_name: merit
+          python_type: float
+          size: null
+          type: real
+        status:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: integer status
+          dimension: ''
+          fortran_default: null
+          line: 8
+          name: status
+          python_name: status
+          python_type: int
+          size: null
+          type: integer
+        vec:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: vec(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 6
+          name: vec
+          python_name: vec
+          python_type: float
+          size: null
+          type: real
+    line: 5
+    name: solution_struct
+/Users/klauer/Repos/bmad/sim_utils/optimizers/lmdif_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90:
+  opti_de_param_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90
+    info:
+      class_name: OptiDeParamStruct
+      comment: ''
+      members:
+        CR:
+          comment: Crossover probability
+          default: 0.8
+          default_factory: ''
+          definition: 'real(rp) :: CR = 0.8'
+          dimension: ''
+          fortran_default: '0.8'
+          line: 6
+          name: CR
+          python_name: cr
+          python_type: float
+          size: null
+          type: real
+        F:
+          comment: Mixing number
+          default: 0.8
+          default_factory: ''
+          definition: 'real(rp) :: F  = 0.8'
+          dimension: ''
+          fortran_default: '0.8'
+          line: 7
+          name: F
+          python_name: f
+          python_type: float
+          size: null
+          type: real
+        binomial_cross:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: binomial_cross = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 10
+          name: binomial_cross
+          python_name: binomial_cross
+          python_type: bool
+          size: null
+          type: logical
+        l_best:
+          comment: Percentage of best vector.
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: l_best = 0.0'
+          dimension: ''
+          fortran_default: '0.0'
+          line: 8
+          name: l_best
+          python_name: l_best
+          python_type: float
+          size: null
+          type: real
+        minimize_merit:
+          comment: Alternative is to maximize.
+          default: true
+          default_factory: ''
+          definition: 'logical :: minimize_merit = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 12
+          name: minimize_merit
+          python_name: minimize_merit
+          python_type: bool
+          size: null
+          type: logical
+        randomize_F:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: randomize_F    = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 11
+          name: randomize_F
+          python_name: randomize_f
+          python_type: bool
+          size: null
+          type: logical
+        use_2nd_diff:
+          comment: use F * (x_4 - x_5) term
+          default: false
+          default_factory: ''
+          definition: 'logical :: use_2nd_diff   = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 9
+          name: use_2nd_diff
+          python_name: use_2nd_diff
+          python_type: bool
+          size: null
+          type: logical
+    line: 5
+    name: opti_de_param_struct
+  solution_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90
+    info:
+      class_name: SolutionStruct_
+      comment: ''
+      members:
+        merit:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) merit
+          dimension: ''
+          fortran_default: null
+          line: 111
+          name: merit
+          python_name: merit
+          python_type: float
+          size: null
+          type: real
+        vec:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), pointer :: vec(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 110
+          name: vec
+          python_name: vec
+          python_type: float
+          size: null
+          type: real
+    line: 109
+    name: solution_struct
+/Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90:
+  solution_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90
+    info:
+      class_name: SolutionStruct__
+      comment: ''
+      members:
+        merit:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) merit
+          dimension: ''
+          fortran_default: null
+          line: 99
+          name: merit
+          python_name: merit
+          python_type: float
+          size: null
+          type: real
+        status:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: integer status
+          dimension: ''
+          fortran_default: null
+          line: 100
+          name: status
+          python_name: status
+          python_type: int
+          size: null
+          type: integer
+        vec:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp), allocatable :: vec(:)'
+          dimension: ':'
+          fortran_default: null
+          line: 98
+          name: vec
+          python_name: vec
+          python_type: float
+          size: null
+          type: real
+    line: 97
+    name: solution_struct
+/Users/klauer/Repos/bmad/sim_utils/plot/display_size_and_resolution.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/plot/noplot_interface.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/plot/pgplot_interface.f90:
+  pg_interface_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/pgplot_interface.f90
+    info:
+      class_name: PgInterfaceStruct
+      comment: ''
+      members:
+        i_chan:
+          comment: ''
+          default: -1
+          default_factory: ''
+          definition: 'integer :: i_chan = -1'
+          dimension: ''
+          fortran_default: '-1'
+          line: 40
+          name: i_chan
+          python_name: i_chan
+          python_type: int
+          size: null
+          type: integer
+        page_scale:
+          comment: scaling for entire page
+          default: 0.0
+          default_factory: ''
+          definition: real page_scale
+          dimension: ''
+          fortran_default: null
+          line: 42
+          name: page_scale
+          python_name: page_scale
+          python_type: float
+          size: null
+          type: real
+        page_type:
+          comment: ''
+          default: ''
+          default_factory: list
+          definition: character(16) page_type
+          dimension: ''
+          fortran_default: null
+          line: 38
+          name: page_type
+          python_name: page_type
+          python_type: str
+          size: '16'
+          type: character
+        plot_file:
+          comment: ''
+          default: ''
+          default_factory: list
+          definition: character(100) plot_file
+          dimension: ''
+          fortran_default: null
+          line: 39
+          name: plot_file
+          python_name: plot_file
+          python_type: str
+          size: '100'
+          type: character
+        qp_to_pg_text_height_factor:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real qp_to_pg_text_height_factor
+          dimension: ''
+          fortran_default: null
+          line: 41
+          name: qp_to_pg_text_height_factor
+          python_name: qp_to_pg_text_height_factor
+          python_type: float
+          size: null
+          type: real
+    line: 37
+    name: pg_interface_struct
+/Users/klauer/Repos/bmad/sim_utils/plot/pgsubs.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90:
+  pl_interface_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90
+    info:
+      class_name: PlInterfaceStruct
+      comment: ''
+      members:
+        char_size:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: char_size'
+          dimension: ''
+          fortran_default: null
+          line: 55
+          name: char_size
+          python_name: char_size
+          python_type: float
+          size: null
+          type: real
+        clip:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: clip'
+          dimension: ''
+          fortran_default: null
+          line: 58
+          name: clip
+          python_name: clip
+          python_type: bool
+          size: null
+          type: logical
+        fg_color:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: fg_color'
+          dimension: ''
+          fortran_default: null
+          line: 57
+          name: fg_color
+          python_name: fg_color
+          python_type: int
+          size: null
+          type: integer
+        fill_pattern:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: fill_pattern'
+          dimension: ''
+          fortran_default: null
+          line: 52
+          name: fill_pattern
+          python_name: fill_pattern
+          python_type: int
+          size: null
+          type: integer
+        graph_pos:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (viewport_size) :: graph_pos'
+          dimension: ''
+          fortran_default: null
+          line: 50
+          name: graph_pos
+          python_name: graph_pos
+          python_type: ViewportSize
+          size: null
+          type: viewport_size
+        i_chan:
+          comment: ''
+          default: -1
+          default_factory: ''
+          definition: 'integer :: i_chan = -1'
+          dimension: ''
+          fortran_default: '-1'
+          line: 51
+          name: i_chan
+          python_name: i_chan
+          python_type: int
+          size: null
+          type: integer
+        line_pattern:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: line_pattern'
+          dimension: ''
+          fortran_default: null
+          line: 54
+          name: line_pattern
+          python_name: line_pattern
+          python_type: int
+          size: null
+          type: integer
+        line_width:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: line_width'
+          dimension: ''
+          fortran_default: null
+          line: 53
+          name: line_width
+          python_name: line_width
+          python_type: int
+          size: null
+          type: integer
+        page_scale:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) page_scale
+          dimension: ''
+          fortran_default: null
+          line: 59
+          name: page_scale
+          python_name: page_scale
+          python_type: float
+          size: null
+          type: real
+        page_type:
+          comment: ''
+          default: ''
+          default_factory: list
+          definition: character(16) page_type
+          dimension: ''
+          fortran_default: null
+          line: 49
+          name: page_type
+          python_name: page_type
+          python_type: str
+          size: '16'
+          type: character
+        sym_size:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: sym_size'
+          dimension: ''
+          fortran_default: null
+          line: 56
+          name: sym_size
+          python_name: sym_size
+          python_type: float
+          size: null
+          type: real
+        x_inch_page:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) x_inch_page
+          dimension: ''
+          fortran_default: null
+          line: 60
+          name: x_inch_page
+          python_name: x_inch_page
+          python_type: float
+          size: null
+          type: real
+        x_inch_to_mm:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) x_inch_to_mm
+          dimension: ''
+          fortran_default: null
+          line: 62
+          name: x_inch_to_mm
+          python_name: x_inch_to_mm
+          python_type: float
+          size: null
+          type: real
+        y_inch_page:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) y_inch_page
+          dimension: ''
+          fortran_default: null
+          line: 61
+          name: y_inch_page
+          python_name: y_inch_page
+          python_type: float
+          size: null
+          type: real
+        y_inch_to_mm:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: real(rp) y_inch_to_mm
+          dimension: ''
+          fortran_default: null
+          line: 63
+          name: y_inch_to_mm
+          python_name: y_inch_to_mm
+          python_type: float
+          size: null
+          type: real
+    line: 48
+    name: pl_interface_struct
+  viewport_size:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90
+    info:
+      class_name: ViewportSize
+      comment: ''
+      members:
+        x1:
+          comment: in mm
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: x1'
+          dimension: ''
+          fortran_default: null
+          line: 42
+          name: x1
+          python_name: x1
+          python_type: float
+          size: null
+          type: real
+        x2:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: x2'
+          dimension: ''
+          fortran_default: null
+          line: 43
+          name: x2
+          python_name: x2
+          python_type: float
+          size: null
+          type: real
+        y1:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: y1'
+          dimension: ''
+          fortran_default: null
+          line: 44
+          name: y1
+          python_name: y1
+          python_type: float
+          size: null
+          type: real
+        y2:
+          comment: ''
+          default: 0.0
+          default_factory: ''
+          definition: 'real(rp) :: y2'
+          dimension: ''
+          fortran_default: null
+          line: 45
+          name: y2
+          python_name: y2
+          python_type: float
+          size: null
+          type: real
+    line: 41
+    name: viewport_size
+/Users/klauer/Repos/bmad/sim_utils/plot/quick_plot.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90:
+  qp_arrow_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpArrowStruct
+      comment: ''
+      members:
+        color:
+          comment: ''
+          default: black
+          default_factory: ''
+          definition: 'character(16) :: color       = ''black'''
+          dimension: ''
+          fortran_default: '''black'''
+          line: 134
+          name: color
+          python_name: color
+          python_type: str
+          size: '16'
+          type: character
+        head_angle:
+          comment: Acute angle of the arrow point in degrees.
+          default: 30
+          default_factory: ''
+          definition: 'real(rp) :: head_angle = 30'
+          dimension: ''
+          fortran_default: '30'
+          line: 130
+          name: head_angle
+          python_name: head_angle
+          python_type: float
+          size: null
+          type: real
+        head_barb:
+          comment: Fraction of triangular arrow head that is cut away from the back.
+          default: 0.4
+          default_factory: ''
+          definition: 'real(rp) :: head_barb  = 0.4'
+          dimension: ''
+          fortran_default: '0.4'
+          line: 131
+          name: head_barb
+          python_name: head_barb
+          python_type: float
+          size: null
+          type: real
+        head_size:
+          comment: ''
+          default: 1.0
+          default_factory: ''
+          definition: 'real(rp) :: head_size  = 1.0'
+          dimension: ''
+          fortran_default: '1.0'
+          line: 132
+          name: head_size
+          python_name: head_size
+          python_type: float
+          size: null
+          type: real
+        head_type:
+          comment: Or 'outline_arrow_head'
+          default: filled_arrow_head
+          default_factory: ''
+          definition: 'character(16) :: head_type   = ''filled_arrow_head'''
+          dimension: ''
+          fortran_default: '''filled_arrow_head'''
+          line: 133
+          name: head_type
+          python_name: head_type
+          python_type: str
+          size: '16'
+          type: character
+    line: 129
+    name: qp_arrow_struct
+  qp_axis_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpAxisStruct
+      comment: ''
+      members:
+        bounds:
+          comment: Or 'ZERO_AT_END' or 'ZERO_SYMMETRIC'
+          default: GENERAL
+          default_factory: ''
+          definition: 'character(16) :: bounds = ''GENERAL'''
+          dimension: ''
+          fortran_default: '''GENERAL'''
+          line: 75
+          name: bounds
+          python_name: bounds
+          python_type: str
+          size: '16'
+          type: character
+        draw_label:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_label = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 78
+          name: draw_label
+          python_name: draw_label
+          python_type: bool
+          size: null
+          type: logical
+        draw_numbers:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_numbers  = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 79
+          name: draw_numbers
+          python_name: draw_numbers
+          python_type: bool
+          size: null
+          type: logical
+        dtick:
+          comment: Distance between ticks. In data units. Ticks will be drawn between
+            %min and %max.
+          default: 2
+          default_factory: ''
+          definition: 'real(rp) :: dtick = 2'
+          dimension: ''
+          fortran_default: '2'
+          line: 63
+          name: dtick
+          python_name: dtick
+          python_type: float
+          size: null
+          type: real
+        eval_max:
+          comment: For general use. Not set by quick_plot.
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: eval_min = 0, eval_max = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 62
+          name: eval_max
+          python_name: eval_max
+          python_type: float
+          size: null
+          type: real
+        eval_min:
+          comment: For general use. Not set by quick_plot.
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: eval_min = 0, eval_max = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 62
+          name: eval_min
+          python_name: eval_min
+          python_type: float
+          size: null
+          type: real
+        label:
+          comment: ''
+          default: ' '
+          default_factory: ''
+          definition: 'character(80) :: label = '' '''
+          dimension: ''
+          fortran_default: ''' '''
+          line: 58
+          name: label
+          python_name: label
+          python_type: str
+          size: '80'
+          type: character
+        label_color:
+          comment: Color of the label.
+          default: black
+          default_factory: ''
+          definition: 'character(16) :: label_color = ''black'''
+          dimension: ''
+          fortran_default: '''black'''
+          line: 68
+          name: label_color
+          python_name: label_color
+          python_type: str
+          size: '16'
+          type: character
+        label_offset:
+          comment: Offset from numbers in inches.
+          default: 0.05
+          default_factory: ''
+          definition: 'real(rp) :: label_offset = 0.05'
+          dimension: ''
+          fortran_default: '0.05'
+          line: 65
+          name: label_offset
+          python_name: label_offset
+          python_type: float
+          size: null
+          type: real
+        major_div:
+          comment: Actual numbrer of major divisions
+          default: 5
+          default_factory: ''
+          definition: 'integer :: major_div = 5'
+          dimension: ''
+          fortran_default: '5'
+          line: 69
+          name: major_div
+          python_name: major_div
+          python_type: int
+          size: null
+          type: integer
+        major_div_nominal:
+          comment: Nominal value.
+          default: 5
+          default_factory: ''
+          definition: 'integer :: major_div_nominal = 5'
+          dimension: ''
+          fortran_default: '5'
+          line: 70
+          name: major_div_nominal
+          python_name: major_div_nominal
+          python_type: int
+          size: null
+          type: integer
+        major_tick_len:
+          comment: In inches.
+          default: 0.1
+          default_factory: ''
+          definition: 'real(rp) :: major_tick_len = 0.10'
+          dimension: ''
+          fortran_default: '0.10'
+          line: 66
+          name: major_tick_len
+          python_name: major_tick_len
+          python_type: float
+          size: null
+          type: real
+        max:
+          comment: Axis min/max in data units.
+          default: 10
+          default_factory: ''
+          definition: 'real(rp) :: min = 0, max = 10'
+          dimension: ''
+          fortran_default: '10'
+          line: 59
+          name: max
+          python_name: max
+          python_type: float
+          size: null
+          type: real
+        min:
+          comment: Axis min/max in data units.
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: min = 0, max = 10'
+          dimension: ''
+          fortran_default: '0'
+          line: 59
+          name: min
+          python_name: min
+          python_type: float
+          size: null
+          type: real
+        minor_div:
+          comment: 0 = auto choose.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: minor_div = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 71
+          name: minor_div
+          python_name: minor_div
+          python_type: int
+          size: null
+          type: integer
+        minor_div_max:
+          comment: Max number for auto choose.
+          default: 5
+          default_factory: ''
+          definition: 'integer :: minor_div_max = 5'
+          dimension: ''
+          fortran_default: '5'
+          line: 72
+          name: minor_div_max
+          python_name: minor_div_max
+          python_type: int
+          size: null
+          type: integer
+        minor_tick_len:
+          comment: In inches.
+          default: 0.06
+          default_factory: ''
+          definition: 'real(rp) :: minor_tick_len = 0.06'
+          dimension: ''
+          fortran_default: '0.06'
+          line: 67
+          name: minor_tick_len
+          python_name: minor_tick_len
+          python_type: float
+          size: null
+          type: real
+        number_offset:
+          comment: Offset from axis line in inches.
+          default: 0.05
+          default_factory: ''
+          definition: 'real(rp) :: number_offset = 0.05'
+          dimension: ''
+          fortran_default: '0.05'
+          line: 64
+          name: number_offset
+          python_name: number_offset
+          python_type: float
+          size: null
+          type: real
+        number_side:
+          comment: +1 = Draw to the side inside the graph, -1 = outside.
+          default: -1
+          default_factory: ''
+          definition: 'integer :: number_side = -1'
+          dimension: ''
+          fortran_default: '-1'
+          line: 77
+          name: number_side
+          python_name: number_side
+          python_type: int
+          size: null
+          type: integer
+        places:
+          comment: Number of places after the decimal point to print.
+          default: 0
+          default_factory: ''
+          definition: 'integer :: places = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 73
+          name: places
+          python_name: places
+          python_type: int
+          size: null
+          type: integer
+        tick_max:
+          comment: Max tick location along axis in data units.
+          default: 10
+          default_factory: ''
+          definition: 'real(rp) :: tick_max = 10'
+          dimension: ''
+          fortran_default: '10'
+          line: 61
+          name: tick_max
+          python_name: tick_max
+          python_type: float
+          size: null
+          type: real
+        tick_min:
+          comment: Min tick location along axis in data units.
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: tick_min = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 60
+          name: tick_min
+          python_name: tick_min
+          python_type: float
+          size: null
+          type: real
+        tick_side:
+          comment: +1 = Draw on the side inside the graph, 0 = both (longer tick),
+            -1 = outside.
+          default: 1
+          default_factory: ''
+          definition: 'integer :: tick_side = +1'
+          dimension: ''
+          fortran_default: '+1'
+          line: 76
+          name: tick_side
+          python_name: tick_side
+          python_type: int
+          size: null
+          type: integer
+        type:
+          comment: Or 'LOG', or 'CUSTOM'
+          default: LINEAR
+          default_factory: ''
+          definition: 'character(16) :: type = ''LINEAR'''
+          dimension: ''
+          fortran_default: '''LINEAR'''
+          line: 74
+          name: type
+          python_name: type
+          python_type: str
+          size: '16'
+          type: character
+    line: 57
+    name: qp_axis_struct
+  qp_legend_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpLegendStruct
+      comment: ''
+      members:
+        draw_line:
+          comment: Draw lines?
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_line = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 141
+          name: draw_line
+          python_name: draw_line
+          python_type: bool
+          size: null
+          type: logical
+        draw_symbol:
+          comment: Draw symbols?
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_symbol = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 142
+          name: draw_symbol
+          python_name: draw_symbol
+          python_type: bool
+          size: null
+          type: logical
+        draw_text:
+          comment: Draw text?
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_text = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 143
+          name: draw_text
+          python_name: draw_text
+          python_type: bool
+          size: null
+          type: logical
+        line_length:
+          comment: Length of the line in points.
+          default: 72
+          default_factory: ''
+          definition: 'real(rp) :: line_length = 72'
+          dimension: ''
+          fortran_default: '72'
+          line: 139
+          name: line_length
+          python_name: line_length
+          python_type: float
+          size: null
+          type: real
+        row_spacing:
+          comment: Spacing between rows.
+          default: 1.0
+          default_factory: ''
+          definition: 'real(rp) :: row_spacing = 1.0'
+          dimension: ''
+          fortran_default: '1.0'
+          line: 138
+          name: row_spacing
+          python_name: row_spacing
+          python_type: float
+          size: null
+          type: real
+        text_offset:
+          comment: Horizontal offset in points between the line and the text.
+          default: 10
+          default_factory: ''
+          definition: 'real(rp) :: text_offset = 10'
+          dimension: ''
+          fortran_default: '10'
+          line: 140
+          name: text_offset
+          python_name: text_offset
+          python_type: float
+          size: null
+          type: real
+    line: 137
+    name: qp_legend_struct
+  qp_line_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpLineStruct
+      comment: ''
+      members:
+        color:
+          comment: ''
+          default: black
+          default_factory: ''
+          definition: 'character(16) :: color   = ''black'''
+          dimension: ''
+          fortran_default: '''black'''
+          line: 117
+          name: color
+          python_name: color
+          python_type: str
+          size: '16'
+          type: character
+        pattern:
+          comment: ''
+          default: solid
+          default_factory: ''
+          definition: 'character(16) :: pattern = ''solid'''
+          dimension: ''
+          fortran_default: '''solid'''
+          line: 118
+          name: pattern
+          python_name: pattern
+          python_type: str
+          size: '16'
+          type: character
+        width:
+          comment: ''
+          default: 3
+          default_factory: ''
+          definition: 'integer :: width         = 3'
+          dimension: ''
+          fortran_default: '3'
+          line: 116
+          name: width
+          python_name: width
+          python_type: int
+          size: null
+          type: integer
+    line: 115
+    name: qp_line_struct
+  qp_plot_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpPlotStruct
+      comment: ''
+      members:
+        draw_box:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_box    = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 90
+          name: draw_box
+          python_name: draw_box
+          python_type: bool
+          size: null
+          type: logical
+        draw_grid:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_grid   = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 92
+          name: draw_grid
+          python_name: draw_grid
+          python_type: bool
+          size: null
+          type: logical
+        draw_title:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: draw_title  = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 91
+          name: draw_title
+          python_name: draw_title
+          python_type: bool
+          size: null
+          type: logical
+        title:
+          comment: ''
+          default: ' '
+          default_factory: ''
+          definition: 'character(80) :: title = '' '''
+          dimension: ''
+          fortran_default: ''' '''
+          line: 86
+          name: title
+          python_name: title
+          python_type: str
+          size: '80'
+          type: character
+        x:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (qp_axis_struct) x, y, x2, y2
+          dimension: ''
+          fortran_default: null
+          line: 87
+          name: x
+          python_name: x
+          python_type: QpAxisStruct
+          size: null
+          type: qp_axis_struct
+        x2:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (qp_axis_struct) x, y, x2, y2
+          dimension: ''
+          fortran_default: null
+          line: 87
+          name: x2
+          python_name: x2
+          python_type: QpAxisStruct
+          size: null
+          type: qp_axis_struct
+        x2_mirrors_x:
+          comment: x2 axis same as x?
+          default: true
+          default_factory: ''
+          definition: 'logical :: x2_mirrors_x = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 93
+          name: x2_mirrors_x
+          python_name: x2_mirrors_x
+          python_type: bool
+          size: null
+          type: logical
+        x_is_active_axis:
+          comment: True => x is the active axis. False => x2 is active.
+          default: false
+          default_factory: ''
+          definition: 'logical :: x_is_active_axis'
+          dimension: ''
+          fortran_default: null
+          line: 95
+          name: x_is_active_axis
+          python_name: x_is_active_axis
+          python_type: bool
+          size: null
+          type: logical
+        xx:
+          comment: Pointer to x or x2 active axes currently used for plotting.
+          default: null
+          default_factory: ''
+          definition: 'type (qp_axis_struct), pointer :: xx'
+          dimension: ''
+          fortran_default: null
+          line: 88
+          name: xx
+          python_name: xx
+          python_type: QpAxisStruct
+          size: null
+          type: qp_axis_struct
+        y:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (qp_axis_struct) x, y, x2, y2
+          dimension: ''
+          fortran_default: null
+          line: 87
+          name: y
+          python_name: y
+          python_type: QpAxisStruct
+          size: null
+          type: qp_axis_struct
+        y2:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (qp_axis_struct) x, y, x2, y2
+          dimension: ''
+          fortran_default: null
+          line: 87
+          name: y2
+          python_name: y2
+          python_type: QpAxisStruct
+          size: null
+          type: qp_axis_struct
+        y2_mirrors_y:
+          comment: y2 axis same as y?
+          default: true
+          default_factory: ''
+          definition: 'logical :: y2_mirrors_y = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 94
+          name: y2_mirrors_y
+          python_name: y2_mirrors_y
+          python_type: bool
+          size: null
+          type: logical
+        y_is_active_axis:
+          comment: True => y is the active axis. False => y2 is active.
+          default: false
+          default_factory: ''
+          definition: 'logical :: y_is_active_axis'
+          dimension: ''
+          fortran_default: null
+          line: 96
+          name: y_is_active_axis
+          python_name: y_is_active_axis
+          python_type: bool
+          size: null
+          type: logical
+        yy:
+          comment: Pointer to y or y2 active axes currently used for plotting.
+          default: null
+          default_factory: ''
+          definition: 'type (qp_axis_struct), pointer :: yy'
+          dimension: ''
+          fortran_default: null
+          line: 89
+          name: yy
+          python_name: yy
+          python_type: QpAxisStruct
+          size: null
+          type: qp_axis_struct
+    line: 85
+    name: qp_plot_struct
+  qp_point_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpPointStruct
+      comment: ''
+      members:
+        units:
+          comment: ''
+          default: ' '
+          default_factory: ''
+          definition: 'character(16) :: units = '' '''
+          dimension: ''
+          fortran_default: ''' '''
+          line: 101
+          name: units
+          python_name: units
+          python_type: str
+          size: '16'
+          type: character
+        x:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x = 0, y = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 100
+          name: x
+          python_name: x
+          python_type: float
+          size: null
+          type: real
+        y:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x = 0, y = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 100
+          name: y
+          python_name: y
+          python_type: float
+          size: null
+          type: real
+    line: 99
+    name: qp_point_struct
+  qp_rect_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpRectStruct
+      comment: ''
+      members:
+        units:
+          comment: ''
+          default: ' '
+          default_factory: ''
+          definition: 'character(16) :: units = '' '''
+          dimension: ''
+          fortran_default: ''' '''
+          line: 106
+          name: units
+          python_name: units
+          python_type: str
+          size: '16'
+          type: character
+        x1:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 105
+          name: x1
+          python_name: x1
+          python_type: float
+          size: null
+          type: real
+        x2:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 105
+          name: x2
+          python_name: x2
+          python_type: float
+          size: null
+          type: real
+        y1:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 105
+          name: y1
+          python_name: y1
+          python_type: float
+          size: null
+          type: real
+        y2:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0'
+          dimension: ''
+          fortran_default: '0'
+          line: 105
+          name: y2
+          python_name: y2
+          python_type: float
+          size: null
+          type: real
+    line: 104
+    name: qp_rect_struct
+  qp_state_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpStateStruct
+      comment: ''
+      members:
+        arrow:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_arrow_struct) :: arrow = qp_arrow_struct()'
+          dimension: ''
+          fortran_default: qp_arrow_struct()
+          line: 161
+          name: arrow
+          python_name: arrow
+          python_type: QpArrowStruct
+          size: null
+          type: qp_arrow_struct
+        axis_label:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: axis_label = qp_text_struct(15.0,
+            ''black'', .false.)'
+          dimension: ''
+          fortran_default: qp_text_struct(15.0, 'black', .false.)
+          line: 158
+          name: axis_label
+          python_name: axis_label
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        axis_line:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_line_struct) :: axis_line = qp_line_struct()'
+          dimension: ''
+          fortran_default: qp_line_struct()
+          line: 164
+          name: axis_line
+          python_name: axis_line
+          python_type: QpLineStruct
+          size: null
+          type: qp_line_struct
+        axis_number:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: axis_number= qp_text_struct(12.0,
+            ''black'', .false.)'
+          dimension: ''
+          fortran_default: qp_text_struct(12.0, 'black', .false.)
+          line: 157
+          name: axis_number
+          python_name: axis_number
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        border:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_rect_struct) :: border = qp_rect_struct (0.0, 0.0,
+            0.0, 0.0, '' '')'
+          dimension: ''
+          fortran_default: qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')
+          line: 152
+          name: border
+          python_name: border
+          python_type: QpRectStruct
+          size: null
+          type: qp_rect_struct
+        box:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_rect_struct) :: box    = qp_rect_struct (1.0, 2.0,
+            1.0, 2.0, '' '')'
+          dimension: ''
+          fortran_default: qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')
+          line: 149
+          name: box
+          python_name: box
+          python_type: QpRectStruct
+          size: null
+          type: qp_rect_struct
+        buffer:
+          comment: to be used by qp_save_state only
+          default: false
+          default_factory: ''
+          definition: 'logical :: buffer = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 180
+          name: buffer
+          python_name: buffer
+          python_type: bool
+          size: null
+          type: logical
+        clip:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: clip = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 179
+          name: clip
+          python_name: clip
+          python_type: bool
+          size: null
+          type: logical
+        dflt_axis_slop_factor:
+          comment: ''
+          default: 0.001
+          default_factory: ''
+          definition: 'real(rp) :: dflt_axis_slop_factor = 1d-3'
+          dimension: ''
+          fortran_default: 1d-3
+          line: 169
+          name: dflt_axis_slop_factor
+          python_name: dflt_axis_slop_factor
+          python_type: float
+          size: null
+          type: real
+        dflt_draw_units:
+          comment: ''
+          default:
+          - 'DATA '
+          - GRAPH
+          - 'LB   '
+          default_factory: ''
+          definition: 'character(8) :: dflt_draw_units(3) = [''DATA '', ''GRAPH'',
+            ''LB   '' ]'
+          dimension: '3'
+          fortran_default: '[''DATA '', ''GRAPH'', ''LB   '' ]'
+          line: 176
+          name: dflt_draw_units
+          python_name: dflt_draw_units
+          python_type: str
+          size: '8'
+          type: character
+        dflt_set_units:
+          comment: ''
+          default:
+          - 'INCH '
+          - 'PAGE '
+          - 'LB   '
+          default_factory: ''
+          definition: 'character(8) :: dflt_set_units(3)  = [''INCH '', ''PAGE '',
+            ''LB   '' ]'
+          dimension: '3'
+          fortran_default: '[''INCH '', ''PAGE '', ''LB   '' ]'
+          line: 177
+          name: dflt_set_units
+          python_name: dflt_set_units
+          python_type: str
+          size: '8'
+          type: character
+        dflt_units:
+          comment: ''
+          default: 0
+          default_factory: ''
+          definition: 'integer :: dflt_units = dflt_draw$'
+          dimension: ''
+          fortran_default: dflt_draw$
+          line: 172
+          name: dflt_units
+          python_name: dflt_units
+          python_type: int
+          size: null
+          type: integer
+        graph:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_rect_struct) :: graph  = qp_rect_struct (1.0, 2.0,
+            1.0, 2.0, '' '')'
+          dimension: ''
+          fortran_default: qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')
+          line: 150
+          name: graph
+          python_name: graph
+          python_type: QpRectStruct
+          size: null
+          type: qp_rect_struct
+        graph_title:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: graph_title= qp_text_struct(20.0,
+            ''black'', .false.)'
+          dimension: ''
+          fortran_default: qp_text_struct(20.0, 'black', .false.)
+          line: 154
+          name: graph_title
+          python_name: graph_title
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        grid_line:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_line_struct) :: grid_line = qp_line_struct(1, ''light_grey'',
+            ''solid'')'
+          dimension: ''
+          fortran_default: qp_line_struct(1, 'light_grey', 'solid')
+          line: 166
+          name: grid_line
+          python_name: grid_line
+          python_type: QpLineStruct
+          size: null
+          type: qp_line_struct
+        legend:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: legend     = qp_text_struct(13.0,
+            ''black'', .false.)'
+          dimension: ''
+          fortran_default: qp_text_struct(13.0, 'black', .false.)
+          line: 155
+          name: legend
+          python_name: legend
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        legend_line:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_line_struct) :: legend_line = qp_line_struct()'
+          dimension: ''
+          fortran_default: qp_line_struct()
+          line: 165
+          name: legend_line
+          python_name: legend_line
+          python_type: QpLineStruct
+          size: null
+          type: qp_line_struct
+        main_title:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: main_title = qp_text_struct(18.0,
+            ''black'', .false.)'
+          dimension: ''
+          fortran_default: qp_text_struct(18.0, 'black', .false.)
+          line: 153
+          name: main_title
+          python_name: main_title
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        margin:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_rect_struct) :: margin = qp_rect_struct (0.0, 0.0,
+            0.0, 0.0, '' '')'
+          dimension: ''
+          fortran_default: qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')
+          line: 151
+          name: margin
+          python_name: margin
+          python_type: QpRectStruct
+          size: null
+          type: qp_rect_struct
+        max_axis_zero_digits:
+          comment: ''
+          default: 3
+          default_factory: ''
+          definition: 'integer :: max_axis_zero_digits = 3'
+          dimension: ''
+          fortran_default: '3'
+          line: 171
+          name: max_axis_zero_digits
+          python_name: max_axis_zero_digits
+          python_type: int
+          size: null
+          type: integer
+        max_digits:
+          comment: ''
+          default: 8
+          default_factory: ''
+          definition: 'integer :: max_digits = 8'
+          dimension: ''
+          fortran_default: '8'
+          line: 173
+          name: max_digits
+          python_name: max_digits
+          python_type: int
+          size: null
+          type: integer
+        page:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_rect_struct) :: page   = qp_rect_struct (0.0, 0.0,
+            0.0, 0.0, '' '')'
+          dimension: ''
+          fortran_default: qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')
+          line: 148
+          name: page
+          python_name: page
+          python_type: QpRectStruct
+          size: null
+          type: qp_rect_struct
+        page_type:
+          comment: '''PS'', ''X'', etc.'
+          default: ''
+          default_factory: list
+          definition: character(16) page_type
+          dimension: ''
+          fortran_default: null
+          line: 175
+          name: page_type
+          python_name: page_type
+          python_type: str
+          size: '16'
+          type: character
+        plot:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: type (qp_plot_struct) plot
+          dimension: ''
+          fortran_default: null
+          line: 147
+          name: plot
+          python_name: plot
+          python_type: QpPlotStruct
+          size: null
+          type: qp_plot_struct
+        plot_file:
+          comment: ''
+          default: ''
+          default_factory: list
+          definition: character(200) plot_file
+          dimension: ''
+          fortran_default: null
+          line: 174
+          name: plot_file
+          python_name: plot_file
+          python_type: str
+          size: '200'
+          type: character
+        plot_line:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_line_struct) :: plot_line = qp_line_struct()'
+          dimension: ''
+          fortran_default: qp_line_struct()
+          line: 163
+          name: plot_line
+          python_name: plot_line
+          python_type: QpLineStruct
+          size: null
+          type: qp_line_struct
+        std_line:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_line_struct) :: std_line  = qp_line_struct()'
+          dimension: ''
+          fortran_default: qp_line_struct()
+          line: 162
+          name: std_line
+          python_name: std_line
+          python_type: QpLineStruct
+          size: null
+          type: qp_line_struct
+        subgraph_on:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: subgraph_on = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 178
+          name: subgraph_on
+          python_name: subgraph_on
+          python_type: bool
+          size: null
+          type: logical
+        symbol:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_symbol_struct) :: symbol = qp_symbol_struct()'
+          dimension: ''
+          fortran_default: qp_symbol_struct()
+          line: 160
+          name: symbol
+          python_name: symbol
+          python_type: QpSymbolStruct
+          size: null
+          type: qp_symbol_struct
+        text:
+          comment: ''
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: text       = qp_text_struct(18.0,
+            ''black'', .false.)'
+          dimension: ''
+          fortran_default: qp_text_struct(18.0, 'black', .false.)
+          line: 156
+          name: text
+          python_name: text
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        text_background:
+          comment: ''
+          default: not_set
+          default_factory: ''
+          definition: 'character(16) :: text_background = ''not_set'''
+          dimension: ''
+          fortran_default: '''not_set'''
+          line: 170
+          name: text_background
+          python_name: text_background
+          python_type: str
+          size: '16'
+          type: character
+        text_scale:
+          comment: ''
+          default: 1
+          default_factory: ''
+          definition: 'real(rp) :: text_scale = 1'
+          dimension: ''
+          fortran_default: '1'
+          line: 167
+          name: text_scale
+          python_name: text_scale
+          python_type: float
+          size: null
+          type: real
+        text_spacing_factor:
+          comment: ''
+          default: 0.6
+          default_factory: ''
+          definition: 'real(rp) :: text_spacing_factor = 0.6'
+          dimension: ''
+          fortran_default: '0.6'
+          line: 168
+          name: text_spacing_factor
+          python_name: text_spacing_factor
+          python_type: float
+          size: null
+          type: real
+        this_text:
+          comment: current settings.
+          default: null
+          default_factory: ''
+          definition: 'type (qp_text_struct) :: this_text'
+          dimension: ''
+          fortran_default: null
+          line: 159
+          name: this_text
+          python_name: this_text
+          python_type: QpTextStruct
+          size: null
+          type: qp_text_struct
+        uniform_symbol_size:
+          comment: ''
+          default: true
+          default_factory: ''
+          definition: 'logical :: uniform_symbol_size = .true.'
+          dimension: ''
+          fortran_default: .true.
+          line: 181
+          name: uniform_symbol_size
+          python_name: uniform_symbol_size
+          python_type: bool
+          size: null
+          type: logical
+    line: 146
+    name: qp_state_struct
+  qp_symbol_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpSymbolStruct
+      comment: ''
+      members:
+        color:
+          comment: ''
+          default: black
+          default_factory: ''
+          definition: 'character(16) :: color        = ''black'''
+          dimension: ''
+          fortran_default: '''black'''
+          line: 124
+          name: color
+          python_name: color
+          python_type: str
+          size: '16'
+          type: character
+        fill_pattern:
+          comment: ''
+          default: solid_fill
+          default_factory: ''
+          definition: 'character(16) :: fill_pattern = ''solid_fill'''
+          dimension: ''
+          fortran_default: '''solid_fill'''
+          line: 125
+          name: fill_pattern
+          python_name: fill_pattern
+          python_type: str
+          size: '16'
+          type: character
+        height:
+          comment: in points (same as text height)
+          default: 10.0
+          default_factory: ''
+          definition: 'real(rp) :: height            = 10d0'
+          dimension: ''
+          fortran_default: 10d0
+          line: 123
+          name: height
+          python_name: height
+          python_type: float
+          size: null
+          type: real
+        line_width:
+          comment: ''
+          default: 3
+          default_factory: ''
+          definition: 'integer :: line_width         = 3'
+          dimension: ''
+          fortran_default: '3'
+          line: 126
+          name: line_width
+          python_name: line_width
+          python_type: int
+          size: null
+          type: integer
+        type:
+          comment: ''
+          default: circle_dot
+          default_factory: ''
+          definition: 'character(16) :: type         = ''circle_dot'''
+          dimension: ''
+          fortran_default: '''circle_dot'''
+          line: 122
+          name: type
+          python_name: type
+          python_type: str
+          size: '16'
+          type: character
+    line: 121
+    name: qp_symbol_struct
+  qp_text_struct:
+    filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
+    info:
+      class_name: QpTextStruct
+      comment: ''
+      members:
+        color:
+          comment: ''
+          default: black
+          default_factory: ''
+          definition: 'character(16) :: color     = ''black'''
+          dimension: ''
+          fortran_default: '''black'''
+          line: 111
+          name: color
+          python_name: color
+          python_type: str
+          size: '16'
+          type: character
+        height:
+          comment: in points
+          default: 12
+          default_factory: ''
+          definition: 'real(rp) :: height         = 12'
+          dimension: ''
+          fortran_default: '12'
+          line: 110
+          name: height
+          python_name: height
+          python_type: float
+          size: null
+          type: real
+        uniform_spacing:
+          comment: ''
+          default: false
+          default_factory: ''
+          definition: 'logical :: uniform_spacing = .false.'
+          dimension: ''
+          fortran_default: .false.
+          line: 112
+          name: uniform_spacing
+          python_name: uniform_spacing
+          python_type: bool
+          size: null
+          type: logical
+    line: 109
+    name: qp_text_struct
+/Users/klauer/Repos/bmad/sim_utils/special_functions/asinc.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/complex_error_function.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/cos_one.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/cosc.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/dj_bessel.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/elliptic_integral_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/factorial.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/faddeeva_function.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/gen_complete_elliptic.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/i_bessel.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/i_bessel_extended.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/j_bessel.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/modulo2_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/n_choose_k.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/sign_of_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/sinc.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/sincc.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/sinhx_x.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/sqrt_alpha.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/special_functions/sqrt_one.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/all_pointer_to_string.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/date_and_time_stamp.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/detab.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/djb_hash.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/djb_str_hash.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/doubleup_quotes.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/downcase.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/downcase_string.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/index_nocase.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/indexer_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/int_str.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/is_alphabetic.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/is_integer.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/is_logical.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/is_real.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/location_decode.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/location_encode_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/logic_str.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/make_legal_comment.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/match_reg.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/match_wild.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/match_word.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/nametable_add.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/nametable_bracket_indexx.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/nametable_change1.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/nametable_init.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/nametable_remove.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/ordinal_str.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/parse_fortran_format.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/pointer_to_locations.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/query_string.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/quote.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/quoten.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/real_num_fortran_format.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/real_str.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/real_to_string.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/reals_to_string.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/reals_to_table_row.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_count.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_downcase.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_first_in_set.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_first_not_in_set.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_last_in_set.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_last_not_in_set.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_match_wild.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_set.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_substitute.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/str_upcase.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/string_to_int.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/string_to_real.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/string_trim.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/string_trim2.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/substr.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/to_str.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/unquote.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/upcase.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/upcase_string.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/var_length_string_mod.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/word_len.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/string/word_read.f90: {}
