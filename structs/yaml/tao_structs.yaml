@@ -76,6 +76,7 @@
           size: null
           type: integer
     line: 16
+    module: tao_c_interface_mod
     name: tao_c_interface_common_struct
 /Users/klauer/Repos/bmad/tao/code/tao_call_cmd.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_change_mod.f90: {}
@@ -152,6 +153,7 @@
           size: '12'
           type: character
     line: 54
+    module: tao_evaluate_expression
     name: expression_func_struct
 /Users/klauer/Repos/bmad/tao/code/tao_evaluate_tune.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_find_data.f90: {}
@@ -271,6 +273,7 @@
           size: null
           type: real
     line: 23
+    module: tao_init_plotting
     name: old_tao_ele_shape_struct
 /Users/klauer/Repos/bmad/tao/code/tao_init_variables_mod.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90:
@@ -684,6 +687,7 @@
           size: null
           type: real
     line: 79
+    module: tao_input_struct
     name: tao_curve_input
   tao_d1_data_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -705,6 +709,7 @@
           size: '40'
           type: character
     line: 21
+    module: tao_input_struct
     name: tao_d1_data_input
   tao_d2_data_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -726,6 +731,7 @@
           size: '40'
           type: character
     line: 17
+    module: tao_input_struct
     name: tao_d2_data_input
   tao_datum_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -942,6 +948,7 @@
           size: null
           type: real
     line: 25
+    module: tao_input_struct
     name: tao_datum_input
   tao_design_lat_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -1080,6 +1087,7 @@
           size: '40'
           type: character
     line: 167
+    module: tao_input_struct
     name: tao_design_lat_input
   tao_ele_shape_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -1205,6 +1213,7 @@
           size: null
           type: real
     line: 217
+    module: tao_input_struct
     name: tao_ele_shape_input
   tao_graph_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -1691,6 +1700,7 @@
           size: null
           type: qp_axis_struct
     line: 112
+    module: tao_input_struct
     name: tao_graph_input
   tao_key_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -1829,6 +1839,7 @@
           size: null
           type: real
     line: 180
+    module: tao_input_struct
     name: tao_key_input
   tao_place_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -1863,6 +1874,7 @@
           size: '40'
           type: character
     line: 74
+    module: tao_input_struct
     name: tao_place_input
   tao_plot_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -2001,6 +2013,7 @@
           size: '16'
           type: character
     line: 151
+    module: tao_input_struct
     name: tao_plot_input
   tao_plot_page_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -2282,6 +2295,7 @@
           size: null
           type: tao_title_struct
     line: 193
+    module: tao_input_struct
     name: tao_plot_page_input
   tao_region_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -2316,6 +2330,7 @@
           size: '40'
           type: character
     line: 69
+    module: tao_input_struct
     name: tao_region_input
   tao_v1_var_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -2337,6 +2352,7 @@
           size: '40'
           type: character
     line: 47
+    module: tao_input_struct
     name: tao_v1_var_input
   tao_var_input:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_input_struct.f90
@@ -2501,11 +2517,12 @@
           size: null
           type: real
     line: 51
+    module: tao_input_struct
     name: tao_var_input
 /Users/klauer/Repos/bmad/tao/code/tao_interface.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_is_valid_name.f90: {}
+/Users/klauer/Repos/bmad/tao/code/tao_json.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_json_cmd.f90: {}
-/Users/klauer/Repos/bmad/tao/code/tao_json_cmd_autogen.inc: {}
 /Users/klauer/Repos/bmad/tao/code/tao_key_info_to_str.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_lat_bookkeeper.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_lat_emit_calc.f90: {}
@@ -2652,6 +2669,7 @@
           size: null
           type: integer
     line: 110
+    module: tao_show_this
     name: old_show_lat_column_struct
   show_lat_column_info_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_show_this.f90
@@ -2790,6 +2808,7 @@
           size: null
           type: real
     line: 128
+    module: tao_show_this
     name: show_lat_column_info_struct
   show_lat_column_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_show_this.f90
@@ -2876,6 +2895,7 @@
           size: null
           type: integer
     line: 119
+    module: tao_show_this
     name: show_lat_column_struct
 /Users/klauer/Repos/bmad/tao/code/tao_single_mode.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_spin_matrices_calc_needed.f90: {}
@@ -2996,6 +3016,7 @@
           size: null
           type: integer
     line: 728
+    module: tao_struct
     name: do_loop_struct
   tao_alias_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3030,6 +3051,7 @@
           size: '40'
           type: character
     line: 710
+    module: tao_struct
     name: tao_alias_struct
   tao_beam_branch_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3156,6 +3178,7 @@
           size: '40'
           type: character
     line: 985
+    module: tao_struct
     name: tao_beam_branch_struct
   tao_beam_shake_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3320,6 +3343,7 @@
           size: null
           type: real
     line: 838
+    module: tao_struct
     name: tao_beam_shake_struct
   tao_beam_uni_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3393,6 +3417,7 @@
           size: null
           type: logical
     line: 1007
+    module: tao_struct
     name: tao_beam_uni_struct
   tao_building_wall_orientation_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3440,6 +3465,7 @@
           size: null
           type: real
     line: 611
+    module: tao_struct
     name: tao_building_wall_orientation_struct
   tao_building_wall_point_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3513,6 +3539,7 @@
           size: null
           type: real
     line: 617
+    module: tao_struct
     name: tao_building_wall_point_struct
   tao_building_wall_section_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3560,6 +3587,7 @@
           size: null
           type: tao_building_wall_point_struct
     line: 623
+    module: tao_struct
     name: tao_building_wall_section_struct
   tao_building_wall_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3595,6 +3623,7 @@
           size: null
           type: tao_building_wall_section_struct
     line: 629
+    module: tao_struct
     name: tao_building_wall_struct
   tao_cmd_history_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3629,6 +3658,7 @@
           size: null
           type: integer
     line: 61
+    module: tao_struct
     name: tao_cmd_history_struct
   tao_command_file_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -3767,6 +3797,7 @@
           size: null
           type: logical
     line: 715
+    module: tao_struct
     name: tao_command_file_struct
   tao_common_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -4401,6 +4432,7 @@
           size: '16'
           type: character
     line: 740
+    module: tao_struct
     name: tao_common_struct
   tao_curve_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -4422,6 +4454,7 @@
           size: null
           type: tao_curve_struct
     line: 375
+    module: tao_struct
     name: tao_curve_array_struct
   tao_curve_color_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -4495,6 +4528,7 @@
           size: null
           type: real
     line: 179
+    module: tao_struct
     name: tao_curve_color_struct
   tao_curve_orbit_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -4542,6 +4576,7 @@
           size: null
           type: real
     line: 171
+    module: tao_struct
     name: tao_curve_orbit_struct
   tao_curve_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5059,6 +5094,7 @@
           size: null
           type: real
     line: 189
+    module: tao_struct
     name: tao_curve_struct
   tao_d1_data_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5080,6 +5116,7 @@
           size: null
           type: tao_d1_data_struct
     line: 509
+    module: tao_struct
     name: tao_d1_data_array_struct
   tao_d1_data_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5127,6 +5164,7 @@
           size: '40'
           type: character
     line: 475
+    module: tao_struct
     name: tao_d1_data_struct
   tao_d2_data_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5148,6 +5186,7 @@
           size: null
           type: tao_d2_data_struct
     line: 513
+    module: tao_struct
     name: tao_d2_data_array_struct
   tao_d2_data_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5312,6 +5351,7 @@
           size: null
           type: logical
     line: 487
+    module: tao_struct
     name: tao_d2_data_struct
   tao_data_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5333,6 +5373,7 @@
           size: null
           type: tao_data_struct
     line: 505
+    module: tao_struct
     name: tao_data_array_struct
   tao_data_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5954,6 +5995,7 @@
           size: '100'
           type: character
     line: 421
+    module: tao_struct
     name: tao_data_struct
   tao_data_var_component_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -5988,6 +6030,7 @@
           size: null
           type: real
     line: 157
+    module: tao_struct
     name: tao_data_var_component_struct
   tao_drawing_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6009,6 +6052,7 @@
           size: null
           type: tao_ele_shape_struct
     line: 128
+    module: tao_struct
     name: tao_drawing_struct
   tao_dynamic_aperture_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6095,6 +6139,7 @@
           size: null
           type: aperture_scan_struct
     line: 1048
+    module: tao_struct
     name: tao_dynamic_aperture_struct
   tao_ele_pointer_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6129,6 +6174,7 @@
           size: null
           type: integer
     line: 107
+    module: tao_struct
     name: tao_ele_pointer_struct
   tao_ele_shape_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6293,6 +6339,7 @@
           size: null
           type: tao_ele_pointer_struct
     line: 113
+    module: tao_struct
     name: tao_ele_shape_struct
   tao_eval_stack1_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6379,6 +6426,7 @@
           size: null
           type: tao_real_pointer_struct
     line: 96
+    module: tao_struct
     name: tao_eval_stack1_struct
   tao_expression_info_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6426,6 +6474,7 @@
           size: null
           type: real
     line: 90
+    module: tao_struct
     name: tao_expression_info_struct
   tao_floor_plan_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -6590,6 +6639,7 @@
           size: '2'
           type: character
     line: 234
+    module: tao_struct
     name: tao_floor_plan_struct
   tao_global_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -7471,6 +7521,7 @@
           size: null
           type: logical
     line: 638
+    module: tao_struct
     name: tao_global_struct
   tao_graph_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -7492,6 +7543,7 @@
           size: null
           type: tao_graph_struct
     line: 371
+    module: tao_struct
     name: tao_graph_array_struct
   tao_graph_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -7942,6 +7994,7 @@
           size: null
           type: logical
     line: 253
+    module: tao_struct
     name: tao_graph_struct
   tao_histogram_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -8041,6 +8094,7 @@
           size: null
           type: real
     line: 162
+    module: tao_struct
     name: tao_histogram_struct
   tao_init_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -8582,6 +8636,7 @@
           size: '400'
           type: character
     line: 791
+    module: tao_struct
     name: tao_init_struct
   tao_integer_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -8603,6 +8658,7 @@
           size: null
           type: integer, pointer
     line: 80
+    module: tao_struct
     name: tao_integer_array_struct
   tao_lat_mode_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -8637,6 +8693,7 @@
           size: null
           type: real
     line: 869
+    module: tao_struct
     name: tao_lat_mode_struct
   tao_lat_sigma_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -8658,6 +8715,7 @@
           size: null
           type: real
     line: 874
+    module: tao_struct
     name: tao_lat_sigma_struct
   tao_lattice_branch_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9057,6 +9115,7 @@
           size: null
           type: logical
     line: 923
+    module: tao_struct
     name: tao_lattice_branch_struct
   tao_lattice_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9182,6 +9241,7 @@
           size: null
           type: tao_universe_struct
     line: 957
+    module: tao_struct
     name: tao_lattice_struct
   tao_logical_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9203,6 +9263,7 @@
           size: null
           type: logical, pointer
     line: 76
+    module: tao_struct
     name: tao_logical_array_struct
   tao_model_branch_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9237,6 +9298,7 @@
           size: null
           type: tao_model_element_struct
     line: 1000
+    module: tao_struct
     name: tao_model_branch_struct
   tao_model_element_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9285,6 +9347,7 @@
           size: null
           type: logical
     line: 975
+    module: tao_struct
     name: tao_model_element_struct
   tao_mpi_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9358,6 +9421,7 @@
           size: null
           type: integer
     line: 1037
+    module: tao_struct
     name: tao_mpi_struct
   tao_ping_scale_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9418,6 +9482,7 @@
           size: null
           type: real
     line: 1090
+    module: tao_struct
     name: tao_ping_scale_struct
   tao_plot_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9439,6 +9504,7 @@
           size: null
           type: tao_plot_struct
     line: 367
+    module: tao_struct
     name: tao_plot_array_struct
   tao_plot_cache_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9486,6 +9552,7 @@
           size: null
           type: coord_struct
     line: 913
+    module: tao_struct
     name: tao_plot_cache_struct
   tao_plot_page_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9819,6 +9886,7 @@
           size: null
           type: tao_title_struct
     line: 333
+    module: tao_struct
     name: tao_plot_page_struct
   tao_plot_region_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -9905,6 +9973,7 @@
           size: null
           type: logical
     line: 318
+    module: tao_struct
     name: tao_plot_region_struct
   tao_plot_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10109,6 +10178,7 @@
           size: '16'
           type: character
     line: 295
+    module: tao_struct
     name: tao_plot_struct
   tao_real_pointer_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10156,6 +10226,7 @@
           size: null
           type: real
     line: 70
+    module: tao_struct
     name: tao_real_pointer_struct
   tao_region_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10177,6 +10248,7 @@
           size: null
           type: tao_plot_region_struct
     line: 363
+    module: tao_struct
     name: tao_region_array_struct
   tao_scratch_space_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10461,6 +10533,7 @@
           size: null
           type: real
     line: 847
+    module: tao_struct
     name: tao_scratch_space_struct
   tao_shape_pattern_point_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10511,6 +10584,7 @@
           size: null
           type: real
     line: 132
+    module: tao_struct
     name: tao_shape_pattern_point_struct
   tao_shape_pattern_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10559,6 +10633,7 @@
           size: null
           type: tao_shape_pattern_point_struct
     line: 136
+    module: tao_struct
     name: tao_shape_pattern_struct
   tao_spin_dn_dpz_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10608,6 +10683,7 @@
           size: null
           type: real
     line: 878
+    module: tao_struct
     name: tao_spin_dn_dpz_struct
   tao_spin_ele_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10681,6 +10757,7 @@
           size: null
           type: logical
     line: 884
+    module: tao_struct
     name: tao_spin_ele_struct
   tao_spin_map_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -10819,6 +10896,7 @@
           size: null
           type: logical
     line: 381
+    module: tao_struct
     name: tao_spin_map_struct
   tao_spin_polarization_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11036,6 +11114,7 @@
           size: null
           type: logical
     line: 892
+    module: tao_struct
     name: tao_spin_polarization_struct
   tao_string_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11057,6 +11136,7 @@
           size: null
           type: character
     line: 84
+    module: tao_struct
     name: tao_string_array_struct
   tao_super_universe_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11260,6 +11340,7 @@
           size: null
           type: tao_wave_struct
     line: 1131
+    module: tao_struct
     name: tao_super_universe_struct
   tao_title_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11346,6 +11427,7 @@
           size: null
           type: real
     line: 149
+    module: tao_struct
     name: tao_title_struct
   tao_universe_calc_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11523,6 +11605,7 @@
           size: null
           type: logical
     line: 1018
+    module: tao_struct
     name: tao_universe_calc_struct
   tao_universe_pointer_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11544,6 +11627,7 @@
           size: null
           type: tao_universe_struct
     line: 1099
+    module: tao_struct
     name: tao_universe_pointer_struct
   tao_universe_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11812,6 +11896,7 @@
           size: null
           type: tao_spin_map_struct
     line: 1106
+    module: tao_struct
     name: tao_universe_struct
   tao_v1_var_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11833,6 +11918,7 @@
           size: null
           type: tao_v1_var_struct
     line: 603
+    module: tao_struct
     name: tao_v1_var_array_struct
   tao_v1_var_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11880,6 +11966,7 @@
           size: null
           type: tao_var_struct
     line: 589
+    module: tao_struct
     name: tao_v1_var_struct
   tao_var_array_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11901,6 +11988,7 @@
           size: null
           type: tao_var_struct
     line: 599
+    module: tao_struct
     name: tao_var_array_struct
   tao_var_slave_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -11974,6 +12062,7 @@
           size: null
           type: real
     line: 521
+    module: tao_struct
     name: tao_var_slave_struct
   tao_var_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -12476,6 +12565,7 @@
           size: null
           type: real
     line: 545
+    module: tao_struct
     name: tao_var_struct
   tao_wave_kick_pt_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -12575,6 +12665,7 @@
           size: null
           type: real
     line: 1059
+    module: tao_struct
     name: tao_wave_kick_pt_struct
   tao_wave_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_struct.f90
@@ -13140,6 +13231,7 @@
           size: null
           type: real
     line: 1066
+    module: tao_struct
     name: tao_wave_struct
 /Users/klauer/Repos/bmad/tao/code/tao_subin_uni_number.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_svd_optimizer_mod.f90: {}
@@ -13284,6 +13376,7 @@
           size: null
           type: real
     line: 318
+    module: tao_top10_mod
     name: constraint_struct
   tao_top10_struct:
     filename: /Users/klauer/Repos/bmad/tao/code/tao_top10_mod.f90
@@ -13344,6 +13437,7 @@
           size: null
           type: real
     line: 9
+    module: tao_top10_mod
     name: tao_top10_struct
 /Users/klauer/Repos/bmad/tao/code/tao_top_level.f90: {}
 /Users/klauer/Repos/bmad/tao/code/tao_turn_on_special_calcs_if_needed_for_plotting.f90: {}

@@ -4,6 +4,7 @@ import argparse
 import ast
 import json
 import keyword
+import logging
 import os
 import pathlib
 from typing import NamedTuple, Sequence
@@ -11,6 +12,8 @@ from typing import NamedTuple, Sequence
 import jinja2
 import pydantic
 import yaml
+
+logger = logging.getLogger(__name__)
 
 size_ignore = {"rp", "dp", "hsize_t"}
 
@@ -41,12 +44,25 @@ class ParserConfig(pydantic.BaseModel):
         return cls.model_validate(contents)
 
 
-class SourcePaths(pydantic.BaseModel):
+class SourcePaths(pydantic.BaseModel, frozen=True):
     source_dir: pathlib.Path
+    fortran_filename: pathlib.Path
     yaml_filename: str
     python_filename: str
     python_import_name: str
     function_prefix: str
+
+    @pydantic.field_validator("fortran_filename")
+    @classmethod
+    def validate_fortran_filename(cls, v: pathlib.Path | str) -> pathlib.Path:
+        # Expand environment variables in the path
+        expanded_path = pathlib.Path(os.path.expandvars(str(v)))
+
+        if expanded_path.is_dir():
+            raise ValueError(f"Path is a directory: {expanded_path}")
+
+        expanded_path.parent.mkdir(exist_ok=True, parents=True)
+        return expanded_path
 
     @pydantic.field_validator("source_dir")
     @classmethod
@@ -54,7 +70,6 @@ class SourcePaths(pydantic.BaseModel):
         # Expand environment variables in the path
         expanded_path = pathlib.Path(os.path.expandvars(str(v)))
 
-        # Check if the path exists
         if not expanded_path.exists():
             raise ValueError(f"Path does not exist: {expanded_path}")
 
@@ -98,6 +113,7 @@ class Structure(pydantic.BaseModel):
     filename: pathlib.Path
     line: int
     name: str
+    module: str
     lines: list[str] = pydantic.Field(default_factory=list, exclude=True)
     info: StructureInfo = pydantic.Field(default_factory=StructureInfo)
 
@@ -381,10 +397,16 @@ def find_structs(
 ) -> dict[str, Structure]:
     structs = {}
     in_struct = ""
+    module = filename.stem
     for num, line in enumerate(contents.splitlines(), 1):
         lower_line = line.lower().split()
         if not lower_line:
             ...
+        elif lower_line[0] == "module":
+            if len(lower_line) == 2:
+                module = lower_line[1]
+            else:
+                logger.debug(f"Skipping module line: {lower_line}")
         elif lower_line[0] == "type" or lower_line[0].startswith("type,"):
             if line.lower().replace(" ", "").startswith("type("):
                 if in_struct:
@@ -399,8 +421,10 @@ def find_structs(
             class_name = to_class_name(in_struct)
             while class_name in by_class_name:
                 class_name += "_"
+            assert module != "Sc_euclidean"
             structs[in_struct] = Structure(
                 filename=filename,
+                module=module,
                 name=in_struct,
                 line=num,
                 lines=[line.strip()],
@@ -410,12 +434,36 @@ def find_structs(
         elif lower_line[:2] == ["end", "type"] or lower_line[0] == "endtype":
             if not in_struct:
                 raise RuntimeError(f"{filename}:{num}: Not in struct? {line}")
-            print("Saw structure:", in_struct)  # , structs[in_struct])
+            logger.debug(f"Saw structure: {in_struct}")  # , structs[in_struct])
             in_struct = ""
         elif in_struct:
             structs[in_struct].lines.append(line.strip())
 
     return structs
+
+
+skip_includes = ["fftw3.f03", "mpif.h"]
+
+
+def fill_includes(filename: pathlib.Path, contents: str) -> str:
+    result = []
+    for line in contents.splitlines():
+        parts = line.strip().split()
+        if parts and parts[0].lower() == "include":
+            include_fn = parts[1].replace("'", "")
+
+            if include_fn in skip_includes or not include_fn.lower().endswith(
+                ".f90"
+            ):  # TODO config file
+                result.append(line)
+            else:
+                include_path = filename.parent / include_fn
+                result.extend(include_path.read_text().splitlines())
+                # TODO: no recursive includes
+        else:
+            result.append(line)
+
+    return "\n".join(result)
 
 
 def find_structs_in_file(
@@ -424,6 +472,8 @@ def find_structs_in_file(
 ) -> dict[str, Structure]:
     with open(filename, encoding="latin-1") as fp:
         contents = fp.read()
+
+    contents = fill_includes(filename, contents)
     return find_structs(
         contents=contents,
         by_class_name=by_class_name,
@@ -452,7 +502,7 @@ def convert(
     failed = {}
     by_class_name = {}
     filenames = list(path.glob("**/*.f90", case_sensitive=False))
-    filenames.extend(list(path.glob("**/*.inc", case_sensitive=False)))
+    # filenames.extend(list(path.glob("**/*.inc", case_sensitive=False)))
     for source_fn in filenames:
         try:
             by_file[source_fn] = find_structs_in_file(source_fn, by_class_name)
@@ -460,16 +510,18 @@ def convert(
             failed[source_fn] = ex
             raise
 
-    print(
-        f"{path.name!r} total structures:",
+    logger.info(
+        f"{path.name!r} total structures: %d",
         sum(len(structs) for structs in by_file.values()),
     )
-    print(f"Path: {path}")
-    print("Total structures:", sum(len(structs) for structs in by_file.values()))
-    print("Success:", len(by_file))
-    print("Failures:", len(failed))
+    logger.info(f"Path: {path}")
+    logger.info(
+        "Total structures: %d", sum(len(structs) for structs in by_file.values())
+    )
+    logger.info("Success:          %d", len(by_file))
+    logger.info("Failures:         %d", len(failed))
     for fail, reason in failed.items():
-        print("Failed:", fail, reason)
+        logger.error(f"Failed: {fail} {reason}")
 
     for source_fn, structs in by_file.items():
         for _, info in structs.items():
@@ -481,9 +533,8 @@ def convert(
     with open(yaml_path, "wt") as fp:
         yaml.safe_dump(dumped, fp)
 
-    if todo:
-        for item in sorted(todo):
-            print("(TODO)", item)
+    for item in sorted(todo):
+        logger.error(f"(TODO) not yet supported: {item}")
 
     return by_file
 
@@ -507,9 +558,7 @@ def load_structures(fn: pathlib.Path | str) -> StructureFile:
 #     return by_name
 
 
-def get_all_structure_names(
-    path: AnyPath,
-) -> list[str]:
+def get_all_structure_names(path: AnyPath) -> list[str]:
     res = []
     for structs in load_structures(path).values():
         for struct in structs.values():
@@ -698,19 +747,25 @@ def convert_and_write(
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--path", dest="paths", nargs="*")
-    parser.add_argument("--cls", dest="classes", nargs="*")
-    parser.add_argument("--output", default=".", nargs="?")
-    parser.add_argument("--config", nargs="?")
-    args = parser.parse_args()
+    argp = argparse.ArgumentParser()
+    argp.add_argument("--config", nargs="?")
+    # argp.add_argument("--path", dest="paths", nargs="*")
+    # argp.add_argument("--cls", dest="classes", nargs="*")
+    argp.add_argument("--output", default=".", nargs="?")
+    argp.add_argument("-l", "--log-level", nargs="?", default="INFO")
+    args = argp.parse_args()
 
-    if args.config:
-        conf = ParserConfig.from_file(args.config)
-        convert_and_write(config=conf, output_path=pathlib.Path(args.output))
-    else:
-        # convert_and_write(paths=args.paths, classes=args.classes, output=args.output)
-        raise NotImplementedError
+    logging.basicConfig(
+        level=args.log_level.upper(),
+        format="%(asctime)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    # if args.config:
+    conf = ParserConfig.from_file(args.config)
+    convert_and_write(config=conf, output_path=pathlib.Path(args.output))
+    # else:
+    #     # convert_and_write(paths=args.paths, classes=args.classes, output=args.output)
+    #     raise NotImplementedError
 
 
 if __name__ == "__main__":

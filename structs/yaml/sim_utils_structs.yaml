@@ -96,6 +96,7 @@
           size: null
           type: var_length_string_struct
     line: 64
+    module: object_model_mod
     name: object_struct
   temp_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/file/object_model_mod.f90
@@ -117,6 +118,7 @@
           size: '40'
           type: character
     line: 60
+    module: object_model_mod
     name: temp_struct
 /Users/klauer/Repos/bmad/sim_utils/file/real_path.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/file/skip_header.f90: {}
@@ -525,6 +527,7 @@
           size: null
           type: real
     line: 5
+    module: geodesic_lm
     name: geodesic_lm_param_struct
 /Users/klauer/Repos/bmad/sim_utils/geodesic_lm/lambda.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/geodesic_lm/leastsq.f90: {}
@@ -592,6 +595,7 @@
           size: null
           type: integer
     line: 124
+    module: particle_species_mod
     name: atom_struct
 /Users/klauer/Repos/bmad/sim_utils/interfaces/physical_constants.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/interfaces/precision_def.f90:
@@ -641,6 +645,7 @@
           size: null
           type: logical
     line: 8
+    module: precision_def
     name: global_common_struct
   named_number_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/precision_def.f90
@@ -675,6 +680,7 @@
           size: null
           type: real
     line: 16
+    module: precision_def
     name: named_number_struct
 /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_interface.f90: {}
@@ -751,6 +757,7 @@
           size: null
           type: real
     line: 45
+    module: sim_utils_struct
     name: all_pointer_struct
   molecular_component_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
@@ -785,6 +792,7 @@
           size: null
           type: integer
     line: 77
+    module: sim_utils_struct
     name: molecular_component_struct
   nametable_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
@@ -846,6 +854,7 @@
           size: '40'
           type: character
     line: 34
+    module: sim_utils_struct
     name: nametable_struct
   str_index_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
@@ -907,6 +916,7 @@
           size: null
           type: var_length_string_struct
     line: 18
+    module: sim_utils_struct
     name: str_index_struct
   var_length_string_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/interfaces/sim_utils_struct.f90
@@ -928,6 +938,7 @@
           size: null
           type: character
     line: 14
+    module: sim_utils_struct
     name: var_length_string_struct
 /Users/klauer/Repos/bmad/sim_utils/io/command_line_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/io/input_mod.f90: {}
@@ -1034,6 +1045,7 @@
           size: null
           type: logical
     line: 33
+    module: output_mod
     name: out_io_mod_com_struct
   out_io_output_direct_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/io/output_mod.f90
@@ -1068,6 +1080,7 @@
           size: null
           type: logical
     line: 28
+    module: output_mod
     name: out_io_output_direct_struct
 /Users/klauer/Repos/bmad/sim_utils/io/system_command.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/io/ttychr.f90: {}
@@ -1145,6 +1158,7 @@
           size: null
           type: integer
     line: 9
+    module: bin_mod
     name: bin_struct
   general_bin_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/bin_mod.f90
@@ -1231,6 +1245,7 @@
           size: null
           type: integer
     line: 17
+    module: bin_mod
     name: general_bin_struct
 /Users/klauer/Repos/bmad/sim_utils/math/bit_set_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/math/bracket_index.f90: {}
@@ -1271,6 +1286,7 @@
           size: null
           type: integer
     line: 70
+    module: cubic_interpolation_mod
     name: bicubic_cmplx_coef_struct
   bicubic_coef_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1305,6 +1321,7 @@
           size: null
           type: integer
     line: 43
+    module: cubic_interpolation_mod
     name: bicubic_coef_struct
   cmplx_field1_at_2D_pt_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1365,6 +1382,7 @@
           size: null
           type: complex
     line: 55
+    module: cubic_interpolation_mod
     name: cmplx_field1_at_2D_pt_struct
   cmplx_field1_at_3D_pt_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1477,6 +1495,7 @@
           size: null
           type: complex
     line: 110
+    module: cubic_interpolation_mod
     name: cmplx_field1_at_3D_pt_struct
   cmplx_field_at_2D_box_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1511,6 +1530,7 @@
           size: null
           type: cmplx_field1_at_2D_pt_struct
     line: 63
+    module: cubic_interpolation_mod
     name: cmplx_field_at_2D_box_struct
   cmplx_field_at_3D_box_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1545,6 +1565,7 @@
           size: null
           type: cmplx_field1_at_3D_pt_struct
     line: 119
+    module: cubic_interpolation_mod
     name: cmplx_field_at_3D_box_struct
   field1_at_2D_pt_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1605,6 +1626,7 @@
           size: null
           type: real
     line: 28
+    module: cubic_interpolation_mod
     name: field1_at_2D_pt_struct
   field1_at_3D_pt_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1717,6 +1739,7 @@
           size: null
           type: real
     line: 82
+    module: cubic_interpolation_mod
     name: field1_at_3D_pt_struct
   field_at_2D_box_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1751,6 +1774,7 @@
           size: null
           type: field1_at_2D_pt_struct
     line: 36
+    module: cubic_interpolation_mod
     name: field_at_2D_box_struct
   field_at_3D_box_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1785,6 +1809,7 @@
           size: null
           type: field1_at_3D_pt_struct
     line: 91
+    module: cubic_interpolation_mod
     name: field_at_3D_box_struct
   m16_matrix_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1806,6 +1831,7 @@
           size: null
           type: m16_row_struct
     line: 137
+    module: cubic_interpolation_mod
     name: m16_matrix_struct
   m16_row_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1827,6 +1853,7 @@
           size: null
           type: integer
     line: 133
+    module: cubic_interpolation_mod
     name: m16_row_struct
   m64_matrix_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1848,6 +1875,7 @@
           size: null
           type: m64_row_struct
     line: 165
+    module: cubic_interpolation_mod
     name: m64_matrix_struct
   m64_row_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1869,6 +1897,7 @@
           size: null
           type: integer
     line: 161
+    module: cubic_interpolation_mod
     name: m64_row_struct
   tricubic_cmplx_coef_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1903,6 +1932,7 @@
           size: null
           type: integer
     line: 126
+    module: cubic_interpolation_mod
     name: tricubic_cmplx_coef_struct
   tricubic_coef_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
@@ -1937,6 +1967,7 @@
           size: null
           type: integer
     line: 98
+    module: cubic_interpolation_mod
     name: tricubic_coef_struct
 /Users/klauer/Repos/bmad/sim_utils/math/da2_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/math/fft_1d.f90: {}
@@ -2118,6 +2149,7 @@
           size: null
           type: real
     line: 28
+    module: random_mod
     name: random_state_struct
 /Users/klauer/Repos/bmad/sim_utils/math/rms_value.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/math/rot_2d.f90: {}
@@ -2182,6 +2214,7 @@
           size: null
           type: real
     line: 18
+    module: spline_mod
     name: spline_struct
 /Users/klauer/Repos/bmad/sim_utils/math/super_recipes_mod.f90:
   super_mrqmin_storage_struct:
@@ -2347,6 +2380,7 @@
           size: null
           type: real
     line: 13
+    module: super_recipes_mod
     name: super_mrqmin_storage_struct
 /Users/klauer/Repos/bmad/sim_utils/math/windowLS.f90:
   wls_struct:
@@ -2447,6 +2481,7 @@
           size: null
           type: REAL
     line: 39
+    module: windowls_mod
     name: wls_struct
 /Users/klauer/Repos/bmad/sim_utils/matrix/cplx_mat_inverse.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/matrix/cplx_mat_make_unit.f90: {}
@@ -2488,6 +2523,7 @@
           size: null
           type: real
     line: 6
+    module: fortran_cpp_utils
     name: c_dummy_struct
 /Users/klauer/Repos/bmad/sim_utils/misc/logical_is_garbage.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/milli_sleep.f90: {}
@@ -2495,6 +2531,7 @@
 /Users/klauer/Repos/bmad/sim_utils/misc/run_timer.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/set_logical_to_garbage.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/set_parameter.f90: {}
+/Users/klauer/Repos/bmad/sim_utils/misc/sim_utils_json.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/swap_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/transfer_logical.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/utilities_mod.f90: {}
@@ -2547,6 +2584,7 @@
           size: null
           type: real
     line: 5
+    module: opti_de_mpi_mod
     name: solution_struct
 /Users/klauer/Repos/bmad/sim_utils/optimizers/lmdif_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90:
@@ -2648,6 +2686,7 @@
           size: null
           type: logical
     line: 5
+    module: opti_de_mod
     name: opti_de_param_struct
   solution_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90
@@ -2682,6 +2721,7 @@
           size: null
           type: real
     line: 109
+    module: opti_de_mod
     name: solution_struct
 /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90:
   solution_struct:
@@ -2730,6 +2770,7 @@
           size: null
           type: real
     line: 97
+    module: opti_de_openmp_mod
     name: solution_struct
 /Users/klauer/Repos/bmad/sim_utils/plot/display_size_and_resolution.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/noplot_interface.f90: {}
@@ -2806,6 +2847,7 @@
           size: null
           type: real
     line: 37
+    module: pgplot_interface
     name: pg_interface_struct
 /Users/klauer/Repos/bmad/sim_utils/plot/pgsubs.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90:
@@ -3011,6 +3053,7 @@
           size: null
           type: real
     line: 48
+    module: plplot_interface
     name: pl_interface_struct
   viewport_size:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90
@@ -3071,6 +3114,7 @@
           size: null
           type: real
     line: 41
+    module: plplot_interface
     name: viewport_size
 /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90:
@@ -3146,6 +3190,7 @@
           size: '16'
           type: character
     line: 129
+    module: quick_plot_struct
     name: qp_arrow_struct
   qp_axis_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -3468,6 +3513,7 @@
           size: '16'
           type: character
     line: 57
+    module: quick_plot_struct
     name: qp_axis_struct
   qp_legend_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -3554,6 +3600,7 @@
           size: null
           type: real
     line: 137
+    module: quick_plot_struct
     name: qp_legend_struct
   qp_line_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -3601,6 +3648,7 @@
           size: null
           type: integer
     line: 115
+    module: quick_plot_struct
     name: qp_line_struct
   qp_plot_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -3791,6 +3839,7 @@
           size: null
           type: qp_axis_struct
     line: 85
+    module: quick_plot_struct
     name: qp_plot_struct
   qp_point_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -3838,6 +3887,7 @@
           size: null
           type: real
     line: 99
+    module: quick_plot_struct
     name: qp_point_struct
   qp_rect_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -3911,6 +3961,7 @@
           size: null
           type: real
     line: 104
+    module: quick_plot_struct
     name: qp_rect_struct
   qp_state_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -4394,6 +4445,7 @@
           size: null
           type: logical
     line: 146
+    module: quick_plot_struct
     name: qp_state_struct
   qp_symbol_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -4467,6 +4519,7 @@
           size: '16'
           type: character
     line: 121
+    module: quick_plot_struct
     name: qp_symbol_struct
   qp_text_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90
@@ -4514,6 +4567,7 @@
           size: null
           type: logical
     line: 109
+    module: quick_plot_struct
     name: qp_text_struct
 /Users/klauer/Repos/bmad/sim_utils/special_functions/asinc.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/special_functions/complex_error_function.f90: {}

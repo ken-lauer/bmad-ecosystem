@@ -209,6 +209,7 @@
           size: null
           type: real
     line: 30
+    module: bend_exact_multipole_field
     name: bend_exact_coef_struct
   pole_coef_struct:
     filename: /Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90
@@ -256,6 +257,7 @@
           size: null
           type: real
     line: 209
+    module: bend_exact_multipole_field
     name: pole_coef_struct
   pure_bend_multipole_struct:
     filename: /Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90
@@ -277,7 +279,9 @@
           size: null
           type: real
     line: 595
+    module: bend_exact_multipole_field
     name: pure_bend_multipole_struct
+/Users/klauer/Repos/bmad/bmad/code/bmad_json.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/branch_name.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/c_to_cbar.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/calc_z_tune.f90: {}
@@ -350,6 +354,7 @@
           size: null
           type: real
     line: 107
+    module: closed_orbit_calc
     name: closed_orb_com_struct
   matrix_save:
     filename: /Users/klauer/Repos/bmad/bmad/code/closed_orbit_calc.f90
@@ -410,6 +415,7 @@
           size: null
           type: real
     line: 99
+    module: closed_orbit_calc
     name: matrix_save
 /Users/klauer/Repos/bmad/bmad/code/closed_orbit_from_tracking.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/combine_consecutive_elements.f90: {}
@@ -462,6 +468,7 @@
           size: null
           type: integer
     line: 21
+    module: ele_order_calc
     name: this_order1_struct
   this_order_struct:
     filename: /Users/klauer/Repos/bmad/bmad/code/ele_order_calc.f90
@@ -483,6 +490,7 @@
           size: null
           type: this_order1_struct
     line: 26
+    module: ele_order_calc
     name: this_order_struct
 /Users/klauer/Repos/bmad/bmad/code/ele_unique_name.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/ele_value_has_changed.f90: {}
@@ -566,6 +574,7 @@
           size: null
           type: integer
     line: 23
+    module: lat_sanity_check
     name: lord_slave1_struct
   lord_slave_struct:
     filename: /Users/klauer/Repos/bmad/bmad/code/lat_sanity_check.f90
@@ -587,6 +596,7 @@
           size: null
           type: lord_slave1_struct
     line: 30
+    module: lat_sanity_check
     name: lord_slave_struct
 /Users/klauer/Repos/bmad/bmad/code/lattice_bookkeeper.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/lord_edge_aligned.f90: {}
@@ -647,6 +657,7 @@
           size: null
           type: this_ele_loc_struct
     line: 64
+    module: remove_eles_from_lat
     name: ele_index_temp
   this_ele_loc_struct:
     filename: /Users/klauer/Repos/bmad/bmad/code/remove_eles_from_lat.f90
@@ -707,6 +718,7 @@
           size: null
           type: integer
     line: 57
+    module: remove_eles_from_lat
     name: this_ele_loc_struct
 /Users/klauer/Repos/bmad/bmad/code/reverse_lat.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/rf_clock_setup.f90:
@@ -756,6 +768,7 @@
           size: null
           type: integer
     line: 41
+    module: rf_clock_setup
     name: basket_struct
   rf_ele_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/code/rf_clock_setup.f90
@@ -816,6 +829,7 @@
           size: null
           type: real
     line: 34
+    module: rf_clock_setup
     name: rf_ele_info_struct
 /Users/klauer/Repos/bmad/bmad/code/rf_is_on.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/s_calc.f90: {}
@@ -874,6 +888,7 @@
           size: null
           type: coord_struct
     line: 47
+    module: twiss_from_tracking
     name: multi_orb_struct
 /Users/klauer/Repos/bmad/bmad/code/twiss_propagate1.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/twiss_propagate_all.f90: {}
@@ -964,6 +979,7 @@
           size: null
           type: integer
     line: 23
+    module: xraylib
     name: compounddatanist
   crystal_struct:
     filename: /Users/klauer/Repos/bmad/bmad/dummy_routines/xraylib_dummy.f90
@@ -985,6 +1001,7 @@
           size: null
           type: real
     line: 19
+    module: xraylib
     name: crystal_struct
   xrlComplex_C:
     filename: /Users/klauer/Repos/bmad/bmad/dummy_routines/xraylib_dummy.f90
@@ -1019,6 +1036,7 @@
           size: null
           type: REAL
     line: 28
+    module: xraylib
     name: xrlComplex_C
 /Users/klauer/Repos/bmad/bmad/geometry/bend_shift.f90: {}
 /Users/klauer/Repos/bmad/bmad/geometry/coords_body_to_local.f90: {}
@@ -1118,6 +1136,7 @@
           size: null
           type: integer
     line: 41
+    module: hdf5_interface
     name: hdf5_info_struct
 /Users/klauer/Repos/bmad/bmad/hdf5/hdf5_openpmd_mod.f90:
   pmd_unit_struct:
@@ -1166,6 +1185,7 @@
           size: '8'
           type: character
     line: 9
+    module: hdf5_openpmd_mod
     name: pmd_unit_struct
 /Users/klauer/Repos/bmad/bmad/hdf5/hdf5_read_beam.f90: {}
 /Users/klauer/Repos/bmad/bmad/hdf5/hdf5_read_grid_field.f90: {}
@@ -1192,6 +1212,7 @@
           size: null
           type: integer
     line: 7
+    module: astra_interface_mod
     name: astra_lattice_param_struct
 /Users/klauer/Repos/bmad/bmad/interface/blender_interface_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/interface/gpt_interface_mod.f90:
@@ -1267,6 +1288,7 @@
           size: '40'
           type: character
     line: 7
+    module: gpt_interface_mod
     name: gpt_lat_param_struct
 /Users/klauer/Repos/bmad/bmad/interface/opal_interface_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/interface/xraylib_interface.f90: {}
@@ -1319,6 +1341,7 @@
           size: null
           type: real
     line: 21
+    module: gen_grad1_to_em_taylor
     name: em_taylor_coef_struct
 /Users/klauer/Repos/bmad/bmad/low_level/gen_grad_at_s_to_em_taylor.f90:
   em_taylor_coef_struct:
@@ -1341,6 +1364,7 @@
           size: null
           type: real
     line: 21
+    module: gen_grad_at_s_to_em_taylor
     name: em_taylor_coef_struct
 /Users/klauer/Repos/bmad/bmad/low_level/init_bmad.f90: {}
 /Users/klauer/Repos/bmad/bmad/low_level/init_coord.f90: {}
@@ -1640,6 +1664,7 @@
           size: null
           type: integer
     line: 32
+    module: symp_lie_bmad
     name: wiggler_computations_struct
 /Users/klauer/Repos/bmad/bmad/low_level/tilt_mat6.f90: {}
 /Users/klauer/Repos/bmad/bmad/low_level/track1_bmad.f90: {}
@@ -1749,6 +1774,7 @@
           size: null
           type: real
     line: 38
+    module: track_a_converter
     name: converter_common_struct
   converter_param_storage_struct:
     filename: /Users/klauer/Repos/bmad/bmad/low_level/track_a_converter.f90
@@ -1952,6 +1978,7 @@
           size: null
           type: real
     line: 28
+    module: track_a_converter
     name: converter_param_storage_struct
 /Users/klauer/Repos/bmad/bmad/low_level/track_a_crab_cavity.f90: {}
 /Users/klauer/Repos/bmad/bmad/low_level/track_a_drift.f90: {}
@@ -2116,6 +2143,7 @@
           size: null
           type: real
     line: 40
+    module: track_a_lcavity
     name: internal_state_struct
 /Users/klauer/Repos/bmad/bmad/low_level/track_a_mask.f90: {}
 /Users/klauer/Repos/bmad/bmad/low_level/track_a_match.f90: {}
@@ -2233,6 +2261,7 @@
           size: null
           type: real
     line: 25
+    module: attribute_mod
     name: ele_attribute_struct
 /Users/klauer/Repos/bmad/bmad/modules/bmad.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/bmad_interface.f90: {}
@@ -2297,6 +2326,7 @@
           size: null
           type: integer
     line: 678
+    module: bmad_struct
     name: ac_kicker_freq_struct
   ac_kicker_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -2331,6 +2361,7 @@
           size: null
           type: ac_kicker_freq_struct
     line: 685
+    module: bmad_struct
     name: ac_kicker_struct
   ac_kicker_time_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -2378,6 +2409,7 @@
           size: null
           type: real
     line: 672
+    module: bmad_struct
     name: ac_kicker_time_struct
   anormal_mode_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -2479,6 +2511,7 @@
           size: null
           type: real
     line: 1921
+    module: bmad_struct
     name: anormal_mode_struct
   aperture_param_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -2604,6 +2637,7 @@
           size: null
           type: real
     line: 2070
+    module: bmad_struct
     name: aperture_param_struct
   aperture_point_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -2677,6 +2711,7 @@
           size: null
           type: real
     line: 2061
+    module: bmad_struct
     name: aperture_point_struct
   aperture_scan_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -2724,6 +2759,7 @@
           size: null
           type: coord_struct
     line: 2084
+    module: bmad_struct
     name: aperture_scan_struct
   beam_init_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -3190,6 +3226,7 @@
           size: null
           type: logical
     line: 1135
+    module: bmad_struct
     name: beam_init_struct
   beam_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -3211,6 +3248,7 @@
           size: null
           type: bunch_struct
     line: 1110
+    module: bmad_struct
     name: beam_struct
   bmad_common_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -3740,6 +3778,7 @@
           size: null
           type: integer
     line: 2221
+    module: bmad_struct
     name: bmad_common_struct
   bmad_normal_form_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -3852,6 +3891,7 @@
           size: null
           type: resonance_h_struct
     line: 1531
+    module: bmad_struct
     name: bmad_normal_form_struct
   bmad_private_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -3887,6 +3927,7 @@
           size: null
           type: real
     line: 2270
+    module: bmad_struct
     name: bmad_private_struct
   bookkeeping_state_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4012,6 +4053,7 @@
           size: null
           type: integer
     line: 931
+    module: bmad_struct
     name: bookkeeping_state_struct
   bpm_phase_coupling_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4150,6 +4192,7 @@
           size: null
           type: real
     line: 569
+    module: bmad_struct
     name: bpm_phase_coupling_struct
   branch_pointer_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4171,6 +4214,7 @@
           size: null
           type: branch_struct
     line: 903
+    module: bmad_struct
     name: branch_pointer_struct
   branch_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4376,6 +4420,7 @@
           size: null
           type: mode_info_struct
     line: 1557
+    module: bmad_struct
     name: branch_struct
   bunch_params_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4691,6 +4736,7 @@
           size: null
           type: twiss_struct
     line: 1187
+    module: bmad_struct
     name: bunch_params_struct
   bunch_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4886,6 +4932,7 @@
           size: null
           type: real
     line: 1090
+    module: bmad_struct
     name: bunch_struct
   bunch_track_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -4933,6 +4980,7 @@
           size: null
           type: bunch_params_struct
     line: 1213
+    module: bmad_struct
     name: bunch_track_struct
   cartesian_map_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5019,6 +5067,7 @@
           size: null
           type: real
     line: 713
+    module: bmad_struct
     name: cartesian_map_struct
   cartesian_map_term1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5144,6 +5193,7 @@
           size: null
           type: real
     line: 699
+    module: bmad_struct
     name: cartesian_map_term1_struct
   cartesian_map_term_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5191,6 +5241,7 @@
           size: null
           type: cartesian_map_term1_struct
     line: 707
+    module: bmad_struct
     name: cartesian_map_term_struct
   complex_taylor_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5225,6 +5276,7 @@
           size: null
           type: complex_taylor_term_struct
     line: 487
+    module: bmad_struct
     name: complex_taylor_struct
   complex_taylor_term_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5259,6 +5311,7 @@
           size: null
           type: integer
     line: 469
+    module: bmad_struct
     name: complex_taylor_term_struct
   control_ramp1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5333,6 +5386,7 @@
           size: null
           type: real
     line: 1326
+    module: bmad_struct
     name: control_ramp1_struct
   control_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5446,6 +5500,7 @@
           size: null
           type: real
     line: 1308
+    module: bmad_struct
     name: control_struct
   control_var1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5493,6 +5548,7 @@
           size: null
           type: real
     line: 1320
+    module: bmad_struct
     name: control_var1_struct
   controller_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5553,6 +5609,7 @@
           size: null
           type: real
     line: 1343
+    module: bmad_struct
     name: controller_struct
   converter_dir_1D_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5587,6 +5644,7 @@
           size: null
           type: real
     line: 1241
+    module: bmad_struct
     name: converter_dir_1D_struct
   converter_dir_2D_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5621,6 +5679,7 @@
           size: null
           type: real
     line: 1246
+    module: bmad_struct
     name: converter_dir_2D_struct
   converter_dir_coef_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5681,6 +5740,7 @@
           size: null
           type: converter_dir_2D_struct
     line: 1251
+    module: bmad_struct
     name: converter_dir_coef_struct
   converter_direction_out_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5780,6 +5840,7 @@
           size: null
           type: converter_dir_coef_struct
     line: 1258
+    module: bmad_struct
     name: converter_direction_out_struct
   converter_distribution_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5814,6 +5875,7 @@
           size: null
           type: real
     line: 1290
+    module: bmad_struct
     name: converter_distribution_struct
   converter_prob_pc_r_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -5968,6 +6030,7 @@
           size: null
           type: real
     line: 1224
+    module: bmad_struct
     name: converter_prob_pc_r_struct
   converter_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6015,6 +6078,7 @@
           size: null
           type: integer
     line: 1298
+    module: bmad_struct
     name: converter_struct
   converter_sub_distribution_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6075,6 +6139,7 @@
           size: null
           type: real
     line: 1267
+    module: bmad_struct
     name: converter_sub_distribution_struct
   coord_array_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6096,6 +6161,7 @@
           size: null
           type: coord_struct
     line: 561
+    module: bmad_struct
     name: coord_array_struct
   coord_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6385,6 +6451,7 @@
           size: null
           type: real
     line: 529
+    module: bmad_struct
     name: coord_struct
   cylindrical_map_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6523,6 +6590,7 @@
           size: null
           type: real
     line: 735
+    module: bmad_struct
     name: cylindrical_map_struct
   cylindrical_map_term1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6557,6 +6625,7 @@
           size: null
           type: complex
     line: 724
+    module: bmad_struct
     name: cylindrical_map_term1_struct
   cylindrical_map_term_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6604,6 +6673,7 @@
           size: null
           type: cylindrical_map_term1_struct
     line: 729
+    module: bmad_struct
     name: cylindrical_map_term_struct
   ele_pointer_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -6651,6 +6721,7 @@
           size: null
           type: lat_ele_loc_struct
     line: 895
+    module: bmad_struct
     name: ele_pointer_struct
   ele_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -7871,6 +7942,7 @@
           size: null
           type: twiss_struct
     line: 1368
+    module: bmad_struct
     name: ele_struct
   ellipse_beam_init_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -7918,6 +7990,7 @@
           size: null
           type: real
     line: 1114
+    module: bmad_struct
     name: ellipse_beam_init_struct
   em_field_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -8017,6 +8090,7 @@
           size: null
           type: real
     line: 1972
+    module: bmad_struct
     name: em_field_struct
   em_taylor_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -8051,6 +8125,7 @@
           size: null
           type: em_taylor_term_struct
     line: 811
+    module: bmad_struct
     name: em_taylor_struct
   em_taylor_term_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -8085,6 +8160,7 @@
           size: null
           type: integer
     line: 806
+    module: bmad_struct
     name: em_taylor_term_struct
   expression_atom_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -8132,6 +8208,7 @@
           size: null
           type: real
     line: 55
+    module: bmad_struct
     name: expression_atom_struct
   extra_parsing_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9024,6 +9101,7 @@
           size: null
           type: logical
     line: 2138
+    module: bmad_struct
     name: extra_parsing_info_struct
   floor_position_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9097,6 +9175,7 @@
           size: null
           type: real
     line: 827
+    module: bmad_struct
     name: floor_position_struct
   foil_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9118,6 +9197,7 @@
           size: null
           type: material_struct
     line: 1284
+    module: bmad_struct
     name: foil_struct
   fringe_field_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9218,6 +9298,7 @@
           size: null
           type: real
     line: 35
+    module: bmad_struct
     name: fringe_field_info_struct
   gen_grad1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9279,6 +9360,7 @@
           size: null
           type: integer
     line: 750
+    module: bmad_struct
     name: gen_grad1_struct
   gen_grad_map_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9430,6 +9512,7 @@
           size: null
           type: real
     line: 758
+    module: bmad_struct
     name: gen_grad_map_struct
   grid_beam_init_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9516,6 +9599,7 @@
           size: null
           type: real
     line: 1126
+    module: bmad_struct
     name: grid_beam_init_struct
   grid_field_pt1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9550,6 +9634,7 @@
           size: null
           type: complex
     line: 774
+    module: bmad_struct
     name: grid_field_pt1_struct
   grid_field_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9597,6 +9682,7 @@
           size: null
           type: grid_field_pt1_struct
     line: 779
+    module: bmad_struct
     name: grid_field_pt_struct
   grid_field_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9787,6 +9873,7 @@
           size: null
           type: tricubic_cmplx_coef_struct
     line: 785
+    module: bmad_struct
     name: grid_field_struct
   high_energy_space_charge_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9899,6 +9986,7 @@
           size: null
           type: real
     line: 835
+    module: bmad_struct
     name: high_energy_space_charge_struct
   interval1_coef_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9946,6 +10034,7 @@
           size: null
           type: real
     line: 200
+    module: bmad_struct
     name: interval1_coef_struct
   kv_beam_init_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -9993,6 +10082,7 @@
           size: null
           type: integer
     line: 1120
+    module: bmad_struct
     name: kv_beam_init_struct
   lat_ele_loc_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10027,6 +10117,7 @@
           size: null
           type: integer
     line: 853
+    module: bmad_struct
     name: lat_ele_loc_struct
   lat_ele_order1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10061,6 +10152,7 @@
           size: null
           type: integer
     line: 860
+    module: bmad_struct
     name: lat_ele_order1_struct
   lat_ele_order_array_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10082,6 +10174,7 @@
           size: null
           type: lat_ele_order1_struct
     line: 865
+    module: bmad_struct
     name: lat_ele_order_array_struct
   lat_ele_order_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10103,6 +10196,7 @@
           size: null
           type: lat_ele_order_array_struct
     line: 884
+    module: bmad_struct
     name: lat_ele_order_struct
   lat_param_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10334,6 +10428,7 @@
           size: null
           type: real
     line: 1474
+    module: bmad_struct
     name: lat_param_struct
   lat_pointer_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10355,6 +10450,7 @@
           size: null
           type: lat_struct
     line: 909
+    module: bmad_struct
     name: lat_pointer_struct
   lat_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10770,6 +10866,7 @@
           size: null
           type: mode_info_struct
     line: 1592
+    module: bmad_struct
     name: lat_struct
   linac_normal_mode_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10869,6 +10966,7 @@
           size: null
           type: real
     line: 1931
+    module: bmad_struct
     name: linac_normal_mode_struct
   linear_ele_isf_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10890,6 +10988,7 @@
           size: null
           type: linear_isf1_struct
     line: 322
+    module: bmad_struct
     name: linear_ele_isf_struct
   linear_isf1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -10938,6 +11037,7 @@
           size: null
           type: real
     line: 313
+    module: bmad_struct
     name: linear_isf1_struct
   material_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11054,6 +11154,7 @@
           size: null
           type: integer
     line: 1276
+    module: bmad_struct
     name: material_struct
   mode3_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11140,6 +11241,7 @@
           size: null
           type: twiss_struct
     line: 915
+    module: bmad_struct
     name: mode3_struct
   mode_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11226,6 +11328,7 @@
           size: null
           type: real
     line: 1510
+    module: bmad_struct
     name: mode_info_struct
   multipass_all_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11260,6 +11363,7 @@
           size: null
           type: multipass_lord_info_struct
     line: 2052
+    module: bmad_struct
     name: multipass_all_info_struct
   multipass_branch_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11281,6 +11385,7 @@
           size: null
           type: multipass_ele_info_struct
     line: 2045
+    module: bmad_struct
     name: multipass_branch_info_struct
   multipass_ele_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11341,6 +11446,7 @@
           size: null
           type: logical
     line: 2038
+    module: bmad_struct
     name: multipass_ele_info_struct
   multipass_lord_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11414,6 +11520,7 @@
           size: null
           type: ele_pointer_struct
     line: 2027
+    module: bmad_struct
     name: multipass_lord_info_struct
   multipole_cache_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11604,6 +11711,7 @@
           size: null
           type: logical
     line: 946
+    module: bmad_struct
     name: multipole_cache_struct
   normal_modes_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11781,6 +11889,7 @@
           size: null
           type: anormal_mode_struct
     line: 1941
+    module: bmad_struct
     name: normal_modes_struct
   pauli_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11802,6 +11911,7 @@
           size: null
           type: complex
     line: 259
+    module: bmad_struct
     name: pauli_struct
   photon_element_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -11971,6 +12081,7 @@
           size: null
           type: photon_target_struct
     line: 1072
+    module: bmad_struct
     name: photon_element_struct
   photon_material_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12083,6 +12194,7 @@
           size: null
           type: real
     line: 1057
+    module: bmad_struct
     name: photon_material_struct
   photon_reflect_surface_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12182,6 +12294,7 @@
           size: null
           type: photon_reflect_table_struct
     line: 218
+    module: bmad_struct
     name: photon_reflect_surface_struct
   photon_reflect_table_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12281,6 +12394,7 @@
           size: null
           type: real
     line: 204
+    module: bmad_struct
     name: photon_reflect_table_struct
   photon_target_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12354,6 +12468,7 @@
           size: null
           type: integer
     line: 1049
+    module: bmad_struct
     name: photon_target_struct
   pixel_detec_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12440,6 +12555,7 @@
           size: null
           type: real
     line: 1026
+    module: bmad_struct
     name: pixel_detec_struct
   pixel_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12581,6 +12697,7 @@
           size: null
           type: real
     line: 1016
+    module: bmad_struct
     name: pixel_pt_struct
   pmd_header_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12732,6 +12849,7 @@
           size: null
           type: character
     line: 2357
+    module: bmad_struct
     name: pmd_header_struct
   pre_tracker_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12792,6 +12910,7 @@
           size: null
           type: integer
     line: 1576
+    module: bmad_struct
     name: pre_tracker_struct
   ptc_branch1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12826,6 +12945,7 @@
           size: null
           type: ptc_layout_pointer_struct
     line: 1503
+    module: bmad_struct
     name: ptc_branch1_struct
   ptc_common_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12968,6 +13088,7 @@
           size: null
           type: real
     line: 2280
+    module: bmad_struct
     name: ptc_common_struct
   ptc_layout_pointer_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -12989,6 +13110,7 @@
           size: null
           type: layout
     line: 1499
+    module: bmad_struct
     name: ptc_layout_pointer_struct
   ptc_normal_form_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13127,6 +13249,7 @@
           size: null
           type: logical
     line: 1542
+    module: bmad_struct
     name: ptc_normal_form_struct
   ptc_private_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13213,6 +13336,7 @@
           size: null
           type: integer
     line: 2307
+    module: bmad_struct
     name: ptc_private_struct
   rad_int1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13455,6 +13579,7 @@
           size: null
           type: real
     line: 2324
+    module: bmad_struct
     name: rad_int1_struct
   rad_int_all_ele_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13476,6 +13601,7 @@
           size: null
           type: rad_int_branch_struct
     line: 2351
+    module: bmad_struct
     name: rad_int_all_ele_struct
   rad_int_branch_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13497,6 +13623,7 @@
           size: null
           type: rad_int1_struct
     line: 2347
+    module: bmad_struct
     name: rad_int_branch_struct
   rad_map_ele_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13544,6 +13671,7 @@
           size: null
           type: logical
     line: 969
+    module: bmad_struct
     name: rad_map_ele_struct
   rad_map_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13617,6 +13745,7 @@
           size: null
           type: real
     line: 961
+    module: bmad_struct
     name: rad_map_struct
   ramper_lord_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13664,6 +13793,7 @@
           size: null
           type: integer
     line: 1337
+    module: bmad_struct
     name: ramper_lord_struct
   resonance_h_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13698,6 +13828,7 @@
           size: '6'
           type: character
     line: 1521
+    module: bmad_struct
     name: resonance_h_struct
   space_charge_common_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13935,6 +14066,7 @@
           size: null
           type: integer
     line: 2093
+    module: bmad_struct
     name: space_charge_common_struct
   spin_axis_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -13982,6 +14114,7 @@
           size: null
           type: real
     line: 274
+    module: bmad_struct
     name: spin_axis_struct
   spin_eigen_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14016,6 +14149,7 @@
           size: null
           type: complex
     line: 269
+    module: bmad_struct
     name: spin_eigen_struct
   spin_matching_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14167,6 +14301,7 @@
           size: null
           type: logical
     line: 280
+    module: bmad_struct
     name: spin_matching_struct
   spin_orbit_map1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14214,6 +14349,7 @@
           size: null
           type: real
     line: 305
+    module: bmad_struct
     name: spin_orbit_map1_struct
   spin_polar_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14274,6 +14410,7 @@
           size: null
           type: real
     line: 296
+    module: bmad_struct
     name: spin_polar_struct
   strong_beam_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14373,6 +14510,7 @@
           size: null
           type: real
     line: 1990
+    module: bmad_struct
     name: strong_beam_struct
   surface_curvature_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14433,6 +14571,7 @@
           size: null
           type: real
     line: 1036
+    module: bmad_struct
     name: surface_curvature_struct
   surface_displacement_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14519,6 +14658,7 @@
           size: null
           type: real
     line: 1003
+    module: bmad_struct
     name: surface_displacement_pt_struct
   surface_displacement_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14579,6 +14719,7 @@
           size: null
           type: real
     line: 1008
+    module: bmad_struct
     name: surface_displacement_struct
   surface_h_misalign_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14669,6 +14810,7 @@
           size: null
           type: real
     line: 990
+    module: bmad_struct
     name: surface_h_misalign_pt_struct
   surface_h_misalign_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14729,6 +14871,7 @@
           size: null
           type: real
     line: 995
+    module: bmad_struct
     name: surface_h_misalign_struct
   surface_segmented_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14802,6 +14945,7 @@
           size: null
           type: real
     line: 977
+    module: bmad_struct
     name: surface_segmented_pt_struct
   surface_segmented_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14862,6 +15006,7 @@
           size: null
           type: real
     line: 982
+    module: bmad_struct
     name: surface_segmented_struct
   target_point_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14883,6 +15028,7 @@
           size: null
           type: real
     line: 1045
+    module: bmad_struct
     name: target_point_struct
   taylor_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14917,6 +15063,7 @@
           size: null
           type: taylor_term_struct
     line: 478
+    module: bmad_struct
     name: taylor_struct
   taylor_term_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14951,6 +15098,7 @@
           size: null
           type: integer
     line: 464
+    module: bmad_struct
     name: taylor_term_struct
   time_runge_kutta_common_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -14985,6 +15133,7 @@
           size: null
           type: logical
     line: 2119
+    module: bmad_struct
     name: time_runge_kutta_common_struct
   track_point_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15071,6 +15220,7 @@
           size: null
           type: real
     line: 1997
+    module: bmad_struct
     name: track_point_struct
   track_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15146,6 +15296,7 @@
           size: null
           type: track_point_struct
     line: 2008
+    module: bmad_struct
     name: track_struct
   twiss_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15304,6 +15455,7 @@
           size: null
           type: real
     line: 181
+    module: bmad_struct
     name: twiss_struct
   wake_lr_mode_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15481,6 +15633,7 @@
           size: null
           type: logical
     line: 636
+    module: bmad_struct
     name: wake_lr_mode_struct
   wake_lr_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15581,6 +15734,7 @@
           size: null
           type: real
     line: 652
+    module: bmad_struct
     name: wake_lr_struct
   wake_sr_mode_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15720,6 +15874,7 @@
           size: null
           type: integer
     line: 606
+    module: bmad_struct
     name: wake_sr_mode_struct
   wake_sr_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15858,6 +16013,7 @@
           size: null
           type: real
     line: 620
+    module: bmad_struct
     name: wake_sr_struct
   wake_sr_z_long_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -15984,6 +16140,7 @@
           size: null
           type: real
     line: 594
+    module: bmad_struct
     name: wake_sr_z_long_struct
   wake_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -16022,6 +16179,7 @@
           size: null
           type: wake_sr_struct
     line: 665
+    module: bmad_struct
     name: wake_struct
   wall3d_section_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -16294,6 +16452,7 @@
           size: null
           type: real
     line: 417
+    module: bmad_struct
     name: wall3d_section_struct
   wall3d_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -16432,6 +16591,7 @@
           size: null
           type: integer
     line: 449
+    module: bmad_struct
     name: wall3d_struct
   wall3d_vertex_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -16557,6 +16717,7 @@
           size: null
           type: real
     line: 401
+    module: bmad_struct
     name: wall3d_vertex_struct
   xy_disp_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/bmad_struct.f90
@@ -16617,6 +16778,7 @@
           size: null
           type: real
     line: 846
+    module: bmad_struct
     name: xy_disp_struct
 /Users/klauer/Repos/bmad/bmad/modules/bookkeeper_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/changed_attribute_bookkeeper.f90: {}
@@ -16813,6 +16975,7 @@
           size: null
           type: real
     line: 18
+    module: element_modeling_mod
     name: wiggler_modeling_common_struct
 /Users/klauer/Repos/bmad/bmad/modules/em_field_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/equal_mod.f90: {}
@@ -16864,6 +17027,7 @@
           size: '12'
           type: character
     line: 41
+    module: expression_mod
     name: expression_func_struct
 /Users/klauer/Repos/bmad/bmad/modules/fringe_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/integration_timer_mod.f90: {}
@@ -16953,6 +17117,7 @@
           size: null
           type: real
     line: 14
+    module: mad_mod
     name: mad_energy_struct
   mad_map_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/mad_mod.f90
@@ -17000,6 +17165,7 @@
           size: null
           type: real
     line: 23
+    module: mad_mod
     name: mad_map_struct
 /Users/klauer/Repos/bmad/bmad/modules/measurement_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/mode3_mod.f90:
@@ -17023,6 +17189,7 @@
           size: null
           type: real
     line: 1267
+    module: mode3_mod
     name: mat2_struct
 /Users/klauer/Repos/bmad/bmad/modules/multipole_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/rad_6d_mod.f90:
@@ -17072,6 +17239,7 @@
           size: null
           type: real
     line: 16
+    module: rad_6d_mod
     name: private_stash_struct
   qromb_int_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/rad_6d_mod.f90
@@ -17132,6 +17300,7 @@
           size: null
           type: real
     line: 743
+    module: rad_6d_mod
     name: qromb_int_struct
 /Users/klauer/Repos/bmad/bmad/modules/rad_int_common.f90:
   rad_int_cache1_struct:
@@ -17180,6 +17349,7 @@
           size: null
           type: rad_int_track_point_struct
     line: 28
+    module: rad_int_common
     name: rad_int_cache1_struct
   rad_int_cache_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/rad_int_common.f90
@@ -17214,6 +17384,7 @@
           size: null
           type: logical
     line: 34
+    module: rad_int_common
     name: rad_int_cache_struct
   rad_int_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/rad_int_common.f90
@@ -17404,6 +17575,7 @@
           size: null
           type: coord_struct
     line: 43
+    module: rad_int_common
     name: rad_int_info_struct
   rad_int_track_point_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/rad_int_common.f90
@@ -17555,6 +17727,7 @@
           size: null
           type: real
     line: 15
+    module: rad_int_common
     name: rad_int_track_point_struct
   ri_array_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/rad_int_common.f90
@@ -17589,6 +17762,7 @@
           size: null
           type: real
     line: 86
+    module: rad_int_common
     name: ri_array_struct
 /Users/klauer/Repos/bmad/bmad/modules/radiation_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/runge_kutta_mod.f90:
@@ -17626,6 +17800,7 @@
           size: null
           type: integer
     line: 5
+    module: runge_kutta_mod
     name: runge_kutta_common_struct
 /Users/klauer/Repos/bmad/bmad/modules/srdt_mod.f90:
   sliced_eles_struct:
@@ -17856,6 +18031,7 @@
           size: null
           type: summation_rdt_struct
     line: 41
+    module: srdt_mod
     name: sliced_eles_struct
   summation_rdt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/srdt_mod.f90
@@ -18137,6 +18313,7 @@
           size: null
           type: complex
     line: 11
+    module: srdt_mod
     name: summation_rdt_struct
 /Users/klauer/Repos/bmad/bmad/modules/superimpose_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/taylor_mod.f90: {}
@@ -18190,6 +18367,7 @@
           size: null
           type: wall3d_section_struct
     line: 1206
+    module: wall3d_mod
     name: section_ptr_struct
 /Users/klauer/Repos/bmad/bmad/multiparticle/bbi_kick.f90: {}
 /Users/klauer/Repos/bmad/bmad/multiparticle/beam_file_io.f90: {}
@@ -18244,6 +18422,7 @@
           size: null
           type: real
     line: 23
+    module: ibs_mod
     name: ibs_lifetime_struct
   ibs_maxratio_struct:
     filename: /Users/klauer/Repos/bmad/bmad/multiparticle/ibs_mod.f90
@@ -18291,6 +18470,7 @@
           size: null
           type: real
     line: 30
+    module: ibs_mod
     name: ibs_maxratio_struct
   ibs_sim_param_struct:
     filename: /Users/klauer/Repos/bmad/bmad/multiparticle/ibs_mod.f90
@@ -18410,6 +18590,7 @@
           size: null
           type: real
     line: 10
+    module: ibs_mod
     name: ibs_sim_param_struct
 /Users/klauer/Repos/bmad/bmad/multiparticle/ibs_rates_mod.f90:
   ibs_struct:
@@ -18458,6 +18639,7 @@
           size: null
           type: real
     line: 7
+    module: ibs_rates_mod
     name: ibs_struct
 /Users/klauer/Repos/bmad/bmad/multiparticle/init_wake.f90: {}
 /Users/klauer/Repos/bmad/bmad/multiparticle/longitudinal_profile_mod.f90: {}
@@ -18514,6 +18696,7 @@
           size: null
           type: REAL
     line: 23
+    module: touschek_mod
     name: momentum_aperture_struct
 /Users/klauer/Repos/bmad/bmad/multiparticle/track_bunch_time.f90: {}
 /Users/klauer/Repos/bmad/bmad/multiparticle/transfer_wake.f90: {}
@@ -18544,6 +18727,7 @@
           size: null
           type: multipass_region_ele_struct
     line: 12
+    module: write_lattice_file_mod
     name: multipass_region_branch_struct
   multipass_region_ele_struct:
     filename: /Users/klauer/Repos/bmad/bmad/output/write_lattice_file_mod.f90
@@ -18591,6 +18775,7 @@
           size: null
           type: logical
     line: 6
+    module: write_lattice_file_mod
     name: multipass_region_ele_struct
   multipass_region_lat_struct:
     filename: /Users/klauer/Repos/bmad/bmad/output/write_lattice_file_mod.f90
@@ -18612,6 +18797,7 @@
           size: null
           type: multipass_region_branch_struct
     line: 16
+    module: write_lattice_file_mod
     name: multipass_region_lat_struct
 /Users/klauer/Repos/bmad/bmad/output/write_lattice_in_elegant_format.f90: {}
 /Users/klauer/Repos/bmad/bmad/output/write_lattice_in_foreign_format.f90: {}
@@ -18658,6 +18844,7 @@
           size: null
           type: integer
     line: 6551
+    module: bmad_parser_mod
     name: grid_pt_struct
   lr_wake_input_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_mod.f90
@@ -18801,6 +18988,7 @@
           size: null
           type: real
     line: 1760
+    module: bmad_parser_mod
     name: lr_wake_input_struct
   multi_ele_pointer_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_mod.f90
@@ -18835,6 +19023,7 @@
           size: null
           type: integer
     line: 4276
+    module: bmad_parser_mod
     name: multi_ele_pointer_struct
   my_knot_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_mod.f90
@@ -18856,6 +19045,7 @@
           size: null
           type: real
     line: 2264
+    module: bmad_parser_mod
     name: my_knot_struct
 /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90:
   base_line_ele_struct:
@@ -18943,6 +19133,7 @@
           size: '40'
           type: character
     line: 29
+    module: bmad_parser_struct
     name: base_line_ele_struct
   bp_common2_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -18964,6 +19155,7 @@
           size: null
           type: bp_const_struct
     line: 176
+    module: bmad_parser_struct
     name: bp_common2_struct
   bp_common_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -19510,6 +19702,7 @@
           size: null
           type: logical
     line: 127
+    module: bmad_parser_struct
     name: bp_common_struct
   bp_const_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -19557,6 +19750,7 @@
           size: null
           type: real
     line: 121
+    module: bmad_parser_struct
     name: bp_const_struct
   parser_controller_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -19630,6 +19824,7 @@
           size: null
           type: real
     line: 78
+    module: bmad_parser_struct
     name: parser_controller_struct
   parser_ele_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -19898,6 +20093,7 @@
           size: null
           type: logical
     line: 86
+    module: bmad_parser_struct
     name: parser_ele_struct
   parser_lat_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -19919,6 +20115,7 @@
           size: null
           type: parser_ele_struct
     line: 108
+    module: bmad_parser_struct
     name: parser_lat_struct
   seq_ele_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -20071,6 +20268,7 @@
           size: null
           type: integer
     line: 14
+    module: bmad_parser_struct
     name: seq_ele_struct
   seq_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -20248,6 +20446,7 @@
           size: null
           type: integer
     line: 38
+    module: bmad_parser_struct
     name: seq_struct
   stack_file_struct:
     filename: /Users/klauer/Repos/bmad/bmad/parsing/bmad_parser_struct.f90
@@ -20425,6 +20624,7 @@
           size: null
           type: character
     line: 60
+    module: bmad_parser_struct
     name: stack_file_struct
 /Users/klauer/Repos/bmad/bmad/parsing/check_controller_controls.f90: {}
 /Users/klauer/Repos/bmad/bmad/parsing/converter_distribution_parser.f90:
@@ -20474,6 +20674,7 @@
           size: '40'
           type: character
     line: 24
+    module: converter_distribution_parser
     name: subobj
 /Users/klauer/Repos/bmad/bmad/parsing/create_feedback.f90: {}
 /Users/klauer/Repos/bmad/bmad/parsing/create_field_overlap.f90: {}
@@ -20533,6 +20734,7 @@
           size: null
           type: real
     line: 5
+    module: capillary_mod
     name: photon_coord_struct
   photon_track_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/capillary_mod.f90
@@ -20567,6 +20769,7 @@
           size: null
           type: photon_coord_struct
     line: 11
+    module: capillary_mod
     name: photon_track_struct
 /Users/klauer/Repos/bmad/bmad/photon/crystal_attribute_bookkeeper.f90: {}
 /Users/klauer/Repos/bmad/bmad/photon/init_photon_from_a_photon_init_ele.f90: {}
@@ -20658,6 +20861,7 @@
           size: null
           type: real
     line: 1397
+    module: photon_init_mod
     name: adaptive_integration_interval_struct
   photon_init_spline_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_init_mod.f90
@@ -20718,6 +20922,7 @@
           size: null
           type: real
     line: 22
+    module: photon_init_mod
     name: photon_init_spline_pt_struct
   photon_init_spline_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_init_mod.f90
@@ -20792,6 +20997,7 @@
           size: null
           type: real
     line: 26
+    module: photon_init_mod
     name: photon_init_spline_struct
   photon_vert_angle_pt_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_init_mod.f90
@@ -20852,6 +21058,7 @@
           size: null
           type: real
     line: 434
+    module: photon_init_mod
     name: photon_vert_angle_pt_struct
 /Users/klauer/Repos/bmad/bmad/photon/photon_init_spline_mod.f90:
   photon_init_splines_struct:
@@ -20913,6 +21120,7 @@
           size: null
           type: photon_init_y_angle_spline_struct
     line: 24
+    module: photon_init_spline_mod
     name: photon_init_splines_struct
   photon_init_x_angle_spline_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_init_spline_mod.f90
@@ -20977,6 +21185,7 @@
           size: null
           type: spline_struct
     line: 15
+    module: photon_init_spline_mod
     name: photon_init_x_angle_spline_struct
   photon_init_y_angle_spline_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_init_spline_mod.f90
@@ -21054,6 +21263,7 @@
           size: null
           type: photon_init_x_angle_spline_struct
     line: 19
+    module: photon_init_spline_mod
     name: photon_init_y_angle_spline_struct
 /Users/klauer/Repos/bmad/bmad/photon/photon_reflection_mod.f90:
   cheb_diffuse_struct:
@@ -21089,6 +21299,7 @@
           size: null
           type: real
     line: 20
+    module: photon_reflection_mod
     name: cheb_diffuse_struct
   diffuse_common_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_reflection_mod.f90
@@ -21123,6 +21334,7 @@
           size: null
           type: logical
     line: 28
+    module: photon_reflection_mod
     name: diffuse_common_struct
   diffuse_param_struct:
     filename: /Users/klauer/Repos/bmad/bmad/photon/photon_reflection_mod.f90
@@ -21222,6 +21434,7 @@
           size: null
           type: real
     line: 13
+    module: photon_reflection_mod
     name: diffuse_param_struct
 /Users/klauer/Repos/bmad/bmad/photon/photon_target_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/photon/photon_utils_mod.f90:
@@ -21310,6 +21523,7 @@
           size: null
           type: real
     line: 9
+    module: photon_utils_mod
     name: crystal_param_struct
 /Users/klauer/Repos/bmad/bmad/photon/rotate_for_curved_surface.f90: {}
 /Users/klauer/Repos/bmad/bmad/photon/tilt_coords_photon.f90: {}
@@ -21375,6 +21589,7 @@
           size: null
           type: real
     line: 623
+    module: track1_photon_mod
     name: mosaic_layer_struct
 /Users/klauer/Repos/bmad/bmad/photon/track_a_drift_photon.f90: {}
 /Users/klauer/Repos/bmad/bmad/photon/track_to_surface.f90: {}
@@ -21605,6 +21820,7 @@
           size: null
           type: tree_element_zhe
     line: 9
+    module: ptc_map_with_radiation_mod
     name: ptc_rad_map_struct
 /Users/klauer/Repos/bmad/bmad/ptc/ptc_ran_seed_put.f90: {}
 /Users/klauer/Repos/bmad/bmad/ptc/ptc_read_flat_file.f90: {}
@@ -21630,6 +21846,7 @@
           size: null
           type: real
     line: 38
+    module: ptc_spin_matching_calc
     name: quat1_struct
 /Users/klauer/Repos/bmad/bmad/ptc/ptc_transfer_map_with_spin.f90: {}
 /Users/klauer/Repos/bmad/bmad/ptc/set_ptc.f90: {}
@@ -21840,6 +22057,7 @@
           size: null
           type: real
     line: 34
+    module: csr_and_space_charge_mod
     name: csr_bunch_slice_struct
   csr_ele_info_struct:
     filename: /Users/klauer/Repos/bmad/bmad/space_charge/csr_and_space_charge_mod.f90
@@ -21992,6 +22210,7 @@
           size: null
           type: real
     line: 22
+    module: csr_and_space_charge_mod
     name: csr_ele_info_struct
   csr_kick1_struct:
     filename: /Users/klauer/Repos/bmad/bmad/space_charge/csr_and_space_charge_mod.f90
@@ -22169,6 +22388,7 @@
           size: null
           type: real
     line: 57
+    module: csr_and_space_charge_mod
     name: csr_kick1_struct
   csr_particle_position_struct:
     filename: /Users/klauer/Repos/bmad/bmad/space_charge/csr_and_space_charge_mod.f90
@@ -22203,6 +22423,7 @@
           size: null
           type: real
     line: 73
+    module: csr_and_space_charge_mod
     name: csr_particle_position_struct
   csr_struct:
     filename: /Users/klauer/Repos/bmad/bmad/space_charge/csr_and_space_charge_mod.f90
@@ -22499,6 +22720,7 @@
           size: null
           type: real
     line: 78
+    module: csr_and_space_charge_mod
     name: csr_struct
 /Users/klauer/Repos/bmad/bmad/space_charge/fast_fourier_am.f90: {}
 /Users/klauer/Repos/bmad/bmad/space_charge/fft_interface_mod.f90: {}
@@ -22679,6 +22901,7 @@
           size: null
           type: real
     line: 14
+    module: open_spacecharge_mod
     name: mesh3d_struct
 /Users/klauer/Repos/bmad/bmad/space_charge/space_charge_mod.f90:
   this_w_struct:
@@ -22714,6 +22937,7 @@
           size: null
           type: real
     line: 33
+    module: space_charge_mod
     name: this_w_struct
 /Users/klauer/Repos/bmad/bmad/space_charge/track1_bunch_space_charge.f90: {}
 /Users/klauer/Repos/bmad/bmad/spin/angle_between_polars.f90: {}
@@ -22775,6 +22999,7 @@
           size: null
           type: real
     line: 145
+    module: track1_spin_integration
     name: q_array_struct
 /Users/klauer/Repos/bmad/bmad/spin/track1_spin_taylor.f90: {}
 /Users/klauer/Repos/bmad/bmad/spin/valid_spin_tracking_method.f90: {}

@@ -24,9 +24,7 @@ from .forest_structs import (
     CNormalForm,
     CQuaternion,
     CTaylor,
-    Fibre,
     InternalState,
-    Layout,
     Probe8,
     TreeElement,
 )
