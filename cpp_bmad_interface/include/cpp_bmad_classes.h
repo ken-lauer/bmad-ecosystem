@@ -1238,7 +1238,7 @@ public:
     oss << "master_parameter=" << master_parameter << ", ";
     oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
     oss << "field_type=" << field_type << ", ";
-    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << ptr; }; 
+    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << *ptr; }; 
     oss << "}";
     return oss.str();
   }
@@ -1376,7 +1376,7 @@ public:
     oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
     oss << "dz=" << dz << ", ";
     oss << "r0=" << r0 << ", ";
-    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << ptr; }; 
+    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << *ptr; }; 
     oss << "}";
     return oss.str();
   }
@@ -1516,7 +1516,7 @@ public:
     oss << "dr=" << dr << ", ";
     oss << "r0=" << r0 << ", ";
     oss << "curved_ref_frame=" << curved_ref_frame << ", ";
-    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << ptr; }; 
+    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << *ptr; }; 
     oss << "}";
     return oss.str();
   }
@@ -2740,7 +2740,7 @@ public:
     oss << "name=" << name << ", ";
     oss << "material=" << material << ", ";
     oss << "v=" << v << ", ";
-    oss << "surface="; if (surface == nullptr) { oss << "nullptr"; } else { oss << surface; }; oss << ", ";
+    oss << "surface="; if (surface == nullptr) { oss << "nullptr"; } else { oss << *surface; }; oss << ", ";
     oss << "type=" << type << ", ";
     oss << "n_vertex_input=" << n_vertex_input << ", ";
     oss << "ix_ele=" << ix_ele << ", ";
@@ -2854,7 +2854,7 @@ public:
     oss << "CPP_ramper_lord{";
     oss << "ix_ele=" << ix_ele << ", ";
     oss << "ix_con=" << ix_con << ", ";
-    oss << "attrib_ptr="; if (attrib_ptr == nullptr) { oss << "nullptr"; } else { oss << attrib_ptr; }; 
+    oss << "attrib_ptr="; if (attrib_ptr == nullptr) { oss << "nullptr"; } else { oss << *attrib_ptr; }; 
     oss << "}";
     return oss.str();
   }
@@ -4277,24 +4277,24 @@ public:
     oss << "type=" << type << ", ";
     oss << "alias=" << alias << ", ";
     oss << "component_name=" << component_name << ", ";
-    oss << "descrip="; if (descrip == nullptr) { oss << "nullptr"; } else { oss << descrip; }; oss << ", ";
+    oss << "descrip="; if (descrip == nullptr) { oss << "nullptr"; } else { oss << *descrip; }; oss << ", ";
     oss << "a=" << a << ", ";
     oss << "b=" << b << ", ";
     oss << "z=" << z << ", ";
     oss << "x=" << x << ", ";
     oss << "y=" << y << ", ";
-    oss << "ac_kick="; if (ac_kick == nullptr) { oss << "nullptr"; } else { oss << ac_kick; }; oss << ", ";
+    oss << "ac_kick="; if (ac_kick == nullptr) { oss << "nullptr"; } else { oss << *ac_kick; }; oss << ", ";
     oss << "bookkeeping_state=" << bookkeeping_state << ", ";
-    oss << "control="; if (control == nullptr) { oss << "nullptr"; } else { oss << control; }; oss << ", ";
+    oss << "control="; if (control == nullptr) { oss << "nullptr"; } else { oss << *control; }; oss << ", ";
     oss << "floor=" << floor << ", ";
-    oss << "high_energy_space_charge="; if (high_energy_space_charge == nullptr) { oss << "nullptr"; } else { oss << high_energy_space_charge; }; oss << ", ";
-    oss << "mode3="; if (mode3 == nullptr) { oss << "nullptr"; } else { oss << mode3; }; oss << ", ";
-    oss << "photon="; if (photon == nullptr) { oss << "nullptr"; } else { oss << photon; }; oss << ", ";
-    oss << "rad_map="; if (rad_map == nullptr) { oss << "nullptr"; } else { oss << rad_map; }; oss << ", ";
+    oss << "high_energy_space_charge="; if (high_energy_space_charge == nullptr) { oss << "nullptr"; } else { oss << *high_energy_space_charge; }; oss << ", ";
+    oss << "mode3="; if (mode3 == nullptr) { oss << "nullptr"; } else { oss << *mode3; }; oss << ", ";
+    oss << "photon="; if (photon == nullptr) { oss << "nullptr"; } else { oss << *photon; }; oss << ", ";
+    oss << "rad_map="; if (rad_map == nullptr) { oss << "nullptr"; } else { oss << *rad_map; }; oss << ", ";
     oss << "taylor=" << taylor << ", ";
     oss << "spin_taylor_ref_orb_in=" << spin_taylor_ref_orb_in << ", ";
     oss << "spin_taylor=" << spin_taylor << ", ";
-    oss << "wake="; if (wake == nullptr) { oss << "nullptr"; } else { oss << wake; }; oss << ", ";
+    oss << "wake="; if (wake == nullptr) { oss << "nullptr"; } else { oss << *wake; }; oss << ", ";
     oss << "wall3d=" << wall3d << ", ";
     oss << "cartesian_map=" << cartesian_map << ", ";
     oss << "cylindrical_map=" << cylindrical_map << ", ";
@@ -4574,10 +4574,10 @@ public:
     oss << "title=" << title << ", ";
     oss << "print_str=" << print_str << ", ";
     oss << "constant=" << constant << ", ";
-    oss << "a="; if (a == nullptr) { oss << "nullptr"; } else { oss << a; }; oss << ", ";
-    oss << "b="; if (b == nullptr) { oss << "nullptr"; } else { oss << b; }; oss << ", ";
-    oss << "z="; if (z == nullptr) { oss << "nullptr"; } else { oss << z; }; oss << ", ";
-    oss << "param="; if (param == nullptr) { oss << "nullptr"; } else { oss << param; }; oss << ", ";
+    oss << "a="; if (a == nullptr) { oss << "nullptr"; } else { oss << *a; }; oss << ", ";
+    oss << "b="; if (b == nullptr) { oss << "nullptr"; } else { oss << *b; }; oss << ", ";
+    oss << "z="; if (z == nullptr) { oss << "nullptr"; } else { oss << *z; }; oss << ", ";
+    oss << "param="; if (param == nullptr) { oss << "nullptr"; } else { oss << *param; }; oss << ", ";
     oss << "lord_state=" << lord_state << ", ";
     oss << "ele_init=" << ele_init << ", ";
     oss << "ele=" << ele << ", ";
@@ -4588,8 +4588,8 @@ public:
     oss << "pre_tracker=" << pre_tracker << ", ";
     oss << "custom=" << custom << ", ";
     oss << "version=" << version << ", ";
-    oss << "n_ele_track="; if (n_ele_track == nullptr) { oss << "nullptr"; } else { oss << n_ele_track; }; oss << ", ";
-    oss << "n_ele_max="; if (n_ele_max == nullptr) { oss << "nullptr"; } else { oss << n_ele_max; }; oss << ", ";
+    oss << "n_ele_track="; if (n_ele_track == nullptr) { oss << "nullptr"; } else { oss << *n_ele_track; }; oss << ", ";
+    oss << "n_ele_max="; if (n_ele_max == nullptr) { oss << "nullptr"; } else { oss << *n_ele_max; }; oss << ", ";
     oss << "n_control_max=" << n_control_max << ", ";
     oss << "n_ic_max=" << n_ic_max << ", ";
     oss << "input_taylor_order=" << input_taylor_order << ", ";

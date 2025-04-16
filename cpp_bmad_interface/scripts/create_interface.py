@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
+"""
 
-# Note: Run this script in the cpp_bmad_interface directory.
+Note: Run this script in the cpp_bmad_interface directory.
 
-# Script to read in Fortran structures and create:
-#   Corresponding C++ class
-#   Translator between Fortran structure and C++ class
-#   Routines to check for equality between instances of a given fortran structure.
-#   Routines to check for equality between instances of a given C++ class
-#   Program to check the Fortran / C++ translator
+Script to read in Fortran structures and create:
+  Corresponding C++ class
+  Translator between Fortran structure and C++ class
+  Routines to check for equality between instances of a given fortran structure.
+  Routines to check for equality between instances of a given C++ class
+  Program to check the Fortran / C++ translator
 
-# Note: The corresponding C++ class component for a pointer or allocatable Fortran
-# scalar struct component is an array whose length is zero if the Fortran component
-# is nullified and whose length is 1 otherwise.
+Note: The corresponding C++ class component for a pointer or allocatable Fortran
+scalar struct component is an array whose length is zero if the Fortran component
+is nullified and whose length is 1 otherwise.
+"""
 
 from __future__ import annotations
-
-# TODO: CPP_ele grid_field grid_field_to_c takes majority of ele/lat conversion time
 
 import copy
 import os
@@ -2933,6 +2933,26 @@ use {params.equality_mod_file}
     f_test.write("contains\n\n")
 
     for struct in struct_definitions:
+        # if struct.cpp_class == "CPP_ele":
+        #
+        #     def debug_arg(arg: Argument):
+        #         if arg.pointer_type != "NOT":
+        #             if arg.type == "type":
+        #                 return "! skip"
+        #             return f"""\
+        #             if (associated(f2_ele%{arg.f_name})) then
+        #                 print *, "f2_ele%{arg.f_name}=", f2_ele%{arg.f_name}
+        #             endif
+        #             """
+        #         return f'\
+        #             print *, "f2_ele%{arg.f_name}=", f2_ele%{arg.f_name}'
+        #
+        #     f_debug_code = "\n".join(
+        #         f"! {arg}\n" + debug_arg(arg) for arg in struct.arg if arg.is_component
+        #     )
+        # else:
+        #     f_debug_code = ""
+        f_debug_code = ""
         f_test.write(
             f"""
 !---------------------------------------------------------------------------------
@@ -2997,9 +3017,10 @@ else
   c_ok = c_logic(.false.)
 endif
 
+{f_debug_code}
+
 call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 3)
 call {struct.short_name}_to_c (c_loc(f2_{struct.short_name}), c_{struct.short_name})
-
 end subroutine test2_f_{struct.short_name}
 
 !---------------------------------------------------------------------------------
@@ -3050,7 +3071,7 @@ def get_class_repr(struct: Structure) -> str:
 
         if arg.pointer_type == "PTR" and not arg.array:
             lines.append(
-                f'oss << "{arg.c_name}="; if ({arg.c_name} == nullptr) {{ oss << "nullptr"; }} else {{ oss << {arg.c_name}; }}; oss << ", ";'
+                f'oss << "{arg.c_name}="; if ({arg.c_name} == nullptr) {{ oss << "nullptr"; }} else {{ oss << *{arg.c_name}; }}; oss << ", ";'
             )
         else:
             lines.append(f'oss << "{arg.c_name}=" << {arg.c_name} << ", ";')
@@ -3358,6 +3379,20 @@ using namespace Bmad;
         file.write(f"void set_CPP_{head}_test_pattern (CPP_{head}& C, int ix_patt);\n")
 
     for struct in struct_definitions:
+        c_debug_code = ""
+        # c_debug_code = ""
+        # if struct.cpp_class == "CPP_ele":
+        #     c_debug_code = """
+        #
+        #  set_CPP_ele_test_pattern(C2, 4);
+        #  ele_to_f(C2, F);
+        #  cout << " [4] C2 = " << C2 << endl;
+        #  ele_to_c(F, C);
+        #  cout << " back " << endl;
+        #  cout << " [4] C = " << C << endl;
+        #
+        #      """
+
         file.write(f"""
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -3423,6 +3458,7 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
   set_{struct.cpp_class}_test_pattern (C2, 4);
   {struct.short_name}_to_f (C2, F);
 
+  {c_debug_code}
 }}
 """)
 
@@ -3495,12 +3531,10 @@ with open(os.path.join(params.test_dir, "bmad_cpp_test_mod.f90"), "w") as file:
     write_tests_mod(file)
 with open(os.path.join("include", "cpp_bmad_classes.h"), "w") as file:
     write_cpp_classes(file)
-with open(SCRIPTS_PATH / "convert_template.cpp", "r") as file:
-    convert_header = file.read()
+convert_header = (SCRIPTS_PATH / "convert_template.cpp").read_text()
 with open(os.path.join(params.code_dir, "cpp_bmad_convert.cpp"), "w") as file:
     write_cpp_convert(convert_header, file)
-with open(SCRIPTS_PATH / "equality_template.cpp", "r") as file:
-    equality_header = file.read()
+equality_header = (SCRIPTS_PATH / "equality_template.cpp").read_text()
 with open(os.path.join(params.code_dir, "cpp_equality.cpp"), "w") as file:
     write_cpp_equality(equality_header, file)
 with open(os.path.join(params.test_dir, "cpp_bmad_test.cpp"), "w") as file:
