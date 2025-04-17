@@ -48,6 +48,189 @@ def test_get_default(
 
 
 @pytest.mark.parametrize(
+    "line, expected_type",
+    [
+        # Simple basic types
+        ("INTEGER :: x", TypeInformation(type="INTEGER")),
+        ("REAL :: y", TypeInformation(type="REAL")),
+        ("CHARACTER :: c", TypeInformation(type="CHARACTER")),
+        ("LOGICAL :: flag", TypeInformation(type="LOGICAL")),
+        # Types with sizes/kinds
+        ("INTEGER(KIND=4) :: i", TypeInformation(type="INTEGER", size="KIND=4")),
+        ("REAL(8) :: x", TypeInformation(type="REAL", size="8")),
+        ("CHARACTER(LEN=80) :: str", TypeInformation(type="CHARACTER", size="LEN=80")),
+        # Dimension attribute
+        (
+            "INTEGER, DIMENSION(10) :: arr",
+            TypeInformation(type="INTEGER", dimension="10"),
+        ),
+        (
+            "REAL, DIMENSION(0:9, -5:5) :: matrix",
+            TypeInformation(type="REAL", dimension="0:9, -5:5"),
+        ),
+        (
+            "CHARACTER(LEN=20), DIMENSION(:) :: dynamic_array",
+            TypeInformation(type="CHARACTER", size="LEN=20", dimension=":"),
+        ),
+        # Allocatable attribute
+        (
+            "REAL, ALLOCATABLE :: dynamic_var",
+            TypeInformation(type="REAL", allocatable=True),
+        ),
+        (
+            "INTEGER, ALLOCATABLE, DIMENSION(:,:) :: matrix",
+            TypeInformation(type="INTEGER", allocatable=True, dimension=":,:"),
+        ),
+        # Pointer attribute
+        ("REAL, POINTER :: p", TypeInformation(type="REAL", pointer=True)),
+        (
+            "INTEGER, POINTER, DIMENSION(:) :: p_arr",
+            TypeInformation(type="INTEGER", pointer=True, dimension=":"),
+        ),
+        # Intent attribute
+        ("REAL, INTENT(IN) :: input_var", TypeInformation(type="REAL", intent="IN")),
+        (
+            "INTEGER, INTENT(OUT) :: result",
+            TypeInformation(type="INTEGER", intent="OUT"),
+        ),
+        (
+            "REAL, INTENT(INOUT) :: inout_var",
+            TypeInformation(type="REAL", intent="INOUT"),
+        ),
+        # Bind attribute
+        ("INTEGER, BIND(C) :: c_int", TypeInformation(type="INTEGER", bind="C")),
+        (
+            'REAL, BIND(C, name="c_float") :: c_float_var',
+            TypeInformation(type="REAL", bind='C, name="c_float"'),
+        ),
+        # Optional attribute
+        (
+            "REAL, OPTIONAL :: maybe_present",
+            TypeInformation(type="REAL", optional=True),
+        ),
+        # Access attributes (PRIVATE/PUBLIC)
+        (
+            "INTEGER, PRIVATE :: hidden_var",
+            TypeInformation(type="INTEGER", private=True),
+        ),
+        ("REAL, PUBLIC :: exposed_var", TypeInformation(type="REAL", public=True)),
+        # Parameter attribute
+        (
+            "REAL, PARAMETER :: PI = 3.14159",
+            TypeInformation(type="REAL", parameter=True),
+        ),
+        # External attribute
+        (
+            "REAL, EXTERNAL :: external_func",
+            TypeInformation(type="REAL", external=True),
+        ),
+        # Target attribute
+        ("INTEGER, TARGET :: target_var", TypeInformation(type="INTEGER", target=True)),
+        # Value attribute
+        ("REAL, VALUE :: val_param", TypeInformation(type="REAL", value=True)),
+        # Contiguous attribute
+        (
+            "REAL, POINTER, CONTIGUOUS :: contiguous_array(:)",
+            TypeInformation(type="REAL", pointer=True, contiguous=True),
+        ),
+        # Protected attribute
+        (
+            "INTEGER, PROTECTED :: protected_var",
+            TypeInformation(type="INTEGER", protected=True),
+        ),
+        # Asynchronous attribute
+        (
+            "REAL, ASYNCHRONOUS :: async_var",
+            TypeInformation(type="REAL", asynchronous=True),
+        ),
+        # Save attribute
+        ("INTEGER, SAVE :: persistent_var", TypeInformation(type="INTEGER", save=True)),
+        # Volatile attribute
+        (
+            "INTEGER, VOLATILE :: changing_var",
+            TypeInformation(type="INTEGER", volatile=True),
+        ),
+        # Static attribute (non-standard extension)
+        ("INTEGER, STATIC :: static_var", TypeInformation(type="INTEGER", static=True)),
+        # Intrinsic attribute
+        (
+            "REAL, INTRINSIC :: intrinsic_func",
+            TypeInformation(type="REAL", intrinsic=True),
+        ),
+        # Complex combinations
+        (
+            "REAL(KIND=8), DIMENSION(100), ALLOCATABLE, INTENT(INOUT), TARGET :: complex_var",
+            TypeInformation(
+                type="REAL",
+                size="KIND=8",
+                dimension="100",
+                allocatable=True,
+                intent="INOUT",
+                target=True,
+            ),
+        ),
+        (
+            "CHARACTER(LEN=:), ALLOCATABLE, PRIVATE :: dynamic_string",
+            TypeInformation(
+                type="CHARACTER", size="LEN=:", allocatable=True, private=True
+            ),
+        ),
+        (
+            "INTEGER, DIMENSION(:,:), POINTER, CONTIGUOUS, INTENT(IN) :: input_matrix",
+            TypeInformation(
+                type="INTEGER",
+                dimension=":,:",
+                pointer=True,
+                contiguous=True,
+                intent="IN",
+            ),
+        ),
+        (
+            "REAL, OPTIONAL, INTENT(IN), VALUE :: optional_param",
+            TypeInformation(type="REAL", optional=True, intent="IN", value=True),
+        ),
+        (
+            'INTEGER, VOLATILE, ASYNCHRONOUS, BIND(C, name="status") :: status_flag',
+            TypeInformation(
+                type="INTEGER",
+                volatile=True,
+                asynchronous=True,
+                bind='C, name="status"',
+            ),
+        ),
+        # Edge cases with unusual spacing or formatting
+        (
+            "  INTEGER   ,  DIMENSION(10)   ::   x  ",
+            TypeInformation(type="INTEGER", dimension="10"),
+        ),
+        (
+            "REAL,DIMENSION(10),INTENT(IN),OPTIONAL::param",
+            TypeInformation(type="REAL", dimension="10", intent="IN", optional=True),
+        ),
+        # User-defined types
+        (
+            "TYPE(MyCustomType) :: custom_var",
+            TypeInformation(type="MyCustomType"),
+        ),
+        (
+            "TYPE(MyCustomType), POINTER :: custom_ptr",
+            TypeInformation(type="MyCustomType", pointer=True),
+        ),
+        # Non-standard attributes that would be collected but not specifically parsed
+        (
+            "INTEGER, ALIGN(32) :: aligned_var",
+            TypeInformation(type="INTEGER", attributes=("ALIGN(32)",)),
+        ),
+    ],
+)
+def test_type_parsing(line: str, expected_type: TypeInformation) -> None:
+    """Test parsing of Fortran type declarations with various attributes."""
+    parsed_type = get_type_from_line(line)
+
+    assert parsed_type == expected_type
+
+
+@pytest.mark.parametrize(
     ("line", "expected_type", "expected_size"),
     [
         (
@@ -222,18 +405,7 @@ def test_parse_type_decl(line: str, expected_decl: list[ParsedDeclaration]) -> N
     ],
 )
 def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
-    python_type = get_python_type(
-        TypeInformation(
-            type=type,
-            size=None,
-            dimension=None,
-            allocatable=False,
-            pointer=False,
-            intent=None,
-            bind=None,
-            others=(),
-        )
-    )
+    python_type = get_python_type(TypeInformation(type=type))
     assert python_type == expected_python_type
 
 

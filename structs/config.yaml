@@ -32,9 +32,11 @@ sources:
     python_filename: python/forest_structs.py
     python_import_name: forest_structs
     function_prefix: forest_
-    skip_structures:
-      - c_dascratch
-      - c_dalevel
+    skip_json:
+      - c_dascratch%PREVIOUS
+      - c_dascratch%NEXT
+      - dascratch%PREVIOUS
+      - dascratch%NEXT
     include_dirs:
       - ${ACC_ROOT_DIR}/forest/include
     skip_includes:

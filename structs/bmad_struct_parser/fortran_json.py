@@ -302,14 +302,25 @@ class Converter(pydantic.BaseModel):
 
     def get_json_dump_code(
         self,
+        struct: Structure,
         struct_var: str,
         member: StructureMember,
         parent_json_var: str,
         member_json_var: str = "json_obj",
+        source: SourceConfig | None = None,
         # print_: bool = False,
         # destroy: bool = False,
     ) -> JsonDumpMember:
         imports = {}
+        if source is not None:
+            full_member_name = f"{struct.name}%{member.name}"
+            if full_member_name in source.skip_json:
+                return JsonDumpMember(
+                    var=member_json_var,
+                    member=member,
+                    code=f"! config skip_json: {full_member_name} ({member.type}, {member.comment})",
+                )
+
         if member.python_type not in {"int", "float", "bool", "str", "Complex"}:
             self.seen.add(member.type)
 
@@ -410,6 +421,7 @@ class Converter(pydantic.BaseModel):
         key: str = "",
         print_: bool = True,
         destroy: bool = True,
+        source: SourceConfig | None = None,
     ) -> JsonDumpCode:
         if not key:
             key = "''"
@@ -420,10 +432,12 @@ class Converter(pydantic.BaseModel):
         all_imports: dict[str, list[str]] = {}
         for member in struct.info.members.values():
             member_dump = self.get_json_dump_code(
+                struct=struct,
                 struct_var=struct_var,
                 member=member,
                 parent_json_var=root_variable,
                 member_json_var="json_obj",
+                source=source,
             )
 
             for name, imports in member_dump.imports.items():
@@ -446,6 +460,7 @@ class Converter(pydantic.BaseModel):
 
     def get_struct_dump_subroutine(
         self,
+        source: SourceConfig,
         struct: Structure,
         root_variable: str = "json_root",
         print_: bool = True,
@@ -464,6 +479,7 @@ class Converter(pydantic.BaseModel):
             key="",  # TODO: "name"?
             print_=False,
             destroy=False,
+            source=source,
         )
 
         imports = "\n".join(
@@ -592,7 +608,7 @@ def convert_all(
         if name.lower() in skips or by_name[name].filename.stem in filename_skips:
             conv.generated.add(name)
             continue
-        subroutine = conv.get_struct_dump_subroutine(struct)
+        subroutine = conv.get_struct_dump_subroutine(source, struct)
         fortran.subroutines[subroutine.name] = subroutine.code
         conv.generated.add(name)
 

@@ -7,7 +7,8 @@ import keyword
 import logging
 import os
 import pathlib
-from typing import NamedTuple, Sequence
+from typing import NamedTuple
+from collections.abc import Sequence
 
 import jinja2
 import pydantic
@@ -53,6 +54,7 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
     function_prefix: str
     skip_includes: tuple[str, ...] = ()
     include_dirs: tuple[pathlib.Path, ...] = ()
+    skip_json: tuple[str, ...] = ()
 
     @pydantic.field_validator("include_dirs")
     @classmethod
@@ -141,7 +143,7 @@ class Structure(pydantic.BaseModel):
         last_member = None
         for lineno, line in enumerate(self.lines[1:], start=self.line + 1):
             if "!" in line:
-                line, comment = [part.strip() for part in line.split("!", 1)]
+                line, comment = (part.strip() for part in line.split("!", 1))
             else:
                 line, comment = line, ""
 
@@ -259,21 +261,90 @@ def get_type_from_line(line: str) -> TypeInformation:
     pointer = False
     intent = None
     bind = None
-    others = []
+    optional = False
+    private = False
+    public = False
+    parameter = False
+    external = False
+    target = False
+    value = False
+    contiguous = False
+    protected = False
+    asynchronous = False
+    save = False  # Already initialized from outside this code block
+    static = False  # Already initialized from outside
+    intrinsic = False  # Already initialized from outside
+    volatile = False  # Already initialized from outside
+    attributes = []
+
     for part in parts[1:]:
-        if part.lower() == "pointer":
+        part_lower = part.lower()
+
+        if part_lower == "pointer":
+            # Example: REAL, POINTER :: x
             pointer = True
-        elif part.lower() == "allocatable":
+        elif part_lower == "allocatable":
+            # Example: REAL, ALLOCATABLE :: array(:)
             allocatable = True
-        elif part.lower().startswith("dimension"):
+        elif part_lower.startswith("dimension"):
+            # Example: REAL, DIMENSION(10) :: array
+            # Example: REAL, DIMENSION(:,:) :: matrix
             dimension = get_in_parenthesis(part)
-        elif part.lower().startswith("intent"):
+
+        elif part_lower.startswith("intent"):
+            # Example: SUBROUTINE sub(x) REAL, INTENT(IN) :: x
+            # Other intents: INTENT(OUT), INTENT(INOUT)
             intent = get_in_parenthesis(part)
-        elif part.lower().startswith("bind"):
+
+        elif part_lower.startswith("bind"):
+            # Example: INTEGER, BIND(C) :: counter
+            # Example: INTEGER, BIND(C, name="c_counter") :: counter
             bind = get_in_parenthesis(part)
+        elif part_lower == "optional":
+            # Example: SUBROUTINE sub(x) REAL, OPTIONAL :: x
+            optional = True
+        elif part_lower == "private":
+            # Example: REAL, PRIVATE :: internal_var
+            private = True
+        elif part_lower == "public":
+            # Example: REAL, PUBLIC :: api_var
+            public = True
+        elif part_lower == "parameter":
+            # Example: REAL, PARAMETER :: PI = 3.14159
+            parameter = True
+        elif part_lower == "external":
+            # Example: REAL, EXTERNAL :: func
+            external = True
+        elif part_lower == "target":
+            # Example: REAL, TARGET :: x
+            target = True
+        elif part_lower == "value":
+            # Example: SUBROUTINE sub(x) REAL, VALUE :: x
+            value = True
+        elif part_lower == "contiguous":
+            # Example: REAL, POINTER, CONTIGUOUS :: array(:)
+            contiguous = True
+        elif part_lower == "protected":
+            # Example: REAL, PROTECTED :: config_var
+            protected = True
+        elif part_lower == "asynchronous":
+            # Example: REAL, ASYNCHRONOUS :: async_buffer
+            asynchronous = True
+        elif part_lower == "save":
+            # Example: REAL, SAVE :: persistent_var
+            save = True
+        elif part_lower == "volatile":
+            # Example: INTEGER, VOLATILE :: status_flag
+            volatile = True
+        elif part_lower == "static":
+            # Example: INTEGER, STATIC :: counter
+            static = True
+        elif part_lower == "intrinsic":
+            # Example: REAL, INTRINSIC :: sin
+            intrinsic = True
         else:
             logger.warning(f"TODO: handle type information for: {part!r} of {line!r}")
-            others.append(part)
+            attributes.append(part)
 
     return TypeInformation(
         type=type_name,
@@ -283,7 +354,21 @@ def get_type_from_line(line: str) -> TypeInformation:
         pointer=pointer,
         intent=intent,
         bind=bind,
-        others=tuple(others),
+        save=save,
+        static=static,
+        intrinsic=intrinsic,
+        volatile=volatile,
+        optional=optional,
+        private=private,
+        public=public,
+        parameter=parameter,
+        external=external,
+        target=target,
+        value=value,
+        contiguous=contiguous,
+        protected=protected,
+        asynchronous=asynchronous,
+        attributes=tuple(attributes),
     )
 
 
@@ -325,15 +410,39 @@ def _split_variables(line: str) -> list[str]:
 
 
 class TypeInformation(NamedTuple):
-    type: str
-    # if type is 'real(dp)', size is 'dp'
-    size: str | None
-    dimension: str | None
-    allocatable: bool
-    pointer: bool
-    bind: str | None
-    intent: str | None
-    others: tuple[str, ...]
+    """
+    A structured representation of a Fortran type declaration with all its attributes.
+
+    Examples:
+    - INTEGER, DIMENSION(10) :: array
+    - REAL(KIND=8), INTENT(IN), OPTIONAL :: param
+    - CHARACTER(LEN=100), ALLOCATABLE :: dynamic_string
+    """
+
+    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER')
+
+    allocatable: bool = False  # Whether the variable is allocatable
+    asynchronous: bool = False  # Whether the variable can be used in async operations
+    bind: str | None = None  # Bind(C) specification
+    contiguous: bool = False  # Whether array data is contiguous
+    dimension: str | None = None  # Dimension specification
+    external: bool = False  # Whether the entity is external
+    intent: str | None = None  # Intent specification ('IN', 'OUT', 'INOUT')
+    intrinsic: bool = False  # Whether the type is intrinsic
+    optional: bool = False  # Whether the variable is optional in a procedure
+    parameter: bool = False  # Whether the variable is a parameter (constant)
+    pointer: bool = False  # Whether the variable is a pointer
+    private: bool = False  # Whether the variable has PUBLIC access
+    protected: bool = False  # Whether the variable is protected
+    public: bool = False  # Whether the variable has PUBLIC access
+    save: bool = False  # Whether the variable has SAVE attribute
+    size: str | None = None  # Size or kind specification
+    static: bool = False  # Whether the variable has STATIC attribute
+    target: bool = False  # Whether the variable can be target of a pointer
+    value: bool = False  # Whether the parameter is passed by value
+    volatile: bool = False  # Whether the variable has VOLATILE attribute
+
+    attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
 
 
 class FileLine(NamedTuple):
@@ -678,7 +787,7 @@ def convert(
     info_adapter = pydantic.TypeAdapter(dict[pathlib.Path, dict[str, Structure]])
     dumped = json.loads(info_adapter.dump_json(by_file))
 
-    with open(yaml_path, "wt") as fp:
+    with open(yaml_path, "w") as fp:
         yaml.safe_dump(dumped, fp)
 
     for item in sorted(todo):
