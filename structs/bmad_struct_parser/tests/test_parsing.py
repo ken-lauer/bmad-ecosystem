@@ -2,10 +2,12 @@ import pathlib
 import pytest
 
 from ..parser import (
+    FileLine,
     ParsedDeclaration,
     Structure,
     StructureInfo,
     StructureMember,
+    TypeInformation,
     find_structs,
     get_default,
     get_names_from_line,
@@ -80,9 +82,9 @@ def test_get_type_from_line(
     expected_type: str,
     expected_size: str | None,
 ) -> None:
-    type_, size = get_type_from_line(line)
-    assert type_ == expected_type
-    assert size == expected_size
+    type_info = get_type_from_line(line)
+    assert type_info.type == expected_type
+    assert type_info.size == expected_size
 
 
 @pytest.mark.parametrize(
@@ -145,6 +147,12 @@ def test_get_names_from_line(
             "integer :: i_chan = -1",
             [
                 ParsedDeclaration(name="i_chan", dimension="", default="-1"),
+            ],
+        ),
+        (
+            "complex(DP), POINTER,dimension(:)::C => null() ! Coefficients C(N)",
+            [
+                ParsedDeclaration(name="C", dimension=":", default="null()"),
             ],
         ),
     ],
@@ -213,8 +221,19 @@ def test_parse_type_decl(line: str, expected_decl: list[ParsedDeclaration]) -> N
         ("logical, allocatable", "bool"),
     ],
 )
-def test_get_python_type(type: str, expected_python_type: str) -> None:
-    python_type = get_python_type(type)
+def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
+    python_type = get_python_type(
+        TypeInformation(
+            type=type,
+            size=None,
+            dimension=None,
+            allocatable=False,
+            pointer=False,
+            intent=None,
+            bind=None,
+            others=(),
+        )
+    )
     assert python_type == expected_python_type
 
 
@@ -511,6 +530,7 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
         filename=pathlib.Path("."),
         line=1,
         name="name",
+        module="",
     )
     struct.parse()
     assert struct.info.members == expected_info.members
@@ -532,6 +552,7 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
                     lines=["type struct_name"],
                     line=2,
                     name="struct_name",
+                    module="",
                     info=StructureInfo(
                         class_name="StructName",
                         comment="",
@@ -540,6 +561,7 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
                 ),
                 "struct_name2": Structure(
                     filename=pathlib.Path("."),
+                    module="",
                     lines=["type struct_name2"],
                     line=4,
                     name="struct_name2",
@@ -562,6 +584,7 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
             {
                 "struct_name": Structure(
                     filename=pathlib.Path("."),
+                    module="",
                     lines=[
                         "type struct_name",
                         "real(rp) :: orb_eigen_vec(6,6) = 0    ! this has a",
@@ -595,7 +618,11 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
     ],
 )
 def test_find_structs(lines: str, expected_info: dict[str, Structure]) -> None:
-    res = find_structs(lines, filename=pathlib.Path("."), by_class_name={})
+    file_lines = [
+        FileLine(line=line, lineno=lineno, filename=pathlib.Path())
+        for lineno, line in enumerate(lines.splitlines(), 1)
+    ]
+    res = find_structs(file_lines, filename=pathlib.Path("."), by_class_name={})
     for struct in res.values():
         struct.parse()
     assert res == expected_info

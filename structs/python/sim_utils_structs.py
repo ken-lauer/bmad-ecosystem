@@ -463,13 +463,13 @@ class AllPointerStruct(pydantic.BaseModel):
     Attributes
     ----------
     i : int
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     i1 : int
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     L : bool
-        Bmad type: logical, pointer
+        Bmad type: logical
         Fortran default: null()
     r : float
         Bmad type: real
@@ -531,7 +531,7 @@ class NametableStruct(pydantic.BaseModel):
     ----------
     index : int
         Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     n_max : int
         Use only names(n_min:n_max) part of array.
         Bmad type: integer
@@ -573,7 +573,7 @@ class StrIndexStruct(pydantic.BaseModel):
     ----------
     index : int
         Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     n_max : int
         Use only names(n_min:n_max) part of array.
         Bmad type: integer
@@ -1442,7 +1442,7 @@ class SuperMrqminStorageStruct(pydantic.BaseModel):
         Bmad type: real
     mask : bool
         Used by super_mrqcof
-        Bmad type: logical, allocatable
+        Bmad type: logical
     ochisq : float
         Bmad type: real
     old_dy : float

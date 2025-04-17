@@ -35,7 +35,7 @@ MODEL_TEMPLATE = MODULE_PATH / "dataclass.tpl"
 
 
 class ParserConfig(pydantic.BaseModel):
-    sources: list[SourcePaths]
+    sources: list[SourceConfig]
 
     @classmethod
     def from_file(cls, filename: pathlib.Path) -> ParserConfig:
@@ -44,13 +44,27 @@ class ParserConfig(pydantic.BaseModel):
         return cls.model_validate(contents)
 
 
-class SourcePaths(pydantic.BaseModel, frozen=True):
+class SourceConfig(pydantic.BaseModel, frozen=True):
     source_dir: pathlib.Path
     fortran_filename: pathlib.Path
     yaml_filename: str
     python_filename: str
     python_import_name: str
     function_prefix: str
+    skip_includes: tuple[str, ...] = ()
+    include_dirs: tuple[pathlib.Path, ...] = ()
+
+    @pydantic.field_validator("include_dirs")
+    @classmethod
+    def validate_include_dirs(
+        cls, values: list[pathlib.Path | str]
+    ) -> tuple[pathlib.Path, ...]:
+        expanded_paths = [pathlib.Path(os.path.expandvars(str(v))) for v in values]
+        for path in expanded_paths:
+            if not path.is_dir():
+                raise ValueError(f"Path is not a directory: {path}")
+
+        return tuple(expanded_paths)
 
     @pydantic.field_validator("fortran_filename")
     @classmethod
@@ -136,25 +150,27 @@ class Structure(pydantic.BaseModel):
                     last_member.comment = f"{last_member.comment} {comment}".strip()
                 continue
 
-            for decl in parse_declaration(line):
-                type_, size = get_type_from_line(line)
+            type_info = get_type_from_line(line)
+            for decl in parse_declaration(line, type_info):
                 try:
-                    python_type = get_python_type(type_)
+                    python_type = get_python_type(type_info)
                 except NotImplementedError:
-                    todo.add(type_.lower())
+                    todo.add(type_info.type.lower())
                     continue
 
-                default, default_factory = get_default(python_type, size, decl.default)
+                default, default_factory = get_default(
+                    python_type, type_info.size, decl.default
+                )
 
                 self.info.members[decl.name] = StructureMember(
                     name=decl.name,
                     python_name=get_python_member_name(decl.name),
-                    type=type_,
+                    type=type_info.type,
                     python_type=python_type,
                     line=lineno,
                     definition=line,
                     comment=comment,
-                    size=size,
+                    size=type_info.size,
                     dimension=decl.dimension,
                     fortran_default=decl.default,
                     default=default,
@@ -164,7 +180,7 @@ class Structure(pydantic.BaseModel):
 
 
 def get_default(
-    python_type: str, size: str | None, fortran_default: str
+    python_type: str, size: str | None, fortran_default: str | None
 ) -> tuple[DefaultType, str]:
     if fortran_default:
         if fortran_default.lower() == ".false.":
@@ -214,26 +230,61 @@ def get_in_parenthesis(value: str) -> str:
     return after.split(")")[0].strip()
 
 
-def get_type_from_line(line: str) -> tuple[str, str | None]:
+def get_type_from_line(line: str) -> TypeInformation:
     if "::" in line:
-        type_ = line[: line.index("::")].strip()
+        line = line[: line.index("::")].strip()
     else:
-        type_ = line.split()[0]
+        # "type (foo) a, b, c" -> "type (foo) a"
+        line = _split_variables(line)[0]
+        # "type (foo) a" -> "type (foo)"
+        line = line.rsplit(" ", 1)[0].strip()
 
-    type_ = type_.rstrip(", ")
-    if line.lower().startswith("type(") or line.lower().startswith("type "):
-        type_ = get_in_parenthesis(line)
-        return type_, None
+    parts = _split_variables(line)
 
-    if "(" in type_:
-        size = get_in_parenthesis(type_)
-        type_ = type_.split("(")[0].strip()
-        return type_, size
+    type_name = parts[0]
+    if type_name.lower().startswith("type(") or type_name.lower().startswith("type "):
+        if "(" in line:
+            type_name = get_in_parenthesis(line)
+        size = None
+    elif "(" in type_name:
+        size = get_in_parenthesis(type_name)
+        type_name = type_name.split("(")[0].strip()
+    elif "*" in type_name:
+        type_name, size = type_name.split("*", 1)
+    else:
+        size = None
 
-    if "*" in type_:
-        type_, size = type_.split("*", 1)
-        return type_.strip(), size.strip()
-    return type_, None
+    dimension = None
+    allocatable = False
+    pointer = False
+    intent = None
+    bind = None
+    others = []
+    for part in parts[1:]:
+        if part.lower() == "pointer":
+            pointer = True
+        elif part.lower() == "allocatable":
+            allocatable = True
+        elif part.lower().startswith("dimension"):
+            dimension = get_in_parenthesis(part)
+        elif part.lower().startswith("intent"):
+            intent = get_in_parenthesis(part)
+        elif part.lower().startswith("bind"):
+            bind = get_in_parenthesis(part)
+        else:
+            logger.warning(f"TODO: handle type information for: {part!r} of {line!r}")
+            others.append(part)
+
+    return TypeInformation(
+        type=type_name,
+        size=size,
+        dimension=dimension,
+        allocatable=allocatable,
+        pointer=pointer,
+        intent=intent,
+        bind=bind,
+        others=tuple(others),
+    )
 
 
 def remove_comment(line: str) -> str:
@@ -244,7 +295,7 @@ def remove_comment(line: str) -> str:
 
 
 def get_names_from_line(line: str) -> list[str]:
-    return [name for name, *_ in parse_declaration(line)]
+    return [decl.name for decl in parse_declaration(line)]
 
 
 def _split_variables(line: str) -> list[str]:
@@ -273,13 +324,49 @@ def _split_variables(line: str) -> list[str]:
     return variables
 
 
+class TypeInformation(NamedTuple):
+    type: str
+    # if type is 'real(dp)', size is 'dp'
+    size: str | None
+    dimension: str | None
+    allocatable: bool
+    pointer: bool
+    bind: str | None
+    intent: str | None
+    others: tuple[str, ...]
+
+
+class FileLine(NamedTuple):
+    filename: pathlib.Path
+    lineno: int
+    line: str
+
+
 class ParsedDeclaration(NamedTuple):
     name: str
     dimension: str | None
     default: str | None
 
 
-def _split_variable(line: str) -> ParsedDeclaration:
+def _split_variable(line: str, type_info: TypeInformation) -> ParsedDeclaration:
+    """
+    Parse a single variable declaration into a ParsedDeclaration object.
+
+    Parameters
+    ----------
+    line : str
+        The string containing the variable declaration.
+
+    Returns
+    -------
+    ParsedDeclaration
+        An object containing the variable name, dimension, and default value if any.
+
+    Raises
+    ------
+    ValueError
+        If the line starts with an unexpected parenthesis.
+    """
     if line.startswith("("):
         raise ValueError(f"{line} starts with ( unexpectedly...")
 
@@ -306,13 +393,35 @@ def _split_variable(line: str) -> ParsedDeclaration:
 
     return ParsedDeclaration(
         name=name.strip(),
-        dimension=dimension.strip(),
+        dimension=type_info.dimension or dimension.strip(),
         default=default.strip() if default else None,
     )
 
 
-def parse_type_declaration(line: str) -> list[ParsedDeclaration]:
+def parse_type_declaration(
+    line: str, type_info: TypeInformation | None = None
+) -> list[ParsedDeclaration]:
+    """
+    Parse a Fortran TYPE declaration line into a list of ParsedDeclaration objects.
+
+    Parameters
+    ----------
+    line : str
+        A string containing a Fortran TYPE declaration.
+
+    Returns
+    -------
+    list[ParsedDeclaration]
+        A list of ParsedDeclaration objects representing the variables declared in the line.
+
+    Notes
+    -----
+    This function handles both simple TYPE declarations and more complex ones
+    with variable specifications.
+    """
     assert line.lower().startswith("type ") or line.lower().startswith("type(")
+    if type_info is None:
+        type_info = get_type_from_line(line)
 
     if "::" in line:
         line = line[line.index("::") + 2 :]
@@ -323,10 +432,33 @@ def parse_type_declaration(line: str) -> list[ParsedDeclaration]:
             ]
         line = line.split(")", 1)[1].strip()
 
-    return [_split_variable(variable) for variable in _split_variables(line)]
+    return [_split_variable(variable, type_info) for variable in _split_variables(line)]
 
 
-def parse_declaration(line: str) -> list[ParsedDeclaration]:
+def parse_declaration(
+    line: str, type_info: TypeInformation | None = None
+) -> list[ParsedDeclaration]:
+    """
+    Parse a Fortran declaration line into a list of ParsedDeclaration objects.
+
+    Parameters
+    ----------
+    line : str
+        A string containing a Fortran declaration statement.
+
+    Returns
+    -------
+    list[ParsedDeclaration]
+        A list of ParsedDeclaration objects representing the variables declared in the line.
+
+    Notes
+    -----
+    This function handles both TYPE declarations and other variable declarations.
+    It removes comments from the line before parsing.
+    """
+    if type_info is None:
+        type_info = get_type_from_line(line)
+
     line = remove_comment(line)
     if line.lower().startswith("type ") or line.lower().startswith("type("):
         return parse_type_declaration(line)
@@ -336,7 +468,7 @@ def parse_declaration(line: str) -> list[ParsedDeclaration]:
     else:
         line = " ".join(line.split()[1:])
 
-    return [_split_variable(variable) for variable in _split_variables(line)]
+    return [_split_variable(variable, type_info) for variable in _split_variables(line)]
 
 
 def get_python_member_name(name: str) -> str:
@@ -360,7 +492,7 @@ def get_python_member_name(name: str) -> str:
     }.get(name, name)
 
 
-def get_python_type(name: str) -> str:
+def get_python_type(type_info: TypeInformation) -> str:
     type_map = {
         "logical": "bool",
         "integer": "int",
@@ -369,7 +501,7 @@ def get_python_type(name: str) -> str:
         "complex": "Complex",  #  -> builtin type not supported
     }
     # name_case = name
-    name = name.lower()
+    name = type_info.type.lower()
     if name in type_map:
         return type_map[name]
     for delim in "(, ":
@@ -391,23 +523,24 @@ def get_python_type(name: str) -> str:
 
 
 def find_structs(
-    contents: str,
+    file_lines: list[FileLine],
     by_class_name: dict[str, Structure],
     filename: pathlib.Path,
 ) -> dict[str, Structure]:
     structs = {}
     in_struct = ""
     module = filename.stem
-    for num, line in enumerate(contents.splitlines(), 1):
-        lower_line = line.lower().split()
-        if not lower_line:
+    for file_line in file_lines:
+        line = file_line.line
+        lower_split = line.lower().split()
+        if not lower_split:
             ...
-        elif lower_line[0] == "module":
-            if len(lower_line) == 2:
-                module = lower_line[1]
+        elif lower_split[0] == "module":
+            if len(lower_split) == 2:
+                module = lower_split[1]
             else:
-                logger.debug(f"Skipping module line: {lower_line}")
-        elif lower_line[0] == "type" or lower_line[0].startswith("type,"):
+                logger.debug(f"Skipping module line: {lower_split}")
+        elif lower_split[0] == "type" or lower_split[0].startswith("type,"):
             if line.lower().replace(" ", "").startswith("type("):
                 if in_struct:
                     structs[in_struct].lines.append(line.strip())
@@ -416,24 +549,27 @@ def find_structs(
                 # select type(x) / type is (y)
                 continue
             if in_struct:
-                raise RuntimeError(f"{filename}:{num}: In struct: {in_struct} {line}")
+                raise RuntimeError(
+                    f"{filename}:{file_line.lineno}: In struct: {in_struct} {line}"
+                )
             (in_struct,) = get_names_from_line(line)
             class_name = to_class_name(in_struct)
             while class_name in by_class_name:
                 class_name += "_"
-            assert module != "Sc_euclidean"
             structs[in_struct] = Structure(
-                filename=filename,
+                filename=file_line.filename,
                 module=module,
                 name=in_struct,
-                line=num,
+                line=file_line.lineno,
                 lines=[line.strip()],
                 info=StructureInfo(class_name=class_name),
             )
             by_class_name[class_name] = structs[in_struct]
-        elif lower_line[:2] == ["end", "type"] or lower_line[0] == "endtype":
+        elif lower_split[:2] == ["end", "type"] or lower_split[0] == "endtype":
             if not in_struct:
-                raise RuntimeError(f"{filename}:{num}: Not in struct? {line}")
+                raise RuntimeError(
+                    f"{filename}:{file_line.lineno}: Not in struct? {line}"
+                )
             logger.debug(f"Saw structure: {in_struct}")  # , structs[in_struct])
             in_struct = ""
         elif in_struct:
@@ -442,40 +578,50 @@ def find_structs(
     return structs
 
 
-skip_includes = ["fftw3.f03", "mpif.h"]
-
-
-def fill_includes(filename: pathlib.Path, contents: str) -> str:
+def fill_includes(
+    source_config: SourceConfig, filename: pathlib.Path, contents: str
+) -> list[FileLine]:
     result = []
-    for line in contents.splitlines():
+    for lineno, line in enumerate(contents.splitlines(), 1):
         parts = line.strip().split()
+        file_line = FileLine(filename=filename, lineno=lineno, line=line)
         if parts and parts[0].lower() == "include":
-            include_fn = parts[1].replace("'", "")
+            include_fn = ast.literal_eval(parts[1])
 
-            if include_fn in skip_includes or not include_fn.lower().endswith(
-                ".f90"
-            ):  # TODO config file
-                result.append(line)
+            if include_fn in source_config.skip_includes or pathlib.Path(
+                include_fn
+            ).suffix.lower() in {".h"}:
+                result.append(file_line)
             else:
-                include_path = filename.parent / include_fn
-                result.extend(include_path.read_text().splitlines())
-                # TODO: no recursive includes
+                for candidate_path in [filename.parent, *source_config.include_dirs]:
+                    include_path = candidate_path / include_fn
+                    if include_path.exists():
+                        result.extend(
+                            fill_includes(
+                                source_config, include_path, include_path.read_text()
+                            )
+                        )
+                        break
+                else:
+                    raise FileNotFoundError(include_fn)
         else:
-            result.append(line)
+            result.append(file_line)
 
-    return "\n".join(result)
+    return result
 
 
 def find_structs_in_file(
+    config: ParserConfig,
+    source: SourceConfig,
     filename: pathlib.Path,
     by_class_name: dict[str, Structure],
 ) -> dict[str, Structure]:
     with open(filename, encoding="latin-1") as fp:
         contents = fp.read()
 
-    contents = fill_includes(filename, contents)
+    file_lines = fill_includes(source, filename, contents)
     return find_structs(
-        contents=contents,
+        file_lines=file_lines,
         by_class_name=by_class_name,
         filename=filename,
     )
@@ -495,31 +641,33 @@ def to_class_name(bmad_name: str) -> str:
 
 
 def convert(
-    path: pathlib.Path,
+    config: ParserConfig,
+    source: SourceConfig,
     yaml_path: pathlib.Path,
 ) -> dict[pathlib.Path, dict[str, Structure]]:
     by_file = {}
     failed = {}
     by_class_name = {}
-    filenames = list(path.glob("**/*.f90", case_sensitive=False))
-    # filenames.extend(list(path.glob("**/*.inc", case_sensitive=False)))
+    filenames = list(source.source_dir.glob("**/*.f90", case_sensitive=False))
     for source_fn in filenames:
         try:
-            by_file[source_fn] = find_structs_in_file(source_fn, by_class_name)
+            by_file[source_fn] = find_structs_in_file(
+                config, source, source_fn, by_class_name
+            )
         except Exception as ex:
             failed[source_fn] = ex
             raise
 
     logger.info(
-        f"{path.name!r} total structures: %d",
+        f"{source.source_dir.name!r} total structures: %d",
         sum(len(structs) for structs in by_file.values()),
     )
-    logger.info(f"Path: {path}")
+    logger.info(f"Path: {source.source_dir}")
     logger.info(
         "Total structures: %d", sum(len(structs) for structs in by_file.values())
     )
-    logger.info("Success:          %d", len(by_file))
-    logger.info("Failures:         %d", len(failed))
+    logger.info("Success:          %d files", len(by_file))
+    logger.info("Failures:         %d files", len(failed))
     for fail, reason in failed.items():
         logger.error(f"Failed: {fail} {reason}")
 
@@ -636,7 +784,7 @@ def make_all_models(
     *,
     base_path: pathlib.Path = pathlib.Path("."),
     template_filename: AnyPath = MODEL_TEMPLATE,
-    imports: dict[pathlib.Path, SourcePaths],
+    imports: dict[pathlib.Path, SourceConfig],
 ) -> str:
     """
     Load the structure yaml file and generate dataclass source code for it.
@@ -731,7 +879,7 @@ def convert_and_write(
         return output_fn
 
     for source in config.sources:
-        convert(source.source_dir, get_output_path(source.yaml_filename))
+        convert(config, source, get_output_path(source.yaml_filename))
 
     for source in config.sources:
         python_source = make_all_models(

@@ -4837,7 +4837,7 @@
           python_name: ix_z
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         n_bad:
           comment: Number of rejected steps when using adaptive step size control.
           default: 0
@@ -9243,7 +9243,7 @@
           python_name: hard_location
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         has_fringe:
           comment: Has a fringe to worry about?
           default: false
@@ -9270,7 +9270,7 @@
           python_name: location
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         particle_at:
           comment: first_track_edge$, second_track_edge$, or none$
           default: -1
@@ -10603,7 +10603,7 @@
           python_name: ic
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         input_file_name:
           comment: Name of the lattice input file
           default: ''
@@ -10694,7 +10694,7 @@
           python_name: n_ele_max
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         n_ele_track:
           comment: Number of lat elements to track through.
           default: 0
@@ -10707,7 +10707,7 @@
           python_name: n_ele_track
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         n_ic_max:
           comment: Last index used in ic_array
           default: 0
@@ -11405,7 +11405,7 @@
           python_name: ix_lord
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         ix_pass:
           comment: Pass number
           default: 0
@@ -11431,7 +11431,7 @@
           python_name: ix_super
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         multipass:
           comment: True if involved in multipass. False otherwise
           default: false
@@ -12978,7 +12978,7 @@
           python_name: exact_misalign
           python_type: bool
           size: null
-          type: logical, pointer
+          type: logical
         exact_model:
           comment: Points to PTC EXACT_MODEL. Default True.
           default: false
@@ -12991,7 +12991,7 @@
           python_name: exact_model
           python_type: bool
           size: null
-          type: logical, pointer
+          type: logical
         max_fringe_order:
           comment: Points to PTC HIGHEST_FRINGE. 2 (default) => Quadrupole.
           default: 0
@@ -13004,7 +13004,7 @@
           python_name: max_fringe_order
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         old_integrator:
           comment: Points to PTC OLD_INTEGRATOR. -1 = False, 1 = True.
           default: 0
@@ -13017,7 +13017,7 @@
           python_name: old_integrator
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         print_info_messages:
           comment: Allow PTC to print informational messages (which can clutter the
             output)?
@@ -22738,7 +22738,7 @@
           default: 0.0
           default_factory: ''
           definition: 'real(dp), allocatable, dimension(:,:,:,:) :: bfield'
-          dimension: ''
+          dimension: ':,:,:,:'
           fortran_default: null
           line: 26
           name: bfield
@@ -22777,7 +22777,7 @@
           default: 0.0
           default_factory: ''
           definition: 'real(dp), allocatable, dimension(:,:,:,:) :: efield'
-          dimension: ''
+          dimension: ':,:,:,:'
           fortran_default: null
           line: 25
           name: efield
@@ -22879,7 +22879,7 @@
           default: 0.0
           default_factory: ''
           definition: 'real(dp), allocatable, dimension(:,:,:) :: phi'
-          dimension: ''
+          dimension: ':,:,:'
           fortran_default: null
           line: 24
           name: phi
@@ -22892,7 +22892,7 @@
           default: 0.0
           default_factory: ''
           definition: 'real(dp), allocatable, dimension(:,:,:) :: rho'
-          dimension: ''
+          dimension: ':,:,:'
           fortran_default: null
           line: 23
           name: rho

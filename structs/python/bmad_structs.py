@@ -24,7 +24,9 @@ from .forest_structs import (
     CNormalForm,
     CQuaternion,
     CTaylor,
+    Fibre,
     InternalState,
+    Layout,
     Probe8,
     TreeElement,
 )
@@ -2806,7 +2808,7 @@ class BunchStruct(pydantic.BaseModel):
         Fortran default: 0
     ix_z : int
         bunch%ix_z(1) is index of head particle, etc.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     n_bad : int
         Number of rejected steps when using adaptive step size control.
         Bmad type: integer
@@ -5519,7 +5521,7 @@ class FringeFieldInfoStruct(pydantic.BaseModel):
         Fortran default: null()
     hard_location : int
         Particle location wrt hard_ele. Points to element in location(:).
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     has_fringe : bool
         Has a fringe to worry about?
@@ -5528,7 +5530,7 @@ class FringeFieldInfoStruct(pydantic.BaseModel):
     location : int
         Particle location in an element. entrance_end$, inside$, or exit_end$ Elements
         in list are the tracking element or its lords.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     particle_at : int
         first_track_edge$, second_track_edge$, or none$
         Bmad type: integer
@@ -6374,7 +6376,7 @@ class LatStruct(pydantic.BaseModel):
         Bmad type: ele_struct
     ic : int
         Index to %control(:) from slaves.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     input_file_name : str
         Name of the lattice input file
         Bmad type: character
@@ -6400,11 +6402,11 @@ class LatStruct(pydantic.BaseModel):
         Fortran default: 0
     n_ele_max : int
         Index of last valid element in %ele(:) array
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     n_ele_track : int
         Number of lat elements to track through.
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     n_ic_max : int
         Last index used in ic_array
@@ -6929,13 +6931,13 @@ class MultipassEleInfoStruct(pydantic.BaseModel):
     ----------
     ix_lord : int
         Pointers to lord(:) array
-        Bmad type: integer, allocatable
+        Bmad type: integer
     ix_pass : int
         Pass number
         Bmad type: integer
     ix_super : int
         Indexes to slave(ix_pass, super_slave%ix_ele) matrix
-        Bmad type: integer, allocatable
+        Bmad type: integer
     multipass : bool
         True if involved in multipass. False otherwise
         Bmad type: logical
@@ -7843,19 +7845,19 @@ class PtcCommonStruct(pydantic.BaseModel):
         Fortran default: 0.006
     exact_misalign : bool
         Points to PTC ALWAYS_EXACTMIS. Default True. Notice different names.
-        Bmad type: logical, pointer
+        Bmad type: logical
         Fortran default: null()
     exact_model : bool
         Points to PTC EXACT_MODEL. Default True.
-        Bmad type: logical, pointer
+        Bmad type: logical
         Fortran default: null()
     max_fringe_order : int
         Points to PTC HIGHEST_FRINGE. 2 (default) => Quadrupole.
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     old_integrator : int
         Points to PTC OLD_INTEGRATOR. -1 = False, 1 = True.
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     print_info_messages : bool
         Allow PTC to print informational messages (which can clutter the output)?
@@ -13743,7 +13745,7 @@ class Mesh3dStruct(pydantic.BaseModel):
         Bmad type: real
     """
 
-    bfield: float = pydantic.Field(
+    bfield: Sequence[float] = pydantic.Field(
         default=0.0,
         description="magnetic field grid",
     )
@@ -13756,7 +13758,7 @@ class Mesh3dStruct(pydantic.BaseModel):
         max_length=3,
         description="Grid spacing",
     )
-    efield: float = pydantic.Field(
+    efield: Sequence[float] = pydantic.Field(
         default=0.0,
         description="electric field grid",
     )
@@ -13795,11 +13797,11 @@ class Mesh3dStruct(pydantic.BaseModel):
         max_length=3,
         description="Array padding for cyclic convolution",
     )
-    phi: float = pydantic.Field(
+    phi: Sequence[float] = pydantic.Field(
         default=0.0,
         description="electric potential grid",
     )
-    rho: float = pydantic.Field(
+    rho: Sequence[float] = pydantic.Field(
         default=0.0,
         description="Charge density grid",
     )

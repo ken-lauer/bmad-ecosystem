@@ -11,7 +11,7 @@ import pydantic
 
 from .parser import (
     ParserConfig,
-    SourcePaths,
+    SourceConfig,
     Structure,
     StructureFile,
     StructureMember,
@@ -47,19 +47,6 @@ skips = {
 logger = logging.getLogger(__name__)
 
 
-def _split_defn_words(defn: str) -> list[str]:
-    separators = "(), \t[]"
-    words = []
-    last = []
-    for ch in defn:
-        if ch in separators:
-            words.append("".join(last))
-            last = []
-        else:
-            last.append(ch)
-    return words
-
-
 class JsonDumpMember(pydantic.BaseModel):
     var: str
     member: StructureMember
@@ -74,9 +61,9 @@ class JsonDumpCode(pydantic.BaseModel):
 
 
 class FortranSource(pydantic.BaseModel):
+    module: str
     imports: list[str] = []
     header: str = """
-    use precision_def, only: rp
     """
 
     footer: str = """
@@ -88,6 +75,7 @@ subroutine complex_to_json (input, json_root, depth)
 
     use json_module
     use json_kinds, only: CK
+    use precision_def, only: rp
 
     implicit none
 
@@ -111,12 +99,28 @@ end subroutine complex_to_json
         subroutines = "\n".join(sub for sub in self.subroutines.values())
         source_lines = "\n".join(
             (
+                f"module {self.module}",
+                "contains",
                 self.header,
                 subroutines,
                 self.footer,
+                f"end module {self.module}",
             )
         )
         return "\n".join(line for line in source_lines.splitlines() if line.strip())
+
+
+def _split_defn_words(defn: str) -> list[str]:
+    separators = "(), \t[]"
+    words = []
+    last = []
+    for ch in defn:
+        if ch in separators:
+            words.append("".join(last))
+            last = []
+        else:
+            last.append(ch)
+    return words
 
 
 def get_structures_by_name(
@@ -234,7 +238,7 @@ class ListBuilder(pydantic.BaseModel):
 
 class Converter(pydantic.BaseModel):
     structs: StructureFile
-    importable: dict[SourcePaths, StructureFile] = {}
+    importable: dict[SourceConfig, StructureFile] = {}
     generated: set[str] = set()
     seen: set[str] = set()
     imports: dict[StructureFile, list[str]] = {}
@@ -453,18 +457,11 @@ class Converter(pydantic.BaseModel):
         if struct.name.lower() in skips or struct.filename.stem in filename_skips:
             raise ValueError(f"skipped subroutine: {subroutine_name}")
 
-        if struct.name.lower() in special_use_by_struct:
-            struct_filename = special_use_by_struct[struct.name.lower()]
-        elif struct.filename.stem in special_use_by_filename:
-            struct_filename = special_use_by_filename[struct.filename.stem]
-        else:
-            struct_filename = struct.filename.stem
-
         dump_code = self.get_struct_dump_code(
             "input",
             struct,
             root_variable="json_root",
-            key="name",
+            key="",  # TODO: "name"?
             print_=False,
             destroy=False,
         )
@@ -501,7 +498,7 @@ class Converter(pydantic.BaseModel):
             endif
 
             if (.not. associated(input)) then
-              call json%create_null(json_root, name)
+              call json%create_null(json_root, '')
               return
             endif
             """.rstrip()
@@ -580,15 +577,15 @@ def convert_tree(structs: StructureFile, struct_name: str):
 
 
 def convert_all(
-    source: SourcePaths,
+    source: SourceConfig,
     structs: StructureFile,
-    importable: dict[SourcePaths, StructureFile],
+    importable: dict[SourceConfig, StructureFile],
 ):
     conv = Converter(structs=structs, importable=importable)
     by_name = conv.by_bmad_name
 
     # tree = make_struct_tree(conv.by_bmad_name)
-    fortran = FortranSource()
+    fortran = FortranSource(module=source.fortran_filename.stem)
 
     for name, struct in conv.by_bmad_name.items():
         logger.debug(f"Generating: {name}")

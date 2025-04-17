@@ -4793,7 +4793,7 @@
           python_name: ix_line
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         ix_symb:
           comment: Corresponding index in d1_data%d(:) array.
           default: 0
@@ -4806,7 +4806,7 @@
           python_name: ix_symb
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         ix_universe:
           comment: Universe where data is. -1 => use s%global%default_universe
           default: -1
@@ -8656,7 +8656,7 @@
           python_name: i
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
     line: 80
     module: tao_struct
     name: tao_integer_array_struct
@@ -9261,7 +9261,7 @@
           python_name: L
           python_type: bool
           size: null
-          type: logical, pointer
+          type: logical
     line: 76
     module: tao_struct
     name: tao_logical_array_struct
@@ -10198,7 +10198,7 @@
           python_name: good_user
           python_type: bool
           size: null
-          type: logical, pointer
+          type: logical
         good_value:
           comment: ''
           default: false
@@ -10211,7 +10211,7 @@
           python_name: good_value
           python_type: bool
           size: null
-          type: logical, pointer
+          type: logical
         r:
           comment: ''
           default: 0.0
@@ -10440,7 +10440,7 @@
           python_name: picked
           python_type: bool
           size: null
-          type: logical, allocatable
+          type: logical
         srdt_cache:
           comment: ''
           default: 0.0
@@ -11234,7 +11234,7 @@
           python_name: key
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         mpi:
           comment: ''
           default: null
@@ -12993,7 +12993,7 @@
           python_name: ix_data
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         kick:
           comment: ''
           default: null

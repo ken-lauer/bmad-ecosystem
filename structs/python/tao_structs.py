@@ -2706,10 +2706,10 @@ class TaoCurveStruct(pydantic.BaseModel):
         Fortran default: 0
     ix_line : int
         Used by wave and aperture curves.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     ix_symb : int
         Corresponding index in d1_data%d(:) array.
-        Bmad type: integer, allocatable
+        Bmad type: integer
     ix_universe : int
         Universe where data is. -1 => use s%global%default_universe
         Bmad type: integer
@@ -5239,7 +5239,7 @@ class TaoIntegerArrayStruct(pydantic.BaseModel):
     Attributes
     ----------
     i : int
-        Bmad type: integer, pointer
+        Bmad type: integer
         Fortran default: null()
     """
 
@@ -5577,7 +5577,7 @@ class TaoLogicalArrayStruct(pydantic.BaseModel):
     Attributes
     ----------
     L : bool
-        Bmad type: logical, pointer
+        Bmad type: logical
         Fortran default: null()
     """
 
@@ -6172,10 +6172,10 @@ class TaoRealPointerStruct(pydantic.BaseModel):
     Attributes
     ----------
     good_user : bool
-        Bmad type: logical, pointer
+        Bmad type: logical
         Fortran default: null()
     good_value : bool
-        Bmad type: logical, pointer
+        Bmad type: logical
         Fortran default: null()
     r : float
         Bmad type: real
@@ -6243,7 +6243,7 @@ class TaoScratchSpaceStruct(pydantic.BaseModel):
     info_y : TaoExpressionInfoStruct
         Bmad type: tao_expression_info_struct
     picked : bool
-        Bmad type: logical, allocatable
+        Bmad type: logical
     srdt_cache : Complex
         Bmad type: complex
     stack : TaoEvalStack1Struct
@@ -6731,7 +6731,7 @@ class TaoSuperUniverseStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     key : int
-        Bmad type: integer, allocatable
+        Bmad type: integer
     mpi : TaoMpiStruct
         Bmad type: tao_mpi_struct
         Fortran default: tao_mpi_struct()
@@ -7728,7 +7728,7 @@ class TaoWaveStruct(pydantic.BaseModel):
         Fortran default: -1
     ix_data : int
         Translates from plot point to datum index
-        Bmad type: integer, allocatable
+        Bmad type: integer
     kick : TaoWaveKickPtStruct
         Bmad type: tao_wave_kick_pt_struct
     n_a : int

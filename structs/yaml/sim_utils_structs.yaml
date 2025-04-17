@@ -703,7 +703,7 @@
           python_name: i
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         i1:
           comment: ''
           default: 0
@@ -716,7 +716,7 @@
           python_name: i1
           python_type: int
           size: null
-          type: integer, pointer
+          type: integer
         l:
           comment: ''
           default: false
@@ -729,7 +729,7 @@
           python_name: L
           python_type: bool
           size: null
-          type: logical, pointer
+          type: logical
         r:
           comment: ''
           default: 0.0
@@ -813,7 +813,7 @@
           python_name: index
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         n_max:
           comment: Use only names(n_min:n_max) part of array.
           default: 0
@@ -875,7 +875,7 @@
           python_name: index
           python_type: int
           size: null
-          type: integer, allocatable
+          type: integer
         n_max:
           comment: Use only names(n_min:n_max) part of array.
           default: 0
@@ -2326,7 +2326,7 @@
           python_name: mask
           python_type: bool
           size: null
-          type: logical, allocatable
+          type: logical
         ochisq:
           comment: ''
           default: 0.0
