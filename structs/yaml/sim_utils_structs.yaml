@@ -141,7 +141,7 @@
           definition: 'real(rp) :: Cgoal  = 1.E-23'
           dimension: ''
           fortran_default: '1.E-23'
-          line: 24
+          line: 21
           name: Cgoal
           python_name: cgoal
           python_type: float
@@ -154,7 +154,7 @@
           definition: 'logical :: analytic_avv = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 35
+          line: 32
           name: analytic_avv
           python_name: analytic_avv
           python_type: bool
@@ -167,7 +167,7 @@
           definition: 'logical :: analytic_jac = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 34
+          line: 31
           name: analytic_jac
           python_name: analytic_jac
           python_type: bool
@@ -180,7 +180,7 @@
           definition: 'real(rp) :: artol = 1.E-3'
           dimension: ''
           fortran_default: '1.E-3'
-          line: 23
+          line: 20
           name: artol
           python_name: artol
           python_type: float
@@ -193,7 +193,7 @@
           definition: 'real(rp) :: avmax = 0.8'
           dimension: ''
           fortran_default: '0.8'
-          line: 33
+          line: 30
           name: avmax
           python_name: avmax
           python_type: float
@@ -206,7 +206,7 @@
           definition: 'logical :: center_diff = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 36
+          line: 33
           name: center_diff
           python_name: center_diff
           python_type: bool
@@ -219,7 +219,7 @@
           definition: 'real(rp) :: factoraccept  = 5.'
           dimension: ''
           fortran_default: '5.'
-          line: 31
+          line: 28
           name: factoraccept
           python_name: factoraccept
           python_type: float
@@ -232,7 +232,7 @@
           definition: 'real(rp) :: factorreject  = 2.'
           dimension: ''
           fortran_default: '2.'
-          line: 32
+          line: 29
           name: factorreject
           python_name: factorreject
           python_type: float
@@ -245,7 +245,7 @@
           definition: 'real(rp) :: frtol = 1.5E-8'
           dimension: ''
           fortran_default: '1.5E-8'
-          line: 29
+          line: 26
           name: frtol
           python_name: frtol
           python_type: float
@@ -258,7 +258,7 @@
           definition: 'real(rp) :: ftol = 1.5E-8'
           dimension: ''
           fortran_default: '1.5E-8'
-          line: 28
+          line: 25
           name: ftol
           python_name: ftol
           python_type: float
@@ -271,7 +271,7 @@
           definition: 'logical :: geo_hit_limit= .false.'
           dimension: ''
           fortran_default: .false.
-          line: 37
+          line: 34
           name: geo_hit_limit
           python_name: geo_hit_limit
           python_type: bool
@@ -284,7 +284,7 @@
           definition: 'real(rp) :: gtol  = 1.5E-8'
           dimension: ''
           fortran_default: '1.5E-8'
-          line: 25
+          line: 22
           name: gtol
           python_name: gtol
           python_type: float
@@ -297,21 +297,20 @@
           definition: 'real(rp) :: h1=1.D-6,h2=1.D-1'
           dimension: ''
           fortran_default: 1.D-6
-          line: 18
+          line: 17
           name: h1
           python_name: h1
           python_type: float
           size: null
           type: real
         h2:
-          comment: controls step sizes for finite diff derivatives h1 for jacobian,
-            h2 for dir second deriv ! Stopping criterion
+          comment: controls step sizes for finite diff derivatives
           default: 0.1
           default_factory: ''
           definition: 'real(rp) :: h1=1.D-6,h2=1.D-1'
           dimension: ''
           fortran_default: 1.D-1
-          line: 18
+          line: 17
           name: h2
           python_name: h2
           python_type: float
@@ -344,8 +343,7 @@
           size: null
           type: integer
         ibroyden:
-          comment: 'number of iterations using approximate jacobian !!!real(rp) ::
-            eps = 1.5E-6      ! function evaluation precision'
+          comment: number of iterations using approximate jacobian
           default: 0
           default_factory: ''
           definition: 'integer :: ibroyden = 0'
@@ -377,7 +375,7 @@
           definition: 'real(rp) :: initialfactor = 1.'
           dimension: ''
           fortran_default: '1.'
-          line: 30
+          line: 27
           name: initialfactor
           python_name: initialfactor
           python_type: float
@@ -442,7 +440,7 @@
           definition: 'real(rp) :: maxlam = 1E7'
           dimension: ''
           fortran_default: 1E7
-          line: 21
+          line: 18
           name: maxlam
           python_name: maxlam
           python_type: float
@@ -455,7 +453,7 @@
           definition: 'real(rp) :: minlam = -1.0'
           dimension: ''
           fortran_default: '-1.0'
-          line: 22
+          line: 19
           name: minlam
           python_name: minlam
           python_type: float
@@ -507,7 +505,7 @@
           definition: 'real(rp) :: xrtol = 1.5E-8'
           dimension: ''
           fortran_default: '1.5E-8'
-          line: 27
+          line: 24
           name: xrtol
           python_name: xrtol
           python_type: float
@@ -520,7 +518,7 @@
           definition: 'real(rp) :: xtol = 1.E-10'
           dimension: ''
           fortran_default: '1.E-10'
-          line: 26
+          line: 23
           name: xtol
           python_name: xtol
           python_type: float
@@ -555,8 +553,7 @@
           size: null
           type: integer
         mass:
-          comment: isotope masses in units of the unified atomic mass unit. mass(0)
-            is the standard atomic weight mass(n) is the mass of isotope n + i_offset
+          comment: isotope masses in units of the unified atomic mass unit.
           default: 0.0
           default_factory: ''
           definition: 'real(rp) :: mass(0:46) = no_iso'
@@ -801,8 +798,7 @@
       comment: ''
       members:
         index:
-          comment: Sorted index for names(:) array. names(an_index(i)) is in alphabetical
-            order.
+          comment: Sorted index for names(:) array.
           default: 0
           default_factory: ''
           definition: 'integer, allocatable :: index(:)'
@@ -821,7 +817,7 @@
           definition: 'integer :: n_max = 0'
           dimension: ''
           fortran_default: '0'
-          line: 39
+          line: 38
           name: n_max
           python_name: n_max
           python_type: int
@@ -834,7 +830,7 @@
           definition: 'integer :: n_min = 1'
           dimension: ''
           fortran_default: '1'
-          line: 38
+          line: 37
           name: n_min
           python_name: n_min
           python_type: int
@@ -863,8 +859,7 @@
       comment: ''
       members:
         index:
-          comment: Sorted index for names(:) array. names(an_index(i)) is in alphabetical
-            order.
+          comment: Sorted index for names(:) array.
           default: 0
           default_factory: ''
           definition: 'integer, allocatable :: index(:)'
@@ -883,7 +878,7 @@
           definition: 'integer :: n_max = 0'
           dimension: ''
           fortran_default: '0'
-          line: 23
+          line: 22
           name: n_max
           python_name: n_max
           python_type: int
@@ -896,7 +891,7 @@
           definition: 'integer :: n_min = 1'
           dimension: ''
           fortran_default: '1'
-          line: 22
+          line: 21
           name: n_min
           python_name: n_min
           python_type: int
@@ -1811,94 +1806,6 @@
     line: 91
     module: cubic_interpolation_mod
     name: field_at_3D_box_struct
-  m16_matrix_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
-    info:
-      class_name: M16MatrixStruct
-      comment: ''
-      members:
-        row:
-          comment: ''
-          default: null
-          default_factory: ''
-          definition: type (m16_row_struct) row(16)
-          dimension: '16'
-          fortran_default: null
-          line: 138
-          name: row
-          python_name: row
-          python_type: M16RowStruct
-          size: null
-          type: m16_row_struct
-    line: 137
-    module: cubic_interpolation_mod
-    name: m16_matrix_struct
-  m16_row_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
-    info:
-      class_name: M16RowStruct
-      comment: ''
-      members:
-        pt:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: integer pt(16)
-          dimension: '16'
-          fortran_default: null
-          line: 134
-          name: pt
-          python_name: pt
-          python_type: int
-          size: null
-          type: integer
-    line: 133
-    module: cubic_interpolation_mod
-    name: m16_row_struct
-  m64_matrix_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
-    info:
-      class_name: M64MatrixStruct
-      comment: ''
-      members:
-        row:
-          comment: ''
-          default: null
-          default_factory: ''
-          definition: type (m64_row_struct) row(64)
-          dimension: '64'
-          fortran_default: null
-          line: 166
-          name: row
-          python_name: row
-          python_type: M64RowStruct
-          size: null
-          type: m64_row_struct
-    line: 165
-    module: cubic_interpolation_mod
-    name: m64_matrix_struct
-  m64_row_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
-    info:
-      class_name: M64RowStruct
-      comment: ''
-      members:
-        pt:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: integer pt(64)
-          dimension: '64'
-          fortran_default: null
-          line: 162
-          name: pt
-          python_name: pt
-          python_type: int
-          size: null
-          type: integer
-    line: 161
-    module: cubic_interpolation_mod
-    name: m64_row_struct
   tricubic_cmplx_coef_struct:
     filename: /Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90
     info:
@@ -1999,14 +1906,14 @@
           definition: 'real(sp) :: am = 0'
           dimension: ''
           fortran_default: '0'
-          line: 35
+          line: 34
           name: am
           python_name: am
           python_type: float
           size: null
           type: real
         engine:
-          comment: Params
+          comment: ''
           default: 0
           default_factory: ''
           definition: 'integer :: engine = pseudo_random$'
@@ -2025,7 +1932,7 @@
           definition: 'integer :: gauss_converter = exact_gaussian$'
           dimension: ''
           fortran_default: exact_gaussian$
-          line: 36
+          line: 35
           name: gauss_converter
           python_name: gauss_converter
           python_type: int
@@ -2038,7 +1945,7 @@
           definition: 'real(rp) :: gauss_sigma_cut = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 37
+          line: 36
           name: gauss_sigma_cut
           python_name: gauss_sigma_cut
           python_type: float
@@ -2064,7 +1971,7 @@
           definition: 'integer(i4_b) :: in_sobseq = 0'
           dimension: ''
           fortran_default: '0'
-          line: 38
+          line: 37
           name: in_sobseq
           python_name: in_sobseq
           python_type: int
@@ -2090,7 +1997,7 @@
           definition: 'integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0'
           dimension: sobseq_maxdim
           fortran_default: '0'
-          line: 39
+          line: 38
           name: ix_sobseq
           python_name: ix_sobseq
           python_type: int
@@ -2129,7 +2036,7 @@
           definition: 'integer :: seed = 0'
           dimension: ''
           fortran_default: '0'
-          line: 34
+          line: 33
           name: seed
           python_name: seed
           python_type: int
@@ -2142,7 +2049,7 @@
           definition: 'real(rp) :: x_sobseq(sobseq_maxdim) = 0'
           dimension: sobseq_maxdim
           fortran_default: '0'
-          line: 40
+          line: 39
           name: x_sobseq
           python_name: x_sobseq
           python_type: float
@@ -2230,7 +2137,7 @@
           definition: 'real(rp), allocatable :: alpha(:, :)'
           dimension: ':, :'
           fortran_default: null
-          line: 16
+          line: 15
           name: alpha
           python_name: alpha
           python_type: float
@@ -2243,7 +2150,7 @@
           definition: 'real(rp), allocatable :: atry(:), beta(:)'
           dimension: ':'
           fortran_default: null
-          line: 17
+          line: 16
           name: atry
           python_name: atry
           python_type: float
@@ -2256,7 +2163,7 @@
           definition: 'real(rp), allocatable :: atry(:), beta(:)'
           dimension: ':'
           fortran_default: null
-          line: 17
+          line: 16
           name: beta
           python_name: beta
           python_type: float
@@ -2269,7 +2176,7 @@
           definition: 'real(rp), allocatable :: covar(:, :)'
           dimension: ':, :'
           fortran_default: null
-          line: 15
+          line: 14
           name: covar
           python_name: covar
           python_type: float
@@ -2282,7 +2189,7 @@
           definition: 'real(rp), allocatable :: da(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 18
+          line: 17
           name: da
           python_name: da
           python_type: float
@@ -2295,7 +2202,7 @@
           definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
           dimension: ':'
           fortran_default: null
-          line: 23
+          line: 21
           name: dy
           python_name: dy
           python_type: float
@@ -2308,20 +2215,20 @@
           definition: 'real(rp), allocatable :: dyda(:, :)'
           dimension: ':, :'
           fortran_default: null
-          line: 22
+          line: 20
           name: dyda
           python_name: dyda
           python_type: float
           size: null
           type: real
         mask:
-          comment: Used by super_mrqcof
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical, allocatable :: mask(:)'
           dimension: ':'
           fortran_default: null
-          line: 20
+          line: 19
           name: mask
           python_name: mask
           python_type: bool
@@ -2334,7 +2241,7 @@
           definition: 'real(rp) :: ochisq'
           dimension: ''
           fortran_default: null
-          line: 19
+          line: 18
           name: ochisq
           python_name: ochisq
           python_type: float
@@ -2347,7 +2254,7 @@
           definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
           dimension: ':'
           fortran_default: null
-          line: 23
+          line: 21
           name: old_dy
           python_name: old_dy
           python_type: float
@@ -2360,7 +2267,7 @@
           definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
           dimension: ':'
           fortran_default: null
-          line: 23
+          line: 21
           name: wt
           python_name: wt
           python_type: float
@@ -2373,7 +2280,7 @@
           definition: 'real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)'
           dimension: ':'
           fortran_default: null
-          line: 23
+          line: 21
           name: ymod
           python_name: ymod
           python_type: float
@@ -2537,55 +2444,7 @@
 /Users/klauer/Repos/bmad/sim_utils/misc/utilities_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/misc/virtual_memory_usage.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/mpi/mpi.f90: {}
-/Users/klauer/Repos/bmad/sim_utils/mpi/opti_de_mpi_mod.f90:
-  solution_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/mpi/opti_de_mpi_mod.f90
-    info:
-      class_name: SolutionStruct
-      comment: ''
-      members:
-        merit:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) merit
-          dimension: ''
-          fortran_default: null
-          line: 7
-          name: merit
-          python_name: merit
-          python_type: float
-          size: null
-          type: real
-        status:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: integer status
-          dimension: ''
-          fortran_default: null
-          line: 8
-          name: status
-          python_name: status
-          python_type: int
-          size: null
-          type: integer
-        vec:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp), allocatable :: vec(:)'
-          dimension: ':'
-          fortran_default: null
-          line: 6
-          name: vec
-          python_name: vec
-          python_type: float
-          size: null
-          type: real
-    line: 5
-    module: opti_de_mpi_mod
-    name: solution_struct
+/Users/klauer/Repos/bmad/sim_utils/mpi/opti_de_mpi_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/optimizers/lmdif_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90:
   opti_de_param_struct:
@@ -2688,90 +2547,7 @@
     line: 5
     module: opti_de_mod
     name: opti_de_param_struct
-  solution_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90
-    info:
-      class_name: SolutionStruct_
-      comment: ''
-      members:
-        merit:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) merit
-          dimension: ''
-          fortran_default: null
-          line: 111
-          name: merit
-          python_name: merit
-          python_type: float
-          size: null
-          type: real
-        vec:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp), pointer :: vec(:)'
-          dimension: ':'
-          fortran_default: null
-          line: 110
-          name: vec
-          python_name: vec
-          python_type: float
-          size: null
-          type: real
-    line: 109
-    module: opti_de_mod
-    name: solution_struct
-/Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90:
-  solution_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90
-    info:
-      class_name: SolutionStruct__
-      comment: ''
-      members:
-        merit:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) merit
-          dimension: ''
-          fortran_default: null
-          line: 99
-          name: merit
-          python_name: merit
-          python_type: float
-          size: null
-          type: real
-        status:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: integer status
-          dimension: ''
-          fortran_default: null
-          line: 100
-          name: status
-          python_name: status
-          python_type: int
-          size: null
-          type: integer
-        vec:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp), allocatable :: vec(:)'
-          dimension: ':'
-          fortran_default: null
-          line: 98
-          name: vec
-          python_name: vec
-          python_type: float
-          size: null
-          type: real
-    line: 97
-    module: opti_de_openmp_mod
-    name: solution_struct
+/Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/display_size_and_resolution.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/noplot_interface.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/pgplot_interface.f90:
@@ -2850,272 +2626,7 @@
     module: pgplot_interface
     name: pg_interface_struct
 /Users/klauer/Repos/bmad/sim_utils/plot/pgsubs.f90: {}
-/Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90:
-  pl_interface_struct:
-    filename: /Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90
-    info:
-      class_name: PlInterfaceStruct
-      comment: ''
-      members:
-        char_size:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: char_size'
-          dimension: ''
-          fortran_default: null
-          line: 55
-          name: char_size
-          python_name: char_size
-          python_type: float
-          size: null
-          type: real
-        clip:
-          comment: ''
-          default: false
-          default_factory: ''
-          definition: 'logical :: clip'
-          dimension: ''
-          fortran_default: null
-          line: 58
-          name: clip
-          python_name: clip
-          python_type: bool
-          size: null
-          type: logical
-        fg_color:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: fg_color'
-          dimension: ''
-          fortran_default: null
-          line: 57
-          name: fg_color
-          python_name: fg_color
-          python_type: int
-          size: null
-          type: integer
-        fill_pattern:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: fill_pattern'
-          dimension: ''
-          fortran_default: null
-          line: 52
-          name: fill_pattern
-          python_name: fill_pattern
-          python_type: int
-          size: null
-          type: integer
-        graph_pos:
-          comment: ''
-          default: null
-          default_factory: ''
-          definition: 'type (viewport_size) :: graph_pos'
-          dimension: ''
-          fortran_default: null
-          line: 50
-          name: graph_pos
-          python_name: graph_pos
-          python_type: ViewportSize
-          size: null
-          type: viewport_size
-        i_chan:
-          comment: ''
-          default: -1
-          default_factory: ''
-          definition: 'integer :: i_chan = -1'
-          dimension: ''
-          fortran_default: '-1'
-          line: 51
-          name: i_chan
-          python_name: i_chan
-          python_type: int
-          size: null
-          type: integer
-        line_pattern:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: line_pattern'
-          dimension: ''
-          fortran_default: null
-          line: 54
-          name: line_pattern
-          python_name: line_pattern
-          python_type: int
-          size: null
-          type: integer
-        line_width:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: line_width'
-          dimension: ''
-          fortran_default: null
-          line: 53
-          name: line_width
-          python_name: line_width
-          python_type: int
-          size: null
-          type: integer
-        page_scale:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) page_scale
-          dimension: ''
-          fortran_default: null
-          line: 59
-          name: page_scale
-          python_name: page_scale
-          python_type: float
-          size: null
-          type: real
-        page_type:
-          comment: ''
-          default: ''
-          default_factory: list
-          definition: character(16) page_type
-          dimension: ''
-          fortran_default: null
-          line: 49
-          name: page_type
-          python_name: page_type
-          python_type: str
-          size: '16'
-          type: character
-        sym_size:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: sym_size'
-          dimension: ''
-          fortran_default: null
-          line: 56
-          name: sym_size
-          python_name: sym_size
-          python_type: float
-          size: null
-          type: real
-        x_inch_page:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) x_inch_page
-          dimension: ''
-          fortran_default: null
-          line: 60
-          name: x_inch_page
-          python_name: x_inch_page
-          python_type: float
-          size: null
-          type: real
-        x_inch_to_mm:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) x_inch_to_mm
-          dimension: ''
-          fortran_default: null
-          line: 62
-          name: x_inch_to_mm
-          python_name: x_inch_to_mm
-          python_type: float
-          size: null
-          type: real
-        y_inch_page:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) y_inch_page
-          dimension: ''
-          fortran_default: null
-          line: 61
-          name: y_inch_page
-          python_name: y_inch_page
-          python_type: float
-          size: null
-          type: real
-        y_inch_to_mm:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) y_inch_to_mm
-          dimension: ''
-          fortran_default: null
-          line: 63
-          name: y_inch_to_mm
-          python_name: y_inch_to_mm
-          python_type: float
-          size: null
-          type: real
-    line: 48
-    module: plplot_interface
-    name: pl_interface_struct
-  viewport_size:
-    filename: /Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90
-    info:
-      class_name: ViewportSize
-      comment: ''
-      members:
-        x1:
-          comment: in mm
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: x1'
-          dimension: ''
-          fortran_default: null
-          line: 42
-          name: x1
-          python_name: x1
-          python_type: float
-          size: null
-          type: real
-        x2:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: x2'
-          dimension: ''
-          fortran_default: null
-          line: 43
-          name: x2
-          python_name: x2
-          python_type: float
-          size: null
-          type: real
-        y1:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: y1'
-          dimension: ''
-          fortran_default: null
-          line: 44
-          name: y1
-          python_name: y1
-          python_type: float
-          size: null
-          type: real
-        y2:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: y2'
-          dimension: ''
-          fortran_default: null
-          line: 45
-          name: y2
-          python_name: y2
-          python_type: float
-          size: null
-          type: real
-    line: 41
-    module: plplot_interface
-    name: viewport_size
+/Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot.f90: {}
 /Users/klauer/Repos/bmad/sim_utils/plot/quick_plot_struct.f90:
   qp_arrow_struct:

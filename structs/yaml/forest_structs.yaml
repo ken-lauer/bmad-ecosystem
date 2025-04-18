@@ -357,7 +357,7 @@
           definition: real(dp)  a(3),b(3)
           dimension: '3'
           fortran_default: null
-          line: 121
+          line: 120
           name: a
           python_name: a
           python_type: float
@@ -370,7 +370,7 @@
           definition: real(dp)  a(3),b(3)
           dimension: '3'
           fortran_default: null
-          line: 121
+          line: 120
           name: b
           python_name: b
           python_type: float
@@ -383,7 +383,7 @@
           definition: real(dp)  ent(3,3),exi(3,3)
           dimension: 3,3
           fortran_default: null
-          line: 122
+          line: 121
           name: ent
           python_name: ent
           python_type: float
@@ -396,7 +396,7 @@
           definition: real(dp)  ent(3,3),exi(3,3)
           dimension: 3,3
           fortran_default: null
-          line: 122
+          line: 121
           name: exi
           python_name: exi
           python_type: float
@@ -409,7 +409,7 @@
           definition: real(dp)  o(3),mid(3,3)
           dimension: 3,3
           fortran_default: null
-          line: 124
+          line: 123
           name: mid
           python_name: mid
           python_type: float
@@ -422,7 +422,7 @@
           definition: real(dp)  o(3),mid(3,3)
           dimension: '3'
           fortran_default: null
-          line: 124
+          line: 123
           name: o
           python_name: o
           python_type: float
@@ -435,7 +435,7 @@
           definition: real(dp) r0(3),r(3)
           dimension: '3'
           fortran_default: null
-          line: 127
+          line: 126
           name: r
           python_name: r
           python_type: float
@@ -448,7 +448,7 @@
           definition: real(dp) r0(3),r(3)
           dimension: '3'
           fortran_default: null
-          line: 127
+          line: 126
           name: r0
           python_name: r0
           python_type: float
@@ -461,7 +461,7 @@
           definition: real(dp)  reference_ray(6)
           dimension: '6'
           fortran_default: null
-          line: 125
+          line: 124
           name: reference_ray
           python_name: reference_ray
           python_type: float
@@ -474,7 +474,7 @@
           definition: real(dp) scale
           dimension: ''
           fortran_default: null
-          line: 128
+          line: 127
           name: scale
           python_name: scale
           python_type: float
@@ -487,7 +487,7 @@
           definition: logical(lp) u(2)
           dimension: '2'
           fortran_default: null
-          line: 129
+          line: 128
           name: u
           python_name: u
           python_type: bool
@@ -500,7 +500,7 @@
           definition: real(dp)  wx,wy
           dimension: ''
           fortran_default: null
-          line: 123
+          line: 122
           name: wx
           python_name: wx
           python_type: float
@@ -513,7 +513,7 @@
           definition: real(dp)  wx,wy
           dimension: ''
           fortran_default: null
-          line: 123
+          line: 122
           name: wy
           python_name: wy
           python_type: float
@@ -526,7 +526,7 @@
           definition: real(dp) x(6)
           dimension: '6'
           fortran_default: null
-          line: 126
+          line: 125
           name: x
           python_name: x
           python_type: float
@@ -2111,15 +2111,14 @@
           definition: real(dp) L,B_SOL
           dimension: ''
           fortran_default: null
-          line: 42
+          line: 40
           name: B_SOL
           python_name: b_sol
           python_type: float
           size: null
           type: real
         KIND:
-          comment: INTEGER old_integrator   not implemented yet in flat file character(nlp+3)
-            name_vorname(2)
+          comment: ''
           default: 0
           default_factory: ''
           definition: INTEGER KIND
@@ -2138,7 +2137,7 @@
           definition: real(dp) L,B_SOL
           dimension: ''
           fortran_default: null
-          line: 42
+          line: 40
           name: L
           python_name: L
           python_type: float
@@ -2151,7 +2150,7 @@
           definition: LOGICAL(LP) THIN
           dimension: ''
           fortran_default: null
-          line: 46
+          line: 44
           name: THIN
           python_name: thin
           python_type: bool
@@ -2164,7 +2163,7 @@
           definition: real(dp) VOLT_FREQ_PHAS(3)
           dimension: '3'
           fortran_default: null
-          line: 45
+          line: 43
           name: VOLT_FREQ_PHAS
           python_name: volt_freq_phas
           python_type: float
@@ -2177,7 +2176,7 @@
           definition: real(dp) an(nmul_max)
           dimension: nmul_max
           fortran_default: null
-          line: 43
+          line: 41
           name: an
           python_name: an
           python_type: float
@@ -2190,7 +2189,7 @@
           definition: real(dp) bn(nmul_max)
           dimension: nmul_max
           fortran_default: null
-          line: 44
+          line: 42
           name: bn
           python_name: bn
           python_type: float
@@ -2203,7 +2202,7 @@
           definition: character(120) fileb
           dimension: ''
           fortran_default: null
-          line: 53
+          line: 51
           name: fileb
           python_name: fileb
           python_type: str
@@ -2216,7 +2215,7 @@
           definition: character(120) filef
           dimension: ''
           fortran_default: null
-          line: 52
+          line: 50
           name: filef
           python_name: filef
           python_type: str
@@ -2229,7 +2228,7 @@
           definition: real(dp) fint_hgap_h1_h2_va_vs(8)
           dimension: '8'
           fortran_default: null
-          line: 47
+          line: 45
           name: fint_hgap_h1_h2_va_vs
           python_name: fint_hgap_h1_h2_va_vs
           python_type: float
@@ -2242,7 +2241,7 @@
           definition: character(nlp) name_vorname(2)
           dimension: '2'
           fortran_default: null
-          line: 41
+          line: 39
           name: name_vorname
           python_name: name_vorname
           python_type: str
@@ -2255,7 +2254,7 @@
           definition: logical(lp) recut_even_electric_MIS(4)
           dimension: '4'
           fortran_default: null
-          line: 48
+          line: 46
           name: recut_even_electric_MIS
           python_name: recut_even_electric_mis
           python_type: bool
@@ -2268,7 +2267,7 @@
           definition: integer skipptcbf(2)
           dimension: '2'
           fortran_default: null
-          line: 51
+          line: 49
           name: skipptcbf
           python_name: skipptcbf
           python_type: int
@@ -2281,7 +2280,7 @@
           definition: integer(2) slow_ac
           dimension: ''
           fortran_default: null
-          line: 49
+          line: 47
           name: slow_ac
           python_name: slow_ac
           python_type: int
@@ -2294,7 +2293,7 @@
           definition: logical(lp) usebf_do1bf(4)
           dimension: '4'
           fortran_default: null
-          line: 50
+          line: 48
           name: usebf_do1bf
           python_name: usebf_do1bf
           python_type: bool
@@ -4065,7 +4064,7 @@
           definition: real(dp) e
           dimension: ''
           fortran_default: null
-          line: 96
+          line: 95
           name: e
           python_name: e
           python_type: float
@@ -4111,7 +4110,7 @@
           size: null
           type: logical
         use_q:
-          comment: 'type(integration_node),pointer :: last_node=>null()'
+          comment: ''
           default: false
           default_factory: ''
           definition: logical u,use_q
@@ -4196,7 +4195,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: CC'
           dimension: ':'
           fortran_default: null
-          line: 70
+          line: 69
           name: CC
           python_name: cc
           python_type: float
@@ -4209,7 +4208,7 @@
           definition: 'integer,  DIMENSION(:), POINTER :: JL,JV'
           dimension: ':'
           fortran_default: null
-          line: 72
+          line: 71
           name: JL
           python_name: jl
           python_type: int
@@ -4222,7 +4221,7 @@
           definition: 'integer,  DIMENSION(:), POINTER :: JL,JV'
           dimension: ':'
           fortran_default: null
-          line: 72
+          line: 71
           name: JV
           python_name: jv
           python_type: int
@@ -4235,7 +4234,7 @@
           definition: 'INTEGER,POINTER :: N,NP,no'
           dimension: ''
           fortran_default: null
-          line: 73
+          line: 72
           name: N
           python_name: n
           python_type: int
@@ -4248,7 +4247,7 @@
           definition: 'INTEGER,POINTER :: N,NP,no'
           dimension: ''
           fortran_default: null
-          line: 73
+          line: 72
           name: NP
           python_name: np
           python_type: int
@@ -4261,7 +4260,7 @@
           definition: 'real(dp), pointer :: ds,beta0,eps'
           dimension: ''
           fortran_default: null
-          line: 76
+          line: 75
           name: beta0
           python_name: beta0
           python_type: float
@@ -4274,7 +4273,7 @@
           definition: 'real(dp), pointer :: ds,beta0,eps'
           dimension: ''
           fortran_default: null
-          line: 76
+          line: 75
           name: ds
           python_name: ds
           python_type: float
@@ -4287,7 +4286,7 @@
           definition: 'real(dp), pointer :: e_ij(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 74
+          line: 73
           name: e_ij
           python_name: e_ij
           python_type: float
@@ -4300,20 +4299,20 @@
           definition: 'real(dp), pointer :: ds,beta0,eps'
           dimension: ''
           fortran_default: null
-          line: 76
+          line: 75
           name: eps
           python_name: eps
           python_type: float
           size: null
           type: real
         factored:
-          comment: 'integer, pointer :: ng'
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical, pointer :: symptrack,usenonsymp,factored'
           dimension: ''
           fortran_default: null
-          line: 77
+          line: 76
           name: factored
           python_name: factored
           python_type: bool
@@ -4326,7 +4325,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0'
           dimension: ':'
           fortran_default: null
-          line: 71
+          line: 70
           name: fix
           python_name: fix
           python_type: float
@@ -4339,7 +4338,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0'
           dimension: ':'
           fortran_default: null
-          line: 71
+          line: 70
           name: fix0
           python_name: fix0
           python_type: float
@@ -4352,7 +4351,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0'
           dimension: ':'
           fortran_default: null
-          line: 71
+          line: 70
           name: fixr
           python_name: fixr
           python_type: float
@@ -4365,7 +4364,7 @@
           definition: 'INTEGER,POINTER :: N,NP,no'
           dimension: ''
           fortran_default: null
-          line: 73
+          line: 72
           name: 'no'
           python_name: 'no'
           python_type: int
@@ -4378,7 +4377,7 @@
           definition: 'real(dp), pointer :: rad(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 75
+          line: 74
           name: rad
           python_name: rad
           python_type: float
@@ -4391,7 +4390,7 @@
           definition: 'logical, pointer :: symptrack,usenonsymp,factored'
           dimension: ''
           fortran_default: null
-          line: 77
+          line: 76
           name: symptrack
           python_name: symptrack
           python_type: bool
@@ -4404,7 +4403,7 @@
           definition: 'logical, pointer :: symptrack,usenonsymp,factored'
           dimension: ''
           fortran_default: null
-          line: 77
+          line: 76
           name: usenonsymp
           python_name: usenonsymp
           python_type: bool
@@ -4427,20 +4426,20 @@
           definition: 'logical(lp), pointer :: ALWAYS_EXACTMIS => null()'
           dimension: ''
           fortran_default: null()
-          line: 314
+          line: 309
           name: ALWAYS_EXACTMIS
           python_name: always_exactmis
           python_type: bool
           size: null
           type: logical
         ALWAYS_EXACT_PATCHING:
-          comment: =.TRUE. patching done correctly used to output horror messages
+          comment: =.TRUE. patching done correctly
           default: false
           default_factory: ''
           definition: 'logical(lp),pointer :: ALWAYS_EXACT_PATCHING => null()'
           dimension: ''
           fortran_default: null()
-          line: 338
+          line: 328
           name: ALWAYS_EXACT_PATCHING
           python_name: always_exact_patching
           python_type: bool
@@ -4453,7 +4452,7 @@
           definition: 'logical(lp),pointer :: ALWAYS_knobs => null()'
           dimension: ''
           fortran_default: null()
-          line: 315
+          line: 310
           name: ALWAYS_knobs
           python_name: always_knobs
           python_type: bool
@@ -4466,7 +4465,7 @@
           definition: 'logical(lp),pointer  :: APERTURE_FLAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 301
+          line: 297
           name: APERTURE_FLAG
           python_name: aperture_flag
           python_type: bool
@@ -4479,7 +4478,7 @@
           definition: 'integer, pointer:: CAVITY_TOTALPATH => null()'
           dimension: ''
           fortran_default: null()
-          line: 318
+          line: 313
           name: CAVITY_TOTALPATH
           python_name: cavity_totalpath
           python_type: int
@@ -4492,7 +4491,7 @@
           definition: 'logical(lp),pointer  :: CHECK_MADX_APERTURE => null()'
           dimension: ''
           fortran_default: null()
-          line: 300
+          line: 296
           name: CHECK_MADX_APERTURE
           python_name: check_madx_aperture
           python_type: bool
@@ -4505,7 +4504,7 @@
           definition: 'logical(lp),pointer  :: CHECK_STABLE => null()'
           dimension: ''
           fortran_default: null()
-          line: 299
+          line: 295
           name: CHECK_STABLE
           python_name: check_stable
           python_type: bool
@@ -4518,7 +4517,7 @@
           definition: 'logical(lp), pointer :: EXACT_MODEL => null()'
           dimension: ''
           fortran_default: null()
-          line: 313
+          line: 308
           name: EXACT_MODEL
           python_name: exact_model
           python_type: bool
@@ -4531,7 +4530,7 @@
           definition: 'logical(lp),pointer :: FEED_P0C => null()'
           dimension: ''
           fortran_default: null()
-          line: 337
+          line: 327
           name: FEED_P0C
           python_name: feed_p0c
           python_type: bool
@@ -4544,21 +4543,20 @@
           definition: integer,pointer ::FIBRE_DIR => null()
           dimension: ''
           fortran_default: null()
-          line: 322
+          line: 316
           name: FIBRE_DIR
           python_name: fibre_dir
           python_type: int
           size: null
           type: integer
         FIBRE_flip:
-          comment: =.true. x_prime true means noncanonical outside magnets. x(5) variables
-            stays the same.
+          comment: =.true.
           default: false
           default_factory: ''
           definition: logical(lp),pointer ::FIBRE_flip => null()
           dimension: ''
           fortran_default: null()
-          line: 325
+          line: 318
           name: FIBRE_flip
           python_name: fibre_flip
           python_type: bool
@@ -4571,21 +4569,20 @@
           definition: 'integer,pointer :: HIGHEST_FRINGE => null()'
           dimension: ''
           fortran_default: null()
-          line: 319
+          line: 314
           name: HIGHEST_FRINGE
           python_name: highest_fringe
           python_type: int
           size: null
           type: integer
         INITIAL_CHARGE:
-          comment: =1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE creates a reverse
-            propagator and a reversed ring in combination with above
+          comment: =1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE
           default: 0.0
           default_factory: ''
           definition: real(dp),pointer ::INITIAL_CHARGE => null()
           dimension: ''
           fortran_default: null()
-          line: 323
+          line: 317
           name: INITIAL_CHARGE
           python_name: initial_charge
           python_type: float
@@ -4598,7 +4595,7 @@
           definition: 'logical(lp), pointer :: MAD       => null()'
           dimension: ''
           fortran_default: null()
-          line: 312
+          line: 307
           name: MAD
           python_name: mad
           python_type: bool
@@ -4611,7 +4608,7 @@
           definition: 'logical(lp), pointer :: MAD8_WEDGE  => null()'
           dimension: ''
           fortran_default: null()
-          line: 332
+          line: 323
           name: MAD8_WEDGE
           python_name: mad8_wedge
           python_type: bool
@@ -4624,7 +4621,7 @@
           definition: 'logical(lp), pointer :: MADLENGTH => null()'
           dimension: ''
           fortran_default: null()
-          line: 311
+          line: 306
           name: MADLENGTH
           python_name: madlength
           python_type: bool
@@ -4637,7 +4634,7 @@
           definition: 'integer, pointer :: MADTHICK => null()'
           dimension: ''
           fortran_default: null()
-          line: 307
+          line: 302
           name: MADTHICK
           python_name: madthick
           python_type: int
@@ -4650,7 +4647,7 @@
           definition: 'integer, pointer :: MADTHIN_NORMAL => null()'
           dimension: ''
           fortran_default: null()
-          line: 308
+          line: 303
           name: MADTHIN_NORMAL
           python_name: madthin_normal
           python_type: int
@@ -4663,7 +4660,7 @@
           definition: 'integer, pointer :: MADTHIN_SKEW => null()'
           dimension: ''
           fortran_default: null()
-          line: 309
+          line: 304
           name: MADTHIN_SKEW
           python_name: madthin_skew
           python_type: int
@@ -4676,7 +4673,7 @@
           definition: 'integer, pointer::  NSTD => null(),METD => null()'
           dimension: ''
           fortran_default: null()
-          line: 310
+          line: 305
           name: METD
           python_name: metd
           python_type: int
@@ -4689,7 +4686,7 @@
           definition: 'integer,pointer :: NPARA    => null()'
           dimension: ''
           fortran_default: null()
-          line: 283
+          line: 281
           name: NPARA
           python_name: npara
           python_type: int
@@ -4702,7 +4699,7 @@
           definition: 'integer, pointer::  NSTD => null(),METD => null()'
           dimension: ''
           fortran_default: null()
-          line: 310
+          line: 305
           name: NSTD
           python_name: nstd
           python_type: int
@@ -4715,7 +4712,7 @@
           definition: 'logical(lp),pointer  :: OLD => null()'
           dimension: ''
           fortran_default: null()
-          line: 272
+          line: 271
           name: OLD
           python_name: old
           python_type: bool
@@ -4728,7 +4725,7 @@
           definition: 'logical(lp),pointer :: OLD_IMPLEMENTATION_OF_SIXTRACK => null()'
           dimension: ''
           fortran_default: null()
-          line: 343
+          line: 332
           name: OLD_IMPLEMENTATION_OF_SIXTRACK
           python_name: old_implementation_of_sixtrack
           python_type: bool
@@ -4741,7 +4738,7 @@
           definition: 'logical(lp),pointer  :: ROOT_CHECK => null()'
           dimension: ''
           fortran_default: null()
-          line: 298
+          line: 294
           name: ROOT_CHECK
           python_name: root_check
           python_type: bool
@@ -4754,7 +4751,7 @@
           definition: 'integer, pointer :: SECTOR_NMUL     => null()'
           dimension: ''
           fortran_default: null()
-          line: 330
+          line: 321
           name: SECTOR_NMUL
           python_name: sector_nmul
           python_type: int
@@ -4767,7 +4764,7 @@
           definition: 'integer, pointer :: SECTOR_NMUL_MAX => null()'
           dimension: ''
           fortran_default: null()
-          line: 329
+          line: 320
           name: SECTOR_NMUL_MAX
           python_name: sector_nmul_max
           python_type: int
@@ -4780,7 +4777,7 @@
           definition: 'logical(lp),pointer  :: STABLE_DA_pancake => null()'
           dimension: ''
           fortran_default: null()
-          line: 341
+          line: 330
           name: STABLE_DA_pancake
           python_name: stable_da_pancake
           python_type: bool
@@ -4793,7 +4790,7 @@
           definition: 'logical(lp),pointer  :: WATCH_USER => null()'
           dimension: ''
           fortran_default: null()
-          line: 303
+          line: 299
           name: WATCH_USER
           python_name: watch_user
           python_type: bool
@@ -4806,7 +4803,7 @@
           definition: 'REAL(dp),pointer     :: absolute_aperture => null()'
           dimension: ''
           fortran_default: null()
-          line: 304
+          line: 300
           name: absolute_aperture
           python_name: absolute_aperture
           python_type: float
@@ -4819,7 +4816,7 @@
           definition: 'logical(lp),pointer :: check_da  => null()'
           dimension: ''
           fortran_default: null()
-          line: 342
+          line: 331
           name: check_da
           python_name: check_da
           python_type: bool
@@ -4832,7 +4829,7 @@
           definition: 'logical(lp), pointer :: compute_stoch_kick => null()'
           dimension: ''
           fortran_default: null()
-          line: 336
+          line: 326
           name: compute_stoch_kick
           python_name: compute_stoch_kick
           python_type: bool
@@ -4845,20 +4842,20 @@
           definition: 'REAL(dp),pointer     :: da_absolute_aperture => null()'
           dimension: ''
           fortran_default: null()
-          line: 295
+          line: 292
           name: da_absolute_aperture
           python_name: da_absolute_aperture
           python_type: float
           size: null
           type: REAL
         do_beam_beam:
-          comment: 'obvious meaning: false normally creates a reverse propagator'
+          comment: 'obvious meaning: false normally'
           default: false
           default_factory: ''
           definition: 'logical(lp),pointer :: do_beam_beam => null()'
           dimension: ''
           fortran_default: null()
-          line: 320
+          line: 315
           name: do_beam_beam
           python_name: do_beam_beam
           python_type: bool
@@ -4871,20 +4868,20 @@
           definition: 'logical(lp), pointer:: electron     => null()'
           dimension: ''
           fortran_default: null()
-          line: 333
+          line: 324
           name: electron
           python_name: electron
           python_type: bool
           size: null
           type: logical
         eps_pos:
-          comment: fill once and never touch again
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: 'real(dp), pointer :: eps_pos => null()'
           dimension: ''
           fortran_default: null()
-          line: 327
+          line: 319
           name: eps_pos
           python_name: eps_pos
           python_type: float
@@ -4897,20 +4894,20 @@
           definition: 'logical(lp), pointer :: global_verbose => null()'
           dimension: ''
           fortran_default: null()
-          line: 345
+          line: 334
           name: global_verbose
           python_name: global_verbose
           python_type: bool
           size: null
           type: logical
         hyperbolic_aperture:
-          comment: controls crashes in exponentials influence fibre creation
+          comment: controls crashes in exponentials
           default: 0.0
           default_factory: ''
           definition: 'real(dp),pointer :: hyperbolic_aperture => null()'
           dimension: ''
           fortran_default: null()
-          line: 305
+          line: 301
           name: hyperbolic_aperture
           python_name: hyperbolic_aperture
           python_type: float
@@ -4923,7 +4920,7 @@
           definition: 'logical(lp),pointer :: knob => null()'
           dimension: ''
           fortran_default: null()
-          line: 291
+          line: 289
           name: knob
           python_name: knob
           python_type: bool
@@ -4936,21 +4933,20 @@
           definition: 'integer,pointer :: lda_used => null()'
           dimension: ''
           fortran_default: null()
-          line: 271
+          line: 270
           name: lda_used
           python_name: lda_used
           python_type: int
           size: null
           type: integer
         massfactor:
-          comment: =one  sets variable muon and electron must be true global on the
-            fly
+          comment: =one  sets variable muon and electron must be true
           default: 0.0
           default_factory: ''
           definition: 'real(dp), pointer :: massfactor     => null()'
           dimension: ''
           fortran_default: null()
-          line: 334
+          line: 325
           name: massfactor
           python_name: massfactor
           python_type: float
@@ -4963,7 +4959,7 @@
           definition: 'integer,pointer :: nd  => null()'
           dimension: ''
           fortran_default: null()
-          line: 276
+          line: 275
           name: nd
           python_name: nd
           python_type: int
@@ -4976,7 +4972,7 @@
           definition: 'integer,pointer :: nd2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 277
+          line: 276
           name: nd2
           python_name: nd2
           python_type: int
@@ -4989,7 +4985,7 @@
           definition: 'integer,pointer :: nd2harm   => null()'
           dimension: ''
           fortran_default: null()
-          line: 287
+          line: 285
           name: nd2harm
           python_name: nd2harm
           python_type: int
@@ -5002,7 +4998,7 @@
           definition: 'integer,pointer :: nd2t   => null()'
           dimension: ''
           fortran_default: null()
-          line: 286
+          line: 284
           name: nd2t
           python_name: nd2t
           python_type: int
@@ -5015,7 +5011,7 @@
           definition: 'integer,pointer :: ndc2t   => null()'
           dimension: ''
           fortran_default: null()
-          line: 288
+          line: 286
           name: ndc2t
           python_name: ndc2t
           python_type: int
@@ -5028,7 +5024,7 @@
           definition: 'integer,pointer :: ndpt     => null()'
           dimension: ''
           fortran_default: null()
-          line: 281
+          line: 279
           name: ndpt
           python_name: ndpt
           python_type: int
@@ -5041,7 +5037,7 @@
           definition: 'integer, pointer :: ndpt_bmad => null()'
           dimension: ''
           fortran_default: null()
-          line: 347
+          line: 336
           name: ndpt_bmad
           python_name: ndpt_bmad
           python_type: int
@@ -5054,7 +5050,7 @@
           definition: integer,pointer ::ndptb  => null()
           dimension: ''
           fortran_default: null()
-          line: 282
+          line: 280
           name: ndptb
           python_name: ndptb
           python_type: int
@@ -5067,7 +5063,7 @@
           definition: 'integer,pointer :: no  => null()'
           dimension: ''
           fortran_default: null()
-          line: 274
+          line: 273
           name: 'no'
           python_name: 'no'
           python_type: int
@@ -5080,7 +5076,7 @@
           definition: 'logical(lp), pointer :: no_hyperbolic_in_normal_form => null()'
           dimension: ''
           fortran_default: null()
-          line: 346
+          line: 335
           name: no_hyperbolic_in_normal_form
           python_name: no_hyperbolic_in_normal_form
           python_type: bool
@@ -5093,7 +5089,7 @@
           definition: 'integer,pointer :: np  => null()'
           dimension: ''
           fortran_default: null()
-          line: 278
+          line: 277
           name: np
           python_name: np
           python_type: int
@@ -5106,7 +5102,7 @@
           definition: 'integer,pointer :: np_pol   => null()'
           dimension: ''
           fortran_default: null()
-          line: 285
+          line: 283
           name: np_pol
           python_name: np_pol
           python_type: int
@@ -5119,21 +5115,20 @@
           definition: 'integer,pointer :: npara_fpp=> null()'
           dimension: ''
           fortran_default: null()
-          line: 284
+          line: 282
           name: npara_fpp
           python_name: npara_fpp
           python_type: int
           size: null
           type: integer
         nspin:
-          comment: 'number of spin variables (0 or 3) integer,pointer :: SPIN_pos
-            => null()       ! position of spin variables (0 or 3)'
+          comment: number of spin variables (0 or 3)
           default: 0
           default_factory: ''
           definition: 'integer,pointer :: nspin => null()'
           dimension: ''
           fortran_default: null()
-          line: 279
+          line: 278
           name: nspin
           python_name: nspin
           python_type: int
@@ -5146,7 +5141,7 @@
           definition: 'integer,pointer :: nv  => null()'
           dimension: ''
           fortran_default: null()
-          line: 275
+          line: 274
           name: nv
           python_name: nv
           python_type: int
@@ -5159,7 +5154,7 @@
           definition: 'real(dp),pointer :: phase0  => null()'
           dimension: ''
           fortran_default: null()
-          line: 344
+          line: 333
           name: phase0
           python_name: phase0
           python_type: float
@@ -5172,7 +5167,7 @@
           definition: 'integer,pointer :: pos_of_delta   => null()'
           dimension: ''
           fortran_default: null()
-          line: 289
+          line: 287
           name: pos_of_delta
           python_name: pos_of_delta
           python_type: int
@@ -5185,7 +5180,7 @@
           definition: 'logical(lp),pointer  :: real_warning => null()'
           dimension: ''
           fortran_default: null()
-          line: 273
+          line: 272
           name: real_warning
           python_name: real_warning
           python_type: bool
@@ -5198,7 +5193,7 @@
           definition: 'logical(lp),pointer :: recirculator_cheat => null()'
           dimension: ''
           fortran_default: null()
-          line: 316
+          line: 311
           name: recirculator_cheat
           python_name: recirculator_cheat
           python_type: bool
@@ -5211,7 +5206,7 @@
           definition: 'integer,pointer :: rf   => null()'
           dimension: ''
           fortran_default: null()
-          line: 290
+          line: 288
           name: rf
           python_name: rf
           python_type: int
@@ -5224,7 +5219,7 @@
           definition: 'logical(lp),pointer  :: s_aperture_CHECK => null()'
           dimension: ''
           fortran_default: null()
-          line: 302
+          line: 298
           name: s_aperture_CHECK
           python_name: s_aperture_check
           python_type: bool
@@ -5237,7 +5232,7 @@
           definition: 'logical(lp), pointer :: setknob => null()'
           dimension: ''
           fortran_default: null()
-          line: 294
+          line: 291
           name: setknob
           python_name: setknob
           python_type: bool
@@ -5250,7 +5245,7 @@
           definition: 'logical(lp),pointer :: sixtrack_compatible => null()'
           dimension: ''
           fortran_default: null()
-          line: 317
+          line: 312
           name: sixtrack_compatible
           python_name: sixtrack_compatible
           python_type: bool
@@ -5263,7 +5258,7 @@
           definition: 'logical(lp),pointer :: stable_da => null()'
           dimension: ''
           fortran_default: null()
-          line: 340
+          line: 329
           name: stable_da
           python_name: stable_da
           python_type: bool
@@ -5276,20 +5271,20 @@
           definition: 'real(dp),pointer :: total_da_size => null()'
           dimension: ''
           fortran_default: null()
-          line: 270
+          line: 269
           name: total_da_size
           python_name: total_da_size
           python_type: float
           size: null
           type: real
         valishev:
-          comment: 'integer, pointer :: NDPT_OTHER'
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical(lp),pointer :: valishev => null()'
           dimension: ''
           fortran_default: null()
-          line: 292
+          line: 290
           name: valishev
           python_name: valishev
           python_type: bool
@@ -5302,7 +5297,7 @@
           definition: 'real(dp), pointer :: wedge_coeff(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 331
+          line: 322
           name: wedge_coeff
           python_name: wedge_coeff
           python_type: float
@@ -5315,7 +5310,7 @@
           definition: 'integer,pointer :: wherelost => null()'
           dimension: ''
           fortran_default: null()
-          line: 297
+          line: 293
           name: wherelost
           python_name: wherelost
           python_type: int
@@ -5331,7 +5326,7 @@
       comment: ''
       members:
         MF:
-          comment: 'AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.'
+          comment: ''
           default: false
           default_factory: ''
           definition: logical(lp) MF
@@ -5353,7 +5348,7 @@
       comment: ''
       members:
         MF:
-          comment: 'AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.'
+          comment: ''
           default: false
           default_factory: ''
           definition: logical(lp) MF
@@ -7397,7 +7392,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 40
+          line: 39
           name: ANG_IN
           python_name: ang_in
           python_type: float
@@ -7411,7 +7406,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 41
+          line: 40
           name: ANG_OUT
           python_name: ang_out
           python_type: float
@@ -7425,7 +7420,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 40
+          line: 39
           name: D_IN
           python_name: d_in
           python_type: float
@@ -7439,14 +7434,14 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 41
+          line: 40
           name: D_OUT
           python_name: d_out
           python_type: float
           size: null
           type: real
         f:
-          comment: FIBRE MISALIGNMENTS
+          comment: ''
           default: null
           default_factory: ''
           definition: 'type(magnet_frame), pointer :: f => null()'
@@ -7953,7 +7948,7 @@
       comment: ''
       members:
         L:
-          comment: 'collimator of MAD type(MADX_APERTURE), POINTER :: A => null()'
+          comment: collimator of MAD
           default: 0.0
           default_factory: ''
           definition: real(dp) , POINTER ::L => null()
@@ -7988,7 +7983,7 @@
       comment: ''
       members:
         L:
-          comment: 'type(MADX_APERTURE), POINTER :: A => null()'
+          comment: ''
           default: null
           default_factory: ''
           definition: TYPE(REAL_8) , POINTER ::L => null()
@@ -8029,7 +8024,7 @@
           definition: 'TYPE(ABELL), POINTER :: AB    => null()'
           dimension: ''
           fortran_default: null()
-          line: 266
+          line: 254
           name: AB
           python_name: ab
           python_type: Abell
@@ -8042,7 +8037,7 @@
           definition: 'real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()'
           dimension: ':'
           fortran_default: null()
-          line: 228
+          line: 222
           name: AN
           python_name: an
           python_type: float
@@ -8056,7 +8051,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 234
+          line: 227
           name: A_ac
           python_name: a_ac
           python_type: float
@@ -8069,20 +8064,20 @@
           definition: 'real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()'
           dimension: ':'
           fortran_default: null()
-          line: 228
+          line: 222
           name: BN
           python_name: bn
           python_type: float
           size: null
           type: real
         B_SOL:
-          comment: misalignements and rotation
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: 'real(dp), POINTER ::  B_SOL  => null()'
           dimension: ''
           fortran_default: null()
-          line: 240
+          line: 233
           name: B_SOL
           python_name: b_sol
           python_type: float
@@ -8095,7 +8090,7 @@
           definition: 'TYPE(CAV4), POINTER :: C4    => null()'
           dimension: ''
           fortran_default: null()
-          line: 250
+          line: 238
           name: C4
           python_name: c4
           python_type: Cav4
@@ -8108,7 +8103,7 @@
           definition: 'TYPE(CAV_TRAV), POINTER :: CAV21 => null()'
           dimension: ''
           fortran_default: null()
-          line: 263
+          line: 251
           name: CAV21
           python_name: cav21
           python_type: CavTrav
@@ -8121,7 +8116,7 @@
           definition: 'TYPE(DRIFT1), POINTER :: D0  => null()'
           dimension: ''
           fortran_default: null()
-          line: 247
+          line: 235
           name: D0
           python_name: d0
           python_type: Drift1
@@ -8135,7 +8130,7 @@
             null(),D0_AN => null(),D0_BN => null();'
           dimension: ':'
           fortran_default: null()
-          line: 235
+          line: 228
           name: D0_AN
           python_name: d0_an
           python_type: float
@@ -8149,7 +8144,7 @@
             null(),D0_AN => null(),D0_BN => null();'
           dimension: ':'
           fortran_default: null();
-          line: 235
+          line: 228
           name: D0_BN
           python_name: d0_bn
           python_type: float
@@ -8162,7 +8157,7 @@
           definition: 'real(dp), POINTER:: D_Volt=> null(),D0_Volt=> null();'
           dimension: ''
           fortran_default: null();
-          line: 236
+          line: 229
           name: D0_Volt
           python_name: d0_volt
           python_type: float
@@ -8175,7 +8170,7 @@
           definition: 'real(dp), POINTER:: D_phas=> null(),D0_phas=> null();'
           dimension: ''
           fortran_default: null();
-          line: 237
+          line: 230
           name: D0_phas
           python_name: d0_phas
           python_type: float
@@ -8189,7 +8184,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 234
+          line: 227
           name: DC_ac
           python_name: dc_ac
           python_type: float
@@ -8203,7 +8198,7 @@
             null(),DELTA_E => null(),LAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 233
+          line: 226
           name: DELTA_E
           python_name: delta_e
           python_type: float
@@ -8217,7 +8212,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 234
+          line: 227
           name: D_AC
           python_name: d_ac
           python_type: float
@@ -8231,7 +8226,7 @@
             null(),D0_AN => null(),D0_BN => null();'
           dimension: ':'
           fortran_default: null()
-          line: 235
+          line: 228
           name: D_AN
           python_name: d_an
           python_type: float
@@ -8245,7 +8240,7 @@
             null(),D0_AN => null(),D0_BN => null();'
           dimension: ':'
           fortran_default: null()
-          line: 235
+          line: 228
           name: D_BN
           python_name: d_bn
           python_type: float
@@ -8258,7 +8253,7 @@
           definition: 'real(dp), POINTER:: D_Volt=> null(),D0_Volt=> null();'
           dimension: ''
           fortran_default: null()
-          line: 236
+          line: 229
           name: D_Volt
           python_name: d_volt
           python_type: float
@@ -8271,7 +8266,7 @@
           definition: 'real(dp), POINTER:: D_phas=> null(),D0_phas=> null();'
           dimension: ''
           fortran_default: null()
-          line: 237
+          line: 230
           name: D_phas
           python_name: d_phas
           python_type: float
@@ -8284,7 +8279,7 @@
           definition: 'TYPE(ECOL), POINTER :: ECOL19 => null()'
           dimension: ''
           fortran_default: null()
-          line: 262
+          line: 250
           name: ECOL19
           python_name: ecol19
           python_type: Ecol
@@ -8297,7 +8292,7 @@
           definition: 'TYPE(ENGE), POINTER :: ENGE17 => null()'
           dimension: ''
           fortran_default: null()
-          line: 260
+          line: 248
           name: ENGE17
           python_name: enge17
           python_type: Enge
@@ -8311,7 +8306,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 229
+          line: 223
           name: FINT
           python_name: fint
           python_type: float
@@ -8325,7 +8320,7 @@
             null(),DELTA_E => null(),LAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 233
+          line: 226
           name: FREQ
           python_name: freq
           python_type: float
@@ -8338,7 +8333,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(),H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 230
+          line: 224
           name: H1
           python_name: h1
           python_type: float
@@ -8351,7 +8346,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(),H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 230
+          line: 224
           name: H2
           python_name: h2
           python_type: float
@@ -8364,7 +8359,7 @@
           definition: 'TYPE(HELICAL_DIPOLE), POINTER :: HE22  => null()'
           dimension: ''
           fortran_default: null()
-          line: 267
+          line: 255
           name: HE22
           python_name: he22
           python_type: HelicalDipole
@@ -8378,7 +8373,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 229
+          line: 223
           name: HGAP
           python_name: hgap
           python_type: float
@@ -8391,7 +8386,7 @@
           definition: 'TYPE(STREX), POINTER :: K16   => null()'
           dimension: ''
           fortran_default: null()
-          line: 259
+          line: 247
           name: K16
           python_name: k16
           python_type: Strex
@@ -8404,7 +8399,7 @@
           definition: 'TYPE(DKD2), POINTER :: K2    => null()'
           dimension: ''
           fortran_default: null()
-          line: 248
+          line: 236
           name: K2
           python_name: k2
           python_type: Dkd2
@@ -8417,7 +8412,7 @@
           definition: 'TYPE(KICKT3), POINTER :: K3  => null()'
           dimension: ''
           fortran_default: null()
-          line: 249
+          line: 237
           name: K3
           python_name: k3
           python_type: Kickt3
@@ -8443,7 +8438,7 @@
           definition: 'real(dp), POINTER ::  L  => null()'
           dimension: ''
           fortran_default: null()
-          line: 226
+          line: 221
           name: L
           python_name: L
           python_type: float
@@ -8457,23 +8452,20 @@
             null(),DELTA_E => null(),LAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 233
+          line: 226
           name: LAG
           python_name: lag
           python_type: float
           size: null
           type: real
         MIS:
-          comment: migalignment on or off real(dp),  DIMENSION(:), POINTER ::d =>
-            null(),r => null()                             !  Misalignements storage  space
-            integer  twiss                                                            !
-            TYPES OF MAGNETS
+          comment: migalignment on or off
           default: false
           default_factory: ''
           definition: 'logical(lp), POINTER ::  MIS => null()'
           dimension: ''
           fortran_default: null()
-          line: 242
+          line: 234
           name: MIS
           python_name: mis
           python_type: bool
@@ -8486,7 +8478,7 @@
           definition: 'TYPE(MON), POINTER :: MON14   => null()'
           dimension: ''
           fortran_default: null()
-          line: 257
+          line: 245
           name: MON14
           python_name: mon14
           python_type: Mon
@@ -8499,7 +8491,7 @@
           definition: 'CHARACTER(nlp), POINTER ::  NAME  => null()'
           dimension: ''
           fortran_default: null()
-          line: 220
+          line: 219
           name: NAME
           python_name: name
           python_type: str
@@ -8512,7 +8504,7 @@
           definition: 'type(MAGNET_CHART), pointer :: P => null()'
           dimension: ''
           fortran_default: null()
-          line: 219
+          line: 218
           name: P
           python_name: p
           python_type: MagnetChart
@@ -8525,7 +8517,7 @@
           definition: 'TYPE(PANCAKE), POINTER :: PA => null()'
           dimension: ''
           fortran_default: null()
-          line: 265
+          line: 253
           name: PA
           python_name: pa
           python_type: Pancake
@@ -8538,7 +8530,7 @@
           definition: 'TYPE(FIBRE), POINTER :: PARENT_FIBRE => null()'
           dimension: ''
           fortran_default: null()
-          line: 269
+          line: 257
           name: PARENT_FIBRE
           python_name: parent_fibre
           python_type: Fibre
@@ -8552,7 +8544,7 @@
             null(),DELTA_E => null(),LAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 233
+          line: 226
           name: PHAS
           python_name: phas
           python_type: float
@@ -8578,7 +8570,7 @@
           definition: 'TYPE(RCOL), POINTER :: RCOL18 => null()'
           dimension: ''
           fortran_default: null()
-          line: 261
+          line: 249
           name: RCOL18
           python_name: rcol18
           python_type: Rcol
@@ -8591,7 +8583,7 @@
           definition: 'TYPE(SOL5), POINTER :: S5    => null()'
           dimension: ''
           fortran_default: null()
-          line: 251
+          line: 239
           name: S5
           python_name: s5
           python_type: Sol5
@@ -8604,7 +8596,7 @@
           definition: 'TYPE(NSMI), POINTER :: S8    => null()'
           dimension: ''
           fortran_default: null()
-          line: 254
+          line: 242
           name: S8
           python_name: s8
           python_type: Nsmi
@@ -8617,7 +8609,7 @@
           definition: 'TYPE(SSMI), POINTER :: S9    => null()'
           dimension: ''
           fortran_default: null()
-          line: 255
+          line: 243
           name: S9
           python_name: s9
           python_type: Ssmi
@@ -8630,7 +8622,7 @@
           definition: 'TYPE(SUPERDRIFT), POINTER :: SDR      => null()'
           dimension: ''
           fortran_default: null()
-          line: 268
+          line: 256
           name: SDR
           python_name: sdr
           python_type: Superdrift
@@ -8643,7 +8635,7 @@
           definition: 'TYPE(ESEPTUM), POINTER :: SEP15 => null()'
           dimension: ''
           fortran_default: null()
-          line: 258
+          line: 246
           name: SEP15
           python_name: sep15
           python_type: Eseptum
@@ -8656,7 +8648,7 @@
           definition: 'TYPE(AFFINE_FRAME), POINTER :: SIAMESE_FRAME => null()'
           dimension: ''
           fortran_default: null()
-          line: 273
+          line: 261
           name: SIAMESE_FRAME
           python_name: siamese_frame
           python_type: AffineFrame
@@ -8669,7 +8661,7 @@
           definition: 'TYPE(KTK), POINTER :: T6     => null()'
           dimension: ''
           fortran_default: null()
-          line: 252
+          line: 240
           name: T6
           python_name: t6
           python_type: Ktk
@@ -8682,7 +8674,7 @@
           definition: 'TYPE(TKTF), POINTER :: T7    => null()'
           dimension: ''
           fortran_default: null()
-          line: 253
+          line: 241
           name: T7
           python_name: t7
           python_type: Tktf
@@ -8695,7 +8687,7 @@
           definition: 'logical(lp), POINTER :: THIN => null()'
           dimension: ''
           fortran_default: null()
-          line: 238
+          line: 231
           name: THIN
           python_name: thin
           python_type: bool
@@ -8708,7 +8700,7 @@
           definition: 'TYPE(TEAPOT), POINTER :: TP10 => null()'
           dimension: ''
           fortran_default: null()
-          line: 256
+          line: 244
           name: TP10
           python_name: tp10
           python_type: Teapot
@@ -8721,7 +8713,7 @@
           definition: 'real(dp),   POINTER:: VA => null(),VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 231
+          line: 225
           name: VA
           python_name: va
           python_type: float
@@ -8735,21 +8727,20 @@
             null(),DELTA_E => null(),LAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 233
+          line: 226
           name: VOLT
           python_name: volt
           python_type: float
           size: null
           type: real
         VORNAME:
-          comment: Identification Length is common although certain things like Markers
-            should not have a length Well let us say it is zero
+          comment: Identification
           default: ''
           default_factory: ''
           definition: 'CHARACTER(vp), POINTER ::  VORNAME  => null()'
           dimension: ''
           fortran_default: null()
-          line: 221
+          line: 220
           name: VORNAME
           python_name: vorname
           python_type: str
@@ -8762,7 +8753,7 @@
           definition: 'real(dp),   POINTER:: VA => null(),VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 231
+          line: 225
           name: VS
           python_name: vs
           python_type: float
@@ -8775,7 +8766,7 @@
           definition: 'TYPE(SAGAN), POINTER :: WI   => null()'
           dimension: ''
           fortran_default: null()
-          line: 264
+          line: 252
           name: WI
           python_name: wi
           python_type: Sagan
@@ -8788,7 +8779,7 @@
           definition: 'type(girder),pointer :: assembly => null()'
           dimension: ''
           fortran_default: null()
-          line: 276
+          line: 263
           name: assembly
           python_name: assembly
           python_type: Girder
@@ -8802,7 +8793,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 278
+          line: 265
           name: backward
           python_name: backward
           python_type: TreeElement
@@ -8815,7 +8806,7 @@
           definition: 'logical, pointer :: do1mapf=> null(),do1mapb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 281
+          line: 268
           name: do1mapb
           python_name: do1mapb
           python_type: bool
@@ -8828,7 +8819,7 @@
           definition: 'logical, pointer :: do1mapf=> null(),do1mapb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 281
+          line: 268
           name: do1mapf
           python_name: do1mapf
           python_type: bool
@@ -8841,7 +8832,7 @@
           definition: 'TYPE(fibre_appearance), POINTER :: doko => null()'
           dimension: ''
           fortran_default: null()
-          line: 270
+          line: 258
           name: doko
           python_name: doko
           python_type: FibreAppearance
@@ -8867,7 +8858,7 @@
           definition: 'real(dp), pointer :: ene'
           dimension: ''
           fortran_default: null
-          line: 282
+          line: 269
           name: ene
           python_name: ene
           python_type: float
@@ -8887,7 +8878,7 @@
           size: null
           type: logical
         fileb:
-          comment: common stuff to all element
+          comment: ''
           default: ''
           default_factory: list
           definition: 'character(120), pointer ::  fileb'
@@ -8920,20 +8911,20 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 278
+          line: 265
           name: forward
           python_name: forward
           python_type: TreeElement
           size: null
           type: tree_element
         girder_FRAME:
-          comment: integer, POINTER ::girder_index => null()
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE(AFFINE_FRAME), POINTER :: girder_FRAME => null()'
           dimension: ''
           fortran_default: null()
-          line: 274
+          line: 262
           name: girder_FRAME
           python_name: girder_frame
           python_type: AffineFrame
@@ -8946,7 +8937,7 @@
           definition: 'type(element), pointer :: girders => null()'
           dimension: ''
           fortran_default: null()
-          line: 272
+          line: 260
           name: girders
           python_name: girders
           python_type: Element
@@ -8985,7 +8976,7 @@
           definition: 'type(ramping), pointer :: ramp => null()'
           dimension: ''
           fortran_default: null()
-          line: 277
+          line: 264
           name: ramp
           python_name: ramp
           python_type: Ramping
@@ -9011,7 +9002,7 @@
           definition: 'type(element), pointer :: siamese => null()'
           dimension: ''
           fortran_default: null()
-          line: 271
+          line: 259
           name: siamese
           python_name: siamese
           python_type: Element
@@ -9024,7 +9015,7 @@
           definition: 'integer, pointer :: skip_ptc_f=> null(),skip_ptc_b=> null()'
           dimension: ''
           fortran_default: null()
-          line: 280
+          line: 267
           name: skip_ptc_b
           python_name: skip_ptc_b
           python_type: int
@@ -9037,7 +9028,7 @@
           definition: 'integer, pointer :: skip_ptc_f=> null(),skip_ptc_b=> null()'
           dimension: ''
           fortran_default: null()
-          line: 280
+          line: 267
           name: skip_ptc_f
           python_name: skip_ptc_f
           python_type: int
@@ -9050,7 +9041,7 @@
           definition: 'integer(2), pointer :: slow_ac => null()'
           dimension: ''
           fortran_default: null()
-          line: 239
+          line: 232
           name: slow_ac
           python_name: slow_ac
           python_type: int
@@ -9064,7 +9055,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 234
+          line: 227
           name: theta_ac
           python_name: theta_ac
           python_type: float
@@ -9077,7 +9068,7 @@
           definition: 'logical, pointer :: usef=> null(),useb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 279
+          line: 266
           name: useb
           python_name: useb
           python_type: bool
@@ -9090,7 +9081,7 @@
           definition: 'logical, pointer :: usef=> null(),useb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 279
+          line: 266
           name: usef
           python_name: usef
           python_type: bool
@@ -9112,7 +9103,7 @@
           definition: 'TYPE(ABELLP), POINTER :: AB    => null()'
           dimension: ''
           fortran_default: null()
-          line: 337
+          line: 330
           name: AB
           python_name: ab
           python_type: Abellp
@@ -9126,7 +9117,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 297
+          line: 294
           name: AN
           python_name: an
           python_type: Real8
@@ -9140,7 +9131,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 304
+          line: 300
           name: A_ac
           python_name: a_ac
           python_type: Real8
@@ -9154,7 +9145,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 297
+          line: 294
           name: BN
           python_name: bn
           python_type: Real8
@@ -9167,7 +9158,7 @@
           definition: 'TYPE(REAL_8), POINTER :: B_SOL => null()'
           dimension: ''
           fortran_default: null()
-          line: 308
+          line: 304
           name: B_SOL
           python_name: b_sol
           python_type: Real8
@@ -9180,7 +9171,7 @@
           definition: 'TYPE(CAV4P), POINTER :: C4    => null()'
           dimension: ''
           fortran_default: null()
-          line: 319
+          line: 312
           name: C4
           python_name: c4
           python_type: Cav4p
@@ -9193,7 +9184,7 @@
           definition: 'TYPE(CAV_TRAVP), POINTER :: CAV21 => null()'
           dimension: ''
           fortran_default: null()
-          line: 332
+          line: 325
           name: CAV21
           python_name: cav21
           python_type: CavTravp
@@ -9206,7 +9197,7 @@
           definition: 'TYPE(DRIFT1P), POINTER :: D0  => null()'
           dimension: ''
           fortran_default: null()
-          line: 316
+          line: 309
           name: D0
           python_name: d0
           python_type: Drift1p
@@ -9220,7 +9211,7 @@
             => null(),D0_AN => null(),D0_BN => null()'
           dimension: ':'
           fortran_default: null()
-          line: 305
+          line: 301
           name: D0_AN
           python_name: d0_an
           python_type: Real8
@@ -9234,7 +9225,7 @@
             => null(),D0_AN => null(),D0_BN => null()'
           dimension: ':'
           fortran_default: null()
-          line: 305
+          line: 301
           name: D0_BN
           python_name: d0_bn
           python_type: Real8
@@ -9247,7 +9238,7 @@
           definition: 'TYPE(REAL_8),  POINTER :: D_Volt=> null(),D0_Volt=> null();'
           dimension: ''
           fortran_default: null();
-          line: 306
+          line: 302
           name: D0_Volt
           python_name: d0_volt
           python_type: Real8
@@ -9260,7 +9251,7 @@
           definition: 'TYPE(REAL_8), POINTER :: D_phas=> null(),D0_phas=> null();'
           dimension: ''
           fortran_default: null();
-          line: 307
+          line: 303
           name: D0_phas
           python_name: d0_phas
           python_type: Real8
@@ -9274,7 +9265,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 304
+          line: 300
           name: DC_ac
           python_name: dc_ac
           python_type: Real8
@@ -9287,7 +9278,7 @@
           definition: 'real(dp), POINTER :: DELTA_E  => null()'
           dimension: ''
           fortran_default: null()
-          line: 303
+          line: 299
           name: DELTA_E
           python_name: delta_e
           python_type: float
@@ -9301,7 +9292,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 304
+          line: 300
           name: D_AC
           python_name: d_ac
           python_type: Real8
@@ -9315,7 +9306,7 @@
             => null(),D0_AN => null(),D0_BN => null()'
           dimension: ':'
           fortran_default: null()
-          line: 305
+          line: 301
           name: D_AN
           python_name: d_an
           python_type: Real8
@@ -9329,7 +9320,7 @@
             => null(),D0_AN => null(),D0_BN => null()'
           dimension: ':'
           fortran_default: null()
-          line: 305
+          line: 301
           name: D_BN
           python_name: d_bn
           python_type: Real8
@@ -9342,7 +9333,7 @@
           definition: 'TYPE(REAL_8),  POINTER :: D_Volt=> null(),D0_Volt=> null();'
           dimension: ''
           fortran_default: null()
-          line: 306
+          line: 302
           name: D_Volt
           python_name: d_volt
           python_type: Real8
@@ -9355,7 +9346,7 @@
           definition: 'TYPE(REAL_8), POINTER :: D_phas=> null(),D0_phas=> null();'
           dimension: ''
           fortran_default: null()
-          line: 307
+          line: 303
           name: D_phas
           python_name: d_phas
           python_type: Real8
@@ -9368,7 +9359,7 @@
           definition: 'TYPE(ECOLP), POINTER :: ECOL19   => null()'
           dimension: ''
           fortran_default: null()
-          line: 331
+          line: 324
           name: ECOL19
           python_name: ecol19
           python_type: Ecolp
@@ -9381,7 +9372,7 @@
           definition: 'TYPE(ENGEP), POINTER :: ENGE17   => null()'
           dimension: ''
           fortran_default: null()
-          line: 329
+          line: 322
           name: ENGE17
           python_name: enge17
           python_type: Engep
@@ -9395,7 +9386,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 298
+          line: 295
           name: FINT
           python_name: fint
           python_type: Real8
@@ -9409,7 +9400,7 @@
             => null()'
           dimension: ''
           fortran_default: null()
-          line: 302
+          line: 298
           name: FREQ
           python_name: freq
           python_type: Real8
@@ -9422,7 +9413,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(),H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 299
+          line: 296
           name: H1
           python_name: h1
           python_type: Real8
@@ -9435,7 +9426,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(),H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 299
+          line: 296
           name: H2
           python_name: h2
           python_type: Real8
@@ -9448,7 +9439,7 @@
           definition: 'TYPE(HELICAL_DIPOLEP), POINTER :: HE22 => null()'
           dimension: ''
           fortran_default: null()
-          line: 333
+          line: 326
           name: HE22
           python_name: he22
           python_type: HelicalDipolep
@@ -9462,7 +9453,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 298
+          line: 295
           name: HGAP
           python_name: hgap
           python_type: Real8
@@ -9475,7 +9466,7 @@
           definition: 'TYPE(STREXP), POINTER :: K16     => null()'
           dimension: ''
           fortran_default: null()
-          line: 328
+          line: 321
           name: K16
           python_name: k16
           python_type: Strexp
@@ -9488,7 +9479,7 @@
           definition: 'TYPE(DKD2P), POINTER :: K2    => null()'
           dimension: ''
           fortran_default: null()
-          line: 317
+          line: 310
           name: K2
           python_name: k2
           python_type: Dkd2p
@@ -9501,7 +9492,7 @@
           definition: 'TYPE(KICKT3P), POINTER :: K3  => null()'
           dimension: ''
           fortran_default: null()
-          line: 318
+          line: 311
           name: K3
           python_name: k3
           python_type: Kickt3p
@@ -9540,20 +9531,20 @@
           definition: 'TYPE(REAL_8), POINTER ::  L    => null()'
           dimension: ''
           fortran_default: null()
-          line: 296
+          line: 293
           name: L
           python_name: L
           python_type: Real8
           size: null
           type: REAL_8
         MIS:
-          comment: 'real(dp),  DIMENSION(:), POINTER :: D,R'
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical(lp), POINTER ::  MIS => null()'
           dimension: ''
           fortran_default: null()
-          line: 312
+          line: 307
           name: MIS
           python_name: mis
           python_type: bool
@@ -9566,7 +9557,7 @@
           definition: 'TYPE(MONP), POINTER :: MON14   => null()'
           dimension: ''
           fortran_default: null()
-          line: 326
+          line: 319
           name: MON14
           python_name: mon14
           python_type: Monp
@@ -9586,13 +9577,13 @@
           size: null
           type: CHARACTER
         P:
-          comment: TYPES OF POLYMORPHIC MAGNETS
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE(MAGNET_CHART), POINTER :: P => null()'
           dimension: ''
           fortran_default: null()
-          line: 314
+          line: 308
           name: P
           python_name: p
           python_type: MagnetChart
@@ -9605,20 +9596,20 @@
           definition: 'TYPE(PANCAKEP), POINTER :: PA       => null()'
           dimension: ''
           fortran_default: null()
-          line: 336
+          line: 329
           name: PA
           python_name: pa
           python_type: Pancakep
           size: null
           type: PANCAKEP
         PARENT_FIBRE:
-          comment: 'TYPE(fibre_appearance), POINTER :: doko'
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE(FIBRE), POINTER :: PARENT_FIBRE => null()'
           dimension: ''
           fortran_default: null()
-          line: 338
+          line: 331
           name: PARENT_FIBRE
           python_name: parent_fibre
           python_type: Fibre
@@ -9632,7 +9623,7 @@
             => null()'
           dimension: ''
           fortran_default: null()
-          line: 302
+          line: 298
           name: PHAS
           python_name: phas
           python_type: Real8
@@ -9645,7 +9636,7 @@
           definition: 'TYPE(RCOLP), POINTER :: RCOL18   => null()'
           dimension: ''
           fortran_default: null()
-          line: 330
+          line: 323
           name: RCOL18
           python_name: rcol18
           python_type: Rcolp
@@ -9658,7 +9649,7 @@
           definition: 'TYPE(SOL5P), POINTER :: S5    => null()'
           dimension: ''
           fortran_default: null()
-          line: 320
+          line: 313
           name: S5
           python_name: s5
           python_type: Sol5p
@@ -9671,7 +9662,7 @@
           definition: 'TYPE(NSMIP), POINTER :: S8    => null()'
           dimension: ''
           fortran_default: null()
-          line: 323
+          line: 316
           name: S8
           python_name: s8
           python_type: Nsmip
@@ -9684,7 +9675,7 @@
           definition: 'TYPE(SSMIP), POINTER :: S9    => null()'
           dimension: ''
           fortran_default: null()
-          line: 324
+          line: 317
           name: S9
           python_name: s9
           python_type: Ssmip
@@ -9697,7 +9688,7 @@
           definition: 'TYPE(SUPERDRIFTP), POINTER :: SDR  => null()'
           dimension: ''
           fortran_default: null()
-          line: 334
+          line: 327
           name: SDR
           python_name: sdr
           python_type: Superdriftp
@@ -9710,7 +9701,7 @@
           definition: 'TYPE(ESEPTUMP), POINTER :: SEP15 => null()'
           dimension: ''
           fortran_default: null()
-          line: 327
+          line: 320
           name: SEP15
           python_name: sep15
           python_type: Eseptump
@@ -9723,7 +9714,7 @@
           definition: 'TYPE(KTKP), POINTER :: T6     => null()'
           dimension: ''
           fortran_default: null()
-          line: 321
+          line: 314
           name: T6
           python_name: t6
           python_type: Ktkp
@@ -9736,7 +9727,7 @@
           definition: 'TYPE(TKTFP), POINTER :: T7    => null()'
           dimension: ''
           fortran_default: null()
-          line: 322
+          line: 315
           name: T7
           python_name: t7
           python_type: Tktfp
@@ -9749,7 +9740,7 @@
           definition: 'logical(lp), POINTER :: THIN => null()'
           dimension: ''
           fortran_default: null()
-          line: 309
+          line: 305
           name: THIN
           python_name: thin
           python_type: bool
@@ -9762,7 +9753,7 @@
           definition: 'TYPE(TEAPOTP), POINTER :: TP10 => null()'
           dimension: ''
           fortran_default: null()
-          line: 325
+          line: 318
           name: TP10
           python_name: tp10
           python_type: Teapotp
@@ -9775,7 +9766,7 @@
           definition: 'TYPE(REAL_8),    POINTER:: VA => null(),VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 300
+          line: 297
           name: VA
           python_name: va
           python_type: Real8
@@ -9789,7 +9780,7 @@
             => null()'
           dimension: ''
           fortran_default: null()
-          line: 302
+          line: 298
           name: VOLT
           python_name: volt
           python_type: Real8
@@ -9815,7 +9806,7 @@
           definition: 'TYPE(REAL_8),    POINTER:: VA => null(),VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 300
+          line: 297
           name: VS
           python_name: vs
           python_type: Real8
@@ -9828,7 +9819,7 @@
           definition: 'TYPE(SAGANP), POINTER :: WI         => null()'
           dimension: ''
           fortran_default: null()
-          line: 335
+          line: 328
           name: WI
           python_name: wi
           python_type: Saganp
@@ -9842,7 +9833,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 341
+          line: 333
           name: backward
           python_name: backward
           python_type: TreeElement
@@ -9855,7 +9846,7 @@
           definition: 'logical, pointer :: do1mapf=> null(),do1mapb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 344
+          line: 336
           name: do1mapb
           python_name: do1mapb
           python_type: bool
@@ -9868,7 +9859,7 @@
           definition: 'logical, pointer :: do1mapf=> null(),do1mapb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 344
+          line: 336
           name: do1mapf
           python_name: do1mapf
           python_type: bool
@@ -9895,7 +9886,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 341
+          line: 333
           name: forward
           python_name: forward
           python_type: TreeElement
@@ -9934,7 +9925,7 @@
           definition: 'type(ramping), pointer :: ramp => null()'
           dimension: ''
           fortran_default: null()
-          line: 340
+          line: 332
           name: ramp
           python_name: ramp
           python_type: Ramping
@@ -9947,7 +9938,7 @@
           definition: 'integer, pointer :: skip_ptc_f=> null(),skip_ptc_b=> null()'
           dimension: ''
           fortran_default: null()
-          line: 343
+          line: 335
           name: skip_ptc_b
           python_name: skip_ptc_b
           python_type: int
@@ -9960,20 +9951,20 @@
           definition: 'integer, pointer :: skip_ptc_f=> null(),skip_ptc_b=> null()'
           dimension: ''
           fortran_default: null()
-          line: 343
+          line: 335
           name: skip_ptc_f
           python_name: skip_ptc_f
           python_type: int
           size: null
           type: integer
         slow_ac:
-          comment: MISALIGNEMENTS AND ROTATION
+          comment: ''
           default: ''
           default_factory: list
           definition: 'integer(2), pointer :: slow_ac => null()'
           dimension: ''
           fortran_default: null()
-          line: 310
+          line: 306
           name: slow_ac
           python_name: slow_ac
           python_type: int
@@ -9987,7 +9978,7 @@
             => null(),D_AC => null()'
           dimension: ''
           fortran_default: null()
-          line: 304
+          line: 300
           name: theta_ac
           python_name: theta_ac
           python_type: Real8
@@ -10000,7 +9991,7 @@
           definition: 'logical, pointer :: usef=> null(),useb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 342
+          line: 334
           name: useb
           python_name: useb
           python_type: bool
@@ -10013,7 +10004,7 @@
           definition: 'logical, pointer :: usef=> null(),useb=> null()'
           dimension: ''
           fortran_default: null()
-          line: 342
+          line: 334
           name: usef
           python_name: usef
           python_type: bool
@@ -10488,13 +10479,13 @@
       comment: ''
       members:
         AG:
-          comment: spin g-2 TO TIE LAYOUTS
+          comment: spin g-2
           default: 0.0
           default_factory: ''
           definition: 'real(dp), POINTER :: AG  => null()'
           dimension: ''
           fortran_default: null()
-          line: 406
+          line: 401
           name: AG
           python_name: ag
           python_type: float
@@ -10508,7 +10499,7 @@
             => null(),MASS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 404
+          line: 399
           name: BETA0
           python_name: beta0
           python_type: float
@@ -10521,7 +10512,7 @@
           definition: 'real(dp), POINTER :: CHARGE => null()'
           dimension: ''
           fortran_default: null()
-          line: 405
+          line: 400
           name: CHARGE
           python_name: charge
           python_type: float
@@ -10534,7 +10525,7 @@
           definition: TYPE(CHART),POINTER ::CHART => null()
           dimension: ''
           fortran_default: null()
-          line: 389
+          line: 388
           name: CHART
           python_name: chart
           python_type: Chart
@@ -10547,7 +10538,7 @@
           definition: INTEGER,POINTER ::DIR => null()
           dimension: ''
           fortran_default: null()
-          line: 387
+          line: 386
           name: DIR
           python_name: dir
           python_type: int
@@ -10561,7 +10552,7 @@
             => null(),MASS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 404
+          line: 399
           name: GAMBET
           python_name: gambet
           python_type: float
@@ -10575,7 +10566,7 @@
             => null(),MASS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 404
+          line: 399
           name: GAMMA0I
           python_name: gamma0i
           python_type: float
@@ -10588,20 +10579,20 @@
           definition: 'TYPE (ELEMENT), POINTER ::  MAG => null()'
           dimension: ''
           fortran_default: null()
-          line: 390
+          line: 389
           name: MAG
           python_name: mag
           python_type: Element
           size: null
           type: ELEMENT
         MAGP:
-          comment: END OF DATA POINTER TO THE MAGNETS ON EACH SIDE OF THIS NODE
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE (ELEMENTP),POINTER ::  MAGP => null()'
           dimension: ''
           fortran_default: null()
-          line: 391
+          line: 390
           name: MAGP
           python_name: magp
           python_type: Elementp
@@ -10615,7 +10606,7 @@
             => null(),MASS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 404
+          line: 399
           name: MASS
           python_name: mass
           python_type: float
@@ -10628,20 +10619,20 @@
           definition: 'TYPE (FIBRE),POINTER :: N => null()'
           dimension: ''
           fortran_default: null()
-          line: 409
+          line: 403
           name: N
           python_name: n
           python_type: Fibre
           size: null
           type: FIBRE
         NEXT:
-          comment: POINTING TO PARENT LAYOUT AND PARENT FIBRE DATA
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE (FIBRE),POINTER :: NEXT => null()'
           dimension: ''
           fortran_default: null()
-          line: 395
+          line: 392
           name: NEXT
           python_name: next
           python_type: Fibre
@@ -10654,7 +10645,7 @@
           definition: 'TYPE (FIBRE),POINTER :: P => null()'
           dimension: ''
           fortran_default: null()
-          line: 408
+          line: 402
           name: P
           python_name: p
           python_type: Fibre
@@ -10667,7 +10658,7 @@
           definition: 'TYPE (LAYOUT),POINTER :: PARENT_LAYOUT => null()'
           dimension: ''
           fortran_default: null()
-          line: 397
+          line: 393
           name: PARENT_LAYOUT
           python_name: parent_layout
           python_type: Layout
@@ -10680,7 +10671,7 @@
           definition: TYPE(PATCH),POINTER ::PATCH => null()
           dimension: ''
           fortran_default: null()
-          line: 388
+          line: 387
           name: PATCH
           python_name: patch
           python_type: Patch
@@ -10693,7 +10684,7 @@
           definition: 'TYPE (FIBRE),POINTER :: PREVIOUS => null()'
           dimension: ''
           fortran_default: null()
-          line: 394
+          line: 391
           name: PREVIOUS
           python_name: previous
           python_type: Fibre
@@ -10706,7 +10697,7 @@
           definition: 'TYPE(INTEGRATION_NODE),POINTER :: T1 => null()'
           dimension: ''
           fortran_default: null()
-          line: 399
+          line: 395
           name: T1
           python_name: t1
           python_type: IntegrationNode
@@ -10719,7 +10710,7 @@
           definition: 'TYPE(INTEGRATION_NODE),POINTER ::  T2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 400
+          line: 396
           name: T2
           python_name: t2
           python_type: IntegrationNode
@@ -10732,7 +10723,7 @@
           definition: 'TYPE(INTEGRATION_NODE),POINTER :: TM  => null()'
           dimension: ''
           fortran_default: null()
-          line: 401
+          line: 397
           name: TM
           python_name: tm
           python_type: IntegrationNode
@@ -10745,7 +10736,7 @@
           definition: type(info),pointer ::i => null()
           dimension: ''
           fortran_default: null()
-          line: 398
+          line: 394
           name: i
           python_name: i
           python_type: Info
@@ -10758,20 +10749,20 @@
           definition: 'INTEGER,POINTER :: loc => null()'
           dimension: ''
           fortran_default: null()
-          line: 410
+          line: 404
           name: loc
           python_name: loc
           python_type: int
           size: null
           type: INTEGER
         pos:
-          comment: POSITION IN LAYOUT NEW STUFF....
+          comment: POSITION IN LAYOUT
           default: 0
           default_factory: ''
           definition: INTEGER,POINTER ::pos  => null()
           dimension: ''
           fortran_default: null()
-          line: 402
+          line: 398
           name: pos
           python_name: pos
           python_type: int
@@ -11053,13 +11044,13 @@
       comment: ''
       members:
         BB:
-          comment: 'TYPE(tree_element), POINTER :: T'
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE(BEAM_BEAM_NODE), POINTER :: BB  => null()'
           dimension: ''
           fortran_default: null()
-          line: 381
+          line: 380
           name: BB
           python_name: bb
           python_type: BeamBeamNode
@@ -11248,7 +11239,7 @@
           size: null
           type: real
         lf:
-          comment: 'TYPE(EXTRA_WORK), POINTER :: WORK'
+          comment: ''
           default: null
           default_factory: ''
           definition: 'type(c_lattice_function), pointer :: lf  => null()'
@@ -11998,7 +11989,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 207
+          line: 206
           name: FINT
           python_name: fint
           python_type: float
@@ -12011,7 +12002,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 208
+          line: 207
           name: H1
           python_name: h1
           python_type: float
@@ -12024,7 +12015,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 208
+          line: 207
           name: H2
           python_name: h2
           python_type: float
@@ -12038,7 +12029,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 207
+          line: 206
           name: HGAP
           python_name: hgap
           python_type: float
@@ -12072,8 +12063,7 @@
           size: null
           type: real
         MATY:
-          comment: 'LINEAR MATRIX frs     real(dp),  DIMENSION(:), POINTER :: lx(:)
-            => null(), ly(:) => null()'
+          comment: LINEAR MATRIX
           default: 0.0
           default_factory: ''
           definition: 'real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY
@@ -12106,7 +12096,7 @@
           definition: 'real(dp),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 209
+          line: 208
           name: VA
           python_name: va
           python_type: float
@@ -12119,7 +12109,7 @@
           definition: 'real(dp),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 209
+          line: 208
           name: VS
           python_name: vs
           python_type: float
@@ -12132,7 +12122,7 @@
           definition: 'real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()'
           dimension: ':'
           fortran_default: null()
-          line: 206
+          line: 205
           name: lx
           python_name: lx
           python_type: float
@@ -12145,7 +12135,7 @@
           definition: 'real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()'
           dimension: ':'
           fortran_default: null()
-          line: 206
+          line: 205
           name: ly
           python_name: ly
           python_type: float
@@ -12196,7 +12186,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 219
+          line: 218
           name: FINT
           python_name: fint
           python_type: Real8
@@ -12209,7 +12199,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 220
+          line: 219
           name: H1
           python_name: h1
           python_type: Real8
@@ -12222,7 +12212,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 220
+          line: 219
           name: H2
           python_name: h2
           python_type: Real8
@@ -12236,7 +12226,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 219
+          line: 218
           name: HGAP
           python_name: hgap
           python_type: Real8
@@ -12270,8 +12260,7 @@
           size: null
           type: REAL_8
         MATY:
-          comment: 'LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:)
-            => null(), ly(:) => null()'
+          comment: LINEAR MATRIX
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY
@@ -12304,7 +12293,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 221
+          line: 220
           name: VA
           python_name: va
           python_type: Real8
@@ -12317,7 +12306,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 221
+          line: 220
           name: VS
           python_name: vs
           python_type: Real8
@@ -12331,7 +12320,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 218
+          line: 217
           name: lx
           python_name: lx
           python_type: Real8
@@ -12345,7 +12334,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 218
+          line: 217
           name: ly
           python_name: ly
           python_type: Real8
@@ -12374,14 +12363,13 @@
           size: null
           type: logical
         DNA:
-          comment: 'type(array_of_fibres), pointer :: A(:) => null() type(d_lattice_function),
-            pointer :: lf0  => null()'
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE(layout_array), POINTER :: DNA(:)  => null()'
           dimension: ':'
           fortran_default: null()
-          line: 434
+          line: 432
           name: DNA
           python_name: dna
           python_type: LayoutArray
@@ -12394,7 +12382,7 @@
           definition: 'TYPE (FIBRE), POINTER :: END  => null()'
           dimension: ''
           fortran_default: null()
-          line: 426
+          line: 424
           name: END
           python_name: end
           python_type: Fibre
@@ -12407,7 +12395,7 @@
           definition: 'TYPE (FIBRE), POINTER :: END_GROUND  => null()'
           dimension: ''
           fortran_default: null()
-          line: 429
+          line: 427
           name: END_GROUND
           python_name: end_ground
           python_type: Fibre
@@ -12446,7 +12434,7 @@
           definition: 'TYPE (FIBRE), POINTER :: LAST  => null()'
           dimension: ''
           fortran_default: null()
-          line: 424
+          line: 423
           name: LAST
           python_name: last
           python_type: Fibre
@@ -12459,7 +12447,7 @@
           definition: 'INTEGER, POINTER :: LASTPOS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 423
+          line: 422
           name: LASTPOS
           python_name: lastpos
           python_type: int
@@ -12498,7 +12486,7 @@
           definition: 'TYPE (LAYOUT), POINTER :: NEXT  => null()'
           dimension: ''
           fortran_default: null()
-          line: 430
+          line: 428
           name: NEXT
           python_name: next
           python_type: Layout
@@ -12524,7 +12512,7 @@
           definition: 'TYPE (LAYOUT), POINTER :: PREVIOUS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 431
+          line: 429
           name: PREVIOUS
           python_name: previous
           python_type: Layout
@@ -12537,7 +12525,7 @@
           definition: 'TYPE (FIBRE), POINTER :: START  => null()'
           dimension: ''
           fortran_default: null()
-          line: 427
+          line: 425
           name: START
           python_name: start
           python_type: Fibre
@@ -12550,7 +12538,7 @@
           definition: 'TYPE (FIBRE), POINTER :: START_GROUND  => null()'
           dimension: ''
           fortran_default: null()
-          line: 428
+          line: 426
           name: START_GROUND
           python_name: start_ground
           python_type: Fibre
@@ -12563,15 +12551,14 @@
           definition: 'type(NODE_LAYOUT), pointer :: T    => null()'
           dimension: ''
           fortran_default: null()
-          line: 432
+          line: 430
           name: T
           python_name: t
           python_type: NodeLayout
           size: null
           type: NODE_LAYOUT
         THIN:
-          comment: PARAMETER USED FOR AUTOMATIC CUTTING INTO THIN LENS POINTERS OF
-            LINK LAYOUT
+          comment: PARAMETER USED FOR AUTOMATIC CUTTING INTO THIN LENS
           default: 0.0
           default_factory: ''
           definition: 'REAL(DP),  POINTER :: THIN  => null()'
@@ -12590,7 +12577,7 @@
           definition: 'TYPE (MAD_UNIVERSE), POINTER :: parent_universe  => null()'
           dimension: ''
           fortran_default: null()
-          line: 433
+          line: 431
           name: parent_universe
           python_name: parent_universe
           python_type: MadUniverse
@@ -12768,7 +12755,7 @@
           definition: 'TYPE (FIBRE), POINTER :: LAST  => null()'
           dimension: ''
           fortran_default: null()
-          line: 456
+          line: 455
           name: LAST
           python_name: last
           python_type: Fibre
@@ -12781,7 +12768,7 @@
           definition: 'INTEGER, POINTER :: LASTPOS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 455
+          line: 454
           name: LASTPOS
           python_name: lastpos
           python_type: int
@@ -12807,7 +12794,7 @@
           definition: 'INTEGER, POINTER :: NF  => null()'
           dimension: ''
           fortran_default: null()
-          line: 454
+          line: 453
           name: NF
           python_name: nf
           python_type: int
@@ -12827,8 +12814,7 @@
           size: null
           type: INTEGER
         START:
-          comment: POINTERS OF UNIVERSE IN CONJUNCTION WITH THE POINTERS N AND P OF
-            THE FIBRES
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE (LAYOUT), POINTER :: START  => null()'
@@ -12922,7 +12908,7 @@
           definition: 'LOGICAL(lp), POINTER :: EXACT  => null()'
           dimension: ''
           fortran_default: null()
-          line: 177
+          line: 176
           name: EXACT
           python_name: exact
           python_type: bool
@@ -12964,7 +12950,7 @@
             => null(), bend_fringe => null()'
           dimension: ''
           fortran_default: null()
-          line: 178
+          line: 177
           name: KILL_ENT_FRINGE
           python_name: kill_ent_fringe
           python_type: bool
@@ -12978,7 +12964,7 @@
             => null()'
           dimension: ''
           fortran_default: null()
-          line: 179
+          line: 178
           name: KILL_ENT_SPIN
           python_name: kill_ent_spin
           python_type: bool
@@ -12992,7 +12978,7 @@
             => null(), bend_fringe => null()'
           dimension: ''
           fortran_default: null()
-          line: 178
+          line: 177
           name: KILL_EXI_FRINGE
           python_name: kill_exi_fringe
           python_type: bool
@@ -13006,7 +12992,7 @@
             => null()'
           dimension: ''
           fortran_default: null()
-          line: 179
+          line: 178
           name: KILL_EXI_SPIN
           python_name: kill_exi_spin
           python_type: bool
@@ -13059,7 +13045,7 @@
           definition: 'INTEGER, POINTER :: METHOD => null(),NST => null()'
           dimension: ''
           fortran_default: null()
-          line: 182
+          line: 180
           name: METHOD
           python_name: method
           python_type: int
@@ -13072,7 +13058,7 @@
           definition: 'INTEGER, POINTER :: NMUL => null()'
           dimension: ''
           fortran_default: null()
-          line: 183
+          line: 181
           name: NMUL
           python_name: nmul
           python_type: int
@@ -13085,7 +13071,7 @@
           definition: 'INTEGER, POINTER :: METHOD => null(),NST => null()'
           dimension: ''
           fortran_default: null()
-          line: 182
+          line: 180
           name: NST
           python_name: nst
           python_type: int
@@ -13139,7 +13125,7 @@
             => null(), bend_fringe => null()'
           dimension: ''
           fortran_default: null()
-          line: 178
+          line: 177
           name: bend_fringe
           python_name: bend_fringe
           python_type: bool
@@ -13192,7 +13178,7 @@
             null()'
           dimension: ''
           fortran_default: null()
-          line: 180
+          line: 179
           name: highest_fringe
           python_name: highest_fringe
           python_type: int
@@ -13206,7 +13192,7 @@
             null()'
           dimension: ''
           fortran_default: null()
-          line: 180
+          line: 179
           name: permFRINGE
           python_name: permfringe
           python_type: int
@@ -13437,7 +13423,7 @@
           definition: INTEGER NMUL,NATURAL,ADD
           dimension: ''
           fortran_default: null
-          line: 93
+          line: 92
           name: ADD
           python_name: add
           python_type: int
@@ -13450,7 +13436,7 @@
           definition: real(dp) AN(NMAX),BN(NMAX)
           dimension: NMAX
           fortran_default: null
-          line: 92
+          line: 91
           name: AN
           python_name: an
           python_type: float
@@ -13463,7 +13449,7 @@
           definition: real(dp) AN(NMAX),BN(NMAX)
           dimension: NMAX
           fortran_default: null
-          line: 92
+          line: 91
           name: BN
           python_name: bn
           python_type: float
@@ -13476,7 +13462,7 @@
           definition: INTEGER NMUL,NATURAL,ADD
           dimension: ''
           fortran_default: null
-          line: 93
+          line: 92
           name: NATURAL
           python_name: natural
           python_type: int
@@ -13489,7 +13475,7 @@
           definition: INTEGER NMUL,NATURAL,ADD
           dimension: ''
           fortran_default: null
-          line: 93
+          line: 92
           name: NMUL
           python_name: nmul
           python_type: int
@@ -13524,7 +13510,7 @@
           definition: 'TYPE (INTEGRATION_NODE), POINTER :: END  => null()'
           dimension: ''
           fortran_default: null()
-          line: 474
+          line: 472
           name: END
           python_name: end
           python_type: IntegrationNode
@@ -13537,7 +13523,7 @@
           definition: 'TYPE (INTEGRATION_NODE), POINTER :: END_GROUND  => null()'
           dimension: ''
           fortran_default: null()
-          line: 477
+          line: 475
           name: END_GROUND
           python_name: end_ground
           python_type: IntegrationNode
@@ -13563,7 +13549,7 @@
           definition: 'TYPE (INTEGRATION_NODE), POINTER :: LAST  => null()'
           dimension: ''
           fortran_default: null()
-          line: 472
+          line: 471
           name: LAST
           python_name: last
           python_type: IntegrationNode
@@ -13576,14 +13562,14 @@
           definition: 'INTEGER, POINTER :: LASTPOS  => null()'
           dimension: ''
           fortran_default: null()
-          line: 471
+          line: 470
           name: LASTPOS
           python_name: lastpos
           python_type: int
           size: null
           type: INTEGER
         N:
-          comment: TOTAL ELEMENT IN THE CHAIN POINTERS OF LINK LAYOUT
+          comment: TOTAL ELEMENT IN THE CHAIN
           default: 0
           default_factory: ''
           definition: 'INTEGER,  POINTER :: N   => null()'
@@ -13615,7 +13601,7 @@
           definition: 'TYPE(ORBIT_LATTICE), POINTER :: ORBIT_LATTICE  => null()'
           dimension: ''
           fortran_default: null()
-          line: 479
+          line: 477
           name: ORBIT_LATTICE
           python_name: orbit_lattice
           python_type: OrbitLattice
@@ -13628,7 +13614,7 @@
           definition: 'TYPE (LAYOUT), POINTER :: PARENT_LAYOUT  => null()'
           dimension: ''
           fortran_default: null()
-          line: 478
+          line: 476
           name: PARENT_LAYOUT
           python_name: parent_layout
           python_type: Layout
@@ -13641,7 +13627,7 @@
           definition: 'TYPE (INTEGRATION_NODE), POINTER :: START  => null()'
           dimension: ''
           fortran_default: null()
-          line: 475
+          line: 473
           name: START
           python_name: start
           python_type: IntegrationNode
@@ -13654,7 +13640,7 @@
           definition: 'TYPE (INTEGRATION_NODE), POINTER :: START_GROUND  => null()'
           dimension: ''
           fortran_default: null()
-          line: 476
+          line: 474
           name: START_GROUND
           python_name: start_ground
           python_type: IntegrationNode
@@ -13892,13 +13878,13 @@
           size: null
           type: REAL
         ORBIT_OMEGA_after:
-          comment: 'REAL(DP), pointer  ::  freqb,freqa,voltb,volta,phasa,phasb,xs6,dxs6'
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: 'REAL(DP), pointer  ::  ORBIT_OMEGA_after => null()'
           dimension: ''
           fortran_default: null()
-          line: 512
+          line: 511
           name: ORBIT_OMEGA_after
           python_name: orbit_omega_after
           python_type: float
@@ -13990,7 +13976,7 @@
           definition: 'TYPE(INTERNAL_STATE),pointer :: STATE => null()'
           dimension: ''
           fortran_default: null()
-          line: 514
+          line: 512
           name: STATE
           python_name: state
           python_type: InternalState
@@ -14017,7 +14003,7 @@
           definition: 'real(dp), pointer :: dt(:)  => null()'
           dimension: ':'
           fortran_default: null()
-          line: 517
+          line: 515
           name: dt
           python_name: dt
           python_type: float
@@ -14043,7 +14029,7 @@
           definition: 'REAL(DP), pointer  ::  orbit_deltae  => null()'
           dimension: ''
           fortran_default: null()
-          line: 511
+          line: 510
           name: orbit_deltae
           python_name: orbit_deltae
           python_type: float
@@ -14063,7 +14049,7 @@
           size: null
           type: REAL
         orbit_gamma:
-          comment: 'GET_gamma REAL(DP), pointer  ::  orbit_dppfac ! GET_dppfac'
+          comment: GET_gamma
           default: 0.0
           default_factory: ''
           definition: 'REAL(DP), pointer  ::  orbit_gamma  => null()'
@@ -14095,7 +14081,7 @@
           definition: 'TYPE(layout), pointer :: parent_layout  => null()'
           dimension: ''
           fortran_default: null()
-          line: 516
+          line: 514
           name: parent_layout
           python_name: parent_layout
           python_type: Layout
@@ -14108,7 +14094,7 @@
           definition: 'TYPE(INTEGRATION_NODE), pointer :: tp  => null()'
           dimension: ''
           fortran_default: null()
-          line: 515
+          line: 513
           name: tp
           python_name: tp
           python_type: IntegrationNode
@@ -14334,7 +14320,7 @@
           size: null
           type: REAL
         xprime:
-          comment: 'type(gen_grad_field_coeff),pointer :: gf => null()'
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical,pointer :: xprime => null()'
@@ -14478,7 +14464,7 @@
           size: null
           type: real
         xprime:
-          comment: 'type(gen_grad_field_coeff),pointer :: gf => null()'
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical,pointer :: xprime=> null()'
@@ -14751,7 +14737,7 @@
           definition: INTEGER IAN(NMAX),IBN(NMAX)
           dimension: NMAX
           fortran_default: null
-          line: 133
+          line: 131
           name: IAN
           python_name: ian
           python_type: int
@@ -14764,7 +14750,7 @@
           definition: INTEGER IAN(NMAX),IBN(NMAX)
           dimension: NMAX
           fortran_default: null
-          line: 133
+          line: 131
           name: IBN
           python_name: ibn
           python_type: int
@@ -14777,7 +14763,7 @@
           definition: INTEGER IB_SOL
           dimension: ''
           fortran_default: null
-          line: 136
+          line: 134
           name: IB_SOL
           python_name: ib_sol
           python_type: int
@@ -14790,7 +14776,7 @@
           definition: INTEGER IVOLT, IFREQ,IPHAS
           dimension: ''
           fortran_default: null
-          line: 135
+          line: 133
           name: IFREQ
           python_name: ifreq
           python_type: int
@@ -14803,7 +14789,7 @@
           definition: INTEGER IVOLT, IFREQ,IPHAS
           dimension: ''
           fortran_default: null
-          line: 135
+          line: 133
           name: IPHAS
           python_name: iphas
           python_type: int
@@ -14816,7 +14802,7 @@
           definition: INTEGER IVOLT, IFREQ,IPHAS
           dimension: ''
           fortran_default: null
-          line: 135
+          line: 133
           name: IVOLT
           python_name: ivolt
           python_type: int
@@ -14842,7 +14828,7 @@
           definition: INTEGER NPARA
           dimension: ''
           fortran_default: null
-          line: 132
+          line: 130
           name: NPARA
           python_name: npara
           python_type: int
@@ -14855,7 +14841,7 @@
           definition: real(dp) SAN(NMAX),SBN(NMAX)
           dimension: NMAX
           fortran_default: null
-          line: 134
+          line: 132
           name: SAN
           python_name: san
           python_type: float
@@ -14868,7 +14854,7 @@
           definition: real(dp) SAN(NMAX),SBN(NMAX)
           dimension: NMAX
           fortran_default: null
-          line: 134
+          line: 132
           name: SBN
           python_name: sbn
           python_type: float
@@ -14881,20 +14867,20 @@
           definition: real(dp) SB_SOL
           dimension: ''
           fortran_default: null
-          line: 138
+          line: 136
           name: SB_SOL
           python_name: sb_sol
           python_type: float
           size: null
           type: real
         SET_ELEMENT:
-          comment: STUFF FOR PARAMETER DEPENDENCE
+          comment: ''
           default: false
           default_factory: ''
           definition: 'LOGICAL(lp), POINTER ::  SET_ELEMENT => null()'
           dimension: ''
           fortran_default: null()
-          line: 130
+          line: 129
           name: SET_ELEMENT
           python_name: set_element
           python_type: bool
@@ -14907,7 +14893,7 @@
           definition: 'LOGICAL(lp), POINTER ::  SET_TPSAFIT  => null()'
           dimension: ''
           fortran_default: null()
-          line: 129
+          line: 128
           name: SET_TPSAFIT
           python_name: set_tpsafit
           python_type: bool
@@ -14920,7 +14906,7 @@
           definition: real(dp) SVOLT, SFREQ,SPHAS
           dimension: ''
           fortran_default: null
-          line: 137
+          line: 135
           name: SFREQ
           python_name: sfreq
           python_type: float
@@ -14933,7 +14919,7 @@
           definition: real(dp) SVOLT, SFREQ,SPHAS
           dimension: ''
           fortran_default: null
-          line: 137
+          line: 135
           name: SPHAS
           python_name: sphas
           python_type: float
@@ -14946,7 +14932,7 @@
           definition: real(dp) SVOLT, SFREQ,SPHAS
           dimension: ''
           fortran_default: null
-          line: 137
+          line: 135
           name: SVOLT
           python_name: svolt
           python_type: float
@@ -14959,14 +14945,14 @@
           definition: 'real(dp),DIMENSION(:), POINTER :: TPSAFIT => null()'
           dimension: ':'
           fortran_default: null()
-          line: 128
+          line: 127
           name: TPSAFIT
           python_name: tpsafit
           python_type: float
           size: null
           type: real
         VORNAME:
-          comment: STUFF FOR SETTING MAGNET USING GLOBAL ARRAY TPSAFIT
+          comment: ''
           default: ''
           default_factory: ''
           definition: CHARACTER(vp) VORNAME
@@ -14985,7 +14971,7 @@
           definition: integer g,np,nb
           dimension: ''
           fortran_default: null
-          line: 139
+          line: 137
           name: g
           python_name: g
           python_type: int
@@ -15005,13 +14991,13 @@
           size: null
           type: integer
         nb:
-          comment: group index  number of blocks User defined Functions
+          comment: group index  number of blocks
           default: 0
           default_factory: ''
           definition: integer g,np,nb
           dimension: ''
           fortran_default: null
-          line: 139
+          line: 137
           name: nb
           python_name: nb
           python_type: int
@@ -15024,7 +15010,7 @@
           definition: integer g,np,nb
           dimension: ''
           fortran_default: null
-          line: 139
+          line: 137
           name: np
           python_name: np
           python_type: int
@@ -15037,7 +15023,7 @@
           definition: TYPE(POL_BLOCK_sagan) sagan
           dimension: ''
           fortran_default: null
-          line: 141
+          line: 138
           name: sagan
           python_name: sagan
           python_type: PolBlockSagan
@@ -15184,7 +15170,7 @@
       comment: ''
       members:
         L:
-          comment: 'collimator of MAD type(MADX_APERTURE), POINTER :: A => null()'
+          comment: collimator of MAD
           default: 0.0
           default_factory: ''
           definition: 'real(dp) , POINTER :: L => null()'
@@ -15219,7 +15205,7 @@
       comment: ''
       members:
         L:
-          comment: 'type(MADX_APERTURE), POINTER :: A => null()'
+          comment: ''
           default: null
           default_factory: ''
           definition: TYPE(REAL_8) , POINTER ::L => null()
@@ -15254,14 +15240,13 @@
       comment: ''
       members:
         ALLOC:
-          comment: '@1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE integer g,nb  !  group
-            index, number in group &2'
+          comment: '@1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE'
           default: false
           default_factory: ''
           definition: 'LOGICAL(lp) :: ALLOC'
           dimension: ''
           fortran_default: null
-          line: 121
+          line: 120
           name: ALLOC
           python_name: alloc
           python_type: bool
@@ -15274,7 +15259,7 @@
           definition: INTEGER I
           dimension: ''
           fortran_default: null
-          line: 119
+          line: 118
           name: I
           python_name: i
           python_type: int
@@ -15287,14 +15272,14 @@
           definition: INTEGER KIND
           dimension: ''
           fortran_default: null
-          line: 118
+          line: 117
           name: KIND
           python_name: kind
           python_type: int
           size: null
           type: INTEGER
         R:
-          comment: '@1    USED IF REAL &2'
+          comment: '@1    USED IF REAL'
           default: 0.0
           default_factory: ''
           definition: REAL(DP) R
@@ -15313,7 +15298,7 @@
           definition: REAL(DP) S
           dimension: ''
           fortran_default: null
-          line: 120
+          line: 119
           name: S
           python_name: s
           python_type: float
@@ -15355,7 +15340,7 @@
           size: null
           type: real
         BN:
-          comment: Multipole component (OPTIONAL) ADD INTERNAL STUFF HERE AS POINTERS
+          comment: Multipole component (OPTIONAL)
           default: 0.0
           default_factory: ''
           definition: 'real(dp),  DIMENSION(:), POINTER :: AN=> null(),BN=> null()'
@@ -15374,7 +15359,7 @@
           definition: real(dp),  DIMENSION(:),  POINTER ::INTERNAL  => null()
           dimension: ':'
           fortran_default: null()
-          line: 58
+          line: 57
           name: INTERNAL
           python_name: internal
           python_type: float
@@ -15413,7 +15398,7 @@
           definition: 'TYPE(undu_R), POINTER :: W=> null()'
           dimension: ''
           fortran_default: null()
-          line: 60
+          line: 59
           name: W
           python_name: w
           python_type: UnduR
@@ -15439,7 +15424,7 @@
           definition: 'LOGICAL(lp), POINTER :: xprime  => null()'
           dimension: ''
           fortran_default: null()
-          line: 59
+          line: 58
           name: xprime
           python_name: xprime
           python_type: bool
@@ -15468,7 +15453,7 @@
           size: null
           type: REAL_8
         BN:
-          comment: Multipole component (OPTIONAL) ADD INTERNAL STUFF HERE AS POINTERS
+          comment: Multipole component (OPTIONAL)
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8),  DIMENSION(:), POINTER :: AN=> null(),BN => null()'
@@ -15487,7 +15472,7 @@
           definition: TYPE(REAL_8), DIMENSION(:),POINTER ::INTERNAL=> null()
           dimension: ':'
           fortran_default: null()
-          line: 69
+          line: 68
           name: INTERNAL
           python_name: internal
           python_type: Real8
@@ -15526,7 +15511,7 @@
           definition: 'TYPE(undu_p), POINTER :: W=> null()'
           dimension: ''
           fortran_default: null()
-          line: 71
+          line: 70
           name: W
           python_name: w
           python_type: UnduP
@@ -15552,7 +15537,7 @@
           definition: 'LOGICAL(lp), POINTER :: xprime  => null()'
           dimension: ''
           fortran_default: null()
-          line: 70
+          line: 69
           name: xprime
           python_name: xprime
           python_type: bool
@@ -16598,7 +16583,7 @@
           definition: 'real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()'
           dimension: ':'
           fortran_default: null()
-          line: 295
+          line: 293
           name: AE
           python_name: ae
           python_type: float
@@ -16624,7 +16609,7 @@
           definition: 'real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()'
           dimension: ':'
           fortran_default: null()
-          line: 295
+          line: 293
           name: BE
           python_name: be
           python_type: float
@@ -16650,7 +16635,7 @@
           definition: 'logical(lp),   POINTER :: DRIFTKICK => null()'
           dimension: ''
           fortran_default: null()
-          line: 289
+          line: 288
           name: DRIFTKICK
           python_name: driftkick
           python_type: bool
@@ -16663,7 +16648,7 @@
           definition: 'LOGICAL(LP), POINTER :: ELECTRIC => null()'
           dimension: ''
           fortran_default: null()
-          line: 297
+          line: 295
           name: ELECTRIC
           python_name: electric
           python_type: bool
@@ -16677,7 +16662,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 290
+          line: 289
           name: FINT
           python_name: fint
           python_type: float
@@ -16690,7 +16675,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 291
+          line: 290
           name: H1
           python_name: h1
           python_type: float
@@ -16703,7 +16688,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 291
+          line: 290
           name: H2
           python_name: h2
           python_type: float
@@ -16717,7 +16702,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 290
+          line: 289
           name: HGAP
           python_name: hgap
           python_type: float
@@ -16757,7 +16742,7 @@
             => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 296
+          line: 294
           name: PHI
           python_name: phi
           python_type: float
@@ -16770,20 +16755,20 @@
           definition: 'real(dp),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 293
+          line: 292
           name: VA
           python_name: va
           python_type: float
           size: null
           type: real
         VS:
-          comment: valishev-like multipole !  electric info
+          comment: valishev-like multipole
           default: 0.0
           default_factory: ''
           definition: 'real(dp),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 293
+          line: 292
           name: VS
           python_name: vs
           python_type: float
@@ -16817,7 +16802,7 @@
           size: null
           type: real
         bf_y:
-          comment: 'B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()'
+          comment: B field polynomial
           default: 0.0
           default_factory: ''
           definition: 'real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y =>
@@ -16838,7 +16823,7 @@
             => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 296
+          line: 294
           name: e_x
           python_name: e_x
           python_type: float
@@ -16852,7 +16837,7 @@
             => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 296
+          line: 294
           name: e_y
           python_name: e_y
           python_type: float
@@ -16865,7 +16850,7 @@
           definition: 'integer, pointer :: f => null()'
           dimension: ''
           fortran_default: null()
-          line: 292
+          line: 291
           name: f
           python_name: f
           python_type: int
@@ -16879,7 +16864,7 @@
             => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 296
+          line: 294
           name: vm
           python_name: vm
           python_type: float
@@ -16902,7 +16887,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 312
+          line: 310
           name: AE
           python_name: ae
           python_type: Real8
@@ -16930,7 +16915,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 312
+          line: 310
           name: BE
           python_name: be
           python_type: Real8
@@ -16957,7 +16942,7 @@
           definition: 'logical(lp),   POINTER :: DRIFTKICK => null()'
           dimension: ''
           fortran_default: null()
-          line: 306
+          line: 305
           name: DRIFTKICK
           python_name: driftkick
           python_type: bool
@@ -16970,7 +16955,7 @@
           definition: 'LOGICAL(LP), POINTER :: ELECTRIC => null()'
           dimension: ''
           fortran_default: null()
-          line: 314
+          line: 312
           name: ELECTRIC
           python_name: electric
           python_type: bool
@@ -16984,7 +16969,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 307
+          line: 306
           name: FINT
           python_name: fint
           python_type: Real8
@@ -16997,7 +16982,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 308
+          line: 307
           name: H1
           python_name: h1
           python_type: Real8
@@ -17010,7 +16995,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 308
+          line: 307
           name: H2
           python_name: h2
           python_type: Real8
@@ -17024,7 +17009,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 307
+          line: 306
           name: HGAP
           python_name: hgap
           python_type: Real8
@@ -17064,7 +17049,7 @@
             => null(),PHI => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 313
+          line: 311
           name: PHI
           python_name: phi
           python_type: Real8
@@ -17077,20 +17062,20 @@
           definition: 'TYPE(REAL_8),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 310
+          line: 309
           name: VA
           python_name: va
           python_type: Real8
           size: null
           type: REAL_8
         VS:
-          comment: valishev-like multipole !  electric info
+          comment: valishev-like multipole
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 310
+          line: 309
           name: VS
           python_name: vs
           python_type: Real8
@@ -17124,7 +17109,7 @@
           size: null
           type: REAL_8
         bf_y:
-          comment: 'B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()'
+          comment: B field polynomial
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y
@@ -17145,7 +17130,7 @@
             => null(),PHI => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 313
+          line: 311
           name: e_x
           python_name: e_x
           python_type: Real8
@@ -17159,7 +17144,7 @@
             => null(),PHI => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 313
+          line: 311
           name: e_y
           python_name: e_y
           python_type: Real8
@@ -17172,7 +17157,7 @@
           definition: 'integer, pointer :: f => null()'
           dimension: ''
           fortran_default: null()
-          line: 309
+          line: 308
           name: f
           python_name: f
           python_type: int
@@ -17186,7 +17171,7 @@
             => null(),PHI => null(),vm => null()'
           dimension: ':'
           fortran_default: null()
-          line: 313
+          line: 311
           name: vm
           python_name: vm
           python_type: Real8
@@ -17461,7 +17446,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 237
+          line: 233
           name: FINT
           python_name: fint
           python_type: float
@@ -17474,7 +17459,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 238
+          line: 234
           name: H1
           python_name: h1
           python_type: float
@@ -17487,7 +17472,7 @@
           definition: 'real(dp),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 238
+          line: 234
           name: H2
           python_name: h2
           python_type: float
@@ -17501,7 +17486,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 237
+          line: 233
           name: HGAP
           python_name: hgap
           python_type: float
@@ -17563,8 +17548,7 @@
           size: null
           type: real
         MATY2:
-          comment: 'LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER :: lx(:)
-            => null()'
+          comment: LINEAR MATRIX
           default: 0.0
           default_factory: ''
           definition: 'real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2
@@ -17598,36 +17582,34 @@
             => null()'
           dimension: ':,:'
           fortran_default: null()
-          line: 232
+          line: 231
           name: RMATX
           python_name: rmatx
           python_type: float
           size: null
           type: real
         RMATY:
-          comment: 'LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER ::   Rlx(:)
-            => null()'
+          comment: LINEAR MATRIX
           default: 0.0
           default_factory: ''
           definition: 'real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY
             => null()'
           dimension: ':,:'
           fortran_default: null()
-          line: 232
+          line: 231
           name: RMATY
           python_name: rmaty
           python_type: float
           size: null
           type: real
         Rlx:
-          comment: 'real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp),
-            DIMENSION(:), POINTER ::   dy(:) => null()'
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: 'real(dp), DIMENSION(:), POINTER ::   Rlx => null()'
           dimension: ':'
           fortran_default: null()
-          line: 234
+          line: 232
           name: Rlx
           python_name: rlx
           python_type: float
@@ -17640,7 +17622,7 @@
           definition: 'real(dp),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 239
+          line: 235
           name: VA
           python_name: va
           python_type: float
@@ -17653,7 +17635,7 @@
           definition: 'real(dp),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 239
+          line: 235
           name: VS
           python_name: vs
           python_type: float
@@ -17666,7 +17648,7 @@
           definition: 'integer, pointer :: f => null()'
           dimension: ''
           fortran_default: null()
-          line: 240
+          line: 236
           name: f
           python_name: f
           python_type: int
@@ -17679,7 +17661,7 @@
           definition: 'real(dp), DIMENSION(:), POINTER :: lx => null()'
           dimension: ':'
           fortran_default: null()
-          line: 231
+          line: 230
           name: lx
           python_name: lx
           python_type: float
@@ -17730,7 +17712,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 256
+          line: 252
           name: FINT
           python_name: fint
           python_type: Real8
@@ -17743,7 +17725,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 257
+          line: 253
           name: H1
           python_name: h1
           python_type: Real8
@@ -17756,7 +17738,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()'
           dimension: ''
           fortran_default: null()
-          line: 257
+          line: 253
           name: H2
           python_name: h2
           python_type: Real8
@@ -17770,7 +17752,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 256
+          line: 252
           name: HGAP
           python_name: hgap
           python_type: Real8
@@ -17832,8 +17814,7 @@
           size: null
           type: REAL_8
         MATY2:
-          comment: 'LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:)
-            => null()'
+          comment: LINEAR MATRIX
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(),
@@ -17867,36 +17848,34 @@
             => null()'
           dimension: ':,:'
           fortran_default: null()
-          line: 251
+          line: 250
           name: RMATX
           python_name: rmatx
           python_type: Real8
           size: null
           type: REAL_8
         RMATY:
-          comment: 'LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:),   POINTER ::
-            Rlx(:) => null()'
+          comment: LINEAR MATRIX
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY
             => null()'
           dimension: ':,:'
           fortran_default: null()
-          line: 251
+          line: 250
           name: RMATY
           python_name: rmaty
           python_type: Real8
           size: null
           type: REAL_8
         Rlx:
-          comment: 'real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp),
-            DIMENSION(:), POINTER ::   dy(:) => null()'
+          comment: ''
           default: null
           default_factory: ''
           definition: 'TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx => null()'
           dimension: ':'
           fortran_default: null()
-          line: 253
+          line: 251
           name: Rlx
           python_name: rlx
           python_type: Real8
@@ -17909,7 +17888,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 258
+          line: 254
           name: VA
           python_name: va
           python_type: Real8
@@ -17922,7 +17901,7 @@
           definition: 'TYPE(REAL_8),   POINTER:: VA => null(), VS => null()'
           dimension: ''
           fortran_default: null()
-          line: 258
+          line: 254
           name: VS
           python_name: vs
           python_type: Real8
@@ -17935,7 +17914,7 @@
           definition: 'integer, pointer :: f => null()'
           dimension: ''
           fortran_default: null()
-          line: 259
+          line: 255
           name: f
           python_name: f
           python_type: int
@@ -17948,7 +17927,7 @@
           definition: 'TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null()'
           dimension: ':'
           fortran_default: null()
-          line: 250
+          line: 249
           name: lx
           python_name: lx
           python_type: Real8
@@ -18270,7 +18249,7 @@
           definition: logical(lp),POINTER ::CLOSED
           dimension: ''
           fortran_default: null
-          line: 407
+          line: 406
           name: CLOSED
           python_name: closed
           python_type: bool
@@ -18283,7 +18262,7 @@
           definition: 'TYPE (c_dascratch), POINTER :: END'
           dimension: ''
           fortran_default: null
-          line: 409
+          line: 408
           name: END
           python_name: end
           python_type: CDascratch
@@ -18296,7 +18275,7 @@
           definition: 'TYPE (c_dascratch), POINTER :: END_GROUND'
           dimension: ''
           fortran_default: null
-          line: 412
+          line: 411
           name: END_GROUND
           python_name: end_ground
           python_type: CDascratch
@@ -18322,7 +18301,7 @@
           definition: 'TYPE (c_dascratch), POINTER :: PRESENT'
           dimension: ''
           fortran_default: null
-          line: 408
+          line: 407
           name: PRESENT
           python_name: present
           python_type: CDascratch
@@ -18335,7 +18314,7 @@
           definition: 'TYPE (c_dascratch), POINTER :: START'
           dimension: ''
           fortran_default: null
-          line: 410
+          line: 409
           name: START
           python_name: start
           python_type: CDascratch
@@ -18348,7 +18327,7 @@
           definition: 'TYPE (c_dascratch), POINTER :: START_GROUND'
           dimension: ''
           fortran_default: null
-          line: 411
+          line: 410
           name: START_GROUND
           python_name: start_ground
           python_type: CDascratch
@@ -18364,66 +18343,65 @@
       comment: ''
       members:
         cm:
-          comment: Moment matrix (transpose of Yu Matrix)
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: 'complex(dpn), pointer :: cm(:,:)=> null()'
           dimension: ':,:'
           fortran_default: null()
-          line: 445
+          line: 440
           name: cm
           python_name: cm
           python_type: Complex
           size: null
           type: complex
         e_ij:
-          comment: '@1 stochastic fluctuation in radiation theory Number of planes
-            allocated'
+          comment: '@1 stochastic fluctuation in radiation theory'
           default: 0.0
           default_factory: ''
           definition: complex(dp) e_ij(6,6)
           dimension: 6,6
           fortran_default: null
-          line: 439
+          line: 437
           name: e_ij
           python_name: e_ij
           python_type: Complex
           size: null
           type: complex
         m:
-          comment: SO(3) is deprecated in FPP and computed from quaternion if needed
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: 'real(dpn),pointer :: m(:,:)=> null()'
           dimension: ':,:'
           fortran_default: null()
-          line: 447
+          line: 441
           name: m
           python_name: m
           python_type: float
           size: null
           type: real
         n:
-          comment: '@1 number of planes allocated Initial orbit if tpsa =  true'
+          comment: '@1 number of planes allocated'
           default: 0
           default_factory: ''
           definition: 'integer :: n=0'
           dimension: ''
           fortran_default: '0'
-          line: 441
+          line: 438
           name: n
           python_name: n
           python_type: int
           size: null
           type: integer
         q:
-          comment: Stochastic part
+          comment: ''
           default: null
           default_factory: ''
           definition: type(c_quaternion) q
           dimension: ''
           fortran_default: null
-          line: 437
+          line: 436
           name: q
           python_name: q
           python_type: CQuaternion
@@ -18436,7 +18414,7 @@
           definition: type(c_spinmatrix) s
           dimension: ''
           fortran_default: null
-          line: 450
+          line: 442
           name: s
           python_name: s
           python_type: CSpinmatrix
@@ -18449,20 +18427,20 @@
           definition: type (c_taylor) v(lnv)
           dimension: lnv
           fortran_default: null
-          line: 436
+          line: 435
           name: v
           python_name: v
           python_type: CTaylor
           size: null
           type: c_taylor
         x0:
-          comment: Lie map matrix  (Yu's square matrix)
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: complex(dp) x0(lnv)
           dimension: lnv
           fortran_default: null
-          line: 443
+          line: 439
           name: x0
           python_name: x0
           python_type: Complex
@@ -18697,7 +18675,7 @@
           definition: 'real(dp) :: sigmas(6,6)'
           dimension: 6,6
           fortran_default: null
-          line: 26
+          line: 25
           name: sigmas
           python_name: sigmas
           python_type: float
@@ -18717,7 +18695,7 @@
           size: null
           type: real
         symplectic:
-          comment: '!!!  radiation quantity'
+          comment: ''
           default: true
           default_factory: ''
           definition: 'logical :: symplectic = .true.'
@@ -18793,7 +18771,7 @@
           definition: type(c_damap) As
           dimension: ''
           fortran_default: null
-          line: 511
+          line: 506
           name: As
           python_name: as_
           python_type: CDamap
@@ -18806,7 +18784,7 @@
           definition: type(c_damap) Atot
           dimension: ''
           fortran_default: null
-          line: 492
+          line: 491
           name: Atot
           python_name: atot
           python_type: CDamap
@@ -18819,7 +18797,7 @@
           definition: type(c_vector_field) H,H_l,H_nl
           dimension: ''
           fortran_default: null
-          line: 493
+          line: 492
           name: H
           python_name: h
           python_type: CVectorField
@@ -18832,21 +18810,20 @@
           definition: type(c_vector_field) H,H_l,H_nl
           dimension: ''
           fortran_default: null
-          line: 493
+          line: 492
           name: H_l
           python_name: h_l
           python_type: CVectorField
           size: null
           type: c_vector_field
         H_nl:
-          comment: '!!Envelope radiation stuff to normalise radiation (Sand''s like
-            theory)'
+          comment: ''
           default: null
           default_factory: ''
           definition: type(c_vector_field) H,H_l,H_nl
           dimension: ''
           fortran_default: null
-          line: 493
+          line: 492
           name: H_nl
           python_name: h_nl
           python_type: CVectorField
@@ -18859,7 +18836,7 @@
           definition: integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)
           dimension: NDIM2t/2,NRESO
           fortran_default: null
-          line: 500
+          line: 497
           name: M
           python_name: m
           python_type: int
@@ -18872,7 +18849,7 @@
           definition: integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)
           dimension: ''
           fortran_default: null
-          line: 500
+          line: 497
           name: NRES
           python_name: nres
           python_type: int
@@ -18885,7 +18862,7 @@
           definition: type(c_damap) a1
           dimension: ''
           fortran_default: null
-          line: 506
+          line: 501
           name: a1
           python_name: a1
           python_type: CDamap
@@ -18898,7 +18875,7 @@
           definition: type(c_damap) a2
           dimension: ''
           fortran_default: null
-          line: 507
+          line: 502
           name: a2
           python_name: a2
           python_type: CDamap
@@ -18911,7 +18888,7 @@
           definition: type(c_damap) a_t
           dimension: ''
           fortran_default: null
-          line: 505
+          line: 500
           name: a_t
           python_name: a_t
           python_type: CDamap
@@ -18924,7 +18901,7 @@
           definition: complex(dp) b_ijr(6,6)
           dimension: 6,6
           fortran_default: null
-          line: 497
+          line: 495
           name: b_ijr
           python_name: b_ijr
           python_type: Complex
@@ -18937,7 +18914,7 @@
           definition: real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle
           dimension: NDIM2t/2
           fortran_default: null
-          line: 502
+          line: 498
           name: damping
           python_name: damping
           python_type: float
@@ -18945,13 +18922,13 @@
           type: real
         emittance:
           comment: '@1  Equilibrium emittances as defined by Chao (computed from s_ijr(2*i-1,2*i)
-            i=1,2,3 ) ! controls resonances left in normal form'
+            i=1,2,3 )'
           default: 0.0
           default_factory: ''
           definition: real(dp) emittance(3)
           dimension: '3'
           fortran_default: null
-          line: 498
+          line: 496
           name: emittance
           python_name: emittance
           python_type: float
@@ -18964,7 +18941,7 @@
           definition: type(c_factored_lie) g
           dimension: ''
           fortran_default: null
-          line: 508
+          line: 503
           name: g
           python_name: g
           python_type: CFactoredLie
@@ -18977,21 +18954,20 @@
           definition: type(c_factored_lie) ker
           dimension: ''
           fortran_default: null
-          line: 509
+          line: 504
           name: ker
           python_name: ker
           python_type: CFactoredLie
           size: null
           type: c_factored_lie
         ms:
-          comment: '@1 stores resonances to be left in the map, including spin (ms)
-            ! redundant stuff'
+          comment: '@1 stores resonances to be left in the map, including spin (ms)'
           default: 0
           default_factory: ''
           definition: integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)
           dimension: NRESO
           fortran_default: null
-          line: 500
+          line: 497
           name: ms
           python_name: ms
           python_type: int
@@ -19004,21 +18980,20 @@
           definition: type(c_damap) n
           dimension: ''
           fortran_default: null
-          line: 510
+          line: 505
           name: n
           python_name: n
           python_type: CDamap
           size: null
           type: c_damap
         positive:
-          comment: forces positive tunes (close to 1 if <0) !!  Things not to be used
-            in the case of spin with quaternion
+          comment: forces positive tunes (close to 1 if <0)
           default: false
           default_factory: ''
           definition: logical positive
           dimension: ''
           fortran_default: null
-          line: 503
+          line: 499
           name: positive
           python_name: positive
           python_type: bool
@@ -19031,7 +19006,7 @@
           definition: real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle
           dimension: ''
           fortran_default: null
-          line: 502
+          line: 498
           name: quaternion_angle
           python_name: quaternion_angle
           python_type: float
@@ -19044,7 +19019,7 @@
           definition: complex(dp) s_ij0(6,6)
           dimension: 6,6
           fortran_default: null
-          line: 495
+          line: 493
           name: s_ij0
           python_name: s_ij0
           python_type: Complex
@@ -19057,7 +19032,7 @@
           definition: complex(dp) s_ijr(6,6)
           dimension: 6,6
           fortran_default: null
-          line: 496
+          line: 494
           name: s_ijr
           python_name: s_ijr
           python_type: Complex
@@ -19070,7 +19045,7 @@
           definition: real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle
           dimension: ''
           fortran_default: null
-          line: 502
+          line: 498
           name: spin_tune
           python_name: spin_tune
           python_type: float
@@ -19083,7 +19058,7 @@
           definition: real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle
           dimension: NDIM2t/2
           fortran_default: null
-          line: 502
+          line: 498
           name: tune
           python_name: tune
           python_type: float
@@ -19121,7 +19096,7 @@
       comment: ''
       members:
         n:
-          comment: '# of dimensions used in x(lnv) Obsolescent'
+          comment: '# of dimensions used in x(lnv)'
           default: 0
           default_factory: ''
           definition: integer n
@@ -19153,7 +19128,7 @@
           definition: complex(dp) s1(3),s2(3),s3(3)
           dimension: '3'
           fortran_default: null
-          line: 525
+          line: 524
           name: s1
           python_name: s1
           python_type: Complex
@@ -19166,7 +19141,7 @@
           definition: complex(dp) s1(3),s2(3),s3(3)
           dimension: '3'
           fortran_default: null
-          line: 525
+          line: 524
           name: s2
           python_name: s2
           python_type: Complex
@@ -19179,7 +19154,7 @@
           definition: complex(dp) s1(3),s2(3),s3(3)
           dimension: '3'
           fortran_default: null
-          line: 525
+          line: 524
           name: s3
           python_name: s3
           python_type: Complex
@@ -19258,20 +19233,20 @@
           definition: type(c_spinmatrix) L
           dimension: ''
           fortran_default: null
-          line: 473
+          line: 466
           name: L
           python_name: L
           python_type: CSpinmatrix
           size: null
           type: c_spinmatrix
         eps:
-          comment: orbital part
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: real(dp) eps
           dimension: ''
           fortran_default: null
-          line: 467
+          line: 463
           name: eps
           python_name: eps
           python_type: float
@@ -19284,47 +19259,46 @@
           definition: 'integer :: n=0,nrmax'
           dimension: ''
           fortran_default: '0'
-          line: 464
+          line: 462
           name: n
           python_name: n
           python_type: int
           size: null
           type: integer
         nrmax:
-          comment: '@1 if eps=-integer  then |eps| # of Lie brackets are taken @ otherwise
-            eps=eps_tpsalie=10^-9'
+          comment: ''
           default: 0
           default_factory: ''
           definition: 'integer :: n=0,nrmax'
           dimension: ''
           fortran_default: null
-          line: 464
+          line: 462
           name: nrmax
           python_name: nrmax
           python_type: int
           size: null
           type: integer
         q:
-          comment: type(c_spinor) h
+          comment: ''
           default: null
           default_factory: ''
           definition: type(c_quaternion) q
           dimension: ''
           fortran_default: null
-          line: 471
+          line: 465
           name: q
           python_name: q
           python_type: CQuaternion
           size: null
           type: c_quaternion
         v:
-          comment: quaternion part
+          comment: ''
           default: null
           default_factory: ''
           definition: type (c_taylor) v(lnv)
           dimension: lnv
           fortran_default: null
-          line: 469
+          line: 464
           name: v
           python_name: v
           python_type: CTaylor
@@ -19475,7 +19449,7 @@
           size: null
           type: complex
         s:
-          comment: integer g,nb  !  group index
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: complex(dp) s
@@ -19573,7 +19547,7 @@
           definition: logical(lp),POINTER ::CLOSED
           dimension: ''
           fortran_default: null
-          line: 180
+          line: 179
           name: CLOSED
           python_name: closed
           python_type: bool
@@ -19586,7 +19560,7 @@
           definition: 'TYPE (dascratch), POINTER :: END'
           dimension: ''
           fortran_default: null
-          line: 182
+          line: 181
           name: END
           python_name: end
           python_type: Dascratch
@@ -19599,7 +19573,7 @@
           definition: 'TYPE (dascratch), POINTER :: END_GROUND'
           dimension: ''
           fortran_default: null
-          line: 185
+          line: 184
           name: END_GROUND
           python_name: end_ground
           python_type: Dascratch
@@ -19625,7 +19599,7 @@
           definition: 'TYPE (dascratch), POINTER :: PRESENT'
           dimension: ''
           fortran_default: null
-          line: 181
+          line: 180
           name: PRESENT
           python_name: present
           python_type: Dascratch
@@ -19638,7 +19612,7 @@
           definition: 'TYPE (dascratch), POINTER :: START'
           dimension: ''
           fortran_default: null
-          line: 183
+          line: 182
           name: START
           python_name: start
           python_type: Dascratch
@@ -19651,7 +19625,7 @@
           definition: 'TYPE (dascratch), POINTER :: START_GROUND'
           dimension: ''
           fortran_default: null
-          line: 184
+          line: 183
           name: START_GROUND
           python_name: start_ground
           python_type: Dascratch
@@ -20261,7 +20235,7 @@
           definition: 'TYPE (girder), POINTER :: END  => null()'
           dimension: ''
           fortran_default: null()
-          line: 81
+          line: 80
           name: END
           python_name: end
           python_type: Girder
@@ -20326,7 +20300,7 @@
           definition: 'TYPE (girder), POINTER :: START  => null()'
           dimension: ''
           fortran_default: null()
-          line: 82
+          line: 81
           name: START
           python_name: start
           python_type: Girder
@@ -20352,7 +20326,7 @@
           definition: 'type (fibre), pointer :: lastfibre  => null()'
           dimension: ''
           fortran_default: null()
-          line: 83
+          line: 82
           name: lastfibre
           python_name: lastfibre
           python_type: Fibre
@@ -21052,13 +21026,13 @@
           size: null
           type: rf_phasor_8
         e:
-          comment: real(dp) damps(3,3) real(dp) b_kin(3,3) real(dp) D_spin(3)
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: real(dp) e
           dimension: ''
           fortran_default: null
-          line: 368
+          line: 367
           name: e
           python_name: e
           python_type: float
@@ -21071,7 +21045,7 @@
           definition: 'type(integration_node),pointer :: last_node=>null()'
           dimension: ''
           fortran_default: null()
-          line: 367
+          line: 366
           name: last_node
           python_name: last_node
           python_type: IntegrationNode
@@ -21123,7 +21097,7 @@
           definition: logical u,use_q
           dimension: ''
           fortran_default: null
-          line: 366
+          line: 365
           name: u
           python_name: u
           python_type: bool
@@ -21136,7 +21110,7 @@
           definition: logical u,use_q
           dimension: ''
           fortran_default: null
-          line: 366
+          line: 365
           name: use_q
           python_name: use_q
           python_type: bool
@@ -21156,8 +21130,7 @@
           size: null
           type: real_8
         x0:
-          comment: initial value of the ray for TPSA calculations with c_damap stuff
-            for exception
+          comment: initial value of the ray for TPSA calculations with c_damap
           default: 0.0
           default_factory: ''
           definition: real(dp) x0(6)
@@ -21358,7 +21331,7 @@
       comment: ''
       members:
         om:
-          comment: real(dp) f(nacmode),phase(nacmode)
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: real(dp) om
@@ -21377,7 +21350,7 @@
           definition: real(dp) t
           dimension: ''
           fortran_default: null
-          line: 336
+          line: 335
           name: t
           python_name: t
           python_type: float
@@ -21406,7 +21379,7 @@
       comment: ''
       members:
         om:
-          comment: the omega of the modulation real(dp) f(nacmode),phase(nacmode)
+          comment: the omega of the modulation
           default: null
           default_factory: ''
           definition: type(real_8) om
@@ -21425,7 +21398,7 @@
           definition: real(dp) t
           dimension: ''
           fortran_default: null
-          line: 343
+          line: 342
           name: t
           python_name: t
           python_type: float
@@ -21546,8 +21519,7 @@
       comment: ''
       members:
         I:
-          comment: '@1  integer I is a pointer in old da-package of Berz GTPSA REMOVED
-            !          type (c_ptr) j !@1  gtpsa'
+          comment: '@1  integer I is a pointer in old da-package of Berz'
           default: 0
           default_factory: ''
           definition: INTEGER I
@@ -21818,7 +21790,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: CC'
           dimension: ':'
           fortran_default: null
-          line: 306
+          line: 305
           name: CC
           python_name: cc
           python_type: float
@@ -21831,7 +21803,7 @@
           definition: 'integer,  DIMENSION(:), POINTER :: JL,JV'
           dimension: ':'
           fortran_default: null
-          line: 308
+          line: 307
           name: JL
           python_name: jl
           python_type: int
@@ -21844,7 +21816,7 @@
           definition: 'integer,  DIMENSION(:), POINTER :: JL,JV'
           dimension: ':'
           fortran_default: null
-          line: 308
+          line: 307
           name: JV
           python_name: jv
           python_type: int
@@ -21857,7 +21829,7 @@
           definition: 'INTEGER,POINTER :: N,NP,no'
           dimension: ''
           fortran_default: null
-          line: 309
+          line: 308
           name: N
           python_name: n
           python_type: int
@@ -21870,7 +21842,7 @@
           definition: 'INTEGER,POINTER :: N,NP,no'
           dimension: ''
           fortran_default: null
-          line: 309
+          line: 308
           name: NP
           python_name: np
           python_type: int
@@ -21883,7 +21855,7 @@
           definition: 'real(dp), pointer :: ds,beta0,eps'
           dimension: ''
           fortran_default: null
-          line: 312
+          line: 311
           name: beta0
           python_name: beta0
           python_type: float
@@ -21896,7 +21868,7 @@
           definition: 'real(dp), pointer :: ds,beta0,eps'
           dimension: ''
           fortran_default: null
-          line: 312
+          line: 311
           name: ds
           python_name: ds
           python_type: float
@@ -21909,7 +21881,7 @@
           definition: 'real(dp), pointer :: e_ij(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 310
+          line: 309
           name: e_ij
           python_name: e_ij
           python_type: float
@@ -21922,7 +21894,7 @@
           definition: 'real(dp), pointer :: ds,beta0,eps'
           dimension: ''
           fortran_default: null
-          line: 312
+          line: 311
           name: eps
           python_name: eps
           python_type: float
@@ -21935,7 +21907,7 @@
           definition: 'logical, pointer :: symptrack,usenonsymp,factored'
           dimension: ''
           fortran_default: null
-          line: 313
+          line: 312
           name: factored
           python_name: factored
           python_type: bool
@@ -21948,7 +21920,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0'
           dimension: ':'
           fortran_default: null
-          line: 307
+          line: 306
           name: fix
           python_name: fix
           python_type: float
@@ -21961,7 +21933,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0'
           dimension: ':'
           fortran_default: null
-          line: 307
+          line: 306
           name: fix0
           python_name: fix0
           python_type: float
@@ -21974,7 +21946,7 @@
           definition: 'real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0'
           dimension: ':'
           fortran_default: null
-          line: 307
+          line: 306
           name: fixr
           python_name: fixr
           python_type: float
@@ -21987,7 +21959,7 @@
           definition: 'INTEGER,POINTER :: N,NP,no'
           dimension: ''
           fortran_default: null
-          line: 309
+          line: 308
           name: 'no'
           python_name: 'no'
           python_type: int
@@ -22000,7 +21972,7 @@
           definition: 'real(dp), pointer :: rad(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 311
+          line: 310
           name: rad
           python_name: rad
           python_type: float
@@ -22013,7 +21985,7 @@
           definition: 'logical, pointer :: symptrack,usenonsymp,factored'
           dimension: ''
           fortran_default: null
-          line: 313
+          line: 312
           name: symptrack
           python_name: symptrack
           python_type: bool
@@ -22026,7 +21998,7 @@
           definition: 'logical, pointer :: symptrack,usenonsymp,factored'
           dimension: ''
           fortran_default: null
-          line: 313
+          line: 312
           name: usenonsymp
           python_name: usenonsymp
           python_type: bool
@@ -22509,7 +22481,7 @@
           definition: integer ifac
           dimension: ''
           fortran_default: null
-          line: 204
+          line: 203
           name: ifac
           python_name: ifac
           python_type: int
@@ -22523,7 +22495,7 @@
           definition: type (taylor) v(ndim2)
           dimension: ndim2
           fortran_default: null
-          line: 203
+          line: 202
           name: v
           python_name: v
           python_type: Taylor

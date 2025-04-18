@@ -40,172 +40,6 @@ Complex = Annotated[
 ]
 
 
-class BendExactCoefStruct(pydantic.BaseModel):
-    """
-    BendExactCoefStruct corresponds to bmad `bend_exact_coef_struct`
-    which is in Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90 on line 30.
-
-    Attributes
-    ----------
-    cutoff_minus : float
-        Crossover between exact formula and pade approximant
-        Bmad type: real
-        Fortran default: 0
-    cutoff_plus : float
-        Crossover between exact formula and pade approximant Exact formula coefs
-        Bmad type: real
-        Fortran default: 0
-    d2_pade_denom_coef : float
-        Non-zero coefs are in the range [0:n_d2_pade_denom]
-        Bmad type: real
-        Fortran default: 0
-    d2_pade_numer_coef : float
-        Non-zero coefs are in the range [0:n_d2_pade_numer]
-        Bmad type: real
-        Fortran default: 0
-    exact_log_coef : float
-        Non-zero coefs are in the range [0:n_exact_log] pade approximant
-        Bmad type: real
-        Fortran default: 0
-    exact_non_coef : float
-        Non-zero coefs are in the range [0:n_exact_non]
-        Bmad type: real
-        Fortran default: 0
-    n_d2_pade_denom : int
-        Bmad type: integer
-        Fortran default: 0
-    n_d2_pade_numer : int
-        Bmad type: integer
-        Fortran default: 0
-    n_exact_log : int
-        Bmad type: integer
-        Fortran default: 0
-    n_exact_non : int
-        Bmad type: integer
-        Fortran default: 0
-    n_pade_denom : int
-        Bmad type: integer
-        Fortran default: 0
-    n_pade_numer : int
-        Bmad type: integer
-        Fortran default: 0
-    order : int
-        Bmad type: integer
-        Fortran default: 0
-    pade_denom_coef : float
-        Non-zero coefs are in the range [0:n_pade_denom] 2nd derivative pade
-        approximant.
-        Bmad type: real
-        Fortran default: 0
-    pade_numer_coef : float
-        Non-zero coefs are in the range [0:n_pade_numer]
-        Bmad type: real
-        Fortran default: 0
-    """
-
-    cutoff_minus: float = pydantic.Field(
-        default=0,
-        description="Crossover between exact formula and pade approximant",
-    )
-    cutoff_plus: float = pydantic.Field(
-        default=0,
-        description="Crossover between exact formula and pade approximant Exact formula coefs",
-    )
-    d2_pade_denom_coef: Sequence[float] = pydantic.Field(
-        default=0,
-        description="Non-zero coefs are in the range [0:n_d2_pade_denom]",
-    )
-    d2_pade_numer_coef: Sequence[float] = pydantic.Field(
-        default=0,
-        description="Non-zero coefs are in the range [0:n_d2_pade_numer]",
-    )
-    exact_log_coef: Sequence[float] = pydantic.Field(
-        default=0,
-        description="Non-zero coefs are in the range [0:n_exact_log] pade approximant",
-    )
-    exact_non_coef: Sequence[float] = pydantic.Field(
-        default=0,
-        description="Non-zero coefs are in the range [0:n_exact_non]",
-    )
-    n_d2_pade_denom: int = pydantic.Field(
-        default=0,
-    )
-    n_d2_pade_numer: int = pydantic.Field(
-        default=0,
-    )
-    n_exact_log: int = pydantic.Field(
-        default=0,
-    )
-    n_exact_non: int = pydantic.Field(
-        default=0,
-    )
-    n_pade_denom: int = pydantic.Field(
-        default=0,
-    )
-    n_pade_numer: int = pydantic.Field(
-        default=0,
-    )
-    order: int = pydantic.Field(
-        default=0,
-    )
-    pade_denom_coef: Sequence[float] = pydantic.Field(
-        default=0,
-        description=(
-            "Non-zero coefs are in the range [0:n_pade_denom] 2nd derivative pade "
-            "approximant."
-        ),
-    )
-    pade_numer_coef: Sequence[float] = pydantic.Field(
-        default=0,
-        description="Non-zero coefs are in the range [0:n_pade_numer]",
-    )
-
-
-class PoleCoefStruct(pydantic.BaseModel):
-    """
-    PoleCoefStruct corresponds to bmad `pole_coef_struct`
-    which is in Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90 on line 209.
-
-    Attributes
-    ----------
-    derivative : float
-        Bmad type: real
-        Fortran default: 0
-    derivative2 : float
-        Bmad type: real
-        Fortran default: 0
-    value : float
-        Bmad type: real
-        Fortran default: 0
-    """
-
-    derivative: float = pydantic.Field(
-        default=0,
-    )
-    derivative2: float = pydantic.Field(
-        default=0,
-    )
-    value: float = pydantic.Field(
-        default=0,
-    )
-
-
-class PureBendMultipoleStruct(pydantic.BaseModel):
-    """
-    PureBendMultipoleStruct corresponds to bmad `pure_bend_multipole_struct`
-    which is in Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90 on line 595.
-
-    Attributes
-    ----------
-    convert : float
-        Bmad type: real
-    """
-
-    convert: Sequence[float] = pydantic.Field(
-        default=0.0,
-    )
-
-
 class ClosedOrbComStruct(pydantic.BaseModel):
     """
     ClosedOrbComStruct corresponds to bmad `closed_orb_com_struct`
@@ -1105,8 +939,7 @@ class EleAttributeStruct(pydantic.BaseModel):
     Attributes
     ----------
     ix_attrib : int
-        Attribute index. Frequently will be where in the ele%value(:) array the
-        attribute is.
+        Attribute index. Frequently will be where in the
         Bmad type: integer
         Fortran default: -1
     kind : int
@@ -1132,10 +965,7 @@ class EleAttributeStruct(pydantic.BaseModel):
 
     ix_attrib: int = pydantic.Field(
         default=-1,
-        description=(
-            "Attribute index. Frequently will be where in the ele%value(:) array the "
-            "attribute is."
-        ),
+        description="Attribute index. Frequently will be where in the",
     )
     kind: int = pydantic.Field(
         default=0,
@@ -1519,8 +1349,7 @@ class BeamInitStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     distribution_type : str
-        distribution type (in x-px, y-py, and z-pz planes) "ELLIPSE", "KV", "GRID",
-        "FILE", "RAN_GAUSS" or "" = "RAN_GAUSS"
+        distribution type (in x-px, y-py, and z-pz planes)
         Bmad type: character
         Fortran default: 'RAN_GAUSS'
     dt_bunch : float
@@ -1540,7 +1369,7 @@ class BeamInitStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: ''
     full_6d_coupling_calc : bool
-        Use V from 6x6 1-turn mat to match distribution? Else use 4x4 1-turn mat used.
+        Use V from 6x6 1-turn mat to match distribution?
         Bmad type: logical
         Fortran default: .false.
     grid : GridBeamInitStruct
@@ -1568,7 +1397,6 @@ class BeamInitStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: 'pseudo'
     random_gauss_converter : str
-        Or 'quick'. Uniform to gauss conversion method.
         Bmad type: character
         Fortran default: 'exact'
     random_sigma_cutoff : float
@@ -1620,8 +1448,7 @@ class BeamInitStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     use_z_as_t : bool
-        Only used if  use_t_coords = .true. If true,  z describes the t distribution If
-        false, z describes the s distribution
+        Only used if  use_t_coords = .true.
         Bmad type: logical
         Fortran default: .false.
     """
@@ -1671,10 +1498,7 @@ class BeamInitStruct(pydantic.BaseModel):
     distribution_type: Sequence[str] = pydantic.Field(
         default="RAN_GAUSS",
         max_length=3,
-        description=(
-            "distribution type (in x-px, y-py, and z-pz planes) 'ELLIPSE', 'KV', "
-            "'GRID', 'FILE', 'RAN_GAUSS' or '' = 'RAN_GAUSS'"
-        ),
+        description="distribution type (in x-px, y-py, and z-pz planes)",
     )
     dt_bunch: float = pydantic.Field(
         default=0,
@@ -1697,7 +1521,7 @@ class BeamInitStruct(pydantic.BaseModel):
     )
     full_6d_coupling_calc: bool = pydantic.Field(
         default=False,
-        description="Use V from 6x6 1-turn mat to match distribution? Else use 4x4 1-turn mat used.",
+        description="Use V from 6x6 1-turn mat to match distribution?",
         validation_alias=pydantic.AliasChoices(
             "full_6d_coupling_calc", "full_6D_coupling_calc"
         ),
@@ -1733,7 +1557,6 @@ class BeamInitStruct(pydantic.BaseModel):
     random_gauss_converter: str = pydantic.Field(
         default="exact",
         max_length=16,
-        description="Or 'quick'. Uniform to gauss conversion method.",
     )
     random_sigma_cutoff: float = pydantic.Field(
         default=-1,
@@ -1787,10 +1610,7 @@ class BeamInitStruct(pydantic.BaseModel):
     )
     use_z_as_t: bool = pydantic.Field(
         default=False,
-        description=(
-            "Only used if  use_t_coords = .true. If true,  z describes the t "
-            "distribution If false, z describes the s distribution"
-        ),
+        description="Only used if  use_t_coords = .true.",
     )
 
 
@@ -1858,8 +1678,7 @@ class BmadCommonStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .true.
     convert_to_kinetic_momentum : bool
-        Cancel kicks due to finite vector potential when doing symplectic tracking? Set
-        to True to test symp_lie_bmad against runge_kutta.
+        Cancel kicks due to finite vector potential when doing symplectic tracking?
         Bmad type: logical
         Fortran default: .false.
     csr_and_space_charge_on : bool
@@ -2022,10 +1841,7 @@ class BmadCommonStruct(pydantic.BaseModel):
     )
     convert_to_kinetic_momentum: bool = pydantic.Field(
         default=False,
-        description=(
-            "Cancel kicks due to finite vector potential when doing symplectic "
-            "tracking? Set to True to test symp_lie_bmad against runge_kutta."
-        ),
+        description="Cancel kicks due to finite vector potential when doing symplectic tracking?",
     )
     csr_and_space_charge_on: bool = pydantic.Field(
         default=False,
@@ -2657,8 +2473,7 @@ class BunchParamsStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: -1
     twiss_valid : bool
-        Is the data here valid? Note: IF there is no energy variation (RF off)
-        twiss_valid may be true but in this case the z-twiss will not be valid.
+        Is the data here valid? Note: IF there is no energy
         Bmad type: logical
         Fortran default: .false.
     x : TwissStruct
@@ -2755,10 +2570,7 @@ class BunchParamsStruct(pydantic.BaseModel):
     )
     twiss_valid: bool = pydantic.Field(
         default=False,
-        description=(
-            "Is the data here valid? Note: IF there is no energy variation (RF off) "
-            "twiss_valid may be true but in this case the z-twiss will not be valid."
-        ),
+        description="Is the data here valid? Note: IF there is no energy",
     )
     x: TwissStruct = pydantic.Field(
         default=None,
@@ -2790,8 +2602,6 @@ class BunchStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     drift_between_t_and_s : bool
-        Drift (ignore any fields) instead of tracking to speed up the calculation? This
-        can only be done under certain circumstances.
         Bmad type: logical
         Fortran default: .false.
     ix_bunch : int
@@ -2832,7 +2642,6 @@ class BunchStruct(pydantic.BaseModel):
         Fortran default: 0
     z_center : float
         Longitudinal center of bunch at creation time. Note: Generally, z_center of
-        bunch #1 is 0 and z_center of the other bunches is negative.
         Bmad type: real
         Fortran default: 0
     """
@@ -2847,10 +2656,6 @@ class BunchStruct(pydantic.BaseModel):
     )
     drift_between_t_and_s: bool = pydantic.Field(
         default=False,
-        description=(
-            "Drift (ignore any fields) instead of tracking to speed up the calculation? "
-            "This can only be done under certain circumstances."
-        ),
     )
     ix_bunch: int = pydantic.Field(
         default=0,
@@ -2892,10 +2697,7 @@ class BunchStruct(pydantic.BaseModel):
     )
     z_center: float = pydantic.Field(
         default=0,
-        description=(
-            "Longitudinal center of bunch at creation time. Note: Generally, z_center "
-            "of bunch #1 is 0 and z_center of the other bunches is negative."
-        ),
+        description="Longitudinal center of bunch at creation time. Note: Generally, z_center of",
     )
 
 
@@ -3195,8 +2997,7 @@ class ControlStruct(pydantic.BaseModel):
     Attributes
     ----------
     attribute : str
-        Name of attribute controlled. Set to "FIELD_OVERLAPS" for field overlaps. Set
-        to "INPUT" or "OUTPUT" for feedback slaves.
+        Name of attribute controlled. Set to "FIELD_OVERLAPS" for field overlaps.
         Bmad type: character
         Fortran default: ''
     ix_attrib : int
@@ -3227,10 +3028,7 @@ class ControlStruct(pydantic.BaseModel):
     attribute: str = pydantic.Field(
         default="",
         max_length=40,
-        description=(
-            "Name of attribute controlled. Set to 'FIELD_OVERLAPS' for field overlaps. "
-            "Set to 'INPUT' or 'OUTPUT' for feedback slaves."
-        ),
+        description="Name of attribute controlled. Set to 'FIELD_OVERLAPS' for field overlaps.",
     )
     ix_attrib: int = pydantic.Field(
         default=-1,
@@ -3496,8 +3294,7 @@ class ConverterProbPcRStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     p_norm : float
-        Normalized probability taking into account. angle_out_max, pc_out_min, and
-        pc_out_max restrictions.
+        Normalized probability taking into account.
         Bmad type: real
     pc_out : float
         Grid pc_out values.
@@ -3513,8 +3310,7 @@ class ConverterProbPcRStruct(pydantic.BaseModel):
         Grid r_out values.
         Bmad type: real
     spin_z : float
-        Z polarization grid. Stuff below is calculated rather than read in from the
-        lattice file.
+        Z polarization grid.
         Bmad type: real
     """
 
@@ -3534,10 +3330,7 @@ class ConverterProbPcRStruct(pydantic.BaseModel):
     )
     p_norm: Sequence[float] = pydantic.Field(
         default=0.0,
-        description=(
-            "Normalized probability taking into account. angle_out_max, pc_out_min, and "
-            "pc_out_max restrictions."
-        ),
+        description="Normalized probability taking into account.",
     )
     pc_out: Sequence[float] = pydantic.Field(
         default=0.0,
@@ -3559,10 +3352,7 @@ class ConverterProbPcRStruct(pydantic.BaseModel):
     )
     spin_z: Sequence[float] = pydantic.Field(
         default=0.0,
-        description=(
-            "Z polarization grid. Stuff below is calculated rather than read in from "
-            "the lattice file."
-        ),
+        description="Z polarization grid.",
     )
 
 
@@ -3664,18 +3454,15 @@ class CoordStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: -1
     charge : float
-        Macroparticle weight (which is different from particle species charge). For
-        some space charge calcs the weight is in Coulombs.
+        Macroparticle weight (which is different from particle species charge).
         Bmad type: real
         Fortran default: 0
     direction : int
-        +1 or -1. Sign of longitudinal direction of motion (ds/dt). This is independent
-        of the element orientation.
+        +1 or -1. Sign of longitudinal direction of motion (ds/dt).
         Bmad type: integer
         Fortran default: 1
     dt_ref : float
-        Used in: * time tracking for computing z. * by coherent photons =
-        path_length/c_light.
+        Used in:
         Bmad type: real
         Fortran default: 0
     field : float
@@ -3687,8 +3474,7 @@ class CoordStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: -1
     ix_ele : int
-        Index of the lattice element the particle is in. May be -1 if element is not
-        associated with a lattice.
+        Index of the lattice element the particle is in.
         Bmad type: integer
         Fortran default: -1
     ix_turn : int
@@ -3704,13 +3490,11 @@ class CoordStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: upstream_end$
     p0c : float
-        For non-photons: Reference momentum. For photons: Photon momentum (not
-        reference).
+        For non-photons: Reference momentum.
         Bmad type: real
         Fortran default: 0
     phase : float
-        Photon E-field phase (x,y). phase(1) is also used with RF-time tracking to
-        record the number of RF cycles.
+        Photon E-field phase (x,y). phase(1) is also used with
         Bmad type: real
         Fortran default: 0
     r : float
@@ -3735,7 +3519,7 @@ class CoordStruct(pydantic.BaseModel):
         Fortran default: not_set$
     t : float
         Absolute time (not relative to reference). If bmad_private%rf_clock_frequency
-        is set, %t will be the RF clock time in the range [0, 1/rf_clock_freq]
+        is
         Bmad type: real
         Fortran default: 0
     time_dir : int
@@ -3761,24 +3545,15 @@ class CoordStruct(pydantic.BaseModel):
     )
     charge: float = pydantic.Field(
         default=0,
-        description=(
-            "Macroparticle weight (which is different from particle species charge). "
-            "For some space charge calcs the weight is in Coulombs."
-        ),
+        description="Macroparticle weight (which is different from particle species charge).",
     )
     direction: int = pydantic.Field(
         default=1,
-        description=(
-            "+1 or -1. Sign of longitudinal direction of motion (ds/dt). This is "
-            "independent of the element orientation."
-        ),
+        description="+1 or -1. Sign of longitudinal direction of motion (ds/dt).",
     )
     dt_ref: float = pydantic.Field(
         default=0,
-        description=(
-            "Used in: * time tracking for computing z. * by coherent photons = "
-            "path_length/c_light."
-        ),
+        description="Used in:",
     )
     field: Sequence[float] = pydantic.Field(
         default=0,
@@ -3791,10 +3566,7 @@ class CoordStruct(pydantic.BaseModel):
     )
     ix_ele: int = pydantic.Field(
         default=-1,
-        description=(
-            "Index of the lattice element the particle is in. May be -1 if element is "
-            "not associated with a lattice."
-        ),
+        description="Index of the lattice element the particle is in.",
     )
     ix_turn: int = pydantic.Field(
         default=0,
@@ -3810,18 +3582,12 @@ class CoordStruct(pydantic.BaseModel):
     )
     p0c: float = pydantic.Field(
         default=0,
-        description=(
-            "For non-photons: Reference momentum. For photons: Photon momentum (not "
-            "reference)."
-        ),
+        description="For non-photons: Reference momentum.",
     )
     phase: Sequence[float] = pydantic.Field(
         default=0,
         max_length=2,
-        description=(
-            "Photon E-field phase (x,y). phase(1) is also used with RF-time tracking to "
-            "record the number of RF cycles."
-        ),
+        description="Photon E-field phase (x,y). phase(1) is also used with",
     )
     r: float = pydantic.Field(
         default=0,
@@ -3846,11 +3612,7 @@ class CoordStruct(pydantic.BaseModel):
     )
     t: float = pydantic.Field(
         default=0,
-        description=(
-            "Absolute time (not relative to reference). If "
-            "bmad_private%rf_clock_frequency is set, %t will be the RF clock time in "
-            "the range [0, 1/rf_clock_freq]"
-        ),
+        description="Absolute time (not relative to reference). If bmad_private%rf_clock_frequency is",
     )
     time_dir: int = pydantic.Field(
         default=1,
@@ -4161,11 +3923,7 @@ class EleStruct(pydantic.BaseModel):
         Bmad type: gen_grad_map_struct
         Fortran default: null()
     grid_field : GridFieldStruct
-        Used to define E/M fields. The difference between map_ref_orb and time_ref_orb
-        is that map_ref_orb is the reference orbit for the 1st order spin/orbit map
-        which, in general, is non-zero while time_ref_orb follows the reference
-        particle which is generally the zero orbit (non-zero, for example, in the
-        second slice of a sliced wiggler).
+        Used to define E/M fields.
         Bmad type: grid_field_struct
         Fortran default: null()
     high_energy_space_charge : HighEnergySpaceChargeStruct
@@ -4279,12 +4037,11 @@ class EleStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: '<Initialized>'
     offset_moves_aperture : bool
-        element offsets affects aperture? ! final :: ele_finalizer
+        element offsets affects aperture?
         Bmad type: logical
         Fortran default: .false.
     old_value : float
-        Used to see if %value(:) array has changed. Note: The reference orbit for
-        spin/orbit matrices is %map_ref_orb_in/out
+        Used to see if %value(:) array has changed.
         Bmad type: real
         Fortran default: 0
     orientation : int
@@ -4307,9 +4064,7 @@ class EleStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     rad_map : RadMapEleStruct
-        Radiation kick parameters Note: The reference orbits for spin and orbit Taylor
-        maps are not necessarily the same. For example, Sprint spin Taylor maps can be
-        with respect to the zero orbit independent of the orbital map.
+        Radiation kick parameters
         Bmad type: rad_map_ele_struct
         Fortran default: null()
     ref_species : int
@@ -4329,8 +4084,7 @@ class EleStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     scale_multipoles : bool
-        Are ab_multipoles within other elements (EG: quads, etc.) scaled by the
-        strength of the element?
+        Are ab_multipoles within other elements (EG: quads, etc.)
         Bmad type: logical
         Fortran default: .true.
     select : bool
@@ -4405,7 +4159,7 @@ class EleStruct(pydantic.BaseModel):
         Bmad type: wake_struct
         Fortran default: null()
     wall3d : Wall3dStruct
-        Chamber or capillary wall E/M field structs.
+        Chamber or capillary wall
         Bmad type: wall3d_struct
         Fortran default: null()
     x : XyDispStruct
@@ -4537,13 +4291,7 @@ class EleStruct(pydantic.BaseModel):
     )
     grid_field: Sequence[GridFieldStruct] = pydantic.Field(
         default=None,
-        description=(
-            "Used to define E/M fields. The difference between map_ref_orb and "
-            "time_ref_orb is that map_ref_orb is the reference orbit for the 1st order "
-            "spin/orbit map which, in general, is non-zero while time_ref_orb follows "
-            "the reference particle which is generally the zero orbit (non-zero, for "
-            "example, in the second slice of a sliced wiggler)."
-        ),
+        description="Used to define E/M fields.",
     )
     high_energy_space_charge: HighEnergySpaceChargeStruct = pydantic.Field(
         default=None,
@@ -4661,14 +4409,11 @@ class EleStruct(pydantic.BaseModel):
     )
     offset_moves_aperture: bool = pydantic.Field(
         default=False,
-        description="element offsets affects aperture? ! final :: ele_finalizer",
+        description="element offsets affects aperture?",
     )
     old_value: Sequence[float] = pydantic.Field(
         default=0,
-        description=(
-            "Used to see if %value(:) array has changed. Note: The reference orbit for "
-            "spin/orbit matrices is %map_ref_orb_in/out"
-        ),
+        description="Used to see if %value(:) array has changed.",
     )
     orientation: int = pydantic.Field(
         default=1,
@@ -4691,11 +4436,7 @@ class EleStruct(pydantic.BaseModel):
     )
     rad_map: RadMapEleStruct = pydantic.Field(
         default=None,
-        description=(
-            "Radiation kick parameters Note: The reference orbits for spin and orbit "
-            "Taylor maps are not necessarily the same. For example, Sprint spin Taylor "
-            "maps can be with respect to the zero orbit independent of the orbital map."
-        ),
+        description="Radiation kick parameters",
     )
     ref_species: int = pydantic.Field(
         default=0,
@@ -4715,10 +4456,7 @@ class EleStruct(pydantic.BaseModel):
     )
     scale_multipoles: bool = pydantic.Field(
         default=True,
-        description=(
-            "Are ab_multipoles within other elements (EG: quads, etc.) scaled by the "
-            "strength of the element?"
-        ),
+        description="Are ab_multipoles within other elements (EG: quads, etc.)",
     )
     select: bool = pydantic.Field(
         default=False,
@@ -4797,7 +4535,7 @@ class EleStruct(pydantic.BaseModel):
     )
     wall3d: Sequence[Wall3dStruct] = pydantic.Field(
         default=None,
-        description="Chamber or capillary wall E/M field structs.",
+        description="Chamber or capillary wall",
     )
     x: XyDispStruct = pydantic.Field(
         default=None,
@@ -5064,7 +4802,6 @@ class ExtraParsingInfoStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     debug_set : bool
-        Used with space_charge_com
         Bmad type: logical
         Fortran default: .false.
     default_ds_step_set : bool
@@ -5074,7 +4811,6 @@ class ExtraParsingInfoStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     diagnostic_output_file_set : bool
-        Used with ptc_com
         Bmad type: logical
         Fortran default: .false.
     ds_track_step_set : bool
@@ -5215,7 +4951,6 @@ class ExtraParsingInfoStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     undeterministic_ran_function_called : bool
-        Used with bmad_com
         Bmad type: logical
         Fortran default: .false.
     use_orientation_patches_set : bool
@@ -5276,7 +5011,6 @@ class ExtraParsingInfoStruct(pydantic.BaseModel):
     )
     debug_set: bool = pydantic.Field(
         default=False,
-        description="Used with space_charge_com",
     )
     default_ds_step_set: bool = pydantic.Field(
         default=False,
@@ -5286,7 +5020,6 @@ class ExtraParsingInfoStruct(pydantic.BaseModel):
     )
     diagnostic_output_file_set: bool = pydantic.Field(
         default=False,
-        description="Used with ptc_com",
     )
     ds_track_step_set: bool = pydantic.Field(
         default=False,
@@ -5427,7 +5160,6 @@ class ExtraParsingInfoStruct(pydantic.BaseModel):
     )
     undeterministic_ran_function_called: bool = pydantic.Field(
         default=False,
-        description="Used with bmad_com",
     )
     use_orientation_patches_set: bool = pydantic.Field(
         default=False,
@@ -5528,8 +5260,7 @@ class FringeFieldInfoStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     location : int
-        Particle location in an element. entrance_end$, inside$, or exit_end$ Elements
-        in list are the tracking element or its lords.
+        Particle location in an element. entrance_end$, inside$, or exit_end$
         Bmad type: integer
     particle_at : int
         first_track_edge$, second_track_edge$, or none$
@@ -5557,10 +5288,7 @@ class FringeFieldInfoStruct(pydantic.BaseModel):
     )
     location: Sequence[int] = pydantic.Field(
         default=0,
-        description=(
-            "Particle location in an element. entrance_end$, inside$, or exit_end$ "
-            "Elements in list are the tracking element or its lords."
-        ),
+        description="Particle location in an element. entrance_end$, inside$, or exit_end$",
     )
     particle_at: int = pydantic.Field(
         default=-1,
@@ -5586,8 +5314,7 @@ class GenGrad1Struct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: 0
     n_deriv_max : int
-        Max GG derivative The derivative matrix is extended to include the
-        interpolating spline polynomial.
+        Max GG derivative
         Bmad type: integer
         Fortran default: -1
     sincos : int
@@ -5606,10 +5333,7 @@ class GenGrad1Struct(pydantic.BaseModel):
     )
     n_deriv_max: int = pydantic.Field(
         default=-1,
-        description=(
-            "Max GG derivative The derivative matrix is extended to include the "
-            "interpolating spline polynomial."
-        ),
+        description="Max GG derivative",
     )
     sincos: int = pydantic.Field(
         default=0,
@@ -6168,7 +5892,6 @@ class LatParamStruct(pydantic.BaseModel):
         Bmad type: beam_init_struct
         Fortran default: beam_init_struct()
     bookkeeping_state : BookkeepingStateStruct
-        Overall status for the branch.
         Bmad type: bookkeeping_state_struct
         Fortran default: bookkeeping_state_struct()
     default_tracking_species : int
@@ -6204,8 +5927,7 @@ class LatParamStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     particle : int
-        Reference particle: positron$, electron$, etc. Call lattice_bookkeeper if this
-        is changed.
+        Reference particle: positron$, electron$, etc.
         Bmad type: integer
         Fortran default: not_set$
     spin_tune : float
@@ -6229,8 +5951,7 @@ class LatParamStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     unstable_factor : float
-        If positive: Growth rate/turn if unstable in closed branches or |orbit-
-        aperture|/aperture if particle hits wall. Zero otherwise.
+        If positive: Growth rate/turn if unstable in closed branches or
         Bmad type: real
         Fortran default: 0
     """
@@ -6241,7 +5962,6 @@ class LatParamStruct(pydantic.BaseModel):
     )
     bookkeeping_state: BookkeepingStateStruct = pydantic.Field(
         default=None,
-        description="Overall status for the branch.",
     )
     default_tracking_species: int = pydantic.Field(
         default=0,
@@ -6277,10 +5997,7 @@ class LatParamStruct(pydantic.BaseModel):
     )
     particle: int = pydantic.Field(
         default=0,
-        description=(
-            "Reference particle: positron$, electron$, etc. Call lattice_bookkeeper if "
-            "this is changed."
-        ),
+        description="Reference particle: positron$, electron$, etc.",
     )
     spin_tune: float = pydantic.Field(
         default=0,
@@ -6308,10 +6025,7 @@ class LatParamStruct(pydantic.BaseModel):
     )
     unstable_factor: float = pydantic.Field(
         default=0,
-        description=(
-            "If positive: Growth rate/turn if unstable in closed branches or |orbit- "
-            "aperture|/aperture if particle hits wall. Zero otherwise."
-        ),
+        description="If positive: Growth rate/turn if unstable in closed branches or",
     )
 
 
@@ -6360,8 +6074,7 @@ class LatStruct(pydantic.BaseModel):
         Control list
         Bmad type: control_struct
     creation_hash : int
-        Set by bmad_parser. creation_hash will vary if any of the lattice files are
-        modified.
+        Set by bmad_parser. creation_hash will vary if
         Bmad type: integer
         Fortran default: 0
     custom : float
@@ -6479,10 +6192,7 @@ class LatStruct(pydantic.BaseModel):
     )
     creation_hash: int = pydantic.Field(
         default=0,
-        description=(
-            "Set by bmad_parser. creation_hash will vary if any of the lattice files "
-            "are modified."
-        ),
+        description="Set by bmad_parser. creation_hash will vary if",
     )
     custom: Sequence[float] = pydantic.Field(
         default=0.0,
@@ -6698,8 +6408,7 @@ class LinearIsf1Struct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     s : float
-        Offset from beginning of element. !! real(rp) :: m_1turn(6,6) = 0   ! Orbital
-        1-turn matrix.
+        Offset from beginning of element.
         Bmad type: real
         Fortran default: 0
     """
@@ -6715,10 +6424,7 @@ class LinearIsf1Struct(pydantic.BaseModel):
     )
     s: float = pydantic.Field(
         default=0,
-        description=(
-            "Offset from beginning of element. !! real(rp) :: m_1turn(6,6) = 0   ! "
-            "Orbital 1-turn matrix."
-        ),
+        description="Offset from beginning of element.",
     )
 
 
@@ -7046,7 +6752,6 @@ class MultipoleCacheStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: -1
     mag_valid : bool
-        From elseparator hkick and vkick.
         Bmad type: logical
         Fortran default: .false.
     """
@@ -7092,7 +6797,6 @@ class MultipoleCacheStruct(pydantic.BaseModel):
     )
     mag_valid: bool = pydantic.Field(
         default=False,
-        description="From elseparator hkick and vkick.",
     )
 
 
@@ -7864,13 +7568,11 @@ class PtcCommonStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     print_step_warning : bool
-        Print warning if element uses too many steps. Below is stuff that should not be
-        set except by experts
+        Print warning if element uses too many steps.
         Bmad type: logical
         Fortran default: .false.
     translate_patch_drift_time : bool
-        When a Bmad patch is translated to a PTC fibre, is the drift time included in
-        the translation?
+        When a Bmad patch is translated to a PTC fibre, is the drift
         Bmad type: logical
         Fortran default: .true.
     use_orientation_patches : bool
@@ -7909,17 +7611,11 @@ class PtcCommonStruct(pydantic.BaseModel):
     )
     print_step_warning: bool = pydantic.Field(
         default=False,
-        description=(
-            "Print warning if element uses too many steps. Below is stuff that should "
-            "not be set except by experts"
-        ),
+        description="Print warning if element uses too many steps.",
     )
     translate_patch_drift_time: bool = pydantic.Field(
         default=True,
-        description=(
-            "When a Bmad patch is translated to a PTC fibre, is the drift time included "
-            "in the translation?"
-        ),
+        description="When a Bmad patch is translated to a PTC fibre, is the drift",
     )
     use_orientation_patches: bool = pydantic.Field(
         default=True,
@@ -8445,8 +8141,7 @@ class SpaceChargeCommonStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     lsc_sigma_cutoff : float
-        Cutoff for the 1-dim longitudinal SC calc. If a bin sigma is < cutoff *
-        sigma_ave then ignore.
+        Cutoff for the 1-dim longitudinal SC calc.
         Bmad type: real
         Fortran default: 0.1
     n_bin : int
@@ -8463,7 +8158,6 @@ class SpaceChargeCommonStruct(pydantic.BaseModel):
         Fortran default: 2
     particle_sigma_cutoff : float
         3D SC calc cutoff for particles with (x,y,z) position far from the center.
-        Negative or zero means ignore.
         Bmad type: real
         Fortran default: -1
     rel_tol_tracking : float
@@ -8518,10 +8212,7 @@ class SpaceChargeCommonStruct(pydantic.BaseModel):
     )
     lsc_sigma_cutoff: float = pydantic.Field(
         default=0.1,
-        description=(
-            "Cutoff for the 1-dim longitudinal SC calc. If a bin sigma is < cutoff * "
-            "sigma_ave then ignore."
-        ),
+        description="Cutoff for the 1-dim longitudinal SC calc.",
     )
     n_bin: int = pydantic.Field(
         default=0,
@@ -8537,10 +8228,7 @@ class SpaceChargeCommonStruct(pydantic.BaseModel):
     )
     particle_sigma_cutoff: float = pydantic.Field(
         default=-1,
-        description=(
-            "3D SC calc cutoff for particles with (x,y,z) position far from the center. "
-            "Negative or zero means ignore."
-        ),
+        description="3D SC calc cutoff for particles with (x,y,z) position far from the center.",
     )
     rel_tol_tracking: float = pydantic.Field(
         default=1e-08,
@@ -9338,8 +9026,7 @@ class TrackStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: 0
     n_pt : int
-        Track upper bound for %pt(0:) array. n_bad and n_ok are used by adaptive
-        trackers to record the number of times the step length had to be shortened.
+        Track upper bound for %pt(0:) array.
         Bmad type: integer
         Fortran default: -1
     pt : TrackPointStruct
@@ -9361,11 +9048,7 @@ class TrackStruct(pydantic.BaseModel):
     )
     n_pt: int = pydantic.Field(
         default=-1,
-        description=(
-            "Track upper bound for %pt(0:) array. n_bad and n_ok are used by adaptive "
-            "trackers to record the number of times the step length had to be "
-            "shortened."
-        ),
+        description="Track upper bound for %pt(0:) array.",
     )
     pt: Sequence[TrackPointStruct] = pydantic.Field(
         default=None,
@@ -9594,8 +9277,7 @@ class WakeLrStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .true.
     t_ref : float
-        time reference value for computing the wake amplitude. This is used to prevent
-        value overflow with long trains.
+        time reference value for computing the wake amplitude.
         Bmad type: real
         Fortran default: 0
     time_scale : float
@@ -9625,10 +9307,7 @@ class WakeLrStruct(pydantic.BaseModel):
     )
     t_ref: float = pydantic.Field(
         default=0,
-        description=(
-            "time reference value for computing the wake amplitude. This is used to "
-            "prevent value overflow with long trains."
-        ),
+        description="time reference value for computing the wake amplitude.",
     )
     time_scale: float = pydantic.Field(
         default=1,
@@ -9680,8 +9359,7 @@ class WakeSrModeStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: none$
     position_dependence : int
-        Transverse: leading$, trailing$, none$ Longitudinal: x_leading$, ...,
-        y_trailing$, none$
+        Transverse: leading$, trailing$, none$
         Bmad type: integer
         Fortran default: not_set$
     """
@@ -9724,10 +9402,7 @@ class WakeSrModeStruct(pydantic.BaseModel):
     )
     position_dependence: int = pydantic.Field(
         default=0,
-        description=(
-            "Transverse: leading$, trailing$, none$ Longitudinal: x_leading$, ..., "
-            "y_trailing$, none$"
-        ),
+        description="Transverse: leading$, trailing$, none$",
     )
 
 
@@ -9830,8 +9505,7 @@ class WakeSrZLongStruct(pydantic.BaseModel):
         Fourier transform of w.
         Bmad type: complex
     position_dependence : int
-        Transverse: leading$, trailing$, none$ Longitudinal: x_leading$, ...,
-        y_trailing$, none$
+        Transverse: leading$, trailing$, none$
         Bmad type: integer
         Fortran default: none$
     smoothing_sigma : float
@@ -9868,10 +9542,7 @@ class WakeSrZLongStruct(pydantic.BaseModel):
     )
     position_dependence: int = pydantic.Field(
         default=0,
-        description=(
-            "Transverse: leading$, trailing$, none$ Longitudinal: x_leading$, ..., "
-            "y_trailing$, none$"
-        ),
+        description="Transverse: leading$, trailing$, none$",
     )
     smoothing_sigma: float = pydantic.Field(
         default=0,
@@ -9974,8 +9645,7 @@ class Wall3dSectionStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .false.
     r0 : float
-        Center of section Section-to-section spline interpolation of the center of the
-        section
+        Center of section
         Bmad type: real
         Fortran default: 0
     s : float
@@ -9983,7 +9653,6 @@ class Wall3dSectionStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     surface : PhotonReflectSurfaceStruct
-        Surface reflectivity tables.
         Bmad type: photon_reflect_surface_struct
         Fortran default: null()
     thickness : float
@@ -9998,8 +9667,7 @@ class Wall3dSectionStruct(pydantic.BaseModel):
         Array of vertices. Always stored relative.
         Bmad type: wall3d_vertex_struct
     vertices_state : int
-        absolute$, or shifted_to_relative$. If set to absolute$ on input, will be
-        changed to shifted_to_relative$ by section initalizer.
+        absolute$, or shifted_to_relative$. If set to absolute$ on input,
         Bmad type: integer
         Fortran default: relative$
     x0_coef : float
@@ -10007,7 +9675,7 @@ class Wall3dSectionStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     y0_coef : float
-        Spline coefs for y-center Section-to_section spline interpolation of the wall.
+        Spline coefs for y-center
         Bmad type: real
         Fortran default: 0
     """
@@ -10063,10 +9731,7 @@ class Wall3dSectionStruct(pydantic.BaseModel):
     r0: Sequence[float] = pydantic.Field(
         default=0,
         max_length=2,
-        description=(
-            "Center of section Section-to-section spline interpolation of the center of "
-            "the section"
-        ),
+        description="Center of section",
     )
     s: float = pydantic.Field(
         default=0,
@@ -10074,7 +9739,6 @@ class Wall3dSectionStruct(pydantic.BaseModel):
     )
     surface: PhotonReflectSurfaceStruct = pydantic.Field(
         default=None,
-        description="Surface reflectivity tables.",
     )
     thickness: float = pydantic.Field(
         default=-1,
@@ -10090,10 +9754,7 @@ class Wall3dSectionStruct(pydantic.BaseModel):
     )
     vertices_state: int = pydantic.Field(
         default=0,
-        description=(
-            "absolute$, or shifted_to_relative$. If set to absolute$ on input, will be "
-            "changed to shifted_to_relative$ by section initalizer."
-        ),
+        description="absolute$, or shifted_to_relative$. If set to absolute$ on input,",
     )
     x0_coef: Sequence[float] = pydantic.Field(
         default=0,
@@ -10101,7 +9762,7 @@ class Wall3dSectionStruct(pydantic.BaseModel):
     )
     y0_coef: Sequence[float] = pydantic.Field(
         default=0,
-        description="Spline coefs for y-center Section-to_section spline interpolation of the wall.",
+        description="Spline coefs for y-center",
     )
 
 
@@ -10544,38 +10205,6 @@ class Mat2Struct(pydantic.BaseModel):
 
     m: Sequence[float] = pydantic.Field(
         default=0.0,
-    )
-
-
-class PrivateStashStruct(pydantic.BaseModel):
-    """
-    PrivateStashStruct corresponds to bmad `private_stash_struct`
-    which is in Users/klauer/Repos/bmad/bmad/modules/rad_6d_mod.f90 on line 16.
-
-    Attributes
-    ----------
-    eta_x_coef : float
-        Dispersion interpolation coefs.
-        Bmad type: real
-    eta_y_coef : float
-        Dispersion interpolation coefs.
-        Bmad type: real
-    gamma0 : float
-        Relativistic gamma factor.
-        Bmad type: real
-    """
-
-    eta_x_coef: Sequence[float] = pydantic.Field(
-        default=0.0,
-        description="Dispersion interpolation coefs.",
-    )
-    eta_y_coef: Sequence[float] = pydantic.Field(
-        default=0.0,
-        description="Dispersion interpolation coefs.",
-    )
-    gamma0: float = pydantic.Field(
-        default=0.0,
-        description="Relativistic gamma factor.",
     )
 
 
@@ -11026,7 +10655,6 @@ class SummationRdtStruct(pydantic.BaseModel):
     h10110 : Complex
         Bmad type: complex
     h10200 : Complex
-        2nd order in K2 moments
         Bmad type: complex
     h11001 : Complex
         Bmad type: complex
@@ -11080,7 +10708,6 @@ class SummationRdtStruct(pydantic.BaseModel):
     )
     h10200: Complex = pydantic.Field(
         default=0.0,
-        description="2nd order in K2 moments",
     )
     h11001: Complex = pydantic.Field(
         default=0.0,
@@ -11218,7 +10845,7 @@ class IbsSimParamStruct(pydantic.BaseModel):
         Fortran default: 1
     do_pwd : bool
         If true, then use potential well distortion to calculate bunch lengths.  If
-        false, bunch length is proportional to energy spread.
+        false,
         Bmad type: logical
         Fortran default: .false.
     eta_set : float
@@ -11232,8 +10859,7 @@ class IbsSimParamStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0.0d0
     formula : str
-        Which IBS formulation to use.  See subroutine ibs1 for a list. real(rp) ::
-        fake_3HC = -1   ! If greater than zero, divide growth rates by this factor.
+        Which IBS formulation to use.  See subroutine ibs1 for a list.
         Bmad type: character
         Fortran default: 'bjmt'
     inductance : float
@@ -11261,7 +10887,7 @@ class IbsSimParamStruct(pydantic.BaseModel):
         default=False,
         description=(
             "If true, then use potential well distortion to calculate bunch lengths. "
-            "If false, bunch length is proportional to energy spread."
+            "If false,"
         ),
     )
     eta_set: float = pydantic.Field(
@@ -11281,11 +10907,7 @@ class IbsSimParamStruct(pydantic.BaseModel):
     formula: str = pydantic.Field(
         default="bjmt",
         max_length=4,
-        description=(
-            "Which IBS formulation to use.  See subroutine ibs1 for a list. real(rp) :: "
-            "fake_3HC = -1   ! If greater than zero, divide growth rates by this "
-            "factor."
-        ),
+        description="Which IBS formulation to use.  See subroutine ibs1 for a list.",
     )
     inductance: float = pydantic.Field(
         default=0.0,
@@ -11717,8 +11339,7 @@ class BpCommonStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: 0
     last_char_in_parse_line : str
-        Needed for long lines read in pieces. parser_name is used by routines to tell
-        if parsing is being done or not.
+        Needed for long lines read in pieces.
         Bmad type: character
         Fortran default: ''
     last_word : str
@@ -11726,8 +11347,7 @@ class BpCommonStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: ''
     lat_file_names : str
-        List of all files used to create lat Note: use %line2_file_name to ID line.
-        %line1_file_name may be blank!
+        List of all files used to create lat
         Bmad type: character
     line1_file_name : str
         Name of file from which %input_line1 was read
@@ -11757,9 +11377,7 @@ class BpCommonStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: ''
     print_err : bool
-        Print error messages? For compatibility with translated MAD files, treat
-        undefined vars as having zero value. Note: When using the parser code for local
-        evaluations (done by Tao), do not wnat this.
+        Print error messages?
         Bmad type: logical
         Fortran default: .true.
     rest_of_line : str
@@ -11871,10 +11489,7 @@ class BpCommonStruct(pydantic.BaseModel):
     last_char_in_parse_line: str = pydantic.Field(
         default="",
         max_length=1,
-        description=(
-            "Needed for long lines read in pieces. parser_name is used by routines to "
-            "tell if parsing is being done or not."
-        ),
+        description="Needed for long lines read in pieces.",
     )
     last_word: str = pydantic.Field(
         default="",
@@ -11884,10 +11499,7 @@ class BpCommonStruct(pydantic.BaseModel):
     lat_file_names: Sequence[str] = pydantic.Field(
         default_factory=list,
         max_length=400,
-        description=(
-            "List of all files used to create lat Note: use %line2_file_name to ID "
-            "line. %line1_file_name may be blank!"
-        ),
+        description="List of all files used to create lat",
     )
     line1_file_name: str = pydantic.Field(
         default="",
@@ -11921,11 +11533,7 @@ class BpCommonStruct(pydantic.BaseModel):
     )
     print_err: bool = pydantic.Field(
         default=True,
-        description=(
-            "Print error messages? For compatibility with translated MAD files, treat "
-            "undefined vars as having zero value. Note: When using the parser code for "
-            "local evaluations (done by Tao), do not wnat this."
-        ),
+        description="Print error messages?",
     )
     rest_of_line: str = pydantic.Field(
         default="",
@@ -12225,7 +11833,7 @@ class SeqEleStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: 0
     ix_ele : int
-        if an element: pointer to ELE array if a line or list: pointer to SEQ array
+        if an element: pointer to ELE array
         Bmad type: integer
         Fortran default: 0
     name : str
@@ -12271,7 +11879,7 @@ class SeqEleStruct(pydantic.BaseModel):
     )
     ix_ele: int = pydantic.Field(
         default=0,
-        description="if an element: pointer to ELE array if a line or list: pointer to SEQ array",
+        description="if an element: pointer to ELE array",
     )
     name: str = pydantic.Field(
         default_factory=list,
@@ -12679,8 +12287,7 @@ class PhotonInitSplineStruct(pydantic.BaseModel):
     spline_type : int
         Bmad type: integer
     x_max : float
-        Upper bound of Region of validity of this spline fit. The lower bound is given
-        by the upper bound of the previos struct.
+        Upper bound of Region of validity of this spline fit.
         Bmad type: real
     x_min : float
         Lower bound
@@ -12699,10 +12306,7 @@ class PhotonInitSplineStruct(pydantic.BaseModel):
     )
     x_max: float = pydantic.Field(
         default=0.0,
-        description=(
-            "Upper bound of Region of validity of this spline fit. The lower bound is "
-            "given by the upper bound of the previos struct."
-        ),
+        description="Upper bound of Region of validity of this spline fit.",
     )
     x_min: float = pydantic.Field(
         default=0.0,
@@ -13032,8 +12636,7 @@ class PtcRadMapStruct(pydantic.BaseModel):
     Attributes
     ----------
     damp_mat : float
-        Damping "correction" to orbital matrix. Stoc_mat is referenced to the start of
-        the map. That is, it is applied before the transport matrix.
+        Damping "correction" to orbital matrix.
         Bmad type: real
     dref_time : float
         Time ref particle takes.
@@ -13081,10 +12684,7 @@ class PtcRadMapStruct(pydantic.BaseModel):
 
     damp_mat: Sequence[float] = pydantic.Field(
         default=0.0,
-        description=(
-            "Damping 'correction' to orbital matrix. Stoc_mat is referenced to the "
-            "start of the map. That is, it is applied before the transport matrix."
-        ),
+        description="Damping 'correction' to orbital matrix.",
     )
     dref_time: float = pydantic.Field(
         default=0.0,
@@ -13333,8 +12933,7 @@ class CsrEleInfoStruct(pydantic.BaseModel):
         Floor position of element ref coords at entrance/exit ends
         Bmad type: floor_position_struct
     spline : SplineStruct
-        Spline for centroid orbit. spline%x = distance along chord. The spline is zero
-        at the ends by construction.
+        Spline for centroid orbit. spline%x = distance along chord.
         Bmad type: spline_struct
     theta_chord : float
         Reference angle of chord in z-x plane
@@ -13383,10 +12982,7 @@ class CsrEleInfoStruct(pydantic.BaseModel):
     )
     spline: SplineStruct = pydantic.Field(
         default=None,
-        description=(
-            "Spline for centroid orbit. spline%x = distance along chord. The spline is "
-            "zero at the ends by construction."
-        ),
+        description="Spline for centroid orbit. spline%x = distance along chord.",
     )
     theta_chord: float = pydantic.Field(
         default=0.0,

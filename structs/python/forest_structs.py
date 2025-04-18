@@ -1201,8 +1201,6 @@ class EleList(pydantic.BaseModel):
     b_sol : float
         Bmad type: real
     kind : int
-        INTEGER old_integrator   not implemented yet in flat file character(nlp+3)
-        name_vorname(2)
         Bmad type: INTEGER
     L : float
         Bmad type: real
@@ -1240,10 +1238,6 @@ class EleList(pydantic.BaseModel):
     )
     kind: int = pydantic.Field(
         default=0,
-        description=(
-            "INTEGER old_integrator   not implemented yet in flat file character(nlp+3) "
-            "name_vorname(2)"
-        ),
         validation_alias=pydantic.AliasChoices("kind", "KIND"),
         serialization_alias="KIND",
     )
@@ -2280,7 +2274,6 @@ class Probe(pydantic.BaseModel):
     u : bool
         Bmad type: logical
     use_q : bool
-        type(integration_node),pointer :: last_node=>null()
         Bmad type: logical
     x : float
         Bmad type: real
@@ -2301,7 +2294,6 @@ class Probe(pydantic.BaseModel):
     )
     use_q: bool = pydantic.Field(
         default=False,
-        description="type(integration_node),pointer :: last_node=>null()",
     )
     x: Sequence[float] = pydantic.Field(
         default=0.0,
@@ -2370,7 +2362,6 @@ class TreeElement(pydantic.BaseModel):
     eps : float
         Bmad type: real
     factored : bool
-        integer, pointer :: ng
         Bmad type: logical
     fix : float
         Bmad type: real
@@ -2427,7 +2418,6 @@ class TreeElement(pydantic.BaseModel):
     )
     factored: bool = pydantic.Field(
         default=False,
-        description="integer, pointer :: ng",
     )
     fix: Sequence[float] = pydantic.Field(
         default=0.0,
@@ -2464,7 +2454,7 @@ class Control(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: null()
     always_exact_patching : bool
-        =.TRUE. patching done correctly used to output horror messages
+        =.TRUE. patching done correctly
         Bmad type: logical
         Fortran default: null()
     always_knobs : bool
@@ -2500,8 +2490,7 @@ class Control(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: null()
     fibre_flip : bool
-        =.true. x_prime true means noncanonical outside magnets. x(5) variables stays
-        the same.
+        =.true.
         Bmad type: logical
         Fortran default: null()
     highest_fringe : int
@@ -2509,8 +2498,7 @@ class Control(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: null()
     initial_charge : float
-        =1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE creates a reverse propagator
-        and a reversed ring in combination with above
+        =1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE
         Bmad type: real
         Fortran default: null()
     mad : bool
@@ -2591,7 +2579,7 @@ class Control(pydantic.BaseModel):
         Bmad type: REAL
         Fortran default: null()
     do_beam_beam : bool
-        obvious meaning: false normally creates a reverse propagator
+        obvious meaning: false normally
         Bmad type: logical
         Fortran default: null()
     electron : bool
@@ -2599,14 +2587,13 @@ class Control(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: null()
     eps_pos : float
-        fill once and never touch again
         Bmad type: real
         Fortran default: null()
     global_verbose : bool
         Bmad type: logical
         Fortran default: null()
     hyperbolic_aperture : float
-        controls crashes in exponentials influence fibre creation
+        controls crashes in exponentials
         Bmad type: real
         Fortran default: null()
     knob : bool
@@ -2617,7 +2604,7 @@ class Control(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: null()
     massfactor : float
-        =one  sets variable muon and electron must be true global on the fly
+        =one  sets variable muon and electron must be true
         Bmad type: real
         Fortran default: null()
     nd : int
@@ -2671,8 +2658,7 @@ class Control(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: null()
     nspin : int
-        number of spin variables (0 or 3) integer,pointer :: SPIN_pos => null()       !
-        position of spin variables (0 or 3)
+        number of spin variables (0 or 3)
         Bmad type: integer
         Fortran default: null()
     nv : int
@@ -2719,7 +2705,6 @@ class Control(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     valishev : bool
-        integer, pointer :: NDPT_OTHER
         Bmad type: logical
         Fortran default: null()
     wedge_coeff : float
@@ -2740,7 +2725,7 @@ class Control(pydantic.BaseModel):
     )
     always_exact_patching: bool = pydantic.Field(
         default=False,
-        description="=.TRUE. patching done correctly used to output horror messages",
+        description="=.TRUE. patching done correctly",
         validation_alias=pydantic.AliasChoices(
             "always_exact_patching", "ALWAYS_EXACT_PATCHING"
         ),
@@ -2798,10 +2783,7 @@ class Control(pydantic.BaseModel):
     )
     fibre_flip: bool = pydantic.Field(
         default=False,
-        description=(
-            "=.true. x_prime true means noncanonical outside magnets. x(5) variables "
-            "stays the same."
-        ),
+        description="=.true.",
         validation_alias=pydantic.AliasChoices("fibre_flip", "FIBRE_flip"),
         serialization_alias="FIBRE_flip",
     )
@@ -2813,10 +2795,7 @@ class Control(pydantic.BaseModel):
     )
     initial_charge: float = pydantic.Field(
         default=0.0,
-        description=(
-            "=1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE creates a reverse "
-            "propagator and a reversed ring in combination with above"
-        ),
+        description="=1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE",
         validation_alias=pydantic.AliasChoices("initial_charge", "INITIAL_CHARGE"),
         serialization_alias="INITIAL_CHARGE",
     )
@@ -2935,7 +2914,7 @@ class Control(pydantic.BaseModel):
     )
     do_beam_beam: bool = pydantic.Field(
         default=False,
-        description="obvious meaning: false normally creates a reverse propagator",
+        description="obvious meaning: false normally",
     )
     electron: bool = pydantic.Field(
         default=False,
@@ -2943,14 +2922,13 @@ class Control(pydantic.BaseModel):
     )
     eps_pos: float = pydantic.Field(
         default=0.0,
-        description="fill once and never touch again",
     )
     global_verbose: bool = pydantic.Field(
         default=False,
     )
     hyperbolic_aperture: float = pydantic.Field(
         default=0.0,
-        description="controls crashes in exponentials influence fibre creation",
+        description="controls crashes in exponentials",
     )
     knob: bool = pydantic.Field(
         default=False,
@@ -2961,7 +2939,7 @@ class Control(pydantic.BaseModel):
     )
     massfactor: float = pydantic.Field(
         default=0.0,
-        description="=one  sets variable muon and electron must be true global on the fly",
+        description="=one  sets variable muon and electron must be true",
     )
     nd: int = pydantic.Field(
         default=0,
@@ -3015,10 +2993,7 @@ class Control(pydantic.BaseModel):
     )
     nspin: int = pydantic.Field(
         default=0,
-        description=(
-            "number of spin variables (0 or 3) integer,pointer :: SPIN_pos => null() "
-            "! position of spin variables (0 or 3)"
-        ),
+        description="number of spin variables (0 or 3)",
     )
     nv: int = pydantic.Field(
         default=0,
@@ -3067,7 +3042,6 @@ class Control(pydantic.BaseModel):
     )
     valishev: bool = pydantic.Field(
         default=False,
-        description="integer, pointer :: NDPT_OTHER",
     )
     wedge_coeff: Sequence[float] = pydantic.Field(
         default=0.0,
@@ -3087,13 +3061,11 @@ class File(pydantic.BaseModel):
     Attributes
     ----------
     mf : bool
-        AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.
         Bmad type: logical
     """
 
     mf: bool = pydantic.Field(
         default=False,
-        description="AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.",
         validation_alias=pydantic.AliasChoices("mf", "MF"),
         serialization_alias="MF",
     )
@@ -3107,13 +3079,11 @@ class FileK(pydantic.BaseModel):
     Attributes
     ----------
     mf : bool
-        AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.
         Bmad type: logical
     """
 
     mf: bool = pydantic.Field(
         default=False,
-        description="AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.",
         validation_alias=pydantic.AliasChoices("mf", "MF"),
         serialization_alias="MF",
     )
@@ -4416,7 +4386,6 @@ class Chart(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     f : MagnetFrame
-        FIBRE MISALIGNMENTS
         Bmad type: magnet_frame
         Fortran default: null()
     """
@@ -4443,7 +4412,6 @@ class Chart(pydantic.BaseModel):
     )
     f: MagnetFrame = pydantic.Field(
         default=None,
-        description="FIBRE MISALIGNMENTS",
     )
 
 
@@ -4802,7 +4770,7 @@ class Ecol(pydantic.BaseModel):
     Attributes
     ----------
     L : float
-        collimator of MAD type(MADX_APERTURE), POINTER :: A => null()
+        collimator of MAD
         Bmad type: real
         Fortran default: null()
     p : MagnetChart
@@ -4812,7 +4780,7 @@ class Ecol(pydantic.BaseModel):
 
     L: float = pydantic.Field(
         default=0.0,
-        description="collimator of MAD type(MADX_APERTURE), POINTER :: A => null()",
+        description="collimator of MAD",
     )
     p: MagnetChart = pydantic.Field(
         default=None,
@@ -4829,7 +4797,6 @@ class Ecolp(pydantic.BaseModel):
     Attributes
     ----------
     L : Real8
-        type(MADX_APERTURE), POINTER :: A => null()
         Bmad type: REAL_8
         Fortran default: null()
     p : MagnetChart
@@ -4839,7 +4806,6 @@ class Ecolp(pydantic.BaseModel):
 
     L: Real8 = pydantic.Field(
         default=None,
-        description="type(MADX_APERTURE), POINTER :: A => null()",
     )
     p: MagnetChart = pydantic.Field(
         default=None,
@@ -4872,7 +4838,6 @@ class Element(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     b_sol : float
-        misalignements and rotation
         Bmad type: real
         Fortran default: null()
     c4 : Cav4
@@ -4983,10 +4948,7 @@ class Element(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     mis : bool
-        migalignment on or off real(dp),  DIMENSION(:), POINTER ::d => null(),r =>
-        null()                             !  Misalignements storage  space integer
-        twiss                                                            ! TYPES OF
-        MAGNETS
+        migalignment on or off
         Bmad type: logical
         Fortran default: null()
     mon14 : Mon
@@ -5066,8 +5028,7 @@ class Element(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     vorname : str
-        Identification Length is common although certain things like Markers should not
-        have a length Well let us say it is zero
+        Identification
         Bmad type: CHARACTER
         Fortran default: null()
     vs : float
@@ -5107,7 +5068,6 @@ class Element(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: null()
     fileb : str
-        common stuff to all element
         Bmad type: character
     filef : str
         maps replacing ptc
@@ -5117,7 +5077,6 @@ class Element(pydantic.BaseModel):
         Bmad type: tree_element
         Fortran default: null()
     girder_frame : AffineFrame
-        integer, POINTER ::girder_index => null()
         Bmad type: AFFINE_FRAME
         Fortran default: null()
     girders : Element
@@ -5187,7 +5146,6 @@ class Element(pydantic.BaseModel):
     )
     b_sol: float = pydantic.Field(
         default=0.0,
-        description="misalignements and rotation",
         validation_alias=pydantic.AliasChoices("b_sol", "B_SOL"),
         serialization_alias="B_SOL",
     )
@@ -5354,12 +5312,7 @@ class Element(pydantic.BaseModel):
     )
     mis: bool = pydantic.Field(
         default=False,
-        description=(
-            "migalignment on or off real(dp),  DIMENSION(:), POINTER ::d => null(),r => "
-            "null()                             !  Misalignements storage  space "
-            "integer  twiss "
-            "! TYPES OF MAGNETS"
-        ),
+        description="migalignment on or off",
         validation_alias=pydantic.AliasChoices("mis", "MIS"),
         serialization_alias="MIS",
     )
@@ -5481,10 +5434,7 @@ class Element(pydantic.BaseModel):
     )
     vorname: str = pydantic.Field(
         default="",
-        description=(
-            "Identification Length is common although certain things like Markers "
-            "should not have a length Well let us say it is zero"
-        ),
+        description="Identification",
         validation_alias=pydantic.AliasChoices("vorname", "VORNAME"),
         serialization_alias="VORNAME",
     )
@@ -5532,7 +5482,6 @@ class Element(pydantic.BaseModel):
     fileb: str = pydantic.Field(
         default_factory=list,
         max_length=120,
-        description="common stuff to all element",
     )
     filef: str = pydantic.Field(
         default_factory=list,
@@ -5545,7 +5494,6 @@ class Element(pydantic.BaseModel):
     )
     girder_frame: AffineFrame = pydantic.Field(
         default=None,
-        description="integer, POINTER ::girder_index => null()",
         validation_alias=pydantic.AliasChoices("girder_frame", "girder_FRAME"),
         serialization_alias="girder_FRAME",
     )
@@ -5727,7 +5675,6 @@ class Elementp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     mis : bool
-        real(dp),  DIMENSION(:), POINTER :: D,R
         Bmad type: logical
         Fortran default: null()
     mon14 : Monp
@@ -5739,7 +5686,6 @@ class Elementp(pydantic.BaseModel):
         Bmad type: CHARACTER
         Fortran default: null()
     p : MagnetChart
-        TYPES OF POLYMORPHIC MAGNETS
         Bmad type: MAGNET_CHART
         Fortran default: null()
     pa : Pancakep
@@ -5747,7 +5693,6 @@ class Elementp(pydantic.BaseModel):
         Bmad type: PANCAKEP
         Fortran default: null()
     parent_fibre : Fibre
-        TYPE(fibre_appearance), POINTER :: doko
         Bmad type: FIBRE
         Fortran default: null()
     phas : Real8
@@ -5845,7 +5790,6 @@ class Elementp(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: null()
     slow_ac : int
-        MISALIGNEMENTS AND ROTATION
         Bmad type: integer
         Fortran default: null()
     theta_ac : Real8
@@ -6053,7 +5997,6 @@ class Elementp(pydantic.BaseModel):
     )
     mis: bool = pydantic.Field(
         default=False,
-        description="real(dp),  DIMENSION(:), POINTER :: D,R",
         validation_alias=pydantic.AliasChoices("mis", "MIS"),
         serialization_alias="MIS",
     )
@@ -6071,7 +6014,6 @@ class Elementp(pydantic.BaseModel):
     )
     p: MagnetChart = pydantic.Field(
         default=None,
-        description="TYPES OF POLYMORPHIC MAGNETS",
         validation_alias=pydantic.AliasChoices("p", "P"),
         serialization_alias="P",
     )
@@ -6083,7 +6025,6 @@ class Elementp(pydantic.BaseModel):
     )
     parent_fibre: Fibre = pydantic.Field(
         default=None,
-        description="TYPE(fibre_appearance), POINTER :: doko",
         validation_alias=pydantic.AliasChoices("parent_fibre", "PARENT_FIBRE"),
         serialization_alias="PARENT_FIBRE",
     )
@@ -6216,7 +6157,6 @@ class Elementp(pydantic.BaseModel):
     slow_ac: int = pydantic.Field(
         default_factory=list,
         max_length=2,
-        description="MISALIGNEMENTS AND ROTATION",
     )
     theta_ac: Real8 = pydantic.Field(
         default=None,
@@ -6561,7 +6501,7 @@ class Fibre(pydantic.BaseModel):
     Attributes
     ----------
     ag : float
-        spin g-2 TO TIE LAYOUTS
+        spin g-2
         Bmad type: real
         Fortran default: null()
     beta0 : float
@@ -6589,7 +6529,6 @@ class Fibre(pydantic.BaseModel):
         Bmad type: ELEMENT
         Fortran default: null()
     magp : Elementp
-        END OF DATA POINTER TO THE MAGNETS ON EACH SIDE OF THIS NODE
         Bmad type: ELEMENTP
         Fortran default: null()
     mass : float
@@ -6600,7 +6539,6 @@ class Fibre(pydantic.BaseModel):
         Bmad type: FIBRE
         Fortran default: null()
     next : Fibre
-        POINTING TO PARENT LAYOUT AND PARENT FIBRE DATA
         Bmad type: FIBRE
         Fortran default: null()
     p : Fibre
@@ -6635,14 +6573,14 @@ class Fibre(pydantic.BaseModel):
         Bmad type: INTEGER
         Fortran default: null()
     pos : int
-        POSITION IN LAYOUT NEW STUFF....
+        POSITION IN LAYOUT
         Bmad type: INTEGER
         Fortran default: null()
     """
 
     ag: float = pydantic.Field(
         default=0.0,
-        description="spin g-2 TO TIE LAYOUTS",
+        description="spin g-2",
         validation_alias=pydantic.AliasChoices("ag", "AG"),
         serialization_alias="AG",
     )
@@ -6686,7 +6624,6 @@ class Fibre(pydantic.BaseModel):
     )
     magp: Elementp = pydantic.Field(
         default=None,
-        description="END OF DATA POINTER TO THE MAGNETS ON EACH SIDE OF THIS NODE",
         validation_alias=pydantic.AliasChoices("magp", "MAGP"),
         serialization_alias="MAGP",
     )
@@ -6703,7 +6640,6 @@ class Fibre(pydantic.BaseModel):
     )
     next: Fibre = pydantic.Field(
         default=None,
-        description="POINTING TO PARENT LAYOUT AND PARENT FIBRE DATA",
         validation_alias=pydantic.AliasChoices("next", "NEXT"),
         serialization_alias="NEXT",
     )
@@ -6754,7 +6690,7 @@ class Fibre(pydantic.BaseModel):
     )
     pos: int = pydantic.Field(
         default=0,
-        description="POSITION IN LAYOUT NEW STUFF....",
+        description="POSITION IN LAYOUT",
     )
 
 
@@ -6939,7 +6875,6 @@ class IntegrationNode(pydantic.BaseModel):
     Attributes
     ----------
     bb : BeamBeamNode
-        TYPE(tree_element), POINTER :: T
         Bmad type: BEAM_BEAM_NODE
         Fortran default: null()
     cas : int
@@ -6983,7 +6918,6 @@ class IntegrationNode(pydantic.BaseModel):
     exi : float
         Bmad type: real
     lf : CLatticeFunction
-        TYPE(EXTRA_WORK), POINTER :: WORK
         Bmad type: c_lattice_function
         Fortran default: null()
     lost : int
@@ -7002,7 +6936,6 @@ class IntegrationNode(pydantic.BaseModel):
 
     bb: BeamBeamNode = pydantic.Field(
         default=None,
-        description="TYPE(tree_element), POINTER :: T",
         validation_alias=pydantic.AliasChoices("bb", "BB"),
         serialization_alias="BB",
     )
@@ -7066,7 +6999,6 @@ class IntegrationNode(pydantic.BaseModel):
     )
     lf: CLatticeFunction = pydantic.Field(
         default=None,
-        description="TYPE(EXTRA_WORK), POINTER :: WORK",
     )
     lost: int = pydantic.Field(
         default=0,
@@ -7538,8 +7470,7 @@ class Ktk(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     maty : float
-        LINEAR MATRIX frs     real(dp),  DIMENSION(:), POINTER :: lx(:) => null(),
-        ly(:) => null()
+        LINEAR MATRIX
         Bmad type: real
         Fortran default: null()
     p : MagnetChart
@@ -7608,10 +7539,7 @@ class Ktk(pydantic.BaseModel):
     )
     maty: Sequence[float] = pydantic.Field(
         default=0.0,
-        description=(
-            "LINEAR MATRIX frs     real(dp),  DIMENSION(:), POINTER :: lx(:) => null(), "
-            "ly(:) => null()"
-        ),
+        description="LINEAR MATRIX",
         validation_alias=pydantic.AliasChoices("maty", "MATY"),
         serialization_alias="MATY",
     )
@@ -7679,8 +7607,7 @@ class Ktkp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     maty : Real8
-        LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:) => null(),
-        ly(:) => null()
+        LINEAR MATRIX
         Bmad type: REAL_8
         Fortran default: null()
     p : MagnetChart
@@ -7749,10 +7676,7 @@ class Ktkp(pydantic.BaseModel):
     )
     maty: Sequence[Real8] = pydantic.Field(
         default=None,
-        description=(
-            "LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:) => "
-            "null(), ly(:) => null()"
-        ),
+        description="LINEAR MATRIX",
         validation_alias=pydantic.AliasChoices("maty", "MATY"),
         serialization_alias="MATY",
     )
@@ -7792,8 +7716,6 @@ class Layout(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: null()
     dna : LayoutArray
-        type(array_of_fibres), pointer :: A(:) => null() type(d_lattice_function),
-        pointer :: lf0  => null()
         Bmad type: layout_array
         Fortran default: null()
     end : Fibre
@@ -7848,7 +7770,7 @@ class Layout(pydantic.BaseModel):
         Bmad type: NODE_LAYOUT
         Fortran default: null()
     thin : float
-        PARAMETER USED FOR AUTOMATIC CUTTING INTO THIN LENS POINTERS OF LINK LAYOUT
+        PARAMETER USED FOR AUTOMATIC CUTTING INTO THIN LENS
         Bmad type: REAL
         Fortran default: null()
     parent_universe : MadUniverse
@@ -7863,10 +7785,6 @@ class Layout(pydantic.BaseModel):
     )
     dna: Sequence[LayoutArray] = pydantic.Field(
         default=None,
-        description=(
-            "type(array_of_fibres), pointer :: A(:) => null() type(d_lattice_function), "
-            "pointer :: lf0  => null()"
-        ),
         validation_alias=pydantic.AliasChoices("dna", "DNA"),
         serialization_alias="DNA",
     )
@@ -7952,7 +7870,7 @@ class Layout(pydantic.BaseModel):
     )
     thin: float = pydantic.Field(
         default=0.0,
-        description="PARAMETER USED FOR AUTOMATIC CUTTING INTO THIN LENS POINTERS OF LINK LAYOUT",
+        description="PARAMETER USED FOR AUTOMATIC CUTTING INTO THIN LENS",
         validation_alias=pydantic.AliasChoices("thin", "THIN"),
         serialization_alias="THIN",
     )
@@ -8089,7 +8007,6 @@ class MadUniverse(pydantic.BaseModel):
         Bmad type: INTEGER
         Fortran default: null()
     start : Layout
-        POINTERS OF UNIVERSE IN CONJUNCTION WITH THE POINTERS N AND P OF THE FIBRES
         Bmad type: LAYOUT
         Fortran default: null()
     """
@@ -8131,7 +8048,6 @@ class MadUniverse(pydantic.BaseModel):
     )
     start: Layout = pydantic.Field(
         default=None,
-        description="POINTERS OF UNIVERSE IN CONJUNCTION WITH THE POINTERS N AND P OF THE FIBRES",
         validation_alias=pydantic.AliasChoices("start", "START"),
         serialization_alias="START",
     )
@@ -8595,7 +8511,7 @@ class NodeLayout(pydantic.BaseModel):
         Bmad type: INTEGER
         Fortran default: null()
     n : int
-        TOTAL ELEMENT IN THE CHAIN POINTERS OF LINK LAYOUT
+        TOTAL ELEMENT IN THE CHAIN
         Bmad type: INTEGER
         Fortran default: null()
     name : str
@@ -8653,7 +8569,7 @@ class NodeLayout(pydantic.BaseModel):
     )
     n: int = pydantic.Field(
         default=0,
-        description="TOTAL ELEMENT IN THE CHAIN POINTERS OF LINK LAYOUT",
+        description="TOTAL ELEMENT IN THE CHAIN",
         validation_alias=pydantic.AliasChoices("n", "N"),
         serialization_alias="N",
     )
@@ -8813,7 +8729,6 @@ class OrbitLattice(pydantic.BaseModel):
         Bmad type: REAL
         Fortran default: null()
     orbit_omega_after : float
-        REAL(DP), pointer  ::  freqb,freqa,voltb,volta,phasa,phasb,xs6,dxs6
         Bmad type: REAL
         Fortran default: null()
     orbit_p0c : float
@@ -8860,7 +8775,7 @@ class OrbitLattice(pydantic.BaseModel):
         Bmad type: REAL
         Fortran default: null()
     orbit_gamma : float
-        GET_gamma REAL(DP), pointer  ::  orbit_dppfac ! GET_dppfac
+        GET_gamma
         Bmad type: REAL
         Fortran default: null()
     orbit_kinetic : float
@@ -8925,7 +8840,6 @@ class OrbitLattice(pydantic.BaseModel):
     )
     orbit_omega_after: float = pydantic.Field(
         default=0.0,
-        description="REAL(DP), pointer  ::  freqb,freqa,voltb,volta,phasa,phasb,xs6,dxs6",
         validation_alias=pydantic.AliasChoices(
             "orbit_omega_after", "ORBIT_OMEGA_after"
         ),
@@ -8994,7 +8908,7 @@ class OrbitLattice(pydantic.BaseModel):
     )
     orbit_gamma: float = pydantic.Field(
         default=0.0,
-        description="GET_gamma REAL(DP), pointer  ::  orbit_dppfac ! GET_dppfac",
+        description="GET_gamma",
     )
     orbit_kinetic: float = pydantic.Field(
         default=0.0,
@@ -9100,7 +9014,6 @@ class Pancake(pydantic.BaseModel):
         Bmad type: REAL
         Fortran default: null()
     xprime : bool
-        type(gen_grad_field_coeff),pointer :: gf => null()
         Bmad type: logical
         Fortran default: null()
     """
@@ -9140,7 +9053,6 @@ class Pancake(pydantic.BaseModel):
     )
     xprime: bool = pydantic.Field(
         default=False,
-        description="type(gen_grad_field_coeff),pointer :: gf => null()",
     )
 
 
@@ -9179,7 +9091,6 @@ class Pancakep(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     xprime : bool
-        type(gen_grad_field_coeff),pointer :: gf => null()
         Bmad type: logical
         Fortran default: null()
     """
@@ -9219,7 +9130,6 @@ class Pancakep(pydantic.BaseModel):
     )
     xprime: bool = pydantic.Field(
         default=False,
-        description="type(gen_grad_field_coeff),pointer :: gf => null()",
     )
 
 
@@ -9435,7 +9345,6 @@ class PolBlock(pydantic.BaseModel):
     sb_sol : float
         Bmad type: real
     set_element : bool
-        STUFF FOR PARAMETER DEPENDENCE
         Bmad type: LOGICAL
         Fortran default: null()
     set_tpsafit : bool
@@ -9451,7 +9360,6 @@ class PolBlock(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     vorname : str
-        STUFF FOR SETTING MAGNET USING GLOBAL ARRAY TPSAFIT
         Bmad type: CHARACTER
     g : int
         group index  number of blocks
@@ -9459,7 +9367,7 @@ class PolBlock(pydantic.BaseModel):
     n_name : int
         Bmad type: integer
     nb : int
-        group index  number of blocks User defined Functions
+        group index  number of blocks
         Bmad type: integer
     np : int
         group index  number of blocks
@@ -9525,7 +9433,6 @@ class PolBlock(pydantic.BaseModel):
     )
     set_element: bool = pydantic.Field(
         default=False,
-        description="STUFF FOR PARAMETER DEPENDENCE",
         validation_alias=pydantic.AliasChoices("set_element", "SET_ELEMENT"),
         serialization_alias="SET_ELEMENT",
     )
@@ -9556,7 +9463,6 @@ class PolBlock(pydantic.BaseModel):
     )
     vorname: str = pydantic.Field(
         default="",
-        description="STUFF FOR SETTING MAGNET USING GLOBAL ARRAY TPSAFIT",
         validation_alias=pydantic.AliasChoices("vorname", "VORNAME"),
         serialization_alias="VORNAME",
     )
@@ -9569,7 +9475,7 @@ class PolBlock(pydantic.BaseModel):
     )
     nb: int = pydantic.Field(
         default=0,
-        description="group index  number of blocks User defined Functions",
+        description="group index  number of blocks",
     )
     np: int = pydantic.Field(
         default=0,
@@ -9678,7 +9584,7 @@ class Rcol(pydantic.BaseModel):
     Attributes
     ----------
     L : float
-        collimator of MAD type(MADX_APERTURE), POINTER :: A => null()
+        collimator of MAD
         Bmad type: real
         Fortran default: null()
     p : MagnetChart
@@ -9688,7 +9594,7 @@ class Rcol(pydantic.BaseModel):
 
     L: float = pydantic.Field(
         default=0.0,
-        description="collimator of MAD type(MADX_APERTURE), POINTER :: A => null()",
+        description="collimator of MAD",
     )
     p: MagnetChart = pydantic.Field(
         default=None,
@@ -9705,7 +9611,6 @@ class Rcolp(pydantic.BaseModel):
     Attributes
     ----------
     L : Real8
-        type(MADX_APERTURE), POINTER :: A => null()
         Bmad type: REAL_8
         Fortran default: null()
     p : MagnetChart
@@ -9715,7 +9620,6 @@ class Rcolp(pydantic.BaseModel):
 
     L: Real8 = pydantic.Field(
         default=None,
-        description="type(MADX_APERTURE), POINTER :: A => null()",
     )
     p: MagnetChart = pydantic.Field(
         default=None,
@@ -9732,8 +9636,7 @@ class Real8(pydantic.BaseModel):
     Attributes
     ----------
     alloc : bool
-        @1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE integer g,nb  !  group index, number in
-        group &2
+        @1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE
         Bmad type: LOGICAL
     i : int
         @1   USED FOR KNOBS AND SPECIAL KIND=0
@@ -9742,7 +9645,7 @@ class Real8(pydantic.BaseModel):
         @1  0,1,2,3 (1=REAL,2=TAYLOR,3=TAYLOR KNOB, 0=SPECIAL)
         Bmad type: INTEGER
     r : float
-        @1    USED IF REAL &2
+        @1    USED IF REAL
         Bmad type: REAL
     s : float
         @1   SCALING FOR KNOBS AND SPECIAL KIND=0
@@ -9754,10 +9657,7 @@ class Real8(pydantic.BaseModel):
 
     alloc: bool = pydantic.Field(
         default=False,
-        description=(
-            "@1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE integer g,nb  !  group index, "
-            "number in group &2"
-        ),
+        description="@1 IF TAYLOR IS ALLOCATED IN DA-PACKAGE",
         validation_alias=pydantic.AliasChoices("alloc", "ALLOC"),
         serialization_alias="ALLOC",
     )
@@ -9775,7 +9675,7 @@ class Real8(pydantic.BaseModel):
     )
     r: float = pydantic.Field(
         default=0.0,
-        description="@1    USED IF REAL &2",
+        description="@1    USED IF REAL",
         validation_alias=pydantic.AliasChoices("r", "R"),
         serialization_alias="R",
     )
@@ -9805,7 +9705,7 @@ class Sagan(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     bn : float
-        Multipole component (OPTIONAL) ADD INTERNAL STUFF HERE AS POINTERS
+        Multipole component (OPTIONAL)
         Bmad type: real
         Fortran default: null()
     internal : float
@@ -9838,7 +9738,7 @@ class Sagan(pydantic.BaseModel):
     )
     bn: Sequence[float] = pydantic.Field(
         default=0.0,
-        description="Multipole component (OPTIONAL) ADD INTERNAL STUFF HERE AS POINTERS",
+        description="Multipole component (OPTIONAL)",
         validation_alias=pydantic.AliasChoices("bn", "BN"),
         serialization_alias="BN",
     )
@@ -9882,7 +9782,7 @@ class Saganp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     bn : Real8
-        Multipole component (OPTIONAL) ADD INTERNAL STUFF HERE AS POINTERS
+        Multipole component (OPTIONAL)
         Bmad type: REAL_8
         Fortran default: null()
     internal : Real8
@@ -9915,7 +9815,7 @@ class Saganp(pydantic.BaseModel):
     )
     bn: Sequence[Real8] = pydantic.Field(
         default=None,
-        description="Multipole component (OPTIONAL) ADD INTERNAL STUFF HERE AS POINTERS",
+        description="Multipole component (OPTIONAL)",
         validation_alias=pydantic.AliasChoices("bn", "BN"),
         serialization_alias="BN",
     )
@@ -10736,7 +10636,7 @@ class Teapot(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     vs : float
-        valishev-like multipole !  electric info
+        valishev-like multipole
         Bmad type: real
         Fortran default: null()
     b_sol : float
@@ -10747,7 +10647,7 @@ class Teapot(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     bf_y : float
-        B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()
+        B field polynomial
         Bmad type: real
         Fortran default: null()
     e_x : float
@@ -10844,7 +10744,7 @@ class Teapot(pydantic.BaseModel):
     )
     vs: float = pydantic.Field(
         default=0.0,
-        description="valishev-like multipole !  electric info",
+        description="valishev-like multipole",
         validation_alias=pydantic.AliasChoices("vs", "VS"),
         serialization_alias="VS",
     )
@@ -10857,7 +10757,7 @@ class Teapot(pydantic.BaseModel):
     )
     bf_y: Sequence[float] = pydantic.Field(
         default=0.0,
-        description="B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()",
+        description="B field polynomial",
     )
     e_x: Sequence[float] = pydantic.Field(
         default=0.0,
@@ -10932,7 +10832,7 @@ class Teapotp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     vs : Real8
-        valishev-like multipole !  electric info
+        valishev-like multipole
         Bmad type: REAL_8
         Fortran default: null()
     b_sol : Real8
@@ -10943,7 +10843,7 @@ class Teapotp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     bf_y : Real8
-        B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()
+        B field polynomial
         Bmad type: REAL_8
         Fortran default: null()
     e_x : Real8
@@ -11039,7 +10939,7 @@ class Teapotp(pydantic.BaseModel):
     )
     vs: Real8 = pydantic.Field(
         default=None,
-        description="valishev-like multipole !  electric info",
+        description="valishev-like multipole",
         validation_alias=pydantic.AliasChoices("vs", "VS"),
         serialization_alias="VS",
     )
@@ -11052,7 +10952,7 @@ class Teapotp(pydantic.BaseModel):
     )
     bf_y: Sequence[Real8] = pydantic.Field(
         default=None,
-        description="B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()",
+        description="B field polynomial",
     )
     e_x: Sequence[Real8] = pydantic.Field(
         default=None,
@@ -11249,7 +11149,7 @@ class Tktf(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     maty2 : float
-        LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER :: lx(:) => null()
+        LINEAR MATRIX
         Bmad type: real
         Fortran default: null()
     p : MagnetChart
@@ -11260,12 +11160,10 @@ class Tktf(pydantic.BaseModel):
         Bmad type: real
         Fortran default: null()
     rmaty : float
-        LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER ::   Rlx(:) => null()
+        LINEAR MATRIX
         Bmad type: real
         Fortran default: null()
     rlx : float
-        real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp), DIMENSION(:),
-        POINTER ::   dy(:) => null()
         Bmad type: real
         Fortran default: null()
     va : float
@@ -11343,7 +11241,7 @@ class Tktf(pydantic.BaseModel):
     )
     maty2: Sequence[float] = pydantic.Field(
         default=0.0,
-        description="LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER :: lx(:) => null()",
+        description="LINEAR MATRIX",
         validation_alias=pydantic.AliasChoices("maty2", "MATY2"),
         serialization_alias="MATY2",
     )
@@ -11360,16 +11258,12 @@ class Tktf(pydantic.BaseModel):
     )
     rmaty: Sequence[float] = pydantic.Field(
         default=0.0,
-        description="LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER ::   Rlx(:) => null()",
+        description="LINEAR MATRIX",
         validation_alias=pydantic.AliasChoices("rmaty", "RMATY"),
         serialization_alias="RMATY",
     )
     rlx: Sequence[float] = pydantic.Field(
         default=0.0,
-        description=(
-            "real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp), "
-            "DIMENSION(:), POINTER ::   dy(:) => null()"
-        ),
         validation_alias=pydantic.AliasChoices("rlx", "Rlx"),
         serialization_alias="Rlx",
     )
@@ -11440,7 +11334,7 @@ class Tktfp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     maty2 : Real8
-        LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:) => null()
+        LINEAR MATRIX
         Bmad type: REAL_8
         Fortran default: null()
     p : MagnetChart
@@ -11451,12 +11345,10 @@ class Tktfp(pydantic.BaseModel):
         Bmad type: REAL_8
         Fortran default: null()
     rmaty : Real8
-        LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx(:) => null()
+        LINEAR MATRIX
         Bmad type: REAL_8
         Fortran default: null()
     rlx : Real8
-        real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp), DIMENSION(:),
-        POINTER ::   dy(:) => null()
         Bmad type: REAL_8
         Fortran default: null()
     va : Real8
@@ -11534,7 +11426,7 @@ class Tktfp(pydantic.BaseModel):
     )
     maty2: Sequence[Real8] = pydantic.Field(
         default=None,
-        description="LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:) => null()",
+        description="LINEAR MATRIX",
         validation_alias=pydantic.AliasChoices("maty2", "MATY2"),
         serialization_alias="MATY2",
     )
@@ -11551,16 +11443,12 @@ class Tktfp(pydantic.BaseModel):
     )
     rmaty: Sequence[Real8] = pydantic.Field(
         default=None,
-        description="LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx(:) => null()",
+        description="LINEAR MATRIX",
         validation_alias=pydantic.AliasChoices("rmaty", "RMATY"),
         serialization_alias="RMATY",
     )
     rlx: Sequence[Real8] = pydantic.Field(
         default=None,
-        description=(
-            "real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp), "
-            "DIMENSION(:), POINTER ::   dy(:) => null()"
-        ),
         validation_alias=pydantic.AliasChoices("rlx", "Rlx"),
         serialization_alias="Rlx",
     )
@@ -11858,22 +11746,19 @@ class CDamap(pydantic.BaseModel):
     Attributes
     ----------
     cm : Complex
-        Moment matrix (transpose of Yu Matrix)
         Bmad type: complex
         Fortran default: null()
     e_ij : Complex
-        @1 stochastic fluctuation in radiation theory Number of planes allocated
+        @1 stochastic fluctuation in radiation theory
         Bmad type: complex
     m : float
-        SO(3) is deprecated in FPP and computed from quaternion if needed
         Bmad type: real
         Fortran default: null()
     n : int
-        @1 number of planes allocated Initial orbit if tpsa =  true
+        @1 number of planes allocated
         Bmad type: integer
         Fortran default: 0
     q : CQuaternion
-        Stochastic part
         Bmad type: c_quaternion
     s : CSpinmatrix
         @1 spin matrix
@@ -11882,29 +11767,25 @@ class CDamap(pydantic.BaseModel):
         @1 orbital part of the map
         Bmad type: c_taylor
     x0 : Complex
-        Lie map matrix  (Yu's square matrix)
         Bmad type: complex
     """
 
     cm: Sequence[Complex] = pydantic.Field(
         default=0.0,
-        description="Moment matrix (transpose of Yu Matrix)",
     )
     e_ij: Sequence[Complex] = pydantic.Field(
         default=0.0,
-        description="@1 stochastic fluctuation in radiation theory Number of planes allocated",
+        description="@1 stochastic fluctuation in radiation theory",
     )
     m: Sequence[float] = pydantic.Field(
         default=0.0,
-        description="SO(3) is deprecated in FPP and computed from quaternion if needed",
     )
     n: int = pydantic.Field(
         default=0,
-        description="@1 number of planes allocated Initial orbit if tpsa =  true",
+        description="@1 number of planes allocated",
     )
     q: CQuaternion = pydantic.Field(
         default=None,
-        description="Stochastic part",
     )
     s: CSpinmatrix = pydantic.Field(
         default=None,
@@ -11916,7 +11797,6 @@ class CDamap(pydantic.BaseModel):
     )
     x0: Sequence[Complex] = pydantic.Field(
         default=0.0,
-        description="Lie map matrix  (Yu's square matrix)",
     )
 
 
@@ -12019,7 +11899,6 @@ class CLatticeFunction(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     symplectic : bool
-        !!!  radiation quantity
         Bmad type: logical
         Fortran default: .true.
     t : IntegrationNode
@@ -12076,7 +11955,6 @@ class CLatticeFunction(pydantic.BaseModel):
     )
     symplectic: bool = pydantic.Field(
         default=True,
-        description="!!!  radiation quantity",
     )
     t: IntegrationNode = pydantic.Field(
         default=None,
@@ -12122,7 +12000,6 @@ class CNormalForm(pydantic.BaseModel):
     h_l : CVectorField
         Bmad type: c_vector_field
     h_nl : CVectorField
-        !!Envelope radiation stuff to normalise radiation (Sand's like theory)
         Bmad type: c_vector_field
     m : int
         @1 stores resonances to be left in the map, including spin (ms)
@@ -12147,7 +12024,7 @@ class CNormalForm(pydantic.BaseModel):
         Bmad type: real
     emittance : float
         @1  Equilibrium emittances as defined by Chao (computed from s_ijr(2*i-1,2*i)
-        i=1,2,3 ) ! controls resonances left in normal form
+        i=1,2,3 )
         Bmad type: real
     g : CFactoredLie
         @1 nonlinear part of a in phasors
@@ -12156,15 +12033,13 @@ class CNormalForm(pydantic.BaseModel):
         @1  kernel i.e. normal form in phasors
         Bmad type: c_factored_lie
     ms : int
-        @1 stores resonances to be left in the map, including spin (ms) ! redundant
-        stuff
+        @1 stores resonances to be left in the map, including spin (ms)
         Bmad type: integer
     n : CDamap
         @1 transformation n (m=a n a^-1)
         Bmad type: c_damap
     positive : bool
-        forces positive tunes (close to 1 if <0) !!  Things not to be used in the case
-        of spin with quaternion
+        forces positive tunes (close to 1 if <0)
         Bmad type: logical
     quaternion_angle : float
         @1 Stores simple information
@@ -12207,7 +12082,6 @@ class CNormalForm(pydantic.BaseModel):
     )
     h_nl: CVectorField = pydantic.Field(
         default=None,
-        description="!!Envelope radiation stuff to normalise radiation (Sand's like theory)",
         validation_alias=pydantic.AliasChoices("h_nl", "H_nl"),
         serialization_alias="H_nl",
     )
@@ -12248,7 +12122,7 @@ class CNormalForm(pydantic.BaseModel):
         max_length=3,
         description=(
             "@1  Equilibrium emittances as defined by Chao (computed from "
-            "s_ijr(2*i-1,2*i) i=1,2,3 ) ! controls resonances left in normal form"
+            "s_ijr(2*i-1,2*i) i=1,2,3 )"
         ),
     )
     g: CFactoredLie = pydantic.Field(
@@ -12261,10 +12135,7 @@ class CNormalForm(pydantic.BaseModel):
     )
     ms: Sequence[int] = pydantic.Field(
         default=0,
-        description=(
-            "@1 stores resonances to be left in the map, including spin (ms) ! "
-            "redundant stuff"
-        ),
+        description="@1 stores resonances to be left in the map, including spin (ms)",
     )
     n: CDamap = pydantic.Field(
         default=None,
@@ -12272,10 +12143,7 @@ class CNormalForm(pydantic.BaseModel):
     )
     positive: bool = pydantic.Field(
         default=False,
-        description=(
-            "forces positive tunes (close to 1 if <0) !!  Things not to be used in the "
-            "case of spin with quaternion"
-        ),
+        description="forces positive tunes (close to 1 if <0)",
     )
     quaternion_angle: float = pydantic.Field(
         default=0.0,
@@ -12323,7 +12191,7 @@ class CRay(pydantic.BaseModel):
     Attributes
     ----------
     n : int
-        # of dimensions used in x(lnv) Obsolescent
+        # of dimensions used in x(lnv)
         Bmad type: integer
     q : ComplexQuaternion
         # quaternion
@@ -12344,7 +12212,7 @@ class CRay(pydantic.BaseModel):
 
     n: int = pydantic.Field(
         default=0,
-        description="# of dimensions used in x(lnv) Obsolescent",
+        description="# of dimensions used in x(lnv)",
     )
     q: ComplexQuaternion = pydantic.Field(
         default=None,
@@ -12414,20 +12282,15 @@ class CVectorField(pydantic.BaseModel):
     L : CSpinmatrix
         Bmad type: c_spinmatrix
     eps : float
-        orbital part
         Bmad type: real
     n : int
         Bmad type: integer
         Fortran default: 0
     nrmax : int
-        @1 if eps=-integer  then |eps| # of Lie brackets are taken @ otherwise
-        eps=eps_tpsalie=10^-9
         Bmad type: integer
     q : CQuaternion
-        type(c_spinor) h
         Bmad type: c_quaternion
     v : CTaylor
-        quaternion part
         Bmad type: c_taylor
     """
 
@@ -12436,25 +12299,18 @@ class CVectorField(pydantic.BaseModel):
     )
     eps: float = pydantic.Field(
         default=0.0,
-        description="orbital part",
     )
     n: int = pydantic.Field(
         default=0,
     )
     nrmax: int = pydantic.Field(
         default=0,
-        description=(
-            "@1 if eps=-integer  then |eps| # of Lie brackets are taken @ otherwise "
-            "eps=eps_tpsalie=10^-9"
-        ),
     )
     q: CQuaternion = pydantic.Field(
         default=None,
-        description="type(c_spinor) h",
     )
     v: Sequence[CTaylor] = pydantic.Field(
         default=None,
-        description="quaternion part",
     )
 
 
@@ -12526,7 +12382,6 @@ class Complex8(pydantic.BaseModel):
     r : Complex
         Bmad type: complex
     s : Complex
-        integer g,nb  !  group index
         Bmad type: complex
     t : Complextaylor
         Bmad type: complextaylor
@@ -12549,7 +12404,6 @@ class Complex8(pydantic.BaseModel):
     )
     s: Complex = pydantic.Field(
         default=0.0,
-        description="integer g,nb  !  group index",
     )
     t: Complextaylor = pydantic.Field(
         default=None,
@@ -13471,7 +13325,6 @@ class Probe8(pydantic.BaseModel):
         Modulation of magnet
         Bmad type: rf_phasor_8
     e : float
-        real(dp) damps(3,3) real(dp) b_kin(3,3) real(dp) D_spin(3)
         Bmad type: real
     last_node : IntegrationNode
         Bmad type: integration_node
@@ -13493,7 +13346,7 @@ class Probe8(pydantic.BaseModel):
         Polymorphic orbital ray
         Bmad type: real_8
     x0 : float
-        initial value of the ray for TPSA calculations with c_damap stuff for exception
+        initial value of the ray for TPSA calculations with c_damap
         Bmad type: real
     """
 
@@ -13509,7 +13362,6 @@ class Probe8(pydantic.BaseModel):
     )
     e: float = pydantic.Field(
         default=0.0,
-        description="real(dp) damps(3,3) real(dp) b_kin(3,3) real(dp) D_spin(3)",
     )
     last_node: IntegrationNode = pydantic.Field(
         default=None,
@@ -13540,7 +13392,7 @@ class Probe8(pydantic.BaseModel):
     x0: Sequence[float] = pydantic.Field(
         default=0.0,
         max_length=6,
-        description="initial value of the ray for TPSA calculations with c_damap stuff for exception",
+        description="initial value of the ray for TPSA calculations with c_damap",
     )
 
 
@@ -13665,7 +13517,6 @@ class RfPhasor(pydantic.BaseModel):
     Attributes
     ----------
     om : float
-        real(dp) f(nacmode),phase(nacmode)
         Bmad type: real
     t : float
         Bmad type: real
@@ -13675,7 +13526,6 @@ class RfPhasor(pydantic.BaseModel):
 
     om: float = pydantic.Field(
         default=0.0,
-        description="real(dp) f(nacmode),phase(nacmode)",
     )
     t: float = pydantic.Field(
         default=0.0,
@@ -13694,7 +13544,7 @@ class RfPhasor8(pydantic.BaseModel):
     Attributes
     ----------
     om : Real8
-        the omega of the modulation real(dp) f(nacmode),phase(nacmode)
+        the omega of the modulation
         Bmad type: real_8
     t : float
         the pseudo-time
@@ -13706,7 +13556,7 @@ class RfPhasor8(pydantic.BaseModel):
 
     om: Real8 = pydantic.Field(
         default=None,
-        description="the omega of the modulation real(dp) f(nacmode),phase(nacmode)",
+        description="the omega of the modulation",
     )
     t: float = pydantic.Field(
         default=0.0,
@@ -13791,17 +13641,13 @@ class Taylor(pydantic.BaseModel):
     Attributes
     ----------
     i : int
-        @1  integer I is a pointer in old da-package of Berz GTPSA REMOVED !
-        type (c_ptr) j !@1  gtpsa
+        @1  integer I is a pointer in old da-package of Berz
         Bmad type: INTEGER
     """
 
     i: int = pydantic.Field(
         default=0,
-        description=(
-            "@1  integer I is a pointer in old da-package of Berz GTPSA REMOVED ! "
-            "type (c_ptr) j !@1  gtpsa"
-        ),
+        description="@1  integer I is a pointer in old da-package of Berz",
         validation_alias=pydantic.AliasChoices("i", "I"),
         serialization_alias="I",
     )

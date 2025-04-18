@@ -153,8 +153,7 @@ class GeodesicLmParamStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 1.D-6
     h2 : float
-        controls step sizes for finite diff derivatives h1 for jacobian, h2 for dir
-        second deriv ! Stopping criterion
+        controls step sizes for finite diff derivatives
         Bmad type: real
         Fortran default: 1.D-1
     iaccel : int
@@ -166,8 +165,7 @@ class GeodesicLmParamStruct(pydantic.BaseModel):
         Bmad type: integer
         Fortran default: 0
     ibroyden : int
-        number of iterations using approximate jacobian !!!real(rp) :: eps = 1.5E-6
-        ! function evaluation precision
+        number of iterations using approximate jacobian
         Bmad type: integer
         Fortran default: 0
     imethod : int
@@ -277,10 +275,7 @@ class GeodesicLmParamStruct(pydantic.BaseModel):
     )
     h2: float = pydantic.Field(
         default=0.1,
-        description=(
-            "controls step sizes for finite diff derivatives h1 for jacobian, h2 for "
-            "dir second deriv ! Stopping criterion"
-        ),
+        description="controls step sizes for finite diff derivatives",
     )
     iaccel: int = pydantic.Field(
         default=1,
@@ -292,10 +287,7 @@ class GeodesicLmParamStruct(pydantic.BaseModel):
     )
     ibroyden: int = pydantic.Field(
         default=0,
-        description=(
-            "number of iterations using approximate jacobian !!!real(rp) :: eps = "
-            "1.5E-6      ! function evaluation precision"
-        ),
+        description="number of iterations using approximate jacobian",
     )
     imethod: int = pydantic.Field(
         default=10,
@@ -362,8 +354,7 @@ class AtomStruct(pydantic.BaseModel):
         isotope number offset
         Bmad type: integer
     mass : float
-        isotope masses in units of the unified atomic mass unit. mass(0) is the
-        standard atomic weight mass(n) is the mass of isotope n + i_offset
+        isotope masses in units of the unified atomic mass unit.
         Bmad type: real
         Fortran default: no_iso
     name : str
@@ -380,10 +371,7 @@ class AtomStruct(pydantic.BaseModel):
     )
     mass: Sequence[float] = pydantic.Field(
         default=0.0,
-        description=(
-            "isotope masses in units of the unified atomic mass unit. mass(0) is the "
-            "standard atomic weight mass(n) is the mass of isotope n + i_offset"
-        ),
+        description="isotope masses in units of the unified atomic mass unit.",
     )
     name: str = pydantic.Field(
         default_factory=list,
@@ -530,7 +518,7 @@ class NametableStruct(pydantic.BaseModel):
     Attributes
     ----------
     index : int
-        Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.
+        Sorted index for names(:) array.
         Bmad type: integer
     n_max : int
         Use only names(n_min:n_max) part of array.
@@ -547,7 +535,7 @@ class NametableStruct(pydantic.BaseModel):
 
     index: Sequence[int] = pydantic.Field(
         default=0,
-        description="Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.",
+        description="Sorted index for names(:) array.",
     )
     n_max: int = pydantic.Field(
         default=0,
@@ -572,7 +560,7 @@ class StrIndexStruct(pydantic.BaseModel):
     Attributes
     ----------
     index : int
-        Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.
+        Sorted index for names(:) array.
         Bmad type: integer
     n_max : int
         Use only names(n_min:n_max) part of array.
@@ -588,7 +576,7 @@ class StrIndexStruct(pydantic.BaseModel):
 
     index: Sequence[int] = pydantic.Field(
         default=0,
-        description="Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.",
+        description="Sorted index for names(:) array.",
     )
     n_max: int = pydantic.Field(
         default=0,
@@ -1163,74 +1151,6 @@ class FieldAt3dBoxStruct(pydantic.BaseModel):
     )
 
 
-class M16MatrixStruct(pydantic.BaseModel):
-    """
-    M16MatrixStruct corresponds to bmad `m16_matrix_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90 on line 137.
-
-    Attributes
-    ----------
-    row : M16RowStruct
-        Bmad type: m16_row_struct
-    """
-
-    row: Sequence[M16RowStruct] = pydantic.Field(
-        default=None,
-        max_length=16,
-    )
-
-
-class M16RowStruct(pydantic.BaseModel):
-    """
-    M16RowStruct corresponds to bmad `m16_row_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90 on line 133.
-
-    Attributes
-    ----------
-    pt : int
-        Bmad type: integer
-    """
-
-    pt: Sequence[int] = pydantic.Field(
-        default=0,
-        max_length=16,
-    )
-
-
-class M64MatrixStruct(pydantic.BaseModel):
-    """
-    M64MatrixStruct corresponds to bmad `m64_matrix_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90 on line 165.
-
-    Attributes
-    ----------
-    row : M64RowStruct
-        Bmad type: m64_row_struct
-    """
-
-    row: Sequence[M64RowStruct] = pydantic.Field(
-        default=None,
-        max_length=64,
-    )
-
-
-class M64RowStruct(pydantic.BaseModel):
-    """
-    M64RowStruct corresponds to bmad `m64_row_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/math/cubic_interpolation_mod.f90 on line 161.
-
-    Attributes
-    ----------
-    pt : int
-        Bmad type: integer
-    """
-
-    pt: Sequence[int] = pydantic.Field(
-        default=0,
-        max_length=64,
-    )
-
-
 class TricubicCmplxCoefStruct(pydantic.BaseModel):
     """
     TricubicCmplxCoefStruct corresponds to bmad `tricubic_cmplx_coef_struct`
@@ -1298,7 +1218,6 @@ class RandomStateStruct(pydantic.BaseModel):
         Bmad type: real
         Fortran default: 0
     engine : int
-        Params
         Bmad type: integer
         Fortran default: pseudo_random$
     gauss_converter : int
@@ -1339,7 +1258,6 @@ class RandomStateStruct(pydantic.BaseModel):
     )
     engine: int = pydantic.Field(
         default=0,
-        description="Params",
     )
     gauss_converter: int = pydantic.Field(
         default=0,
@@ -1441,7 +1359,6 @@ class SuperMrqminStorageStruct(pydantic.BaseModel):
     dyda : float
         Bmad type: real
     mask : bool
-        Used by super_mrqcof
         Bmad type: logical
     ochisq : float
         Bmad type: real
@@ -1478,7 +1395,6 @@ class SuperMrqminStorageStruct(pydantic.BaseModel):
     )
     mask: Sequence[bool] = pydantic.Field(
         default=False,
-        description="Used by super_mrqcof",
     )
     ochisq: float = pydantic.Field(
         default=0.0,
@@ -1570,32 +1486,6 @@ class CDummyStruct(pydantic.BaseModel):
     )
 
 
-class SolutionStruct(pydantic.BaseModel):
-    """
-    SolutionStruct corresponds to bmad `solution_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/mpi/opti_de_mpi_mod.f90 on line 5.
-
-    Attributes
-    ----------
-    merit : float
-        Bmad type: real
-    status : int
-        Bmad type: integer
-    vec : float
-        Bmad type: real
-    """
-
-    merit: float = pydantic.Field(
-        default=0.0,
-    )
-    status: int = pydantic.Field(
-        default=0,
-    )
-    vec: Sequence[float] = pydantic.Field(
-        default=0.0,
-    )
-
-
 class OptiDeParamStruct(pydantic.BaseModel):
     """
     OptiDeParamStruct corresponds to bmad `opti_de_param_struct`
@@ -1665,53 +1555,6 @@ class OptiDeParamStruct(pydantic.BaseModel):
     )
 
 
-class SolutionStruct_(pydantic.BaseModel):
-    """
-    SolutionStruct_ corresponds to bmad `solution_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_mod.f90 on line 109.
-
-    Attributes
-    ----------
-    merit : float
-        Bmad type: real
-    vec : float
-        Bmad type: real
-    """
-
-    merit: float = pydantic.Field(
-        default=0.0,
-    )
-    vec: Sequence[float] = pydantic.Field(
-        default=0.0,
-    )
-
-
-class SolutionStruct__(pydantic.BaseModel):
-    """
-    SolutionStruct__ corresponds to bmad `solution_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/optimizers/opti_de_openmp_mod.f90 on line 97.
-
-    Attributes
-    ----------
-    merit : float
-        Bmad type: real
-    status : int
-        Bmad type: integer
-    vec : float
-        Bmad type: real
-    """
-
-    merit: float = pydantic.Field(
-        default=0.0,
-    )
-    status: int = pydantic.Field(
-        default=0,
-    )
-    vec: Sequence[float] = pydantic.Field(
-        default=0.0,
-    )
-
-
 class PgInterfaceStruct(pydantic.BaseModel):
     """
     PgInterfaceStruct corresponds to bmad `pg_interface_struct`
@@ -1749,127 +1592,6 @@ class PgInterfaceStruct(pydantic.BaseModel):
         max_length=100,
     )
     qp_to_pg_text_height_factor: float = pydantic.Field(
-        default=0.0,
-    )
-
-
-class PlInterfaceStruct(pydantic.BaseModel):
-    """
-    PlInterfaceStruct corresponds to bmad `pl_interface_struct`
-    which is in Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90 on line 48.
-
-    Attributes
-    ----------
-    char_size : float
-        Bmad type: real
-    clip : bool
-        Bmad type: logical
-    fg_color : int
-        Bmad type: integer
-    fill_pattern : int
-        Bmad type: integer
-    graph_pos : ViewportSize
-        Bmad type: viewport_size
-    i_chan : int
-        Bmad type: integer
-        Fortran default: -1
-    line_pattern : int
-        Bmad type: integer
-    line_width : int
-        Bmad type: integer
-    page_scale : float
-        Bmad type: real
-    page_type : str
-        Bmad type: character
-    sym_size : float
-        Bmad type: real
-    x_inch_page : float
-        Bmad type: real
-    x_inch_to_mm : float
-        Bmad type: real
-    y_inch_page : float
-        Bmad type: real
-    y_inch_to_mm : float
-        Bmad type: real
-    """
-
-    char_size: float = pydantic.Field(
-        default=0.0,
-    )
-    clip: bool = pydantic.Field(
-        default=False,
-    )
-    fg_color: int = pydantic.Field(
-        default=0,
-    )
-    fill_pattern: int = pydantic.Field(
-        default=0,
-    )
-    graph_pos: ViewportSize = pydantic.Field(
-        default=None,
-    )
-    i_chan: int = pydantic.Field(
-        default=-1,
-    )
-    line_pattern: int = pydantic.Field(
-        default=0,
-    )
-    line_width: int = pydantic.Field(
-        default=0,
-    )
-    page_scale: float = pydantic.Field(
-        default=0.0,
-    )
-    page_type: str = pydantic.Field(
-        default_factory=list,
-        max_length=16,
-    )
-    sym_size: float = pydantic.Field(
-        default=0.0,
-    )
-    x_inch_page: float = pydantic.Field(
-        default=0.0,
-    )
-    x_inch_to_mm: float = pydantic.Field(
-        default=0.0,
-    )
-    y_inch_page: float = pydantic.Field(
-        default=0.0,
-    )
-    y_inch_to_mm: float = pydantic.Field(
-        default=0.0,
-    )
-
-
-class ViewportSize(pydantic.BaseModel):
-    """
-    ViewportSize corresponds to bmad `viewport_size`
-    which is in Users/klauer/Repos/bmad/sim_utils/plot/plplot_interface.f90 on line 41.
-
-    Attributes
-    ----------
-    x1 : float
-        in mm
-        Bmad type: real
-    x2 : float
-        Bmad type: real
-    y1 : float
-        Bmad type: real
-    y2 : float
-        Bmad type: real
-    """
-
-    x1: float = pydantic.Field(
-        default=0.0,
-        description="in mm",
-    )
-    x2: float = pydantic.Field(
-        default=0.0,
-    )
-    y1: float = pydantic.Field(
-        default=0.0,
-    )
-    y2: float = pydantic.Field(
         default=0.0,
     )
 

@@ -4,283 +4,7 @@
 /Users/klauer/Repos/bmad/bmad/code/at_this_ele_end.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/attribute_bookkeeper.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/attribute_set_bookkeeping.f90: {}
-/Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90:
-  bend_exact_coef_struct:
-    filename: /Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90
-    info:
-      class_name: BendExactCoefStruct
-      comment: ''
-      members:
-        cutoff_minus:
-          comment: Crossover between exact formula and pade approximant
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: cutoff_minus = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 32
-          name: cutoff_minus
-          python_name: cutoff_minus
-          python_type: float
-          size: null
-          type: real
-        cutoff_plus:
-          comment: Crossover between exact formula and pade approximant Exact formula
-            coefs
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: cutoff_plus = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 33
-          name: cutoff_plus
-          python_name: cutoff_plus
-          python_type: float
-          size: null
-          type: real
-        d2_pade_denom_coef:
-          comment: Non-zero coefs are in the range [0:n_d2_pade_denom]
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: d2_pade_denom_coef(0:8) = 0'
-          dimension: 0:8
-          fortran_default: '0'
-          line: 48
-          name: d2_pade_denom_coef
-          python_name: d2_pade_denom_coef
-          python_type: float
-          size: null
-          type: real
-        d2_pade_numer_coef:
-          comment: Non-zero coefs are in the range [0:n_d2_pade_numer]
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: d2_pade_numer_coef(0:7) = 0'
-          dimension: 0:7
-          fortran_default: '0'
-          line: 46
-          name: d2_pade_numer_coef
-          python_name: d2_pade_numer_coef
-          python_type: float
-          size: null
-          type: real
-        exact_log_coef:
-          comment: Non-zero coefs are in the range [0:n_exact_log] pade approximant
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: exact_log_coef(0:10) = 0'
-          dimension: 0:10
-          fortran_default: '0'
-          line: 38
-          name: exact_log_coef
-          python_name: exact_log_coef
-          python_type: float
-          size: null
-          type: real
-        exact_non_coef:
-          comment: Non-zero coefs are in the range [0:n_exact_non]
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: exact_non_coef(0:11) = 0'
-          dimension: 0:11
-          fortran_default: '0'
-          line: 36
-          name: exact_non_coef
-          python_name: exact_non_coef
-          python_type: float
-          size: null
-          type: real
-        n_d2_pade_denom:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: n_d2_pade_denom = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 47
-          name: n_d2_pade_denom
-          python_name: n_d2_pade_denom
-          python_type: int
-          size: null
-          type: integer
-        n_d2_pade_numer:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: n_d2_pade_numer = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 45
-          name: n_d2_pade_numer
-          python_name: n_d2_pade_numer
-          python_type: int
-          size: null
-          type: integer
-        n_exact_log:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: n_exact_log = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 37
-          name: n_exact_log
-          python_name: n_exact_log
-          python_type: int
-          size: null
-          type: integer
-        n_exact_non:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: n_exact_non = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 35
-          name: n_exact_non
-          python_name: n_exact_non
-          python_type: int
-          size: null
-          type: integer
-        n_pade_denom:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: n_pade_denom = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 42
-          name: n_pade_denom
-          python_name: n_pade_denom
-          python_type: int
-          size: null
-          type: integer
-        n_pade_numer:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: n_pade_numer = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 40
-          name: n_pade_numer
-          python_name: n_pade_numer
-          python_type: int
-          size: null
-          type: integer
-        order:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'integer :: order = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 31
-          name: order
-          python_name: order
-          python_type: int
-          size: null
-          type: integer
-        pade_denom_coef:
-          comment: Non-zero coefs are in the range [0:n_pade_denom] 2nd derivative
-            pade approximant.
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: pade_denom_coef(0:8) = 0'
-          dimension: 0:8
-          fortran_default: '0'
-          line: 43
-          name: pade_denom_coef
-          python_name: pade_denom_coef
-          python_type: float
-          size: null
-          type: real
-        pade_numer_coef:
-          comment: Non-zero coefs are in the range [0:n_pade_numer]
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: pade_numer_coef(0:7) = 0'
-          dimension: 0:7
-          fortran_default: '0'
-          line: 41
-          name: pade_numer_coef
-          python_name: pade_numer_coef
-          python_type: float
-          size: null
-          type: real
-    line: 30
-    module: bend_exact_multipole_field
-    name: bend_exact_coef_struct
-  pole_coef_struct:
-    filename: /Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90
-    info:
-      class_name: PoleCoefStruct
-      comment: ''
-      members:
-        derivative:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: derivative = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 211
-          name: derivative
-          python_name: derivative
-          python_type: float
-          size: null
-          type: real
-        derivative2:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: derivative2 = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 212
-          name: derivative2
-          python_name: derivative2
-          python_type: float
-          size: null
-          type: real
-        value:
-          comment: ''
-          default: 0
-          default_factory: ''
-          definition: 'real(rp) :: value = 0'
-          dimension: ''
-          fortran_default: '0'
-          line: 210
-          name: value
-          python_name: value
-          python_type: float
-          size: null
-          type: real
-    line: 209
-    module: bend_exact_multipole_field
-    name: pole_coef_struct
-  pure_bend_multipole_struct:
-    filename: /Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90
-    info:
-      class_name: PureBendMultipoleStruct
-      comment: ''
-      members:
-        convert:
-          comment: ''
-          default: 0.0
-          default_factory: ''
-          definition: real(rp) convert(0:n_pole_maxx)
-          dimension: 0:n_pole_maxx
-          fortran_default: null
-          line: 596
-          name: convert
-          python_name: convert
-          python_type: float
-          size: null
-          type: real
-    line: 595
-    module: bend_exact_multipole_field
-    name: pure_bend_multipole_struct
+/Users/klauer/Repos/bmad/bmad/code/bend_exact_multipole_field.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/bmad_json.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/branch_name.f90: {}
 /Users/klauer/Repos/bmad/bmad/code/c_to_cbar.f90: {}
@@ -2182,8 +1906,7 @@
       comment: ''
       members:
         ix_attrib:
-          comment: Attribute index. Frequently will be where in the ele%value(:) array
-            the attribute is.
+          comment: Attribute index. Frequently will be where in the
           default: -1
           default_factory: ''
           definition: 'integer :: ix_attrib = -1'
@@ -2254,7 +1977,7 @@
           definition: 'real(rp) :: value = real_garbage$'
           dimension: ''
           fortran_default: real_garbage$
-          line: 32
+          line: 31
           name: value
           python_name: value
           python_type: float
@@ -2774,7 +2497,7 @@
           definition: 'type (kv_beam_init_struct) :: KV = kv_beam_init_struct()'
           dimension: ''
           fortran_default: kv_beam_init_struct()
-          line: 1141
+          line: 1140
           name: KV
           python_name: kv
           python_type: KvBeamInitStruct
@@ -2787,7 +2510,7 @@
           definition: 'real(rp) :: a_emit = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1156
+          line: 1154
           name: a_emit
           python_name: a_emit
           python_type: float
@@ -2800,7 +2523,7 @@
           definition: 'real(rp) :: a_norm_emit = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1154
+          line: 1152
           name: a_norm_emit
           python_name: a_norm_emit
           python_type: float
@@ -2813,7 +2536,7 @@
           definition: 'real(rp) :: b_emit = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1157
+          line: 1155
           name: b_emit
           python_name: b_emit
           python_type: float
@@ -2826,7 +2549,7 @@
           definition: 'real(rp) :: b_norm_emit = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1155
+          line: 1153
           name: b_norm_emit
           python_name: b_norm_emit
           python_type: float
@@ -2839,7 +2562,7 @@
           definition: 'real(rp) :: bunch_charge = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1164
+          line: 1162
           name: bunch_charge
           python_name: bunch_charge
           python_type: float
@@ -2852,7 +2575,7 @@
           definition: 'real(rp) :: center(6) = 0'
           dimension: '6'
           fortran_default: '0'
-          line: 1159
+          line: 1157
           name: center
           python_name: center
           python_type: float
@@ -2865,7 +2588,7 @@
           definition: 'real(rp) :: center_jitter(6) = 0.0'
           dimension: '6'
           fortran_default: '0.0'
-          line: 1143
+          line: 1142
           name: center_jitter
           python_name: center_jitter
           python_type: float
@@ -2878,15 +2601,14 @@
           definition: 'real(rp) :: dPz_dz = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1158
+          line: 1156
           name: dPz_dz
           python_name: dpz_dz
           python_type: float
           size: null
           type: real
         distribution_type:
-          comment: distribution type (in x-px, y-py, and z-pz planes) "ELLIPSE", "KV",
-            "GRID", "FILE", "RAN_GAUSS" or "" = "RAN_GAUSS"
+          comment: distribution type (in x-px, y-py, and z-pz planes)
           default: RAN_GAUSS
           default_factory: ''
           definition: 'character(16) :: distribution_type(3) = ''RAN_GAUSS'''
@@ -2905,7 +2627,7 @@
           definition: 'real(rp) :: dt_bunch = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1161
+          line: 1159
           name: dt_bunch
           python_name: dt_bunch
           python_type: float
@@ -2918,7 +2640,7 @@
           definition: 'type (ellipse_beam_init_struct) :: ellipse(3) = ellipse_beam_init_struct()'
           dimension: '3'
           fortran_default: ellipse_beam_init_struct()
-          line: 1140
+          line: 1139
           name: ellipse
           python_name: ellipse
           python_type: EllipseBeamInitStruct
@@ -2931,7 +2653,7 @@
           definition: 'real(rp) :: emit_jitter(2)   = 0.0'
           dimension: '2'
           fortran_default: '0.0'
-          line: 1144
+          line: 1143
           name: emit_jitter
           python_name: emit_jitter
           python_type: float
@@ -2944,21 +2666,20 @@
           definition: 'character(200) :: file_name = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 1175
+          line: 1170
           name: file_name
           python_name: file_name
           python_type: str
           size: '200'
           type: character
         full_6D_coupling_calc:
-          comment: Use V from 6x6 1-turn mat to match distribution? Else use 4x4 1-turn
-            mat used.
+          comment: Use V from 6x6 1-turn mat to match distribution?
           default: false
           default_factory: ''
           definition: 'logical :: full_6D_coupling_calc = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1168
+          line: 1166
           name: full_6D_coupling_calc
           python_name: full_6d_coupling_calc
           python_type: bool
@@ -2971,7 +2692,7 @@
           definition: 'type (grid_beam_init_struct) :: grid(3) = grid_beam_init_struct()'
           dimension: '3'
           fortran_default: grid_beam_init_struct()
-          line: 1142
+          line: 1141
           name: grid
           python_name: grid
           python_type: GridBeamInitStruct
@@ -2984,7 +2705,7 @@
           definition: 'integer :: ix_turn = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1166
+          line: 1164
           name: ix_turn
           python_name: ix_turn
           python_type: int
@@ -2997,7 +2718,7 @@
           definition: 'integer :: n_bunch = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1165
+          line: 1163
           name: n_bunch
           python_name: n_bunch
           python_type: int
@@ -3010,7 +2731,7 @@
           definition: 'integer :: n_particle = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1147
+          line: 1146
           name: n_particle
           python_name: n_particle
           python_type: int
@@ -3036,20 +2757,20 @@
           definition: 'character(16) :: random_engine = ''pseudo'''
           dimension: ''
           fortran_default: '''pseudo'''
-          line: 1150
+          line: 1149
           name: random_engine
           python_name: random_engine
           python_type: str
           size: '16'
           type: character
         random_gauss_converter:
-          comment: Or 'quick'. Uniform to gauss conversion method.
+          comment: ''
           default: exact
           default_factory: ''
           definition: 'character(16) :: random_gauss_converter = ''exact'''
           dimension: ''
           fortran_default: '''exact'''
-          line: 1151
+          line: 1150
           name: random_gauss_converter
           python_name: random_gauss_converter
           python_type: str
@@ -3062,7 +2783,7 @@
           definition: 'real(rp) :: random_sigma_cutoff = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 1153
+          line: 1151
           name: random_sigma_cutoff
           python_name: random_sigma_cutoff
           python_type: float
@@ -3075,7 +2796,7 @@
           definition: 'logical :: renorm_center = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1148
+          line: 1147
           name: renorm_center
           python_name: renorm_center
           python_type: bool
@@ -3088,7 +2809,7 @@
           definition: 'logical :: renorm_sigma = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1149
+          line: 1148
           name: renorm_sigma
           python_name: renorm_sigma
           python_type: bool
@@ -3101,7 +2822,7 @@
           definition: 'real(rp) :: sig_pz = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1163
+          line: 1161
           name: sig_pz
           python_name: sig_pz
           python_type: float
@@ -3114,7 +2835,7 @@
           definition: 'real(rp) :: sig_pz_jitter    = 0.0'
           dimension: ''
           fortran_default: '0.0'
-          line: 1146
+          line: 1145
           name: sig_pz_jitter
           python_name: sig_pz_jitter
           python_type: float
@@ -3127,7 +2848,7 @@
           definition: 'real(rp) :: sig_z = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1162
+          line: 1160
           name: sig_z
           python_name: sig_z
           python_type: float
@@ -3140,7 +2861,7 @@
           definition: 'real(rp) :: sig_z_jitter     = 0.0'
           dimension: ''
           fortran_default: '0.0'
-          line: 1145
+          line: 1144
           name: sig_z_jitter
           python_name: sig_z_jitter
           python_type: float
@@ -3153,7 +2874,7 @@
           definition: 'character(16) :: species = ""'
           dimension: ''
           fortran_default: '""'
-          line: 1167
+          line: 1165
           name: species
           python_name: species
           python_type: str
@@ -3166,7 +2887,7 @@
           definition: 'real(rp) :: spin(3) = 0'
           dimension: '3'
           fortran_default: '0'
-          line: 1139
+          line: 1138
           name: spin
           python_name: spin
           python_type: float
@@ -3179,7 +2900,7 @@
           definition: 'real(rp) :: t_offset = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1160
+          line: 1158
           name: t_offset
           python_name: t_offset
           python_type: float
@@ -3192,7 +2913,7 @@
           definition: 'logical :: use_particle_start = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1170
+          line: 1167
           name: use_particle_start
           python_name: use_particle_start
           python_type: bool
@@ -3205,21 +2926,20 @@
           definition: 'logical :: use_t_coords = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1171
+          line: 1168
           name: use_t_coords
           python_name: use_t_coords
           python_type: bool
           size: null
           type: logical
         use_z_as_t:
-          comment: Only used if  use_t_coords = .true. If true,  z describes the t
-            distribution If false, z describes the s distribution
+          comment: Only used if  use_t_coords = .true.
           default: false
           default_factory: ''
           definition: 'logical :: use_z_as_t   = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1172
+          line: 1169
           name: use_z_as_t
           python_name: use_z_as_t
           python_type: bool
@@ -3315,7 +3035,7 @@
           definition: 'logical :: aperture_limit_on = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 2261
+          line: 2260
           name: aperture_limit_on
           python_name: aperture_limit_on
           python_type: bool
@@ -3388,7 +3108,7 @@
           type: logical
         convert_to_kinetic_momentum:
           comment: Cancel kicks due to finite vector potential when doing symplectic
-            tracking? Set to True to test symp_lie_bmad against runge_kutta.
+            tracking?
           default: false
           default_factory: ''
           definition: 'logical :: convert_to_kinetic_momentum = .false.'
@@ -3433,7 +3153,7 @@
           definition: 'logical :: debug = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2262
+          line: 2261
           name: debug
           python_name: debug
           python_type: bool
@@ -4679,9 +4399,7 @@
           size: null
           type: real
         twiss_valid:
-          comment: 'Is the data here valid? Note: IF there is no energy variation
-            (RF off) twiss_valid may be true but in this case the z-twiss will not
-            be valid.'
+          comment: 'Is the data here valid? Note: IF there is no energy'
           default: false
           default_factory: ''
           definition: 'logical :: twiss_valid = .false.'
@@ -4771,14 +4489,13 @@
           size: null
           type: real
         drift_between_t_and_s:
-          comment: Drift (ignore any fields) instead of tracking to speed up the calculation?
-            This can only be done under certain circumstances.
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical :: drift_between_t_and_s = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1099
+          line: 1098
           name: drift_between_t_and_s
           python_name: drift_between_t_and_s
           python_type: bool
@@ -4791,7 +4508,7 @@
           definition: 'integer :: ix_bunch = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1103
+          line: 1100
           name: ix_bunch
           python_name: ix_bunch
           python_type: int
@@ -4805,7 +4522,7 @@
           definition: 'integer :: ix_ele = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1102
+          line: 1099
           name: ix_ele
           python_name: ix_ele
           python_type: int
@@ -4819,7 +4536,7 @@
           definition: 'integer :: ix_turn = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1104
+          line: 1101
           name: ix_turn
           python_name: ix_turn
           python_type: int
@@ -4845,7 +4562,7 @@
           definition: 'integer :: n_bad = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1107
+          line: 1104
           name: n_bad
           python_name: n_bad
           python_type: int
@@ -4858,7 +4575,7 @@
           definition: 'integer :: n_good = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1106
+          line: 1103
           name: n_good
           python_name: n_good
           python_type: int
@@ -4871,7 +4588,7 @@
           definition: 'integer :: n_live = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1105
+          line: 1102
           name: n_live
           python_name: n_live
           python_type: int
@@ -4898,7 +4615,7 @@
           definition: 'real(rp) :: t0 = real_garbage$'
           dimension: ''
           fortran_default: real_garbage$
-          line: 1098
+          line: 1097
           name: t0
           python_name: t0
           python_type: float
@@ -4911,7 +4628,7 @@
           definition: 'real(rp) :: t_center = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1097
+          line: 1096
           name: t_center
           python_name: t_center
           python_type: float
@@ -4919,7 +4636,7 @@
           type: real
         z_center:
           comment: 'Longitudinal center of bunch at creation time. Note: Generally,
-            z_center of bunch #1 is 0 and z_center of the other bunches is negative.'
+            z_center of'
           default: 0
           default_factory: ''
           definition: 'real(rp) :: z_center = 0'
@@ -5396,7 +5113,7 @@
       members:
         attribute:
           comment: Name of attribute controlled. Set to "FIELD_OVERLAPS" for field
-            overlaps. Set to "INPUT" or "OUTPUT" for feedback slaves.
+            overlaps.
           default: ''
           default_factory: ''
           definition: 'character(40) :: attribute = '''''
@@ -5415,7 +5132,7 @@
           definition: 'integer :: ix_attrib = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 1317
+          line: 1316
           name: ix_attrib
           python_name: ix_attrib
           python_type: int
@@ -5890,7 +5607,7 @@
           definition: 'real(rp), allocatable :: integ_pc_out(:)'
           dimension: ':'
           fortran_default: null
-          line: 1234
+          line: 1232
           name: integ_pc_out
           python_name: integ_pc_out
           python_type: float
@@ -5903,7 +5620,7 @@
           definition: 'real(rp), allocatable :: integ_r(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 1235
+          line: 1233
           name: integ_r
           python_name: integ_r
           python_type: float
@@ -5916,7 +5633,7 @@
           definition: 'real(rp), allocatable :: integ_r_ave(:)'
           dimension: ':'
           fortran_default: null
-          line: 1236
+          line: 1234
           name: integ_r_ave
           python_name: integ_r_ave
           python_type: float
@@ -5930,21 +5647,20 @@
           definition: 'real(rp) :: integrated_prob = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1231
+          line: 1230
           name: integrated_prob
           python_name: integrated_prob
           python_type: float
           size: null
           type: real
         p_norm:
-          comment: Normalized probability taking into account. angle_out_max, pc_out_min,
-            and pc_out_max restrictions.
+          comment: Normalized probability taking into account.
           default: 0.0
           default_factory: ''
           definition: 'real(rp), allocatable :: p_norm(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 1232
+          line: 1231
           name: p_norm
           python_name: p_norm
           python_type: float
@@ -5970,7 +5686,7 @@
           definition: real(rp) pc_out_min, pc_out_max
           dimension: ''
           fortran_default: null
-          line: 1230
+          line: 1229
           name: pc_out_max
           python_name: pc_out_max
           python_type: float
@@ -5983,7 +5699,7 @@
           definition: real(rp) pc_out_min, pc_out_max
           dimension: ''
           fortran_default: null
-          line: 1230
+          line: 1229
           name: pc_out_min
           python_name: pc_out_min
           python_type: float
@@ -6016,8 +5732,7 @@
           size: null
           type: real
         spin_z:
-          comment: Z polarization grid. Stuff below is calculated rather than read
-            in from the lattice file.
+          comment: Z polarization grid.
           default: 0.0
           default_factory: ''
           definition: 'real(rp), allocatable :: spin_z(:,:)'
@@ -6176,7 +5891,7 @@
           definition: 'real(rp) :: E_potential = 0'
           dimension: ''
           fortran_default: '0'
-          line: 546
+          line: 540
           name: E_potential
           python_name: e_potential
           python_type: float
@@ -6189,7 +5904,7 @@
           definition: 'real(rp) :: beta = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 547
+          line: 541
           name: beta
           python_name: beta
           python_type: float
@@ -6197,41 +5912,39 @@
           type: real
         charge:
           comment: Macroparticle weight (which is different from particle species
-            charge). For some space charge calcs the weight is in Coulombs.
+            charge).
           default: 0
           default_factory: ''
           definition: 'real(rp) :: charge = 0'
           dimension: ''
           fortran_default: '0'
-          line: 538
+          line: 536
           name: charge
           python_name: charge
           python_type: float
           size: null
           type: real
         direction:
-          comment: +1 or -1. Sign of longitudinal direction of motion (ds/dt). This
-            is independent of the element orientation.
+          comment: +1 or -1. Sign of longitudinal direction of motion (ds/dt).
           default: 1
           default_factory: ''
           definition: 'integer :: direction = 1'
           dimension: ''
           fortran_default: '1'
-          line: 554
+          line: 547
           name: direction
           python_name: direction
           python_type: int
           size: null
           type: integer
         dt_ref:
-          comment: 'Used in: * time tracking for computing z. * by coherent photons
-            = path_length/c_light.'
+          comment: 'Used in:'
           default: 0
           default_factory: ''
           definition: 'real(rp) :: dt_ref = 0'
           dimension: ''
           fortran_default: '0'
-          line: 540
+          line: 537
           name: dt_ref
           python_name: dt_ref
           python_type: float
@@ -6244,7 +5957,7 @@
           definition: 'real(rp) :: field(2) = 0'
           dimension: '2'
           fortran_default: '0'
-          line: 535
+          line: 534
           name: field
           python_name: field
           python_type: float
@@ -6257,21 +5970,20 @@
           definition: 'integer :: ix_branch = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 550
+          line: 543
           name: ix_branch
           python_name: ix_branch
           python_type: int
           size: null
           type: integer
         ix_ele:
-          comment: Index of the lattice element the particle is in. May be -1 if element
-            is not associated with a lattice.
+          comment: Index of the lattice element the particle is in.
           default: -1
           default_factory: ''
           definition: 'integer :: ix_ele = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 548
+          line: 542
           name: ix_ele
           python_name: ix_ele
           python_type: int
@@ -6284,7 +5996,7 @@
           definition: 'integer :: ix_turn = 0'
           dimension: ''
           fortran_default: '0'
-          line: 551
+          line: 544
           name: ix_turn
           python_name: ix_turn
           python_type: int
@@ -6297,7 +6009,7 @@
           definition: 'integer :: ix_user = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 552
+          line: 545
           name: ix_user
           python_name: ix_user
           python_type: int
@@ -6310,35 +6022,33 @@
           definition: 'integer :: location = upstream_end$'
           dimension: ''
           fortran_default: upstream_end$
-          line: 558
+          line: 550
           name: location
           python_name: location
           python_type: int
           size: null
           type: integer
         p0c:
-          comment: 'For non-photons: Reference momentum. For photons: Photon momentum
-            (not reference).'
+          comment: 'For non-photons: Reference momentum.'
           default: 0
           default_factory: ''
           definition: 'real(rp) :: p0c = 0'
           dimension: ''
           fortran_default: '0'
-          line: 544
+          line: 539
           name: p0c
           python_name: p0c
           python_type: float
           size: null
           type: real
         phase:
-          comment: Photon E-field phase (x,y). phase(1) is also used with RF-time
-            tracking to record the number of RF cycles.
+          comment: Photon E-field phase (x,y). phase(1) is also used with
           default: 0
           default_factory: ''
           definition: 'real(rp) :: phase(2) = 0'
           dimension: '2'
           fortran_default: '0'
-          line: 536
+          line: 535
           name: phase
           python_name: phase
           python_type: float
@@ -6351,7 +6061,7 @@
           definition: 'real(rp) :: r = 0'
           dimension: ''
           fortran_default: '0'
-          line: 543
+          line: 538
           name: r
           python_name: r
           python_type: float
@@ -6377,7 +6087,7 @@
           definition: 'integer :: species = not_set$'
           dimension: ''
           fortran_default: not_set$
-          line: 557
+          line: 549
           name: species
           python_name: species
           python_type: int
@@ -6390,7 +6100,7 @@
           definition: 'real(rp) :: spin(3) = 0'
           dimension: '3'
           fortran_default: '0'
-          line: 534
+          line: 533
           name: spin
           python_name: spin
           python_type: float
@@ -6403,7 +6113,7 @@
           definition: 'integer :: state = not_set$'
           dimension: ''
           fortran_default: not_set$
-          line: 553
+          line: 546
           name: state
           python_name: state
           python_type: int
@@ -6411,7 +6121,7 @@
           type: integer
         t:
           comment: Absolute time (not relative to reference). If bmad_private%rf_clock_frequency
-            is set, %t will be the RF clock time in the range [0, 1/rf_clock_freq]
+            is
           default: 0
           default_factory: ''
           definition: 'real(rp) :: t = 0'
@@ -6430,7 +6140,7 @@
           definition: 'integer :: time_dir = 1'
           dimension: ''
           fortran_default: '1'
-          line: 556
+          line: 548
           name: time_dir
           python_name: time_dir
           python_type: int
@@ -6749,7 +6459,7 @@
           definition: 'real(rp), pointer :: a_pole(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1423
+          line: 1416
           name: a_pole
           python_name: a_pole
           python_type: float
@@ -6762,7 +6472,7 @@
           definition: 'real(rp), pointer :: a_pole_elec(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1425
+          line: 1418
           name: a_pole_elec
           python_name: a_pole_elec
           python_type: float
@@ -6801,7 +6511,7 @@
           definition: 'integer :: aperture_at = exit_end$'
           dimension: ''
           fortran_default: exit_end$
-          line: 1451
+          line: 1444
           name: aperture_at
           python_name: aperture_at
           python_type: int
@@ -6814,7 +6524,7 @@
           definition: 'integer :: aperture_type = rectangular$'
           dimension: ''
           fortran_default: rectangular$
-          line: 1452
+          line: 1445
           name: aperture_type
           python_name: aperture_type
           python_type: int
@@ -6840,7 +6550,7 @@
           definition: 'real(rp), pointer :: b_pole(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1424
+          line: 1417
           name: b_pole
           python_name: b_pole
           python_type: float
@@ -6853,7 +6563,7 @@
           definition: 'real(rp), pointer :: b_pole_elec(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1426
+          line: 1419
           name: b_pole_elec
           python_name: b_pole_elec
           python_type: float
@@ -6866,7 +6576,7 @@
           definition: 'logical :: bmad_logic = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1464
+          line: 1456
           name: bmad_logic
           python_name: bmad_logic
           python_type: bool
@@ -6905,7 +6615,7 @@
           definition: 'real(rp) :: c_mat(2,2) = 0'
           dimension: 2,2
           fortran_default: '0'
-          line: 1418
+          line: 1411
           name: c_mat
           python_name: c_mat
           python_type: float
@@ -6919,7 +6629,7 @@
             null()'
           dimension: ':'
           fortran_default: null()
-          line: 1401
+          line: 1398
           name: cartesian_map
           python_name: cartesian_map
           python_type: CartesianMapStruct
@@ -6971,7 +6681,7 @@
           definition: 'integer :: csr_method = off$'
           dimension: ''
           fortran_default: off$
-          line: 1447
+          line: 1440
           name: csr_method
           python_name: csr_method
           python_type: int
@@ -6984,7 +6694,7 @@
           definition: 'real(rp), pointer :: custom(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1427
+          line: 1420
           name: custom
           python_name: custom
           python_type: float
@@ -6998,7 +6708,7 @@
             => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1402
+          line: 1399
           name: cylindrical_map
           python_name: cylindrical_map
           python_type: CylindricalMapStruct
@@ -7024,7 +6734,7 @@
           definition: 'integer :: field_calc = bmad_standard$'
           dimension: ''
           fortran_default: bmad_standard$
-          line: 1450
+          line: 1443
           name: field_calc
           python_name: field_calc
           python_type: int
@@ -7037,7 +6747,7 @@
           definition: 'logical :: field_master = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1461
+          line: 1453
           name: field_master
           python_name: field_master
           python_type: bool
@@ -7078,7 +6788,7 @@
           definition: 'real(rp) :: gamma_c = 1'
           dimension: ''
           fortran_default: '1'
-          line: 1419
+          line: 1412
           name: gamma_c
           python_name: gamma_c
           python_type: float
@@ -7091,24 +6801,20 @@
           definition: 'type (gen_grad_map_struct), pointer :: gen_grad_map(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1403
+          line: 1400
           name: gen_grad_map
           python_name: gen_grad_map
           python_type: GenGradMapStruct
           size: null
           type: gen_grad_map_struct
         grid_field:
-          comment: Used to define E/M fields. The difference between map_ref_orb and
-            time_ref_orb is that map_ref_orb is the reference orbit for the 1st order
-            spin/orbit map which, in general, is non-zero while time_ref_orb follows
-            the reference particle which is generally the zero orbit (non-zero, for
-            example, in the second slice of a sliced wiggler).
+          comment: Used to define E/M fields.
           default: null
           default_factory: ''
           definition: 'type (grid_field_struct), pointer :: grid_field(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1404
+          line: 1401
           name: grid_field
           python_name: grid_field
           python_type: GridFieldStruct
@@ -7135,7 +6841,7 @@
           definition: 'integer :: ic1_lord = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1441
+          line: 1434
           name: ic1_lord
           python_name: ic1_lord
           python_type: int
@@ -7148,7 +6854,7 @@
           definition: 'logical :: is_on = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1462
+          line: 1454
           name: is_on
           python_name: is_on
           python_type: bool
@@ -7161,7 +6867,7 @@
           definition: 'integer :: ix1_slave = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1436
+          line: 1429
           name: ix1_slave
           python_name: ix1_slave
           python_type: int
@@ -7174,7 +6880,7 @@
           definition: 'integer :: ix_branch = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1432
+          line: 1425
           name: ix_branch
           python_name: ix_branch
           python_type: int
@@ -7188,7 +6894,7 @@
           definition: 'integer :: ix_ele = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 1431
+          line: 1424
           name: ix_ele
           python_name: ix_ele
           python_type: int
@@ -7201,7 +6907,7 @@
           definition: 'integer :: ix_pointer = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1442
+          line: 1435
           name: ix_pointer
           python_name: ix_pointer
           python_type: int
@@ -7214,7 +6920,7 @@
           definition: 'integer :: ixx = 0, iyy = 0, izz = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1443
+          line: 1436
           name: ixx
           python_name: ixx
           python_type: int
@@ -7227,7 +6933,7 @@
           definition: 'integer :: ixx = 0, iyy = 0, izz = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1443
+          line: 1436
           name: iyy
           python_name: iyy
           python_type: int
@@ -7240,7 +6946,7 @@
           definition: 'integer :: ixx = 0, iyy = 0, izz = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1443
+          line: 1436
           name: izz
           python_name: izz
           python_type: int
@@ -7253,7 +6959,7 @@
           definition: 'integer :: key = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1429
+          line: 1422
           name: key
           python_name: key
           python_type: int
@@ -7266,7 +6972,7 @@
           definition: 'logical :: logic = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1463
+          line: 1455
           name: logic
           python_name: logic
           python_type: bool
@@ -7292,7 +6998,7 @@
           definition: 'integer :: lord_status = not_a_lord$'
           dimension: ''
           fortran_default: not_a_lord$
-          line: 1433
+          line: 1426
           name: lord_status
           python_name: lord_status
           python_type: int
@@ -7305,7 +7011,7 @@
           definition: 'type (coord_struct) :: map_ref_orb_in = coord_struct()'
           dimension: ''
           fortran_default: coord_struct()
-          line: 1408
+          line: 1402
           name: map_ref_orb_in
           python_name: map_ref_orb_in
           python_type: CoordStruct
@@ -7318,7 +7024,7 @@
           definition: 'type (coord_struct) :: map_ref_orb_out = coord_struct()'
           dimension: ''
           fortran_default: coord_struct()
-          line: 1409
+          line: 1403
           name: map_ref_orb_out
           python_name: map_ref_orb_out
           python_type: CoordStruct
@@ -7331,7 +7037,7 @@
           definition: 'real(rp) :: mat6(6,6) = 0'
           dimension: 6,6
           fortran_default: '0'
-          line: 1417
+          line: 1410
           name: mat6
           python_name: mat6
           python_type: float
@@ -7344,7 +7050,7 @@
           definition: 'integer :: mat6_calc_method = bmad_standard$'
           dimension: ''
           fortran_default: bmad_standard$
-          line: 1444
+          line: 1437
           name: mat6_calc_method
           python_name: mat6_calc_method
           python_type: int
@@ -7370,7 +7076,7 @@
           definition: 'logical :: mode_flip = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1456
+          line: 1449
           name: mode_flip
           python_name: mode_flip
           python_type: bool
@@ -7396,7 +7102,7 @@
           definition: 'logical :: multipoles_on = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1457
+          line: 1450
           name: multipoles_on
           python_name: multipoles_on
           python_type: bool
@@ -7409,7 +7115,7 @@
           definition: 'integer :: n_lord = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1438
+          line: 1431
           name: n_lord
           python_name: n_lord
           python_type: int
@@ -7422,7 +7128,7 @@
           definition: 'integer :: n_lord_field = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1439
+          line: 1432
           name: n_lord_field
           python_name: n_lord_field
           python_type: int
@@ -7435,7 +7141,7 @@
           definition: 'integer :: n_lord_ramper = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1440
+          line: 1433
           name: n_lord_ramper
           python_name: n_lord_ramper
           python_type: int
@@ -7448,7 +7154,7 @@
           definition: 'integer :: n_slave = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1434
+          line: 1427
           name: n_slave
           python_name: n_slave
           python_type: int
@@ -7461,7 +7167,7 @@
           definition: 'integer :: n_slave_field = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1435
+          line: 1428
           name: n_slave_field
           python_name: n_slave_field
           python_type: int
@@ -7481,27 +7187,26 @@
           size: '40'
           type: character
         offset_moves_aperture:
-          comment: 'element offsets affects aperture? ! final :: ele_finalizer'
+          comment: element offsets affects aperture?
           default: false
           default_factory: ''
           definition: 'logical :: offset_moves_aperture = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1466
+          line: 1458
           name: offset_moves_aperture
           python_name: offset_moves_aperture
           python_type: bool
           size: null
           type: logical
         old_value:
-          comment: 'Used to see if %value(:) array has changed. Note: The reference
-            orbit for spin/orbit matrices is %map_ref_orb_in/out'
+          comment: Used to see if %value(:) array has changed.
           default: 0
           default_factory: ''
           definition: 'real(rp) :: old_value(num_ele_attrib$) = 0'
           dimension: num_ele_attrib$
           fortran_default: '0'
-          line: 1413
+          line: 1407
           name: old_value
           python_name: old_value
           python_type: float
@@ -7514,7 +7219,7 @@
           definition: 'integer :: orientation = 1'
           dimension: ''
           fortran_default: '1'
-          line: 1454
+          line: 1447
           name: orientation
           python_name: orientation
           python_type: int
@@ -7553,7 +7258,7 @@
           definition: 'integer :: ptc_integration_type = matrix_kick$'
           dimension: ''
           fortran_default: matrix_kick$
-          line: 1449
+          line: 1442
           name: ptc_integration_type
           python_name: ptc_integration_type
           python_type: int
@@ -7566,17 +7271,14 @@
           definition: 'real(rp), pointer :: r(:,:,:) => null()'
           dimension: ':,:,:'
           fortran_default: null()
-          line: 1428
+          line: 1421
           name: r
           python_name: r
           python_type: float
           size: null
           type: real
         rad_map:
-          comment: 'Radiation kick parameters Note: The reference orbits for spin
-            and orbit Taylor maps are not necessarily the same. For example, Sprint
-            spin Taylor maps can be with respect to the zero orbit independent of
-            the orbital map.'
+          comment: Radiation kick parameters
           default: null
           default_factory: ''
           definition: 'type (rad_map_ele_struct), pointer :: rad_map => null()'
@@ -7595,7 +7297,7 @@
           definition: 'integer :: ref_species = not_set$'
           dimension: ''
           fortran_default: not_set$
-          line: 1453
+          line: 1446
           name: ref_species
           python_name: ref_species
           python_type: int
@@ -7608,7 +7310,7 @@
           definition: 'real(rp) :: ref_time = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1422
+          line: 1415
           name: ref_time
           python_name: ref_time
           python_type: float
@@ -7621,7 +7323,7 @@
           definition: 'real(rp) :: s = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1421
+          line: 1414
           name: s
           python_name: s
           python_type: float
@@ -7634,21 +7336,20 @@
           definition: 'real(rp) :: s_start = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1420
+          line: 1413
           name: s_start
           python_name: s_start
           python_type: float
           size: null
           type: real
         scale_multipoles:
-          comment: 'Are ab_multipoles within other elements (EG: quads, etc.) scaled
-            by the strength of the element?'
+          comment: 'Are ab_multipoles within other elements (EG: quads, etc.)'
           default: true
           default_factory: ''
           definition: 'logical :: scale_multipoles = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1458
+          line: 1451
           name: scale_multipoles
           python_name: scale_multipoles
           python_type: bool
@@ -7661,7 +7362,7 @@
           definition: 'logical :: select = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1465
+          line: 1457
           name: select
           python_name: select
           python_type: bool
@@ -7675,7 +7376,7 @@
           definition: 'integer :: slave_status = free$'
           dimension: ''
           fortran_default: free$
-          line: 1437
+          line: 1430
           name: slave_status
           python_name: slave_status
           python_type: int
@@ -7688,7 +7389,7 @@
           definition: 'integer :: space_charge_method = off$'
           dimension: ''
           fortran_default: off$
-          line: 1448
+          line: 1441
           name: space_charge_method
           python_name: space_charge_method
           python_type: int
@@ -7701,7 +7402,7 @@
           definition: 'real(rp) :: spin_q(0:3,0:6) = real_garbage$'
           dimension: 0:3,0:6
           fortran_default: real_garbage$
-          line: 1415
+          line: 1408
           name: spin_q
           python_name: spin_q
           python_type: float
@@ -7714,7 +7415,7 @@
           definition: 'type (taylor_struct) :: spin_taylor(0:3) = taylor_struct()'
           dimension: 0:3
           fortran_default: taylor_struct()
-          line: 1397
+          line: 1395
           name: spin_taylor
           python_name: spin_taylor
           python_type: TaylorStruct
@@ -7727,7 +7428,7 @@
           definition: 'real(rp) :: spin_taylor_ref_orb_in(6) = real_garbage$'
           dimension: '6'
           fortran_default: real_garbage$
-          line: 1396
+          line: 1394
           name: spin_taylor_ref_orb_in
           python_name: spin_taylor_ref_orb_in
           python_type: float
@@ -7740,7 +7441,7 @@
           definition: 'integer :: spin_tracking_method = tracking$'
           dimension: ''
           fortran_default: tracking$
-          line: 1446
+          line: 1439
           name: spin_tracking_method
           python_name: spin_tracking_method
           python_type: int
@@ -7753,7 +7454,7 @@
           definition: 'integer :: sub_key = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1430
+          line: 1423
           name: sub_key
           python_name: sub_key
           python_type: int
@@ -7766,7 +7467,7 @@
           definition: 'logical :: symplectify = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1455
+          line: 1448
           name: symplectify
           python_name: symplectify
           python_type: bool
@@ -7779,7 +7480,7 @@
           definition: 'type (taylor_struct) :: taylor(6) = taylor_struct()'
           dimension: '6'
           fortran_default: taylor_struct()
-          line: 1395
+          line: 1393
           name: taylor
           python_name: taylor
           python_type: TaylorStruct
@@ -7792,7 +7493,7 @@
           definition: 'logical :: taylor_map_includes_offsets = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1460
+          line: 1452
           name: taylor_map_includes_offsets
           python_name: taylor_map_includes_offsets
           python_type: bool
@@ -7805,7 +7506,7 @@
           definition: 'type (coord_struct) :: time_ref_orb_in = coord_struct()'
           dimension: ''
           fortran_default: coord_struct()
-          line: 1410
+          line: 1404
           name: time_ref_orb_in
           python_name: time_ref_orb_in
           python_type: CoordStruct
@@ -7818,7 +7519,7 @@
           definition: 'type (coord_struct) :: time_ref_orb_out = coord_struct()'
           dimension: ''
           fortran_default: coord_struct()
-          line: 1411
+          line: 1405
           name: time_ref_orb_out
           python_name: time_ref_orb_out
           python_type: CoordStruct
@@ -7831,7 +7532,7 @@
           definition: 'integer :: tracking_method = bmad_standard$'
           dimension: ''
           fortran_default: bmad_standard$
-          line: 1445
+          line: 1438
           name: tracking_method
           python_name: tracking_method
           python_type: int
@@ -7857,7 +7558,7 @@
           definition: 'real(rp) :: value(num_ele_attrib$) = 0'
           dimension: num_ele_attrib$
           fortran_default: '0'
-          line: 1412
+          line: 1406
           name: value
           python_name: value
           python_type: float
@@ -7870,7 +7571,7 @@
           definition: 'real(rp) :: vec0(6) = 0'
           dimension: '6'
           fortran_default: '0'
-          line: 1416
+          line: 1409
           name: vec0
           python_name: vec0
           python_type: float
@@ -7883,20 +7584,20 @@
           definition: 'type (wake_struct), pointer :: wake => null()'
           dimension: ''
           fortran_default: null()
-          line: 1398
+          line: 1396
           name: wake
           python_name: wake
           python_type: WakeStruct
           size: null
           type: wake_struct
         wall3d:
-          comment: Chamber or capillary wall E/M field structs.
+          comment: Chamber or capillary wall
           default: null
           default_factory: ''
           definition: 'type (wall3d_struct), pointer :: wall3d(:) => null()'
           dimension: ':'
           fortran_default: null()
-          line: 1399
+          line: 1397
           name: wall3d
           python_name: wall3d
           python_type: Wall3dStruct
@@ -8223,7 +7924,7 @@
           definition: 'logical :: abs_tol_adaptive_tracking_set          = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2150
+          line: 2149
           name: abs_tol_adaptive_tracking_set
           python_name: abs_tol_adaptive_tracking_set
           python_type: bool
@@ -8236,7 +7937,7 @@
           definition: 'logical :: abs_tol_tracking_set                   = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2148
+          line: 2147
           name: abs_tol_tracking_set
           python_name: abs_tol_tracking_set
           python_type: bool
@@ -8249,7 +7950,7 @@
           definition: 'logical :: absolute_time_ref_shift_set            = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2174
+          line: 2173
           name: absolute_time_ref_shift_set
           python_name: absolute_time_ref_shift_set
           python_type: bool
@@ -8262,7 +7963,7 @@
           definition: 'logical :: absolute_time_tracking_set             = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2173
+          line: 2172
           name: absolute_time_tracking_set
           python_name: absolute_time_tracking_set
           python_type: bool
@@ -8275,7 +7976,7 @@
           definition: 'logical :: aperture_limit_on_set                  = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2176
+          line: 2175
           name: aperture_limit_on_set
           python_name: aperture_limit_on_set
           python_type: bool
@@ -8288,7 +7989,7 @@
           definition: 'logical :: autoscale_amp_abs_tol_set              = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2155
+          line: 2154
           name: autoscale_amp_abs_tol_set
           python_name: autoscale_amp_abs_tol_set
           python_type: bool
@@ -8301,7 +8002,7 @@
           definition: 'logical :: autoscale_amp_rel_tol_set              = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2156
+          line: 2155
           name: autoscale_amp_rel_tol_set
           python_name: autoscale_amp_rel_tol_set
           python_type: bool
@@ -8314,7 +8015,7 @@
           definition: 'logical :: autoscale_phase_tol_set                = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2157
+          line: 2156
           name: autoscale_phase_tol_set
           python_name: autoscale_phase_tol_set
           python_type: bool
@@ -8327,7 +8028,7 @@
           definition: 'logical :: beam_chamber_height_set                = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2188
+          line: 2186
           name: beam_chamber_height_set
           python_name: beam_chamber_height_set
           python_type: bool
@@ -8340,7 +8041,7 @@
           definition: 'logical :: cathode_strength_cutoff_set            = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2185
+          line: 2183
           name: cathode_strength_cutoff_set
           python_name: cathode_strength_cutoff_set
           python_type: bool
@@ -8353,7 +8054,7 @@
           definition: 'logical :: conserve_taylor_maps_set               = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2172
+          line: 2171
           name: conserve_taylor_maps_set
           python_name: conserve_taylor_maps_set
           python_type: bool
@@ -8366,7 +8067,7 @@
           definition: 'logical :: convert_to_kinetic_momentum_set        = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2175
+          line: 2174
           name: convert_to_kinetic_momentum_set
           python_name: convert_to_kinetic_momentum_set
           python_type: bool
@@ -8379,7 +8080,7 @@
           definition: 'logical :: csr3d_mesh_size_set                    = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2192
+          line: 2190
           name: csr3d_mesh_size_set
           python_name: csr3d_mesh_size_set
           python_type: bool
@@ -8392,7 +8093,7 @@
           definition: 'logical :: csr_and_space_charge_on_set            = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2166
+          line: 2165
           name: csr_and_space_charge_on_set
           python_name: csr_and_space_charge_on_set
           python_type: bool
@@ -8405,7 +8106,7 @@
           definition: 'logical :: cut_factor_set                         = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2208
+          line: 2205
           name: cut_factor_set
           python_name: cut_factor_set
           python_type: bool
@@ -8418,20 +8119,20 @@
           definition: 'logical :: d_orb_set                              = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2143
+          line: 2142
           name: d_orb_set
           python_name: d_orb_set
           python_type: bool
           size: null
           type: logical
         debug_set:
-          comment: Used with space_charge_com
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical :: debug_set                              = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2181
+          line: 2180
           name: debug_set
           python_name: debug_set
           python_type: bool
@@ -8444,7 +8145,7 @@
           definition: 'logical :: default_ds_step_set                    = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2145
+          line: 2144
           name: default_ds_step_set
           python_name: default_ds_step_set
           python_type: bool
@@ -8457,20 +8158,20 @@
           definition: 'logical :: default_integ_order_set                = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2162
+          line: 2161
           name: default_integ_order_set
           python_name: default_integ_order_set
           python_type: bool
           size: null
           type: logical
         diagnostic_output_file_set:
-          comment: Used with ptc_com
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical :: diagnostic_output_file_set             = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2199
+          line: 2197
           name: diagnostic_output_file_set
           python_name: diagnostic_output_file_set
           python_type: bool
@@ -8483,7 +8184,7 @@
           definition: 'logical :: ds_track_step_set                      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2183
+          line: 2181
           name: ds_track_step_set
           python_name: ds_track_step_set
           python_type: bool
@@ -8496,7 +8197,7 @@
           definition: 'logical :: dt_track_step_set                      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2184
+          line: 2182
           name: dt_track_step_set
           python_name: dt_track_step_set
           python_type: bool
@@ -8509,7 +8210,7 @@
           definition: 'logical :: electric_dipole_moment_set             = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2159
+          line: 2158
           name: electric_dipole_moment_set
           python_name: electric_dipole_moment_set
           python_type: bool
@@ -8522,7 +8223,7 @@
           definition: 'logical :: exact_misalign_set                     = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2206
+          line: 2203
           name: exact_misalign_set
           python_name: exact_misalign_set
           python_type: bool
@@ -8535,7 +8236,7 @@
           definition: 'logical :: exact_model_set                        = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2205
+          line: 2202
           name: exact_model_set
           python_name: exact_model_set
           python_type: bool
@@ -8548,7 +8249,7 @@
           definition: 'logical :: fatal_ds_adaptive_tracking_set         = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2153
+          line: 2152
           name: fatal_ds_adaptive_tracking_set
           python_name: fatal_ds_adaptive_tracking_set
           python_type: bool
@@ -8561,7 +8262,7 @@
           definition: 'logical :: high_energy_space_charge_on_set        = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2165
+          line: 2164
           name: high_energy_space_charge_on_set
           python_name: high_energy_space_charge_on_set
           python_type: bool
@@ -8574,7 +8275,7 @@
           definition: 'logical :: init_ds_adaptive_tracking_set          = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2151
+          line: 2150
           name: init_ds_adaptive_tracking_set
           python_name: init_ds_adaptive_tracking_set
           python_type: bool
@@ -8587,7 +8288,7 @@
           definition: 'logical :: lr_wakes_on_set                        = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2164
+          line: 2163
           name: lr_wakes_on_set
           python_name: lr_wakes_on_set
           python_type: bool
@@ -8600,7 +8301,7 @@
           definition: 'logical :: lsc_kick_transverse_dependence_set     = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2197
+          line: 2195
           name: lsc_kick_transverse_dependence_set
           python_name: lsc_kick_transverse_dependence_set
           python_type: bool
@@ -8613,7 +8314,7 @@
           definition: 'logical :: lsc_sigma_cutoff_set                   = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2189
+          line: 2187
           name: lsc_sigma_cutoff_set
           python_name: lsc_sigma_cutoff_set
           python_type: bool
@@ -8626,7 +8327,7 @@
           definition: 'logical :: max_aperture_limit_set                 = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2144
+          line: 2143
           name: max_aperture_limit_set
           python_name: max_aperture_limit_set
           python_type: bool
@@ -8639,7 +8340,7 @@
           definition: 'logical :: max_fringe_order_set                   = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2204
+          line: 2201
           name: max_fringe_order_set
           python_name: max_fringe_order_set
           python_type: bool
@@ -8652,7 +8353,7 @@
           definition: 'logical :: max_num_runge_kutta_step_set           = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2180
+          line: 2179
           name: max_num_runge_kutta_step_set
           python_name: max_num_runge_kutta_step_set
           python_type: bool
@@ -8665,7 +8366,7 @@
           definition: 'logical :: min_ds_adaptive_tracking_set           = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2152
+          line: 2151
           name: min_ds_adaptive_tracking_set
           python_name: min_ds_adaptive_tracking_set
           python_type: bool
@@ -8678,7 +8379,7 @@
           definition: 'logical :: n_bin_set                              = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2193
+          line: 2191
           name: n_bin_set
           python_name: n_bin_set
           python_type: bool
@@ -8691,7 +8392,7 @@
           definition: 'logical :: n_shield_images_set                    = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2195
+          line: 2193
           name: n_shield_images_set
           python_name: n_shield_images_set
           python_type: bool
@@ -8704,7 +8405,7 @@
           definition: 'logical :: old_integrator_set                     = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2201
+          line: 2198
           name: old_integrator_set
           python_name: old_integrator_set
           python_type: bool
@@ -8717,7 +8418,7 @@
           definition: 'logical :: particle_bin_span_set                  = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2194
+          line: 2192
           name: particle_bin_span_set
           python_name: particle_bin_span_set
           python_type: bool
@@ -8730,7 +8431,7 @@
           definition: 'logical :: particle_sigma_cutoff_set              = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2190
+          line: 2188
           name: particle_sigma_cutoff_set
           python_name: particle_sigma_cutoff_set
           python_type: bool
@@ -8743,7 +8444,7 @@
           definition: 'logical :: print_info_messages_set                = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2203
+          line: 2200
           name: print_info_messages_set
           python_name: print_info_messages_set
           python_type: bool
@@ -8756,7 +8457,7 @@
           definition: 'logical :: radiation_damping_on_set               = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2169
+          line: 2168
           name: radiation_damping_on_set
           python_name: radiation_damping_on_set
           python_type: bool
@@ -8769,7 +8470,7 @@
           definition: 'logical :: radiation_fluctuations_on_set          = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2171
+          line: 2170
           name: radiation_fluctuations_on_set
           python_name: radiation_fluctuations_on_set
           python_type: bool
@@ -8782,7 +8483,7 @@
           definition: 'logical :: radiation_zero_average_set             = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2170
+          line: 2169
           name: radiation_zero_average_set
           python_name: radiation_zero_average_set
           python_type: bool
@@ -8821,7 +8522,7 @@
           definition: 'logical :: rel_tol_adaptive_tracking_set          = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2149
+          line: 2148
           name: rel_tol_adaptive_tracking_set
           python_name: rel_tol_adaptive_tracking_set
           python_type: bool
@@ -8834,7 +8535,7 @@
           definition: 'logical :: rel_tol_tracking_set                   = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2147
+          line: 2146
           name: rel_tol_tracking_set
           python_name: rel_tol_tracking_set
           python_type: bool
@@ -8847,7 +8548,7 @@
           definition: 'logical :: rf_phase_below_transition_ref_set      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2158
+          line: 2157
           name: rf_phase_below_transition_ref_set
           python_name: rf_phase_below_transition_ref_set
           python_type: bool
@@ -8860,7 +8561,7 @@
           definition: 'logical :: runge_kutta_order_set                  = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2161
+          line: 2160
           name: runge_kutta_order_set
           python_name: runge_kutta_order_set
           python_type: bool
@@ -8873,7 +8574,7 @@
           definition: 'logical :: sad_amp_max_set                        = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2178
+          line: 2177
           name: sad_amp_max_set
           python_name: sad_amp_max_set
           python_type: bool
@@ -8886,7 +8587,7 @@
           definition: 'logical :: sad_eps_scale_set                      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2177
+          line: 2176
           name: sad_eps_scale_set
           python_name: sad_eps_scale_set
           python_type: bool
@@ -8899,7 +8600,7 @@
           definition: 'logical :: sad_n_div_max_set                      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2179
+          line: 2178
           name: sad_n_div_max_set
           python_name: sad_n_div_max_set
           python_type: bool
@@ -8912,7 +8613,7 @@
           definition: 'logical :: sc_abs_tol_tracking_set                = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2187
+          line: 2185
           name: sc_abs_tol_tracking_set
           python_name: sc_abs_tol_tracking_set
           python_type: bool
@@ -8925,7 +8626,7 @@
           definition: 'logical :: sc_debug_set                           = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2198
+          line: 2196
           name: sc_debug_set
           python_name: sc_debug_set
           python_type: bool
@@ -8938,7 +8639,7 @@
           definition: 'logical :: sc_min_in_bin_set                      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2196
+          line: 2194
           name: sc_min_in_bin_set
           python_name: sc_min_in_bin_set
           python_type: bool
@@ -8951,7 +8652,7 @@
           definition: 'logical :: sc_rel_tol_tracking_set                = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2186
+          line: 2184
           name: sc_rel_tol_tracking_set
           python_name: sc_rel_tol_tracking_set
           python_type: bool
@@ -8964,7 +8665,7 @@
           definition: 'logical :: significant_length_set                 = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2146
+          line: 2145
           name: significant_length_set
           python_name: significant_length_set
           python_type: bool
@@ -8977,7 +8678,7 @@
           definition: 'logical :: space_charge_mesh_size_set             = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2191
+          line: 2189
           name: space_charge_mesh_size_set
           python_name: space_charge_mesh_size_set
           python_type: bool
@@ -8990,7 +8691,7 @@
           definition: 'logical :: spin_sokolov_ternov_flipping_on_set    = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2168
+          line: 2167
           name: spin_sokolov_ternov_flipping_on_set
           python_name: spin_sokolov_ternov_flipping_on_set
           python_type: bool
@@ -9003,7 +8704,7 @@
           definition: 'logical :: spin_tracking_on_set                   = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2167
+          line: 2166
           name: spin_tracking_on_set
           python_name: spin_tracking_on_set
           python_type: bool
@@ -9016,7 +8717,7 @@
           definition: 'logical :: sr_wakes_on_set                        = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2163
+          line: 2162
           name: sr_wakes_on_set
           python_name: sr_wakes_on_set
           python_type: bool
@@ -9029,7 +8730,7 @@
           definition: 'logical :: synch_rad_scale_set                    = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2154
+          line: 2153
           name: synch_rad_scale_set
           python_name: synch_rad_scale_set
           python_type: bool
@@ -9042,7 +8743,7 @@
           definition: 'logical :: taylor_order_set                       = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2160
+          line: 2159
           name: taylor_order_set
           python_name: taylor_order_set
           python_type: bool
@@ -9055,14 +8756,14 @@
           definition: 'logical :: translate_patch_drift_time_set         = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2209
+          line: 2206
           name: translate_patch_drift_time_set
           python_name: translate_patch_drift_time_set
           python_type: bool
           size: null
           type: logical
         undeterministic_ran_function_called:
-          comment: Used with bmad_com
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical :: undeterministic_ran_function_called    = .false.'
@@ -9081,7 +8782,7 @@
           definition: 'logical :: use_orientation_patches_set            = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2202
+          line: 2199
           name: use_orientation_patches_set
           python_name: use_orientation_patches_set
           python_type: bool
@@ -9094,7 +8795,7 @@
           definition: 'logical :: vertical_kick_set                      = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2207
+          line: 2204
           name: vertical_kick_set
           python_name: vertical_kick_set
           python_type: bool
@@ -9251,7 +8952,7 @@
           definition: 'logical :: has_fringe = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 43
+          line: 42
           name: has_fringe
           python_name: has_fringe
           python_type: bool
@@ -9259,7 +8960,6 @@
           type: logical
         location:
           comment: Particle location in an element. entrance_end$, inside$, or exit_end$
-            Elements in list are the tracking element or its lords.
           default: 0
           default_factory: ''
           definition: 'integer, allocatable :: location(:)'
@@ -9313,7 +9013,7 @@
           definition: 'real(rp), allocatable :: deriv(:,:)'
           dimension: ':,:'
           fortran_default: null
-          line: 755
+          line: 754
           name: deriv
           python_name: deriv
           python_type: float
@@ -9333,8 +9033,7 @@
           size: null
           type: integer
         n_deriv_max:
-          comment: Max GG derivative The derivative matrix is extended to include
-            the interpolating spline polynomial.
+          comment: Max GG derivative
           default: -1
           default_factory: ''
           definition: 'integer :: n_deriv_max = -1'
@@ -10211,20 +9910,20 @@
           definition: 'type (beam_init_struct) :: beam_init = beam_init_struct()'
           dimension: ''
           fortran_default: beam_init_struct()
-          line: 1494
+          line: 1491
           name: beam_init
           python_name: beam_init
           python_type: BeamInitStruct
           size: null
           type: beam_init_struct
         bookkeeping_state:
-          comment: Overall status for the branch.
+          comment: ''
           default: null
           default_factory: ''
           definition: 'type (bookkeeping_state_struct) :: bookkeeping_state = bookkeeping_state_struct()'
           dimension: ''
           fortran_default: bookkeeping_state_struct()
-          line: 1492
+          line: 1490
           name: bookkeeping_state
           python_name: bookkeeping_state
           python_type: BookkeepingStateStruct
@@ -10237,7 +9936,7 @@
           definition: 'integer :: default_tracking_species = ref_particle$'
           dimension: ''
           fortran_default: ref_particle$
-          line: 1484
+          line: 1482
           name: default_tracking_species
           python_name: default_tracking_species
           python_type: int
@@ -10250,7 +9949,7 @@
           definition: 'real(rp) :: g1_integral = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 1489
+          line: 1487
           name: g1_integral
           python_name: g1_integral
           python_type: float
@@ -10263,7 +9962,7 @@
           definition: 'real(rp) :: g2_integral = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 1490
+          line: 1488
           name: g2_integral
           python_name: g2_integral
           python_type: float
@@ -10276,7 +9975,7 @@
           definition: 'real(rp) :: g3_integral = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 1491
+          line: 1489
           name: g3_integral
           python_name: g3_integral
           python_type: float
@@ -10289,7 +9988,7 @@
           definition: 'integer :: geometry = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1485
+          line: 1483
           name: geometry
           python_name: geometry
           python_type: int
@@ -10302,7 +10001,7 @@
           definition: 'integer :: ixx = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1486
+          line: 1484
           name: ixx
           python_name: ixx
           python_type: int
@@ -10315,7 +10014,7 @@
           definition: 'logical :: live_branch = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 1488
+          line: 1486
           name: live_branch
           python_name: live_branch
           python_type: bool
@@ -10335,14 +10034,13 @@
           size: null
           type: real
         particle:
-          comment: 'Reference particle: positron$, electron$, etc. Call lattice_bookkeeper
-            if this is changed.'
+          comment: 'Reference particle: positron$, electron$, etc.'
           default: 0
           default_factory: ''
           definition: 'integer :: particle = not_set$'
           dimension: ''
           fortran_default: not_set$
-          line: 1482
+          line: 1481
           name: particle
           python_name: particle
           python_type: int
@@ -10355,7 +10053,7 @@
           definition: 'real(rp) :: spin_tune = 0'
           dimension: ''
           fortran_default: '0'
-          line: 1481
+          line: 1480
           name: spin_tune
           python_name: spin_tune
           python_type: float
@@ -10368,7 +10066,7 @@
           definition: 'logical :: stable = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 1487
+          line: 1485
           name: stable
           python_name: stable
           python_type: bool
@@ -10381,7 +10079,7 @@
           definition: 'real(rp) :: t1_no_RF(6,6) = 0'
           dimension: 6,6
           fortran_default: '0'
-          line: 1480
+          line: 1479
           name: t1_no_RF
           python_name: t1_no_rf
           python_type: float
@@ -10394,7 +10092,7 @@
           definition: 'real(rp) :: t1_with_RF(6,6) = 0'
           dimension: 6,6
           fortran_default: '0'
-          line: 1479
+          line: 1478
           name: t1_with_RF
           python_name: t1_with_rf
           python_type: float
@@ -10414,8 +10112,7 @@
           size: null
           type: real
         unstable_factor:
-          comment: 'If positive: Growth rate/turn if unstable in closed branches or
-            |orbit-aperture|/aperture if particle hits wall. Zero otherwise.'
+          comment: 'If positive: Growth rate/turn if unstable in closed branches or'
           default: 0
           default_factory: ''
           definition: 'real(rp) :: unstable_factor = 0'
@@ -10539,8 +10236,7 @@
           size: null
           type: control_struct
         creation_hash:
-          comment: Set by bmad_parser. creation_hash will vary if any of the lattice
-            files are modified.
+          comment: Set by bmad_parser. creation_hash will vary if
           default: 0
           default_factory: ''
           definition: 'integer :: creation_hash = 0'
@@ -10806,7 +10502,7 @@
           definition: 'integer :: ramper_slave_bookkeeping = stale$'
           dimension: ''
           fortran_default: stale$
-          line: 1622
+          line: 1621
           name: ramper_slave_bookkeeping
           python_name: ramper_slave_bookkeeping
           python_type: int
@@ -11023,8 +10719,7 @@
           size: null
           type: real
         s:
-          comment: 'Offset from beginning of element. !! real(rp) :: m_1turn(6,6)
-            = 0   ! Orbital 1-turn matrix.'
+          comment: Offset from beginning of element.
           default: 0
           default_factory: ''
           definition: 'real(rp) :: s = 0'
@@ -11535,7 +11230,7 @@
           definition: 'real(rp), allocatable :: a_kick_elec(:), b_kick_elec(:)'
           dimension: ':'
           fortran_default: null
-          line: 954
+          line: 952
           name: a_kick_elec
           python_name: a_kick_elec
           python_type: float
@@ -11548,7 +11243,7 @@
           definition: 'real(rp), allocatable :: a_kick_mag(:), b_kick_mag(:)'
           dimension: ':'
           fortran_default: null
-          line: 949
+          line: 948
           name: a_kick_mag
           python_name: a_kick_mag
           python_type: float
@@ -11561,7 +11256,7 @@
           definition: 'real(rp), allocatable :: a_pole_elec(:), b_pole_elec(:)'
           dimension: ':'
           fortran_default: null
-          line: 953
+          line: 951
           name: a_pole_elec
           python_name: a_pole_elec
           python_type: float
@@ -11574,7 +11269,7 @@
           definition: 'real(rp), allocatable :: a_pole_mag(:), b_pole_mag(:)'
           dimension: ':'
           fortran_default: null
-          line: 948
+          line: 947
           name: a_pole_mag
           python_name: a_pole_mag
           python_type: float
@@ -11587,7 +11282,7 @@
           definition: 'real(rp), allocatable :: a_kick_elec(:), b_kick_elec(:)'
           dimension: ':'
           fortran_default: null
-          line: 954
+          line: 952
           name: b_kick_elec
           python_name: b_kick_elec
           python_type: float
@@ -11600,7 +11295,7 @@
           definition: 'real(rp), allocatable :: a_kick_mag(:), b_kick_mag(:)'
           dimension: ':'
           fortran_default: null
-          line: 949
+          line: 948
           name: b_kick_mag
           python_name: b_kick_mag
           python_type: float
@@ -11613,7 +11308,7 @@
           definition: 'real(rp), allocatable :: a_pole_elec(:), b_pole_elec(:)'
           dimension: ':'
           fortran_default: null
-          line: 953
+          line: 951
           name: b_pole_elec
           python_name: b_pole_elec
           python_type: float
@@ -11626,7 +11321,7 @@
           definition: 'real(rp), allocatable :: a_pole_mag(:), b_pole_mag(:)'
           dimension: ':'
           fortran_default: null
-          line: 948
+          line: 947
           name: b_pole_mag
           python_name: b_pole_mag
           python_type: float
@@ -11639,7 +11334,7 @@
           definition: 'logical :: elec_valid = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 956
+          line: 954
           name: elec_valid
           python_name: elec_valid
           python_type: bool
@@ -11652,7 +11347,7 @@
           definition: 'integer :: ix_pole_elec_max = -1, ix_kick_elec_max = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 955
+          line: 953
           name: ix_kick_elec_max
           python_name: ix_kick_elec_max
           python_type: int
@@ -11665,7 +11360,7 @@
           definition: 'integer :: ix_pole_mag_max = -1, ix_kick_mag_max = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 950
+          line: 949
           name: ix_kick_mag_max
           python_name: ix_kick_mag_max
           python_type: int
@@ -11678,7 +11373,7 @@
           definition: 'integer :: ix_pole_elec_max = -1, ix_kick_elec_max = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 955
+          line: 953
           name: ix_pole_elec_max
           python_name: ix_pole_elec_max
           python_type: int
@@ -11691,20 +11386,20 @@
           definition: 'integer :: ix_pole_mag_max = -1, ix_kick_mag_max = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 950
+          line: 949
           name: ix_pole_mag_max
           python_name: ix_pole_mag_max
           python_type: int
           size: null
           type: integer
         mag_valid:
-          comment: From elseparator hkick and vkick.
+          comment: ''
           default: false
           default_factory: ''
           definition: 'logical :: mag_valid = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 951
+          line: 950
           name: mag_valid
           python_name: mag_valid
           python_type: bool
@@ -13026,15 +12721,14 @@
           definition: 'logical :: print_info_messages = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2290
+          line: 2289
           name: print_info_messages
           python_name: print_info_messages
           python_type: bool
           size: null
           type: logical
         print_step_warning:
-          comment: Print warning if element uses too many steps. Below is stuff that
-            should not be set except by experts
+          comment: Print warning if element uses too many steps.
           default: false
           default_factory: ''
           definition: 'logical :: print_step_warning = .false.'
@@ -13047,14 +12741,13 @@
           size: null
           type: logical
         translate_patch_drift_time:
-          comment: When a Bmad patch is translated to a PTC fibre, is the drift time
-            included in the translation?
+          comment: When a Bmad patch is translated to a PTC fibre, is the drift
           default: true
           default_factory: ''
           definition: 'logical :: translate_patch_drift_time = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 2291
+          line: 2290
           name: translate_patch_drift_time
           python_name: translate_patch_drift_time
           python_type: bool
@@ -13067,7 +12760,7 @@
           definition: 'logical :: use_orientation_patches = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 2289
+          line: 2288
           name: use_orientation_patches
           python_name: use_orientation_patches
           python_type: bool
@@ -13638,7 +13331,7 @@
           definition: type (rad_map_struct) rm0, rm1
           dimension: ''
           fortran_default: null
-          line: 971
+          line: 970
           name: rm0
           python_name: rm0
           python_type: RadMapStruct
@@ -13651,7 +13344,7 @@
           definition: type (rad_map_struct) rm0, rm1
           dimension: ''
           fortran_default: null
-          line: 971
+          line: 970
           name: rm1
           python_name: rm1
           python_type: RadMapStruct
@@ -13664,7 +13357,7 @@
           definition: 'logical :: stale = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 972
+          line: 971
           name: stale
           python_name: stale
           python_type: bool
@@ -13885,7 +13578,7 @@
           definition: 'integer :: csr3d_mesh_size(3) = [32, 32, 64]'
           dimension: '3'
           fortran_default: '[32, 32, 64]'
-          line: 2105
+          line: 2103
           name: csr3d_mesh_size
           python_name: csr3d_mesh_size
           python_type: int
@@ -13898,7 +13591,7 @@
           definition: 'logical :: debug = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2111
+          line: 2109
           name: debug
           python_name: debug
           python_type: bool
@@ -13911,7 +13604,7 @@
           definition: 'character(400) :: diagnostic_output_file = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 2112
+          line: 2110
           name: diagnostic_output_file
           python_name: diagnostic_output_file
           python_type: str
@@ -13950,15 +13643,14 @@
           definition: 'logical :: lsc_kick_transverse_dependence = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 2110
+          line: 2108
           name: lsc_kick_transverse_dependence
           python_name: lsc_kick_transverse_dependence
           python_type: bool
           size: null
           type: logical
         lsc_sigma_cutoff:
-          comment: Cutoff for the 1-dim longitudinal SC calc. If a bin sigma is <
-            cutoff * sigma_ave then ignore.
+          comment: Cutoff for the 1-dim longitudinal SC calc.
           default: 0.1
           default_factory: ''
           definition: 'real(rp) :: lsc_sigma_cutoff = 0.1'
@@ -13977,7 +13669,7 @@
           definition: 'integer :: n_bin = 0'
           dimension: ''
           fortran_default: '0'
-          line: 2106
+          line: 2104
           name: n_bin
           python_name: n_bin
           python_type: int
@@ -13990,7 +13682,7 @@
           definition: 'integer :: n_shield_images = 0'
           dimension: ''
           fortran_default: '0'
-          line: 2108
+          line: 2106
           name: n_shield_images
           python_name: n_shield_images
           python_type: int
@@ -14003,7 +13695,7 @@
           definition: 'integer :: particle_bin_span = 2'
           dimension: ''
           fortran_default: '2'
-          line: 2107
+          line: 2105
           name: particle_bin_span
           python_name: particle_bin_span
           python_type: int
@@ -14011,13 +13703,13 @@
           type: integer
         particle_sigma_cutoff:
           comment: 3D SC calc cutoff for particles with (x,y,z) position far from
-            the center. Negative or zero means ignore.
+            the center.
           default: -1
           default_factory: ''
           definition: 'real(rp) :: particle_sigma_cutoff = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 2102
+          line: 2101
           name: particle_sigma_cutoff
           python_name: particle_sigma_cutoff
           python_type: float
@@ -14043,7 +13735,7 @@
           definition: 'integer :: sc_min_in_bin = 10'
           dimension: ''
           fortran_default: '10'
-          line: 2109
+          line: 2107
           name: sc_min_in_bin
           python_name: sc_min_in_bin
           python_type: int
@@ -14059,7 +13751,7 @@
           definition: 'integer :: space_charge_mesh_size(3) = [32, 32, 64]'
           dimension: '3'
           fortran_default: '[32, 32, 64]'
-          line: 2104
+          line: 2102
           name: space_charge_mesh_size
           python_name: space_charge_mesh_size
           python_type: int
@@ -15248,7 +14940,7 @@
           definition: 'integer :: n_bad = 0'
           dimension: ''
           fortran_default: '0'
-          line: 2013
+          line: 2012
           name: n_bad
           python_name: n_bad
           python_type: int
@@ -15261,16 +14953,14 @@
           definition: 'integer :: n_ok = 0'
           dimension: ''
           fortran_default: '0'
-          line: 2014
+          line: 2013
           name: n_ok
           python_name: n_ok
           python_type: int
           size: null
           type: integer
         n_pt:
-          comment: Track upper bound for %pt(0:) array. n_bad and n_ok are used by
-            adaptive trackers to record the number of times the step length had to
-            be shortened.
+          comment: Track upper bound for %pt(0:) array.
           default: -1
           default_factory: ''
           definition: 'integer :: n_pt = -1'
@@ -15648,7 +15338,7 @@
           definition: 'real(rp) :: amp_scale = 1'
           dimension: ''
           fortran_default: '1'
-          line: 658
+          line: 657
           name: amp_scale
           python_name: amp_scale
           python_type: float
@@ -15674,7 +15364,7 @@
           definition: 'real(rp) :: freq_spread = 0'
           dimension: ''
           fortran_default: '0'
-          line: 657
+          line: 656
           name: freq_spread
           python_name: freq_spread
           python_type: float
@@ -15700,15 +15390,14 @@
           definition: 'logical :: self_wake_on = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 660
+          line: 659
           name: self_wake_on
           python_name: self_wake_on
           python_type: bool
           size: null
           type: logical
         t_ref:
-          comment: time reference value for computing the wake amplitude. This is
-            used to prevent value overflow with long trains.
+          comment: time reference value for computing the wake amplitude.
           default: 0
           default_factory: ''
           definition: 'real(rp) :: t_ref = 0'
@@ -15727,7 +15416,7 @@
           definition: 'real(rp) :: time_scale = 1'
           dimension: ''
           fortran_default: '1'
-          line: 659
+          line: 658
           name: time_scale
           python_name: time_scale
           python_type: float
@@ -15860,8 +15549,7 @@
           size: null
           type: integer
         position_dependence:
-          comment: 'Transverse: leading$, trailing$, none$ Longitudinal: x_leading$,
-            ..., y_trailing$, none$'
+          comment: 'Transverse: leading$, trailing$, none$'
           default: 0
           default_factory: ''
           definition: 'integer :: position_dependence = not_set$'
@@ -16061,8 +15749,7 @@
           size: null
           type: complex
         position_dependence:
-          comment: 'Transverse: leading$, trailing$, none$ Longitudinal: x_leading$,
-            ..., y_trailing$, none$'
+          comment: 'Transverse: leading$, trailing$, none$'
           default: 0
           default_factory: ''
           definition: 'integer :: position_dependence = none$'
@@ -16094,7 +15781,7 @@
           definition: 'logical :: time_based = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 603
+          line: 602
           name: time_based
           python_name: time_based
           python_type: bool
@@ -16194,7 +15881,7 @@
           definition: 'real(rp) :: dr_ds = real_garbage$'
           dimension: ''
           fortran_default: real_garbage$
-          line: 439
+          line: 435
           name: dr_ds
           python_name: dr_ds
           python_type: float
@@ -16207,7 +15894,7 @@
           definition: 'real(rp) :: dx0_ds = 0'
           dimension: ''
           fortran_default: '0'
-          line: 434
+          line: 431
           name: dx0_ds
           python_name: dx0_ds
           python_type: float
@@ -16220,7 +15907,7 @@
           definition: 'real(rp) :: dy0_ds = 0'
           dimension: ''
           fortran_default: '0'
-          line: 435
+          line: 432
           name: dy0_ds
           python_name: dy0_ds
           python_type: float
@@ -16233,7 +15920,7 @@
           definition: 'integer :: ix_branch = 0'
           dimension: ''
           fortran_default: '0'
-          line: 426
+          line: 425
           name: ix_branch
           python_name: ix_branch
           python_type: int
@@ -16246,7 +15933,7 @@
           definition: 'integer :: ix_ele = 0'
           dimension: ''
           fortran_default: '0'
-          line: 425
+          line: 424
           name: ix_ele
           python_name: ix_ele
           python_type: int
@@ -16272,7 +15959,7 @@
           definition: 'integer :: n_vertex_input = 0'
           dimension: ''
           fortran_default: '0'
-          line: 424
+          line: 423
           name: n_vertex_input
           python_name: n_vertex_input
           python_type: int
@@ -16298,7 +15985,7 @@
           definition: 'real(rp) :: p1_coef(3) = 0'
           dimension: '3'
           fortran_default: '0'
-          line: 440
+          line: 436
           name: p1_coef
           python_name: p1_coef
           python_type: float
@@ -16311,7 +15998,7 @@
           definition: 'real(rp) :: p2_coef(3) = 0'
           dimension: '3'
           fortran_default: '0'
-          line: 441
+          line: 437
           name: p2_coef
           python_name: p2_coef
           python_type: float
@@ -16324,21 +16011,20 @@
           definition: 'logical :: patch_in_region = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 429
+          line: 427
           name: patch_in_region
           python_name: patch_in_region
           python_type: bool
           size: null
           type: logical
         r0:
-          comment: Center of section Section-to-section spline interpolation of the
-            center of the section
+          comment: Center of section
           default: 0
           default_factory: ''
           definition: 'real(rp) :: r0(2) = 0'
           dimension: '2'
           fortran_default: '0'
-          line: 432
+          line: 430
           name: r0
           python_name: r0
           python_type: float
@@ -16351,14 +16037,14 @@
           definition: 'real(rp) :: s = 0'
           dimension: ''
           fortran_default: '0'
-          line: 431
+          line: 429
           name: s
           python_name: s
           python_type: float
           size: null
           type: real
         surface:
-          comment: Surface reflectivity tables.
+          comment: ''
           default: null
           default_factory: ''
           definition: 'type (photon_reflect_surface_struct), pointer :: surface =>
@@ -16378,7 +16064,7 @@
           definition: 'real(rp) :: thickness = -1'
           dimension: ''
           fortran_default: '-1'
-          line: 430
+          line: 428
           name: thickness
           python_name: thickness
           python_type: float
@@ -16391,7 +16077,7 @@
           definition: 'integer :: type = normal$'
           dimension: ''
           fortran_default: normal$
-          line: 423
+          line: 422
           name: type
           python_name: type
           python_type: int
@@ -16412,13 +16098,12 @@
           type: wall3d_vertex_struct
         vertices_state:
           comment: absolute$, or shifted_to_relative$. If set to absolute$ on input,
-            will be changed to shifted_to_relative$ by section initalizer.
           default: 0
           default_factory: ''
           definition: 'integer :: vertices_state = relative$'
           dimension: ''
           fortran_default: relative$
-          line: 427
+          line: 426
           name: vertices_state
           python_name: vertices_state
           python_type: int
@@ -16431,21 +16116,20 @@
           definition: 'real(rp) :: x0_coef(0:3) = 0'
           dimension: 0:3
           fortran_default: '0'
-          line: 436
+          line: 433
           name: x0_coef
           python_name: x0_coef
           python_type: float
           size: null
           type: real
         y0_coef:
-          comment: Spline coefs for y-center Section-to_section spline interpolation
-            of the wall.
+          comment: Spline coefs for y-center
           default: 0
           default_factory: ''
           definition: 'real(rp) :: y0_coef(0:3) = 0'
           dimension: 0:3
           fortran_default: '0'
-          line: 437
+          line: 434
           name: y0_coef
           python_name: y0_coef
           python_type: float
@@ -17193,54 +16877,6 @@
     name: mat2_struct
 /Users/klauer/Repos/bmad/bmad/modules/multipole_mod.f90: {}
 /Users/klauer/Repos/bmad/bmad/modules/rad_6d_mod.f90:
-  private_stash_struct:
-    filename: /Users/klauer/Repos/bmad/bmad/modules/rad_6d_mod.f90
-    info:
-      class_name: PrivateStashStruct
-      comment: ''
-      members:
-        eta_x_coef:
-          comment: Dispersion interpolation coefs.
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: eta_x_coef(0:3)'
-          dimension: 0:3
-          fortran_default: null
-          line: 18
-          name: eta_x_coef
-          python_name: eta_x_coef
-          python_type: float
-          size: null
-          type: real
-        eta_y_coef:
-          comment: Dispersion interpolation coefs.
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: eta_y_coef(0:3)'
-          dimension: 0:3
-          fortran_default: null
-          line: 19
-          name: eta_y_coef
-          python_name: eta_y_coef
-          python_type: float
-          size: null
-          type: real
-        gamma0:
-          comment: Relativistic gamma factor.
-          default: 0.0
-          default_factory: ''
-          definition: 'real(rp) :: gamma0'
-          dimension: ''
-          fortran_default: null
-          line: 17
-          name: gamma0
-          python_name: gamma0
-          python_type: float
-          size: null
-          type: real
-    line: 16
-    module: rad_6d_mod
-    name: private_stash_struct
   qromb_int_struct:
     filename: /Users/klauer/Repos/bmad/bmad/modules/rad_6d_mod.f90
     info:
@@ -18072,7 +17708,7 @@
           definition: complex(rp) h00220
           dimension: ''
           fortran_default: null
-          line: 32
+          line: 31
           name: h00220
           python_name: h00220
           python_type: Complex
@@ -18085,7 +17721,7 @@
           definition: complex(rp) h00310
           dimension: ''
           fortran_default: null
-          line: 29
+          line: 28
           name: h00310
           python_name: h00310
           python_type: Complex
@@ -18098,7 +17734,7 @@
           definition: complex(rp) h00400
           dimension: ''
           fortran_default: null
-          line: 30
+          line: 29
           name: h00400
           python_name: h00400
           python_type: Complex
@@ -18144,7 +17780,7 @@
           size: null
           type: complex
         h10200:
-          comment: 2nd order in K2 moments
+          comment: ''
           default: 0.0
           default_factory: ''
           definition: complex(rp) h10200
@@ -18176,7 +17812,7 @@
           definition: complex(rp) h11110
           dimension: ''
           fortran_default: null
-          line: 33
+          line: 32
           name: h11110
           python_name: h11110
           python_type: Complex
@@ -18189,7 +17825,7 @@
           definition: complex(rp) h11200
           dimension: ''
           fortran_default: null
-          line: 26
+          line: 25
           name: h11200
           python_name: h11200
           python_type: Complex
@@ -18215,7 +17851,7 @@
           definition: complex(rp) h20020
           dimension: ''
           fortran_default: null
-          line: 27
+          line: 26
           name: h20020
           python_name: h20020
           python_type: Complex
@@ -18228,7 +17864,7 @@
           definition: complex(rp) h20110
           dimension: ''
           fortran_default: null
-          line: 25
+          line: 24
           name: h20110
           python_name: h20110
           python_type: Complex
@@ -18241,7 +17877,7 @@
           definition: complex(rp) h20200
           dimension: ''
           fortran_default: null
-          line: 28
+          line: 27
           name: h20200
           python_name: h20200
           python_type: Complex
@@ -18267,7 +17903,7 @@
           definition: complex(rp) h22000
           dimension: ''
           fortran_default: null
-          line: 31
+          line: 30
           name: h22000
           python_name: h22000
           python_type: Complex
@@ -18293,7 +17929,7 @@
           definition: complex(rp) h31000
           dimension: ''
           fortran_default: null
-          line: 23
+          line: 22
           name: h31000
           python_name: h31000
           python_type: Complex
@@ -18306,7 +17942,7 @@
           definition: complex(rp) h40000
           dimension: ''
           fortran_default: null
-          line: 24
+          line: 23
           name: h40000
           python_name: h40000
           python_type: Complex
@@ -18389,7 +18025,7 @@
           definition: real(rp) Tlp
           dimension: ''
           fortran_default: null
-          line: 27
+          line: 26
           name: Tlp
           python_name: tlp
           python_type: float
@@ -18402,7 +18038,7 @@
           definition: real(rp) Tlx
           dimension: ''
           fortran_default: null
-          line: 25
+          line: 24
           name: Tlx
           python_name: tlx
           python_type: float
@@ -18415,7 +18051,7 @@
           definition: real(rp) Tly
           dimension: ''
           fortran_default: null
-          line: 26
+          line: 25
           name: Tly
           python_name: tly
           python_type: float
@@ -18494,7 +18130,7 @@
           type: integer
         do_pwd:
           comment: If true, then use potential well distortion to calculate bunch
-            lengths.  If false, bunch length is proportional to energy spread.
+            lengths.  If false,
           default: false
           default_factory: ''
           definition: 'logical :: do_pwd = .false.'
@@ -18535,15 +18171,13 @@
           size: null
           type: real
         formula:
-          comment: 'Which IBS formulation to use.  See subroutine ibs1 for a list.
-            real(rp) :: fake_3HC = -1   ! If greater than zero, divide growth rates
-            by this factor.'
+          comment: Which IBS formulation to use.  See subroutine ibs1 for a list.
           default: bjmt
           default_factory: ''
           definition: 'character(4) :: formula = ''bjmt'''
           dimension: ''
           fortran_default: '''bjmt'''
-          line: 19
+          line: 18
           name: formula
           python_name: formula
           python_type: str
@@ -18556,7 +18190,7 @@
           definition: 'real(rp) :: inductance = 0.0d0'
           dimension: ''
           fortran_default: 0.0d0
-          line: 18
+          line: 17
           name: inductance
           python_name: inductance
           python_type: float
@@ -18606,7 +18240,7 @@
           definition: real(rp) inv_Ta
           dimension: ''
           fortran_default: null
-          line: 9
+          line: 8
           name: inv_Ta
           python_name: inv_ta
           python_type: float
@@ -18619,7 +18253,7 @@
           definition: real(rp) inv_Tb
           dimension: ''
           fortran_default: null
-          line: 10
+          line: 9
           name: inv_Tb
           python_name: inv_tb
           python_type: float
@@ -18632,7 +18266,7 @@
           definition: real(rp) inv_Tz
           dimension: ''
           fortran_default: null
-          line: 11
+          line: 10
           name: inv_Tz
           python_name: inv_tz
           python_type: float
@@ -19170,7 +18804,7 @@
           definition: 'logical :: always_parse = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 157
+          line: 155
           name: always_parse
           python_name: always_parse
           python_type: bool
@@ -19183,7 +18817,7 @@
           definition: 'logical :: bmad_parser_calling = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 150
+          line: 148
           name: bmad_parser_calling
           python_name: bmad_parser_calling
           python_type: bool
@@ -19196,7 +18830,7 @@
           definition: 'logical :: calc_reference_orbit = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 166
+          line: 162
           name: calc_reference_orbit
           python_name: calc_reference_orbit
           python_type: bool
@@ -19222,7 +18856,7 @@
           definition: 'logical :: detected_expand_lattice_cmd = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 167
+          line: 163
           name: detected_expand_lattice_cmd
           python_name: detected_expand_lattice_cmd
           python_type: bool
@@ -19235,7 +18869,7 @@
           definition: 'logical :: do_superimpose = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 154
+          line: 152
           name: do_superimpose
           python_name: do_superimpose
           python_type: bool
@@ -19248,7 +18882,7 @@
           definition: 'logical :: error_flag = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 152
+          line: 150
           name: error_flag
           python_name: error_flag
           python_type: bool
@@ -19274,7 +18908,7 @@
           definition: 'logical :: fatal_error_flag = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 151
+          line: 149
           name: fatal_error_flag
           python_name: fatal_error_flag
           python_type: bool
@@ -19339,7 +18973,7 @@
           definition: 'logical :: inline_call_active = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 159
+          line: 157
           name: inline_call_active
           python_name: inline_call_active
           python_type: bool
@@ -19352,7 +18986,7 @@
           definition: 'logical :: input_from_file = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 158
+          line: 156
           name: input_from_file
           python_name: input_from_file
           python_type: bool
@@ -19365,7 +18999,7 @@
           definition: 'character(n_parse_line_extended) :: input_line1 = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 142
+          line: 141
           name: input_line1
           python_name: input_line1
           python_type: str
@@ -19378,7 +19012,7 @@
           definition: 'character(n_parse_line_extended) :: input_line2 = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 143
+          line: 142
           name: input_line2
           python_name: input_line2
           python_type: str
@@ -19391,7 +19025,7 @@
           definition: 'logical :: input_line_meaningful = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 153
+          line: 151
           name: input_line_meaningful
           python_name: input_line_meaningful
           python_type: bool
@@ -19424,14 +19058,13 @@
           size: null
           type: integer
         last_char_in_parse_line:
-          comment: Needed for long lines read in pieces. parser_name is used by routines
-            to tell if parsing is being done or not.
+          comment: Needed for long lines read in pieces.
           default: ''
           default_factory: ''
           definition: 'character(1) :: last_char_in_parse_line =  '''''
           dimension: ''
           fortran_default: ''''''
-          line: 146
+          line: 145
           name: last_char_in_parse_line
           python_name: last_char_in_parse_line
           python_type: str
@@ -19444,15 +19077,14 @@
           definition: 'character(100) :: last_word = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 149
+          line: 147
           name: last_word
           python_name: last_word
           python_type: str
           size: '100'
           type: character
         lat_file_names:
-          comment: 'List of all files used to create lat Note: use %line2_file_name
-            to ID line. %line1_file_name may be blank!'
+          comment: List of all files used to create lat
           default: ''
           default_factory: list
           definition: 'character(400), allocatable :: lat_file_names(:)'
@@ -19471,7 +19103,7 @@
           definition: 'character(400) :: line1_file_name = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 139
+          line: 138
           name: line1_file_name
           python_name: line1_file_name
           python_type: str
@@ -19484,7 +19116,7 @@
           definition: 'character(400) :: line2_file_name = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 140
+          line: 139
           name: line2_file_name
           python_name: line2_file_name
           python_type: str
@@ -19497,7 +19129,7 @@
           definition: 'character(n_parse_line) :: next_chunk = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 145
+          line: 144
           name: next_chunk
           python_name: next_chunk
           python_type: str
@@ -19536,7 +19168,7 @@
           definition: 'character(n_parse_line_extended) :: parse_line = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 141
+          line: 140
           name: parse_line
           python_name: parse_line
           python_type: str
@@ -19549,22 +19181,20 @@
           definition: 'character(40) :: parser_name = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 148
+          line: 146
           name: parser_name
           python_name: parser_name
           python_type: str
           size: '40'
           type: character
         print_err:
-          comment: 'Print error messages? For compatibility with translated MAD files,
-            treat undefined vars as having zero value. Note: When using the parser
-            code for local evaluations (done by Tao), do not wnat this.'
+          comment: Print error messages?
           default: true
           default_factory: ''
           definition: 'logical :: print_err = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 160
+          line: 158
           name: print_err
           python_name: print_err
           python_type: bool
@@ -19578,7 +19208,7 @@
           definition: 'character(n_parse_line) :: rest_of_line = '''''
           dimension: ''
           fortran_default: ''''''
-          line: 144
+          line: 143
           name: rest_of_line
           python_name: rest_of_line
           python_type: str
@@ -19591,7 +19221,7 @@
           definition: 'real :: time0 = 0, time1 = 0, time2 = 0, time3 = 0'
           dimension: ''
           fortran_default: '0'
-          line: 168
+          line: 164
           name: time0
           python_name: time0
           python_type: float
@@ -19604,7 +19234,7 @@
           definition: 'real :: time0 = 0, time1 = 0, time2 = 0, time3 = 0'
           dimension: ''
           fortran_default: '0'
-          line: 168
+          line: 164
           name: time1
           python_name: time1
           python_type: float
@@ -19617,7 +19247,7 @@
           definition: 'real :: time0 = 0, time1 = 0, time2 = 0, time3 = 0'
           dimension: ''
           fortran_default: '0'
-          line: 168
+          line: 164
           name: time2
           python_name: time2
           python_type: float
@@ -19630,7 +19260,7 @@
           definition: 'real :: time0 = 0, time1 = 0, time2 = 0, time3 = 0'
           dimension: ''
           fortran_default: '0'
-          line: 168
+          line: 164
           name: time3
           python_name: time3
           python_type: float
@@ -19643,7 +19273,7 @@
           definition: 'logical :: undefined_vars_evaluate_to_zero = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 163
+          line: 159
           name: undefined_vars_evaluate_to_zero
           python_name: undefined_vars_evaluate_to_zero
           python_type: bool
@@ -19656,7 +19286,7 @@
           definition: 'logical :: use_local_lat_file = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 164
+          line: 160
           name: use_local_lat_file
           python_name: use_local_lat_file
           python_type: bool
@@ -19669,7 +19299,7 @@
           definition: 'logical :: used_line_set_by_calling_routine = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 165
+          line: 161
           name: used_line_set_by_calling_routine
           python_name: used_line_set_by_calling_routine
           python_type: bool
@@ -19682,7 +19312,7 @@
           definition: 'logical :: write_digested = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 155
+          line: 153
           name: write_digested
           python_name: write_digested
           python_type: bool
@@ -19695,7 +19325,7 @@
           definition: 'logical :: write_digested2 = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 156
+          line: 154
           name: write_digested2
           python_name: write_digested2
           python_type: bool
@@ -20143,7 +19773,7 @@
           definition: 'logical :: ele_order_reflect = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 25
+          line: 24
           name: ele_order_reflect
           python_name: ele_order_reflect
           python_type: bool
@@ -20156,7 +19786,7 @@
           definition: 'integer :: ele_orientation = 1'
           dimension: ''
           fortran_default: '1'
-          line: 26
+          line: 25
           name: ele_orientation
           python_name: ele_orientation
           python_type: int
@@ -20169,15 +19799,14 @@
           definition: 'integer :: ix_arg  = 0'
           dimension: ''
           fortran_default: '0'
-          line: 23
+          line: 22
           name: ix_arg
           python_name: ix_arg
           python_type: int
           size: null
           type: integer
         ix_ele:
-          comment: 'if an element: pointer to ELE array if a line or list: pointer
-            to SEQ array'
+          comment: 'if an element: pointer to ELE array'
           default: 0
           default_factory: ''
           definition: 'integer :: ix_ele = 0'
@@ -20209,7 +19838,7 @@
           definition: integer ::rep_count = 1
           dimension: ''
           fortran_default: '1'
-          line: 24
+          line: 23
           name: rep_count
           python_name: rep_count
           python_type: int
@@ -20937,7 +20566,7 @@
           definition: real(rp) del_x
           dimension: ''
           fortran_default: null
-          line: 30
+          line: 29
           name: del_x
           python_name: del_x
           python_type: float
@@ -20950,7 +20579,7 @@
           definition: 'type (photon_init_spline_pt_struct), allocatable :: pt(:)'
           dimension: ':'
           fortran_default: null
-          line: 31
+          line: 30
           name: pt
           python_name: pt
           python_type: PhotonInitSplinePtStruct
@@ -20963,15 +20592,14 @@
           definition: integer spline_type
           dimension: ''
           fortran_default: null
-          line: 32
+          line: 31
           name: spline_type
           python_name: spline_type
           python_type: int
           size: null
           type: integer
         x_max:
-          comment: Upper bound of Region of validity of this spline fit. The lower
-            bound is given by the upper bound of the previos struct.
+          comment: Upper bound of Region of validity of this spline fit.
           default: 0.0
           default_factory: ''
           definition: real(rp) x_max
@@ -21314,7 +20942,7 @@
           definition: 'real(rp) :: area_err_tol = 4d-3'
           dimension: ''
           fortran_default: 4d-3
-          line: 31
+          line: 30
           name: area_err_tol
           python_name: area_err_tol
           python_type: float
@@ -21327,7 +20955,7 @@
           definition: 'logical :: use_spline_fit = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 30
+          line: 29
           name: use_spline_fit
           python_name: use_spline_fit
           python_type: bool
@@ -21611,8 +21239,7 @@
       comment: ''
       members:
         damp_mat:
-          comment: Damping "correction" to orbital matrix. Stoc_mat is referenced
-            to the start of the map. That is, it is applied before the transport matrix.
+          comment: Damping "correction" to orbital matrix.
           default: 0.0
           default_factory: ''
           definition: real(rp) damp_mat(6,6)
@@ -21761,7 +21388,7 @@
           definition: real(rp) ref0(6)
           dimension: '6'
           fortran_default: null
-          line: 25
+          line: 24
           name: ref0
           python_name: ref0
           python_type: float
@@ -21774,7 +21401,7 @@
           definition: real(rp) ref1(6)
           dimension: '6'
           fortran_default: null
-          line: 26
+          line: 25
           name: ref1
           python_name: ref1
           python_type: float
@@ -21800,7 +21427,7 @@
           definition: real(rp) stoc_mat(6,6)
           dimension: 6,6
           fortran_default: null
-          line: 24
+          line: 23
           name: stoc_mat
           python_name: stoc_mat
           python_type: float
@@ -22072,7 +21699,7 @@
           definition: real(rp) L_chord
           dimension: ''
           fortran_default: null
-          line: 30
+          line: 29
           name: L_chord
           python_name: l_chord
           python_type: float
@@ -22085,7 +21712,7 @@
           definition: real(rp) dL_s
           dimension: ''
           fortran_default: null
-          line: 31
+          line: 30
           name: dL_s
           python_name: dl_s
           python_type: float
@@ -22183,8 +21810,7 @@
           size: null
           type: floor_position_struct
         spline:
-          comment: Spline for centroid orbit. spline%x = distance along chord. The
-            spline is zero at the ends by construction.
+          comment: Spline for centroid orbit. spline%x = distance along chord.
           default: null
           default_factory: ''
           definition: type (spline_struct) spline
@@ -22203,7 +21829,7 @@
           definition: real(rp) theta_chord
           dimension: ''
           fortran_default: null
-          line: 29
+          line: 28
           name: theta_chord
           python_name: theta_chord
           python_type: float

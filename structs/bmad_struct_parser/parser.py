@@ -53,8 +53,9 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
     python_import_name: str
     function_prefix: str
     skip_includes: tuple[str, ...] = ()
-    include_dirs: tuple[pathlib.Path, ...] = ()
     skip_json: tuple[str, ...] = ()
+    skip_structs: tuple[str, ...] = ()
+    include_dirs: tuple[pathlib.Path, ...] = ()
 
     @pydantic.field_validator("include_dirs")
     @classmethod
@@ -179,6 +180,14 @@ class Structure(pydantic.BaseModel):
                     default_factory=default_factory,
                 )
                 last_member = self.info.members[decl.name]
+
+
+def case_insensitive_match(name: str, options: Sequence[str]) -> str:
+    name_lower = name.lower()
+    for option in options:
+        if option == name_lower:
+            return option
+    raise ValueError(f"Name not found: {name}")
 
 
 def get_default(
@@ -450,6 +459,9 @@ class FileLine(NamedTuple):
     lineno: int
     line: str
 
+    def __str__(self):
+        return f"{self.filename}:{self.lineno}"
+
 
 class ParsedDeclaration(NamedTuple):
     name: str
@@ -635,54 +647,102 @@ def find_structs(
     file_lines: list[FileLine],
     by_class_name: dict[str, Structure],
     filename: pathlib.Path,
-) -> dict[str, Structure]:
-    structs = {}
-    in_struct = ""
+) -> list[Structure]:
+    structs: list[Structure] = []
+    struct = None
+    in_routine = ""
     module = filename.stem
+    private_structs: dict[FileLine, list[str]] = {}
     for file_line in file_lines:
         line = file_line.line
-        lower_split = line.lower().split()
+        lower_split = remove_comment(line).lower().strip().split()
         if not lower_split:
             ...
+        elif lower_split[0] in {"subroutine", "function"}:
+            in_routine = lower_split[1]
         elif lower_split[0] == "module":
             if len(lower_split) == 2:
                 module = lower_split[1]
             else:
-                logger.debug(f"Skipping module line: {lower_split}")
+                if lower_split[1] not in {"procedure"}:
+                    logger.debug(f"Skipping module line: {lower_split}")
+        elif lower_split[0] == "private":
+            names = " ".join(lower_split[1:]).replace(",", " ").split()
+            private_structs[file_line] = names
         elif lower_split[0] == "type" or lower_split[0].startswith("type,"):
-            if line.lower().replace(" ", "").startswith("type("):
-                if in_struct:
-                    structs[in_struct].lines.append(line.strip())
+            if struct is not None:
+                struct.lines.append(line.strip())
                 continue
-            if line.lower().startswith("type is"):
-                # select type(x) / type is (y)
+
+            squashed = line.lower().replace(" ", "")
+            if squashed.startswith("type("):
                 continue
-            if in_struct:
+            if squashed.startswith("typeis"):  # select type(x) / type is (y)
+                continue
+            if struct is not None:
                 raise RuntimeError(
-                    f"{filename}:{file_line.lineno}: In struct: {in_struct} {line}"
+                    f"{filename}:{file_line.lineno}: In struct: {struct.name} {line}"
                 )
-            (in_struct,) = get_names_from_line(line)
-            class_name = to_class_name(in_struct)
+
+            # TYPE structname
+            # END TYPE
+            #
+            # TYPE, BIND(C) :: xrlComplex_C
+            #   REAL (C_DOUBLE) :: re
+            #   REAL (C_DOUBLE) :: im
+            # ENDTYPE
+            (struct_name,) = get_names_from_line(line)
+
+            class_name = to_class_name(struct_name)
             while class_name in by_class_name:
                 class_name += "_"
-            structs[in_struct] = Structure(
+
+            struct = Structure(
                 filename=file_line.filename,
                 module=module,
-                name=in_struct,
+                name=struct_name,
                 line=file_line.lineno,
                 lines=[line.strip()],
                 info=StructureInfo(class_name=class_name),
             )
-            by_class_name[class_name] = structs[in_struct]
+            structs.append(struct)
+            by_class_name[class_name] = struct
+        elif (
+            lower_split[:2] == ["end", "subroutine"]
+            or lower_split[0] == "endsubroutine"
+            or lower_split[:2] == ["end", "function"]
+            or lower_split[0] == "endfunction"
+        ):
+            in_routine = ""
         elif lower_split[:2] == ["end", "type"] or lower_split[0] == "endtype":
-            if not in_struct:
+            if struct is None:
                 raise RuntimeError(
                     f"{filename}:{file_line.lineno}: Not in struct? {line}"
                 )
-            logger.debug(f"Saw structure: {in_struct}")  # , structs[in_struct])
-            in_struct = ""
-        elif in_struct:
-            structs[in_struct].lines.append(line.strip())
+            logger.debug(f"Saw structure: {struct.name}")  # %s", struct)
+            if in_routine:
+                logger.warning(
+                    f"Private structure {struct.name!r} defined in routine {in_routine!r} ({file_line})"
+                )
+                # structs.pop(in_struct)
+            struct = None
+        elif struct is not None:
+            struct.lines.append(line.strip())
+
+    if struct is not None:
+        raise RuntimeError(
+            f"Parse failure: {filename}: TYPE {struct.name} has no matching END TYPE?"
+        )
+
+    for file_line, private_names in private_structs.items():
+        for private_name in private_names:
+            for struct in list(structs):
+                if (
+                    struct.name.lower() == private_name.lower()
+                    and struct.filename == file_line.filename
+                ):
+                    logger.debug(f"Skipping private struct: {private_name}")
+                    structs.remove(struct)
 
     return structs
 
@@ -720,20 +780,19 @@ def fill_includes(
 
 
 def find_structs_in_file(
-    config: ParserConfig,
-    source: SourceConfig,
+    parser_config: ParserConfig,
+    source_config: SourceConfig,
     filename: pathlib.Path,
     by_class_name: dict[str, Structure],
 ) -> dict[str, Structure]:
-    with open(filename, encoding="latin-1") as fp:
-        contents = fp.read()
-
-    file_lines = fill_includes(source, filename, contents)
-    return find_structs(
+    contents = filename.read_text(encoding="latin-1")
+    file_lines = fill_includes(source_config, filename, contents)
+    structs = find_structs(
         file_lines=file_lines,
         by_class_name=by_class_name,
         filename=filename,
     )
+    return {struct.name: struct for struct in structs}
 
 
 def to_class_name(bmad_name: str) -> str:
@@ -750,28 +809,46 @@ def to_class_name(bmad_name: str) -> str:
 
 
 def convert(
-    config: ParserConfig,
-    source: SourceConfig,
+    parser_config: ParserConfig,
+    source_config: SourceConfig,
     yaml_path: pathlib.Path,
 ) -> dict[pathlib.Path, dict[str, Structure]]:
     by_file = {}
     failed = {}
     by_class_name = {}
-    filenames = list(source.source_dir.glob("**/*.f90", case_sensitive=False))
+    filenames = list(source_config.source_dir.glob("**/*.f90", case_sensitive=False))
     for source_fn in filenames:
         try:
             by_file[source_fn] = find_structs_in_file(
-                config, source, source_fn, by_class_name
+                parser_config, source_config, source_fn, by_class_name
             )
         except Exception as ex:
             failed[source_fn] = ex
             raise
 
+    for name in source_config.skip_structs:
+        matches = 0
+        for source_fn, structs in by_file.items():
+            try:
+                name = case_insensitive_match(name, list(structs))
+            except ValueError:
+                pass
+            else:
+                logger.warning(
+                    f"User config skipped struct: {name} (found in {source_fn})"
+                )
+                structs.pop(name)
+                # Could be defined in multiple files which we don't handle now
+                matches += 1
+
+        if not matches:
+            logger.warning(f"Unknown user-specified struct skip: {name}")
+
     logger.info(
-        f"{source.source_dir.name!r} total structures: %d",
+        f"{source_config.source_dir.name!r} total structures: %d",
         sum(len(structs) for structs in by_file.values()),
     )
-    logger.info(f"Path: {source.source_dir}")
+    logger.info(f"Path: {source_config.source_dir}")
     logger.info(
         "Total structures: %d", sum(len(structs) for structs in by_file.values())
     )
@@ -980,27 +1057,31 @@ def get_class_references(
 
 
 def convert_and_write(
-    config: ParserConfig, output_path: pathlib.Path, classes: list[str] | None = None
+    parser_config: ParserConfig,
+    output_path: pathlib.Path,
+    classes: list[str] | None = None,
 ):
     def get_output_path(fn: str) -> pathlib.Path:
         output_fn = pathlib.Path(output_path) / fn
         output_fn.parent.mkdir(exist_ok=True, parents=True)
         return output_fn
 
-    for source in config.sources:
-        convert(config, source, get_output_path(source.yaml_filename))
+    for source_config in parser_config.sources:
+        convert(
+            parser_config, source_config, get_output_path(source_config.yaml_filename)
+        )
 
-    for source in config.sources:
+    for source_config in parser_config.sources:
         python_source = make_all_models(
-            get_output_path(source.yaml_filename),
+            get_output_path(source_config.yaml_filename),
             base_path=output_path,
             imports={
                 other.source_dir: other
-                for other in config.sources
-                if other.source_dir != source.source_dir
+                for other in parser_config.sources
+                if other.source_dir != source_config.source_dir
             },
         )
-        get_output_path(source.python_filename).write_text(python_source)
+        get_output_path(source_config.python_filename).write_text(python_source)
 
 
 def main():
@@ -1019,7 +1100,7 @@ def main():
     )
     # if args.config:
     conf = ParserConfig.from_file(args.config)
-    convert_and_write(config=conf, output_path=pathlib.Path(args.output))
+    convert_and_write(parser_config=conf, output_path=pathlib.Path(args.output))
     # else:
     #     # convert_and_write(paths=args.paths, classes=args.classes, output=args.output)
     #     raise NotImplementedError

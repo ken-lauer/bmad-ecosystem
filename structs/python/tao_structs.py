@@ -1749,8 +1749,7 @@ class TaoBeamBranchStruct(pydantic.BaseModel):
         Bmad type: logical
         Fortran default: .true.
     ix_branch : int
-        Branch tracked. If track_start or track_end is a lord, ix_track_start/end index
-        will be a index of slave.
+        Branch tracked.
         Bmad type: integer
         Fortran default: 0
     ix_track_end : int
@@ -1788,10 +1787,7 @@ class TaoBeamBranchStruct(pydantic.BaseModel):
     )
     ix_branch: int = pydantic.Field(
         default=0,
-        description=(
-            "Branch tracked. If track_start or track_end is a lord, ix_track_start/end "
-            "index will be a index of slave."
-        ),
+        description="Branch tracked.",
     )
     ix_track_end: int = pydantic.Field(
         default=0,
@@ -2668,8 +2664,7 @@ class TaoCurveStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: ''
     draw_error_bars : bool
-        Draw error bars based upon data%error_rms if drawing data? !! logical ::
-        draw_rms = .false.          ! Show mean and RMS values with legend?
+        Draw error bars based upon data%error_rms if drawing data?
         Bmad type: logical
         Fortran default: .false.
     draw_line : bool
@@ -2816,10 +2811,7 @@ class TaoCurveStruct(pydantic.BaseModel):
     )
     draw_error_bars: bool = pydantic.Field(
         default=False,
-        description=(
-            "Draw error bars based upon data%error_rms if drawing data? !! logical :: "
-            "draw_rms = .false.          ! Show mean and RMS values with legend?"
-        ),
+        description="Draw error bars based upon data%error_rms if drawing data?",
     )
     draw_line: bool = pydantic.Field(
         default=True,
@@ -2980,7 +2972,6 @@ class TaoD1DataStruct(pydantic.BaseModel):
     Attributes
     ----------
     d : TaoDataStruct
-        Pointer to the appropriate section in u%data
         Bmad type: tao_data_struct
         Fortran default: null()
     d2 : TaoD2DataStruct
@@ -2995,7 +2986,6 @@ class TaoD1DataStruct(pydantic.BaseModel):
 
     d: Sequence[TaoDataStruct] = pydantic.Field(
         default=None,
-        description="Pointer to the appropriate section in u%data",
     )
     d2: TaoD2DataStruct = pydantic.Field(
         default=None,
@@ -5376,8 +5366,7 @@ class TaoLatticeBranchStruct(pydantic.BaseModel):
     track_state : int
         Bmad type: integer
     twiss_valid : bool
-        Invalid EG with unstable 1-turn matrix with a closed branch. With open branch:
-        twiss_valid = T even if some Twiss (and orbit) is invalid.
+        Invalid EG with unstable 1-turn matrix with a closed branch.
         Bmad type: logical
         Fortran default: .true.
     """
@@ -5489,10 +5478,7 @@ class TaoLatticeBranchStruct(pydantic.BaseModel):
     )
     twiss_valid: bool = pydantic.Field(
         default=True,
-        description=(
-            "Invalid EG with unstable 1-turn matrix with a closed branch. With open "
-            "branch: twiss_valid = T even if some Twiss (and orbit) is invalid."
-        ),
+        description="Invalid EG with unstable 1-turn matrix with a closed branch.",
     )
 
 
@@ -7189,7 +7175,6 @@ class TaoV1VarStruct(pydantic.BaseModel):
         Bmad type: character
         Fortran default: ''
     v : TaoVarStruct
-        Pointer to the appropriate section in s%var.
         Bmad type: tao_var_struct
         Fortran default: null()
     """
@@ -7205,7 +7190,6 @@ class TaoV1VarStruct(pydantic.BaseModel):
     )
     v: Sequence[TaoVarStruct] = pydantic.Field(
         default=None,
-        description="Pointer to the appropriate section in s%var.",
     )
 
 

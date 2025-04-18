@@ -5,6 +5,11 @@ sources:
     python_filename: python/bmad_structs.py
     python_import_name: bmad_structs
     function_prefix: bmad_
+    skip_structs:
+      # compilation TODO: Cannot open module file ‘bend_exact_multipole_field.mod’ for reading at (1): No such file or directory
+      - bend_exact_coef_struct
+      - pole_coef_struct
+      - pure_bend_multipole_struct
     skip_includes:
       - fftw3.f03
 
@@ -16,6 +21,16 @@ sources:
     function_prefix: sim_utils_
     skip_includes:
       - fftw3.f03
+    skip_structs:
+      # TODO: plplot backend / struct not found during compilation?
+      - pl_interface_struct
+      - viewport_size
+      # TODO: openmpi vs not
+      - solution_struct
+    skip_json:
+      # TODO: Recursive calls
+      - object_struct%child
+      - object_struct%parent
 
   - source_dir: ${ACC_ROOT_DIR}/tao
     fortran_filename: ${ACC_ROOT_DIR}/tao/code/tao_json.f90
@@ -33,22 +48,15 @@ sources:
     python_import_name: forest_structs
     function_prefix: forest_
     skip_json:
+      # TODO: Recursive calls
       - c_dascratch%PREVIOUS
       - c_dascratch%NEXT
       - dascratch%PREVIOUS
       - dascratch%NEXT
+      - dascratch%NEXT
+      # TODO: overlap of 'probe' type name...
+      - bunch%xs
     include_dirs:
       - ${ACC_ROOT_DIR}/forest/include
     skip_includes:
       - mpif.h
-# config:
-#   struct_aliases:
-#     genfield: ptc_spin
-#     fibre: ptc_spin
-#     layout: ptc_spin
-#     c_damap: ptc_spin
-#     c_normal_form: ptc_spin
-#     c_taylor: ptc_spin
-#     quaternion_8: ptc_spin
-#     probe_8: ptc_spin
-#     internal_state: ptc_spin

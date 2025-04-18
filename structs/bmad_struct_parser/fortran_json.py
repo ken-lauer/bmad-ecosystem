@@ -291,12 +291,12 @@ class Converter(pydantic.BaseModel):
             )
         return JsonDumpMember(var=struct_var, member=member, code=code)
 
-    def resolve_import(self, name: str) -> Structure:
-        for source, struct_file in self.importable.items():
+    def resolve_import(self, name: str) -> tuple[SourceConfig, Structure]:
+        for source_config, struct_file in self.importable.items():
             for _, structs in struct_file.items():
                 for struct in structs.values():
                     if name.lower() == struct.name.lower():
-                        return struct
+                        return source_config, struct
 
         raise ValueError(f"Structure not found to import: {name}")
 
@@ -371,9 +371,10 @@ class Converter(pydantic.BaseModel):
             try:
                 struct = self.by_bmad_name[member.type.lower()]
             except KeyError:
-                struct = self.resolve_import(member.type.lower())
-                imports.setdefault(struct.module, [])
-                imports[struct.module].append(to_subroutine_name(member.type))
+                struct_source_config, struct = self.resolve_import(member.type.lower())
+                to_json_module = struct_source_config.fortran_filename.stem
+                imports.setdefault(to_json_module, [])
+                imports[to_json_module].append(to_subroutine_name(member.type))
 
             if struct.name.lower() in skips or struct.filename.stem in filename_skips:
                 self.seen.remove(member.type)

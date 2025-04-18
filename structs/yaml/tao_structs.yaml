@@ -3112,8 +3112,7 @@
           size: null
           type: logical
         ix_branch:
-          comment: Branch tracked. If track_start or track_end is a lord, ix_track_start/end
-            index will be a index of slave.
+          comment: Branch tracked.
           default: 0
           default_factory: ''
           definition: 'integer :: ix_branch = 0'
@@ -3132,7 +3131,7 @@
           definition: 'integer :: ix_track_end = not_set$'
           dimension: ''
           fortran_default: not_set$
-          line: 995
+          line: 994
           name: ix_track_end
           python_name: ix_track_end
           python_type: int
@@ -3145,7 +3144,7 @@
           definition: 'integer :: ix_track_start = not_set$'
           dimension: ''
           fortran_default: not_set$
-          line: 994
+          line: 993
           name: ix_track_start
           python_name: ix_track_start
           python_type: int
@@ -4650,9 +4649,7 @@
           size: '100'
           type: character
         draw_error_bars:
-          comment: 'Draw error bars based upon data%error_rms if drawing data? !!
-            logical :: draw_rms = .false.          ! Show mean and RMS values with
-            legend?'
+          comment: Draw error bars based upon data%error_rms if drawing data?
           default: false
           default_factory: ''
           definition: 'logical :: draw_error_bars = .false.'
@@ -4905,7 +4902,7 @@
           definition: 'logical :: smooth_line_calc = .true.'
           dimension: ''
           fortran_default: .true.
-          line: 228
+          line: 227
           name: smooth_line_calc
           python_name: smooth_line_calc
           python_type: bool
@@ -4970,7 +4967,7 @@
           definition: 'logical :: valid = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 229
+          line: 228
           name: valid
           python_name: valid
           python_type: bool
@@ -5125,7 +5122,7 @@
       comment: ''
       members:
         d:
-          comment: Pointer to the appropriate section in u%data
+          comment: ''
           default: null
           default_factory: ''
           definition: 'type (tao_data_struct), pointer :: d(:) => null()'
@@ -8912,7 +8909,7 @@
           definition: 'logical :: mode_flip_here = .false.'
           dimension: ''
           fortran_default: .false.
-          line: 951
+          line: 950
           name: mode_flip_here
           python_name: mode_flip_here
           python_type: bool
@@ -9101,8 +9098,7 @@
           size: null
           type: integer
         twiss_valid:
-          comment: 'Invalid EG with unstable 1-turn matrix with a closed branch. With
-            open branch: twiss_valid = T even if some Twiss (and orbit) is invalid.'
+          comment: Invalid EG with unstable 1-turn matrix with a closed branch.
           default: true
           default_factory: ''
           definition: 'logical :: twiss_valid = .true.'
@@ -11953,7 +11949,7 @@
           size: '40'
           type: character
         v:
-          comment: Pointer to the appropriate section in s%var.
+          comment: ''
           default: null
           default_factory: ''
           definition: 'type (tao_var_struct), pointer :: v(:) => null()'
