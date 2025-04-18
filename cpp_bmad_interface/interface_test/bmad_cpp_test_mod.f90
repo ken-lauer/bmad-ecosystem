@@ -1,6 +1,10 @@
 
 module bmad_cpp_test_mod
 
+use json_module, only: json_core, json_value
+use bmad_json
+use sim_utils_json
+
 use bmad_cpp_convert_mod
 use equality_mod
 
@@ -17,6 +21,10 @@ subroutine test1_f_spline (ok)
 implicit none
 
 type(spline_struct), target :: f_spline, f2_spline
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -42,6 +50,17 @@ if (f_spline == f2_spline) then
 else
   print *, '[4] spline: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call spline_struct_to_json(f_spline, json_root)
+  call json%print(json_root, 'test_f_spline_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spline_struct_to_json(f2_spline, json_root)
+  call json%print(json_root, 'test_f_spline_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_spline
@@ -51,7 +70,10 @@ end subroutine test1_f_spline
 
 subroutine test2_f_spline (c_spline, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_spline
 type(spline_struct), target :: f_spline, f2_spline
@@ -68,6 +90,17 @@ if (f_spline == f2_spline) then
 else
   print *, '[2] spline: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call spline_struct_to_json(f_spline, json_root)
+  call json%print(json_root, 'test_f_spline_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spline_struct_to_json(f2_spline, json_root)
+  call json%print(json_root, 'test_f_spline_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -113,6 +146,10 @@ subroutine test1_f_spin_polar (ok)
 implicit none
 
 type(spin_polar_struct), target :: f_spin_polar, f2_spin_polar
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -138,6 +175,17 @@ if (f_spin_polar == f2_spin_polar) then
 else
   print *, '[4] spin_polar: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call spin_polar_struct_to_json(f_spin_polar, json_root)
+  call json%print(json_root, 'test_f_spin_polar_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spin_polar_struct_to_json(f2_spin_polar, json_root)
+  call json%print(json_root, 'test_f_spin_polar_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_spin_polar
@@ -147,7 +195,10 @@ end subroutine test1_f_spin_polar
 
 subroutine test2_f_spin_polar (c_spin_polar, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_spin_polar
 type(spin_polar_struct), target :: f_spin_polar, f2_spin_polar
@@ -164,6 +215,17 @@ if (f_spin_polar == f2_spin_polar) then
 else
   print *, '[2] spin_polar: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call spin_polar_struct_to_json(f_spin_polar, json_root)
+  call json%print(json_root, 'test_f_spin_polar_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spin_polar_struct_to_json(f2_spin_polar, json_root)
+  call json%print(json_root, 'test_f_spin_polar_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -206,6 +268,10 @@ subroutine test1_f_ac_kicker_time (ok)
 implicit none
 
 type(ac_kicker_time_struct), target :: f_ac_kicker_time, f2_ac_kicker_time
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -231,6 +297,17 @@ if (f_ac_kicker_time == f2_ac_kicker_time) then
 else
   print *, '[4] ac_kicker_time: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call ac_kicker_time_struct_to_json(f_ac_kicker_time, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_time_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ac_kicker_time_struct_to_json(f2_ac_kicker_time, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_time_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_ac_kicker_time
@@ -240,7 +317,10 @@ end subroutine test1_f_ac_kicker_time
 
 subroutine test2_f_ac_kicker_time (c_ac_kicker_time, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_ac_kicker_time
 type(ac_kicker_time_struct), target :: f_ac_kicker_time, f2_ac_kicker_time
@@ -257,6 +337,17 @@ if (f_ac_kicker_time == f2_ac_kicker_time) then
 else
   print *, '[2] ac_kicker_time: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ac_kicker_time_struct_to_json(f_ac_kicker_time, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_time_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ac_kicker_time_struct_to_json(f2_ac_kicker_time, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_time_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -297,6 +388,10 @@ subroutine test1_f_ac_kicker_freq (ok)
 implicit none
 
 type(ac_kicker_freq_struct), target :: f_ac_kicker_freq, f2_ac_kicker_freq
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -322,6 +417,17 @@ if (f_ac_kicker_freq == f2_ac_kicker_freq) then
 else
   print *, '[4] ac_kicker_freq: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call ac_kicker_freq_struct_to_json(f_ac_kicker_freq, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_freq_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ac_kicker_freq_struct_to_json(f2_ac_kicker_freq, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_freq_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_ac_kicker_freq
@@ -331,7 +437,10 @@ end subroutine test1_f_ac_kicker_freq
 
 subroutine test2_f_ac_kicker_freq (c_ac_kicker_freq, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_ac_kicker_freq
 type(ac_kicker_freq_struct), target :: f_ac_kicker_freq, f2_ac_kicker_freq
@@ -348,6 +457,17 @@ if (f_ac_kicker_freq == f2_ac_kicker_freq) then
 else
   print *, '[2] ac_kicker_freq: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ac_kicker_freq_struct_to_json(f_ac_kicker_freq, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_freq_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ac_kicker_freq_struct_to_json(f2_ac_kicker_freq, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_freq_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -390,6 +510,10 @@ subroutine test1_f_ac_kicker (ok)
 implicit none
 
 type(ac_kicker_struct), target :: f_ac_kicker, f2_ac_kicker
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -415,6 +539,17 @@ if (f_ac_kicker == f2_ac_kicker) then
 else
   print *, '[4] ac_kicker: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call ac_kicker_struct_to_json(f_ac_kicker, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ac_kicker_struct_to_json(f2_ac_kicker, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_ac_kicker
@@ -424,7 +559,10 @@ end subroutine test1_f_ac_kicker
 
 subroutine test2_f_ac_kicker (c_ac_kicker, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_ac_kicker
 type(ac_kicker_struct), target :: f_ac_kicker, f2_ac_kicker
@@ -441,6 +579,17 @@ if (f_ac_kicker == f2_ac_kicker) then
 else
   print *, '[2] ac_kicker: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ac_kicker_struct_to_json(f_ac_kicker, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ac_kicker_struct_to_json(f2_ac_kicker, json_root)
+  call json%print(json_root, 'test_f_ac_kicker_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -495,6 +644,10 @@ subroutine test1_f_interval1_coef (ok)
 implicit none
 
 type(interval1_coef_struct), target :: f_interval1_coef, f2_interval1_coef
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -520,6 +673,17 @@ if (f_interval1_coef == f2_interval1_coef) then
 else
   print *, '[4] interval1_coef: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call interval1_coef_struct_to_json(f_interval1_coef, json_root)
+  call json%print(json_root, 'test_f_interval1_coef_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call interval1_coef_struct_to_json(f2_interval1_coef, json_root)
+  call json%print(json_root, 'test_f_interval1_coef_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_interval1_coef
@@ -529,7 +693,10 @@ end subroutine test1_f_interval1_coef
 
 subroutine test2_f_interval1_coef (c_interval1_coef, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_interval1_coef
 type(interval1_coef_struct), target :: f_interval1_coef, f2_interval1_coef
@@ -546,6 +713,17 @@ if (f_interval1_coef == f2_interval1_coef) then
 else
   print *, '[2] interval1_coef: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call interval1_coef_struct_to_json(f_interval1_coef, json_root)
+  call json%print(json_root, 'test_f_interval1_coef_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call interval1_coef_struct_to_json(f2_interval1_coef, json_root)
+  call json%print(json_root, 'test_f_interval1_coef_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -586,6 +764,10 @@ subroutine test1_f_photon_reflect_table (ok)
 implicit none
 
 type(photon_reflect_table_struct), target :: f_photon_reflect_table, f2_photon_reflect_table
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -611,6 +793,17 @@ if (f_photon_reflect_table == f2_photon_reflect_table) then
 else
   print *, '[4] photon_reflect_table: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call photon_reflect_table_struct_to_json(f_photon_reflect_table, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_table_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_reflect_table_struct_to_json(f2_photon_reflect_table, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_table_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_photon_reflect_table
@@ -620,7 +813,10 @@ end subroutine test1_f_photon_reflect_table
 
 subroutine test2_f_photon_reflect_table (c_photon_reflect_table, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_photon_reflect_table
 type(photon_reflect_table_struct), target :: f_photon_reflect_table, f2_photon_reflect_table
@@ -637,6 +833,17 @@ if (f_photon_reflect_table == f2_photon_reflect_table) then
 else
   print *, '[2] photon_reflect_table: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call photon_reflect_table_struct_to_json(f_photon_reflect_table, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_table_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_reflect_table_struct_to_json(f2_photon_reflect_table, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_table_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -739,6 +946,10 @@ subroutine test1_f_photon_reflect_surface (ok)
 implicit none
 
 type(photon_reflect_surface_struct), target :: f_photon_reflect_surface, f2_photon_reflect_surface
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -764,6 +975,17 @@ if (f_photon_reflect_surface == f2_photon_reflect_surface) then
 else
   print *, '[4] photon_reflect_surface: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call photon_reflect_surface_struct_to_json(f_photon_reflect_surface, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_surface_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_reflect_surface_struct_to_json(f2_photon_reflect_surface, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_surface_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_photon_reflect_surface
@@ -773,7 +995,10 @@ end subroutine test1_f_photon_reflect_surface
 
 subroutine test2_f_photon_reflect_surface (c_photon_reflect_surface, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_photon_reflect_surface
 type(photon_reflect_surface_struct), target :: f_photon_reflect_surface, f2_photon_reflect_surface
@@ -790,6 +1015,17 @@ if (f_photon_reflect_surface == f2_photon_reflect_surface) then
 else
   print *, '[2] photon_reflect_surface: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call photon_reflect_surface_struct_to_json(f_photon_reflect_surface, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_surface_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_reflect_surface_struct_to_json(f2_photon_reflect_surface, json_root)
+  call json%print(json_root, 'test_f_photon_reflect_surface_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -852,6 +1088,10 @@ subroutine test1_f_coord (ok)
 implicit none
 
 type(coord_struct), target :: f_coord, f2_coord
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -877,6 +1117,17 @@ if (f_coord == f2_coord) then
 else
   print *, '[4] coord: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call coord_struct_to_json(f_coord, json_root)
+  call json%print(json_root, 'test_f_coord_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call coord_struct_to_json(f2_coord, json_root)
+  call json%print(json_root, 'test_f_coord_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_coord
@@ -886,7 +1137,10 @@ end subroutine test1_f_coord
 
 subroutine test2_f_coord (c_coord, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_coord
 type(coord_struct), target :: f_coord, f2_coord
@@ -903,6 +1157,17 @@ if (f_coord == f2_coord) then
 else
   print *, '[2] coord: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call coord_struct_to_json(f_coord, json_root)
+  call json%print(json_root, 'test_f_coord_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call coord_struct_to_json(f2_coord, json_root)
+  call json%print(json_root, 'test_f_coord_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -991,6 +1256,10 @@ subroutine test1_f_coord_array (ok)
 implicit none
 
 type(coord_array_struct), target :: f_coord_array, f2_coord_array
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1016,6 +1285,17 @@ if (f_coord_array == f2_coord_array) then
 else
   print *, '[4] coord_array: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call coord_array_struct_to_json(f_coord_array, json_root)
+  call json%print(json_root, 'test_f_coord_array_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call coord_array_struct_to_json(f2_coord_array, json_root)
+  call json%print(json_root, 'test_f_coord_array_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_coord_array
@@ -1025,7 +1305,10 @@ end subroutine test1_f_coord_array
 
 subroutine test2_f_coord_array (c_coord_array, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_coord_array
 type(coord_array_struct), target :: f_coord_array, f2_coord_array
@@ -1042,6 +1325,17 @@ if (f_coord_array == f2_coord_array) then
 else
   print *, '[2] coord_array: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call coord_array_struct_to_json(f_coord_array, json_root)
+  call json%print(json_root, 'test_f_coord_array_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call coord_array_struct_to_json(f2_coord_array, json_root)
+  call json%print(json_root, 'test_f_coord_array_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1086,6 +1380,10 @@ subroutine test1_f_bpm_phase_coupling (ok)
 implicit none
 
 type(bpm_phase_coupling_struct), target :: f_bpm_phase_coupling, f2_bpm_phase_coupling
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1111,6 +1409,17 @@ if (f_bpm_phase_coupling == f2_bpm_phase_coupling) then
 else
   print *, '[4] bpm_phase_coupling: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call bpm_phase_coupling_struct_to_json(f_bpm_phase_coupling, json_root)
+  call json%print(json_root, 'test_f_bpm_phase_coupling_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bpm_phase_coupling_struct_to_json(f2_bpm_phase_coupling, json_root)
+  call json%print(json_root, 'test_f_bpm_phase_coupling_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_bpm_phase_coupling
@@ -1120,7 +1429,10 @@ end subroutine test1_f_bpm_phase_coupling
 
 subroutine test2_f_bpm_phase_coupling (c_bpm_phase_coupling, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_bpm_phase_coupling
 type(bpm_phase_coupling_struct), target :: f_bpm_phase_coupling, f2_bpm_phase_coupling
@@ -1137,6 +1449,17 @@ if (f_bpm_phase_coupling == f2_bpm_phase_coupling) then
 else
   print *, '[2] bpm_phase_coupling: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bpm_phase_coupling_struct_to_json(f_bpm_phase_coupling, json_root)
+  call json%print(json_root, 'test_f_bpm_phase_coupling_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bpm_phase_coupling_struct_to_json(f2_bpm_phase_coupling, json_root)
+  call json%print(json_root, 'test_f_bpm_phase_coupling_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1191,6 +1514,10 @@ subroutine test1_f_expression_atom (ok)
 implicit none
 
 type(expression_atom_struct), target :: f_expression_atom, f2_expression_atom
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1216,6 +1543,17 @@ if (f_expression_atom == f2_expression_atom) then
 else
   print *, '[4] expression_atom: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call expression_atom_struct_to_json(f_expression_atom, json_root)
+  call json%print(json_root, 'test_f_expression_atom_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call expression_atom_struct_to_json(f2_expression_atom, json_root)
+  call json%print(json_root, 'test_f_expression_atom_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_expression_atom
@@ -1225,7 +1563,10 @@ end subroutine test1_f_expression_atom
 
 subroutine test2_f_expression_atom (c_expression_atom, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_expression_atom
 type(expression_atom_struct), target :: f_expression_atom, f2_expression_atom
@@ -1242,6 +1583,17 @@ if (f_expression_atom == f2_expression_atom) then
 else
   print *, '[2] expression_atom: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call expression_atom_struct_to_json(f_expression_atom, json_root)
+  call json%print(json_root, 'test_f_expression_atom_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call expression_atom_struct_to_json(f2_expression_atom, json_root)
+  call json%print(json_root, 'test_f_expression_atom_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1284,6 +1636,10 @@ subroutine test1_f_wake_sr_z_long (ok)
 implicit none
 
 type(wake_sr_z_long_struct), target :: f_wake_sr_z_long, f2_wake_sr_z_long
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1309,6 +1665,17 @@ if (f_wake_sr_z_long == f2_wake_sr_z_long) then
 else
   print *, '[4] wake_sr_z_long: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wake_sr_z_long_struct_to_json(f_wake_sr_z_long, json_root)
+  call json%print(json_root, 'test_f_wake_sr_z_long_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_sr_z_long_struct_to_json(f2_wake_sr_z_long, json_root)
+  call json%print(json_root, 'test_f_wake_sr_z_long_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wake_sr_z_long
@@ -1318,7 +1685,10 @@ end subroutine test1_f_wake_sr_z_long
 
 subroutine test2_f_wake_sr_z_long (c_wake_sr_z_long, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wake_sr_z_long
 type(wake_sr_z_long_struct), target :: f_wake_sr_z_long, f2_wake_sr_z_long
@@ -1335,6 +1705,17 @@ if (f_wake_sr_z_long == f2_wake_sr_z_long) then
 else
   print *, '[2] wake_sr_z_long: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wake_sr_z_long_struct_to_json(f_wake_sr_z_long, json_root)
+  call json%print(json_root, 'test_f_wake_sr_z_long_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_sr_z_long_struct_to_json(f2_wake_sr_z_long, json_root)
+  call json%print(json_root, 'test_f_wake_sr_z_long_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1423,6 +1804,10 @@ subroutine test1_f_wake_sr_mode (ok)
 implicit none
 
 type(wake_sr_mode_struct), target :: f_wake_sr_mode, f2_wake_sr_mode
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1448,6 +1833,17 @@ if (f_wake_sr_mode == f2_wake_sr_mode) then
 else
   print *, '[4] wake_sr_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wake_sr_mode_struct_to_json(f_wake_sr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_sr_mode_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_sr_mode_struct_to_json(f2_wake_sr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_sr_mode_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wake_sr_mode
@@ -1457,7 +1853,10 @@ end subroutine test1_f_wake_sr_mode
 
 subroutine test2_f_wake_sr_mode (c_wake_sr_mode, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wake_sr_mode
 type(wake_sr_mode_struct), target :: f_wake_sr_mode, f2_wake_sr_mode
@@ -1474,6 +1873,17 @@ if (f_wake_sr_mode == f2_wake_sr_mode) then
 else
   print *, '[2] wake_sr_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wake_sr_mode_struct_to_json(f_wake_sr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_sr_mode_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_sr_mode_struct_to_json(f2_wake_sr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_sr_mode_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1528,6 +1938,10 @@ subroutine test1_f_wake_sr (ok)
 implicit none
 
 type(wake_sr_struct), target :: f_wake_sr, f2_wake_sr
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1553,6 +1967,17 @@ if (f_wake_sr == f2_wake_sr) then
 else
   print *, '[4] wake_sr: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wake_sr_struct_to_json(f_wake_sr, json_root)
+  call json%print(json_root, 'test_f_wake_sr_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_sr_struct_to_json(f2_wake_sr, json_root)
+  call json%print(json_root, 'test_f_wake_sr_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wake_sr
@@ -1562,7 +1987,10 @@ end subroutine test1_f_wake_sr
 
 subroutine test2_f_wake_sr (c_wake_sr, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wake_sr
 type(wake_sr_struct), target :: f_wake_sr, f2_wake_sr
@@ -1579,6 +2007,17 @@ if (f_wake_sr == f2_wake_sr) then
 else
   print *, '[2] wake_sr: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wake_sr_struct_to_json(f_wake_sr, json_root)
+  call json%print(json_root, 'test_f_wake_sr_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_sr_struct_to_json(f2_wake_sr, json_root)
+  call json%print(json_root, 'test_f_wake_sr_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1651,6 +2090,10 @@ subroutine test1_f_wake_lr_mode (ok)
 implicit none
 
 type(wake_lr_mode_struct), target :: f_wake_lr_mode, f2_wake_lr_mode
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1676,6 +2119,17 @@ if (f_wake_lr_mode == f2_wake_lr_mode) then
 else
   print *, '[4] wake_lr_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wake_lr_mode_struct_to_json(f_wake_lr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_lr_mode_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_lr_mode_struct_to_json(f2_wake_lr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_lr_mode_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wake_lr_mode
@@ -1685,7 +2139,10 @@ end subroutine test1_f_wake_lr_mode
 
 subroutine test2_f_wake_lr_mode (c_wake_lr_mode, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wake_lr_mode
 type(wake_lr_mode_struct), target :: f_wake_lr_mode, f2_wake_lr_mode
@@ -1702,6 +2159,17 @@ if (f_wake_lr_mode == f2_wake_lr_mode) then
 else
   print *, '[2] wake_lr_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wake_lr_mode_struct_to_json(f_wake_lr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_lr_mode_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_lr_mode_struct_to_json(f2_wake_lr_mode, json_root)
+  call json%print(json_root, 'test_f_wake_lr_mode_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1762,6 +2230,10 @@ subroutine test1_f_wake_lr (ok)
 implicit none
 
 type(wake_lr_struct), target :: f_wake_lr, f2_wake_lr
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1787,6 +2259,17 @@ if (f_wake_lr == f2_wake_lr) then
 else
   print *, '[4] wake_lr: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wake_lr_struct_to_json(f_wake_lr, json_root)
+  call json%print(json_root, 'test_f_wake_lr_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_lr_struct_to_json(f2_wake_lr, json_root)
+  call json%print(json_root, 'test_f_wake_lr_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wake_lr
@@ -1796,7 +2279,10 @@ end subroutine test1_f_wake_lr
 
 subroutine test2_f_wake_lr (c_wake_lr, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wake_lr
 type(wake_lr_struct), target :: f_wake_lr, f2_wake_lr
@@ -1813,6 +2299,17 @@ if (f_wake_lr == f2_wake_lr) then
 else
   print *, '[2] wake_lr: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wake_lr_struct_to_json(f_wake_lr, json_root)
+  call json%print(json_root, 'test_f_wake_lr_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_lr_struct_to_json(f2_wake_lr, json_root)
+  call json%print(json_root, 'test_f_wake_lr_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1871,6 +2368,10 @@ subroutine test1_f_lat_ele_loc (ok)
 implicit none
 
 type(lat_ele_loc_struct), target :: f_lat_ele_loc, f2_lat_ele_loc
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1896,6 +2397,17 @@ if (f_lat_ele_loc == f2_lat_ele_loc) then
 else
   print *, '[4] lat_ele_loc: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call lat_ele_loc_struct_to_json(f_lat_ele_loc, json_root)
+  call json%print(json_root, 'test_f_lat_ele_loc_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_loc_struct_to_json(f2_lat_ele_loc, json_root)
+  call json%print(json_root, 'test_f_lat_ele_loc_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_lat_ele_loc
@@ -1905,7 +2417,10 @@ end subroutine test1_f_lat_ele_loc
 
 subroutine test2_f_lat_ele_loc (c_lat_ele_loc, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_lat_ele_loc
 type(lat_ele_loc_struct), target :: f_lat_ele_loc, f2_lat_ele_loc
@@ -1922,6 +2437,17 @@ if (f_lat_ele_loc == f2_lat_ele_loc) then
 else
   print *, '[2] lat_ele_loc: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call lat_ele_loc_struct_to_json(f_lat_ele_loc, json_root)
+  call json%print(json_root, 'test_f_lat_ele_loc_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_loc_struct_to_json(f2_lat_ele_loc, json_root)
+  call json%print(json_root, 'test_f_lat_ele_loc_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -1960,6 +2486,10 @@ subroutine test1_f_wake (ok)
 implicit none
 
 type(wake_struct), target :: f_wake, f2_wake
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -1985,6 +2515,17 @@ if (f_wake == f2_wake) then
 else
   print *, '[4] wake: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wake_struct_to_json(f_wake, json_root)
+  call json%print(json_root, 'test_f_wake_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_struct_to_json(f2_wake, json_root)
+  call json%print(json_root, 'test_f_wake_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wake
@@ -1994,7 +2535,10 @@ end subroutine test1_f_wake
 
 subroutine test2_f_wake (c_wake, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wake
 type(wake_struct), target :: f_wake, f2_wake
@@ -2011,6 +2555,17 @@ if (f_wake == f2_wake) then
 else
   print *, '[2] wake: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wake_struct_to_json(f_wake, json_root)
+  call json%print(json_root, 'test_f_wake_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wake_struct_to_json(f2_wake, json_root)
+  call json%print(json_root, 'test_f_wake_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2049,6 +2604,10 @@ subroutine test1_f_taylor_term (ok)
 implicit none
 
 type(taylor_term_struct), target :: f_taylor_term, f2_taylor_term
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2074,6 +2633,17 @@ if (f_taylor_term == f2_taylor_term) then
 else
   print *, '[4] taylor_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call taylor_term_struct_to_json(f_taylor_term, json_root)
+  call json%print(json_root, 'test_f_taylor_term_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call taylor_term_struct_to_json(f2_taylor_term, json_root)
+  call json%print(json_root, 'test_f_taylor_term_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_taylor_term
@@ -2083,7 +2653,10 @@ end subroutine test1_f_taylor_term
 
 subroutine test2_f_taylor_term (c_taylor_term, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_taylor_term
 type(taylor_term_struct), target :: f_taylor_term, f2_taylor_term
@@ -2100,6 +2673,17 @@ if (f_taylor_term == f2_taylor_term) then
 else
   print *, '[2] taylor_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call taylor_term_struct_to_json(f_taylor_term, json_root)
+  call json%print(json_root, 'test_f_taylor_term_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call taylor_term_struct_to_json(f2_taylor_term, json_root)
+  call json%print(json_root, 'test_f_taylor_term_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2141,6 +2725,10 @@ subroutine test1_f_taylor (ok)
 implicit none
 
 type(taylor_struct), target :: f_taylor, f2_taylor
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2166,6 +2754,17 @@ if (f_taylor == f2_taylor) then
 else
   print *, '[4] taylor: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call taylor_struct_to_json(f_taylor, json_root)
+  call json%print(json_root, 'test_f_taylor_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call taylor_struct_to_json(f2_taylor, json_root)
+  call json%print(json_root, 'test_f_taylor_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_taylor
@@ -2175,7 +2774,10 @@ end subroutine test1_f_taylor
 
 subroutine test2_f_taylor (c_taylor, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_taylor
 type(taylor_struct), target :: f_taylor, f2_taylor
@@ -2192,6 +2794,17 @@ if (f_taylor == f2_taylor) then
 else
   print *, '[2] taylor: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call taylor_struct_to_json(f_taylor, json_root)
+  call json%print(json_root, 'test_f_taylor_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call taylor_struct_to_json(f2_taylor, json_root)
+  call json%print(json_root, 'test_f_taylor_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2238,6 +2851,10 @@ subroutine test1_f_em_taylor_term (ok)
 implicit none
 
 type(em_taylor_term_struct), target :: f_em_taylor_term, f2_em_taylor_term
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2263,6 +2880,17 @@ if (f_em_taylor_term == f2_em_taylor_term) then
 else
   print *, '[4] em_taylor_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call em_taylor_term_struct_to_json(f_em_taylor_term, json_root)
+  call json%print(json_root, 'test_f_em_taylor_term_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call em_taylor_term_struct_to_json(f2_em_taylor_term, json_root)
+  call json%print(json_root, 'test_f_em_taylor_term_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_em_taylor_term
@@ -2272,7 +2900,10 @@ end subroutine test1_f_em_taylor_term
 
 subroutine test2_f_em_taylor_term (c_em_taylor_term, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_em_taylor_term
 type(em_taylor_term_struct), target :: f_em_taylor_term, f2_em_taylor_term
@@ -2289,6 +2920,17 @@ if (f_em_taylor_term == f2_em_taylor_term) then
 else
   print *, '[2] em_taylor_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call em_taylor_term_struct_to_json(f_em_taylor_term, json_root)
+  call json%print(json_root, 'test_f_em_taylor_term_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call em_taylor_term_struct_to_json(f2_em_taylor_term, json_root)
+  call json%print(json_root, 'test_f_em_taylor_term_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2330,6 +2972,10 @@ subroutine test1_f_em_taylor (ok)
 implicit none
 
 type(em_taylor_struct), target :: f_em_taylor, f2_em_taylor
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2355,6 +3001,17 @@ if (f_em_taylor == f2_em_taylor) then
 else
   print *, '[4] em_taylor: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call em_taylor_struct_to_json(f_em_taylor, json_root)
+  call json%print(json_root, 'test_f_em_taylor_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call em_taylor_struct_to_json(f2_em_taylor, json_root)
+  call json%print(json_root, 'test_f_em_taylor_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_em_taylor
@@ -2364,7 +3021,10 @@ end subroutine test1_f_em_taylor
 
 subroutine test2_f_em_taylor (c_em_taylor, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_em_taylor
 type(em_taylor_struct), target :: f_em_taylor, f2_em_taylor
@@ -2381,6 +3041,17 @@ if (f_em_taylor == f2_em_taylor) then
 else
   print *, '[2] em_taylor: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call em_taylor_struct_to_json(f_em_taylor, json_root)
+  call json%print(json_root, 'test_f_em_taylor_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call em_taylor_struct_to_json(f2_em_taylor, json_root)
+  call json%print(json_root, 'test_f_em_taylor_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2427,6 +3098,10 @@ subroutine test1_f_cartesian_map_term1 (ok)
 implicit none
 
 type(cartesian_map_term1_struct), target :: f_cartesian_map_term1, f2_cartesian_map_term1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2452,6 +3127,17 @@ if (f_cartesian_map_term1 == f2_cartesian_map_term1) then
 else
   print *, '[4] cartesian_map_term1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call cartesian_map_term1_struct_to_json(f_cartesian_map_term1, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cartesian_map_term1_struct_to_json(f2_cartesian_map_term1, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_cartesian_map_term1
@@ -2461,7 +3147,10 @@ end subroutine test1_f_cartesian_map_term1
 
 subroutine test2_f_cartesian_map_term1 (c_cartesian_map_term1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_cartesian_map_term1
 type(cartesian_map_term1_struct), target :: f_cartesian_map_term1, f2_cartesian_map_term1
@@ -2478,6 +3167,17 @@ if (f_cartesian_map_term1 == f2_cartesian_map_term1) then
 else
   print *, '[2] cartesian_map_term1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call cartesian_map_term1_struct_to_json(f_cartesian_map_term1, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cartesian_map_term1_struct_to_json(f2_cartesian_map_term1, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2530,6 +3230,10 @@ subroutine test1_f_cartesian_map_term (ok)
 implicit none
 
 type(cartesian_map_term_struct), target :: f_cartesian_map_term, f2_cartesian_map_term
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2555,6 +3259,17 @@ if (f_cartesian_map_term == f2_cartesian_map_term) then
 else
   print *, '[4] cartesian_map_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call cartesian_map_term_struct_to_json(f_cartesian_map_term, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cartesian_map_term_struct_to_json(f2_cartesian_map_term, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_cartesian_map_term
@@ -2564,7 +3279,10 @@ end subroutine test1_f_cartesian_map_term
 
 subroutine test2_f_cartesian_map_term (c_cartesian_map_term, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_cartesian_map_term
 type(cartesian_map_term_struct), target :: f_cartesian_map_term, f2_cartesian_map_term
@@ -2581,6 +3299,17 @@ if (f_cartesian_map_term == f2_cartesian_map_term) then
 else
   print *, '[2] cartesian_map_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call cartesian_map_term_struct_to_json(f_cartesian_map_term, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cartesian_map_term_struct_to_json(f2_cartesian_map_term, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_term_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2631,6 +3360,10 @@ subroutine test1_f_cartesian_map (ok)
 implicit none
 
 type(cartesian_map_struct), target :: f_cartesian_map, f2_cartesian_map
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2656,6 +3389,17 @@ if (f_cartesian_map == f2_cartesian_map) then
 else
   print *, '[4] cartesian_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call cartesian_map_struct_to_json(f_cartesian_map, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cartesian_map_struct_to_json(f2_cartesian_map, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_cartesian_map
@@ -2665,7 +3409,10 @@ end subroutine test1_f_cartesian_map
 
 subroutine test2_f_cartesian_map (c_cartesian_map, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_cartesian_map
 type(cartesian_map_struct), target :: f_cartesian_map, f2_cartesian_map
@@ -2682,6 +3429,17 @@ if (f_cartesian_map == f2_cartesian_map) then
 else
   print *, '[2] cartesian_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call cartesian_map_struct_to_json(f_cartesian_map, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cartesian_map_struct_to_json(f2_cartesian_map, json_root)
+  call json%print(json_root, 'test_f_cartesian_map_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2737,6 +3495,10 @@ subroutine test1_f_cylindrical_map_term1 (ok)
 implicit none
 
 type(cylindrical_map_term1_struct), target :: f_cylindrical_map_term1, f2_cylindrical_map_term1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2762,6 +3524,17 @@ if (f_cylindrical_map_term1 == f2_cylindrical_map_term1) then
 else
   print *, '[4] cylindrical_map_term1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call cylindrical_map_term1_struct_to_json(f_cylindrical_map_term1, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cylindrical_map_term1_struct_to_json(f2_cylindrical_map_term1, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_cylindrical_map_term1
@@ -2771,7 +3544,10 @@ end subroutine test1_f_cylindrical_map_term1
 
 subroutine test2_f_cylindrical_map_term1 (c_cylindrical_map_term1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_cylindrical_map_term1
 type(cylindrical_map_term1_struct), target :: f_cylindrical_map_term1, f2_cylindrical_map_term1
@@ -2788,6 +3564,17 @@ if (f_cylindrical_map_term1 == f2_cylindrical_map_term1) then
 else
   print *, '[2] cylindrical_map_term1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call cylindrical_map_term1_struct_to_json(f_cylindrical_map_term1, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cylindrical_map_term1_struct_to_json(f2_cylindrical_map_term1, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2826,6 +3613,10 @@ subroutine test1_f_cylindrical_map_term (ok)
 implicit none
 
 type(cylindrical_map_term_struct), target :: f_cylindrical_map_term, f2_cylindrical_map_term
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2851,6 +3642,17 @@ if (f_cylindrical_map_term == f2_cylindrical_map_term) then
 else
   print *, '[4] cylindrical_map_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call cylindrical_map_term_struct_to_json(f_cylindrical_map_term, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cylindrical_map_term_struct_to_json(f2_cylindrical_map_term, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_cylindrical_map_term
@@ -2860,7 +3662,10 @@ end subroutine test1_f_cylindrical_map_term
 
 subroutine test2_f_cylindrical_map_term (c_cylindrical_map_term, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_cylindrical_map_term
 type(cylindrical_map_term_struct), target :: f_cylindrical_map_term, f2_cylindrical_map_term
@@ -2877,6 +3682,17 @@ if (f_cylindrical_map_term == f2_cylindrical_map_term) then
 else
   print *, '[2] cylindrical_map_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call cylindrical_map_term_struct_to_json(f_cylindrical_map_term, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cylindrical_map_term_struct_to_json(f2_cylindrical_map_term, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_term_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -2927,6 +3743,10 @@ subroutine test1_f_cylindrical_map (ok)
 implicit none
 
 type(cylindrical_map_struct), target :: f_cylindrical_map, f2_cylindrical_map
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2952,6 +3772,17 @@ if (f_cylindrical_map == f2_cylindrical_map) then
 else
   print *, '[4] cylindrical_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call cylindrical_map_struct_to_json(f_cylindrical_map, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cylindrical_map_struct_to_json(f2_cylindrical_map, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_cylindrical_map
@@ -2961,7 +3792,10 @@ end subroutine test1_f_cylindrical_map
 
 subroutine test2_f_cylindrical_map (c_cylindrical_map, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_cylindrical_map
 type(cylindrical_map_struct), target :: f_cylindrical_map, f2_cylindrical_map
@@ -2978,6 +3812,17 @@ if (f_cylindrical_map == f2_cylindrical_map) then
 else
   print *, '[2] cylindrical_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call cylindrical_map_struct_to_json(f_cylindrical_map, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call cylindrical_map_struct_to_json(f2_cylindrical_map, json_root)
+  call json%print(json_root, 'test_f_cylindrical_map_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3041,6 +3886,10 @@ subroutine test1_f_grid_field_pt1 (ok)
 implicit none
 
 type(grid_field_pt1_struct), target :: f_grid_field_pt1, f2_grid_field_pt1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3066,6 +3915,17 @@ if (f_grid_field_pt1 == f2_grid_field_pt1) then
 else
   print *, '[4] grid_field_pt1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call grid_field_pt1_struct_to_json(f_grid_field_pt1, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_field_pt1_struct_to_json(f2_grid_field_pt1, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_grid_field_pt1
@@ -3075,7 +3935,10 @@ end subroutine test1_f_grid_field_pt1
 
 subroutine test2_f_grid_field_pt1 (c_grid_field_pt1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_grid_field_pt1
 type(grid_field_pt1_struct), target :: f_grid_field_pt1, f2_grid_field_pt1
@@ -3092,6 +3955,17 @@ if (f_grid_field_pt1 == f2_grid_field_pt1) then
 else
   print *, '[2] grid_field_pt1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call grid_field_pt1_struct_to_json(f_grid_field_pt1, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_field_pt1_struct_to_json(f2_grid_field_pt1, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3136,6 +4010,10 @@ subroutine test1_f_grid_field_pt (ok)
 implicit none
 
 type(grid_field_pt_struct), target :: f_grid_field_pt, f2_grid_field_pt
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3161,6 +4039,17 @@ if (f_grid_field_pt == f2_grid_field_pt) then
 else
   print *, '[4] grid_field_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call grid_field_pt_struct_to_json(f_grid_field_pt, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_field_pt_struct_to_json(f2_grid_field_pt, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_grid_field_pt
@@ -3170,7 +4059,10 @@ end subroutine test1_f_grid_field_pt
 
 subroutine test2_f_grid_field_pt (c_grid_field_pt, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_grid_field_pt
 type(grid_field_pt_struct), target :: f_grid_field_pt, f2_grid_field_pt
@@ -3187,6 +4079,17 @@ if (f_grid_field_pt == f2_grid_field_pt) then
 else
   print *, '[2] grid_field_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call grid_field_pt_struct_to_json(f_grid_field_pt, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_field_pt_struct_to_json(f2_grid_field_pt, json_root)
+  call json%print(json_root, 'test_f_grid_field_pt_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3227,6 +4130,10 @@ subroutine test1_f_grid_field (ok)
 implicit none
 
 type(grid_field_struct), target :: f_grid_field, f2_grid_field
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3252,6 +4159,17 @@ if (f_grid_field == f2_grid_field) then
 else
   print *, '[4] grid_field: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call grid_field_struct_to_json(f_grid_field, json_root)
+  call json%print(json_root, 'test_f_grid_field_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_field_struct_to_json(f2_grid_field, json_root)
+  call json%print(json_root, 'test_f_grid_field_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_grid_field
@@ -3261,7 +4179,10 @@ end subroutine test1_f_grid_field
 
 subroutine test2_f_grid_field (c_grid_field, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_grid_field
 type(grid_field_struct), target :: f_grid_field, f2_grid_field
@@ -3278,6 +4199,17 @@ if (f_grid_field == f2_grid_field) then
 else
   print *, '[2] grid_field: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call grid_field_struct_to_json(f_grid_field, json_root)
+  call json%print(json_root, 'test_f_grid_field_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_field_struct_to_json(f2_grid_field, json_root)
+  call json%print(json_root, 'test_f_grid_field_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3348,6 +4280,10 @@ subroutine test1_f_floor_position (ok)
 implicit none
 
 type(floor_position_struct), target :: f_floor_position, f2_floor_position
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3373,6 +4309,17 @@ if (f_floor_position == f2_floor_position) then
 else
   print *, '[4] floor_position: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call floor_position_struct_to_json(f_floor_position, json_root)
+  call json%print(json_root, 'test_f_floor_position_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call floor_position_struct_to_json(f2_floor_position, json_root)
+  call json%print(json_root, 'test_f_floor_position_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_floor_position
@@ -3382,7 +4329,10 @@ end subroutine test1_f_floor_position
 
 subroutine test2_f_floor_position (c_floor_position, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_floor_position
 type(floor_position_struct), target :: f_floor_position, f2_floor_position
@@ -3399,6 +4349,17 @@ if (f_floor_position == f2_floor_position) then
 else
   print *, '[2] floor_position: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call floor_position_struct_to_json(f_floor_position, json_root)
+  call json%print(json_root, 'test_f_floor_position_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call floor_position_struct_to_json(f2_floor_position, json_root)
+  call json%print(json_root, 'test_f_floor_position_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3450,6 +4411,10 @@ subroutine test1_f_high_energy_space_charge (ok)
 implicit none
 
 type(high_energy_space_charge_struct), target :: f_high_energy_space_charge, f2_high_energy_space_charge
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3475,6 +4440,17 @@ if (f_high_energy_space_charge == f2_high_energy_space_charge) then
 else
   print *, '[4] high_energy_space_charge: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call high_energy_space_charge_struct_to_json(f_high_energy_space_charge, json_root)
+  call json%print(json_root, 'test_f_high_energy_space_charge_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call high_energy_space_charge_struct_to_json(f2_high_energy_space_charge, json_root)
+  call json%print(json_root, 'test_f_high_energy_space_charge_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_high_energy_space_charge
@@ -3484,7 +4460,10 @@ end subroutine test1_f_high_energy_space_charge
 
 subroutine test2_f_high_energy_space_charge (c_high_energy_space_charge, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_high_energy_space_charge
 type(high_energy_space_charge_struct), target :: f_high_energy_space_charge, f2_high_energy_space_charge
@@ -3501,6 +4480,17 @@ if (f_high_energy_space_charge == f2_high_energy_space_charge) then
 else
   print *, '[2] high_energy_space_charge: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call high_energy_space_charge_struct_to_json(f_high_energy_space_charge, json_root)
+  call json%print(json_root, 'test_f_high_energy_space_charge_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call high_energy_space_charge_struct_to_json(f2_high_energy_space_charge, json_root)
+  call json%print(json_root, 'test_f_high_energy_space_charge_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3551,6 +4541,10 @@ subroutine test1_f_xy_disp (ok)
 implicit none
 
 type(xy_disp_struct), target :: f_xy_disp, f2_xy_disp
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3576,6 +4570,17 @@ if (f_xy_disp == f2_xy_disp) then
 else
   print *, '[4] xy_disp: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call xy_disp_struct_to_json(f_xy_disp, json_root)
+  call json%print(json_root, 'test_f_xy_disp_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call xy_disp_struct_to_json(f2_xy_disp, json_root)
+  call json%print(json_root, 'test_f_xy_disp_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_xy_disp
@@ -3585,7 +4590,10 @@ end subroutine test1_f_xy_disp
 
 subroutine test2_f_xy_disp (c_xy_disp, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_xy_disp
 type(xy_disp_struct), target :: f_xy_disp, f2_xy_disp
@@ -3602,6 +4610,17 @@ if (f_xy_disp == f2_xy_disp) then
 else
   print *, '[2] xy_disp: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call xy_disp_struct_to_json(f_xy_disp, json_root)
+  call json%print(json_root, 'test_f_xy_disp_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call xy_disp_struct_to_json(f2_xy_disp, json_root)
+  call json%print(json_root, 'test_f_xy_disp_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3644,6 +4663,10 @@ subroutine test1_f_twiss (ok)
 implicit none
 
 type(twiss_struct), target :: f_twiss, f2_twiss
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3669,6 +4692,17 @@ if (f_twiss == f2_twiss) then
 else
   print *, '[4] twiss: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call twiss_struct_to_json(f_twiss, json_root)
+  call json%print(json_root, 'test_f_twiss_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call twiss_struct_to_json(f2_twiss, json_root)
+  call json%print(json_root, 'test_f_twiss_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_twiss
@@ -3678,7 +4712,10 @@ end subroutine test1_f_twiss
 
 subroutine test2_f_twiss (c_twiss, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_twiss
 type(twiss_struct), target :: f_twiss, f2_twiss
@@ -3695,6 +4732,17 @@ if (f_twiss == f2_twiss) then
 else
   print *, '[2] twiss: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call twiss_struct_to_json(f_twiss, json_root)
+  call json%print(json_root, 'test_f_twiss_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call twiss_struct_to_json(f2_twiss, json_root)
+  call json%print(json_root, 'test_f_twiss_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3751,6 +4799,10 @@ subroutine test1_f_mode3 (ok)
 implicit none
 
 type(mode3_struct), target :: f_mode3, f2_mode3
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3776,6 +4828,17 @@ if (f_mode3 == f2_mode3) then
 else
   print *, '[4] mode3: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call mode3_struct_to_json(f_mode3, json_root)
+  call json%print(json_root, 'test_f_mode3_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call mode3_struct_to_json(f2_mode3, json_root)
+  call json%print(json_root, 'test_f_mode3_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_mode3
@@ -3785,7 +4848,10 @@ end subroutine test1_f_mode3
 
 subroutine test2_f_mode3 (c_mode3, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_mode3
 type(mode3_struct), target :: f_mode3, f2_mode3
@@ -3802,6 +4868,17 @@ if (f_mode3 == f2_mode3) then
 else
   print *, '[2] mode3: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call mode3_struct_to_json(f_mode3, json_root)
+  call json%print(json_root, 'test_f_mode3_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call mode3_struct_to_json(f2_mode3, json_root)
+  call json%print(json_root, 'test_f_mode3_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3852,6 +4929,10 @@ subroutine test1_f_bookkeeping_state (ok)
 implicit none
 
 type(bookkeeping_state_struct), target :: f_bookkeeping_state, f2_bookkeeping_state
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3877,6 +4958,17 @@ if (f_bookkeeping_state == f2_bookkeeping_state) then
 else
   print *, '[4] bookkeeping_state: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call bookkeeping_state_struct_to_json(f_bookkeeping_state, json_root)
+  call json%print(json_root, 'test_f_bookkeeping_state_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bookkeeping_state_struct_to_json(f2_bookkeeping_state, json_root)
+  call json%print(json_root, 'test_f_bookkeeping_state_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_bookkeeping_state
@@ -3886,7 +4978,10 @@ end subroutine test1_f_bookkeeping_state
 
 subroutine test2_f_bookkeeping_state (c_bookkeeping_state, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_bookkeeping_state
 type(bookkeeping_state_struct), target :: f_bookkeeping_state, f2_bookkeeping_state
@@ -3903,6 +4998,17 @@ if (f_bookkeeping_state == f2_bookkeeping_state) then
 else
   print *, '[2] bookkeeping_state: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bookkeeping_state_struct_to_json(f_bookkeeping_state, json_root)
+  call json%print(json_root, 'test_f_bookkeeping_state_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bookkeeping_state_struct_to_json(f2_bookkeeping_state, json_root)
+  call json%print(json_root, 'test_f_bookkeeping_state_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -3955,6 +5061,10 @@ subroutine test1_f_rad_map (ok)
 implicit none
 
 type(rad_map_struct), target :: f_rad_map, f2_rad_map
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -3980,6 +5090,17 @@ if (f_rad_map == f2_rad_map) then
 else
   print *, '[4] rad_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call rad_map_struct_to_json(f_rad_map, json_root)
+  call json%print(json_root, 'test_f_rad_map_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_map_struct_to_json(f2_rad_map, json_root)
+  call json%print(json_root, 'test_f_rad_map_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_rad_map
@@ -3989,7 +5110,10 @@ end subroutine test1_f_rad_map
 
 subroutine test2_f_rad_map (c_rad_map, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_rad_map
 type(rad_map_struct), target :: f_rad_map, f2_rad_map
@@ -4006,6 +5130,17 @@ if (f_rad_map == f2_rad_map) then
 else
   print *, '[2] rad_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rad_map_struct_to_json(f_rad_map, json_root)
+  call json%print(json_root, 'test_f_rad_map_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_map_struct_to_json(f2_rad_map, json_root)
+  call json%print(json_root, 'test_f_rad_map_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4068,6 +5203,10 @@ subroutine test1_f_rad_map_ele (ok)
 implicit none
 
 type(rad_map_ele_struct), target :: f_rad_map_ele, f2_rad_map_ele
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4093,6 +5232,17 @@ if (f_rad_map_ele == f2_rad_map_ele) then
 else
   print *, '[4] rad_map_ele: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call rad_map_ele_struct_to_json(f_rad_map_ele, json_root)
+  call json%print(json_root, 'test_f_rad_map_ele_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_map_ele_struct_to_json(f2_rad_map_ele, json_root)
+  call json%print(json_root, 'test_f_rad_map_ele_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_rad_map_ele
@@ -4102,7 +5252,10 @@ end subroutine test1_f_rad_map_ele
 
 subroutine test2_f_rad_map_ele (c_rad_map_ele, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_rad_map_ele
 type(rad_map_ele_struct), target :: f_rad_map_ele, f2_rad_map_ele
@@ -4119,6 +5272,17 @@ if (f_rad_map_ele == f2_rad_map_ele) then
 else
   print *, '[2] rad_map_ele: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rad_map_ele_struct_to_json(f_rad_map_ele, json_root)
+  call json%print(json_root, 'test_f_rad_map_ele_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_map_ele_struct_to_json(f2_rad_map_ele, json_root)
+  call json%print(json_root, 'test_f_rad_map_ele_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4159,6 +5323,10 @@ subroutine test1_f_gen_grad1 (ok)
 implicit none
 
 type(gen_grad1_struct), target :: f_gen_grad1, f2_gen_grad1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4184,6 +5352,17 @@ if (f_gen_grad1 == f2_gen_grad1) then
 else
   print *, '[4] gen_grad1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call gen_grad1_struct_to_json(f_gen_grad1, json_root)
+  call json%print(json_root, 'test_f_gen_grad1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call gen_grad1_struct_to_json(f2_gen_grad1, json_root)
+  call json%print(json_root, 'test_f_gen_grad1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_gen_grad1
@@ -4193,7 +5372,10 @@ end subroutine test1_f_gen_grad1
 
 subroutine test2_f_gen_grad1 (c_gen_grad1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_gen_grad1
 type(gen_grad1_struct), target :: f_gen_grad1, f2_gen_grad1
@@ -4210,6 +5392,17 @@ if (f_gen_grad1 == f2_gen_grad1) then
 else
   print *, '[2] gen_grad1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call gen_grad1_struct_to_json(f_gen_grad1, json_root)
+  call json%print(json_root, 'test_f_gen_grad1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call gen_grad1_struct_to_json(f2_gen_grad1, json_root)
+  call json%print(json_root, 'test_f_gen_grad1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4262,6 +5455,10 @@ subroutine test1_f_gen_grad_map (ok)
 implicit none
 
 type(gen_grad_map_struct), target :: f_gen_grad_map, f2_gen_grad_map
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4287,6 +5484,17 @@ if (f_gen_grad_map == f2_gen_grad_map) then
 else
   print *, '[4] gen_grad_map: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call gen_grad_map_struct_to_json(f_gen_grad_map, json_root)
+  call json%print(json_root, 'test_f_gen_grad_map_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call gen_grad_map_struct_to_json(f2_gen_grad_map, json_root)
+  call json%print(json_root, 'test_f_gen_grad_map_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_gen_grad_map
@@ -4296,7 +5504,10 @@ end subroutine test1_f_gen_grad_map
 
 subroutine test2_f_gen_grad_map (c_gen_grad_map, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_gen_grad_map
 type(gen_grad_map_struct), target :: f_gen_grad_map, f2_gen_grad_map
@@ -4313,6 +5524,17 @@ if (f_gen_grad_map == f2_gen_grad_map) then
 else
   print *, '[2] gen_grad_map: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call gen_grad_map_struct_to_json(f_gen_grad_map, json_root)
+  call json%print(json_root, 'test_f_gen_grad_map_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call gen_grad_map_struct_to_json(f2_gen_grad_map, json_root)
+  call json%print(json_root, 'test_f_gen_grad_map_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4382,6 +5604,10 @@ subroutine test1_f_surface_segmented_pt (ok)
 implicit none
 
 type(surface_segmented_pt_struct), target :: f_surface_segmented_pt, f2_surface_segmented_pt
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4407,6 +5633,17 @@ if (f_surface_segmented_pt == f2_surface_segmented_pt) then
 else
   print *, '[4] surface_segmented_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_segmented_pt_struct_to_json(f_surface_segmented_pt, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pt_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_segmented_pt_struct_to_json(f2_surface_segmented_pt, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pt_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_segmented_pt
@@ -4416,7 +5653,10 @@ end subroutine test1_f_surface_segmented_pt
 
 subroutine test2_f_surface_segmented_pt (c_surface_segmented_pt, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_segmented_pt
 type(surface_segmented_pt_struct), target :: f_surface_segmented_pt, f2_surface_segmented_pt
@@ -4433,6 +5673,17 @@ if (f_surface_segmented_pt == f2_surface_segmented_pt) then
 else
   print *, '[2] surface_segmented_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_segmented_pt_struct_to_json(f_surface_segmented_pt, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pt_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_segmented_pt_struct_to_json(f2_surface_segmented_pt, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pt_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4477,6 +5728,10 @@ subroutine test1_f_surface_segmented (ok)
 implicit none
 
 type(surface_segmented_struct), target :: f_surface_segmented, f2_surface_segmented
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4502,6 +5757,17 @@ if (f_surface_segmented == f2_surface_segmented) then
 else
   print *, '[4] surface_segmented: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_segmented_struct_to_json(f_surface_segmented, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_segmented_struct_to_json(f2_surface_segmented, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_segmented
@@ -4511,7 +5777,10 @@ end subroutine test1_f_surface_segmented
 
 subroutine test2_f_surface_segmented (c_surface_segmented, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_segmented
 type(surface_segmented_struct), target :: f_surface_segmented, f2_surface_segmented
@@ -4528,6 +5797,17 @@ if (f_surface_segmented == f2_surface_segmented) then
 else
   print *, '[2] surface_segmented: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_segmented_struct_to_json(f_surface_segmented, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_segmented_struct_to_json(f2_surface_segmented, json_root)
+  call json%print(json_root, 'test_f_surface_segmented_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4586,6 +5866,10 @@ subroutine test1_f_surface_h_misalign_pt (ok)
 implicit none
 
 type(surface_h_misalign_pt_struct), target :: f_surface_h_misalign_pt, f2_surface_h_misalign_pt
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4611,6 +5895,17 @@ if (f_surface_h_misalign_pt == f2_surface_h_misalign_pt) then
 else
   print *, '[4] surface_h_misalign_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_h_misalign_pt_struct_to_json(f_surface_h_misalign_pt, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pt_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_h_misalign_pt_struct_to_json(f2_surface_h_misalign_pt, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pt_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_h_misalign_pt
@@ -4620,7 +5915,10 @@ end subroutine test1_f_surface_h_misalign_pt
 
 subroutine test2_f_surface_h_misalign_pt (c_surface_h_misalign_pt, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_h_misalign_pt
 type(surface_h_misalign_pt_struct), target :: f_surface_h_misalign_pt, f2_surface_h_misalign_pt
@@ -4637,6 +5935,17 @@ if (f_surface_h_misalign_pt == f2_surface_h_misalign_pt) then
 else
   print *, '[2] surface_h_misalign_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_h_misalign_pt_struct_to_json(f_surface_h_misalign_pt, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pt_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_h_misalign_pt_struct_to_json(f2_surface_h_misalign_pt, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pt_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4683,6 +5992,10 @@ subroutine test1_f_surface_h_misalign (ok)
 implicit none
 
 type(surface_h_misalign_struct), target :: f_surface_h_misalign, f2_surface_h_misalign
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4708,6 +6021,17 @@ if (f_surface_h_misalign == f2_surface_h_misalign) then
 else
   print *, '[4] surface_h_misalign: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_h_misalign_struct_to_json(f_surface_h_misalign, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_h_misalign_struct_to_json(f2_surface_h_misalign, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_h_misalign
@@ -4717,7 +6041,10 @@ end subroutine test1_f_surface_h_misalign
 
 subroutine test2_f_surface_h_misalign (c_surface_h_misalign, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_h_misalign
 type(surface_h_misalign_struct), target :: f_surface_h_misalign, f2_surface_h_misalign
@@ -4734,6 +6061,17 @@ if (f_surface_h_misalign == f2_surface_h_misalign) then
 else
   print *, '[2] surface_h_misalign: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_h_misalign_struct_to_json(f_surface_h_misalign, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_h_misalign_struct_to_json(f2_surface_h_misalign, json_root)
+  call json%print(json_root, 'test_f_surface_h_misalign_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4792,6 +6130,10 @@ subroutine test1_f_surface_displacement_pt (ok)
 implicit none
 
 type(surface_displacement_pt_struct), target :: f_surface_displacement_pt, f2_surface_displacement_pt
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4817,6 +6159,17 @@ if (f_surface_displacement_pt == f2_surface_displacement_pt) then
 else
   print *, '[4] surface_displacement_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_displacement_pt_struct_to_json(f_surface_displacement_pt, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pt_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_displacement_pt_struct_to_json(f2_surface_displacement_pt, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pt_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_displacement_pt
@@ -4826,7 +6179,10 @@ end subroutine test1_f_surface_displacement_pt
 
 subroutine test2_f_surface_displacement_pt (c_surface_displacement_pt, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_displacement_pt
 type(surface_displacement_pt_struct), target :: f_surface_displacement_pt, f2_surface_displacement_pt
@@ -4843,6 +6199,17 @@ if (f_surface_displacement_pt == f2_surface_displacement_pt) then
 else
   print *, '[2] surface_displacement_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_displacement_pt_struct_to_json(f_surface_displacement_pt, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pt_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_displacement_pt_struct_to_json(f2_surface_displacement_pt, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pt_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4889,6 +6256,10 @@ subroutine test1_f_surface_displacement (ok)
 implicit none
 
 type(surface_displacement_struct), target :: f_surface_displacement, f2_surface_displacement
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -4914,6 +6285,17 @@ if (f_surface_displacement == f2_surface_displacement) then
 else
   print *, '[4] surface_displacement: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_displacement_struct_to_json(f_surface_displacement, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_displacement_struct_to_json(f2_surface_displacement, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_displacement
@@ -4923,7 +6305,10 @@ end subroutine test1_f_surface_displacement
 
 subroutine test2_f_surface_displacement (c_surface_displacement, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_displacement
 type(surface_displacement_struct), target :: f_surface_displacement, f2_surface_displacement
@@ -4940,6 +6325,17 @@ if (f_surface_displacement == f2_surface_displacement) then
 else
   print *, '[2] surface_displacement: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_displacement_struct_to_json(f_surface_displacement, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_displacement_struct_to_json(f2_surface_displacement, json_root)
+  call json%print(json_root, 'test_f_surface_displacement_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -4998,6 +6394,10 @@ subroutine test1_f_target_point (ok)
 implicit none
 
 type(target_point_struct), target :: f_target_point, f2_target_point
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5023,6 +6423,17 @@ if (f_target_point == f2_target_point) then
 else
   print *, '[4] target_point: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call target_point_struct_to_json(f_target_point, json_root)
+  call json%print(json_root, 'test_f_target_point_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call target_point_struct_to_json(f2_target_point, json_root)
+  call json%print(json_root, 'test_f_target_point_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_target_point
@@ -5032,7 +6443,10 @@ end subroutine test1_f_target_point
 
 subroutine test2_f_target_point (c_target_point, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_target_point
 type(target_point_struct), target :: f_target_point, f2_target_point
@@ -5049,6 +6463,17 @@ if (f_target_point == f2_target_point) then
 else
   print *, '[2] target_point: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call target_point_struct_to_json(f_target_point, json_root)
+  call json%print(json_root, 'test_f_target_point_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call target_point_struct_to_json(f2_target_point, json_root)
+  call json%print(json_root, 'test_f_target_point_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5088,6 +6513,10 @@ subroutine test1_f_surface_curvature (ok)
 implicit none
 
 type(surface_curvature_struct), target :: f_surface_curvature, f2_surface_curvature
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5113,6 +6542,17 @@ if (f_surface_curvature == f2_surface_curvature) then
 else
   print *, '[4] surface_curvature: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call surface_curvature_struct_to_json(f_surface_curvature, json_root)
+  call json%print(json_root, 'test_f_surface_curvature_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_curvature_struct_to_json(f2_surface_curvature, json_root)
+  call json%print(json_root, 'test_f_surface_curvature_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_surface_curvature
@@ -5122,7 +6562,10 @@ end subroutine test1_f_surface_curvature
 
 subroutine test2_f_surface_curvature (c_surface_curvature, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_surface_curvature
 type(surface_curvature_struct), target :: f_surface_curvature, f2_surface_curvature
@@ -5139,6 +6582,17 @@ if (f_surface_curvature == f2_surface_curvature) then
 else
   print *, '[2] surface_curvature: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call surface_curvature_struct_to_json(f_surface_curvature, json_root)
+  call json%print(json_root, 'test_f_surface_curvature_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call surface_curvature_struct_to_json(f2_surface_curvature, json_root)
+  call json%print(json_root, 'test_f_surface_curvature_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5188,6 +6642,10 @@ subroutine test1_f_photon_target (ok)
 implicit none
 
 type(photon_target_struct), target :: f_photon_target, f2_photon_target
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5213,6 +6671,17 @@ if (f_photon_target == f2_photon_target) then
 else
   print *, '[4] photon_target: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call photon_target_struct_to_json(f_photon_target, json_root)
+  call json%print(json_root, 'test_f_photon_target_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_target_struct_to_json(f2_photon_target, json_root)
+  call json%print(json_root, 'test_f_photon_target_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_photon_target
@@ -5222,7 +6691,10 @@ end subroutine test1_f_photon_target
 
 subroutine test2_f_photon_target (c_photon_target, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_photon_target
 type(photon_target_struct), target :: f_photon_target, f2_photon_target
@@ -5239,6 +6711,17 @@ if (f_photon_target == f2_photon_target) then
 else
   print *, '[2] photon_target: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call photon_target_struct_to_json(f_photon_target, json_root)
+  call json%print(json_root, 'test_f_photon_target_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_target_struct_to_json(f2_photon_target, json_root)
+  call json%print(json_root, 'test_f_photon_target_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5286,6 +6769,10 @@ subroutine test1_f_photon_material (ok)
 implicit none
 
 type(photon_material_struct), target :: f_photon_material, f2_photon_material
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5311,6 +6798,17 @@ if (f_photon_material == f2_photon_material) then
 else
   print *, '[4] photon_material: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call photon_material_struct_to_json(f_photon_material, json_root)
+  call json%print(json_root, 'test_f_photon_material_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_material_struct_to_json(f2_photon_material, json_root)
+  call json%print(json_root, 'test_f_photon_material_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_photon_material
@@ -5320,7 +6818,10 @@ end subroutine test1_f_photon_material
 
 subroutine test2_f_photon_material (c_photon_material, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_photon_material
 type(photon_material_struct), target :: f_photon_material, f2_photon_material
@@ -5337,6 +6838,17 @@ if (f_photon_material == f2_photon_material) then
 else
   print *, '[2] photon_material: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call photon_material_struct_to_json(f_photon_material, json_root)
+  call json%print(json_root, 'test_f_photon_material_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_material_struct_to_json(f2_photon_material, json_root)
+  call json%print(json_root, 'test_f_photon_material_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5393,6 +6905,10 @@ subroutine test1_f_pixel_pt (ok)
 implicit none
 
 type(pixel_pt_struct), target :: f_pixel_pt, f2_pixel_pt
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5418,6 +6934,17 @@ if (f_pixel_pt == f2_pixel_pt) then
 else
   print *, '[4] pixel_pt: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call pixel_pt_struct_to_json(f_pixel_pt, json_root)
+  call json%print(json_root, 'test_f_pixel_pt_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call pixel_pt_struct_to_json(f2_pixel_pt, json_root)
+  call json%print(json_root, 'test_f_pixel_pt_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_pixel_pt
@@ -5427,7 +6954,10 @@ end subroutine test1_f_pixel_pt
 
 subroutine test2_f_pixel_pt (c_pixel_pt, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_pixel_pt
 type(pixel_pt_struct), target :: f_pixel_pt, f2_pixel_pt
@@ -5444,6 +6974,17 @@ if (f_pixel_pt == f2_pixel_pt) then
 else
   print *, '[2] pixel_pt: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call pixel_pt_struct_to_json(f_pixel_pt, json_root)
+  call json%print(json_root, 'test_f_pixel_pt_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call pixel_pt_struct_to_json(f2_pixel_pt, json_root)
+  call json%print(json_root, 'test_f_pixel_pt_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5510,6 +7051,10 @@ subroutine test1_f_pixel_detec (ok)
 implicit none
 
 type(pixel_detec_struct), target :: f_pixel_detec, f2_pixel_detec
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5535,6 +7080,17 @@ if (f_pixel_detec == f2_pixel_detec) then
 else
   print *, '[4] pixel_detec: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call pixel_detec_struct_to_json(f_pixel_detec, json_root)
+  call json%print(json_root, 'test_f_pixel_detec_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call pixel_detec_struct_to_json(f2_pixel_detec, json_root)
+  call json%print(json_root, 'test_f_pixel_detec_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_pixel_detec
@@ -5544,7 +7100,10 @@ end subroutine test1_f_pixel_detec
 
 subroutine test2_f_pixel_detec (c_pixel_detec, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_pixel_detec
 type(pixel_detec_struct), target :: f_pixel_detec, f2_pixel_detec
@@ -5561,6 +7120,17 @@ if (f_pixel_detec == f2_pixel_detec) then
 else
   print *, '[2] pixel_detec: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call pixel_detec_struct_to_json(f_pixel_detec, json_root)
+  call json%print(json_root, 'test_f_pixel_detec_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call pixel_detec_struct_to_json(f2_pixel_detec, json_root)
+  call json%print(json_root, 'test_f_pixel_detec_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5623,6 +7193,10 @@ subroutine test1_f_photon_element (ok)
 implicit none
 
 type(photon_element_struct), target :: f_photon_element, f2_photon_element
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5648,6 +7222,17 @@ if (f_photon_element == f2_photon_element) then
 else
   print *, '[4] photon_element: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call photon_element_struct_to_json(f_photon_element, json_root)
+  call json%print(json_root, 'test_f_photon_element_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_element_struct_to_json(f2_photon_element, json_root)
+  call json%print(json_root, 'test_f_photon_element_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_photon_element
@@ -5657,7 +7242,10 @@ end subroutine test1_f_photon_element
 
 subroutine test2_f_photon_element (c_photon_element, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_photon_element
 type(photon_element_struct), target :: f_photon_element, f2_photon_element
@@ -5674,6 +7262,17 @@ if (f_photon_element == f2_photon_element) then
 else
   print *, '[2] photon_element: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call photon_element_struct_to_json(f_photon_element, json_root)
+  call json%print(json_root, 'test_f_photon_element_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call photon_element_struct_to_json(f2_photon_element, json_root)
+  call json%print(json_root, 'test_f_photon_element_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5749,6 +7348,10 @@ subroutine test1_f_wall3d_vertex (ok)
 implicit none
 
 type(wall3d_vertex_struct), target :: f_wall3d_vertex, f2_wall3d_vertex
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5774,6 +7377,17 @@ if (f_wall3d_vertex == f2_wall3d_vertex) then
 else
   print *, '[4] wall3d_vertex: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wall3d_vertex_struct_to_json(f_wall3d_vertex, json_root)
+  call json%print(json_root, 'test_f_wall3d_vertex_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wall3d_vertex_struct_to_json(f2_wall3d_vertex, json_root)
+  call json%print(json_root, 'test_f_wall3d_vertex_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wall3d_vertex
@@ -5783,7 +7397,10 @@ end subroutine test1_f_wall3d_vertex
 
 subroutine test2_f_wall3d_vertex (c_wall3d_vertex, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wall3d_vertex
 type(wall3d_vertex_struct), target :: f_wall3d_vertex, f2_wall3d_vertex
@@ -5800,6 +7417,17 @@ if (f_wall3d_vertex == f2_wall3d_vertex) then
 else
   print *, '[2] wall3d_vertex: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wall3d_vertex_struct_to_json(f_wall3d_vertex, json_root)
+  call json%print(json_root, 'test_f_wall3d_vertex_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wall3d_vertex_struct_to_json(f2_wall3d_vertex, json_root)
+  call json%print(json_root, 'test_f_wall3d_vertex_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -5852,6 +7480,10 @@ subroutine test1_f_wall3d_section (ok)
 implicit none
 
 type(wall3d_section_struct), target :: f_wall3d_section, f2_wall3d_section
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -5877,6 +7509,17 @@ if (f_wall3d_section == f2_wall3d_section) then
 else
   print *, '[4] wall3d_section: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wall3d_section_struct_to_json(f_wall3d_section, json_root)
+  call json%print(json_root, 'test_f_wall3d_section_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wall3d_section_struct_to_json(f2_wall3d_section, json_root)
+  call json%print(json_root, 'test_f_wall3d_section_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wall3d_section
@@ -5886,7 +7529,10 @@ end subroutine test1_f_wall3d_section
 
 subroutine test2_f_wall3d_section (c_wall3d_section, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wall3d_section
 type(wall3d_section_struct), target :: f_wall3d_section, f2_wall3d_section
@@ -5903,6 +7549,17 @@ if (f_wall3d_section == f2_wall3d_section) then
 else
   print *, '[2] wall3d_section: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wall3d_section_struct_to_json(f_wall3d_section, json_root)
+  call json%print(json_root, 'test_f_wall3d_section_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wall3d_section_struct_to_json(f2_wall3d_section, json_root)
+  call json%print(json_root, 'test_f_wall3d_section_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6010,6 +7667,10 @@ subroutine test1_f_wall3d (ok)
 implicit none
 
 type(wall3d_struct), target :: f_wall3d, f2_wall3d
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6035,6 +7696,17 @@ if (f_wall3d == f2_wall3d) then
 else
   print *, '[4] wall3d: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call wall3d_struct_to_json(f_wall3d, json_root)
+  call json%print(json_root, 'test_f_wall3d_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wall3d_struct_to_json(f2_wall3d, json_root)
+  call json%print(json_root, 'test_f_wall3d_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_wall3d
@@ -6044,7 +7716,10 @@ end subroutine test1_f_wall3d
 
 subroutine test2_f_wall3d (c_wall3d, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_wall3d
 type(wall3d_struct), target :: f_wall3d, f2_wall3d
@@ -6061,6 +7736,17 @@ if (f_wall3d == f2_wall3d) then
 else
   print *, '[2] wall3d: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call wall3d_struct_to_json(f_wall3d, json_root)
+  call json%print(json_root, 'test_f_wall3d_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call wall3d_struct_to_json(f2_wall3d, json_root)
+  call json%print(json_root, 'test_f_wall3d_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6129,6 +7815,10 @@ subroutine test1_f_ramper_lord (ok)
 implicit none
 
 type(ramper_lord_struct), target :: f_ramper_lord, f2_ramper_lord
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6154,6 +7844,17 @@ if (f_ramper_lord == f2_ramper_lord) then
 else
   print *, '[4] ramper_lord: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call ramper_lord_struct_to_json(f_ramper_lord, json_root)
+  call json%print(json_root, 'test_f_ramper_lord_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ramper_lord_struct_to_json(f2_ramper_lord, json_root)
+  call json%print(json_root, 'test_f_ramper_lord_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_ramper_lord
@@ -6163,7 +7864,10 @@ end subroutine test1_f_ramper_lord
 
 subroutine test2_f_ramper_lord (c_ramper_lord, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_ramper_lord
 type(ramper_lord_struct), target :: f_ramper_lord, f2_ramper_lord
@@ -6180,6 +7884,17 @@ if (f_ramper_lord == f2_ramper_lord) then
 else
   print *, '[2] ramper_lord: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ramper_lord_struct_to_json(f_ramper_lord, json_root)
+  call json%print(json_root, 'test_f_ramper_lord_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ramper_lord_struct_to_json(f2_ramper_lord, json_root)
+  call json%print(json_root, 'test_f_ramper_lord_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6226,6 +7941,10 @@ subroutine test1_f_control (ok)
 implicit none
 
 type(control_struct), target :: f_control, f2_control
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6251,6 +7970,17 @@ if (f_control == f2_control) then
 else
   print *, '[4] control: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call control_struct_to_json(f_control, json_root)
+  call json%print(json_root, 'test_f_control_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call control_struct_to_json(f2_control, json_root)
+  call json%print(json_root, 'test_f_control_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_control
@@ -6260,7 +7990,10 @@ end subroutine test1_f_control
 
 subroutine test2_f_control (c_control, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_control
 type(control_struct), target :: f_control, f2_control
@@ -6277,6 +8010,17 @@ if (f_control == f2_control) then
 else
   print *, '[2] control: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call control_struct_to_json(f_control, json_root)
+  call json%print(json_root, 'test_f_control_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call control_struct_to_json(f2_control, json_root)
+  call json%print(json_root, 'test_f_control_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6348,6 +8092,10 @@ subroutine test1_f_control_var1 (ok)
 implicit none
 
 type(control_var1_struct), target :: f_control_var1, f2_control_var1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6373,6 +8121,17 @@ if (f_control_var1 == f2_control_var1) then
 else
   print *, '[4] control_var1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call control_var1_struct_to_json(f_control_var1, json_root)
+  call json%print(json_root, 'test_f_control_var1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call control_var1_struct_to_json(f2_control_var1, json_root)
+  call json%print(json_root, 'test_f_control_var1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_control_var1
@@ -6382,7 +8141,10 @@ end subroutine test1_f_control_var1
 
 subroutine test2_f_control_var1 (c_control_var1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_control_var1
 type(control_var1_struct), target :: f_control_var1, f2_control_var1
@@ -6399,6 +8161,17 @@ if (f_control_var1 == f2_control_var1) then
 else
   print *, '[2] control_var1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call control_var1_struct_to_json(f_control_var1, json_root)
+  call json%print(json_root, 'test_f_control_var1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call control_var1_struct_to_json(f2_control_var1, json_root)
+  call json%print(json_root, 'test_f_control_var1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6441,6 +8214,10 @@ subroutine test1_f_control_ramp1 (ok)
 implicit none
 
 type(control_ramp1_struct), target :: f_control_ramp1, f2_control_ramp1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6466,6 +8243,17 @@ if (f_control_ramp1 == f2_control_ramp1) then
 else
   print *, '[4] control_ramp1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call control_ramp1_struct_to_json(f_control_ramp1, json_root)
+  call json%print(json_root, 'test_f_control_ramp1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call control_ramp1_struct_to_json(f2_control_ramp1, json_root)
+  call json%print(json_root, 'test_f_control_ramp1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_control_ramp1
@@ -6475,7 +8263,10 @@ end subroutine test1_f_control_ramp1
 
 subroutine test2_f_control_ramp1 (c_control_ramp1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_control_ramp1
 type(control_ramp1_struct), target :: f_control_ramp1, f2_control_ramp1
@@ -6492,6 +8283,17 @@ if (f_control_ramp1 == f2_control_ramp1) then
 else
   print *, '[2] control_ramp1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call control_ramp1_struct_to_json(f_control_ramp1, json_root)
+  call json%print(json_root, 'test_f_control_ramp1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call control_ramp1_struct_to_json(f2_control_ramp1, json_root)
+  call json%print(json_root, 'test_f_control_ramp1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6557,6 +8359,10 @@ subroutine test1_f_controller (ok)
 implicit none
 
 type(controller_struct), target :: f_controller, f2_controller
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6582,6 +8388,17 @@ if (f_controller == f2_controller) then
 else
   print *, '[4] controller: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call controller_struct_to_json(f_controller, json_root)
+  call json%print(json_root, 'test_f_controller_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call controller_struct_to_json(f2_controller, json_root)
+  call json%print(json_root, 'test_f_controller_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_controller
@@ -6591,7 +8408,10 @@ end subroutine test1_f_controller
 
 subroutine test2_f_controller (c_controller, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_controller
 type(controller_struct), target :: f_controller, f2_controller
@@ -6608,6 +8428,17 @@ if (f_controller == f2_controller) then
 else
   print *, '[2] controller: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call controller_struct_to_json(f_controller, json_root)
+  call json%print(json_root, 'test_f_controller_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call controller_struct_to_json(f2_controller, json_root)
+  call json%print(json_root, 'test_f_controller_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6683,6 +8514,10 @@ subroutine test1_f_ellipse_beam_init (ok)
 implicit none
 
 type(ellipse_beam_init_struct), target :: f_ellipse_beam_init, f2_ellipse_beam_init
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6708,6 +8543,17 @@ if (f_ellipse_beam_init == f2_ellipse_beam_init) then
 else
   print *, '[4] ellipse_beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call ellipse_beam_init_struct_to_json(f_ellipse_beam_init, json_root)
+  call json%print(json_root, 'test_f_ellipse_beam_init_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ellipse_beam_init_struct_to_json(f2_ellipse_beam_init, json_root)
+  call json%print(json_root, 'test_f_ellipse_beam_init_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_ellipse_beam_init
@@ -6717,7 +8563,10 @@ end subroutine test1_f_ellipse_beam_init
 
 subroutine test2_f_ellipse_beam_init (c_ellipse_beam_init, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_ellipse_beam_init
 type(ellipse_beam_init_struct), target :: f_ellipse_beam_init, f2_ellipse_beam_init
@@ -6734,6 +8583,17 @@ if (f_ellipse_beam_init == f2_ellipse_beam_init) then
 else
   print *, '[2] ellipse_beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ellipse_beam_init_struct_to_json(f_ellipse_beam_init, json_root)
+  call json%print(json_root, 'test_f_ellipse_beam_init_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ellipse_beam_init_struct_to_json(f2_ellipse_beam_init, json_root)
+  call json%print(json_root, 'test_f_ellipse_beam_init_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6774,6 +8634,10 @@ subroutine test1_f_kv_beam_init (ok)
 implicit none
 
 type(kv_beam_init_struct), target :: f_kv_beam_init, f2_kv_beam_init
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6799,6 +8663,17 @@ if (f_kv_beam_init == f2_kv_beam_init) then
 else
   print *, '[4] kv_beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call kv_beam_init_struct_to_json(f_kv_beam_init, json_root)
+  call json%print(json_root, 'test_f_kv_beam_init_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call kv_beam_init_struct_to_json(f2_kv_beam_init, json_root)
+  call json%print(json_root, 'test_f_kv_beam_init_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_kv_beam_init
@@ -6808,7 +8683,10 @@ end subroutine test1_f_kv_beam_init
 
 subroutine test2_f_kv_beam_init (c_kv_beam_init, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_kv_beam_init
 type(kv_beam_init_struct), target :: f_kv_beam_init, f2_kv_beam_init
@@ -6825,6 +8703,17 @@ if (f_kv_beam_init == f2_kv_beam_init) then
 else
   print *, '[2] kv_beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call kv_beam_init_struct_to_json(f_kv_beam_init, json_root)
+  call json%print(json_root, 'test_f_kv_beam_init_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call kv_beam_init_struct_to_json(f2_kv_beam_init, json_root)
+  call json%print(json_root, 'test_f_kv_beam_init_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6868,6 +8757,10 @@ subroutine test1_f_grid_beam_init (ok)
 implicit none
 
 type(grid_beam_init_struct), target :: f_grid_beam_init, f2_grid_beam_init
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6893,6 +8786,17 @@ if (f_grid_beam_init == f2_grid_beam_init) then
 else
   print *, '[4] grid_beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call grid_beam_init_struct_to_json(f_grid_beam_init, json_root)
+  call json%print(json_root, 'test_f_grid_beam_init_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_beam_init_struct_to_json(f2_grid_beam_init, json_root)
+  call json%print(json_root, 'test_f_grid_beam_init_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_grid_beam_init
@@ -6902,7 +8806,10 @@ end subroutine test1_f_grid_beam_init
 
 subroutine test2_f_grid_beam_init (c_grid_beam_init, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_grid_beam_init
 type(grid_beam_init_struct), target :: f_grid_beam_init, f2_grid_beam_init
@@ -6919,6 +8826,17 @@ if (f_grid_beam_init == f2_grid_beam_init) then
 else
   print *, '[2] grid_beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call grid_beam_init_struct_to_json(f_grid_beam_init, json_root)
+  call json%print(json_root, 'test_f_grid_beam_init_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call grid_beam_init_struct_to_json(f2_grid_beam_init, json_root)
+  call json%print(json_root, 'test_f_grid_beam_init_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -6965,6 +8883,10 @@ subroutine test1_f_beam_init (ok)
 implicit none
 
 type(beam_init_struct), target :: f_beam_init, f2_beam_init
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -6990,6 +8912,17 @@ if (f_beam_init == f2_beam_init) then
 else
   print *, '[4] beam_init: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call beam_init_struct_to_json(f_beam_init, json_root)
+  call json%print(json_root, 'test_f_beam_init_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call beam_init_struct_to_json(f2_beam_init, json_root)
+  call json%print(json_root, 'test_f_beam_init_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_beam_init
@@ -6999,7 +8932,10 @@ end subroutine test1_f_beam_init
 
 subroutine test2_f_beam_init (c_beam_init, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_beam_init
 type(beam_init_struct), target :: f_beam_init, f2_beam_init
@@ -7016,6 +8952,17 @@ if (f_beam_init == f2_beam_init) then
 else
   print *, '[2] beam_init: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call beam_init_struct_to_json(f_beam_init, json_root)
+  call json%print(json_root, 'test_f_beam_init_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call beam_init_struct_to_json(f2_beam_init, json_root)
+  call json%print(json_root, 'test_f_beam_init_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7152,6 +9099,10 @@ subroutine test1_f_lat_param (ok)
 implicit none
 
 type(lat_param_struct), target :: f_lat_param, f2_lat_param
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7177,6 +9128,17 @@ if (f_lat_param == f2_lat_param) then
 else
   print *, '[4] lat_param: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call lat_param_struct_to_json(f_lat_param, json_root)
+  call json%print(json_root, 'test_f_lat_param_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_param_struct_to_json(f2_lat_param, json_root)
+  call json%print(json_root, 'test_f_lat_param_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_lat_param
@@ -7186,7 +9148,10 @@ end subroutine test1_f_lat_param
 
 subroutine test2_f_lat_param (c_lat_param, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_lat_param
 type(lat_param_struct), target :: f_lat_param, f2_lat_param
@@ -7203,6 +9168,17 @@ if (f_lat_param == f2_lat_param) then
 else
   print *, '[2] lat_param: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call lat_param_struct_to_json(f_lat_param, json_root)
+  call json%print(json_root, 'test_f_lat_param_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_param_struct_to_json(f2_lat_param, json_root)
+  call json%print(json_root, 'test_f_lat_param_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7279,6 +9255,10 @@ subroutine test1_f_mode_info (ok)
 implicit none
 
 type(mode_info_struct), target :: f_mode_info, f2_mode_info
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7304,6 +9284,17 @@ if (f_mode_info == f2_mode_info) then
 else
   print *, '[4] mode_info: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call mode_info_struct_to_json(f_mode_info, json_root)
+  call json%print(json_root, 'test_f_mode_info_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call mode_info_struct_to_json(f2_mode_info, json_root)
+  call json%print(json_root, 'test_f_mode_info_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_mode_info
@@ -7313,7 +9304,10 @@ end subroutine test1_f_mode_info
 
 subroutine test2_f_mode_info (c_mode_info, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_mode_info
 type(mode_info_struct), target :: f_mode_info, f2_mode_info
@@ -7330,6 +9324,17 @@ if (f_mode_info == f2_mode_info) then
 else
   print *, '[2] mode_info: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call mode_info_struct_to_json(f_mode_info, json_root)
+  call json%print(json_root, 'test_f_mode_info_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call mode_info_struct_to_json(f2_mode_info, json_root)
+  call json%print(json_root, 'test_f_mode_info_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7376,6 +9381,10 @@ subroutine test1_f_pre_tracker (ok)
 implicit none
 
 type(pre_tracker_struct), target :: f_pre_tracker, f2_pre_tracker
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7401,6 +9410,17 @@ if (f_pre_tracker == f2_pre_tracker) then
 else
   print *, '[4] pre_tracker: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call pre_tracker_struct_to_json(f_pre_tracker, json_root)
+  call json%print(json_root, 'test_f_pre_tracker_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call pre_tracker_struct_to_json(f2_pre_tracker, json_root)
+  call json%print(json_root, 'test_f_pre_tracker_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_pre_tracker
@@ -7410,7 +9430,10 @@ end subroutine test1_f_pre_tracker
 
 subroutine test2_f_pre_tracker (c_pre_tracker, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_pre_tracker
 type(pre_tracker_struct), target :: f_pre_tracker, f2_pre_tracker
@@ -7427,6 +9450,17 @@ if (f_pre_tracker == f2_pre_tracker) then
 else
   print *, '[2] pre_tracker: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call pre_tracker_struct_to_json(f_pre_tracker, json_root)
+  call json%print(json_root, 'test_f_pre_tracker_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call pre_tracker_struct_to_json(f2_pre_tracker, json_root)
+  call json%print(json_root, 'test_f_pre_tracker_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7471,6 +9505,10 @@ subroutine test1_f_anormal_mode (ok)
 implicit none
 
 type(anormal_mode_struct), target :: f_anormal_mode, f2_anormal_mode
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7496,6 +9534,17 @@ if (f_anormal_mode == f2_anormal_mode) then
 else
   print *, '[4] anormal_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call anormal_mode_struct_to_json(f_anormal_mode, json_root)
+  call json%print(json_root, 'test_f_anormal_mode_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call anormal_mode_struct_to_json(f2_anormal_mode, json_root)
+  call json%print(json_root, 'test_f_anormal_mode_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_anormal_mode
@@ -7505,7 +9554,10 @@ end subroutine test1_f_anormal_mode
 
 subroutine test2_f_anormal_mode (c_anormal_mode, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_anormal_mode
 type(anormal_mode_struct), target :: f_anormal_mode, f2_anormal_mode
@@ -7522,6 +9574,17 @@ if (f_anormal_mode == f2_anormal_mode) then
 else
   print *, '[2] anormal_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call anormal_mode_struct_to_json(f_anormal_mode, json_root)
+  call json%print(json_root, 'test_f_anormal_mode_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call anormal_mode_struct_to_json(f2_anormal_mode, json_root)
+  call json%print(json_root, 'test_f_anormal_mode_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7573,6 +9636,10 @@ subroutine test1_f_linac_normal_mode (ok)
 implicit none
 
 type(linac_normal_mode_struct), target :: f_linac_normal_mode, f2_linac_normal_mode
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7598,6 +9665,17 @@ if (f_linac_normal_mode == f2_linac_normal_mode) then
 else
   print *, '[4] linac_normal_mode: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call linac_normal_mode_struct_to_json(f_linac_normal_mode, json_root)
+  call json%print(json_root, 'test_f_linac_normal_mode_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call linac_normal_mode_struct_to_json(f2_linac_normal_mode, json_root)
+  call json%print(json_root, 'test_f_linac_normal_mode_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_linac_normal_mode
@@ -7607,7 +9685,10 @@ end subroutine test1_f_linac_normal_mode
 
 subroutine test2_f_linac_normal_mode (c_linac_normal_mode, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_linac_normal_mode
 type(linac_normal_mode_struct), target :: f_linac_normal_mode, f2_linac_normal_mode
@@ -7624,6 +9705,17 @@ if (f_linac_normal_mode == f2_linac_normal_mode) then
 else
   print *, '[2] linac_normal_mode: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call linac_normal_mode_struct_to_json(f_linac_normal_mode, json_root)
+  call json%print(json_root, 'test_f_linac_normal_mode_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call linac_normal_mode_struct_to_json(f2_linac_normal_mode, json_root)
+  call json%print(json_root, 'test_f_linac_normal_mode_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7672,6 +9764,10 @@ subroutine test1_f_normal_modes (ok)
 implicit none
 
 type(normal_modes_struct), target :: f_normal_modes, f2_normal_modes
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7697,6 +9793,17 @@ if (f_normal_modes == f2_normal_modes) then
 else
   print *, '[4] normal_modes: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call normal_modes_struct_to_json(f_normal_modes, json_root)
+  call json%print(json_root, 'test_f_normal_modes_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call normal_modes_struct_to_json(f2_normal_modes, json_root)
+  call json%print(json_root, 'test_f_normal_modes_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_normal_modes
@@ -7706,7 +9813,10 @@ end subroutine test1_f_normal_modes
 
 subroutine test2_f_normal_modes (c_normal_modes, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_normal_modes
 type(normal_modes_struct), target :: f_normal_modes, f2_normal_modes
@@ -7723,6 +9833,17 @@ if (f_normal_modes == f2_normal_modes) then
 else
   print *, '[2] normal_modes: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call normal_modes_struct_to_json(f_normal_modes, json_root)
+  call json%print(json_root, 'test_f_normal_modes_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call normal_modes_struct_to_json(f2_normal_modes, json_root)
+  call json%print(json_root, 'test_f_normal_modes_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7786,6 +9907,10 @@ subroutine test1_f_em_field (ok)
 implicit none
 
 type(em_field_struct), target :: f_em_field, f2_em_field
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7811,6 +9936,17 @@ if (f_em_field == f2_em_field) then
 else
   print *, '[4] em_field: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call em_field_struct_to_json(f_em_field, json_root)
+  call json%print(json_root, 'test_f_em_field_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call em_field_struct_to_json(f2_em_field, json_root)
+  call json%print(json_root, 'test_f_em_field_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_em_field
@@ -7820,7 +9956,10 @@ end subroutine test1_f_em_field
 
 subroutine test2_f_em_field (c_em_field, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_em_field
 type(em_field_struct), target :: f_em_field, f2_em_field
@@ -7837,6 +9976,17 @@ if (f_em_field == f2_em_field) then
 else
   print *, '[2] em_field: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call em_field_struct_to_json(f_em_field, json_root)
+  call json%print(json_root, 'test_f_em_field_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call em_field_struct_to_json(f2_em_field, json_root)
+  call json%print(json_root, 'test_f_em_field_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -7902,6 +10052,10 @@ subroutine test1_f_strong_beam (ok)
 implicit none
 
 type(strong_beam_struct), target :: f_strong_beam, f2_strong_beam
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -7927,6 +10081,17 @@ if (f_strong_beam == f2_strong_beam) then
 else
   print *, '[4] strong_beam: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call strong_beam_struct_to_json(f_strong_beam, json_root)
+  call json%print(json_root, 'test_f_strong_beam_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call strong_beam_struct_to_json(f2_strong_beam, json_root)
+  call json%print(json_root, 'test_f_strong_beam_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_strong_beam
@@ -7936,7 +10101,10 @@ end subroutine test1_f_strong_beam
 
 subroutine test2_f_strong_beam (c_strong_beam, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_strong_beam
 type(strong_beam_struct), target :: f_strong_beam, f2_strong_beam
@@ -7953,6 +10121,17 @@ if (f_strong_beam == f2_strong_beam) then
 else
   print *, '[2] strong_beam: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call strong_beam_struct_to_json(f_strong_beam, json_root)
+  call json%print(json_root, 'test_f_strong_beam_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call strong_beam_struct_to_json(f2_strong_beam, json_root)
+  call json%print(json_root, 'test_f_strong_beam_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8001,6 +10180,10 @@ subroutine test1_f_track_point (ok)
 implicit none
 
 type(track_point_struct), target :: f_track_point, f2_track_point
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8026,6 +10209,17 @@ if (f_track_point == f2_track_point) then
 else
   print *, '[4] track_point: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call track_point_struct_to_json(f_track_point, json_root)
+  call json%print(json_root, 'test_f_track_point_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call track_point_struct_to_json(f2_track_point, json_root)
+  call json%print(json_root, 'test_f_track_point_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_track_point
@@ -8035,7 +10229,10 @@ end subroutine test1_f_track_point
 
 subroutine test2_f_track_point (c_track_point, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_track_point
 type(track_point_struct), target :: f_track_point, f2_track_point
@@ -8052,6 +10249,17 @@ if (f_track_point == f2_track_point) then
 else
   print *, '[2] track_point: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call track_point_struct_to_json(f_track_point, json_root)
+  call json%print(json_root, 'test_f_track_point_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call track_point_struct_to_json(f2_track_point, json_root)
+  call json%print(json_root, 'test_f_track_point_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8105,6 +10313,10 @@ subroutine test1_f_track (ok)
 implicit none
 
 type(track_struct), target :: f_track, f2_track
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8130,6 +10342,17 @@ if (f_track == f2_track) then
 else
   print *, '[4] track: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call track_struct_to_json(f_track, json_root)
+  call json%print(json_root, 'test_f_track_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call track_struct_to_json(f2_track, json_root)
+  call json%print(json_root, 'test_f_track_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_track
@@ -8139,7 +10362,10 @@ end subroutine test1_f_track
 
 subroutine test2_f_track (c_track, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_track
 type(track_struct), target :: f_track, f2_track
@@ -8156,6 +10382,17 @@ if (f_track == f2_track) then
 else
   print *, '[2] track: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call track_struct_to_json(f_track, json_root)
+  call json%print(json_root, 'test_f_track_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call track_struct_to_json(f2_track, json_root)
+  call json%print(json_root, 'test_f_track_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8208,6 +10445,10 @@ subroutine test1_f_space_charge_common (ok)
 implicit none
 
 type(space_charge_common_struct), target :: f_space_charge_common, f2_space_charge_common
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8233,6 +10474,17 @@ if (f_space_charge_common == f2_space_charge_common) then
 else
   print *, '[4] space_charge_common: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call space_charge_common_struct_to_json(f_space_charge_common, json_root)
+  call json%print(json_root, 'test_f_space_charge_common_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call space_charge_common_struct_to_json(f2_space_charge_common, json_root)
+  call json%print(json_root, 'test_f_space_charge_common_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_space_charge_common
@@ -8242,7 +10494,10 @@ end subroutine test1_f_space_charge_common
 
 subroutine test2_f_space_charge_common (c_space_charge_common, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_space_charge_common
 type(space_charge_common_struct), target :: f_space_charge_common, f2_space_charge_common
@@ -8259,6 +10514,17 @@ if (f_space_charge_common == f2_space_charge_common) then
 else
   print *, '[2] space_charge_common: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call space_charge_common_struct_to_json(f_space_charge_common, json_root)
+  call json%print(json_root, 'test_f_space_charge_common_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call space_charge_common_struct_to_json(f2_space_charge_common, json_root)
+  call json%print(json_root, 'test_f_space_charge_common_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8335,6 +10601,10 @@ subroutine test1_f_bmad_common (ok)
 implicit none
 
 type(bmad_common_struct), target :: f_bmad_common, f2_bmad_common
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8360,6 +10630,17 @@ if (f_bmad_common == f2_bmad_common) then
 else
   print *, '[4] bmad_common: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call bmad_common_struct_to_json(f_bmad_common, json_root)
+  call json%print(json_root, 'test_f_bmad_common_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bmad_common_struct_to_json(f2_bmad_common, json_root)
+  call json%print(json_root, 'test_f_bmad_common_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_bmad_common
@@ -8369,7 +10650,10 @@ end subroutine test1_f_bmad_common
 
 subroutine test2_f_bmad_common (c_bmad_common, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_bmad_common
 type(bmad_common_struct), target :: f_bmad_common, f2_bmad_common
@@ -8386,6 +10670,17 @@ if (f_bmad_common == f2_bmad_common) then
 else
   print *, '[2] bmad_common: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bmad_common_struct_to_json(f_bmad_common, json_root)
+  call json%print(json_root, 'test_f_bmad_common_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bmad_common_struct_to_json(f2_bmad_common, json_root)
+  call json%print(json_root, 'test_f_bmad_common_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8503,6 +10798,10 @@ subroutine test1_f_rad_int1 (ok)
 implicit none
 
 type(rad_int1_struct), target :: f_rad_int1, f2_rad_int1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8528,6 +10827,17 @@ if (f_rad_int1 == f2_rad_int1) then
 else
   print *, '[4] rad_int1: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call rad_int1_struct_to_json(f_rad_int1, json_root)
+  call json%print(json_root, 'test_f_rad_int1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_int1_struct_to_json(f2_rad_int1, json_root)
+  call json%print(json_root, 'test_f_rad_int1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_rad_int1
@@ -8537,7 +10847,10 @@ end subroutine test1_f_rad_int1
 
 subroutine test2_f_rad_int1 (c_rad_int1, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_rad_int1
 type(rad_int1_struct), target :: f_rad_int1, f2_rad_int1
@@ -8554,6 +10867,17 @@ if (f_rad_int1 == f2_rad_int1) then
 else
   print *, '[2] rad_int1: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rad_int1_struct_to_json(f_rad_int1, json_root)
+  call json%print(json_root, 'test_f_rad_int1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_int1_struct_to_json(f2_rad_int1, json_root)
+  call json%print(json_root, 'test_f_rad_int1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8624,6 +10948,10 @@ subroutine test1_f_rad_int_branch (ok)
 implicit none
 
 type(rad_int_branch_struct), target :: f_rad_int_branch, f2_rad_int_branch
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8649,6 +10977,17 @@ if (f_rad_int_branch == f2_rad_int_branch) then
 else
   print *, '[4] rad_int_branch: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call rad_int_branch_struct_to_json(f_rad_int_branch, json_root)
+  call json%print(json_root, 'test_f_rad_int_branch_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_int_branch_struct_to_json(f2_rad_int_branch, json_root)
+  call json%print(json_root, 'test_f_rad_int_branch_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_rad_int_branch
@@ -8658,7 +10997,10 @@ end subroutine test1_f_rad_int_branch
 
 subroutine test2_f_rad_int_branch (c_rad_int_branch, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_rad_int_branch
 type(rad_int_branch_struct), target :: f_rad_int_branch, f2_rad_int_branch
@@ -8675,6 +11017,17 @@ if (f_rad_int_branch == f2_rad_int_branch) then
 else
   print *, '[2] rad_int_branch: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rad_int_branch_struct_to_json(f_rad_int_branch, json_root)
+  call json%print(json_root, 'test_f_rad_int_branch_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_int_branch_struct_to_json(f2_rad_int_branch, json_root)
+  call json%print(json_root, 'test_f_rad_int_branch_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8719,6 +11072,10 @@ subroutine test1_f_rad_int_all_ele (ok)
 implicit none
 
 type(rad_int_all_ele_struct), target :: f_rad_int_all_ele, f2_rad_int_all_ele
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8744,6 +11101,17 @@ if (f_rad_int_all_ele == f2_rad_int_all_ele) then
 else
   print *, '[4] rad_int_all_ele: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call rad_int_all_ele_struct_to_json(f_rad_int_all_ele, json_root)
+  call json%print(json_root, 'test_f_rad_int_all_ele_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_int_all_ele_struct_to_json(f2_rad_int_all_ele, json_root)
+  call json%print(json_root, 'test_f_rad_int_all_ele_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_rad_int_all_ele
@@ -8753,7 +11121,10 @@ end subroutine test1_f_rad_int_all_ele
 
 subroutine test2_f_rad_int_all_ele (c_rad_int_all_ele, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_rad_int_all_ele
 type(rad_int_all_ele_struct), target :: f_rad_int_all_ele, f2_rad_int_all_ele
@@ -8770,6 +11141,17 @@ if (f_rad_int_all_ele == f2_rad_int_all_ele) then
 else
   print *, '[2] rad_int_all_ele: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rad_int_all_ele_struct_to_json(f_rad_int_all_ele, json_root)
+  call json%print(json_root, 'test_f_rad_int_all_ele_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rad_int_all_ele_struct_to_json(f2_rad_int_all_ele, json_root)
+  call json%print(json_root, 'test_f_rad_int_all_ele_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -8814,6 +11196,10 @@ subroutine test1_f_ele (ok)
 implicit none
 
 type(ele_struct), target :: f_ele, f2_ele
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -8839,6 +11225,17 @@ if (f_ele == f2_ele) then
 else
   print *, '[4] ele: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call ele_struct_to_json(f_ele, json_root)
+  call json%print(json_root, 'test_f_ele_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ele_struct_to_json(f2_ele, json_root)
+  call json%print(json_root, 'test_f_ele_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_ele
@@ -8848,7 +11245,10 @@ end subroutine test1_f_ele
 
 subroutine test2_f_ele (c_ele, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_ele
 type(ele_struct), target :: f_ele, f2_ele
@@ -8865,6 +11265,17 @@ if (f_ele == f2_ele) then
 else
   print *, '[2] ele: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ele_struct_to_json(f_ele, json_root)
+  call json%print(json_root, 'test_f_ele_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ele_struct_to_json(f2_ele, json_root)
+  call json%print(json_root, 'test_f_ele_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -9055,12 +11466,12 @@ call set_coord_test_pattern (F%map_ref_orb_out, ix_patt)
 call set_coord_test_pattern (F%time_ref_orb_in, ix_patt)
 !! f_side.test_pat[type, 0, NOT] CPP_coord
 call set_coord_test_pattern (F%time_ref_orb_out, ix_patt)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%value,1); lb1 = lbound(F%value,1) - 1
   rhs = 100 + jd1 + 45 + offset
   F%value(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%old_value,1); lb1 = lbound(F%old_value,1) - 1
   rhs = 100 + jd1 + 46 + offset
   F%old_value(jd1+lb1) = rhs
@@ -9253,6 +11664,10 @@ subroutine test1_f_complex_taylor_term (ok)
 implicit none
 
 type(complex_taylor_term_struct), target :: f_complex_taylor_term, f2_complex_taylor_term
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -9278,6 +11693,17 @@ if (f_complex_taylor_term == f2_complex_taylor_term) then
 else
   print *, '[4] complex_taylor_term: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call complex_taylor_term_struct_to_json(f_complex_taylor_term, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_term_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call complex_taylor_term_struct_to_json(f2_complex_taylor_term, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_term_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_complex_taylor_term
@@ -9287,7 +11713,10 @@ end subroutine test1_f_complex_taylor_term
 
 subroutine test2_f_complex_taylor_term (c_complex_taylor_term, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_complex_taylor_term
 type(complex_taylor_term_struct), target :: f_complex_taylor_term, f2_complex_taylor_term
@@ -9304,6 +11733,17 @@ if (f_complex_taylor_term == f2_complex_taylor_term) then
 else
   print *, '[2] complex_taylor_term: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call complex_taylor_term_struct_to_json(f_complex_taylor_term, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_term_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call complex_taylor_term_struct_to_json(f2_complex_taylor_term, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_term_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -9345,6 +11785,10 @@ subroutine test1_f_complex_taylor (ok)
 implicit none
 
 type(complex_taylor_struct), target :: f_complex_taylor, f2_complex_taylor
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -9370,6 +11814,17 @@ if (f_complex_taylor == f2_complex_taylor) then
 else
   print *, '[4] complex_taylor: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call complex_taylor_struct_to_json(f_complex_taylor, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call complex_taylor_struct_to_json(f2_complex_taylor, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_complex_taylor
@@ -9379,7 +11834,10 @@ end subroutine test1_f_complex_taylor
 
 subroutine test2_f_complex_taylor (c_complex_taylor, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_complex_taylor
 type(complex_taylor_struct), target :: f_complex_taylor, f2_complex_taylor
@@ -9396,6 +11854,17 @@ if (f_complex_taylor == f2_complex_taylor) then
 else
   print *, '[2] complex_taylor: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call complex_taylor_struct_to_json(f_complex_taylor, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call complex_taylor_struct_to_json(f2_complex_taylor, json_root)
+  call json%print(json_root, 'test_f_complex_taylor_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -9442,6 +11911,10 @@ subroutine test1_f_branch (ok)
 implicit none
 
 type(branch_struct), target :: f_branch, f2_branch
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -9467,6 +11940,17 @@ if (f_branch == f2_branch) then
 else
   print *, '[4] branch: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call branch_struct_to_json(f_branch, json_root)
+  call json%print(json_root, 'test_f_branch_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call branch_struct_to_json(f2_branch, json_root)
+  call json%print(json_root, 'test_f_branch_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_branch
@@ -9476,7 +11960,10 @@ end subroutine test1_f_branch
 
 subroutine test2_f_branch (c_branch, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_branch
 type(branch_struct), target :: f_branch, f2_branch
@@ -9493,6 +11980,17 @@ if (f_branch == f2_branch) then
 else
   print *, '[2] branch: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call branch_struct_to_json(f_branch, json_root)
+  call json%print(json_root, 'test_f_branch_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call branch_struct_to_json(f2_branch, json_root)
+  call json%print(json_root, 'test_f_branch_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -9571,6 +12069,10 @@ subroutine test1_f_lat (ok)
 implicit none
 
 type(lat_struct), target :: f_lat, f2_lat
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -9596,6 +12098,17 @@ if (f_lat == f2_lat) then
 else
   print *, '[4] lat: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call lat_struct_to_json(f_lat, json_root)
+  call json%print(json_root, 'test_f_lat_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_struct_to_json(f2_lat, json_root)
+  call json%print(json_root, 'test_f_lat_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_lat
@@ -9605,7 +12118,10 @@ end subroutine test1_f_lat
 
 subroutine test2_f_lat (c_lat, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_lat
 type(lat_struct), target :: f_lat, f2_lat
@@ -9622,6 +12138,17 @@ if (f_lat == f2_lat) then
 else
   print *, '[2] lat: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call lat_struct_to_json(f_lat, json_root)
+  call json%print(json_root, 'test_f_lat_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_struct_to_json(f2_lat, json_root)
+  call json%print(json_root, 'test_f_lat_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -9820,6 +12347,10 @@ subroutine test1_f_bunch (ok)
 implicit none
 
 type(bunch_struct), target :: f_bunch, f2_bunch
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -9845,6 +12376,17 @@ if (f_bunch == f2_bunch) then
 else
   print *, '[4] bunch: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call bunch_struct_to_json(f_bunch, json_root)
+  call json%print(json_root, 'test_f_bunch_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bunch_struct_to_json(f2_bunch, json_root)
+  call json%print(json_root, 'test_f_bunch_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_bunch
@@ -9854,7 +12396,10 @@ end subroutine test1_f_bunch
 
 subroutine test2_f_bunch (c_bunch, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_bunch
 type(bunch_struct), target :: f_bunch, f2_bunch
@@ -9871,6 +12416,17 @@ if (f_bunch == f2_bunch) then
 else
   print *, '[2] bunch: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bunch_struct_to_json(f_bunch, json_root)
+  call json%print(json_root, 'test_f_bunch_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bunch_struct_to_json(f2_bunch, json_root)
+  call json%print(json_root, 'test_f_bunch_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -9950,6 +12506,10 @@ subroutine test1_f_bunch_params (ok)
 implicit none
 
 type(bunch_params_struct), target :: f_bunch_params, f2_bunch_params
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -9975,6 +12535,17 @@ if (f_bunch_params == f2_bunch_params) then
 else
   print *, '[4] bunch_params: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call bunch_params_struct_to_json(f_bunch_params, json_root)
+  call json%print(json_root, 'test_f_bunch_params_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bunch_params_struct_to_json(f2_bunch_params, json_root)
+  call json%print(json_root, 'test_f_bunch_params_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_bunch_params
@@ -9984,7 +12555,10 @@ end subroutine test1_f_bunch_params
 
 subroutine test2_f_bunch_params (c_bunch_params, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_bunch_params
 type(bunch_params_struct), target :: f_bunch_params, f2_bunch_params
@@ -10001,6 +12575,17 @@ if (f_bunch_params == f2_bunch_params) then
 else
   print *, '[2] bunch_params: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bunch_params_struct_to_json(f_bunch_params, json_root)
+  call json%print(json_root, 'test_f_bunch_params_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bunch_params_struct_to_json(f2_bunch_params, json_root)
+  call json%print(json_root, 'test_f_bunch_params_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -10091,6 +12676,10 @@ subroutine test1_f_beam (ok)
 implicit none
 
 type(beam_struct), target :: f_beam, f2_beam
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -10116,6 +12705,17 @@ if (f_beam == f2_beam) then
 else
   print *, '[4] beam: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call beam_struct_to_json(f_beam, json_root)
+  call json%print(json_root, 'test_f_beam_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call beam_struct_to_json(f2_beam, json_root)
+  call json%print(json_root, 'test_f_beam_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_beam
@@ -10125,7 +12725,10 @@ end subroutine test1_f_beam
 
 subroutine test2_f_beam (c_beam, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_beam
 type(beam_struct), target :: f_beam, f2_beam
@@ -10142,6 +12745,17 @@ if (f_beam == f2_beam) then
 else
   print *, '[2] beam: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call beam_struct_to_json(f_beam, json_root)
+  call json%print(json_root, 'test_f_beam_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call beam_struct_to_json(f2_beam, json_root)
+  call json%print(json_root, 'test_f_beam_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -10186,6 +12800,10 @@ subroutine test1_f_aperture_point (ok)
 implicit none
 
 type(aperture_point_struct), target :: f_aperture_point, f2_aperture_point
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -10211,6 +12829,17 @@ if (f_aperture_point == f2_aperture_point) then
 else
   print *, '[4] aperture_point: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call aperture_point_struct_to_json(f_aperture_point, json_root)
+  call json%print(json_root, 'test_f_aperture_point_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call aperture_point_struct_to_json(f2_aperture_point, json_root)
+  call json%print(json_root, 'test_f_aperture_point_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_aperture_point
@@ -10220,7 +12849,10 @@ end subroutine test1_f_aperture_point
 
 subroutine test2_f_aperture_point (c_aperture_point, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_aperture_point
 type(aperture_point_struct), target :: f_aperture_point, f2_aperture_point
@@ -10237,6 +12869,17 @@ if (f_aperture_point == f2_aperture_point) then
 else
   print *, '[2] aperture_point: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call aperture_point_struct_to_json(f_aperture_point, json_root)
+  call json%print(json_root, 'test_f_aperture_point_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call aperture_point_struct_to_json(f2_aperture_point, json_root)
+  call json%print(json_root, 'test_f_aperture_point_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -10281,6 +12924,10 @@ subroutine test1_f_aperture_param (ok)
 implicit none
 
 type(aperture_param_struct), target :: f_aperture_param, f2_aperture_param
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -10306,6 +12953,17 @@ if (f_aperture_param == f2_aperture_param) then
 else
   print *, '[4] aperture_param: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call aperture_param_struct_to_json(f_aperture_param, json_root)
+  call json%print(json_root, 'test_f_aperture_param_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call aperture_param_struct_to_json(f2_aperture_param, json_root)
+  call json%print(json_root, 'test_f_aperture_param_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_aperture_param
@@ -10315,7 +12973,10 @@ end subroutine test1_f_aperture_param
 
 subroutine test2_f_aperture_param (c_aperture_param, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_aperture_param
 type(aperture_param_struct), target :: f_aperture_param, f2_aperture_param
@@ -10332,6 +12993,17 @@ if (f_aperture_param == f2_aperture_param) then
 else
   print *, '[2] aperture_param: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call aperture_param_struct_to_json(f_aperture_param, json_root)
+  call json%print(json_root, 'test_f_aperture_param_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call aperture_param_struct_to_json(f2_aperture_param, json_root)
+  call json%print(json_root, 'test_f_aperture_param_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 
@@ -10386,6 +13058,10 @@ subroutine test1_f_aperture_scan (ok)
 implicit none
 
 type(aperture_scan_struct), target :: f_aperture_scan, f2_aperture_scan
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -10411,6 +13087,17 @@ if (f_aperture_scan == f2_aperture_scan) then
 else
   print *, '[4] aperture_scan: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call aperture_scan_struct_to_json(f_aperture_scan, json_root)
+  call json%print(json_root, 'test_f_aperture_scan_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call aperture_scan_struct_to_json(f2_aperture_scan, json_root)
+  call json%print(json_root, 'test_f_aperture_scan_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_aperture_scan
@@ -10420,7 +13107,10 @@ end subroutine test1_f_aperture_scan
 
 subroutine test2_f_aperture_scan (c_aperture_scan, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_aperture_scan
 type(aperture_scan_struct), target :: f_aperture_scan, f2_aperture_scan
@@ -10437,6 +13127,17 @@ if (f_aperture_scan == f2_aperture_scan) then
 else
   print *, '[2] aperture_scan: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call aperture_scan_struct_to_json(f_aperture_scan, json_root)
+  call json%print(json_root, 'test_f_aperture_scan_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call aperture_scan_struct_to_json(f2_aperture_scan, json_root)
+  call json%print(json_root, 'test_f_aperture_scan_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 

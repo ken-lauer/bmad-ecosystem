@@ -6740,11 +6740,13 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
   set_CPP_coord_test_pattern(C.time_ref_orb_out, ix_patt);
 
   // c_side.test_pat[real, 1, NOT]
+  // (custom - off-by-one ele attribs)
   C.value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++)
     {int rhs = 100 + i + 45 + offset; C.value[i] = rhs;}
 
   // c_side.test_pat[real, 1, NOT]
+  // (custom - off-by-one ele attribs)
   C.old_value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++)
     {int rhs = 100 + i + 46 + offset; C.old_value[i] = rhs;}

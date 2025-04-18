@@ -4132,11 +4132,13 @@ for (size_t i = 0; i < C.spin_taylor.size(); i++)
   coord_to_c(z_time_ref_orb_in, C.time_ref_orb_in);
   // c_side.to_c2_set[type, 0, NOT] CPP_coord
   coord_to_c(z_time_ref_orb_out, C.time_ref_orb_out);
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
+  // (custom - off-by-one ele attribs)
   C.value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.value[i] = z_value[i-1];
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
+  // (custom - off-by-one ele attribs)
   C.old_value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.old_value[i] = z_old_value[i-1];
 

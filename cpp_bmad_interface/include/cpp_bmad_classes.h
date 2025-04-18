@@ -4180,8 +4180,8 @@ public:
   CPP_coord map_ref_orb_out;
   CPP_coord time_ref_orb_in;
   CPP_coord time_ref_orb_out;
-  FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB> value = { 0.0 };
-  FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB> old_value = { 0.0 };
+  FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1> value = { 0.0 };
+  FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1> old_value = { 0.0 };
   FixedArray2D<Real, 4, 7> spin_q;
   FixedArray1D<Real, 6> vec0 = { 0.0 };
   FixedArray2D<Real, 6, 6> mat6;

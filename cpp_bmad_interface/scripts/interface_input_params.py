@@ -271,11 +271,13 @@ def customize(struct_definitions):
 
             if id_name == "ele%value" or id_name == "ele%old_value":
                 arg.c_side.to_c2_set = """\
+  // (custom - off-by-one ele attribs)
   C.NAME[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.NAME[i] = z_NAME[i-1];
 """.replace("NAME", arg.f_name)
 
                 arg.c_side.test_pat = """\
+  // (custom - off-by-one ele attribs)
   C.NAME[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++)
     {int rhs = 100 + i + ARGIDX + offset; C.NAME[i] = rhs;}

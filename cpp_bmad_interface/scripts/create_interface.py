@@ -23,9 +23,10 @@ import pathlib
 import re
 import string
 import sys
+import tempfile
 import textwrap
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Callable, Literal
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
@@ -287,6 +288,10 @@ class Argument:
             if self.lbound[0] != "1":
                 print('lbound not "1" with parameter upper bound!', file=sys.stderr)
                 sys.exit("STOPPING HERE")
+            if self.ubound[0].lower() == "num_ele_attrib$":
+                # NOTE: special case: this is an element attributes array, and we intend
+                # to keep the array indices the same from C++/Fortran.
+                return "num_ele_attrib$", "Bmad::NUM_ELE_ATTRIB+1"
         else:
             f_dim1 = str(1 + int(self.ubound[0]) - int(self.lbound[0]))
             c_dim1 = f_dim1
@@ -2586,7 +2591,7 @@ def check_missing():
         sys.exit(1)
 
 
-def create_fortran_interface(struct_definitions, params, f_face):
+def create_fortran_interface(f_face, struct_definitions, params):
     # Create Fortran side of interface...
 
     # First the header
@@ -2810,7 +2815,7 @@ end subroutine {s_name}_to_f2
     f_face.write("end module\n")
 
 
-def create_fortran_equality_check_code():
+def create_fortran_equality_check_code(f_equ):
     f_equ.write(
         f"""\
 !+
@@ -2923,6 +2928,10 @@ def write_tests_mod(f_test):
         f"""
 module bmad_cpp_test_mod
 
+use json_module, only: json_core, json_value
+use bmad_json
+use sim_utils_json
+
 use bmad_cpp_convert_mod
 use {params.equality_mod_file}
 """
@@ -2964,6 +2973,10 @@ subroutine test1_f_{struct.short_name} (ok)
 implicit none
 
 type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
 logical(c_bool) c_ok
 logical ok
 
@@ -2989,6 +3002,17 @@ if (f_{struct.short_name} == f2_{struct.short_name}) then
 else
   print *, '[4] {struct.short_name}: C SIDE CONVERT C->F: FAILED!'
   ok = .false.
+
+  nullify(json_root)
+  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
+  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
+  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+
 endif
 
 end subroutine test1_f_{struct.short_name}
@@ -2998,7 +3022,10 @@ end subroutine test1_f_{struct.short_name}
 
 subroutine test2_f_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
 
-implicit  none
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
 
 type(c_ptr), value ::  c_{struct.short_name}
 type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
@@ -3015,6 +3042,17 @@ if (f_{struct.short_name} == f2_{struct.short_name}) then
 else
   print *, '[2] {struct.short_name}: F SIDE CONVERT C->F: FAILED!'
   c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
+  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
+  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+
 endif
 
 {f_debug_code}
@@ -3234,7 +3272,7 @@ def write_cpp_classes(file) -> None:
     )
 
 
-def write_cpp_convert(header: str, file):
+def write_cpp_convert(file, header: str):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     file.write(header)
 
@@ -3321,7 +3359,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("}\n")
 
 
-def write_cpp_equality(header: str, file):
+def write_cpp_equality(file, header: str):
     file.write(header)
 
     for struct in struct_definitions:
@@ -3463,6 +3501,68 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 """)
 
 
+def write_if_differs(
+    write_func: Callable,
+    target_path: pathlib.Path | str,
+    *args,
+    **kwargs,
+) -> bool:
+    """
+    Execute a write function to a temporary file first, and only write to the target file
+    if the contents differ from the existing file or if the target file doesn't exist.
+
+    Parameters
+    ----------
+    write_func : Callable
+        Function that performs the writing operation; should accept a file object as its first argument
+    target_path : pathlib.Path
+        Path to the target file that may be written to
+    *args : Any
+        Additional positional arguments to pass to write_func
+    **kwargs : Any
+        Additional keyword arguments to pass to write_func
+
+    Returns
+    -------
+    bool
+        True if the target file was updated, False if no update was needed
+
+    Notes
+    -----
+    This function assumes text contents and does not handle encoding specifications.
+    """
+    target_path = pathlib.Path(target_path)
+
+    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
+        write_func(temp_file, *args, **kwargs)
+
+        temp_file.flush()
+        temp_file.seek(0)
+        content = temp_file.read()
+
+    if not target_path.exists():
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        print(
+            f"* Writing to {target_path} (new file) {len(content)} bytes",
+            file=sys.stderr,
+        )
+        target_path.write_text(content)
+        return True
+
+    target_content = target_path.read_text()
+
+    if content != target_content:
+        print(
+            f"* Writing to {target_path} (new contents) {len(target_content)} -> {len(content)} bytes",
+            file=sys.stderr,
+        )
+        target_path.write_text(content)
+        return True
+
+    print(f"* Not writing {target_path} (contents same)", file=sys.stderr)
+    return False
+
+
 # NOTE: the script is meant to be run from '/cpp_bmad_interface'.
 os.chdir(CPP_INTERFACE_ROOT)
 
@@ -3519,23 +3619,34 @@ print(f"Number of structs found:         {n_found}", file=sys.stderr)
 
 check_missing()
 
-with open(params.code_dir + "/bmad_cpp_convert_mod.f90", "w") as file:
-    create_fortran_interface(struct_definitions, params, file)
-with open(
-    os.path.join(params.equality_mod_dir, params.equality_mod_file + ".f90"), "w"
-) as f_equ:
-    create_fortran_equality_check_code()
-with open(os.path.join(params.test_dir, "main.f90"), "w") as file:
-    write_tests_main(file)
-with open(os.path.join(params.test_dir, "bmad_cpp_test_mod.f90"), "w") as file:
-    write_tests_mod(file)
-with open(os.path.join("include", "cpp_bmad_classes.h"), "w") as file:
-    write_cpp_classes(file)
+write_if_differs(
+    create_fortran_interface,
+    pathlib.Path(params.code_dir) / "bmad_cpp_convert_mod.f90",
+    struct_definitions,
+    params,
+)
+write_if_differs(
+    create_fortran_equality_check_code,
+    pathlib.Path(params.equality_mod_dir) / (params.equality_mod_file + ".f90"),
+)
+
+write_if_differs(write_tests_main, pathlib.Path(params.test_dir) / "main.f90")
+write_if_differs(
+    write_tests_mod, pathlib.Path(params.test_dir) / "bmad_cpp_test_mod.f90"
+)
+write_if_differs(write_cpp_classes, pathlib.Path("include") / "cpp_bmad_classes.h")
 convert_header = (SCRIPTS_PATH / "convert_template.cpp").read_text()
-with open(os.path.join(params.code_dir, "cpp_bmad_convert.cpp"), "w") as file:
-    write_cpp_convert(convert_header, file)
+
+write_if_differs(
+    write_cpp_convert,
+    pathlib.Path(params.code_dir) / "cpp_bmad_convert.cpp",
+    convert_header,
+)
+
 equality_header = (SCRIPTS_PATH / "equality_template.cpp").read_text()
-with open(os.path.join(params.code_dir, "cpp_equality.cpp"), "w") as file:
-    write_cpp_equality(equality_header, file)
-with open(os.path.join(params.test_dir, "cpp_bmad_test.cpp"), "w") as file:
-    write_cpp_test(file)
+write_if_differs(
+    write_cpp_equality,
+    pathlib.Path(params.code_dir) / "cpp_equality.cpp",
+    equality_header,
+)
+write_if_differs(write_cpp_test, pathlib.Path(params.test_dir) / "cpp_bmad_test.cpp")
