@@ -45,6 +45,11 @@ class ParserConfig(pydantic.BaseModel):
         return cls.model_validate(contents)
 
 
+class JsonConfig(pydantic.BaseModel, frozen=True):
+    skip_members: tuple[str, ...] = ()
+    skip_files: tuple[str, ...] = ()
+
+
 class SourceConfig(pydantic.BaseModel, frozen=True):
     source_dir: pathlib.Path
     fortran_filename: pathlib.Path
@@ -53,7 +58,7 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
     python_import_name: str
     function_prefix: str
     skip_includes: tuple[str, ...] = ()
-    skip_json: tuple[str, ...] = ()
+    json_config: JsonConfig = JsonConfig()
     skip_structs: tuple[str, ...] = ()
     include_dirs: tuple[pathlib.Path, ...] = ()
 
@@ -106,6 +111,10 @@ class StructureMember(pydantic.BaseModel):
     fortran_default: bool | int | str | float | None = ""
     default: DefaultType = ""
     default_factory: str = ""
+
+    @property
+    def is_structure(self) -> bool:
+        return self.python_type not in {"int", "float", "bool", "str", "Complex"}
 
     @pydantic.field_validator("size")
     @classmethod
@@ -651,7 +660,7 @@ def find_structs(
     structs: list[Structure] = []
     struct = None
     in_routine = ""
-    module = filename.stem
+    module = ""
     private_structs: dict[FileLine, list[str]] = {}
     for file_line in file_lines:
         line = file_line.line
@@ -705,8 +714,16 @@ def find_structs(
                 lines=[line.strip()],
                 info=StructureInfo(class_name=class_name),
             )
-            structs.append(struct)
-            by_class_name[class_name] = struct
+
+            if in_routine:
+                logger.debug(
+                    f"Private structure {struct.name!r} defined in routine {in_routine!r} ({file_line})"
+                )
+            elif not struct.module:
+                logger.debug(f"Skipping structure not in module: {struct.name}")
+            else:
+                structs.append(struct)
+                by_class_name[class_name] = struct
         elif (
             lower_split[:2] == ["end", "subroutine"]
             or lower_split[0] == "endsubroutine"
@@ -720,11 +737,6 @@ def find_structs(
                     f"{filename}:{file_line.lineno}: Not in struct? {line}"
                 )
             logger.debug(f"Saw structure: {struct.name}")  # %s", struct)
-            if in_routine:
-                logger.warning(
-                    f"Private structure {struct.name!r} defined in routine {in_routine!r} ({file_line})"
-                )
-                # structs.pop(in_struct)
             struct = None
         elif struct is not None:
             struct.lines.append(line.strip())
@@ -741,7 +753,9 @@ def find_structs(
                     struct.name.lower() == private_name.lower()
                     and struct.filename == file_line.filename
                 ):
-                    logger.debug(f"Skipping private struct: {private_name}")
+                    logger.debug(
+                        f"Skipping private struct: {private_name} (from 'private' designation at {file_line})"
+                    )
                     structs.remove(struct)
 
     return structs
@@ -834,7 +848,7 @@ def convert(
             except ValueError:
                 pass
             else:
-                logger.warning(
+                logger.debug(
                     f"User config skipped struct: {name} (found in {source_fn})"
                 )
                 structs.pop(name)

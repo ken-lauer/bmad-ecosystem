@@ -21,8 +21,8 @@ ELSE ()
   )
 ENDIF ()
 
-SET (SRC_DIRS 
-  code 
+SET (SRC_DIRS
+  code
   ### custom  # Using function pointers now
   geometry
   interface
@@ -40,6 +40,7 @@ SET (SRC_DIRS
 
 SET (SHARED_DEPS
   sim_utils
+  jsonfortran
   $ENV{ACC_BMAD_LINK_LIBS}
   X11
   readline

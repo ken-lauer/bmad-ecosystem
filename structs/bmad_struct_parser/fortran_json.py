@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import logging
 import pathlib
-import sys
 import textwrap
 from typing import Literal
 
@@ -18,25 +17,10 @@ from .parser import (
     load_structures,
 )
 
-filename_skips = {
-    "a_def_element_fibre_layout",
-}
+# filename_skips = {
+#     "a_def_element_fibre_layout",
+# }
 
-special_use_by_filename = {
-    "h_definition": "ptc_spin",
-    "a_def": "ptc_spin",
-}
-special_use_by_struct = {
-    "genfield": "ptc_spin",
-    "fibre": "ptc_spin",
-    "layout": "ptc_spin",
-    "c_damap": "ptc_spin",
-    "c_normal_form": "ptc_spin",
-    "c_taylor": "ptc_spin",
-    "quaternion_8": "ptc_spin",
-    "probe_8": "ptc_spin",
-    "internal_state": "ptc_spin",
-}
 skips = {
     # "cylindrical_map_term1_struct",
     # "fibre",
@@ -291,7 +275,7 @@ class Converter(pydantic.BaseModel):
             )
         return JsonDumpMember(var=struct_var, member=member, code=code)
 
-    def resolve_import(self, name: str) -> tuple[SourceConfig, Structure]:
+    def _find_importable_structure(self, name: str) -> tuple[SourceConfig, Structure]:
         for source_config, struct_file in self.importable.items():
             for _, structs in struct_file.items():
                 for struct in structs.values():
@@ -299,6 +283,15 @@ class Converter(pydantic.BaseModel):
                         return source_config, struct
 
         raise ValueError(f"Structure not found to import: {name}")
+
+    def resolve_import(self, type: str) -> tuple[Structure, dict[str, list[str]]]:
+        try:
+            struct = self.by_bmad_name[type.lower()]
+        except KeyError:
+            struct_source_config, struct = self._find_importable_structure(type.lower())
+            to_json_module = struct_source_config.fortran_filename.stem
+            return struct, {to_json_module: [to_subroutine_name(type)]}
+        return struct, {}
 
     def get_json_dump_code(
         self,
@@ -314,23 +307,29 @@ class Converter(pydantic.BaseModel):
         imports = {}
         if source is not None:
             full_member_name = f"{struct.name}%{member.name}"
-            if full_member_name in source.skip_json:
+            if (
+                full_member_name in source.json_config.skip_members
+                or full_member_name.lower() in source.json_config.skip_members
+            ):
                 return JsonDumpMember(
                     var=member_json_var,
                     member=member,
-                    code=f"! config skip_json: {full_member_name} ({member.type}, {member.comment})",
+                    code=f"! config skip_members: {full_member_name} ({member.type}, {member.comment})",
                 )
 
         if member.python_type not in {"int", "float", "bool", "str", "Complex"}:
             self.seen.add(member.type)
 
         if member.dimension:
-            return self._get_json_dump_code_array(
+            struct_member = self._get_json_dump_code_array(
                 struct_var=struct_var,
                 member=member,
                 parent_json_var=parent_json_var,
                 member_json_var=member_json_var,
             )
+            if member.is_structure:
+                _, struct_member.imports = self.resolve_import(member.type)
+            return struct_member
 
         # TODO: what conditions can we add here to avoid recursing through the graph?
         # baking it into the json dumping code seems not so feasible
@@ -368,22 +367,7 @@ class Converter(pydantic.BaseModel):
                 )
             )
         else:
-            try:
-                struct = self.by_bmad_name[member.type.lower()]
-            except KeyError:
-                struct_source_config, struct = self.resolve_import(member.type.lower())
-                to_json_module = struct_source_config.fortran_filename.stem
-                imports.setdefault(to_json_module, [])
-                imports[to_json_module].append(to_subroutine_name(member.type))
-
-            if struct.name.lower() in skips or struct.filename.stem in filename_skips:
-                self.seen.remove(member.type)
-                return JsonDumpMember(
-                    var="",
-                    member=member,
-                    code=f"! skipped explicitly by converter: struct={struct.name} file={struct.filename.name} member={member_json_var}",
-                )
-
+            struct, imports = self.resolve_import(member.type)
             conv_subroutine = to_subroutine_name(member.type)
             code = "\n".join(
                 (
@@ -470,8 +454,8 @@ class Converter(pydantic.BaseModel):
         subroutine_name = to_subroutine_name(struct.name)
 
         lines = [f"subroutine {subroutine_name} (input, json_root, depth)"]
-        if struct.name.lower() in skips or struct.filename.stem in filename_skips:
-            raise ValueError(f"skipped subroutine: {subroutine_name}")
+        # if struct.name.lower() in skips or struct.filename.stem in filename_skips:
+        #     raise ValueError(f"skipped subroutine: {subroutine_name}")
 
         dump_code = self.get_struct_dump_code(
             "input",
@@ -569,46 +553,23 @@ def make_struct_tree(structures: dict[str, Structure]) -> dict[str, set[str]]:
     return res
 
 
-def convert_tree(structs: StructureFile, struct_name: str):
-    # only one structure and the sub-structures required to serialize it
-    conv = Converter(structs=structs)
-    by_name = conv.by_bmad_name
-
-    conv.seen = {struct_name}
-
-    while conv.seen - conv.generated:
-        remaining = conv.seen - conv.generated
-        next_struct = sorted(remaining)[0]
-        print("Generating:", next_struct, file=sys.stderr)
-        if (
-            next_struct.lower() in skips
-            or by_name[next_struct.lower()].filename.stem in filename_skips
-        ):
-            conv.generated.add(next_struct)
-            continue
-        subroutine = conv.get_struct_dump_subroutine(by_name[next_struct.lower()])
-        print(subroutine.code)
-        conv.generated.add(next_struct)
-
-    logger.info("Total structures: %d", len(conv.seen))
-
-
 def convert_all(
     source: SourceConfig,
     structs: StructureFile,
     importable: dict[SourceConfig, StructureFile],
 ):
     conv = Converter(structs=structs, importable=importable)
-    by_name = conv.by_bmad_name
-
-    # tree = make_struct_tree(conv.by_bmad_name)
     fortran = FortranSource(module=source.fortran_filename.stem)
 
     for name, struct in conv.by_bmad_name.items():
-        logger.debug(f"Generating: {name}")
-        if name.lower() in skips or by_name[name].filename.stem in filename_skips:
-            conv.generated.add(name)
+        if struct.filename.name in source.json_config.skip_files:
+            logger.debug(f"Skipping {name} from file {struct.filename}")
             continue
+
+        logger.debug(f"Generating: {name}")
+        # if name.lower() in skips or by_name[name].filename.stem in filename_skips:
+        #     conv.generated.add(name)
+        #     continue
         subroutine = conv.get_struct_dump_subroutine(source, struct)
         fortran.subroutines[subroutine.name] = subroutine.code
         conv.generated.add(name)
