@@ -3109,27 +3109,27 @@ def get_class_repr(struct: Structure) -> str:
 
         if arg.pointer_type == "PTR" and not arg.array:
             lines.append(
-                f'oss << "{arg.c_name}="; if ({arg.c_name} == nullptr) {{ oss << "nullptr"; }} else {{ oss << *{arg.c_name}; }}; oss << ", ";'
+                f'os << "{arg.c_name}="; if (obj.{arg.c_name} == nullptr) {{ os << "nullptr"; }} else {{ os << obj.{arg.c_name}; }}; os << ", ";'
             )
         else:
-            lines.append(f'oss << "{arg.c_name}=" << {arg.c_name} << ", ";')
+            lines.append(f'os << "{arg.c_name}=" << obj.{arg.c_name} << ", ";')
 
     if lines:
-        lines[-1] = lines[-1].replace('oss << ", ";', "")
+        lines[-1] = lines[-1].replace('os << ", ";', "")
         lines[-1] = lines[-1].replace(' << ", "', "")
 
     return string.Template("""
   friend ostream& operator<<(ostream& os, const ${cpp_class}& obj) {
-    os << obj.repr();
+    os << "${cpp_class}{";
+    ${lines}
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "${cpp_class}{";
-    ${lines}
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     """).substitute(
         cpp_class=struct.cpp_class,
@@ -3193,9 +3193,6 @@ def get_class_lines(struct: Structure) -> list[str]:
         ${destructor}${repr_methods}
         };
         
-        // std::ostream& operator<<(std::ostream& os, const ${cpp_class}& obj) {
-        //   return os << obj.repr();  // Reuse the repr method
-        // }
         extern "C" void ${short_name}_to_c (const Opaque_${short_name}_class*, ${cpp_class}&);
         extern "C" void ${short_name}_to_f (const ${cpp_class}&, Opaque_${short_name}_class*);
         

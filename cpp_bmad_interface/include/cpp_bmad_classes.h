@@ -40,26 +40,23 @@ public:
   std::shared_ptr<CPP_spline> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_spline& obj) {
-    os << obj.repr();
+    os << "CPP_spline{";
+    os << "x0=" << obj.x0 << ", ";
+    os << "y0=" << obj.y0 << ", ";
+    os << "x1=" << obj.x1 << ", ";
+    os << "coef=" << obj.coef;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_spline{";
-    oss << "x0=" << x0 << ", ";
-    oss << "y0=" << y0 << ", ";
-    oss << "x1=" << x1 << ", ";
-    oss << "coef=" << coef;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_spline& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void spline_to_c (const Opaque_spline_class*, CPP_spline&);
 extern "C" void spline_to_f (const CPP_spline&, Opaque_spline_class*);
 
@@ -84,26 +81,23 @@ public:
   std::shared_ptr<CPP_spin_polar> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_spin_polar& obj) {
-    os << obj.repr();
+    os << "CPP_spin_polar{";
+    os << "polarization=" << obj.polarization << ", ";
+    os << "theta=" << obj.theta << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "xi=" << obj.xi;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_spin_polar{";
-    oss << "polarization=" << polarization << ", ";
-    oss << "theta=" << theta << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "xi=" << xi;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_spin_polar& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void spin_polar_to_c (const Opaque_spin_polar_class*, CPP_spin_polar&);
 extern "C" void spin_polar_to_f (const CPP_spin_polar&, Opaque_spin_polar_class*);
 
@@ -127,25 +121,22 @@ public:
   std::shared_ptr<CPP_ac_kicker_time> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker_time& obj) {
-    os << obj.repr();
+    os << "CPP_ac_kicker_time{";
+    os << "amp=" << obj.amp << ", ";
+    os << "time=" << obj.time << ", ";
+    os << "spline=" << obj.spline;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_ac_kicker_time{";
-    oss << "amp=" << amp << ", ";
-    oss << "time=" << time << ", ";
-    oss << "spline=" << spline;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_ac_kicker_time& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void ac_kicker_time_to_c (const Opaque_ac_kicker_time_class*, CPP_ac_kicker_time&);
 extern "C" void ac_kicker_time_to_f (const CPP_ac_kicker_time&, Opaque_ac_kicker_time_class*);
 
@@ -170,26 +161,23 @@ public:
   std::shared_ptr<CPP_ac_kicker_freq> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker_freq& obj) {
-    os << obj.repr();
+    os << "CPP_ac_kicker_freq{";
+    os << "f=" << obj.f << ", ";
+    os << "amp=" << obj.amp << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "rf_clock_harmonic=" << obj.rf_clock_harmonic;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_ac_kicker_freq{";
-    oss << "f=" << f << ", ";
-    oss << "amp=" << amp << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "rf_clock_harmonic=" << rf_clock_harmonic;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_ac_kicker_freq& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void ac_kicker_freq_to_c (const Opaque_ac_kicker_freq_class*, CPP_ac_kicker_freq&);
 extern "C" void ac_kicker_freq_to_f (const CPP_ac_kicker_freq&, Opaque_ac_kicker_freq_class*);
 
@@ -212,24 +200,21 @@ public:
   std::shared_ptr<CPP_ac_kicker> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker& obj) {
-    os << obj.repr();
+    os << "CPP_ac_kicker{";
+    os << "amp_vs_time=" << obj.amp_vs_time << ", ";
+    os << "frequency=" << obj.frequency;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_ac_kicker{";
-    oss << "amp_vs_time=" << amp_vs_time << ", ";
-    oss << "frequency=" << frequency;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_ac_kicker& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void ac_kicker_to_c (const Opaque_ac_kicker_class*, CPP_ac_kicker&);
 extern "C" void ac_kicker_to_f (const CPP_ac_kicker&, Opaque_ac_kicker_class*);
 
@@ -253,25 +238,22 @@ public:
   std::shared_ptr<CPP_interval1_coef> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_interval1_coef& obj) {
-    os << obj.repr();
+    os << "CPP_interval1_coef{";
+    os << "c0=" << obj.c0 << ", ";
+    os << "c1=" << obj.c1 << ", ";
+    os << "n_exp=" << obj.n_exp;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_interval1_coef{";
-    oss << "c0=" << c0 << ", ";
-    oss << "c1=" << c1 << ", ";
-    oss << "n_exp=" << n_exp;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_interval1_coef& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void interval1_coef_to_c (const Opaque_interval1_coef_class*, CPP_interval1_coef&);
 extern "C" void interval1_coef_to_f (const CPP_interval1_coef&, Opaque_interval1_coef_class*);
 
@@ -299,29 +281,26 @@ public:
   std::shared_ptr<CPP_photon_reflect_table> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_reflect_table& obj) {
-    os << obj.repr();
+    os << "CPP_photon_reflect_table{";
+    os << "angle=" << obj.angle << ", ";
+    os << "energy=" << obj.energy << ", ";
+    os << "int1=" << obj.int1 << ", ";
+    os << "p_reflect=" << obj.p_reflect << ", ";
+    os << "max_energy=" << obj.max_energy << ", ";
+    os << "p_reflect_scratch=" << obj.p_reflect_scratch << ", ";
+    os << "bragg_angle=" << obj.bragg_angle;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_photon_reflect_table{";
-    oss << "angle=" << angle << ", ";
-    oss << "energy=" << energy << ", ";
-    oss << "int1=" << int1 << ", ";
-    oss << "p_reflect=" << p_reflect << ", ";
-    oss << "max_energy=" << max_energy << ", ";
-    oss << "p_reflect_scratch=" << p_reflect_scratch << ", ";
-    oss << "bragg_angle=" << bragg_angle;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_photon_reflect_table& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void photon_reflect_table_to_c (const Opaque_photon_reflect_table_class*, CPP_photon_reflect_table&);
 extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table&, Opaque_photon_reflect_table_class*);
 
@@ -349,29 +328,26 @@ public:
   std::shared_ptr<CPP_photon_reflect_surface> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_reflect_surface& obj) {
-    os << obj.repr();
+    os << "CPP_photon_reflect_surface{";
+    os << "name=" << obj.name << ", ";
+    os << "description=" << obj.description << ", ";
+    os << "reflectivity_file=" << obj.reflectivity_file << ", ";
+    os << "table=" << obj.table << ", ";
+    os << "surface_roughness_rms=" << obj.surface_roughness_rms << ", ";
+    os << "roughness_correlation_len=" << obj.roughness_correlation_len << ", ";
+    os << "ix_surface=" << obj.ix_surface;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_photon_reflect_surface{";
-    oss << "name=" << name << ", ";
-    oss << "description=" << description << ", ";
-    oss << "reflectivity_file=" << reflectivity_file << ", ";
-    oss << "table=" << table << ", ";
-    oss << "surface_roughness_rms=" << surface_roughness_rms << ", ";
-    oss << "roughness_correlation_len=" << roughness_correlation_len << ", ";
-    oss << "ix_surface=" << ix_surface;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_photon_reflect_surface& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void photon_reflect_surface_to_c (const Opaque_photon_reflect_surface_class*, CPP_photon_reflect_surface&);
 extern "C" void photon_reflect_surface_to_f (const CPP_photon_reflect_surface&, Opaque_photon_reflect_surface_class*);
 
@@ -413,43 +389,40 @@ public:
   std::shared_ptr<CPP_coord> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_coord& obj) {
-    os << obj.repr();
+    os << "CPP_coord{";
+    os << "vec=" << obj.vec << ", ";
+    os << "s=" << obj.s << ", ";
+    os << "t=" << obj.t << ", ";
+    os << "spin=" << obj.spin << ", ";
+    os << "field=" << obj.field << ", ";
+    os << "phase=" << obj.phase << ", ";
+    os << "charge=" << obj.charge << ", ";
+    os << "dt_ref=" << obj.dt_ref << ", ";
+    os << "r=" << obj.r << ", ";
+    os << "p0c=" << obj.p0c << ", ";
+    os << "e_potential=" << obj.e_potential << ", ";
+    os << "beta=" << obj.beta << ", ";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "ix_branch=" << obj.ix_branch << ", ";
+    os << "ix_turn=" << obj.ix_turn << ", ";
+    os << "ix_user=" << obj.ix_user << ", ";
+    os << "state=" << obj.state << ", ";
+    os << "direction=" << obj.direction << ", ";
+    os << "time_dir=" << obj.time_dir << ", ";
+    os << "species=" << obj.species << ", ";
+    os << "location=" << obj.location;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_coord{";
-    oss << "vec=" << vec << ", ";
-    oss << "s=" << s << ", ";
-    oss << "t=" << t << ", ";
-    oss << "spin=" << spin << ", ";
-    oss << "field=" << field << ", ";
-    oss << "phase=" << phase << ", ";
-    oss << "charge=" << charge << ", ";
-    oss << "dt_ref=" << dt_ref << ", ";
-    oss << "r=" << r << ", ";
-    oss << "p0c=" << p0c << ", ";
-    oss << "e_potential=" << e_potential << ", ";
-    oss << "beta=" << beta << ", ";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "ix_branch=" << ix_branch << ", ";
-    oss << "ix_turn=" << ix_turn << ", ";
-    oss << "ix_user=" << ix_user << ", ";
-    oss << "state=" << state << ", ";
-    oss << "direction=" << direction << ", ";
-    oss << "time_dir=" << time_dir << ", ";
-    oss << "species=" << species << ", ";
-    oss << "location=" << location;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_coord& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void coord_to_c (const Opaque_coord_class*, CPP_coord&);
 extern "C" void coord_to_f (const CPP_coord&, Opaque_coord_class*);
 
@@ -471,23 +444,20 @@ public:
   std::shared_ptr<CPP_coord_array> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_coord_array& obj) {
-    os << obj.repr();
+    os << "CPP_coord_array{";
+    os << "orbit=" << obj.orbit;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_coord_array{";
-    oss << "orbit=" << orbit;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_coord_array& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void coord_array_to_c (const Opaque_coord_array_class*, CPP_coord_array&);
 extern "C" void coord_array_to_f (const CPP_coord_array&, Opaque_coord_array_class*);
 
@@ -518,32 +488,29 @@ public:
   std::shared_ptr<CPP_bpm_phase_coupling> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bpm_phase_coupling& obj) {
-    os << obj.repr();
+    os << "CPP_bpm_phase_coupling{";
+    os << "k_22a=" << obj.k_22a << ", ";
+    os << "k_12a=" << obj.k_12a << ", ";
+    os << "k_11b=" << obj.k_11b << ", ";
+    os << "k_12b=" << obj.k_12b << ", ";
+    os << "cbar22_a=" << obj.cbar22_a << ", ";
+    os << "cbar12_a=" << obj.cbar12_a << ", ";
+    os << "cbar11_b=" << obj.cbar11_b << ", ";
+    os << "cbar12_b=" << obj.cbar12_b << ", ";
+    os << "phi_a=" << obj.phi_a << ", ";
+    os << "phi_b=" << obj.phi_b;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_bpm_phase_coupling{";
-    oss << "k_22a=" << k_22a << ", ";
-    oss << "k_12a=" << k_12a << ", ";
-    oss << "k_11b=" << k_11b << ", ";
-    oss << "k_12b=" << k_12b << ", ";
-    oss << "cbar22_a=" << cbar22_a << ", ";
-    oss << "cbar12_a=" << cbar12_a << ", ";
-    oss << "cbar11_b=" << cbar11_b << ", ";
-    oss << "cbar12_b=" << cbar12_b << ", ";
-    oss << "phi_a=" << phi_a << ", ";
-    oss << "phi_b=" << phi_b;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_bpm_phase_coupling& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void bpm_phase_coupling_to_c (const Opaque_bpm_phase_coupling_class*, CPP_bpm_phase_coupling&);
 extern "C" void bpm_phase_coupling_to_f (const CPP_bpm_phase_coupling&, Opaque_bpm_phase_coupling_class*);
 
@@ -567,25 +534,22 @@ public:
   std::shared_ptr<CPP_expression_atom> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_expression_atom& obj) {
-    os << obj.repr();
+    os << "CPP_expression_atom{";
+    os << "name=" << obj.name << ", ";
+    os << "type=" << obj.type << ", ";
+    os << "value=" << obj.value;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_expression_atom{";
-    oss << "name=" << name << ", ";
-    oss << "type=" << type << ", ";
-    oss << "value=" << value;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_expression_atom& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void expression_atom_to_c (const Opaque_expression_atom_class*, CPP_expression_atom&);
 extern "C" void expression_atom_to_f (const CPP_expression_atom&, Opaque_expression_atom_class*);
 
@@ -615,31 +579,28 @@ public:
   std::shared_ptr<CPP_wake_sr_z_long> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_sr_z_long& obj) {
-    os << obj.repr();
+    os << "CPP_wake_sr_z_long{";
+    os << "w=" << obj.w << ", ";
+    os << "fw=" << obj.fw << ", ";
+    os << "fbunch=" << obj.fbunch << ", ";
+    os << "w_out=" << obj.w_out << ", ";
+    os << "dz=" << obj.dz << ", ";
+    os << "z0=" << obj.z0 << ", ";
+    os << "smoothing_sigma=" << obj.smoothing_sigma << ", ";
+    os << "position_dependence=" << obj.position_dependence << ", ";
+    os << "time_based=" << obj.time_based;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wake_sr_z_long{";
-    oss << "w=" << w << ", ";
-    oss << "fw=" << fw << ", ";
-    oss << "fbunch=" << fbunch << ", ";
-    oss << "w_out=" << w_out << ", ";
-    oss << "dz=" << dz << ", ";
-    oss << "z0=" << z0 << ", ";
-    oss << "smoothing_sigma=" << smoothing_sigma << ", ";
-    oss << "position_dependence=" << position_dependence << ", ";
-    oss << "time_based=" << time_based;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wake_sr_z_long& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wake_sr_z_long_to_c (const Opaque_wake_sr_z_long_class*, CPP_wake_sr_z_long&);
 extern "C" void wake_sr_z_long_to_f (const CPP_wake_sr_z_long&, Opaque_wake_sr_z_long_class*);
 
@@ -670,32 +631,29 @@ public:
   std::shared_ptr<CPP_wake_sr_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_sr_mode& obj) {
-    os << obj.repr();
+    os << "CPP_wake_sr_mode{";
+    os << "amp=" << obj.amp << ", ";
+    os << "damp=" << obj.damp << ", ";
+    os << "k=" << obj.k << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "b_sin=" << obj.b_sin << ", ";
+    os << "b_cos=" << obj.b_cos << ", ";
+    os << "a_sin=" << obj.a_sin << ", ";
+    os << "a_cos=" << obj.a_cos << ", ";
+    os << "polarization=" << obj.polarization << ", ";
+    os << "position_dependence=" << obj.position_dependence;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wake_sr_mode{";
-    oss << "amp=" << amp << ", ";
-    oss << "damp=" << damp << ", ";
-    oss << "k=" << k << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "b_sin=" << b_sin << ", ";
-    oss << "b_cos=" << b_cos << ", ";
-    oss << "a_sin=" << a_sin << ", ";
-    oss << "a_cos=" << a_cos << ", ";
-    oss << "polarization=" << polarization << ", ";
-    oss << "position_dependence=" << position_dependence;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wake_sr_mode& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wake_sr_mode_to_c (const Opaque_wake_sr_mode_class*, CPP_wake_sr_mode&);
 extern "C" void wake_sr_mode_to_f (const CPP_wake_sr_mode&, Opaque_wake_sr_mode_class*);
 
@@ -726,32 +684,29 @@ public:
   std::shared_ptr<CPP_wake_sr> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_sr& obj) {
-    os << obj.repr();
+    os << "CPP_wake_sr{";
+    os << "file=" << obj.file << ", ";
+    os << "z_long=" << obj.z_long << ", ";
+    os << "long_wake=" << obj.long_wake << ", ";
+    os << "trans_wake=" << obj.trans_wake << ", ";
+    os << "z_ref_long=" << obj.z_ref_long << ", ";
+    os << "z_ref_trans=" << obj.z_ref_trans << ", ";
+    os << "z_max=" << obj.z_max << ", ";
+    os << "amp_scale=" << obj.amp_scale << ", ";
+    os << "z_scale=" << obj.z_scale << ", ";
+    os << "scale_with_length=" << obj.scale_with_length;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wake_sr{";
-    oss << "file=" << file << ", ";
-    oss << "z_long=" << z_long << ", ";
-    oss << "long_wake=" << long_wake << ", ";
-    oss << "trans_wake=" << trans_wake << ", ";
-    oss << "z_ref_long=" << z_ref_long << ", ";
-    oss << "z_ref_trans=" << z_ref_trans << ", ";
-    oss << "z_max=" << z_max << ", ";
-    oss << "amp_scale=" << amp_scale << ", ";
-    oss << "z_scale=" << z_scale << ", ";
-    oss << "scale_with_length=" << scale_with_length;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wake_sr& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wake_sr_to_c (const Opaque_wake_sr_class*, CPP_wake_sr&);
 extern "C" void wake_sr_to_f (const CPP_wake_sr&, Opaque_wake_sr_class*);
 
@@ -785,35 +740,32 @@ public:
   std::shared_ptr<CPP_wake_lr_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_lr_mode& obj) {
-    os << obj.repr();
+    os << "CPP_wake_lr_mode{";
+    os << "freq=" << obj.freq << ", ";
+    os << "freq_in=" << obj.freq_in << ", ";
+    os << "r_over_q=" << obj.r_over_q << ", ";
+    os << "q=" << obj.q << ", ";
+    os << "damp=" << obj.damp << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "angle=" << obj.angle << ", ";
+    os << "b_sin=" << obj.b_sin << ", ";
+    os << "b_cos=" << obj.b_cos << ", ";
+    os << "a_sin=" << obj.a_sin << ", ";
+    os << "a_cos=" << obj.a_cos << ", ";
+    os << "m=" << obj.m << ", ";
+    os << "polarized=" << obj.polarized;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wake_lr_mode{";
-    oss << "freq=" << freq << ", ";
-    oss << "freq_in=" << freq_in << ", ";
-    oss << "r_over_q=" << r_over_q << ", ";
-    oss << "q=" << q << ", ";
-    oss << "damp=" << damp << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "angle=" << angle << ", ";
-    oss << "b_sin=" << b_sin << ", ";
-    oss << "b_cos=" << b_cos << ", ";
-    oss << "a_sin=" << a_sin << ", ";
-    oss << "a_cos=" << a_cos << ", ";
-    oss << "m=" << m << ", ";
-    oss << "polarized=" << polarized;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wake_lr_mode& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wake_lr_mode_to_c (const Opaque_wake_lr_mode_class*, CPP_wake_lr_mode&);
 extern "C" void wake_lr_mode_to_f (const CPP_wake_lr_mode&, Opaque_wake_lr_mode_class*);
 
@@ -841,29 +793,26 @@ public:
   std::shared_ptr<CPP_wake_lr> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_lr& obj) {
-    os << obj.repr();
+    os << "CPP_wake_lr{";
+    os << "file=" << obj.file << ", ";
+    os << "mode=" << obj.mode << ", ";
+    os << "t_ref=" << obj.t_ref << ", ";
+    os << "freq_spread=" << obj.freq_spread << ", ";
+    os << "amp_scale=" << obj.amp_scale << ", ";
+    os << "time_scale=" << obj.time_scale << ", ";
+    os << "self_wake_on=" << obj.self_wake_on;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wake_lr{";
-    oss << "file=" << file << ", ";
-    oss << "mode=" << mode << ", ";
-    oss << "t_ref=" << t_ref << ", ";
-    oss << "freq_spread=" << freq_spread << ", ";
-    oss << "amp_scale=" << amp_scale << ", ";
-    oss << "time_scale=" << time_scale << ", ";
-    oss << "self_wake_on=" << self_wake_on;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wake_lr& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wake_lr_to_c (const Opaque_wake_lr_class*, CPP_wake_lr&);
 extern "C" void wake_lr_to_f (const CPP_wake_lr&, Opaque_wake_lr_class*);
 
@@ -886,24 +835,21 @@ public:
   std::shared_ptr<CPP_lat_ele_loc> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_lat_ele_loc& obj) {
-    os << obj.repr();
+    os << "CPP_lat_ele_loc{";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "ix_branch=" << obj.ix_branch;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_lat_ele_loc{";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "ix_branch=" << ix_branch;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_lat_ele_loc& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void lat_ele_loc_to_c (const Opaque_lat_ele_loc_class*, CPP_lat_ele_loc&);
 extern "C" void lat_ele_loc_to_f (const CPP_lat_ele_loc&, Opaque_lat_ele_loc_class*);
 
@@ -926,24 +872,21 @@ public:
   std::shared_ptr<CPP_wake> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake& obj) {
-    os << obj.repr();
+    os << "CPP_wake{";
+    os << "sr=" << obj.sr << ", ";
+    os << "lr=" << obj.lr;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wake{";
-    oss << "sr=" << sr << ", ";
-    oss << "lr=" << lr;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wake& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wake_to_c (const Opaque_wake_class*, CPP_wake&);
 extern "C" void wake_to_f (const CPP_wake&, Opaque_wake_class*);
 
@@ -966,24 +909,21 @@ public:
   std::shared_ptr<CPP_taylor_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_taylor_term& obj) {
-    os << obj.repr();
+    os << "CPP_taylor_term{";
+    os << "coef=" << obj.coef << ", ";
+    os << "expn=" << obj.expn;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_taylor_term{";
-    oss << "coef=" << coef << ", ";
-    oss << "expn=" << expn;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_taylor_term& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void taylor_term_to_c (const Opaque_taylor_term_class*, CPP_taylor_term&);
 extern "C" void taylor_term_to_f (const CPP_taylor_term&, Opaque_taylor_term_class*);
 
@@ -1006,24 +946,21 @@ public:
   std::shared_ptr<CPP_taylor> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_taylor& obj) {
-    os << obj.repr();
+    os << "CPP_taylor{";
+    os << "ref=" << obj.ref << ", ";
+    os << "term=" << obj.term;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_taylor{";
-    oss << "ref=" << ref << ", ";
-    oss << "term=" << term;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_taylor& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void taylor_to_c (const Opaque_taylor_class*, CPP_taylor&);
 extern "C" void taylor_to_f (const CPP_taylor&, Opaque_taylor_class*);
 
@@ -1046,24 +983,21 @@ public:
   std::shared_ptr<CPP_em_taylor_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_em_taylor_term& obj) {
-    os << obj.repr();
+    os << "CPP_em_taylor_term{";
+    os << "coef=" << obj.coef << ", ";
+    os << "expn=" << obj.expn;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_em_taylor_term{";
-    oss << "coef=" << coef << ", ";
-    oss << "expn=" << expn;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_em_taylor_term& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void em_taylor_term_to_c (const Opaque_em_taylor_term_class*, CPP_em_taylor_term&);
 extern "C" void em_taylor_term_to_f (const CPP_em_taylor_term&, Opaque_em_taylor_term_class*);
 
@@ -1086,24 +1020,21 @@ public:
   std::shared_ptr<CPP_em_taylor> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_em_taylor& obj) {
-    os << obj.repr();
+    os << "CPP_em_taylor{";
+    os << "ref=" << obj.ref << ", ";
+    os << "term=" << obj.term;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_em_taylor{";
-    oss << "ref=" << ref << ", ";
-    oss << "term=" << term;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_em_taylor& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void em_taylor_to_c (const Opaque_em_taylor_class*, CPP_em_taylor&);
 extern "C" void em_taylor_to_f (const CPP_em_taylor&, Opaque_em_taylor_class*);
 
@@ -1133,31 +1064,28 @@ public:
   std::shared_ptr<CPP_cartesian_map_term1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map_term1& obj) {
-    os << obj.repr();
+    os << "CPP_cartesian_map_term1{";
+    os << "coef=" << obj.coef << ", ";
+    os << "kx=" << obj.kx << ", ";
+    os << "ky=" << obj.ky << ", ";
+    os << "kz=" << obj.kz << ", ";
+    os << "x0=" << obj.x0 << ", ";
+    os << "y0=" << obj.y0 << ", ";
+    os << "phi_z=" << obj.phi_z << ", ";
+    os << "family=" << obj.family << ", ";
+    os << "form=" << obj.form;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_cartesian_map_term1{";
-    oss << "coef=" << coef << ", ";
-    oss << "kx=" << kx << ", ";
-    oss << "ky=" << ky << ", ";
-    oss << "kz=" << kz << ", ";
-    oss << "x0=" << x0 << ", ";
-    oss << "y0=" << y0 << ", ";
-    oss << "phi_z=" << phi_z << ", ";
-    oss << "family=" << family << ", ";
-    oss << "form=" << form;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_cartesian_map_term1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void cartesian_map_term1_to_c (const Opaque_cartesian_map_term1_class*, CPP_cartesian_map_term1&);
 extern "C" void cartesian_map_term1_to_f (const CPP_cartesian_map_term1&, Opaque_cartesian_map_term1_class*);
 
@@ -1181,25 +1109,22 @@ public:
   std::shared_ptr<CPP_cartesian_map_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map_term& obj) {
-    os << obj.repr();
+    os << "CPP_cartesian_map_term{";
+    os << "file=" << obj.file << ", ";
+    os << "n_link=" << obj.n_link << ", ";
+    os << "term=" << obj.term;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_cartesian_map_term{";
-    oss << "file=" << file << ", ";
-    oss << "n_link=" << n_link << ", ";
-    oss << "term=" << term;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_cartesian_map_term& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void cartesian_map_term_to_c (const Opaque_cartesian_map_term_class*, CPP_cartesian_map_term&);
 extern "C" void cartesian_map_term_to_f (const CPP_cartesian_map_term&, Opaque_cartesian_map_term_class*);
 
@@ -1226,28 +1151,25 @@ public:
   std::shared_ptr<CPP_cartesian_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map& obj) {
-    os << obj.repr();
+    os << "CPP_cartesian_map{";
+    os << "field_scale=" << obj.field_scale << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "master_parameter=" << obj.master_parameter << ", ";
+    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "field_type=" << obj.field_type << ", ";
+    os << "ptr="; if (obj.ptr == nullptr) { os << "nullptr"; } else { os << obj.ptr; }; 
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_cartesian_map{";
-    oss << "field_scale=" << field_scale << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "master_parameter=" << master_parameter << ", ";
-    oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
-    oss << "field_type=" << field_type << ", ";
-    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << *ptr; }; 
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_cartesian_map& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void cartesian_map_to_c (const Opaque_cartesian_map_class*, CPP_cartesian_map&);
 extern "C" void cartesian_map_to_f (const CPP_cartesian_map&, Opaque_cartesian_map_class*);
 
@@ -1270,24 +1192,21 @@ public:
   std::shared_ptr<CPP_cylindrical_map_term1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map_term1& obj) {
-    os << obj.repr();
+    os << "CPP_cylindrical_map_term1{";
+    os << "e_coef=" << obj.e_coef << ", ";
+    os << "b_coef=" << obj.b_coef;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_cylindrical_map_term1{";
-    oss << "e_coef=" << e_coef << ", ";
-    oss << "b_coef=" << b_coef;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_cylindrical_map_term1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void cylindrical_map_term1_to_c (const Opaque_cylindrical_map_term1_class*, CPP_cylindrical_map_term1&);
 extern "C" void cylindrical_map_term1_to_f (const CPP_cylindrical_map_term1&, Opaque_cylindrical_map_term1_class*);
 
@@ -1311,25 +1230,22 @@ public:
   std::shared_ptr<CPP_cylindrical_map_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map_term& obj) {
-    os << obj.repr();
+    os << "CPP_cylindrical_map_term{";
+    os << "file=" << obj.file << ", ";
+    os << "n_link=" << obj.n_link << ", ";
+    os << "term=" << obj.term;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_cylindrical_map_term{";
-    oss << "file=" << file << ", ";
-    oss << "n_link=" << n_link << ", ";
-    oss << "term=" << term;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_cylindrical_map_term& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void cylindrical_map_term_to_c (const Opaque_cylindrical_map_term_class*, CPP_cylindrical_map_term&);
 extern "C" void cylindrical_map_term_to_f (const CPP_cylindrical_map_term&, Opaque_cylindrical_map_term_class*);
 
@@ -1360,32 +1276,29 @@ public:
   std::shared_ptr<CPP_cylindrical_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map& obj) {
-    os << obj.repr();
+    os << "CPP_cylindrical_map{";
+    os << "m=" << obj.m << ", ";
+    os << "harmonic=" << obj.harmonic << ", ";
+    os << "phi0_fieldmap=" << obj.phi0_fieldmap << ", ";
+    os << "theta0_azimuth=" << obj.theta0_azimuth << ", ";
+    os << "field_scale=" << obj.field_scale << ", ";
+    os << "master_parameter=" << obj.master_parameter << ", ";
+    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "dz=" << obj.dz << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "ptr="; if (obj.ptr == nullptr) { os << "nullptr"; } else { os << obj.ptr; }; 
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_cylindrical_map{";
-    oss << "m=" << m << ", ";
-    oss << "harmonic=" << harmonic << ", ";
-    oss << "phi0_fieldmap=" << phi0_fieldmap << ", ";
-    oss << "theta0_azimuth=" << theta0_azimuth << ", ";
-    oss << "field_scale=" << field_scale << ", ";
-    oss << "master_parameter=" << master_parameter << ", ";
-    oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
-    oss << "dz=" << dz << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << *ptr; }; 
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_cylindrical_map& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void cylindrical_map_to_c (const Opaque_cylindrical_map_class*, CPP_cylindrical_map&);
 extern "C" void cylindrical_map_to_f (const CPP_cylindrical_map&, Opaque_cylindrical_map_class*);
 
@@ -1408,24 +1321,21 @@ public:
   std::shared_ptr<CPP_grid_field_pt1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_field_pt1& obj) {
-    os << obj.repr();
+    os << "CPP_grid_field_pt1{";
+    os << "e=" << obj.e << ", ";
+    os << "b=" << obj.b;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_grid_field_pt1{";
-    oss << "e=" << e << ", ";
-    oss << "b=" << b;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_grid_field_pt1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void grid_field_pt1_to_c (const Opaque_grid_field_pt1_class*, CPP_grid_field_pt1&);
 extern "C" void grid_field_pt1_to_f (const CPP_grid_field_pt1&, Opaque_grid_field_pt1_class*);
 
@@ -1448,24 +1358,21 @@ public:
   std::shared_ptr<CPP_grid_field_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_field_pt& obj) {
-    os << obj.repr();
+    os << "CPP_grid_field_pt{";
+    os << "file=" << obj.file << ", ";
+    os << "n_link=" << obj.n_link;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_grid_field_pt{";
-    oss << "file=" << file << ", ";
-    oss << "n_link=" << n_link;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_grid_field_pt& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void grid_field_pt_to_c (const Opaque_grid_field_pt_class*, CPP_grid_field_pt&);
 extern "C" void grid_field_pt_to_f (const CPP_grid_field_pt&, Opaque_grid_field_pt_class*);
 
@@ -1498,34 +1405,31 @@ public:
   std::shared_ptr<CPP_grid_field> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_field& obj) {
-    os << obj.repr();
+    os << "CPP_grid_field{";
+    os << "geometry=" << obj.geometry << ", ";
+    os << "harmonic=" << obj.harmonic << ", ";
+    os << "phi0_fieldmap=" << obj.phi0_fieldmap << ", ";
+    os << "field_scale=" << obj.field_scale << ", ";
+    os << "field_type=" << obj.field_type << ", ";
+    os << "master_parameter=" << obj.master_parameter << ", ";
+    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "interpolation_order=" << obj.interpolation_order << ", ";
+    os << "dr=" << obj.dr << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "curved_ref_frame=" << obj.curved_ref_frame << ", ";
+    os << "ptr="; if (obj.ptr == nullptr) { os << "nullptr"; } else { os << obj.ptr; }; 
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_grid_field{";
-    oss << "geometry=" << geometry << ", ";
-    oss << "harmonic=" << harmonic << ", ";
-    oss << "phi0_fieldmap=" << phi0_fieldmap << ", ";
-    oss << "field_scale=" << field_scale << ", ";
-    oss << "field_type=" << field_type << ", ";
-    oss << "master_parameter=" << master_parameter << ", ";
-    oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
-    oss << "interpolation_order=" << interpolation_order << ", ";
-    oss << "dr=" << dr << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "curved_ref_frame=" << curved_ref_frame << ", ";
-    oss << "ptr="; if (ptr == nullptr) { oss << "nullptr"; } else { oss << *ptr; }; 
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_grid_field& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void grid_field_to_c (const Opaque_grid_field_class*, CPP_grid_field&);
 extern "C" void grid_field_to_f (const CPP_grid_field&, Opaque_grid_field_class*);
 
@@ -1551,27 +1455,24 @@ public:
   std::shared_ptr<CPP_floor_position> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_floor_position& obj) {
-    os << obj.repr();
+    os << "CPP_floor_position{";
+    os << "r=" << obj.r << ", ";
+    os << "w=" << obj.w << ", ";
+    os << "theta=" << obj.theta << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "psi=" << obj.psi;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_floor_position{";
-    oss << "r=" << r << ", ";
-    oss << "w=" << w << ", ";
-    oss << "theta=" << theta << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "psi=" << psi;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_floor_position& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void floor_position_to_c (const Opaque_floor_position_class*, CPP_floor_position&);
 extern "C" void floor_position_to_f (const CPP_floor_position&, Opaque_floor_position_class*);
 
@@ -1600,30 +1501,27 @@ public:
   std::shared_ptr<CPP_high_energy_space_charge> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_high_energy_space_charge& obj) {
-    os << obj.repr();
+    os << "CPP_high_energy_space_charge{";
+    os << "closed_orb=" << obj.closed_orb << ", ";
+    os << "kick_const=" << obj.kick_const << ", ";
+    os << "sig_x=" << obj.sig_x << ", ";
+    os << "sig_y=" << obj.sig_y << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "sin_phi=" << obj.sin_phi << ", ";
+    os << "cos_phi=" << obj.cos_phi << ", ";
+    os << "sig_z=" << obj.sig_z;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_high_energy_space_charge{";
-    oss << "closed_orb=" << closed_orb << ", ";
-    oss << "kick_const=" << kick_const << ", ";
-    oss << "sig_x=" << sig_x << ", ";
-    oss << "sig_y=" << sig_y << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "sin_phi=" << sin_phi << ", ";
-    oss << "cos_phi=" << cos_phi << ", ";
-    oss << "sig_z=" << sig_z;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_high_energy_space_charge& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void high_energy_space_charge_to_c (const Opaque_high_energy_space_charge_class*, CPP_high_energy_space_charge&);
 extern "C" void high_energy_space_charge_to_f (const CPP_high_energy_space_charge&, Opaque_high_energy_space_charge_class*);
 
@@ -1648,26 +1546,23 @@ public:
   std::shared_ptr<CPP_xy_disp> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_xy_disp& obj) {
-    os << obj.repr();
+    os << "CPP_xy_disp{";
+    os << "eta=" << obj.eta << ", ";
+    os << "etap=" << obj.etap << ", ";
+    os << "deta_ds=" << obj.deta_ds << ", ";
+    os << "sigma=" << obj.sigma;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_xy_disp{";
-    oss << "eta=" << eta << ", ";
-    oss << "etap=" << etap << ", ";
-    oss << "deta_ds=" << deta_ds << ", ";
-    oss << "sigma=" << sigma;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_xy_disp& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void xy_disp_to_c (const Opaque_xy_disp_class*, CPP_xy_disp&);
 extern "C" void xy_disp_to_f (const CPP_xy_disp&, Opaque_xy_disp_class*);
 
@@ -1699,33 +1594,30 @@ public:
   std::shared_ptr<CPP_twiss> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_twiss& obj) {
-    os << obj.repr();
+    os << "CPP_twiss{";
+    os << "beta=" << obj.beta << ", ";
+    os << "alpha=" << obj.alpha << ", ";
+    os << "gamma=" << obj.gamma << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "eta=" << obj.eta << ", ";
+    os << "etap=" << obj.etap << ", ";
+    os << "deta_ds=" << obj.deta_ds << ", ";
+    os << "sigma=" << obj.sigma << ", ";
+    os << "sigma_p=" << obj.sigma_p << ", ";
+    os << "emit=" << obj.emit << ", ";
+    os << "norm_emit=" << obj.norm_emit;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_twiss{";
-    oss << "beta=" << beta << ", ";
-    oss << "alpha=" << alpha << ", ";
-    oss << "gamma=" << gamma << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "eta=" << eta << ", ";
-    oss << "etap=" << etap << ", ";
-    oss << "deta_ds=" << deta_ds << ", ";
-    oss << "sigma=" << sigma << ", ";
-    oss << "sigma_p=" << sigma_p << ", ";
-    oss << "emit=" << emit << ", ";
-    oss << "norm_emit=" << norm_emit;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_twiss& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void twiss_to_c (const Opaque_twiss_class*, CPP_twiss&);
 extern "C" void twiss_to_f (const CPP_twiss&, Opaque_twiss_class*);
 
@@ -1752,28 +1644,25 @@ public:
   std::shared_ptr<CPP_mode3> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_mode3& obj) {
-    os << obj.repr();
+    os << "CPP_mode3{";
+    os << "v=" << obj.v << ", ";
+    os << "a=" << obj.a << ", ";
+    os << "b=" << obj.b << ", ";
+    os << "c=" << obj.c << ", ";
+    os << "x=" << obj.x << ", ";
+    os << "y=" << obj.y;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_mode3{";
-    oss << "v=" << v << ", ";
-    oss << "a=" << a << ", ";
-    oss << "b=" << b << ", ";
-    oss << "c=" << c << ", ";
-    oss << "x=" << x << ", ";
-    oss << "y=" << y;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_mode3& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void mode3_to_c (const Opaque_mode3_class*, CPP_mode3&);
 extern "C" void mode3_to_f (const CPP_mode3&, Opaque_mode3_class*);
 
@@ -1803,31 +1692,28 @@ public:
   std::shared_ptr<CPP_bookkeeping_state> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bookkeeping_state& obj) {
-    os << obj.repr();
+    os << "CPP_bookkeeping_state{";
+    os << "attributes=" << obj.attributes << ", ";
+    os << "control=" << obj.control << ", ";
+    os << "floor_position=" << obj.floor_position << ", ";
+    os << "s_position=" << obj.s_position << ", ";
+    os << "ref_energy=" << obj.ref_energy << ", ";
+    os << "mat6=" << obj.mat6 << ", ";
+    os << "rad_int=" << obj.rad_int << ", ";
+    os << "ptc=" << obj.ptc << ", ";
+    os << "has_misalign=" << obj.has_misalign;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_bookkeeping_state{";
-    oss << "attributes=" << attributes << ", ";
-    oss << "control=" << control << ", ";
-    oss << "floor_position=" << floor_position << ", ";
-    oss << "s_position=" << s_position << ", ";
-    oss << "ref_energy=" << ref_energy << ", ";
-    oss << "mat6=" << mat6 << ", ";
-    oss << "rad_int=" << rad_int << ", ";
-    oss << "ptc=" << ptc << ", ";
-    oss << "has_misalign=" << has_misalign;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_bookkeeping_state& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void bookkeeping_state_to_c (const Opaque_bookkeeping_state_class*, CPP_bookkeeping_state&);
 extern "C" void bookkeeping_state_to_f (const CPP_bookkeeping_state&, Opaque_bookkeeping_state_class*);
 
@@ -1853,27 +1739,24 @@ public:
   std::shared_ptr<CPP_rad_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_map& obj) {
-    os << obj.repr();
+    os << "CPP_rad_map{";
+    os << "ref_orb=" << obj.ref_orb << ", ";
+    os << "damp_dmat=" << obj.damp_dmat << ", ";
+    os << "xfer_damp_vec=" << obj.xfer_damp_vec << ", ";
+    os << "xfer_damp_mat=" << obj.xfer_damp_mat << ", ";
+    os << "stoc_mat=" << obj.stoc_mat;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_rad_map{";
-    oss << "ref_orb=" << ref_orb << ", ";
-    oss << "damp_dmat=" << damp_dmat << ", ";
-    oss << "xfer_damp_vec=" << xfer_damp_vec << ", ";
-    oss << "xfer_damp_mat=" << xfer_damp_mat << ", ";
-    oss << "stoc_mat=" << stoc_mat;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_rad_map& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void rad_map_to_c (const Opaque_rad_map_class*, CPP_rad_map&);
 extern "C" void rad_map_to_f (const CPP_rad_map&, Opaque_rad_map_class*);
 
@@ -1897,25 +1780,22 @@ public:
   std::shared_ptr<CPP_rad_map_ele> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_map_ele& obj) {
-    os << obj.repr();
+    os << "CPP_rad_map_ele{";
+    os << "rm0=" << obj.rm0 << ", ";
+    os << "rm1=" << obj.rm1 << ", ";
+    os << "stale=" << obj.stale;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_rad_map_ele{";
-    oss << "rm0=" << rm0 << ", ";
-    oss << "rm1=" << rm1 << ", ";
-    oss << "stale=" << stale;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_rad_map_ele& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void rad_map_ele_to_c (const Opaque_rad_map_ele_class*, CPP_rad_map_ele&);
 extern "C" void rad_map_ele_to_f (const CPP_rad_map_ele&, Opaque_rad_map_ele_class*);
 
@@ -1940,26 +1820,23 @@ public:
   std::shared_ptr<CPP_gen_grad1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_gen_grad1& obj) {
-    os << obj.repr();
+    os << "CPP_gen_grad1{";
+    os << "m=" << obj.m << ", ";
+    os << "sincos=" << obj.sincos << ", ";
+    os << "n_deriv_max=" << obj.n_deriv_max << ", ";
+    os << "deriv=" << obj.deriv;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_gen_grad1{";
-    oss << "m=" << m << ", ";
-    oss << "sincos=" << sincos << ", ";
-    oss << "n_deriv_max=" << n_deriv_max << ", ";
-    oss << "deriv=" << deriv;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_gen_grad1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void gen_grad1_to_c (const Opaque_gen_grad1_class*, CPP_gen_grad1&);
 extern "C" void gen_grad1_to_f (const CPP_gen_grad1&, Opaque_gen_grad1_class*);
 
@@ -1991,33 +1868,30 @@ public:
   std::shared_ptr<CPP_gen_grad_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_gen_grad_map& obj) {
-    os << obj.repr();
+    os << "CPP_gen_grad_map{";
+    os << "file=" << obj.file << ", ";
+    os << "gg=" << obj.gg << ", ";
+    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "field_type=" << obj.field_type << ", ";
+    os << "iz0=" << obj.iz0 << ", ";
+    os << "iz1=" << obj.iz1 << ", ";
+    os << "dz=" << obj.dz << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "field_scale=" << obj.field_scale << ", ";
+    os << "master_parameter=" << obj.master_parameter << ", ";
+    os << "curved_ref_frame=" << obj.curved_ref_frame;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_gen_grad_map{";
-    oss << "file=" << file << ", ";
-    oss << "gg=" << gg << ", ";
-    oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
-    oss << "field_type=" << field_type << ", ";
-    oss << "iz0=" << iz0 << ", ";
-    oss << "iz1=" << iz1 << ", ";
-    oss << "dz=" << dz << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "field_scale=" << field_scale << ", ";
-    oss << "master_parameter=" << master_parameter << ", ";
-    oss << "curved_ref_frame=" << curved_ref_frame;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_gen_grad_map& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void gen_grad_map_to_c (const Opaque_gen_grad_map_class*, CPP_gen_grad_map&);
 extern "C" void gen_grad_map_to_f (const CPP_gen_grad_map&, Opaque_gen_grad_map_class*);
 
@@ -2043,27 +1917,24 @@ public:
   std::shared_ptr<CPP_surface_segmented_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_segmented_pt& obj) {
-    os << obj.repr();
+    os << "CPP_surface_segmented_pt{";
+    os << "x0=" << obj.x0 << ", ";
+    os << "y0=" << obj.y0 << ", ";
+    os << "z0=" << obj.z0 << ", ";
+    os << "dz_dx=" << obj.dz_dx << ", ";
+    os << "dz_dy=" << obj.dz_dy;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_segmented_pt{";
-    oss << "x0=" << x0 << ", ";
-    oss << "y0=" << y0 << ", ";
-    oss << "z0=" << z0 << ", ";
-    oss << "dz_dx=" << dz_dx << ", ";
-    oss << "dz_dy=" << dz_dy;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_segmented_pt& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_segmented_pt_to_c (const Opaque_surface_segmented_pt_class*, CPP_surface_segmented_pt&);
 extern "C" void surface_segmented_pt_to_f (const CPP_surface_segmented_pt&, Opaque_surface_segmented_pt_class*);
 
@@ -2088,26 +1959,23 @@ public:
   std::shared_ptr<CPP_surface_segmented> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_segmented& obj) {
-    os << obj.repr();
+    os << "CPP_surface_segmented{";
+    os << "active=" << obj.active << ", ";
+    os << "dr=" << obj.dr << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "pt=" << obj.pt;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_segmented{";
-    oss << "active=" << active << ", ";
-    oss << "dr=" << dr << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "pt=" << pt;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_segmented& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_segmented_to_c (const Opaque_surface_segmented_class*, CPP_surface_segmented&);
 extern "C" void surface_segmented_to_f (const CPP_surface_segmented&, Opaque_surface_segmented_class*);
 
@@ -2134,28 +2002,25 @@ public:
   std::shared_ptr<CPP_surface_h_misalign_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_h_misalign_pt& obj) {
-    os << obj.repr();
+    os << "CPP_surface_h_misalign_pt{";
+    os << "x0=" << obj.x0 << ", ";
+    os << "y0=" << obj.y0 << ", ";
+    os << "rot_y=" << obj.rot_y << ", ";
+    os << "rot_t=" << obj.rot_t << ", ";
+    os << "rot_y_rms=" << obj.rot_y_rms << ", ";
+    os << "rot_t_rms=" << obj.rot_t_rms;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_h_misalign_pt{";
-    oss << "x0=" << x0 << ", ";
-    oss << "y0=" << y0 << ", ";
-    oss << "rot_y=" << rot_y << ", ";
-    oss << "rot_t=" << rot_t << ", ";
-    oss << "rot_y_rms=" << rot_y_rms << ", ";
-    oss << "rot_t_rms=" << rot_t_rms;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_h_misalign_pt& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_h_misalign_pt_to_c (const Opaque_surface_h_misalign_pt_class*, CPP_surface_h_misalign_pt&);
 extern "C" void surface_h_misalign_pt_to_f (const CPP_surface_h_misalign_pt&, Opaque_surface_h_misalign_pt_class*);
 
@@ -2180,26 +2045,23 @@ public:
   std::shared_ptr<CPP_surface_h_misalign> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_h_misalign& obj) {
-    os << obj.repr();
+    os << "CPP_surface_h_misalign{";
+    os << "active=" << obj.active << ", ";
+    os << "dr=" << obj.dr << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "pt=" << obj.pt;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_h_misalign{";
-    oss << "active=" << active << ", ";
-    oss << "dr=" << dr << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "pt=" << pt;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_h_misalign& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_h_misalign_to_c (const Opaque_surface_h_misalign_class*, CPP_surface_h_misalign&);
 extern "C" void surface_h_misalign_to_f (const CPP_surface_h_misalign&, Opaque_surface_h_misalign_class*);
 
@@ -2226,28 +2088,25 @@ public:
   std::shared_ptr<CPP_surface_displacement_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_displacement_pt& obj) {
-    os << obj.repr();
+    os << "CPP_surface_displacement_pt{";
+    os << "x0=" << obj.x0 << ", ";
+    os << "y0=" << obj.y0 << ", ";
+    os << "z0=" << obj.z0 << ", ";
+    os << "dz_dx=" << obj.dz_dx << ", ";
+    os << "dz_dy=" << obj.dz_dy << ", ";
+    os << "d2z_dxdy=" << obj.d2z_dxdy;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_displacement_pt{";
-    oss << "x0=" << x0 << ", ";
-    oss << "y0=" << y0 << ", ";
-    oss << "z0=" << z0 << ", ";
-    oss << "dz_dx=" << dz_dx << ", ";
-    oss << "dz_dy=" << dz_dy << ", ";
-    oss << "d2z_dxdy=" << d2z_dxdy;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_displacement_pt& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_displacement_pt_to_c (const Opaque_surface_displacement_pt_class*, CPP_surface_displacement_pt&);
 extern "C" void surface_displacement_pt_to_f (const CPP_surface_displacement_pt&, Opaque_surface_displacement_pt_class*);
 
@@ -2272,26 +2131,23 @@ public:
   std::shared_ptr<CPP_surface_displacement> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_displacement& obj) {
-    os << obj.repr();
+    os << "CPP_surface_displacement{";
+    os << "active=" << obj.active << ", ";
+    os << "dr=" << obj.dr << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "pt=" << obj.pt;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_displacement{";
-    oss << "active=" << active << ", ";
-    oss << "dr=" << dr << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "pt=" << pt;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_displacement& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_displacement_to_c (const Opaque_surface_displacement_class*, CPP_surface_displacement&);
 extern "C" void surface_displacement_to_f (const CPP_surface_displacement&, Opaque_surface_displacement_class*);
 
@@ -2313,23 +2169,20 @@ public:
   std::shared_ptr<CPP_target_point> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_target_point& obj) {
-    os << obj.repr();
+    os << "CPP_target_point{";
+    os << "r=" << obj.r;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_target_point{";
-    oss << "r=" << r;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_target_point& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void target_point_to_c (const Opaque_target_point_class*, CPP_target_point&);
 extern "C" void target_point_to_f (const CPP_target_point&, Opaque_target_point_class*);
 
@@ -2354,26 +2207,23 @@ public:
   std::shared_ptr<CPP_surface_curvature> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_curvature& obj) {
-    os << obj.repr();
+    os << "CPP_surface_curvature{";
+    os << "xy=" << obj.xy << ", ";
+    os << "spherical=" << obj.spherical << ", ";
+    os << "elliptical=" << obj.elliptical << ", ";
+    os << "has_curvature=" << obj.has_curvature;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_surface_curvature{";
-    oss << "xy=" << xy << ", ";
-    oss << "spherical=" << spherical << ", ";
-    oss << "elliptical=" << elliptical << ", ";
-    oss << "has_curvature=" << has_curvature;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_surface_curvature& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void surface_curvature_to_c (const Opaque_surface_curvature_class*, CPP_surface_curvature&);
 extern "C" void surface_curvature_to_f (const CPP_surface_curvature&, Opaque_surface_curvature_class*);
 
@@ -2399,27 +2249,24 @@ public:
   std::shared_ptr<CPP_photon_target> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_target& obj) {
-    os << obj.repr();
+    os << "CPP_photon_target{";
+    os << "type=" << obj.type << ", ";
+    os << "n_corner=" << obj.n_corner << ", ";
+    os << "ele_loc=" << obj.ele_loc << ", ";
+    os << "corner=" << obj.corner << ", ";
+    os << "center=" << obj.center;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_photon_target{";
-    oss << "type=" << type << ", ";
-    oss << "n_corner=" << n_corner << ", ";
-    oss << "ele_loc=" << ele_loc << ", ";
-    oss << "corner=" << corner << ", ";
-    oss << "center=" << center;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_photon_target& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void photon_target_to_c (const Opaque_photon_target_class*, CPP_photon_target&);
 extern "C" void photon_target_to_f (const CPP_photon_target&, Opaque_photon_target_class*);
 
@@ -2448,30 +2295,27 @@ public:
   std::shared_ptr<CPP_photon_material> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_material& obj) {
-    os << obj.repr();
+    os << "CPP_photon_material{";
+    os << "f0_m1=" << obj.f0_m1 << ", ";
+    os << "f0_m2=" << obj.f0_m2 << ", ";
+    os << "f_0=" << obj.f_0 << ", ";
+    os << "f_h=" << obj.f_h << ", ";
+    os << "f_hbar=" << obj.f_hbar << ", ";
+    os << "f_hkl=" << obj.f_hkl << ", ";
+    os << "h_norm=" << obj.h_norm << ", ";
+    os << "l_ref=" << obj.l_ref;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_photon_material{";
-    oss << "f0_m1=" << f0_m1 << ", ";
-    oss << "f0_m2=" << f0_m2 << ", ";
-    oss << "f_0=" << f_0 << ", ";
-    oss << "f_h=" << f_h << ", ";
-    oss << "f_hbar=" << f_hbar << ", ";
-    oss << "f_hkl=" << f_hkl << ", ";
-    oss << "h_norm=" << h_norm << ", ";
-    oss << "l_ref=" << l_ref;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_photon_material& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void photon_material_to_c (const Opaque_photon_material_class*, CPP_photon_material&);
 extern "C" void photon_material_to_f (const CPP_photon_material&, Opaque_photon_material_class*);
 
@@ -2502,32 +2346,29 @@ public:
   std::shared_ptr<CPP_pixel_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_pixel_pt& obj) {
-    os << obj.repr();
+    os << "CPP_pixel_pt{";
+    os << "n_photon=" << obj.n_photon << ", ";
+    os << "e_x=" << obj.e_x << ", ";
+    os << "e_y=" << obj.e_y << ", ";
+    os << "intensity_x=" << obj.intensity_x << ", ";
+    os << "intensity_y=" << obj.intensity_y << ", ";
+    os << "intensity=" << obj.intensity << ", ";
+    os << "orbit=" << obj.orbit << ", ";
+    os << "orbit_rms=" << obj.orbit_rms << ", ";
+    os << "init_orbit=" << obj.init_orbit << ", ";
+    os << "init_orbit_rms=" << obj.init_orbit_rms;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_pixel_pt{";
-    oss << "n_photon=" << n_photon << ", ";
-    oss << "e_x=" << e_x << ", ";
-    oss << "e_y=" << e_y << ", ";
-    oss << "intensity_x=" << intensity_x << ", ";
-    oss << "intensity_y=" << intensity_y << ", ";
-    oss << "intensity=" << intensity << ", ";
-    oss << "orbit=" << orbit << ", ";
-    oss << "orbit_rms=" << orbit_rms << ", ";
-    oss << "init_orbit=" << init_orbit << ", ";
-    oss << "init_orbit_rms=" << init_orbit_rms;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_pixel_pt& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void pixel_pt_to_c (const Opaque_pixel_pt_class*, CPP_pixel_pt&);
 extern "C" void pixel_pt_to_f (const CPP_pixel_pt&, Opaque_pixel_pt_class*);
 
@@ -2554,28 +2395,25 @@ public:
   std::shared_ptr<CPP_pixel_detec> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_pixel_detec& obj) {
-    os << obj.repr();
+    os << "CPP_pixel_detec{";
+    os << "dr=" << obj.dr << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "n_track_tot=" << obj.n_track_tot << ", ";
+    os << "n_hit_detec=" << obj.n_hit_detec << ", ";
+    os << "n_hit_pixel=" << obj.n_hit_pixel << ", ";
+    os << "pt=" << obj.pt;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_pixel_detec{";
-    oss << "dr=" << dr << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "n_track_tot=" << n_track_tot << ", ";
-    oss << "n_hit_detec=" << n_hit_detec << ", ";
-    oss << "n_hit_pixel=" << n_hit_pixel << ", ";
-    oss << "pt=" << pt;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_pixel_detec& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void pixel_detec_to_c (const Opaque_pixel_detec_class*, CPP_pixel_detec&);
 extern "C" void pixel_detec_to_f (const CPP_pixel_detec&, Opaque_pixel_detec_class*);
 
@@ -2608,34 +2446,31 @@ public:
   std::shared_ptr<CPP_photon_element> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_element& obj) {
-    os << obj.repr();
+    os << "CPP_photon_element{";
+    os << "curvature=" << obj.curvature << ", ";
+    os << "target=" << obj.target << ", ";
+    os << "material=" << obj.material << ", ";
+    os << "segmented=" << obj.segmented << ", ";
+    os << "h_misalign=" << obj.h_misalign << ", ";
+    os << "displacement=" << obj.displacement << ", ";
+    os << "pixel=" << obj.pixel << ", ";
+    os << "reflectivity_table_type=" << obj.reflectivity_table_type << ", ";
+    os << "reflectivity_table_sigma=" << obj.reflectivity_table_sigma << ", ";
+    os << "reflectivity_table_pi=" << obj.reflectivity_table_pi << ", ";
+    os << "init_energy_prob=" << obj.init_energy_prob << ", ";
+    os << "integrated_init_energy_prob=" << obj.integrated_init_energy_prob;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_photon_element{";
-    oss << "curvature=" << curvature << ", ";
-    oss << "target=" << target << ", ";
-    oss << "material=" << material << ", ";
-    oss << "segmented=" << segmented << ", ";
-    oss << "h_misalign=" << h_misalign << ", ";
-    oss << "displacement=" << displacement << ", ";
-    oss << "pixel=" << pixel << ", ";
-    oss << "reflectivity_table_type=" << reflectivity_table_type << ", ";
-    oss << "reflectivity_table_sigma=" << reflectivity_table_sigma << ", ";
-    oss << "reflectivity_table_pi=" << reflectivity_table_pi << ", ";
-    oss << "init_energy_prob=" << init_energy_prob << ", ";
-    oss << "integrated_init_energy_prob=" << integrated_init_energy_prob;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_photon_element& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void photon_element_to_c (const Opaque_photon_element_class*, CPP_photon_element&);
 extern "C" void photon_element_to_f (const CPP_photon_element&, Opaque_photon_element_class*);
 
@@ -2665,31 +2500,28 @@ public:
   std::shared_ptr<CPP_wall3d_vertex> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wall3d_vertex& obj) {
-    os << obj.repr();
+    os << "CPP_wall3d_vertex{";
+    os << "x=" << obj.x << ", ";
+    os << "y=" << obj.y << ", ";
+    os << "radius_x=" << obj.radius_x << ", ";
+    os << "radius_y=" << obj.radius_y << ", ";
+    os << "tilt=" << obj.tilt << ", ";
+    os << "angle=" << obj.angle << ", ";
+    os << "x0=" << obj.x0 << ", ";
+    os << "y0=" << obj.y0 << ", ";
+    os << "type=" << obj.type;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wall3d_vertex{";
-    oss << "x=" << x << ", ";
-    oss << "y=" << y << ", ";
-    oss << "radius_x=" << radius_x << ", ";
-    oss << "radius_y=" << radius_y << ", ";
-    oss << "tilt=" << tilt << ", ";
-    oss << "angle=" << angle << ", ";
-    oss << "x0=" << x0 << ", ";
-    oss << "y0=" << y0 << ", ";
-    oss << "type=" << type;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wall3d_vertex& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wall3d_vertex_to_c (const Opaque_wall3d_vertex_class*, CPP_wall3d_vertex&);
 extern "C" void wall3d_vertex_to_f (const CPP_wall3d_vertex&, Opaque_wall3d_vertex_class*);
 
@@ -2730,42 +2562,39 @@ public:
   std::shared_ptr<CPP_wall3d_section> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wall3d_section& obj) {
-    os << obj.repr();
+    os << "CPP_wall3d_section{";
+    os << "name=" << obj.name << ", ";
+    os << "material=" << obj.material << ", ";
+    os << "v=" << obj.v << ", ";
+    os << "surface="; if (obj.surface == nullptr) { os << "nullptr"; } else { os << obj.surface; }; os << ", ";
+    os << "type=" << obj.type << ", ";
+    os << "n_vertex_input=" << obj.n_vertex_input << ", ";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "ix_branch=" << obj.ix_branch << ", ";
+    os << "vertices_state=" << obj.vertices_state << ", ";
+    os << "patch_in_region=" << obj.patch_in_region << ", ";
+    os << "thickness=" << obj.thickness << ", ";
+    os << "s=" << obj.s << ", ";
+    os << "r0=" << obj.r0 << ", ";
+    os << "dx0_ds=" << obj.dx0_ds << ", ";
+    os << "dy0_ds=" << obj.dy0_ds << ", ";
+    os << "x0_coef=" << obj.x0_coef << ", ";
+    os << "y0_coef=" << obj.y0_coef << ", ";
+    os << "dr_ds=" << obj.dr_ds << ", ";
+    os << "p1_coef=" << obj.p1_coef << ", ";
+    os << "p2_coef=" << obj.p2_coef;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wall3d_section{";
-    oss << "name=" << name << ", ";
-    oss << "material=" << material << ", ";
-    oss << "v=" << v << ", ";
-    oss << "surface="; if (surface == nullptr) { oss << "nullptr"; } else { oss << *surface; }; oss << ", ";
-    oss << "type=" << type << ", ";
-    oss << "n_vertex_input=" << n_vertex_input << ", ";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "ix_branch=" << ix_branch << ", ";
-    oss << "vertices_state=" << vertices_state << ", ";
-    oss << "patch_in_region=" << patch_in_region << ", ";
-    oss << "thickness=" << thickness << ", ";
-    oss << "s=" << s << ", ";
-    oss << "r0=" << r0 << ", ";
-    oss << "dx0_ds=" << dx0_ds << ", ";
-    oss << "dy0_ds=" << dy0_ds << ", ";
-    oss << "x0_coef=" << x0_coef << ", ";
-    oss << "y0_coef=" << y0_coef << ", ";
-    oss << "dr_ds=" << dr_ds << ", ";
-    oss << "p1_coef=" << p1_coef << ", ";
-    oss << "p2_coef=" << p2_coef;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wall3d_section& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wall3d_section_to_c (const Opaque_wall3d_section_class*, CPP_wall3d_section&);
 extern "C" void wall3d_section_to_f (const CPP_wall3d_section&, Opaque_wall3d_section_class*);
 
@@ -2796,32 +2625,29 @@ public:
   std::shared_ptr<CPP_wall3d> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wall3d& obj) {
-    os << obj.repr();
+    os << "CPP_wall3d{";
+    os << "name=" << obj.name << ", ";
+    os << "type=" << obj.type << ", ";
+    os << "ix_wall3d=" << obj.ix_wall3d << ", ";
+    os << "n_link=" << obj.n_link << ", ";
+    os << "thickness=" << obj.thickness << ", ";
+    os << "clear_material=" << obj.clear_material << ", ";
+    os << "opaque_material=" << obj.opaque_material << ", ";
+    os << "superimpose=" << obj.superimpose << ", ";
+    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "section=" << obj.section;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_wall3d{";
-    oss << "name=" << name << ", ";
-    oss << "type=" << type << ", ";
-    oss << "ix_wall3d=" << ix_wall3d << ", ";
-    oss << "n_link=" << n_link << ", ";
-    oss << "thickness=" << thickness << ", ";
-    oss << "clear_material=" << clear_material << ", ";
-    oss << "opaque_material=" << opaque_material << ", ";
-    oss << "superimpose=" << superimpose << ", ";
-    oss << "ele_anchor_pt=" << ele_anchor_pt << ", ";
-    oss << "section=" << section;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_wall3d& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void wall3d_to_c (const Opaque_wall3d_class*, CPP_wall3d&);
 extern "C" void wall3d_to_f (const CPP_wall3d&, Opaque_wall3d_class*);
 
@@ -2845,25 +2671,22 @@ public:
   std::shared_ptr<CPP_ramper_lord> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ramper_lord& obj) {
-    os << obj.repr();
+    os << "CPP_ramper_lord{";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "ix_con=" << obj.ix_con << ", ";
+    os << "attrib_ptr="; if (obj.attrib_ptr == nullptr) { os << "nullptr"; } else { os << obj.attrib_ptr; }; 
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_ramper_lord{";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "ix_con=" << ix_con << ", ";
-    oss << "attrib_ptr="; if (attrib_ptr == nullptr) { oss << "nullptr"; } else { oss << *attrib_ptr; }; 
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_ramper_lord& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void ramper_lord_to_c (const Opaque_ramper_lord_class*, CPP_ramper_lord&);
 extern "C" void ramper_lord_to_f (const CPP_ramper_lord&, Opaque_ramper_lord_class*);
 
@@ -2892,30 +2715,27 @@ public:
   std::shared_ptr<CPP_control> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_control& obj) {
-    os << obj.repr();
+    os << "CPP_control{";
+    os << "value=" << obj.value << ", ";
+    os << "y_knot=" << obj.y_knot << ", ";
+    os << "stack=" << obj.stack << ", ";
+    os << "slave=" << obj.slave << ", ";
+    os << "lord=" << obj.lord << ", ";
+    os << "slave_name=" << obj.slave_name << ", ";
+    os << "attribute=" << obj.attribute << ", ";
+    os << "ix_attrib=" << obj.ix_attrib;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_control{";
-    oss << "value=" << value << ", ";
-    oss << "y_knot=" << y_knot << ", ";
-    oss << "stack=" << stack << ", ";
-    oss << "slave=" << slave << ", ";
-    oss << "lord=" << lord << ", ";
-    oss << "slave_name=" << slave_name << ", ";
-    oss << "attribute=" << attribute << ", ";
-    oss << "ix_attrib=" << ix_attrib;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_control& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void control_to_c (const Opaque_control_class*, CPP_control&);
 extern "C" void control_to_f (const CPP_control&, Opaque_control_class*);
 
@@ -2939,25 +2759,22 @@ public:
   std::shared_ptr<CPP_control_var1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_control_var1& obj) {
-    os << obj.repr();
+    os << "CPP_control_var1{";
+    os << "name=" << obj.name << ", ";
+    os << "value=" << obj.value << ", ";
+    os << "old_value=" << obj.old_value;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_control_var1{";
-    oss << "name=" << name << ", ";
-    oss << "value=" << value << ", ";
-    oss << "old_value=" << old_value;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_control_var1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void control_var1_to_c (const Opaque_control_var1_class*, CPP_control_var1&);
 extern "C" void control_var1_to_f (const CPP_control_var1&, Opaque_control_var1_class*);
 
@@ -2983,27 +2800,24 @@ public:
   std::shared_ptr<CPP_control_ramp1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_control_ramp1& obj) {
-    os << obj.repr();
+    os << "CPP_control_ramp1{";
+    os << "y_knot=" << obj.y_knot << ", ";
+    os << "stack=" << obj.stack << ", ";
+    os << "attribute=" << obj.attribute << ", ";
+    os << "slave_name=" << obj.slave_name << ", ";
+    os << "is_controller=" << obj.is_controller;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_control_ramp1{";
-    oss << "y_knot=" << y_knot << ", ";
-    oss << "stack=" << stack << ", ";
-    oss << "attribute=" << attribute << ", ";
-    oss << "slave_name=" << slave_name << ", ";
-    oss << "is_controller=" << is_controller;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_control_ramp1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void control_ramp1_to_c (const Opaque_control_ramp1_class*, CPP_control_ramp1&);
 extern "C" void control_ramp1_to_f (const CPP_control_ramp1&, Opaque_control_ramp1_class*);
 
@@ -3028,26 +2842,23 @@ public:
   std::shared_ptr<CPP_controller> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_controller& obj) {
-    os << obj.repr();
+    os << "CPP_controller{";
+    os << "var=" << obj.var << ", ";
+    os << "ramp=" << obj.ramp << ", ";
+    os << "ramper_lord=" << obj.ramper_lord << ", ";
+    os << "x_knot=" << obj.x_knot;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_controller{";
-    oss << "var=" << var << ", ";
-    oss << "ramp=" << ramp << ", ";
-    oss << "ramper_lord=" << ramper_lord << ", ";
-    oss << "x_knot=" << x_knot;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_controller& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void controller_to_c (const Opaque_controller_class*, CPP_controller&);
 extern "C" void controller_to_f (const CPP_controller&, Opaque_controller_class*);
 
@@ -3071,25 +2882,22 @@ public:
   std::shared_ptr<CPP_ellipse_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ellipse_beam_init& obj) {
-    os << obj.repr();
+    os << "CPP_ellipse_beam_init{";
+    os << "part_per_ellipse=" << obj.part_per_ellipse << ", ";
+    os << "n_ellipse=" << obj.n_ellipse << ", ";
+    os << "sigma_cutoff=" << obj.sigma_cutoff;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_ellipse_beam_init{";
-    oss << "part_per_ellipse=" << part_per_ellipse << ", ";
-    oss << "n_ellipse=" << n_ellipse << ", ";
-    oss << "sigma_cutoff=" << sigma_cutoff;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_ellipse_beam_init& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void ellipse_beam_init_to_c (const Opaque_ellipse_beam_init_class*, CPP_ellipse_beam_init&);
 extern "C" void ellipse_beam_init_to_f (const CPP_ellipse_beam_init&, Opaque_ellipse_beam_init_class*);
 
@@ -3113,25 +2921,22 @@ public:
   std::shared_ptr<CPP_kv_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_kv_beam_init& obj) {
-    os << obj.repr();
+    os << "CPP_kv_beam_init{";
+    os << "part_per_phi=" << obj.part_per_phi << ", ";
+    os << "n_i2=" << obj.n_i2 << ", ";
+    os << "a=" << obj.a;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_kv_beam_init{";
-    oss << "part_per_phi=" << part_per_phi << ", ";
-    oss << "n_i2=" << n_i2 << ", ";
-    oss << "a=" << a;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_kv_beam_init& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void kv_beam_init_to_c (const Opaque_kv_beam_init_class*, CPP_kv_beam_init&);
 extern "C" void kv_beam_init_to_f (const CPP_kv_beam_init&, Opaque_kv_beam_init_class*);
 
@@ -3158,28 +2963,25 @@ public:
   std::shared_ptr<CPP_grid_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_beam_init& obj) {
-    os << obj.repr();
+    os << "CPP_grid_beam_init{";
+    os << "n_x=" << obj.n_x << ", ";
+    os << "n_px=" << obj.n_px << ", ";
+    os << "x_min=" << obj.x_min << ", ";
+    os << "x_max=" << obj.x_max << ", ";
+    os << "px_min=" << obj.px_min << ", ";
+    os << "px_max=" << obj.px_max;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_grid_beam_init{";
-    oss << "n_x=" << n_x << ", ";
-    oss << "n_px=" << n_px << ", ";
-    oss << "x_min=" << x_min << ", ";
-    oss << "x_max=" << x_max << ", ";
-    oss << "px_min=" << px_min << ", ";
-    oss << "px_max=" << px_max;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_grid_beam_init& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void grid_beam_init_to_c (const Opaque_grid_beam_init_class*, CPP_grid_beam_init&);
 extern "C" void grid_beam_init_to_f (const CPP_grid_beam_init&, Opaque_grid_beam_init_class*);
 
@@ -3235,57 +3037,54 @@ public:
   std::shared_ptr<CPP_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_beam_init& obj) {
-    os << obj.repr();
+    os << "CPP_beam_init{";
+    os << "position_file=" << obj.position_file << ", ";
+    os << "distribution_type=" << obj.distribution_type << ", ";
+    os << "spin=" << obj.spin << ", ";
+    os << "ellipse=" << obj.ellipse << ", ";
+    os << "kv=" << obj.kv << ", ";
+    os << "grid=" << obj.grid << ", ";
+    os << "center_jitter=" << obj.center_jitter << ", ";
+    os << "emit_jitter=" << obj.emit_jitter << ", ";
+    os << "sig_z_jitter=" << obj.sig_z_jitter << ", ";
+    os << "sig_pz_jitter=" << obj.sig_pz_jitter << ", ";
+    os << "n_particle=" << obj.n_particle << ", ";
+    os << "renorm_center=" << obj.renorm_center << ", ";
+    os << "renorm_sigma=" << obj.renorm_sigma << ", ";
+    os << "random_engine=" << obj.random_engine << ", ";
+    os << "random_gauss_converter=" << obj.random_gauss_converter << ", ";
+    os << "random_sigma_cutoff=" << obj.random_sigma_cutoff << ", ";
+    os << "a_norm_emit=" << obj.a_norm_emit << ", ";
+    os << "b_norm_emit=" << obj.b_norm_emit << ", ";
+    os << "a_emit=" << obj.a_emit << ", ";
+    os << "b_emit=" << obj.b_emit << ", ";
+    os << "dpz_dz=" << obj.dpz_dz << ", ";
+    os << "center=" << obj.center << ", ";
+    os << "t_offset=" << obj.t_offset << ", ";
+    os << "dt_bunch=" << obj.dt_bunch << ", ";
+    os << "sig_z=" << obj.sig_z << ", ";
+    os << "sig_pz=" << obj.sig_pz << ", ";
+    os << "bunch_charge=" << obj.bunch_charge << ", ";
+    os << "n_bunch=" << obj.n_bunch << ", ";
+    os << "ix_turn=" << obj.ix_turn << ", ";
+    os << "species=" << obj.species << ", ";
+    os << "full_6d_coupling_calc=" << obj.full_6d_coupling_calc << ", ";
+    os << "use_particle_start=" << obj.use_particle_start << ", ";
+    os << "use_t_coords=" << obj.use_t_coords << ", ";
+    os << "use_z_as_t=" << obj.use_z_as_t << ", ";
+    os << "file_name=" << obj.file_name;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_beam_init{";
-    oss << "position_file=" << position_file << ", ";
-    oss << "distribution_type=" << distribution_type << ", ";
-    oss << "spin=" << spin << ", ";
-    oss << "ellipse=" << ellipse << ", ";
-    oss << "kv=" << kv << ", ";
-    oss << "grid=" << grid << ", ";
-    oss << "center_jitter=" << center_jitter << ", ";
-    oss << "emit_jitter=" << emit_jitter << ", ";
-    oss << "sig_z_jitter=" << sig_z_jitter << ", ";
-    oss << "sig_pz_jitter=" << sig_pz_jitter << ", ";
-    oss << "n_particle=" << n_particle << ", ";
-    oss << "renorm_center=" << renorm_center << ", ";
-    oss << "renorm_sigma=" << renorm_sigma << ", ";
-    oss << "random_engine=" << random_engine << ", ";
-    oss << "random_gauss_converter=" << random_gauss_converter << ", ";
-    oss << "random_sigma_cutoff=" << random_sigma_cutoff << ", ";
-    oss << "a_norm_emit=" << a_norm_emit << ", ";
-    oss << "b_norm_emit=" << b_norm_emit << ", ";
-    oss << "a_emit=" << a_emit << ", ";
-    oss << "b_emit=" << b_emit << ", ";
-    oss << "dpz_dz=" << dpz_dz << ", ";
-    oss << "center=" << center << ", ";
-    oss << "t_offset=" << t_offset << ", ";
-    oss << "dt_bunch=" << dt_bunch << ", ";
-    oss << "sig_z=" << sig_z << ", ";
-    oss << "sig_pz=" << sig_pz << ", ";
-    oss << "bunch_charge=" << bunch_charge << ", ";
-    oss << "n_bunch=" << n_bunch << ", ";
-    oss << "ix_turn=" << ix_turn << ", ";
-    oss << "species=" << species << ", ";
-    oss << "full_6d_coupling_calc=" << full_6d_coupling_calc << ", ";
-    oss << "use_particle_start=" << use_particle_start << ", ";
-    oss << "use_t_coords=" << use_t_coords << ", ";
-    oss << "use_z_as_t=" << use_z_as_t << ", ";
-    oss << "file_name=" << file_name;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_beam_init& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void beam_init_to_c (const Opaque_beam_init_class*, CPP_beam_init&);
 extern "C" void beam_init_to_f (const CPP_beam_init&, Opaque_beam_init_class*);
 
@@ -3323,39 +3122,36 @@ public:
   std::shared_ptr<CPP_lat_param> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_lat_param& obj) {
-    os << obj.repr();
+    os << "CPP_lat_param{";
+    os << "n_part=" << obj.n_part << ", ";
+    os << "total_length=" << obj.total_length << ", ";
+    os << "unstable_factor=" << obj.unstable_factor << ", ";
+    os << "t1_with_rf=" << obj.t1_with_rf << ", ";
+    os << "t1_no_rf=" << obj.t1_no_rf << ", ";
+    os << "spin_tune=" << obj.spin_tune << ", ";
+    os << "particle=" << obj.particle << ", ";
+    os << "default_tracking_species=" << obj.default_tracking_species << ", ";
+    os << "geometry=" << obj.geometry << ", ";
+    os << "ixx=" << obj.ixx << ", ";
+    os << "stable=" << obj.stable << ", ";
+    os << "live_branch=" << obj.live_branch << ", ";
+    os << "g1_integral=" << obj.g1_integral << ", ";
+    os << "g2_integral=" << obj.g2_integral << ", ";
+    os << "g3_integral=" << obj.g3_integral << ", ";
+    os << "bookkeeping_state=" << obj.bookkeeping_state << ", ";
+    os << "beam_init=" << obj.beam_init;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_lat_param{";
-    oss << "n_part=" << n_part << ", ";
-    oss << "total_length=" << total_length << ", ";
-    oss << "unstable_factor=" << unstable_factor << ", ";
-    oss << "t1_with_rf=" << t1_with_rf << ", ";
-    oss << "t1_no_rf=" << t1_no_rf << ", ";
-    oss << "spin_tune=" << spin_tune << ", ";
-    oss << "particle=" << particle << ", ";
-    oss << "default_tracking_species=" << default_tracking_species << ", ";
-    oss << "geometry=" << geometry << ", ";
-    oss << "ixx=" << ixx << ", ";
-    oss << "stable=" << stable << ", ";
-    oss << "live_branch=" << live_branch << ", ";
-    oss << "g1_integral=" << g1_integral << ", ";
-    oss << "g2_integral=" << g2_integral << ", ";
-    oss << "g3_integral=" << g3_integral << ", ";
-    oss << "bookkeeping_state=" << bookkeeping_state << ", ";
-    oss << "beam_init=" << beam_init;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_lat_param& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void lat_param_to_c (const Opaque_lat_param_class*, CPP_lat_param&);
 extern "C" void lat_param_to_f (const CPP_lat_param&, Opaque_lat_param_class*);
 
@@ -3382,28 +3178,25 @@ public:
   std::shared_ptr<CPP_mode_info> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_mode_info& obj) {
-    os << obj.repr();
+    os << "CPP_mode_info{";
+    os << "stable=" << obj.stable << ", ";
+    os << "tune=" << obj.tune << ", ";
+    os << "emit=" << obj.emit << ", ";
+    os << "chrom=" << obj.chrom << ", ";
+    os << "sigma=" << obj.sigma << ", ";
+    os << "sigmap=" << obj.sigmap;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_mode_info{";
-    oss << "stable=" << stable << ", ";
-    oss << "tune=" << tune << ", ";
-    oss << "emit=" << emit << ", ";
-    oss << "chrom=" << chrom << ", ";
-    oss << "sigma=" << sigma << ", ";
-    oss << "sigmap=" << sigmap;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_mode_info& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void mode_info_to_c (const Opaque_mode_info_class*, CPP_mode_info&);
 extern "C" void mode_info_to_f (const CPP_mode_info&, Opaque_mode_info_class*);
 
@@ -3428,26 +3221,23 @@ public:
   std::shared_ptr<CPP_pre_tracker> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_pre_tracker& obj) {
-    os << obj.repr();
+    os << "CPP_pre_tracker{";
+    os << "who=" << obj.who << ", ";
+    os << "ix_ele_start=" << obj.ix_ele_start << ", ";
+    os << "ix_ele_end=" << obj.ix_ele_end << ", ";
+    os << "input_file=" << obj.input_file;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_pre_tracker{";
-    oss << "who=" << who << ", ";
-    oss << "ix_ele_start=" << ix_ele_start << ", ";
-    oss << "ix_ele_end=" << ix_ele_end << ", ";
-    oss << "input_file=" << input_file;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_pre_tracker& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void pre_tracker_to_c (const Opaque_pre_tracker_class*, CPP_pre_tracker&);
 extern "C" void pre_tracker_to_f (const CPP_pre_tracker&, Opaque_pre_tracker_class*);
 
@@ -3475,29 +3265,26 @@ public:
   std::shared_ptr<CPP_anormal_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_anormal_mode& obj) {
-    os << obj.repr();
+    os << "CPP_anormal_mode{";
+    os << "emittance=" << obj.emittance << ", ";
+    os << "emittance_no_vert=" << obj.emittance_no_vert << ", ";
+    os << "synch_int=" << obj.synch_int << ", ";
+    os << "j_damp=" << obj.j_damp << ", ";
+    os << "alpha_damp=" << obj.alpha_damp << ", ";
+    os << "chrom=" << obj.chrom << ", ";
+    os << "tune=" << obj.tune;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_anormal_mode{";
-    oss << "emittance=" << emittance << ", ";
-    oss << "emittance_no_vert=" << emittance_no_vert << ", ";
-    oss << "synch_int=" << synch_int << ", ";
-    oss << "j_damp=" << j_damp << ", ";
-    oss << "alpha_damp=" << alpha_damp << ", ";
-    oss << "chrom=" << chrom << ", ";
-    oss << "tune=" << tune;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_anormal_mode& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void anormal_mode_to_c (const Opaque_anormal_mode_class*, CPP_anormal_mode&);
 extern "C" void anormal_mode_to_f (const CPP_anormal_mode&, Opaque_anormal_mode_class*);
 
@@ -3525,29 +3312,26 @@ public:
   std::shared_ptr<CPP_linac_normal_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_linac_normal_mode& obj) {
-    os << obj.repr();
+    os << "CPP_linac_normal_mode{";
+    os << "i2_e4=" << obj.i2_e4 << ", ";
+    os << "i3_e7=" << obj.i3_e7 << ", ";
+    os << "i5a_e6=" << obj.i5a_e6 << ", ";
+    os << "i5b_e6=" << obj.i5b_e6 << ", ";
+    os << "sig_e1=" << obj.sig_e1 << ", ";
+    os << "a_emittance_end=" << obj.a_emittance_end << ", ";
+    os << "b_emittance_end=" << obj.b_emittance_end;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_linac_normal_mode{";
-    oss << "i2_e4=" << i2_e4 << ", ";
-    oss << "i3_e7=" << i3_e7 << ", ";
-    oss << "i5a_e6=" << i5a_e6 << ", ";
-    oss << "i5b_e6=" << i5b_e6 << ", ";
-    oss << "sig_e1=" << sig_e1 << ", ";
-    oss << "a_emittance_end=" << a_emittance_end << ", ";
-    oss << "b_emittance_end=" << b_emittance_end;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_linac_normal_mode& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void linac_normal_mode_to_c (const Opaque_linac_normal_mode_class*, CPP_linac_normal_mode&);
 extern "C" void linac_normal_mode_to_f (const CPP_linac_normal_mode&, Opaque_linac_normal_mode_class*);
 
@@ -3581,35 +3365,32 @@ public:
   std::shared_ptr<CPP_normal_modes> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_normal_modes& obj) {
-    os << obj.repr();
+    os << "CPP_normal_modes{";
+    os << "synch_int=" << obj.synch_int << ", ";
+    os << "sige_e=" << obj.sige_e << ", ";
+    os << "sig_z=" << obj.sig_z << ", ";
+    os << "e_loss=" << obj.e_loss << ", ";
+    os << "rf_voltage=" << obj.rf_voltage << ", ";
+    os << "pz_aperture=" << obj.pz_aperture << ", ";
+    os << "pz_average=" << obj.pz_average << ", ";
+    os << "momentum_compaction=" << obj.momentum_compaction << ", ";
+    os << "dpz_damp=" << obj.dpz_damp << ", ";
+    os << "a=" << obj.a << ", ";
+    os << "b=" << obj.b << ", ";
+    os << "z=" << obj.z << ", ";
+    os << "lin=" << obj.lin;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_normal_modes{";
-    oss << "synch_int=" << synch_int << ", ";
-    oss << "sige_e=" << sige_e << ", ";
-    oss << "sig_z=" << sig_z << ", ";
-    oss << "e_loss=" << e_loss << ", ";
-    oss << "rf_voltage=" << rf_voltage << ", ";
-    oss << "pz_aperture=" << pz_aperture << ", ";
-    oss << "pz_average=" << pz_average << ", ";
-    oss << "momentum_compaction=" << momentum_compaction << ", ";
-    oss << "dpz_damp=" << dpz_damp << ", ";
-    oss << "a=" << a << ", ";
-    oss << "b=" << b << ", ";
-    oss << "z=" << z << ", ";
-    oss << "lin=" << lin;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_normal_modes& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void normal_modes_to_c (const Opaque_normal_modes_class*, CPP_normal_modes&);
 extern "C" void normal_modes_to_f (const CPP_normal_modes&, Opaque_normal_modes_class*);
 
@@ -3637,29 +3418,26 @@ public:
   std::shared_ptr<CPP_em_field> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_em_field& obj) {
-    os << obj.repr();
+    os << "CPP_em_field{";
+    os << "e=" << obj.e << ", ";
+    os << "b=" << obj.b << ", ";
+    os << "de=" << obj.de << ", ";
+    os << "db=" << obj.db << ", ";
+    os << "phi=" << obj.phi << ", ";
+    os << "phi_b=" << obj.phi_b << ", ";
+    os << "a=" << obj.a;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_em_field{";
-    oss << "e=" << e << ", ";
-    oss << "b=" << b << ", ";
-    oss << "de=" << de << ", ";
-    oss << "db=" << db << ", ";
-    oss << "phi=" << phi << ", ";
-    oss << "phi_b=" << phi_b << ", ";
-    oss << "a=" << a;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_em_field& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void em_field_to_c (const Opaque_em_field_class*, CPP_em_field&);
 extern "C" void em_field_to_f (const CPP_em_field&, Opaque_em_field_class*);
 
@@ -3687,29 +3465,26 @@ public:
   std::shared_ptr<CPP_strong_beam> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_strong_beam& obj) {
-    os << obj.repr();
+    os << "CPP_strong_beam{";
+    os << "ix_slice=" << obj.ix_slice << ", ";
+    os << "x_center=" << obj.x_center << ", ";
+    os << "y_center=" << obj.y_center << ", ";
+    os << "x_sigma=" << obj.x_sigma << ", ";
+    os << "y_sigma=" << obj.y_sigma << ", ";
+    os << "dx=" << obj.dx << ", ";
+    os << "dy=" << obj.dy;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_strong_beam{";
-    oss << "ix_slice=" << ix_slice << ", ";
-    oss << "x_center=" << x_center << ", ";
-    oss << "y_center=" << y_center << ", ";
-    oss << "x_sigma=" << x_sigma << ", ";
-    oss << "y_sigma=" << y_sigma << ", ";
-    oss << "dx=" << dx << ", ";
-    oss << "dy=" << dy;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_strong_beam& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void strong_beam_to_c (const Opaque_strong_beam_class*, CPP_strong_beam&);
 extern "C" void strong_beam_to_f (const CPP_strong_beam&, Opaque_strong_beam_class*);
 
@@ -3736,28 +3511,25 @@ public:
   std::shared_ptr<CPP_track_point> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_track_point& obj) {
-    os << obj.repr();
+    os << "CPP_track_point{";
+    os << "s_body=" << obj.s_body << ", ";
+    os << "orb=" << obj.orb << ", ";
+    os << "field=" << obj.field << ", ";
+    os << "strong_beam=" << obj.strong_beam << ", ";
+    os << "vec0=" << obj.vec0 << ", ";
+    os << "mat6=" << obj.mat6;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_track_point{";
-    oss << "s_body=" << s_body << ", ";
-    oss << "orb=" << orb << ", ";
-    oss << "field=" << field << ", ";
-    oss << "strong_beam=" << strong_beam << ", ";
-    oss << "vec0=" << vec0 << ", ";
-    oss << "mat6=" << mat6;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_track_point& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void track_point_to_c (const Opaque_track_point_class*, CPP_track_point&);
 extern "C" void track_point_to_f (const CPP_track_point&, Opaque_track_point_class*);
 
@@ -3783,27 +3555,24 @@ public:
   std::shared_ptr<CPP_track> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_track& obj) {
-    os << obj.repr();
+    os << "CPP_track{";
+    os << "pt=" << obj.pt << ", ";
+    os << "ds_save=" << obj.ds_save << ", ";
+    os << "n_pt=" << obj.n_pt << ", ";
+    os << "n_bad=" << obj.n_bad << ", ";
+    os << "n_ok=" << obj.n_ok;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_track{";
-    oss << "pt=" << pt << ", ";
-    oss << "ds_save=" << ds_save << ", ";
-    oss << "n_pt=" << n_pt << ", ";
-    oss << "n_bad=" << n_bad << ", ";
-    oss << "n_ok=" << n_ok;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_track& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void track_to_c (const Opaque_track_class*, CPP_track&);
 extern "C" void track_to_f (const CPP_track&, Opaque_track_class*);
 
@@ -3841,39 +3610,36 @@ public:
   std::shared_ptr<CPP_space_charge_common> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_space_charge_common& obj) {
-    os << obj.repr();
+    os << "CPP_space_charge_common{";
+    os << "ds_track_step=" << obj.ds_track_step << ", ";
+    os << "dt_track_step=" << obj.dt_track_step << ", ";
+    os << "cathode_strength_cutoff=" << obj.cathode_strength_cutoff << ", ";
+    os << "rel_tol_tracking=" << obj.rel_tol_tracking << ", ";
+    os << "abs_tol_tracking=" << obj.abs_tol_tracking << ", ";
+    os << "beam_chamber_height=" << obj.beam_chamber_height << ", ";
+    os << "lsc_sigma_cutoff=" << obj.lsc_sigma_cutoff << ", ";
+    os << "particle_sigma_cutoff=" << obj.particle_sigma_cutoff << ", ";
+    os << "space_charge_mesh_size=" << obj.space_charge_mesh_size << ", ";
+    os << "csr3d_mesh_size=" << obj.csr3d_mesh_size << ", ";
+    os << "n_bin=" << obj.n_bin << ", ";
+    os << "particle_bin_span=" << obj.particle_bin_span << ", ";
+    os << "n_shield_images=" << obj.n_shield_images << ", ";
+    os << "sc_min_in_bin=" << obj.sc_min_in_bin << ", ";
+    os << "lsc_kick_transverse_dependence=" << obj.lsc_kick_transverse_dependence << ", ";
+    os << "debug=" << obj.debug << ", ";
+    os << "diagnostic_output_file=" << obj.diagnostic_output_file;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_space_charge_common{";
-    oss << "ds_track_step=" << ds_track_step << ", ";
-    oss << "dt_track_step=" << dt_track_step << ", ";
-    oss << "cathode_strength_cutoff=" << cathode_strength_cutoff << ", ";
-    oss << "rel_tol_tracking=" << rel_tol_tracking << ", ";
-    oss << "abs_tol_tracking=" << abs_tol_tracking << ", ";
-    oss << "beam_chamber_height=" << beam_chamber_height << ", ";
-    oss << "lsc_sigma_cutoff=" << lsc_sigma_cutoff << ", ";
-    oss << "particle_sigma_cutoff=" << particle_sigma_cutoff << ", ";
-    oss << "space_charge_mesh_size=" << space_charge_mesh_size << ", ";
-    oss << "csr3d_mesh_size=" << csr3d_mesh_size << ", ";
-    oss << "n_bin=" << n_bin << ", ";
-    oss << "particle_bin_span=" << particle_bin_span << ", ";
-    oss << "n_shield_images=" << n_shield_images << ", ";
-    oss << "sc_min_in_bin=" << sc_min_in_bin << ", ";
-    oss << "lsc_kick_transverse_dependence=" << lsc_kick_transverse_dependence << ", ";
-    oss << "debug=" << debug << ", ";
-    oss << "diagnostic_output_file=" << diagnostic_output_file;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_space_charge_common& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void space_charge_common_to_c (const Opaque_space_charge_common_class*, CPP_space_charge_common&);
 extern "C" void space_charge_common_to_f (const CPP_space_charge_common&, Opaque_space_charge_common_class*);
 
@@ -3934,62 +3700,59 @@ public:
   std::shared_ptr<CPP_bmad_common> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bmad_common& obj) {
-    os << obj.repr();
+    os << "CPP_bmad_common{";
+    os << "max_aperture_limit=" << obj.max_aperture_limit << ", ";
+    os << "d_orb=" << obj.d_orb << ", ";
+    os << "default_ds_step=" << obj.default_ds_step << ", ";
+    os << "significant_length=" << obj.significant_length << ", ";
+    os << "rel_tol_tracking=" << obj.rel_tol_tracking << ", ";
+    os << "abs_tol_tracking=" << obj.abs_tol_tracking << ", ";
+    os << "rel_tol_adaptive_tracking=" << obj.rel_tol_adaptive_tracking << ", ";
+    os << "abs_tol_adaptive_tracking=" << obj.abs_tol_adaptive_tracking << ", ";
+    os << "init_ds_adaptive_tracking=" << obj.init_ds_adaptive_tracking << ", ";
+    os << "min_ds_adaptive_tracking=" << obj.min_ds_adaptive_tracking << ", ";
+    os << "fatal_ds_adaptive_tracking=" << obj.fatal_ds_adaptive_tracking << ", ";
+    os << "autoscale_amp_abs_tol=" << obj.autoscale_amp_abs_tol << ", ";
+    os << "autoscale_amp_rel_tol=" << obj.autoscale_amp_rel_tol << ", ";
+    os << "autoscale_phase_tol=" << obj.autoscale_phase_tol << ", ";
+    os << "electric_dipole_moment=" << obj.electric_dipole_moment << ", ";
+    os << "synch_rad_scale=" << obj.synch_rad_scale << ", ";
+    os << "sad_eps_scale=" << obj.sad_eps_scale << ", ";
+    os << "sad_amp_max=" << obj.sad_amp_max << ", ";
+    os << "sad_n_div_max=" << obj.sad_n_div_max << ", ";
+    os << "taylor_order=" << obj.taylor_order << ", ";
+    os << "runge_kutta_order=" << obj.runge_kutta_order << ", ";
+    os << "default_integ_order=" << obj.default_integ_order << ", ";
+    os << "max_num_runge_kutta_step=" << obj.max_num_runge_kutta_step << ", ";
+    os << "rf_phase_below_transition_ref=" << obj.rf_phase_below_transition_ref << ", ";
+    os << "sr_wakes_on=" << obj.sr_wakes_on << ", ";
+    os << "lr_wakes_on=" << obj.lr_wakes_on << ", ";
+    os << "auto_bookkeeper=" << obj.auto_bookkeeper << ", ";
+    os << "high_energy_space_charge_on=" << obj.high_energy_space_charge_on << ", ";
+    os << "csr_and_space_charge_on=" << obj.csr_and_space_charge_on << ", ";
+    os << "spin_tracking_on=" << obj.spin_tracking_on << ", ";
+    os << "spin_sokolov_ternov_flipping_on=" << obj.spin_sokolov_ternov_flipping_on << ", ";
+    os << "radiation_damping_on=" << obj.radiation_damping_on << ", ";
+    os << "radiation_zero_average=" << obj.radiation_zero_average << ", ";
+    os << "radiation_fluctuations_on=" << obj.radiation_fluctuations_on << ", ";
+    os << "conserve_taylor_maps=" << obj.conserve_taylor_maps << ", ";
+    os << "absolute_time_tracking=" << obj.absolute_time_tracking << ", ";
+    os << "absolute_time_ref_shift=" << obj.absolute_time_ref_shift << ", ";
+    os << "convert_to_kinetic_momentum=" << obj.convert_to_kinetic_momentum << ", ";
+    os << "aperture_limit_on=" << obj.aperture_limit_on << ", ";
+    os << "debug=" << obj.debug;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_bmad_common{";
-    oss << "max_aperture_limit=" << max_aperture_limit << ", ";
-    oss << "d_orb=" << d_orb << ", ";
-    oss << "default_ds_step=" << default_ds_step << ", ";
-    oss << "significant_length=" << significant_length << ", ";
-    oss << "rel_tol_tracking=" << rel_tol_tracking << ", ";
-    oss << "abs_tol_tracking=" << abs_tol_tracking << ", ";
-    oss << "rel_tol_adaptive_tracking=" << rel_tol_adaptive_tracking << ", ";
-    oss << "abs_tol_adaptive_tracking=" << abs_tol_adaptive_tracking << ", ";
-    oss << "init_ds_adaptive_tracking=" << init_ds_adaptive_tracking << ", ";
-    oss << "min_ds_adaptive_tracking=" << min_ds_adaptive_tracking << ", ";
-    oss << "fatal_ds_adaptive_tracking=" << fatal_ds_adaptive_tracking << ", ";
-    oss << "autoscale_amp_abs_tol=" << autoscale_amp_abs_tol << ", ";
-    oss << "autoscale_amp_rel_tol=" << autoscale_amp_rel_tol << ", ";
-    oss << "autoscale_phase_tol=" << autoscale_phase_tol << ", ";
-    oss << "electric_dipole_moment=" << electric_dipole_moment << ", ";
-    oss << "synch_rad_scale=" << synch_rad_scale << ", ";
-    oss << "sad_eps_scale=" << sad_eps_scale << ", ";
-    oss << "sad_amp_max=" << sad_amp_max << ", ";
-    oss << "sad_n_div_max=" << sad_n_div_max << ", ";
-    oss << "taylor_order=" << taylor_order << ", ";
-    oss << "runge_kutta_order=" << runge_kutta_order << ", ";
-    oss << "default_integ_order=" << default_integ_order << ", ";
-    oss << "max_num_runge_kutta_step=" << max_num_runge_kutta_step << ", ";
-    oss << "rf_phase_below_transition_ref=" << rf_phase_below_transition_ref << ", ";
-    oss << "sr_wakes_on=" << sr_wakes_on << ", ";
-    oss << "lr_wakes_on=" << lr_wakes_on << ", ";
-    oss << "auto_bookkeeper=" << auto_bookkeeper << ", ";
-    oss << "high_energy_space_charge_on=" << high_energy_space_charge_on << ", ";
-    oss << "csr_and_space_charge_on=" << csr_and_space_charge_on << ", ";
-    oss << "spin_tracking_on=" << spin_tracking_on << ", ";
-    oss << "spin_sokolov_ternov_flipping_on=" << spin_sokolov_ternov_flipping_on << ", ";
-    oss << "radiation_damping_on=" << radiation_damping_on << ", ";
-    oss << "radiation_zero_average=" << radiation_zero_average << ", ";
-    oss << "radiation_fluctuations_on=" << radiation_fluctuations_on << ", ";
-    oss << "conserve_taylor_maps=" << conserve_taylor_maps << ", ";
-    oss << "absolute_time_tracking=" << absolute_time_tracking << ", ";
-    oss << "absolute_time_ref_shift=" << absolute_time_ref_shift << ", ";
-    oss << "convert_to_kinetic_momentum=" << convert_to_kinetic_momentum << ", ";
-    oss << "aperture_limit_on=" << aperture_limit_on << ", ";
-    oss << "debug=" << debug;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_bmad_common& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void bmad_common_to_c (const Opaque_bmad_common_class*, CPP_bmad_common&);
 extern "C" void bmad_common_to_f (const CPP_bmad_common&, Opaque_bmad_common_class*);
 
@@ -4028,40 +3791,37 @@ public:
   std::shared_ptr<CPP_rad_int1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_int1& obj) {
-    os << obj.repr();
+    os << "CPP_rad_int1{";
+    os << "i0=" << obj.i0 << ", ";
+    os << "i1=" << obj.i1 << ", ";
+    os << "i2=" << obj.i2 << ", ";
+    os << "i3=" << obj.i3 << ", ";
+    os << "i4a=" << obj.i4a << ", ";
+    os << "i4b=" << obj.i4b << ", ";
+    os << "i4z=" << obj.i4z << ", ";
+    os << "i5a=" << obj.i5a << ", ";
+    os << "i5b=" << obj.i5b << ", ";
+    os << "i6b=" << obj.i6b << ", ";
+    os << "lin_i2_e4=" << obj.lin_i2_e4 << ", ";
+    os << "lin_i3_e7=" << obj.lin_i3_e7 << ", ";
+    os << "lin_i5a_e6=" << obj.lin_i5a_e6 << ", ";
+    os << "lin_i5b_e6=" << obj.lin_i5b_e6 << ", ";
+    os << "lin_norm_emit_a=" << obj.lin_norm_emit_a << ", ";
+    os << "lin_norm_emit_b=" << obj.lin_norm_emit_b << ", ";
+    os << "lin_sig_e=" << obj.lin_sig_e << ", ";
+    os << "n_steps=" << obj.n_steps;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_rad_int1{";
-    oss << "i0=" << i0 << ", ";
-    oss << "i1=" << i1 << ", ";
-    oss << "i2=" << i2 << ", ";
-    oss << "i3=" << i3 << ", ";
-    oss << "i4a=" << i4a << ", ";
-    oss << "i4b=" << i4b << ", ";
-    oss << "i4z=" << i4z << ", ";
-    oss << "i5a=" << i5a << ", ";
-    oss << "i5b=" << i5b << ", ";
-    oss << "i6b=" << i6b << ", ";
-    oss << "lin_i2_e4=" << lin_i2_e4 << ", ";
-    oss << "lin_i3_e7=" << lin_i3_e7 << ", ";
-    oss << "lin_i5a_e6=" << lin_i5a_e6 << ", ";
-    oss << "lin_i5b_e6=" << lin_i5b_e6 << ", ";
-    oss << "lin_norm_emit_a=" << lin_norm_emit_a << ", ";
-    oss << "lin_norm_emit_b=" << lin_norm_emit_b << ", ";
-    oss << "lin_sig_e=" << lin_sig_e << ", ";
-    oss << "n_steps=" << n_steps;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_rad_int1& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void rad_int1_to_c (const Opaque_rad_int1_class*, CPP_rad_int1&);
 extern "C" void rad_int1_to_f (const CPP_rad_int1&, Opaque_rad_int1_class*);
 
@@ -4083,23 +3843,20 @@ public:
   std::shared_ptr<CPP_rad_int_branch> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_int_branch& obj) {
-    os << obj.repr();
+    os << "CPP_rad_int_branch{";
+    os << "ele=" << obj.ele;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_rad_int_branch{";
-    oss << "ele=" << ele;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_rad_int_branch& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void rad_int_branch_to_c (const Opaque_rad_int_branch_class*, CPP_rad_int_branch&);
 extern "C" void rad_int_branch_to_f (const CPP_rad_int_branch&, Opaque_rad_int_branch_class*);
 
@@ -4121,23 +3878,20 @@ public:
   std::shared_ptr<CPP_rad_int_all_ele> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_int_all_ele& obj) {
-    os << obj.repr();
+    os << "CPP_rad_int_all_ele{";
+    os << "branch=" << obj.branch;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_rad_int_all_ele{";
-    oss << "branch=" << branch;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_rad_int_all_ele& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void rad_int_all_ele_to_c (const Opaque_rad_int_all_ele_class*, CPP_rad_int_all_ele&);
 extern "C" void rad_int_all_ele_to_f (const CPP_rad_int_all_ele&, Opaque_rad_int_all_ele_class*);
 
@@ -4266,108 +4020,105 @@ public:
   std::shared_ptr<CPP_ele> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ele& obj) {
-    os << obj.repr();
+    os << "CPP_ele{";
+    os << "name=" << obj.name << ", ";
+    os << "type=" << obj.type << ", ";
+    os << "alias=" << obj.alias << ", ";
+    os << "component_name=" << obj.component_name << ", ";
+    os << "descrip="; if (obj.descrip == nullptr) { os << "nullptr"; } else { os << obj.descrip; }; os << ", ";
+    os << "a=" << obj.a << ", ";
+    os << "b=" << obj.b << ", ";
+    os << "z=" << obj.z << ", ";
+    os << "x=" << obj.x << ", ";
+    os << "y=" << obj.y << ", ";
+    os << "ac_kick="; if (obj.ac_kick == nullptr) { os << "nullptr"; } else { os << obj.ac_kick; }; os << ", ";
+    os << "bookkeeping_state=" << obj.bookkeeping_state << ", ";
+    os << "control="; if (obj.control == nullptr) { os << "nullptr"; } else { os << obj.control; }; os << ", ";
+    os << "floor=" << obj.floor << ", ";
+    os << "high_energy_space_charge="; if (obj.high_energy_space_charge == nullptr) { os << "nullptr"; } else { os << obj.high_energy_space_charge; }; os << ", ";
+    os << "mode3="; if (obj.mode3 == nullptr) { os << "nullptr"; } else { os << obj.mode3; }; os << ", ";
+    os << "photon="; if (obj.photon == nullptr) { os << "nullptr"; } else { os << obj.photon; }; os << ", ";
+    os << "rad_map="; if (obj.rad_map == nullptr) { os << "nullptr"; } else { os << obj.rad_map; }; os << ", ";
+    os << "taylor=" << obj.taylor << ", ";
+    os << "spin_taylor_ref_orb_in=" << obj.spin_taylor_ref_orb_in << ", ";
+    os << "spin_taylor=" << obj.spin_taylor << ", ";
+    os << "wake="; if (obj.wake == nullptr) { os << "nullptr"; } else { os << obj.wake; }; os << ", ";
+    os << "wall3d=" << obj.wall3d << ", ";
+    os << "cartesian_map=" << obj.cartesian_map << ", ";
+    os << "cylindrical_map=" << obj.cylindrical_map << ", ";
+    os << "gen_grad_map=" << obj.gen_grad_map << ", ";
+    os << "grid_field=" << obj.grid_field << ", ";
+    os << "map_ref_orb_in=" << obj.map_ref_orb_in << ", ";
+    os << "map_ref_orb_out=" << obj.map_ref_orb_out << ", ";
+    os << "time_ref_orb_in=" << obj.time_ref_orb_in << ", ";
+    os << "time_ref_orb_out=" << obj.time_ref_orb_out << ", ";
+    os << "value=" << obj.value << ", ";
+    os << "old_value=" << obj.old_value << ", ";
+    os << "spin_q=" << obj.spin_q << ", ";
+    os << "vec0=" << obj.vec0 << ", ";
+    os << "mat6=" << obj.mat6 << ", ";
+    os << "c_mat=" << obj.c_mat << ", ";
+    os << "gamma_c=" << obj.gamma_c << ", ";
+    os << "s_start=" << obj.s_start << ", ";
+    os << "s=" << obj.s << ", ";
+    os << "ref_time=" << obj.ref_time << ", ";
+    os << "a_pole=" << obj.a_pole << ", ";
+    os << "b_pole=" << obj.b_pole << ", ";
+    os << "a_pole_elec=" << obj.a_pole_elec << ", ";
+    os << "b_pole_elec=" << obj.b_pole_elec << ", ";
+    os << "custom=" << obj.custom << ", ";
+    os << "r=" << obj.r << ", ";
+    os << "key=" << obj.key << ", ";
+    os << "sub_key=" << obj.sub_key << ", ";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "ix_branch=" << obj.ix_branch << ", ";
+    os << "lord_status=" << obj.lord_status << ", ";
+    os << "n_slave=" << obj.n_slave << ", ";
+    os << "n_slave_field=" << obj.n_slave_field << ", ";
+    os << "ix1_slave=" << obj.ix1_slave << ", ";
+    os << "slave_status=" << obj.slave_status << ", ";
+    os << "n_lord=" << obj.n_lord << ", ";
+    os << "n_lord_field=" << obj.n_lord_field << ", ";
+    os << "n_lord_ramper=" << obj.n_lord_ramper << ", ";
+    os << "ic1_lord=" << obj.ic1_lord << ", ";
+    os << "ix_pointer=" << obj.ix_pointer << ", ";
+    os << "ixx=" << obj.ixx << ", ";
+    os << "iyy=" << obj.iyy << ", ";
+    os << "izz=" << obj.izz << ", ";
+    os << "mat6_calc_method=" << obj.mat6_calc_method << ", ";
+    os << "tracking_method=" << obj.tracking_method << ", ";
+    os << "spin_tracking_method=" << obj.spin_tracking_method << ", ";
+    os << "csr_method=" << obj.csr_method << ", ";
+    os << "space_charge_method=" << obj.space_charge_method << ", ";
+    os << "ptc_integration_type=" << obj.ptc_integration_type << ", ";
+    os << "field_calc=" << obj.field_calc << ", ";
+    os << "aperture_at=" << obj.aperture_at << ", ";
+    os << "aperture_type=" << obj.aperture_type << ", ";
+    os << "ref_species=" << obj.ref_species << ", ";
+    os << "orientation=" << obj.orientation << ", ";
+    os << "symplectify=" << obj.symplectify << ", ";
+    os << "mode_flip=" << obj.mode_flip << ", ";
+    os << "multipoles_on=" << obj.multipoles_on << ", ";
+    os << "scale_multipoles=" << obj.scale_multipoles << ", ";
+    os << "taylor_map_includes_offsets=" << obj.taylor_map_includes_offsets << ", ";
+    os << "field_master=" << obj.field_master << ", ";
+    os << "is_on=" << obj.is_on << ", ";
+    os << "logic=" << obj.logic << ", ";
+    os << "bmad_logic=" << obj.bmad_logic << ", ";
+    os << "select=" << obj.select << ", ";
+    os << "offset_moves_aperture=" << obj.offset_moves_aperture;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_ele{";
-    oss << "name=" << name << ", ";
-    oss << "type=" << type << ", ";
-    oss << "alias=" << alias << ", ";
-    oss << "component_name=" << component_name << ", ";
-    oss << "descrip="; if (descrip == nullptr) { oss << "nullptr"; } else { oss << *descrip; }; oss << ", ";
-    oss << "a=" << a << ", ";
-    oss << "b=" << b << ", ";
-    oss << "z=" << z << ", ";
-    oss << "x=" << x << ", ";
-    oss << "y=" << y << ", ";
-    oss << "ac_kick="; if (ac_kick == nullptr) { oss << "nullptr"; } else { oss << *ac_kick; }; oss << ", ";
-    oss << "bookkeeping_state=" << bookkeeping_state << ", ";
-    oss << "control="; if (control == nullptr) { oss << "nullptr"; } else { oss << *control; }; oss << ", ";
-    oss << "floor=" << floor << ", ";
-    oss << "high_energy_space_charge="; if (high_energy_space_charge == nullptr) { oss << "nullptr"; } else { oss << *high_energy_space_charge; }; oss << ", ";
-    oss << "mode3="; if (mode3 == nullptr) { oss << "nullptr"; } else { oss << *mode3; }; oss << ", ";
-    oss << "photon="; if (photon == nullptr) { oss << "nullptr"; } else { oss << *photon; }; oss << ", ";
-    oss << "rad_map="; if (rad_map == nullptr) { oss << "nullptr"; } else { oss << *rad_map; }; oss << ", ";
-    oss << "taylor=" << taylor << ", ";
-    oss << "spin_taylor_ref_orb_in=" << spin_taylor_ref_orb_in << ", ";
-    oss << "spin_taylor=" << spin_taylor << ", ";
-    oss << "wake="; if (wake == nullptr) { oss << "nullptr"; } else { oss << *wake; }; oss << ", ";
-    oss << "wall3d=" << wall3d << ", ";
-    oss << "cartesian_map=" << cartesian_map << ", ";
-    oss << "cylindrical_map=" << cylindrical_map << ", ";
-    oss << "gen_grad_map=" << gen_grad_map << ", ";
-    oss << "grid_field=" << grid_field << ", ";
-    oss << "map_ref_orb_in=" << map_ref_orb_in << ", ";
-    oss << "map_ref_orb_out=" << map_ref_orb_out << ", ";
-    oss << "time_ref_orb_in=" << time_ref_orb_in << ", ";
-    oss << "time_ref_orb_out=" << time_ref_orb_out << ", ";
-    oss << "value=" << value << ", ";
-    oss << "old_value=" << old_value << ", ";
-    oss << "spin_q=" << spin_q << ", ";
-    oss << "vec0=" << vec0 << ", ";
-    oss << "mat6=" << mat6 << ", ";
-    oss << "c_mat=" << c_mat << ", ";
-    oss << "gamma_c=" << gamma_c << ", ";
-    oss << "s_start=" << s_start << ", ";
-    oss << "s=" << s << ", ";
-    oss << "ref_time=" << ref_time << ", ";
-    oss << "a_pole=" << a_pole << ", ";
-    oss << "b_pole=" << b_pole << ", ";
-    oss << "a_pole_elec=" << a_pole_elec << ", ";
-    oss << "b_pole_elec=" << b_pole_elec << ", ";
-    oss << "custom=" << custom << ", ";
-    oss << "r=" << r << ", ";
-    oss << "key=" << key << ", ";
-    oss << "sub_key=" << sub_key << ", ";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "ix_branch=" << ix_branch << ", ";
-    oss << "lord_status=" << lord_status << ", ";
-    oss << "n_slave=" << n_slave << ", ";
-    oss << "n_slave_field=" << n_slave_field << ", ";
-    oss << "ix1_slave=" << ix1_slave << ", ";
-    oss << "slave_status=" << slave_status << ", ";
-    oss << "n_lord=" << n_lord << ", ";
-    oss << "n_lord_field=" << n_lord_field << ", ";
-    oss << "n_lord_ramper=" << n_lord_ramper << ", ";
-    oss << "ic1_lord=" << ic1_lord << ", ";
-    oss << "ix_pointer=" << ix_pointer << ", ";
-    oss << "ixx=" << ixx << ", ";
-    oss << "iyy=" << iyy << ", ";
-    oss << "izz=" << izz << ", ";
-    oss << "mat6_calc_method=" << mat6_calc_method << ", ";
-    oss << "tracking_method=" << tracking_method << ", ";
-    oss << "spin_tracking_method=" << spin_tracking_method << ", ";
-    oss << "csr_method=" << csr_method << ", ";
-    oss << "space_charge_method=" << space_charge_method << ", ";
-    oss << "ptc_integration_type=" << ptc_integration_type << ", ";
-    oss << "field_calc=" << field_calc << ", ";
-    oss << "aperture_at=" << aperture_at << ", ";
-    oss << "aperture_type=" << aperture_type << ", ";
-    oss << "ref_species=" << ref_species << ", ";
-    oss << "orientation=" << orientation << ", ";
-    oss << "symplectify=" << symplectify << ", ";
-    oss << "mode_flip=" << mode_flip << ", ";
-    oss << "multipoles_on=" << multipoles_on << ", ";
-    oss << "scale_multipoles=" << scale_multipoles << ", ";
-    oss << "taylor_map_includes_offsets=" << taylor_map_includes_offsets << ", ";
-    oss << "field_master=" << field_master << ", ";
-    oss << "is_on=" << is_on << ", ";
-    oss << "logic=" << logic << ", ";
-    oss << "bmad_logic=" << bmad_logic << ", ";
-    oss << "select=" << select << ", ";
-    oss << "offset_moves_aperture=" << offset_moves_aperture;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_ele& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void ele_to_c (const Opaque_ele_class*, CPP_ele&);
 extern "C" void ele_to_f (const CPP_ele&, Opaque_ele_class*);
 
@@ -4390,24 +4141,21 @@ public:
   std::shared_ptr<CPP_complex_taylor_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_complex_taylor_term& obj) {
-    os << obj.repr();
+    os << "CPP_complex_taylor_term{";
+    os << "coef=" << obj.coef << ", ";
+    os << "expn=" << obj.expn;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_complex_taylor_term{";
-    oss << "coef=" << coef << ", ";
-    oss << "expn=" << expn;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_complex_taylor_term& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void complex_taylor_term_to_c (const Opaque_complex_taylor_term_class*, CPP_complex_taylor_term&);
 extern "C" void complex_taylor_term_to_f (const CPP_complex_taylor_term&, Opaque_complex_taylor_term_class*);
 
@@ -4430,24 +4178,21 @@ public:
   std::shared_ptr<CPP_complex_taylor> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_complex_taylor& obj) {
-    os << obj.repr();
+    os << "CPP_complex_taylor{";
+    os << "ref=" << obj.ref << ", ";
+    os << "term=" << obj.term;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_complex_taylor{";
-    oss << "ref=" << ref << ", ";
-    oss << "term=" << term;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_complex_taylor& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void complex_taylor_to_c (const Opaque_complex_taylor_class*, CPP_complex_taylor&);
 extern "C" void complex_taylor_to_f (const CPP_complex_taylor&, Opaque_complex_taylor_class*);
 
@@ -4481,35 +4226,32 @@ public:
   std::shared_ptr<CPP_branch> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_branch& obj) {
-    os << obj.repr();
+    os << "CPP_branch{";
+    os << "name=" << obj.name << ", ";
+    os << "ix_branch=" << obj.ix_branch << ", ";
+    os << "ix_from_branch=" << obj.ix_from_branch << ", ";
+    os << "ix_from_ele=" << obj.ix_from_ele << ", ";
+    os << "ix_to_ele=" << obj.ix_to_ele << ", ";
+    os << "n_ele_track=" << obj.n_ele_track << ", ";
+    os << "n_ele_max=" << obj.n_ele_max << ", ";
+    os << "a=" << obj.a << ", ";
+    os << "b=" << obj.b << ", ";
+    os << "z=" << obj.z << ", ";
+    os << "ele=" << obj.ele << ", ";
+    os << "param=" << obj.param << ", ";
+    os << "wall3d=" << obj.wall3d;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_branch{";
-    oss << "name=" << name << ", ";
-    oss << "ix_branch=" << ix_branch << ", ";
-    oss << "ix_from_branch=" << ix_from_branch << ", ";
-    oss << "ix_from_ele=" << ix_from_ele << ", ";
-    oss << "ix_to_ele=" << ix_to_ele << ", ";
-    oss << "n_ele_track=" << n_ele_track << ", ";
-    oss << "n_ele_max=" << n_ele_max << ", ";
-    oss << "a=" << a << ", ";
-    oss << "b=" << b << ", ";
-    oss << "z=" << z << ", ";
-    oss << "ele=" << ele << ", ";
-    oss << "param=" << param << ", ";
-    oss << "wall3d=" << wall3d;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_branch& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void branch_to_c (const Opaque_branch_class*, CPP_branch&);
 extern "C" void branch_to_f (const CPP_branch&, Opaque_branch_class*);
 
@@ -4560,52 +4302,49 @@ public:
   std::shared_ptr<CPP_lat> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_lat& obj) {
-    os << obj.repr();
+    os << "CPP_lat{";
+    os << "use_name=" << obj.use_name << ", ";
+    os << "lattice=" << obj.lattice << ", ";
+    os << "machine=" << obj.machine << ", ";
+    os << "input_file_name=" << obj.input_file_name << ", ";
+    os << "title=" << obj.title << ", ";
+    os << "print_str=" << obj.print_str << ", ";
+    os << "constant=" << obj.constant << ", ";
+    os << "a="; if (obj.a == nullptr) { os << "nullptr"; } else { os << obj.a; }; os << ", ";
+    os << "b="; if (obj.b == nullptr) { os << "nullptr"; } else { os << obj.b; }; os << ", ";
+    os << "z="; if (obj.z == nullptr) { os << "nullptr"; } else { os << obj.z; }; os << ", ";
+    os << "param="; if (obj.param == nullptr) { os << "nullptr"; } else { os << obj.param; }; os << ", ";
+    os << "lord_state=" << obj.lord_state << ", ";
+    os << "ele_init=" << obj.ele_init << ", ";
+    os << "ele=" << obj.ele << ", ";
+    os << "branch=" << obj.branch << ", ";
+    os << "control=" << obj.control << ", ";
+    os << "particle_start=" << obj.particle_start << ", ";
+    os << "beam_init=" << obj.beam_init << ", ";
+    os << "pre_tracker=" << obj.pre_tracker << ", ";
+    os << "custom=" << obj.custom << ", ";
+    os << "version=" << obj.version << ", ";
+    os << "n_ele_track="; if (obj.n_ele_track == nullptr) { os << "nullptr"; } else { os << obj.n_ele_track; }; os << ", ";
+    os << "n_ele_max="; if (obj.n_ele_max == nullptr) { os << "nullptr"; } else { os << obj.n_ele_max; }; os << ", ";
+    os << "n_control_max=" << obj.n_control_max << ", ";
+    os << "n_ic_max=" << obj.n_ic_max << ", ";
+    os << "input_taylor_order=" << obj.input_taylor_order << ", ";
+    os << "ic=" << obj.ic << ", ";
+    os << "photon_type=" << obj.photon_type << ", ";
+    os << "creation_hash=" << obj.creation_hash << ", ";
+    os << "ramper_slave_bookkeeping=" << obj.ramper_slave_bookkeeping;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_lat{";
-    oss << "use_name=" << use_name << ", ";
-    oss << "lattice=" << lattice << ", ";
-    oss << "machine=" << machine << ", ";
-    oss << "input_file_name=" << input_file_name << ", ";
-    oss << "title=" << title << ", ";
-    oss << "print_str=" << print_str << ", ";
-    oss << "constant=" << constant << ", ";
-    oss << "a="; if (a == nullptr) { oss << "nullptr"; } else { oss << *a; }; oss << ", ";
-    oss << "b="; if (b == nullptr) { oss << "nullptr"; } else { oss << *b; }; oss << ", ";
-    oss << "z="; if (z == nullptr) { oss << "nullptr"; } else { oss << *z; }; oss << ", ";
-    oss << "param="; if (param == nullptr) { oss << "nullptr"; } else { oss << *param; }; oss << ", ";
-    oss << "lord_state=" << lord_state << ", ";
-    oss << "ele_init=" << ele_init << ", ";
-    oss << "ele=" << ele << ", ";
-    oss << "branch=" << branch << ", ";
-    oss << "control=" << control << ", ";
-    oss << "particle_start=" << particle_start << ", ";
-    oss << "beam_init=" << beam_init << ", ";
-    oss << "pre_tracker=" << pre_tracker << ", ";
-    oss << "custom=" << custom << ", ";
-    oss << "version=" << version << ", ";
-    oss << "n_ele_track="; if (n_ele_track == nullptr) { oss << "nullptr"; } else { oss << *n_ele_track; }; oss << ", ";
-    oss << "n_ele_max="; if (n_ele_max == nullptr) { oss << "nullptr"; } else { oss << *n_ele_max; }; oss << ", ";
-    oss << "n_control_max=" << n_control_max << ", ";
-    oss << "n_ic_max=" << n_ic_max << ", ";
-    oss << "input_taylor_order=" << input_taylor_order << ", ";
-    oss << "ic=" << ic << ", ";
-    oss << "photon_type=" << photon_type << ", ";
-    oss << "creation_hash=" << creation_hash << ", ";
-    oss << "ramper_slave_bookkeeping=" << ramper_slave_bookkeeping;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_lat& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void lat_to_c (const Opaque_lat_class*, CPP_lat&);
 extern "C" void lat_to_f (const CPP_lat&, Opaque_lat_class*);
 
@@ -4640,36 +4379,33 @@ public:
   std::shared_ptr<CPP_bunch> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bunch& obj) {
-    os << obj.repr();
+    os << "CPP_bunch{";
+    os << "particle=" << obj.particle << ", ";
+    os << "ix_z=" << obj.ix_z << ", ";
+    os << "charge_tot=" << obj.charge_tot << ", ";
+    os << "charge_live=" << obj.charge_live << ", ";
+    os << "z_center=" << obj.z_center << ", ";
+    os << "t_center=" << obj.t_center << ", ";
+    os << "t0=" << obj.t0 << ", ";
+    os << "drift_between_t_and_s=" << obj.drift_between_t_and_s << ", ";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "ix_bunch=" << obj.ix_bunch << ", ";
+    os << "ix_turn=" << obj.ix_turn << ", ";
+    os << "n_live=" << obj.n_live << ", ";
+    os << "n_good=" << obj.n_good << ", ";
+    os << "n_bad=" << obj.n_bad;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_bunch{";
-    oss << "particle=" << particle << ", ";
-    oss << "ix_z=" << ix_z << ", ";
-    oss << "charge_tot=" << charge_tot << ", ";
-    oss << "charge_live=" << charge_live << ", ";
-    oss << "z_center=" << z_center << ", ";
-    oss << "t_center=" << t_center << ", ";
-    oss << "t0=" << t0 << ", ";
-    oss << "drift_between_t_and_s=" << drift_between_t_and_s << ", ";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "ix_bunch=" << ix_bunch << ", ";
-    oss << "ix_turn=" << ix_turn << ", ";
-    oss << "n_live=" << n_live << ", ";
-    oss << "n_good=" << n_good << ", ";
-    oss << "n_bad=" << n_bad;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_bunch& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void bunch_to_c (const Opaque_bunch_class*, CPP_bunch&);
 extern "C" void bunch_to_f (const CPP_bunch&, Opaque_bunch_class*);
 
@@ -4713,45 +4449,42 @@ public:
   std::shared_ptr<CPP_bunch_params> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bunch_params& obj) {
-    os << obj.repr();
+    os << "CPP_bunch_params{";
+    os << "centroid=" << obj.centroid << ", ";
+    os << "x=" << obj.x << ", ";
+    os << "y=" << obj.y << ", ";
+    os << "z=" << obj.z << ", ";
+    os << "a=" << obj.a << ", ";
+    os << "b=" << obj.b << ", ";
+    os << "c=" << obj.c << ", ";
+    os << "sigma=" << obj.sigma << ", ";
+    os << "rel_max=" << obj.rel_max << ", ";
+    os << "rel_min=" << obj.rel_min << ", ";
+    os << "s=" << obj.s << ", ";
+    os << "t=" << obj.t << ", ";
+    os << "sigma_t=" << obj.sigma_t << ", ";
+    os << "charge_live=" << obj.charge_live << ", ";
+    os << "charge_tot=" << obj.charge_tot << ", ";
+    os << "n_particle_tot=" << obj.n_particle_tot << ", ";
+    os << "n_particle_live=" << obj.n_particle_live << ", ";
+    os << "n_particle_lost_in_ele=" << obj.n_particle_lost_in_ele << ", ";
+    os << "n_good_steps=" << obj.n_good_steps << ", ";
+    os << "n_bad_steps=" << obj.n_bad_steps << ", ";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "location=" << obj.location << ", ";
+    os << "twiss_valid=" << obj.twiss_valid;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_bunch_params{";
-    oss << "centroid=" << centroid << ", ";
-    oss << "x=" << x << ", ";
-    oss << "y=" << y << ", ";
-    oss << "z=" << z << ", ";
-    oss << "a=" << a << ", ";
-    oss << "b=" << b << ", ";
-    oss << "c=" << c << ", ";
-    oss << "sigma=" << sigma << ", ";
-    oss << "rel_max=" << rel_max << ", ";
-    oss << "rel_min=" << rel_min << ", ";
-    oss << "s=" << s << ", ";
-    oss << "t=" << t << ", ";
-    oss << "sigma_t=" << sigma_t << ", ";
-    oss << "charge_live=" << charge_live << ", ";
-    oss << "charge_tot=" << charge_tot << ", ";
-    oss << "n_particle_tot=" << n_particle_tot << ", ";
-    oss << "n_particle_live=" << n_particle_live << ", ";
-    oss << "n_particle_lost_in_ele=" << n_particle_lost_in_ele << ", ";
-    oss << "n_good_steps=" << n_good_steps << ", ";
-    oss << "n_bad_steps=" << n_bad_steps << ", ";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "location=" << location << ", ";
-    oss << "twiss_valid=" << twiss_valid;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_bunch_params& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void bunch_params_to_c (const Opaque_bunch_params_class*, CPP_bunch_params&);
 extern "C" void bunch_params_to_f (const CPP_bunch_params&, Opaque_bunch_params_class*);
 
@@ -4773,23 +4506,20 @@ public:
   std::shared_ptr<CPP_beam> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_beam& obj) {
-    os << obj.repr();
+    os << "CPP_beam{";
+    os << "bunch=" << obj.bunch;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_beam{";
-    oss << "bunch=" << bunch;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_beam& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void beam_to_c (const Opaque_beam_class*, CPP_beam&);
 extern "C" void beam_to_f (const CPP_beam&, Opaque_beam_class*);
 
@@ -4815,27 +4545,24 @@ public:
   std::shared_ptr<CPP_aperture_point> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_aperture_point& obj) {
-    os << obj.repr();
+    os << "CPP_aperture_point{";
+    os << "x=" << obj.x << ", ";
+    os << "y=" << obj.y << ", ";
+    os << "plane=" << obj.plane << ", ";
+    os << "ix_ele=" << obj.ix_ele << ", ";
+    os << "i_turn=" << obj.i_turn;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_aperture_point{";
-    oss << "x=" << x << ", ";
-    oss << "y=" << y << ", ";
-    oss << "plane=" << plane << ", ";
-    oss << "ix_ele=" << ix_ele << ", ";
-    oss << "i_turn=" << i_turn;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_aperture_point& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void aperture_point_to_c (const Opaque_aperture_point_class*, CPP_aperture_point&);
 extern "C" void aperture_point_to_f (const CPP_aperture_point&, Opaque_aperture_point_class*);
 
@@ -4865,31 +4592,28 @@ public:
   std::shared_ptr<CPP_aperture_param> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_aperture_param& obj) {
-    os << obj.repr();
+    os << "CPP_aperture_param{";
+    os << "min_angle=" << obj.min_angle << ", ";
+    os << "max_angle=" << obj.max_angle << ", ";
+    os << "n_angle=" << obj.n_angle << ", ";
+    os << "n_turn=" << obj.n_turn << ", ";
+    os << "x_init=" << obj.x_init << ", ";
+    os << "y_init=" << obj.y_init << ", ";
+    os << "rel_accuracy=" << obj.rel_accuracy << ", ";
+    os << "abs_accuracy=" << obj.abs_accuracy << ", ";
+    os << "start_ele=" << obj.start_ele;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_aperture_param{";
-    oss << "min_angle=" << min_angle << ", ";
-    oss << "max_angle=" << max_angle << ", ";
-    oss << "n_angle=" << n_angle << ", ";
-    oss << "n_turn=" << n_turn << ", ";
-    oss << "x_init=" << x_init << ", ";
-    oss << "y_init=" << y_init << ", ";
-    oss << "rel_accuracy=" << rel_accuracy << ", ";
-    oss << "abs_accuracy=" << abs_accuracy << ", ";
-    oss << "start_ele=" << start_ele;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_aperture_param& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void aperture_param_to_c (const Opaque_aperture_param_class*, CPP_aperture_param&);
 extern "C" void aperture_param_to_f (const CPP_aperture_param&, Opaque_aperture_param_class*);
 
@@ -4913,25 +4637,22 @@ public:
   std::shared_ptr<CPP_aperture_scan> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_aperture_scan& obj) {
-    os << obj.repr();
+    os << "CPP_aperture_scan{";
+    os << "point=" << obj.point << ", ";
+    os << "ref_orb=" << obj.ref_orb << ", ";
+    os << "pz_start=" << obj.pz_start;
+    os << "}";
     return os;
   }
 
   std::string repr() const {
-    std::ostringstream oss;
-    oss << "CPP_aperture_scan{";
-    oss << "point=" << point << ", ";
-    oss << "ref_orb=" << ref_orb << ", ";
-    oss << "pz_start=" << pz_start;
-    oss << "}";
-    return oss.str();
+    std::ostringstream os;
+    os << this;
+    return os.str();
   }
     
 };
 
-// std::ostream& operator<<(std::ostream& os, const CPP_aperture_scan& obj) {
-//   return os << obj.repr();  // Reuse the repr method
-// }
 extern "C" void aperture_scan_to_c (const Opaque_aperture_scan_class*, CPP_aperture_scan&);
 extern "C" void aperture_scan_to_f (const CPP_aperture_scan&, Opaque_aperture_scan_class*);
 
