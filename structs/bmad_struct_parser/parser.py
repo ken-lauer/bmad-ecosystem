@@ -16,7 +16,8 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-size_ignore = {"rp", "dp", "hsize_t"}
+size_ignore = {}
+# size_ignore = {"rp", "dp", "hsize_t"}
 
 DefaultType = (
     bool
@@ -101,6 +102,7 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
 class StructureMember(pydantic.BaseModel):
     line: int
     definition: str
+    type_info: TypeInformation
     name: str = ""
     python_name: str = ""
     type: str = ""
@@ -112,16 +114,12 @@ class StructureMember(pydantic.BaseModel):
     default: DefaultType = ""
     default_factory: str = ""
 
-    @property
-    def is_structure(self) -> bool:
-        return self.python_type not in {"int", "float", "bool", "str", "Complex"}
-
     @pydantic.field_validator("size")
     @classmethod
     def _validate_size(cls, size: str | None):
         if not size:
             return None
-        if size in size_ignore or not size.isnumeric():
+        if size in size_ignore:  #  or not size.isnumeric():
             return None
         return size
 
@@ -178,6 +176,7 @@ class Structure(pydantic.BaseModel):
                     name=decl.name,
                     python_name=get_python_member_name(decl.name),
                     type=type_info.type,
+                    type_info=type_info,
                     python_type=python_type,
                     line=lineno,
                     definition=line,
@@ -301,11 +300,7 @@ def get_type_from_line(line: str) -> TypeInformation:
     parts = _split_variables(line)
 
     type_name = parts[0]
-    if type_name.lower().startswith("type(") or type_name.lower().startswith("type "):
-        if "(" in line:
-            type_name = get_in_parenthesis(line)
-        size = None
-    elif "(" in type_name:
+    if "(" in type_name:
         size = get_in_parenthesis(type_name)
         type_name = type_name.split("(")[0].strip()
     elif "*" in type_name:
@@ -405,7 +400,7 @@ def get_type_from_line(line: str) -> TypeInformation:
 
     return TypeInformation(
         type=type_name,
-        size=size,
+        kind=size,
         dimension=dimension,
         allocatable=allocatable,
         pointer=pointer,
@@ -466,7 +461,7 @@ def _split_variables(line: str) -> list[str]:
     return variables
 
 
-class TypeInformation(NamedTuple):
+class TypeInformation(pydantic.BaseModel, frozen=True):
     """
     A structured representation of a Fortran type declaration with all its attributes.
 
@@ -476,7 +471,7 @@ class TypeInformation(NamedTuple):
     - CHARACTER(LEN=100), ALLOCATABLE :: dynamic_string
     """
 
-    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER')
+    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER', 'TYPE')
 
     allocatable: bool = False  # Whether the variable is allocatable
     asynchronous: bool = False  # Whether the variable can be used in async operations
@@ -493,13 +488,18 @@ class TypeInformation(NamedTuple):
     protected: bool = False  # Whether the variable is protected
     public: bool = False  # Whether the variable has PUBLIC access
     save: bool = False  # Whether the variable has SAVE attribute
-    size: str | None = None  # Size or kind specification
+    kind: str | None = None  # Size or kind specification
     static: bool = False  # Whether the variable has STATIC attribute
     target: bool = False  # Whether the variable can be target of a pointer
     value: bool = False  # Whether the parameter is passed by value
     volatile: bool = False  # Whether the variable has VOLATILE attribute
 
     attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
+
+    @property
+    def size(self):
+        # TODO: redo this; 'kind' is more appropriate here
+        return self.kind  # back-compat
 
 
 class FileLine(NamedTuple):
@@ -915,10 +915,10 @@ def convert(
             info.parse()
 
     info_adapter = pydantic.TypeAdapter(dict[pathlib.Path, dict[str, Structure]])
-    dumped = json.loads(info_adapter.dump_json(by_file))
+    dumped = json.loads(info_adapter.dump_json(by_file, exclude_defaults=True))
 
     with open(yaml_path, "w") as fp:
-        yaml.safe_dump(dumped, fp)
+        yaml.safe_dump(dumped, fp, sort_keys=False)
 
     for item in sorted(todo):
         logger.error(f"(TODO) not yet supported: {item}")
@@ -940,7 +940,7 @@ def load_all_structures(*yaml_paths: pathlib.Path | str) -> list[Structure]:
     all_structs = []
     for yaml_path in yaml_paths:
         for _, structs in load_structures(yaml_path).items():
-            all_structs.extend(structs)
+            all_structs.extend(list(structs.values()))
     return all_structs
 
 

@@ -26,9 +26,11 @@ import sys
 import tempfile
 import textwrap
 from dataclasses import dataclass, field
-from typing import Any, Callable, Literal
+from typing import Callable, Literal
 
 import bmad_struct_parser
+from bmad_struct_parser import Structure as FortranStructure
+from bmad_struct_parser.parser import StructureMember
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
@@ -274,8 +276,6 @@ class Argument:
     kind: str = ""
     pointer_type: PointerType = NOT
     array: list[str] = field(default_factory=list)
-    lbound: list[Any] = field(default_factory=list)
-    ubound: list[Any] = field(default_factory=list)
     init_value: str = ""
     comment: str = ""
     f_side: f_side_trans_class = field(default_factory=f_side_trans_class)
@@ -285,6 +285,20 @@ class Argument:
     # Only for routine parameters:
     intent: Literal["inout", "in", "out", ""] = ""
     optional: bool = False
+
+    @property
+    def lbound(self) -> list[str]:
+        if not self.array or self.array[0] == ":":
+            return []
+
+        return [dim.split(":")[0] if ":" in dim else "1" for dim in self.array]
+
+    @property
+    def ubound(self) -> list[str]:
+        if not self.array or self.array[0] == ":":
+            return []
+
+        return [dim.split(":")[1] if ":" in dim else dim for dim in self.array]
 
     def get_dim1(self) -> tuple[str, str]:
         if self.ubound[0][-1] == "$":
@@ -331,6 +345,12 @@ class Argument:
     @property
     def dim3(self) -> int:
         return 1 + int(arg.ubound[2]) - int(arg.lbound[2])
+
+    def should_translate(self, struct_name: str) -> bool:
+        return (
+            self.kind not in params.component_no_translate_list
+            and f"{struct_name}%{self.f_name}" not in params.component_no_translate_list
+        )
 
     def replace_name_placeholders(self):
         """Replace NAME placeholders with argument names on both C and Fortran sides."""
@@ -385,6 +405,8 @@ class Argument:
     def _handle_type_argument(self) -> None:
         """Process 'type' arguments by replacing KIND placeholders."""
         kind = self.kind[:-7]
+        if not kind:
+            raise RuntimeError("Kind is empty?")
         self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("KIND", kind)
         self.f_side.to_f2_var = [
             var.replace("KIND", kind) for var in self.f_side.to_f2_var
@@ -402,6 +424,8 @@ class Argument:
 
     def _handle_first_dimension(self) -> None:
         """Handle the first dimension of an array argument."""
+        if not self.lbound:
+            return
         self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM1", self.c_dim1)
         self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM1", self.f_dim1)
         self.f_side.test_pat = self.f_side.test_pat.replace("DIM1", self.f_dim1)
@@ -421,6 +445,8 @@ class Argument:
 
     def _handle_second_dimension(self) -> None:
         """Handle the second dimension of an array argument."""
+        if not self.lbound:
+            return
         dim2 = str(self.dim2)
         self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM2", dim2)
         self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM2", dim2)
@@ -443,6 +469,8 @@ class Argument:
 
     def _handle_third_dimension(self) -> None:
         """Handle the third dimension of an array argument."""
+        if not self.lbound:
+            return
         dim3 = str(self.dim3)
         self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM3", dim3)
         self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM3", dim3)
@@ -2017,364 +2045,62 @@ re_contains = re.compile(
 
 ##################################################################################
 ##################################################################################
-def parse_structure_definitions(struct_definitions):
-    """
-    Parse Fortran structure definitions from specified files.
-
-    Parameters
-    ----------
-    struct_definitions : list
-        List to store structure definitions
-    params : object
-        Parameters containing file paths and translation dictionaries
-
-    Notes
-    -----
-    Parsing handles various Fortran type definitions. Current restrictions to avoid:
-      1) Line continuations: '&'
-      2) Dimensions: "integer, dimension(7) :: abc"
-      3) Kind: "integer(kind = 8) abc"
-      4) Variable inits using "," or "(" characters: "real abc(2) = [1, 2]"
-    """
-
-    for file_name in params.struct_def_files:
-        parse_struct_file(file_name, struct_definitions)
-
-
-def parse_struct_file(file_name: str, struct_definitions: list) -> None:
-    """
-    Parse a single Fortran module file for structure definitions.
-
-    Parameters
-    ----------
-    file_name : str
-        Path to the Fortran module file
-    struct_definitions : list
-        List to store structure definitions
-    """
-    with open(file_name) as f_module_file:
-        for line in f_module_file:
-            split_line = line.lower().split()
-            if len(split_line) < 2 or split_line[0] != "type":
-                continue
-
-            for struct in struct_definitions:
-                if struct.f_name == split_line[1]:
-                    break
-            else:
-                continue
-
-            struct.short_name = struct.f_name[:-7]  # Remove '_struct' suffix
-            struct.cpp_class = "CPP_" + struct.short_name
-
-            # Collect the struct components
-            parse_struct_components(f_module_file, struct)
-            remove_untranslated(struct)
-
-
-def parse_struct_components(lines, struct) -> None:
-    """
-    Parse components of a Fortran structure.
-
-    Parameters
-    ----------
-    lines : list of str or file obj
-        Open file handle to the Fortran module file
-    struct : object
-        Structure object to populate with component information
-    params : object
-        Parameters containing name translation dictionaries
-    """
-    found_contains_statement = False
-
-    for line in lines:
-        if re_end_type.match(line):
-            break
-        if re_contains.match(line):
-            found_contains_statement = True
-        if found_contains_statement:
-            continue
-
-        print_debug("\nStart: " + line.strip())
-
-        # Remove comments
-        part = line.partition("!")
-        comment = part[2].strip()
-        line = part[0].strip()
-
-        if not line:
-            continue  # Blank line
-
-        print_debug("P1: " + line.strip())
-
-        base_arg = parse_component_line(line, comment)
-        if base_arg:
-            # Process all components on this line
-            process_components(base_arg, line, struct, params)
-
-
-def parse_component_line(line: str, comment: str) -> Argument:
-    """
-    Parse a single line containing Fortran structure component definitions.
-
-    Parameters
-    ----------
-    line : str
-        Line of Fortran code (comments removed)
-    comment : str
-        Comment for this line
-
-    Returns
-    -------
-    arg_class
-        Base argument with type information parsed
-    """
-    base_arg = Argument()
-    base_arg.comment = comment
-
-    if ", optional" in line:
-        line = line.replace(", optional", "")
-        base_arg.optional = True
+def argument_from_fstruct(
+    fstruct: FortranStructure, member: StructureMember
+) -> Argument:
+    if member.size and member.type.lower() == "integer":
+        type_ = "integer8"
     else:
-        base_arg.optional = False
+        type_ = member.type
 
-    for intent in ("in", "out", "inout"):
-        intent_attr = f", intent({intent})"
-        if intent_attr in line:
-            line = line.replace(intent_attr, "")
-            base_arg.intent = intent
-            break
+    if member.type_info.pointer:
+        pointer_type = PTR
+    elif member.type_info.allocatable:
+        pointer_type = ALLOC
     else:
-        base_arg.intent = ""
+        pointer_type = NOT
 
-    # Get base_arg.type
-    split_line = re_match1.split(line, 1)
-    print_debug("P2: " + str(split_line))
-
-    base_arg.type = split_line.pop(0)
-    if base_arg.type == "integer" and split_line[0][0] == "(":
-        base_arg.type = "integer8"
-
-    if split_line[0][0] == " ":
-        split_line = re_match2.split(split_line[1], 1)
-        if split_line[0] == "":
-            split_line.pop(0)
-
-    print_debug("P3: " + str(split_line))
-
-    # Add type information if there is more...
-    if split_line[0] == "(":
-        split_line = split_line[1].partition(")")
-        base_arg.kind = split_line[0].strip()
-        split_line = re_match2.split(split_line[2].lstrip(), 1)
-        if split_line[0] == "":
-            split_line.pop(0)  # EG: "real(rp) :: ..."
-
-    print_debug("P4: " + str(split_line))
-
-    if split_line[0] == ",":
-        split_line = split_line[1].partition("::")
-
-        if split_line[0].strip() == "allocatable":
-            base_arg.pointer_type = ALLOC
-        elif split_line[0].strip() == "pointer":
-            base_arg.pointer_type = PTR
-
-        split_line = [split_line[2].lstrip()]
-
-    if split_line[0] == "::":
-        split_line.pop(0)
-
-    # Join split_line into one string so that we are starting from a definite state
-    if len(split_line) > 1:
-        split_line = ["".join(split_line)]
-
-    print_debug("P5: " + str(split_line))
-
-    base_arg.split_line = split_line
-    return base_arg
+    return Argument(
+        is_component=True,
+        f_name=member.name,
+        c_name=params.c_side_name_translation.get(
+            f"{fstruct.name}%{member.name}", member.name
+        ),
+        type=type_,
+        kind=member.size or "",
+        pointer_type=pointer_type,
+        array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
+        init_value=str(member.fortran_default),
+        comment=member.comment,
+    )
 
 
-def process_components(base_arg: Argument, line: str, struct, params) -> None:
-    """
-    Process all components defined on a single line.
-
-    Parameters
-    ----------
-    base_arg : Argument
-        Base argument with type information
-    line : str
-        Original line of Fortran code
-    struct : object
-        Structure object to add components to
-    params : object
-        Parameters containing name translation dictionaries
-    """
-    split_line = base_arg.split_line
-
-    while True:
-        print_debug("L1: " + str(split_line))
-
-        if len(split_line) > 1:
-            print(
-                "Confused parsing of struct component: "
-                + line.strip()
-                + " in: "
-                + struct.f_name,
-                file=sys.stderr,
-            )
-
-        split_line = re_match2.split(split_line[0], 1)
-        print_debug("L2: " + str(split_line))
-
-        arg = copy.deepcopy(base_arg)
-        arg.f_name = split_line.pop(0).strip().lower()
-
-        # Handle reserved words on the C++ side
-        full_name = struct.f_name + "%" + arg.f_name
-        if full_name in params.c_side_name_translation:
-            arg.c_name = params.c_side_name_translation[full_name]
-        else:
-            arg.c_name = arg.f_name
-
-        if len(split_line) == 0:
-            struct.arg.append(arg)
-            break
-
-        # Get array bounds
-        if split_line[0] == "(":
-            arg = parse_array_bounds(arg, split_line)
-            split_line = arg.split_line
-
-        print_debug("L3: " + str(split_line))
-
-        if len(split_line) == 0:
-            struct.arg.append(arg)
-            break
-
-        # Get initial value
-        if split_line[0] == "=":
-            arg, split_line = parse_init_value(arg, split_line)
-
-        print_debug("L4: " + str(split_line))
-
-        struct.arg.append(arg)
-        if len(split_line) == 0 or split_line[0] == "":
-            break
-
-        if split_line[0] != ",":
-            print(
-                'Expected "," while parsing: ' + line.strip() + " in: " + struct.f_name,
-                file=sys.stderr,
-            )
-
-        split_line.pop(0)
-
-
-def parse_array_bounds(arg: Argument, split_line: list) -> Argument:
-    """
-    Parse array bounds from a component definition.
-
-    Parameters
-    ----------
-    arg : Argument
-        Argument to update with array information
-    split_line : list
-        Current split line being processed
-
-    Returns
-    -------
-    Argument
-        Updated argument with array bounds
-    """
-    split_line = split_line[1].lstrip().partition(")")
-    full_array = split_line[0].strip().replace(" ", "")
-    arg.array = full_array.split(",")
-
-    print_debug("L2p1: " + str(split_line))
-
-    split_line = re_match2.split(split_line[2].lstrip(), 1)
-    print_debug("L2p2: " + str(split_line))
-
-    if split_line[0] == "":
-        split_line.pop(0)  # Needed for EG: "integer aaa(5)"
-
-    if arg.array[0] != ":":  # If has explicit bounds...
-        for dim in arg.array:
-            if ":" in dim:
-                arg.lbound.append(dim.partition(":")[0])
-                arg.ubound.append(dim.partition(":")[2])
-            else:
-                arg.lbound.append("1")
-                arg.ubound.append(dim)
-
-    arg.split_line = split_line
-    return arg
-
-
-def parse_init_value(arg: Argument, split_line: list) -> tuple:
-    """
-    Parse initialization value from a component definition.
-
-    Parameters
-    ----------
-    arg : Argument
-        Argument to update with initialization information
-    split_line : list
-        Current split line being processed
-
-    Returns
-    -------
-    tuple
-        (updated arg, updated split_line)
-    """
-    split_line = re_match2.split(split_line[1].lstrip(), 1)
-    print_debug("L3p1: " + str(split_line))
-
-    # If have EG: "b(2) = [3, 4], c => null()" need to
-    # combine back "(...)" or "[...]" construct which is part of init string.
-    if len(split_line) > 1 and (split_line[1] == "(" or split_line[1] == "["):
-        split0 = split_line[0] + split_line[1]
-        n_parens = 1
-
-        ix = 0
-        for ix, char in enumerate(split_line[2]):
-            split0 = split0 + char
-            if char == "(" or char == "[":
-                n_parens = n_parens + 1
-            if char == ")" or char == "]":
-                n_parens = n_parens - 1
-            if n_parens == 0:
-                break
-        split1 = split_line[2][ix + 1 :]
-        if split1 == "":
-            split_line = [split0]
-        elif split1[0] == ",":
-            split_line = [split0, ",", split1[1:]]
-        else:
-            raise RuntimeError(f"Parse init value failed: {split_line}")
-
-    print_debug("L3p2: " + str(split_line))
-
-    arg.init_value = split_line[0]
-    if len(split_line) == 1:
-        split_line[0] = ""
-    else:
-        split_line.pop(0)
-
-    return arg, split_line
-
-
-def remove_untranslated(struct: Structure) -> None:
-    # Throw out any sub-structures that are not to be translated
-    struct.arg = [
-        arg
-        for arg in struct.arg
-        if not (
-            arg.kind in params.component_no_translate_list
-            or f"{struct.f_name}%{arg.f_name}" in params.component_no_translate_list
-        )
+def arguments_from_fstruct(fstruct: FortranStructure) -> list[Argument]:
+    return [
+        argument_from_fstruct(fstruct, member)
+        for name, member in fstruct.info.members.items()
     ]
+
+
+def match_structure_definition(
+    fortran_structures: list[FortranStructure],
+    struct: Structure,
+):
+    for fstruct in fortran_structures:
+        if struct.f_name == fstruct.name:
+            break
+    else:
+        raise RuntimeError(f"Structure not found: {struct.f_name}")
+
+    struct.f_name = fstruct.name
+    struct.short_name = fstruct.name.removesuffix("_struct")
+    struct.cpp_class = "CPP_" + struct.short_name
+    struct.arg = arguments_from_fstruct(fstruct)
+
+
+def set_translations(struct: Structure) -> None:
+    # Throw out any sub-structures that are not to be translated
+    struct.arg = [arg for arg in struct.arg if arg.should_translate(struct.f_name)]
 
     # Add translation info to each argument
     for arg in struct.arg:
@@ -2449,82 +2175,82 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
                 ia += 1
 
 
-def parse_bmad_routine_file(fortran_code):
-    """
-    Parse a Fortran file containing subroutines and return a dictionary
-    mapping subroutine names to their content.
-    """
-    subroutine_blocks = {}
+# def parse_bmad_routine_file(fortran_code):
+#     """
+#     Parse a Fortran file containing subroutines and return a dictionary
+#     mapping subroutine names to their content.
+#     """
+#     subroutine_blocks = {}
+#
+#     # Split the code into lines
+#     lines = fortran_code.strip().split("\n")
+#
+#     current_subroutine = None
+#     current_content = []
+#
+#     for line in lines:
+#         line = line.strip()
+#         lower = line.lower()
+#         if lower.startswith("subroutine ") or lower.startswith("recursive subroutine "):
+#             if lower.startswith("recursive "):
+#                 lower = lower.removeprefix("recursive ")
+#             # If we were already collecting a subroutine, save it before starting a new one
+#             if current_subroutine:
+#                 subroutine_blocks[current_subroutine] = "\n".join(current_content)
+#
+#             subroutine_name = line.split()[1].split("(")[0]
+#             arguments = tuple(
+#                 arg.strip() for arg in line.split("(")[1].rstrip(")").split(",")
+#             )
+#             current_subroutine = (subroutine_name, arguments)
+#             current_content = [line]
+#         elif line.lower().startswith("end subroutine"):
+#             current_content.append(line)
+#             assert current_subroutine is not None
+#             subroutine_blocks[current_subroutine] = "\n".join(current_content)
+#             current_subroutine = None
+#             current_content = []
+#         elif current_subroutine:
+#             current_content.append(line)
+#
+#     # In case there's a final subroutine without an explicit end
+#     if current_subroutine:
+#         subroutine_blocks[current_subroutine] = "\n".join(current_content)
+#
+#     return subroutine_blocks
 
-    # Split the code into lines
-    lines = fortran_code.strip().split("\n")
 
-    current_subroutine = None
-    current_content = []
-
-    for line in lines:
-        line = line.strip()
-        lower = line.lower()
-        if lower.startswith("subroutine ") or lower.startswith("recursive subroutine "):
-            if lower.startswith("recursive "):
-                lower = lower.removeprefix("recursive ")
-            # If we were already collecting a subroutine, save it before starting a new one
-            if current_subroutine:
-                subroutine_blocks[current_subroutine] = "\n".join(current_content)
-
-            subroutine_name = line.split()[1].split("(")[0]
-            arguments = tuple(
-                arg.strip() for arg in line.split("(")[1].rstrip(")").split(",")
-            )
-            current_subroutine = (subroutine_name, arguments)
-            current_content = [line]
-        elif line.lower().startswith("end subroutine"):
-            current_content.append(line)
-            assert current_subroutine is not None
-            subroutine_blocks[current_subroutine] = "\n".join(current_content)
-            current_subroutine = None
-            current_content = []
-        elif current_subroutine:
-            current_content.append(line)
-
-    # In case there's a final subroutine without an explicit end
-    if current_subroutine:
-        subroutine_blocks[current_subroutine] = "\n".join(current_content)
-
-    return subroutine_blocks
-
-
-def parse_bmad_routines(params):
-    subroutines = {}
-
-    for fn in params.routine_interface_files:
-        fortran_code = pathlib.Path(fn).read_text()
-        lines = fortran_code.splitlines()
-        lines = lines[lines.index("interface") :]
-        lines = lines[: lines.index("end interface")]
-        name_to_subroutine_contents = parse_bmad_routine_file("\n".join(lines))
-
-        for (name, args), contents in name_to_subroutine_contents.items():
-            subroutine = Subroutine(name, arg_order=args)
-            parse_struct_components(
-                lines=[
-                    line.strip()
-                    for line in contents.splitlines()[1:]
-                    if line.strip() and line.strip() not in ("import", "implicit none")
-                ],
-                struct=subroutine,
-                params=params,
-            )
-            for arg in subroutine.arg:
-                if arg.pointer_type == "NOT" and arg.array:
-                    arg.pointer_type = "ALLOC"
-                    # arg.c_side.c_class = f"{arg.c_side.c_class}*"
-
-            remove_untranslated(subroutine)
-            for arg in subroutine.arg:
-                arg.fix_struct_arg_placeholders(struct)
-            subroutines[name] = subroutine
-    return subroutines
+# def parse_bmad_routines(params):
+#     subroutines = {}
+#
+#     for fn in params.routine_interface_files:
+#         fortran_code = pathlib.Path(fn).read_text()
+#         lines = fortran_code.splitlines()
+#         lines = lines[lines.index("interface") :]
+#         lines = lines[: lines.index("end interface")]
+#         name_to_subroutine_contents = parse_bmad_routine_file("\n".join(lines))
+#
+#         for (name, args), contents in name_to_subroutine_contents.items():
+#             subroutine = Subroutine(name, arg_order=args)
+#             parse_struct_components(
+#                 lines=[
+#                     line.strip()
+#                     for line in contents.splitlines()[1:]
+#                     if line.strip() and line.strip() not in ("import", "implicit none")
+#                 ],
+#                 struct=subroutine,
+#                 params=params,
+#             )
+#             for arg in subroutine.arg:
+#                 if arg.pointer_type == "NOT" and arg.array:
+#                     arg.pointer_type = "ALLOC"
+#                     # arg.c_side.c_class = f"{arg.c_side.c_class}*"
+#
+#             set_translations(subroutine)
+#             for arg in subroutine.arg:
+#                 arg.fix_struct_arg_placeholders(struct)
+#             subroutines[name] = subroutine
+#     return subroutines
 
 
 # ******************************************************************************
@@ -2676,6 +2402,8 @@ interface
         f_face.write("    !! f_side.to_c2_type :: f_side.to_c2_name\n")
         f_face.write("    type(c_ptr), value :: C\n")
         for arg_type, args in list(to_c2_call_def.items()):
+            if not arg_type:
+                raise RuntimeError("No argument type?")
             for i in range(1 + (len(args) - 1) // 7):
                 f_face.write(
                     f"    {arg_type} :: {', '.join(args[i * 7 : i * 7 + 7])}\n"
@@ -3572,26 +3300,29 @@ c_side_trans = initialize_c_side_trans()
 c_side_trans_custom_overrides = {}
 f_side_trans_custom_overrides = {}
 
+fortran_structures = bmad_struct_parser.load_all_structures(
+    *params.struct_def_yaml_files
+)
+
 struct_definitions: list[Structure] = []
+
 for name in params.struct_list:
-    struct_definitions.append(Structure(name))
+    struct = Structure(name)
+    match_structure_definition(fortran_structures, struct)
+    set_translations(struct)
 
-all_structures = bmad_struct_parser.load_all_structures(*params.struct_def_yaml_files)
-parse_structure_definitions(struct_definitions)
-
-for struct in struct_definitions:
     add_array_bound_info_for_pointer_structures(struct)
-
-for struct in struct_definitions:
     print_debug("\nStruct: " + str(struct))
     for arg in struct.arg:
         arg.fix_struct_arg_placeholders(struct)
+
+    struct_definitions.append(struct)
 
 # *Customization hook*
 
 params.customize(struct_definitions)
 
-routines = parse_bmad_routines(params)
+# routines = parse_bmad_routines(params)
 
 if DEBUG:
     write_parsed_structures(struct_definitions, "f_structs.parsed")
