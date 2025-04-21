@@ -1,3 +1,5 @@
+module test_struct_defs
+
 type wake_lr_struct
   integer(8) :: aaa
   integer :: bbb
@@ -11,3 +13,4 @@ type wake_struct
   type (wake_lr_struct) :: sr = wake_sr_struct('', null(), null(), 0.0_rp, 0.0_rp, 0.0_rp, 1.0_rp, 1.0_rp, .true.) ! Short-range wake
 end type
 
+end module
