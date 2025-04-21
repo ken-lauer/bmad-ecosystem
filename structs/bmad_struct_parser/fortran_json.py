@@ -595,6 +595,7 @@ def main():
         format="%(asctime)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
+    logger.info("Generating code for Fortran JSON conversion...")
     conf = ParserConfig.from_file(args.config)
 
     working_dir = pathlib.Path(args.working_directory)

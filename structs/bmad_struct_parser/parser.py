@@ -936,6 +936,14 @@ def load_structures(fn: pathlib.Path | str) -> StructureFile:
     return info_adapter.validate_python(loaded)
 
 
+def load_all_structures(*yaml_paths: pathlib.Path | str) -> list[Structure]:
+    all_structs = []
+    for yaml_path in yaml_paths:
+        for _, structs in load_structures(yaml_path).items():
+            all_structs.extend(structs)
+    return all_structs
+
+
 # def load_all_structures_by_class_name() -> dict[str, Structure]:
 #     by_name = {}
 #     for paths in all_source_to_paths.values():

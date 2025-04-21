@@ -28,8 +28,16 @@ import textwrap
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal
 
+import bmad_struct_parser
+
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
+ACC_ROOT_DIR = CPP_INTERFACE_ROOT.parent
+STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
+
+DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "config.yaml"
+
+assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}"
 
 ##################################################################################
 ##################################################################################
@@ -245,8 +253,6 @@ class Argument:
         Pointer type: NOT, PTR, or ALLOC.
     array : List[str]
         Array dimension specifications, e.g., [':', ':'] or ['0:6', '3'].
-    full_array : str
-        Complete array specification, e.g., '(:,:)', '(0:6, 3)'.
     lbound : List[Any]
         Lower bounds for each array dimension.
     ubound : List[Any]
@@ -268,7 +274,6 @@ class Argument:
     kind: str = ""
     pointer_type: PointerType = NOT
     array: list[str] = field(default_factory=list)
-    full_array: str = ""
     lbound: list[Any] = field(default_factory=list)
     ubound: list[Any] = field(default_factory=list)
     init_value: str = ""
@@ -551,13 +556,12 @@ class Argument:
         self._handle_init_values()
 
     def original_repr(self) -> str:
-        return '["{}({})", "{}", "{}", {}, "{}" {} {} "{}"]'.format(
+        return '["{}({})", "{}", "{}", {}, {} {} "{}"]'.format(
             self.type,
             self.kind,
             self.pointer_type,
             self.f_name,
             self.array,
-            self.full_array,
             self.lbound,
             self.ubound,
             self.init_value,
@@ -2013,7 +2017,7 @@ re_contains = re.compile(
 
 ##################################################################################
 ##################################################################################
-def parse_structure_definitions(struct_definitions, params):
+def parse_structure_definitions(struct_definitions):
     """
     Parse Fortran structure definitions from specified files.
 
@@ -2034,18 +2038,10 @@ def parse_structure_definitions(struct_definitions, params):
     """
 
     for file_name in params.struct_def_files:
-        parse_struct_file(
-            file_name,
-            struct_definitions,
-            params,
-        )
+        parse_struct_file(file_name, struct_definitions)
 
 
-def parse_struct_file(
-    file_name: str,
-    struct_definitions: list,
-    params,
-) -> None:
+def parse_struct_file(file_name: str, struct_definitions: list) -> None:
     """
     Parse a single Fortran module file for structure definitions.
 
@@ -2055,8 +2051,6 @@ def parse_struct_file(
         Path to the Fortran module file
     struct_definitions : list
         List to store structure definitions
-    params : object
-        Parameters containing name translation dictionaries
     """
     with open(file_name) as f_module_file:
         for line in f_module_file:
@@ -2074,15 +2068,11 @@ def parse_struct_file(
             struct.cpp_class = "CPP_" + struct.short_name
 
             # Collect the struct components
-            parse_struct_components(
-                f_module_file,
-                struct,
-                params,
-            )
+            parse_struct_components(f_module_file, struct)
             remove_untranslated(struct)
 
 
-def parse_struct_components(lines, struct, params) -> None:
+def parse_struct_components(lines, struct) -> None:
     """
     Parse components of a Fortran structure.
 
@@ -2298,8 +2288,8 @@ def parse_array_bounds(arg: Argument, split_line: list) -> Argument:
         Updated argument with array bounds
     """
     split_line = split_line[1].lstrip().partition(")")
-    arg.full_array = "(" + split_line[0].strip().replace(" ", "") + ")"
-    arg.array = arg.full_array[1:-1].split(",")
+    full_array = split_line[0].strip().replace(" ", "")
+    arg.array = full_array.split(",")
 
     print_debug("L2p1: " + str(split_line))
 
@@ -2929,8 +2919,6 @@ def write_tests_mod(f_test):
 module bmad_cpp_test_mod
 
 use json_module, only: json_core, json_value
-use bmad_json
-use sim_utils_json
 
 use bmad_cpp_convert_mod
 use {params.equality_mod_file}
@@ -3027,7 +3015,7 @@ implicit none
 type(json_core) :: json
 type(json_value), pointer :: json_root
 
-type(c_ptr), value ::  c_{struct.short_name}
+type(c_ptr), value :: c_{struct.short_name}
 type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
 logical(c_bool) c_ok
 
@@ -3588,7 +3576,8 @@ struct_definitions: list[Structure] = []
 for name in params.struct_list:
     struct_definitions.append(Structure(name))
 
-parse_structure_definitions(struct_definitions, params)
+all_structures = bmad_struct_parser.load_all_structures(*params.struct_def_yaml_files)
+parse_structure_definitions(struct_definitions)
 
 for struct in struct_definitions:
     add_array_bound_info_for_pointer_structures(struct)

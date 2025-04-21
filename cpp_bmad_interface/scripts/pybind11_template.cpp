@@ -16,6 +16,10 @@ using namespace Bmad;
 namespace py = pybind11;
 
 // ${forward_declarations}
+
+/*
+ *
+ * TODO: using the test interface for now
 extern "C" bool cpp_bmad_parser(const char *lat_file, void *lat
                                 // ,
                                 // bool make_mats6,
@@ -64,12 +68,15 @@ bmad_parser_wrapper(const std::string &lat_file,
   //
   // return result;
 }
+*/
 
 PYBIND11_MODULE(bmad, m) {
   m.doc() = "pybind11 bmad plugin: auto-generated from struct definitions";
 
   // ${pybind11_definitions}
 
+  /*
+   * TODO: using the test interface for now
   m.def("bmad_parser", &bmad_parser_wrapper, py::return_value_policy::automatic,
         py::arg("lat_file"), py::arg("make_mats6") = py::none(),
         py::arg("digested_read_ok") = py::none(),
@@ -84,4 +91,5 @@ PYBIND11_MODULE(bmad, m) {
         "Returns:\n"
         "    dict: Dictionary containing 'error', 'lattice', and optionally "
         "'parse_lattice'");
+  */
 }

@@ -8,13 +8,27 @@ struct_def_files = [
     "../bmad/modules/complex_taylor_mod.f90",
 ]
 
+struct_def_yaml_files = [
+    "../structs/yaml/bmad_structs.yaml",
+    "../structs/yaml/forest_structs.yaml",
+    "../structs/yaml/sim_utils_structs.yaml",
+    "../structs/yaml/tao_structs.yaml",
+]
+
 routine_interface_files = ["../bmad/modules/bmad_routine_interface.f90"]
 
 # List of use statements needed in various Fortran modules.
 
-conversion_use_statements = ["use bmad_struct"]
-equality_use_statements = ["use bmad_struct"]
-test_use_statements = []
+conversion_use_statements = [
+    "use bmad_struct",
+]
+equality_use_statements = [
+    "use bmad_struct",
+]
+test_use_statements = [
+    "use bmad_json",
+    "use sim_utils_json",
+]
 
 # List of structures to setup interfaces for.
 # List must be in ordered such that if struct A is a component of struct B,
@@ -121,26 +135,24 @@ struct_list = [
 #   <component_struct_name>        or
 #   <struct>%<component_name>
 
-component_no_translate_list = set(
-    [
-        "fibre",
-        "ptc_branch1_info_struct",
-        "layout",
-        "exact_bend_multipole_struct",
-        "branch_struct%ptc",
-        "ele_struct%lord",
-        "ele_struct%branch",
-        "ele_struct%converter",
-        "ele_struct%multipole_cache",
-        "ele_struct%foil",
-        "lat_struct%nametable",
-        "branch_struct%lat",
-        "normal_form_struct",
-        "grid_field_struct%bi_coef",
-        "grid_field_struct%tri_coef",
-        "grid_field_pt_struct%pt",  # NOTE: this can be massive for large lattices
-    ]
-)
+component_no_translate_list = {
+    "fibre",
+    "ptc_branch1_info_struct",
+    "layout",
+    "exact_bend_multipole_struct",
+    "branch_struct%ptc",
+    "ele_struct%lord",
+    "ele_struct%branch",
+    "ele_struct%converter",
+    "ele_struct%multipole_cache",
+    "ele_struct%foil",
+    "lat_struct%nametable",
+    "branch_struct%lat",
+    "normal_form_struct",
+    "grid_field_struct%bi_coef",
+    "grid_field_struct%tri_coef",
+    "grid_field_pt_struct%pt",  # NOTE: this can be massive for large lattices
+}
 
 # List of structure components links:
 # Structure components that are just links to other structures are handled differently.
@@ -148,19 +160,17 @@ component_no_translate_list = set(
 #   2) Ignore in Fortran and C++ equality tests (could go around in circles).
 #   3) Do not create a test pattern in interface test code.
 
-interface_ignore_list = set(
-    [
-        "ele_struct%branch",
-        "branch_struct%lat",
-        "pixel_grid_struct",
-    ]
-)
+interface_ignore_list = {
+    "ele_struct%branch",
+    "branch_struct%lat",
+    "pixel_grid_struct",
+}
 
 # List of structure components that are structures and are defined externally.
 # There are no such structures for the cpp_bmad_interface library but there
 # are for the cpp_tao_interface library.
 
-structs_defined_externally = set([])
+structs_defined_externally = set()
 
 # Translations on C++ side to avoid clash with reserved words
 
@@ -189,8 +199,7 @@ code_dir = "code"
 def f_side_lbound(id_name):
     if id_name == "branch%ele":
         return "0"
-    else:
-        return "1"
+    return "1"
 
 
 # custom C++ side init
@@ -261,7 +270,7 @@ def customize(struct_definitions):
     }
 """
         for arg in struct.arg:
-            id_name = struct.short_name + "%" + arg.f_name
+            id_name = f"{struct.short_name}%{arg.f_name}"
 
             if id_name in c_custom_constructors:
                 arg.c_side.constructor = c_custom_constructors[id_name]
