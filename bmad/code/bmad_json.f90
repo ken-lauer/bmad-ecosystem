@@ -6433,26 +6433,14 @@ subroutine ele_struct_to_json (input, json_root, depth)
   call bookkeeping_state_struct_to_json(input%bookkeeping_state, json_val, depth + 1)
   call json%rename(json_val, 'bookkeeping_state')
   call json%add(json_root, json_val)
-  if (associated(input%branch)) then
-    call branch_struct_to_json(input%branch, json_val, depth + 1)
-    call json%rename(json_val, 'branch')
-    call json%add(json_root, json_val)
-  endif
+  ! config skip_members: ele_struct%branch (type, Pointer to branch containing element.)
   if (associated(input%control)) then
     call controller_struct_to_json(input%control, json_val, depth + 1)
     call json%rename(json_val, 'control')
     call json%add(json_root, json_val)
   endif
-  if (associated(input%converter)) then
-    call converter_struct_to_json(input%converter, json_val, depth + 1)
-    call json%rename(json_val, 'converter')
-    call json%add(json_root, json_val)
-  endif
-  if (associated(input%foil)) then
-    call foil_struct_to_json(input%foil, json_val, depth + 1)
-    call json%rename(json_val, 'foil')
-    call json%add(json_root, json_val)
-  endif
+  ! config skip_members: ele_struct%converter (type, EG: Positron converter in linac.)
+  ! config skip_members: ele_struct%foil (type, )
   ! config skip_members: ele_struct%lord (type, Pointer to a slice lord.)
   if (associated(input%ptc_fibre)) then
     call fibre_to_json(input%ptc_fibre, json_val, depth + 1)
@@ -6477,11 +6465,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     call json%rename(json_val, 'photon')
     call json%add(json_root, json_val)
   endif
-  if (allocated(input%multipole_cache)) then
-    call multipole_cache_struct_to_json(input%multipole_cache, json_val, depth + 1)
-    call json%rename(json_val, 'multipole_cache')
-    call json%add(json_root, json_val)
-  endif
+  ! config skip_members: ele_struct%multipole_cache (type, )
   if (associated(input%rad_map)) then
     call rad_map_ele_struct_to_json(input%rad_map, json_val, depth + 1)
     call json%rename(json_val, 'rad_map')
@@ -7134,11 +7118,7 @@ subroutine branch_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'ix_to_ele', int(input%ix_to_ele))
   call json%add(json_root, 'n_ele_track', int(input%n_ele_track))
   call json%add(json_root, 'n_ele_max', int(input%n_ele_max))
-  if (associated(input%lat)) then
-    call lat_struct_to_json(input%lat, json_val, depth + 1)
-    call json%rename(json_val, 'lat')
-    call json%add(json_root, json_val)
-  endif
+  ! config skip_members: branch_struct%lat (type, )
   call mode_info_struct_to_json(input%a, json_val, depth + 1)
   call json%rename(json_val, 'a')
   call json%add(json_root, json_val)
@@ -7171,9 +7151,7 @@ subroutine branch_struct_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  call ptc_branch1_struct_to_json(input%ptc, json_val, depth + 1)
-  call json%rename(json_val, 'ptc')
-  call json%add(json_root, json_val)
+  ! config skip_members: branch_struct%ptc (type, Pointer to layout. Note: ptc info not transferred with "branch1 = branch2" set.)
 end subroutine branch_struct_to_json
 subroutine pre_tracker_struct_to_json (input, json_root, depth)
   use bmad_struct, only: pre_tracker_struct
@@ -7208,7 +7186,6 @@ subroutine lat_struct_to_json (input, json_root, depth)
   use json_module
   use json_string_utilities, only: integer_to_string
   use json_kinds, only: CK
-  use sim_utils_json, only: nametable_struct_to_json
   implicit none
   type(json_core) :: json
   type (lat_struct), pointer, intent(in) :: input
@@ -7317,9 +7294,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
   call pre_tracker_struct_to_json(input%pre_tracker, json_val, depth + 1)
   call json%rename(json_val, 'pre_tracker')
   call json%add(json_root, json_val)
-  call nametable_struct_to_json(input%nametable, json_val, depth + 1)
-  call json%rename(json_val, 'nametable')
-  call json%add(json_root, json_val)
+  ! config skip_members: lat_struct%nametable (type, For quick searching by element name.)
   if (allocated(input%custom)) then
     !line=1611 definition='real(rp), allocatable :: custom(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='custom' python_name='custom' type='real' python_type='float' size='rp' dimension=':' comment='Custom attributes.' fortran_default=None default=0.0 default_factory=''
     call json%create_array(json_list1, 'custom')
