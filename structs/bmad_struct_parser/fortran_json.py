@@ -165,9 +165,17 @@ class ListBuilder(pydantic.BaseModel):
             iteration = f"call json%{create}({self.json_value_var}, {self.struct_var}%{member.name}({iter_vars}), '')"
         elif member.python_type in {"str"}:
             iteration = f"call json%create_string({self.json_value_var}, trim({self.struct_var}%{member.name}({iter_vars})), '')"
-        else:
+        elif member.type.lower() in {"complex"}:
             conv_subroutine = to_subroutine_name(member.type)
             iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth + 1)"
+        elif member.type.lower() == "type":
+            assert member.kind is not None
+            conv_subroutine = to_subroutine_name(member.kind)
+            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth + 1)"
+        else:
+            raise NotImplementedError(
+                f"Member type: {member.type=} {member.kind=} {member=}"
+            )
 
         def iter_dimension(dim: int, loop: str, key: str = ""):
             before = (
@@ -317,8 +325,9 @@ class Converter(pydantic.BaseModel):
                     code=f"! config skip_members: {full_member_name} ({member.type}, {member.comment})",
                 )
 
-        if member.python_type not in {"int", "float", "bool", "str", "Complex"}:
-            self.seen.add(member.type)
+        if member.type.lower() == "type":
+            assert member.kind is not None
+            self.seen.add(member.kind)
 
         if member.dimension:
             struct_member = self._get_json_dump_code_array(
@@ -327,8 +336,9 @@ class Converter(pydantic.BaseModel):
                 parent_json_var=parent_json_var,
                 member_json_var=member_json_var,
             )
-            if member.is_structure:
-                _, struct_member.imports = self.resolve_import(member.type)
+            if member.type.lower() == "type":
+                assert member.kind is not None
+                _, struct_member.imports = self.resolve_import(member.kind)
             return struct_member
 
         # TODO: what conditions can we add here to avoid recursing through the graph?
@@ -366,15 +376,20 @@ class Converter(pydantic.BaseModel):
                     f"call json%add({parent_json_var}, {list_var})",
                 )
             )
-        else:
-            struct, imports = self.resolve_import(member.type)
-            conv_subroutine = to_subroutine_name(member.type)
+        elif member.type.lower() == "type":
+            assert member.kind is not None
+            struct, imports = self.resolve_import(member.kind)
+            conv_subroutine = to_subroutine_name(member.kind)
             code = "\n".join(
                 (
                     f"call {conv_subroutine}({struct_var}%{member.name}, json_val, depth + 1)",
                     f"call json%rename(json_val, '{member.name}')",
                     f"call json%add({parent_json_var}, json_val)",
                 )
+            )
+        else:
+            raise NotImplementedError(
+                f"Member type: {member.type=} {member.kind=} {member=}"
             )
 
         defn_words = _split_defn_words(member.definition.lower())

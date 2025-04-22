@@ -123,6 +123,10 @@ class StructureMember(pydantic.BaseModel):
             return None
         return size
 
+    @property
+    def kind(self) -> str | None:
+        return self.size
+
 
 class StructureInfo(pydantic.BaseModel):
     class_name: str = ""
@@ -138,6 +142,7 @@ class Structure(pydantic.BaseModel):
     line: int
     name: str
     module: str
+    private: bool = False
     lines: list[str] = pydantic.Field(default_factory=list, exclude=True)
     info: StructureInfo = pydantic.Field(default_factory=StructureInfo)
 
@@ -670,31 +675,30 @@ def get_python_type(type_info: TypeInformation) -> str:
         "complex": "Complex",  #  -> builtin type not supported
     }
     # name_case = name
-    name = type_info.type.lower()
-    if name in type_map:
-        return type_map[name]
-    for delim in "(, ":
-        part = name.split(delim)[0]
-        if part in type_map:
-            # logical, allocatable (for example)
-            return type_map[part]
-    assert not name.startswith("character")
-    # if name.endswith("_struct"):
-    # name = name.split(",")[0].strip()
-    # if name == "type":
-    #     return "type"
+    try:
+        return type_map[type_info.type.lower()]
+    except KeyError:
+        pass
+
+    if type_info.type.lower() != "type":
+        raise NotImplementedError(f"Type not supported: {type_info.type}")
+
+    if type_info.kind is None:
+        raise ValueError(f"type() without kind is unsupported ({type_info=})")
+
+    type_name = type_info.kind.lower()
     renames = {
         "TreeElementZhe": "TreeElement",
     }
-    class_name = to_class_name(name)
+    class_name = to_class_name(type_name)
     return renames.get(class_name, class_name)
-    # raise NotImplementedError(name_case)
 
 
 def find_structs(
     file_lines: list[FileLine],
     by_class_name: dict[str, Structure],
     filename: pathlib.Path,
+    include_private: bool = False,
 ) -> list[Structure]:
     structs: list[Structure] = []
     struct = None
@@ -790,12 +794,14 @@ def find_structs(
             for struct in list(structs):
                 if (
                     struct.name.lower() == private_name.lower()
-                    and struct.filename == file_line.filename
+                    and struct.filename.name == file_line.filename.name
                 ):
-                    logger.debug(
-                        f"Skipping private struct: {private_name} (from 'private' designation at {file_line})"
-                    )
-                    structs.remove(struct)
+                    struct.private = True
+                    if not include_private:
+                        logger.debug(
+                            f"Skipping private struct: {private_name} (from 'private' designation at {file_line})"
+                        )
+                        structs.remove(struct)
 
     return structs
 

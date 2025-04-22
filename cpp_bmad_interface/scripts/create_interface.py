@@ -276,7 +276,7 @@ class Argument:
     kind: str = ""
     pointer_type: PointerType = NOT
     array: list[str] = field(default_factory=list)
-    init_value: str = ""
+    init_value: str | None = None
     comment: str = ""
     f_side: f_side_trans_class = field(default_factory=f_side_trans_class)
     c_side: c_side_trans_class = field(default_factory=c_side_trans_class)
@@ -500,7 +500,7 @@ class Argument:
         # On Fortran side "complex abc(2) = 0" is allowed but on C++ side want "0.0" for init value.
         # Therefore, ignore "0" as an init value.
 
-        if self.init_value == "":
+        if not self.init_value:
             pass
         elif self.init_value == "0":
             pass
@@ -1604,7 +1604,7 @@ def configure_c_dim1_ptr(
 ):
     """Configure pointer for dimension 1"""
     cp.c_class = f"VariableArray1D<{c_type}>"
-    cp.class_initializer = cp.class_initializer.replace("DIM1", "0")
+    cp.class_initializer = ""  # cp.class_initializer.replace("DIM1", "0")
     cp.c_instantiation_suffix = ""
     cp.to_f2_call = "z_NAME"
     cp.to_c2_set = """
@@ -2067,10 +2067,10 @@ def argument_from_fstruct(
             f"{fstruct.name}%{member.name}", member.name
         ),
         type=type_,
-        kind=member.size or "",
+        kind=member.kind or "",
         pointer_type=pointer_type,
         array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
-        init_value=str(member.fortran_default),
+        init_value=str(member.fortran_default) if member.fortran_default else None,
         comment=member.comment,
     )
 
