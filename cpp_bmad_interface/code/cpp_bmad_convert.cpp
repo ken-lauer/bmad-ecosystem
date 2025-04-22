@@ -21,7 +21,7 @@ using namespace Bmad;
 extern "C" void spline_to_c (const Opaque_spline_class*, CPP_spline&);
 
 // c_side.to_f2_arg
-extern "C" void spline_to_f2 (Opaque_spline_class*, c_Real&, c_Real&, c_Real&, c_RealArr);
+extern "C" void spline_to_f2 (Opaque_spline_class*, C_ARG&, C_ARG&, C_ARG&, C_ARGArr);
 
 extern "C" void spline_to_f (const CPP_spline& C, Opaque_spline_class* F) {
 
@@ -31,16 +31,16 @@ extern "C" void spline_to_f (const CPP_spline& C, Opaque_spline_class* F) {
 }
 
 // c_side.to_c2_arg
-extern "C" void spline_to_c2 (CPP_spline& C, c_Real& z_x0, c_Real& z_y0, c_Real& z_x1,
-    c_RealArr z_coef) {
+extern "C" void spline_to_c2 (CPP_spline& C, C_ARG& z_x0, C_ARG& z_y0, C_ARG& z_x1, C_ARGArr
+    z_coef) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x0 = z_x0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y0 = z_y0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x1 = z_x1;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 4>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 4>
   C.coef << z_coef;
 }
 
@@ -51,8 +51,7 @@ extern "C" void spline_to_c2 (CPP_spline& C, c_Real& z_x0, c_Real& z_y0, c_Real&
 extern "C" void spin_polar_to_c (const Opaque_spin_polar_class*, CPP_spin_polar&);
 
 // c_side.to_f2_arg
-extern "C" void spin_polar_to_f2 (Opaque_spin_polar_class*, c_Real&, c_Real&, c_Real&,
-    c_Real&);
+extern "C" void spin_polar_to_f2 (Opaque_spin_polar_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void spin_polar_to_f (const CPP_spin_polar& C, Opaque_spin_polar_class* F) {
 
@@ -62,16 +61,16 @@ extern "C" void spin_polar_to_f (const CPP_spin_polar& C, Opaque_spin_polar_clas
 }
 
 // c_side.to_c2_arg
-extern "C" void spin_polar_to_c2 (CPP_spin_polar& C, c_Real& z_polarization, c_Real& z_theta,
-    c_Real& z_phi, c_Real& z_xi) {
+extern "C" void spin_polar_to_c2 (CPP_spin_polar& C, C_ARG& z_polarization, C_ARG& z_theta,
+    C_ARG& z_phi, C_ARG& z_xi) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.polarization = z_polarization;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.theta = z_theta;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.xi = z_xi;
 }
 
@@ -82,8 +81,7 @@ extern "C" void spin_polar_to_c2 (CPP_spin_polar& C, c_Real& z_polarization, c_R
 extern "C" void ac_kicker_time_to_c (const Opaque_ac_kicker_time_class*, CPP_ac_kicker_time&);
 
 // c_side.to_f2_arg
-extern "C" void ac_kicker_time_to_f2 (Opaque_ac_kicker_time_class*, c_Real&, c_Real&, const
-    CPP_spline&);
+extern "C" void ac_kicker_time_to_f2 (Opaque_ac_kicker_time_class*, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void ac_kicker_time_to_f (const CPP_ac_kicker_time& C, Opaque_ac_kicker_time_class* F) {
 
@@ -93,14 +91,14 @@ extern "C" void ac_kicker_time_to_f (const CPP_ac_kicker_time& C, Opaque_ac_kick
 }
 
 // c_side.to_c2_arg
-extern "C" void ac_kicker_time_to_c2 (CPP_ac_kicker_time& C, c_Real& z_amp, c_Real& z_time,
-    const Opaque_spline_class* z_spline) {
+extern "C" void ac_kicker_time_to_c2 (CPP_ac_kicker_time& C, C_ARG& z_amp, C_ARG& z_time, const
+    Opaque_spline_class* z_spline) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.amp = z_amp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.time = z_time;
-  // c_side.to_c2_set[type, 0, NOT] CPP_spline
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   spline_to_c(z_spline, C.spline);
 }
 
@@ -111,8 +109,8 @@ extern "C" void ac_kicker_time_to_c2 (CPP_ac_kicker_time& C, c_Real& z_amp, c_Re
 extern "C" void ac_kicker_freq_to_c (const Opaque_ac_kicker_freq_class*, CPP_ac_kicker_freq&);
 
 // c_side.to_f2_arg
-extern "C" void ac_kicker_freq_to_f2 (Opaque_ac_kicker_freq_class*, c_Real&, c_Real&, c_Real&,
-    c_Int&);
+extern "C" void ac_kicker_freq_to_f2 (Opaque_ac_kicker_freq_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&);
 
 extern "C" void ac_kicker_freq_to_f (const CPP_ac_kicker_freq& C, Opaque_ac_kicker_freq_class* F) {
 
@@ -122,16 +120,16 @@ extern "C" void ac_kicker_freq_to_f (const CPP_ac_kicker_freq& C, Opaque_ac_kick
 }
 
 // c_side.to_c2_arg
-extern "C" void ac_kicker_freq_to_c2 (CPP_ac_kicker_freq& C, c_Real& z_f, c_Real& z_amp,
-    c_Real& z_phi, c_Int& z_rf_clock_harmonic) {
+extern "C" void ac_kicker_freq_to_c2 (CPP_ac_kicker_freq& C, C_ARG& z_f, C_ARG& z_amp, C_ARG&
+    z_phi, C_ARG& z_rf_clock_harmonic) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.f = z_f;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.amp = z_amp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.rf_clock_harmonic = z_rf_clock_harmonic;
 }
 
@@ -142,18 +140,17 @@ extern "C" void ac_kicker_freq_to_c2 (CPP_ac_kicker_freq& C, c_Real& z_f, c_Real
 extern "C" void ac_kicker_to_c (const Opaque_ac_kicker_class*, CPP_ac_kicker&);
 
 // c_side.to_f2_arg
-extern "C" void ac_kicker_to_f2 (Opaque_ac_kicker_class*, const CPP_ac_kicker_time**, Int,
-    const CPP_ac_kicker_freq**, Int);
+extern "C" void ac_kicker_to_f2 (Opaque_ac_kicker_class*, C_ARG**, Int, C_ARG**, Int);
 
 extern "C" void ac_kicker_to_f (const CPP_ac_kicker& C, Opaque_ac_kicker_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_time>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_amp_vs_time = C.amp_vs_time.size();
   const CPP_ac_kicker_time** z_amp_vs_time = nullptr;
   if (n1_amp_vs_time != 0) {
     z_amp_vs_time = new const CPP_ac_kicker_time*[n1_amp_vs_time];
     for (auto i{0}; i < n1_amp_vs_time; i++) z_amp_vs_time[i] = &C.amp_vs_time[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_freq>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_frequency = C.frequency.size();
   const CPP_ac_kicker_freq** z_frequency = nullptr;
   if (n1_frequency != 0) {
@@ -165,20 +162,20 @@ extern "C" void ac_kicker_to_f (const CPP_ac_kicker& C, Opaque_ac_kicker_class* 
   ac_kicker_to_f2 (F, z_amp_vs_time, n1_amp_vs_time, z_frequency, n1_frequency);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_amp_vs_time) delete[] z_amp_vs_time;
+  if (z_amp_vs_time) delete[] z_amp_vs_time;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_frequency) delete[] z_frequency;
+  if (z_frequency) delete[] z_frequency;
 }
 
 // c_side.to_c2_arg
 extern "C" void ac_kicker_to_c2 (CPP_ac_kicker& C, Opaque_ac_kicker_time_class** z_amp_vs_time,
     Int n1_amp_vs_time, Opaque_ac_kicker_freq_class** z_frequency, Int n1_frequency) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_time>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.amp_vs_time.resize(n1_amp_vs_time);
   for (auto i{0}; i < n1_amp_vs_time; i++) { ac_kicker_time_to_c(z_amp_vs_time[i], C.amp_vs_time[i]); }
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_freq>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.frequency.resize(n1_frequency);
   for (auto i{0}; i < n1_frequency; i++) { ac_kicker_freq_to_c(z_frequency[i], C.frequency[i]); }
 
@@ -191,7 +188,7 @@ extern "C" void ac_kicker_to_c2 (CPP_ac_kicker& C, Opaque_ac_kicker_time_class**
 extern "C" void interval1_coef_to_c (const Opaque_interval1_coef_class*, CPP_interval1_coef&);
 
 // c_side.to_f2_arg
-extern "C" void interval1_coef_to_f2 (Opaque_interval1_coef_class*, c_Real&, c_Real&, c_Real&);
+extern "C" void interval1_coef_to_f2 (Opaque_interval1_coef_class*, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void interval1_coef_to_f (const CPP_interval1_coef& C, Opaque_interval1_coef_class* F) {
 
@@ -201,14 +198,14 @@ extern "C" void interval1_coef_to_f (const CPP_interval1_coef& C, Opaque_interva
 }
 
 // c_side.to_c2_arg
-extern "C" void interval1_coef_to_c2 (CPP_interval1_coef& C, c_Real& z_c0, c_Real& z_c1,
-    c_Real& z_n_exp) {
+extern "C" void interval1_coef_to_c2 (CPP_interval1_coef& C, C_ARG& z_c0, C_ARG& z_c1, C_ARG&
+    z_n_exp) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.c0 = z_c0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.c1 = z_c1;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.n_exp = z_n_exp;
 }
 
@@ -219,48 +216,47 @@ extern "C" void interval1_coef_to_c2 (CPP_interval1_coef& C, c_Real& z_c0, c_Rea
 extern "C" void photon_reflect_table_to_c (const Opaque_photon_reflect_table_class*, CPP_photon_reflect_table&);
 
 // c_side.to_f2_arg
-extern "C" void photon_reflect_table_to_f2 (Opaque_photon_reflect_table_class*, c_RealArr, Int,
-    c_RealArr, Int, const CPP_interval1_coef**, Int, c_RealArr, Int, Int, c_Real&, c_RealArr,
-    Int, c_RealArr, Int);
+extern "C" void photon_reflect_table_to_f2 (Opaque_photon_reflect_table_class*, C_ARGArr, Int,
+    C_ARGArr, Int, C_ARG**, Int, C_ARGArr, Int, Int, C_ARG&, C_ARGArr, Int, C_ARGArr, Int);
 
 extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Opaque_photon_reflect_table_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_angle = C.angle.size();
-  c_RealArr z_angle = nullptr;
+  c_C_TYPEArr z_angle = nullptr;
   if (n1_angle > 0) {
     z_angle = &C.angle[0];
   }
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_energy = C.energy.size();
-  c_RealArr z_energy = nullptr;
+  c_C_TYPEArr z_energy = nullptr;
   if (n1_energy > 0) {
     z_energy = &C.energy[0];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_interval1_coef>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_int1 = C.int1.size();
   const CPP_interval1_coef** z_int1 = nullptr;
   if (n1_int1 != 0) {
     z_int1 = new const CPP_interval1_coef*[n1_int1];
     for (auto i{0}; i < n1_int1; i++) z_int1[i] = &C.int1[i];
   }
-  // c_side.to_f_setup[real, 2, ALLOC] VariableArray2D<Real>
+  // c_side.to_f_setup[real, 2, ALLOC] VariableArray2D<C_TYPE>
   auto n1_p_reflect { C.p_reflect.size() };
   auto n2_p_reflect { std::size_t{0} };
-  Real* z_p_reflect = nullptr;
+  C_TYPE* z_p_reflect = nullptr;
   if (n1_p_reflect > 0) {
     n2_p_reflect = C.p_reflect[0].size();
-    z_p_reflect = new Real [n1_p_reflect*n2_p_reflect];
+    z_p_reflect = new C_TYPE [n1_p_reflect*n2_p_reflect];
     matrix_to_vec (C.p_reflect, z_p_reflect);
   }
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_p_reflect_scratch = C.p_reflect_scratch.size();
-  c_RealArr z_p_reflect_scratch = nullptr;
+  c_C_TYPEArr z_p_reflect_scratch = nullptr;
   if (n1_p_reflect_scratch > 0) {
     z_p_reflect_scratch = &C.p_reflect_scratch[0];
   }
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_bragg_angle = C.bragg_angle.size();
-  c_RealArr z_bragg_angle = nullptr;
+  c_C_TYPEArr z_bragg_angle = nullptr;
   if (n1_bragg_angle > 0) {
     z_bragg_angle = &C.bragg_angle[0];
   }
@@ -271,45 +267,45 @@ extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Op
       n1_p_reflect_scratch, z_bragg_angle, n1_bragg_angle);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_int1) delete[] z_int1;
+  if (z_int1) delete[] z_int1;
   // c_side.to_f_cleanup[real, 2, ALLOC]
   if (z_p_reflect) delete[] z_p_reflect;
 }
 
 // c_side.to_c2_arg
-extern "C" void photon_reflect_table_to_c2 (CPP_photon_reflect_table& C, c_RealArr z_angle, Int
-    n1_angle, c_RealArr z_energy, Int n1_energy, Opaque_interval1_coef_class** z_int1, Int
-    n1_int1, c_RealArr z_p_reflect, Int n1_p_reflect, Int n2_p_reflect, c_Real& z_max_energy,
-    c_RealArr z_p_reflect_scratch, Int n1_p_reflect_scratch, c_RealArr z_bragg_angle, Int
+extern "C" void photon_reflect_table_to_c2 (CPP_photon_reflect_table& C, C_ARGArr z_angle, Int
+    n1_angle, C_ARGArr z_energy, Int n1_energy, Opaque_interval1_coef_class** z_int1, Int
+    n1_int1, C_ARGArr z_p_reflect, Int n1_p_reflect, Int n2_p_reflect, C_ARG& z_max_energy,
+    C_ARGArr z_p_reflect_scratch, Int n1_p_reflect_scratch, C_ARGArr z_bragg_angle, Int
     n1_bragg_angle) {
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.angle.resize(n1_angle);
   C.angle << z_angle;
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.energy.resize(n1_energy);
   C.energy << z_energy;
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_interval1_coef>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.int1.resize(n1_int1);
   for (auto i{0}; i < n1_int1; i++) { interval1_coef_to_c(z_int1[i], C.int1[i]); }
 
-  // c_side.to_c2_set[real, 2, ALLOC] VariableArray2D<Real>
+  // c_side.to_c2_set[real, 2, ALLOC] VariableArray2D<C_TYPE>
   C.p_reflect.resize(n1_p_reflect);
   for (auto i{0}; i < n1_p_reflect; i++) C.p_reflect[i].resize(n2_p_reflect);
   C.p_reflect << z_p_reflect;
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.max_energy = z_max_energy;
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.p_reflect_scratch.resize(n1_p_reflect_scratch);
   C.p_reflect_scratch << z_p_reflect_scratch;
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.bragg_angle.resize(n1_bragg_angle);
   C.bragg_angle << z_bragg_angle;
@@ -324,10 +320,10 @@ extern "C" void photon_reflect_surface_to_c (const Opaque_photon_reflect_surface
 
 // c_side.to_f2_arg
 extern "C" void photon_reflect_surface_to_f2 (Opaque_photon_reflect_surface_class*, c_Char,
-    c_Char, c_Char, const CPP_photon_reflect_table**, Int, c_Real&, c_Real&, c_Int&);
+    c_Char, c_Char, C_ARG**, Int, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void photon_reflect_surface_to_f (const CPP_photon_reflect_surface& C, Opaque_photon_reflect_surface_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_photon_reflect_table>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_table = C.table.size();
   const CPP_photon_reflect_table** z_table = nullptr;
   if (n1_table != 0) {
@@ -341,14 +337,14 @@ extern "C" void photon_reflect_surface_to_f (const CPP_photon_reflect_surface& C
       C.roughness_correlation_len, C.ix_surface);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_table) delete[] z_table;
+  if (z_table) delete[] z_table;
 }
 
 // c_side.to_c2_arg
 extern "C" void photon_reflect_surface_to_c2 (CPP_photon_reflect_surface& C, c_Char z_name,
     c_Char z_description, c_Char z_reflectivity_file, Opaque_photon_reflect_table_class**
-    z_table, Int n1_table, c_Real& z_surface_roughness_rms, c_Real&
-    z_roughness_correlation_len, c_Int& z_ix_surface) {
+    z_table, Int n1_table, C_ARG& z_surface_roughness_rms, C_ARG& z_roughness_correlation_len,
+    C_ARG& z_ix_surface) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
@@ -356,15 +352,15 @@ extern "C" void photon_reflect_surface_to_c2 (CPP_photon_reflect_surface& C, c_C
   C.description = z_description;
   // c_side.to_c2_set[character, 0, NOT] string
   C.reflectivity_file = z_reflectivity_file;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_photon_reflect_table>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.table.resize(n1_table);
   for (auto i{0}; i < n1_table; i++) { photon_reflect_table_to_c(z_table[i], C.table[i]); }
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.surface_roughness_rms = z_surface_roughness_rms;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.roughness_correlation_len = z_roughness_correlation_len;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_surface = z_ix_surface;
 }
 
@@ -375,9 +371,9 @@ extern "C" void photon_reflect_surface_to_c2 (CPP_photon_reflect_surface& C, c_C
 extern "C" void coord_to_c (const Opaque_coord_class*, CPP_coord&);
 
 // c_side.to_f2_arg
-extern "C" void coord_to_f2 (Opaque_coord_class*, c_RealArr, c_Real&, c_Real&, c_RealArr,
-    c_RealArr, c_RealArr, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&);
+extern "C" void coord_to_f2 (Opaque_coord_class*, C_ARGArr, C_ARG&, C_ARG&, C_ARGArr, C_ARGArr,
+    C_ARGArr, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void coord_to_f (const CPP_coord& C, Opaque_coord_class* F) {
 
@@ -389,53 +385,53 @@ extern "C" void coord_to_f (const CPP_coord& C, Opaque_coord_class* F) {
 }
 
 // c_side.to_c2_arg
-extern "C" void coord_to_c2 (CPP_coord& C, c_RealArr z_vec, c_Real& z_s, c_Real& z_t, c_RealArr
-    z_spin, c_RealArr z_field, c_RealArr z_phase, c_Real& z_charge, c_Real& z_dt_ref, c_Real&
-    z_r, c_Real& z_p0c, c_Real& z_E_potential, c_Real& z_beta, c_Int& z_ix_ele, c_Int&
-    z_ix_branch, c_Int& z_ix_turn, c_Int& z_ix_user, c_Int& z_state, c_Int& z_direction, c_Int&
-    z_time_dir, c_Int& z_species, c_Int& z_location) {
+extern "C" void coord_to_c2 (CPP_coord& C, C_ARGArr z_vec, C_ARG& z_s, C_ARG& z_t, C_ARGArr
+    z_spin, C_ARGArr z_field, C_ARGArr z_phase, C_ARG& z_charge, C_ARG& z_dt_ref, C_ARG& z_r,
+    C_ARG& z_p0c, C_ARG& z_E_potential, C_ARG& z_beta, C_ARG& z_ix_ele, C_ARG& z_ix_branch,
+    C_ARG& z_ix_turn, C_ARG& z_ix_user, C_ARG& z_state, C_ARG& z_direction, C_ARG& z_time_dir,
+    C_ARG& z_species, C_ARG& z_location) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.vec << z_vec;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.s = z_s;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.t = z_t;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.spin << z_spin;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.field << z_field;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.phase << z_phase;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.charge = z_charge;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dt_ref = z_dt_ref;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.r = z_r;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.p0c = z_p0c;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.E_potential = z_E_potential;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.beta = z_beta;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_branch = z_ix_branch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_turn = z_ix_turn;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_user = z_ix_user;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.state = z_state;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.direction = z_direction;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.time_dir = z_time_dir;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.species = z_species;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.location = z_location;
 }
 
@@ -446,10 +442,10 @@ extern "C" void coord_to_c2 (CPP_coord& C, c_RealArr z_vec, c_Real& z_s, c_Real&
 extern "C" void coord_array_to_c (const Opaque_coord_array_class*, CPP_coord_array&);
 
 // c_side.to_f2_arg
-extern "C" void coord_array_to_f2 (Opaque_coord_array_class*, const CPP_coord**, Int);
+extern "C" void coord_array_to_f2 (Opaque_coord_array_class*, C_ARG**, Int);
 
 extern "C" void coord_array_to_f (const CPP_coord_array& C, Opaque_coord_array_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_coord>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_orbit = C.orbit.size();
   const CPP_coord** z_orbit = nullptr;
   if (n1_orbit != 0) {
@@ -461,14 +457,14 @@ extern "C" void coord_array_to_f (const CPP_coord_array& C, Opaque_coord_array_c
   coord_array_to_f2 (F, z_orbit, n1_orbit);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_orbit) delete[] z_orbit;
+  if (z_orbit) delete[] z_orbit;
 }
 
 // c_side.to_c2_arg
 extern "C" void coord_array_to_c2 (CPP_coord_array& C, Opaque_coord_class** z_orbit, Int
     n1_orbit) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_coord>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.orbit.resize(n1_orbit);
   for (auto i{0}; i < n1_orbit; i++) { coord_to_c(z_orbit[i], C.orbit[i]); }
 
@@ -481,8 +477,8 @@ extern "C" void coord_array_to_c2 (CPP_coord_array& C, Opaque_coord_class** z_or
 extern "C" void bpm_phase_coupling_to_c (const Opaque_bpm_phase_coupling_class*, CPP_bpm_phase_coupling&);
 
 // c_side.to_f2_arg
-extern "C" void bpm_phase_coupling_to_f2 (Opaque_bpm_phase_coupling_class*, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void bpm_phase_coupling_to_f2 (Opaque_bpm_phase_coupling_class*, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void bpm_phase_coupling_to_f (const CPP_bpm_phase_coupling& C, Opaque_bpm_phase_coupling_class* F) {
 
@@ -493,29 +489,29 @@ extern "C" void bpm_phase_coupling_to_f (const CPP_bpm_phase_coupling& C, Opaque
 }
 
 // c_side.to_c2_arg
-extern "C" void bpm_phase_coupling_to_c2 (CPP_bpm_phase_coupling& C, c_Real& z_K_22a, c_Real&
-    z_K_12a, c_Real& z_K_11b, c_Real& z_K_12b, c_Real& z_Cbar22_a, c_Real& z_Cbar12_a, c_Real&
-    z_Cbar11_b, c_Real& z_Cbar12_b, c_Real& z_phi_a, c_Real& z_phi_b) {
+extern "C" void bpm_phase_coupling_to_c2 (CPP_bpm_phase_coupling& C, C_ARG& z_K_22a, C_ARG&
+    z_K_12a, C_ARG& z_K_11b, C_ARG& z_K_12b, C_ARG& z_Cbar22_a, C_ARG& z_Cbar12_a, C_ARG&
+    z_Cbar11_b, C_ARG& z_Cbar12_b, C_ARG& z_phi_a, C_ARG& z_phi_b) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.K_22a = z_K_22a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.K_12a = z_K_12a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.K_11b = z_K_11b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.K_12b = z_K_12b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.Cbar22_a = z_Cbar22_a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.Cbar12_a = z_Cbar12_a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.Cbar11_b = z_Cbar11_b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.Cbar12_b = z_Cbar12_b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi_a = z_phi_a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi_b = z_phi_b;
 }
 
@@ -526,7 +522,7 @@ extern "C" void bpm_phase_coupling_to_c2 (CPP_bpm_phase_coupling& C, c_Real& z_K
 extern "C" void expression_atom_to_c (const Opaque_expression_atom_class*, CPP_expression_atom&);
 
 // c_side.to_f2_arg
-extern "C" void expression_atom_to_f2 (Opaque_expression_atom_class*, c_Char, c_Int&, c_Real&);
+extern "C" void expression_atom_to_f2 (Opaque_expression_atom_class*, c_Char, C_ARG&, C_ARG&);
 
 extern "C" void expression_atom_to_f (const CPP_expression_atom& C, Opaque_expression_atom_class* F) {
 
@@ -536,14 +532,14 @@ extern "C" void expression_atom_to_f (const CPP_expression_atom& C, Opaque_expre
 }
 
 // c_side.to_c2_arg
-extern "C" void expression_atom_to_c2 (CPP_expression_atom& C, c_Char z_name, c_Int& z_type,
-    c_Real& z_value) {
+extern "C" void expression_atom_to_c2 (CPP_expression_atom& C, c_Char z_name, C_ARG& z_type,
+    C_ARG& z_value) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.type = z_type;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.value = z_value;
 }
 
@@ -554,32 +550,31 @@ extern "C" void expression_atom_to_c2 (CPP_expression_atom& C, c_Char z_name, c_
 extern "C" void wake_sr_z_long_to_c (const Opaque_wake_sr_z_long_class*, CPP_wake_sr_z_long&);
 
 // c_side.to_f2_arg
-extern "C" void wake_sr_z_long_to_f2 (Opaque_wake_sr_z_long_class*, c_RealArr, Int,
-    c_ComplexArr, Int, c_ComplexArr, Int, c_ComplexArr, Int, c_Real&, c_Real&, c_Real&, c_Int&,
-    c_Bool&);
+extern "C" void wake_sr_z_long_to_f2 (Opaque_wake_sr_z_long_class*, C_ARGArr, Int, C_ARGArr,
+    Int, C_ARGArr, Int, C_ARGArr, Int, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void wake_sr_z_long_to_f (const CPP_wake_sr_z_long& C, Opaque_wake_sr_z_long_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_w = C.w.size();
-  c_RealArr z_w = nullptr;
+  c_C_TYPEArr z_w = nullptr;
   if (n1_w > 0) {
     z_w = &C.w[0];
   }
-  // c_side.to_f_setup[complex, 1, ALLOC] VariableArray1D<Complex>
+  // c_side.to_f_setup[complex, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_fw = C.fw.size();
-  c_ComplexArr z_fw = nullptr;
+  c_C_TYPEArr z_fw = nullptr;
   if (n1_fw > 0) {
     z_fw = &C.fw[0];
   }
-  // c_side.to_f_setup[complex, 1, ALLOC] VariableArray1D<Complex>
+  // c_side.to_f_setup[complex, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_fbunch = C.fbunch.size();
-  c_ComplexArr z_fbunch = nullptr;
+  c_C_TYPEArr z_fbunch = nullptr;
   if (n1_fbunch > 0) {
     z_fbunch = &C.fbunch[0];
   }
-  // c_side.to_f_setup[complex, 1, ALLOC] VariableArray1D<Complex>
+  // c_side.to_f_setup[complex, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_w_out = C.w_out.size();
-  c_ComplexArr z_w_out = nullptr;
+  c_C_TYPEArr z_w_out = nullptr;
   if (n1_w_out > 0) {
     z_w_out = &C.w_out[0];
   }
@@ -591,40 +586,40 @@ extern "C" void wake_sr_z_long_to_f (const CPP_wake_sr_z_long& C, Opaque_wake_sr
 }
 
 // c_side.to_c2_arg
-extern "C" void wake_sr_z_long_to_c2 (CPP_wake_sr_z_long& C, c_RealArr z_w, Int n1_w,
-    c_ComplexArr z_fw, Int n1_fw, c_ComplexArr z_fbunch, Int n1_fbunch, c_ComplexArr z_w_out,
-    Int n1_w_out, c_Real& z_dz, c_Real& z_z0, c_Real& z_smoothing_sigma, c_Int&
-    z_position_dependence, c_Bool& z_time_based) {
+extern "C" void wake_sr_z_long_to_c2 (CPP_wake_sr_z_long& C, C_ARGArr z_w, Int n1_w, C_ARGArr
+    z_fw, Int n1_fw, C_ARGArr z_fbunch, Int n1_fbunch, C_ARGArr z_w_out, Int n1_w_out, C_ARG&
+    z_dz, C_ARG& z_z0, C_ARG& z_smoothing_sigma, C_ARG& z_position_dependence, C_ARG&
+    z_time_based) {
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.w.resize(n1_w);
   C.w << z_w;
 
-  // c_side.to_c2_set[complex, 1, ALLOC] VariableArray1D<Complex>
+  // c_side.to_c2_set[complex, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.fw.resize(n1_fw);
   C.fw << z_fw;
 
-  // c_side.to_c2_set[complex, 1, ALLOC] VariableArray1D<Complex>
+  // c_side.to_c2_set[complex, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.fbunch.resize(n1_fbunch);
   C.fbunch << z_fbunch;
 
-  // c_side.to_c2_set[complex, 1, ALLOC] VariableArray1D<Complex>
+  // c_side.to_c2_set[complex, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.w_out.resize(n1_w_out);
   C.w_out << z_w_out;
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz = z_dz;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z0 = z_z0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.smoothing_sigma = z_smoothing_sigma;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.position_dependence = z_position_dependence;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.time_based = z_time_based;
 }
 
@@ -635,8 +630,8 @@ extern "C" void wake_sr_z_long_to_c2 (CPP_wake_sr_z_long& C, c_RealArr z_w, Int 
 extern "C" void wake_sr_mode_to_c (const Opaque_wake_sr_mode_class*, CPP_wake_sr_mode&);
 
 // c_side.to_f2_arg
-extern "C" void wake_sr_mode_to_f2 (Opaque_wake_sr_mode_class*, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Int&, c_Int&);
+extern "C" void wake_sr_mode_to_f2 (Opaque_wake_sr_mode_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void wake_sr_mode_to_f (const CPP_wake_sr_mode& C, Opaque_wake_sr_mode_class* F) {
 
@@ -647,29 +642,29 @@ extern "C" void wake_sr_mode_to_f (const CPP_wake_sr_mode& C, Opaque_wake_sr_mod
 }
 
 // c_side.to_c2_arg
-extern "C" void wake_sr_mode_to_c2 (CPP_wake_sr_mode& C, c_Real& z_amp, c_Real& z_damp, c_Real&
-    z_k, c_Real& z_phi, c_Real& z_b_sin, c_Real& z_b_cos, c_Real& z_a_sin, c_Real& z_a_cos,
-    c_Int& z_polarization, c_Int& z_position_dependence) {
+extern "C" void wake_sr_mode_to_c2 (CPP_wake_sr_mode& C, C_ARG& z_amp, C_ARG& z_damp, C_ARG&
+    z_k, C_ARG& z_phi, C_ARG& z_b_sin, C_ARG& z_b_cos, C_ARG& z_a_sin, C_ARG& z_a_cos, C_ARG&
+    z_polarization, C_ARG& z_position_dependence) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.amp = z_amp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.damp = z_damp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.k = z_k;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_sin = z_b_sin;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_cos = z_b_cos;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_sin = z_a_sin;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_cos = z_a_cos;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.polarization = z_polarization;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.position_dependence = z_position_dependence;
 }
 
@@ -680,19 +675,18 @@ extern "C" void wake_sr_mode_to_c2 (CPP_wake_sr_mode& C, c_Real& z_amp, c_Real& 
 extern "C" void wake_sr_to_c (const Opaque_wake_sr_class*, CPP_wake_sr&);
 
 // c_side.to_f2_arg
-extern "C" void wake_sr_to_f2 (Opaque_wake_sr_class*, c_Char, const CPP_wake_sr_z_long&, const
-    CPP_wake_sr_mode**, Int, const CPP_wake_sr_mode**, Int, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Bool&);
+extern "C" void wake_sr_to_f2 (Opaque_wake_sr_class*, c_Char, C_ARG&, C_ARG**, Int, C_ARG**,
+    Int, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void wake_sr_to_f (const CPP_wake_sr& C, Opaque_wake_sr_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_long_wake = C.long_wake.size();
   const CPP_wake_sr_mode** z_long_wake = nullptr;
   if (n1_long_wake != 0) {
     z_long_wake = new const CPP_wake_sr_mode*[n1_long_wake];
     for (auto i{0}; i < n1_long_wake; i++) z_long_wake[i] = &C.long_wake[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_trans_wake = C.trans_wake.size();
   const CPP_wake_sr_mode** z_trans_wake = nullptr;
   if (n1_trans_wake != 0) {
@@ -706,41 +700,41 @@ extern "C" void wake_sr_to_f (const CPP_wake_sr& C, Opaque_wake_sr_class* F) {
       C.scale_with_length);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_long_wake) delete[] z_long_wake;
+  if (z_long_wake) delete[] z_long_wake;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_trans_wake) delete[] z_trans_wake;
+  if (z_trans_wake) delete[] z_trans_wake;
 }
 
 // c_side.to_c2_arg
 extern "C" void wake_sr_to_c2 (CPP_wake_sr& C, c_Char z_file, const
     Opaque_wake_sr_z_long_class* z_z_long, Opaque_wake_sr_mode_class** z_long_wake, Int
-    n1_long_wake, Opaque_wake_sr_mode_class** z_trans_wake, Int n1_trans_wake, c_Real&
-    z_z_ref_long, c_Real& z_z_ref_trans, c_Real& z_z_max, c_Real& z_amp_scale, c_Real&
-    z_z_scale, c_Bool& z_scale_with_length) {
+    n1_long_wake, Opaque_wake_sr_mode_class** z_trans_wake, Int n1_trans_wake, C_ARG&
+    z_z_ref_long, C_ARG& z_z_ref_trans, C_ARG& z_z_max, C_ARG& z_amp_scale, C_ARG& z_z_scale,
+    C_ARG& z_scale_with_length) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.file = z_file;
-  // c_side.to_c2_set[type, 0, NOT] CPP_wake_sr_z_long
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   wake_sr_z_long_to_c(z_z_long, C.z_long);
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.long_wake.resize(n1_long_wake);
   for (auto i{0}; i < n1_long_wake; i++) { wake_sr_mode_to_c(z_long_wake[i], C.long_wake[i]); }
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.trans_wake.resize(n1_trans_wake);
   for (auto i{0}; i < n1_trans_wake; i++) { wake_sr_mode_to_c(z_trans_wake[i], C.trans_wake[i]); }
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z_ref_long = z_z_ref_long;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z_ref_trans = z_z_ref_trans;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z_max = z_z_max;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.amp_scale = z_amp_scale;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z_scale = z_z_scale;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.scale_with_length = z_scale_with_length;
 }
 
@@ -751,8 +745,8 @@ extern "C" void wake_sr_to_c2 (CPP_wake_sr& C, c_Char z_file, const
 extern "C" void wake_lr_mode_to_c (const Opaque_wake_lr_mode_class*, CPP_wake_lr_mode&);
 
 // c_side.to_f2_arg
-extern "C" void wake_lr_mode_to_f2 (Opaque_wake_lr_mode_class*, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Int&, c_Bool&);
+extern "C" void wake_lr_mode_to_f2 (Opaque_wake_lr_mode_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void wake_lr_mode_to_f (const CPP_wake_lr_mode& C, Opaque_wake_lr_mode_class* F) {
 
@@ -763,36 +757,35 @@ extern "C" void wake_lr_mode_to_f (const CPP_wake_lr_mode& C, Opaque_wake_lr_mod
 }
 
 // c_side.to_c2_arg
-extern "C" void wake_lr_mode_to_c2 (CPP_wake_lr_mode& C, c_Real& z_freq, c_Real& z_freq_in,
-    c_Real& z_R_over_Q, c_Real& z_Q, c_Real& z_damp, c_Real& z_phi, c_Real& z_angle, c_Real&
-    z_b_sin, c_Real& z_b_cos, c_Real& z_a_sin, c_Real& z_a_cos, c_Int& z_m, c_Bool&
-    z_polarized) {
+extern "C" void wake_lr_mode_to_c2 (CPP_wake_lr_mode& C, C_ARG& z_freq, C_ARG& z_freq_in,
+    C_ARG& z_R_over_Q, C_ARG& z_Q, C_ARG& z_damp, C_ARG& z_phi, C_ARG& z_angle, C_ARG& z_b_sin,
+    C_ARG& z_b_cos, C_ARG& z_a_sin, C_ARG& z_a_cos, C_ARG& z_m, C_ARG& z_polarized) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.freq = z_freq;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.freq_in = z_freq_in;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.R_over_Q = z_R_over_Q;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.Q = z_Q;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.damp = z_damp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.angle = z_angle;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_sin = z_b_sin;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_cos = z_b_cos;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_sin = z_a_sin;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_cos = z_a_cos;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.m = z_m;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.polarized = z_polarized;
 }
 
@@ -803,11 +796,11 @@ extern "C" void wake_lr_mode_to_c2 (CPP_wake_lr_mode& C, c_Real& z_freq, c_Real&
 extern "C" void wake_lr_to_c (const Opaque_wake_lr_class*, CPP_wake_lr&);
 
 // c_side.to_f2_arg
-extern "C" void wake_lr_to_f2 (Opaque_wake_lr_class*, c_Char, const CPP_wake_lr_mode**, Int,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Bool&);
+extern "C" void wake_lr_to_f2 (Opaque_wake_lr_class*, c_Char, C_ARG**, Int, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void wake_lr_to_f (const CPP_wake_lr& C, Opaque_wake_lr_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_wake_lr_mode>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_mode = C.mode.size();
   const CPP_wake_lr_mode** z_mode = nullptr;
   if (n1_mode != 0) {
@@ -820,29 +813,29 @@ extern "C" void wake_lr_to_f (const CPP_wake_lr& C, Opaque_wake_lr_class* F) {
       C.time_scale, C.self_wake_on);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_mode) delete[] z_mode;
+  if (z_mode) delete[] z_mode;
 }
 
 // c_side.to_c2_arg
 extern "C" void wake_lr_to_c2 (CPP_wake_lr& C, c_Char z_file, Opaque_wake_lr_mode_class**
-    z_mode, Int n1_mode, c_Real& z_t_ref, c_Real& z_freq_spread, c_Real& z_amp_scale, c_Real&
-    z_time_scale, c_Bool& z_self_wake_on) {
+    z_mode, Int n1_mode, C_ARG& z_t_ref, C_ARG& z_freq_spread, C_ARG& z_amp_scale, C_ARG&
+    z_time_scale, C_ARG& z_self_wake_on) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.file = z_file;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wake_lr_mode>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.mode.resize(n1_mode);
   for (auto i{0}; i < n1_mode; i++) { wake_lr_mode_to_c(z_mode[i], C.mode[i]); }
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.t_ref = z_t_ref;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.freq_spread = z_freq_spread;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.amp_scale = z_amp_scale;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.time_scale = z_time_scale;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.self_wake_on = z_self_wake_on;
 }
 
@@ -853,7 +846,7 @@ extern "C" void wake_lr_to_c2 (CPP_wake_lr& C, c_Char z_file, Opaque_wake_lr_mod
 extern "C" void lat_ele_loc_to_c (const Opaque_lat_ele_loc_class*, CPP_lat_ele_loc&);
 
 // c_side.to_f2_arg
-extern "C" void lat_ele_loc_to_f2 (Opaque_lat_ele_loc_class*, c_Int&, c_Int&);
+extern "C" void lat_ele_loc_to_f2 (Opaque_lat_ele_loc_class*, C_ARG&, C_ARG&);
 
 extern "C" void lat_ele_loc_to_f (const CPP_lat_ele_loc& C, Opaque_lat_ele_loc_class* F) {
 
@@ -863,11 +856,11 @@ extern "C" void lat_ele_loc_to_f (const CPP_lat_ele_loc& C, Opaque_lat_ele_loc_c
 }
 
 // c_side.to_c2_arg
-extern "C" void lat_ele_loc_to_c2 (CPP_lat_ele_loc& C, c_Int& z_ix_ele, c_Int& z_ix_branch) {
+extern "C" void lat_ele_loc_to_c2 (CPP_lat_ele_loc& C, C_ARG& z_ix_ele, C_ARG& z_ix_branch) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_branch = z_ix_branch;
 }
 
@@ -878,7 +871,7 @@ extern "C" void lat_ele_loc_to_c2 (CPP_lat_ele_loc& C, c_Int& z_ix_ele, c_Int& z
 extern "C" void wake_to_c (const Opaque_wake_class*, CPP_wake&);
 
 // c_side.to_f2_arg
-extern "C" void wake_to_f2 (Opaque_wake_class*, const CPP_wake_sr&, const CPP_wake_lr&);
+extern "C" void wake_to_f2 (Opaque_wake_class*, C_ARG&, C_ARG&);
 
 extern "C" void wake_to_f (const CPP_wake& C, Opaque_wake_class* F) {
 
@@ -891,9 +884,9 @@ extern "C" void wake_to_f (const CPP_wake& C, Opaque_wake_class* F) {
 extern "C" void wake_to_c2 (CPP_wake& C, const Opaque_wake_sr_class* z_sr, const
     Opaque_wake_lr_class* z_lr) {
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_wake_sr
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   wake_sr_to_c(z_sr, C.sr);
-  // c_side.to_c2_set[type, 0, NOT] CPP_wake_lr
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   wake_lr_to_c(z_lr, C.lr);
 }
 
@@ -904,7 +897,7 @@ extern "C" void wake_to_c2 (CPP_wake& C, const Opaque_wake_sr_class* z_sr, const
 extern "C" void taylor_term_to_c (const Opaque_taylor_term_class*, CPP_taylor_term&);
 
 // c_side.to_f2_arg
-extern "C" void taylor_term_to_f2 (Opaque_taylor_term_class*, c_Real&, c_IntArr);
+extern "C" void taylor_term_to_f2 (Opaque_taylor_term_class*, C_ARG&, C_ARGArr);
 
 extern "C" void taylor_term_to_f (const CPP_taylor_term& C, Opaque_taylor_term_class* F) {
 
@@ -914,11 +907,11 @@ extern "C" void taylor_term_to_f (const CPP_taylor_term& C, Opaque_taylor_term_c
 }
 
 // c_side.to_c2_arg
-extern "C" void taylor_term_to_c2 (CPP_taylor_term& C, c_Real& z_coef, c_IntArr z_expn) {
+extern "C" void taylor_term_to_c2 (CPP_taylor_term& C, C_ARG& z_coef, C_ARGArr z_expn) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.coef = z_coef;
-  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<Int, 6>
+  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.expn << z_expn;
 }
 
@@ -929,10 +922,10 @@ extern "C" void taylor_term_to_c2 (CPP_taylor_term& C, c_Real& z_coef, c_IntArr 
 extern "C" void taylor_to_c (const Opaque_taylor_class*, CPP_taylor&);
 
 // c_side.to_f2_arg
-extern "C" void taylor_to_f2 (Opaque_taylor_class*, c_Real&, const CPP_taylor_term**, Int);
+extern "C" void taylor_to_f2 (Opaque_taylor_class*, C_ARG&, C_ARG**, Int);
 
 extern "C" void taylor_to_f (const CPP_taylor& C, Opaque_taylor_class* F) {
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_taylor_term>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_term = C.term.size();
   const CPP_taylor_term** z_term = nullptr;
   if (n1_term != 0) {
@@ -944,16 +937,16 @@ extern "C" void taylor_to_f (const CPP_taylor& C, Opaque_taylor_class* F) {
   taylor_to_f2 (F, C.ref, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
-extern "C" void taylor_to_c2 (CPP_taylor& C, c_Real& z_ref, Opaque_taylor_term_class** z_term,
+extern "C" void taylor_to_c2 (CPP_taylor& C, C_ARG& z_ref, Opaque_taylor_term_class** z_term,
     Int n1_term) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.ref = z_ref;
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_taylor_term>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.term.resize(n1_term);
   for (auto i{0}; i < n1_term; i++) { taylor_term_to_c(z_term[i], C.term[i]); }
 
@@ -966,7 +959,7 @@ extern "C" void taylor_to_c2 (CPP_taylor& C, c_Real& z_ref, Opaque_taylor_term_c
 extern "C" void em_taylor_term_to_c (const Opaque_em_taylor_term_class*, CPP_em_taylor_term&);
 
 // c_side.to_f2_arg
-extern "C" void em_taylor_term_to_f2 (Opaque_em_taylor_term_class*, c_Real&, c_IntArr);
+extern "C" void em_taylor_term_to_f2 (Opaque_em_taylor_term_class*, C_ARG&, C_ARGArr);
 
 extern "C" void em_taylor_term_to_f (const CPP_em_taylor_term& C, Opaque_em_taylor_term_class* F) {
 
@@ -976,11 +969,11 @@ extern "C" void em_taylor_term_to_f (const CPP_em_taylor_term& C, Opaque_em_tayl
 }
 
 // c_side.to_c2_arg
-extern "C" void em_taylor_term_to_c2 (CPP_em_taylor_term& C, c_Real& z_coef, c_IntArr z_expn) {
+extern "C" void em_taylor_term_to_c2 (CPP_em_taylor_term& C, C_ARG& z_coef, C_ARGArr z_expn) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.coef = z_coef;
-  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<Int, 2>
+  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.expn << z_expn;
 }
 
@@ -991,11 +984,10 @@ extern "C" void em_taylor_term_to_c2 (CPP_em_taylor_term& C, c_Real& z_coef, c_I
 extern "C" void em_taylor_to_c (const Opaque_em_taylor_class*, CPP_em_taylor&);
 
 // c_side.to_f2_arg
-extern "C" void em_taylor_to_f2 (Opaque_em_taylor_class*, c_Real&, const CPP_em_taylor_term**,
-    Int);
+extern "C" void em_taylor_to_f2 (Opaque_em_taylor_class*, C_ARG&, C_ARG**, Int);
 
 extern "C" void em_taylor_to_f (const CPP_em_taylor& C, Opaque_em_taylor_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_em_taylor_term>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_term = C.term.size();
   const CPP_em_taylor_term** z_term = nullptr;
   if (n1_term != 0) {
@@ -1007,16 +999,16 @@ extern "C" void em_taylor_to_f (const CPP_em_taylor& C, Opaque_em_taylor_class* 
   em_taylor_to_f2 (F, C.ref, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
-extern "C" void em_taylor_to_c2 (CPP_em_taylor& C, c_Real& z_ref, Opaque_em_taylor_term_class**
+extern "C" void em_taylor_to_c2 (CPP_em_taylor& C, C_ARG& z_ref, Opaque_em_taylor_term_class**
     z_term, Int n1_term) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.ref = z_ref;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_em_taylor_term>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.term.resize(n1_term);
   for (auto i{0}; i < n1_term; i++) { em_taylor_term_to_c(z_term[i], C.term[i]); }
 
@@ -1029,8 +1021,8 @@ extern "C" void em_taylor_to_c2 (CPP_em_taylor& C, c_Real& z_ref, Opaque_em_tayl
 extern "C" void cartesian_map_term1_to_c (const Opaque_cartesian_map_term1_class*, CPP_cartesian_map_term1&);
 
 // c_side.to_f2_arg
-extern "C" void cartesian_map_term1_to_f2 (Opaque_cartesian_map_term1_class*, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Int&, c_Int&);
+extern "C" void cartesian_map_term1_to_f2 (Opaque_cartesian_map_term1_class*, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void cartesian_map_term1_to_f (const CPP_cartesian_map_term1& C, Opaque_cartesian_map_term1_class* F) {
 
@@ -1041,27 +1033,27 @@ extern "C" void cartesian_map_term1_to_f (const CPP_cartesian_map_term1& C, Opaq
 }
 
 // c_side.to_c2_arg
-extern "C" void cartesian_map_term1_to_c2 (CPP_cartesian_map_term1& C, c_Real& z_coef, c_Real&
-    z_kx, c_Real& z_ky, c_Real& z_kz, c_Real& z_x0, c_Real& z_y0, c_Real& z_phi_z, c_Int&
-    z_family, c_Int& z_form) {
+extern "C" void cartesian_map_term1_to_c2 (CPP_cartesian_map_term1& C, C_ARG& z_coef, C_ARG&
+    z_kx, C_ARG& z_ky, C_ARG& z_kz, C_ARG& z_x0, C_ARG& z_y0, C_ARG& z_phi_z, C_ARG& z_family,
+    C_ARG& z_form) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.coef = z_coef;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.kx = z_kx;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.ky = z_ky;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.kz = z_kz;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x0 = z_x0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y0 = z_y0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi_z = z_phi_z;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.family = z_family;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.form = z_form;
 }
 
@@ -1072,11 +1064,11 @@ extern "C" void cartesian_map_term1_to_c2 (CPP_cartesian_map_term1& C, c_Real& z
 extern "C" void cartesian_map_term_to_c (const Opaque_cartesian_map_term_class*, CPP_cartesian_map_term&);
 
 // c_side.to_f2_arg
-extern "C" void cartesian_map_term_to_f2 (Opaque_cartesian_map_term_class*, c_Char, c_Int&,
-    const CPP_cartesian_map_term1**, Int);
+extern "C" void cartesian_map_term_to_f2 (Opaque_cartesian_map_term_class*, c_Char, C_ARG&,
+    C_ARG**, Int);
 
 extern "C" void cartesian_map_term_to_f (const CPP_cartesian_map_term& C, Opaque_cartesian_map_term_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_cartesian_map_term1>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_term = C.term.size();
   const CPP_cartesian_map_term1** z_term = nullptr;
   if (n1_term != 0) {
@@ -1088,18 +1080,18 @@ extern "C" void cartesian_map_term_to_f (const CPP_cartesian_map_term& C, Opaque
   cartesian_map_term_to_f2 (F, C.file.c_str(), C.n_link, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
-extern "C" void cartesian_map_term_to_c2 (CPP_cartesian_map_term& C, c_Char z_file, c_Int&
+extern "C" void cartesian_map_term_to_c2 (CPP_cartesian_map_term& C, c_Char z_file, C_ARG&
     z_n_link, Opaque_cartesian_map_term1_class** z_term, Int n1_term) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.file = z_file;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_link = z_n_link;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_cartesian_map_term1>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.term.resize(n1_term);
   for (auto i{0}; i < n1_term; i++) { cartesian_map_term1_to_c(z_term[i], C.term[i]); }
 
@@ -1112,11 +1104,11 @@ extern "C" void cartesian_map_term_to_c2 (CPP_cartesian_map_term& C, c_Char z_fi
 extern "C" void cartesian_map_to_c (const Opaque_cartesian_map_class*, CPP_cartesian_map&);
 
 // c_side.to_f2_arg
-extern "C" void cartesian_map_to_f2 (Opaque_cartesian_map_class*, c_Real&, c_RealArr, c_Int&,
-    c_Int&, c_Int&, const CPP_cartesian_map_term&, Int);
+extern "C" void cartesian_map_to_f2 (Opaque_cartesian_map_class*, C_ARG&, C_ARGArr, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, Int);
 
 extern "C" void cartesian_map_to_f (const CPP_cartesian_map& C, Opaque_cartesian_map_class* F) {
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_cartesian_map_term>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_ptr = 0; if (C.ptr != nullptr) n_ptr = 1;
 
   // c_side.to_f2_call
@@ -1126,25 +1118,25 @@ extern "C" void cartesian_map_to_f (const CPP_cartesian_map& C, Opaque_cartesian
 }
 
 // c_side.to_c2_arg
-extern "C" void cartesian_map_to_c2 (CPP_cartesian_map& C, c_Real& z_field_scale, c_RealArr
-    z_r0, c_Int& z_master_parameter, c_Int& z_ele_anchor_pt, c_Int& z_field_type,
+extern "C" void cartesian_map_to_c2 (CPP_cartesian_map& C, C_ARG& z_field_scale, C_ARGArr z_r0,
+    C_ARG& z_master_parameter, C_ARG& z_ele_anchor_pt, C_ARG& z_field_type,
     Opaque_cartesian_map_term_class* z_ptr, Int n_ptr) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.field_scale = z_field_scale;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.r0 << z_r0;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.master_parameter = z_master_parameter;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ele_anchor_pt = z_ele_anchor_pt;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.field_type = z_field_type;
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_cartesian_map_term>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_ptr == 0) {
     C.ptr = nullptr;
   } else {
-    C.ptr = make_shared<CPP_cartesian_map_term>();
+    C.ptr = make_shared<C_TYPE>();
     cartesian_map_term_to_c(z_ptr, *C.ptr);
   }
 
@@ -1157,8 +1149,8 @@ extern "C" void cartesian_map_to_c2 (CPP_cartesian_map& C, c_Real& z_field_scale
 extern "C" void cylindrical_map_term1_to_c (const Opaque_cylindrical_map_term1_class*, CPP_cylindrical_map_term1&);
 
 // c_side.to_f2_arg
-extern "C" void cylindrical_map_term1_to_f2 (Opaque_cylindrical_map_term1_class*, c_Complex&,
-    c_Complex&);
+extern "C" void cylindrical_map_term1_to_f2 (Opaque_cylindrical_map_term1_class*, C_ARG&,
+    C_ARG&);
 
 extern "C" void cylindrical_map_term1_to_f (const CPP_cylindrical_map_term1& C, Opaque_cylindrical_map_term1_class* F) {
 
@@ -1168,12 +1160,12 @@ extern "C" void cylindrical_map_term1_to_f (const CPP_cylindrical_map_term1& C, 
 }
 
 // c_side.to_c2_arg
-extern "C" void cylindrical_map_term1_to_c2 (CPP_cylindrical_map_term1& C, c_Complex& z_e_coef,
-    c_Complex& z_b_coef) {
+extern "C" void cylindrical_map_term1_to_c2 (CPP_cylindrical_map_term1& C, C_ARG& z_e_coef,
+    C_ARG& z_b_coef) {
 
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.e_coef = z_e_coef;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.b_coef = z_b_coef;
 }
 
@@ -1184,11 +1176,11 @@ extern "C" void cylindrical_map_term1_to_c2 (CPP_cylindrical_map_term1& C, c_Com
 extern "C" void cylindrical_map_term_to_c (const Opaque_cylindrical_map_term_class*, CPP_cylindrical_map_term&);
 
 // c_side.to_f2_arg
-extern "C" void cylindrical_map_term_to_f2 (Opaque_cylindrical_map_term_class*, c_Char, c_Int&,
-    const CPP_cylindrical_map_term1**, Int);
+extern "C" void cylindrical_map_term_to_f2 (Opaque_cylindrical_map_term_class*, c_Char, C_ARG&,
+    C_ARG**, Int);
 
 extern "C" void cylindrical_map_term_to_f (const CPP_cylindrical_map_term& C, Opaque_cylindrical_map_term_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_cylindrical_map_term1>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_term = C.term.size();
   const CPP_cylindrical_map_term1** z_term = nullptr;
   if (n1_term != 0) {
@@ -1200,18 +1192,18 @@ extern "C" void cylindrical_map_term_to_f (const CPP_cylindrical_map_term& C, Op
   cylindrical_map_term_to_f2 (F, C.file.c_str(), C.n_link, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
-extern "C" void cylindrical_map_term_to_c2 (CPP_cylindrical_map_term& C, c_Char z_file, c_Int&
+extern "C" void cylindrical_map_term_to_c2 (CPP_cylindrical_map_term& C, c_Char z_file, C_ARG&
     z_n_link, Opaque_cylindrical_map_term1_class** z_term, Int n1_term) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.file = z_file;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_link = z_n_link;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_cylindrical_map_term1>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.term.resize(n1_term);
   for (auto i{0}; i < n1_term; i++) { cylindrical_map_term1_to_c(z_term[i], C.term[i]); }
 
@@ -1224,12 +1216,11 @@ extern "C" void cylindrical_map_term_to_c2 (CPP_cylindrical_map_term& C, c_Char 
 extern "C" void cylindrical_map_to_c (const Opaque_cylindrical_map_class*, CPP_cylindrical_map&);
 
 // c_side.to_f2_arg
-extern "C" void cylindrical_map_to_f2 (Opaque_cylindrical_map_class*, c_Int&, c_Int&, c_Real&,
-    c_Real&, c_Real&, c_Int&, c_Int&, c_Real&, c_RealArr, const CPP_cylindrical_map_term&,
-    Int);
+extern "C" void cylindrical_map_to_f2 (Opaque_cylindrical_map_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARG&, Int);
 
 extern "C" void cylindrical_map_to_f (const CPP_cylindrical_map& C, Opaque_cylindrical_map_class* F) {
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_cylindrical_map_term>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_ptr = 0; if (C.ptr != nullptr) n_ptr = 1;
 
   // c_side.to_f2_call
@@ -1239,34 +1230,34 @@ extern "C" void cylindrical_map_to_f (const CPP_cylindrical_map& C, Opaque_cylin
 }
 
 // c_side.to_c2_arg
-extern "C" void cylindrical_map_to_c2 (CPP_cylindrical_map& C, c_Int& z_m, c_Int& z_harmonic,
-    c_Real& z_phi0_fieldmap, c_Real& z_theta0_azimuth, c_Real& z_field_scale, c_Int&
-    z_master_parameter, c_Int& z_ele_anchor_pt, c_Real& z_dz, c_RealArr z_r0,
+extern "C" void cylindrical_map_to_c2 (CPP_cylindrical_map& C, C_ARG& z_m, C_ARG& z_harmonic,
+    C_ARG& z_phi0_fieldmap, C_ARG& z_theta0_azimuth, C_ARG& z_field_scale, C_ARG&
+    z_master_parameter, C_ARG& z_ele_anchor_pt, C_ARG& z_dz, C_ARGArr z_r0,
     Opaque_cylindrical_map_term_class* z_ptr, Int n_ptr) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.m = z_m;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.harmonic = z_harmonic;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi0_fieldmap = z_phi0_fieldmap;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.theta0_azimuth = z_theta0_azimuth;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.field_scale = z_field_scale;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.master_parameter = z_master_parameter;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ele_anchor_pt = z_ele_anchor_pt;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz = z_dz;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.r0 << z_r0;
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_cylindrical_map_term>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_ptr == 0) {
     C.ptr = nullptr;
   } else {
-    C.ptr = make_shared<CPP_cylindrical_map_term>();
+    C.ptr = make_shared<C_TYPE>();
     cylindrical_map_term_to_c(z_ptr, *C.ptr);
   }
 
@@ -1279,8 +1270,7 @@ extern "C" void cylindrical_map_to_c2 (CPP_cylindrical_map& C, c_Int& z_m, c_Int
 extern "C" void grid_field_pt1_to_c (const Opaque_grid_field_pt1_class*, CPP_grid_field_pt1&);
 
 // c_side.to_f2_arg
-extern "C" void grid_field_pt1_to_f2 (Opaque_grid_field_pt1_class*, c_ComplexArr,
-    c_ComplexArr);
+extern "C" void grid_field_pt1_to_f2 (Opaque_grid_field_pt1_class*, C_ARGArr, C_ARGArr);
 
 extern "C" void grid_field_pt1_to_f (const CPP_grid_field_pt1& C, Opaque_grid_field_pt1_class* F) {
 
@@ -1290,12 +1280,11 @@ extern "C" void grid_field_pt1_to_f (const CPP_grid_field_pt1& C, Opaque_grid_fi
 }
 
 // c_side.to_c2_arg
-extern "C" void grid_field_pt1_to_c2 (CPP_grid_field_pt1& C, c_ComplexArr z_E, c_ComplexArr
-    z_B) {
+extern "C" void grid_field_pt1_to_c2 (CPP_grid_field_pt1& C, C_ARGArr z_E, C_ARGArr z_B) {
 
-  // c_side.to_c2_set[complex, 1, NOT] FixedArray1D<Complex, 3>
+  // c_side.to_c2_set[complex, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.E << z_E;
-  // c_side.to_c2_set[complex, 1, NOT] FixedArray1D<Complex, 3>
+  // c_side.to_c2_set[complex, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.B << z_B;
 }
 
@@ -1306,7 +1295,7 @@ extern "C" void grid_field_pt1_to_c2 (CPP_grid_field_pt1& C, c_ComplexArr z_E, c
 extern "C" void grid_field_pt_to_c (const Opaque_grid_field_pt_class*, CPP_grid_field_pt&);
 
 // c_side.to_f2_arg
-extern "C" void grid_field_pt_to_f2 (Opaque_grid_field_pt_class*, c_Char, c_Int&);
+extern "C" void grid_field_pt_to_f2 (Opaque_grid_field_pt_class*, c_Char, C_ARG&);
 
 extern "C" void grid_field_pt_to_f (const CPP_grid_field_pt& C, Opaque_grid_field_pt_class* F) {
 
@@ -1316,11 +1305,11 @@ extern "C" void grid_field_pt_to_f (const CPP_grid_field_pt& C, Opaque_grid_fiel
 }
 
 // c_side.to_c2_arg
-extern "C" void grid_field_pt_to_c2 (CPP_grid_field_pt& C, c_Char z_file, c_Int& z_n_link) {
+extern "C" void grid_field_pt_to_c2 (CPP_grid_field_pt& C, c_Char z_file, C_ARG& z_n_link) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.file = z_file;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_link = z_n_link;
 }
 
@@ -1331,12 +1320,11 @@ extern "C" void grid_field_pt_to_c2 (CPP_grid_field_pt& C, c_Char z_file, c_Int&
 extern "C" void grid_field_to_c (const Opaque_grid_field_class*, CPP_grid_field&);
 
 // c_side.to_f2_arg
-extern "C" void grid_field_to_f2 (Opaque_grid_field_class*, c_Int&, c_Int&, c_Real&, c_Real&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_RealArr, c_RealArr, c_Bool&, const CPP_grid_field_pt&,
-    Int);
+extern "C" void grid_field_to_f2 (Opaque_grid_field_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARGArr, C_ARG&, C_ARG&, Int);
 
 extern "C" void grid_field_to_f (const CPP_grid_field& C, Opaque_grid_field_class* F) {
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_grid_field_pt>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_ptr = 0; if (C.ptr != nullptr) n_ptr = 1;
 
   // c_side.to_f2_call
@@ -1347,38 +1335,38 @@ extern "C" void grid_field_to_f (const CPP_grid_field& C, Opaque_grid_field_clas
 }
 
 // c_side.to_c2_arg
-extern "C" void grid_field_to_c2 (CPP_grid_field& C, c_Int& z_geometry, c_Int& z_harmonic,
-    c_Real& z_phi0_fieldmap, c_Real& z_field_scale, c_Int& z_field_type, c_Int&
-    z_master_parameter, c_Int& z_ele_anchor_pt, c_Int& z_interpolation_order, c_RealArr z_dr,
-    c_RealArr z_r0, c_Bool& z_curved_ref_frame, Opaque_grid_field_pt_class* z_ptr, Int n_ptr) {
+extern "C" void grid_field_to_c2 (CPP_grid_field& C, C_ARG& z_geometry, C_ARG& z_harmonic,
+    C_ARG& z_phi0_fieldmap, C_ARG& z_field_scale, C_ARG& z_field_type, C_ARG&
+    z_master_parameter, C_ARG& z_ele_anchor_pt, C_ARG& z_interpolation_order, C_ARGArr z_dr,
+    C_ARGArr z_r0, C_ARG& z_curved_ref_frame, Opaque_grid_field_pt_class* z_ptr, Int n_ptr) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.geometry = z_geometry;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.harmonic = z_harmonic;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi0_fieldmap = z_phi0_fieldmap;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.field_scale = z_field_scale;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.field_type = z_field_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.master_parameter = z_master_parameter;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ele_anchor_pt = z_ele_anchor_pt;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.interpolation_order = z_interpolation_order;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.dr << z_dr;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.r0 << z_r0;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.curved_ref_frame = z_curved_ref_frame;
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_grid_field_pt>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_ptr == 0) {
     C.ptr = nullptr;
   } else {
-    C.ptr = make_shared<CPP_grid_field_pt>();
+    C.ptr = make_shared<C_TYPE>();
     grid_field_pt_to_c(z_ptr, *C.ptr);
   }
 
@@ -1391,12 +1379,12 @@ extern "C" void grid_field_to_c2 (CPP_grid_field& C, c_Int& z_geometry, c_Int& z
 extern "C" void floor_position_to_c (const Opaque_floor_position_class*, CPP_floor_position&);
 
 // c_side.to_f2_arg
-extern "C" void floor_position_to_f2 (Opaque_floor_position_class*, c_RealArr, c_RealArr,
-    c_Real&, c_Real&, c_Real&);
+extern "C" void floor_position_to_f2 (Opaque_floor_position_class*, C_ARGArr, C_ARGArr, C_ARG&,
+    C_ARG&, C_ARG&);
 
 extern "C" void floor_position_to_f (const CPP_floor_position& C, Opaque_floor_position_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 3, 3>
-  Real z_w[3*3]; matrix_to_vec(C.w, z_w);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
+  C_TYPE z_w[3*3]; matrix_to_vec(C.w, z_w);
 
   // c_side.to_f2_call
   floor_position_to_f2 (F, &C.r[0], z_w, C.theta, C.phi, C.psi);
@@ -1404,18 +1392,18 @@ extern "C" void floor_position_to_f (const CPP_floor_position& C, Opaque_floor_p
 }
 
 // c_side.to_c2_arg
-extern "C" void floor_position_to_c2 (CPP_floor_position& C, c_RealArr z_r, c_RealArr z_w,
-    c_Real& z_theta, c_Real& z_phi, c_Real& z_psi) {
+extern "C" void floor_position_to_c2 (CPP_floor_position& C, C_ARGArr z_r, C_ARGArr z_w, C_ARG&
+    z_theta, C_ARG& z_phi, C_ARG& z_psi) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.r << z_r;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 3, 3>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
   C.w << z_w;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.theta = z_theta;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.psi = z_psi;
 }
 
@@ -1426,8 +1414,8 @@ extern "C" void floor_position_to_c2 (CPP_floor_position& C, c_RealArr z_r, c_Re
 extern "C" void high_energy_space_charge_to_c (const Opaque_high_energy_space_charge_class*, CPP_high_energy_space_charge&);
 
 // c_side.to_f2_arg
-extern "C" void high_energy_space_charge_to_f2 (Opaque_high_energy_space_charge_class*, const
-    CPP_coord&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void high_energy_space_charge_to_f2 (Opaque_high_energy_space_charge_class*, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void high_energy_space_charge_to_f (const CPP_high_energy_space_charge& C, Opaque_high_energy_space_charge_class* F) {
 
@@ -1439,24 +1427,24 @@ extern "C" void high_energy_space_charge_to_f (const CPP_high_energy_space_charg
 
 // c_side.to_c2_arg
 extern "C" void high_energy_space_charge_to_c2 (CPP_high_energy_space_charge& C, const
-    Opaque_coord_class* z_closed_orb, c_Real& z_kick_const, c_Real& z_sig_x, c_Real& z_sig_y,
-    c_Real& z_phi, c_Real& z_sin_phi, c_Real& z_cos_phi, c_Real& z_sig_z) {
+    Opaque_coord_class* z_closed_orb, C_ARG& z_kick_const, C_ARG& z_sig_x, C_ARG& z_sig_y,
+    C_ARG& z_phi, C_ARG& z_sin_phi, C_ARG& z_cos_phi, C_ARG& z_sig_z) {
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_closed_orb, C.closed_orb);
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.kick_const = z_kick_const;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_x = z_sig_x;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_y = z_sig_y;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sin_phi = z_sin_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.cos_phi = z_cos_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_z = z_sig_z;
 }
 
@@ -1467,7 +1455,7 @@ extern "C" void high_energy_space_charge_to_c2 (CPP_high_energy_space_charge& C,
 extern "C" void xy_disp_to_c (const Opaque_xy_disp_class*, CPP_xy_disp&);
 
 // c_side.to_f2_arg
-extern "C" void xy_disp_to_f2 (Opaque_xy_disp_class*, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void xy_disp_to_f2 (Opaque_xy_disp_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void xy_disp_to_f (const CPP_xy_disp& C, Opaque_xy_disp_class* F) {
 
@@ -1477,16 +1465,16 @@ extern "C" void xy_disp_to_f (const CPP_xy_disp& C, Opaque_xy_disp_class* F) {
 }
 
 // c_side.to_c2_arg
-extern "C" void xy_disp_to_c2 (CPP_xy_disp& C, c_Real& z_eta, c_Real& z_etap, c_Real&
-    z_deta_ds, c_Real& z_sigma) {
+extern "C" void xy_disp_to_c2 (CPP_xy_disp& C, C_ARG& z_eta, C_ARG& z_etap, C_ARG& z_deta_ds,
+    C_ARG& z_sigma) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.eta = z_eta;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.etap = z_etap;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.deta_ds = z_deta_ds;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigma = z_sigma;
 }
 
@@ -1497,8 +1485,8 @@ extern "C" void xy_disp_to_c2 (CPP_xy_disp& C, c_Real& z_eta, c_Real& z_etap, c_
 extern "C" void twiss_to_c (const Opaque_twiss_class*, CPP_twiss&);
 
 // c_side.to_f2_arg
-extern "C" void twiss_to_f2 (Opaque_twiss_class*, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void twiss_to_f2 (Opaque_twiss_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void twiss_to_f (const CPP_twiss& C, Opaque_twiss_class* F) {
 
@@ -1509,31 +1497,31 @@ extern "C" void twiss_to_f (const CPP_twiss& C, Opaque_twiss_class* F) {
 }
 
 // c_side.to_c2_arg
-extern "C" void twiss_to_c2 (CPP_twiss& C, c_Real& z_beta, c_Real& z_alpha, c_Real& z_gamma,
-    c_Real& z_phi, c_Real& z_eta, c_Real& z_etap, c_Real& z_deta_ds, c_Real& z_sigma, c_Real&
-    z_sigma_p, c_Real& z_emit, c_Real& z_norm_emit) {
+extern "C" void twiss_to_c2 (CPP_twiss& C, C_ARG& z_beta, C_ARG& z_alpha, C_ARG& z_gamma,
+    C_ARG& z_phi, C_ARG& z_eta, C_ARG& z_etap, C_ARG& z_deta_ds, C_ARG& z_sigma, C_ARG&
+    z_sigma_p, C_ARG& z_emit, C_ARG& z_norm_emit) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.beta = z_beta;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.alpha = z_alpha;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.gamma = z_gamma;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.eta = z_eta;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.etap = z_etap;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.deta_ds = z_deta_ds;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigma = z_sigma;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigma_p = z_sigma_p;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.emit = z_emit;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.norm_emit = z_norm_emit;
 }
 
@@ -1544,12 +1532,12 @@ extern "C" void twiss_to_c2 (CPP_twiss& C, c_Real& z_beta, c_Real& z_alpha, c_Re
 extern "C" void mode3_to_c (const Opaque_mode3_class*, CPP_mode3&);
 
 // c_side.to_f2_arg
-extern "C" void mode3_to_f2 (Opaque_mode3_class*, c_RealArr, const CPP_twiss&, const
-    CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_twiss&);
+extern "C" void mode3_to_f2 (Opaque_mode3_class*, C_ARGArr, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&);
 
 extern "C" void mode3_to_f (const CPP_mode3& C, Opaque_mode3_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_v[6*6]; matrix_to_vec(C.v, z_v);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_v[6*6]; matrix_to_vec(C.v, z_v);
 
   // c_side.to_f2_call
   mode3_to_f2 (F, z_v, C.a, C.b, C.c, C.x, C.y);
@@ -1557,21 +1545,21 @@ extern "C" void mode3_to_f (const CPP_mode3& C, Opaque_mode3_class* F) {
 }
 
 // c_side.to_c2_arg
-extern "C" void mode3_to_c2 (CPP_mode3& C, c_RealArr z_v, const Opaque_twiss_class* z_a, const
+extern "C" void mode3_to_c2 (CPP_mode3& C, C_ARGArr z_v, const Opaque_twiss_class* z_a, const
     Opaque_twiss_class* z_b, const Opaque_twiss_class* z_c, const Opaque_twiss_class* z_x,
     const Opaque_twiss_class* z_y) {
 
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.v << z_v;
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_a, C.a);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_b, C.b);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_c, C.c);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_x, C.x);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_y, C.y);
 }
 
@@ -1582,8 +1570,8 @@ extern "C" void mode3_to_c2 (CPP_mode3& C, c_RealArr z_v, const Opaque_twiss_cla
 extern "C" void bookkeeping_state_to_c (const Opaque_bookkeeping_state_class*, CPP_bookkeeping_state&);
 
 // c_side.to_f2_arg
-extern "C" void bookkeeping_state_to_f2 (Opaque_bookkeeping_state_class*, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Bool&);
+extern "C" void bookkeeping_state_to_f2 (Opaque_bookkeeping_state_class*, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void bookkeeping_state_to_f (const CPP_bookkeeping_state& C, Opaque_bookkeeping_state_class* F) {
 
@@ -1594,27 +1582,27 @@ extern "C" void bookkeeping_state_to_f (const CPP_bookkeeping_state& C, Opaque_b
 }
 
 // c_side.to_c2_arg
-extern "C" void bookkeeping_state_to_c2 (CPP_bookkeeping_state& C, c_Int& z_attributes, c_Int&
-    z_control, c_Int& z_floor_position, c_Int& z_s_position, c_Int& z_ref_energy, c_Int&
-    z_mat6, c_Int& z_rad_int, c_Int& z_ptc, c_Bool& z_has_misalign) {
+extern "C" void bookkeeping_state_to_c2 (CPP_bookkeeping_state& C, C_ARG& z_attributes, C_ARG&
+    z_control, C_ARG& z_floor_position, C_ARG& z_s_position, C_ARG& z_ref_energy, C_ARG&
+    z_mat6, C_ARG& z_rad_int, C_ARG& z_ptc, C_ARG& z_has_misalign) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.attributes = z_attributes;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.control = z_control;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.floor_position = z_floor_position;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.s_position = z_s_position;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ref_energy = z_ref_energy;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.mat6 = z_mat6;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.rad_int = z_rad_int;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ptc = z_ptc;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.has_misalign = z_has_misalign;
 }
 
@@ -1625,16 +1613,16 @@ extern "C" void bookkeeping_state_to_c2 (CPP_bookkeeping_state& C, c_Int& z_attr
 extern "C" void rad_map_to_c (const Opaque_rad_map_class*, CPP_rad_map&);
 
 // c_side.to_f2_arg
-extern "C" void rad_map_to_f2 (Opaque_rad_map_class*, c_RealArr, c_RealArr, c_RealArr,
-    c_RealArr, c_RealArr);
+extern "C" void rad_map_to_f2 (Opaque_rad_map_class*, C_ARGArr, C_ARGArr, C_ARGArr, C_ARGArr,
+    C_ARGArr);
 
 extern "C" void rad_map_to_f (const CPP_rad_map& C, Opaque_rad_map_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_damp_dmat[6*6]; matrix_to_vec(C.damp_dmat, z_damp_dmat);
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_xfer_damp_mat[6*6]; matrix_to_vec(C.xfer_damp_mat, z_xfer_damp_mat);
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_stoc_mat[6*6]; matrix_to_vec(C.stoc_mat, z_stoc_mat);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_damp_dmat[6*6]; matrix_to_vec(C.damp_dmat, z_damp_dmat);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_xfer_damp_mat[6*6]; matrix_to_vec(C.xfer_damp_mat, z_xfer_damp_mat);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_stoc_mat[6*6]; matrix_to_vec(C.stoc_mat, z_stoc_mat);
 
   // c_side.to_f2_call
   rad_map_to_f2 (F, &C.ref_orb[0], z_damp_dmat, &C.xfer_damp_vec[0], z_xfer_damp_mat,
@@ -1643,18 +1631,18 @@ extern "C" void rad_map_to_f (const CPP_rad_map& C, Opaque_rad_map_class* F) {
 }
 
 // c_side.to_c2_arg
-extern "C" void rad_map_to_c2 (CPP_rad_map& C, c_RealArr z_ref_orb, c_RealArr z_damp_dmat,
-    c_RealArr z_xfer_damp_vec, c_RealArr z_xfer_damp_mat, c_RealArr z_stoc_mat) {
+extern "C" void rad_map_to_c2 (CPP_rad_map& C, C_ARGArr z_ref_orb, C_ARGArr z_damp_dmat,
+    C_ARGArr z_xfer_damp_vec, C_ARGArr z_xfer_damp_mat, C_ARGArr z_stoc_mat) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.ref_orb << z_ref_orb;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.damp_dmat << z_damp_dmat;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.xfer_damp_vec << z_xfer_damp_vec;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.xfer_damp_mat << z_xfer_damp_mat;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.stoc_mat << z_stoc_mat;
 }
 
@@ -1665,8 +1653,7 @@ extern "C" void rad_map_to_c2 (CPP_rad_map& C, c_RealArr z_ref_orb, c_RealArr z_
 extern "C" void rad_map_ele_to_c (const Opaque_rad_map_ele_class*, CPP_rad_map_ele&);
 
 // c_side.to_f2_arg
-extern "C" void rad_map_ele_to_f2 (Opaque_rad_map_ele_class*, const CPP_rad_map&, const
-    CPP_rad_map&, c_Bool&);
+extern "C" void rad_map_ele_to_f2 (Opaque_rad_map_ele_class*, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void rad_map_ele_to_f (const CPP_rad_map_ele& C, Opaque_rad_map_ele_class* F) {
 
@@ -1677,13 +1664,13 @@ extern "C" void rad_map_ele_to_f (const CPP_rad_map_ele& C, Opaque_rad_map_ele_c
 
 // c_side.to_c2_arg
 extern "C" void rad_map_ele_to_c2 (CPP_rad_map_ele& C, const Opaque_rad_map_class* z_rm0, const
-    Opaque_rad_map_class* z_rm1, c_Bool& z_stale) {
+    Opaque_rad_map_class* z_rm1, C_ARG& z_stale) {
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_rad_map
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   rad_map_to_c(z_rm0, C.rm0);
-  // c_side.to_c2_set[type, 0, NOT] CPP_rad_map
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   rad_map_to_c(z_rm1, C.rm1);
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.stale = z_stale;
 }
 
@@ -1694,17 +1681,17 @@ extern "C" void rad_map_ele_to_c2 (CPP_rad_map_ele& C, const Opaque_rad_map_clas
 extern "C" void gen_grad1_to_c (const Opaque_gen_grad1_class*, CPP_gen_grad1&);
 
 // c_side.to_f2_arg
-extern "C" void gen_grad1_to_f2 (Opaque_gen_grad1_class*, c_Int&, c_Int&, c_Int&, c_RealArr,
+extern "C" void gen_grad1_to_f2 (Opaque_gen_grad1_class*, C_ARG&, C_ARG&, C_ARG&, C_ARGArr,
     Int, Int);
 
 extern "C" void gen_grad1_to_f (const CPP_gen_grad1& C, Opaque_gen_grad1_class* F) {
-  // c_side.to_f_setup[real, 2, ALLOC] VariableArray2D<Real>
+  // c_side.to_f_setup[real, 2, ALLOC] VariableArray2D<C_TYPE>
   auto n1_deriv { C.deriv.size() };
   auto n2_deriv { std::size_t{0} };
-  Real* z_deriv = nullptr;
+  C_TYPE* z_deriv = nullptr;
   if (n1_deriv > 0) {
     n2_deriv = C.deriv[0].size();
-    z_deriv = new Real [n1_deriv*n2_deriv];
+    z_deriv = new C_TYPE [n1_deriv*n2_deriv];
     matrix_to_vec (C.deriv, z_deriv);
   }
 
@@ -1716,16 +1703,16 @@ extern "C" void gen_grad1_to_f (const CPP_gen_grad1& C, Opaque_gen_grad1_class* 
 }
 
 // c_side.to_c2_arg
-extern "C" void gen_grad1_to_c2 (CPP_gen_grad1& C, c_Int& z_m, c_Int& z_sincos, c_Int&
-    z_n_deriv_max, c_RealArr z_deriv, Int n1_deriv, Int n2_deriv) {
+extern "C" void gen_grad1_to_c2 (CPP_gen_grad1& C, C_ARG& z_m, C_ARG& z_sincos, C_ARG&
+    z_n_deriv_max, C_ARGArr z_deriv, Int n1_deriv, Int n2_deriv) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.m = z_m;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.sincos = z_sincos;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_deriv_max = z_n_deriv_max;
-  // c_side.to_c2_set[real, 2, ALLOC] VariableArray2D<Real>
+  // c_side.to_c2_set[real, 2, ALLOC] VariableArray2D<C_TYPE>
   C.deriv.resize(n1_deriv);
   for (auto i{0}; i < n1_deriv; i++) C.deriv[i].resize(n2_deriv);
   C.deriv << z_deriv;
@@ -1739,11 +1726,11 @@ extern "C" void gen_grad1_to_c2 (CPP_gen_grad1& C, c_Int& z_m, c_Int& z_sincos, 
 extern "C" void gen_grad_map_to_c (const Opaque_gen_grad_map_class*, CPP_gen_grad_map&);
 
 // c_side.to_f2_arg
-extern "C" void gen_grad_map_to_f2 (Opaque_gen_grad_map_class*, c_Char, const CPP_gen_grad1**,
-    Int, c_Int&, c_Int&, c_Int&, c_Int&, c_Real&, c_RealArr, c_Real&, c_Int&, c_Bool&);
+extern "C" void gen_grad_map_to_f2 (Opaque_gen_grad_map_class*, c_Char, C_ARG**, Int, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void gen_grad_map_to_f (const CPP_gen_grad_map& C, Opaque_gen_grad_map_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_gen_grad1>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_gg = C.gg.size();
   const CPP_gen_grad1** z_gg = nullptr;
   if (n1_gg != 0) {
@@ -1756,38 +1743,38 @@ extern "C" void gen_grad_map_to_f (const CPP_gen_grad_map& C, Opaque_gen_grad_ma
       C.iz1, C.dz, &C.r0[0], C.field_scale, C.master_parameter, C.curved_ref_frame);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_gg) delete[] z_gg;
+  if (z_gg) delete[] z_gg;
 }
 
 // c_side.to_c2_arg
 extern "C" void gen_grad_map_to_c2 (CPP_gen_grad_map& C, c_Char z_file,
-    Opaque_gen_grad1_class** z_gg, Int n1_gg, c_Int& z_ele_anchor_pt, c_Int& z_field_type,
-    c_Int& z_iz0, c_Int& z_iz1, c_Real& z_dz, c_RealArr z_r0, c_Real& z_field_scale, c_Int&
-    z_master_parameter, c_Bool& z_curved_ref_frame) {
+    Opaque_gen_grad1_class** z_gg, Int n1_gg, C_ARG& z_ele_anchor_pt, C_ARG& z_field_type,
+    C_ARG& z_iz0, C_ARG& z_iz1, C_ARG& z_dz, C_ARGArr z_r0, C_ARG& z_field_scale, C_ARG&
+    z_master_parameter, C_ARG& z_curved_ref_frame) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.file = z_file;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_gen_grad1>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.gg.resize(n1_gg);
   for (auto i{0}; i < n1_gg; i++) { gen_grad1_to_c(z_gg[i], C.gg[i]); }
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ele_anchor_pt = z_ele_anchor_pt;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.field_type = z_field_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.iz0 = z_iz0;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.iz1 = z_iz1;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz = z_dz;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.r0 << z_r0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.field_scale = z_field_scale;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.master_parameter = z_master_parameter;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.curved_ref_frame = z_curved_ref_frame;
 }
 
@@ -1798,8 +1785,8 @@ extern "C" void gen_grad_map_to_c2 (CPP_gen_grad_map& C, c_Char z_file,
 extern "C" void surface_segmented_pt_to_c (const Opaque_surface_segmented_pt_class*, CPP_surface_segmented_pt&);
 
 // c_side.to_f2_arg
-extern "C" void surface_segmented_pt_to_f2 (Opaque_surface_segmented_pt_class*, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void surface_segmented_pt_to_f2 (Opaque_surface_segmented_pt_class*, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void surface_segmented_pt_to_f (const CPP_surface_segmented_pt& C, Opaque_surface_segmented_pt_class* F) {
 
@@ -1809,18 +1796,18 @@ extern "C" void surface_segmented_pt_to_f (const CPP_surface_segmented_pt& C, Op
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_segmented_pt_to_c2 (CPP_surface_segmented_pt& C, c_Real& z_x0, c_Real&
-    z_y0, c_Real& z_z0, c_Real& z_dz_dx, c_Real& z_dz_dy) {
+extern "C" void surface_segmented_pt_to_c2 (CPP_surface_segmented_pt& C, C_ARG& z_x0, C_ARG&
+    z_y0, C_ARG& z_z0, C_ARG& z_dz_dx, C_ARG& z_dz_dy) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x0 = z_x0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y0 = z_y0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z0 = z_z0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz_dx = z_dz_dx;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz_dy = z_dz_dy;
 }
 
@@ -1831,18 +1818,18 @@ extern "C" void surface_segmented_pt_to_c2 (CPP_surface_segmented_pt& C, c_Real&
 extern "C" void surface_segmented_to_c (const Opaque_surface_segmented_class*, CPP_surface_segmented&);
 
 // c_side.to_f2_arg
-extern "C" void surface_segmented_to_f2 (Opaque_surface_segmented_class*, c_Bool&, c_RealArr,
-    c_RealArr, const CPP_surface_segmented_pt**, Int, Int);
+extern "C" void surface_segmented_to_f2 (Opaque_surface_segmented_class*, C_ARG&, C_ARGArr,
+    C_ARGArr, C_ARG**, Int, Int);
 
 extern "C" void surface_segmented_to_f (const CPP_surface_segmented& C, Opaque_surface_segmented_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<CPP_surface_segmented_pt>
+  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
   auto n1_pt { C.pt.size() };
   auto n2_pt { std::size_t{0} };
-  const CPP_surface_segmented_pt** z_pt { nullptr };
+  const C_TYPE** z_pt { nullptr };
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
-    z_pt = new const CPP_surface_segmented_pt* [n1_pt*n2_pt];
+    z_pt = new const C_TYPE* [n1_pt*n2_pt];
     for (auto i{0}; i < n1_pt; i++) {
       for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
@@ -1858,16 +1845,16 @@ extern "C" void surface_segmented_to_f (const CPP_surface_segmented& C, Opaque_s
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_segmented_to_c2 (CPP_surface_segmented& C, c_Bool& z_active, c_RealArr
-    z_dr, c_RealArr z_r0, Opaque_surface_segmented_pt_class** z_pt, Int n1_pt, Int n2_pt) {
+extern "C" void surface_segmented_to_c2 (CPP_surface_segmented& C, C_ARG& z_active, C_ARGArr
+    z_dr, C_ARGArr z_r0, Opaque_surface_segmented_pt_class** z_pt, Int n1_pt, Int n2_pt) {
 
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.active = z_active;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.dr << z_dr;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.r0 << z_r0;
-  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_surface_segmented_pt>
+  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<C_TYPE>
   C.pt.resize(n1_pt);
   for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
@@ -1886,8 +1873,8 @@ extern "C" void surface_segmented_to_c2 (CPP_surface_segmented& C, c_Bool& z_act
 extern "C" void surface_h_misalign_pt_to_c (const Opaque_surface_h_misalign_pt_class*, CPP_surface_h_misalign_pt&);
 
 // c_side.to_f2_arg
-extern "C" void surface_h_misalign_pt_to_f2 (Opaque_surface_h_misalign_pt_class*, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void surface_h_misalign_pt_to_f2 (Opaque_surface_h_misalign_pt_class*, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void surface_h_misalign_pt_to_f (const CPP_surface_h_misalign_pt& C, Opaque_surface_h_misalign_pt_class* F) {
 
@@ -1897,20 +1884,20 @@ extern "C" void surface_h_misalign_pt_to_f (const CPP_surface_h_misalign_pt& C, 
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_h_misalign_pt_to_c2 (CPP_surface_h_misalign_pt& C, c_Real& z_x0,
-    c_Real& z_y0, c_Real& z_rot_y, c_Real& z_rot_t, c_Real& z_rot_y_rms, c_Real& z_rot_t_rms) {
+extern "C" void surface_h_misalign_pt_to_c2 (CPP_surface_h_misalign_pt& C, C_ARG& z_x0, C_ARG&
+    z_y0, C_ARG& z_rot_y, C_ARG& z_rot_t, C_ARG& z_rot_y_rms, C_ARG& z_rot_t_rms) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x0 = z_x0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y0 = z_y0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rot_y = z_rot_y;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rot_t = z_rot_t;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rot_y_rms = z_rot_y_rms;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rot_t_rms = z_rot_t_rms;
 }
 
@@ -1921,18 +1908,18 @@ extern "C" void surface_h_misalign_pt_to_c2 (CPP_surface_h_misalign_pt& C, c_Rea
 extern "C" void surface_h_misalign_to_c (const Opaque_surface_h_misalign_class*, CPP_surface_h_misalign&);
 
 // c_side.to_f2_arg
-extern "C" void surface_h_misalign_to_f2 (Opaque_surface_h_misalign_class*, c_Bool&, c_RealArr,
-    c_RealArr, const CPP_surface_h_misalign_pt**, Int, Int);
+extern "C" void surface_h_misalign_to_f2 (Opaque_surface_h_misalign_class*, C_ARG&, C_ARGArr,
+    C_ARGArr, C_ARG**, Int, Int);
 
 extern "C" void surface_h_misalign_to_f (const CPP_surface_h_misalign& C, Opaque_surface_h_misalign_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<CPP_surface_h_misalign_pt>
+  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
   auto n1_pt { C.pt.size() };
   auto n2_pt { std::size_t{0} };
-  const CPP_surface_h_misalign_pt** z_pt { nullptr };
+  const C_TYPE** z_pt { nullptr };
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
-    z_pt = new const CPP_surface_h_misalign_pt* [n1_pt*n2_pt];
+    z_pt = new const C_TYPE* [n1_pt*n2_pt];
     for (auto i{0}; i < n1_pt; i++) {
       for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
@@ -1948,17 +1935,16 @@ extern "C" void surface_h_misalign_to_f (const CPP_surface_h_misalign& C, Opaque
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_h_misalign_to_c2 (CPP_surface_h_misalign& C, c_Bool& z_active,
-    c_RealArr z_dr, c_RealArr z_r0, Opaque_surface_h_misalign_pt_class** z_pt, Int n1_pt, Int
-    n2_pt) {
+extern "C" void surface_h_misalign_to_c2 (CPP_surface_h_misalign& C, C_ARG& z_active, C_ARGArr
+    z_dr, C_ARGArr z_r0, Opaque_surface_h_misalign_pt_class** z_pt, Int n1_pt, Int n2_pt) {
 
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.active = z_active;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.dr << z_dr;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.r0 << z_r0;
-  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_surface_h_misalign_pt>
+  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<C_TYPE>
   C.pt.resize(n1_pt);
   for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
@@ -1977,8 +1963,8 @@ extern "C" void surface_h_misalign_to_c2 (CPP_surface_h_misalign& C, c_Bool& z_a
 extern "C" void surface_displacement_pt_to_c (const Opaque_surface_displacement_pt_class*, CPP_surface_displacement_pt&);
 
 // c_side.to_f2_arg
-extern "C" void surface_displacement_pt_to_f2 (Opaque_surface_displacement_pt_class*, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void surface_displacement_pt_to_f2 (Opaque_surface_displacement_pt_class*, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void surface_displacement_pt_to_f (const CPP_surface_displacement_pt& C, Opaque_surface_displacement_pt_class* F) {
 
@@ -1988,20 +1974,20 @@ extern "C" void surface_displacement_pt_to_f (const CPP_surface_displacement_pt&
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_displacement_pt_to_c2 (CPP_surface_displacement_pt& C, c_Real& z_x0,
-    c_Real& z_y0, c_Real& z_z0, c_Real& z_dz_dx, c_Real& z_dz_dy, c_Real& z_d2z_dxdy) {
+extern "C" void surface_displacement_pt_to_c2 (CPP_surface_displacement_pt& C, C_ARG& z_x0,
+    C_ARG& z_y0, C_ARG& z_z0, C_ARG& z_dz_dx, C_ARG& z_dz_dy, C_ARG& z_d2z_dxdy) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x0 = z_x0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y0 = z_y0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z0 = z_z0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz_dx = z_dz_dx;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dz_dy = z_dz_dy;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.d2z_dxdy = z_d2z_dxdy;
 }
 
@@ -2012,18 +1998,18 @@ extern "C" void surface_displacement_pt_to_c2 (CPP_surface_displacement_pt& C, c
 extern "C" void surface_displacement_to_c (const Opaque_surface_displacement_class*, CPP_surface_displacement&);
 
 // c_side.to_f2_arg
-extern "C" void surface_displacement_to_f2 (Opaque_surface_displacement_class*, c_Bool&,
-    c_RealArr, c_RealArr, const CPP_surface_displacement_pt**, Int, Int);
+extern "C" void surface_displacement_to_f2 (Opaque_surface_displacement_class*, C_ARG&,
+    C_ARGArr, C_ARGArr, C_ARG**, Int, Int);
 
 extern "C" void surface_displacement_to_f (const CPP_surface_displacement& C, Opaque_surface_displacement_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<CPP_surface_displacement_pt>
+  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
   auto n1_pt { C.pt.size() };
   auto n2_pt { std::size_t{0} };
-  const CPP_surface_displacement_pt** z_pt { nullptr };
+  const C_TYPE** z_pt { nullptr };
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
-    z_pt = new const CPP_surface_displacement_pt* [n1_pt*n2_pt];
+    z_pt = new const C_TYPE* [n1_pt*n2_pt];
     for (auto i{0}; i < n1_pt; i++) {
       for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
@@ -2039,17 +2025,17 @@ extern "C" void surface_displacement_to_f (const CPP_surface_displacement& C, Op
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_displacement_to_c2 (CPP_surface_displacement& C, c_Bool& z_active,
-    c_RealArr z_dr, c_RealArr z_r0, Opaque_surface_displacement_pt_class** z_pt, Int n1_pt, Int
+extern "C" void surface_displacement_to_c2 (CPP_surface_displacement& C, C_ARG& z_active,
+    C_ARGArr z_dr, C_ARGArr z_r0, Opaque_surface_displacement_pt_class** z_pt, Int n1_pt, Int
     n2_pt) {
 
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.active = z_active;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.dr << z_dr;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.r0 << z_r0;
-  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_surface_displacement_pt>
+  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<C_TYPE>
   C.pt.resize(n1_pt);
   for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
@@ -2068,7 +2054,7 @@ extern "C" void surface_displacement_to_c2 (CPP_surface_displacement& C, c_Bool&
 extern "C" void target_point_to_c (const Opaque_target_point_class*, CPP_target_point&);
 
 // c_side.to_f2_arg
-extern "C" void target_point_to_f2 (Opaque_target_point_class*, c_RealArr);
+extern "C" void target_point_to_f2 (Opaque_target_point_class*, C_ARGArr);
 
 extern "C" void target_point_to_f (const CPP_target_point& C, Opaque_target_point_class* F) {
 
@@ -2078,9 +2064,9 @@ extern "C" void target_point_to_f (const CPP_target_point& C, Opaque_target_poin
 }
 
 // c_side.to_c2_arg
-extern "C" void target_point_to_c2 (CPP_target_point& C, c_RealArr z_r) {
+extern "C" void target_point_to_c2 (CPP_target_point& C, C_ARGArr z_r) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.r << z_r;
 }
 
@@ -2091,12 +2077,12 @@ extern "C" void target_point_to_c2 (CPP_target_point& C, c_RealArr z_r) {
 extern "C" void surface_curvature_to_c (const Opaque_surface_curvature_class*, CPP_surface_curvature&);
 
 // c_side.to_f2_arg
-extern "C" void surface_curvature_to_f2 (Opaque_surface_curvature_class*, c_RealArr, c_Real&,
-    c_RealArr, c_Bool&);
+extern "C" void surface_curvature_to_f2 (Opaque_surface_curvature_class*, C_ARGArr, C_ARG&,
+    C_ARGArr, C_ARG&);
 
 extern "C" void surface_curvature_to_f (const CPP_surface_curvature& C, Opaque_surface_curvature_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 7, 7>
-  Real z_xy[7*7]; matrix_to_vec(C.xy, z_xy);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 7, 7>
+  C_TYPE z_xy[7*7]; matrix_to_vec(C.xy, z_xy);
 
   // c_side.to_f2_call
   surface_curvature_to_f2 (F, z_xy, C.spherical, &C.elliptical[0], C.has_curvature);
@@ -2104,16 +2090,16 @@ extern "C" void surface_curvature_to_f (const CPP_surface_curvature& C, Opaque_s
 }
 
 // c_side.to_c2_arg
-extern "C" void surface_curvature_to_c2 (CPP_surface_curvature& C, c_RealArr z_xy, c_Real&
-    z_spherical, c_RealArr z_elliptical, c_Bool& z_has_curvature) {
+extern "C" void surface_curvature_to_c2 (CPP_surface_curvature& C, C_ARGArr z_xy, C_ARG&
+    z_spherical, C_ARGArr z_elliptical, C_ARG& z_has_curvature) {
 
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 7, 7>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 7, 7>
   C.xy << z_xy;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.spherical = z_spherical;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.elliptical << z_elliptical;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.has_curvature = z_has_curvature;
 }
 
@@ -2124,11 +2110,11 @@ extern "C" void surface_curvature_to_c2 (CPP_surface_curvature& C, c_RealArr z_x
 extern "C" void photon_target_to_c (const Opaque_photon_target_class*, CPP_photon_target&);
 
 // c_side.to_f2_arg
-extern "C" void photon_target_to_f2 (Opaque_photon_target_class*, c_Int&, c_Int&, const
-    CPP_lat_ele_loc&, const CPP_target_point**, const CPP_target_point&);
+extern "C" void photon_target_to_f2 (Opaque_photon_target_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG**, C_ARG&);
 
 extern "C" void photon_target_to_f (const CPP_photon_target& C, Opaque_photon_target_class* F) {
-  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<CPP_target_point, 8>
+  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<C_TYPE, 8>
   const CPP_target_point* z_corner[8];
   for (int i = 0; i < 8; i++) {z_corner[i] = &C.corner[i];}
 
@@ -2138,20 +2124,20 @@ extern "C" void photon_target_to_f (const CPP_photon_target& C, Opaque_photon_ta
 }
 
 // c_side.to_c2_arg
-extern "C" void photon_target_to_c2 (CPP_photon_target& C, c_Int& z_type, c_Int& z_n_corner,
+extern "C" void photon_target_to_c2 (CPP_photon_target& C, C_ARG& z_type, C_ARG& z_n_corner,
     const Opaque_lat_ele_loc_class* z_ele_loc, const Opaque_target_point_class** z_corner,
     const Opaque_target_point_class* z_center) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.type = z_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_corner = z_n_corner;
-  // c_side.to_c2_set[type, 0, NOT] CPP_lat_ele_loc
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   lat_ele_loc_to_c(z_ele_loc, C.ele_loc);
-  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<CPP_target_point, 8>
+  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<C_TYPE, 8>
 for (size_t i = 0; i < C.corner.size(); i++)
 { target_point_to_c(z_corner[i], C.corner[i]); }
-  // c_side.to_c2_set[type, 0, NOT] CPP_target_point
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   target_point_to_c(z_center, C.center);
 }
 
@@ -2162,8 +2148,8 @@ for (size_t i = 0; i < C.corner.size(); i++)
 extern "C" void photon_material_to_c (const Opaque_photon_material_class*, CPP_photon_material&);
 
 // c_side.to_f2_arg
-extern "C" void photon_material_to_f2 (Opaque_photon_material_class*, c_Complex&, c_Complex&,
-    c_Complex&, c_Complex&, c_Complex&, c_Complex&, c_RealArr, c_RealArr);
+extern "C" void photon_material_to_f2 (Opaque_photon_material_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARGArr);
 
 extern "C" void photon_material_to_f (const CPP_photon_material& C, Opaque_photon_material_class* F) {
 
@@ -2174,25 +2160,25 @@ extern "C" void photon_material_to_f (const CPP_photon_material& C, Opaque_photo
 }
 
 // c_side.to_c2_arg
-extern "C" void photon_material_to_c2 (CPP_photon_material& C, c_Complex& z_f0_m1, c_Complex&
-    z_f0_m2, c_Complex& z_f_0, c_Complex& z_f_h, c_Complex& z_f_hbar, c_Complex& z_f_hkl,
-    c_RealArr z_h_norm, c_RealArr z_l_ref) {
+extern "C" void photon_material_to_c2 (CPP_photon_material& C, C_ARG& z_f0_m1, C_ARG& z_f0_m2,
+    C_ARG& z_f_0, C_ARG& z_f_h, C_ARG& z_f_hbar, C_ARG& z_f_hkl, C_ARGArr z_h_norm, C_ARGArr
+    z_l_ref) {
 
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.f0_m1 = z_f0_m1;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.f0_m2 = z_f0_m2;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.f_0 = z_f_0;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.f_h = z_f_h;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.f_hbar = z_f_hbar;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.f_hkl = z_f_hkl;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.h_norm << z_h_norm;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.l_ref << z_l_ref;
 }
 
@@ -2203,8 +2189,8 @@ extern "C" void photon_material_to_c2 (CPP_photon_material& C, c_Complex& z_f0_m
 extern "C" void pixel_pt_to_c (const Opaque_pixel_pt_class*, CPP_pixel_pt&);
 
 // c_side.to_f2_arg
-extern "C" void pixel_pt_to_f2 (Opaque_pixel_pt_class*, c_Int8&, c_Complex&, c_Complex&,
-    c_Real&, c_Real&, c_Real&, c_RealArr, c_RealArr, c_RealArr, c_RealArr);
+extern "C" void pixel_pt_to_f2 (Opaque_pixel_pt_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARGArr, C_ARGArr, C_ARGArr, C_ARGArr);
 
 extern "C" void pixel_pt_to_f (const CPP_pixel_pt& C, Opaque_pixel_pt_class* F) {
 
@@ -2215,30 +2201,29 @@ extern "C" void pixel_pt_to_f (const CPP_pixel_pt& C, Opaque_pixel_pt_class* F) 
 }
 
 // c_side.to_c2_arg
-extern "C" void pixel_pt_to_c2 (CPP_pixel_pt& C, c_Int8& z_n_photon, c_Complex& z_E_x,
-    c_Complex& z_E_y, c_Real& z_intensity_x, c_Real& z_intensity_y, c_Real& z_intensity,
-    c_RealArr z_orbit, c_RealArr z_orbit_rms, c_RealArr z_init_orbit, c_RealArr
-    z_init_orbit_rms) {
+extern "C" void pixel_pt_to_c2 (CPP_pixel_pt& C, C_ARG& z_n_photon, C_ARG& z_E_x, C_ARG& z_E_y,
+    C_ARG& z_intensity_x, C_ARG& z_intensity_y, C_ARG& z_intensity, C_ARGArr z_orbit, C_ARGArr
+    z_orbit_rms, C_ARGArr z_init_orbit, C_ARGArr z_init_orbit_rms) {
 
-  // c_side.to_c2_set[integer8, 0, NOT] Int8
+  // c_side.to_c2_set[integer8, 0, NOT] C_TYPE
   C.n_photon = z_n_photon;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.E_x = z_E_x;
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.E_y = z_E_y;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.intensity_x = z_intensity_x;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.intensity_y = z_intensity_y;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.intensity = z_intensity;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.orbit << z_orbit;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.orbit_rms << z_orbit_rms;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.init_orbit << z_init_orbit;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.init_orbit_rms << z_init_orbit_rms;
 }
 
@@ -2249,18 +2234,18 @@ extern "C" void pixel_pt_to_c2 (CPP_pixel_pt& C, c_Int8& z_n_photon, c_Complex& 
 extern "C" void pixel_detec_to_c (const Opaque_pixel_detec_class*, CPP_pixel_detec&);
 
 // c_side.to_f2_arg
-extern "C" void pixel_detec_to_f2 (Opaque_pixel_detec_class*, c_RealArr, c_RealArr, c_Int8&,
-    c_Int8&, c_Int8&, const CPP_pixel_pt**, Int, Int);
+extern "C" void pixel_detec_to_f2 (Opaque_pixel_detec_class*, C_ARGArr, C_ARGArr, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG**, Int, Int);
 
 extern "C" void pixel_detec_to_f (const CPP_pixel_detec& C, Opaque_pixel_detec_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<CPP_pixel_pt>
+  // c_side.to_f_setup[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
   auto n1_pt { C.pt.size() };
   auto n2_pt { std::size_t{0} };
-  const CPP_pixel_pt** z_pt { nullptr };
+  const C_TYPE** z_pt { nullptr };
   if (n1_pt > 0) {
     n2_pt = C.pt[0].size();
-    z_pt = new const CPP_pixel_pt* [n1_pt*n2_pt];
+    z_pt = new const C_TYPE* [n1_pt*n2_pt];
     for (auto i{0}; i < n1_pt; i++) {
       for (auto j{0}; j < n2_pt; j++) {
         z_pt[i*n2_pt + j] = &C.pt[i][j];
@@ -2277,21 +2262,21 @@ extern "C" void pixel_detec_to_f (const CPP_pixel_detec& C, Opaque_pixel_detec_c
 }
 
 // c_side.to_c2_arg
-extern "C" void pixel_detec_to_c2 (CPP_pixel_detec& C, c_RealArr z_dr, c_RealArr z_r0, c_Int8&
-    z_n_track_tot, c_Int8& z_n_hit_detec, c_Int8& z_n_hit_pixel, Opaque_pixel_pt_class** z_pt,
+extern "C" void pixel_detec_to_c2 (CPP_pixel_detec& C, C_ARGArr z_dr, C_ARGArr z_r0, C_ARG&
+    z_n_track_tot, C_ARG& z_n_hit_detec, C_ARG& z_n_hit_pixel, Opaque_pixel_pt_class** z_pt,
     Int n1_pt, Int n2_pt) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.dr << z_dr;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.r0 << z_r0;
-  // c_side.to_c2_set[integer8, 0, NOT] Int8
+  // c_side.to_c2_set[integer8, 0, NOT] C_TYPE
   C.n_track_tot = z_n_track_tot;
-  // c_side.to_c2_set[integer8, 0, NOT] Int8
+  // c_side.to_c2_set[integer8, 0, NOT] C_TYPE
   C.n_hit_detec = z_n_hit_detec;
-  // c_side.to_c2_set[integer8, 0, NOT] Int8
+  // c_side.to_c2_set[integer8, 0, NOT] C_TYPE
   C.n_hit_pixel = z_n_hit_pixel;
-  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<CPP_pixel_pt>
+  // c_side.to_c2_set[type, 2, ALLOC] VariableArray2D<C_TYPE>
   C.pt.resize(n1_pt);
   for (auto i{0}; i < n1_pt; i++) {
     C.pt[i].resize(n2_pt);
@@ -2310,23 +2295,20 @@ extern "C" void pixel_detec_to_c2 (CPP_pixel_detec& C, c_RealArr z_dr, c_RealArr
 extern "C" void photon_element_to_c (const Opaque_photon_element_class*, CPP_photon_element&);
 
 // c_side.to_f2_arg
-extern "C" void photon_element_to_f2 (Opaque_photon_element_class*, const
-    CPP_surface_curvature&, const CPP_photon_target&, const CPP_photon_material&, const
-    CPP_surface_segmented&, const CPP_surface_h_misalign&, const CPP_surface_displacement&,
-    const CPP_pixel_detec&, c_Int&, const CPP_photon_reflect_table&, const
-    CPP_photon_reflect_table&, const CPP_spline**, Int, c_RealArr, Int);
+extern "C" void photon_element_to_f2 (Opaque_photon_element_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG**, Int, C_ARGArr, Int);
 
 extern "C" void photon_element_to_f (const CPP_photon_element& C, Opaque_photon_element_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_spline>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_init_energy_prob = C.init_energy_prob.size();
   const CPP_spline** z_init_energy_prob = nullptr;
   if (n1_init_energy_prob != 0) {
     z_init_energy_prob = new const CPP_spline*[n1_init_energy_prob];
     for (auto i{0}; i < n1_init_energy_prob; i++) z_init_energy_prob[i] = &C.init_energy_prob[i];
   }
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_integrated_init_energy_prob = C.integrated_init_energy_prob.size();
-  c_RealArr z_integrated_init_energy_prob = nullptr;
+  c_C_TYPEArr z_integrated_init_energy_prob = nullptr;
   if (n1_integrated_init_energy_prob > 0) {
     z_integrated_init_energy_prob = &C.integrated_init_energy_prob[0];
   }
@@ -2338,7 +2320,7 @@ extern "C" void photon_element_to_f (const CPP_photon_element& C, Opaque_photon_
       z_integrated_init_energy_prob, n1_integrated_init_energy_prob);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_init_energy_prob) delete[] z_init_energy_prob;
+  if (z_init_energy_prob) delete[] z_init_energy_prob;
 }
 
 // c_side.to_c2_arg
@@ -2347,36 +2329,36 @@ extern "C" void photon_element_to_c2 (CPP_photon_element& C, const
     const Opaque_photon_material_class* z_material, const Opaque_surface_segmented_class*
     z_segmented, const Opaque_surface_h_misalign_class* z_h_misalign, const
     Opaque_surface_displacement_class* z_displacement, const Opaque_pixel_detec_class* z_pixel,
-    c_Int& z_reflectivity_table_type, const Opaque_photon_reflect_table_class*
+    C_ARG& z_reflectivity_table_type, const Opaque_photon_reflect_table_class*
     z_reflectivity_table_sigma, const Opaque_photon_reflect_table_class*
     z_reflectivity_table_pi, Opaque_spline_class** z_init_energy_prob, Int n1_init_energy_prob,
-    c_RealArr z_integrated_init_energy_prob, Int n1_integrated_init_energy_prob) {
+    C_ARGArr z_integrated_init_energy_prob, Int n1_integrated_init_energy_prob) {
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_surface_curvature
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   surface_curvature_to_c(z_curvature, C.curvature);
-  // c_side.to_c2_set[type, 0, NOT] CPP_photon_target
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   photon_target_to_c(z_target, C.target);
-  // c_side.to_c2_set[type, 0, NOT] CPP_photon_material
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   photon_material_to_c(z_material, C.material);
-  // c_side.to_c2_set[type, 0, NOT] CPP_surface_segmented
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   surface_segmented_to_c(z_segmented, C.segmented);
-  // c_side.to_c2_set[type, 0, NOT] CPP_surface_h_misalign
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   surface_h_misalign_to_c(z_h_misalign, C.h_misalign);
-  // c_side.to_c2_set[type, 0, NOT] CPP_surface_displacement
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   surface_displacement_to_c(z_displacement, C.displacement);
-  // c_side.to_c2_set[type, 0, NOT] CPP_pixel_detec
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   pixel_detec_to_c(z_pixel, C.pixel);
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.reflectivity_table_type = z_reflectivity_table_type;
-  // c_side.to_c2_set[type, 0, NOT] CPP_photon_reflect_table
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   photon_reflect_table_to_c(z_reflectivity_table_sigma, C.reflectivity_table_sigma);
-  // c_side.to_c2_set[type, 0, NOT] CPP_photon_reflect_table
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   photon_reflect_table_to_c(z_reflectivity_table_pi, C.reflectivity_table_pi);
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_spline>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.init_energy_prob.resize(n1_init_energy_prob);
   for (auto i{0}; i < n1_init_energy_prob; i++) { spline_to_c(z_init_energy_prob[i], C.init_energy_prob[i]); }
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.integrated_init_energy_prob.resize(n1_integrated_init_energy_prob);
   C.integrated_init_energy_prob << z_integrated_init_energy_prob;
@@ -2390,8 +2372,8 @@ extern "C" void photon_element_to_c2 (CPP_photon_element& C, const
 extern "C" void wall3d_vertex_to_c (const Opaque_wall3d_vertex_class*, CPP_wall3d_vertex&);
 
 // c_side.to_f2_arg
-extern "C" void wall3d_vertex_to_f2 (Opaque_wall3d_vertex_class*, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Int&);
+extern "C" void wall3d_vertex_to_f2 (Opaque_wall3d_vertex_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void wall3d_vertex_to_f (const CPP_wall3d_vertex& C, Opaque_wall3d_vertex_class* F) {
 
@@ -2402,27 +2384,27 @@ extern "C" void wall3d_vertex_to_f (const CPP_wall3d_vertex& C, Opaque_wall3d_ve
 }
 
 // c_side.to_c2_arg
-extern "C" void wall3d_vertex_to_c2 (CPP_wall3d_vertex& C, c_Real& z_x, c_Real& z_y, c_Real&
-    z_radius_x, c_Real& z_radius_y, c_Real& z_tilt, c_Real& z_angle, c_Real& z_x0, c_Real&
-    z_y0, c_Int& z_type) {
+extern "C" void wall3d_vertex_to_c2 (CPP_wall3d_vertex& C, C_ARG& z_x, C_ARG& z_y, C_ARG&
+    z_radius_x, C_ARG& z_radius_y, C_ARG& z_tilt, C_ARG& z_angle, C_ARG& z_x0, C_ARG& z_y0,
+    C_ARG& z_type) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x = z_x;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y = z_y;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.radius_x = z_radius_x;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.radius_y = z_radius_y;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.tilt = z_tilt;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.angle = z_angle;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x0 = z_x0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y0 = z_y0;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.type = z_type;
 }
 
@@ -2433,20 +2415,19 @@ extern "C" void wall3d_vertex_to_c2 (CPP_wall3d_vertex& C, c_Real& z_x, c_Real& 
 extern "C" void wall3d_section_to_c (const Opaque_wall3d_section_class*, CPP_wall3d_section&);
 
 // c_side.to_f2_arg
-extern "C" void wall3d_section_to_f2 (Opaque_wall3d_section_class*, c_Char, c_Char, const
-    CPP_wall3d_vertex**, Int, const CPP_photon_reflect_surface&, Int, c_Int&, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Bool&, c_Real&, c_Real&, c_RealArr, c_Real&, c_Real&, c_RealArr,
-    c_RealArr, c_Real&, c_RealArr, c_RealArr);
+extern "C" void wall3d_section_to_f2 (Opaque_wall3d_section_class*, c_Char, c_Char, C_ARG**,
+    Int, C_ARG&, Int, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARGArr,
+    C_ARG&, C_ARG&, C_ARGArr, C_ARGArr, C_ARG&, C_ARGArr, C_ARGArr);
 
 extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_section_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_wall3d_vertex>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_v = C.v.size();
   const CPP_wall3d_vertex** z_v = nullptr;
   if (n1_v != 0) {
     z_v = new const CPP_wall3d_vertex*[n1_v];
     for (auto i{0}; i < n1_v; i++) z_v[i] = &C.v[i];
   }
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_photon_reflect_surface>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_surface = 0; if (C.surface != nullptr) n_surface = 1;
 
   // c_side.to_f2_call
@@ -2456,64 +2437,64 @@ extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_
       &C.y0_coef[0], C.dr_ds, &C.p1_coef[0], &C.p2_coef[0]);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_v) delete[] z_v;
+  if (z_v) delete[] z_v;
 }
 
 // c_side.to_c2_arg
 extern "C" void wall3d_section_to_c2 (CPP_wall3d_section& C, c_Char z_name, c_Char z_material,
     Opaque_wall3d_vertex_class** z_v, Int n1_v, Opaque_photon_reflect_surface_class* z_surface,
-    Int n_surface, c_Int& z_type, c_Int& z_n_vertex_input, c_Int& z_ix_ele, c_Int& z_ix_branch,
-    c_Int& z_vertices_state, c_Bool& z_patch_in_region, c_Real& z_thickness, c_Real& z_s,
-    c_RealArr z_r0, c_Real& z_dx0_ds, c_Real& z_dy0_ds, c_RealArr z_x0_coef, c_RealArr
-    z_y0_coef, c_Real& z_dr_ds, c_RealArr z_p1_coef, c_RealArr z_p2_coef) {
+    Int n_surface, C_ARG& z_type, C_ARG& z_n_vertex_input, C_ARG& z_ix_ele, C_ARG& z_ix_branch,
+    C_ARG& z_vertices_state, C_ARG& z_patch_in_region, C_ARG& z_thickness, C_ARG& z_s, C_ARGArr
+    z_r0, C_ARG& z_dx0_ds, C_ARG& z_dy0_ds, C_ARGArr z_x0_coef, C_ARGArr z_y0_coef, C_ARG&
+    z_dr_ds, C_ARGArr z_p1_coef, C_ARGArr z_p2_coef) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
   // c_side.to_c2_set[character, 0, NOT] string
   C.material = z_material;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wall3d_vertex>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.v.resize(n1_v);
   for (auto i{0}; i < n1_v; i++) { wall3d_vertex_to_c(z_v[i], C.v[i]); }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_photon_reflect_surface>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_surface == 0) {
     C.surface = nullptr;
   } else {
-    C.surface = make_shared<CPP_photon_reflect_surface>();
+    C.surface = make_shared<C_TYPE>();
     photon_reflect_surface_to_c(z_surface, *C.surface);
   }
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.type = z_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_vertex_input = z_n_vertex_input;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_branch = z_ix_branch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.vertices_state = z_vertices_state;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.patch_in_region = z_patch_in_region;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.thickness = z_thickness;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.s = z_s;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.r0 << z_r0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dx0_ds = z_dx0_ds;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dy0_ds = z_dy0_ds;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 4>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 4>
   C.x0_coef << z_x0_coef;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 4>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 4>
   C.y0_coef << z_y0_coef;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dr_ds = z_dr_ds;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.p1_coef << z_p1_coef;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.p2_coef << z_p2_coef;
 }
 
@@ -2524,11 +2505,11 @@ extern "C" void wall3d_section_to_c2 (CPP_wall3d_section& C, c_Char z_name, c_Ch
 extern "C" void wall3d_to_c (const Opaque_wall3d_class*, CPP_wall3d&);
 
 // c_side.to_f2_arg
-extern "C" void wall3d_to_f2 (Opaque_wall3d_class*, c_Char, c_Int&, c_Int&, c_Int&, c_Real&,
-    c_Char, c_Char, c_Bool&, c_Int&, const CPP_wall3d_section**, Int);
+extern "C" void wall3d_to_f2 (Opaque_wall3d_class*, c_Char, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    c_Char, c_Char, C_ARG&, C_ARG&, C_ARG**, Int);
 
 extern "C" void wall3d_to_f (const CPP_wall3d& C, Opaque_wall3d_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_wall3d_section>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_section = C.section.size();
   const CPP_wall3d_section** z_section = nullptr;
   if (n1_section != 0) {
@@ -2542,34 +2523,34 @@ extern "C" void wall3d_to_f (const CPP_wall3d& C, Opaque_wall3d_class* F) {
       z_section, n1_section);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_section) delete[] z_section;
+  if (z_section) delete[] z_section;
 }
 
 // c_side.to_c2_arg
-extern "C" void wall3d_to_c2 (CPP_wall3d& C, c_Char z_name, c_Int& z_type, c_Int& z_ix_wall3d,
-    c_Int& z_n_link, c_Real& z_thickness, c_Char z_clear_material, c_Char z_opaque_material,
-    c_Bool& z_superimpose, c_Int& z_ele_anchor_pt, Opaque_wall3d_section_class** z_section, Int
+extern "C" void wall3d_to_c2 (CPP_wall3d& C, c_Char z_name, C_ARG& z_type, C_ARG& z_ix_wall3d,
+    C_ARG& z_n_link, C_ARG& z_thickness, c_Char z_clear_material, c_Char z_opaque_material,
+    C_ARG& z_superimpose, C_ARG& z_ele_anchor_pt, Opaque_wall3d_section_class** z_section, Int
     n1_section) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.type = z_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_wall3d = z_ix_wall3d;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_link = z_n_link;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.thickness = z_thickness;
   // c_side.to_c2_set[character, 0, NOT] string
   C.clear_material = z_clear_material;
   // c_side.to_c2_set[character, 0, NOT] string
   C.opaque_material = z_opaque_material;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.superimpose = z_superimpose;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ele_anchor_pt = z_ele_anchor_pt;
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_wall3d_section>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.section.resize(n1_section);
   for (auto i{0}; i < n1_section; i++) { wall3d_section_to_c(z_section[i], C.section[i]); }
 
@@ -2582,10 +2563,10 @@ extern "C" void wall3d_to_c2 (CPP_wall3d& C, c_Char z_name, c_Int& z_type, c_Int
 extern "C" void ramper_lord_to_c (const Opaque_ramper_lord_class*, CPP_ramper_lord&);
 
 // c_side.to_f2_arg
-extern "C" void ramper_lord_to_f2 (Opaque_ramper_lord_class*, c_Int&, c_Int&, c_RealArr, Int);
+extern "C" void ramper_lord_to_f2 (Opaque_ramper_lord_class*, C_ARG&, C_ARG&, C_ARGArr, Int);
 
 extern "C" void ramper_lord_to_f (const CPP_ramper_lord& C, Opaque_ramper_lord_class* F) {
-  // c_side.to_f_setup[real, 0, PTR] shared_ptr<Real>
+  // c_side.to_f_setup[real, 0, PTR] shared_ptr<C_TYPE>
   size_t n_attrib_ptr = 0; if (C.attrib_ptr != nullptr) n_attrib_ptr = 1;
 
   // c_side.to_f2_call
@@ -2594,18 +2575,18 @@ extern "C" void ramper_lord_to_f (const CPP_ramper_lord& C, Opaque_ramper_lord_c
 }
 
 // c_side.to_c2_arg
-extern "C" void ramper_lord_to_c2 (CPP_ramper_lord& C, c_Int& z_ix_ele, c_Int& z_ix_con,
-    c_RealArr z_attrib_ptr, Int n_attrib_ptr) {
+extern "C" void ramper_lord_to_c2 (CPP_ramper_lord& C, C_ARG& z_ix_ele, C_ARG& z_ix_con,
+    C_ARGArr z_attrib_ptr, Int n_attrib_ptr) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_con = z_ix_con;
-  // c_side.to_c2_set[real, 0, PTR] shared_ptr<Real>
+  // c_side.to_c2_set[real, 0, PTR] shared_ptr<C_TYPE>
   if (n_attrib_ptr == 0) {
     C.attrib_ptr = nullptr;
   } else {
-    C.attrib_ptr = make_shared<Real>();
+    C.attrib_ptr = make_shared<C_TYPE>();
     *C.attrib_ptr = *z_attrib_ptr;
   }
 
@@ -2618,18 +2599,17 @@ extern "C" void ramper_lord_to_c2 (CPP_ramper_lord& C, c_Int& z_ix_ele, c_Int& z
 extern "C" void control_to_c (const Opaque_control_class*, CPP_control&);
 
 // c_side.to_f2_arg
-extern "C" void control_to_f2 (Opaque_control_class*, c_Real&, c_RealArr, Int, const
-    CPP_expression_atom**, Int, const CPP_lat_ele_loc&, const CPP_lat_ele_loc&, c_Char, c_Char,
-    c_Int&);
+extern "C" void control_to_f2 (Opaque_control_class*, C_ARG&, C_ARGArr, Int, C_ARG**, Int,
+    C_ARG&, C_ARG&, c_Char, c_Char, C_ARG&);
 
 extern "C" void control_to_f (const CPP_control& C, Opaque_control_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_y_knot = C.y_knot.size();
-  c_RealArr z_y_knot = nullptr;
+  c_C_TYPEArr z_y_knot = nullptr;
   if (n1_y_knot > 0) {
     z_y_knot = &C.y_knot[0];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_stack = C.stack.size();
   const CPP_expression_atom** z_stack = nullptr;
   if (n1_stack != 0) {
@@ -2642,35 +2622,35 @@ extern "C" void control_to_f (const CPP_control& C, Opaque_control_class* F) {
       C.slave_name.c_str(), C.attribute.c_str(), C.ix_attrib);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_stack) delete[] z_stack;
+  if (z_stack) delete[] z_stack;
 }
 
 // c_side.to_c2_arg
-extern "C" void control_to_c2 (CPP_control& C, c_Real& z_value, c_RealArr z_y_knot, Int
+extern "C" void control_to_c2 (CPP_control& C, C_ARG& z_value, C_ARGArr z_y_knot, Int
     n1_y_knot, Opaque_expression_atom_class** z_stack, Int n1_stack, const
     Opaque_lat_ele_loc_class* z_slave, const Opaque_lat_ele_loc_class* z_lord, c_Char
-    z_slave_name, c_Char z_attribute, c_Int& z_ix_attrib) {
+    z_slave_name, c_Char z_attribute, C_ARG& z_ix_attrib) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.value = z_value;
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.y_knot.resize(n1_y_knot);
   C.y_knot << z_y_knot;
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.stack.resize(n1_stack);
   for (auto i{0}; i < n1_stack; i++) { expression_atom_to_c(z_stack[i], C.stack[i]); }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_lat_ele_loc
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   lat_ele_loc_to_c(z_slave, C.slave);
-  // c_side.to_c2_set[type, 0, NOT] CPP_lat_ele_loc
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   lat_ele_loc_to_c(z_lord, C.lord);
   // c_side.to_c2_set[character, 0, NOT] string
   C.slave_name = z_slave_name;
   // c_side.to_c2_set[character, 0, NOT] string
   C.attribute = z_attribute;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_attrib = z_ix_attrib;
 }
 
@@ -2681,7 +2661,7 @@ extern "C" void control_to_c2 (CPP_control& C, c_Real& z_value, c_RealArr z_y_kn
 extern "C" void control_var1_to_c (const Opaque_control_var1_class*, CPP_control_var1&);
 
 // c_side.to_f2_arg
-extern "C" void control_var1_to_f2 (Opaque_control_var1_class*, c_Char, c_Real&, c_Real&);
+extern "C" void control_var1_to_f2 (Opaque_control_var1_class*, c_Char, C_ARG&, C_ARG&);
 
 extern "C" void control_var1_to_f (const CPP_control_var1& C, Opaque_control_var1_class* F) {
 
@@ -2691,14 +2671,14 @@ extern "C" void control_var1_to_f (const CPP_control_var1& C, Opaque_control_var
 }
 
 // c_side.to_c2_arg
-extern "C" void control_var1_to_c2 (CPP_control_var1& C, c_Char z_name, c_Real& z_value,
-    c_Real& z_old_value) {
+extern "C" void control_var1_to_c2 (CPP_control_var1& C, c_Char z_name, C_ARG& z_value, C_ARG&
+    z_old_value) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.value = z_value;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.old_value = z_old_value;
 }
 
@@ -2709,17 +2689,17 @@ extern "C" void control_var1_to_c2 (CPP_control_var1& C, c_Char z_name, c_Real& 
 extern "C" void control_ramp1_to_c (const Opaque_control_ramp1_class*, CPP_control_ramp1&);
 
 // c_side.to_f2_arg
-extern "C" void control_ramp1_to_f2 (Opaque_control_ramp1_class*, c_RealArr, Int, const
-    CPP_expression_atom**, Int, c_Char, c_Char, c_Bool&);
+extern "C" void control_ramp1_to_f2 (Opaque_control_ramp1_class*, C_ARGArr, Int, C_ARG**, Int,
+    c_Char, c_Char, C_ARG&);
 
 extern "C" void control_ramp1_to_f (const CPP_control_ramp1& C, Opaque_control_ramp1_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_y_knot = C.y_knot.size();
-  c_RealArr z_y_knot = nullptr;
+  c_C_TYPEArr z_y_knot = nullptr;
   if (n1_y_knot > 0) {
     z_y_knot = &C.y_knot[0];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_stack = C.stack.size();
   const CPP_expression_atom** z_stack = nullptr;
   if (n1_stack != 0) {
@@ -2732,20 +2712,20 @@ extern "C" void control_ramp1_to_f (const CPP_control_ramp1& C, Opaque_control_r
       C.slave_name.c_str(), C.is_controller);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_stack) delete[] z_stack;
+  if (z_stack) delete[] z_stack;
 }
 
 // c_side.to_c2_arg
-extern "C" void control_ramp1_to_c2 (CPP_control_ramp1& C, c_RealArr z_y_knot, Int n1_y_knot,
+extern "C" void control_ramp1_to_c2 (CPP_control_ramp1& C, C_ARGArr z_y_knot, Int n1_y_knot,
     Opaque_expression_atom_class** z_stack, Int n1_stack, c_Char z_attribute, c_Char
-    z_slave_name, c_Bool& z_is_controller) {
+    z_slave_name, C_ARG& z_is_controller) {
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.y_knot.resize(n1_y_knot);
   C.y_knot << z_y_knot;
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.stack.resize(n1_stack);
   for (auto i{0}; i < n1_stack; i++) { expression_atom_to_c(z_stack[i], C.stack[i]); }
 
@@ -2753,7 +2733,7 @@ extern "C" void control_ramp1_to_c2 (CPP_control_ramp1& C, c_RealArr z_y_knot, I
   C.attribute = z_attribute;
   // c_side.to_c2_set[character, 0, NOT] string
   C.slave_name = z_slave_name;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.is_controller = z_is_controller;
 }
 
@@ -2764,34 +2744,34 @@ extern "C" void control_ramp1_to_c2 (CPP_control_ramp1& C, c_RealArr z_y_knot, I
 extern "C" void controller_to_c (const Opaque_controller_class*, CPP_controller&);
 
 // c_side.to_f2_arg
-extern "C" void controller_to_f2 (Opaque_controller_class*, const CPP_control_var1**, Int,
-    const CPP_control_ramp1**, Int, const CPP_ramper_lord**, Int, c_RealArr, Int);
+extern "C" void controller_to_f2 (Opaque_controller_class*, C_ARG**, Int, C_ARG**, Int,
+    C_ARG**, Int, C_ARGArr, Int);
 
 extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_control_var1>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_var = C.var.size();
   const CPP_control_var1** z_var = nullptr;
   if (n1_var != 0) {
     z_var = new const CPP_control_var1*[n1_var];
     for (auto i{0}; i < n1_var; i++) z_var[i] = &C.var[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_control_ramp1>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_ramp = C.ramp.size();
   const CPP_control_ramp1** z_ramp = nullptr;
   if (n1_ramp != 0) {
     z_ramp = new const CPP_control_ramp1*[n1_ramp];
     for (auto i{0}; i < n1_ramp; i++) z_ramp[i] = &C.ramp[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_ramper_lord>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_ramper_lord = C.ramper_lord.size();
   const CPP_ramper_lord** z_ramper_lord = nullptr;
   if (n1_ramper_lord != 0) {
     z_ramper_lord = new const CPP_ramper_lord*[n1_ramper_lord];
     for (auto i{0}; i < n1_ramper_lord; i++) z_ramper_lord[i] = &C.ramper_lord[i];
   }
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_x_knot = C.x_knot.size();
-  c_RealArr z_x_knot = nullptr;
+  c_C_TYPEArr z_x_knot = nullptr;
   if (n1_x_knot > 0) {
     z_x_knot = &C.x_knot[0];
   }
@@ -2801,31 +2781,31 @@ extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_clas
       n1_x_knot);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_var) delete[] z_var;
+  if (z_var) delete[] z_var;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_ramp) delete[] z_ramp;
+  if (z_ramp) delete[] z_ramp;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_ramper_lord) delete[] z_ramper_lord;
+  if (z_ramper_lord) delete[] z_ramper_lord;
 }
 
 // c_side.to_c2_arg
 extern "C" void controller_to_c2 (CPP_controller& C, Opaque_control_var1_class** z_var, Int
     n1_var, Opaque_control_ramp1_class** z_ramp, Int n1_ramp, Opaque_ramper_lord_class**
-    z_ramper_lord, Int n1_ramper_lord, c_RealArr z_x_knot, Int n1_x_knot) {
+    z_ramper_lord, Int n1_ramper_lord, C_ARGArr z_x_knot, Int n1_x_knot) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_control_var1>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.var.resize(n1_var);
   for (auto i{0}; i < n1_var; i++) { control_var1_to_c(z_var[i], C.var[i]); }
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_control_ramp1>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.ramp.resize(n1_ramp);
   for (auto i{0}; i < n1_ramp; i++) { control_ramp1_to_c(z_ramp[i], C.ramp[i]); }
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_ramper_lord>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.ramper_lord.resize(n1_ramper_lord);
   for (auto i{0}; i < n1_ramper_lord; i++) { ramper_lord_to_c(z_ramper_lord[i], C.ramper_lord[i]); }
 
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.x_knot.resize(n1_x_knot);
   C.x_knot << z_x_knot;
@@ -2839,8 +2819,8 @@ extern "C" void controller_to_c2 (CPP_controller& C, Opaque_control_var1_class**
 extern "C" void ellipse_beam_init_to_c (const Opaque_ellipse_beam_init_class*, CPP_ellipse_beam_init&);
 
 // c_side.to_f2_arg
-extern "C" void ellipse_beam_init_to_f2 (Opaque_ellipse_beam_init_class*, c_Int&, c_Int&,
-    c_Real&);
+extern "C" void ellipse_beam_init_to_f2 (Opaque_ellipse_beam_init_class*, C_ARG&, C_ARG&,
+    C_ARG&);
 
 extern "C" void ellipse_beam_init_to_f (const CPP_ellipse_beam_init& C, Opaque_ellipse_beam_init_class* F) {
 
@@ -2850,14 +2830,14 @@ extern "C" void ellipse_beam_init_to_f (const CPP_ellipse_beam_init& C, Opaque_e
 }
 
 // c_side.to_c2_arg
-extern "C" void ellipse_beam_init_to_c2 (CPP_ellipse_beam_init& C, c_Int& z_part_per_ellipse,
-    c_Int& z_n_ellipse, c_Real& z_sigma_cutoff) {
+extern "C" void ellipse_beam_init_to_c2 (CPP_ellipse_beam_init& C, C_ARG& z_part_per_ellipse,
+    C_ARG& z_n_ellipse, C_ARG& z_sigma_cutoff) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.part_per_ellipse = z_part_per_ellipse;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_ellipse = z_n_ellipse;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigma_cutoff = z_sigma_cutoff;
 }
 
@@ -2868,7 +2848,7 @@ extern "C" void ellipse_beam_init_to_c2 (CPP_ellipse_beam_init& C, c_Int& z_part
 extern "C" void kv_beam_init_to_c (const Opaque_kv_beam_init_class*, CPP_kv_beam_init&);
 
 // c_side.to_f2_arg
-extern "C" void kv_beam_init_to_f2 (Opaque_kv_beam_init_class*, c_IntArr, c_Int&, c_Real&);
+extern "C" void kv_beam_init_to_f2 (Opaque_kv_beam_init_class*, C_ARGArr, C_ARG&, C_ARG&);
 
 extern "C" void kv_beam_init_to_f (const CPP_kv_beam_init& C, Opaque_kv_beam_init_class* F) {
 
@@ -2878,14 +2858,14 @@ extern "C" void kv_beam_init_to_f (const CPP_kv_beam_init& C, Opaque_kv_beam_ini
 }
 
 // c_side.to_c2_arg
-extern "C" void kv_beam_init_to_c2 (CPP_kv_beam_init& C, c_IntArr z_part_per_phi, c_Int&
-    z_n_I2, c_Real& z_A) {
+extern "C" void kv_beam_init_to_c2 (CPP_kv_beam_init& C, C_ARGArr z_part_per_phi, C_ARG&
+    z_n_I2, C_ARG& z_A) {
 
-  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<Int, 2>
+  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.part_per_phi << z_part_per_phi;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_I2 = z_n_I2;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.A = z_A;
 }
 
@@ -2896,8 +2876,8 @@ extern "C" void kv_beam_init_to_c2 (CPP_kv_beam_init& C, c_IntArr z_part_per_phi
 extern "C" void grid_beam_init_to_c (const Opaque_grid_beam_init_class*, CPP_grid_beam_init&);
 
 // c_side.to_f2_arg
-extern "C" void grid_beam_init_to_f2 (Opaque_grid_beam_init_class*, c_Int&, c_Int&, c_Real&,
-    c_Real&, c_Real&, c_Real&);
+extern "C" void grid_beam_init_to_f2 (Opaque_grid_beam_init_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void grid_beam_init_to_f (const CPP_grid_beam_init& C, Opaque_grid_beam_init_class* F) {
 
@@ -2907,20 +2887,20 @@ extern "C" void grid_beam_init_to_f (const CPP_grid_beam_init& C, Opaque_grid_be
 }
 
 // c_side.to_c2_arg
-extern "C" void grid_beam_init_to_c2 (CPP_grid_beam_init& C, c_Int& z_n_x, c_Int& z_n_px,
-    c_Real& z_x_min, c_Real& z_x_max, c_Real& z_px_min, c_Real& z_px_max) {
+extern "C" void grid_beam_init_to_c2 (CPP_grid_beam_init& C, C_ARG& z_n_x, C_ARG& z_n_px,
+    C_ARG& z_x_min, C_ARG& z_x_max, C_ARG& z_px_min, C_ARG& z_px_max) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_x = z_n_x;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_px = z_n_px;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x_min = z_x_min;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x_max = z_x_max;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.px_min = z_px_min;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.px_max = z_px_max;
 }
 
@@ -2931,20 +2911,19 @@ extern "C" void grid_beam_init_to_c2 (CPP_grid_beam_init& C, c_Int& z_n_x, c_Int
 extern "C" void beam_init_to_c (const Opaque_beam_init_class*, CPP_beam_init&);
 
 // c_side.to_f2_arg
-extern "C" void beam_init_to_f2 (Opaque_beam_init_class*, c_Char, c_Char*, c_RealArr, const
-    CPP_ellipse_beam_init**, const CPP_kv_beam_init&, const CPP_grid_beam_init**, c_RealArr,
-    c_RealArr, c_Real&, c_Real&, c_Int&, c_Bool&, c_Bool&, c_Char, c_Char, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_RealArr, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Int&, c_Int&, c_Char, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Char);
+extern "C" void beam_init_to_f2 (Opaque_beam_init_class*, c_Char, c_Char*, C_ARGArr, C_ARG**,
+    C_ARG&, C_ARG**, C_ARGArr, C_ARGArr, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, c_Char,
+    c_Char, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, c_Char, C_ARG&, C_ARG&, C_ARG&, C_ARG&, c_Char);
 
 extern "C" void beam_init_to_f (const CPP_beam_init& C, Opaque_beam_init_class* F) {
   // c_side.to_f_setup[character, 1, NOT] FixedArray1D<string, 3>
   c_Char z_distribution_type[3];
   for (auto i{0}; i < 3; i++) {z_distribution_type[i] = C.distribution_type[i].c_str();}
-  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<CPP_ellipse_beam_init, 3>
+  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<C_TYPE, 3>
   const CPP_ellipse_beam_init* z_ellipse[3];
   for (int i = 0; i < 3; i++) {z_ellipse[i] = &C.ellipse[i];}
-  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<CPP_grid_beam_init, 3>
+  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<C_TYPE, 3>
   const CPP_grid_beam_init* z_grid[3];
   for (int i = 0; i < 3; i++) {z_grid[i] = &C.grid[i];}
 
@@ -2961,86 +2940,86 @@ extern "C" void beam_init_to_f (const CPP_beam_init& C, Opaque_beam_init_class* 
 
 // c_side.to_c2_arg
 extern "C" void beam_init_to_c2 (CPP_beam_init& C, c_Char z_position_file, c_Char*
-    z_distribution_type, c_RealArr z_spin, const Opaque_ellipse_beam_init_class** z_ellipse,
-    const Opaque_kv_beam_init_class* z_KV, const Opaque_grid_beam_init_class** z_grid,
-    c_RealArr z_center_jitter, c_RealArr z_emit_jitter, c_Real& z_sig_z_jitter, c_Real&
-    z_sig_pz_jitter, c_Int& z_n_particle, c_Bool& z_renorm_center, c_Bool& z_renorm_sigma,
-    c_Char z_random_engine, c_Char z_random_gauss_converter, c_Real& z_random_sigma_cutoff,
-    c_Real& z_a_norm_emit, c_Real& z_b_norm_emit, c_Real& z_a_emit, c_Real& z_b_emit, c_Real&
-    z_dPz_dz, c_RealArr z_center, c_Real& z_t_offset, c_Real& z_dt_bunch, c_Real& z_sig_z,
-    c_Real& z_sig_pz, c_Real& z_bunch_charge, c_Int& z_n_bunch, c_Int& z_ix_turn, c_Char
-    z_species, c_Bool& z_full_6D_coupling_calc, c_Bool& z_use_particle_start, c_Bool&
-    z_use_t_coords, c_Bool& z_use_z_as_t, c_Char z_file_name) {
+    z_distribution_type, C_ARGArr z_spin, const Opaque_ellipse_beam_init_class** z_ellipse,
+    const Opaque_kv_beam_init_class* z_KV, const Opaque_grid_beam_init_class** z_grid, C_ARGArr
+    z_center_jitter, C_ARGArr z_emit_jitter, C_ARG& z_sig_z_jitter, C_ARG& z_sig_pz_jitter,
+    C_ARG& z_n_particle, C_ARG& z_renorm_center, C_ARG& z_renorm_sigma, c_Char z_random_engine,
+    c_Char z_random_gauss_converter, C_ARG& z_random_sigma_cutoff, C_ARG& z_a_norm_emit, C_ARG&
+    z_b_norm_emit, C_ARG& z_a_emit, C_ARG& z_b_emit, C_ARG& z_dPz_dz, C_ARGArr z_center, C_ARG&
+    z_t_offset, C_ARG& z_dt_bunch, C_ARG& z_sig_z, C_ARG& z_sig_pz, C_ARG& z_bunch_charge,
+    C_ARG& z_n_bunch, C_ARG& z_ix_turn, c_Char z_species, C_ARG& z_full_6D_coupling_calc,
+    C_ARG& z_use_particle_start, C_ARG& z_use_t_coords, C_ARG& z_use_z_as_t, c_Char
+    z_file_name) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.position_file = z_position_file;
   // c_side.to_c2_set[character, 1, NOT] FixedArray1D<string, 3>
   for (size_t i = 0; i < C.distribution_type.size(); i++) C.distribution_type[i] = z_distribution_type[i];
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.spin << z_spin;
-  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<CPP_ellipse_beam_init, 3>
+  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<C_TYPE, 3>
 for (size_t i = 0; i < C.ellipse.size(); i++)
 { ellipse_beam_init_to_c(z_ellipse[i], C.ellipse[i]); }
-  // c_side.to_c2_set[type, 0, NOT] CPP_kv_beam_init
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   kv_beam_init_to_c(z_KV, C.KV);
-  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<CPP_grid_beam_init, 3>
+  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<C_TYPE, 3>
 for (size_t i = 0; i < C.grid.size(); i++)
 { grid_beam_init_to_c(z_grid[i], C.grid[i]); }
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.center_jitter << z_center_jitter;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 2>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 2>
   C.emit_jitter << z_emit_jitter;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_z_jitter = z_sig_z_jitter;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_pz_jitter = z_sig_pz_jitter;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_particle = z_n_particle;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.renorm_center = z_renorm_center;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.renorm_sigma = z_renorm_sigma;
   // c_side.to_c2_set[character, 0, NOT] string
   C.random_engine = z_random_engine;
   // c_side.to_c2_set[character, 0, NOT] string
   C.random_gauss_converter = z_random_gauss_converter;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.random_sigma_cutoff = z_random_sigma_cutoff;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_norm_emit = z_a_norm_emit;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_norm_emit = z_b_norm_emit;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_emit = z_a_emit;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_emit = z_b_emit;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dPz_dz = z_dPz_dz;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.center << z_center;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.t_offset = z_t_offset;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dt_bunch = z_dt_bunch;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_z = z_sig_z;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_pz = z_sig_pz;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.bunch_charge = z_bunch_charge;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_bunch = z_n_bunch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_turn = z_ix_turn;
   // c_side.to_c2_set[character, 0, NOT] string
   C.species = z_species;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.full_6D_coupling_calc = z_full_6D_coupling_calc;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.use_particle_start = z_use_particle_start;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.use_t_coords = z_use_t_coords;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.use_z_as_t = z_use_z_as_t;
   // c_side.to_c2_set[character, 0, NOT] string
   C.file_name = z_file_name;
@@ -3053,15 +3032,15 @@ for (size_t i = 0; i < C.grid.size(); i++)
 extern "C" void lat_param_to_c (const Opaque_lat_param_class*, CPP_lat_param&);
 
 // c_side.to_f2_arg
-extern "C" void lat_param_to_f2 (Opaque_lat_param_class*, c_Real&, c_Real&, c_Real&, c_RealArr,
-    c_RealArr, c_Real&, c_Int&, c_Int&, c_Int&, c_Int&, c_Bool&, c_Bool&, c_Real&, c_Real&,
-    c_Real&, const CPP_bookkeeping_state&, const CPP_beam_init&);
+extern "C" void lat_param_to_f2 (Opaque_lat_param_class*, C_ARG&, C_ARG&, C_ARG&, C_ARGArr,
+    C_ARGArr, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&);
 
 extern "C" void lat_param_to_f (const CPP_lat_param& C, Opaque_lat_param_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_t1_with_RF[6*6]; matrix_to_vec(C.t1_with_RF, z_t1_with_RF);
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_t1_no_RF[6*6]; matrix_to_vec(C.t1_no_RF, z_t1_no_RF);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_t1_with_RF[6*6]; matrix_to_vec(C.t1_with_RF, z_t1_with_RF);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_t1_no_RF[6*6]; matrix_to_vec(C.t1_no_RF, z_t1_no_RF);
 
   // c_side.to_f2_call
   lat_param_to_f2 (F, C.n_part, C.total_length, C.unstable_factor, z_t1_with_RF, z_t1_no_RF,
@@ -3072,46 +3051,46 @@ extern "C" void lat_param_to_f (const CPP_lat_param& C, Opaque_lat_param_class* 
 }
 
 // c_side.to_c2_arg
-extern "C" void lat_param_to_c2 (CPP_lat_param& C, c_Real& z_n_part, c_Real& z_total_length,
-    c_Real& z_unstable_factor, c_RealArr z_t1_with_RF, c_RealArr z_t1_no_RF, c_Real&
-    z_spin_tune, c_Int& z_particle, c_Int& z_default_tracking_species, c_Int& z_geometry,
-    c_Int& z_ixx, c_Bool& z_stable, c_Bool& z_live_branch, c_Real& z_g1_integral, c_Real&
-    z_g2_integral, c_Real& z_g3_integral, const Opaque_bookkeeping_state_class*
-    z_bookkeeping_state, const Opaque_beam_init_class* z_beam_init) {
+extern "C" void lat_param_to_c2 (CPP_lat_param& C, C_ARG& z_n_part, C_ARG& z_total_length,
+    C_ARG& z_unstable_factor, C_ARGArr z_t1_with_RF, C_ARGArr z_t1_no_RF, C_ARG& z_spin_tune,
+    C_ARG& z_particle, C_ARG& z_default_tracking_species, C_ARG& z_geometry, C_ARG& z_ixx,
+    C_ARG& z_stable, C_ARG& z_live_branch, C_ARG& z_g1_integral, C_ARG& z_g2_integral, C_ARG&
+    z_g3_integral, const Opaque_bookkeeping_state_class* z_bookkeeping_state, const
+    Opaque_beam_init_class* z_beam_init) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.n_part = z_n_part;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.total_length = z_total_length;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.unstable_factor = z_unstable_factor;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.t1_with_RF << z_t1_with_RF;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.t1_no_RF << z_t1_no_RF;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.spin_tune = z_spin_tune;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.particle = z_particle;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.default_tracking_species = z_default_tracking_species;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.geometry = z_geometry;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ixx = z_ixx;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.stable = z_stable;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.live_branch = z_live_branch;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.g1_integral = z_g1_integral;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.g2_integral = z_g2_integral;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.g3_integral = z_g3_integral;
-  // c_side.to_c2_set[type, 0, NOT] CPP_bookkeeping_state
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   bookkeeping_state_to_c(z_bookkeeping_state, C.bookkeeping_state);
-  // c_side.to_c2_set[type, 0, NOT] CPP_beam_init
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   beam_init_to_c(z_beam_init, C.beam_init);
 }
 
@@ -3122,8 +3101,8 @@ extern "C" void lat_param_to_c2 (CPP_lat_param& C, c_Real& z_n_part, c_Real& z_t
 extern "C" void mode_info_to_c (const Opaque_mode_info_class*, CPP_mode_info&);
 
 // c_side.to_f2_arg
-extern "C" void mode_info_to_f2 (Opaque_mode_info_class*, c_Bool&, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&);
+extern "C" void mode_info_to_f2 (Opaque_mode_info_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&);
 
 extern "C" void mode_info_to_f (const CPP_mode_info& C, Opaque_mode_info_class* F) {
 
@@ -3133,20 +3112,20 @@ extern "C" void mode_info_to_f (const CPP_mode_info& C, Opaque_mode_info_class* 
 }
 
 // c_side.to_c2_arg
-extern "C" void mode_info_to_c2 (CPP_mode_info& C, c_Bool& z_stable, c_Real& z_tune, c_Real&
-    z_emit, c_Real& z_chrom, c_Real& z_sigma, c_Real& z_sigmap) {
+extern "C" void mode_info_to_c2 (CPP_mode_info& C, C_ARG& z_stable, C_ARG& z_tune, C_ARG&
+    z_emit, C_ARG& z_chrom, C_ARG& z_sigma, C_ARG& z_sigmap) {
 
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.stable = z_stable;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.tune = z_tune;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.emit = z_emit;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.chrom = z_chrom;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigma = z_sigma;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigmap = z_sigmap;
 }
 
@@ -3157,7 +3136,7 @@ extern "C" void mode_info_to_c2 (CPP_mode_info& C, c_Bool& z_stable, c_Real& z_t
 extern "C" void pre_tracker_to_c (const Opaque_pre_tracker_class*, CPP_pre_tracker&);
 
 // c_side.to_f2_arg
-extern "C" void pre_tracker_to_f2 (Opaque_pre_tracker_class*, c_Int&, c_Int&, c_Int&, c_Char);
+extern "C" void pre_tracker_to_f2 (Opaque_pre_tracker_class*, C_ARG&, C_ARG&, C_ARG&, c_Char);
 
 extern "C" void pre_tracker_to_f (const CPP_pre_tracker& C, Opaque_pre_tracker_class* F) {
 
@@ -3167,14 +3146,14 @@ extern "C" void pre_tracker_to_f (const CPP_pre_tracker& C, Opaque_pre_tracker_c
 }
 
 // c_side.to_c2_arg
-extern "C" void pre_tracker_to_c2 (CPP_pre_tracker& C, c_Int& z_who, c_Int& z_ix_ele_start,
-    c_Int& z_ix_ele_end, c_Char z_input_file) {
+extern "C" void pre_tracker_to_c2 (CPP_pre_tracker& C, C_ARG& z_who, C_ARG& z_ix_ele_start,
+    C_ARG& z_ix_ele_end, c_Char z_input_file) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.who = z_who;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele_start = z_ix_ele_start;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele_end = z_ix_ele_end;
   // c_side.to_c2_set[character, 0, NOT] string
   C.input_file = z_input_file;
@@ -3187,8 +3166,8 @@ extern "C" void pre_tracker_to_c2 (CPP_pre_tracker& C, c_Int& z_who, c_Int& z_ix
 extern "C" void anormal_mode_to_c (const Opaque_anormal_mode_class*, CPP_anormal_mode&);
 
 // c_side.to_f2_arg
-extern "C" void anormal_mode_to_f2 (Opaque_anormal_mode_class*, c_Real&, c_Real&, c_RealArr,
-    c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void anormal_mode_to_f2 (Opaque_anormal_mode_class*, C_ARG&, C_ARG&, C_ARGArr,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void anormal_mode_to_f (const CPP_anormal_mode& C, Opaque_anormal_mode_class* F) {
 
@@ -3199,23 +3178,23 @@ extern "C" void anormal_mode_to_f (const CPP_anormal_mode& C, Opaque_anormal_mod
 }
 
 // c_side.to_c2_arg
-extern "C" void anormal_mode_to_c2 (CPP_anormal_mode& C, c_Real& z_emittance, c_Real&
-    z_emittance_no_vert, c_RealArr z_synch_int, c_Real& z_j_damp, c_Real& z_alpha_damp, c_Real&
-    z_chrom, c_Real& z_tune) {
+extern "C" void anormal_mode_to_c2 (CPP_anormal_mode& C, C_ARG& z_emittance, C_ARG&
+    z_emittance_no_vert, C_ARGArr z_synch_int, C_ARG& z_j_damp, C_ARG& z_alpha_damp, C_ARG&
+    z_chrom, C_ARG& z_tune) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.emittance = z_emittance;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.emittance_no_vert = z_emittance_no_vert;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.synch_int << z_synch_int;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.j_damp = z_j_damp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.alpha_damp = z_alpha_damp;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.chrom = z_chrom;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.tune = z_tune;
 }
 
@@ -3226,8 +3205,8 @@ extern "C" void anormal_mode_to_c2 (CPP_anormal_mode& C, c_Real& z_emittance, c_
 extern "C" void linac_normal_mode_to_c (const Opaque_linac_normal_mode_class*, CPP_linac_normal_mode&);
 
 // c_side.to_f2_arg
-extern "C" void linac_normal_mode_to_f2 (Opaque_linac_normal_mode_class*, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void linac_normal_mode_to_f2 (Opaque_linac_normal_mode_class*, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void linac_normal_mode_to_f (const CPP_linac_normal_mode& C, Opaque_linac_normal_mode_class* F) {
 
@@ -3238,23 +3217,23 @@ extern "C" void linac_normal_mode_to_f (const CPP_linac_normal_mode& C, Opaque_l
 }
 
 // c_side.to_c2_arg
-extern "C" void linac_normal_mode_to_c2 (CPP_linac_normal_mode& C, c_Real& z_i2_E4, c_Real&
-    z_i3_E7, c_Real& z_i5a_E6, c_Real& z_i5b_E6, c_Real& z_sig_E1, c_Real& z_a_emittance_end,
-    c_Real& z_b_emittance_end) {
+extern "C" void linac_normal_mode_to_c2 (CPP_linac_normal_mode& C, C_ARG& z_i2_E4, C_ARG&
+    z_i3_E7, C_ARG& z_i5a_E6, C_ARG& z_i5b_E6, C_ARG& z_sig_E1, C_ARG& z_a_emittance_end,
+    C_ARG& z_b_emittance_end) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i2_E4 = z_i2_E4;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i3_E7 = z_i3_E7;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i5a_E6 = z_i5a_E6;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i5b_E6 = z_i5b_E6;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_E1 = z_sig_E1;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.a_emittance_end = z_a_emittance_end;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.b_emittance_end = z_b_emittance_end;
 }
 
@@ -3265,9 +3244,8 @@ extern "C" void linac_normal_mode_to_c2 (CPP_linac_normal_mode& C, c_Real& z_i2_
 extern "C" void normal_modes_to_c (const Opaque_normal_modes_class*, CPP_normal_modes&);
 
 // c_side.to_f2_arg
-extern "C" void normal_modes_to_f2 (Opaque_normal_modes_class*, c_RealArr, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, const CPP_anormal_mode&, const
-    CPP_anormal_mode&, const CPP_anormal_mode&, const CPP_linac_normal_mode&);
+extern "C" void normal_modes_to_f2 (Opaque_normal_modes_class*, C_ARGArr, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void normal_modes_to_f (const CPP_normal_modes& C, Opaque_normal_modes_class* F) {
 
@@ -3278,37 +3256,37 @@ extern "C" void normal_modes_to_f (const CPP_normal_modes& C, Opaque_normal_mode
 }
 
 // c_side.to_c2_arg
-extern "C" void normal_modes_to_c2 (CPP_normal_modes& C, c_RealArr z_synch_int, c_Real&
-    z_sigE_E, c_Real& z_sig_z, c_Real& z_e_loss, c_Real& z_rf_voltage, c_Real& z_pz_aperture,
-    c_Real& z_pz_average, c_Real& z_momentum_compaction, c_Real& z_dpz_damp, const
+extern "C" void normal_modes_to_c2 (CPP_normal_modes& C, C_ARGArr z_synch_int, C_ARG& z_sigE_E,
+    C_ARG& z_sig_z, C_ARG& z_e_loss, C_ARG& z_rf_voltage, C_ARG& z_pz_aperture, C_ARG&
+    z_pz_average, C_ARG& z_momentum_compaction, C_ARG& z_dpz_damp, const
     Opaque_anormal_mode_class* z_a, const Opaque_anormal_mode_class* z_b, const
     Opaque_anormal_mode_class* z_z, const Opaque_linac_normal_mode_class* z_lin) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 4>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 4>
   C.synch_int << z_synch_int;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigE_E = z_sigE_E;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sig_z = z_sig_z;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.e_loss = z_e_loss;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rf_voltage = z_rf_voltage;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.pz_aperture = z_pz_aperture;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.pz_average = z_pz_average;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.momentum_compaction = z_momentum_compaction;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dpz_damp = z_dpz_damp;
-  // c_side.to_c2_set[type, 0, NOT] CPP_anormal_mode
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   anormal_mode_to_c(z_a, C.a);
-  // c_side.to_c2_set[type, 0, NOT] CPP_anormal_mode
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   anormal_mode_to_c(z_b, C.b);
-  // c_side.to_c2_set[type, 0, NOT] CPP_anormal_mode
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   anormal_mode_to_c(z_z, C.z);
-  // c_side.to_c2_set[type, 0, NOT] CPP_linac_normal_mode
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   linac_normal_mode_to_c(z_lin, C.lin);
 }
 
@@ -3319,14 +3297,14 @@ extern "C" void normal_modes_to_c2 (CPP_normal_modes& C, c_RealArr z_synch_int, 
 extern "C" void em_field_to_c (const Opaque_em_field_class*, CPP_em_field&);
 
 // c_side.to_f2_arg
-extern "C" void em_field_to_f2 (Opaque_em_field_class*, c_RealArr, c_RealArr, c_RealArr,
-    c_RealArr, c_Real&, c_Real&, c_RealArr);
+extern "C" void em_field_to_f2 (Opaque_em_field_class*, C_ARGArr, C_ARGArr, C_ARGArr, C_ARGArr,
+    C_ARG&, C_ARG&, C_ARGArr);
 
 extern "C" void em_field_to_f (const CPP_em_field& C, Opaque_em_field_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 3, 3>
-  Real z_dE[3*3]; matrix_to_vec(C.dE, z_dE);
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 3, 3>
-  Real z_dB[3*3]; matrix_to_vec(C.dB, z_dB);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
+  C_TYPE z_dE[3*3]; matrix_to_vec(C.dE, z_dE);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
+  C_TYPE z_dB[3*3]; matrix_to_vec(C.dB, z_dB);
 
   // c_side.to_f2_call
   em_field_to_f2 (F, &C.E[0], &C.B[0], z_dE, z_dB, C.phi, C.phi_B, &C.A[0]);
@@ -3334,22 +3312,22 @@ extern "C" void em_field_to_f (const CPP_em_field& C, Opaque_em_field_class* F) 
 }
 
 // c_side.to_c2_arg
-extern "C" void em_field_to_c2 (CPP_em_field& C, c_RealArr z_E, c_RealArr z_B, c_RealArr z_dE,
-    c_RealArr z_dB, c_Real& z_phi, c_Real& z_phi_B, c_RealArr z_A) {
+extern "C" void em_field_to_c2 (CPP_em_field& C, C_ARGArr z_E, C_ARGArr z_B, C_ARGArr z_dE,
+    C_ARGArr z_dB, C_ARG& z_phi, C_ARG& z_phi_B, C_ARGArr z_A) {
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.E << z_E;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.B << z_B;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 3, 3>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
   C.dE << z_dE;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 3, 3>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
   C.dB << z_dB;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi = z_phi;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.phi_B = z_phi_B;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 3>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.A << z_A;
 }
 
@@ -3360,8 +3338,8 @@ extern "C" void em_field_to_c2 (CPP_em_field& C, c_RealArr z_E, c_RealArr z_B, c
 extern "C" void strong_beam_to_c (const Opaque_strong_beam_class*, CPP_strong_beam&);
 
 // c_side.to_f2_arg
-extern "C" void strong_beam_to_f2 (Opaque_strong_beam_class*, c_Int&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void strong_beam_to_f2 (Opaque_strong_beam_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void strong_beam_to_f (const CPP_strong_beam& C, Opaque_strong_beam_class* F) {
 
@@ -3371,22 +3349,22 @@ extern "C" void strong_beam_to_f (const CPP_strong_beam& C, Opaque_strong_beam_c
 }
 
 // c_side.to_c2_arg
-extern "C" void strong_beam_to_c2 (CPP_strong_beam& C, c_Int& z_ix_slice, c_Real& z_x_center,
-    c_Real& z_y_center, c_Real& z_x_sigma, c_Real& z_y_sigma, c_Real& z_dx, c_Real& z_dy) {
+extern "C" void strong_beam_to_c2 (CPP_strong_beam& C, C_ARG& z_ix_slice, C_ARG& z_x_center,
+    C_ARG& z_y_center, C_ARG& z_x_sigma, C_ARG& z_y_sigma, C_ARG& z_dx, C_ARG& z_dy) {
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_slice = z_ix_slice;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x_center = z_x_center;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y_center = z_y_center;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x_sigma = z_x_sigma;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y_sigma = z_y_sigma;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dx = z_dx;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dy = z_dy;
 }
 
@@ -3397,12 +3375,12 @@ extern "C" void strong_beam_to_c2 (CPP_strong_beam& C, c_Int& z_ix_slice, c_Real
 extern "C" void track_point_to_c (const Opaque_track_point_class*, CPP_track_point&);
 
 // c_side.to_f2_arg
-extern "C" void track_point_to_f2 (Opaque_track_point_class*, c_Real&, const CPP_coord&, const
-    CPP_em_field&, const CPP_strong_beam&, c_RealArr, c_RealArr);
+extern "C" void track_point_to_f2 (Opaque_track_point_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARGArr, C_ARGArr);
 
 extern "C" void track_point_to_f (const CPP_track_point& C, Opaque_track_point_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_mat6[6*6]; matrix_to_vec(C.mat6, z_mat6);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_mat6[6*6]; matrix_to_vec(C.mat6, z_mat6);
 
   // c_side.to_f2_call
   track_point_to_f2 (F, C.s_body, C.orb, C.field, C.strong_beam, &C.vec0[0], z_mat6);
@@ -3410,21 +3388,21 @@ extern "C" void track_point_to_f (const CPP_track_point& C, Opaque_track_point_c
 }
 
 // c_side.to_c2_arg
-extern "C" void track_point_to_c2 (CPP_track_point& C, c_Real& z_s_body, const
+extern "C" void track_point_to_c2 (CPP_track_point& C, C_ARG& z_s_body, const
     Opaque_coord_class* z_orb, const Opaque_em_field_class* z_field, const
-    Opaque_strong_beam_class* z_strong_beam, c_RealArr z_vec0, c_RealArr z_mat6) {
+    Opaque_strong_beam_class* z_strong_beam, C_ARGArr z_vec0, C_ARGArr z_mat6) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.s_body = z_s_body;
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_orb, C.orb);
-  // c_side.to_c2_set[type, 0, NOT] CPP_em_field
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   em_field_to_c(z_field, C.field);
-  // c_side.to_c2_set[type, 0, NOT] CPP_strong_beam
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   strong_beam_to_c(z_strong_beam, C.strong_beam);
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.vec0 << z_vec0;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.mat6 << z_mat6;
 }
 
@@ -3435,11 +3413,11 @@ extern "C" void track_point_to_c2 (CPP_track_point& C, c_Real& z_s_body, const
 extern "C" void track_to_c (const Opaque_track_class*, CPP_track&);
 
 // c_side.to_f2_arg
-extern "C" void track_to_f2 (Opaque_track_class*, const CPP_track_point**, Int, c_Real&,
-    c_Int&, c_Int&, c_Int&);
+extern "C" void track_to_f2 (Opaque_track_class*, C_ARG**, Int, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&);
 
 extern "C" void track_to_f (const CPP_track& C, Opaque_track_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_track_point>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_pt = C.pt.size();
   const CPP_track_point** z_pt = nullptr;
   if (n1_pt != 0) {
@@ -3451,24 +3429,24 @@ extern "C" void track_to_f (const CPP_track& C, Opaque_track_class* F) {
   track_to_f2 (F, z_pt, n1_pt, C.ds_save, C.n_pt, C.n_bad, C.n_ok);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_pt) delete[] z_pt;
+  if (z_pt) delete[] z_pt;
 }
 
 // c_side.to_c2_arg
-extern "C" void track_to_c2 (CPP_track& C, Opaque_track_point_class** z_pt, Int n1_pt, c_Real&
-    z_ds_save, c_Int& z_n_pt, c_Int& z_n_bad, c_Int& z_n_ok) {
+extern "C" void track_to_c2 (CPP_track& C, Opaque_track_point_class** z_pt, Int n1_pt, C_ARG&
+    z_ds_save, C_ARG& z_n_pt, C_ARG& z_n_bad, C_ARG& z_n_ok) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_track_point>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.pt.resize(n1_pt);
   for (auto i{0}; i < n1_pt; i++) { track_point_to_c(z_pt[i], C.pt[i]); }
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.ds_save = z_ds_save;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_pt = z_n_pt;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_bad = z_n_bad;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_ok = z_n_ok;
 }
 
@@ -3479,9 +3457,9 @@ extern "C" void track_to_c2 (CPP_track& C, Opaque_track_point_class** z_pt, Int 
 extern "C" void space_charge_common_to_c (const Opaque_space_charge_common_class*, CPP_space_charge_common&);
 
 // c_side.to_f2_arg
-extern "C" void space_charge_common_to_f2 (Opaque_space_charge_common_class*, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_IntArr, c_IntArr, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Bool&, c_Bool&, c_Char);
+extern "C" void space_charge_common_to_f2 (Opaque_space_charge_common_class*, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARGArr, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, c_Char);
 
 extern "C" void space_charge_common_to_f (const CPP_space_charge_common& C, Opaque_space_charge_common_class* F) {
 
@@ -3495,45 +3473,45 @@ extern "C" void space_charge_common_to_f (const CPP_space_charge_common& C, Opaq
 }
 
 // c_side.to_c2_arg
-extern "C" void space_charge_common_to_c2 (CPP_space_charge_common& C, c_Real& z_ds_track_step,
-    c_Real& z_dt_track_step, c_Real& z_cathode_strength_cutoff, c_Real& z_rel_tol_tracking,
-    c_Real& z_abs_tol_tracking, c_Real& z_beam_chamber_height, c_Real& z_lsc_sigma_cutoff,
-    c_Real& z_particle_sigma_cutoff, c_IntArr z_space_charge_mesh_size, c_IntArr
-    z_csr3d_mesh_size, c_Int& z_n_bin, c_Int& z_particle_bin_span, c_Int& z_n_shield_images,
-    c_Int& z_sc_min_in_bin, c_Bool& z_lsc_kick_transverse_dependence, c_Bool& z_debug, c_Char
+extern "C" void space_charge_common_to_c2 (CPP_space_charge_common& C, C_ARG& z_ds_track_step,
+    C_ARG& z_dt_track_step, C_ARG& z_cathode_strength_cutoff, C_ARG& z_rel_tol_tracking, C_ARG&
+    z_abs_tol_tracking, C_ARG& z_beam_chamber_height, C_ARG& z_lsc_sigma_cutoff, C_ARG&
+    z_particle_sigma_cutoff, C_ARGArr z_space_charge_mesh_size, C_ARGArr z_csr3d_mesh_size,
+    C_ARG& z_n_bin, C_ARG& z_particle_bin_span, C_ARG& z_n_shield_images, C_ARG&
+    z_sc_min_in_bin, C_ARG& z_lsc_kick_transverse_dependence, C_ARG& z_debug, c_Char
     z_diagnostic_output_file) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.ds_track_step = z_ds_track_step;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.dt_track_step = z_dt_track_step;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.cathode_strength_cutoff = z_cathode_strength_cutoff;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rel_tol_tracking = z_rel_tol_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.abs_tol_tracking = z_abs_tol_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.beam_chamber_height = z_beam_chamber_height;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lsc_sigma_cutoff = z_lsc_sigma_cutoff;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.particle_sigma_cutoff = z_particle_sigma_cutoff;
-  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<Int, 3>
+  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.space_charge_mesh_size << z_space_charge_mesh_size;
-  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<Int, 3>
+  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<C_TYPE, 3>
   C.csr3d_mesh_size << z_csr3d_mesh_size;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_bin = z_n_bin;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.particle_bin_span = z_particle_bin_span;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_shield_images = z_n_shield_images;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.sc_min_in_bin = z_sc_min_in_bin;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.lsc_kick_transverse_dependence = z_lsc_kick_transverse_dependence;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.debug = z_debug;
   // c_side.to_c2_set[character, 0, NOT] string
   C.diagnostic_output_file = z_diagnostic_output_file;
@@ -3546,11 +3524,11 @@ extern "C" void space_charge_common_to_c2 (CPP_space_charge_common& C, c_Real& z
 extern "C" void bmad_common_to_c (const Opaque_bmad_common_class*, CPP_bmad_common&);
 
 // c_side.to_f2_arg
-extern "C" void bmad_common_to_f2 (Opaque_bmad_common_class*, c_Real&, c_RealArr, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&,
-    c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&,
-    c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&);
+extern "C" void bmad_common_to_f2 (Opaque_bmad_common_class*, C_ARG&, C_ARGArr, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void bmad_common_to_f (const CPP_bmad_common& C, Opaque_bmad_common_class* F) {
 
@@ -3571,103 +3549,102 @@ extern "C" void bmad_common_to_f (const CPP_bmad_common& C, Opaque_bmad_common_c
 }
 
 // c_side.to_c2_arg
-extern "C" void bmad_common_to_c2 (CPP_bmad_common& C, c_Real& z_max_aperture_limit, c_RealArr
-    z_d_orb, c_Real& z_default_ds_step, c_Real& z_significant_length, c_Real&
-    z_rel_tol_tracking, c_Real& z_abs_tol_tracking, c_Real& z_rel_tol_adaptive_tracking,
-    c_Real& z_abs_tol_adaptive_tracking, c_Real& z_init_ds_adaptive_tracking, c_Real&
-    z_min_ds_adaptive_tracking, c_Real& z_fatal_ds_adaptive_tracking, c_Real&
-    z_autoscale_amp_abs_tol, c_Real& z_autoscale_amp_rel_tol, c_Real& z_autoscale_phase_tol,
-    c_Real& z_electric_dipole_moment, c_Real& z_synch_rad_scale, c_Real& z_sad_eps_scale,
-    c_Real& z_sad_amp_max, c_Int& z_sad_n_div_max, c_Int& z_taylor_order, c_Int&
-    z_runge_kutta_order, c_Int& z_default_integ_order, c_Int& z_max_num_runge_kutta_step,
-    c_Bool& z_rf_phase_below_transition_ref, c_Bool& z_sr_wakes_on, c_Bool& z_lr_wakes_on,
-    c_Bool& z_auto_bookkeeper, c_Bool& z_high_energy_space_charge_on, c_Bool&
-    z_csr_and_space_charge_on, c_Bool& z_spin_tracking_on, c_Bool&
-    z_spin_sokolov_ternov_flipping_on, c_Bool& z_radiation_damping_on, c_Bool&
-    z_radiation_zero_average, c_Bool& z_radiation_fluctuations_on, c_Bool&
-    z_conserve_taylor_maps, c_Bool& z_absolute_time_tracking, c_Bool&
-    z_absolute_time_ref_shift, c_Bool& z_convert_to_kinetic_momentum, c_Bool&
-    z_aperture_limit_on, c_Bool& z_debug) {
+extern "C" void bmad_common_to_c2 (CPP_bmad_common& C, C_ARG& z_max_aperture_limit, C_ARGArr
+    z_d_orb, C_ARG& z_default_ds_step, C_ARG& z_significant_length, C_ARG& z_rel_tol_tracking,
+    C_ARG& z_abs_tol_tracking, C_ARG& z_rel_tol_adaptive_tracking, C_ARG&
+    z_abs_tol_adaptive_tracking, C_ARG& z_init_ds_adaptive_tracking, C_ARG&
+    z_min_ds_adaptive_tracking, C_ARG& z_fatal_ds_adaptive_tracking, C_ARG&
+    z_autoscale_amp_abs_tol, C_ARG& z_autoscale_amp_rel_tol, C_ARG& z_autoscale_phase_tol,
+    C_ARG& z_electric_dipole_moment, C_ARG& z_synch_rad_scale, C_ARG& z_sad_eps_scale, C_ARG&
+    z_sad_amp_max, C_ARG& z_sad_n_div_max, C_ARG& z_taylor_order, C_ARG& z_runge_kutta_order,
+    C_ARG& z_default_integ_order, C_ARG& z_max_num_runge_kutta_step, C_ARG&
+    z_rf_phase_below_transition_ref, C_ARG& z_sr_wakes_on, C_ARG& z_lr_wakes_on, C_ARG&
+    z_auto_bookkeeper, C_ARG& z_high_energy_space_charge_on, C_ARG& z_csr_and_space_charge_on,
+    C_ARG& z_spin_tracking_on, C_ARG& z_spin_sokolov_ternov_flipping_on, C_ARG&
+    z_radiation_damping_on, C_ARG& z_radiation_zero_average, C_ARG&
+    z_radiation_fluctuations_on, C_ARG& z_conserve_taylor_maps, C_ARG&
+    z_absolute_time_tracking, C_ARG& z_absolute_time_ref_shift, C_ARG&
+    z_convert_to_kinetic_momentum, C_ARG& z_aperture_limit_on, C_ARG& z_debug) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.max_aperture_limit = z_max_aperture_limit;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.d_orb << z_d_orb;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.default_ds_step = z_default_ds_step;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.significant_length = z_significant_length;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rel_tol_tracking = z_rel_tol_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.abs_tol_tracking = z_abs_tol_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rel_tol_adaptive_tracking = z_rel_tol_adaptive_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.abs_tol_adaptive_tracking = z_abs_tol_adaptive_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.init_ds_adaptive_tracking = z_init_ds_adaptive_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.min_ds_adaptive_tracking = z_min_ds_adaptive_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.fatal_ds_adaptive_tracking = z_fatal_ds_adaptive_tracking;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.autoscale_amp_abs_tol = z_autoscale_amp_abs_tol;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.autoscale_amp_rel_tol = z_autoscale_amp_rel_tol;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.autoscale_phase_tol = z_autoscale_phase_tol;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.electric_dipole_moment = z_electric_dipole_moment;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.synch_rad_scale = z_synch_rad_scale;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sad_eps_scale = z_sad_eps_scale;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sad_amp_max = z_sad_amp_max;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.sad_n_div_max = z_sad_n_div_max;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.taylor_order = z_taylor_order;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.runge_kutta_order = z_runge_kutta_order;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.default_integ_order = z_default_integ_order;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.max_num_runge_kutta_step = z_max_num_runge_kutta_step;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.rf_phase_below_transition_ref = z_rf_phase_below_transition_ref;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.sr_wakes_on = z_sr_wakes_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.lr_wakes_on = z_lr_wakes_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.auto_bookkeeper = z_auto_bookkeeper;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.high_energy_space_charge_on = z_high_energy_space_charge_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.csr_and_space_charge_on = z_csr_and_space_charge_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.spin_tracking_on = z_spin_tracking_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.spin_sokolov_ternov_flipping_on = z_spin_sokolov_ternov_flipping_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.radiation_damping_on = z_radiation_damping_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.radiation_zero_average = z_radiation_zero_average;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.radiation_fluctuations_on = z_radiation_fluctuations_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.conserve_taylor_maps = z_conserve_taylor_maps;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.absolute_time_tracking = z_absolute_time_tracking;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.absolute_time_ref_shift = z_absolute_time_ref_shift;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.convert_to_kinetic_momentum = z_convert_to_kinetic_momentum;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.aperture_limit_on = z_aperture_limit_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.debug = z_debug;
 }
 
@@ -3678,9 +3655,9 @@ extern "C" void bmad_common_to_c2 (CPP_bmad_common& C, c_Real& z_max_aperture_li
 extern "C" void rad_int1_to_c (const Opaque_rad_int1_class*, CPP_rad_int1&);
 
 // c_side.to_f2_arg
-extern "C" void rad_int1_to_f2 (Opaque_rad_int1_class*, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Real&, c_Real&, c_Real&, c_Real&);
+extern "C" void rad_int1_to_f2 (Opaque_rad_int1_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&);
 
 extern "C" void rad_int1_to_f (const CPP_rad_int1& C, Opaque_rad_int1_class* F) {
 
@@ -3692,47 +3669,46 @@ extern "C" void rad_int1_to_f (const CPP_rad_int1& C, Opaque_rad_int1_class* F) 
 }
 
 // c_side.to_c2_arg
-extern "C" void rad_int1_to_c2 (CPP_rad_int1& C, c_Real& z_i0, c_Real& z_i1, c_Real& z_i2,
-    c_Real& z_i3, c_Real& z_i4a, c_Real& z_i4b, c_Real& z_i4z, c_Real& z_i5a, c_Real& z_i5b,
-    c_Real& z_i6b, c_Real& z_lin_i2_E4, c_Real& z_lin_i3_E7, c_Real& z_lin_i5a_E6, c_Real&
-    z_lin_i5b_E6, c_Real& z_lin_norm_emit_a, c_Real& z_lin_norm_emit_b, c_Real& z_lin_sig_E,
-    c_Real& z_n_steps) {
+extern "C" void rad_int1_to_c2 (CPP_rad_int1& C, C_ARG& z_i0, C_ARG& z_i1, C_ARG& z_i2, C_ARG&
+    z_i3, C_ARG& z_i4a, C_ARG& z_i4b, C_ARG& z_i4z, C_ARG& z_i5a, C_ARG& z_i5b, C_ARG& z_i6b,
+    C_ARG& z_lin_i2_E4, C_ARG& z_lin_i3_E7, C_ARG& z_lin_i5a_E6, C_ARG& z_lin_i5b_E6, C_ARG&
+    z_lin_norm_emit_a, C_ARG& z_lin_norm_emit_b, C_ARG& z_lin_sig_E, C_ARG& z_n_steps) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i0 = z_i0;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i1 = z_i1;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i2 = z_i2;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i3 = z_i3;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i4a = z_i4a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i4b = z_i4b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i4z = z_i4z;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i5a = z_i5a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i5b = z_i5b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.i6b = z_i6b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_i2_E4 = z_lin_i2_E4;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_i3_E7 = z_lin_i3_E7;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_i5a_E6 = z_lin_i5a_E6;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_i5b_E6 = z_lin_i5b_E6;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_norm_emit_a = z_lin_norm_emit_a;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_norm_emit_b = z_lin_norm_emit_b;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.lin_sig_E = z_lin_sig_E;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.n_steps = z_n_steps;
 }
 
@@ -3743,10 +3719,10 @@ extern "C" void rad_int1_to_c2 (CPP_rad_int1& C, c_Real& z_i0, c_Real& z_i1, c_R
 extern "C" void rad_int_branch_to_c (const Opaque_rad_int_branch_class*, CPP_rad_int_branch&);
 
 // c_side.to_f2_arg
-extern "C" void rad_int_branch_to_f2 (Opaque_rad_int_branch_class*, const CPP_rad_int1**, Int);
+extern "C" void rad_int_branch_to_f2 (Opaque_rad_int_branch_class*, C_ARG**, Int);
 
 extern "C" void rad_int_branch_to_f (const CPP_rad_int_branch& C, Opaque_rad_int_branch_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_rad_int1>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_ele = C.ele.size();
   const CPP_rad_int1** z_ele = nullptr;
   if (n1_ele != 0) {
@@ -3758,14 +3734,14 @@ extern "C" void rad_int_branch_to_f (const CPP_rad_int_branch& C, Opaque_rad_int
   rad_int_branch_to_f2 (F, z_ele, n1_ele);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_ele) delete[] z_ele;
+  if (z_ele) delete[] z_ele;
 }
 
 // c_side.to_c2_arg
 extern "C" void rad_int_branch_to_c2 (CPP_rad_int_branch& C, Opaque_rad_int1_class** z_ele, Int
     n1_ele) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_rad_int1>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.ele.resize(n1_ele);
   for (auto i{0}; i < n1_ele; i++) { rad_int1_to_c(z_ele[i], C.ele[i]); }
 
@@ -3778,11 +3754,10 @@ extern "C" void rad_int_branch_to_c2 (CPP_rad_int_branch& C, Opaque_rad_int1_cla
 extern "C" void rad_int_all_ele_to_c (const Opaque_rad_int_all_ele_class*, CPP_rad_int_all_ele&);
 
 // c_side.to_f2_arg
-extern "C" void rad_int_all_ele_to_f2 (Opaque_rad_int_all_ele_class*, const
-    CPP_rad_int_branch**, Int);
+extern "C" void rad_int_all_ele_to_f2 (Opaque_rad_int_all_ele_class*, C_ARG**, Int);
 
 extern "C" void rad_int_all_ele_to_f (const CPP_rad_int_all_ele& C, Opaque_rad_int_all_ele_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_rad_int_branch>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_branch = C.branch.size();
   const CPP_rad_int_branch** z_branch = nullptr;
   if (n1_branch != 0) {
@@ -3794,14 +3769,14 @@ extern "C" void rad_int_all_ele_to_f (const CPP_rad_int_all_ele& C, Opaque_rad_i
   rad_int_all_ele_to_f2 (F, z_branch, n1_branch);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_branch) delete[] z_branch;
+  if (z_branch) delete[] z_branch;
 }
 
 // c_side.to_c2_arg
 extern "C" void rad_int_all_ele_to_c2 (CPP_rad_int_all_ele& C, Opaque_rad_int_branch_class**
     z_branch, Int n1_branch) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_rad_int_branch>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.branch.resize(n1_branch);
   for (auto i{0}; i < n1_branch; i++) { rad_int_branch_to_c(z_branch[i], C.branch[i]); }
 
@@ -3815,20 +3790,15 @@ extern "C" void ele_to_c (const Opaque_ele_class*, CPP_ele&);
 
 // c_side.to_f2_arg
 extern "C" void ele_to_f2 (Opaque_ele_class*, c_Char, c_Char, c_Char, c_Char, c_Char, Int,
-    const CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_xy_disp&, const
-    CPP_xy_disp&, const CPP_ac_kicker&, Int, const CPP_bookkeeping_state&, const
-    CPP_controller&, Int, const CPP_floor_position&, const CPP_high_energy_space_charge&, Int,
-    const CPP_mode3&, Int, const CPP_photon_element&, Int, const CPP_rad_map_ele&, Int, const
-    CPP_taylor**, c_RealArr, const CPP_taylor**, const CPP_wake&, Int, const CPP_wall3d**, Int,
-    const CPP_cartesian_map**, Int, const CPP_cylindrical_map**, Int, const CPP_gen_grad_map**,
-    Int, const CPP_grid_field**, Int, const CPP_coord&, const CPP_coord&, const CPP_coord&,
-    const CPP_coord&, c_RealArr, c_RealArr, c_RealArr, c_RealArr, c_RealArr, c_RealArr,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_RealArr, Int, c_RealArr, Int, c_RealArr, Int,
-    c_RealArr, Int, c_RealArr, Int, c_RealArr, Int, Int, Int, c_Int&, c_Int&, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&,
-    c_Int&, c_Int&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Bool&,
-    c_Bool&, c_Bool&, c_Bool&);
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, Int, C_ARG&, C_ARG&, Int, C_ARG&, C_ARG&,
+    Int, C_ARG&, Int, C_ARG&, Int, C_ARG&, Int, C_ARG**, C_ARGArr, C_ARG**, C_ARG&, Int,
+    C_ARG**, Int, C_ARG**, Int, C_ARG**, Int, C_ARG**, Int, C_ARG**, Int, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARGArr, C_ARGArr, C_ARGArr, C_ARGArr, C_ARGArr, C_ARGArr, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARGArr, Int, C_ARGArr, Int, C_ARGArr, Int, C_ARGArr, Int, C_ARGArr, Int,
+    C_ARGArr, Int, Int, Int, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
   // c_side.to_f_setup[character, 0, PTR] shared_ptr<string>
@@ -3838,107 +3808,107 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     z_descrip = C.descrip->c_str();
     n_descrip = 1;
   }
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_ac_kicker>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_ac_kick = 0; if (C.ac_kick != nullptr) n_ac_kick = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_controller>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_control = 0; if (C.control != nullptr) n_control = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_high_energy_space_charge>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_high_energy_space_charge = 0; if (C.high_energy_space_charge != nullptr) n_high_energy_space_charge = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_mode3>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_mode3 = 0; if (C.mode3 != nullptr) n_mode3 = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_photon_element>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_photon = 0; if (C.photon != nullptr) n_photon = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_rad_map_ele>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_rad_map = 0; if (C.rad_map != nullptr) n_rad_map = 1;
-  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<CPP_taylor, 6>
+  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<C_TYPE, 6>
   const CPP_taylor* z_taylor[6];
   for (int i = 0; i < 6; i++) {z_taylor[i] = &C.taylor[i];}
-  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<CPP_taylor, 4>
+  // c_side.to_f_setup[type, 1, NOT] FixedArray1D<C_TYPE, 4>
   const CPP_taylor* z_spin_taylor[4];
   for (int i = 0; i < 4; i++) {z_spin_taylor[i] = &C.spin_taylor[i];}
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_wake>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_wake = 0; if (C.wake != nullptr) n_wake = 1;
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_wall3d>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_wall3d = C.wall3d.size();
   const CPP_wall3d** z_wall3d = nullptr;
   if (n1_wall3d != 0) {
     z_wall3d = new const CPP_wall3d*[n1_wall3d];
     for (auto i{0}; i < n1_wall3d; i++) z_wall3d[i] = &C.wall3d[i];
   }
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_cartesian_map>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_cartesian_map = C.cartesian_map.size();
   const CPP_cartesian_map** z_cartesian_map = nullptr;
   if (n1_cartesian_map != 0) {
     z_cartesian_map = new const CPP_cartesian_map*[n1_cartesian_map];
     for (auto i{0}; i < n1_cartesian_map; i++) z_cartesian_map[i] = &C.cartesian_map[i];
   }
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_cylindrical_map>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_cylindrical_map = C.cylindrical_map.size();
   const CPP_cylindrical_map** z_cylindrical_map = nullptr;
   if (n1_cylindrical_map != 0) {
     z_cylindrical_map = new const CPP_cylindrical_map*[n1_cylindrical_map];
     for (auto i{0}; i < n1_cylindrical_map; i++) z_cylindrical_map[i] = &C.cylindrical_map[i];
   }
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_gen_grad_map>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_gen_grad_map = C.gen_grad_map.size();
   const CPP_gen_grad_map** z_gen_grad_map = nullptr;
   if (n1_gen_grad_map != 0) {
     z_gen_grad_map = new const CPP_gen_grad_map*[n1_gen_grad_map];
     for (auto i{0}; i < n1_gen_grad_map; i++) z_gen_grad_map[i] = &C.gen_grad_map[i];
   }
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_grid_field>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_grid_field = C.grid_field.size();
   const CPP_grid_field** z_grid_field = nullptr;
   if (n1_grid_field != 0) {
     z_grid_field = new const CPP_grid_field*[n1_grid_field];
     for (auto i{0}; i < n1_grid_field; i++) z_grid_field[i] = &C.grid_field[i];
   }
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 4, 7>
-  Real z_spin_q[4*7]; matrix_to_vec(C.spin_q, z_spin_q);
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_mat6[6*6]; matrix_to_vec(C.mat6, z_mat6);
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 2, 2>
-  Real z_c_mat[2*2]; matrix_to_vec(C.c_mat, z_c_mat);
-  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 4, 7>
+  C_TYPE z_spin_q[4*7]; matrix_to_vec(C.spin_q, z_spin_q);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_mat6[6*6]; matrix_to_vec(C.mat6, z_mat6);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 2, 2>
+  C_TYPE z_c_mat[2*2]; matrix_to_vec(C.c_mat, z_c_mat);
+  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_a_pole = C.a_pole.size();
-  c_RealArr z_a_pole = nullptr;
+  c_C_TYPEArr z_a_pole = nullptr;
   if (n1_a_pole > 0) {
     z_a_pole = &C.a_pole[0];
   }
-  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_b_pole = C.b_pole.size();
-  c_RealArr z_b_pole = nullptr;
+  c_C_TYPEArr z_b_pole = nullptr;
   if (n1_b_pole > 0) {
     z_b_pole = &C.b_pole[0];
   }
-  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_a_pole_elec = C.a_pole_elec.size();
-  c_RealArr z_a_pole_elec = nullptr;
+  c_C_TYPEArr z_a_pole_elec = nullptr;
   if (n1_a_pole_elec > 0) {
     z_a_pole_elec = &C.a_pole_elec[0];
   }
-  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_b_pole_elec = C.b_pole_elec.size();
-  c_RealArr z_b_pole_elec = nullptr;
+  c_C_TYPEArr z_b_pole_elec = nullptr;
   if (n1_b_pole_elec > 0) {
     z_b_pole_elec = &C.b_pole_elec[0];
   }
-  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_custom = C.custom.size();
-  c_RealArr z_custom = nullptr;
+  c_C_TYPEArr z_custom = nullptr;
   if (n1_custom > 0) {
     z_custom = &C.custom[0];
   }
-  // c_side.to_f_setup[real, 3, PTR] VariableArray3D<Real>
+  // c_side.to_f_setup[real, 3, PTR] VariableArray3D<C_TYPE>
 
   auto n1_r { C.r.size() };
   auto n2_r { std::size_t{0} };
   auto n3_r { std::size_t{0} };
-  Real* z_r { nullptr };
+  C_TYPE* z_r { nullptr };
   if (n1_r > 0) {
     n2_r = C.r[0].size();
     n3_r = C.r[0][0].size();
-    z_r = new Real [C.r.size()*C.r[0].size()*C.r[0][0].size()];
+    z_r = new C_TYPE [C.r.size()*C.r[0].size()*C.r[0][0].size()];
     tensor_to_vec (C.r, z_r);
   }
 
@@ -3963,15 +3933,15 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
       C.is_on, C.logic, C.bmad_logic, C.select, C.offset_moves_aperture);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_wall3d) delete[] z_wall3d;
+  if (z_wall3d) delete[] z_wall3d;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_cartesian_map) delete[] z_cartesian_map;
+  if (z_cartesian_map) delete[] z_cartesian_map;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_cylindrical_map) delete[] z_cylindrical_map;
+  if (z_cylindrical_map) delete[] z_cylindrical_map;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_gen_grad_map) delete[] z_gen_grad_map;
+  if (z_gen_grad_map) delete[] z_gen_grad_map;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_grid_field) delete[] z_grid_field;
+  if (z_grid_field) delete[] z_grid_field;
   // c_side.to_f_cleanup[real, 3, PTR]
   if (z_r) delete[] z_r;
 }
@@ -3986,29 +3956,29 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
     Opaque_high_energy_space_charge_class* z_high_energy_space_charge, Int
     n_high_energy_space_charge, Opaque_mode3_class* z_mode3, Int n_mode3,
     Opaque_photon_element_class* z_photon, Int n_photon, Opaque_rad_map_ele_class* z_rad_map,
-    Int n_rad_map, const Opaque_taylor_class** z_taylor, c_RealArr z_spin_taylor_ref_orb_in,
+    Int n_rad_map, const Opaque_taylor_class** z_taylor, C_ARGArr z_spin_taylor_ref_orb_in,
     const Opaque_taylor_class** z_spin_taylor, Opaque_wake_class* z_wake, Int n_wake,
     Opaque_wall3d_class** z_wall3d, Int n1_wall3d, Opaque_cartesian_map_class**
     z_cartesian_map, Int n1_cartesian_map, Opaque_cylindrical_map_class** z_cylindrical_map,
     Int n1_cylindrical_map, Opaque_gen_grad_map_class** z_gen_grad_map, Int n1_gen_grad_map,
     Opaque_grid_field_class** z_grid_field, Int n1_grid_field, const Opaque_coord_class*
     z_map_ref_orb_in, const Opaque_coord_class* z_map_ref_orb_out, const Opaque_coord_class*
-    z_time_ref_orb_in, const Opaque_coord_class* z_time_ref_orb_out, c_RealArr z_value,
-    c_RealArr z_old_value, c_RealArr z_spin_q, c_RealArr z_vec0, c_RealArr z_mat6, c_RealArr
-    z_c_mat, c_Real& z_gamma_c, c_Real& z_s_start, c_Real& z_s, c_Real& z_ref_time, c_RealArr
-    z_a_pole, Int n1_a_pole, c_RealArr z_b_pole, Int n1_b_pole, c_RealArr z_a_pole_elec, Int
-    n1_a_pole_elec, c_RealArr z_b_pole_elec, Int n1_b_pole_elec, c_RealArr z_custom, Int
-    n1_custom, c_RealArr z_r, Int n1_r, Int n2_r, Int n3_r, c_Int& z_key, c_Int& z_sub_key,
-    c_Int& z_ix_ele, c_Int& z_ix_branch, c_Int& z_lord_status, c_Int& z_n_slave, c_Int&
-    z_n_slave_field, c_Int& z_ix1_slave, c_Int& z_slave_status, c_Int& z_n_lord, c_Int&
-    z_n_lord_field, c_Int& z_n_lord_ramper, c_Int& z_ic1_lord, c_Int& z_ix_pointer, c_Int&
-    z_ixx, c_Int& z_iyy, c_Int& z_izz, c_Int& z_mat6_calc_method, c_Int& z_tracking_method,
-    c_Int& z_spin_tracking_method, c_Int& z_csr_method, c_Int& z_space_charge_method, c_Int&
-    z_ptc_integration_type, c_Int& z_field_calc, c_Int& z_aperture_at, c_Int& z_aperture_type,
-    c_Int& z_ref_species, c_Int& z_orientation, c_Bool& z_symplectify, c_Bool& z_mode_flip,
-    c_Bool& z_multipoles_on, c_Bool& z_scale_multipoles, c_Bool& z_taylor_map_includes_offsets,
-    c_Bool& z_field_master, c_Bool& z_is_on, c_Bool& z_logic, c_Bool& z_bmad_logic, c_Bool&
-    z_select, c_Bool& z_offset_moves_aperture) {
+    z_time_ref_orb_in, const Opaque_coord_class* z_time_ref_orb_out, C_ARGArr z_value, C_ARGArr
+    z_old_value, C_ARGArr z_spin_q, C_ARGArr z_vec0, C_ARGArr z_mat6, C_ARGArr z_c_mat, C_ARG&
+    z_gamma_c, C_ARG& z_s_start, C_ARG& z_s, C_ARG& z_ref_time, C_ARGArr z_a_pole, Int
+    n1_a_pole, C_ARGArr z_b_pole, Int n1_b_pole, C_ARGArr z_a_pole_elec, Int n1_a_pole_elec,
+    C_ARGArr z_b_pole_elec, Int n1_b_pole_elec, C_ARGArr z_custom, Int n1_custom, C_ARGArr z_r,
+    Int n1_r, Int n2_r, Int n3_r, C_ARG& z_key, C_ARG& z_sub_key, C_ARG& z_ix_ele, C_ARG&
+    z_ix_branch, C_ARG& z_lord_status, C_ARG& z_n_slave, C_ARG& z_n_slave_field, C_ARG&
+    z_ix1_slave, C_ARG& z_slave_status, C_ARG& z_n_lord, C_ARG& z_n_lord_field, C_ARG&
+    z_n_lord_ramper, C_ARG& z_ic1_lord, C_ARG& z_ix_pointer, C_ARG& z_ixx, C_ARG& z_iyy, C_ARG&
+    z_izz, C_ARG& z_mat6_calc_method, C_ARG& z_tracking_method, C_ARG& z_spin_tracking_method,
+    C_ARG& z_csr_method, C_ARG& z_space_charge_method, C_ARG& z_ptc_integration_type, C_ARG&
+    z_field_calc, C_ARG& z_aperture_at, C_ARG& z_aperture_type, C_ARG& z_ref_species, C_ARG&
+    z_orientation, C_ARG& z_symplectify, C_ARG& z_mode_flip, C_ARG& z_multipoles_on, C_ARG&
+    z_scale_multipoles, C_ARG& z_taylor_map_includes_offsets, C_ARG& z_field_master, C_ARG&
+    z_is_on, C_ARG& z_logic, C_ARG& z_bmad_logic, C_ARG& z_select, C_ARG&
+    z_offset_moves_aperture) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
@@ -4026,164 +3996,164 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
     C.descrip = make_shared<string>(z_descrip);
   }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_a, C.a);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_b, C.b);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_z, C.z);
-  // c_side.to_c2_set[type, 0, NOT] CPP_xy_disp
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   xy_disp_to_c(z_x, C.x);
-  // c_side.to_c2_set[type, 0, NOT] CPP_xy_disp
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   xy_disp_to_c(z_y, C.y);
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_ac_kicker>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_ac_kick == 0) {
     C.ac_kick = nullptr;
   } else {
-    C.ac_kick = make_shared<CPP_ac_kicker>();
+    C.ac_kick = make_shared<C_TYPE>();
     ac_kicker_to_c(z_ac_kick, *C.ac_kick);
   }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_bookkeeping_state
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   bookkeeping_state_to_c(z_bookkeeping_state, C.bookkeeping_state);
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_controller>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_control == 0) {
     C.control = nullptr;
   } else {
-    C.control = make_shared<CPP_controller>();
+    C.control = make_shared<C_TYPE>();
     controller_to_c(z_control, *C.control);
   }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_floor_position
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   floor_position_to_c(z_floor, C.floor);
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_high_energy_space_charge>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_high_energy_space_charge == 0) {
     C.high_energy_space_charge = nullptr;
   } else {
-    C.high_energy_space_charge = make_shared<CPP_high_energy_space_charge>();
+    C.high_energy_space_charge = make_shared<C_TYPE>();
     high_energy_space_charge_to_c(z_high_energy_space_charge, *C.high_energy_space_charge);
   }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_mode3>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_mode3 == 0) {
     C.mode3 = nullptr;
   } else {
-    C.mode3 = make_shared<CPP_mode3>();
+    C.mode3 = make_shared<C_TYPE>();
     mode3_to_c(z_mode3, *C.mode3);
   }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_photon_element>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_photon == 0) {
     C.photon = nullptr;
   } else {
-    C.photon = make_shared<CPP_photon_element>();
+    C.photon = make_shared<C_TYPE>();
     photon_element_to_c(z_photon, *C.photon);
   }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_rad_map_ele>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_rad_map == 0) {
     C.rad_map = nullptr;
   } else {
-    C.rad_map = make_shared<CPP_rad_map_ele>();
+    C.rad_map = make_shared<C_TYPE>();
     rad_map_ele_to_c(z_rad_map, *C.rad_map);
   }
 
-  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<CPP_taylor, 6>
+  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<C_TYPE, 6>
 for (size_t i = 0; i < C.taylor.size(); i++)
 { taylor_to_c(z_taylor[i], C.taylor[i]); }
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.spin_taylor_ref_orb_in << z_spin_taylor_ref_orb_in;
-  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<CPP_taylor, 4>
+  // c_side.to_c2_set[type, 1, NOT] FixedArray1D<C_TYPE, 4>
 for (size_t i = 0; i < C.spin_taylor.size(); i++)
 { taylor_to_c(z_spin_taylor[i], C.spin_taylor[i]); }
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_wake>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_wake == 0) {
     C.wake = nullptr;
   } else {
-    C.wake = make_shared<CPP_wake>();
+    C.wake = make_shared<C_TYPE>();
     wake_to_c(z_wake, *C.wake);
   }
 
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_wall3d>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.wall3d.resize(n1_wall3d);
   for (auto i{0}; i < n1_wall3d; i++) { wall3d_to_c(z_wall3d[i], C.wall3d[i]); }
 
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_cartesian_map>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.cartesian_map.resize(n1_cartesian_map);
   for (auto i{0}; i < n1_cartesian_map; i++) { cartesian_map_to_c(z_cartesian_map[i], C.cartesian_map[i]); }
 
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_cylindrical_map>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.cylindrical_map.resize(n1_cylindrical_map);
   for (auto i{0}; i < n1_cylindrical_map; i++) { cylindrical_map_to_c(z_cylindrical_map[i], C.cylindrical_map[i]); }
 
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_gen_grad_map>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.gen_grad_map.resize(n1_gen_grad_map);
   for (auto i{0}; i < n1_gen_grad_map; i++) { gen_grad_map_to_c(z_gen_grad_map[i], C.gen_grad_map[i]); }
 
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_grid_field>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.grid_field.resize(n1_grid_field);
   for (auto i{0}; i < n1_grid_field; i++) { grid_field_to_c(z_grid_field[i], C.grid_field[i]); }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_map_ref_orb_in, C.map_ref_orb_in);
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_map_ref_orb_out, C.map_ref_orb_out);
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_time_ref_orb_in, C.time_ref_orb_in);
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_time_ref_orb_out, C.time_ref_orb_out);
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1>
   // (custom - off-by-one ele attribs)
   C.value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.value[i] = z_value[i-1];
 
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1>
   // (custom - off-by-one ele attribs)
   C.old_value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.old_value[i] = z_old_value[i-1];
 
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 4, 7>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 4, 7>
   C.spin_q << z_spin_q;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 6>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.vec0 << z_vec0;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.mat6 << z_mat6;
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 2, 2>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 2, 2>
   C.c_mat << z_c_mat;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.gamma_c = z_gamma_c;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.s_start = z_s_start;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.s = z_s;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.ref_time = z_ref_time;
-  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<C_TYPE>
 
   C.a_pole.resize(n1_a_pole);
   C.a_pole << z_a_pole;
 
-  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<C_TYPE>
 
   C.b_pole.resize(n1_b_pole);
   C.b_pole << z_b_pole;
 
-  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<C_TYPE>
 
   C.a_pole_elec.resize(n1_a_pole_elec);
   C.a_pole_elec << z_a_pole_elec;
 
-  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<C_TYPE>
 
   C.b_pole_elec.resize(n1_b_pole_elec);
   C.b_pole_elec << z_b_pole_elec;
 
-  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, PTR] VariableArray1D<C_TYPE>
 
   C.custom.resize(n1_custom);
   C.custom << z_custom;
 
-  // c_side.to_c2_set[real, 3, PTR] VariableArray3D<Real>
+  // c_side.to_c2_set[real, 3, PTR] VariableArray3D<C_TYPE>
   C.r.resize(n1_r);
   for (size_t i = 0; i < C.r.size(); i++) {
     C.r[i].resize(n2_r);
@@ -4192,83 +4162,83 @@ for (size_t i = 0; i < C.spin_taylor.size(); i++)
   }
   C.r << z_r;
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.key = z_key;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.sub_key = z_sub_key;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_branch = z_ix_branch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.lord_status = z_lord_status;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_slave = z_n_slave;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_slave_field = z_n_slave_field;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix1_slave = z_ix1_slave;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.slave_status = z_slave_status;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_lord = z_n_lord;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_lord_field = z_n_lord_field;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_lord_ramper = z_n_lord_ramper;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ic1_lord = z_ic1_lord;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_pointer = z_ix_pointer;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ixx = z_ixx;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.iyy = z_iyy;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.izz = z_izz;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.mat6_calc_method = z_mat6_calc_method;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.tracking_method = z_tracking_method;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.spin_tracking_method = z_spin_tracking_method;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.csr_method = z_csr_method;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.space_charge_method = z_space_charge_method;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ptc_integration_type = z_ptc_integration_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.field_calc = z_field_calc;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.aperture_at = z_aperture_at;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.aperture_type = z_aperture_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ref_species = z_ref_species;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.orientation = z_orientation;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.symplectify = z_symplectify;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.mode_flip = z_mode_flip;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.multipoles_on = z_multipoles_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.scale_multipoles = z_scale_multipoles;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.taylor_map_includes_offsets = z_taylor_map_includes_offsets;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.field_master = z_field_master;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.is_on = z_is_on;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.logic = z_logic;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.bmad_logic = z_bmad_logic;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.select = z_select;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.offset_moves_aperture = z_offset_moves_aperture;
 }
 
@@ -4279,8 +4249,8 @@ for (size_t i = 0; i < C.spin_taylor.size(); i++)
 extern "C" void complex_taylor_term_to_c (const Opaque_complex_taylor_term_class*, CPP_complex_taylor_term&);
 
 // c_side.to_f2_arg
-extern "C" void complex_taylor_term_to_f2 (Opaque_complex_taylor_term_class*, c_Complex&,
-    c_IntArr);
+extern "C" void complex_taylor_term_to_f2 (Opaque_complex_taylor_term_class*, C_ARG&,
+    C_ARGArr);
 
 extern "C" void complex_taylor_term_to_f (const CPP_complex_taylor_term& C, Opaque_complex_taylor_term_class* F) {
 
@@ -4290,12 +4260,12 @@ extern "C" void complex_taylor_term_to_f (const CPP_complex_taylor_term& C, Opaq
 }
 
 // c_side.to_c2_arg
-extern "C" void complex_taylor_term_to_c2 (CPP_complex_taylor_term& C, c_Complex& z_coef,
-    c_IntArr z_expn) {
+extern "C" void complex_taylor_term_to_c2 (CPP_complex_taylor_term& C, C_ARG& z_coef, C_ARGArr
+    z_expn) {
 
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.coef = z_coef;
-  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<Int, 6>
+  // c_side.to_c2_set[integer, 1, NOT] FixedArray1D<C_TYPE, 6>
   C.expn << z_expn;
 }
 
@@ -4306,11 +4276,10 @@ extern "C" void complex_taylor_term_to_c2 (CPP_complex_taylor_term& C, c_Complex
 extern "C" void complex_taylor_to_c (const Opaque_complex_taylor_class*, CPP_complex_taylor&);
 
 // c_side.to_f2_arg
-extern "C" void complex_taylor_to_f2 (Opaque_complex_taylor_class*, c_Complex&, const
-    CPP_complex_taylor_term**, Int);
+extern "C" void complex_taylor_to_f2 (Opaque_complex_taylor_class*, C_ARG&, C_ARG**, Int);
 
 extern "C" void complex_taylor_to_f (const CPP_complex_taylor& C, Opaque_complex_taylor_class* F) {
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_complex_taylor_term>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_term = C.term.size();
   const CPP_complex_taylor_term** z_term = nullptr;
   if (n1_term != 0) {
@@ -4322,16 +4291,16 @@ extern "C" void complex_taylor_to_f (const CPP_complex_taylor& C, Opaque_complex
   complex_taylor_to_f2 (F, C.ref, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
-extern "C" void complex_taylor_to_c2 (CPP_complex_taylor& C, c_Complex& z_ref,
+extern "C" void complex_taylor_to_c2 (CPP_complex_taylor& C, C_ARG& z_ref,
     Opaque_complex_taylor_term_class** z_term, Int n1_term) {
 
-  // c_side.to_c2_set[complex, 0, NOT] Complex
+  // c_side.to_c2_set[complex, 0, NOT] C_TYPE
   C.ref = z_ref;
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_complex_taylor_term>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.term.resize(n1_term);
   for (auto i{0}; i < n1_term; i++) { complex_taylor_term_to_c(z_term[i], C.term[i]); }
 
@@ -4344,19 +4313,18 @@ extern "C" void complex_taylor_to_c2 (CPP_complex_taylor& C, c_Complex& z_ref,
 extern "C" void branch_to_c (const Opaque_branch_class*, CPP_branch&);
 
 // c_side.to_f2_arg
-extern "C" void branch_to_f2 (Opaque_branch_class*, c_Char, c_Int&, c_Int&, c_Int&, c_Int&,
-    c_Int&, c_Int&, const CPP_mode_info&, const CPP_mode_info&, const CPP_mode_info&, const
-    CPP_ele**, Int, const CPP_lat_param&, const CPP_wall3d**, Int);
+extern "C" void branch_to_f2 (Opaque_branch_class*, c_Char, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG**, Int, C_ARG&, C_ARG**, Int);
 
 extern "C" void branch_to_f (const CPP_branch& C, Opaque_branch_class* F) {
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_ele>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_ele = C.ele.size();
   const CPP_ele** z_ele = nullptr;
   if (n1_ele != 0) {
     z_ele = new const CPP_ele*[n1_ele];
     for (auto i{0}; i < n1_ele; i++) z_ele[i] = &C.ele[i];
   }
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_wall3d>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_wall3d = C.wall3d.size();
   const CPP_wall3d** z_wall3d = nullptr;
   if (n1_wall3d != 0) {
@@ -4369,45 +4337,45 @@ extern "C" void branch_to_f (const CPP_branch& C, Opaque_branch_class* F) {
       C.n_ele_track, C.n_ele_max, C.a, C.b, C.z, z_ele, n1_ele, C.param, z_wall3d, n1_wall3d);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_ele) delete[] z_ele;
+  if (z_ele) delete[] z_ele;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_wall3d) delete[] z_wall3d;
+  if (z_wall3d) delete[] z_wall3d;
 }
 
 // c_side.to_c2_arg
-extern "C" void branch_to_c2 (CPP_branch& C, c_Char z_name, c_Int& z_ix_branch, c_Int&
-    z_ix_from_branch, c_Int& z_ix_from_ele, c_Int& z_ix_to_ele, c_Int& z_n_ele_track, c_Int&
+extern "C" void branch_to_c2 (CPP_branch& C, c_Char z_name, C_ARG& z_ix_branch, C_ARG&
+    z_ix_from_branch, C_ARG& z_ix_from_ele, C_ARG& z_ix_to_ele, C_ARG& z_n_ele_track, C_ARG&
     z_n_ele_max, const Opaque_mode_info_class* z_a, const Opaque_mode_info_class* z_b, const
     Opaque_mode_info_class* z_z, Opaque_ele_class** z_ele, Int n1_ele, const
     Opaque_lat_param_class* z_param, Opaque_wall3d_class** z_wall3d, Int n1_wall3d) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.name = z_name;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_branch = z_ix_branch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_from_branch = z_ix_from_branch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_from_ele = z_ix_from_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_to_ele = z_ix_to_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_ele_track = z_n_ele_track;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_ele_max = z_n_ele_max;
-  // c_side.to_c2_set[type, 0, NOT] CPP_mode_info
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   mode_info_to_c(z_a, C.a);
-  // c_side.to_c2_set[type, 0, NOT] CPP_mode_info
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   mode_info_to_c(z_b, C.b);
-  // c_side.to_c2_set[type, 0, NOT] CPP_mode_info
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   mode_info_to_c(z_z, C.z);
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_ele>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.ele.resize(n1_ele);
   for (auto i{0}; i < n1_ele; i++) { ele_to_c(z_ele[i], C.ele[i]); }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_lat_param
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   lat_param_to_c(z_param, C.param);
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_wall3d>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.wall3d.resize(n1_wall3d);
   for (auto i{0}; i < n1_wall3d; i++) { wall3d_to_c(z_wall3d[i], C.wall3d[i]); }
 
@@ -4421,12 +4389,10 @@ extern "C" void lat_to_c (const Opaque_lat_class*, CPP_lat&);
 
 // c_side.to_f2_arg
 extern "C" void lat_to_f2 (Opaque_lat_class*, c_Char, c_Char, c_Char, c_Char, c_Char, c_Char*,
-    Int, const CPP_expression_atom**, Int, const CPP_mode_info&, Int, const CPP_mode_info&,
-    Int, const CPP_mode_info&, Int, const CPP_lat_param&, Int, const CPP_bookkeeping_state&,
-    const CPP_ele&, const CPP_ele**, Int, const CPP_branch**, Int, const CPP_control**, Int,
-    const CPP_coord&, const CPP_beam_init&, const CPP_pre_tracker&, c_RealArr, Int, c_Int&,
-    c_IntArr, Int, c_IntArr, Int, c_Int&, c_Int&, c_Int&, c_IntArr, Int, c_Int&, c_Int&,
-    c_Int&);
+    Int, C_ARG**, Int, C_ARG&, Int, C_ARG&, Int, C_ARG&, Int, C_ARG&, Int, C_ARG&, C_ARG&,
+    C_ARG**, Int, C_ARG**, Int, C_ARG**, Int, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, Int, C_ARG&,
+    C_ARGArr, Int, C_ARGArr, Int, C_ARG&, C_ARG&, C_ARG&, C_ARGArr, Int, C_ARG&, C_ARG&,
+    C_ARG&);
 
 extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
   // c_side.to_f_setup[character, 1, ALLOC] VariableArray1D<string>
@@ -4436,55 +4402,55 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     z_print_str = new c_Char[n1_print_str];
     for (auto i{0}; i < n1_print_str; i++) z_print_str[i] = C.print_str[i].c_str();
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_constant = C.constant.size();
   const CPP_expression_atom** z_constant = nullptr;
   if (n1_constant != 0) {
     z_constant = new const CPP_expression_atom*[n1_constant];
     for (auto i{0}; i < n1_constant; i++) z_constant[i] = &C.constant[i];
   }
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_mode_info>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_a = 0; if (C.a != nullptr) n_a = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_mode_info>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_b = 0; if (C.b != nullptr) n_b = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_mode_info>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_z = 0; if (C.z != nullptr) n_z = 1;
-  // c_side.to_f_setup[type, 0, PTR] shared_ptr<CPP_lat_param>
+  // c_side.to_f_setup[type, 0, PTR] shared_ptr<C_TYPE>
   size_t n_param = 0; if (C.param != nullptr) n_param = 1;
-  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<CPP_ele>
+  // c_side.to_f_setup[type, 1, PTR] VariableArray1D<C_TYPE>
   auto n1_ele = C.ele.size();
   const CPP_ele** z_ele = nullptr;
   if (n1_ele != 0) {
     z_ele = new const CPP_ele*[n1_ele];
     for (auto i{0}; i < n1_ele; i++) z_ele[i] = &C.ele[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_branch>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_branch = C.branch.size();
   const CPP_branch** z_branch = nullptr;
   if (n1_branch != 0) {
     z_branch = new const CPP_branch*[n1_branch];
     for (auto i{0}; i < n1_branch; i++) z_branch[i] = &C.branch[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_control>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_control = C.control.size();
   const CPP_control** z_control = nullptr;
   if (n1_control != 0) {
     z_control = new const CPP_control*[n1_control];
     for (auto i{0}; i < n1_control; i++) z_control[i] = &C.control[i];
   }
-  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_f_setup[real, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_custom = C.custom.size();
-  c_RealArr z_custom = nullptr;
+  c_C_TYPEArr z_custom = nullptr;
   if (n1_custom > 0) {
     z_custom = &C.custom[0];
   }
-  // c_side.to_f_setup[integer, 0, PTR] shared_ptr<Int>
+  // c_side.to_f_setup[integer, 0, PTR] shared_ptr<C_TYPE>
   size_t n_n_ele_track = 0; if (C.n_ele_track != nullptr) n_n_ele_track = 1;
-  // c_side.to_f_setup[integer, 0, PTR] shared_ptr<Int>
+  // c_side.to_f_setup[integer, 0, PTR] shared_ptr<C_TYPE>
   size_t n_n_ele_max = 0; if (C.n_ele_max != nullptr) n_n_ele_max = 1;
-  // c_side.to_f_setup[integer, 1, ALLOC] VariableArray1D<Int>
+  // c_side.to_f_setup[integer, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_ic = C.ic.size();
-  c_IntArr z_ic = nullptr;
+  c_C_TYPEArr z_ic = nullptr;
   if (n1_ic > 0) {
     z_ic = &C.ic[0];
   }
@@ -4500,15 +4466,15 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
       C.ramper_slave_bookkeeping);
 
   // c_side.to_f_cleanup[character, 1, ALLOC]
- if (z_print_str) delete[] z_print_str;
+  if (z_print_str) delete[] z_print_str;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_constant) delete[] z_constant;
+  if (z_constant) delete[] z_constant;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_ele) delete[] z_ele;
+  if (z_ele) delete[] z_ele;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_branch) delete[] z_branch;
+  if (z_branch) delete[] z_branch;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_control) delete[] z_control;
+  if (z_control) delete[] z_control;
 }
 
 // c_side.to_c2_arg
@@ -4520,11 +4486,11 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
     z_lord_state, const Opaque_ele_class* z_ele_init, Opaque_ele_class** z_ele, Int n1_ele,
     Opaque_branch_class** z_branch, Int n1_branch, Opaque_control_class** z_control, Int
     n1_control, const Opaque_coord_class* z_particle_start, const Opaque_beam_init_class*
-    z_beam_init, const Opaque_pre_tracker_class* z_pre_tracker, c_RealArr z_custom, Int
-    n1_custom, c_Int& z_version, c_IntArr z_n_ele_track, Int n_n_ele_track, c_IntArr
-    z_n_ele_max, Int n_n_ele_max, c_Int& z_n_control_max, c_Int& z_n_ic_max, c_Int&
-    z_input_taylor_order, c_IntArr z_ic, Int n1_ic, c_Int& z_photon_type, c_Int&
-    z_creation_hash, c_Int& z_ramper_slave_bookkeeping) {
+    z_beam_init, const Opaque_pre_tracker_class* z_pre_tracker, C_ARGArr z_custom, Int
+    n1_custom, C_ARG& z_version, C_ARGArr z_n_ele_track, Int n_n_ele_track, C_ARGArr
+    z_n_ele_max, Int n_n_ele_max, C_ARG& z_n_control_max, C_ARG& z_n_ic_max, C_ARG&
+    z_input_taylor_order, C_ARGArr z_ic, Int n1_ic, C_ARG& z_photon_type, C_ARG&
+    z_creation_hash, C_ARG& z_ramper_slave_bookkeeping) {
 
   // c_side.to_c2_set[character, 0, NOT] string
   C.use_name = z_use_name;
@@ -4540,103 +4506,103 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   C.print_str.resize(n1_print_str);
   for (auto i{0}; i < n1_print_str; i++) C.print_str[i] = z_print_str[i];
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.constant.resize(n1_constant);
   for (auto i{0}; i < n1_constant; i++) { expression_atom_to_c(z_constant[i], C.constant[i]); }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_a == 0) {
     C.a = nullptr;
   } else {
-    C.a = make_shared<CPP_mode_info>();
+    C.a = make_shared<C_TYPE>();
     mode_info_to_c(z_a, *C.a);
   }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_b == 0) {
     C.b = nullptr;
   } else {
-    C.b = make_shared<CPP_mode_info>();
+    C.b = make_shared<C_TYPE>();
     mode_info_to_c(z_b, *C.b);
   }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_z == 0) {
     C.z = nullptr;
   } else {
-    C.z = make_shared<CPP_mode_info>();
+    C.z = make_shared<C_TYPE>();
     mode_info_to_c(z_z, *C.z);
   }
 
-  // c_side.to_c2_set[type, 0, PTR] shared_ptr<CPP_lat_param>
+  // c_side.to_c2_set[type, 0, PTR] shared_ptr<C_TYPE>
   if (n_param == 0) {
     C.param = nullptr;
   } else {
-    C.param = make_shared<CPP_lat_param>();
+    C.param = make_shared<C_TYPE>();
     lat_param_to_c(z_param, *C.param);
   }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_bookkeeping_state
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   bookkeeping_state_to_c(z_lord_state, C.lord_state);
-  // c_side.to_c2_set[type, 0, NOT] CPP_ele
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   ele_to_c(z_ele_init, C.ele_init);
-  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<CPP_ele>
+  // c_side.to_c2_set[type, 1, PTR] VariableArray1D<C_TYPE>
   C.ele.resize(n1_ele);
   for (auto i{0}; i < n1_ele; i++) { ele_to_c(z_ele[i], C.ele[i]); }
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_branch>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.branch.resize(n1_branch);
   for (auto i{0}; i < n1_branch; i++) { branch_to_c(z_branch[i], C.branch[i]); }
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_control>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.control.resize(n1_control);
   for (auto i{0}; i < n1_control; i++) { control_to_c(z_control[i], C.control[i]); }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_particle_start, C.particle_start);
-  // c_side.to_c2_set[type, 0, NOT] CPP_beam_init
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   beam_init_to_c(z_beam_init, C.beam_init);
-  // c_side.to_c2_set[type, 0, NOT] CPP_pre_tracker
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   pre_tracker_to_c(z_pre_tracker, C.pre_tracker);
-  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<Real>
+  // c_side.to_c2_set[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.custom.resize(n1_custom);
   C.custom << z_custom;
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.version = z_version;
-  // c_side.to_c2_set[integer, 0, PTR] shared_ptr<Int>
+  // c_side.to_c2_set[integer, 0, PTR] shared_ptr<C_TYPE>
   if (n_n_ele_track == 0) {
     C.n_ele_track = nullptr;
   } else {
-    C.n_ele_track = make_shared<Int>();
+    C.n_ele_track = make_shared<C_TYPE>();
     *C.n_ele_track = *z_n_ele_track;
   }
 
-  // c_side.to_c2_set[integer, 0, PTR] shared_ptr<Int>
+  // c_side.to_c2_set[integer, 0, PTR] shared_ptr<C_TYPE>
   if (n_n_ele_max == 0) {
     C.n_ele_max = nullptr;
   } else {
-    C.n_ele_max = make_shared<Int>();
+    C.n_ele_max = make_shared<C_TYPE>();
     *C.n_ele_max = *z_n_ele_max;
   }
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_control_max = z_n_control_max;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_ic_max = z_n_ic_max;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.input_taylor_order = z_input_taylor_order;
-  // c_side.to_c2_set[integer, 1, ALLOC] VariableArray1D<Int>
+  // c_side.to_c2_set[integer, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.ic.resize(n1_ic);
   C.ic << z_ic;
 
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.photon_type = z_photon_type;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.creation_hash = z_creation_hash;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ramper_slave_bookkeeping = z_ramper_slave_bookkeeping;
 }
 
@@ -4647,21 +4613,20 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
 extern "C" void bunch_to_c (const Opaque_bunch_class*, CPP_bunch&);
 
 // c_side.to_f2_arg
-extern "C" void bunch_to_f2 (Opaque_bunch_class*, const CPP_coord**, Int, c_IntArr, Int,
-    c_Real&, c_Real&, c_Real&, c_Real&, c_Real&, c_Bool&, c_Int&, c_Int&, c_Int&, c_Int&,
-    c_Int&, c_Int&);
+extern "C" void bunch_to_f2 (Opaque_bunch_class*, C_ARG**, Int, C_ARGArr, Int, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void bunch_to_f (const CPP_bunch& C, Opaque_bunch_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_coord>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_particle = C.particle.size();
   const CPP_coord** z_particle = nullptr;
   if (n1_particle != 0) {
     z_particle = new const CPP_coord*[n1_particle];
     for (auto i{0}; i < n1_particle; i++) z_particle[i] = &C.particle[i];
   }
-  // c_side.to_f_setup[integer, 1, ALLOC] VariableArray1D<Int>
+  // c_side.to_f_setup[integer, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_ix_z = C.ix_z.size();
-  c_IntArr z_ix_z = nullptr;
+  c_C_TYPEArr z_ix_z = nullptr;
   if (n1_ix_z > 0) {
     z_ix_z = &C.ix_z[0];
   }
@@ -4672,48 +4637,47 @@ extern "C" void bunch_to_f (const CPP_bunch& C, Opaque_bunch_class* F) {
       C.n_live, C.n_good, C.n_bad);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_particle) delete[] z_particle;
+  if (z_particle) delete[] z_particle;
 }
 
 // c_side.to_c2_arg
 extern "C" void bunch_to_c2 (CPP_bunch& C, Opaque_coord_class** z_particle, Int n1_particle,
-    c_IntArr z_ix_z, Int n1_ix_z, c_Real& z_charge_tot, c_Real& z_charge_live, c_Real&
-    z_z_center, c_Real& z_t_center, c_Real& z_t0, c_Bool& z_drift_between_t_and_s, c_Int&
-    z_ix_ele, c_Int& z_ix_bunch, c_Int& z_ix_turn, c_Int& z_n_live, c_Int& z_n_good, c_Int&
-    z_n_bad) {
+    C_ARGArr z_ix_z, Int n1_ix_z, C_ARG& z_charge_tot, C_ARG& z_charge_live, C_ARG& z_z_center,
+    C_ARG& z_t_center, C_ARG& z_t0, C_ARG& z_drift_between_t_and_s, C_ARG& z_ix_ele, C_ARG&
+    z_ix_bunch, C_ARG& z_ix_turn, C_ARG& z_n_live, C_ARG& z_n_good, C_ARG& z_n_bad) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_coord>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.particle.resize(n1_particle);
   for (auto i{0}; i < n1_particle; i++) { coord_to_c(z_particle[i], C.particle[i]); }
 
-  // c_side.to_c2_set[integer, 1, ALLOC] VariableArray1D<Int>
+  // c_side.to_c2_set[integer, 1, ALLOC] VariableArray1D<C_TYPE>
 
   C.ix_z.resize(n1_ix_z);
   C.ix_z << z_ix_z;
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.charge_tot = z_charge_tot;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.charge_live = z_charge_live;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.z_center = z_z_center;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.t_center = z_t_center;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.t0 = z_t0;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.drift_between_t_and_s = z_drift_between_t_and_s;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_bunch = z_ix_bunch;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_turn = z_ix_turn;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_live = z_n_live;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_good = z_n_good;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_bad = z_n_bad;
 }
 
@@ -4724,14 +4688,13 @@ extern "C" void bunch_to_c2 (CPP_bunch& C, Opaque_coord_class** z_particle, Int 
 extern "C" void bunch_params_to_c (const Opaque_bunch_params_class*, CPP_bunch_params&);
 
 // c_side.to_f2_arg
-extern "C" void bunch_params_to_f2 (Opaque_bunch_params_class*, const CPP_coord&, const
-    CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const
-    CPP_twiss&, c_RealArr, c_RealArr, c_RealArr, c_Real&, c_Real&, c_Real&, c_Real&, c_Real&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Bool&);
+extern "C" void bunch_params_to_f2 (Opaque_bunch_params_class*, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARGArr, C_ARGArr, C_ARGArr, C_ARG&, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&);
 
 extern "C" void bunch_params_to_f (const CPP_bunch_params& C, Opaque_bunch_params_class* F) {
-  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<Real, 6, 6>
-  Real z_sigma[6*6]; matrix_to_vec(C.sigma, z_sigma);
+  // c_side.to_f_setup[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
+  C_TYPE z_sigma[6*6]; matrix_to_vec(C.sigma, z_sigma);
 
   // c_side.to_f2_call
   bunch_params_to_f2 (F, C.centroid, C.x, C.y, C.z, C.a, C.b, C.c, z_sigma, &C.rel_max[0],
@@ -4745,57 +4708,57 @@ extern "C" void bunch_params_to_f (const CPP_bunch_params& C, Opaque_bunch_param
 extern "C" void bunch_params_to_c2 (CPP_bunch_params& C, const Opaque_coord_class* z_centroid,
     const Opaque_twiss_class* z_x, const Opaque_twiss_class* z_y, const Opaque_twiss_class*
     z_z, const Opaque_twiss_class* z_a, const Opaque_twiss_class* z_b, const
-    Opaque_twiss_class* z_c, c_RealArr z_sigma, c_RealArr z_rel_max, c_RealArr z_rel_min,
-    c_Real& z_s, c_Real& z_t, c_Real& z_sigma_t, c_Real& z_charge_live, c_Real& z_charge_tot,
-    c_Int& z_n_particle_tot, c_Int& z_n_particle_live, c_Int& z_n_particle_lost_in_ele, c_Int&
-    z_n_good_steps, c_Int& z_n_bad_steps, c_Int& z_ix_ele, c_Int& z_location, c_Bool&
+    Opaque_twiss_class* z_c, C_ARGArr z_sigma, C_ARGArr z_rel_max, C_ARGArr z_rel_min, C_ARG&
+    z_s, C_ARG& z_t, C_ARG& z_sigma_t, C_ARG& z_charge_live, C_ARG& z_charge_tot, C_ARG&
+    z_n_particle_tot, C_ARG& z_n_particle_live, C_ARG& z_n_particle_lost_in_ele, C_ARG&
+    z_n_good_steps, C_ARG& z_n_bad_steps, C_ARG& z_ix_ele, C_ARG& z_location, C_ARG&
     z_twiss_valid) {
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_centroid, C.centroid);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_x, C.x);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_y, C.y);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_z, C.z);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_a, C.a);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_b, C.b);
-  // c_side.to_c2_set[type, 0, NOT] CPP_twiss
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   twiss_to_c(z_c, C.c);
-  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<Real, 6, 6>
+  // c_side.to_c2_set[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
   C.sigma << z_sigma;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 7>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 7>
   C.rel_max << z_rel_max;
-  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<Real, 7>
+  // c_side.to_c2_set[real, 1, NOT] FixedArray1D<C_TYPE, 7>
   C.rel_min << z_rel_min;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.s = z_s;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.t = z_t;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.sigma_t = z_sigma_t;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.charge_live = z_charge_live;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.charge_tot = z_charge_tot;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_particle_tot = z_n_particle_tot;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_particle_live = z_n_particle_live;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_particle_lost_in_ele = z_n_particle_lost_in_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_good_steps = z_n_good_steps;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_bad_steps = z_n_bad_steps;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.location = z_location;
-  // c_side.to_c2_set[logical, 0, NOT] Bool
+  // c_side.to_c2_set[logical, 0, NOT] C_TYPE
   C.twiss_valid = z_twiss_valid;
 }
 
@@ -4806,10 +4769,10 @@ extern "C" void bunch_params_to_c2 (CPP_bunch_params& C, const Opaque_coord_clas
 extern "C" void beam_to_c (const Opaque_beam_class*, CPP_beam&);
 
 // c_side.to_f2_arg
-extern "C" void beam_to_f2 (Opaque_beam_class*, const CPP_bunch**, Int);
+extern "C" void beam_to_f2 (Opaque_beam_class*, C_ARG**, Int);
 
 extern "C" void beam_to_f (const CPP_beam& C, Opaque_beam_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_bunch>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_bunch = C.bunch.size();
   const CPP_bunch** z_bunch = nullptr;
   if (n1_bunch != 0) {
@@ -4821,13 +4784,13 @@ extern "C" void beam_to_f (const CPP_beam& C, Opaque_beam_class* F) {
   beam_to_f2 (F, z_bunch, n1_bunch);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_bunch) delete[] z_bunch;
+  if (z_bunch) delete[] z_bunch;
 }
 
 // c_side.to_c2_arg
 extern "C" void beam_to_c2 (CPP_beam& C, Opaque_bunch_class** z_bunch, Int n1_bunch) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_bunch>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.bunch.resize(n1_bunch);
   for (auto i{0}; i < n1_bunch; i++) { bunch_to_c(z_bunch[i], C.bunch[i]); }
 
@@ -4840,8 +4803,8 @@ extern "C" void beam_to_c2 (CPP_beam& C, Opaque_bunch_class** z_bunch, Int n1_bu
 extern "C" void aperture_point_to_c (const Opaque_aperture_point_class*, CPP_aperture_point&);
 
 // c_side.to_f2_arg
-extern "C" void aperture_point_to_f2 (Opaque_aperture_point_class*, c_Real&, c_Real&, c_Int&,
-    c_Int&, c_Int&);
+extern "C" void aperture_point_to_f2 (Opaque_aperture_point_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&);
 
 extern "C" void aperture_point_to_f (const CPP_aperture_point& C, Opaque_aperture_point_class* F) {
 
@@ -4851,18 +4814,18 @@ extern "C" void aperture_point_to_f (const CPP_aperture_point& C, Opaque_apertur
 }
 
 // c_side.to_c2_arg
-extern "C" void aperture_point_to_c2 (CPP_aperture_point& C, c_Real& z_x, c_Real& z_y, c_Int&
-    z_plane, c_Int& z_ix_ele, c_Int& z_i_turn) {
+extern "C" void aperture_point_to_c2 (CPP_aperture_point& C, C_ARG& z_x, C_ARG& z_y, C_ARG&
+    z_plane, C_ARG& z_ix_ele, C_ARG& z_i_turn) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x = z_x;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y = z_y;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.plane = z_plane;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.i_turn = z_i_turn;
 }
 
@@ -4873,8 +4836,8 @@ extern "C" void aperture_point_to_c2 (CPP_aperture_point& C, c_Real& z_x, c_Real
 extern "C" void aperture_param_to_c (const Opaque_aperture_param_class*, CPP_aperture_param&);
 
 // c_side.to_f2_arg
-extern "C" void aperture_param_to_f2 (Opaque_aperture_param_class*, c_Real&, c_Real&, c_Int&,
-    c_Int&, c_Real&, c_Real&, c_Real&, c_Real&, c_Char);
+extern "C" void aperture_param_to_f2 (Opaque_aperture_param_class*, C_ARG&, C_ARG&, C_ARG&,
+    C_ARG&, C_ARG&, C_ARG&, C_ARG&, C_ARG&, c_Char);
 
 extern "C" void aperture_param_to_f (const CPP_aperture_param& C, Opaque_aperture_param_class* F) {
 
@@ -4885,25 +4848,25 @@ extern "C" void aperture_param_to_f (const CPP_aperture_param& C, Opaque_apertur
 }
 
 // c_side.to_c2_arg
-extern "C" void aperture_param_to_c2 (CPP_aperture_param& C, c_Real& z_min_angle, c_Real&
-    z_max_angle, c_Int& z_n_angle, c_Int& z_n_turn, c_Real& z_x_init, c_Real& z_y_init, c_Real&
-    z_rel_accuracy, c_Real& z_abs_accuracy, c_Char z_start_ele) {
+extern "C" void aperture_param_to_c2 (CPP_aperture_param& C, C_ARG& z_min_angle, C_ARG&
+    z_max_angle, C_ARG& z_n_angle, C_ARG& z_n_turn, C_ARG& z_x_init, C_ARG& z_y_init, C_ARG&
+    z_rel_accuracy, C_ARG& z_abs_accuracy, c_Char z_start_ele) {
 
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.min_angle = z_min_angle;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.max_angle = z_max_angle;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_angle = z_n_angle;
-  // c_side.to_c2_set[integer, 0, NOT] Int
+  // c_side.to_c2_set[integer, 0, NOT] C_TYPE
   C.n_turn = z_n_turn;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.x_init = z_x_init;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.y_init = z_y_init;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.rel_accuracy = z_rel_accuracy;
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.abs_accuracy = z_abs_accuracy;
   // c_side.to_c2_set[character, 0, NOT] string
   C.start_ele = z_start_ele;
@@ -4916,11 +4879,11 @@ extern "C" void aperture_param_to_c2 (CPP_aperture_param& C, c_Real& z_min_angle
 extern "C" void aperture_scan_to_c (const Opaque_aperture_scan_class*, CPP_aperture_scan&);
 
 // c_side.to_f2_arg
-extern "C" void aperture_scan_to_f2 (Opaque_aperture_scan_class*, const CPP_aperture_point**,
-    Int, const CPP_coord&, c_Real&);
+extern "C" void aperture_scan_to_f2 (Opaque_aperture_scan_class*, C_ARG**, Int, C_ARG&,
+    C_ARG&);
 
 extern "C" void aperture_scan_to_f (const CPP_aperture_scan& C, Opaque_aperture_scan_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<CPP_aperture_point>
+  // c_side.to_f_setup[type, 1, ALLOC] VariableArray1D<C_TYPE>
   auto n1_point = C.point.size();
   const CPP_aperture_point** z_point = nullptr;
   if (n1_point != 0) {
@@ -4932,19 +4895,19 @@ extern "C" void aperture_scan_to_f (const CPP_aperture_scan& C, Opaque_aperture_
   aperture_scan_to_f2 (F, z_point, n1_point, C.ref_orb, C.pz_start);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_point) delete[] z_point;
+  if (z_point) delete[] z_point;
 }
 
 // c_side.to_c2_arg
 extern "C" void aperture_scan_to_c2 (CPP_aperture_scan& C, Opaque_aperture_point_class**
-    z_point, Int n1_point, const Opaque_coord_class* z_ref_orb, c_Real& z_pz_start) {
+    z_point, Int n1_point, const Opaque_coord_class* z_ref_orb, C_ARG& z_pz_start) {
 
-  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<CPP_aperture_point>
+  // c_side.to_c2_set[type, 1, ALLOC] VariableArray1D<C_TYPE>
   C.point.resize(n1_point);
   for (auto i{0}; i < n1_point; i++) { aperture_point_to_c(z_point[i], C.point[i]); }
 
-  // c_side.to_c2_set[type, 0, NOT] CPP_coord
+  // c_side.to_c2_set[type, 0, NOT] C_TYPE
   coord_to_c(z_ref_orb, C.ref_orb);
-  // c_side.to_c2_set[real, 0, NOT] Real
+  // c_side.to_c2_set[real, 0, NOT] C_TYPE
   C.pz_start = z_pz_start;
 }

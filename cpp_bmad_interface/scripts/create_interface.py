@@ -228,9 +228,6 @@ class f_side_trans_class:
 
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
     test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
-    size_var: list[str] = field(
-        default_factory=list
-    )  # For communicating the size of allocatable and pointer variables
     test_value: str = ""
 
 
@@ -777,12 +774,13 @@ def make_f_side_trans_basic(type: str, dim: int):
             )
 
     # Final processing
-    f.test_pat = f.test_pat.replace("TEST_VALUE", f.test_value)
+    # f.test_pat = f.test_pat.replace("TEST_VALUE", f.test_value)
     if f.to_f2_type == "":
         f.to_f2_type = f.to_c2_type
     if f.to_f2_name == "":
         f.to_f2_name = f.to_c2_name
 
+    f.to_c2_type = "TO_C2_TYPE"
     return f
 
 
@@ -813,13 +811,13 @@ endif
     fp.to_c2_name = "z_NAME(*)"
     fp.to_f2_type = "type(c_ptr), value"
     fp.to_f2_name = "z_NAME"
-    fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME(:)"]
+    fp.to_f2_var = ["TO_F2_TYPE, pointer :: f_NAME(:)"]
 
     # ---------------------
     # Pointer, dim = 0
 
     if dim == 0:
-        fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME"]
+        fp.to_f2_var = ["TO_F2_TYPE, pointer :: f_NAME"]
         fp.to_c2_name = "z_NAME"
         fp.to_c2_call = "F%NAME"
         fp.to_f2_trans = """\
@@ -910,7 +908,7 @@ else
                 x2,
                 rhs1,
                 x2,
-                set1.replace("TEST_VALUE", f.test_value),
+                set1,  # .replace("TEST_VALUE", f.test_value),
                 "  enddo\n",
                 "endif\n",
             )
@@ -1000,7 +998,7 @@ else
             + x2
             + rhs2
             + x2
-            + set2.replace("TEST_VALUE", f.test_value)
+            + set2  # .replace("TEST_VALUE", f.test_value)
             + "  enddo; enddo\n"
             + "endif\n"
         )
@@ -1097,7 +1095,7 @@ else
             + x2
             + rhs3
             + x2
-            + set3.replace("TEST_VALUE", f.test_value)
+            + set3  # .replace("TEST_VALUE", f.test_value)
             + "  enddo; enddo; enddo\n"
             + "endif\n"
         )
@@ -1393,6 +1391,9 @@ def configure_c_side_trans_by_type(
     else:
         raise NotImplementedError(type)
 
+    c_type = "C_TYPE"
+    c_arg = "C_ARG"
+
     # Configure based on dimension
     if dim == 0:
         configure_c_dim0_non_ptr(c, c_type, c_arg, type)
@@ -1404,7 +1405,7 @@ def configure_c_side_trans_by_type(
         configure_c_dim3_non_ptr(c, c_type, c_arg, type)
 
     # Apply test pattern
-    c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
+    c.test_pat = c.test_pat  # .replace("TEST_VALUE", c.test_value)
 
     # Special handling for STRUCT type
     if type == STRUCT:
@@ -1556,7 +1557,7 @@ def configure_c_pointer(
     else:
         raise NotImplementedError(dim)
 
-    cp.test_pat = cp.test_pat.replace("TEST_VALUE", c.test_value)
+    # cp.test_pat = cp.test_pat.replace("TEST_VALUE", c.test_value)
 
 
 def configure_c_dim0_ptr(
@@ -1641,7 +1642,7 @@ def configure_c_dim1_ptr(
   C.NAME.resize(n1_NAME);
   for (auto i{0}; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
 """
-        cp.to_f_cleanup = " if (z_NAME) delete[] z_NAME;\n"
+        cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
 
 
 def configure_c_dim2_ptr(
@@ -1844,8 +1845,8 @@ def setup_common_c_side_trans():
                     c,
                     dim,
                     type_val,
-                    get_c_type(type_val),
-                    get_c_arg(type_val),
+                    "C_TYPE",  # get_c_type(type_val), # TODO
+                    "C_ARG",  # TODO #  get_c_arg(type_val),
                 )
 
     return c_side_trans
@@ -1894,7 +1895,7 @@ def setup_char_not_pointer(c_side_trans):
     c_side_trans[CHAR, 0, NOT].to_c2_arg = "c_Char z_NAME"
     c_side_trans[CHAR, 0, NOT].test_pat = (
         "  C.NAME.resize(STR_LEN);\n"
-        + test_pat1.replace("TEST_VALUE", "'a' + rhs % 26")
+        + test_pat1  # .replace("TEST_VALUE", "'a' + rhs % 26")
     )
     # c_side_trans[CHAR, 0, NOT].class_initializer = ""
 
@@ -2049,7 +2050,7 @@ def argument_from_fstruct(
     fstruct: FortranStructure, member: StructureMember
 ) -> Argument:
     if member.size and member.type.lower() == "integer":
-        type_ = "integer8"
+        type_ = INT8
     else:
         type_ = member.type
 
@@ -3299,6 +3300,349 @@ c_side_trans = initialize_c_side_trans()
 
 c_side_trans_custom_overrides = {}
 f_side_trans_custom_overrides = {}
+
+
+def _wrap_block(lines, block, tag, comment):
+    if isinstance(block, str):
+        block = block.rstrip()
+        block = [line.rstrip() for line in block.splitlines()]
+
+    if not block:
+        return
+
+    indent = " " * (len(block[0]) - len(block[0].lstrip()))
+    lines.extend(
+        [
+            f"{indent}{comment}start:{tag}",
+            *block,
+            f"{indent}{comment}end:{tag}",
+        ]
+    )
+
+
+def wrap_block_c(lines, block, tag):
+    return _wrap_block(lines, block, tag, comment="//// ")
+
+
+def wrap_block_f(lines, block, tag):
+    return _wrap_block(lines, block, tag, comment="!!!! ")
+
+
+def export_c2(file):
+    to_f = {}
+
+    def add(
+        key, dct: dict[str, list[str]], value: str, prefix: str = "", suffix: str = ""
+    ) -> None:
+        type_name, ndim, ptr = key
+        key_str = f"{ndim}D_{ptr}_{type_name}"
+
+        value = value.strip()
+        value = f"{prefix}{value}{suffix}"
+        dct.setdefault(value, [])
+        dct[value].append(key_str)
+
+    for key, trans in c_side_trans.items():
+        lines = []
+        lines.append("void TO_F (const CppClass& C, OpaqueClass* F) {")
+
+        if trans.to_f_setup:
+            wrap_block_c(lines, f"  {trans.to_f_setup}", "setup")
+
+        lines.append("")
+
+        lines.append("  to_f2(F,")
+        wrap_block_c(lines, f"  {trans.to_f2_call}", "to_f2_call")
+        lines.append("  );")
+
+        lines.append("")
+
+        # for arg in struct.arg:
+        # lines.append(
+        #     f"  // c_side.to_f_cleanup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]"
+        # )
+        if trans.to_f_cleanup:
+            wrap_block_c(lines, trans.to_f_cleanup, "cleanup")
+
+        lines.append("}")
+
+        add(key, to_f, "\n".join(lines))
+
+    to_c2 = {}
+    for key, trans in c_side_trans.items():
+        lines = []
+        lines.append("void TO_C2 (STRUCT_CPP_CLASS& C,")
+        wrap_block_c(lines, trans.to_f_cleanup, "cleanup")
+        lines.append("  //// start:c2_arg")
+        # for arg in struct.arg:
+        lines.append("  " + trans.to_c2_arg)
+        lines.append("  //// start:c2_arg")
+        lines.append(") {")
+
+        # for arg in struct.arg:
+        lines.append("  //// start:c2_set")
+        lines.append(trans.to_c2_set)
+        lines.append("  //// end:c2_set")
+
+        lines.append("}")
+        add(key, to_c2, "\n".join(lines))
+
+    simple = {
+        "equality_test": {},
+        "test_pat": {},
+        "test_value": {},
+    }
+    for func_name, dct in simple.items():
+        for key, trans in c_side_trans.items():
+            lines = []
+            lines.append(f"void {func_name.upper()} (STRUCT_CPP_CLASS& C) {{")
+            if func_name == "equality":
+                lines.append("  bool is_eq = true;")
+
+            lines.append(f"  //// start:{func_name}")
+            # for arg in struct.arg:
+            lines.append(getattr(trans, func_name).rstrip())
+            lines.append(f"  //// end:{func_name}")
+
+            lines.append("}")
+            add(key, dct, "\n".join(lines))
+
+    classes = {}
+    # for key, trans in c_side_trans.items():
+    #     lines = []
+    #     lines.append("class STRUCT_CPP_CLASS {")
+    #     lines.append("public:")
+    #     # for arg in struct.arg:
+    #     lines.append(
+    #         f"  ARG_C_CLASS ARG_NAME{trans.c_instantiation_suffix} {trans.construct_value}"
+    #     )
+    #
+    #     # lines.append("  //// start:c2_set")
+    #     # lines.append(trans.to_c2_set)
+    #     # lines.append("  //// end:c2_set")
+    #
+    #     lines.append("};")
+    #     add(key, classes, "\n".join(lines))
+
+    print(
+        """
+// vi: syntax=cpp
+//
+#include <cstddef>
+
+class OpaqueClass {};
+class CppClass {
+public:
+  void **NAME;
+};
+""",
+        file=file,
+    )
+
+    for func in [
+        "to_f",
+        "to_c2",
+        "classes",
+    ]:
+        dct = locals()[func]
+        for code, keys in sorted(dct.items(), key=lambda kv: tuple(kv[1])):
+            for key in sorted(keys):
+                print(f"//// {key}", file=file)
+            print(f"{code}", file=file)
+            print(file=file)
+    for func_name, dct in simple.items():
+        for code, keys in sorted(dct.items()):
+            for key in sorted(keys):
+                print(f"//// {key}", file=file)
+            print(f"{code}", file=file)
+            print(file=file)
+
+
+def export_f2(file):
+    to_c = {}
+    to_f2 = {}
+
+    def add(
+        key, dct: dict[str, list[str]], value: str, prefix: str = "", suffix: str = ""
+    ) -> None:
+        # TODO lazy
+        value = value.replace("allocated(", "associated_or_allocated(")
+        value = value.replace("associated(", "associated_or_allocated(")
+
+        type_name, ndim, ptr = key
+        key_str = f"{ndim}D_{ptr}_{type_name}"
+
+        value = value.strip()
+        value = f"{prefix}{value}{suffix}"
+        dct.setdefault(value, [])
+        dct[value].append(key_str)
+
+    for key, trans in f_side_trans.items():
+        lines = []
+        lines.append("subroutine to_c (Fp, C) bind(C)")
+        # NOTE: c2_f2_sub_arg can be derived from to_c2_name (I think)
+        # lines.append("implicit none")
+        # lines.append("interface")
+        # lines.append("  subroutine to_c2 (C, !!!! start:c2_f2_sub_arg")
+        # # for arg in struct.arg:
+        # lines.append(
+        #     f"                   !!!! end:c2_f2_sub_arg"
+        # )
+        # lines.append("                  ) bind(c)")
+        #
+        # # lines.append("    type(c_ptr), value :: C")
+        # # for arg_type, args in list(to_c2_call_def.items()):
+        # #     if not arg_type:
+        # #         raise RuntimeError("No argument type?")
+        # #     for i in range(1 + (len(args) - 1) // 7):
+        # #         lines.append(
+        # #             f"    {arg_type} :: {', '.join(args[i * 7 : i * 7 + 7])}\n"
+        # #         )
+        # lines.append("  end subroutine")
+        # lines.append("end interface")
+        #         lines.append(
+        #             """  end subroutine
+        # end interface
+        #
+        # """
+        # type(c_ptr), value :: Fp, C
+        # type(NAME_struct), pointer :: F
+        # )
+        # wrap_block_f(
+        #     lines, f"{trans.to_c2_type} :: {trans.to_c2_name}", "to_c2_type_and_name"
+        # )
+        # TODO: can we infer this too?
+
+        wrap_block_f(
+            lines, "\n".join(var.lstrip() for var in trans.to_c_var), "to_c_var"
+        )
+
+        lines.append("call c_f_pointer (Fp, F)")
+
+        # for arg in struct.arg:
+        #     if arg.f_side.to_c_trans == "":
+        #         continue
+        #     lines.append(
+        #         f"!! f_side.to_c_trans[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
+        #     )
+        wrap_block_f(lines, trans.to_c_trans.strip(), "to_c_trans")
+
+        lines.append("call to_c2 (C, ")
+        wrap_block_f(lines, "  " + trans.to_c2_call.lstrip(), "to_c2_call")
+        lines.append(")")
+
+        lines.append("end subroutine to_c")
+        lines.append("")
+
+        # TODO lazy
+        block = "\n".join(lines)
+        add(
+            key,
+            to_c,
+            textwrap.indent(block, "  ").replace("  end subroutine", "end subroutine"),
+        )
+
+    for key, trans in f_side_trans.items():
+        lines = []
+        lines.append("    subroutine to_f2 (C,")
+        wrap_block_f(lines, "  " + trans.to_c2_f2_sub_arg, "to_c2_f2_sub_arg")
+        lines.append("  ) bind(c)")
+        wrap_block_f(
+            lines, f"{trans.to_f2_type} :: {trans.to_f2_name}", "to_f2_type_and_name"
+        )
+        wrap_block_f(
+            lines, "\n".join(var.lstrip() for var in trans.to_f2_var), "to_f2_var"
+        )
+        lines.append("call c_f_pointer (Fp, F)")
+        wrap_block_f(lines, trans.to_f2_trans, "to_f2_trans")
+        lines.append("end subroutine to_f2")
+        lines.append("")
+
+        # TODO lazy
+        block = "\n".join(lines)
+        block = block.replace("allocated", "associated_or_allocated(")
+        block = block.replace("associated(", "associated_or_allocated)")
+        add(
+            key,
+            to_f2,
+            textwrap.indent(block, "  ").replace("  end subroutine", "end subroutine"),
+        )
+    simple = {
+        "equality_test": {},
+        "test_pat": {},
+        "test_value": {},
+    }
+    for func_name, dct in simple.items():
+        for key, trans in f_side_trans.items():
+            lines = []
+            lines.append(f"subroutine {func_name.upper()} ()")
+            # if func_name == "equality":
+            #     lines.append("  bool is_eq = true;")
+
+            wrap_block_f(lines, getattr(trans, func_name).rstrip(), func_name)
+
+            lines.append("end subroutine")
+            add(key, dct, "\n".join(lines))
+
+    to_c_header = """
+! vi: syntax=fortran
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad {s_name}_struct to a C++ CPP_{s_name} structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ struct.
+!-
+"""
+
+    to_f2_header = """
+! vi: syntax=fortran
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine {s_name}_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_{s_name} structure to a Bmad {s_name}_struct structure.
+! This routine is called by {s_name}_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the {s_name}_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad {s_name}_struct structure.
+!-
+    """
+
+    for func, header in [
+        ("to_c", to_c_header),
+        ("to_f2", to_f2_header),
+    ]:
+        print(header, file=file)
+        dct = locals()[func]
+        for code, keys in sorted(dct.items(), key=lambda kv: tuple(kv[1])):
+            for key in sorted(keys):
+                print(f"!!!! {key}", file=file)
+            print(f"{code}", file=file)
+            print(file=file)
+
+    for func_name, dct in simple.items():
+        for code, keys in sorted(dct.items()):
+            for key in sorted(keys):
+                print(f"!!!! {key}", file=file)
+            print(f"{code}", file=file)
+            print(file=file)
+
+
+write_if_differs(export_c2, "exported.cpp")
+write_if_differs(export_f2, "exported.f90")
+
 
 fortran_structures = bmad_struct_parser.load_all_structures(
     *params.struct_def_yaml_files

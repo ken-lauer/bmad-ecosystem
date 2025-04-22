@@ -122,16 +122,16 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%x0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%y0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%x1 = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%x0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%y0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%x1 = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 4>
 do jd1 = 1, size(F%coef,1); lb1 = lbound(F%coef,1) - 1
   rhs = 100 + jd1 + 4 + offset
-  F%coef(jd1+lb1) = rhs
+  F%coef(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_spline_test_pattern
@@ -247,14 +247,14 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%polarization = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%theta = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%xi = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%polarization = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%theta = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%xi = TEST_VALUE
 
 end subroutine set_spin_polar_test_pattern
 
@@ -369,11 +369,11 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%amp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%time = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_spline
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%amp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%time = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_spline_test_pattern (F%spline, ix_patt)
 
 end subroutine set_ac_kicker_time_test_pattern
@@ -489,14 +489,14 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%f = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%amp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%phi = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%rf_clock_harmonic = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%f = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%amp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%rf_clock_harmonic = TEST_VALUE
 
 end subroutine set_ac_kicker_freq_test_pattern
 
@@ -611,7 +611,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_time>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%amp_vs_time)) deallocate (F%amp_vs_time)
@@ -621,7 +621,7 @@ else
     call set_ac_kicker_time_test_pattern (F%amp_vs_time(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_ac_kicker_freq>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%frequency)) deallocate (F%frequency)
@@ -745,12 +745,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%c0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%c1 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%n_exp = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%c0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%c1 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%n_exp = TEST_VALUE
 
 end subroutine set_interval1_coef_test_pattern
 
@@ -865,7 +865,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%angle)) deallocate (F%angle)
@@ -873,10 +873,10 @@ else
   if (.not. allocated(F%angle)) allocate (F%angle(-1:1))
   do jd1 = 1, size(F%angle,1); lb1 = lbound(F%angle,1) - 1
     rhs = 100 + jd1 + 1 + offset
-    F%angle(jd1+lb1) = rhs
+    F%angle(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%energy)) deallocate (F%energy)
@@ -884,10 +884,10 @@ else
   if (.not. allocated(F%energy)) allocate (F%energy(-1:1))
   do jd1 = 1, size(F%energy,1); lb1 = lbound(F%energy,1) - 1
     rhs = 100 + jd1 + 3 + offset
-    F%energy(jd1+lb1) = rhs
+    F%energy(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_interval1_coef>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%int1)) deallocate (F%int1)
@@ -897,7 +897,7 @@ else
     call set_interval1_coef_test_pattern (F%int1(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 2, ALLOC] VariableArray2D<Real>
+!! f_side.test_pat[real, 2, ALLOC] VariableArray2D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%p_reflect)) deallocate (F%p_reflect)
@@ -906,12 +906,12 @@ else
   do jd1 = 1, size(F%p_reflect,1); lb1 = lbound(F%p_reflect,1) - 1
   do jd2 = 1, size(F%p_reflect,2); lb2 = lbound(F%p_reflect,2) - 1
     rhs = 100 + jd1 + 10*jd2 + 7 + offset
-    F%p_reflect(jd1+lb1,jd2+lb2) = rhs
+    F%p_reflect(jd1+lb1,jd2+lb2) = TEST_VALUE
   enddo; enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%max_energy = rhs
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%max_energy = TEST_VALUE
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%p_reflect_scratch)) deallocate (F%p_reflect_scratch)
@@ -919,10 +919,10 @@ else
   if (.not. allocated(F%p_reflect_scratch)) allocate (F%p_reflect_scratch(-1:1))
   do jd1 = 1, size(F%p_reflect_scratch,1); lb1 = lbound(F%p_reflect_scratch,1) - 1
     rhs = 100 + jd1 + 11 + offset
-    F%p_reflect_scratch(jd1+lb1) = rhs
+    F%p_reflect_scratch(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%bragg_angle)) deallocate (F%bragg_angle)
@@ -930,7 +930,7 @@ else
   if (.not. allocated(F%bragg_angle)) allocate (F%bragg_angle(-1:1))
   do jd1 = 1, size(F%bragg_angle,1); lb1 = lbound(F%bragg_angle,1) - 1
     rhs = 100 + jd1 + 13 + offset
-    F%bragg_angle(jd1+lb1) = rhs
+    F%bragg_angle(jd1+lb1) = TEST_VALUE
   enddo
 endif
 
@@ -1059,7 +1059,7 @@ enddo
 do jd1 = 1, len(F%reflectivity_file)
   F%reflectivity_file(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_photon_reflect_table>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%table)) deallocate (F%table)
@@ -1069,12 +1069,12 @@ else
     call set_photon_reflect_table_test_pattern (F%table(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%surface_roughness_rms = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%roughness_correlation_len = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%ix_surface = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%surface_roughness_rms = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%roughness_correlation_len = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%ix_surface = TEST_VALUE
 
 end subroutine set_photon_reflect_surface_test_pattern
 
@@ -1189,60 +1189,60 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%vec,1); lb1 = lbound(F%vec,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%vec(jd1+lb1) = rhs
+  F%vec(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%s = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%t = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%s = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%t = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1
   rhs = 100 + jd1 + 4 + offset
-  F%spin(jd1+lb1) = rhs
+  F%spin(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%field,1); lb1 = lbound(F%field,1) - 1
   rhs = 100 + jd1 + 5 + offset
-  F%field(jd1+lb1) = rhs
+  F%field(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%phase,1); lb1 = lbound(F%phase,1) - 1
   rhs = 100 + jd1 + 6 + offset
-  F%phase(jd1+lb1) = rhs
+  F%phase(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%charge = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%dt_ref = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%r = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%p0c = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%E_potential = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 12 + offset; F%beta = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 13 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 14 + offset; F%ix_branch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 15 + offset; F%ix_turn = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 16 + offset; F%ix_user = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 17 + offset; F%state = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 18 + offset; F%direction = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 19 + offset; F%time_dir = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 20 + offset; F%species = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 21 + offset; F%location = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%charge = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%dt_ref = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%r = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%p0c = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%E_potential = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 12 + offset; F%beta = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 13 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 14 + offset; F%ix_branch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 15 + offset; F%ix_turn = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 16 + offset; F%ix_user = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 17 + offset; F%state = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 18 + offset; F%direction = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 19 + offset; F%time_dir = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 20 + offset; F%species = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 21 + offset; F%location = TEST_VALUE
 
 end subroutine set_coord_test_pattern
 
@@ -1357,7 +1357,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_coord>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%orbit)) deallocate (F%orbit)
@@ -1481,26 +1481,26 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%K_22a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%K_12a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%K_11b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%K_12b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%Cbar22_a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%Cbar12_a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%Cbar11_b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%Cbar12_b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%phi_a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%phi_b = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%K_22a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%K_12a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%K_11b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%K_12b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%Cbar22_a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%Cbar12_a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%Cbar11_b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%Cbar12_b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%phi_a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%phi_b = TEST_VALUE
 
 end subroutine set_bpm_phase_coupling_test_pattern
 
@@ -1619,10 +1619,10 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%name)
   F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%type = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%value = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%type = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%value = TEST_VALUE
 
 end subroutine set_expression_atom_test_pattern
 
@@ -1737,7 +1737,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%w)) deallocate (F%w)
@@ -1745,10 +1745,10 @@ else
   if (.not. allocated(F%w)) allocate (F%w(-1:1))
   do jd1 = 1, size(F%w,1); lb1 = lbound(F%w,1) - 1
     rhs = 100 + jd1 + 1 + offset
-    F%w(jd1+lb1) = rhs
+    F%w(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<Complex>
+!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%fw)) deallocate (F%fw)
@@ -1756,10 +1756,10 @@ else
   if (.not. allocated(F%fw)) allocate (F%fw(-1:1))
   do jd1 = 1, size(F%fw,1); lb1 = lbound(F%fw,1) - 1
     rhs = 100 + jd1 + 3 + offset
-    F%fw(jd1+lb1) = cmplx(rhs, 100+rhs)
+    F%fw(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<Complex>
+!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%fbunch)) deallocate (F%fbunch)
@@ -1767,10 +1767,10 @@ else
   if (.not. allocated(F%fbunch)) allocate (F%fbunch(-1:1))
   do jd1 = 1, size(F%fbunch,1); lb1 = lbound(F%fbunch,1) - 1
     rhs = 100 + jd1 + 5 + offset
-    F%fbunch(jd1+lb1) = cmplx(rhs, 100+rhs)
+    F%fbunch(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<Complex>
+!! f_side.test_pat[complex, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%w_out)) deallocate (F%w_out)
@@ -1778,19 +1778,19 @@ else
   if (.not. allocated(F%w_out)) allocate (F%w_out(-1:1))
   do jd1 = 1, size(F%w_out,1); lb1 = lbound(F%w_out,1) - 1
     rhs = 100 + jd1 + 7 + offset
-    F%w_out(jd1+lb1) = cmplx(rhs, 100+rhs)
+    F%w_out(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%dz = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%z0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%smoothing_sigma = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 12 + offset; F%position_dependence = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 13 + offset; F%time_based = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%dz = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%z0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%smoothing_sigma = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 12 + offset; F%position_dependence = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 13 + offset; F%time_based = TEST_VALUE
 
 end subroutine set_wake_sr_z_long_test_pattern
 
@@ -1905,26 +1905,26 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%amp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%damp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%k = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%b_sin = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%b_cos = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%a_sin = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%a_cos = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 9 + offset; F%polarization = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 10 + offset; F%position_dependence = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%amp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%damp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%k = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%b_sin = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%b_cos = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%a_sin = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%a_cos = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 9 + offset; F%polarization = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 10 + offset; F%position_dependence = TEST_VALUE
 
 end subroutine set_wake_sr_mode_test_pattern
 
@@ -2043,9 +2043,9 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 0, NOT] CPP_wake_sr_z_long
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_wake_sr_z_long_test_pattern (F%z_long, ix_patt)
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%long)) deallocate (F%long)
@@ -2055,7 +2055,7 @@ else
     call set_wake_sr_mode_test_pattern (F%long(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wake_sr_mode>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%trans)) deallocate (F%trans)
@@ -2065,18 +2065,18 @@ else
     call set_wake_sr_mode_test_pattern (F%trans(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%z_ref_long = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%z_ref_trans = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%z_max = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%amp_scale = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%z_scale = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 12 + offset; F%scale_with_length = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%z_ref_long = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%z_ref_trans = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%z_max = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%amp_scale = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%z_scale = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 12 + offset; F%scale_with_length = TEST_VALUE
 
 end subroutine set_wake_sr_test_pattern
 
@@ -2191,32 +2191,32 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%freq = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%freq_in = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%R_over_Q = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%Q = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%damp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%angle = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%b_sin = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%b_cos = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%a_sin = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%a_cos = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 12 + offset; F%m = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 13 + offset; F%polarized = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%freq = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%freq_in = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%R_over_Q = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%Q = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%damp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%angle = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%b_sin = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%b_cos = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%a_sin = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%a_cos = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 12 + offset; F%m = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 13 + offset; F%polarized = TEST_VALUE
 
 end subroutine set_wake_lr_mode_test_pattern
 
@@ -2335,7 +2335,7 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wake_lr_mode>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%mode)) deallocate (F%mode)
@@ -2345,16 +2345,16 @@ else
     call set_wake_lr_mode_test_pattern (F%mode(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%t_ref = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%freq_spread = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%amp_scale = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%time_scale = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 8 + offset; F%self_wake_on = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%t_ref = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%freq_spread = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%amp_scale = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%time_scale = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 8 + offset; F%self_wake_on = TEST_VALUE
 
 end subroutine set_wake_lr_test_pattern
 
@@ -2469,10 +2469,10 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%ix_branch = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%ix_branch = TEST_VALUE
 
 end subroutine set_lat_ele_loc_test_pattern
 
@@ -2587,9 +2587,9 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 0, NOT] CPP_wake_sr
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_wake_sr_test_pattern (F%sr, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_wake_lr
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_wake_lr_test_pattern (F%lr, ix_patt)
 
 end subroutine set_wake_test_pattern
@@ -2705,12 +2705,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%coef = rhs
-!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 6>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%coef = TEST_VALUE
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%expn(jd1+lb1) = rhs
+  F%expn(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_taylor_term_test_pattern
@@ -2826,9 +2826,9 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%ref = rhs
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_taylor_term>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ref = TEST_VALUE
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%term)) deallocate (F%term)
@@ -2952,12 +2952,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%coef = rhs
-!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 2>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%coef = TEST_VALUE
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%expn(jd1+lb1) = rhs
+  F%expn(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_em_taylor_term_test_pattern
@@ -3073,9 +3073,9 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%ref = rhs
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_em_taylor_term>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ref = TEST_VALUE
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%term)) deallocate (F%term)
@@ -3199,24 +3199,24 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%coef = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%kx = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%ky = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%kz = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%x0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%y0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%phi_z = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%family = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 9 + offset; F%form = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%coef = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%kx = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%ky = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%kz = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%x0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%y0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%phi_z = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%family = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 9 + offset; F%form = TEST_VALUE
 
 end subroutine set_cartesian_map_term1_test_pattern
 
@@ -3335,9 +3335,9 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_link = rhs
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_cartesian_map_term1>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_link = TEST_VALUE
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%term)) deallocate (F%term)
@@ -3461,20 +3461,20 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%field_scale = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%field_scale = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%master_parameter = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%ele_anchor_pt = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%field_type = rhs
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_cartesian_map_term>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%master_parameter = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%ele_anchor_pt = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%field_type = TEST_VALUE
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
 else
@@ -3596,10 +3596,10 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 1 + offset; F%e_coef = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 2 + offset; F%b_coef = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 1 + offset; F%e_coef = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 2 + offset; F%b_coef = TEST_VALUE
 
 end subroutine set_cylindrical_map_term1_test_pattern
 
@@ -3718,9 +3718,9 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_link = rhs
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_cylindrical_map_term1>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_link = TEST_VALUE
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%term)) deallocate (F%term)
@@ -3844,28 +3844,28 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%m = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%harmonic = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%phi0_fieldmap = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%theta0_azimuth = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%field_scale = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 6 + offset; F%master_parameter = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%ele_anchor_pt = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%dz = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%m = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%harmonic = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%phi0_fieldmap = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%theta0_azimuth = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%field_scale = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 6 + offset; F%master_parameter = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%ele_anchor_pt = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%dz = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 9 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_cylindrical_map_term>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
 else
@@ -3987,15 +3987,15 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[complex, 1, NOT] FixedArray1D<Complex, 3>
+!! f_side.test_pat[complex, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%E,1); lb1 = lbound(F%E,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%E(jd1+lb1) = cmplx(rhs, 100+rhs)
+  F%E(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[complex, 1, NOT] FixedArray1D<Complex, 3>
+!! f_side.test_pat[complex, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%B,1); lb1 = lbound(F%B,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%B(jd1+lb1) = cmplx(rhs, 100+rhs)
+  F%B(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_grid_field_pt1_test_pattern
@@ -4115,8 +4115,8 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_link = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_link = TEST_VALUE
 
 end subroutine set_grid_field_pt_test_pattern
 
@@ -4231,35 +4231,35 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%geometry = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%harmonic = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%phi0_fieldmap = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%field_scale = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%field_type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 6 + offset; F%master_parameter = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%ele_anchor_pt = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%interpolation_order = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%geometry = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%harmonic = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%phi0_fieldmap = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%field_scale = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%field_type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 6 + offset; F%master_parameter = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%ele_anchor_pt = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%interpolation_order = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 9 + offset
-  F%dr(jd1+lb1) = rhs
+  F%dr(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 10 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 11 + offset; F%curved_ref_frame = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_grid_field_pt>
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 11 + offset; F%curved_ref_frame = TEST_VALUE
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
 else
@@ -4381,23 +4381,23 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%r(jd1+lb1) = rhs
+  F%r(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 3, 3>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
 do jd1 = 1, size(F%w,1); lb1 = lbound(F%w,1) - 1
 do jd2 = 1, size(F%w,2); lb2 = lbound(F%w,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 2 + offset
-  F%w(jd1+lb1,jd2+lb2) = rhs
+  F%w(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%theta = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%psi = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%theta = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%psi = TEST_VALUE
 
 end subroutine set_floor_position_test_pattern
 
@@ -4512,22 +4512,22 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%closed_orb, ix_patt)
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%kick_const = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%sig_x = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%sig_y = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%sin_phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%cos_phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%sig_z = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%kick_const = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%sig_x = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%sig_y = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%sin_phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%cos_phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%sig_z = TEST_VALUE
 
 end subroutine set_high_energy_space_charge_test_pattern
 
@@ -4642,14 +4642,14 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%eta = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%etap = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%deta_ds = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%sigma = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%eta = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%etap = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%deta_ds = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%sigma = TEST_VALUE
 
 end subroutine set_xy_disp_test_pattern
 
@@ -4764,28 +4764,28 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%beta = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%alpha = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%gamma = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%eta = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%etap = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%deta_ds = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%sigma = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%sigma_p = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%emit = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%norm_emit = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%beta = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%alpha = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%gamma = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%eta = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%etap = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%deta_ds = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%sigma = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%sigma_p = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%emit = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%norm_emit = TEST_VALUE
 
 end subroutine set_twiss_test_pattern
 
@@ -4900,21 +4900,21 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%v,1); lb1 = lbound(F%v,1) - 1
 do jd2 = 1, size(F%v,2); lb2 = lbound(F%v,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 1 + offset
-  F%v(jd1+lb1,jd2+lb2) = rhs
+  F%v(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%a, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%b, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%c, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%x, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%y, ix_patt)
 
 end subroutine set_mode3_test_pattern
@@ -5030,24 +5030,24 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%attributes = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%control = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%floor_position = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%s_position = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%ref_energy = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 6 + offset; F%mat6 = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%rad_int = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%ptc = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 9 + offset; F%has_misalign = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%attributes = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%control = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%floor_position = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%s_position = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%ref_energy = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 6 + offset; F%mat6 = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%rad_int = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%ptc = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 9 + offset; F%has_misalign = TEST_VALUE
 
 end subroutine set_bookkeeping_state_test_pattern
 
@@ -5162,33 +5162,33 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%ref_orb,1); lb1 = lbound(F%ref_orb,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%ref_orb(jd1+lb1) = rhs
+  F%ref_orb(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%damp_dmat,1); lb1 = lbound(F%damp_dmat,1) - 1
 do jd2 = 1, size(F%damp_dmat,2); lb2 = lbound(F%damp_dmat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 2 + offset
-  F%damp_dmat(jd1+lb1,jd2+lb2) = rhs
+  F%damp_dmat(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%xfer_damp_vec,1); lb1 = lbound(F%xfer_damp_vec,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%xfer_damp_vec(jd1+lb1) = rhs
+  F%xfer_damp_vec(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%xfer_damp_mat,1); lb1 = lbound(F%xfer_damp_mat,1) - 1
 do jd2 = 1, size(F%xfer_damp_mat,2); lb2 = lbound(F%xfer_damp_mat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 4 + offset
-  F%xfer_damp_mat(jd1+lb1,jd2+lb2) = rhs
+  F%xfer_damp_mat(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%stoc_mat,1); lb1 = lbound(F%stoc_mat,1) - 1
 do jd2 = 1, size(F%stoc_mat,2); lb2 = lbound(F%stoc_mat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 5 + offset
-  F%stoc_mat(jd1+lb1,jd2+lb2) = rhs
+  F%stoc_mat(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
 
 end subroutine set_rad_map_test_pattern
@@ -5304,12 +5304,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 0, NOT] CPP_rad_map
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_rad_map_test_pattern (F%rm0, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_rad_map
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_rad_map_test_pattern (F%rm1, ix_patt)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 3 + offset; F%stale = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 3 + offset; F%stale = TEST_VALUE
 
 end subroutine set_rad_map_ele_test_pattern
 
@@ -5424,13 +5424,13 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%m = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%sincos = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%n_deriv_max = rhs
-!! f_side.test_pat[real, 2, ALLOC] VariableArray2D<Real>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%m = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%sincos = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%n_deriv_max = TEST_VALUE
+!! f_side.test_pat[real, 2, ALLOC] VariableArray2D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%deriv)) deallocate (F%deriv)
@@ -5439,7 +5439,7 @@ else
   do jd1 = 1, size(F%deriv,1); lb1 = lbound(F%deriv,1) - 1
   do jd2 = 1, size(F%deriv,2); lb2 = lbound(F%deriv,2) - 1
     rhs = 100 + jd1 + 10*jd2 + 4 + offset
-    F%deriv(jd1+lb1,jd2+lb2) = rhs
+    F%deriv(jd1+lb1,jd2+lb2) = TEST_VALUE
   enddo; enddo
 endif
 
@@ -5560,7 +5560,7 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%file)
   F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_gen_grad1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%gg)) deallocate (F%gg)
@@ -5570,27 +5570,27 @@ else
     call set_gen_grad1_test_pattern (F%gg(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%ele_anchor_pt = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%field_type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 6 + offset; F%iz0 = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%iz1 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%dz = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%ele_anchor_pt = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%field_type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 6 + offset; F%iz0 = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%iz1 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%dz = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 9 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%field_scale = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 11 + offset; F%master_parameter = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 12 + offset; F%curved_ref_frame = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%field_scale = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 11 + offset; F%master_parameter = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 12 + offset; F%curved_ref_frame = TEST_VALUE
 
 end subroutine set_gen_grad_map_test_pattern
 
@@ -5705,16 +5705,16 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%x0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%y0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%z0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%dz_dx = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%dz_dy = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%x0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%y0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%z0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%dz_dx = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%dz_dy = TEST_VALUE
 
 end subroutine set_surface_segmented_pt_test_pattern
 
@@ -5829,19 +5829,19 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 1 + offset; F%active = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%dr(jd1+lb1) = rhs
+  F%dr(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_surface_segmented_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -5967,18 +5967,18 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%x0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%y0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%rot_y = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%rot_t = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%rot_y_rms = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%rot_t_rms = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%x0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%y0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%rot_y = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%rot_t = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%rot_y_rms = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%rot_t_rms = TEST_VALUE
 
 end subroutine set_surface_h_misalign_pt_test_pattern
 
@@ -6093,19 +6093,19 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 1 + offset; F%active = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%dr(jd1+lb1) = rhs
+  F%dr(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_surface_h_misalign_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -6231,18 +6231,18 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%x0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%y0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%z0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%dz_dx = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%dz_dy = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%d2z_dxdy = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%x0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%y0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%z0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%dz_dx = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%dz_dy = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%d2z_dxdy = TEST_VALUE
 
 end subroutine set_surface_displacement_pt_test_pattern
 
@@ -6357,19 +6357,19 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 1 + offset; F%active = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%dr(jd1+lb1) = rhs
+  F%dr(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_surface_displacement_pt>
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -6495,10 +6495,10 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%r(jd1+lb1) = rhs
+  F%r(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_target_point_test_pattern
@@ -6614,21 +6614,21 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 7, 7>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 7, 7>
 do jd1 = 1, size(F%xy,1); lb1 = lbound(F%xy,1) - 1
 do jd2 = 1, size(F%xy,2); lb2 = lbound(F%xy,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 1 + offset
-  F%xy(jd1+lb1,jd2+lb2) = rhs
+  F%xy(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%spherical = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%spherical = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%elliptical,1); lb1 = lbound(F%elliptical,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%elliptical(jd1+lb1) = rhs
+  F%elliptical(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 4 + offset; F%has_curvature = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 4 + offset; F%has_curvature = TEST_VALUE
 
 end subroutine set_surface_curvature_test_pattern
 
@@ -6743,18 +6743,18 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_corner = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_lat_ele_loc
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_corner = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_lat_ele_loc_test_pattern (F%ele_loc, ix_patt)
-!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_target_point, 8>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<C_TYPE, 8>
 do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
   rhs = 100 + jd1 + 4 + offset
   call set_target_point_test_pattern (F%corner(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[type, 0, NOT] CPP_target_point
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_target_point_test_pattern (F%center, ix_patt)
 
 end subroutine set_photon_target_test_pattern
@@ -6870,27 +6870,27 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 1 + offset; F%f0_m1 = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 2 + offset; F%f0_m2 = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 3 + offset; F%f_0 = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 4 + offset; F%f_h = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 5 + offset; F%f_hbar = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 6 + offset; F%f_hkl = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 1 + offset; F%f0_m1 = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 2 + offset; F%f0_m2 = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 3 + offset; F%f_0 = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 4 + offset; F%f_h = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 5 + offset; F%f_hbar = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 6 + offset; F%f_hkl = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%h_norm,1); lb1 = lbound(F%h_norm,1) - 1
   rhs = 100 + jd1 + 7 + offset
-  F%h_norm(jd1+lb1) = rhs
+  F%h_norm(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%l_ref,1); lb1 = lbound(F%l_ref,1) - 1
   rhs = 100 + jd1 + 8 + offset
-  F%l_ref(jd1+lb1) = rhs
+  F%l_ref(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_photon_material_test_pattern
@@ -7006,37 +7006,37 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer8, 0, NOT] Int8
-rhs = 1 + offset; F%n_photon = rhs
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 2 + offset; F%E_x = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 3 + offset; F%E_y = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%intensity_x = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%intensity_y = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%intensity = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[integer8, 0, NOT] C_TYPE
+rhs = 1 + offset; F%n_photon = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 2 + offset; F%E_x = TEST_VALUE
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 3 + offset; F%E_y = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%intensity_x = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%intensity_y = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%intensity = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%orbit,1); lb1 = lbound(F%orbit,1) - 1
   rhs = 100 + jd1 + 7 + offset
-  F%orbit(jd1+lb1) = rhs
+  F%orbit(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%orbit_rms,1); lb1 = lbound(F%orbit_rms,1) - 1
   rhs = 100 + jd1 + 8 + offset
-  F%orbit_rms(jd1+lb1) = rhs
+  F%orbit_rms(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%init_orbit,1); lb1 = lbound(F%init_orbit,1) - 1
   rhs = 100 + jd1 + 9 + offset
-  F%init_orbit(jd1+lb1) = rhs
+  F%init_orbit(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%init_orbit_rms,1); lb1 = lbound(F%init_orbit_rms,1) - 1
   rhs = 100 + jd1 + 10 + offset
-  F%init_orbit_rms(jd1+lb1) = rhs
+  F%init_orbit_rms(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_pixel_pt_test_pattern
@@ -7152,23 +7152,23 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%dr(jd1+lb1) = rhs
+  F%dr(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[integer8, 0, NOT] Int8
-rhs = 3 + offset; F%n_track_tot = rhs
-!! f_side.test_pat[integer8, 0, NOT] Int8
-rhs = 4 + offset; F%n_hit_detec = rhs
-!! f_side.test_pat[integer8, 0, NOT] Int8
-rhs = 5 + offset; F%n_hit_pixel = rhs
-!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<CPP_pixel_pt>
+!! f_side.test_pat[integer8, 0, NOT] C_TYPE
+rhs = 3 + offset; F%n_track_tot = TEST_VALUE
+!! f_side.test_pat[integer8, 0, NOT] C_TYPE
+rhs = 4 + offset; F%n_hit_detec = TEST_VALUE
+!! f_side.test_pat[integer8, 0, NOT] C_TYPE
+rhs = 5 + offset; F%n_hit_pixel = TEST_VALUE
+!! f_side.test_pat[type, 2, ALLOC] VariableArray2D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -7294,27 +7294,27 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 0, NOT] CPP_surface_curvature
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_surface_curvature_test_pattern (F%curvature, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_photon_target
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_photon_target_test_pattern (F%target, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_photon_material
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_photon_material_test_pattern (F%material, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_surface_segmented
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_surface_segmented_test_pattern (F%segmented, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_surface_h_misalign
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_surface_h_misalign_test_pattern (F%h_misalign, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_surface_displacement
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_surface_displacement_test_pattern (F%displacement, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_pixel_detec
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_pixel_detec_test_pattern (F%pixel, ix_patt)
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%reflectivity_table_type = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_photon_reflect_table
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%reflectivity_table_type = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_photon_reflect_table_test_pattern (F%reflectivity_table_sigma, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_photon_reflect_table
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_photon_reflect_table_test_pattern (F%reflectivity_table_pi, ix_patt)
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_spline>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%init_energy_prob)) deallocate (F%init_energy_prob)
@@ -7324,7 +7324,7 @@ else
     call set_spline_test_pattern (F%init_energy_prob(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%integrated_init_energy_prob)) deallocate (F%integrated_init_energy_prob)
@@ -7332,7 +7332,7 @@ else
   if (.not. allocated(F%integrated_init_energy_prob)) allocate (F%integrated_init_energy_prob(-1:1))
   do jd1 = 1, size(F%integrated_init_energy_prob,1); lb1 = lbound(F%integrated_init_energy_prob,1) - 1
     rhs = 100 + jd1 + 13 + offset
-    F%integrated_init_energy_prob(jd1+lb1) = rhs
+    F%integrated_init_energy_prob(jd1+lb1) = TEST_VALUE
   enddo
 endif
 
@@ -7449,24 +7449,24 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%x = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%y = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%radius_x = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%radius_y = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%tilt = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%angle = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%x0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%y0 = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 9 + offset; F%type = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%x = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%y = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%radius_x = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%radius_y = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%tilt = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%angle = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%x0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%y0 = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 9 + offset; F%type = TEST_VALUE
 
 end subroutine set_wall3d_vertex_test_pattern
 
@@ -7589,7 +7589,7 @@ enddo
 do jd1 = 1, len(F%material)
   F%material(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
 enddo
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wall3d_vertex>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%v)) deallocate (F%v)
@@ -7599,7 +7599,7 @@ else
     call set_wall3d_vertex_test_pattern (F%v(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_photon_reflect_surface>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%surface)) deallocate (F%surface)
 else
@@ -7607,52 +7607,52 @@ else
   rhs = 5 + offset
   call set_photon_reflect_surface_test_pattern (F%surface, ix_patt)
 endif
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%n_vertex_input = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 9 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 10 + offset; F%ix_branch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 11 + offset; F%vertices_state = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 12 + offset; F%patch_in_region = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 13 + offset; F%thickness = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 14 + offset; F%s = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%n_vertex_input = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 9 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 10 + offset; F%ix_branch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 11 + offset; F%vertices_state = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 12 + offset; F%patch_in_region = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 13 + offset; F%thickness = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 14 + offset; F%s = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
   rhs = 100 + jd1 + 15 + offset
-  F%r0(jd1+lb1) = rhs
+  F%r0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 16 + offset; F%dx0_ds = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 17 + offset; F%dy0_ds = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 16 + offset; F%dx0_ds = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 17 + offset; F%dy0_ds = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 4>
 do jd1 = 1, size(F%x0_coef,1); lb1 = lbound(F%x0_coef,1) - 1
   rhs = 100 + jd1 + 18 + offset
-  F%x0_coef(jd1+lb1) = rhs
+  F%x0_coef(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 4>
 do jd1 = 1, size(F%y0_coef,1); lb1 = lbound(F%y0_coef,1) - 1
   rhs = 100 + jd1 + 19 + offset
-  F%y0_coef(jd1+lb1) = rhs
+  F%y0_coef(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 20 + offset; F%dr_ds = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 20 + offset; F%dr_ds = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%p1_coef,1); lb1 = lbound(F%p1_coef,1) - 1
   rhs = 100 + jd1 + 21 + offset
-  F%p1_coef(jd1+lb1) = rhs
+  F%p1_coef(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%p2_coef,1); lb1 = lbound(F%p2_coef,1) - 1
   rhs = 100 + jd1 + 22 + offset
-  F%p2_coef(jd1+lb1) = rhs
+  F%p2_coef(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_wall3d_section_test_pattern
@@ -7772,14 +7772,14 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%name)
   F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%ix_wall3d = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%n_link = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%thickness = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%ix_wall3d = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%n_link = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%thickness = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%clear_material)
   F%clear_material(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
@@ -7788,11 +7788,11 @@ enddo
 do jd1 = 1, len(F%opaque_material)
   F%opaque_material(jd1:jd1) = char(ichar("a") + modulo(100+7+offset+jd1, 26))
 enddo
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 8 + offset; F%superimpose = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 9 + offset; F%ele_anchor_pt = rhs
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_wall3d_section>
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 8 + offset; F%superimpose = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 9 + offset; F%ele_anchor_pt = TEST_VALUE
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%section)) deallocate (F%section)
@@ -7916,11 +7916,11 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%ix_con = rhs
-!! f_side.test_pat[real, 0, PTR] shared_ptr<Real>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%ix_con = TEST_VALUE
+!! f_side.test_pat[real, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%attrib_ptr)) deallocate (F%attrib_ptr)
 else
@@ -8042,9 +8042,9 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%value = rhs
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%value = TEST_VALUE
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%y_knot)) deallocate (F%y_knot)
@@ -8052,10 +8052,10 @@ else
   if (.not. allocated(F%y_knot)) allocate (F%y_knot(-1:1))
   do jd1 = 1, size(F%y_knot,1); lb1 = lbound(F%y_knot,1) - 1
     rhs = 100 + jd1 + 2 + offset
-    F%y_knot(jd1+lb1) = rhs
+    F%y_knot(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%stack)) deallocate (F%stack)
@@ -8065,9 +8065,9 @@ else
     call set_expression_atom_test_pattern (F%stack(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_lat_ele_loc
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_lat_ele_loc_test_pattern (F%slave, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_lat_ele_loc
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_lat_ele_loc_test_pattern (F%lord, ix_patt)
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%slave_name)
@@ -8077,8 +8077,8 @@ enddo
 do jd1 = 1, len(F%attribute)
   F%attribute(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 10 + offset; F%ix_attrib = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 10 + offset; F%ix_attrib = TEST_VALUE
 
 end subroutine set_control_test_pattern
 
@@ -8197,10 +8197,10 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%name)
   F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%value = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%old_value = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%value = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%old_value = TEST_VALUE
 
 end subroutine set_control_var1_test_pattern
 
@@ -8315,7 +8315,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%y_knot)) deallocate (F%y_knot)
@@ -8323,10 +8323,10 @@ else
   if (.not. allocated(F%y_knot)) allocate (F%y_knot(-1:1))
   do jd1 = 1, size(F%y_knot,1); lb1 = lbound(F%y_knot,1) - 1
     rhs = 100 + jd1 + 1 + offset
-    F%y_knot(jd1+lb1) = rhs
+    F%y_knot(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%stack)) deallocate (F%stack)
@@ -8344,8 +8344,8 @@ enddo
 do jd1 = 1, len(F%slave_name)
   F%slave_name(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
 enddo
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 7 + offset; F%is_controller = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 7 + offset; F%is_controller = TEST_VALUE
 
 end subroutine set_control_ramp1_test_pattern
 
@@ -8460,7 +8460,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_control_var1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%var)) deallocate (F%var)
@@ -8470,7 +8470,7 @@ else
     call set_control_var1_test_pattern (F%var(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_control_ramp1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%ramp)) deallocate (F%ramp)
@@ -8480,7 +8480,7 @@ else
     call set_control_ramp1_test_pattern (F%ramp(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_ramper_lord>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%ramper_lord)) deallocate (F%ramper_lord)
@@ -8490,7 +8490,7 @@ else
     call set_ramper_lord_test_pattern (F%ramper_lord(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%x_knot)) deallocate (F%x_knot)
@@ -8498,7 +8498,7 @@ else
   if (.not. allocated(F%x_knot)) allocate (F%x_knot(-1:1))
   do jd1 = 1, size(F%x_knot,1); lb1 = lbound(F%x_knot,1) - 1
     rhs = 100 + jd1 + 7 + offset
-    F%x_knot(jd1+lb1) = rhs
+    F%x_knot(jd1+lb1) = TEST_VALUE
   enddo
 endif
 
@@ -8615,12 +8615,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%part_per_ellipse = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_ellipse = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%sigma_cutoff = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%part_per_ellipse = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_ellipse = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%sigma_cutoff = TEST_VALUE
 
 end subroutine set_ellipse_beam_init_test_pattern
 
@@ -8735,15 +8735,15 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 2>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%part_per_phi,1); lb1 = lbound(F%part_per_phi,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%part_per_phi(jd1+lb1) = rhs
+  F%part_per_phi(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_I2 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%A = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_I2 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%A = TEST_VALUE
 
 end subroutine set_kv_beam_init_test_pattern
 
@@ -8858,18 +8858,18 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%n_x = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%n_px = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%x_min = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%x_max = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%px_min = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%px_max = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%n_x = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%n_px = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%x_min = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%x_max = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%px_min = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%px_max = TEST_VALUE
 
 end subroutine set_grid_beam_init_test_pattern
 
@@ -8994,43 +8994,43 @@ do jd1 = lbound(F%distribution_type, 1), ubound(F%distribution_type, 1)
     F%distribution_type(jd1)(jd:jd) = char(ichar("a") + modulo(100+2+offset+10*jd+jd1, 26))
   enddo
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%spin(jd1+lb1) = rhs
+  F%spin(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_ellipse_beam_init, 3>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
   rhs = 100 + jd1 + 4 + offset
   call set_ellipse_beam_init_test_pattern (F%ellipse(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[type, 0, NOT] CPP_kv_beam_init
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_kv_beam_init_test_pattern (F%KV, ix_patt)
-!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_grid_beam_init, 3>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
   rhs = 100 + jd1 + 6 + offset
   call set_grid_beam_init_test_pattern (F%grid(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%center_jitter,1); lb1 = lbound(F%center_jitter,1) - 1
   rhs = 100 + jd1 + 7 + offset
-  F%center_jitter(jd1+lb1) = rhs
+  F%center_jitter(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 2>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 2>
 do jd1 = 1, size(F%emit_jitter,1); lb1 = lbound(F%emit_jitter,1) - 1
   rhs = 100 + jd1 + 8 + offset
-  F%emit_jitter(jd1+lb1) = rhs
+  F%emit_jitter(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%sig_z_jitter = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%sig_pz_jitter = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 11 + offset; F%n_particle = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 12 + offset; F%renorm_center = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 13 + offset; F%renorm_sigma = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%sig_z_jitter = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%sig_pz_jitter = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 11 + offset; F%n_particle = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 12 + offset; F%renorm_center = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 13 + offset; F%renorm_sigma = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%random_engine)
   F%random_engine(jd1:jd1) = char(ichar("a") + modulo(100+14+offset+jd1, 26))
@@ -9039,49 +9039,49 @@ enddo
 do jd1 = 1, len(F%random_gauss_converter)
   F%random_gauss_converter(jd1:jd1) = char(ichar("a") + modulo(100+15+offset+jd1, 26))
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 16 + offset; F%random_sigma_cutoff = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 17 + offset; F%a_norm_emit = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 18 + offset; F%b_norm_emit = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 19 + offset; F%a_emit = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 20 + offset; F%b_emit = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 21 + offset; F%dPz_dz = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 16 + offset; F%random_sigma_cutoff = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 17 + offset; F%a_norm_emit = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 18 + offset; F%b_norm_emit = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 19 + offset; F%a_emit = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 20 + offset; F%b_emit = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 21 + offset; F%dPz_dz = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%center,1); lb1 = lbound(F%center,1) - 1
   rhs = 100 + jd1 + 22 + offset
-  F%center(jd1+lb1) = rhs
+  F%center(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 23 + offset; F%t_offset = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 24 + offset; F%dt_bunch = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 25 + offset; F%sig_z = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 26 + offset; F%sig_pz = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 27 + offset; F%bunch_charge = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 28 + offset; F%n_bunch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 29 + offset; F%ix_turn = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 23 + offset; F%t_offset = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 24 + offset; F%dt_bunch = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 25 + offset; F%sig_z = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 26 + offset; F%sig_pz = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 27 + offset; F%bunch_charge = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 28 + offset; F%n_bunch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 29 + offset; F%ix_turn = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%species)
   F%species(jd1:jd1) = char(ichar("a") + modulo(100+30+offset+jd1, 26))
 enddo
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 31 + offset; F%full_6D_coupling_calc = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 32 + offset; F%use_particle_start = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 33 + offset; F%use_t_coords = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 34 + offset; F%use_z_as_t = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 31 + offset; F%full_6D_coupling_calc = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 32 + offset; F%use_particle_start = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 33 + offset; F%use_t_coords = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 34 + offset; F%use_z_as_t = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%file_name)
   F%file_name(jd1:jd1) = char(ichar("a") + modulo(100+35+offset+jd1, 26))
@@ -9200,47 +9200,47 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%n_part = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%total_length = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%unstable_factor = rhs
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%n_part = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%total_length = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%unstable_factor = TEST_VALUE
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%t1_with_RF,1); lb1 = lbound(F%t1_with_RF,1) - 1
 do jd2 = 1, size(F%t1_with_RF,2); lb2 = lbound(F%t1_with_RF,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 4 + offset
-  F%t1_with_RF(jd1+lb1,jd2+lb2) = rhs
+  F%t1_with_RF(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%t1_no_RF,1); lb1 = lbound(F%t1_no_RF,1) - 1
 do jd2 = 1, size(F%t1_no_RF,2); lb2 = lbound(F%t1_no_RF,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 5 + offset
-  F%t1_no_RF(jd1+lb1,jd2+lb2) = rhs
+  F%t1_no_RF(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%spin_tune = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%particle = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 8 + offset; F%default_tracking_species = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 9 + offset; F%geometry = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 10 + offset; F%ixx = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 11 + offset; F%stable = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 12 + offset; F%live_branch = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 13 + offset; F%g1_integral = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 14 + offset; F%g2_integral = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 15 + offset; F%g3_integral = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_bookkeeping_state
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%spin_tune = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%particle = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 8 + offset; F%default_tracking_species = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 9 + offset; F%geometry = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 10 + offset; F%ixx = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 11 + offset; F%stable = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 12 + offset; F%live_branch = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 13 + offset; F%g1_integral = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 14 + offset; F%g2_integral = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 15 + offset; F%g3_integral = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_bookkeeping_state_test_pattern (F%bookkeeping_state, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_beam_init
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_beam_init_test_pattern (F%beam_init, ix_patt)
 
 end subroutine set_lat_param_test_pattern
@@ -9356,18 +9356,18 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 1 + offset; F%stable = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%tune = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%emit = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%chrom = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%sigma = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%sigmap = rhs
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 1 + offset; F%stable = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%tune = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%emit = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%chrom = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%sigma = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%sigmap = TEST_VALUE
 
 end subroutine set_mode_info_test_pattern
 
@@ -9482,12 +9482,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%who = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%ix_ele_start = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%ix_ele_end = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%who = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%ix_ele_start = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%ix_ele_end = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%input_file)
   F%input_file(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
@@ -9606,23 +9606,23 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%emittance = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%emittance_no_vert = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%emittance = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%emittance_no_vert = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%synch_int,1); lb1 = lbound(F%synch_int,1) - 1
   rhs = 100 + jd1 + 3 + offset
-  F%synch_int(jd1+lb1) = rhs
+  F%synch_int(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%j_damp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%alpha_damp = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%chrom = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%tune = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%j_damp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%alpha_damp = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%chrom = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%tune = TEST_VALUE
 
 end subroutine set_anormal_mode_test_pattern
 
@@ -9737,20 +9737,20 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%i2_E4 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%i3_E7 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%i5a_E6 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%i5b_E6 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%sig_E1 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%a_emittance_end = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%b_emittance_end = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%i2_E4 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%i3_E7 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%i5a_E6 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%i5b_E6 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%sig_E1 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%a_emittance_end = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%b_emittance_end = TEST_VALUE
 
 end subroutine set_linac_normal_mode_test_pattern
 
@@ -9865,34 +9865,34 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 4>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 4>
 do jd1 = 1, size(F%synch_int,1); lb1 = lbound(F%synch_int,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%synch_int(jd1+lb1) = rhs
+  F%synch_int(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%sigE_E = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%sig_z = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%e_loss = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%rf_voltage = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%pz_aperture = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%pz_average = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%momentum_compaction = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%dpz_damp = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_anormal_mode
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%sigE_E = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%sig_z = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%e_loss = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%rf_voltage = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%pz_aperture = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%pz_average = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%momentum_compaction = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%dpz_damp = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_anormal_mode_test_pattern (F%a, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_anormal_mode
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_anormal_mode_test_pattern (F%b, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_anormal_mode
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_anormal_mode_test_pattern (F%z, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_linac_normal_mode
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_linac_normal_mode_test_pattern (F%lin, ix_patt)
 
 end subroutine set_normal_modes_test_pattern
@@ -10008,36 +10008,36 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%E,1); lb1 = lbound(F%E,1) - 1
   rhs = 100 + jd1 + 1 + offset
-  F%E(jd1+lb1) = rhs
+  F%E(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%B,1); lb1 = lbound(F%B,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%B(jd1+lb1) = rhs
+  F%B(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 3, 3>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
 do jd1 = 1, size(F%dE,1); lb1 = lbound(F%dE,1) - 1
 do jd2 = 1, size(F%dE,2); lb2 = lbound(F%dE,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 3 + offset
-  F%dE(jd1+lb1,jd2+lb2) = rhs
+  F%dE(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 3, 3>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 3, 3>
 do jd1 = 1, size(F%dB,1); lb1 = lbound(F%dB,1) - 1
 do jd2 = 1, size(F%dB,2); lb2 = lbound(F%dB,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 4 + offset
-  F%dB(jd1+lb1,jd2+lb2) = rhs
+  F%dB(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%phi = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%phi_B = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%phi = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%phi_B = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%A,1); lb1 = lbound(F%A,1) - 1
   rhs = 100 + jd1 + 7 + offset
-  F%A(jd1+lb1) = rhs
+  F%A(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_em_field_test_pattern
@@ -10153,20 +10153,20 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 1 + offset; F%ix_slice = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%x_center = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%y_center = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%x_sigma = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%y_sigma = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%dx = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%dy = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ix_slice = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%x_center = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%y_center = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%x_sigma = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%y_sigma = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%dx = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%dy = TEST_VALUE
 
 end subroutine set_strong_beam_test_pattern
 
@@ -10281,24 +10281,24 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%s_body = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%s_body = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%orb, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_em_field
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_em_field_test_pattern (F%field, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_strong_beam
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_strong_beam_test_pattern (F%strong_beam, ix_patt)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
   rhs = 100 + jd1 + 5 + offset
-  F%vec0(jd1+lb1) = rhs
+  F%vec0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
 do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 6 + offset
-  F%mat6(jd1+lb1,jd2+lb2) = rhs
+  F%mat6(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
 
 end subroutine set_track_point_test_pattern
@@ -10414,7 +10414,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_track_point>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
@@ -10424,14 +10424,14 @@ else
     call set_track_point_test_pattern (F%pt(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%ds_save = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%n_pt = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%n_bad = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 6 + offset; F%n_ok = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%ds_save = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%n_pt = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%n_bad = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 6 + offset; F%n_ok = TEST_VALUE
 
 end subroutine set_track_test_pattern
 
@@ -10546,44 +10546,44 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%ds_track_step = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%dt_track_step = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%cathode_strength_cutoff = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%rel_tol_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%abs_tol_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%beam_chamber_height = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%lsc_sigma_cutoff = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%particle_sigma_cutoff = rhs
-!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 3>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ds_track_step = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%dt_track_step = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%cathode_strength_cutoff = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%rel_tol_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%abs_tol_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%beam_chamber_height = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%lsc_sigma_cutoff = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%particle_sigma_cutoff = TEST_VALUE
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%space_charge_mesh_size,1); lb1 = lbound(F%space_charge_mesh_size,1) - 1
   rhs = 100 + jd1 + 9 + offset
-  F%space_charge_mesh_size(jd1+lb1) = rhs
+  F%space_charge_mesh_size(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 3>
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<C_TYPE, 3>
 do jd1 = 1, size(F%csr3d_mesh_size,1); lb1 = lbound(F%csr3d_mesh_size,1) - 1
   rhs = 100 + jd1 + 10 + offset
-  F%csr3d_mesh_size(jd1+lb1) = rhs
+  F%csr3d_mesh_size(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 11 + offset; F%n_bin = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 12 + offset; F%particle_bin_span = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 13 + offset; F%n_shield_images = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 14 + offset; F%sc_min_in_bin = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 15 + offset; F%lsc_kick_transverse_dependence = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 16 + offset; F%debug = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 11 + offset; F%n_bin = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 12 + offset; F%particle_bin_span = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 13 + offset; F%n_shield_images = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 14 + offset; F%sc_min_in_bin = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 15 + offset; F%lsc_kick_transverse_dependence = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 16 + offset; F%debug = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%diagnostic_output_file)
   F%diagnostic_output_file(jd1:jd1) = char(ichar("a") + modulo(100+17+offset+jd1, 26))
@@ -10702,89 +10702,89 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%max_aperture_limit = rhs
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%max_aperture_limit = TEST_VALUE
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%d_orb,1); lb1 = lbound(F%d_orb,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%d_orb(jd1+lb1) = rhs
+  F%d_orb(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%default_ds_step = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%significant_length = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%rel_tol_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%abs_tol_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%rel_tol_adaptive_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%abs_tol_adaptive_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%init_ds_adaptive_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%min_ds_adaptive_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%fatal_ds_adaptive_tracking = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 12 + offset; F%autoscale_amp_abs_tol = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 13 + offset; F%autoscale_amp_rel_tol = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 14 + offset; F%autoscale_phase_tol = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 15 + offset; F%electric_dipole_moment = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 16 + offset; F%synch_rad_scale = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 17 + offset; F%sad_eps_scale = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 18 + offset; F%sad_amp_max = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 19 + offset; F%sad_n_div_max = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 20 + offset; F%taylor_order = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 21 + offset; F%runge_kutta_order = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 22 + offset; F%default_integ_order = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 23 + offset; F%max_num_runge_kutta_step = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 24 + offset; F%rf_phase_below_transition_ref = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 25 + offset; F%sr_wakes_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 26 + offset; F%lr_wakes_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 27 + offset; F%auto_bookkeeper = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 28 + offset; F%high_energy_space_charge_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 29 + offset; F%csr_and_space_charge_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 30 + offset; F%spin_tracking_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 31 + offset; F%spin_sokolov_ternov_flipping_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 32 + offset; F%radiation_damping_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 33 + offset; F%radiation_zero_average = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 34 + offset; F%radiation_fluctuations_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 35 + offset; F%conserve_taylor_maps = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 36 + offset; F%absolute_time_tracking = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 37 + offset; F%absolute_time_ref_shift = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 38 + offset; F%convert_to_kinetic_momentum = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 39 + offset; F%aperture_limit_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 40 + offset; F%debug = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%default_ds_step = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%significant_length = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%rel_tol_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%abs_tol_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%rel_tol_adaptive_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%abs_tol_adaptive_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%init_ds_adaptive_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%min_ds_adaptive_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%fatal_ds_adaptive_tracking = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 12 + offset; F%autoscale_amp_abs_tol = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 13 + offset; F%autoscale_amp_rel_tol = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 14 + offset; F%autoscale_phase_tol = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 15 + offset; F%electric_dipole_moment = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 16 + offset; F%synch_rad_scale = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 17 + offset; F%sad_eps_scale = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 18 + offset; F%sad_amp_max = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 19 + offset; F%sad_n_div_max = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 20 + offset; F%taylor_order = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 21 + offset; F%runge_kutta_order = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 22 + offset; F%default_integ_order = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 23 + offset; F%max_num_runge_kutta_step = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 24 + offset; F%rf_phase_below_transition_ref = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 25 + offset; F%sr_wakes_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 26 + offset; F%lr_wakes_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 27 + offset; F%auto_bookkeeper = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 28 + offset; F%high_energy_space_charge_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 29 + offset; F%csr_and_space_charge_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 30 + offset; F%spin_tracking_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 31 + offset; F%spin_sokolov_ternov_flipping_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 32 + offset; F%radiation_damping_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 33 + offset; F%radiation_zero_average = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 34 + offset; F%radiation_fluctuations_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 35 + offset; F%conserve_taylor_maps = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 36 + offset; F%absolute_time_tracking = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 37 + offset; F%absolute_time_ref_shift = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 38 + offset; F%convert_to_kinetic_momentum = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 39 + offset; F%aperture_limit_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 40 + offset; F%debug = TEST_VALUE
 
 end subroutine set_bmad_common_test_pattern
 
@@ -10899,42 +10899,42 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%i0 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%i1 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 3 + offset; F%i2 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%i3 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%i4a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%i4b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%i4z = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%i5a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%i5b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 10 + offset; F%i6b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%lin_i2_E4 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 12 + offset; F%lin_i3_E7 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 13 + offset; F%lin_i5a_E6 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 14 + offset; F%lin_i5b_E6 = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 15 + offset; F%lin_norm_emit_a = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 16 + offset; F%lin_norm_emit_b = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 17 + offset; F%lin_sig_E = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 18 + offset; F%n_steps = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%i0 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%i1 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 3 + offset; F%i2 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%i3 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%i4a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%i4b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%i4z = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%i5a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%i5b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 10 + offset; F%i6b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%lin_i2_E4 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 12 + offset; F%lin_i3_E7 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 13 + offset; F%lin_i5a_E6 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 14 + offset; F%lin_i5b_E6 = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 15 + offset; F%lin_norm_emit_a = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 16 + offset; F%lin_norm_emit_b = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 17 + offset; F%lin_sig_E = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 18 + offset; F%n_steps = TEST_VALUE
 
 end subroutine set_rad_int1_test_pattern
 
@@ -11049,7 +11049,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_rad_int1>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%ele)) deallocate (F%ele)
@@ -11173,7 +11173,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_rad_int_branch>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%branch)) deallocate (F%branch)
@@ -11322,17 +11322,17 @@ else
     F%descrip(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
   enddo
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%a, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%b, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%z, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_xy_disp
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_xy_disp_test_pattern (F%x, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_xy_disp
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_xy_disp_test_pattern (F%y, ix_patt)
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_ac_kicker>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%ac_kick)) deallocate (F%ac_kick)
 else
@@ -11340,9 +11340,9 @@ else
   rhs = 12 + offset
   call set_ac_kicker_test_pattern (F%ac_kick, ix_patt)
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_bookkeeping_state
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_bookkeeping_state_test_pattern (F%bookkeeping_state, ix_patt)
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_controller>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%control)) deallocate (F%control)
 else
@@ -11350,9 +11350,9 @@ else
   rhs = 15 + offset
   call set_controller_test_pattern (F%control, ix_patt)
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_floor_position
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_floor_position_test_pattern (F%floor, ix_patt)
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_high_energy_space_charge>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%high_energy_space_charge)) deallocate (F%high_energy_space_charge)
 else
@@ -11360,7 +11360,7 @@ else
   rhs = 18 + offset
   call set_high_energy_space_charge_test_pattern (F%high_energy_space_charge, ix_patt)
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_mode3>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%mode3)) deallocate (F%mode3)
 else
@@ -11368,7 +11368,7 @@ else
   rhs = 20 + offset
   call set_mode3_test_pattern (F%mode3, ix_patt)
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_photon_element>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%photon)) deallocate (F%photon)
 else
@@ -11376,7 +11376,7 @@ else
   rhs = 22 + offset
   call set_photon_element_test_pattern (F%photon, ix_patt)
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_rad_map_ele>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%rad_map)) deallocate (F%rad_map)
 else
@@ -11384,22 +11384,22 @@ else
   rhs = 24 + offset
   call set_rad_map_ele_test_pattern (F%rad_map, ix_patt)
 endif
-!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_taylor, 6>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
   rhs = 100 + jd1 + 26 + offset
   call set_taylor_test_pattern (F%taylor(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%spin_taylor_ref_orb_in,1); lb1 = lbound(F%spin_taylor_ref_orb_in,1) - 1
   rhs = 100 + jd1 + 27 + offset
-  F%spin_taylor_ref_orb_in(jd1+lb1) = rhs
+  F%spin_taylor_ref_orb_in(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[type, 1, NOT] FixedArray1D<CPP_taylor, 4>
+!! f_side.test_pat[type, 1, NOT] FixedArray1D<C_TYPE, 4>
 do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
   rhs = 100 + jd1 + 28 + offset
   call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_wake>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%wake)) deallocate (F%wake)
 else
@@ -11407,7 +11407,7 @@ else
   rhs = 29 + offset
   call set_wake_test_pattern (F%wake, ix_patt)
 endif
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_wall3d>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%wall3d)) deallocate (F%wall3d)
@@ -11417,7 +11417,7 @@ else
     call set_wall3d_test_pattern (F%wall3d(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_cartesian_map>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%cartesian_map)) deallocate (F%cartesian_map)
@@ -11427,7 +11427,7 @@ else
     call set_cartesian_map_test_pattern (F%cartesian_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_cylindrical_map>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%cylindrical_map)) deallocate (F%cylindrical_map)
@@ -11437,7 +11437,7 @@ else
     call set_cylindrical_map_test_pattern (F%cylindrical_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_gen_grad_map>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%gen_grad_map)) deallocate (F%gen_grad_map)
@@ -11447,7 +11447,7 @@ else
     call set_gen_grad_map_test_pattern (F%gen_grad_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_grid_field>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%grid_field)) deallocate (F%grid_field)
@@ -11457,56 +11457,56 @@ else
     call set_grid_field_test_pattern (F%grid_field(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%map_ref_orb_in, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%map_ref_orb_out, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%time_ref_orb_in, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%time_ref_orb_out, ix_patt)
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%value,1); lb1 = lbound(F%value,1) - 1
   rhs = 100 + jd1 + 45 + offset
-  F%value(jd1+lb1) = rhs
+  F%value(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%old_value,1); lb1 = lbound(F%old_value,1) - 1
   rhs = 100 + jd1 + 46 + offset
-  F%old_value(jd1+lb1) = rhs
+  F%old_value(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 4, 7>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 4, 7>
 do jd1 = 1, size(F%spin_q,1); lb1 = lbound(F%spin_q,1) - 1
 do jd2 = 1, size(F%spin_q,2); lb2 = lbound(F%spin_q,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 47 + offset
-  F%spin_q(jd1+lb1,jd2+lb2) = rhs
+  F%spin_q(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 6>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
   rhs = 100 + jd1 + 48 + offset
-  F%vec0(jd1+lb1) = rhs
+  F%vec0(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
 do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 49 + offset
-  F%mat6(jd1+lb1,jd2+lb2) = rhs
+  F%mat6(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 2, 2>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 2, 2>
 do jd1 = 1, size(F%c_mat,1); lb1 = lbound(F%c_mat,1) - 1
 do jd2 = 1, size(F%c_mat,2); lb2 = lbound(F%c_mat,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 50 + offset
-  F%c_mat(jd1+lb1,jd2+lb2) = rhs
+  F%c_mat(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 51 + offset; F%gamma_c = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 52 + offset; F%s_start = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 53 + offset; F%s = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 54 + offset; F%ref_time = rhs
-!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 51 + offset; F%gamma_c = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 52 + offset; F%s_start = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 53 + offset; F%s = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 54 + offset; F%ref_time = TEST_VALUE
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%a_pole)) deallocate (F%a_pole)
@@ -11514,10 +11514,10 @@ else
   if (.not. associated(F%a_pole)) allocate (F%a_pole(-1:1))
   do jd1 = 1, size(F%a_pole,1); lb1 = lbound(F%a_pole,1) - 1
     rhs = 100 + jd1 + 55 + offset
-    F%a_pole(jd1+lb1) = rhs
+    F%a_pole(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%b_pole)) deallocate (F%b_pole)
@@ -11525,10 +11525,10 @@ else
   if (.not. associated(F%b_pole)) allocate (F%b_pole(-1:1))
   do jd1 = 1, size(F%b_pole,1); lb1 = lbound(F%b_pole,1) - 1
     rhs = 100 + jd1 + 57 + offset
-    F%b_pole(jd1+lb1) = rhs
+    F%b_pole(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%a_pole_elec)) deallocate (F%a_pole_elec)
@@ -11536,10 +11536,10 @@ else
   if (.not. associated(F%a_pole_elec)) allocate (F%a_pole_elec(-1:1))
   do jd1 = 1, size(F%a_pole_elec,1); lb1 = lbound(F%a_pole_elec,1) - 1
     rhs = 100 + jd1 + 59 + offset
-    F%a_pole_elec(jd1+lb1) = rhs
+    F%a_pole_elec(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%b_pole_elec)) deallocate (F%b_pole_elec)
@@ -11547,10 +11547,10 @@ else
   if (.not. associated(F%b_pole_elec)) allocate (F%b_pole_elec(-1:1))
   do jd1 = 1, size(F%b_pole_elec,1); lb1 = lbound(F%b_pole_elec,1) - 1
     rhs = 100 + jd1 + 61 + offset
-    F%b_pole_elec(jd1+lb1) = rhs
+    F%b_pole_elec(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 1, PTR] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%custom)) deallocate (F%custom)
@@ -11558,10 +11558,10 @@ else
   if (.not. associated(F%custom)) allocate (F%custom(-1:1))
   do jd1 = 1, size(F%custom,1); lb1 = lbound(F%custom,1) - 1
     rhs = 100 + jd1 + 63 + offset
-    F%custom(jd1+lb1) = rhs
+    F%custom(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 3, PTR] VariableArray3D<Real>
+!! f_side.test_pat[real, 3, PTR] VariableArray3D<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%r)) deallocate (F%r)
 else
@@ -11570,87 +11570,87 @@ else
   do jd2 = 1, size(F%r,2); lb2 = lbound(F%r,2) - 1
   do jd3 = 1, size(F%r,3); lb3 = lbound(F%r,3) - 1
     rhs = 100 + jd1 + 10*jd2 + 100*jd3 + 65 + offset
-    F%r(jd1+lb1,jd2+lb2,jd3+lb3) = rhs
+    F%r(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE
   enddo; enddo; enddo
 endif
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 69 + offset; F%key = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 70 + offset; F%sub_key = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 71 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 72 + offset; F%ix_branch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 73 + offset; F%lord_status = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 74 + offset; F%n_slave = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 75 + offset; F%n_slave_field = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 76 + offset; F%ix1_slave = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 77 + offset; F%slave_status = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 78 + offset; F%n_lord = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 79 + offset; F%n_lord_field = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 80 + offset; F%n_lord_ramper = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 81 + offset; F%ic1_lord = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 82 + offset; F%ix_pointer = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 83 + offset; F%ixx = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 84 + offset; F%iyy = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 85 + offset; F%izz = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 86 + offset; F%mat6_calc_method = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 87 + offset; F%tracking_method = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 88 + offset; F%spin_tracking_method = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 89 + offset; F%csr_method = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 90 + offset; F%space_charge_method = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 91 + offset; F%ptc_integration_type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 92 + offset; F%field_calc = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 93 + offset; F%aperture_at = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 94 + offset; F%aperture_type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 95 + offset; F%ref_species = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 96 + offset; F%orientation = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 97 + offset; F%symplectify = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 98 + offset; F%mode_flip = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 99 + offset; F%multipoles_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 100 + offset; F%scale_multipoles = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 101 + offset; F%taylor_map_includes_offsets = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 102 + offset; F%field_master = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 103 + offset; F%is_on = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 104 + offset; F%logic = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 105 + offset; F%bmad_logic = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 106 + offset; F%select = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 107 + offset; F%offset_moves_aperture = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 69 + offset; F%key = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 70 + offset; F%sub_key = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 71 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 72 + offset; F%ix_branch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 73 + offset; F%lord_status = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 74 + offset; F%n_slave = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 75 + offset; F%n_slave_field = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 76 + offset; F%ix1_slave = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 77 + offset; F%slave_status = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 78 + offset; F%n_lord = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 79 + offset; F%n_lord_field = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 80 + offset; F%n_lord_ramper = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 81 + offset; F%ic1_lord = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 82 + offset; F%ix_pointer = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 83 + offset; F%ixx = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 84 + offset; F%iyy = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 85 + offset; F%izz = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 86 + offset; F%mat6_calc_method = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 87 + offset; F%tracking_method = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 88 + offset; F%spin_tracking_method = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 89 + offset; F%csr_method = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 90 + offset; F%space_charge_method = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 91 + offset; F%ptc_integration_type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 92 + offset; F%field_calc = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 93 + offset; F%aperture_at = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 94 + offset; F%aperture_type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 95 + offset; F%ref_species = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 96 + offset; F%orientation = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 97 + offset; F%symplectify = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 98 + offset; F%mode_flip = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 99 + offset; F%multipoles_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 100 + offset; F%scale_multipoles = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 101 + offset; F%taylor_map_includes_offsets = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 102 + offset; F%field_master = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 103 + offset; F%is_on = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 104 + offset; F%logic = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 105 + offset; F%bmad_logic = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 106 + offset; F%select = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 107 + offset; F%offset_moves_aperture = TEST_VALUE
 
 end subroutine set_ele_test_pattern
 
@@ -11765,12 +11765,12 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 1 + offset; F%coef = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[integer, 1, NOT] FixedArray1D<Int, 6>
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 1 + offset; F%coef = TEST_VALUE
+!! f_side.test_pat[integer, 1, NOT] FixedArray1D<C_TYPE, 6>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
   rhs = 100 + jd1 + 2 + offset
-  F%expn(jd1+lb1) = rhs
+  F%expn(jd1+lb1) = TEST_VALUE
 enddo
 
 end subroutine set_complex_taylor_term_test_pattern
@@ -11886,9 +11886,9 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[complex, 0, NOT] Complex
-rhs = 1 + offset; F%ref = cmplx(rhs, 100+rhs)
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_complex_taylor_term>
+!! f_side.test_pat[complex, 0, NOT] C_TYPE
+rhs = 1 + offset; F%ref = TEST_VALUE
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%term)) deallocate (F%term)
@@ -12016,25 +12016,25 @@ offset = 100 * ix_patt
 do jd1 = 1, len(F%name)
   F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 2 + offset; F%ix_branch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%ix_from_branch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%ix_from_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%ix_to_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 6 + offset; F%n_ele_track = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 7 + offset; F%n_ele_max = rhs
-!! f_side.test_pat[type, 0, NOT] CPP_mode_info
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 2 + offset; F%ix_branch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%ix_from_branch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%ix_from_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%ix_to_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 6 + offset; F%n_ele_track = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 7 + offset; F%n_ele_max = TEST_VALUE
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_mode_info_test_pattern (F%a, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_mode_info
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_mode_info_test_pattern (F%b, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_mode_info
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_mode_info_test_pattern (F%z, ix_patt)
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_ele>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%ele)) deallocate (F%ele)
@@ -12044,9 +12044,9 @@ else
     call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_lat_param
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_lat_param_test_pattern (F%param, ix_patt)
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_wall3d>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%wall3d)) deallocate (F%wall3d)
@@ -12200,7 +12200,7 @@ else
     F%print_str(jd1)(jd:jd) = char(ichar("a") + modulo(100+6+offset+10*jd+jd1, 26))
   enddo; enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_expression_atom>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%constant)) deallocate (F%constant)
@@ -12210,7 +12210,7 @@ else
     call set_expression_atom_test_pattern (F%constant(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_mode_info>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%a)) deallocate (F%a)
 else
@@ -12218,7 +12218,7 @@ else
   rhs = 10 + offset
   call set_mode_info_test_pattern (F%a, ix_patt)
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_mode_info>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%b)) deallocate (F%b)
 else
@@ -12226,7 +12226,7 @@ else
   rhs = 12 + offset
   call set_mode_info_test_pattern (F%b, ix_patt)
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_mode_info>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%z)) deallocate (F%z)
 else
@@ -12234,7 +12234,7 @@ else
   rhs = 14 + offset
   call set_mode_info_test_pattern (F%z, ix_patt)
 endif
-!! f_side.test_pat[type, 0, PTR] shared_ptr<CPP_lat_param>
+!! f_side.test_pat[type, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%param)) deallocate (F%param)
 else
@@ -12242,11 +12242,11 @@ else
   rhs = 16 + offset
   call set_lat_param_test_pattern (F%param, ix_patt)
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_bookkeeping_state
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_bookkeeping_state_test_pattern (F%lord_state, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_ele
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_ele_test_pattern (F%ele_init, ix_patt)
-!! f_side.test_pat[type, 1, PTR] VariableArray1D<CPP_ele>
+!! f_side.test_pat[type, 1, PTR] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (associated(F%ele)) deallocate (F%ele)
@@ -12256,7 +12256,7 @@ else
     call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_branch>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%branch)) deallocate (F%branch)
@@ -12266,7 +12266,7 @@ else
     call set_branch_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_control>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%control)) deallocate (F%control)
@@ -12276,13 +12276,13 @@ else
     call set_control_test_pattern (F%control(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%particle_start, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_beam_init
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_beam_init_test_pattern (F%beam_init, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_pre_tracker
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_pre_tracker_test_pattern (F%pre_tracker, ix_patt)
-!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<Real>
+!! f_side.test_pat[real, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%custom)) deallocate (F%custom)
@@ -12290,12 +12290,12 @@ else
   if (.not. allocated(F%custom)) allocate (F%custom(-1:1))
   do jd1 = 1, size(F%custom,1); lb1 = lbound(F%custom,1) - 1
     rhs = 100 + jd1 + 29 + offset
-    F%custom(jd1+lb1) = rhs
+    F%custom(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 31 + offset; F%version = rhs
-!! f_side.test_pat[integer, 0, PTR] shared_ptr<Int>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 31 + offset; F%version = TEST_VALUE
+!! f_side.test_pat[integer, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%n_ele_track)) deallocate (F%n_ele_track)
 else
@@ -12303,7 +12303,7 @@ else
   rhs = 32 + offset
   F%n_ele_track = rhs
 endif
-!! f_side.test_pat[integer, 0, PTR] shared_ptr<Int>
+!! f_side.test_pat[integer, 0, PTR] shared_ptr<C_TYPE>
 if (ix_patt < 3) then
   if (associated(F%n_ele_max)) deallocate (F%n_ele_max)
 else
@@ -12311,13 +12311,13 @@ else
   rhs = 34 + offset
   F%n_ele_max = rhs
 endif
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 36 + offset; F%n_control_max = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 37 + offset; F%n_ic_max = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 38 + offset; F%input_taylor_order = rhs
-!! f_side.test_pat[integer, 1, ALLOC] VariableArray1D<Int>
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 36 + offset; F%n_control_max = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 37 + offset; F%n_ic_max = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 38 + offset; F%input_taylor_order = TEST_VALUE
+!! f_side.test_pat[integer, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%ic)) deallocate (F%ic)
@@ -12325,15 +12325,15 @@ else
   if (.not. allocated(F%ic)) allocate (F%ic(-1:1))
   do jd1 = 1, size(F%ic,1); lb1 = lbound(F%ic,1) - 1
     rhs = 100 + jd1 + 39 + offset
-    F%ic(jd1+lb1) = rhs
+    F%ic(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 41 + offset; F%photon_type = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 42 + offset; F%creation_hash = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 43 + offset; F%ramper_slave_bookkeeping = rhs
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 41 + offset; F%photon_type = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 42 + offset; F%creation_hash = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 43 + offset; F%ramper_slave_bookkeeping = TEST_VALUE
 
 end subroutine set_lat_test_pattern
 
@@ -12448,7 +12448,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_coord>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%particle)) deallocate (F%particle)
@@ -12458,7 +12458,7 @@ else
     call set_coord_test_pattern (F%particle(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[integer, 1, ALLOC] VariableArray1D<Int>
+!! f_side.test_pat[integer, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%ix_z)) deallocate (F%ix_z)
@@ -12466,33 +12466,33 @@ else
   if (.not. allocated(F%ix_z)) allocate (F%ix_z(-1:1))
   do jd1 = 1, size(F%ix_z,1); lb1 = lbound(F%ix_z,1) - 1
     rhs = 100 + jd1 + 3 + offset
-    F%ix_z(jd1+lb1) = rhs
+    F%ix_z(jd1+lb1) = TEST_VALUE
   enddo
 endif
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%charge_tot = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%charge_live = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%z_center = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%t_center = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 9 + offset; F%t0 = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 10 + offset; F%drift_between_t_and_s = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 11 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 12 + offset; F%ix_bunch = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 13 + offset; F%ix_turn = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 14 + offset; F%n_live = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 15 + offset; F%n_good = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 16 + offset; F%n_bad = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%charge_tot = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%charge_live = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%z_center = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%t_center = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 9 + offset; F%t0 = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 10 + offset; F%drift_between_t_and_s = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 11 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 12 + offset; F%ix_bunch = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 13 + offset; F%ix_turn = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 14 + offset; F%n_live = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 15 + offset; F%n_good = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 16 + offset; F%n_bad = TEST_VALUE
 
 end subroutine set_bunch_test_pattern
 
@@ -12607,62 +12607,62 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%centroid, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%x, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%y, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%z, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%a, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%b, ix_patt)
-!! f_side.test_pat[type, 0, NOT] CPP_twiss
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_twiss_test_pattern (F%c, ix_patt)
-!! f_side.test_pat[real, 2, NOT] FixedArray2D<Real, 6, 6>
+!! f_side.test_pat[real, 2, NOT] FixedArray2D<C_TYPE, 6, 6>
 do jd1 = 1, size(F%sigma,1); lb1 = lbound(F%sigma,1) - 1
 do jd2 = 1, size(F%sigma,2); lb2 = lbound(F%sigma,2) - 1
   rhs = 100 + jd1 + 10*jd2 + 8 + offset
-  F%sigma(jd1+lb1,jd2+lb2) = rhs
+  F%sigma(jd1+lb1,jd2+lb2) = TEST_VALUE
 enddo; enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 7>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 7>
 do jd1 = 1, size(F%rel_max,1); lb1 = lbound(F%rel_max,1) - 1
   rhs = 100 + jd1 + 9 + offset
-  F%rel_max(jd1+lb1) = rhs
+  F%rel_max(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 1, NOT] FixedArray1D<Real, 7>
+!! f_side.test_pat[real, 1, NOT] FixedArray1D<C_TYPE, 7>
 do jd1 = 1, size(F%rel_min,1); lb1 = lbound(F%rel_min,1) - 1
   rhs = 100 + jd1 + 10 + offset
-  F%rel_min(jd1+lb1) = rhs
+  F%rel_min(jd1+lb1) = TEST_VALUE
 enddo
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 11 + offset; F%s = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 12 + offset; F%t = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 13 + offset; F%sigma_t = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 14 + offset; F%charge_live = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 15 + offset; F%charge_tot = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 16 + offset; F%n_particle_tot = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 17 + offset; F%n_particle_live = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 18 + offset; F%n_particle_lost_in_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 19 + offset; F%n_good_steps = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 20 + offset; F%n_bad_steps = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 21 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 22 + offset; F%location = rhs
-!! f_side.test_pat[logical, 0, NOT] Bool
-rhs = 23 + offset; F%twiss_valid = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 11 + offset; F%s = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 12 + offset; F%t = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 13 + offset; F%sigma_t = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 14 + offset; F%charge_live = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 15 + offset; F%charge_tot = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 16 + offset; F%n_particle_tot = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 17 + offset; F%n_particle_live = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 18 + offset; F%n_particle_lost_in_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 19 + offset; F%n_good_steps = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 20 + offset; F%n_bad_steps = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 21 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 22 + offset; F%location = TEST_VALUE
+!! f_side.test_pat[logical, 0, NOT] C_TYPE
+rhs = 23 + offset; F%twiss_valid = TEST_VALUE
 
 end subroutine set_bunch_params_test_pattern
 
@@ -12777,7 +12777,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_bunch>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%bunch)) deallocate (F%bunch)
@@ -12901,16 +12901,16 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%x = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%y = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%plane = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%ix_ele = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 5 + offset; F%i_turn = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%x = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%y = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%plane = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%ix_ele = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 5 + offset; F%i_turn = TEST_VALUE
 
 end subroutine set_aperture_point_test_pattern
 
@@ -13025,22 +13025,22 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 1 + offset; F%min_angle = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 2 + offset; F%max_angle = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 3 + offset; F%n_angle = rhs
-!! f_side.test_pat[integer, 0, NOT] Int
-rhs = 4 + offset; F%n_turn = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 5 + offset; F%x_init = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 6 + offset; F%y_init = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 7 + offset; F%rel_accuracy = rhs
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 8 + offset; F%abs_accuracy = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 1 + offset; F%min_angle = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 2 + offset; F%max_angle = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 3 + offset; F%n_angle = TEST_VALUE
+!! f_side.test_pat[integer, 0, NOT] C_TYPE
+rhs = 4 + offset; F%n_turn = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 5 + offset; F%x_init = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 6 + offset; F%y_init = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 7 + offset; F%rel_accuracy = TEST_VALUE
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 8 + offset; F%abs_accuracy = TEST_VALUE
 !! f_side.test_pat[character, 0, NOT] string
 do jd1 = 1, len(F%start_ele)
   F%start_ele(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
@@ -13159,7 +13159,7 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
 offset = 100 * ix_patt
 
-!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<CPP_aperture_point>
+!! f_side.test_pat[type, 1, ALLOC] VariableArray1D<C_TYPE>
 
 if (ix_patt < 3) then
   if (allocated(F%point)) deallocate (F%point)
@@ -13169,10 +13169,10 @@ else
     call set_aperture_point_test_pattern (F%point(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[type, 0, NOT] CPP_coord
+!! f_side.test_pat[type, 0, NOT] C_TYPE
 call set_coord_test_pattern (F%ref_orb, ix_patt)
-!! f_side.test_pat[real, 0, NOT] Real
-rhs = 4 + offset; F%pz_start = rhs
+!! f_side.test_pat[real, 0, NOT] C_TYPE
+rhs = 4 + offset; F%pz_start = TEST_VALUE
 
 end subroutine set_aperture_scan_test_pattern
 
