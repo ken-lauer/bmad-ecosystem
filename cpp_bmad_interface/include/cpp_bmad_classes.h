@@ -27,10 +27,10 @@ class Opaque_spline_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_spline: public std::enable_shared_from_this<CPP_spline>  {
 public:
-  C_TYPE x0 = { 0.0 };
-  C_TYPE y0 = { 0.0 };
-  C_TYPE x1 = { 0.0 };
-  FixedArray1D<C_TYPE, 4> coef = { 0.0 };
+    C_TYPE x0 =   {   0.0 };
+    C_TYPE y0 =   {   0.0 };
+    C_TYPE x1 =   {   0.0 };
+    FixedArray1D<C_TYPE, 4> coef =   {   0.0 };
 
   CPP_spline() {
   
@@ -68,10 +68,10 @@ class Opaque_spin_polar_class {};  // Opaque class for pointers to corresponding
 
 class CPP_spin_polar: public std::enable_shared_from_this<CPP_spin_polar>  {
 public:
-  C_TYPE polarization = { 1 };
-  C_TYPE theta = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE xi = { 0.0 };
+    C_TYPE polarization =   { 1 };
+    C_TYPE theta =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE xi =   {   0.0 };
 
   CPP_spin_polar() {
   
@@ -109,9 +109,9 @@ class Opaque_ac_kicker_time_class {};  // Opaque class for pointers to correspon
 
 class CPP_ac_kicker_time: public std::enable_shared_from_this<CPP_ac_kicker_time>  {
 public:
-  C_TYPE amp = { 0.0 };
-  C_TYPE time = { 0.0 };
-  C_TYPE spline;
+    C_TYPE amp =   {   0.0 };
+    C_TYPE time =   {   0.0 };
+    C_TYPE spline;
 
   CPP_ac_kicker_time() {
   
@@ -148,10 +148,10 @@ class Opaque_ac_kicker_freq_class {};  // Opaque class for pointers to correspon
 
 class CPP_ac_kicker_freq: public std::enable_shared_from_this<CPP_ac_kicker_freq>  {
 public:
-  C_TYPE f = { 0.0 };
-  C_TYPE amp = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE rf_clock_harmonic = { 0 };
+    C_TYPE f =   {   0.0 };
+    C_TYPE amp =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE rf_clock_harmonic =   {   0 };
 
   CPP_ac_kicker_freq() {
   
@@ -189,8 +189,8 @@ class Opaque_ac_kicker_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_ac_kicker: public std::enable_shared_from_this<CPP_ac_kicker>  {
 public:
-  VariableArray1D<C_TYPE> amp_vs_time;
-  VariableArray1D<C_TYPE> frequency;
+    VariableArray1D<C_TYPE> amp_vs_time;
+    VariableArray1D<C_TYPE> frequency;
 
   CPP_ac_kicker() {
   
@@ -226,9 +226,9 @@ class Opaque_interval1_coef_class {};  // Opaque class for pointers to correspon
 
 class CPP_interval1_coef: public std::enable_shared_from_this<CPP_interval1_coef>  {
 public:
-  C_TYPE c0 = { 0.0 };
-  C_TYPE c1 = { 0.0 };
-  C_TYPE n_exp = { 0.0 };
+    C_TYPE c0 =   {   0.0 };
+    C_TYPE c1 =   {   0.0 };
+    C_TYPE n_exp =   {   0.0 };
 
   CPP_interval1_coef() {
   
@@ -265,13 +265,13 @@ class Opaque_photon_reflect_table_class {};  // Opaque class for pointers to cor
 
 class CPP_photon_reflect_table: public std::enable_shared_from_this<CPP_photon_reflect_table>  {
 public:
-  VariableArray1D<C_TYPE> angle;
-  VariableArray1D<C_TYPE> energy;
-  VariableArray1D<C_TYPE> int1;
-  VariableArray2D<C_TYPE> p_reflect;
-  C_TYPE max_energy = { -1 };
-  VariableArray1D<C_TYPE> p_reflect_scratch;
-  VariableArray1D<C_TYPE> bragg_angle;
+    VariableArray1D<C_TYPE> angle;
+    VariableArray1D<C_TYPE> energy;
+    VariableArray1D<C_TYPE> int1;
+    VariableArray2D<C_TYPE> p_reflect;
+    C_TYPE max_energy =   { -1 };
+    VariableArray1D<C_TYPE> p_reflect_scratch;
+    VariableArray1D<C_TYPE> bragg_angle;
 
   CPP_photon_reflect_table() {
   
@@ -312,13 +312,13 @@ class Opaque_photon_reflect_surface_class {};  // Opaque class for pointers to c
 
 class CPP_photon_reflect_surface: public std::enable_shared_from_this<CPP_photon_reflect_surface>  {
 public:
-  string name = { "" };
-  string description = { "" };
-  string reflectivity_file = { "" };
-  VariableArray1D<C_TYPE> table;
-  C_TYPE surface_roughness_rms = { 0.0 };
-  C_TYPE roughness_correlation_len = { 0.0 };
-  C_TYPE ix_surface = { -1 };
+    string name =   { "" };
+    string description =   { "" };
+    string reflectivity_file =   { "" };
+    VariableArray1D<C_TYPE> table;
+    C_TYPE surface_roughness_rms =   {   0.0 };
+    C_TYPE roughness_correlation_len =   {   0.0 };
+    C_TYPE ix_surface =   { -1 };
 
   CPP_photon_reflect_surface() {
   
@@ -359,27 +359,27 @@ class Opaque_coord_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_coord: public std::enable_shared_from_this<CPP_coord>  {
 public:
-  FixedArray1D<C_TYPE, 6> vec = { 0.0 };
-  C_TYPE s = { 0.0 };
-  C_TYPE t = { 0.0 };
-  FixedArray1D<C_TYPE, 3> spin = { 0.0 };
-  FixedArray1D<C_TYPE, 2> field = { 0.0 };
-  FixedArray1D<C_TYPE, 2> phase = { 0.0 };
-  C_TYPE charge = { 0.0 };
-  C_TYPE dt_ref = { 0.0 };
-  C_TYPE r = { 0.0 };
-  C_TYPE p0c = { 0.0 };
-  C_TYPE E_potential = { 0.0 };
-  C_TYPE beta = { -1 };
-  C_TYPE ix_ele = { -1 };
-  C_TYPE ix_branch = { -1 };
-  C_TYPE ix_turn = { 0 };
-  C_TYPE ix_user = { -1 };
-  C_TYPE state = { Bmad::NOT_SET };
-  C_TYPE direction = { 1 };
-  C_TYPE time_dir = { 1 };
-  C_TYPE species = { Bmad::NOT_SET };
-  C_TYPE location = { Bmad::UPSTREAM_END };
+    FixedArray1D<C_TYPE, 6> vec =   {   0.0 };
+    C_TYPE s =   {   0.0 };
+    C_TYPE t =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> spin =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> field =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> phase =   {   0.0 };
+    C_TYPE charge =   {   0.0 };
+    C_TYPE dt_ref =   {   0.0 };
+    C_TYPE r =   {   0.0 };
+    C_TYPE p0c =   {   0.0 };
+    C_TYPE E_potential =   {   0.0 };
+    C_TYPE beta =   { -1 };
+    C_TYPE ix_ele =   { -1 };
+    C_TYPE ix_branch =   { -1 };
+    C_TYPE ix_turn =   {   0 };
+    C_TYPE ix_user =   { -1 };
+    C_TYPE state =   { Bmad::NOT_SET };
+    C_TYPE direction =   { 1 };
+    C_TYPE time_dir =   { 1 };
+    C_TYPE species =   { Bmad::NOT_SET };
+    C_TYPE location =   { Bmad::UPSTREAM_END };
 
   CPP_coord() {
   
@@ -434,7 +434,7 @@ class Opaque_coord_array_class {};  // Opaque class for pointers to correspondin
 
 class CPP_coord_array: public std::enable_shared_from_this<CPP_coord_array>  {
 public:
-  VariableArray1D<C_TYPE> orbit;
+    VariableArray1D<C_TYPE> orbit;
 
   CPP_coord_array() {
   
@@ -469,16 +469,16 @@ class Opaque_bpm_phase_coupling_class {};  // Opaque class for pointers to corre
 
 class CPP_bpm_phase_coupling: public std::enable_shared_from_this<CPP_bpm_phase_coupling>  {
 public:
-  C_TYPE K_22a = { 0.0 };
-  C_TYPE K_12a = { 0.0 };
-  C_TYPE K_11b = { 0.0 };
-  C_TYPE K_12b = { 0.0 };
-  C_TYPE Cbar22_a = { 0.0 };
-  C_TYPE Cbar12_a = { 0.0 };
-  C_TYPE Cbar11_b = { 0.0 };
-  C_TYPE Cbar12_b = { 0.0 };
-  C_TYPE phi_a = { 0.0 };
-  C_TYPE phi_b = { 0.0 };
+    C_TYPE K_22a =   {   0.0 };
+    C_TYPE K_12a =   {   0.0 };
+    C_TYPE K_11b =   {   0.0 };
+    C_TYPE K_12b =   {   0.0 };
+    C_TYPE Cbar22_a =   {   0.0 };
+    C_TYPE Cbar12_a =   {   0.0 };
+    C_TYPE Cbar11_b =   {   0.0 };
+    C_TYPE Cbar12_b =   {   0.0 };
+    C_TYPE phi_a =   {   0.0 };
+    C_TYPE phi_b =   {   0.0 };
 
   CPP_bpm_phase_coupling() {
   
@@ -522,9 +522,9 @@ class Opaque_expression_atom_class {};  // Opaque class for pointers to correspo
 
 class CPP_expression_atom: public std::enable_shared_from_this<CPP_expression_atom>  {
 public:
-  string name = { "" };
-  C_TYPE type = { 0 };
-  C_TYPE value = { 0.0 };
+    string name =   { "" };
+    C_TYPE type =   {   0 };
+    C_TYPE value =   {   0.0 };
 
   CPP_expression_atom() {
   
@@ -561,15 +561,15 @@ class Opaque_wake_sr_z_long_class {};  // Opaque class for pointers to correspon
 
 class CPP_wake_sr_z_long: public std::enable_shared_from_this<CPP_wake_sr_z_long>  {
 public:
-  VariableArray1D<C_TYPE> w;
-  VariableArray1D<C_TYPE> fw;
-  VariableArray1D<C_TYPE> fbunch;
-  VariableArray1D<C_TYPE> w_out;
-  C_TYPE dz = { 0.0 };
-  C_TYPE z0 = { 0.0 };
-  C_TYPE smoothing_sigma = { 0.0 };
-  C_TYPE position_dependence = { Bmad::NONE };
-  C_TYPE time_based = { false };
+    VariableArray1D<C_TYPE> w;
+    VariableArray1D<C_TYPE> fw;
+    VariableArray1D<C_TYPE> fbunch;
+    VariableArray1D<C_TYPE> w_out;
+    C_TYPE dz =   {   0.0 };
+    C_TYPE z0 =   {   0.0 };
+    C_TYPE smoothing_sigma =   {   0.0 };
+    C_TYPE position_dependence =   { Bmad::NONE };
+    C_TYPE time_based =   { false };
 
   CPP_wake_sr_z_long() {
   
@@ -612,16 +612,16 @@ class Opaque_wake_sr_mode_class {};  // Opaque class for pointers to correspondi
 
 class CPP_wake_sr_mode: public std::enable_shared_from_this<CPP_wake_sr_mode>  {
 public:
-  C_TYPE amp = { 0.0 };
-  C_TYPE damp = { 0.0 };
-  C_TYPE k = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE b_sin = { 0.0 };
-  C_TYPE b_cos = { 0.0 };
-  C_TYPE a_sin = { 0.0 };
-  C_TYPE a_cos = { 0.0 };
-  C_TYPE polarization = { Bmad::NONE };
-  C_TYPE position_dependence = { Bmad::NOT_SET };
+    C_TYPE amp =   {   0.0 };
+    C_TYPE damp =   {   0.0 };
+    C_TYPE k =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE b_sin =   {   0.0 };
+    C_TYPE b_cos =   {   0.0 };
+    C_TYPE a_sin =   {   0.0 };
+    C_TYPE a_cos =   {   0.0 };
+    C_TYPE polarization =   { Bmad::NONE };
+    C_TYPE position_dependence =   { Bmad::NOT_SET };
 
   CPP_wake_sr_mode() {
   
@@ -665,16 +665,16 @@ class Opaque_wake_sr_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_wake_sr: public std::enable_shared_from_this<CPP_wake_sr>  {
 public:
-  string file = { "" };
-  C_TYPE z_long;
-  VariableArray1D<C_TYPE> long_wake;
-  VariableArray1D<C_TYPE> trans_wake;
-  C_TYPE z_ref_long = { 0.0 };
-  C_TYPE z_ref_trans = { 0.0 };
-  C_TYPE z_max = { 0.0 };
-  C_TYPE amp_scale = { 1 };
-  C_TYPE z_scale = { 1 };
-  C_TYPE scale_with_length = { true };
+    string file =   { "" };
+    C_TYPE z_long;
+    VariableArray1D<C_TYPE> long_wake;
+    VariableArray1D<C_TYPE> trans_wake;
+    C_TYPE z_ref_long =   {   0.0 };
+    C_TYPE z_ref_trans =   {   0.0 };
+    C_TYPE z_max =   {   0.0 };
+    C_TYPE amp_scale =   { 1 };
+    C_TYPE z_scale =   { 1 };
+    C_TYPE scale_with_length =   { true };
 
   CPP_wake_sr() {
   
@@ -718,19 +718,19 @@ class Opaque_wake_lr_mode_class {};  // Opaque class for pointers to correspondi
 
 class CPP_wake_lr_mode: public std::enable_shared_from_this<CPP_wake_lr_mode>  {
 public:
-  C_TYPE freq = { 0.0 };
-  C_TYPE freq_in = { 0.0 };
-  C_TYPE R_over_Q = { 0.0 };
-  C_TYPE Q = { Bmad::REAL_GARBAGE };
-  C_TYPE damp = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE angle = { 0.0 };
-  C_TYPE b_sin = { 0.0 };
-  C_TYPE b_cos = { 0.0 };
-  C_TYPE a_sin = { 0.0 };
-  C_TYPE a_cos = { 0.0 };
-  C_TYPE m = { 0 };
-  C_TYPE polarized = { false };
+    C_TYPE freq =   {   0.0 };
+    C_TYPE freq_in =   {   0.0 };
+    C_TYPE R_over_Q =   {   0.0 };
+    C_TYPE Q =   { Bmad::REAL_GARBAGE };
+    C_TYPE damp =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE angle =   {   0.0 };
+    C_TYPE b_sin =   {   0.0 };
+    C_TYPE b_cos =   {   0.0 };
+    C_TYPE a_sin =   {   0.0 };
+    C_TYPE a_cos =   {   0.0 };
+    C_TYPE m =   {   0 };
+    C_TYPE polarized =   { false };
 
   CPP_wake_lr_mode() {
   
@@ -777,13 +777,13 @@ class Opaque_wake_lr_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_wake_lr: public std::enable_shared_from_this<CPP_wake_lr>  {
 public:
-  string file = { "" };
-  VariableArray1D<C_TYPE> mode;
-  C_TYPE t_ref = { 0.0 };
-  C_TYPE freq_spread = { 0.0 };
-  C_TYPE amp_scale = { 1 };
-  C_TYPE time_scale = { 1 };
-  C_TYPE self_wake_on = { true };
+    string file =   { "" };
+    VariableArray1D<C_TYPE> mode;
+    C_TYPE t_ref =   {   0.0 };
+    C_TYPE freq_spread =   {   0.0 };
+    C_TYPE amp_scale =   { 1 };
+    C_TYPE time_scale =   { 1 };
+    C_TYPE self_wake_on =   { true };
 
   CPP_wake_lr() {
   
@@ -824,8 +824,8 @@ class Opaque_lat_ele_loc_class {};  // Opaque class for pointers to correspondin
 
 class CPP_lat_ele_loc: public std::enable_shared_from_this<CPP_lat_ele_loc>  {
 public:
-  C_TYPE ix_ele = { -1 };
-  C_TYPE ix_branch = { 0 };
+    C_TYPE ix_ele =   { -1 };
+    C_TYPE ix_branch =   {   0 };
 
   CPP_lat_ele_loc() {
   
@@ -861,8 +861,8 @@ class Opaque_wake_class {};  // Opaque class for pointers to corresponding fortr
 
 class CPP_wake: public std::enable_shared_from_this<CPP_wake>  {
 public:
-  C_TYPE sr;
-  C_TYPE lr;
+    C_TYPE sr;
+    C_TYPE lr;
 
   CPP_wake() {
   
@@ -898,8 +898,8 @@ class Opaque_taylor_term_class {};  // Opaque class for pointers to correspondin
 
 class CPP_taylor_term: public std::enable_shared_from_this<CPP_taylor_term>  {
 public:
-  C_TYPE coef = { 0.0 };
-  FixedArray1D<C_TYPE, 6> expn = { 0 };
+    C_TYPE coef =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> expn =   {   0 };
 
   CPP_taylor_term() {
   
@@ -935,8 +935,8 @@ class Opaque_taylor_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_taylor: public std::enable_shared_from_this<CPP_taylor>  {
 public:
-  C_TYPE ref = { 0.0 };
-  VariableArray1D<C_TYPE> term;
+    C_TYPE ref =   {   0.0 };
+    VariableArray1D<C_TYPE> term;
 
   CPP_taylor() {
   
@@ -972,8 +972,8 @@ class Opaque_em_taylor_term_class {};  // Opaque class for pointers to correspon
 
 class CPP_em_taylor_term: public std::enable_shared_from_this<CPP_em_taylor_term>  {
 public:
-  C_TYPE coef = { 0.0 };
-  FixedArray1D<C_TYPE, 2> expn = { 0 };
+    C_TYPE coef =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> expn =   {   0 };
 
   CPP_em_taylor_term() {
   
@@ -1009,8 +1009,8 @@ class Opaque_em_taylor_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_em_taylor: public std::enable_shared_from_this<CPP_em_taylor>  {
 public:
-  C_TYPE ref = { 0.0 };
-  VariableArray1D<C_TYPE> term;
+    C_TYPE ref =   {   0.0 };
+    VariableArray1D<C_TYPE> term;
 
   CPP_em_taylor() {
   
@@ -1046,15 +1046,15 @@ class Opaque_cartesian_map_term1_class {};  // Opaque class for pointers to corr
 
 class CPP_cartesian_map_term1: public std::enable_shared_from_this<CPP_cartesian_map_term1>  {
 public:
-  C_TYPE coef = { 0.0 };
-  C_TYPE kx = { 0.0 };
-  C_TYPE ky = { 0.0 };
-  C_TYPE kz = { 0.0 };
-  C_TYPE x0 = { 0.0 };
-  C_TYPE y0 = { 0.0 };
-  C_TYPE phi_z = { 0.0 };
-  C_TYPE family = { 0 };
-  C_TYPE form = { 0 };
+    C_TYPE coef =   {   0.0 };
+    C_TYPE kx =   {   0.0 };
+    C_TYPE ky =   {   0.0 };
+    C_TYPE kz =   {   0.0 };
+    C_TYPE x0 =   {   0.0 };
+    C_TYPE y0 =   {   0.0 };
+    C_TYPE phi_z =   {   0.0 };
+    C_TYPE family =   {   0 };
+    C_TYPE form =   {   0 };
 
   CPP_cartesian_map_term1() {
   
@@ -1097,9 +1097,9 @@ class Opaque_cartesian_map_term_class {};  // Opaque class for pointers to corre
 
 class CPP_cartesian_map_term: public std::enable_shared_from_this<CPP_cartesian_map_term>  {
 public:
-  string file = { "" };
-  C_TYPE n_link = { 1 };
-  VariableArray1D<C_TYPE> term;
+    string file =   { "" };
+    C_TYPE n_link =   { 1 };
+    VariableArray1D<C_TYPE> term;
 
   CPP_cartesian_map_term() {
   
@@ -1136,12 +1136,12 @@ class Opaque_cartesian_map_class {};  // Opaque class for pointers to correspond
 
 class CPP_cartesian_map: public std::enable_shared_from_this<CPP_cartesian_map>  {
 public:
-  C_TYPE field_scale = { 1 };
-  FixedArray1D<C_TYPE, 3> r0 = { 0.0 };
-  C_TYPE master_parameter = { 0 };
-  C_TYPE ele_anchor_pt = { Bmad::ANCHOR_BEGINNING };
-  C_TYPE field_type = { Bmad::MAGNETIC };
-  shared_ptr<C_TYPE> ptr = nullptr;
+    C_TYPE field_scale =   { 1 };
+    FixedArray1D<C_TYPE, 3> r0 =   {   0.0 };
+    C_TYPE master_parameter =   {   0 };
+    C_TYPE ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    C_TYPE field_type =   { Bmad::MAGNETIC };
+    shared_ptr<C_TYPE> ptr =   nullptr;
 
   CPP_cartesian_map() {
   
@@ -1181,8 +1181,8 @@ class Opaque_cylindrical_map_term1_class {};  // Opaque class for pointers to co
 
 class CPP_cylindrical_map_term1: public std::enable_shared_from_this<CPP_cylindrical_map_term1>  {
 public:
-  C_TYPE e_coef = { 0.0 };
-  C_TYPE b_coef = { 0.0 };
+    C_TYPE e_coef =   {   0.0 };
+    C_TYPE b_coef =   {   0.0 };
 
   CPP_cylindrical_map_term1() {
   
@@ -1218,9 +1218,9 @@ class Opaque_cylindrical_map_term_class {};  // Opaque class for pointers to cor
 
 class CPP_cylindrical_map_term: public std::enable_shared_from_this<CPP_cylindrical_map_term>  {
 public:
-  string file = { "" };
-  C_TYPE n_link = { 1 };
-  VariableArray1D<C_TYPE> term;
+    string file =   { "" };
+    C_TYPE n_link =   { 1 };
+    VariableArray1D<C_TYPE> term;
 
   CPP_cylindrical_map_term() {
   
@@ -1257,16 +1257,16 @@ class Opaque_cylindrical_map_class {};  // Opaque class for pointers to correspo
 
 class CPP_cylindrical_map: public std::enable_shared_from_this<CPP_cylindrical_map>  {
 public:
-  C_TYPE m = { 0 };
-  C_TYPE harmonic = { 0 };
-  C_TYPE phi0_fieldmap = { 0.0 };
-  C_TYPE theta0_azimuth = { 0.0 };
-  C_TYPE field_scale = { 1 };
-  C_TYPE master_parameter = { 0 };
-  C_TYPE ele_anchor_pt = { Bmad::ANCHOR_BEGINNING };
-  C_TYPE dz = { 0.0 };
-  FixedArray1D<C_TYPE, 3> r0 = { 0.0 };
-  shared_ptr<C_TYPE> ptr = nullptr;
+    C_TYPE m =   {   0 };
+    C_TYPE harmonic =   {   0 };
+    C_TYPE phi0_fieldmap =   {   0.0 };
+    C_TYPE theta0_azimuth =   {   0.0 };
+    C_TYPE field_scale =   { 1 };
+    C_TYPE master_parameter =   {   0 };
+    C_TYPE ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    C_TYPE dz =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> r0 =   {   0.0 };
+    shared_ptr<C_TYPE> ptr =   nullptr;
 
   CPP_cylindrical_map() {
   
@@ -1310,8 +1310,8 @@ class Opaque_grid_field_pt1_class {};  // Opaque class for pointers to correspon
 
 class CPP_grid_field_pt1: public std::enable_shared_from_this<CPP_grid_field_pt1>  {
 public:
-  FixedArray1D<C_TYPE, 3> E = { 0.0 };
-  FixedArray1D<C_TYPE, 3> B = { 0.0 };
+    FixedArray1D<C_TYPE, 3> E =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> B =   {   0.0 };
 
   CPP_grid_field_pt1() {
   
@@ -1347,8 +1347,8 @@ class Opaque_grid_field_pt_class {};  // Opaque class for pointers to correspond
 
 class CPP_grid_field_pt: public std::enable_shared_from_this<CPP_grid_field_pt>  {
 public:
-  string file = { "" };
-  C_TYPE n_link = { 1 };
+    string file =   { "" };
+    C_TYPE n_link =   { 1 };
 
   CPP_grid_field_pt() {
   
@@ -1384,18 +1384,18 @@ class Opaque_grid_field_class {};  // Opaque class for pointers to corresponding
 
 class CPP_grid_field: public std::enable_shared_from_this<CPP_grid_field>  {
 public:
-  C_TYPE geometry = { 0 };
-  C_TYPE harmonic = { 0 };
-  C_TYPE phi0_fieldmap = { 0.0 };
-  C_TYPE field_scale = { 1 };
-  C_TYPE field_type = { Bmad::MIXED };
-  C_TYPE master_parameter = { 0 };
-  C_TYPE ele_anchor_pt = { Bmad::ANCHOR_BEGINNING };
-  C_TYPE interpolation_order = { 1 };
-  FixedArray1D<C_TYPE, 3> dr = { 0.0 };
-  FixedArray1D<C_TYPE, 3> r0 = { 0.0 };
-  C_TYPE curved_ref_frame = { false };
-  shared_ptr<C_TYPE> ptr = nullptr;
+    C_TYPE geometry =   {   0 };
+    C_TYPE harmonic =   {   0 };
+    C_TYPE phi0_fieldmap =   {   0.0 };
+    C_TYPE field_scale =   { 1 };
+    C_TYPE field_type =   { Bmad::MIXED };
+    C_TYPE master_parameter =   {   0 };
+    C_TYPE ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    C_TYPE interpolation_order =   { 1 };
+    FixedArray1D<C_TYPE, 3> dr =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> r0 =   {   0.0 };
+    C_TYPE curved_ref_frame =   { false };
+    shared_ptr<C_TYPE> ptr =   nullptr;
 
   CPP_grid_field() {
   
@@ -1441,11 +1441,11 @@ class Opaque_floor_position_class {};  // Opaque class for pointers to correspon
 
 class CPP_floor_position: public std::enable_shared_from_this<CPP_floor_position>  {
 public:
-  FixedArray1D<C_TYPE, 3> r = { 0.0 };
-  FixedArray2D<C_TYPE, 3, 3> w;
-  C_TYPE theta = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE psi = { 0.0 };
+    FixedArray1D<C_TYPE, 3> r =   {   0.0 };
+    FixedArray2D<C_TYPE, 3, 3> w;
+    C_TYPE theta =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE psi =   {   0.0 };
 
   CPP_floor_position() {
   
@@ -1484,14 +1484,14 @@ class Opaque_high_energy_space_charge_class {};  // Opaque class for pointers to
 
 class CPP_high_energy_space_charge: public std::enable_shared_from_this<CPP_high_energy_space_charge>  {
 public:
-  C_TYPE closed_orb;
-  C_TYPE kick_const = { 0.0 };
-  C_TYPE sig_x = { 0.0 };
-  C_TYPE sig_y = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE sin_phi = { 0.0 };
-  C_TYPE cos_phi = { 0.0 };
-  C_TYPE sig_z = { 0.0 };
+    C_TYPE closed_orb;
+    C_TYPE kick_const =   {   0.0 };
+    C_TYPE sig_x =   {   0.0 };
+    C_TYPE sig_y =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE sin_phi =   {   0.0 };
+    C_TYPE cos_phi =   {   0.0 };
+    C_TYPE sig_z =   {   0.0 };
 
   CPP_high_energy_space_charge() {
   
@@ -1533,10 +1533,10 @@ class Opaque_xy_disp_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_xy_disp: public std::enable_shared_from_this<CPP_xy_disp>  {
 public:
-  C_TYPE eta = { 0.0 };
-  C_TYPE etap = { 0.0 };
-  C_TYPE deta_ds = { 0.0 };
-  C_TYPE sigma = { 0.0 };
+    C_TYPE eta =   {   0.0 };
+    C_TYPE etap =   {   0.0 };
+    C_TYPE deta_ds =   {   0.0 };
+    C_TYPE sigma =   {   0.0 };
 
   CPP_xy_disp() {
   
@@ -1574,17 +1574,17 @@ class Opaque_twiss_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_twiss: public std::enable_shared_from_this<CPP_twiss>  {
 public:
-  C_TYPE beta = { 0.0 };
-  C_TYPE alpha = { 0.0 };
-  C_TYPE gamma = { 0.0 };
-  C_TYPE phi = { 0.0 };
-  C_TYPE eta = { 0.0 };
-  C_TYPE etap = { 0.0 };
-  C_TYPE deta_ds = { 0.0 };
-  C_TYPE sigma = { 0.0 };
-  C_TYPE sigma_p = { 0.0 };
-  C_TYPE emit = { 0.0 };
-  C_TYPE norm_emit = { 0.0 };
+    C_TYPE beta =   {   0.0 };
+    C_TYPE alpha =   {   0.0 };
+    C_TYPE gamma =   {   0.0 };
+    C_TYPE phi =   {   0.0 };
+    C_TYPE eta =   {   0.0 };
+    C_TYPE etap =   {   0.0 };
+    C_TYPE deta_ds =   {   0.0 };
+    C_TYPE sigma =   {   0.0 };
+    C_TYPE sigma_p =   {   0.0 };
+    C_TYPE emit =   {   0.0 };
+    C_TYPE norm_emit =   {   0.0 };
 
   CPP_twiss() {
   
@@ -1629,12 +1629,12 @@ class Opaque_mode3_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_mode3: public std::enable_shared_from_this<CPP_mode3>  {
 public:
-  FixedArray2D<C_TYPE, 6, 6> v;
-  C_TYPE a;
-  C_TYPE b;
-  C_TYPE c;
-  C_TYPE x;
-  C_TYPE y;
+    FixedArray2D<C_TYPE, 6, 6> v;
+    C_TYPE a;
+    C_TYPE b;
+    C_TYPE c;
+    C_TYPE x;
+    C_TYPE y;
 
   CPP_mode3() {
   
@@ -1674,15 +1674,15 @@ class Opaque_bookkeeping_state_class {};  // Opaque class for pointers to corres
 
 class CPP_bookkeeping_state: public std::enable_shared_from_this<CPP_bookkeeping_state>  {
 public:
-  C_TYPE attributes = { Bmad::STALE };
-  C_TYPE control = { Bmad::STALE };
-  C_TYPE floor_position = { Bmad::STALE };
-  C_TYPE s_position = { Bmad::STALE };
-  C_TYPE ref_energy = { Bmad::STALE };
-  C_TYPE mat6 = { Bmad::STALE };
-  C_TYPE rad_int = { Bmad::STALE };
-  C_TYPE ptc = { Bmad::STALE };
-  C_TYPE has_misalign = { false };
+    C_TYPE attributes =   { Bmad::STALE };
+    C_TYPE control =   { Bmad::STALE };
+    C_TYPE floor_position =   { Bmad::STALE };
+    C_TYPE s_position =   { Bmad::STALE };
+    C_TYPE ref_energy =   { Bmad::STALE };
+    C_TYPE mat6 =   { Bmad::STALE };
+    C_TYPE rad_int =   { Bmad::STALE };
+    C_TYPE ptc =   { Bmad::STALE };
+    C_TYPE has_misalign =   { false };
 
   CPP_bookkeeping_state() {
   
@@ -1725,11 +1725,11 @@ class Opaque_rad_map_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_rad_map: public std::enable_shared_from_this<CPP_rad_map>  {
 public:
-  FixedArray1D<C_TYPE, 6> ref_orb = { -1 };
-  FixedArray2D<C_TYPE, 6, 6> damp_dmat;
-  FixedArray1D<C_TYPE, 6> xfer_damp_vec = { 0.0 };
-  FixedArray2D<C_TYPE, 6, 6> xfer_damp_mat;
-  FixedArray2D<C_TYPE, 6, 6> stoc_mat;
+    FixedArray1D<C_TYPE, 6> ref_orb =   { -1 };
+    FixedArray2D<C_TYPE, 6, 6> damp_dmat;
+    FixedArray1D<C_TYPE, 6> xfer_damp_vec =   {   0.0 };
+    FixedArray2D<C_TYPE, 6, 6> xfer_damp_mat;
+    FixedArray2D<C_TYPE, 6, 6> stoc_mat;
 
   CPP_rad_map() {
   
@@ -1768,9 +1768,9 @@ class Opaque_rad_map_ele_class {};  // Opaque class for pointers to correspondin
 
 class CPP_rad_map_ele: public std::enable_shared_from_this<CPP_rad_map_ele>  {
 public:
-  C_TYPE rm0;
-  C_TYPE rm1;
-  C_TYPE stale = { true };
+    C_TYPE rm0;
+    C_TYPE rm1;
+    C_TYPE stale =   { true };
 
   CPP_rad_map_ele() {
   
@@ -1807,10 +1807,10 @@ class Opaque_gen_grad1_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_gen_grad1: public std::enable_shared_from_this<CPP_gen_grad1>  {
 public:
-  C_TYPE m = { 0 };
-  C_TYPE sincos = { 0 };
-  C_TYPE n_deriv_max = { -1 };
-  VariableArray2D<C_TYPE> deriv;
+    C_TYPE m =   {   0 };
+    C_TYPE sincos =   {   0 };
+    C_TYPE n_deriv_max =   { -1 };
+    VariableArray2D<C_TYPE> deriv;
 
   CPP_gen_grad1() {
   
@@ -1848,17 +1848,17 @@ class Opaque_gen_grad_map_class {};  // Opaque class for pointers to correspondi
 
 class CPP_gen_grad_map: public std::enable_shared_from_this<CPP_gen_grad_map>  {
 public:
-  string file = { "" };
-  VariableArray1D<C_TYPE> gg;
-  C_TYPE ele_anchor_pt = { Bmad::ANCHOR_BEGINNING };
-  C_TYPE field_type = { Bmad::MAGNETIC };
-  C_TYPE iz0 = { Bmad::INT_GARBAGE };
-  C_TYPE iz1 = { Bmad::INT_GARBAGE };
-  C_TYPE dz = { 0.0 };
-  FixedArray1D<C_TYPE, 3> r0 = { 0.0 };
-  C_TYPE field_scale = { 1 };
-  C_TYPE master_parameter = { 0 };
-  C_TYPE curved_ref_frame = { false };
+    string file =   { "" };
+    VariableArray1D<C_TYPE> gg;
+    C_TYPE ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    C_TYPE field_type =   { Bmad::MAGNETIC };
+    C_TYPE iz0 =   { Bmad::INT_GARBAGE };
+    C_TYPE iz1 =   { Bmad::INT_GARBAGE };
+    C_TYPE dz =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> r0 =   {   0.0 };
+    C_TYPE field_scale =   { 1 };
+    C_TYPE master_parameter =   {   0 };
+    C_TYPE curved_ref_frame =   { false };
 
   CPP_gen_grad_map() {
   
@@ -1903,11 +1903,11 @@ class Opaque_surface_segmented_pt_class {};  // Opaque class for pointers to cor
 
 class CPP_surface_segmented_pt: public std::enable_shared_from_this<CPP_surface_segmented_pt>  {
 public:
-  C_TYPE x0 = { 0.0 };
-  C_TYPE y0 = { 0.0 };
-  C_TYPE z0 = { 0.0 };
-  C_TYPE dz_dx = { 0.0 };
-  C_TYPE dz_dy = { 0.0 };
+    C_TYPE x0 =   {   0.0 };
+    C_TYPE y0 =   {   0.0 };
+    C_TYPE z0 =   {   0.0 };
+    C_TYPE dz_dx =   {   0.0 };
+    C_TYPE dz_dy =   {   0.0 };
 
   CPP_surface_segmented_pt() {
   
@@ -1946,10 +1946,10 @@ class Opaque_surface_segmented_class {};  // Opaque class for pointers to corres
 
 class CPP_surface_segmented: public std::enable_shared_from_this<CPP_surface_segmented>  {
 public:
-  C_TYPE active = { false };
-  FixedArray1D<C_TYPE, 2> dr = { 0.0 };
-  FixedArray1D<C_TYPE, 2> r0 = { 0.0 };
-  VariableArray2D<C_TYPE> pt;
+    C_TYPE active =   { false };
+    FixedArray1D<C_TYPE, 2> dr =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> r0 =   {   0.0 };
+    VariableArray2D<C_TYPE> pt;
 
   CPP_surface_segmented() {
   
@@ -1987,12 +1987,12 @@ class Opaque_surface_h_misalign_pt_class {};  // Opaque class for pointers to co
 
 class CPP_surface_h_misalign_pt: public std::enable_shared_from_this<CPP_surface_h_misalign_pt>  {
 public:
-  C_TYPE x0 = { 0.0 };
-  C_TYPE y0 = { 0.0 };
-  C_TYPE rot_y = { 0.0 };
-  C_TYPE rot_t = { 0.0 };
-  C_TYPE rot_y_rms = { 0.0 };
-  C_TYPE rot_t_rms = { 0.0 };
+    C_TYPE x0 =   {   0.0 };
+    C_TYPE y0 =   {   0.0 };
+    C_TYPE rot_y =   {   0.0 };
+    C_TYPE rot_t =   {   0.0 };
+    C_TYPE rot_y_rms =   {   0.0 };
+    C_TYPE rot_t_rms =   {   0.0 };
 
   CPP_surface_h_misalign_pt() {
   
@@ -2032,10 +2032,10 @@ class Opaque_surface_h_misalign_class {};  // Opaque class for pointers to corre
 
 class CPP_surface_h_misalign: public std::enable_shared_from_this<CPP_surface_h_misalign>  {
 public:
-  C_TYPE active = { false };
-  FixedArray1D<C_TYPE, 2> dr = { 0.0 };
-  FixedArray1D<C_TYPE, 2> r0 = { 0.0 };
-  VariableArray2D<C_TYPE> pt;
+    C_TYPE active =   { false };
+    FixedArray1D<C_TYPE, 2> dr =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> r0 =   {   0.0 };
+    VariableArray2D<C_TYPE> pt;
 
   CPP_surface_h_misalign() {
   
@@ -2073,12 +2073,12 @@ class Opaque_surface_displacement_pt_class {};  // Opaque class for pointers to 
 
 class CPP_surface_displacement_pt: public std::enable_shared_from_this<CPP_surface_displacement_pt>  {
 public:
-  C_TYPE x0 = { 0.0 };
-  C_TYPE y0 = { 0.0 };
-  C_TYPE z0 = { 0.0 };
-  C_TYPE dz_dx = { 0.0 };
-  C_TYPE dz_dy = { 0.0 };
-  C_TYPE d2z_dxdy = { 0.0 };
+    C_TYPE x0 =   {   0.0 };
+    C_TYPE y0 =   {   0.0 };
+    C_TYPE z0 =   {   0.0 };
+    C_TYPE dz_dx =   {   0.0 };
+    C_TYPE dz_dy =   {   0.0 };
+    C_TYPE d2z_dxdy =   {   0.0 };
 
   CPP_surface_displacement_pt() {
   
@@ -2118,10 +2118,10 @@ class Opaque_surface_displacement_class {};  // Opaque class for pointers to cor
 
 class CPP_surface_displacement: public std::enable_shared_from_this<CPP_surface_displacement>  {
 public:
-  C_TYPE active = { false };
-  FixedArray1D<C_TYPE, 2> dr = { 0.0 };
-  FixedArray1D<C_TYPE, 2> r0 = { 0.0 };
-  VariableArray2D<C_TYPE> pt;
+    C_TYPE active =   { false };
+    FixedArray1D<C_TYPE, 2> dr =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> r0 =   {   0.0 };
+    VariableArray2D<C_TYPE> pt;
 
   CPP_surface_displacement() {
   
@@ -2159,7 +2159,7 @@ class Opaque_target_point_class {};  // Opaque class for pointers to correspondi
 
 class CPP_target_point: public std::enable_shared_from_this<CPP_target_point>  {
 public:
-  FixedArray1D<C_TYPE, 3> r = { 0.0 };
+    FixedArray1D<C_TYPE, 3> r =   {   0.0 };
 
   CPP_target_point() {
   
@@ -2194,10 +2194,10 @@ class Opaque_surface_curvature_class {};  // Opaque class for pointers to corres
 
 class CPP_surface_curvature: public std::enable_shared_from_this<CPP_surface_curvature>  {
 public:
-  FixedArray2D<C_TYPE, 7, 7> xy;
-  C_TYPE spherical = { 0.0 };
-  FixedArray1D<C_TYPE, 3> elliptical = { 0.0 };
-  C_TYPE has_curvature = { false };
+    FixedArray2D<C_TYPE, 7, 7> xy;
+    C_TYPE spherical =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> elliptical =   {   0.0 };
+    C_TYPE has_curvature =   { false };
 
   CPP_surface_curvature() {
   
@@ -2235,11 +2235,11 @@ class Opaque_photon_target_class {};  // Opaque class for pointers to correspond
 
 class CPP_photon_target: public std::enable_shared_from_this<CPP_photon_target>  {
 public:
-  C_TYPE type = { Bmad::OFF };
-  C_TYPE n_corner = { 0 };
-  C_TYPE ele_loc;
-  FixedArray1D<C_TYPE, 8> corner;
-  C_TYPE center;
+    C_TYPE type =   { Bmad::OFF };
+    C_TYPE n_corner =   {   0 };
+    C_TYPE ele_loc;
+    FixedArray1D<C_TYPE, 8> corner;
+    C_TYPE center;
 
   CPP_photon_target() {
   
@@ -2278,14 +2278,14 @@ class Opaque_photon_material_class {};  // Opaque class for pointers to correspo
 
 class CPP_photon_material: public std::enable_shared_from_this<CPP_photon_material>  {
 public:
-  C_TYPE f0_m1 = { 0.0 };
-  C_TYPE f0_m2 = { 0.0 };
-  C_TYPE f_0 = { 0.0 };
-  C_TYPE f_h = { 0.0 };
-  C_TYPE f_hbar = { 0.0 };
-  C_TYPE f_hkl = { 0.0 };
-  FixedArray1D<C_TYPE, 3> h_norm = { 0.0 };
-  FixedArray1D<C_TYPE, 3> l_ref = { 0.0 };
+    C_TYPE f0_m1 =   {   0.0 };
+    C_TYPE f0_m2 =   {   0.0 };
+    C_TYPE f_0 =   {   0.0 };
+    C_TYPE f_h =   {   0.0 };
+    C_TYPE f_hbar =   {   0.0 };
+    C_TYPE f_hkl =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> h_norm =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> l_ref =   {   0.0 };
 
   CPP_photon_material() {
   
@@ -2327,16 +2327,16 @@ class Opaque_pixel_pt_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_pixel_pt: public std::enable_shared_from_this<CPP_pixel_pt>  {
 public:
-  C_TYPE n_photon = { 0 };
-  C_TYPE E_x = { 0.0 };
-  C_TYPE E_y = { 0.0 };
-  C_TYPE intensity_x = { 0.0 };
-  C_TYPE intensity_y = { 0.0 };
-  C_TYPE intensity = { 0.0 };
-  FixedArray1D<C_TYPE, 6> orbit = { 0.0 };
-  FixedArray1D<C_TYPE, 6> orbit_rms = { 0.0 };
-  FixedArray1D<C_TYPE, 6> init_orbit = { 0.0 };
-  FixedArray1D<C_TYPE, 6> init_orbit_rms = { 0.0 };
+    C_TYPE n_photon =   {   0 };
+    C_TYPE E_x =   {   0.0 };
+    C_TYPE E_y =   {   0.0 };
+    C_TYPE intensity_x =   {   0.0 };
+    C_TYPE intensity_y =   {   0.0 };
+    C_TYPE intensity =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> orbit =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> orbit_rms =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> init_orbit =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> init_orbit_rms =   {   0.0 };
 
   CPP_pixel_pt() {
   
@@ -2380,12 +2380,12 @@ class Opaque_pixel_detec_class {};  // Opaque class for pointers to correspondin
 
 class CPP_pixel_detec: public std::enable_shared_from_this<CPP_pixel_detec>  {
 public:
-  FixedArray1D<C_TYPE, 2> dr = { 0.0 };
-  FixedArray1D<C_TYPE, 2> r0 = { 0.0 };
-  C_TYPE n_track_tot = { 0 };
-  C_TYPE n_hit_detec = { 0 };
-  C_TYPE n_hit_pixel = { 0 };
-  VariableArray2D<C_TYPE> pt;
+    FixedArray1D<C_TYPE, 2> dr =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> r0 =   {   0.0 };
+    C_TYPE n_track_tot =   {   0 };
+    C_TYPE n_hit_detec =   {   0 };
+    C_TYPE n_hit_pixel =   {   0 };
+    VariableArray2D<C_TYPE> pt;
 
   CPP_pixel_detec() {
   
@@ -2425,18 +2425,18 @@ class Opaque_photon_element_class {};  // Opaque class for pointers to correspon
 
 class CPP_photon_element: public std::enable_shared_from_this<CPP_photon_element>  {
 public:
-  C_TYPE curvature;
-  C_TYPE target;
-  C_TYPE material;
-  C_TYPE segmented;
-  C_TYPE h_misalign;
-  C_TYPE displacement;
-  C_TYPE pixel;
-  C_TYPE reflectivity_table_type = { Bmad::NOT_SET };
-  C_TYPE reflectivity_table_sigma;
-  C_TYPE reflectivity_table_pi;
-  VariableArray1D<C_TYPE> init_energy_prob;
-  VariableArray1D<C_TYPE> integrated_init_energy_prob;
+    C_TYPE curvature;
+    C_TYPE target;
+    C_TYPE material;
+    C_TYPE segmented;
+    C_TYPE h_misalign;
+    C_TYPE displacement;
+    C_TYPE pixel;
+    C_TYPE reflectivity_table_type =   { Bmad::NOT_SET };
+    C_TYPE reflectivity_table_sigma;
+    C_TYPE reflectivity_table_pi;
+    VariableArray1D<C_TYPE> init_energy_prob;
+    VariableArray1D<C_TYPE> integrated_init_energy_prob;
 
   CPP_photon_element() {
   
@@ -2482,15 +2482,15 @@ class Opaque_wall3d_vertex_class {};  // Opaque class for pointers to correspond
 
 class CPP_wall3d_vertex: public std::enable_shared_from_this<CPP_wall3d_vertex>  {
 public:
-  C_TYPE x = { 0.0 };
-  C_TYPE y = { 0.0 };
-  C_TYPE radius_x = { 0.0 };
-  C_TYPE radius_y = { 0.0 };
-  C_TYPE tilt = { 0.0 };
-  C_TYPE angle = { 0.0 };
-  C_TYPE x0 = { 0.0 };
-  C_TYPE y0 = { 0.0 };
-  C_TYPE type = { Bmad::NORMAL };
+    C_TYPE x =   {   0.0 };
+    C_TYPE y =   {   0.0 };
+    C_TYPE radius_x =   {   0.0 };
+    C_TYPE radius_y =   {   0.0 };
+    C_TYPE tilt =   {   0.0 };
+    C_TYPE angle =   {   0.0 };
+    C_TYPE x0 =   {   0.0 };
+    C_TYPE y0 =   {   0.0 };
+    C_TYPE type =   { Bmad::NORMAL };
 
   CPP_wall3d_vertex() {
   
@@ -2533,26 +2533,26 @@ class Opaque_wall3d_section_class {};  // Opaque class for pointers to correspon
 
 class CPP_wall3d_section: public std::enable_shared_from_this<CPP_wall3d_section>  {
 public:
-  string name = { "" };
-  string material = { "" };
-  VariableArray1D<C_TYPE> v;
-  shared_ptr<C_TYPE> surface = nullptr;
-  C_TYPE type = { Bmad::NORMAL };
-  C_TYPE n_vertex_input = { 0 };
-  C_TYPE ix_ele = { 0 };
-  C_TYPE ix_branch = { 0 };
-  C_TYPE vertices_state = { Bmad::RELATIVE };
-  C_TYPE patch_in_region = { false };
-  C_TYPE thickness = { -1 };
-  C_TYPE s = { 0.0 };
-  FixedArray1D<C_TYPE, 2> r0 = { 0.0 };
-  C_TYPE dx0_ds = { 0.0 };
-  C_TYPE dy0_ds = { 0.0 };
-  FixedArray1D<C_TYPE, 4> x0_coef = { 0.0 };
-  FixedArray1D<C_TYPE, 4> y0_coef = { 0.0 };
-  C_TYPE dr_ds = { Bmad::REAL_GARBAGE };
-  FixedArray1D<C_TYPE, 3> p1_coef = { 0.0 };
-  FixedArray1D<C_TYPE, 3> p2_coef = { 0.0 };
+    string name =   { "" };
+    string material =   { "" };
+    VariableArray1D<C_TYPE> v;
+    shared_ptr<C_TYPE> surface =   nullptr;
+    C_TYPE type =   { Bmad::NORMAL };
+    C_TYPE n_vertex_input =   {   0 };
+    C_TYPE ix_ele =   {   0 };
+    C_TYPE ix_branch =   {   0 };
+    C_TYPE vertices_state =   { Bmad::RELATIVE };
+    C_TYPE patch_in_region =   { false };
+    C_TYPE thickness =   { -1 };
+    C_TYPE s =   {   0.0 };
+    FixedArray1D<C_TYPE, 2> r0 =   {   0.0 };
+    C_TYPE dx0_ds =   {   0.0 };
+    C_TYPE dy0_ds =   {   0.0 };
+    FixedArray1D<C_TYPE, 4> x0_coef =   {   0.0 };
+    FixedArray1D<C_TYPE, 4> y0_coef =   {   0.0 };
+    C_TYPE dr_ds =   { Bmad::REAL_GARBAGE };
+    FixedArray1D<C_TYPE, 3> p1_coef =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> p2_coef =   {   0.0 };
 
   CPP_wall3d_section() {
   
@@ -2606,16 +2606,16 @@ class Opaque_wall3d_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_wall3d: public std::enable_shared_from_this<CPP_wall3d>  {
 public:
-  string name = { "" };
-  C_TYPE type = { Bmad::CHAMBER_WALL };
-  C_TYPE ix_wall3d = { 0 };
-  C_TYPE n_link = { 1 };
-  C_TYPE thickness = { -1 };
-  string clear_material = { "" };
-  string opaque_material = { "" };
-  C_TYPE superimpose = { false };
-  C_TYPE ele_anchor_pt = { Bmad::ANCHOR_BEGINNING };
-  VariableArray1D<C_TYPE> section;
+    string name =   { "" };
+    C_TYPE type =   { Bmad::CHAMBER_WALL };
+    C_TYPE ix_wall3d =   {   0 };
+    C_TYPE n_link =   { 1 };
+    C_TYPE thickness =   { -1 };
+    string clear_material =   { "" };
+    string opaque_material =   { "" };
+    C_TYPE superimpose =   { false };
+    C_TYPE ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    VariableArray1D<C_TYPE> section;
 
   CPP_wall3d() {
   
@@ -2659,9 +2659,9 @@ class Opaque_ramper_lord_class {};  // Opaque class for pointers to correspondin
 
 class CPP_ramper_lord: public std::enable_shared_from_this<CPP_ramper_lord>  {
 public:
-  C_TYPE ix_ele = { 0 };
-  C_TYPE ix_con = { 0 };
-  shared_ptr<C_TYPE> attrib_ptr = nullptr;
+    C_TYPE ix_ele =   {   0 };
+    C_TYPE ix_con =   {   0 };
+    shared_ptr<C_TYPE> attrib_ptr =   nullptr;
 
   CPP_ramper_lord() {
   
@@ -2698,14 +2698,14 @@ class Opaque_control_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_control: public std::enable_shared_from_this<CPP_control>  {
 public:
-  C_TYPE value = { 0.0 };
-  VariableArray1D<C_TYPE> y_knot;
-  VariableArray1D<C_TYPE> stack;
-  C_TYPE slave;
-  C_TYPE lord;
-  string slave_name = { "" };
-  string attribute = { "" };
-  C_TYPE ix_attrib = { -1 };
+    C_TYPE value =   {   0.0 };
+    VariableArray1D<C_TYPE> y_knot;
+    VariableArray1D<C_TYPE> stack;
+    C_TYPE slave;
+    C_TYPE lord;
+    string slave_name =   { "" };
+    string attribute =   { "" };
+    C_TYPE ix_attrib =   { -1 };
 
   CPP_control() {
   
@@ -2747,9 +2747,9 @@ class Opaque_control_var1_class {};  // Opaque class for pointers to correspondi
 
 class CPP_control_var1: public std::enable_shared_from_this<CPP_control_var1>  {
 public:
-  string name = { "" };
-  C_TYPE value = { 0.0 };
-  C_TYPE old_value = { 0.0 };
+    string name =   { "" };
+    C_TYPE value =   {   0.0 };
+    C_TYPE old_value =   {   0.0 };
 
   CPP_control_var1() {
   
@@ -2786,11 +2786,11 @@ class Opaque_control_ramp1_class {};  // Opaque class for pointers to correspond
 
 class CPP_control_ramp1: public std::enable_shared_from_this<CPP_control_ramp1>  {
 public:
-  VariableArray1D<C_TYPE> y_knot;
-  VariableArray1D<C_TYPE> stack;
-  string attribute = { "" };
-  string slave_name = { "" };
-  C_TYPE is_controller = { false };
+    VariableArray1D<C_TYPE> y_knot;
+    VariableArray1D<C_TYPE> stack;
+    string attribute =   { "" };
+    string slave_name =   { "" };
+    C_TYPE is_controller =   { false };
 
   CPP_control_ramp1() {
   
@@ -2829,10 +2829,10 @@ class Opaque_controller_class {};  // Opaque class for pointers to corresponding
 
 class CPP_controller: public std::enable_shared_from_this<CPP_controller>  {
 public:
-  VariableArray1D<C_TYPE> var;
-  VariableArray1D<C_TYPE> ramp;
-  VariableArray1D<C_TYPE> ramper_lord;
-  VariableArray1D<C_TYPE> x_knot;
+    VariableArray1D<C_TYPE> var;
+    VariableArray1D<C_TYPE> ramp;
+    VariableArray1D<C_TYPE> ramper_lord;
+    VariableArray1D<C_TYPE> x_knot;
 
   CPP_controller() {
   
@@ -2870,9 +2870,9 @@ class Opaque_ellipse_beam_init_class {};  // Opaque class for pointers to corres
 
 class CPP_ellipse_beam_init: public std::enable_shared_from_this<CPP_ellipse_beam_init>  {
 public:
-  C_TYPE part_per_ellipse = { 0 };
-  C_TYPE n_ellipse = { 1 };
-  C_TYPE sigma_cutoff = { 0.0 };
+    C_TYPE part_per_ellipse =   {   0 };
+    C_TYPE n_ellipse =   { 1 };
+    C_TYPE sigma_cutoff =   {   0.0 };
 
   CPP_ellipse_beam_init() {
   
@@ -2909,9 +2909,9 @@ class Opaque_kv_beam_init_class {};  // Opaque class for pointers to correspondi
 
 class CPP_kv_beam_init: public std::enable_shared_from_this<CPP_kv_beam_init>  {
 public:
-  FixedArray1D<C_TYPE, 2> part_per_phi = { 0 };
-  C_TYPE n_I2 = { 0 };
-  C_TYPE A = { 0.0 };
+    FixedArray1D<C_TYPE, 2> part_per_phi =   {   0 };
+    C_TYPE n_I2 =   {   0 };
+    C_TYPE A =   {   0.0 };
 
   CPP_kv_beam_init() {
   
@@ -2948,12 +2948,12 @@ class Opaque_grid_beam_init_class {};  // Opaque class for pointers to correspon
 
 class CPP_grid_beam_init: public std::enable_shared_from_this<CPP_grid_beam_init>  {
 public:
-  C_TYPE n_x = { 0 };
-  C_TYPE n_px = { 0 };
-  C_TYPE x_min = { 0.0 };
-  C_TYPE x_max = { 0.0 };
-  C_TYPE px_min = { 0.0 };
-  C_TYPE px_max = { 0.0 };
+    C_TYPE n_x =   {   0 };
+    C_TYPE n_px =   {   0 };
+    C_TYPE x_min =   {   0.0 };
+    C_TYPE x_max =   {   0.0 };
+    C_TYPE px_min =   {   0.0 };
+    C_TYPE px_max =   {   0.0 };
 
   CPP_grid_beam_init() {
   
@@ -2993,41 +2993,41 @@ class Opaque_beam_init_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_beam_init: public std::enable_shared_from_this<CPP_beam_init>  {
 public:
-  string position_file = { "" };
-  FixedArray1D<string, 3> distribution_type = { "RAN_GAUSS" };
-  FixedArray1D<C_TYPE, 3> spin = { 0.0 };
-  FixedArray1D<C_TYPE, 3> ellipse;
-  C_TYPE KV;
-  FixedArray1D<C_TYPE, 3> grid;
-  FixedArray1D<C_TYPE, 6> center_jitter = { 0.0 };
-  FixedArray1D<C_TYPE, 2> emit_jitter = { 0.0 };
-  C_TYPE sig_z_jitter = { 0.0 };
-  C_TYPE sig_pz_jitter = { 0.0 };
-  C_TYPE n_particle = { 0 };
-  C_TYPE renorm_center = { true };
-  C_TYPE renorm_sigma = { true };
-  string random_engine = { "pseudo" };
-  string random_gauss_converter = { "exact" };
-  C_TYPE random_sigma_cutoff = { -1 };
-  C_TYPE a_norm_emit = { 0.0 };
-  C_TYPE b_norm_emit = { 0.0 };
-  C_TYPE a_emit = { 0.0 };
-  C_TYPE b_emit = { 0.0 };
-  C_TYPE dPz_dz = { 0.0 };
-  FixedArray1D<C_TYPE, 6> center = { 0.0 };
-  C_TYPE t_offset = { 0.0 };
-  C_TYPE dt_bunch = { 0.0 };
-  C_TYPE sig_z = { 0.0 };
-  C_TYPE sig_pz = { 0.0 };
-  C_TYPE bunch_charge = { 0.0 };
-  C_TYPE n_bunch = { 0 };
-  C_TYPE ix_turn = { 0 };
-  string species = { "" };
-  C_TYPE full_6D_coupling_calc = { false };
-  C_TYPE use_particle_start = { false };
-  C_TYPE use_t_coords = { false };
-  C_TYPE use_z_as_t = { false };
-  string file_name = { "" };
+    string position_file =   { "" };
+    FixedArray1D<string, 3> distribution_type =   { "RAN_GAUSS" };
+    FixedArray1D<C_TYPE, 3> spin =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> ellipse;
+    C_TYPE KV;
+    FixedArray1D<C_TYPE, 3> grid;
+    FixedArray1D<C_TYPE, 6> center_jitter =   { 0.0 };
+    FixedArray1D<C_TYPE, 2> emit_jitter =   { 0.0 };
+    C_TYPE sig_z_jitter =   { 0.0 };
+    C_TYPE sig_pz_jitter =   { 0.0 };
+    C_TYPE n_particle =   {   0 };
+    C_TYPE renorm_center =   { true };
+    C_TYPE renorm_sigma =   { true };
+    string random_engine =   { "pseudo" };
+    string random_gauss_converter =   { "exact" };
+    C_TYPE random_sigma_cutoff =   { -1 };
+    C_TYPE a_norm_emit =   {   0.0 };
+    C_TYPE b_norm_emit =   {   0.0 };
+    C_TYPE a_emit =   {   0.0 };
+    C_TYPE b_emit =   {   0.0 };
+    C_TYPE dPz_dz =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> center =   {   0.0 };
+    C_TYPE t_offset =   {   0.0 };
+    C_TYPE dt_bunch =   {   0.0 };
+    C_TYPE sig_z =   {   0.0 };
+    C_TYPE sig_pz =   {   0.0 };
+    C_TYPE bunch_charge =   {   0.0 };
+    C_TYPE n_bunch =   {   0 };
+    C_TYPE ix_turn =   {   0 };
+    string species =   { "" };
+    C_TYPE full_6D_coupling_calc =   { false };
+    C_TYPE use_particle_start =   { false };
+    C_TYPE use_t_coords =   { false };
+    C_TYPE use_z_as_t =   { false };
+    string file_name =   { "" };
 
   CPP_beam_init() {
   
@@ -3096,23 +3096,23 @@ class Opaque_lat_param_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_lat_param: public std::enable_shared_from_this<CPP_lat_param>  {
 public:
-  C_TYPE n_part = { 0.0 };
-  C_TYPE total_length = { 0.0 };
-  C_TYPE unstable_factor = { 0.0 };
-  FixedArray2D<C_TYPE, 6, 6> t1_with_RF;
-  FixedArray2D<C_TYPE, 6, 6> t1_no_RF;
-  C_TYPE spin_tune = { 0.0 };
-  C_TYPE particle = { Bmad::NOT_SET };
-  C_TYPE default_tracking_species = { Bmad::REF_PARTICLE };
-  C_TYPE geometry = { 0 };
-  C_TYPE ixx = { 0 };
-  C_TYPE stable = { false };
-  C_TYPE live_branch = { true };
-  C_TYPE g1_integral = { -1 };
-  C_TYPE g2_integral = { -1 };
-  C_TYPE g3_integral = { -1 };
-  C_TYPE bookkeeping_state;
-  C_TYPE beam_init;
+    C_TYPE n_part =   {   0.0 };
+    C_TYPE total_length =   {   0.0 };
+    C_TYPE unstable_factor =   {   0.0 };
+    FixedArray2D<C_TYPE, 6, 6> t1_with_RF;
+    FixedArray2D<C_TYPE, 6, 6> t1_no_RF;
+    C_TYPE spin_tune =   {   0.0 };
+    C_TYPE particle =   { Bmad::NOT_SET };
+    C_TYPE default_tracking_species =   { Bmad::REF_PARTICLE };
+    C_TYPE geometry =   {   0 };
+    C_TYPE ixx =   {   0 };
+    C_TYPE stable =   { false };
+    C_TYPE live_branch =   { true };
+    C_TYPE g1_integral =   { -1 };
+    C_TYPE g2_integral =   { -1 };
+    C_TYPE g3_integral =   { -1 };
+    C_TYPE bookkeeping_state;
+    C_TYPE beam_init;
 
   CPP_lat_param() {
   
@@ -3163,12 +3163,12 @@ class Opaque_mode_info_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_mode_info: public std::enable_shared_from_this<CPP_mode_info>  {
 public:
-  C_TYPE stable = { false };
-  C_TYPE tune = { 0.0 };
-  C_TYPE emit = { 0.0 };
-  C_TYPE chrom = { 0.0 };
-  C_TYPE sigma = { 0.0 };
-  C_TYPE sigmap = { 0.0 };
+    C_TYPE stable =   { false };
+    C_TYPE tune =   {   0.0 };
+    C_TYPE emit =   {   0.0 };
+    C_TYPE chrom =   {   0.0 };
+    C_TYPE sigma =   {   0.0 };
+    C_TYPE sigmap =   {   0.0 };
 
   CPP_mode_info() {
   
@@ -3208,10 +3208,10 @@ class Opaque_pre_tracker_class {};  // Opaque class for pointers to correspondin
 
 class CPP_pre_tracker: public std::enable_shared_from_this<CPP_pre_tracker>  {
 public:
-  C_TYPE who = { 0 };
-  C_TYPE ix_ele_start = { 0 };
-  C_TYPE ix_ele_end = { 0 };
-  string input_file = { "" };
+    C_TYPE who =   {   0 };
+    C_TYPE ix_ele_start =   {   0 };
+    C_TYPE ix_ele_end =   {   0 };
+    string input_file =   { "" };
 
   CPP_pre_tracker() {
   
@@ -3249,13 +3249,13 @@ class Opaque_anormal_mode_class {};  // Opaque class for pointers to correspondi
 
 class CPP_anormal_mode: public std::enable_shared_from_this<CPP_anormal_mode>  {
 public:
-  C_TYPE emittance = { 0.0 };
-  C_TYPE emittance_no_vert = { 0.0 };
-  FixedArray1D<C_TYPE, 3> synch_int = { 0.0 };
-  C_TYPE j_damp = { 0.0 };
-  C_TYPE alpha_damp = { 0.0 };
-  C_TYPE chrom = { 0.0 };
-  C_TYPE tune = { 0.0 };
+    C_TYPE emittance =   {   0.0 };
+    C_TYPE emittance_no_vert =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> synch_int =   {   0.0 };
+    C_TYPE j_damp =   {   0.0 };
+    C_TYPE alpha_damp =   {   0.0 };
+    C_TYPE chrom =   {   0.0 };
+    C_TYPE tune =   {   0.0 };
 
   CPP_anormal_mode() {
   
@@ -3296,13 +3296,13 @@ class Opaque_linac_normal_mode_class {};  // Opaque class for pointers to corres
 
 class CPP_linac_normal_mode: public std::enable_shared_from_this<CPP_linac_normal_mode>  {
 public:
-  C_TYPE i2_E4 = { 0.0 };
-  C_TYPE i3_E7 = { 0.0 };
-  C_TYPE i5a_E6 = { 0.0 };
-  C_TYPE i5b_E6 = { 0.0 };
-  C_TYPE sig_E1 = { 0.0 };
-  C_TYPE a_emittance_end = { 0.0 };
-  C_TYPE b_emittance_end = { 0.0 };
+    C_TYPE i2_E4 =   {   0.0 };
+    C_TYPE i3_E7 =   {   0.0 };
+    C_TYPE i5a_E6 =   {   0.0 };
+    C_TYPE i5b_E6 =   {   0.0 };
+    C_TYPE sig_E1 =   {   0.0 };
+    C_TYPE a_emittance_end =   {   0.0 };
+    C_TYPE b_emittance_end =   {   0.0 };
 
   CPP_linac_normal_mode() {
   
@@ -3343,19 +3343,19 @@ class Opaque_normal_modes_class {};  // Opaque class for pointers to correspondi
 
 class CPP_normal_modes: public std::enable_shared_from_this<CPP_normal_modes>  {
 public:
-  FixedArray1D<C_TYPE, 4> synch_int = { 0.0 };
-  C_TYPE sigE_E = { 0.0 };
-  C_TYPE sig_z = { 0.0 };
-  C_TYPE e_loss = { 0.0 };
-  C_TYPE rf_voltage = { 0.0 };
-  C_TYPE pz_aperture = { 0.0 };
-  C_TYPE pz_average = { 0.0 };
-  C_TYPE momentum_compaction = { 0.0 };
-  C_TYPE dpz_damp = { 0.0 };
-  C_TYPE a;
-  C_TYPE b;
-  C_TYPE z;
-  C_TYPE lin;
+    FixedArray1D<C_TYPE, 4> synch_int =   {   0.0 };
+    C_TYPE sigE_E =   {   0.0 };
+    C_TYPE sig_z =   {   0.0 };
+    C_TYPE e_loss =   {   0.0 };
+    C_TYPE rf_voltage =   {   0.0 };
+    C_TYPE pz_aperture =   {   0.0 };
+    C_TYPE pz_average =   {   0.0 };
+    C_TYPE momentum_compaction =   {   0.0 };
+    C_TYPE dpz_damp =   {   0.0 };
+    C_TYPE a;
+    C_TYPE b;
+    C_TYPE z;
+    C_TYPE lin;
 
   CPP_normal_modes() {
   
@@ -3402,13 +3402,13 @@ class Opaque_em_field_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_em_field: public std::enable_shared_from_this<CPP_em_field>  {
 public:
-  FixedArray1D<C_TYPE, 3> E = { 0.0 };
-  FixedArray1D<C_TYPE, 3> B = { 0.0 };
-  FixedArray2D<C_TYPE, 3, 3> dE;
-  FixedArray2D<C_TYPE, 3, 3> dB;
-  C_TYPE phi = { 0.0 };
-  C_TYPE phi_B = { 0.0 };
-  FixedArray1D<C_TYPE, 3> A = { 0.0 };
+    FixedArray1D<C_TYPE, 3> E =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> B =   {   0.0 };
+    FixedArray2D<C_TYPE, 3, 3> dE;
+    FixedArray2D<C_TYPE, 3, 3> dB;
+    C_TYPE phi =   {   0.0 };
+    C_TYPE phi_B =   {   0.0 };
+    FixedArray1D<C_TYPE, 3> A =   {   0.0 };
 
   CPP_em_field() {
   
@@ -3449,13 +3449,13 @@ class Opaque_strong_beam_class {};  // Opaque class for pointers to correspondin
 
 class CPP_strong_beam: public std::enable_shared_from_this<CPP_strong_beam>  {
 public:
-  C_TYPE ix_slice = { 0 };
-  C_TYPE x_center = { 0.0 };
-  C_TYPE y_center = { 0.0 };
-  C_TYPE x_sigma = { 0.0 };
-  C_TYPE y_sigma = { 0.0 };
-  C_TYPE dx = { 0.0 };
-  C_TYPE dy = { 0.0 };
+    C_TYPE ix_slice =   {   0 };
+    C_TYPE x_center =   {   0.0 };
+    C_TYPE y_center =   {   0.0 };
+    C_TYPE x_sigma =   {   0.0 };
+    C_TYPE y_sigma =   {   0.0 };
+    C_TYPE dx =   {   0.0 };
+    C_TYPE dy =   {   0.0 };
 
   CPP_strong_beam() {
   
@@ -3496,12 +3496,12 @@ class Opaque_track_point_class {};  // Opaque class for pointers to correspondin
 
 class CPP_track_point: public std::enable_shared_from_this<CPP_track_point>  {
 public:
-  C_TYPE s_body = { 0.0 };
-  C_TYPE orb;
-  C_TYPE field;
-  C_TYPE strong_beam;
-  FixedArray1D<C_TYPE, 6> vec0 = { 0.0 };
-  FixedArray2D<C_TYPE, 6, 6> mat6;
+    C_TYPE s_body =   {   0.0 };
+    C_TYPE orb;
+    C_TYPE field;
+    C_TYPE strong_beam;
+    FixedArray1D<C_TYPE, 6> vec0 =   {   0.0 };
+    FixedArray2D<C_TYPE, 6, 6> mat6;
 
   CPP_track_point() {
   
@@ -3541,11 +3541,11 @@ class Opaque_track_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_track: public std::enable_shared_from_this<CPP_track>  {
 public:
-  VariableArray1D<C_TYPE> pt;
-  C_TYPE ds_save = { 1e-3 };
-  C_TYPE n_pt = { -1 };
-  C_TYPE n_bad = { 0 };
-  C_TYPE n_ok = { 0 };
+    VariableArray1D<C_TYPE> pt;
+    C_TYPE ds_save =   { 1e-3 };
+    C_TYPE n_pt =   { -1 };
+    C_TYPE n_bad =   {   0 };
+    C_TYPE n_ok =   {   0 };
 
   CPP_track() {
   
@@ -3584,23 +3584,23 @@ class Opaque_space_charge_common_class {};  // Opaque class for pointers to corr
 
 class CPP_space_charge_common: public std::enable_shared_from_this<CPP_space_charge_common>  {
 public:
-  C_TYPE ds_track_step = { 0.0 };
-  C_TYPE dt_track_step = { 1e-12 };
-  C_TYPE cathode_strength_cutoff = { 0.01 };
-  C_TYPE rel_tol_tracking = { 1e-8 };
-  C_TYPE abs_tol_tracking = { 1e-10 };
-  C_TYPE beam_chamber_height = { 0.0 };
-  C_TYPE lsc_sigma_cutoff = { 0.1 };
-  C_TYPE particle_sigma_cutoff = { -1 };
-  FixedArray1D<C_TYPE, 3> space_charge_mesh_size = { 32 };
-  FixedArray1D<C_TYPE, 3> csr3d_mesh_size = { 32 };
-  C_TYPE n_bin = { 0 };
-  C_TYPE particle_bin_span = { 2 };
-  C_TYPE n_shield_images = { 0 };
-  C_TYPE sc_min_in_bin = { 10 };
-  C_TYPE lsc_kick_transverse_dependence = { false };
-  C_TYPE debug = { false };
-  string diagnostic_output_file = { "" };
+    C_TYPE ds_track_step =   {   0.0 };
+    C_TYPE dt_track_step =   { 1e-12 };
+    C_TYPE cathode_strength_cutoff =   { 0.01 };
+    C_TYPE rel_tol_tracking =   { 1e-8 };
+    C_TYPE abs_tol_tracking =   { 1e-10 };
+    C_TYPE beam_chamber_height =   {   0.0 };
+    C_TYPE lsc_sigma_cutoff =   { 0.1 };
+    C_TYPE particle_sigma_cutoff =   { -1 };
+    FixedArray1D<C_TYPE, 3> space_charge_mesh_size =   { 32 };
+    FixedArray1D<C_TYPE, 3> csr3d_mesh_size =   { 32 };
+    C_TYPE n_bin =   {   0 };
+    C_TYPE particle_bin_span =   { 2 };
+    C_TYPE n_shield_images =   {   0 };
+    C_TYPE sc_min_in_bin =   { 10 };
+    C_TYPE lsc_kick_transverse_dependence =   { false };
+    C_TYPE debug =   { false };
+    string diagnostic_output_file =   { "" };
 
   CPP_space_charge_common() {
   
@@ -3651,46 +3651,46 @@ class Opaque_bmad_common_class {};  // Opaque class for pointers to correspondin
 
 class CPP_bmad_common: public std::enable_shared_from_this<CPP_bmad_common>  {
 public:
-  C_TYPE max_aperture_limit = { 1e3 };
-  FixedArray1D<C_TYPE, 6> d_orb = { 1e-5 };
-  C_TYPE default_ds_step = { 0.0 };
-  C_TYPE significant_length = { 1e-10 };
-  C_TYPE rel_tol_tracking = { 1e-9 };
-  C_TYPE abs_tol_tracking = { 1e-12 };
-  C_TYPE rel_tol_adaptive_tracking = { 1e-8 };
-  C_TYPE abs_tol_adaptive_tracking = { 1e-10 };
-  C_TYPE init_ds_adaptive_tracking = { 1e-3 };
-  C_TYPE min_ds_adaptive_tracking = { 0.0 };
-  C_TYPE fatal_ds_adaptive_tracking = { 1e-8 };
-  C_TYPE autoscale_amp_abs_tol = { 0.0 };
-  C_TYPE autoscale_amp_rel_tol = { 1e-6 };
-  C_TYPE autoscale_phase_tol = { 1e-5 };
-  C_TYPE electric_dipole_moment = { 0.0 };
-  C_TYPE synch_rad_scale = { 0.0 };
-  C_TYPE sad_eps_scale = { 5.0e-3 };
-  C_TYPE sad_amp_max = { 5.0e-2 };
-  C_TYPE sad_n_div_max = { 1000 };
-  C_TYPE taylor_order = { 0 };
-  C_TYPE runge_kutta_order = { 4 };
-  C_TYPE default_integ_order = { 2 };
-  C_TYPE max_num_runge_kutta_step = { 10000 };
-  C_TYPE rf_phase_below_transition_ref = { false };
-  C_TYPE sr_wakes_on = { true };
-  C_TYPE lr_wakes_on = { true };
-  C_TYPE auto_bookkeeper = { true };
-  C_TYPE high_energy_space_charge_on = { false };
-  C_TYPE csr_and_space_charge_on = { false };
-  C_TYPE spin_tracking_on = { false };
-  C_TYPE spin_sokolov_ternov_flipping_on = { false };
-  C_TYPE radiation_damping_on = { false };
-  C_TYPE radiation_zero_average = { false };
-  C_TYPE radiation_fluctuations_on = { false };
-  C_TYPE conserve_taylor_maps = { true };
-  C_TYPE absolute_time_tracking = { false };
-  C_TYPE absolute_time_ref_shift = { true };
-  C_TYPE convert_to_kinetic_momentum = { false };
-  C_TYPE aperture_limit_on = { true };
-  C_TYPE debug = { false };
+    C_TYPE max_aperture_limit =   { 1e3 };
+    FixedArray1D<C_TYPE, 6> d_orb =   { 1e-5 };
+    C_TYPE default_ds_step =   {   0.0 };
+    C_TYPE significant_length =   { 1e-10 };
+    C_TYPE rel_tol_tracking =   { 1e-9 };
+    C_TYPE abs_tol_tracking =   { 1e-12 };
+    C_TYPE rel_tol_adaptive_tracking =   { 1e-8 };
+    C_TYPE abs_tol_adaptive_tracking =   { 1e-10 };
+    C_TYPE init_ds_adaptive_tracking =   { 1e-3 };
+    C_TYPE min_ds_adaptive_tracking =   {   0.0 };
+    C_TYPE fatal_ds_adaptive_tracking =   { 1e-8 };
+    C_TYPE autoscale_amp_abs_tol =   {   0.0 };
+    C_TYPE autoscale_amp_rel_tol =   { 1e-6 };
+    C_TYPE autoscale_phase_tol =   { 1e-5 };
+    C_TYPE electric_dipole_moment =   {   0.0 };
+    C_TYPE synch_rad_scale =   {   0.0 };
+    C_TYPE sad_eps_scale =   { 5.0e-3 };
+    C_TYPE sad_amp_max =   { 5.0e-2 };
+    C_TYPE sad_n_div_max =   { 1000 };
+    C_TYPE taylor_order =   {   0 };
+    C_TYPE runge_kutta_order =   { 4 };
+    C_TYPE default_integ_order =   { 2 };
+    C_TYPE max_num_runge_kutta_step =   { 10000 };
+    C_TYPE rf_phase_below_transition_ref =   { false };
+    C_TYPE sr_wakes_on =   { true };
+    C_TYPE lr_wakes_on =   { true };
+    C_TYPE auto_bookkeeper =   { true };
+    C_TYPE high_energy_space_charge_on =   { false };
+    C_TYPE csr_and_space_charge_on =   { false };
+    C_TYPE spin_tracking_on =   { false };
+    C_TYPE spin_sokolov_ternov_flipping_on =   { false };
+    C_TYPE radiation_damping_on =   { false };
+    C_TYPE radiation_zero_average =   { false };
+    C_TYPE radiation_fluctuations_on =   { false };
+    C_TYPE conserve_taylor_maps =   { true };
+    C_TYPE absolute_time_tracking =   { false };
+    C_TYPE absolute_time_ref_shift =   { true };
+    C_TYPE convert_to_kinetic_momentum =   { false };
+    C_TYPE aperture_limit_on =   { true };
+    C_TYPE debug =   { false };
 
   CPP_bmad_common() {
   
@@ -3764,24 +3764,24 @@ class Opaque_rad_int1_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_rad_int1: public std::enable_shared_from_this<CPP_rad_int1>  {
 public:
-  C_TYPE i0 = { 0.0 };
-  C_TYPE i1 = { 0.0 };
-  C_TYPE i2 = { 0.0 };
-  C_TYPE i3 = { 0.0 };
-  C_TYPE i4a = { 0.0 };
-  C_TYPE i4b = { 0.0 };
-  C_TYPE i4z = { 0.0 };
-  C_TYPE i5a = { 0.0 };
-  C_TYPE i5b = { 0.0 };
-  C_TYPE i6b = { 0.0 };
-  C_TYPE lin_i2_E4 = { 0.0 };
-  C_TYPE lin_i3_E7 = { 0.0 };
-  C_TYPE lin_i5a_E6 = { 0.0 };
-  C_TYPE lin_i5b_E6 = { 0.0 };
-  C_TYPE lin_norm_emit_a = { 0.0 };
-  C_TYPE lin_norm_emit_b = { 0.0 };
-  C_TYPE lin_sig_E = { 0.0 };
-  C_TYPE n_steps = { 0.0 };
+    C_TYPE i0 =   {   0.0 };
+    C_TYPE i1 =   {   0.0 };
+    C_TYPE i2 =   {   0.0 };
+    C_TYPE i3 =   {   0.0 };
+    C_TYPE i4a =   {   0.0 };
+    C_TYPE i4b =   {   0.0 };
+    C_TYPE i4z =   {   0.0 };
+    C_TYPE i5a =   {   0.0 };
+    C_TYPE i5b =   {   0.0 };
+    C_TYPE i6b =   {   0.0 };
+    C_TYPE lin_i2_E4 =   {   0.0 };
+    C_TYPE lin_i3_E7 =   {   0.0 };
+    C_TYPE lin_i5a_E6 =   {   0.0 };
+    C_TYPE lin_i5b_E6 =   {   0.0 };
+    C_TYPE lin_norm_emit_a =   {   0.0 };
+    C_TYPE lin_norm_emit_b =   {   0.0 };
+    C_TYPE lin_sig_E =   {   0.0 };
+    C_TYPE n_steps =   {   0.0 };
 
   CPP_rad_int1() {
   
@@ -3833,7 +3833,7 @@ class Opaque_rad_int_branch_class {};  // Opaque class for pointers to correspon
 
 class CPP_rad_int_branch: public std::enable_shared_from_this<CPP_rad_int_branch>  {
 public:
-  VariableArray1D<C_TYPE> ele;
+    VariableArray1D<C_TYPE> ele;
 
   CPP_rad_int_branch() {
   
@@ -3868,7 +3868,7 @@ class Opaque_rad_int_all_ele_class {};  // Opaque class for pointers to correspo
 
 class CPP_rad_int_all_ele: public std::enable_shared_from_this<CPP_rad_int_all_ele>  {
 public:
-  VariableArray1D<C_TYPE> branch;
+    VariableArray1D<C_TYPE> branch;
 
   CPP_rad_int_all_ele() {
   
@@ -3903,92 +3903,92 @@ class Opaque_ele_class {};  // Opaque class for pointers to corresponding fortra
 
 class CPP_ele: public std::enable_shared_from_this<CPP_ele>  {
 public:
-  string name = { "<Initialized>" };
-  string type = { "" };
-  string alias = { "" };
-  string component_name = { "" };
-  shared_ptr<string> descrip = nullptr;
-  C_TYPE a;
-  C_TYPE b;
-  C_TYPE z;
-  C_TYPE x;
-  C_TYPE y;
-  shared_ptr<C_TYPE> ac_kick = nullptr;
-  C_TYPE bookkeeping_state;
-  shared_ptr<C_TYPE> control = nullptr;
-  C_TYPE floor;
-  shared_ptr<C_TYPE> high_energy_space_charge = nullptr;
-  shared_ptr<C_TYPE> mode3 = nullptr;
-  shared_ptr<C_TYPE> photon = nullptr;
-  shared_ptr<C_TYPE> rad_map = nullptr;
-  FixedArray1D<C_TYPE, 6> taylor;
-  FixedArray1D<C_TYPE, 6> spin_taylor_ref_orb_in = { Bmad::REAL_GARBAGE };
-  FixedArray1D<C_TYPE, 4> spin_taylor;
-  shared_ptr<C_TYPE> wake = nullptr;
-  VariableArray1D<C_TYPE> wall3d;
-  VariableArray1D<C_TYPE> cartesian_map;
-  VariableArray1D<C_TYPE> cylindrical_map;
-  VariableArray1D<C_TYPE> gen_grad_map;
-  VariableArray1D<C_TYPE> grid_field;
-  C_TYPE map_ref_orb_in;
-  C_TYPE map_ref_orb_out;
-  C_TYPE time_ref_orb_in;
-  C_TYPE time_ref_orb_out;
-  FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1> value = { 0.0 };
-  FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1> old_value = { 0.0 };
-  FixedArray2D<C_TYPE, 4, 7> spin_q;
-  FixedArray1D<C_TYPE, 6> vec0 = { 0.0 };
-  FixedArray2D<C_TYPE, 6, 6> mat6;
-  FixedArray2D<C_TYPE, 2, 2> c_mat;
-  C_TYPE gamma_c = { 1 };
-  C_TYPE s_start = { 0.0 };
-  C_TYPE s = { 0.0 };
-  C_TYPE ref_time = { 0.0 };
-  VariableArray1D<C_TYPE> a_pole;
-  VariableArray1D<C_TYPE> b_pole;
-  VariableArray1D<C_TYPE> a_pole_elec;
-  VariableArray1D<C_TYPE> b_pole_elec;
-  VariableArray1D<C_TYPE> custom;
-  VariableArray3D<C_TYPE> r;
-  C_TYPE key = { 0 };
-  C_TYPE sub_key = { 0 };
-  C_TYPE ix_ele = { -1 };
-  C_TYPE ix_branch = { 0 };
-  C_TYPE lord_status = { Bmad::NOT_A_LORD };
-  C_TYPE n_slave = { 0 };
-  C_TYPE n_slave_field = { 0 };
-  C_TYPE ix1_slave = { 0 };
-  C_TYPE slave_status = { Bmad::FREE };
-  C_TYPE n_lord = { 0 };
-  C_TYPE n_lord_field = { 0 };
-  C_TYPE n_lord_ramper = { 0 };
-  C_TYPE ic1_lord = { 0 };
-  C_TYPE ix_pointer = { 0 };
-  C_TYPE ixx = { 0 };
-  C_TYPE iyy = { 0 };
-  C_TYPE izz = { 0 };
-  C_TYPE mat6_calc_method = { Bmad::BMAD_STANDARD };
-  C_TYPE tracking_method = { Bmad::BMAD_STANDARD };
-  C_TYPE spin_tracking_method = { Bmad::TRACKING };
-  C_TYPE csr_method = { Bmad::OFF };
-  C_TYPE space_charge_method = { Bmad::OFF };
-  C_TYPE ptc_integration_type = { Bmad::MATRIX_KICK };
-  C_TYPE field_calc = { Bmad::BMAD_STANDARD };
-  C_TYPE aperture_at = { Bmad::EXIT_END };
-  C_TYPE aperture_type = { Bmad::RECTANGULAR };
-  C_TYPE ref_species = { Bmad::NOT_SET };
-  C_TYPE orientation = { 1 };
-  C_TYPE symplectify = { false };
-  C_TYPE mode_flip = { false };
-  C_TYPE multipoles_on = { true };
-  C_TYPE scale_multipoles = { true };
-  C_TYPE taylor_map_includes_offsets = { true };
-  C_TYPE field_master = { false };
-  C_TYPE is_on = { true };
-  C_TYPE logic = { false };
-  C_TYPE bmad_logic = { false };
-  C_TYPE select = { false };
-  C_TYPE offset_moves_aperture = { false };
+    string name =   { "<Initialized>" };
+    string type =   { "" };
+    string alias =   { "" };
+    string component_name =   { "" };
+    shared_ptr<string> descrip =   nullptr;
+    C_TYPE a;
+    C_TYPE b;
+    C_TYPE z;
+    C_TYPE x;
+    C_TYPE y;
+    shared_ptr<C_TYPE> ac_kick =   nullptr;
+    C_TYPE bookkeeping_state;
+    shared_ptr<C_TYPE> control =   nullptr;
+    C_TYPE floor;
+    shared_ptr<C_TYPE> high_energy_space_charge =   nullptr;
+    shared_ptr<C_TYPE> mode3 =   nullptr;
+    shared_ptr<C_TYPE> photon =   nullptr;
+    shared_ptr<C_TYPE> rad_map =   nullptr;
+    FixedArray1D<C_TYPE, 6> taylor;
+    FixedArray1D<C_TYPE, 6> spin_taylor_ref_orb_in =   { Bmad::REAL_GARBAGE };
+    FixedArray1D<C_TYPE, 4> spin_taylor;
+    shared_ptr<C_TYPE> wake =   nullptr;
+    VariableArray1D<C_TYPE> wall3d;
+    VariableArray1D<C_TYPE> cartesian_map;
+    VariableArray1D<C_TYPE> cylindrical_map;
+    VariableArray1D<C_TYPE> gen_grad_map;
+    VariableArray1D<C_TYPE> grid_field;
+    C_TYPE map_ref_orb_in;
+    C_TYPE map_ref_orb_out;
+    C_TYPE time_ref_orb_in;
+    C_TYPE time_ref_orb_out;
+    FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1> value =   {   0.0 };
+    FixedArray1D<C_TYPE, Bmad::NUM_ELE_ATTRIB+1> old_value =   {   0.0 };
+    FixedArray2D<C_TYPE, 4, 7> spin_q;
+    FixedArray1D<C_TYPE, 6> vec0 =   {   0.0 };
+    FixedArray2D<C_TYPE, 6, 6> mat6;
+    FixedArray2D<C_TYPE, 2, 2> c_mat;
+    C_TYPE gamma_c =   { 1 };
+    C_TYPE s_start =   {   0.0 };
+    C_TYPE s =   {   0.0 };
+    C_TYPE ref_time =   {   0.0 };
+    VariableArray1D<C_TYPE> a_pole;
+    VariableArray1D<C_TYPE> b_pole;
+    VariableArray1D<C_TYPE> a_pole_elec;
+    VariableArray1D<C_TYPE> b_pole_elec;
+    VariableArray1D<C_TYPE> custom;
+    VariableArray3D<C_TYPE> r;
+    C_TYPE key =   {   0 };
+    C_TYPE sub_key =   {   0 };
+    C_TYPE ix_ele =   { -1 };
+    C_TYPE ix_branch =   {   0 };
+    C_TYPE lord_status =   { Bmad::NOT_A_LORD };
+    C_TYPE n_slave =   {   0 };
+    C_TYPE n_slave_field =   {   0 };
+    C_TYPE ix1_slave =   {   0 };
+    C_TYPE slave_status =   { Bmad::FREE };
+    C_TYPE n_lord =   {   0 };
+    C_TYPE n_lord_field =   {   0 };
+    C_TYPE n_lord_ramper =   {   0 };
+    C_TYPE ic1_lord =   {   0 };
+    C_TYPE ix_pointer =   {   0 };
+    C_TYPE ixx =   {   0 };
+    C_TYPE iyy =   {   0 };
+    C_TYPE izz =   {   0 };
+    C_TYPE mat6_calc_method =   { Bmad::BMAD_STANDARD };
+    C_TYPE tracking_method =   { Bmad::BMAD_STANDARD };
+    C_TYPE spin_tracking_method =   { Bmad::TRACKING };
+    C_TYPE csr_method =   { Bmad::OFF };
+    C_TYPE space_charge_method =   { Bmad::OFF };
+    C_TYPE ptc_integration_type =   { Bmad::MATRIX_KICK };
+    C_TYPE field_calc =   { Bmad::BMAD_STANDARD };
+    C_TYPE aperture_at =   { Bmad::EXIT_END };
+    C_TYPE aperture_type =   { Bmad::RECTANGULAR };
+    C_TYPE ref_species =   { Bmad::NOT_SET };
+    C_TYPE orientation =   { 1 };
+    C_TYPE symplectify =   { false };
+    C_TYPE mode_flip =   { false };
+    C_TYPE multipoles_on =   { true };
+    C_TYPE scale_multipoles =   { true };
+    C_TYPE taylor_map_includes_offsets =   { true };
+    C_TYPE field_master =   { false };
+    C_TYPE is_on =   { true };
+    C_TYPE logic =   { false };
+    C_TYPE bmad_logic =   { false };
+    C_TYPE select =   { false };
+    C_TYPE offset_moves_aperture =   { false };
 
   void class_init (const int key_) {
     key = key_;
@@ -4130,8 +4130,8 @@ class Opaque_complex_taylor_term_class {};  // Opaque class for pointers to corr
 
 class CPP_complex_taylor_term: public std::enable_shared_from_this<CPP_complex_taylor_term>  {
 public:
-  C_TYPE coef = { 0.0 };
-  FixedArray1D<C_TYPE, 6> expn = { 0 };
+    C_TYPE coef =   {   0.0 };
+    FixedArray1D<C_TYPE, 6> expn =   {   0 };
 
   CPP_complex_taylor_term() {
   
@@ -4167,8 +4167,8 @@ class Opaque_complex_taylor_class {};  // Opaque class for pointers to correspon
 
 class CPP_complex_taylor: public std::enable_shared_from_this<CPP_complex_taylor>  {
 public:
-  C_TYPE ref = { 0.0 };
-  VariableArray1D<C_TYPE> term;
+    C_TYPE ref =   {   0.0 };
+    VariableArray1D<C_TYPE> term;
 
   CPP_complex_taylor() {
   
@@ -4204,19 +4204,19 @@ class Opaque_branch_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_branch: public std::enable_shared_from_this<CPP_branch>  {
 public:
-  string name = { "" };
-  C_TYPE ix_branch = { -1 };
-  C_TYPE ix_from_branch = { -1 };
-  C_TYPE ix_from_ele = { -1 };
-  C_TYPE ix_to_ele = { -1 };
-  C_TYPE n_ele_track = { 0 };
-  C_TYPE n_ele_max = { 0 };
-  C_TYPE a;
-  C_TYPE b;
-  C_TYPE z;
-  VariableArray1D<C_TYPE> ele;
-  C_TYPE param;
-  VariableArray1D<C_TYPE> wall3d;
+    string name =   { "" };
+    C_TYPE ix_branch =   { -1 };
+    C_TYPE ix_from_branch =   { -1 };
+    C_TYPE ix_from_ele =   { -1 };
+    C_TYPE ix_to_ele =   { -1 };
+    C_TYPE n_ele_track =   {   0 };
+    C_TYPE n_ele_max =   {   0 };
+    C_TYPE a;
+    C_TYPE b;
+    C_TYPE z;
+    VariableArray1D<C_TYPE> ele;
+    C_TYPE param;
+    VariableArray1D<C_TYPE> wall3d;
 
   CPP_branch() {
   
@@ -4263,36 +4263,36 @@ class Opaque_lat_class {};  // Opaque class for pointers to corresponding fortra
 
 class CPP_lat: public std::enable_shared_from_this<CPP_lat>  {
 public:
-  string use_name = { "" };
-  string lattice = { "" };
-  string machine = { "" };
-  string input_file_name = { "" };
-  string title = { "" };
-  VariableArray1D<string> print_str;
-  VariableArray1D<C_TYPE> constant;
-  shared_ptr<C_TYPE> a = nullptr;
-  shared_ptr<C_TYPE> b = nullptr;
-  shared_ptr<C_TYPE> z = nullptr;
-  shared_ptr<C_TYPE> param = nullptr;
-  C_TYPE lord_state;
-  C_TYPE ele_init;
-  VariableArray1D<C_TYPE> ele;
-  VariableArray1D<C_TYPE> branch;
-  VariableArray1D<C_TYPE> control;
-  C_TYPE particle_start;
-  C_TYPE beam_init;
-  C_TYPE pre_tracker;
-  VariableArray1D<C_TYPE> custom;
-  C_TYPE version = { -1 };
-  shared_ptr<C_TYPE> n_ele_track = nullptr;
-  shared_ptr<C_TYPE> n_ele_max = nullptr;
-  C_TYPE n_control_max = { 0 };
-  C_TYPE n_ic_max = { 0 };
-  C_TYPE input_taylor_order = { 0 };
-  VariableArray1D<C_TYPE> ic;
-  C_TYPE photon_type = { Bmad::INCOHERENT };
-  C_TYPE creation_hash = { 0 };
-  C_TYPE ramper_slave_bookkeeping = { Bmad::STALE };
+    string use_name =   { "" };
+    string lattice =   { "" };
+    string machine =   { "" };
+    string input_file_name =   { "" };
+    string title =   { "" };
+    VariableArray1D<string> print_str;
+    VariableArray1D<C_TYPE> constant;
+    shared_ptr<C_TYPE> a =   nullptr;
+    shared_ptr<C_TYPE> b =   nullptr;
+    shared_ptr<C_TYPE> z =   nullptr;
+    shared_ptr<C_TYPE> param =   nullptr;
+    C_TYPE lord_state;
+    C_TYPE ele_init;
+    VariableArray1D<C_TYPE> ele;
+    VariableArray1D<C_TYPE> branch;
+    VariableArray1D<C_TYPE> control;
+    C_TYPE particle_start;
+    C_TYPE beam_init;
+    C_TYPE pre_tracker;
+    VariableArray1D<C_TYPE> custom;
+    C_TYPE version =   { -1 };
+    shared_ptr<C_TYPE> n_ele_track =   nullptr;
+    shared_ptr<C_TYPE> n_ele_max =   nullptr;
+    C_TYPE n_control_max =   {   0 };
+    C_TYPE n_ic_max =   {   0 };
+    C_TYPE input_taylor_order =   {   0 };
+    VariableArray1D<C_TYPE> ic;
+    C_TYPE photon_type =   { Bmad::INCOHERENT };
+    C_TYPE creation_hash =   {   0 };
+    C_TYPE ramper_slave_bookkeeping =   { Bmad::STALE };
 
   CPP_lat() {
   
@@ -4356,20 +4356,20 @@ class Opaque_bunch_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_bunch: public std::enable_shared_from_this<CPP_bunch>  {
 public:
-  VariableArray1D<C_TYPE> particle;
-  VariableArray1D<C_TYPE> ix_z;
-  C_TYPE charge_tot = { 0.0 };
-  C_TYPE charge_live = { 0.0 };
-  C_TYPE z_center = { 0.0 };
-  C_TYPE t_center = { 0.0 };
-  C_TYPE t0 = { Bmad::REAL_GARBAGE };
-  C_TYPE drift_between_t_and_s = { false };
-  C_TYPE ix_ele = { 0 };
-  C_TYPE ix_bunch = { 0 };
-  C_TYPE ix_turn = { 0 };
-  C_TYPE n_live = { 0 };
-  C_TYPE n_good = { 0 };
-  C_TYPE n_bad = { 0 };
+    VariableArray1D<C_TYPE> particle;
+    VariableArray1D<C_TYPE> ix_z;
+    C_TYPE charge_tot =   {   0.0 };
+    C_TYPE charge_live =   {   0.0 };
+    C_TYPE z_center =   {   0.0 };
+    C_TYPE t_center =   {   0.0 };
+    C_TYPE t0 =   { Bmad::REAL_GARBAGE };
+    C_TYPE drift_between_t_and_s =   { false };
+    C_TYPE ix_ele =   {   0 };
+    C_TYPE ix_bunch =   {   0 };
+    C_TYPE ix_turn =   {   0 };
+    C_TYPE n_live =   {   0 };
+    C_TYPE n_good =   {   0 };
+    C_TYPE n_bad =   {   0 };
 
   CPP_bunch() {
   
@@ -4417,29 +4417,29 @@ class Opaque_bunch_params_class {};  // Opaque class for pointers to correspondi
 
 class CPP_bunch_params: public std::enable_shared_from_this<CPP_bunch_params>  {
 public:
-  C_TYPE centroid;
-  C_TYPE x;
-  C_TYPE y;
-  C_TYPE z;
-  C_TYPE a;
-  C_TYPE b;
-  C_TYPE c;
-  FixedArray2D<C_TYPE, 6, 6> sigma;
-  FixedArray1D<C_TYPE, 7> rel_max = { 0.0 };
-  FixedArray1D<C_TYPE, 7> rel_min = { 0.0 };
-  C_TYPE s = { -1 };
-  C_TYPE t = { -1 };
-  C_TYPE sigma_t = { 0.0 };
-  C_TYPE charge_live = { 0.0 };
-  C_TYPE charge_tot = { 0.0 };
-  C_TYPE n_particle_tot = { 0 };
-  C_TYPE n_particle_live = { 0 };
-  C_TYPE n_particle_lost_in_ele = { 0 };
-  C_TYPE n_good_steps = { 0 };
-  C_TYPE n_bad_steps = { 0 };
-  C_TYPE ix_ele = { -1 };
-  C_TYPE location = { Bmad::NOT_SET };
-  C_TYPE twiss_valid = { false };
+    C_TYPE centroid;
+    C_TYPE x;
+    C_TYPE y;
+    C_TYPE z;
+    C_TYPE a;
+    C_TYPE b;
+    C_TYPE c;
+    FixedArray2D<C_TYPE, 6, 6> sigma;
+    FixedArray1D<C_TYPE, 7> rel_max =   {   0.0 };
+    FixedArray1D<C_TYPE, 7> rel_min =   {   0.0 };
+    C_TYPE s =   { -1 };
+    C_TYPE t =   { -1 };
+    C_TYPE sigma_t =   {   0.0 };
+    C_TYPE charge_live =   {   0.0 };
+    C_TYPE charge_tot =   {   0.0 };
+    C_TYPE n_particle_tot =   {   0 };
+    C_TYPE n_particle_live =   {   0 };
+    C_TYPE n_particle_lost_in_ele =   {   0 };
+    C_TYPE n_good_steps =   {   0 };
+    C_TYPE n_bad_steps =   {   0 };
+    C_TYPE ix_ele =   { -1 };
+    C_TYPE location =   { Bmad::NOT_SET };
+    C_TYPE twiss_valid =   { false };
 
   CPP_bunch_params() {
   
@@ -4496,7 +4496,7 @@ class Opaque_beam_class {};  // Opaque class for pointers to corresponding fortr
 
 class CPP_beam: public std::enable_shared_from_this<CPP_beam>  {
 public:
-  VariableArray1D<C_TYPE> bunch;
+    VariableArray1D<C_TYPE> bunch;
 
   CPP_beam() {
   
@@ -4531,11 +4531,11 @@ class Opaque_aperture_point_class {};  // Opaque class for pointers to correspon
 
 class CPP_aperture_point: public std::enable_shared_from_this<CPP_aperture_point>  {
 public:
-  C_TYPE x = { 0.0 };
-  C_TYPE y = { 0.0 };
-  C_TYPE plane = { 0 };
-  C_TYPE ix_ele = { 0 };
-  C_TYPE i_turn = { 0 };
+    C_TYPE x =   {   0.0 };
+    C_TYPE y =   {   0.0 };
+    C_TYPE plane =   {   0 };
+    C_TYPE ix_ele =   {   0 };
+    C_TYPE i_turn =   {   0 };
 
   CPP_aperture_point() {
   
@@ -4574,15 +4574,15 @@ class Opaque_aperture_param_class {};  // Opaque class for pointers to correspon
 
 class CPP_aperture_param: public std::enable_shared_from_this<CPP_aperture_param>  {
 public:
-  C_TYPE min_angle = { 0.0 };
-  C_TYPE max_angle = { Bmad::pi };
-  C_TYPE n_angle = { 9 };
-  C_TYPE n_turn = { 100 };
-  C_TYPE x_init = { 0.0 };
-  C_TYPE y_init = { 0.0 };
-  C_TYPE rel_accuracy = { 0.0 };
-  C_TYPE abs_accuracy = { 0.0 };
-  string start_ele = { "" };
+    C_TYPE min_angle =   {   0.0 };
+    C_TYPE max_angle =   { Bmad::pi };
+    C_TYPE n_angle =   { 9 };
+    C_TYPE n_turn =   { 100 };
+    C_TYPE x_init =   {   0.0 };
+    C_TYPE y_init =   {   0.0 };
+    C_TYPE rel_accuracy =   {   0.0 };
+    C_TYPE abs_accuracy =   {   0.0 };
+    string start_ele =   { "" };
 
   CPP_aperture_param() {
   
@@ -4625,9 +4625,9 @@ class Opaque_aperture_scan_class {};  // Opaque class for pointers to correspond
 
 class CPP_aperture_scan: public std::enable_shared_from_this<CPP_aperture_scan>  {
 public:
-  VariableArray1D<C_TYPE> point;
-  C_TYPE ref_orb;
-  C_TYPE pz_start = { 0.0 };
+    VariableArray1D<C_TYPE> point;
+    C_TYPE ref_orb;
+    C_TYPE pz_start =   {   0.0 };
 
   CPP_aperture_scan() {
   
