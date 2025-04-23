@@ -18,6 +18,7 @@ is nullified and whose length is 1 otherwise.
 from __future__ import annotations
 
 import copy
+import dataclasses
 import os
 import pathlib
 import re
@@ -25,8 +26,8 @@ import string
 import sys
 import tempfile
 import textwrap
-from dataclasses import dataclass, field
-from typing import Callable, Literal
+from dataclasses import dataclass, field, fields
+from typing import Callable, Literal, NamedTuple
 
 import bmad_struct_parser
 from bmad_struct_parser import Structure as FortranStructure
@@ -66,6 +67,45 @@ NOT = "NOT"
 PTR = "PTR"
 ALLOC = "ALLOC"
 PointerType = Literal["NOT", "PTR", "ALLOC"]
+
+
+class FullType(NamedTuple):
+    type: ArgumentType
+    dim: int
+    ptr: PointerType
+
+    def sort_key(self):
+        return (self.dim, self.ptr, self.type)
+
+    def __str__(self) -> str:
+        return f"{self.dim}D_{self.ptr}_{self.type}"
+
+    @staticmethod
+    def from_template(type: str) -> FullType:
+        dim, ptr, type_name = type.split("_")
+
+        try:
+            dim = int(dim.lower().rstrip("d"))
+        except TypeError:
+            raise ValueError(
+                f"Dimension of type from template is not integer: {type=} {dim=}"
+            )
+
+        if type_name not in (
+            "real",
+            "complex",
+            "integer",
+            "integer8",
+            "logical",
+            "character",
+            "type",
+            "size",
+        ):
+            raise ValueError(f"Unexpected type: {type_name}")
+        if ptr not in ("NOT", "PTR", "ALLOC"):
+            raise ValueError(f"Invalid pointer type: {type=} {ptr=}")
+        return FullType(type_name, dim, ptr)
+
 
 do_not_share_classes = {
     # "CPP_grid_field_pt",
@@ -182,6 +222,15 @@ class c_side_trans_class:
     # "TEST_VALUE" in "test_pat" gets replaced with this.
     test_value: str = ""
 
+    def replace_all(self, old: str, new: str) -> None:
+        for fld in fields(self):
+            value = getattr(self, fld.name)
+
+            if isinstance(value, str):
+                setattr(self, fld.name, value.replace(old, new))
+            else:
+                setattr(self, fld.name, [v.replace(old, new) for v in value])
+
     def __str__(self):
         return "{},  {},  {},  {}".format(
             self.c_class,
@@ -229,6 +278,35 @@ class f_side_trans_class:
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
     test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
     test_value: str = ""
+
+    def replace_all(self, old: str, new: str) -> None:
+        for fld in fields(self):
+            value = getattr(self, fld.name)
+
+            if isinstance(value, str):
+                setattr(self, fld.name, value.replace(old, new))
+            else:
+                setattr(self, fld.name, [v.replace(old, new) for v in value])
+
+    @property
+    def to_c2_type_and_name(self):
+        return f"{self.to_c2_type} :: {self.to_c2_name}"
+
+    @to_c2_type_and_name.setter
+    def to_c2_type_and_name(self, value):
+        type, name = value.split("::")
+        self.to_c2_type = type.strip()
+        self.to_c2_name = name.strip()
+
+    @property
+    def to_f2_type_and_name(self):
+        return f"{self.to_f2_type} :: {self.to_f2_name}"
+
+    @to_f2_type_and_name.setter
+    def to_f2_type_and_name(self, value):
+        type, name = value.split("::")
+        self.to_f2_type = type.strip()
+        self.to_f2_name = name.strip()
 
 
 @dataclass
@@ -3302,30 +3380,35 @@ c_side_trans_custom_overrides = {}
 f_side_trans_custom_overrides = {}
 
 
-def _wrap_block(lines, block, tag, comment):
+def _wrap_block(
+    lines: list[str], block: str | list[str], tag: str, comment: str, required: bool
+):
     if isinstance(block, str):
         block = block.rstrip()
         block = [line.rstrip() for line in block.splitlines()]
 
     if not block:
-        return
+        if not required:
+            return
+        indent = "  "
+    else:
+        indent = " " * (len(block[0]) - len(block[0].lstrip()))
 
-    indent = " " * (len(block[0]) - len(block[0].lstrip()))
     lines.extend(
         [
-            f"{indent}{comment}start:{tag}",
+            f"{indent}{comment}begin:{tag}",
             *block,
             f"{indent}{comment}end:{tag}",
         ]
     )
 
 
-def wrap_block_c(lines, block, tag):
-    return _wrap_block(lines, block, tag, comment="//// ")
+def wrap_block_c(lines, block, tag, required=False):
+    return _wrap_block(lines, block, tag, comment="//// ", required=required)
 
 
-def wrap_block_f(lines, block, tag):
-    return _wrap_block(lines, block, tag, comment="!!!! ")
+def wrap_block_f(lines, block, tag, required=False):
+    return _wrap_block(lines, block, tag, comment="!!!! ", required=required)
 
 
 def export_c2(file):
@@ -3337,32 +3420,29 @@ def export_c2(file):
         type_name, ndim, ptr = key
         key_str = f"{ndim}D_{ptr}_{type_name}"
 
-        value = value.strip()
+        value = value.rstrip()
         value = f"{prefix}{value}{suffix}"
         dct.setdefault(value, [])
         dct[value].append(key_str)
 
     for key, trans in c_side_trans.items():
         lines = []
-        lines.append("void TO_F (const CppClass& C, OpaqueClass* F) {")
+        lines.append("void to_f (const CppClass& C, OpaqueClass* F) {")
 
         if trans.to_f_setup:
-            wrap_block_c(lines, f"  {trans.to_f_setup}", "setup")
+            wrap_block_c(lines, f"  {trans.to_f_setup.strip()}", "to_f_setup")
 
         lines.append("")
 
-        lines.append("  to_f2(F,")
+        lines.append("  to_f2(F, /*")
+        wrap_block_c(lines, f"  {trans.to_f2_arg}", "to_f2_arg")
+        lines.append("  */")
         wrap_block_c(lines, f"  {trans.to_f2_call}", "to_f2_call")
         lines.append("  );")
 
         lines.append("")
 
-        # for arg in struct.arg:
-        # lines.append(
-        #     f"  // c_side.to_f_cleanup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]"
-        # )
-        if trans.to_f_cleanup:
-            wrap_block_c(lines, trans.to_f_cleanup, "cleanup")
+        wrap_block_c(lines, trans.to_f_cleanup, "to_f_cleanup")
 
         lines.append("}")
 
@@ -3371,18 +3451,12 @@ def export_c2(file):
     to_c2 = {}
     for key, trans in c_side_trans.items():
         lines = []
-        lines.append("void TO_C2 (STRUCT_CPP_CLASS& C,")
-        wrap_block_c(lines, trans.to_f_cleanup, "cleanup")
-        lines.append("  //// start:c2_arg")
-        # for arg in struct.arg:
-        lines.append("  " + trans.to_c2_arg)
-        lines.append("  //// start:c2_arg")
+        lines.append("void to_c2 (STRUCT_CPP_CLASS& C,")
+        wrap_block_c(lines, f"  {trans.to_c2_arg}", "to_c2_arg")
         lines.append(") {")
 
         # for arg in struct.arg:
-        lines.append("  //// start:c2_set")
-        lines.append(trans.to_c2_set)
-        lines.append("  //// end:c2_set")
+        wrap_block_c(lines, trans.to_c2_set, "to_c2_set")
 
         lines.append("}")
         add(key, to_c2, "\n".join(lines))
@@ -3391,44 +3465,47 @@ def export_c2(file):
         "equality_test": {},
         "test_pat": {},
         "test_value": {},
+        "c_class": {},
+        # "to_f2_arg": {},
+        "class_initializer": {},
+        "construct_value": {},
+        "c_instantiation_suffix": {},
     }
     for func_name, dct in simple.items():
         for key, trans in c_side_trans.items():
             lines = []
-            lines.append(f"void {func_name.upper()} (STRUCT_CPP_CLASS& C) {{")
+            # lines.append(f"void {func_name.upper()} (STRUCT_CPP_CLASS& C) {{")
             if func_name == "equality":
                 lines.append("  bool is_eq = true;")
 
-            lines.append(f"  //// start:{func_name}")
-            # for arg in struct.arg:
-            lines.append(getattr(trans, func_name).rstrip())
-            lines.append(f"  //// end:{func_name}")
+            value = "  " + getattr(trans, func_name).strip()
+            wrap_block_c(lines, value, func_name, required=True)
 
-            lines.append("}")
             add(key, dct, "\n".join(lines))
 
     classes = {}
-    # for key, trans in c_side_trans.items():
-    #     lines = []
-    #     lines.append("class STRUCT_CPP_CLASS {")
-    #     lines.append("public:")
-    #     # for arg in struct.arg:
-    #     lines.append(
-    #         f"  ARG_C_CLASS ARG_NAME{trans.c_instantiation_suffix} {trans.construct_value}"
-    #     )
-    #
-    #     # lines.append("  //// start:c2_set")
-    #     # lines.append(trans.to_c2_set)
-    #     # lines.append("  //// end:c2_set")
-    #
-    #     lines.append("};")
-    #     add(key, classes, "\n".join(lines))
+    for key, trans in c_side_trans.items():
+        lines = []
+        lines.append("class STRUCT_CPP_CLASS {")
+        lines.append("public:")
+        # for arg in struct.arg:
+        lines.append(
+            f"  ARG_C_CLASS ARG_NAME{trans.c_instantiation_suffix} {trans.construct_value}"
+        )
+
+        # lines.append("  //// begin:c2_set")
+        # lines.append(trans.to_c2_set)
+        # lines.append("  //// end:c2_set")
+
+        lines.append("};")
+        add(key, classes, "\n".join(lines))
 
     print(
         """
 // vi: syntax=cpp
 //
 #include <cstddef>
+#include "include/bmad_std_typedef.h"
 
 class OpaqueClass {};
 class CppClass {
@@ -3445,17 +3522,29 @@ public:
         "classes",
     ]:
         dct = locals()[func]
-        for code, keys in sorted(dct.items(), key=lambda kv: tuple(kv[1])):
+        for idx, (code, keys) in enumerate(
+            sorted(dct.items(), key=lambda kv: tuple(kv[1]))
+        ):
+            print(f"//// section:{func}", file=file)
             for key in sorted(keys):
-                print(f"//// {key}", file=file)
-            print(f"{code}", file=file)
+                print(f"//// type:{key}", file=file)
+            suffix = "abcdefghijklmnopqrstuvwxyz"[idx]
+            print(
+                code.replace(f"void {func} ", f"void {func}__variant_{suffix} "),
+                file=file,
+            )
             print(file=file)
     for func_name, dct in simple.items():
+        print(f"void {func_name.upper()} (STRUCT_CPP_CLASS& C) {{", file=file)
+        print("/*", file=file)
         for code, keys in sorted(dct.items()):
+            print(f"  //// section:{func_name}", file=file)
             for key in sorted(keys):
-                print(f"//// {key}", file=file)
+                print(f"  //// type:{key}", file=file)
             print(f"{code}", file=file)
             print(file=file)
+        print("*/", file=file)
+        print("}", file=file)
 
 
 def export_f2(file):
@@ -3483,7 +3572,7 @@ def export_f2(file):
         # NOTE: c2_f2_sub_arg can be derived from to_c2_name (I think)
         # lines.append("implicit none")
         # lines.append("interface")
-        # lines.append("  subroutine to_c2 (C, !!!! start:c2_f2_sub_arg")
+        # lines.append("  subroutine to_c2 (C, !!!! begin:c2_f2_sub_arg")
         # # for arg in struct.arg:
         # lines.append(
         #     f"                   !!!! end:c2_f2_sub_arg"
@@ -3508,9 +3597,9 @@ def export_f2(file):
         # type(c_ptr), value :: Fp, C
         # type(NAME_struct), pointer :: F
         # )
-        # wrap_block_f(
-        #     lines, f"{trans.to_c2_type} :: {trans.to_c2_name}", "to_c2_type_and_name"
-        # )
+        wrap_block_f(
+            lines, f"{trans.to_c2_type} :: {trans.to_c2_name}", "to_c2_type_and_name"
+        )
         # TODO: can we infer this too?
 
         wrap_block_f(
@@ -3551,37 +3640,41 @@ def export_f2(file):
             lines, f"{trans.to_f2_type} :: {trans.to_f2_name}", "to_f2_type_and_name"
         )
         wrap_block_f(
-            lines, "\n".join(var.lstrip() for var in trans.to_f2_var), "to_f2_var"
+            lines,
+            "\n".join(var.lstrip() for var in trans.to_f2_var),
+            "to_f2_var",
         )
         lines.append("call c_f_pointer (Fp, F)")
-        wrap_block_f(lines, trans.to_f2_trans, "to_f2_trans")
+        wrap_block_f(lines, trans.to_f2_trans, "to_f2_trans", required=True)
         lines.append("end subroutine to_f2")
         lines.append("")
 
-        # TODO lazy
         block = "\n".join(lines)
-        block = block.replace("allocated", "associated_or_allocated(")
-        block = block.replace("associated(", "associated_or_allocated)")
         add(
             key,
             to_f2,
             textwrap.indent(block, "  ").replace("  end subroutine", "end subroutine"),
         )
+
     simple = {
         "equality_test": {},
         "test_pat": {},
         "test_value": {},
+        # "to_c2_type": {},
     }
     for func_name, dct in simple.items():
         for key, trans in f_side_trans.items():
             lines = []
-            lines.append(f"subroutine {func_name.upper()} ()")
             # if func_name == "equality":
             #     lines.append("  bool is_eq = true;")
 
-            wrap_block_f(lines, getattr(trans, func_name).rstrip(), func_name)
+            wrap_block_f(
+                lines,
+                getattr(trans, func_name).strip(),
+                func_name,
+                required=True,
+            )
 
-            lines.append("end subroutine")
             add(key, dct, "\n".join(lines))
 
     to_c_header = """
@@ -3627,22 +3720,178 @@ def export_f2(file):
         print(header, file=file)
         dct = locals()[func]
         for code, keys in sorted(dct.items(), key=lambda kv: tuple(kv[1])):
+            print(f"!!!! section:{func}", file=file)
             for key in sorted(keys):
-                print(f"!!!! {key}", file=file)
+                print(f"!!!! type:{key}", file=file)
             print(f"{code}", file=file)
             print(file=file)
 
     for func_name, dct in simple.items():
+        print(f"subroutine {func_name.upper()} ()", file=file)
         for code, keys in sorted(dct.items()):
+            print(f"!!!! section:{func_name}", file=file)
             for key in sorted(keys):
-                print(f"!!!! {key}", file=file)
+                print(f"!!!! type:{key}", file=file)
             print(f"{code}", file=file)
             print(file=file)
+        print("end subroutine", file=file)
+
+
+@dataclasses.dataclass
+class TemplateImporter:
+    section: re.Pattern
+    section_with_match: re.Pattern
+    type: re.Pattern
+    begin: re.Pattern
+    end: re.Pattern
+
+    @classmethod
+    def from_prefix(cls, prefix: str) -> TemplateImporter:
+        return TemplateImporter(
+            # These must be on their own line:
+            section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
+            section_with_match=re.compile(
+                rf"^\s*{prefix}\s*section:(.*)\s*$", flags=re.MULTILINE
+            ),
+            type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
+            # This may appear anywhere in a line
+            begin=re.compile(rf"^.*{prefix}\s*begin:(.*).*\s*$", flags=re.MULTILINE),
+            end=re.compile(rf"{prefix}\s*end:(.*)\s*$", flags=re.MULTILINE),
+        )
+
+    def split_sections(self, contents: str) -> list[str]:
+        sections = self.section.split(contents)[1:]
+        for section in sections:
+            assert "section:" not in section
+        return sections
+
+    def split_tags(self, section: str) -> dict[str, str]:
+        by_tag = {}
+        for begin in self.begin.finditer(section):
+            tag = begin.group(1).lower()
+
+            tag_contents = section[begin.span()[1] :].lstrip("\n\r")
+            end = self.end.search(tag_contents)
+            if end is None:
+                raise RuntimeError(
+                    f"begin:{tag} without end:{tag}. Context:\n{tag_contents}"
+                )
+            if end.group(1).lower() != tag:
+                end_tag = end.group(1)
+                raise RuntimeError(
+                    f"begin:{tag} has a mismatched end tag end:{end_tag}  Context:\n{tag_contents}"
+                )
+
+            by_tag[tag] = tag_contents[: end.span()[0]].rstrip()
+        return by_tag
+
+    def get_types(self, contents: str) -> list[str]:
+        return self.type.findall(contents)
+
+
+def import_template(
+    cls,
+    template_contents: str,
+):
+    """Initialize the c_side_trans dictionary with configured objects for all combinations."""
+    transformers = {}
+
+    if cls is c_side_trans_class:
+        importer = TemplateImporter.from_prefix("////")
+    elif cls is f_side_trans_class:
+        importer = TemplateImporter.from_prefix("!!!!")
+    else:
+        raise NotImplementedError(cls)
+
+    valid_fields = {fld.name for fld in fields(cls)}
+    for section in importer.split_sections(template_contents):
+        types = importer.get_types(section)
+        tags = importer.split_tags(section)
+        for tag in tags:
+            if tag not in valid_fields and not hasattr(cls, tag):
+                raise ValueError(
+                    f"Unexpected tag: {tag!r} found in section:\n{section}"
+                )
+        for type_str in types:
+            full_type = FullType.from_template(type_str)
+            if full_type not in transformers:
+                transformers[full_type] = cls()
+
+            for tag, value in tags.items():
+                setattr(transformers[full_type], tag, value)
+
+    return transformers
+
+
+def compare(orig_dct, new_dct):
+    diff = False
+    for type_, orig_trans in orig_dct.items():
+        type_ = FullType(*type_)
+        new_trans = new_dct[type_]
+        for fld in fields(type(new_trans)):
+            new = getattr(new_trans, fld.name)
+            expected = getattr(orig_trans, fld.name)
+
+            assert isinstance(expected, type(new))
+            if isinstance(expected, list):
+                expected = "\n".join(expected)
+            if isinstance(new, list):
+                new = "\n".join(new)
+
+            def ignore_whitespace(val):
+                if isinstance(val, list):
+                    val = "".join(val)
+                return "".join(
+                    "".join(line.strip().split()) for line in val.strip().splitlines()
+                )
+
+            if ignore_whitespace(new) != ignore_whitespace(expected):
+                if (
+                    fld.name
+                    in {
+                        # "c_class",
+                        # "to_f2_arg",
+                        # "class_initializer",
+                        # "construct_value",
+                        # "c_instantiation_suffix",
+                    }
+                ):
+                    pass
+                else:
+                    print(
+                        f"\n{type_} {fld.name}\nexpected  : {expected.strip()!r}\nnew       : {new.strip()!r}"
+                    )
+                    print(
+                        f"\n{type_} {fld.name}\nexpected  : {ignore_whitespace(expected)!r}\nnew       : {ignore_whitespace(new)!r}"
+                    )
+                    diff = True
+    if diff:
+        raise ValueError("differs")
 
 
 write_if_differs(export_c2, "exported.cpp")
 write_if_differs(export_f2, "exported.f90")
 
+new_c_side_trans: dict[FullType, c_side_trans_class] = import_template(
+    c_side_trans_class, pathlib.Path("exported.cpp").read_text()
+)
+new_f_side_trans: dict[FullType, f_side_trans_class] = import_template(
+    f_side_trans_class, pathlib.Path("exported.f90").read_text()
+)
+
+for type_, trans in new_f_side_trans.items():
+    if isinstance(trans.to_f2_var, str):
+        trans.to_f2_var = trans.to_f2_var.splitlines()
+    if isinstance(trans.to_c_var, str):
+        trans.to_c_var = trans.to_c_var.splitlines()
+    if type_.ptr == ALLOC:
+        trans.replace_all("associated_or_allocated(", "allocated(")
+    else:
+        trans.replace_all("associated_or_allocated(", "associated(")
+
+
+compare(c_side_trans, new_c_side_trans)
+compare(f_side_trans, new_f_side_trans)
 
 fortran_structures = bmad_struct_parser.load_all_structures(
     *params.struct_def_yaml_files
