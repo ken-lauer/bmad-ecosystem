@@ -825,6 +825,7 @@ is_eq = is_eq .and. (f1%ele_anchor_pt == f2%ele_anchor_pt)
 !! f_side.equality_test[integer, 0, NOT]
 is_eq = is_eq .and. (f1%field_type == f2%field_type)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
@@ -909,6 +910,7 @@ is_eq = is_eq .and. (f1%dz == f2%dz)
 !! f_side.equality_test[real, 1, NOT]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
@@ -991,6 +993,7 @@ is_eq = is_eq .and. all(f1%r0 == f2%r0)
 !! f_side.equality_test[logical, 0, NOT]
 is_eq = is_eq .and. (f1%curved_ref_frame .eqv. f2%curved_ref_frame)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
@@ -1737,6 +1740,7 @@ if (allocated(f1%v)) is_eq = all(shape(f1%v) == shape(f2%v))
 if (.not. is_eq) return
 if (allocated(f1%v)) is_eq = all(f1%v == f2%v)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%surface) .eqv. associated(f2%surface))
 if (.not. is_eq) return
 if (associated(f1%surface)) is_eq = (f1%surface == f2%surface)
@@ -1833,6 +1837,7 @@ is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
 !! f_side.equality_test[integer, 0, NOT]
 is_eq = is_eq .and. (f1%ix_con == f2%ix_con)
 !! f_side.equality_test[real, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%attrib_ptr) .eqv. associated(f2%attrib_ptr))
 if (.not. is_eq) return
 if (associated(f1%attrib_ptr)) is_eq = (f1%attrib_ptr == f2%attrib_ptr)
@@ -2719,6 +2724,7 @@ is_eq = is_eq .and. (f1%alias == f2%alias)
 !! f_side.equality_test[character, 0, NOT]
 is_eq = is_eq .and. (f1%component_name == f2%component_name)
 !! f_side.equality_test[character, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%descrip) .eqv. associated(f2%descrip))
 if (.not. is_eq) return
 if (associated(f1%descrip)) is_eq = (f1%descrip == f2%descrip)
@@ -2733,30 +2739,36 @@ is_eq = is_eq .and. (f1%x == f2%x)
 !! f_side.equality_test[type, 0, NOT]
 is_eq = is_eq .and. (f1%y == f2%y)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%ac_kick) .eqv. associated(f2%ac_kick))
 if (.not. is_eq) return
 if (associated(f1%ac_kick)) is_eq = (f1%ac_kick == f2%ac_kick)
 !! f_side.equality_test[type, 0, NOT]
 is_eq = is_eq .and. (f1%bookkeeping_state == f2%bookkeeping_state)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%control) .eqv. associated(f2%control))
 if (.not. is_eq) return
 if (associated(f1%control)) is_eq = (f1%control == f2%control)
 !! f_side.equality_test[type, 0, NOT]
 is_eq = is_eq .and. (f1%floor == f2%floor)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%high_energy_space_charge) .eqv. associated(f2%high_energy_space_charge))
 if (.not. is_eq) return
 if (associated(f1%high_energy_space_charge)) is_eq = (f1%high_energy_space_charge == f2%high_energy_space_charge)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%mode3) .eqv. associated(f2%mode3))
 if (.not. is_eq) return
 if (associated(f1%mode3)) is_eq = (f1%mode3 == f2%mode3)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%photon) .eqv. associated(f2%photon))
 if (.not. is_eq) return
 if (associated(f1%photon)) is_eq = (f1%photon == f2%photon)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%rad_map) .eqv. associated(f2%rad_map))
 if (.not. is_eq) return
 if (associated(f1%rad_map)) is_eq = (f1%rad_map == f2%rad_map)
@@ -2767,6 +2779,7 @@ is_eq = is_eq .and. all(f1%spin_taylor_ref_orb_in == f2%spin_taylor_ref_orb_in)
 !! f_side.equality_test[type, 1, NOT]
 is_eq = is_eq .and. all(f1%spin_taylor == f2%spin_taylor)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%wake) .eqv. associated(f2%wake))
 if (.not. is_eq) return
 if (associated(f1%wake)) is_eq = (f1%wake == f2%wake)
@@ -3075,18 +3088,22 @@ if (allocated(f1%constant)) is_eq = all(shape(f1%constant) == shape(f2%constant)
 if (.not. is_eq) return
 if (allocated(f1%constant)) is_eq = all(f1%constant == f2%constant)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%a) .eqv. associated(f2%a))
 if (.not. is_eq) return
 if (associated(f1%a)) is_eq = (f1%a == f2%a)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%b) .eqv. associated(f2%b))
 if (.not. is_eq) return
 if (associated(f1%b)) is_eq = (f1%b == f2%b)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%z) .eqv. associated(f2%z))
 if (.not. is_eq) return
 if (associated(f1%z)) is_eq = (f1%z == f2%z)
 !! f_side.equality_test[type, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%param) .eqv. associated(f2%param))
 if (.not. is_eq) return
 if (associated(f1%param)) is_eq = (f1%param == f2%param)
@@ -3127,10 +3144,12 @@ if (allocated(f1%custom)) is_eq = all(f1%custom == f2%custom)
 !! f_side.equality_test[integer, 0, NOT]
 is_eq = is_eq .and. (f1%version == f2%version)
 !! f_side.equality_test[integer, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%n_ele_track) .eqv. associated(f2%n_ele_track))
 if (.not. is_eq) return
 if (associated(f1%n_ele_track)) is_eq = (f1%n_ele_track == f2%n_ele_track)
 !! f_side.equality_test[integer, 0, PTR]
+
 is_eq = is_eq .and. (associated(f1%n_ele_max) .eqv. associated(f2%n_ele_max))
 if (.not. is_eq) return
 if (associated(f1%n_ele_max)) is_eq = (f1%n_ele_max == f2%n_ele_max)

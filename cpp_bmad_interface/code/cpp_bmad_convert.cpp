@@ -165,9 +165,9 @@ extern "C" void ac_kicker_to_f (const CPP_ac_kicker& C, Opaque_ac_kicker_class* 
   ac_kicker_to_f2 (F, z_amp_vs_time, n1_amp_vs_time, z_frequency, n1_frequency);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_amp_vs_time) delete[] z_amp_vs_time;
+  if (z_amp_vs_time) delete[] z_amp_vs_time;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_frequency) delete[] z_frequency;
+  if (z_frequency) delete[] z_frequency;
 }
 
 // c_side.to_c2_arg
@@ -271,7 +271,7 @@ extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Op
       n1_p_reflect_scratch, z_bragg_angle, n1_bragg_angle);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_int1) delete[] z_int1;
+  if (z_int1) delete[] z_int1;
   // c_side.to_f_cleanup[real, 2, ALLOC]
   if (z_p_reflect) delete[] z_p_reflect;
 }
@@ -341,7 +341,7 @@ extern "C" void photon_reflect_surface_to_f (const CPP_photon_reflect_surface& C
       C.roughness_correlation_len, C.ix_surface);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_table) delete[] z_table;
+  if (z_table) delete[] z_table;
 }
 
 // c_side.to_c2_arg
@@ -461,7 +461,7 @@ extern "C" void coord_array_to_f (const CPP_coord_array& C, Opaque_coord_array_c
   coord_array_to_f2 (F, z_orbit, n1_orbit);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_orbit) delete[] z_orbit;
+  if (z_orbit) delete[] z_orbit;
 }
 
 // c_side.to_c2_arg
@@ -706,9 +706,9 @@ extern "C" void wake_sr_to_f (const CPP_wake_sr& C, Opaque_wake_sr_class* F) {
       C.scale_with_length);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_long_wake) delete[] z_long_wake;
+  if (z_long_wake) delete[] z_long_wake;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_trans_wake) delete[] z_trans_wake;
+  if (z_trans_wake) delete[] z_trans_wake;
 }
 
 // c_side.to_c2_arg
@@ -820,7 +820,7 @@ extern "C" void wake_lr_to_f (const CPP_wake_lr& C, Opaque_wake_lr_class* F) {
       C.time_scale, C.self_wake_on);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_mode) delete[] z_mode;
+  if (z_mode) delete[] z_mode;
 }
 
 // c_side.to_c2_arg
@@ -944,7 +944,7 @@ extern "C" void taylor_to_f (const CPP_taylor& C, Opaque_taylor_class* F) {
   taylor_to_f2 (F, C.ref, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
@@ -1007,7 +1007,7 @@ extern "C" void em_taylor_to_f (const CPP_em_taylor& C, Opaque_em_taylor_class* 
   em_taylor_to_f2 (F, C.ref, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
@@ -1088,7 +1088,7 @@ extern "C" void cartesian_map_term_to_f (const CPP_cartesian_map_term& C, Opaque
   cartesian_map_term_to_f2 (F, C.file.c_str(), C.n_link, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
@@ -1200,7 +1200,7 @@ extern "C" void cylindrical_map_term_to_f (const CPP_cylindrical_map_term& C, Op
   cylindrical_map_term_to_f2 (F, C.file.c_str(), C.n_link, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
@@ -1756,7 +1756,7 @@ extern "C" void gen_grad_map_to_f (const CPP_gen_grad_map& C, Opaque_gen_grad_ma
       C.iz1, C.dz, &C.r0[0], C.field_scale, C.master_parameter, C.curved_ref_frame);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_gg) delete[] z_gg;
+  if (z_gg) delete[] z_gg;
 }
 
 // c_side.to_c2_arg
@@ -2338,7 +2338,7 @@ extern "C" void photon_element_to_f (const CPP_photon_element& C, Opaque_photon_
       z_integrated_init_energy_prob, n1_integrated_init_energy_prob);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_init_energy_prob) delete[] z_init_energy_prob;
+  if (z_init_energy_prob) delete[] z_init_energy_prob;
 }
 
 // c_side.to_c2_arg
@@ -2456,7 +2456,7 @@ extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_
       &C.y0_coef[0], C.dr_ds, &C.p1_coef[0], &C.p2_coef[0]);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_v) delete[] z_v;
+  if (z_v) delete[] z_v;
 }
 
 // c_side.to_c2_arg
@@ -2542,7 +2542,7 @@ extern "C" void wall3d_to_f (const CPP_wall3d& C, Opaque_wall3d_class* F) {
       z_section, n1_section);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_section) delete[] z_section;
+  if (z_section) delete[] z_section;
 }
 
 // c_side.to_c2_arg
@@ -2642,7 +2642,7 @@ extern "C" void control_to_f (const CPP_control& C, Opaque_control_class* F) {
       C.slave_name.c_str(), C.attribute.c_str(), C.ix_attrib);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_stack) delete[] z_stack;
+  if (z_stack) delete[] z_stack;
 }
 
 // c_side.to_c2_arg
@@ -2732,7 +2732,7 @@ extern "C" void control_ramp1_to_f (const CPP_control_ramp1& C, Opaque_control_r
       C.slave_name.c_str(), C.is_controller);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_stack) delete[] z_stack;
+  if (z_stack) delete[] z_stack;
 }
 
 // c_side.to_c2_arg
@@ -2801,11 +2801,11 @@ extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_clas
       n1_x_knot);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_var) delete[] z_var;
+  if (z_var) delete[] z_var;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_ramp) delete[] z_ramp;
+  if (z_ramp) delete[] z_ramp;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_ramper_lord) delete[] z_ramper_lord;
+  if (z_ramper_lord) delete[] z_ramper_lord;
 }
 
 // c_side.to_c2_arg
@@ -3451,7 +3451,7 @@ extern "C" void track_to_f (const CPP_track& C, Opaque_track_class* F) {
   track_to_f2 (F, z_pt, n1_pt, C.ds_save, C.n_pt, C.n_bad, C.n_ok);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_pt) delete[] z_pt;
+  if (z_pt) delete[] z_pt;
 }
 
 // c_side.to_c2_arg
@@ -3758,7 +3758,7 @@ extern "C" void rad_int_branch_to_f (const CPP_rad_int_branch& C, Opaque_rad_int
   rad_int_branch_to_f2 (F, z_ele, n1_ele);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_ele) delete[] z_ele;
+  if (z_ele) delete[] z_ele;
 }
 
 // c_side.to_c2_arg
@@ -3794,7 +3794,7 @@ extern "C" void rad_int_all_ele_to_f (const CPP_rad_int_all_ele& C, Opaque_rad_i
   rad_int_all_ele_to_f2 (F, z_branch, n1_branch);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_branch) delete[] z_branch;
+  if (z_branch) delete[] z_branch;
 }
 
 // c_side.to_c2_arg
@@ -3963,15 +3963,15 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
       C.is_on, C.logic, C.bmad_logic, C.select, C.offset_moves_aperture);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_wall3d) delete[] z_wall3d;
+  if (z_wall3d) delete[] z_wall3d;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_cartesian_map) delete[] z_cartesian_map;
+  if (z_cartesian_map) delete[] z_cartesian_map;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_cylindrical_map) delete[] z_cylindrical_map;
+  if (z_cylindrical_map) delete[] z_cylindrical_map;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_gen_grad_map) delete[] z_gen_grad_map;
+  if (z_gen_grad_map) delete[] z_gen_grad_map;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_grid_field) delete[] z_grid_field;
+  if (z_grid_field) delete[] z_grid_field;
   // c_side.to_f_cleanup[real, 3, PTR]
   if (z_r) delete[] z_r;
 }
@@ -4322,7 +4322,7 @@ extern "C" void complex_taylor_to_f (const CPP_complex_taylor& C, Opaque_complex
   complex_taylor_to_f2 (F, C.ref, z_term, n1_term);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_term) delete[] z_term;
+  if (z_term) delete[] z_term;
 }
 
 // c_side.to_c2_arg
@@ -4369,9 +4369,9 @@ extern "C" void branch_to_f (const CPP_branch& C, Opaque_branch_class* F) {
       C.n_ele_track, C.n_ele_max, C.a, C.b, C.z, z_ele, n1_ele, C.param, z_wall3d, n1_wall3d);
 
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_ele) delete[] z_ele;
+  if (z_ele) delete[] z_ele;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_wall3d) delete[] z_wall3d;
+  if (z_wall3d) delete[] z_wall3d;
 }
 
 // c_side.to_c2_arg
@@ -4500,15 +4500,15 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
       C.ramper_slave_bookkeeping);
 
   // c_side.to_f_cleanup[character, 1, ALLOC]
- if (z_print_str) delete[] z_print_str;
+  if (z_print_str) delete[] z_print_str;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_constant) delete[] z_constant;
+  if (z_constant) delete[] z_constant;
   // c_side.to_f_cleanup[type, 1, PTR]
- if (z_ele) delete[] z_ele;
+  if (z_ele) delete[] z_ele;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_branch) delete[] z_branch;
+  if (z_branch) delete[] z_branch;
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_control) delete[] z_control;
+  if (z_control) delete[] z_control;
 }
 
 // c_side.to_c2_arg
@@ -4672,7 +4672,7 @@ extern "C" void bunch_to_f (const CPP_bunch& C, Opaque_bunch_class* F) {
       C.n_live, C.n_good, C.n_bad);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_particle) delete[] z_particle;
+  if (z_particle) delete[] z_particle;
 }
 
 // c_side.to_c2_arg
@@ -4821,7 +4821,7 @@ extern "C" void beam_to_f (const CPP_beam& C, Opaque_beam_class* F) {
   beam_to_f2 (F, z_bunch, n1_bunch);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_bunch) delete[] z_bunch;
+  if (z_bunch) delete[] z_bunch;
 }
 
 // c_side.to_c2_arg
@@ -4932,7 +4932,7 @@ extern "C" void aperture_scan_to_f (const CPP_aperture_scan& C, Opaque_aperture_
   aperture_scan_to_f2 (F, z_point, n1_point, C.ref_orb, C.pz_start);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
- if (z_point) delete[] z_point;
+  if (z_point) delete[] z_point;
 }
 
 // c_side.to_c2_arg
