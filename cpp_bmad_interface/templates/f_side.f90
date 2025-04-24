@@ -1920,7 +1920,7 @@ enddo
 !!!! type:1D_ALLOC_type
 !!!! type:1D_PTR_type
 !!!! begin:test_value
-rhs
+TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -1946,9 +1946,30 @@ endif
 !!!! type:1D_PTR_logical
 !!!! type:1D_PTR_real
 !!!! type:1D_PTR_size
-!!!! begin:test_value
+!!!! case:1D_ALLOC_complex:test_value
+cmplx(rhs, 100+rhs)
+!!!! case:1D_ALLOC_integer:test_value
 rhs
-!!!! end:test_value
+!!!! case:1D_ALLOC_integer8:test_value
+rhs
+!!!! case:1D_ALLOC_logical:test_value
+(modulo(rhs, 2) == 0)
+!!!! case:1D_ALLOC_real:test_value
+rhs
+!!!! case:1D_ALLOC_size:test_value
+
+!!!! case:1D_PTR_complex:test_value
+cmplx(rhs, 100+rhs)
+!!!! case:1D_PTR_integer:test_value
+rhs
+!!!! case:1D_PTR_integer8:test_value
+rhs
+!!!! case:1D_PTR_logical:test_value
+(modulo(rhs, 2) == 0)
+!!!! case:1D_PTR_real:test_value
+rhs
+!!!! case:1D_PTR_size:test_value
+
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
@@ -1965,7 +1986,7 @@ endif
 !!!! type:2D_ALLOC_type
 !!!! type:2D_PTR_type
 !!!! begin:test_value
-rhs
+TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -1993,9 +2014,30 @@ endif
 !!!! type:2D_PTR_logical
 !!!! type:2D_PTR_real
 !!!! type:2D_PTR_size
-!!!! begin:test_value
+!!!! case:2D_ALLOC_complex:test_value
+cmplx(rhs, 100+rhs)
+!!!! case:2D_ALLOC_integer:test_value
 rhs
-!!!! end:test_value
+!!!! case:2D_ALLOC_integer8:test_value
+rhs
+!!!! case:2D_ALLOC_logical:test_value
+(modulo(rhs, 2) == 0)
+!!!! case:2D_ALLOC_real:test_value
+rhs
+!!!! case:2D_ALLOC_size:test_value
+
+!!!! case:2D_PTR_complex:test_value
+cmplx(rhs, 100+rhs)
+!!!! case:2D_PTR_integer:test_value
+rhs
+!!!! case:2D_PTR_integer8:test_value
+rhs
+!!!! case:2D_PTR_logical:test_value
+(modulo(rhs, 2) == 0)
+!!!! case:2D_PTR_real:test_value
+rhs
+!!!! case:2D_PTR_size:test_value
+
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
@@ -2013,7 +2055,7 @@ endif
 !!!! type:3D_ALLOC_type
 !!!! type:3D_PTR_type
 !!!! begin:test_value
-rhs
+TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -2043,9 +2085,30 @@ endif
 !!!! type:3D_PTR_logical
 !!!! type:3D_PTR_real
 !!!! type:3D_PTR_size
-!!!! begin:test_value
+!!!! case:3D_ALLOC_complex:test_value
+cmplx(rhs, 100+rhs)
+!!!! case:3D_ALLOC_integer:test_value
 rhs
-!!!! end:test_value
+!!!! case:3D_ALLOC_integer8:test_value
+rhs
+!!!! case:3D_ALLOC_logical:test_value
+(modulo(rhs, 2) == 0)
+!!!! case:3D_ALLOC_real:test_value
+rhs
+!!!! case:3D_ALLOC_size:test_value
+
+!!!! case:3D_PTR_complex:test_value
+cmplx(rhs, 100+rhs)
+!!!! case:3D_PTR_integer:test_value
+rhs
+!!!! case:3D_PTR_integer8:test_value
+rhs
+!!!! case:3D_PTR_logical:test_value
+(modulo(rhs, 2) == 0)
+!!!! case:3D_PTR_real:test_value
+rhs
+!!!! case:3D_PTR_size:test_value
+
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
@@ -2064,7 +2127,7 @@ endif
 !!!! type:1D_ALLOC_character
 !!!! type:1D_PTR_character
 !!!! begin:test_value
-rhs
+TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -2099,7 +2162,7 @@ endif
 !!!! type:0D_ALLOC_size
 !!!! type:0D_PTR_size
 !!!! begin:test_value
-rhs
+
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -2115,7 +2178,7 @@ endif
 !!!! type:0D_ALLOC_logical
 !!!! type:0D_PTR_logical
 !!!! begin:test_value
-rhs
+(modulo(rhs, 2) == 0)
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -2131,7 +2194,7 @@ endif
 !!!! type:0D_ALLOC_complex
 !!!! type:0D_PTR_complex
 !!!! begin:test_value
-rhs
+cmplx(rhs, 100+rhs)
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
@@ -2167,7 +2230,7 @@ endif
 !!!! type:0D_ALLOC_type
 !!!! type:0D_PTR_type
 !!!! begin:test_value
-rhs
+TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then

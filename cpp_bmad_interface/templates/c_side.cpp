@@ -1620,7 +1620,7 @@ void TEST_PAT (STRUCT_CPP_CLASS& C) {
   //// begin:test_pat
   C.NAME.resize(STR_LEN);
   for (size_t i = 0; i < C.NAME.size(); i++)
-    {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = TEST_VALUE;}
+    {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = 'a' + rhs % 26;}
   //// end:test_pat
 
   //// section:test_pat

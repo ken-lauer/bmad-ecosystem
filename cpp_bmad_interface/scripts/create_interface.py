@@ -33,6 +33,7 @@ import bmad_struct_parser
 from bmad_struct_parser import Structure as FortranStructure
 from bmad_struct_parser.parser import StructureMember
 
+
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
 ACC_ROOT_DIR = CPP_INTERFACE_ROOT.parent
@@ -361,6 +362,10 @@ class Argument:
     c_side: CSideTransform = field(default_factory=CSideTransform)
 
     @property
+    def full_type(self):
+        return FullType(self.type, len(self.array), self.pointer_type)
+
+    @property
     def lbound(self) -> list[str]:
         if not self.array or self.array[0] == ":":
             return []
@@ -425,18 +430,6 @@ class Argument:
             self.kind not in params.component_no_translate_list
             and f"{struct_name}%{self.f_name}" not in params.component_no_translate_list
         )
-
-    def replace_name_placeholders(self):
-        """Replace NAME placeholders with argument names on both C and Fortran sides."""
-        self.f_side.replace_all("NAME", self.f_name)
-        self.c_side.replace_all("NAME", self.c_name)
-
-    def _replace_string_length_placeholders(self) -> None:
-        """Replace STR_LEN placeholders with the argument's kind."""
-        self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
-        self.f_side.to_c_var = [
-            var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
-        ]
 
     def _handle_lbound(self, struct: Structure) -> None:
         """Handle the lower bound replacement."""
@@ -519,20 +512,16 @@ class Argument:
             The structure definition containing the argument
         """
         print_debug("self: " + str(self))
-        p_type = self.pointer_type
+        self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
+        self.f_side.to_c_var = [
+            var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
+        ]
 
-        # Replace string length placeholders
-        self._replace_string_length_placeholders()
-
-        # Handle array bounds
         self._handle_lbound(struct)
-
-        # Handle 'type' arguments
         if self.type == "type":
             self._handle_type_argument()
 
-        # Handle array dimensions
-        if p_type == NOT:
+        if self.pointer_type == NOT:
             # not a pointer/dynamically allocated type;
             # replace DIM1, DIM2, DIM3 here
             if len(self.array) >= 1:
@@ -553,10 +542,8 @@ class Argument:
                 self.f_side.replace_all("DIM3", str(self.dim3))
                 self.c_side.replace_all("DIM3", str(self.dim3))
 
-        # Replace name placeholders
-        self.replace_name_placeholders()
-
-        # Handle initialization values
+        self.f_side.replace_all("NAME", self.f_name)
+        self.c_side.replace_all("NAME", self.c_name)
         self._handle_init_values()
 
     def original_repr(self) -> str:
@@ -609,7 +596,7 @@ class TemplateImporter:
             # These must be on their own line:
             section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
             special_case=re.compile(
-                rf"^\s*{prefix}\s*case:(.*):(.*)\s*$\n^(.*)$", flags=re.MULTILINE
+                rf"^\s*{prefix}\s*case:(.*):(.*)$\n^(.*)$", flags=re.MULTILINE
             ),
             type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
             # This may appear anywhere in a line
@@ -662,7 +649,7 @@ def import_template(
     template_contents: str,
 ):
     """Initialize the c_transforms dictionary with configured objects for all combinations."""
-    transformers = {}
+    transforms = {}
 
     if cls is CSideTransform:
         importer = TemplateImporter.from_prefix("////")
@@ -671,35 +658,34 @@ def import_template(
     else:
         raise NotImplementedError(cls)
 
-    def check_tags(tags: list[str]):
-        for tag in tags:
-            if tag not in valid_fields and not hasattr(cls, tag):
-                raise ValueError(
-                    f"Unexpected special case tag: {tag!r} found in section:\n{section}"
-                )
+    def set_tag(full_type: FullType, tag: str, value: str) -> None:
+        if tag not in valid_fields and not hasattr(cls, tag):
+            raise ValueError(
+                f"Unexpected special case tag: {tag!r} found in section:\n{section}"
+            )
+        if full_type not in transforms:
+            transforms[full_type] = cls()
+
+        if "!!!! " in value or "//// " in value:
+            raise ValueError(
+                f"Special characters found in value: {value=}. Section:\n{section}"
+            )
+        setattr(transforms[full_type], tag, value)
 
     valid_fields = {fld.name for fld in fields(cls)}
     for section in importer.split_sections(template_contents):
         types = importer.get_types(section)
         tags = importer.split_tags(section)
         special_cases = importer.get_special_cases(section)
-
-        check_tags(list(tags))
         for full_type in types:
-            if full_type not in transformers:
-                transformers[full_type] = cls()
-
             for tag, value in tags.items():
-                setattr(transformers[full_type], tag, value)
+                set_tag(full_type, tag, value)
 
         for full_type, tag_to_value in special_cases.items():
-            if full_type not in transformers:
-                transformers[full_type] = cls()
-            check_tags(list(tag_to_value))
             for tag, value in tag_to_value.items():
-                setattr(transformers[full_type], tag, value)
+                set_tag(full_type, tag, value)
 
-    return transformers
+    return transforms
 
 
 def get_c_type(type_val: str) -> str:
@@ -797,15 +783,10 @@ def set_translations(struct: Structure) -> None:
 
     # Add translation info to each argument
     for arg in struct.arg:
-        n_dim = len(arg.array)
-        p_type = arg.pointer_type
-        translation_key = FullType(arg.type, n_dim, p_type)
-
         # Skip arguments without translation definitions
-        if translation_key not in f_transforms:
+        if arg.full_type not in f_transforms:
             print(
-                f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} "
-                f"[{arg.type}, {n_dim}, {p_type}]",
+                f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} [{arg.full_type}]",
                 file=sys.stderr,
             )
             continue
@@ -814,11 +795,11 @@ def set_translations(struct: Structure) -> None:
         try:
             arg.f_side = f_side_trans_custom_overrides[arg_full_name]
         except KeyError:
-            arg.f_side = copy.deepcopy(f_transforms[translation_key])
+            arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
         try:
             arg.c_side = c_side_trans_custom_overrides[arg_full_name]
         except KeyError:
-            arg.c_side = copy.deepcopy(c_transforms[translation_key])
+            arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
 
 
 def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
@@ -1470,9 +1451,7 @@ offset = 100 * ix_patt
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            f_test.write(
-                f"!! f_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
-            )
+            f_test.write(f"!! f_side.test_pat[{arg.full_type}] {arg.c_side.c_class}\n")
 
             print(arg.f_side.test_pat.replace("ARGIDX", str(i)), file=f_test)
 
