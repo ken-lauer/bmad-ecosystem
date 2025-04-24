@@ -102,8 +102,6 @@ else
 
 endif
 
-
-
 call set_spline_test_pattern (f2_spline, 3)
 call spline_to_c (c_loc(f2_spline), c_spline)
 end subroutine test2_f_spline
@@ -227,8 +225,6 @@ else
 
 endif
 
-
-
 call set_spin_polar_test_pattern (f2_spin_polar, 3)
 call spin_polar_to_c (c_loc(f2_spin_polar), c_spin_polar)
 end subroutine test2_f_spin_polar
@@ -349,8 +345,6 @@ else
 
 endif
 
-
-
 call set_ac_kicker_time_test_pattern (f2_ac_kicker_time, 3)
 call ac_kicker_time_to_c (c_loc(f2_ac_kicker_time), c_ac_kicker_time)
 end subroutine test2_f_ac_kicker_time
@@ -468,8 +462,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_ac_kicker_freq_test_pattern (f2_ac_kicker_freq, 3)
 call ac_kicker_freq_to_c (c_loc(f2_ac_kicker_freq), c_ac_kicker_freq)
@@ -590,8 +582,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_ac_kicker_test_pattern (f2_ac_kicker, 3)
 call ac_kicker_to_c (c_loc(f2_ac_kicker), c_ac_kicker)
@@ -723,8 +713,6 @@ else
 
 endif
 
-
-
 call set_interval1_coef_test_pattern (f2_interval1_coef, 3)
 call interval1_coef_to_c (c_loc(f2_interval1_coef), c_interval1_coef)
 end subroutine test2_f_interval1_coef
@@ -842,8 +830,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_photon_reflect_table_test_pattern (f2_photon_reflect_table, 3)
 call photon_reflect_table_to_c (c_loc(f2_photon_reflect_table), c_photon_reflect_table)
@@ -1019,8 +1005,6 @@ else
 
 endif
 
-
-
 call set_photon_reflect_surface_test_pattern (f2_photon_reflect_surface, 3)
 call photon_reflect_surface_to_c (c_loc(f2_photon_reflect_surface), c_photon_reflect_surface)
 end subroutine test2_f_photon_reflect_surface
@@ -1159,8 +1143,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_coord_test_pattern (f2_coord, 3)
 call coord_to_c (c_loc(f2_coord), c_coord)
@@ -1328,8 +1310,6 @@ else
 
 endif
 
-
-
 call set_coord_array_test_pattern (f2_coord_array, 3)
 call coord_array_to_c (c_loc(f2_coord_array), c_coord_array)
 end subroutine test2_f_coord_array
@@ -1450,8 +1430,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_bpm_phase_coupling_test_pattern (f2_bpm_phase_coupling, 3)
 call bpm_phase_coupling_to_c (c_loc(f2_bpm_phase_coupling), c_bpm_phase_coupling)
@@ -1585,8 +1563,6 @@ else
 
 endif
 
-
-
 call set_expression_atom_test_pattern (f2_expression_atom, 3)
 call expression_atom_to_c (c_loc(f2_expression_atom), c_expression_atom)
 end subroutine test2_f_expression_atom
@@ -1706,8 +1682,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_wake_sr_z_long_test_pattern (f2_wake_sr_z_long, 3)
 call wake_sr_z_long_to_c (c_loc(f2_wake_sr_z_long), c_wake_sr_z_long)
@@ -1871,8 +1845,6 @@ else
 
 endif
 
-
-
 call set_wake_sr_mode_test_pattern (f2_wake_sr_mode, 3)
 call wake_sr_mode_to_c (c_loc(f2_wake_sr_mode), c_wake_sr_mode)
 end subroutine test2_f_wake_sr_mode
@@ -2004,8 +1976,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_wake_sr_test_pattern (f2_wake_sr, 3)
 call wake_sr_to_c (c_loc(f2_wake_sr), c_wake_sr)
@@ -2155,8 +2125,6 @@ else
 
 endif
 
-
-
 call set_wake_lr_mode_test_pattern (f2_wake_lr_mode, 3)
 call wake_lr_mode_to_c (c_loc(f2_wake_lr_mode), c_wake_lr_mode)
 end subroutine test2_f_wake_lr_mode
@@ -2295,8 +2263,6 @@ else
 
 endif
 
-
-
 call set_wake_lr_test_pattern (f2_wake_lr, 3)
 call wake_lr_to_c (c_loc(f2_wake_lr), c_wake_lr)
 end subroutine test2_f_wake_lr
@@ -2432,8 +2398,6 @@ else
 
 endif
 
-
-
 call set_lat_ele_loc_test_pattern (f2_lat_ele_loc, 3)
 call lat_ele_loc_to_c (c_loc(f2_lat_ele_loc), c_lat_ele_loc)
 end subroutine test2_f_lat_ele_loc
@@ -2550,8 +2514,6 @@ else
 
 endif
 
-
-
 call set_wake_test_pattern (f2_wake, 3)
 call wake_to_c (c_loc(f2_wake), c_wake)
 end subroutine test2_f_wake
@@ -2667,8 +2629,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_taylor_term_test_pattern (f2_taylor_term, 3)
 call taylor_term_to_c (c_loc(f2_taylor_term), c_taylor_term)
@@ -2788,8 +2748,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_taylor_test_pattern (f2_taylor, 3)
 call taylor_to_c (c_loc(f2_taylor), c_taylor)
@@ -2914,8 +2872,6 @@ else
 
 endif
 
-
-
 call set_em_taylor_term_test_pattern (f2_em_taylor_term, 3)
 call em_taylor_term_to_c (c_loc(f2_em_taylor_term), c_em_taylor_term)
 end subroutine test2_f_em_taylor_term
@@ -3034,8 +2990,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_em_taylor_test_pattern (f2_em_taylor, 3)
 call em_taylor_to_c (c_loc(f2_em_taylor), c_em_taylor)
@@ -3159,8 +3113,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_cartesian_map_term1_test_pattern (f2_cartesian_map_term1, 3)
 call cartesian_map_term1_to_c (c_loc(f2_cartesian_map_term1), c_cartesian_map_term1)
@@ -3292,8 +3244,6 @@ else
 
 endif
 
-
-
 call set_cartesian_map_term_test_pattern (f2_cartesian_map_term, 3)
 call cartesian_map_term_to_c (c_loc(f2_cartesian_map_term), c_cartesian_map_term)
 end subroutine test2_f_cartesian_map_term
@@ -3420,8 +3370,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_cartesian_map_test_pattern (f2_cartesian_map, 3)
 call cartesian_map_to_c (c_loc(f2_cartesian_map), c_cartesian_map)
@@ -3556,8 +3504,6 @@ else
 
 endif
 
-
-
 call set_cylindrical_map_term1_test_pattern (f2_cylindrical_map_term1, 3)
 call cylindrical_map_term1_to_c (c_loc(f2_cylindrical_map_term1), c_cylindrical_map_term1)
 end subroutine test2_f_cylindrical_map_term1
@@ -3673,8 +3619,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_cylindrical_map_term_test_pattern (f2_cylindrical_map_term, 3)
 call cylindrical_map_term_to_c (c_loc(f2_cylindrical_map_term), c_cylindrical_map_term)
@@ -3802,8 +3746,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_cylindrical_map_test_pattern (f2_cylindrical_map, 3)
 call cylindrical_map_to_c (c_loc(f2_cylindrical_map), c_cylindrical_map)
@@ -3946,8 +3888,6 @@ else
 
 endif
 
-
-
 call set_grid_field_pt1_test_pattern (f2_grid_field_pt1, 3)
 call grid_field_pt1_to_c (c_loc(f2_grid_field_pt1), c_grid_field_pt1)
 end subroutine test2_f_grid_field_pt1
@@ -4070,8 +4010,6 @@ else
 
 endif
 
-
-
 call set_grid_field_pt_test_pattern (f2_grid_field_pt, 3)
 call grid_field_pt_to_c (c_loc(f2_grid_field_pt), c_grid_field_pt)
 end subroutine test2_f_grid_field_pt
@@ -4189,8 +4127,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_grid_field_test_pattern (f2_grid_field, 3)
 call grid_field_to_c (c_loc(f2_grid_field), c_grid_field)
@@ -4340,8 +4276,6 @@ else
 
 endif
 
-
-
 call set_floor_position_test_pattern (f2_floor_position, 3)
 call floor_position_to_c (c_loc(f2_floor_position), c_floor_position)
 end subroutine test2_f_floor_position
@@ -4471,8 +4405,6 @@ else
 
 endif
 
-
-
 call set_high_energy_space_charge_test_pattern (f2_high_energy_space_charge, 3)
 call high_energy_space_charge_to_c (c_loc(f2_high_energy_space_charge), c_high_energy_space_charge)
 end subroutine test2_f_high_energy_space_charge
@@ -4601,8 +4533,6 @@ else
 
 endif
 
-
-
 call set_xy_disp_test_pattern (f2_xy_disp, 3)
 call xy_disp_to_c (c_loc(f2_xy_disp), c_xy_disp)
 end subroutine test2_f_xy_disp
@@ -4722,8 +4652,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_twiss_test_pattern (f2_twiss, 3)
 call twiss_to_c (c_loc(f2_twiss), c_twiss)
@@ -4859,8 +4787,6 @@ else
 
 endif
 
-
-
 call set_mode3_test_pattern (f2_mode3, 3)
 call mode3_to_c (c_loc(f2_mode3), c_mode3)
 end subroutine test2_f_mode3
@@ -4988,8 +4914,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_bookkeeping_state_test_pattern (f2_bookkeeping_state, 3)
 call bookkeeping_state_to_c (c_loc(f2_bookkeeping_state), c_bookkeeping_state)
@@ -5120,8 +5044,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_rad_map_test_pattern (f2_rad_map, 3)
 call rad_map_to_c (c_loc(f2_rad_map), c_rad_map)
@@ -5263,8 +5185,6 @@ else
 
 endif
 
-
-
 call set_rad_map_ele_test_pattern (f2_rad_map_ele, 3)
 call rad_map_ele_to_c (c_loc(f2_rad_map_ele), c_rad_map_ele)
 end subroutine test2_f_rad_map_ele
@@ -5382,8 +5302,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_gen_grad1_test_pattern (f2_gen_grad1, 3)
 call gen_grad1_to_c (c_loc(f2_gen_grad1), c_gen_grad1)
@@ -5513,8 +5431,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_gen_grad_map_test_pattern (f2_gen_grad_map, 3)
 call gen_grad_map_to_c (c_loc(f2_gen_grad_map), c_gen_grad_map)
@@ -5662,8 +5578,6 @@ else
 
 endif
 
-
-
 call set_surface_segmented_pt_test_pattern (f2_surface_segmented_pt, 3)
 call surface_segmented_pt_to_c (c_loc(f2_surface_segmented_pt), c_surface_segmented_pt)
 end subroutine test2_f_surface_segmented_pt
@@ -5785,8 +5699,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_surface_segmented_test_pattern (f2_surface_segmented, 3)
 call surface_segmented_to_c (c_loc(f2_surface_segmented), c_surface_segmented)
@@ -5923,8 +5835,6 @@ else
 
 endif
 
-
-
 call set_surface_h_misalign_pt_test_pattern (f2_surface_h_misalign_pt, 3)
 call surface_h_misalign_pt_to_c (c_loc(f2_surface_h_misalign_pt), c_surface_h_misalign_pt)
 end subroutine test2_f_surface_h_misalign_pt
@@ -6048,8 +5958,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_surface_h_misalign_test_pattern (f2_surface_h_misalign, 3)
 call surface_h_misalign_to_c (c_loc(f2_surface_h_misalign), c_surface_h_misalign)
@@ -6186,8 +6094,6 @@ else
 
 endif
 
-
-
 call set_surface_displacement_pt_test_pattern (f2_surface_displacement_pt, 3)
 call surface_displacement_pt_to_c (c_loc(f2_surface_displacement_pt), c_surface_displacement_pt)
 end subroutine test2_f_surface_displacement_pt
@@ -6311,8 +6217,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_surface_displacement_test_pattern (f2_surface_displacement, 3)
 call surface_displacement_to_c (c_loc(f2_surface_displacement), c_surface_displacement)
@@ -6449,8 +6353,6 @@ else
 
 endif
 
-
-
 call set_target_point_test_pattern (f2_target_point, 3)
 call target_point_to_c (c_loc(f2_target_point), c_target_point)
 end subroutine test2_f_target_point
@@ -6567,8 +6469,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_surface_curvature_test_pattern (f2_surface_curvature, 3)
 call surface_curvature_to_c (c_loc(f2_surface_curvature), c_surface_curvature)
@@ -6697,8 +6597,6 @@ else
 
 endif
 
-
-
 call set_photon_target_test_pattern (f2_photon_target, 3)
 call photon_target_to_c (c_loc(f2_photon_target), c_photon_target)
 end subroutine test2_f_photon_target
@@ -6823,8 +6721,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_photon_material_test_pattern (f2_photon_material, 3)
 call photon_material_to_c (c_loc(f2_photon_material), c_photon_material)
@@ -6959,8 +6855,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_pixel_pt_test_pattern (f2_pixel_pt, 3)
 call pixel_pt_to_c (c_loc(f2_pixel_pt), c_pixel_pt)
@@ -7106,8 +7000,6 @@ else
 
 endif
 
-
-
 call set_pixel_detec_test_pattern (f2_pixel_detec, 3)
 call pixel_detec_to_c (c_loc(f2_pixel_detec), c_pixel_detec)
 end subroutine test2_f_pixel_detec
@@ -7246,8 +7138,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_photon_element_test_pattern (f2_photon_element, 3)
 call photon_element_to_c (c_loc(f2_photon_element), c_photon_element)
@@ -7400,8 +7290,6 @@ else
 
 endif
 
-
-
 call set_wall3d_vertex_test_pattern (f2_wall3d_vertex, 3)
 call wall3d_vertex_to_c (c_loc(f2_wall3d_vertex), c_wall3d_vertex)
 end subroutine test2_f_wall3d_vertex
@@ -7531,8 +7419,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_wall3d_section_test_pattern (f2_wall3d_section, 3)
 call wall3d_section_to_c (c_loc(f2_wall3d_section), c_wall3d_section)
@@ -7718,8 +7604,6 @@ else
 
 endif
 
-
-
 call set_wall3d_test_pattern (f2_wall3d, 3)
 call wall3d_to_c (c_loc(f2_wall3d), c_wall3d)
 end subroutine test2_f_wall3d
@@ -7865,8 +7749,6 @@ else
 
 endif
 
-
-
 call set_ramper_lord_test_pattern (f2_ramper_lord, 3)
 call ramper_lord_to_c (c_loc(f2_ramper_lord), c_ramper_lord)
 end subroutine test2_f_ramper_lord
@@ -7990,8 +7872,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_control_test_pattern (f2_control, 3)
 call control_to_c (c_loc(f2_control), c_control)
@@ -8140,8 +8020,6 @@ else
 
 endif
 
-
-
 call set_control_var1_test_pattern (f2_control_var1, 3)
 call control_var1_to_c (c_loc(f2_control_var1), c_control_var1)
 end subroutine test2_f_control_var1
@@ -8261,8 +8139,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_control_ramp1_test_pattern (f2_control_ramp1, 3)
 call control_ramp1_to_c (c_loc(f2_control_ramp1), c_control_ramp1)
@@ -8404,8 +8280,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_controller_test_pattern (f2_controller, 3)
 call controller_to_c (c_loc(f2_controller), c_controller)
@@ -8556,8 +8430,6 @@ else
 
 endif
 
-
-
 call set_ellipse_beam_init_test_pattern (f2_ellipse_beam_init, 3)
 call ellipse_beam_init_to_c (c_loc(f2_ellipse_beam_init), c_ellipse_beam_init)
 end subroutine test2_f_ellipse_beam_init
@@ -8675,8 +8547,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_kv_beam_init_test_pattern (f2_kv_beam_init, 3)
 call kv_beam_init_to_c (c_loc(f2_kv_beam_init), c_kv_beam_init)
@@ -8798,8 +8668,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_grid_beam_init_test_pattern (f2_grid_beam_init, 3)
 call grid_beam_init_to_c (c_loc(f2_grid_beam_init), c_grid_beam_init)
@@ -8924,8 +8792,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_beam_init_test_pattern (f2_beam_init, 3)
 call beam_init_to_c (c_loc(f2_beam_init), c_beam_init)
@@ -9141,8 +9007,6 @@ else
 
 endif
 
-
-
 call set_lat_param_test_pattern (f2_lat_param, 3)
 call lat_param_to_c (c_loc(f2_lat_param), c_lat_param)
 end subroutine test2_f_lat_param
@@ -9297,8 +9161,6 @@ else
 
 endif
 
-
-
 call set_mode_info_test_pattern (f2_mode_info, 3)
 call mode_info_to_c (c_loc(f2_mode_info), c_mode_info)
 end subroutine test2_f_mode_info
@@ -9423,8 +9285,6 @@ else
 
 endif
 
-
-
 call set_pre_tracker_test_pattern (f2_pre_tracker, 3)
 call pre_tracker_to_c (c_loc(f2_pre_tracker), c_pre_tracker)
 end subroutine test2_f_pre_tracker
@@ -9546,8 +9406,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_anormal_mode_test_pattern (f2_anormal_mode, 3)
 call anormal_mode_to_c (c_loc(f2_anormal_mode), c_anormal_mode)
@@ -9678,8 +9536,6 @@ else
 
 endif
 
-
-
 call set_linac_normal_mode_test_pattern (f2_linac_normal_mode, 3)
 call linac_normal_mode_to_c (c_loc(f2_linac_normal_mode), c_linac_normal_mode)
 end subroutine test2_f_linac_normal_mode
@@ -9805,8 +9661,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_normal_modes_test_pattern (f2_normal_modes, 3)
 call normal_modes_to_c (c_loc(f2_normal_modes), c_normal_modes)
@@ -9948,8 +9802,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_em_field_test_pattern (f2_em_field, 3)
 call em_field_to_c (c_loc(f2_em_field), c_em_field)
@@ -10094,8 +9946,6 @@ else
 
 endif
 
-
-
 call set_strong_beam_test_pattern (f2_strong_beam, 3)
 call strong_beam_to_c (c_loc(f2_strong_beam), c_strong_beam)
 end subroutine test2_f_strong_beam
@@ -10221,8 +10071,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_track_point_test_pattern (f2_track_point, 3)
 call track_point_to_c (c_loc(f2_track_point), c_track_point)
@@ -10355,8 +10203,6 @@ else
 
 endif
 
-
-
 call set_track_test_pattern (f2_track, 3)
 call track_to_c (c_loc(f2_track), c_track)
 end subroutine test2_f_track
@@ -10485,8 +10331,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_space_charge_common_test_pattern (f2_space_charge_common, 3)
 call space_charge_common_to_c (c_loc(f2_space_charge_common), c_space_charge_common)
@@ -10641,8 +10485,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_bmad_common_test_pattern (f2_bmad_common, 3)
 call bmad_common_to_c (c_loc(f2_bmad_common), c_bmad_common)
@@ -10839,8 +10681,6 @@ else
 
 endif
 
-
-
 call set_rad_int1_test_pattern (f2_rad_int1, 3)
 call rad_int1_to_c (c_loc(f2_rad_int1), c_rad_int1)
 end subroutine test2_f_rad_int1
@@ -10989,8 +10829,6 @@ else
 
 endif
 
-
-
 call set_rad_int_branch_test_pattern (f2_rad_int_branch, 3)
 call rad_int_branch_to_c (c_loc(f2_rad_int_branch), c_rad_int_branch)
 end subroutine test2_f_rad_int_branch
@@ -11112,8 +10950,6 @@ else
 
 endif
 
-
-
 call set_rad_int_all_ele_test_pattern (f2_rad_int_all_ele, 3)
 call rad_int_all_ele_to_c (c_loc(f2_rad_int_all_ele), c_rad_int_all_ele)
 end subroutine test2_f_rad_int_all_ele
@@ -11234,8 +11070,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_ele_test_pattern (f2_ele, 3)
 call ele_to_c (c_loc(f2_ele), c_ele)
@@ -11693,8 +11527,6 @@ else
 
 endif
 
-
-
 call set_complex_taylor_term_test_pattern (f2_complex_taylor_term, 3)
 call complex_taylor_term_to_c (c_loc(f2_complex_taylor_term), c_complex_taylor_term)
 end subroutine test2_f_complex_taylor_term
@@ -11813,8 +11645,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_complex_taylor_test_pattern (f2_complex_taylor, 3)
 call complex_taylor_to_c (c_loc(f2_complex_taylor), c_complex_taylor)
@@ -11938,8 +11768,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_branch_test_pattern (f2_branch, 3)
 call branch_to_c (c_loc(f2_branch), c_branch)
@@ -12094,8 +11922,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_lat_test_pattern (f2_lat, 3)
 call lat_to_c (c_loc(f2_lat), c_lat)
@@ -12367,8 +12193,6 @@ else
 
 endif
 
-
-
 call set_bunch_test_pattern (f2_bunch, 3)
 call bunch_to_c (c_loc(f2_bunch), c_bunch)
 end subroutine test2_f_bunch
@@ -12523,8 +12347,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_bunch_params_test_pattern (f2_bunch_params, 3)
 call bunch_params_to_c (c_loc(f2_bunch_params), c_bunch_params)
@@ -12694,8 +12516,6 @@ else
 
 endif
 
-
-
 call set_beam_test_pattern (f2_beam, 3)
 call beam_to_c (c_loc(f2_beam), c_beam)
 end subroutine test2_f_beam
@@ -12816,8 +12636,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_aperture_point_test_pattern (f2_aperture_point, 3)
 call aperture_point_to_c (c_loc(f2_aperture_point), c_aperture_point)
@@ -12940,8 +12758,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_aperture_param_test_pattern (f2_aperture_param, 3)
 call aperture_param_to_c (c_loc(f2_aperture_param), c_aperture_param)
@@ -13074,8 +12890,6 @@ else
   call json%destroy(json_root)
 
 endif
-
-
 
 call set_aperture_scan_test_pattern (f2_aperture_scan, 3)
 call aperture_scan_to_c (c_loc(f2_aperture_scan), c_aperture_scan)
