@@ -3,14 +3,12 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import keyword
 import logging
 import os
 import pathlib
 from typing import NamedTuple
 from collections.abc import Sequence
 
-import jinja2
 import pydantic
 import yaml
 
@@ -104,15 +102,11 @@ class StructureMember(pydantic.BaseModel):
     definition: str
     type_info: TypeInformation
     name: str = ""
-    python_name: str = ""
     type: str = ""
-    python_type: str = ""
     size: str | None = None
     dimension: str | None = None
     comment: str = ""
-    fortran_default: bool | int | str | float | None = ""
-    default: DefaultType = ""
-    default_factory: str = ""
+    default: bool | int | str | float | None = ""
 
     @pydantic.field_validator("size")
     @classmethod
@@ -128,15 +122,6 @@ class StructureMember(pydantic.BaseModel):
         return self.size
 
 
-class StructureInfo(pydantic.BaseModel):
-    class_name: str = ""
-    comment: str = ""
-    members: dict[str, StructureMember] = pydantic.Field(default_factory=dict)
-
-
-todo = set()
-
-
 class Structure(pydantic.BaseModel):
     filename: pathlib.Path
     line: int
@@ -144,7 +129,8 @@ class Structure(pydantic.BaseModel):
     module: str
     private: bool = False
     lines: list[str] = pydantic.Field(default_factory=list, exclude=True)
-    info: StructureInfo = pydantic.Field(default_factory=StructureInfo)
+    comment: str = ""
+    members: dict[str, StructureMember] = pydantic.Field(default_factory=dict)
 
     def parse(self) -> None:
         skips = {
@@ -167,32 +153,18 @@ class Structure(pydantic.BaseModel):
 
             type_info = get_type_from_line(line)
             for decl in parse_declaration(line, type_info):
-                try:
-                    python_type = get_python_type(type_info)
-                except NotImplementedError:
-                    todo.add(type_info.type.lower())
-                    continue
-
-                default, default_factory = get_default(
-                    python_type, type_info.size, decl.default
-                )
-
-                self.info.members[decl.name] = StructureMember(
+                self.members[decl.name] = StructureMember(
                     name=decl.name,
-                    python_name=get_python_member_name(decl.name),
                     type=type_info.type,
                     type_info=type_info,
-                    python_type=python_type,
                     line=lineno,
                     definition=line,
                     comment=comment,
                     size=type_info.size,
                     dimension=decl.dimension,
-                    fortran_default=decl.default,
-                    default=default,
-                    default_factory=default_factory,
+                    default=decl.default,
                 )
-                last_member = self.info.members[decl.name]
+                last_member = self.members[decl.name]
 
 
 def path_with_respect_to_env(path: pathlib.Path, env_var_name: str) -> pathlib.Path:
@@ -232,14 +204,6 @@ def path_with_respect_to_env(path: pathlib.Path, env_var_name: str) -> pathlib.P
         return path
 
     return pathlib.Path(f"${env_var_name}", *path.parts[len(env_path.parts) :])
-
-
-def case_insensitive_match(name: str, options: Sequence[str]) -> str:
-    name_lower = name.lower()
-    for option in options:
-        if option == name_lower:
-            return option
-    raise ValueError(f"Name not found: {name}")
 
 
 def get_default(
@@ -645,58 +609,8 @@ def parse_declaration(
     return [_split_variable(variable, type_info) for variable in _split_variables(line)]
 
 
-def get_python_member_name(name: str) -> str:
-    name = name.lower()
-    assert name
-    if (
-        keyword.iskeyword(name)
-        or name in dir(__builtins__)
-        or name in {"str", "int", "float", "list", "tuple"}
-    ):
-        return f"{name}_"
-    if not name.isidentifier():
-        return f"bmad_{name}"
-    if name.startswith("model_"):
-        return f"bmad_{name}"
-    return {
-        "lambda": "lambda_",
-        "global": "global_",
-        "as": "as_",
-        "l": "L",
-    }.get(name, name)
-
-
-def get_python_type(type_info: TypeInformation) -> str:
-    type_map = {
-        "logical": "bool",
-        "integer": "int",
-        "real": "float",
-        "character": "str",
-        "complex": "Complex",  #  -> builtin type not supported
-    }
-    # name_case = name
-    try:
-        return type_map[type_info.type.lower()]
-    except KeyError:
-        pass
-
-    if type_info.type.lower() != "type":
-        raise NotImplementedError(f"Type not supported: {type_info.type}")
-
-    if type_info.kind is None:
-        raise ValueError(f"type() without kind is unsupported ({type_info=})")
-
-    type_name = type_info.kind.lower()
-    renames = {
-        "TreeElementZhe": "TreeElement",
-    }
-    class_name = to_class_name(type_name)
-    return renames.get(class_name, class_name)
-
-
 def find_structs(
     file_lines: list[FileLine],
-    by_class_name: dict[str, Structure],
     filename: pathlib.Path,
     include_private: bool = False,
 ) -> list[Structure]:
@@ -745,17 +659,12 @@ def find_structs(
             # ENDTYPE
             (struct_name,) = get_names_from_line(line)
 
-            class_name = to_class_name(struct_name)
-            while class_name in by_class_name:
-                class_name += "_"
-
             struct = Structure(
                 filename=path_with_respect_to_env(file_line.filename, "ACC_ROOT_DIR"),
                 module=module,
                 name=struct_name,
                 line=file_line.lineno,
                 lines=[line.strip()],
-                info=StructureInfo(class_name=class_name),
             )
 
             if in_routine:
@@ -766,7 +675,6 @@ def find_structs(
                 logger.debug(f"Skipping structure not in module: {struct.name}")
             else:
                 structs.append(struct)
-                by_class_name[class_name] = struct
         elif (
             lower_split[:2] == ["end", "subroutine"]
             or lower_split[0] == "endsubroutine"
@@ -842,291 +750,83 @@ def find_structs_in_file(
     parser_config: ParserConfig,
     source_config: SourceConfig,
     filename: pathlib.Path,
-    by_class_name: dict[str, Structure],
-) -> dict[str, Structure]:
+) -> list[Structure]:
     contents = filename.read_text(encoding="latin-1")
     file_lines = fill_includes(source_config, filename, contents)
-    structs = find_structs(
+    return find_structs(
         file_lines=file_lines,
-        by_class_name=by_class_name,
         filename=filename,
     )
-    return {struct.name: struct for struct in structs}
-
-
-def to_class_name(bmad_name: str) -> str:
-    """Convert a bmad struct name to a dataclass name."""
-    name_chars = list(bmad_name.capitalize())
-    renames = {}
-    while "_" in name_chars:
-        idx = name_chars.index("_")
-        name_chars.pop(idx)
-        if idx < len(name_chars):
-            name_chars[idx] = name_chars[idx].upper()
-    class_name = "".join(name_chars)
-    return renames.get(class_name, class_name)
 
 
 def convert(
     parser_config: ParserConfig,
     source_config: SourceConfig,
     yaml_path: pathlib.Path,
-) -> dict[pathlib.Path, dict[str, Structure]]:
-    by_file = {}
+) -> list[Structure]:
+    structs: list[Structure] = []
     failed = {}
-    by_class_name = {}
     filenames = list(source_config.source_dir.glob("**/*.f90", case_sensitive=False))
     for source_fn in filenames:
         try:
-            by_file[source_fn] = find_structs_in_file(
-                parser_config, source_config, source_fn, by_class_name
+            structs.extend(
+                find_structs_in_file(parser_config, source_config, source_fn)
             )
         except Exception as ex:
             failed[source_fn] = ex
             raise
 
-    for name in source_config.skip_structs:
-        matches = 0
-        for source_fn, structs in by_file.items():
-            try:
-                name = case_insensitive_match(name, list(structs))
-            except ValueError:
-                pass
-            else:
+    for to_skip in source_config.skip_structs:
+        for struct in list(structs):
+            if struct.name.lower() == to_skip.lower():
                 logger.debug(
-                    f"User config skipped struct: {name} (found in {source_fn})"
+                    f"User config skipped struct: {to_skip} (found in {struct.filename})"
                 )
-                structs.pop(name)
-                # Could be defined in multiple files which we don't handle now
-                matches += 1
+                structs.remove(struct)
+                break
+        else:
+            logger.warning(f"Unknown user-specified struct skip: {to_skip}")
 
-        if not matches:
-            logger.warning(f"Unknown user-specified struct skip: {name}")
-
-    logger.info(
-        f"{source_config.source_dir.name!r} total structures: %d",
-        sum(len(structs) for structs in by_file.values()),
-    )
+    unique_files = set(struct.filename for struct in structs)
+    logger.info(f"{source_config.source_dir.name!r} parsing complete:")
     logger.info(f"Path: {source_config.source_dir}")
-    logger.info(
-        "Total structures: %d", sum(len(structs) for structs in by_file.values())
-    )
-    logger.info("Success:          %d files", len(by_file))
+    logger.info("Total structures: %d", len(structs))
+    logger.info("Success:          %d files", len(unique_files))
     logger.info("Failures:         %d files", len(failed))
     for fail, reason in failed.items():
         logger.error(f"Failed: {fail} {reason}")
 
-    for source_fn, structs in by_file.items():
-        for _, info in structs.items():
-            info.parse()
+    for struct in structs:
+        struct.parse()
 
-    info_adapter = pydantic.TypeAdapter(dict[pathlib.Path, dict[str, Structure]])
-    dumped = json.loads(info_adapter.dump_json(by_file, exclude_defaults=True))
+    info_adapter = pydantic.TypeAdapter("list[Structure]")
+    dumped_json = info_adapter.dump_json(structs, exclude_defaults=True)
+    dumped = json.loads(dumped_json)
 
+    yaml_path.with_suffix(".json").write_bytes(dumped_json)
     with open(yaml_path, "w") as fp:
         yaml.safe_dump(dumped, fp, sort_keys=False)
 
-    for item in sorted(todo):
-        logger.error(f"(TODO) not yet supported: {item}")
-
-    return by_file
+    return structs
 
 
-StructureFile = dict[pathlib.Path, dict[str, Structure]]
-
-
-def load_structures(fn: pathlib.Path | str) -> StructureFile:
+def load_structures(fn: pathlib.Path | str) -> list[Structure]:
     with open(fn) as fp:
         loaded = yaml.safe_load(fp)
-    info_adapter = pydantic.TypeAdapter(StructureFile)
+    info_adapter = pydantic.TypeAdapter("list[Structure]")
     return info_adapter.validate_python(loaded)
 
 
 def load_all_structures(*yaml_paths: pathlib.Path | str) -> list[Structure]:
     all_structs = []
     for yaml_path in yaml_paths:
-        for _, structs in load_structures(yaml_path).items():
-            all_structs.extend(list(structs.values()))
+        all_structs.extend(load_structures(yaml_path))
     return all_structs
-
-
-# def load_all_structures_by_class_name() -> dict[str, Structure]:
-#     by_name = {}
-#     for paths in all_source_to_paths.values():
-#         for _, structs in load_structures(GENERATED_PATH / paths["yaml"]).items():
-#             for struct in structs.values():
-#                 by_name[struct.info.class_name] = struct
-#     return by_name
-
-
-def get_all_structure_names(path: AnyPath) -> list[str]:
-    res = []
-    for structs in load_structures(path).values():
-        for struct in structs.values():
-            res.append(struct.info.class_name)
-    return res
-
-
-def get_classes_to_import(
-    structs_by_filename: StructureFile, importable: dict[str, str]
-) -> dict[str, set[str]]:
-    res: dict[str, set[str]] = {}
-    for _, structs in structs_by_filename.items():
-        for struct in structs.values():
-            for member in struct.info.members.values():
-                if member.python_type in importable:
-                    source = importable[member.python_type]
-                    res.setdefault(source, set()).add(member.python_type)
-    return res
-
-
-def _custom_repr(obj: object) -> str:
-    """A tweaked ``repr`` to always return double quotes."""
-    result = repr(obj)
-    return result.replace("'", '"')
-
-
-def render_python_source(
-    structs: StructureFile,
-    *,
-    template_filename: AnyPath = MODEL_TEMPLATE,
-    classes_to_import: dict[str, set[str]],
-) -> str:
-    """
-    Load the structure yaml file and generate dataclass source code for it.
-
-    Parameters
-    ----------
-    path : str or pathlib.Path
-        Path to the structure yaml file.
-
-    Returns
-    -------
-    str
-        Generated Python source code.
-    """
-
-    struct_file = pydantic.TypeAdapter(StructureFile)
-    dict_structs = struct_file.dump_python(structs)
-    template = pathlib.Path(template_filename).read_text()
-
-    def maybe_raw_string(value: str) -> str:
-        if "\\" in value:
-            return "r"
-        return ""
-
-    env = jinja2.Environment()
-    env.filters["repr"] = _custom_repr
-    env.filters["maybe_raw_string"] = maybe_raw_string
-    env.filters["splitlines"] = str.splitlines
-    tpl = env.from_string(template)
-
-    return tpl.render(
-        all_structs=dict_structs,
-        type_map={
-            "string": "str",
-            "double": "float",
-            "integer": "int",
-        },
-        to_import=classes_to_import,
-    ).strip()
-
-
-def make_all_models(
-    path: AnyPath,
-    *,
-    base_path: pathlib.Path = pathlib.Path("."),
-    template_filename: AnyPath = MODEL_TEMPLATE,
-    imports: dict[pathlib.Path, SourceConfig],
-) -> str:
-    """
-    Load the structure yaml file and generate dataclass source code for it.
-
-    Parameters
-    ----------
-    path : str or pathlib.Path
-        Path to the structure yaml file.
-
-    Returns
-    -------
-    str
-        Generated Python source code.
-    """
-
-    structs = load_structures(path)
-
-    import_structs = {
-        struct_name: import_paths.python_import_name
-        for _, import_paths in imports.items()
-        for struct_name in get_all_structure_names(
-            base_path / import_paths.yaml_filename
-        )
-    }
-
-    classes_to_import = get_classes_to_import(structs, import_structs)
-    return render_python_source(
-        structs,
-        template_filename=template_filename,
-        classes_to_import=classes_to_import,
-    )
-
-
-def get_class_references(
-    by_name: dict[str, Structure],
-    name: str,
-) -> set[str]:
-    res: set[str] = set()
-
-    struct = by_name[name]
-    for member in struct.info.members.values():
-        if member.python_type in by_name:
-            res.add(member.python_type)
-            res |= get_class_references(by_name, member.python_type)
-    return res
-
-
-# def make_model_subset(
-#     limit_to: list[str],
-#     *,
-#     template_filename: AnyPath = MODEL_TEMPLATE,
-# ) -> str:
-#     """
-#     Load the structure yaml file and generate dataclass source code for it.
-#
-#     Parameters
-#     ----------
-#     path : str or pathlib.Path
-#         Path to the structure yaml file.
-#
-#     Returns
-#     -------
-#     str
-#         Generated Python source code.
-#     """
-#
-#     by_name = load_all_structures_by_class_name()
-#
-#     to_add = set()
-#     for name in limit_to:
-#         refs = get_class_references(by_name, name)
-#         refs = refs - to_add
-#         for ref in refs:
-#             print(f"Adding new reference for {name}: {ref}")
-#         to_add |= refs
-#
-#     limit_to = sorted(set(limit_to) | to_add)
-#     by_name = {name: by_name[name] for name in limit_to}
-#     return render_python_source(
-#         {pathlib.Path(): by_name},
-#         template_filename=template_filename,
-#         classes_to_import={},
-#     )
 
 
 def convert_and_write(
     parser_config: ParserConfig,
     output_path: pathlib.Path,
-    classes: list[str] | None = None,
 ):
     def get_output_path(fn: str) -> pathlib.Path:
         output_fn = pathlib.Path(output_path) / fn
@@ -1138,24 +838,10 @@ def convert_and_write(
             parser_config, source_config, get_output_path(source_config.yaml_filename)
         )
 
-    for source_config in parser_config.sources:
-        python_source = make_all_models(
-            get_output_path(source_config.yaml_filename),
-            base_path=output_path,
-            imports={
-                other.source_dir: other
-                for other in parser_config.sources
-                if other.source_dir != source_config.source_dir
-            },
-        )
-        get_output_path(source_config.python_filename).write_text(python_source)
-
 
 def main():
     argp = argparse.ArgumentParser()
     argp.add_argument("--config", nargs="?")
-    # argp.add_argument("--path", dest="paths", nargs="*")
-    # argp.add_argument("--cls", dest="classes", nargs="*")
     argp.add_argument("--output", default=".", nargs="?")
     argp.add_argument("-l", "--log-level", nargs="?", default="INFO")
     args = argp.parse_args()
@@ -1165,12 +851,8 @@ def main():
         format="%(asctime)s - %(levelname)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
     )
-    # if args.config:
     conf = ParserConfig.from_file(args.config)
     convert_and_write(parser_config=conf, output_path=pathlib.Path(args.output))
-    # else:
-    #     # convert_and_write(paths=args.paths, classes=args.classes, output=args.output)
-    #     raise NotImplementedError
 
 
 if __name__ == "__main__":

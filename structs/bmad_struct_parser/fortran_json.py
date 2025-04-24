@@ -4,7 +4,6 @@ import argparse
 import logging
 import pathlib
 import textwrap
-from typing import Literal
 
 import pydantic
 
@@ -12,7 +11,6 @@ from .parser import (
     ParserConfig,
     SourceConfig,
     Structure,
-    StructureFile,
     StructureMember,
     load_structures,
 )
@@ -107,26 +105,10 @@ def _split_defn_words(defn: str) -> list[str]:
     return words
 
 
-def get_structures_by_name(
-    struct_file: StructureFile,
-    attr: Literal["python", "bmad"],
-) -> dict[str, Structure]:
+def get_structures_by_name(struct_file: list[Structure]) -> dict[str, Structure]:
     by_name: dict[str, Structure] = {}
-    for _, structs in struct_file.items():
-        for struct in structs.values():
-            if attr == "python":
-                by_name[struct.info.class_name] = struct
-            else:
-                by_name[struct.name.lower()] = struct
-    return by_name
-
-
-def get_structures_name_to_import(struct_file: StructureFile) -> dict[str, str]:
-    by_name: dict[str, Structure] = {}
-    # TODO: config for destination fortran filename...
-    for fn, structs in struct_file.items():
-        for struct in structs.values():
-            by_name[struct.name.lower()] = fn  # struct.filename.name
+    for struct in struct_file:
+        by_name[struct.name.lower()] = struct
     return by_name
 
 
@@ -156,14 +138,15 @@ class ListBuilder(pydantic.BaseModel):
         iter_vars = ", ".join(
             f"{self.iter_var}{dim}" for dim in range(1, num_dimensions + 1)
         )
-        if member.python_type in {"int", "float", "bool"}:
+
+        if member.type.lower() in {"integer", "real", "logical"}:
             create = {
-                "int": "create_integer",
-                "float": "create_real",
-                "bool": "create_logical",
-            }[member.python_type]
+                "integer": "create_integer",
+                "real": "create_real",
+                "logical": "create_logical",
+            }[member.type.lower()]
             iteration = f"call json%{create}({self.json_value_var}, {self.struct_var}%{member.name}({iter_vars}), '')"
-        elif member.python_type in {"str"}:
+        elif member.type.lower() in {"character"}:
             iteration = f"call json%create_string({self.json_value_var}, trim({self.struct_var}%{member.name}({iter_vars})), '')"
         elif member.type.lower() in {"complex"}:
             conv_subroutine = to_subroutine_name(member.type)
@@ -229,19 +212,15 @@ class ListBuilder(pydantic.BaseModel):
 
 
 class Converter(pydantic.BaseModel):
-    structs: StructureFile
-    importable: dict[SourceConfig, StructureFile] = {}
+    structs: list[Structure]
+    importable: dict[SourceConfig, list[Structure]] = {}
     generated: set[str] = set()
     seen: set[str] = set()
-    imports: dict[StructureFile, list[str]] = {}
+    imports: dict[SourceConfig, list[str]] = {}
 
     @property
     def by_bmad_name(self) -> dict[str, Structure]:
-        return get_structures_by_name(self.structs, "bmad")
-
-    @property
-    def by_class_name(self) -> dict[str, Structure]:
-        return get_structures_by_name(self.structs, "python")
+        return get_structures_by_name(self.structs)
 
     def _get_json_dump_code_array(
         self,
@@ -261,7 +240,7 @@ class Converter(pydantic.BaseModel):
             json_list_var="json_list",
             json_value_var="json_val",
             parent_json_var=parent_json_var,
-            key=member.python_name,
+            key=member.name.lower(),
         )
         code = builder.create_loop()
         defn_words = _split_defn_words(member.definition.lower())
@@ -284,11 +263,10 @@ class Converter(pydantic.BaseModel):
         return JsonDumpMember(var=struct_var, member=member, code=code)
 
     def _find_importable_structure(self, name: str) -> tuple[SourceConfig, Structure]:
-        for source_config, struct_file in self.importable.items():
-            for _, structs in struct_file.items():
-                for struct in structs.values():
-                    if name.lower() == struct.name.lower():
-                        return source_config, struct
+        for source_config, structs in self.importable.items():
+            for struct in structs:
+                if name.lower() == struct.name.lower():
+                    return source_config, struct
 
         raise ValueError(f"Structure not found to import: {name}")
 
@@ -360,19 +338,19 @@ class Converter(pydantic.BaseModel):
                 code=f"! parent pointer skip: {member.name} ({member.type}, {member.comment})",
             )
 
-        if member.python_type in {"int"}:
-            code = f"call json%add({parent_json_var}, '{member.python_name}', int({struct_var}%{member.name}))"
-        elif member.python_type in {"float", "bool"}:
-            code = f"call json%add({parent_json_var}, '{member.python_name}', {struct_var}%{member.name})"
-        elif member.python_type in {"str"}:
-            code = f"call json%add({parent_json_var}, '{member.python_name}', trim({struct_var}%{member.name}))"
-        elif member.python_type in {"Complex"}:
+        if member.type.lower() in {"integer"}:
+            code = f"call json%add({parent_json_var}, '{member.name.lower()}', int({struct_var}%{member.name}))"
+        elif member.type.lower() in {"real", "logical"}:
+            code = f"call json%add({parent_json_var}, '{member.name.lower()}', {struct_var}%{member.name})"
+        elif member.type.lower() in {"character"}:
+            code = f"call json%add({parent_json_var}, '{member.name.lower()}', trim({struct_var}%{member.name}))"
+        elif member.type.lower() in {"complex"}:
             json_list_var = "json_list"
             list_var = f"{json_list_var}1"
             code = "\n".join(
                 (
                     f"call complex_to_json({struct_var}%{member.name}, {list_var}, depth+1)",
-                    f"call json%rename({list_var}, '{member.python_name}')",
+                    f"call json%rename({list_var}, '{member.name.lower()}')",
                     f"call json%add({parent_json_var}, {list_var})",
                 )
             )
@@ -430,7 +408,7 @@ class Converter(pydantic.BaseModel):
         ]
 
         all_imports: dict[str, list[str]] = {}
-        for member in struct.info.members.values():
+        for member in struct.members.values():
             member_dump = self.get_json_dump_code(
                 struct=struct,
                 struct_var=struct_var,
@@ -549,7 +527,7 @@ def get_used_structures(
         return seen
 
     seen.add(struct.name.lower())
-    for member in struct.info.members.values():
+    for member in struct.members.values():
         type_name = member.type.lower()
         if type_name in structures and type_name not in seen:
             seen.add(type_name)
@@ -570,8 +548,8 @@ def make_struct_tree(structures: dict[str, Structure]) -> dict[str, set[str]]:
 
 def convert_all(
     source: SourceConfig,
-    structs: StructureFile,
-    importable: dict[SourceConfig, StructureFile],
+    structs: list[Structure],
+    importable: dict[SourceConfig, list[Structure]],
 ):
     conv = Converter(structs=structs, importable=importable)
     fortran = FortranSource(module=source.fortran_filename.stem)
@@ -593,7 +571,7 @@ def convert_all(
     logger.info("Total structures: %d", len(conv.seen))
 
 
-def dump_usage_tree(structs: StructureFile):
+def dump_usage_tree(structs: list[Structure]):
     conv = Converter(structs=structs)
     return make_struct_tree(conv.by_bmad_name)
 

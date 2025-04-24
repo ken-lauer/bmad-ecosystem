@@ -39,7 +39,7 @@ subroutine R_XY_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=46 definition='REAL(DP) A(2)' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='REAL' python_type='float' size='DP' dimension='2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=46 definition='REAL(DP) A(2)' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='REAL' size='DP' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%A, 1), ubound(input%A, 1)
     call json%create_real(json_val, input%A(i1), '')
@@ -99,7 +99,7 @@ subroutine T_XYZ_to_json (input, json_root, depth)
   call json%add(json_root, 'sixtrack', input%SIXTRACK)
   call json%add(json_root, 'l_design', input%L_DESIGN)
   call json%add(json_root, 'dl_sixtrack', input%DL_SIXTRACK)
-  !line=56 definition='REAL(DP) D(3),DL' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' python_name='d' type='REAL' python_type='float' size='DP' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=56 definition='REAL(DP) D(3),DL' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' type='REAL' size='DP' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'd')
   do i1 = lbound(input%D, 1), ubound(input%D, 1)
     call json%create_real(json_val, input%D(i1), '')
@@ -174,7 +174,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     call json%add(json_root, 'n_mono', int(input%n_mono))
   endif
   if (associated(input%i)) then
-    !line=151 definition='integer, DIMENSION(:), POINTER   :: i,j' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i' python_name='i' type='integer' python_type='int' size=None dimension=':' comment=',ie,je' fortran_default=None default=0 default_factory=''
+    !line=151 definition='integer, DIMENSION(:), POINTER   :: i,j' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i' type='integer' size=None dimension=':' comment=',ie,je' default=None
     call json%create_array(json_list1, 'i')
     do i1 = lbound(input%i, 1), ubound(input%i, 1)
       call json%create_integer(json_val, input%i(i1), '')
@@ -184,7 +184,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%j)) then
-    !line=151 definition='integer, DIMENSION(:), POINTER   :: i,j' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='j' python_name='j' type='integer' python_type='int' size=None dimension=':' comment=',ie,je' fortran_default=None default=0 default_factory=''
+    !line=151 definition='integer, DIMENSION(:), POINTER   :: i,j' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='j' type='integer' size=None dimension=':' comment=',ie,je' default=None
     call json%create_array(json_list1, 'j')
     do i1 = lbound(input%j, 1), ubound(input%j, 1)
       call json%create_integer(json_val, input%j(i1), '')
@@ -194,7 +194,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%a_x)) then
-    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_x' python_name='a_x' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_x' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%a_x, 2), ubound(input%a_x, 2)
       call json%create_array(json_list1, 'a_x')
@@ -209,7 +209,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%a_y)) then
-    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_y' python_name='a_y' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_y' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%a_y, 2), ubound(input%a_y, 2)
       call json%create_array(json_list1, 'a_y')
@@ -224,7 +224,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%b_x)) then
-    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_x' python_name='b_x' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_x' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%b_x, 2), ubound(input%b_x, 2)
       call json%create_array(json_list1, 'b_x')
@@ -239,7 +239,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%b_y)) then
-    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_y' python_name='b_y' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_y' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%b_y, 2), ubound(input%b_y, 2)
       call json%create_array(json_list1, 'b_y')
@@ -254,7 +254,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%va)) then
-    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='va' python_name='va' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='va' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%va, 2), ubound(input%va, 2)
       call json%create_array(json_list1, 'va')
@@ -269,7 +269,7 @@ subroutine B_CYL_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%vb)) then
-    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='vb' python_name='vb' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=152 definition='real(dp), DIMENSION(:,:), POINTER   :: a_x,a_y,b_x,b_y,va,vb' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='vb' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%vb, 2), ubound(input%vb, 2)
       call json%create_array(json_list1, 'vb')
@@ -312,7 +312,7 @@ subroutine bunch_to_json (input, json_root, depth)
   call json%add(json_root, 'r', int(input%r))
   call json%add(json_root, 'reloaded', int(input%reloaded))
   if (associated(input%stable)) then
-    !line=45 definition='logical, pointer :: stable(:)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='stable' python_name='stable' type='logical' python_type='bool' size=None dimension=':' comment='' fortran_default=None default=False default_factory=''
+    !line=45 definition='logical, pointer :: stable(:)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='stable' type='logical' size=None dimension=':' comment='' default=None
     call json%create_array(json_list1, 'stable')
     do i1 = lbound(input%stable, 1), ubound(input%stable, 1)
       call json%create_logical(json_val, input%stable(i1), '')
@@ -322,7 +322,7 @@ subroutine bunch_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%turn)) then
-    !line=46 definition='real(dp) , pointer :: turn(:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='turn' python_name='turn' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=46 definition='real(dp) , pointer :: turn(:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='turn' type='real' size='dp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'turn')
     do i1 = lbound(input%turn, 1), ubound(input%turn, 1)
       call json%create_real(json_val, input%turn(i1), '')
@@ -394,7 +394,7 @@ subroutine tree_element_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%CC)) then
-    !line=305 definition='real(dp) ,  DIMENSION(:), POINTER :: CC' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='CC' python_name='cc' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=305 definition='real(dp) ,  DIMENSION(:), POINTER :: CC' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='CC' type='real' size='dp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'cc')
     do i1 = lbound(input%CC, 1), ubound(input%CC, 1)
       call json%create_real(json_val, input%CC(i1), '')
@@ -404,7 +404,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fixr)) then
-    !line=306 definition='real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fixr' python_name='fixr' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=306 definition='real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fixr' type='real' size='dp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'fixr')
     do i1 = lbound(input%fixr, 1), ubound(input%fixr, 1)
       call json%create_real(json_val, input%fixr(i1), '')
@@ -414,7 +414,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fix)) then
-    !line=306 definition='real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix' python_name='fix' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=306 definition='real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix' type='real' size='dp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'fix')
     do i1 = lbound(input%fix, 1), ubound(input%fix, 1)
       call json%create_real(json_val, input%fix(i1), '')
@@ -424,7 +424,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fix0)) then
-    !line=306 definition='real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix0' python_name='fix0' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=306 definition='real(dp) ,  DIMENSION(:), POINTER :: fixr,fix,fix0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix0' type='real' size='dp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'fix0')
     do i1 = lbound(input%fix0, 1), ubound(input%fix0, 1)
       call json%create_real(json_val, input%fix0(i1), '')
@@ -434,7 +434,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%JL)) then
-    !line=307 definition='integer,  DIMENSION(:), POINTER :: JL,JV' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='JL' python_name='jl' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default=None default=0 default_factory=''
+    !line=307 definition='integer,  DIMENSION(:), POINTER :: JL,JV' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='JL' type='integer' size=None dimension=':' comment='' default=None
     call json%create_array(json_list1, 'jl')
     do i1 = lbound(input%JL, 1), ubound(input%JL, 1)
       call json%create_integer(json_val, input%JL(i1), '')
@@ -444,7 +444,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%JV)) then
-    !line=307 definition='integer,  DIMENSION(:), POINTER :: JL,JV' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='JV' python_name='jv' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default=None default=0 default_factory=''
+    !line=307 definition='integer,  DIMENSION(:), POINTER :: JL,JV' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='JV' type='integer' size=None dimension=':' comment='' default=None
     call json%create_array(json_list1, 'jv')
     do i1 = lbound(input%JV, 1), ubound(input%JV, 1)
       call json%create_integer(json_val, input%JV(i1), '')
@@ -463,7 +463,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     call json%add(json_root, 'no', int(input%no))
   endif
   if (associated(input%e_ij)) then
-    !line=309 definition='real(dp), pointer :: e_ij(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_ij' python_name='e_ij' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=309 definition='real(dp), pointer :: e_ij(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_ij' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%e_ij, 2), ubound(input%e_ij, 2)
       call json%create_array(json_list1, 'e_ij')
@@ -478,7 +478,7 @@ subroutine tree_element_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%rad)) then
-    !line=310 definition='real(dp), pointer :: rad(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='rad' python_name='rad' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=310 definition='real(dp), pointer :: rad(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='rad' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%rad, 2), ubound(input%rad, 2)
       call json%create_array(json_list1, 'rad')
@@ -534,7 +534,7 @@ subroutine spinor_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=162 definition='real(dp) x(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='real' python_type='float' size='dp' dimension='3' comment='x(3) = (s_x, s_y, s_z)   with  |s|=1' fortran_default=None default=0.0 default_factory=''
+  !line=162 definition='real(dp) x(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='real' size='dp' dimension='3' comment='x(3) = (s_x, s_y, s_z)   with  |s|=1' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call json%create_real(json_val, input%x(i1), '')
@@ -566,7 +566,7 @@ subroutine quaternion_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=127 definition='real(dp) x(0:3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='real' python_type='float' size='dp' dimension='0:3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=127 definition='real(dp) x(0:3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='real' size='dp' dimension='0:3' comment='' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call json%create_real(json_val, input%x(i1), '')
@@ -598,7 +598,7 @@ subroutine probe_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=347 definition='real(dp) x(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=347 definition='real(dp) x(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='real' size='dp' dimension='6' comment='' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call json%create_real(json_val, input%x(i1), '')
@@ -606,7 +606,7 @@ subroutine probe_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=348 definition='type(spinor) s(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spinor', static=False, target=False, value=False, volatile=False, attributes=()) name='s' python_name='s' type='type' python_type='Spinor' size='spinor' dimension='3' comment='' fortran_default=None default=None default_factory=''
+  !line=348 definition='type(spinor) s(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spinor', static=False, target=False, value=False, volatile=False, attributes=()) name='s' type='type' size='spinor' dimension='3' comment='' default=None
   call json%create_array(json_list1, 's')
   do i1 = lbound(input%s, 1), ubound(input%s, 1)
     call spinor_to_json(input%s(i1), json_val, depth + 1)
@@ -617,7 +617,7 @@ subroutine probe_to_json (input, json_root, depth)
   call quaternion_to_json(input%q, json_val, depth + 1)
   call json%rename(json_val, 'q')
   call json%add(json_root, json_val)
-  !line=350 definition='type(rf_phasor)  AC(nacmax)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rf_phasor', static=False, target=False, value=False, volatile=False, attributes=()) name='AC' python_name='ac' type='type' python_type='RfPhasor' size='rf_phasor' dimension='nacmax' comment='' fortran_default=None default=None default_factory=''
+  !line=350 definition='type(rf_phasor)  AC(nacmax)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rf_phasor', static=False, target=False, value=False, volatile=False, attributes=()) name='AC' type='type' size='rf_phasor' dimension='nacmax' comment='' default=None
   call json%create_array(json_list1, 'ac')
   do i1 = lbound(input%AC, 1), ubound(input%AC, 1)
     call rf_phasor_to_json(input%AC(i1), json_val, depth + 1)
@@ -666,7 +666,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     call json%add(json_root, 'kind', int(input%kind))
   endif
   if (associated(input%bpm)) then
-    !line=18 definition='real(dp), pointer :: bpm(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bpm' python_name='bpm' type='real' python_type='float' size='dp' dimension=':,:' comment='store fake experiment from alex_track_monitors' fortran_default=None default=0.0 default_factory=''
+    !line=18 definition='real(dp), pointer :: bpm(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bpm' type='real' size='dp' dimension=':,:' comment='store fake experiment from alex_track_monitors' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%bpm, 2), ubound(input%bpm, 2)
       call json%create_array(json_list1, 'bpm')
@@ -681,7 +681,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%r)) then
-    !line=19 definition='real(dp), pointer :: r(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' python_name='r' type='real' python_type='float' size='dp' dimension=':,:' comment='store fake experiment from alex_track_monitors' fortran_default=None default=0.0 default_factory=''
+    !line=19 definition='real(dp), pointer :: r(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='dp' dimension=':,:' comment='store fake experiment from alex_track_monitors' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%r, 2), ubound(input%r, 2)
       call json%create_array(json_list1, 'r')
@@ -696,7 +696,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%xf)) then
-    !line=20 definition='real(dp), pointer :: xf(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='xf' python_name='xf' type='real' python_type='float' size='dp' dimension=':,:' comment='real data put here' fortran_default=None default=0.0 default_factory=''
+    !line=20 definition='real(dp), pointer :: xf(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='xf' type='real' size='dp' dimension=':,:' comment='real data put here' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%xf, 2), ubound(input%xf, 2)
       call json%create_array(json_list1, 'xf')
@@ -711,7 +711,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%xn)) then
-    !line=21 definition='real(dp), pointer :: xn(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='xn' python_name='xn' type='real' python_type='float' size='dp' dimension=':,:' comment='real data put here' fortran_default=None default=0.0 default_factory=''
+    !line=21 definition='real(dp), pointer :: xn(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='xn' type='real' size='dp' dimension=':,:' comment='real data put here' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%xn, 2), ubound(input%xn, 2)
       call json%create_array(json_list1, 'xn')
@@ -726,7 +726,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%mom)) then
-    !line=22 definition='real(dp), pointer :: mom(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mom' python_name='mom' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=22 definition='real(dp), pointer :: mom(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mom' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%mom, 2), ubound(input%mom, 2)
       call json%create_array(json_list1, 'mom')
@@ -741,7 +741,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%A)) then
-    !line=23 definition='real(dp), pointer :: A(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=23 definition='real(dp), pointer :: A(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%A, 2), ubound(input%A, 2)
       call json%create_array(json_list1, 'a')
@@ -756,7 +756,7 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%At)) then
-    !line=24 definition='real(dp), pointer :: At(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='At' python_name='at' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=24 definition='real(dp), pointer :: At(:,:)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='At' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%At, 2), ubound(input%At, 2)
       call json%create_array(json_list1, 'at')
@@ -795,7 +795,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=120 definition='real(dp)  a(3),b(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension='3' comment='Centre of entrance and exit faces' fortran_default=None default=0.0 default_factory=''
+  !line=120 definition='real(dp)  a(3),b(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension='3' comment='Centre of entrance and exit faces' default=None
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call json%create_real(json_val, input%a(i1), '')
@@ -803,7 +803,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=120 definition='real(dp)  a(3),b(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' python_name='b' type='real' python_type='float' size='dp' dimension='3' comment='Centre of entrance and exit faces' fortran_default=None default=0.0 default_factory=''
+  !line=120 definition='real(dp)  a(3),b(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' type='real' size='dp' dimension='3' comment='Centre of entrance and exit faces' default=None
   call json%create_array(json_list1, 'b')
   do i1 = lbound(input%b, 1), ubound(input%b, 1)
     call json%create_real(json_val, input%b(i1), '')
@@ -811,7 +811,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=121 definition='real(dp)  ent(3,3),exi(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' python_name='ent' type='real' python_type='float' size='dp' dimension='3,3' comment='entrace and exit frames for drawing magnet faces' fortran_default=None default=0.0 default_factory=''
+  !line=121 definition='real(dp)  ent(3,3),exi(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' type='real' size='dp' dimension='3,3' comment='entrace and exit frames for drawing magnet faces' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
     call json%create_array(json_list1, 'ent')
@@ -824,7 +824,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=121 definition='real(dp)  ent(3,3),exi(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='exi' python_name='exi' type='real' python_type='float' size='dp' dimension='3,3' comment='entrace and exit frames for drawing magnet faces' fortran_default=None default=0.0 default_factory=''
+  !line=121 definition='real(dp)  ent(3,3),exi(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='exi' type='real' size='dp' dimension='3,3' comment='entrace and exit frames for drawing magnet faces' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%exi, 2), ubound(input%exi, 2)
     call json%create_array(json_list1, 'exi')
@@ -839,7 +839,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   nullify(json_list2)
   call json%add(json_root, 'wx', input%wx)
   call json%add(json_root, 'wy', input%wy)
-  !line=123 definition='real(dp)  o(3),mid(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='o' python_name='o' type='real' python_type='float' size='dp' dimension='3' comment='frames at the point of tracking' fortran_default=None default=0.0 default_factory=''
+  !line=123 definition='real(dp)  o(3),mid(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='o' type='real' size='dp' dimension='3' comment='frames at the point of tracking' default=None
   call json%create_array(json_list1, 'o')
   do i1 = lbound(input%o, 1), ubound(input%o, 1)
     call json%create_real(json_val, input%o(i1), '')
@@ -847,7 +847,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=123 definition='real(dp)  o(3),mid(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mid' python_name='mid' type='real' python_type='float' size='dp' dimension='3,3' comment='frames at the point of tracking' fortran_default=None default=0.0 default_factory=''
+  !line=123 definition='real(dp)  o(3),mid(3,3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mid' type='real' size='dp' dimension='3,3' comment='frames at the point of tracking' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%mid, 2), ubound(input%mid, 2)
     call json%create_array(json_list1, 'mid')
@@ -860,7 +860,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=124 definition='real(dp)  reference_ray(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='reference_ray' python_name='reference_ray' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=124 definition='real(dp)  reference_ray(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='reference_ray' type='real' size='dp' dimension='6' comment='' default=None
   call json%create_array(json_list1, 'reference_ray')
   do i1 = lbound(input%reference_ray, 1), ubound(input%reference_ray, 1)
     call json%create_real(json_val, input%reference_ray(i1), '')
@@ -868,7 +868,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=125 definition='real(dp) x(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='real' python_type='float' size='dp' dimension='6' comment='ray tracked with reference_ray using a  type(beam)' fortran_default=None default=0.0 default_factory=''
+  !line=125 definition='real(dp) x(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='real' size='dp' dimension='6' comment='ray tracked with reference_ray using a  type(beam)' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call json%create_real(json_val, input%x(i1), '')
@@ -876,7 +876,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=126 definition='real(dp) r0(3),r(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' python_name='r0' type='real' python_type='float' size='dp' dimension='3' comment='ray position global returned' fortran_default=None default=0.0 default_factory=''
+  !line=126 definition='real(dp) r0(3),r(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='dp' dimension='3' comment='ray position global returned' default=None
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -884,7 +884,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=126 definition='real(dp) r0(3),r(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' python_name='r' type='real' python_type='float' size='dp' dimension='3' comment='ray position global returned' fortran_default=None default=0.0 default_factory=''
+  !line=126 definition='real(dp) r0(3),r(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='dp' dimension='3' comment='ray position global returned' default=None
   call json%create_array(json_list1, 'r')
   do i1 = lbound(input%r, 1), ubound(input%r, 1)
     call json%create_real(json_val, input%r(i1), '')
@@ -893,7 +893,7 @@ subroutine three_d_info_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'scale', input%scale)
-  !line=128 definition='logical(lp) u(2)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lp', static=False, target=False, value=False, volatile=False, attributes=()) name='u' python_name='u' type='logical' python_type='bool' size='lp' dimension='2' comment='unstable flag for both ray and reference_ray' fortran_default=None default=False default_factory=''
+  !line=128 definition='logical(lp) u(2)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lp', static=False, target=False, value=False, volatile=False, attributes=()) name='u' type='logical' size='lp' dimension='2' comment='unstable flag for both ray and reference_ray' default=None
   call json%create_array(json_list1, 'u')
   do i1 = lbound(input%u, 1), ubound(input%u, 1)
     call json%create_logical(json_val, input%u(i1), '')
@@ -925,10 +925,10 @@ subroutine EL_LIST_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call json%add(json_root, 'L', input%L)
+  call json%add(json_root, 'l', input%L)
   call json%add(json_root, 'ld', input%LD)
   call json%add(json_root, 'lc', input%LC)
-  !line=59 definition='real(dp) L,LD,LC,K(NMAX),KS(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='K' python_name='k' type='real' python_type='float' size='dp' dimension='NMAX' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=59 definition='real(dp) L,LD,LC,K(NMAX),KS(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='K' type='real' size='dp' dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'k')
   do i1 = lbound(input%K, 1), ubound(input%K, 1)
     call json%create_real(json_val, input%K(i1), '')
@@ -936,7 +936,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=59 definition='real(dp) L,LD,LC,K(NMAX),KS(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='KS' python_name='ks' type='real' python_type='float' size='dp' dimension='NMAX' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=59 definition='real(dp) L,LD,LC,K(NMAX),KS(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='KS' type='real' size='dp' dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'ks')
   do i1 = lbound(input%KS, 1), ubound(input%KS, 1)
     call json%create_real(json_val, input%KS(i1), '')
@@ -944,7 +944,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=60 definition='real(dp) ang(3),t(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ang' python_name='ang' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=60 definition='real(dp) ang(3),t(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ang' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'ang')
   do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
     call json%create_real(json_val, input%ang(i1), '')
@@ -952,7 +952,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=60 definition='real(dp) ang(3),t(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='t' python_name='t' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=60 definition='real(dp) ang(3),t(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='t' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 't')
   do i1 = lbound(input%t, 1), ubound(input%t, 1)
     call json%create_real(json_val, input%t(i1), '')
@@ -960,7 +960,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=61 definition='real(dp) angi(3),ti(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='angi' python_name='angi' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=61 definition='real(dp) angi(3),ti(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='angi' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'angi')
   do i1 = lbound(input%angi, 1), ubound(input%angi, 1)
     call json%create_real(json_val, input%angi(i1), '')
@@ -968,7 +968,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=61 definition='real(dp) angi(3),ti(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ti' python_name='ti' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=61 definition='real(dp) angi(3),ti(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ti' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'ti')
   do i1 = lbound(input%ti, 1), ubound(input%ti, 1)
     call json%create_real(json_val, input%ti(i1), '')
@@ -1013,7 +1013,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   call json%add(json_root, 'method', int(input%method))
   call json%add(json_root, 'aperture_on', input%APERTURE_ON)
   call json%add(json_root, 'aperture_kind', int(input%APERTURE_KIND))
-  !line=75 definition='REAL(DP) APERTURE_R(2),APERTURE_X,APERTURE_Y,APERTURE_DX,APERTURE_DY' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='APERTURE_R' python_name='aperture_r' type='REAL' python_type='float' size='DP' dimension='2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=75 definition='REAL(DP) APERTURE_R(2),APERTURE_X,APERTURE_Y,APERTURE_DX,APERTURE_DY' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='APERTURE_R' type='REAL' size='DP' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'aperture_r')
   do i1 = lbound(input%APERTURE_R, 1), ubound(input%APERTURE_R, 1)
     call json%create_real(json_val, input%APERTURE_R(i1), '')
@@ -1027,7 +1027,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   call json%add(json_root, 'aperture_dy', input%APERTURE_DY)
   call json%add(json_root, 'aperture_polygn', int(input%APERTURE_POLYGN))
   if (associated(input%APERTURE_POLYGX)) then
-    !line=77 definition='REAL(DP), pointer, dimension (:) :: APERTURE_POLYGX => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='APERTURE_POLYGX' python_name='aperture_polygx' type='REAL' python_type='float' size='DP' dimension=':' comment='length defined with APERTURE_POLYGN' fortran_default='null()' default=0.0 default_factory=''
+    !line=77 definition='REAL(DP), pointer, dimension (:) :: APERTURE_POLYGX => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='APERTURE_POLYGX' type='REAL' size='DP' dimension=':' comment='length defined with APERTURE_POLYGN' default='null()'
     call json%create_array(json_list1, 'aperture_polygx')
     do i1 = lbound(input%APERTURE_POLYGX, 1), ubound(input%APERTURE_POLYGX, 1)
       call json%create_real(json_val, input%APERTURE_POLYGX(i1), '')
@@ -1037,7 +1037,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%APERTURE_POLYGY)) then
-    !line=78 definition='REAL(DP), pointer, dimension (:) :: APERTURE_POLYGY => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='APERTURE_POLYGY' python_name='aperture_polygy' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=78 definition='REAL(DP), pointer, dimension (:) :: APERTURE_POLYGY => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='APERTURE_POLYGY' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'aperture_polygy')
     do i1 = lbound(input%APERTURE_POLYGY, 1), ubound(input%APERTURE_POLYGY, 1)
       call json%create_real(json_val, input%APERTURE_POLYGY(i1), '')
@@ -1059,7 +1059,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   call json%add(json_root, 'usethin', input%usethin)
   call json%add(json_root, 'n_bessel', int(input%N_BESSEL))
   call json%add(json_root, 'n_ac', int(input%n_ac))
-  !line=86 definition='REAL(DP) d_bn(NMAX), d_an(NMAX)' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='d_bn' python_name='d_bn' type='REAL' python_type='float' size='DP' dimension='NMAX' comment='oscillation amplitudes of multipoles (modulation)' fortran_default=None default=0.0 default_factory=''
+  !line=86 definition='REAL(DP) d_bn(NMAX), d_an(NMAX)' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='d_bn' type='REAL' size='DP' dimension='NMAX' comment='oscillation amplitudes of multipoles (modulation)' default=None
   call json%create_array(json_list1, 'd_bn')
   do i1 = lbound(input%d_bn, 1), ubound(input%d_bn, 1)
     call json%create_real(json_val, input%d_bn(i1), '')
@@ -1067,7 +1067,7 @@ subroutine EL_LIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=86 definition='REAL(DP) d_bn(NMAX), d_an(NMAX)' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='d_an' python_name='d_an' type='REAL' python_type='float' size='DP' dimension='NMAX' comment='oscillation amplitudes of multipoles (modulation)' fortran_default=None default=0.0 default_factory=''
+  !line=86 definition='REAL(DP) d_bn(NMAX), d_an(NMAX)' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='d_an' type='REAL' size='DP' dimension='NMAX' comment='oscillation amplitudes of multipoles (modulation)' default=None
   call json%create_array(json_list1, 'd_an')
   do i1 = lbound(input%d_an, 1), ubound(input%d_an, 1)
     call json%create_real(json_val, input%d_an(i1), '')
@@ -1263,7 +1263,7 @@ subroutine CONTROL_to_json (input, json_root, depth)
     call json%add(json_root, 'sector_nmul', int(input%SECTOR_NMUL))
   endif
   if (associated(input%wedge_coeff)) then
-    !line=322 definition='real(dp), pointer :: wedge_coeff(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='wedge_coeff' python_name='wedge_coeff' type='real' python_type='float' size='dp' dimension=':' comment='QUAD_KICK IN WEDGE' fortran_default='null()' default=0.0 default_factory=''
+    !line=322 definition='real(dp), pointer :: wedge_coeff(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='wedge_coeff' type='real' size='dp' dimension=':' comment='QUAD_KICK IN WEDGE' default='null()'
     call json%create_array(json_list1, 'wedge_coeff')
     do i1 = lbound(input%wedge_coeff, 1), ubound(input%wedge_coeff, 1)
       call json%create_real(json_val, input%wedge_coeff(i1), '')
@@ -1386,7 +1386,7 @@ subroutine my_1D_taylor_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1484 definition='real(dp) a(0:N_my_1D_taylor)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension='0:N_my_1D_taylor' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=1484 definition='real(dp) a(0:N_my_1D_taylor)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension='0:N_my_1D_taylor' comment='' default=None
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call json%create_real(json_val, input%a(i1), '')
@@ -1418,7 +1418,7 @@ subroutine my_linear_taylor_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1994 definition='complex(dp) a(0:n_mono)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='complex' python_type='Complex' size='dp' dimension='0:n_mono' comment='@2  &nbsp; Taylor series \x83e\x83C\x83\x89\x81[\x93W\x8aJ\x81i\x83e\x83C\x83\x89\x81[\x82Ä\x82ñ\x82©\x82¢) \x95\x82\x93®\x8f¬\x90\x94\x93_\x90\x94\x81i\x82Ó\x82Ç\x82¤\x82µ\x82å\x82¤\x82·\x82¤\x82Ä\x82ñ\x82·\x82¤\x81j' fortran_default=None default=0.0 default_factory=''
+  !line=1994 definition='complex(dp) a(0:n_mono)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='complex' size='dp' dimension='0:n_mono' comment='@2  &nbsp; Taylor series \x83e\x83C\x83\x89\x81[\x93W\x8aJ\x81i\x83e\x83C\x83\x89\x81[\x82Ä\x82ñ\x82©\x82¢) \x95\x82\x93®\x8f¬\x90\x94\x93_\x90\x94\x81i\x82Ó\x82Ç\x82¤\x82µ\x82å\x82¤\x82·\x82¤\x82Ä\x82ñ\x82·\x82¤\x81j' default=None
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call complex_to_json(input%a(i1), json_val, depth + 1)
@@ -1450,7 +1450,7 @@ subroutine sub_taylor_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=79 definition='INTEGER j(lnv)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='j' python_name='j' type='INTEGER' python_type='int' size=None dimension='lnv' comment='' fortran_default=None default=0 default_factory=''
+  !line=79 definition='INTEGER j(lnv)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='j' type='INTEGER' size=None dimension='lnv' comment='' default=None
   call json%create_array(json_list1, 'j')
   do i1 = lbound(input%j, 1), ubound(input%j, 1)
     call json%create_integer(json_val, input%j(i1), '')
@@ -1512,7 +1512,7 @@ subroutine UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
   call json%add(json_root, 'n', int(input%N))
   call json%add(json_root, 'nv', int(input%NV))
   if (associated(input%C)) then
-    !line=96 definition='REAL(DP), POINTER,dimension(:)::C' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='C' python_name='c' type='REAL' python_type='float' size='DP' dimension=':' comment='Coefficients C(N)' fortran_default=None default=0.0 default_factory=''
+    !line=96 definition='REAL(DP), POINTER,dimension(:)::C' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='C' type='REAL' size='DP' dimension=':' comment='Coefficients C(N)' default=None
     call json%create_array(json_list1, 'c')
     do i1 = lbound(input%C, 1), ubound(input%C, 1)
       call json%create_real(json_val, input%C(i1), '')
@@ -1522,7 +1522,7 @@ subroutine UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%J)) then
-    !line=97 definition='INTEGER, POINTER,dimension(:,:)::J' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='J' python_name='j' type='INTEGER' python_type='int' size=None dimension=':,:' comment='Exponents of each coefficients J(N,NV)' fortran_default=None default=0 default_factory=''
+    !line=97 definition='INTEGER, POINTER,dimension(:,:)::J' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='J' type='INTEGER' size=None dimension=':,:' comment='Exponents of each coefficients J(N,NV)' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%J, 2), ubound(input%J, 2)
       call json%create_array(json_list1, 'j')
@@ -1564,7 +1564,7 @@ subroutine c_UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
   call json%add(json_root, 'nv', int(input%NV))
   call json%add(json_root, 'nd2', int(input%nd2))
   if (associated(input%C)) then
-    !line=102 definition='complex(DP), POINTER,dimension(:)::C => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='C' python_name='c' type='complex' python_type='Complex' size='DP' dimension=':' comment='Coefficients C(N)' fortran_default='null()' default=0.0 default_factory=''
+    !line=102 definition='complex(DP), POINTER,dimension(:)::C => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='C' type='complex' size='DP' dimension=':' comment='Coefficients C(N)' default='null()'
     call json%create_array(json_list1, 'c')
     do i1 = lbound(input%C, 1), ubound(input%C, 1)
       call complex_to_json(input%C(i1), json_val, depth + 1)
@@ -1574,7 +1574,7 @@ subroutine c_UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%J)) then
-    !line=103 definition='INTEGER, POINTER,dimension(:,:)::J=> null()' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='J' python_name='j' type='INTEGER' python_type='int' size=None dimension=':,:' comment='Exponents of each coefficients J(N,NV)' fortran_default='null()' default=0 default_factory=''
+    !line=103 definition='INTEGER, POINTER,dimension(:,:)::J=> null()' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='J' type='INTEGER' size=None dimension=':,:' comment='Exponents of each coefficients J(N,NV)' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%J, 2), ubound(input%J, 2)
       call json%create_array(json_list1, 'j')
@@ -1674,7 +1674,7 @@ subroutine complex_quaternion_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=131 definition='complex(dp) x(0:3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='complex' python_type='Complex' size='dp' dimension='0:3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=131 definition='complex(dp) x(0:3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='complex' size='dp' dimension='0:3' comment='' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call complex_to_json(input%x(i1), json_val, depth + 1)
@@ -1706,7 +1706,7 @@ subroutine quaternion_8_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=135 definition='type(real_8) x(0:3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='type' python_type='Real8' size='real_8' dimension='0:3' comment='' fortran_default=None default=None default_factory=''
+  !line=135 definition='type(real_8) x(0:3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='type' size='real_8' dimension='0:3' comment='' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call real_8_to_json(input%x(i1), json_val, depth + 1)
@@ -1775,7 +1775,7 @@ subroutine spinor_8_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=166 definition='type(real_8) x(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='type' python_type='Real8' size='real_8' dimension='3' comment='x(3) = (s_x, s_y, s_z)   with  |s|=1' fortran_default=None default=None default_factory=''
+  !line=166 definition='type(real_8) x(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='type' size='real_8' dimension='3' comment='x(3) = (s_x, s_y, s_z)   with  |s|=1' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call real_8_to_json(input%x(i1), json_val, depth + 1)
@@ -1893,7 +1893,7 @@ subroutine DAMAP_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=190 definition='TYPE (TAYLOR) V(ndim2)' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='TAYLOR', static=False, target=False, value=False, volatile=False, attributes=()) name='V' python_name='v' type='TYPE' python_type='Taylor' size='TAYLOR' dimension='ndim2' comment='Ndim2=6 but allocated to nd2=2,4,6 ! etienne_oct_2004' fortran_default=None default=None default_factory=''
+  !line=190 definition='TYPE (TAYLOR) V(ndim2)' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='TAYLOR', static=False, target=False, value=False, volatile=False, attributes=()) name='V' type='TYPE' size='TAYLOR' dimension='ndim2' comment='Ndim2=6 but allocated to nd2=2,4,6 ! etienne_oct_2004' default=None
   call json%create_array(json_list1, 'v')
   do i1 = lbound(input%V, 1), ubound(input%V, 1)
     call TAYLOR_to_json(input%V(i1), json_val, depth + 1)
@@ -1925,7 +1925,7 @@ subroutine GMAP_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=196 definition='TYPE (TAYLOR) V(lnv)' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='TAYLOR', static=False, target=False, value=False, volatile=False, attributes=()) name='V' python_name='v' type='TYPE' python_type='Taylor' size='TAYLOR' dimension='lnv' comment='' fortran_default=None default=None default_factory=''
+  !line=196 definition='TYPE (TAYLOR) V(lnv)' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='TAYLOR', static=False, target=False, value=False, volatile=False, attributes=()) name='V' type='TYPE' size='TAYLOR' dimension='lnv' comment='' default=None
   call json%create_array(json_list1, 'v')
   do i1 = lbound(input%V, 1), ubound(input%V, 1)
     call TAYLOR_to_json(input%V(i1), json_val, depth + 1)
@@ -1958,7 +1958,7 @@ subroutine vecfield_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=202 definition='type (taylor) v(ndim2)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' python_name='v' type='type' python_type='Taylor' size='taylor' dimension='ndim2' comment='@1 <font face="Times New Roman">V<sub>i</sub>&#8706;<sub>i</sub></font> Operator' fortran_default=None default=None default_factory=''
+  !line=202 definition='type (taylor) v(ndim2)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' type='type' size='taylor' dimension='ndim2' comment='@1 <font face="Times New Roman">V<sub>i</sub>&#8706;<sub>i</sub></font> Operator' default=None
   call json%create_array(json_list1, 'v')
   do i1 = lbound(input%v, 1), ubound(input%v, 1)
     call taylor_to_json(input%v(i1), json_val, depth + 1)
@@ -2020,7 +2020,7 @@ subroutine tree_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=216 definition='type (taylor) branch(ndim2)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' python_name='branch' type='type' python_type='Taylor' size='taylor' dimension='ndim2' comment='' fortran_default=None default=None default_factory=''
+  !line=216 definition='type (taylor) branch(ndim2)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' type='type' size='taylor' dimension='ndim2' comment='' default=None
   call json%create_array(json_list1, 'branch')
   do i1 = lbound(input%branch, 1), ubound(input%branch, 1)
     call taylor_to_json(input%branch(i1), json_val, depth + 1)
@@ -2052,7 +2052,7 @@ subroutine DRAGTFINN_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=227 definition='real(dp)  constant(ndim2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='constant' python_name='constant' type='real' python_type='float' size='dp' dimension='ndim2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=227 definition='real(dp)  constant(ndim2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='constant' type='real' size='dp' dimension='ndim2' comment='' default=None
   call json%create_array(json_list1, 'constant')
   do i1 = lbound(input%constant, 1), ubound(input%constant, 1)
     call json%create_real(json_val, input%constant(i1), '')
@@ -2093,7 +2093,7 @@ subroutine reversedragtfinn_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=234 definition='real(dp)  CONSTANT(NDIM2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='CONSTANT' python_name='constant' type='real' python_type='float' size='dp' dimension='NDIM2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=234 definition='real(dp)  CONSTANT(NDIM2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='CONSTANT' type='real' size='dp' dimension='NDIM2' comment='' default=None
   call json%create_array(json_list1, 'constant')
   do i1 = lbound(input%CONSTANT, 1), ubound(input%CONSTANT, 1)
     call json%create_real(json_val, input%CONSTANT(i1), '')
@@ -2180,7 +2180,7 @@ subroutine normalform_to_json (input, json_root, depth)
   call damap_to_json(input%DHDJ, json_val, depth + 1)
   call json%rename(json_val, 'DHDJ')
   call json%add(json_root, json_val)
-  !line=253 definition='real(dp) TUNE(NDIM),DAMPING(NDIM)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TUNE' python_name='tune' type='real' python_type='float' size='dp' dimension='NDIM' comment='@1 linear tune and linear damping' fortran_default=None default=0.0 default_factory=''
+  !line=253 definition='real(dp) TUNE(NDIM),DAMPING(NDIM)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TUNE' type='real' size='dp' dimension='NDIM' comment='@1 linear tune and linear damping' default=None
   call json%create_array(json_list1, 'tune')
   do i1 = lbound(input%TUNE, 1), ubound(input%TUNE, 1)
     call json%create_real(json_val, input%TUNE(i1), '')
@@ -2188,7 +2188,7 @@ subroutine normalform_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=253 definition='real(dp) TUNE(NDIM),DAMPING(NDIM)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='DAMPING' python_name='damping' type='real' python_type='float' size='dp' dimension='NDIM' comment='@1 linear tune and linear damping' fortran_default=None default=0.0 default_factory=''
+  !line=253 definition='real(dp) TUNE(NDIM),DAMPING(NDIM)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='DAMPING' type='real' size='dp' dimension='NDIM' comment='@1 linear tune and linear damping' default=None
   call json%create_array(json_list1, 'damping')
   do i1 = lbound(input%DAMPING, 1), ubound(input%DAMPING, 1)
     call json%create_real(json_val, input%DAMPING(i1), '')
@@ -2199,7 +2199,7 @@ subroutine normalform_to_json (input, json_root, depth)
   call json%add(json_root, 'nord', int(input%nord))
   call json%add(json_root, 'jtune', int(input%jtune))
   call json%add(json_root, 'nres', int(input%NRES))
-  !line=255 definition='integer NRES,M(NDIM,NRESO),PLANE(NDIM)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='M' python_name='m' type='integer' python_type='int' size=None dimension='NDIM,NRESO' comment='@1 NRES,M(NDIM,NRESO) -> resonances left in the map' fortran_default=None default=0 default_factory=''
+  !line=255 definition='integer NRES,M(NDIM,NRESO),PLANE(NDIM)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='M' type='integer' size=None dimension='NDIM,NRESO' comment='@1 NRES,M(NDIM,NRESO) -> resonances left in the map' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%M, 2), ubound(input%M, 2)
     call json%create_array(json_list1, 'm')
@@ -2212,7 +2212,7 @@ subroutine normalform_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=255 definition='integer NRES,M(NDIM,NRESO),PLANE(NDIM)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='PLANE' python_name='plane' type='integer' python_type='int' size=None dimension='NDIM' comment='@1 NRES,M(NDIM,NRESO) -> resonances left in the map' fortran_default=None default=0 default_factory=''
+  !line=255 definition='integer NRES,M(NDIM,NRESO),PLANE(NDIM)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='PLANE' type='integer' size=None dimension='NDIM' comment='@1 NRES,M(NDIM,NRESO) -> resonances left in the map' default=None
   call json%create_array(json_list1, 'plane')
   do i1 = lbound(input%PLANE, 1), ubound(input%PLANE, 1)
     call json%create_integer(json_val, input%PLANE(i1), '')
@@ -2251,7 +2251,7 @@ subroutine genfield_to_json (input, json_root, depth)
   call damap_to_json(input%m, json_val, depth + 1)
   call json%rename(json_val, 'm')
   call json%add(json_root, json_val)
-  !line=262 definition='type (taylor) d(ndim,ndim)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='d' python_name='d' type='type' python_type='Taylor' size='taylor' dimension='ndim,ndim' comment='' fortran_default=None default=None default_factory=''
+  !line=262 definition='type (taylor) d(ndim,ndim)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='d' type='type' size='taylor' dimension='ndim,ndim' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%d, 2), ubound(input%d, 2)
     call json%create_array(json_list1, 'd')
@@ -2273,7 +2273,7 @@ subroutine genfield_to_json (input, json_root, depth)
   call damap_to_json(input%mt, json_val, depth + 1)
   call json%rename(json_val, 'mt')
   call json%add(json_root, json_val)
-  !line=266 definition='real(dp) constant(ndim2),eps' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='constant' python_name='constant' type='real' python_type='float' size='dp' dimension='ndim2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=266 definition='real(dp) constant(ndim2),eps' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='constant' type='real' size='dp' dimension='ndim2' comment='' default=None
   call json%create_array(json_list1, 'constant')
   do i1 = lbound(input%constant, 1), ubound(input%constant, 1)
     call json%create_real(json_val, input%constant(i1), '')
@@ -2403,7 +2403,7 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%ANGLE)) then
-    !line=5 definition='REAL(DP), POINTER,DIMENSION(:)  ::   ANGLE(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ANGLE' python_name='angle' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=5 definition='REAL(DP), POINTER,DIMENSION(:)  ::   ANGLE(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ANGLE' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'angle')
     do i1 = lbound(input%ANGLE, 1), ubound(input%ANGLE, 1)
       call json%create_real(json_val, input%ANGLE(i1), '')
@@ -2413,7 +2413,7 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%D)) then
-    !line=6 definition='REAL(DP), POINTER,DIMENSION(:)  ::   D(:)     => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' python_name='d' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=6 definition='REAL(DP), POINTER,DIMENSION(:)  ::   D(:)     => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'd')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%create_real(json_val, input%D(i1), '')
@@ -2423,7 +2423,7 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%A)) then
-    !line=7 definition='REAL(DP), POINTER,DIMENSION(:)  ::   A        => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=7 definition='REAL(DP), POINTER,DIMENSION(:)  ::   A        => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%create_real(json_val, input%A(i1), '')
@@ -2433,7 +2433,7 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ENT)) then
-    !line=8 definition='REAL(DP), POINTER,DIMENSION(:,:)::   ENT      => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ENT' python_name='ent' type='REAL' python_type='float' size='DP' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=8 definition='REAL(DP), POINTER,DIMENSION(:,:)::   ENT      => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ENT' type='REAL' size='DP' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%ENT, 2), ubound(input%ENT, 2)
       call json%create_array(json_list1, 'ent')
@@ -2448,7 +2448,7 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%B)) then
-    !line=9 definition='REAL(DP), POINTER,DIMENSION(:)  ::   B        => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=9 definition='REAL(DP), POINTER,DIMENSION(:)  ::   B        => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'b')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call json%create_real(json_val, input%B(i1), '')
@@ -2458,7 +2458,7 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%EXI)) then
-    !line=10 definition='REAL(DP), POINTER,DIMENSION(:,:)::   EXI      => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='EXI' python_name='exi' type='REAL' python_type='float' size='DP' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=10 definition='REAL(DP), POINTER,DIMENSION(:,:)::   EXI      => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='EXI' type='REAL' size='DP' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%EXI, 2), ubound(input%EXI, 2)
       call json%create_array(json_list1, 'exi')
@@ -2497,7 +2497,7 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%A)) then
-    !line=15 definition='REAL(DP), POINTER,DIMENSION(:)  ::   A   => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=15 definition='REAL(DP), POINTER,DIMENSION(:)  ::   A   => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%create_real(json_val, input%A(i1), '')
@@ -2507,7 +2507,7 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ENT)) then
-    !line=16 definition='REAL(DP), POINTER,DIMENSION(:,:)::   ENT => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ENT' python_name='ent' type='REAL' python_type='float' size='DP' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=16 definition='REAL(DP), POINTER,DIMENSION(:,:)::   ENT => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ENT' type='REAL' size='DP' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%ENT, 2), ubound(input%ENT, 2)
       call json%create_array(json_list1, 'ent')
@@ -2522,7 +2522,7 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%O)) then
-    !line=17 definition='REAL(DP), POINTER,DIMENSION(:)  ::   O   => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='O' python_name='o' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=17 definition='REAL(DP), POINTER,DIMENSION(:)  ::   O   => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='O' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'o')
     do i1 = lbound(input%O, 1), ubound(input%O, 1)
       call json%create_real(json_val, input%O(i1), '')
@@ -2532,7 +2532,7 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%MID)) then
-    !line=18 definition='REAL(DP), POINTER,DIMENSION(:,:)::   MID => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='MID' python_name='mid' type='REAL' python_type='float' size='DP' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=18 definition='REAL(DP), POINTER,DIMENSION(:,:)::   MID => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='MID' type='REAL' size='DP' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MID, 2), ubound(input%MID, 2)
       call json%create_array(json_list1, 'mid')
@@ -2547,7 +2547,7 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%B)) then
-    !line=19 definition='REAL(DP), POINTER,DIMENSION(:)  ::   B   => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=19 definition='REAL(DP), POINTER,DIMENSION(:)  ::   B   => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'b')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call json%create_real(json_val, input%B(i1), '')
@@ -2557,7 +2557,7 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%EXI)) then
-    !line=20 definition='REAL(DP), POINTER,DIMENSION(:,:)::   EXI => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='EXI' python_name='exi' type='REAL' python_type='float' size='DP' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=20 definition='REAL(DP), POINTER,DIMENSION(:,:)::   EXI => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='EXI' type='REAL' size='DP' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%EXI, 2), ubound(input%EXI, 2)
       call json%create_array(json_list1, 'exi')
@@ -2608,7 +2608,7 @@ subroutine PATCH_to_json (input, json_root, depth)
   if (associated(input%B_X2)) then
     call json%add(json_root, 'b_x2', int(input%B_X2))
   endif
-  !line=27 definition='REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A_D' python_name='a_d' type='REAL' python_type='float' size='DP' dimension=':' comment='ENTRACE AND EXIT TRANSLATIONS  A_D(3)' fortran_default='null()' default=0.0 default_factory=''
+  !line=27 definition='REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A_D' type='REAL' size='DP' dimension=':' comment='ENTRACE AND EXIT TRANSLATIONS  A_D(3)' default='null()'
   call json%create_array(json_list1, 'a_d')
   do i1 = lbound(input%A_D, 1), ubound(input%A_D, 1)
     call json%create_real(json_val, input%A_D(i1), '')
@@ -2616,7 +2616,7 @@ subroutine PATCH_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=27 definition='REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B_D' python_name='b_d' type='REAL' python_type='float' size='DP' dimension=':' comment='ENTRACE AND EXIT TRANSLATIONS  A_D(3)' fortran_default='null()' default=0.0 default_factory=''
+  !line=27 definition='REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B_D' type='REAL' size='DP' dimension=':' comment='ENTRACE AND EXIT TRANSLATIONS  A_D(3)' default='null()'
   call json%create_array(json_list1, 'b_d')
   do i1 = lbound(input%B_D, 1), ubound(input%B_D, 1)
     call json%create_real(json_val, input%B_D(i1), '')
@@ -2624,7 +2624,7 @@ subroutine PATCH_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=28 definition='REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A_ANG' python_name='a_ang' type='REAL' python_type='float' size='DP' dimension=':' comment='ENTRACE AND EXIT ROTATIONS    A_ANG(3)' fortran_default='null()' default=0.0 default_factory=''
+  !line=28 definition='REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A_ANG' type='REAL' size='DP' dimension=':' comment='ENTRACE AND EXIT ROTATIONS    A_ANG(3)' default='null()'
   call json%create_array(json_list1, 'a_ang')
   do i1 = lbound(input%A_ANG, 1), ubound(input%A_ANG, 1)
     call json%create_real(json_val, input%A_ANG(i1), '')
@@ -2632,7 +2632,7 @@ subroutine PATCH_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=28 definition='REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B_ANG' python_name='b_ang' type='REAL' python_type='float' size='DP' dimension=':' comment='ENTRACE AND EXIT ROTATIONS    A_ANG(3)' fortran_default='null()' default=0.0 default_factory=''
+  !line=28 definition='REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='B_ANG' type='REAL' size='DP' dimension=':' comment='ENTRACE AND EXIT ROTATIONS    A_ANG(3)' default='null()'
   call json%create_array(json_list1, 'b_ang')
   do i1 = lbound(input%B_ANG, 1), ubound(input%B_ANG, 1)
     call json%create_real(json_val, input%B_ANG(i1), '')
@@ -2678,7 +2678,7 @@ subroutine CHART_to_json (input, json_root, depth)
     call json%rename(json_val, 'f')
     call json%add(json_root, json_val)
   endif
-  !line=39 definition='real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_IN' python_name='d_in' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=39 definition='real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_IN' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'd_in')
   do i1 = lbound(input%D_IN, 1), ubound(input%D_IN, 1)
     call json%create_real(json_val, input%D_IN(i1), '')
@@ -2686,7 +2686,7 @@ subroutine CHART_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=39 definition='real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_IN' python_name='ang_in' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=39 definition='real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_IN' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'ang_in')
   do i1 = lbound(input%ANG_IN, 1), ubound(input%ANG_IN, 1)
     call json%create_real(json_val, input%ANG_IN(i1), '')
@@ -2694,7 +2694,7 @@ subroutine CHART_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=40 definition='real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_OUT' python_name='d_out' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=40 definition='real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_OUT' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'd_out')
   do i1 = lbound(input%D_OUT, 1), ubound(input%D_OUT, 1)
     call json%create_real(json_val, input%D_OUT(i1), '')
@@ -2702,7 +2702,7 @@ subroutine CHART_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=40 definition='real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_OUT' python_name='ang_out' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=40 definition='real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_OUT' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'ang_out')
   do i1 = lbound(input%ANG_OUT, 1), ubound(input%ANG_OUT, 1)
     call json%create_real(json_val, input%ANG_OUT(i1), '')
@@ -2734,7 +2734,7 @@ subroutine POL_sagan_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=5 definition='INTEGER ia(n_max)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ia' python_name='ia' type='INTEGER' python_type='int' size=None dimension='n_max' comment='' fortran_default=None default=0 default_factory=''
+  !line=5 definition='INTEGER ia(n_max)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ia' type='INTEGER' size=None dimension='n_max' comment='' default=None
   call json%create_array(json_list1, 'ia')
   do i1 = lbound(input%ia, 1), ubound(input%ia, 1)
     call json%create_integer(json_val, input%ia(i1), '')
@@ -2742,7 +2742,7 @@ subroutine POL_sagan_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=6 definition='real(dp) Sa(n_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='Sa' python_name='sa' type='real' python_type='float' size='dp' dimension='n_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=6 definition='real(dp) Sa(n_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='Sa' type='real' size='dp' dimension='n_max' comment='' default=None
   call json%create_array(json_list1, 'sa')
   do i1 = lbound(input%Sa, 1), ubound(input%Sa, 1)
     call json%create_real(json_val, input%Sa(i1), '')
@@ -2774,7 +2774,7 @@ subroutine POL_BLOCK_sagan_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=11 definition='INTEGER Iinternal(6)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='Iinternal' python_name='iinternal' type='INTEGER' python_type='int' size=None dimension='6' comment='' fortran_default=None default=0 default_factory=''
+  !line=11 definition='INTEGER Iinternal(6)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='Iinternal' type='INTEGER' size=None dimension='6' comment='' default=None
   call json%create_array(json_list1, 'iinternal')
   do i1 = lbound(input%Iinternal, 1), ubound(input%Iinternal, 1)
     call json%create_integer(json_val, input%Iinternal(i1), '')
@@ -2782,7 +2782,7 @@ subroutine POL_BLOCK_sagan_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=12 definition='real(dp) SInternal(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='SInternal' python_name='sinternal' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=12 definition='real(dp) SInternal(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='SInternal' type='real' size='dp' dimension='6' comment='' default=None
   call json%create_array(json_list1, 'sinternal')
   do i1 = lbound(input%SInternal, 1), ubound(input%SInternal, 1)
     call json%create_real(json_val, input%SInternal(i1), '')
@@ -2818,7 +2818,7 @@ subroutine undu_R_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%K)) then
-    !line=17 definition='real(dp), DIMENSION(:,:), pointer :: K=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='K' python_name='k' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=17 definition='real(dp), DIMENSION(:,:), pointer :: K=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='K' type='real' size='dp' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%K, 2), ubound(input%K, 2)
       call json%create_array(json_list1, 'k')
@@ -2833,7 +2833,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%A)) then
-    !line=18 definition='real(dp), DIMENSION(:), pointer :: A=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=18 definition='real(dp), DIMENSION(:), pointer :: A=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%create_real(json_val, input%A(i1), '')
@@ -2843,7 +2843,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%F)) then
-    !line=19 definition='real(dp), DIMENSION(:), pointer :: F=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='F' python_name='f' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=19 definition='real(dp), DIMENSION(:), pointer :: F=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='F' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'f')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call json%create_real(json_val, input%F(i1), '')
@@ -2853,7 +2853,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%x0)) then
-    !line=20 definition='real(dp), DIMENSION(:), pointer :: x0=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' python_name='x0' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=20 definition='real(dp), DIMENSION(:), pointer :: x0=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'x0')
     do i1 = lbound(input%x0, 1), ubound(input%x0, 1)
       call json%create_real(json_val, input%x0(i1), '')
@@ -2863,7 +2863,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%y0)) then
-    !line=21 definition='real(dp), DIMENSION(:), pointer :: y0=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='y0' python_name='y0' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=21 definition='real(dp), DIMENSION(:), pointer :: y0=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='y0' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'y0')
     do i1 = lbound(input%y0, 1), ubound(input%y0, 1)
       call json%create_real(json_val, input%y0(i1), '')
@@ -2873,7 +2873,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%KE)) then
-    !line=22 definition='real(dp), DIMENSION(:,:), pointer :: KE=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='KE' python_name='ke' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=22 definition='real(dp), DIMENSION(:,:), pointer :: KE=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='KE' type='real' size='dp' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%KE, 2), ubound(input%KE, 2)
       call json%create_array(json_list1, 'ke')
@@ -2888,7 +2888,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%AE)) then
-    !line=23 definition='real(dp), DIMENSION(:), pointer :: AE=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' python_name='ae' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=23 definition='real(dp), DIMENSION(:), pointer :: AE=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ae')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call json%create_real(json_val, input%AE(i1), '')
@@ -2898,7 +2898,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%FE)) then
-    !line=24 definition='real(dp), DIMENSION(:), pointer :: FE=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FE' python_name='fe' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=24 definition='real(dp), DIMENSION(:), pointer :: FE=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FE' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'fe')
     do i1 = lbound(input%FE, 1), ubound(input%FE, 1)
       call json%create_real(json_val, input%FE(i1), '')
@@ -2908,7 +2908,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%x0E)) then
-    !line=25 definition='real(dp), DIMENSION(:), pointer :: x0E=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0E' python_name='x0e' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=25 definition='real(dp), DIMENSION(:), pointer :: x0E=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0E' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'x0e')
     do i1 = lbound(input%x0E, 1), ubound(input%x0E, 1)
       call json%create_real(json_val, input%x0E(i1), '')
@@ -2918,7 +2918,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%y0E)) then
-    !line=26 definition='real(dp), DIMENSION(:), pointer :: y0E=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='y0E' python_name='y0e' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=26 definition='real(dp), DIMENSION(:), pointer :: y0E=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='y0E' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'y0e')
     do i1 = lbound(input%y0E, 1), ubound(input%y0E, 1)
       call json%create_real(json_val, input%y0E(i1), '')
@@ -2928,7 +2928,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ex)) then
-    !line=27 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ex' python_name='ex' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=27 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ex' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ex')
     do i1 = lbound(input%ex, 1), ubound(input%ex, 1)
       call json%create_real(json_val, input%ex(i1), '')
@@ -2938,7 +2938,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ey)) then
-    !line=27 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ey' python_name='ey' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=27 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ey' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ey')
     do i1 = lbound(input%ey, 1), ubound(input%ey, 1)
       call json%create_real(json_val, input%ey(i1), '')
@@ -2957,7 +2957,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     call json%add(json_root, 'ne', int(input%ne))
   endif
   if (associated(input%FORM)) then
-    !line=30 definition='integer, DIMENSION(:), pointer :: FORM=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORM' python_name='form' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default='null()' default=0 default_factory=''
+    !line=30 definition='integer, DIMENSION(:), pointer :: FORM=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORM' type='integer' size=None dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'form')
     do i1 = lbound(input%FORM, 1), ubound(input%FORM, 1)
       call json%create_integer(json_val, input%FORM(i1), '')
@@ -2967,7 +2967,7 @@ subroutine undu_R_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%FORME)) then
-    !line=31 definition='integer, DIMENSION(:), pointer :: FORME=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORME' python_name='forme' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default='null()' default=0 default_factory=''
+    !line=31 definition='integer, DIMENSION(:), pointer :: FORME=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORME' type='integer' size=None dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'forme')
     do i1 = lbound(input%FORME, 1), ubound(input%FORME, 1)
       call json%create_integer(json_val, input%FORME(i1), '')
@@ -3001,7 +3001,7 @@ subroutine undu_p_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%K)) then
-    !line=35 definition='TYPE(REAL_8), DIMENSION(:,:), pointer :: K=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='K' python_name='k' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='' fortran_default='null()' default=None default_factory=''
+    !line=35 definition='TYPE(REAL_8), DIMENSION(:,:), pointer :: K=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='K' type='TYPE' size='REAL_8' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%K, 2), ubound(input%K, 2)
       call json%create_array(json_list1, 'k')
@@ -3016,7 +3016,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%A)) then
-    !line=36 definition='TYPE(REAL_8), DIMENSION(:), pointer :: A=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=36 definition='TYPE(REAL_8), DIMENSION(:), pointer :: A=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call REAL_8_to_json(input%A(i1), json_val, depth + 1)
@@ -3026,7 +3026,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%F)) then
-    !line=37 definition='TYPE(REAL_8), DIMENSION(:), pointer :: F=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='F' python_name='f' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=37 definition='TYPE(REAL_8), DIMENSION(:), pointer :: F=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='F' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'f')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call REAL_8_to_json(input%F(i1), json_val, depth + 1)
@@ -3036,7 +3036,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%x0)) then
-    !line=38 definition='TYPE(REAL_8), DIMENSION(:), pointer :: x0=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' python_name='x0' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=38 definition='TYPE(REAL_8), DIMENSION(:), pointer :: x0=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'x0')
     do i1 = lbound(input%x0, 1), ubound(input%x0, 1)
       call REAL_8_to_json(input%x0(i1), json_val, depth + 1)
@@ -3046,7 +3046,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%y0)) then
-    !line=39 definition='TYPE(REAL_8), DIMENSION(:), pointer :: y0=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='y0' python_name='y0' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=39 definition='TYPE(REAL_8), DIMENSION(:), pointer :: y0=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='y0' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'y0')
     do i1 = lbound(input%y0, 1), ubound(input%y0, 1)
       call REAL_8_to_json(input%y0(i1), json_val, depth + 1)
@@ -3056,7 +3056,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%KE)) then
-    !line=40 definition='TYPE(REAL_8), DIMENSION(:,:), pointer :: KE=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='KE' python_name='ke' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='' fortran_default='null()' default=None default_factory=''
+    !line=40 definition='TYPE(REAL_8), DIMENSION(:,:), pointer :: KE=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='KE' type='TYPE' size='REAL_8' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%KE, 2), ubound(input%KE, 2)
       call json%create_array(json_list1, 'ke')
@@ -3071,7 +3071,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%AE)) then
-    !line=41 definition='TYPE(REAL_8), DIMENSION(:), pointer :: AE=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' python_name='ae' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=41 definition='TYPE(REAL_8), DIMENSION(:), pointer :: AE=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ae')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call REAL_8_to_json(input%AE(i1), json_val, depth + 1)
@@ -3081,7 +3081,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%FE)) then
-    !line=42 definition='TYPE(REAL_8), DIMENSION(:), pointer :: FE=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FE' python_name='fe' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=42 definition='TYPE(REAL_8), DIMENSION(:), pointer :: FE=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FE' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'fe')
     do i1 = lbound(input%FE, 1), ubound(input%FE, 1)
       call REAL_8_to_json(input%FE(i1), json_val, depth + 1)
@@ -3091,7 +3091,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%x0E)) then
-    !line=43 definition='TYPE(REAL_8), DIMENSION(:), pointer :: x0E=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x0E' python_name='x0e' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=43 definition='TYPE(REAL_8), DIMENSION(:), pointer :: x0E=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x0E' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'x0e')
     do i1 = lbound(input%x0E, 1), ubound(input%x0E, 1)
       call REAL_8_to_json(input%x0E(i1), json_val, depth + 1)
@@ -3101,7 +3101,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%y0E)) then
-    !line=44 definition='TYPE(REAL_8), DIMENSION(:), pointer :: y0E=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='y0E' python_name='y0e' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=44 definition='TYPE(REAL_8), DIMENSION(:), pointer :: y0E=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='y0E' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'y0e')
     do i1 = lbound(input%y0E, 1), ubound(input%y0E, 1)
       call REAL_8_to_json(input%y0E(i1), json_val, depth + 1)
@@ -3111,7 +3111,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ex)) then
-    !line=45 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ex' python_name='ex' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=45 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ex' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ex')
     do i1 = lbound(input%ex, 1), ubound(input%ex, 1)
       call json%create_real(json_val, input%ex(i1), '')
@@ -3121,7 +3121,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ey)) then
-    !line=45 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ey' python_name='ey' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=45 definition='real(dp), DIMENSION(:), pointer :: ex=> null(),ey=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ey' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ey')
     do i1 = lbound(input%ey, 1), ubound(input%ey, 1)
       call json%create_real(json_val, input%ey(i1), '')
@@ -3142,7 +3142,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     call json%add(json_root, 'ne', int(input%ne))
   endif
   if (associated(input%FORM)) then
-    !line=48 definition='integer, DIMENSION(:), pointer :: FORM=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORM' python_name='form' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default='null()' default=0 default_factory=''
+    !line=48 definition='integer, DIMENSION(:), pointer :: FORM=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORM' type='integer' size=None dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'form')
     do i1 = lbound(input%FORM, 1), ubound(input%FORM, 1)
       call json%create_integer(json_val, input%FORM(i1), '')
@@ -3152,7 +3152,7 @@ subroutine undu_p_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%FORME)) then
-    !line=49 definition='integer, DIMENSION(:), pointer :: FORME=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORME' python_name='forme' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default='null()' default=0 default_factory=''
+    !line=49 definition='integer, DIMENSION(:), pointer :: FORME=> null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='FORME' type='integer' size=None dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'forme')
     do i1 = lbound(input%FORME, 1), ubound(input%FORME, 1)
       call json%create_integer(json_val, input%FORME(i1), '')
@@ -3187,13 +3187,13 @@ subroutine SAGAN_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%n_min)) then
     call json%add(json_root, 'n_min', int(input%n_min))
   endif
   if (associated(input%AN)) then
-    !line=56 definition='real(dp),  DIMENSION(:), POINTER :: AN=> null(),BN=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component (OPTIONAL)' fortran_default='null()' default=0.0 default_factory=''
+    !line=56 definition='real(dp),  DIMENSION(:), POINTER :: AN=> null(),BN=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component (OPTIONAL)' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -3203,7 +3203,7 @@ subroutine SAGAN_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=56 definition='real(dp),  DIMENSION(:), POINTER :: AN=> null(),BN=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component (OPTIONAL)' fortran_default='null()' default=0.0 default_factory=''
+    !line=56 definition='real(dp),  DIMENSION(:), POINTER :: AN=> null(),BN=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component (OPTIONAL)' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -3213,7 +3213,7 @@ subroutine SAGAN_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%INTERNAL)) then
-    !line=57 definition='real(dp),  DIMENSION(:),  POINTER ::INTERNAL  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='INTERNAL' python_name='internal' type='real' python_type='float' size='dp' dimension=':' comment='INTERNAL IS AN EXAMPLE' fortran_default='null()' default=0.0 default_factory=''
+    !line=57 definition='real(dp),  DIMENSION(:),  POINTER ::INTERNAL  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='INTERNAL' type='real' size='dp' dimension=':' comment='INTERNAL IS AN EXAMPLE' default='null()'
     call json%create_array(json_list1, 'internal')
     do i1 = lbound(input%INTERNAL, 1), ubound(input%INTERNAL, 1)
       call json%create_real(json_val, input%INTERNAL(i1), '')
@@ -3264,7 +3264,7 @@ subroutine SAGANP_to_json (input, json_root, depth)
     call json%add(json_root, 'n_min', int(input%n_min))
   endif
   if (associated(input%AN)) then
-    !line=67 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN=> null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component (OPTIONAL)' fortran_default='null()' default=None default_factory=''
+    !line=67 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN=> null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component (OPTIONAL)' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -3274,7 +3274,7 @@ subroutine SAGANP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=67 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN=> null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component (OPTIONAL)' fortran_default='null()' default=None default_factory=''
+    !line=67 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN=> null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component (OPTIONAL)' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -3284,7 +3284,7 @@ subroutine SAGANP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%INTERNAL)) then
-    !line=68 definition='TYPE(REAL_8), DIMENSION(:),POINTER ::INTERNAL=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='INTERNAL' python_name='internal' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='INTERNAL IS AN EXAMPLE' fortran_default='null()' default=None default_factory=''
+    !line=68 definition='TYPE(REAL_8), DIMENSION(:),POINTER ::INTERNAL=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='INTERNAL' type='TYPE' size='REAL_8' dimension=':' comment='INTERNAL IS AN EXAMPLE' default='null()'
     call json%create_array(json_list1, 'internal')
     do i1 = lbound(input%INTERNAL, 1), ubound(input%INTERNAL, 1)
       call REAL_8_to_json(input%INTERNAL(i1), json_val, depth + 1)
@@ -3325,7 +3325,7 @@ subroutine c_linear_map_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=12 definition='complex(dp) mat(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mat' python_name='mat' type='complex' python_type='Complex' size='dp' dimension='6,6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=12 definition='complex(dp) mat(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mat' type='complex' size='dp' dimension='6,6' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%mat, 2), ubound(input%mat, 2)
     call json%create_array(json_list1, 'mat')
@@ -3338,7 +3338,7 @@ subroutine c_linear_map_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=13 definition='complex(dp)  q(0:3,0:6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='q' python_name='q' type='complex' python_type='Complex' size='dp' dimension='0:3,0:6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=13 definition='complex(dp)  q(0:3,0:6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='q' type='complex' size='dp' dimension='0:3,0:6' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%q, 2), ubound(input%q, 2)
     call json%create_array(json_list1, 'q')
@@ -3375,7 +3375,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=17 definition='real(dp) :: E(3,6,6) =0 ,K(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' python_name='e' type='real' python_type='float' size='dp' dimension='3,6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=17 definition='real(dp) :: E(3,6,6) =0 ,K(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' type='real' size='dp' dimension='3,6,6' comment='' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%E, 3), ubound(input%E, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3393,7 +3393,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=17 definition='real(dp) :: E(3,6,6) =0 ,K(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='K' python_name='k' type='real' python_type='float' size='dp' dimension='3,6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=17 definition='real(dp) :: E(3,6,6) =0 ,K(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='K' type='real' size='dp' dimension='3,6,6' comment='' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%K, 3), ubound(input%K, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3411,7 +3411,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=18 definition='real(dp) :: H(3,6,6) = 0,B(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='H' python_name='h' type='real' python_type='float' size='dp' dimension='3,6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=18 definition='real(dp) :: H(3,6,6) = 0,B(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='H' type='real' size='dp' dimension='3,6,6' comment='' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%H, 3), ubound(input%H, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3429,7 +3429,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=18 definition='real(dp) :: H(3,6,6) = 0,B(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='real' python_type='float' size='dp' dimension='3,6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=18 definition='real(dp) :: H(3,6,6) = 0,B(3,6,6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='real' size='dp' dimension='3,6,6' comment='' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%B, 3), ubound(input%B, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3447,7 +3447,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=19 definition='real(dp) :: S(1:3,1:3,0:6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='S' python_name='s' type='real' python_type='float' size='dp' dimension='1:3,1:3,0:6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=19 definition='real(dp) :: S(1:3,1:3,0:6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='S' type='real' size='dp' dimension='1:3,1:3,0:6' comment='' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%S, 3), ubound(input%S, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3465,7 +3465,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=20 definition='real(dp) ::phase(3) =0 ,damping(3) =0 , spin(2) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='phase' python_name='phase' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default='0' default=0 default_factory=''
+  !line=20 definition='real(dp) ::phase(3) =0 ,damping(3) =0 , spin(2) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='phase' type='real' size='dp' dimension='3' comment='' default='0'
   call json%create_array(json_list1, 'phase')
   do i1 = lbound(input%phase, 1), ubound(input%phase, 1)
     call json%create_real(json_val, input%phase(i1), '')
@@ -3473,7 +3473,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(dp) ::phase(3) =0 ,damping(3) =0 , spin(2) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='damping' python_name='damping' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default='0' default=0 default_factory=''
+  !line=20 definition='real(dp) ::phase(3) =0 ,damping(3) =0 , spin(2) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='damping' type='real' size='dp' dimension='3' comment='' default='0'
   call json%create_array(json_list1, 'damping')
   do i1 = lbound(input%damping, 1), ubound(input%damping, 1)
     call json%create_real(json_val, input%damping(i1), '')
@@ -3481,7 +3481,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(dp) ::phase(3) =0 ,damping(3) =0 , spin(2) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin' python_name='spin' type='real' python_type='float' size='dp' dimension='2' comment='' fortran_default='0' default=0 default_factory=''
+  !line=20 definition='real(dp) ::phase(3) =0 ,damping(3) =0 , spin(2) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin' type='real' size='dp' dimension='2' comment='' default='0'
   call json%create_array(json_list1, 'spin')
   do i1 = lbound(input%spin, 1), ubound(input%spin, 1)
     call json%create_real(json_val, input%spin(i1), '')
@@ -3489,7 +3489,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=21 definition='real(dp):: fix(6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix' python_name='fix' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=21 definition='real(dp):: fix(6) =0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix' type='real' size='dp' dimension='6' comment='' default='0'
   call json%create_array(json_list1, 'fix')
   do i1 = lbound(input%fix, 1), ubound(input%fix, 1)
     call json%create_real(json_val, input%fix(i1), '')
@@ -3508,7 +3508,7 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   call json%add(json_root, 'symplectic', input%symplectic)
-  !line=25 definition='real(dp) :: sigmas(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='sigmas' python_name='sigmas' type='real' python_type='float' size='dp' dimension='6,6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=25 definition='real(dp) :: sigmas(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='sigmas' type='real' size='dp' dimension='6,6' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%sigmas, 2), ubound(input%sigmas, 2)
     call json%create_array(json_list1, 'sigmas')
@@ -3560,7 +3560,7 @@ subroutine girder_to_json (input, json_root, depth)
   if (associated(input%discarded)) then
     call json%add(json_root, 'discarded', int(input%discarded))
   endif
-  !line=59 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=59 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call json%create_real(json_val, input%a(i1), '')
@@ -3568,7 +3568,7 @@ subroutine girder_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=59 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' python_name='ent' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=59 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' type='real' size='dp' dimension=':,:' comment='' default='null()'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
     call json%create_array(json_list1, 'ent')
@@ -3616,7 +3616,7 @@ subroutine girder_info_to_json (input, json_root, depth)
     call json%add(json_root, 'name', trim(input%NAME))
   endif
   if (associated(input%d)) then
-    !line=67 definition='real(dp), POINTER ::  d(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='d' python_name='d' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=67 definition='real(dp), POINTER ::  d(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='d' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'd')
     do i1 = lbound(input%d, 1), ubound(input%d, 1)
       call json%create_real(json_val, input%d(i1), '')
@@ -3630,7 +3630,7 @@ subroutine girder_info_to_json (input, json_root, depth)
     call json%rename(json_val, 'mag')
     call json%add(json_root, json_val)
   endif
-  !line=69 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=69 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call json%create_real(json_val, input%a(i1), '')
@@ -3638,7 +3638,7 @@ subroutine girder_info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=69 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' python_name='ent' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=69 definition='real(dp), pointer:: a(:) => null(),ent(:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' type='real' size='dp' dimension=':,:' comment='' default='null()'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
     call json%create_array(json_list1, 'ent')
@@ -3737,7 +3737,7 @@ subroutine MUL_BLOCK_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=91 definition='real(dp) AN(NMAX),BN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension='NMAX' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=91 definition='real(dp) AN(NMAX),BN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'an')
   do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
     call json%create_real(json_val, input%AN(i1), '')
@@ -3745,7 +3745,7 @@ subroutine MUL_BLOCK_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=91 definition='real(dp) AN(NMAX),BN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension='NMAX' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=91 definition='real(dp) AN(NMAX),BN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'bn')
   do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
     call json%create_real(json_val, input%BN(i1), '')
@@ -3818,7 +3818,7 @@ subroutine POL_BLOCK_to_json (input, json_root, depth)
   call json%add(json_root, 'n_name', int(input%n_name))
   call json%add(json_root, 'vorname', trim(input%VORNAME))
   if (associated(input%TPSAFIT)) then
-    !line=127 definition='real(dp),DIMENSION(:), POINTER :: TPSAFIT => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TPSAFIT' python_name='tpsafit' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=127 definition='real(dp),DIMENSION(:), POINTER :: TPSAFIT => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TPSAFIT' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'tpsafit')
     do i1 = lbound(input%TPSAFIT, 1), ubound(input%TPSAFIT, 1)
       call json%create_real(json_val, input%TPSAFIT(i1), '')
@@ -3834,7 +3834,7 @@ subroutine POL_BLOCK_to_json (input, json_root, depth)
     call json%add(json_root, 'set_element', input%SET_ELEMENT)
   endif
   call json%add(json_root, 'npara', int(input%NPARA))
-  !line=131 definition='INTEGER IAN(NMAX),IBN(NMAX)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='IAN' python_name='ian' type='INTEGER' python_type='int' size=None dimension='NMAX' comment='' fortran_default=None default=0 default_factory=''
+  !line=131 definition='INTEGER IAN(NMAX),IBN(NMAX)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='IAN' type='INTEGER' size=None dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'ian')
   do i1 = lbound(input%IAN, 1), ubound(input%IAN, 1)
     call json%create_integer(json_val, input%IAN(i1), '')
@@ -3842,7 +3842,7 @@ subroutine POL_BLOCK_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=131 definition='INTEGER IAN(NMAX),IBN(NMAX)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='IBN' python_name='ibn' type='INTEGER' python_type='int' size=None dimension='NMAX' comment='' fortran_default=None default=0 default_factory=''
+  !line=131 definition='INTEGER IAN(NMAX),IBN(NMAX)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='IBN' type='INTEGER' size=None dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'ibn')
   do i1 = lbound(input%IBN, 1), ubound(input%IBN, 1)
     call json%create_integer(json_val, input%IBN(i1), '')
@@ -3850,7 +3850,7 @@ subroutine POL_BLOCK_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=132 definition='real(dp) SAN(NMAX),SBN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='SAN' python_name='san' type='real' python_type='float' size='dp' dimension='NMAX' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=132 definition='real(dp) SAN(NMAX),SBN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='SAN' type='real' size='dp' dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'san')
   do i1 = lbound(input%SAN, 1), ubound(input%SAN, 1)
     call json%create_real(json_val, input%SAN(i1), '')
@@ -3858,7 +3858,7 @@ subroutine POL_BLOCK_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=132 definition='real(dp) SAN(NMAX),SBN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='SBN' python_name='sbn' type='real' python_type='float' size='dp' dimension='NMAX' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=132 definition='real(dp) SAN(NMAX),SBN(NMAX)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='SBN' type='real' size='dp' dimension='NMAX' comment='' default=None
   call json%create_array(json_list1, 'sbn')
   do i1 = lbound(input%SBN, 1), ubound(input%SBN, 1)
     call json%create_real(json_val, input%SBN(i1), '')
@@ -3904,7 +3904,7 @@ subroutine POL_BLOCK_INICOND_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=145 definition='INTEGER       :: BETA(3)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='BETA' python_name='beta' type='INTEGER' python_type='int' size=None dimension='3' comment='' fortran_default=None default=0 default_factory=''
+  !line=145 definition='INTEGER       :: BETA(3)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='BETA' type='INTEGER' size=None dimension='3' comment='' default=None
   call json%create_array(json_list1, 'beta')
   do i1 = lbound(input%BETA, 1), ubound(input%BETA, 1)
     call json%create_integer(json_val, input%BETA(i1), '')
@@ -3912,7 +3912,7 @@ subroutine POL_BLOCK_INICOND_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=146 definition='INTEGER       :: ALFA(3)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ALFA' python_name='alfa' type='INTEGER' python_type='int' size=None dimension='3' comment='' fortran_default=None default=0 default_factory=''
+  !line=146 definition='INTEGER       :: ALFA(3)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ALFA' type='INTEGER' size=None dimension='3' comment='' default=None
   call json%create_array(json_list1, 'alfa')
   do i1 = lbound(input%ALFA, 1), ubound(input%ALFA, 1)
     call json%create_integer(json_val, input%ALFA(i1), '')
@@ -3920,7 +3920,7 @@ subroutine POL_BLOCK_INICOND_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=147 definition='INTEGER       :: DISPERSION(4)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='DISPERSION' python_name='dispersion' type='INTEGER' python_type='int' size=None dimension='4' comment='' fortran_default=None default=0 default_factory=''
+  !line=147 definition='INTEGER       :: DISPERSION(4)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='DISPERSION' type='INTEGER' size=None dimension='4' comment='' default=None
   call json%create_array(json_list1, 'dispersion')
   do i1 = lbound(input%DISPERSION, 1), ubound(input%DISPERSION, 1)
     call json%create_integer(json_val, input%DISPERSION(i1), '')
@@ -3959,7 +3959,7 @@ subroutine MADX_APERTURE_to_json (input, json_root, depth)
     call json%add(json_root, 'kind', int(input%KIND))
   endif
   if (associated(input%R)) then
-    !line=154 definition='REAL(DP),pointer :: R(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='R' python_name='r' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=154 definition='REAL(DP),pointer :: R(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='R' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'r')
     do i1 = lbound(input%R, 1), ubound(input%R, 1)
       call json%create_real(json_val, input%R(i1), '')
@@ -3981,7 +3981,7 @@ subroutine MADX_APERTURE_to_json (input, json_root, depth)
     call json%add(json_root, 'dy', input%DY)
   endif
   if (associated(input%POLYGX)) then
-    !line=156 definition='REAL(DP),pointer :: POLYGX(:)  => null(), POLYGY(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='POLYGX' python_name='polygx' type='REAL' python_type='float' size='DP' dimension=':' comment='arbitrary polygon' fortran_default='null()' default=0.0 default_factory=''
+    !line=156 definition='REAL(DP),pointer :: POLYGX(:)  => null(), POLYGY(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='POLYGX' type='REAL' size='DP' dimension=':' comment='arbitrary polygon' default='null()'
     call json%create_array(json_list1, 'polygx')
     do i1 = lbound(input%POLYGX, 1), ubound(input%POLYGX, 1)
       call json%create_real(json_val, input%POLYGX(i1), '')
@@ -3991,7 +3991,7 @@ subroutine MADX_APERTURE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%POLYGY)) then
-    !line=156 definition='REAL(DP),pointer :: POLYGX(:)  => null(), POLYGY(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='POLYGY' python_name='polygy' type='REAL' python_type='float' size='DP' dimension=':' comment='arbitrary polygon' fortran_default='null()' default=0.0 default_factory=''
+    !line=156 definition='REAL(DP),pointer :: POLYGX(:)  => null(), POLYGY(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='POLYGY' type='REAL' size='DP' dimension=':' comment='arbitrary polygon' default='null()'
     call json%create_array(json_list1, 'polygy')
     do i1 = lbound(input%POLYGY, 1), ubound(input%POLYGY, 1)
       call json%create_real(json_val, input%POLYGY(i1), '')
@@ -4060,7 +4060,7 @@ subroutine MAGNET_CHART_to_json (input, json_root, depth)
   call MADX_APERTURE_to_json(input%APERTURE, json_val, depth + 1)
   call json%rename(json_val, 'APERTURE')
   call json%add(json_root, json_val)
-  !line=168 definition='type(S_APERTURE), pointer:: A(:)  => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='S_APERTURE', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='type' python_type='SAperture' size='S_APERTURE' dimension=':' comment='never used : different aperture at every node' fortran_default='null()' default=None default_factory=''
+  !line=168 definition='type(S_APERTURE), pointer:: A(:)  => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='S_APERTURE', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='type' size='S_APERTURE' dimension=':' comment='never used : different aperture at every node' default='null()'
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%A, 1), ubound(input%A, 1)
     call S_APERTURE_to_json(input%A(i1), json_val, depth + 1)
@@ -4105,7 +4105,7 @@ subroutine MAGNET_CHART_to_json (input, json_root, depth)
     call json%add(json_root, 'tiltd', input%TILTD)
   endif
   if (associated(input%EDGE)) then
-    !line=175 definition='real(dp),  DIMENSION(:), POINTER :: EDGE  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='EDGE' python_name='edge' type='real' python_type='float' size='dp' dimension=':' comment='INTERNAL FRAME  design entrance and exit angle' fortran_default='null()' default=0.0 default_factory=''
+    !line=175 definition='real(dp),  DIMENSION(:), POINTER :: EDGE  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='EDGE' type='real' size='dp' dimension=':' comment='INTERNAL FRAME  design entrance and exit angle' default='null()'
     call json%create_array(json_list1, 'edge')
     do i1 = lbound(input%EDGE, 1), ubound(input%EDGE, 1)
       call json%create_real(json_val, input%EDGE(i1), '')
@@ -4171,7 +4171,7 @@ subroutine tilting_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=189 definition='real(dp) tilt(0:nmax)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='tilt' python_name='tilt' type='real' python_type='float' size='dp' dimension='0:nmax' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=189 definition='real(dp) tilt(0:nmax)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='tilt' type='real' size='dp' dimension='0:nmax' comment='' default=None
   call json%create_array(json_list1, 'tilt')
   do i1 = lbound(input%tilt, 1), ubound(input%tilt, 1)
     call json%create_real(json_val, input%tilt(i1), '')
@@ -4211,7 +4211,7 @@ subroutine time_energy_to_json (input, json_root, depth)
     call json%add(json_root, 'energy', input%energy)
   endif
   if (associated(input%an)) then
-    !line=196 definition='real(dp),pointer :: an(:) => null(),bn(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='an' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=196 definition='real(dp),pointer :: an(:) => null(),bn(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='an' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%an, 1), ubound(input%an, 1)
       call json%create_real(json_val, input%an(i1), '')
@@ -4221,7 +4221,7 @@ subroutine time_energy_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%bn)) then
-    !line=196 definition='real(dp),pointer :: an(:) => null(),bn(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bn' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=196 definition='real(dp),pointer :: an(:) => null(),bn(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bn' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%bn, 1), ubound(input%bn, 1)
       call json%create_real(json_val, input%bn(i1), '')
@@ -4267,7 +4267,7 @@ subroutine ramping_to_json (input, json_root, depth)
     call json%add(json_root, 't_max', input%t_max)
   endif
   if (associated(input%table)) then
-    !line=203 definition='type(time_energy),pointer :: table(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='time_energy', static=False, target=False, value=False, volatile=False, attributes=()) name='table' python_name='table' type='type' python_type='TimeEnergy' size='time_energy' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=203 definition='type(time_energy),pointer :: table(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='time_energy', static=False, target=False, value=False, volatile=False, attributes=()) name='table' type='type' size='time_energy' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'table')
     do i1 = lbound(input%table, 1), ubound(input%table, 1)
       call time_energy_to_json(input%table(i1), json_val, depth + 1)
@@ -4338,9 +4338,9 @@ subroutine ELEMENT_to_json (input, json_root, depth)
     call json%add(json_root, 'vorname', trim(input%VORNAME))
   endif
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
-  !line=222 definition='real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+  !line=222 definition='real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'an')
   do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
     call json%create_real(json_val, input%AN(i1), '')
@@ -4348,7 +4348,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=222 definition='real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+  !line=222 definition='real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'bn')
   do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
     call json%create_real(json_val, input%BN(i1), '')
@@ -4356,7 +4356,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=223 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=223 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -4364,7 +4364,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=223 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=223 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -4403,7 +4403,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   if (associated(input%D_AC)) then
     call json%add(json_root, 'd_ac', input%D_AC)
   endif
-  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_AN' python_name='d_an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd_an')
   do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
     call json%create_real(json_val, input%D_AN(i1), '')
@@ -4411,7 +4411,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_BN' python_name='d_bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd_bn')
   do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
     call json%create_real(json_val, input%D_BN(i1), '')
@@ -4419,7 +4419,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_AN' python_name='d0_an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd0_an')
   do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
     call json%create_real(json_val, input%D0_AN(i1), '')
@@ -4427,7 +4427,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_BN' python_name='d0_bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null();' default=0.0 default_factory=''
+  !line=228 definition='real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null();'
   call json%create_array(json_list1, 'd0_bn')
   do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
     call json%create_real(json_val, input%D0_BN(i1), '')
@@ -4594,7 +4594,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%forward)) then
-    !line=265 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='forward' python_name='forward' type='type' python_type='TreeElement' size='tree_element' dimension=':' comment='Taylor tracking on a fibre' fortran_default='null()' default=None default_factory=''
+    !line=265 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='forward' type='type' size='tree_element' dimension=':' comment='Taylor tracking on a fibre' default='null()'
     call json%create_array(json_list1, 'forward')
     do i1 = lbound(input%forward, 1), ubound(input%forward, 1)
       call tree_element_to_json(input%forward(i1), json_val, depth + 1)
@@ -4604,7 +4604,7 @@ subroutine ELEMENT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%backward)) then
-    !line=265 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='backward' python_name='backward' type='type' python_type='TreeElement' size='tree_element' dimension=':' comment='Taylor tracking on a fibre' fortran_default='null()' default=None default_factory=''
+    !line=265 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='backward' type='type' size='tree_element' dimension=':' comment='Taylor tracking on a fibre' default='null()'
     call json%create_array(json_list1, 'backward')
     do i1 = lbound(input%backward, 1), ubound(input%backward, 1)
       call tree_element_to_json(input%backward(i1), json_val, depth + 1)
@@ -4685,7 +4685,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=294 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN   => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='MULTIPOLE COMPONENT' fortran_default='null()' default=None default_factory=''
+    !line=294 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN   => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='MULTIPOLE COMPONENT' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -4695,7 +4695,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=294 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN   => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='MULTIPOLE COMPONENT' fortran_default='null()' default=None default_factory=''
+    !line=294 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN   => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='MULTIPOLE COMPONENT' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -4704,7 +4704,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=295 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=295 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -4712,7 +4712,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=295 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=295 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -4770,7 +4770,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     call json%rename(json_val, 'D_AC')
     call json%add(json_root, json_val)
   endif
-  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D_AN' python_name='d_an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D_AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd_an')
   do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
     call REAL_8_to_json(input%D_AN(i1), json_val, depth + 1)
@@ -4778,7 +4778,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D_BN' python_name='d_bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D_BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd_bn')
   do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
     call REAL_8_to_json(input%D_BN(i1), json_val, depth + 1)
@@ -4786,7 +4786,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_AN' python_name='d0_an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd0_an')
   do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
     call REAL_8_to_json(input%D0_AN(i1), json_val, depth + 1)
@@ -4794,7 +4794,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_BN' python_name='d0_bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+  !line=301 definition='TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='D0_BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
   call json%create_array(json_list1, 'd0_bn')
   do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
     call REAL_8_to_json(input%D0_BN(i1), json_val, depth + 1)
@@ -4958,7 +4958,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%forward)) then
-    !line=333 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='forward' python_name='forward' type='type' python_type='TreeElement' size='tree_element' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=333 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='forward' type='type' size='tree_element' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'forward')
     do i1 = lbound(input%forward, 1), ubound(input%forward, 1)
       call tree_element_to_json(input%forward(i1), json_val, depth + 1)
@@ -4968,7 +4968,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%backward)) then
-    !line=333 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='backward' python_name='backward' type='type' python_type='TreeElement' size='tree_element' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=333 definition='type(tree_element), pointer :: forward(:)=> null(),backward(:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='backward' type='type' size='tree_element' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'backward')
     do i1 = lbound(input%backward, 1), ubound(input%backward, 1)
       call tree_element_to_json(input%backward(i1), json_val, depth + 1)
@@ -5053,7 +5053,7 @@ subroutine info_to_json (input, json_root, depth)
     call json%add(json_root, 's', input%s)
   endif
   if (associated(input%beta)) then
-    !line=356 definition='real(dp),pointer ::  beta(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='beta' python_name='beta' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=356 definition='real(dp),pointer ::  beta(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='beta' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'beta')
     do i1 = lbound(input%beta, 1), ubound(input%beta, 1)
       call json%create_real(json_val, input%beta(i1), '')
@@ -5063,7 +5063,7 @@ subroutine info_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fix0)) then
-    !line=357 definition='real(dp),pointer ::  fix0(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix0' python_name='fix0' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=357 definition='real(dp),pointer ::  fix0(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix0' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'fix0')
     do i1 = lbound(input%fix0, 1), ubound(input%fix0, 1)
       call json%create_real(json_val, input%fix0(i1), '')
@@ -5073,7 +5073,7 @@ subroutine info_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fix)) then
-    !line=358 definition='real(dp),pointer ::  fix(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix' python_name='fix' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=358 definition='real(dp),pointer ::  fix(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fix' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'fix')
     do i1 = lbound(input%fix, 1), ubound(input%fix, 1)
       call json%create_real(json_val, input%fix(i1), '')
@@ -5082,7 +5082,7 @@ subroutine info_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=359 definition='real(dp), pointer:: pos(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='pos' python_name='pos' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=359 definition='real(dp), pointer:: pos(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='pos' type='real' size='dp' dimension=':' comment='' default='null()'
   call json%create_array(json_list1, 'pos')
   do i1 = lbound(input%pos, 1), ubound(input%pos, 1)
     call json%create_real(json_val, input%pos(i1), '')
@@ -5090,7 +5090,7 @@ subroutine info_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=360 definition='real(dp), pointer:: m(:,:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='m' python_name='m' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+  !line=360 definition='real(dp), pointer:: m(:,:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='m' type='real' size='dp' dimension=':,:' comment='' default='null()'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%m, 2), ubound(input%m, 2)
     call json%create_array(json_list1, 'm')
@@ -5140,7 +5140,7 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
     call json%add(json_root, 'lost', int(input%lost))
   endif
   if (associated(input%S)) then
-    !line=367 definition='real(dp), POINTER :: S(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='S' python_name='s' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=367 definition='real(dp), POINTER :: S(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='S' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 's')
     do i1 = lbound(input%S, 1), ubound(input%S, 1)
       call json%create_real(json_val, input%S(i1), '')
@@ -5153,7 +5153,7 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
     call json%add(json_root, 'ds_ac', input%ds_ac)
   endif
   if (associated(input%ref)) then
-    !line=369 definition='real(dp), POINTER :: ref(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ref' python_name='ref' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=369 definition='real(dp), POINTER :: ref(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ref' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ref')
     do i1 = lbound(input%ref, 1), ubound(input%ref, 1)
       call json%create_real(json_val, input%ref(i1), '')
@@ -5163,7 +5163,7 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ent)) then
-    !line=370 definition='real(dp), pointer :: ent(:,:),a(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' python_name='ent' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=370 definition='real(dp), pointer :: ent(:,:),a(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
       call json%create_array(json_list1, 'ent')
@@ -5178,7 +5178,7 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%a)) then
-    !line=370 definition='real(dp), pointer :: ent(:,:),a(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=370 definition='real(dp), pointer :: ent(:,:),a(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%a, 1), ubound(input%a, 1)
       call json%create_real(json_val, input%a(i1), '')
@@ -5188,7 +5188,7 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%exi)) then
-    !line=371 definition='real(dp), pointer :: exi(:,:),b(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='exi' python_name='exi' type='real' python_type='float' size='dp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=371 definition='real(dp), pointer :: exi(:,:),b(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='exi' type='real' size='dp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%exi, 2), ubound(input%exi, 2)
       call json%create_array(json_list1, 'exi')
@@ -5203,7 +5203,7 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%b)) then
-    !line=371 definition='real(dp), pointer :: exi(:,:),b(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' python_name='b' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=371 definition='real(dp), pointer :: exi(:,:),b(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'b')
     do i1 = lbound(input%b, 1), ubound(input%b, 1)
       call json%create_real(json_val, input%b(i1), '')
@@ -5429,7 +5429,7 @@ subroutine LAYOUT_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%DNA)) then
-    !line=432 definition='TYPE(layout_array), POINTER :: DNA(:)  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='layout_array', static=False, target=False, value=False, volatile=False, attributes=()) name='DNA' python_name='dna' type='TYPE' python_type='LayoutArray' size='layout_array' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=432 definition='TYPE(layout_array), POINTER :: DNA(:)  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='layout_array', static=False, target=False, value=False, volatile=False, attributes=()) name='DNA' type='TYPE' size='layout_array' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'dna')
     do i1 = lbound(input%DNA, 1), ubound(input%DNA, 1)
       call layout_array_to_json(input%DNA(i1), json_val, depth + 1)
@@ -5681,7 +5681,7 @@ subroutine ORBIT_NODE_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%LATTICE)) then
-    !line=484 definition='REAL(DP), POINTER :: LATTICE(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='LATTICE' python_name='lattice' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=484 definition='REAL(DP), POINTER :: LATTICE(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='LATTICE' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'lattice')
     do i1 = lbound(input%LATTICE, 1), ubound(input%LATTICE, 1)
       call json%create_real(json_val, input%LATTICE(i1), '')
@@ -5727,7 +5727,7 @@ subroutine ORBIT_LATTICE_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%ORBIT_NODES)) then
-    !line=492 definition='TYPE(ORBIT_NODE), pointer :: ORBIT_NODES(:)  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='ORBIT_NODE', static=False, target=False, value=False, volatile=False, attributes=()) name='ORBIT_NODES' python_name='orbit_nodes' type='TYPE' python_type='OrbitNode' size='ORBIT_NODE' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=492 definition='TYPE(ORBIT_NODE), pointer :: ORBIT_NODES(:)  => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='ORBIT_NODE', static=False, target=False, value=False, volatile=False, attributes=()) name='ORBIT_NODES' type='TYPE' size='ORBIT_NODE' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'orbit_nodes')
     do i1 = lbound(input%ORBIT_NODES, 1), ubound(input%ORBIT_NODES, 1)
       call ORBIT_NODE_to_json(input%ORBIT_NODES(i1), json_val, depth + 1)
@@ -5812,7 +5812,7 @@ subroutine ORBIT_LATTICE_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%dt)) then
-    !line=515 definition='real(dp), pointer :: dt(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dt' python_name='dt' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=515 definition='real(dp), pointer :: dt(:)  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dt' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'dt')
     do i1 = lbound(input%dt, 1), ubound(input%dt, 1)
       call json%create_real(json_val, input%dt(i1), '')
@@ -5846,7 +5846,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%S)) then
-    !line=524 definition='REAL(DP), POINTER :: S(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='S' python_name='s' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=524 definition='REAL(DP), POINTER :: S(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='S' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 's')
     do i1 = lbound(input%S, 1), ubound(input%S, 1)
       call json%create_real(json_val, input%S(i1), '')
@@ -5859,7 +5859,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     call json%add(json_root, 'n', int(input%N))
   endif
   if (associated(input%SX)) then
-    !line=526 definition='REAL(DP), POINTER :: SX(:) => null(),SY(:) => null(),FK(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='SX' python_name='sx' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=526 definition='REAL(DP), POINTER :: SX(:) => null(),SY(:) => null(),FK(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='SX' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'sx')
     do i1 = lbound(input%SX, 1), ubound(input%SX, 1)
       call json%create_real(json_val, input%SX(i1), '')
@@ -5869,7 +5869,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%SY)) then
-    !line=526 definition='REAL(DP), POINTER :: SX(:) => null(),SY(:) => null(),FK(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='SY' python_name='sy' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=526 definition='REAL(DP), POINTER :: SX(:) => null(),SY(:) => null(),FK(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='SY' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'sy')
     do i1 = lbound(input%SY, 1), ubound(input%SY, 1)
       call json%create_real(json_val, input%SY(i1), '')
@@ -5879,7 +5879,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%FK)) then
-    !line=526 definition='REAL(DP), POINTER :: SX(:) => null(),SY(:) => null(),FK(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='FK' python_name='fk' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=526 definition='REAL(DP), POINTER :: SX(:) => null(),SY(:) => null(),FK(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='FK' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'fk')
     do i1 = lbound(input%FK, 1), ubound(input%FK, 1)
       call json%create_real(json_val, input%FK(i1), '')
@@ -5889,7 +5889,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%XM)) then
-    !line=527 definition='REAL(DP), POINTER :: XM(:) => null(),YM(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='XM' python_name='xm' type='REAL' python_type='float' size='DP' dimension=':' comment='trivial transverse displacement: not needed' fortran_default='null()' default=0.0 default_factory=''
+    !line=527 definition='REAL(DP), POINTER :: XM(:) => null(),YM(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='XM' type='REAL' size='DP' dimension=':' comment='trivial transverse displacement: not needed' default='null()'
     call json%create_array(json_list1, 'xm')
     do i1 = lbound(input%XM, 1), ubound(input%XM, 1)
       call json%create_real(json_val, input%XM(i1), '')
@@ -5899,7 +5899,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%YM)) then
-    !line=527 definition='REAL(DP), POINTER :: XM(:) => null(),YM(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='YM' python_name='ym' type='REAL' python_type='float' size='DP' dimension=':' comment='trivial transverse displacement: not needed' fortran_default='null()' default=0.0 default_factory=''
+    !line=527 definition='REAL(DP), POINTER :: XM(:) => null(),YM(:) => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='YM' type='REAL' size='DP' dimension=':' comment='trivial transverse displacement: not needed' default='null()'
     call json%create_array(json_list1, 'ym')
     do i1 = lbound(input%YM, 1), ubound(input%YM, 1)
       call json%create_real(json_val, input%YM(i1), '')
@@ -5909,7 +5909,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BBK)) then
-    !line=528 definition='REAL(DP), POINTER :: BBK(:,:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='BBK' python_name='bbk' type='REAL' python_type='float' size='DP' dimension=':,:' comment='kick on closed orbit' fortran_default='null()' default=0.0 default_factory=''
+    !line=528 definition='REAL(DP), POINTER :: BBK(:,:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='BBK' type='REAL' size='DP' dimension=':,:' comment='kick on closed orbit' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%BBK, 2), ubound(input%BBK, 2)
       call json%create_array(json_list1, 'bbk')
@@ -5924,7 +5924,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%A)) then
-    !line=529 definition='REAL(DP), POINTER :: A(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='REAL' python_type='float' size='DP' dimension=':' comment='patch angles' fortran_default='null()' default=0.0 default_factory=''
+    !line=529 definition='REAL(DP), POINTER :: A(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='REAL' size='DP' dimension=':' comment='patch angles' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%create_real(json_val, input%A(i1), '')
@@ -5934,7 +5934,7 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%D)) then
-    !line=530 definition='REAL(DP), POINTER :: D(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' python_name='d' type='REAL' python_type='float' size='DP' dimension=':' comment='patch translation' fortran_default='null()' default=0.0 default_factory=''
+    !line=530 definition='REAL(DP), POINTER :: D(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' type='REAL' size='DP' dimension=':' comment='patch translation' default='null()'
     call json%create_array(json_list1, 'd')
     do i1 = lbound(input%D, 1), ubound(input%D, 1)
       call json%create_real(json_val, input%D(i1), '')
@@ -5995,7 +5995,7 @@ subroutine EXTRA_WORK_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%ORB)) then
-    !line=541 definition='REAL(DP), POINTER :: ORB(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ORB' python_name='orb' type='REAL' python_type='float' size='DP' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=541 definition='REAL(DP), POINTER :: ORB(:)  => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ORB' type='REAL' size='DP' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'orb')
     do i1 = lbound(input%ORB, 1), ubound(input%ORB, 1)
       call json%create_real(json_val, input%ORB(i1), '')
@@ -6030,7 +6030,7 @@ subroutine E_BEAM_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'n', int(input%N))
   if (associated(input%Z)) then
-    !line=556 definition='type(probe), POINTER :: Z(:)  => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='probe', static=False, target=False, value=False, volatile=False, attributes=()) name='Z' python_name='z' type='type' python_type='Probe' size='probe' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=556 definition='type(probe), POINTER :: Z(:)  => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='probe', static=False, target=False, value=False, volatile=False, attributes=()) name='Z' type='type' size='probe' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'z')
     do i1 = lbound(input%Z, 1), ubound(input%Z, 1)
       call probe_to_json(input%Z(i1), json_val, depth + 1)
@@ -6070,7 +6070,7 @@ subroutine temps_energie_to_json (input, json_root, depth)
     call json%add(json_root, 'energie', input%energie)
   endif
   if (associated(input%volt)) then
-    !line=7 definition='real(dp),pointer :: volt(:)=> null(),phase(:)=> null(),tc=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='volt' python_name='volt' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=7 definition='real(dp),pointer :: volt(:)=> null(),phase(:)=> null(),tc=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='volt' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'volt')
     do i1 = lbound(input%volt, 1), ubound(input%volt, 1)
       call json%create_real(json_val, input%volt(i1), '')
@@ -6080,7 +6080,7 @@ subroutine temps_energie_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%phase)) then
-    !line=7 definition='real(dp),pointer :: volt(:)=> null(),phase(:)=> null(),tc=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='phase' python_name='phase' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=7 definition='real(dp),pointer :: volt(:)=> null(),phase(:)=> null(),tc=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='phase' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'phase')
     do i1 = lbound(input%phase, 1), ubound(input%phase, 1)
       call json%create_real(json_val, input%phase(i1), '')
@@ -6129,7 +6129,7 @@ subroutine acceleration_to_json (input, json_root, depth)
     call json%add(json_root, 'r', input%r)
   endif
   if (associated(input%de)) then
-    !line=12 definition='real(dp), pointer :: r=> null(),de(:)=> null(),e_in(:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='de' python_name='de' type='real' python_type='float' size='dp' dimension=':' comment=', unit_time' fortran_default='null()' default=0.0 default_factory=''
+    !line=12 definition='real(dp), pointer :: r=> null(),de(:)=> null(),e_in(:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='de' type='real' size='dp' dimension=':' comment=', unit_time' default='null()'
     call json%create_array(json_list1, 'de')
     do i1 = lbound(input%de, 1), ubound(input%de, 1)
       call json%create_real(json_val, input%de(i1), '')
@@ -6139,7 +6139,7 @@ subroutine acceleration_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%e_in)) then
-    !line=12 definition='real(dp), pointer :: r=> null(),de(:)=> null(),e_in(:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_in' python_name='e_in' type='real' python_type='float' size='dp' dimension=':' comment=', unit_time' fortran_default='null()' default=0.0 default_factory=''
+    !line=12 definition='real(dp), pointer :: r=> null(),de(:)=> null(),e_in(:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_in' type='real' size='dp' dimension=':' comment=', unit_time' default='null()'
     call json%create_array(json_list1, 'e_in')
     do i1 = lbound(input%e_in, 1), ubound(input%e_in, 1)
       call json%create_real(json_val, input%e_in(i1), '')
@@ -6169,7 +6169,7 @@ subroutine acceleration_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%tableau)) then
-    !line=17 definition='type(temps_energie),pointer :: tableau(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='temps_energie', static=False, target=False, value=False, volatile=False, attributes=()) name='tableau' python_name='tableau' type='type' python_type='TempsEnergie' size='temps_energie' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=17 definition='type(temps_energie),pointer :: tableau(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='temps_energie', static=False, target=False, value=False, volatile=False, attributes=()) name='tableau' type='type' size='temps_energie' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'tableau')
     do i1 = lbound(input%tableau, 1), ubound(input%tableau, 1)
       call temps_energie_to_json(input%tableau(i1), json_val, depth + 1)
@@ -6207,7 +6207,7 @@ subroutine DRIFT1_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
 end subroutine DRIFT1_to_json
 subroutine DRIFT1P_to_json (input, json_root, depth)
@@ -6265,9 +6265,9 @@ subroutine SUPERDRIFT_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
-  !line=35 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' python_name='d' type='REAL' python_type='float' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' fortran_default='null()' default=0.0 default_factory=''
+  !line=35 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' type='REAL' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' default='null()'
   call json%create_array(json_list1, 'd')
   do i1 = lbound(input%D, 1), ubound(input%D, 1)
     call json%create_real(json_val, input%D(i1), '')
@@ -6275,7 +6275,7 @@ subroutine SUPERDRIFT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=35 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ang' python_name='ang' type='REAL' python_type='float' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' fortran_default='null()' default=0.0 default_factory=''
+  !line=35 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ang' type='REAL' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' default='null()'
   call json%create_array(json_list1, 'ang')
   do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
     call json%create_real(json_val, input%ang(i1), '')
@@ -6319,7 +6319,7 @@ subroutine SUPERDRIFTP_to_json (input, json_root, depth)
     call json%rename(json_val, 'L')
     call json%add(json_root, json_val)
   endif
-  !line=42 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' python_name='d' type='REAL' python_type='float' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' fortran_default='null()' default=0.0 default_factory=''
+  !line=42 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='D' type='REAL' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' default='null()'
   call json%create_array(json_list1, 'd')
   do i1 = lbound(input%D, 1), ubound(input%D, 1)
     call json%create_real(json_val, input%D(i1), '')
@@ -6327,7 +6327,7 @@ subroutine SUPERDRIFTP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=42 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ang' python_name='ang' type='REAL' python_type='float' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' fortran_default='null()' default=0.0 default_factory=''
+  !line=42 definition='REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()' type_info=TypeInformation(type='REAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ang' type='REAL' size='DP' dimension=':' comment='TRANSLATIONS  A_D(3) and Angles' default='null()'
   call json%create_array(json_list1, 'ang')
   do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
     call json%create_real(json_val, input%ang(i1), '')
@@ -6367,10 +6367,10 @@ subroutine DKD2_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=49 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=49 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -6380,7 +6380,7 @@ subroutine DKD2_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=49 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=49 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -6389,7 +6389,7 @@ subroutine DKD2_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=50 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=50 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -6397,7 +6397,7 @@ subroutine DKD2_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=50 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=50 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -6443,7 +6443,7 @@ subroutine DKD2P_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=59 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=59 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -6453,7 +6453,7 @@ subroutine DKD2P_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=59 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=59 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -6462,7 +6462,7 @@ subroutine DKD2P_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=60 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=60 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -6470,7 +6470,7 @@ subroutine DKD2P_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=60 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=60 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -6519,7 +6519,7 @@ subroutine KICKT3_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%AN)) then
-    !line=68 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=68 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -6529,7 +6529,7 @@ subroutine KICKT3_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=68 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=68 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -6579,7 +6579,7 @@ subroutine KICKT3P_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%AN)) then
-    !line=79 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=79 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -6589,7 +6589,7 @@ subroutine KICKT3P_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=79 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=79 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -6656,10 +6656,10 @@ subroutine ABELL_to_json (input, json_root, depth)
   endif
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=92 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='MULTIPLICATIVE FACTOR USUALLY 1' fortran_default='null()' default=0.0 default_factory=''
+    !line=92 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='MULTIPLICATIVE FACTOR USUALLY 1' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -6669,7 +6669,7 @@ subroutine ABELL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=92 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='MULTIPLICATIVE FACTOR USUALLY 1' fortran_default='null()' default=0.0 default_factory=''
+    !line=92 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='MULTIPLICATIVE FACTOR USUALLY 1' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -6679,7 +6679,7 @@ subroutine ABELL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%DZ)) then
-    !line=93 definition='real(dp), POINTER :: DZ(:) => null(), T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='DZ' python_name='dz' type='real' python_type='float' size='dp' dimension=':' comment=', phi0(:) => null()' fortran_default='null()' default=0.0 default_factory=''
+    !line=93 definition='real(dp), POINTER :: DZ(:) => null(), T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='DZ' type='real' size='dp' dimension=':' comment=', phi0(:) => null()' default='null()'
     call json%create_array(json_list1, 'dz')
     do i1 = lbound(input%DZ, 1), ubound(input%DZ, 1)
       call json%create_real(json_val, input%DZ(i1), '')
@@ -6689,7 +6689,7 @@ subroutine ABELL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%T)) then
-    !line=93 definition='real(dp), POINTER :: DZ(:) => null(), T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='T' python_name='t' type='real' python_type='float' size='dp' dimension=':' comment=', phi0(:) => null()' fortran_default='null()' default=0.0 default_factory=''
+    !line=93 definition='real(dp), POINTER :: DZ(:) => null(), T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='T' type='real' size='dp' dimension=':' comment=', phi0(:) => null()' default='null()'
     call json%create_array(json_list1, 't')
     do i1 = lbound(input%T, 1), ubound(input%T, 1)
       call json%create_real(json_val, input%T(i1), '')
@@ -6699,7 +6699,7 @@ subroutine ABELL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%TE)) then
-    !line=93 definition='real(dp), POINTER :: DZ(:) => null(), T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TE' python_name='te' type='real' python_type='float' size='dp' dimension=':' comment=', phi0(:) => null()' fortran_default='null()' default=0.0 default_factory=''
+    !line=93 definition='real(dp), POINTER :: DZ(:) => null(), T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TE' type='real' size='dp' dimension=':' comment=', phi0(:) => null()' default='null()'
     call json%create_array(json_list1, 'te')
     do i1 = lbound(input%TE, 1), ubound(input%TE, 1)
       call json%create_real(json_val, input%TE(i1), '')
@@ -6709,7 +6709,7 @@ subroutine ABELL_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%B)) then
-    !line=94 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='complex' python_type='Complex' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=94 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='complex' size='dp' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%B, 2), ubound(input%B, 2)
       call json%create_array(json_list1, 'b')
@@ -6724,7 +6724,7 @@ subroutine ABELL_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%E)) then
-    !line=94 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' python_name='e' type='complex' python_type='Complex' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=94 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' type='complex' size='dp' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%E, 2), ubound(input%E, 2)
       call json%create_array(json_list1, 'e')
@@ -6799,7 +6799,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=104 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=104 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -6809,7 +6809,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=104 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=104 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -6819,7 +6819,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%DZ)) then
-    !line=105 definition='real(dp), POINTER :: DZ(:) => null(),T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='DZ' python_name='dz' type='real' python_type='float' size='dp' dimension=':' comment=', phi0(:) => null()' fortran_default='null()' default=0.0 default_factory=''
+    !line=105 definition='real(dp), POINTER :: DZ(:) => null(),T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='DZ' type='real' size='dp' dimension=':' comment=', phi0(:) => null()' default='null()'
     call json%create_array(json_list1, 'dz')
     do i1 = lbound(input%DZ, 1), ubound(input%DZ, 1)
       call json%create_real(json_val, input%DZ(i1), '')
@@ -6829,7 +6829,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%T)) then
-    !line=105 definition='real(dp), POINTER :: DZ(:) => null(),T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='T' python_name='t' type='real' python_type='float' size='dp' dimension=':' comment=', phi0(:) => null()' fortran_default='null()' default=0.0 default_factory=''
+    !line=105 definition='real(dp), POINTER :: DZ(:) => null(),T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='T' type='real' size='dp' dimension=':' comment=', phi0(:) => null()' default='null()'
     call json%create_array(json_list1, 't')
     do i1 = lbound(input%T, 1), ubound(input%T, 1)
       call json%create_real(json_val, input%T(i1), '')
@@ -6839,7 +6839,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%TE)) then
-    !line=105 definition='real(dp), POINTER :: DZ(:) => null(),T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TE' python_name='te' type='real' python_type='float' size='dp' dimension=':' comment=', phi0(:) => null()' fortran_default='null()' default=0.0 default_factory=''
+    !line=105 definition='real(dp), POINTER :: DZ(:) => null(),T(:) => null(), TE(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TE' type='real' size='dp' dimension=':' comment=', phi0(:) => null()' default='null()'
     call json%create_array(json_list1, 'te')
     do i1 = lbound(input%TE, 1), ubound(input%TE, 1)
       call json%create_real(json_val, input%TE(i1), '')
@@ -6849,7 +6849,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%B)) then
-    !line=106 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='complex' python_type='Complex' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=106 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='complex' size='dp' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%B, 2), ubound(input%B, 2)
       call json%create_array(json_list1, 'b')
@@ -6864,7 +6864,7 @@ subroutine ABELLP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%E)) then
-    !line=106 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' python_name='e' type='complex' python_type='Complex' size='dp' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=106 definition='complex(dp), POINTER :: B(:,:) => null(),E(:,:) => null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' type='complex' size='dp' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%E, 2), ubound(input%E, 2)
       call json%create_array(json_list1, 'e')
@@ -6936,10 +6936,10 @@ subroutine CAV4_to_json (input, json_root, depth)
   endif
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=117 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=117 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -6949,7 +6949,7 @@ subroutine CAV4_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=117 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=117 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -6977,7 +6977,7 @@ subroutine CAV4_to_json (input, json_root, depth)
     call json%add(json_root, 't', input%t)
   endif
   if (associated(input%F)) then
-    !line=119 definition='real(dp), POINTER :: F(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='F' python_name='f' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=119 definition='real(dp), POINTER :: F(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='F' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'f')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call json%create_real(json_val, input%F(i1), '')
@@ -6993,7 +6993,7 @@ subroutine CAV4_to_json (input, json_root, depth)
     call json%add(json_root, 'r', input%R)
   endif
   if (associated(input%PH)) then
-    !line=121 definition='real(dp), POINTER :: PH(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PH' python_name='ph' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=121 definition='real(dp), POINTER :: PH(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PH' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ph')
     do i1 = lbound(input%PH, 1), ubound(input%PH, 1)
       call json%create_real(json_val, input%PH(i1), '')
@@ -7025,7 +7025,7 @@ subroutine CAV4_to_json (input, json_root, depth)
   call json%add(json_root, 'h1', input%H1)
   call json%add(json_root, 'h2', input%H2)
   if (associated(input%AN0)) then
-    !line=128 definition='real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN0' python_name='an0' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=128 definition='real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN0' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an0')
     do i1 = lbound(input%AN0, 1), ubound(input%AN0, 1)
       call json%create_real(json_val, input%AN0(i1), '')
@@ -7035,7 +7035,7 @@ subroutine CAV4_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN0)) then
-    !line=128 definition='real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN0' python_name='bn0' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=128 definition='real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN0' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn0')
     do i1 = lbound(input%BN0, 1), ubound(input%BN0, 1)
       call json%create_real(json_val, input%BN0(i1), '')
@@ -7078,7 +7078,7 @@ subroutine CAV4P_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=136 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=136 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -7088,7 +7088,7 @@ subroutine CAV4P_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=136 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=136 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -7122,7 +7122,7 @@ subroutine CAV4P_to_json (input, json_root, depth)
     call json%add(json_root, 't', input%t)
   endif
   if (associated(input%F)) then
-    !line=139 definition='TYPE(REAL_8), POINTER :: F(:) => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='F' python_name='f' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=139 definition='TYPE(REAL_8), POINTER :: F(:) => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='F' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'f')
     do i1 = lbound(input%F, 1), ubound(input%F, 1)
       call REAL_8_to_json(input%F(i1), json_val, depth + 1)
@@ -7132,7 +7132,7 @@ subroutine CAV4P_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%PH)) then
-    !line=140 definition='TYPE(REAL_8), POINTER :: PH(:) => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='PH' python_name='ph' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=140 definition='TYPE(REAL_8), POINTER :: PH(:) => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='PH' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ph')
     do i1 = lbound(input%PH, 1), ubound(input%PH, 1)
       call REAL_8_to_json(input%PH(i1), json_val, depth + 1)
@@ -7178,7 +7178,7 @@ subroutine CAV4P_to_json (input, json_root, depth)
   call json%rename(json_val, 'H2')
   call json%add(json_root, json_val)
   if (associated(input%AN0)) then
-    !line=148 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN0' python_name='an0' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=148 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN0' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an0')
     do i1 = lbound(input%AN0, 1), ubound(input%AN0, 1)
       call REAL_8_to_json(input%AN0(i1), json_val, depth + 1)
@@ -7188,7 +7188,7 @@ subroutine CAV4P_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN0)) then
-    !line=148 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN0' python_name='bn0' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=148 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN0' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn0')
     do i1 = lbound(input%BN0, 1), ubound(input%BN0, 1)
       call REAL_8_to_json(input%BN0(i1), json_val, depth + 1)
@@ -7226,7 +7226,7 @@ subroutine CAV_TRAV_to_json (input, json_root, depth)
   endif
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%VOLT)) then
     call json%add(json_root, 'volt', input%VOLT)
@@ -7262,7 +7262,7 @@ subroutine CAV_TRAV_to_json (input, json_root, depth)
     call json%add(json_root, 'cavity_totalpath', int(input%CAVITY_TOTALPATH))
   endif
   if (associated(input%AN)) then
-    !line=159 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=159 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -7272,7 +7272,7 @@ subroutine CAV_TRAV_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=159 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=159 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -7360,7 +7360,7 @@ subroutine CAV_TRAVP_to_json (input, json_root, depth)
     call json%add(json_root, 'cavity_totalpath', int(input%CAVITY_TOTALPATH))
   endif
   if (associated(input%AN)) then
-    !line=172 definition='type(real_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='type' python_type='Real8' size='real_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=172 definition='type(real_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='type' size='real_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call real_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -7370,7 +7370,7 @@ subroutine CAV_TRAVP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=172 definition='type(real_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='type' python_type='Real8' size='real_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=172 definition='type(real_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='type' size='real_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call real_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -7405,13 +7405,13 @@ subroutine SOL5_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%B_SOL)) then
     call json%add(json_root, 'b_sol', input%B_SOL)
   endif
   if (associated(input%AN)) then
-    !line=181 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=181 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -7421,7 +7421,7 @@ subroutine SOL5_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=181 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=181 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -7430,7 +7430,7 @@ subroutine SOL5_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=182 definition='real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=182 definition='real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -7438,7 +7438,7 @@ subroutine SOL5_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=182 definition='real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=182 definition='real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -7480,7 +7480,7 @@ subroutine SOL5P_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%AN)) then
-    !line=190 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=190 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -7490,7 +7490,7 @@ subroutine SOL5P_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=190 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=190 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -7509,7 +7509,7 @@ subroutine SOL5P_to_json (input, json_root, depth)
     call json%rename(json_val, 'B_SOL')
     call json%add(json_root, json_val)
   endif
-  !line=193 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=193 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -7517,7 +7517,7 @@ subroutine SOL5P_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=193 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=193 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -7567,10 +7567,10 @@ subroutine KTK_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=203 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=203 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -7580,7 +7580,7 @@ subroutine KTK_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=203 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=203 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -7590,7 +7590,7 @@ subroutine KTK_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%MATX)) then
-    !line=204 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' python_name='matx' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=204 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, 'matx')
@@ -7605,7 +7605,7 @@ subroutine KTK_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATY)) then
-    !line=204 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' python_name='maty' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=204 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, 'maty')
@@ -7620,7 +7620,7 @@ subroutine KTK_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%lx)) then
-    !line=205 definition='real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' python_name='lx' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=205 definition='real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'lx')
     do i1 = lbound(input%lx, 1), ubound(input%lx, 1)
       call json%create_real(json_val, input%lx(i1), '')
@@ -7630,7 +7630,7 @@ subroutine KTK_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ly)) then
-    !line=205 definition='real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ly' python_name='ly' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=205 definition='real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ly' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ly')
     do i1 = lbound(input%ly, 1), ubound(input%ly, 1)
       call json%create_real(json_val, input%ly(i1), '')
@@ -7639,7 +7639,7 @@ subroutine KTK_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=206 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=206 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -7647,7 +7647,7 @@ subroutine KTK_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=206 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=206 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -7690,7 +7690,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=215 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=215 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -7700,7 +7700,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=215 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=215 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -7710,7 +7710,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%MATX)) then
-    !line=216 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' python_name='matx' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=216 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, 'matx')
@@ -7725,7 +7725,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATY)) then
-    !line=216 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' python_name='maty' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=216 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, 'maty')
@@ -7740,7 +7740,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%lx)) then
-    !line=217 definition='TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' python_name='lx' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=217 definition='TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'lx')
     do i1 = lbound(input%lx, 1), ubound(input%lx, 1)
       call REAL_8_to_json(input%lx(i1), json_val, depth + 1)
@@ -7750,7 +7750,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%ly)) then
-    !line=217 definition='TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='ly' python_name='ly' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=217 definition='TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null(), ly => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='ly' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'ly')
     do i1 = lbound(input%ly, 1), ubound(input%ly, 1)
       call REAL_8_to_json(input%ly(i1), json_val, depth + 1)
@@ -7759,7 +7759,7 @@ subroutine KTKP_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=218 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=218 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -7767,7 +7767,7 @@ subroutine KTKP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=218 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=218 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -7813,10 +7813,10 @@ subroutine TKTF_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=227 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=227 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -7826,7 +7826,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=227 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=227 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -7836,7 +7836,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%MATX)) then
-    !line=228 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' python_name='matx' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=228 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, 'matx')
@@ -7851,7 +7851,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATY)) then
-    !line=228 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' python_name='maty' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=228 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, 'maty')
@@ -7866,7 +7866,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATX2)) then
-    !line=229 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX2' python_name='matx2' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=229 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX2' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATX2, 2), ubound(input%MATX2, 2)
       call json%create_array(json_list1, 'matx2')
@@ -7881,7 +7881,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATY2)) then
-    !line=229 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY2' python_name='maty2' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=229 definition='real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY2' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATY2, 2), ubound(input%MATY2, 2)
       call json%create_array(json_list1, 'maty2')
@@ -7896,7 +7896,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%lx)) then
-    !line=230 definition='real(dp), DIMENSION(:), POINTER :: lx => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' python_name='lx' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=230 definition='real(dp), DIMENSION(:), POINTER :: lx => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'lx')
     do i1 = lbound(input%lx, 1), ubound(input%lx, 1)
       call json%create_real(json_val, input%lx(i1), '')
@@ -7906,7 +7906,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%RMATX)) then
-    !line=231 definition='real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATX' python_name='rmatx' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=231 definition='real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATX' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%RMATX, 2), ubound(input%RMATX, 2)
       call json%create_array(json_list1, 'rmatx')
@@ -7921,7 +7921,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%RMATY)) then
-    !line=231 definition='real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATY' python_name='rmaty' type='real' python_type='float' size='dp' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=0.0 default_factory=''
+    !line=231 definition='real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATY' type='real' size='dp' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%RMATY, 2), ubound(input%RMATY, 2)
       call json%create_array(json_list1, 'rmaty')
@@ -7936,7 +7936,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%Rlx)) then
-    !line=232 definition='real(dp), DIMENSION(:), POINTER ::   Rlx => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='Rlx' python_name='rlx' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=232 definition='real(dp), DIMENSION(:), POINTER ::   Rlx => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='Rlx' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'rlx')
     do i1 = lbound(input%Rlx, 1), ubound(input%Rlx, 1)
       call json%create_real(json_val, input%Rlx(i1), '')
@@ -7945,7 +7945,7 @@ subroutine TKTF_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=233 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=233 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -7953,7 +7953,7 @@ subroutine TKTF_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=233 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=233 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -7999,7 +7999,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=246 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=246 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -8009,7 +8009,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=246 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=246 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -8019,7 +8019,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%MATX)) then
-    !line=247 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' python_name='matx' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=247 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATX, 2), ubound(input%MATX, 2)
       call json%create_array(json_list1, 'matx')
@@ -8034,7 +8034,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATY)) then
-    !line=247 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' python_name='maty' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=247 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATY, 2), ubound(input%MATY, 2)
       call json%create_array(json_list1, 'maty')
@@ -8049,7 +8049,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATX2)) then
-    !line=248 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX2' python_name='matx2' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=248 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATX2' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATX2, 2), ubound(input%MATX2, 2)
       call json%create_array(json_list1, 'matx2')
@@ -8064,7 +8064,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%MATY2)) then
-    !line=248 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY2' python_name='maty2' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=248 definition='TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='MATY2' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%MATY2, 2), ubound(input%MATY2, 2)
       call json%create_array(json_list1, 'maty2')
@@ -8079,7 +8079,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%lx)) then
-    !line=249 definition='TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' python_name='lx' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=249 definition='TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='lx' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'lx')
     do i1 = lbound(input%lx, 1), ubound(input%lx, 1)
       call REAL_8_to_json(input%lx(i1), json_val, depth + 1)
@@ -8089,7 +8089,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%RMATX)) then
-    !line=250 definition='TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATX' python_name='rmatx' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=250 definition='TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATX' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%RMATX, 2), ubound(input%RMATX, 2)
       call json%create_array(json_list1, 'rmatx')
@@ -8104,7 +8104,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%RMATY)) then
-    !line=250 definition='TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATY' python_name='rmaty' type='TYPE' python_type='Real8' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' fortran_default='null()' default=None default_factory=''
+    !line=250 definition='TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='RMATY' type='TYPE' size='REAL_8' dimension=':,:' comment='LINEAR MATRIX' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%RMATY, 2), ubound(input%RMATY, 2)
       call json%create_array(json_list1, 'rmaty')
@@ -8119,7 +8119,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%Rlx)) then
-    !line=251 definition='TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='Rlx' python_name='rlx' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=251 definition='TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='Rlx' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'rlx')
     do i1 = lbound(input%Rlx, 1), ubound(input%Rlx, 1)
       call REAL_8_to_json(input%Rlx(i1), json_val, depth + 1)
@@ -8128,7 +8128,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=252 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=252 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -8136,7 +8136,7 @@ subroutine TKTFP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=252 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=252 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -8185,7 +8185,7 @@ subroutine NSMI_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%BN)) then
-    !line=264 definition='real(dp),  DIMENSION(:), POINTER :: BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=264 definition='real(dp),  DIMENSION(:), POINTER :: BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -8220,7 +8220,7 @@ subroutine NSMIP_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%BN)) then
-    !line=269 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=269 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -8255,7 +8255,7 @@ subroutine SSMI_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%AN)) then
-    !line=274 definition='real(dp),  DIMENSION(:), POINTER :: AN  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=274 definition='real(dp),  DIMENSION(:), POINTER :: AN  => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -8290,7 +8290,7 @@ subroutine SSMIP_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%AN)) then
-    !line=279 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=279 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -8325,13 +8325,13 @@ subroutine TEAPOT_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%b_sol)) then
     call json%add(json_root, 'b_sol', input%b_sol)
   endif
   if (associated(input%AN)) then
-    !line=286 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=286 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -8341,7 +8341,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=286 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=286 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -8351,7 +8351,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%bf_x)) then
-    !line=287 definition='real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_x' python_name='bf_x' type='real' python_type='float' size='dp' dimension=':' comment='B field polynomial' fortran_default='null()' default=0.0 default_factory=''
+    !line=287 definition='real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_x' type='real' size='dp' dimension=':' comment='B field polynomial' default='null()'
     call json%create_array(json_list1, 'bf_x')
     do i1 = lbound(input%bf_x, 1), ubound(input%bf_x, 1)
       call json%create_real(json_val, input%bf_x(i1), '')
@@ -8361,7 +8361,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%bf_y)) then
-    !line=287 definition='real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_y' python_name='bf_y' type='real' python_type='float' size='dp' dimension=':' comment='B field polynomial' fortran_default='null()' default=0.0 default_factory=''
+    !line=287 definition='real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_y' type='real' size='dp' dimension=':' comment='B field polynomial' default='null()'
     call json%create_array(json_list1, 'bf_y')
     do i1 = lbound(input%bf_y, 1), ubound(input%bf_y, 1)
       call json%create_real(json_val, input%bf_y(i1), '')
@@ -8373,7 +8373,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !line=289 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=289 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -8381,7 +8381,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=289 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=289 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -8397,7 +8397,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
   call json%add(json_root, 'va', input%VA)
   call json%add(json_root, 'vs', input%VS)
   if (associated(input%AE)) then
-    !line=293 definition='real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' python_name='ae' type='real' python_type='float' size='dp' dimension=':' comment='an,bn for electric stuff' fortran_default='null()' default=0.0 default_factory=''
+    !line=293 definition='real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' type='real' size='dp' dimension=':' comment='an,bn for electric stuff' default='null()'
     call json%create_array(json_list1, 'ae')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call json%create_real(json_val, input%AE(i1), '')
@@ -8407,7 +8407,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BE)) then
-    !line=293 definition='real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BE' python_name='be' type='real' python_type='float' size='dp' dimension=':' comment='an,bn for electric stuff' fortran_default='null()' default=0.0 default_factory=''
+    !line=293 definition='real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BE' type='real' size='dp' dimension=':' comment='an,bn for electric stuff' default='null()'
     call json%create_array(json_list1, 'be')
     do i1 = lbound(input%BE, 1), ubound(input%BE, 1)
       call json%create_real(json_val, input%BE(i1), '')
@@ -8417,7 +8417,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%e_x)) then
-    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_x' python_name='e_x' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_x' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'e_x')
     do i1 = lbound(input%e_x, 1), ubound(input%e_x, 1)
       call json%create_real(json_val, input%e_x(i1), '')
@@ -8427,7 +8427,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%e_y)) then
-    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_y' python_name='e_y' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_y' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'e_y')
     do i1 = lbound(input%e_y, 1), ubound(input%e_y, 1)
       call json%create_real(json_val, input%e_y(i1), '')
@@ -8437,7 +8437,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%PHI)) then
-    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PHI' python_name='phi' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PHI' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'phi')
     do i1 = lbound(input%PHI, 1), ubound(input%PHI, 1)
       call json%create_real(json_val, input%PHI(i1), '')
@@ -8447,7 +8447,7 @@ subroutine TEAPOT_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%vm)) then
-    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='vm' python_name='vm' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=294 definition='real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='vm' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'vm')
     do i1 = lbound(input%vm, 1), ubound(input%vm, 1)
       call json%create_real(json_val, input%vm(i1), '')
@@ -8495,7 +8495,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=303 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=303 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -8505,7 +8505,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=303 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=303 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -8515,7 +8515,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%bf_x)) then
-    !line=304 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_x' python_name='bf_x' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='B field polynomial' fortran_default='null()' default=None default_factory=''
+    !line=304 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_x' type='TYPE' size='REAL_8' dimension=':' comment='B field polynomial' default='null()'
     call json%create_array(json_list1, 'bf_x')
     do i1 = lbound(input%bf_x, 1), ubound(input%bf_x, 1)
       call REAL_8_to_json(input%bf_x(i1), json_val, depth + 1)
@@ -8525,7 +8525,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%bf_y)) then
-    !line=304 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_y' python_name='bf_y' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='B field polynomial' fortran_default='null()' default=None default_factory=''
+    !line=304 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='bf_y' type='TYPE' size='REAL_8' dimension=':' comment='B field polynomial' default='null()'
     call json%create_array(json_list1, 'bf_y')
     do i1 = lbound(input%bf_y, 1), ubound(input%bf_y, 1)
       call REAL_8_to_json(input%bf_y(i1), json_val, depth + 1)
@@ -8537,7 +8537,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !line=306 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=306 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -8545,7 +8545,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=306 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=306 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -8569,7 +8569,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
   call json%rename(json_val, 'VS')
   call json%add(json_root, json_val)
   if (associated(input%AE)) then
-    !line=310 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' python_name='ae' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='an,bn for electric stuff' fortran_default='null()' default=None default_factory=''
+    !line=310 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AE' type='TYPE' size='REAL_8' dimension=':' comment='an,bn for electric stuff' default='null()'
     call json%create_array(json_list1, 'ae')
     do i1 = lbound(input%AE, 1), ubound(input%AE, 1)
       call REAL_8_to_json(input%AE(i1), json_val, depth + 1)
@@ -8579,7 +8579,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BE)) then
-    !line=310 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BE' python_name='be' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='an,bn for electric stuff' fortran_default='null()' default=None default_factory=''
+    !line=310 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BE' type='TYPE' size='REAL_8' dimension=':' comment='an,bn for electric stuff' default='null()'
     call json%create_array(json_list1, 'be')
     do i1 = lbound(input%BE, 1), ubound(input%BE, 1)
       call REAL_8_to_json(input%BE(i1), json_val, depth + 1)
@@ -8589,7 +8589,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%e_x)) then
-    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='e_x' python_name='e_x' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='e_x' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'e_x')
     do i1 = lbound(input%e_x, 1), ubound(input%e_x, 1)
       call REAL_8_to_json(input%e_x(i1), json_val, depth + 1)
@@ -8599,7 +8599,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%e_y)) then
-    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='e_y' python_name='e_y' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='e_y' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'e_y')
     do i1 = lbound(input%e_y, 1), ubound(input%e_y, 1)
       call REAL_8_to_json(input%e_y(i1), json_val, depth + 1)
@@ -8609,7 +8609,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%PHI)) then
-    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='PHI' python_name='phi' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='PHI' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'phi')
     do i1 = lbound(input%PHI, 1), ubound(input%PHI, 1)
       call REAL_8_to_json(input%PHI(i1), json_val, depth + 1)
@@ -8619,7 +8619,7 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%vm)) then
-    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='vm' python_name='vm' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=311 definition='TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='vm' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'vm')
     do i1 = lbound(input%vm, 1), ubound(input%vm, 1)
       call REAL_8_to_json(input%vm(i1), json_val, depth + 1)
@@ -8657,7 +8657,7 @@ subroutine MON_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%x)) then
     call json%add(json_root, 'x', input%x)
@@ -8727,7 +8727,7 @@ subroutine RCOL_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
 end subroutine RCOL_to_json
 subroutine RCOLP_to_json (input, json_root, depth)
@@ -8785,7 +8785,7 @@ subroutine ECOL_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
 end subroutine ECOL_to_json
 subroutine ECOLP_to_json (input, json_root, depth)
@@ -8843,7 +8843,7 @@ subroutine ESEPTUM_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%VOLT)) then
     call json%add(json_root, 'volt', input%VOLT)
@@ -8917,10 +8917,10 @@ subroutine STREX_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=370 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=370 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -8930,7 +8930,7 @@ subroutine STREX_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=370 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=370 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -8942,7 +8942,7 @@ subroutine STREX_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !line=372 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=372 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call json%create_real(json_val, input%FINT(i1), '')
@@ -8950,7 +8950,7 @@ subroutine STREX_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=372 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='real' python_type='float' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=0.0 default_factory=''
+  !line=372 definition='real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='real' size='dp' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call json%create_real(json_val, input%HGAP(i1), '')
@@ -8996,7 +8996,7 @@ subroutine STREXP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=381 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=381 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -9006,7 +9006,7 @@ subroutine STREXP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=381 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=381 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -9018,7 +9018,7 @@ subroutine STREXP_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !line=383 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' python_name='fint' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=383 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='FINT' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'fint')
   do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
     call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
@@ -9026,7 +9026,7 @@ subroutine STREXP_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=383 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' python_name='hgap' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' fortran_default='null()' default=None default_factory=''
+  !line=383 definition='TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='HGAP' type='TYPE' size='REAL_8' dimension=':' comment='FRINGE FUDGE FOR MAD' default='null()'
   call json%create_array(json_list1, 'hgap')
   do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
     call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
@@ -9075,13 +9075,13 @@ subroutine ENGE_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%D)) then
     call json%add(json_root, 'd', input%D)
   endif
   if (associated(input%AN)) then
-    !line=393 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=393 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -9091,7 +9091,7 @@ subroutine ENGE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=393 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=393 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -9101,7 +9101,7 @@ subroutine ENGE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%A)) then
-    !line=394 definition='real(dp),  DIMENSION(:), POINTER :: A => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='real' python_type='float' size='dp' dimension=':' comment='ENGE  COEFFICIENTS' fortran_default='null()' default=0.0 default_factory=''
+    !line=394 definition='real(dp),  DIMENSION(:), POINTER :: A => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='real' size='dp' dimension=':' comment='ENGE  COEFFICIENTS' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%create_real(json_val, input%A(i1), '')
@@ -9149,7 +9149,7 @@ subroutine ENGEP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=402 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=402 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -9159,7 +9159,7 @@ subroutine ENGEP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=402 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='Multipole component' fortran_default='null()' default=None default_factory=''
+    !line=402 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -9172,7 +9172,7 @@ subroutine ENGEP_to_json (input, json_root, depth)
     call json%add(json_root, 'd', input%D)
   endif
   if (associated(input%A)) then
-    !line=404 definition='real(dp),  DIMENSION(:), POINTER :: A => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' python_name='a' type='real' python_type='float' size='dp' dimension=':' comment='ENGE  COEFFICIENTS' fortran_default='null()' default=0.0 default_factory=''
+    !line=404 definition='real(dp),  DIMENSION(:), POINTER :: A => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='real' size='dp' dimension=':' comment='ENGE  COEFFICIENTS' default='null()'
     call json%create_array(json_list1, 'a')
     do i1 = lbound(input%A, 1), ubound(input%A, 1)
       call json%create_real(json_val, input%A(i1), '')
@@ -9215,10 +9215,10 @@ subroutine PANCAKE_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%B)) then
-    !line=427 definition='type(tree_element),  POINTER :: B(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='type' python_type='TreeElement' size='tree_element' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=427 definition='type(tree_element),  POINTER :: B(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='type' size='tree_element' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'b')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call tree_element_to_json(input%B(i1), json_val, depth + 1)
@@ -9279,7 +9279,7 @@ subroutine PANCAKEP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%B)) then
-    !line=436 definition='type(tree_element),  POINTER :: B(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='B' python_name='b' type='type' python_type='TreeElement' size='tree_element' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=436 definition='type(tree_element),  POINTER :: B(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tree_element', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='type' size='tree_element' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'b')
     do i1 = lbound(input%B, 1), ubound(input%B, 1)
       call tree_element_to_json(input%B(i1), json_val, depth + 1)
@@ -9337,10 +9337,10 @@ subroutine HELICAL_DIPOLE_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   ! parent pointer skip: P (TYPE, )
   if (associated(input%L)) then
-    call json%add(json_root, 'L', input%L)
+    call json%add(json_root, 'l', input%L)
   endif
   if (associated(input%AN)) then
-    !line=447 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=447 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call json%create_real(json_val, input%AN(i1), '')
@@ -9350,7 +9350,7 @@ subroutine HELICAL_DIPOLE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=447 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=447 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call json%create_real(json_val, input%BN(i1), '')
@@ -9360,7 +9360,7 @@ subroutine HELICAL_DIPOLE_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fake_shift)) then
-    !line=447 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fake_shift' python_name='fake_shift' type='real' python_type='float' size='dp' dimension=':' comment='Multipole component' fortran_default='null()' default=0.0 default_factory=''
+    !line=447 definition='real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fake_shift' type='real' size='dp' dimension=':' comment='Multipole component' default='null()'
     call json%create_array(json_list1, 'fake_shift')
     do i1 = lbound(input%fake_shift, 1), ubound(input%fake_shift, 1)
       call json%create_real(json_val, input%fake_shift(i1), '')
@@ -9409,7 +9409,7 @@ subroutine HELICAL_DIPOLEP_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%AN)) then
-    !line=455 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' python_name='an' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=455 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='AN' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'an')
     do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
       call REAL_8_to_json(input%AN(i1), json_val, depth + 1)
@@ -9419,7 +9419,7 @@ subroutine HELICAL_DIPOLEP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%BN)) then
-    !line=455 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' python_name='bn' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=455 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='BN' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'bn')
     do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
       call REAL_8_to_json(input%BN(i1), json_val, depth + 1)
@@ -9429,7 +9429,7 @@ subroutine HELICAL_DIPOLEP_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%fake_shift)) then
-    !line=456 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: fake_shift=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='fake_shift' python_name='fake_shift' type='TYPE' python_type='Real8' size='REAL_8' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=456 definition='TYPE(REAL_8),  DIMENSION(:), POINTER :: fake_shift=> null()' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=':', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='REAL_8', static=False, target=False, value=False, volatile=False, attributes=()) name='fake_shift' type='TYPE' size='REAL_8' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'fake_shift')
     do i1 = lbound(input%fake_shift, 1), ubound(input%fake_shift, 1)
       call REAL_8_to_json(input%fake_shift(i1), json_val, depth + 1)
@@ -9475,7 +9475,7 @@ subroutine rf_phasor_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=333 definition='real(dp) x(2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='real' python_type='float' size='dp' dimension='2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=333 definition='real(dp) x(2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='real' size='dp' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call json%create_real(json_val, input%x(i1), '')
@@ -9509,7 +9509,7 @@ subroutine rf_phasor_8_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=340 definition='type(real_8)  x(2)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='type' python_type='Real8' size='real_8' dimension='2' comment='The two hands of the clock' fortran_default=None default=None default_factory=''
+  !line=340 definition='type(real_8)  x(2)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='type' size='real_8' dimension='2' comment='The two hands of the clock' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call real_8_to_json(input%x(i1), json_val, depth + 1)
@@ -9545,7 +9545,7 @@ subroutine probe_8_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=358 definition='type(real_8) x(6)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='type' python_type='Real8' size='real_8' dimension='6' comment='Polymorphic orbital ray' fortran_default=None default=None default_factory=''
+  !line=358 definition='type(real_8) x(6)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='real_8', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='type' size='real_8' dimension='6' comment='Polymorphic orbital ray' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call real_8_to_json(input%x(i1), json_val, depth + 1)
@@ -9553,7 +9553,7 @@ subroutine probe_8_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=359 definition='type(spinor_8) s(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spinor_8', static=False, target=False, value=False, volatile=False, attributes=()) name='s' python_name='s' type='type' python_type='Spinor8' size='spinor_8' dimension='3' comment='Polymorphic spin s(1:3)' fortran_default=None default=None default_factory=''
+  !line=359 definition='type(spinor_8) s(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spinor_8', static=False, target=False, value=False, volatile=False, attributes=()) name='s' type='type' size='spinor_8' dimension='3' comment='Polymorphic spin s(1:3)' default=None
   call json%create_array(json_list1, 's')
   do i1 = lbound(input%s, 1), ubound(input%s, 1)
     call spinor_8_to_json(input%s(i1), json_val, depth + 1)
@@ -9564,7 +9564,7 @@ subroutine probe_8_to_json (input, json_root, depth)
   call quaternion_8_to_json(input%q, json_val, depth + 1)
   call json%rename(json_val, 'q')
   call json%add(json_root, json_val)
-  !line=361 definition='type(rf_phasor_8)  ac(nacmax)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rf_phasor_8', static=False, target=False, value=False, volatile=False, attributes=()) name='ac' python_name='ac' type='type' python_type='RfPhasor8' size='rf_phasor_8' dimension='nacmax' comment='Modulation of magnet' fortran_default=None default=None default_factory=''
+  !line=361 definition='type(rf_phasor_8)  ac(nacmax)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rf_phasor_8', static=False, target=False, value=False, volatile=False, attributes=()) name='ac' type='type' size='rf_phasor_8' dimension='nacmax' comment='Modulation of magnet' default=None
   call json%create_array(json_list1, 'ac')
   do i1 = lbound(input%ac, 1), ubound(input%ac, 1)
     call rf_phasor_8_to_json(input%ac(i1), json_val, depth + 1)
@@ -9573,7 +9573,7 @@ subroutine probe_8_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'nac', int(input%nac))
-  !line=363 definition='real(dp) E_ij(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E_ij' python_name='e_ij' type='real' python_type='float' size='dp' dimension='6,6' comment='Envelope for stochastic radiation' fortran_default=None default=0.0 default_factory=''
+  !line=363 definition='real(dp) E_ij(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E_ij' type='real' size='dp' dimension='6,6' comment='Envelope for stochastic radiation' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%E_ij, 2), ubound(input%E_ij, 2)
     call json%create_array(json_list1, 'e_ij')
@@ -9586,7 +9586,7 @@ subroutine probe_8_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=364 definition='real(dp) x0(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' python_name='x0' type='real' python_type='float' size='dp' dimension='6' comment='initial value of the ray for TPSA calculations with c_damap' fortran_default=None default=0.0 default_factory=''
+  !line=364 definition='real(dp) x0(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' type='real' size='dp' dimension='6' comment='initial value of the ray for TPSA calculations with c_damap' default=None
   call json%create_array(json_list1, 'x0')
   do i1 = lbound(input%x0, 1), ubound(input%x0, 1)
     call json%create_real(json_val, input%x0(i1), '')
@@ -9636,7 +9636,7 @@ subroutine TEMPORAL_PROBE_to_json (input, json_root, depth)
   endif
   call json%add(json_root, 'r', input%r)
   call json%add(json_root, 'dt0', input%dt0)
-  !line=378 definition='real(DP)   POS(6),T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='POS' python_name='pos' type='real' python_type='float' size='DP' dimension='6' comment='(x,y,z,px,py,pz) at dt0 and total time' fortran_default=None default=0.0 default_factory=''
+  !line=378 definition='real(DP)   POS(6),T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='POS' type='real' size='DP' dimension='6' comment='(x,y,z,px,py,pz) at dt0 and total time' default=None
   call json%create_array(json_list1, 'pos')
   do i1 = lbound(input%POS, 1), ubound(input%POS, 1)
     call json%create_real(json_val, input%POS(i1), '')
@@ -9645,7 +9645,7 @@ subroutine TEMPORAL_PROBE_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 't', input%T)
-  !line=379 definition='real(DP)   IC(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='IC' python_name='ic' type='real' python_type='float' size='DP' dimension='3' comment='(x,y,z,px,py,pz) at dt0' fortran_default=None default=0.0 default_factory=''
+  !line=379 definition='real(DP)   IC(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='IC' type='real' size='DP' dimension='3' comment='(x,y,z,px,py,pz) at dt0' default=None
   call json%create_array(json_list1, 'ic')
   do i1 = lbound(input%IC, 1), ubound(input%IC, 1)
     call json%create_real(json_val, input%IC(i1), '')
@@ -9653,7 +9653,7 @@ subroutine TEMPORAL_PROBE_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=380 definition='type(spinor) s(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spinor', static=False, target=False, value=False, volatile=False, attributes=()) name='s' python_name='s' type='type' python_type='Spinor' size='spinor' dimension='3' comment='spin vectors at dt0' fortran_default=None default=None default_factory=''
+  !line=380 definition='type(spinor) s(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spinor', static=False, target=False, value=False, volatile=False, attributes=()) name='s' type='type' size='spinor' dimension='3' comment='spin vectors at dt0' default=None
   call json%create_array(json_list1, 's')
   do i1 = lbound(input%s, 1), ubound(input%s, 1)
     call spinor_to_json(input%s(i1), json_val, depth + 1)
@@ -9686,7 +9686,7 @@ subroutine TEMPORAL_BEAM_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%TP)) then
-    !line=384 definition='TYPE(TEMPORAL_PROBE), pointer :: TP(:)' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='TEMPORAL_PROBE', static=False, target=False, value=False, volatile=False, attributes=()) name='TP' python_name='tp' type='TYPE' python_type='TemporalProbe' size='TEMPORAL_PROBE' dimension=':' comment='' fortran_default=None default=None default_factory=''
+    !line=384 definition='TYPE(TEMPORAL_PROBE), pointer :: TP(:)' type_info=TypeInformation(type='TYPE', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='TEMPORAL_PROBE', static=False, target=False, value=False, volatile=False, attributes=()) name='TP' type='TYPE' size='TEMPORAL_PROBE' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'tp')
     do i1 = lbound(input%TP, 1), ubound(input%TP, 1)
       call TEMPORAL_PROBE_to_json(input%TP(i1), json_val, depth + 1)
@@ -9695,7 +9695,7 @@ subroutine TEMPORAL_BEAM_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=385 definition='real(DP) a(3),ent(3,3),p0c,total_time' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='DP' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=385 definition='real(DP) a(3),ent(3,3),p0c,total_time' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='DP' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call json%create_real(json_val, input%a(i1), '')
@@ -9703,7 +9703,7 @@ subroutine TEMPORAL_BEAM_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=385 definition='real(DP) a(3),ent(3,3),p0c,total_time' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' python_name='ent' type='real' python_type='float' size='DP' dimension='3,3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=385 definition='real(DP) a(3),ent(3,3),p0c,total_time' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='DP', static=False, target=False, value=False, volatile=False, attributes=()) name='ent' type='real' size='DP' dimension='3,3' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
     call json%create_array(json_list1, 'ent')
@@ -9862,7 +9862,7 @@ subroutine c_spinmatrix_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=416 definition='type(c_taylor) s(3,3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='s' python_name='s' type='type' python_type='CTaylor' size='c_taylor' dimension='3,3' comment='' fortran_default=None default=None default_factory=''
+  !line=416 definition='type(c_taylor) s(3,3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='s' type='type' size='c_taylor' dimension='3,3' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%s, 2), ubound(input%s, 2)
     call json%create_array(json_list1, 's')
@@ -9899,7 +9899,7 @@ subroutine c_spinor_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=420 definition='type(c_taylor) v(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' python_name='v' type='type' python_type='CTaylor' size='c_taylor' dimension='3' comment='' fortran_default=None default=None default_factory=''
+  !line=420 definition='type(c_taylor) v(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' type='type' size='c_taylor' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'v')
   do i1 = lbound(input%v, 1), ubound(input%v, 1)
     call c_taylor_to_json(input%v(i1), json_val, depth + 1)
@@ -9932,7 +9932,7 @@ subroutine c_yu_w_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (associated(input%w)) then
-    !line=425 definition='type (c_taylor),pointer :: w(:,:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='w' python_name='w' type='type' python_type='CTaylor' size='c_taylor' dimension=':,:' comment='@1 orbital part of the map' fortran_default='null()' default=None default_factory=''
+    !line=425 definition='type (c_taylor),pointer :: w(:,:)=> null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='w' type='type' size='c_taylor' dimension=':,:' comment='@1 orbital part of the map' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%w, 2), ubound(input%w, 2)
       call json%create_array(json_list1, 'w')
@@ -9971,7 +9971,7 @@ subroutine c_quaternion_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=430 definition='type(c_taylor) x(0:3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='type' python_type='CTaylor' size='c_taylor' dimension='0:3' comment='' fortran_default=None default=None default_factory=''
+  !line=430 definition='type(c_taylor) x(0:3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='type' size='c_taylor' dimension='0:3' comment='' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call c_taylor_to_json(input%x(i1), json_val, depth + 1)
@@ -10003,7 +10003,7 @@ subroutine c_damap_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=435 definition='type (c_taylor) v(lnv)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' python_name='v' type='type' python_type='CTaylor' size='c_taylor' dimension='lnv' comment='@1 orbital part of the map' fortran_default=None default=None default_factory=''
+  !line=435 definition='type (c_taylor) v(lnv)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' type='type' size='c_taylor' dimension='lnv' comment='@1 orbital part of the map' default=None
   call json%create_array(json_list1, 'v')
   do i1 = lbound(input%v, 1), ubound(input%v, 1)
     call c_taylor_to_json(input%v(i1), json_val, depth + 1)
@@ -10014,7 +10014,7 @@ subroutine c_damap_to_json (input, json_root, depth)
   call c_quaternion_to_json(input%q, json_val, depth + 1)
   call json%rename(json_val, 'q')
   call json%add(json_root, json_val)
-  !line=437 definition='complex(dp) e_ij(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_ij' python_name='e_ij' type='complex' python_type='Complex' size='dp' dimension='6,6' comment='@1 stochastic fluctuation in radiation theory' fortran_default=None default=0.0 default_factory=''
+  !line=437 definition='complex(dp) e_ij(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='e_ij' type='complex' size='dp' dimension='6,6' comment='@1 stochastic fluctuation in radiation theory' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%e_ij, 2), ubound(input%e_ij, 2)
     call json%create_array(json_list1, 'e_ij')
@@ -10028,7 +10028,7 @@ subroutine c_damap_to_json (input, json_root, depth)
   call json%add(json_root, json_list2)
   nullify(json_list2)
   call json%add(json_root, 'n', int(input%n))
-  !line=439 definition='complex(dp) x0(lnv)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' python_name='x0' type='complex' python_type='Complex' size='dp' dimension='lnv' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=439 definition='complex(dp) x0(lnv)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' type='complex' size='dp' dimension='lnv' comment='' default=None
   call json%create_array(json_list1, 'x0')
   do i1 = lbound(input%x0, 1), ubound(input%x0, 1)
     call complex_to_json(input%x0(i1), json_val, depth + 1)
@@ -10037,7 +10037,7 @@ subroutine c_damap_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   if (associated(input%cm)) then
-    !line=440 definition='complex(dpn), pointer :: cm(:,:)=> null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dpn', static=False, target=False, value=False, volatile=False, attributes=()) name='cm' python_name='cm' type='complex' python_type='Complex' size='dpn' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=440 definition='complex(dpn), pointer :: cm(:,:)=> null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dpn', static=False, target=False, value=False, volatile=False, attributes=()) name='cm' type='complex' size='dpn' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%cm, 2), ubound(input%cm, 2)
       call json%create_array(json_list1, 'cm')
@@ -10052,7 +10052,7 @@ subroutine c_damap_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%m)) then
-    !line=441 definition='real(dpn),pointer :: m(:,:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dpn', static=False, target=False, value=False, volatile=False, attributes=()) name='m' python_name='m' type='real' python_type='float' size='dpn' dimension=':,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=441 definition='real(dpn),pointer :: m(:,:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dpn', static=False, target=False, value=False, volatile=False, attributes=()) name='m' type='real' size='dpn' dimension=':,:' comment='' default='null()'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%m, 2), ubound(input%m, 2)
       call json%create_array(json_list1, 'm')
@@ -10096,7 +10096,7 @@ subroutine c_vector_field_to_json (input, json_root, depth)
   call json%add(json_root, 'n', int(input%n))
   call json%add(json_root, 'nrmax', int(input%nrmax))
   call json%add(json_root, 'eps', input%eps)
-  !line=464 definition='type (c_taylor) v(lnv)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' python_name='v' type='type' python_type='CTaylor' size='c_taylor' dimension='lnv' comment='' fortran_default=None default=None default_factory=''
+  !line=464 definition='type (c_taylor) v(lnv)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='v' type='type' size='c_taylor' dimension='lnv' comment='' default=None
   call json%create_array(json_list1, 'v')
   do i1 = lbound(input%v, 1), ubound(input%v, 1)
     call c_taylor_to_json(input%v(i1), json_val, depth + 1)
@@ -10136,7 +10136,7 @@ subroutine c_vector_field_fourier_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'n', int(input%n))
   if (associated(input%f)) then
-    !line=480 definition='type (c_vector_field), pointer :: f(:)  =>null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='c_vector_field', static=False, target=False, value=False, volatile=False, attributes=()) name='f' python_name='f' type='type' python_type='CVectorField' size='c_vector_field' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=480 definition='type (c_vector_field), pointer :: f(:)  =>null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='c_vector_field', static=False, target=False, value=False, volatile=False, attributes=()) name='f' type='type' size='c_vector_field' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'f')
     do i1 = lbound(input%f, 1), ubound(input%f, 1)
       call c_vector_field_to_json(input%f(i1), json_val, depth + 1)
@@ -10172,7 +10172,7 @@ subroutine c_factored_lie_to_json (input, json_root, depth)
   call json%add(json_root, 'n', int(input%n))
   call json%add(json_root, 'dir', int(input%dir))
   if (associated(input%f)) then
-    !line=486 definition='type (c_vector_field), pointer :: f(:)=>null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='c_vector_field', static=False, target=False, value=False, volatile=False, attributes=()) name='f' python_name='f' type='type' python_type='CVectorField' size='c_vector_field' dimension=':' comment='' fortran_default='null()' default=None default_factory=''
+    !line=486 definition='type (c_vector_field), pointer :: f(:)=>null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='c_vector_field', static=False, target=False, value=False, volatile=False, attributes=()) name='f' type='type' size='c_vector_field' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'f')
     do i1 = lbound(input%f, 1), ubound(input%f, 1)
       call c_vector_field_to_json(input%f(i1), json_val, depth + 1)
@@ -10217,7 +10217,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   call c_vector_field_to_json(input%H_nl, json_val, depth + 1)
   call json%rename(json_val, 'H_nl')
   call json%add(json_root, json_val)
-  !line=493 definition='complex(dp) s_ij0(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s_ij0' python_name='s_ij0' type='complex' python_type='Complex' size='dp' dimension='6,6' comment='@1  equilibrium beam sizes' fortran_default=None default=0.0 default_factory=''
+  !line=493 definition='complex(dp) s_ij0(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s_ij0' type='complex' size='dp' dimension='6,6' comment='@1  equilibrium beam sizes' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%s_ij0, 2), ubound(input%s_ij0, 2)
     call json%create_array(json_list1, 's_ij0')
@@ -10230,7 +10230,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=494 definition='complex(dp) s_ijr(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s_ijr' python_name='s_ijr' type='complex' python_type='Complex' size='dp' dimension='6,6' comment='@1  equilibrium beam sizes in resonance basis' fortran_default=None default=0.0 default_factory=''
+  !line=494 definition='complex(dp) s_ijr(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s_ijr' type='complex' size='dp' dimension='6,6' comment='@1  equilibrium beam sizes in resonance basis' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%s_ijr, 2), ubound(input%s_ijr, 2)
     call json%create_array(json_list1, 's_ijr')
@@ -10243,7 +10243,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=495 definition='complex(dp) b_ijr(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_ijr' python_name='b_ijr' type='complex' python_type='Complex' size='dp' dimension='6,6' comment='@1   stochastic kick in resonance basis' fortran_default=None default=0.0 default_factory=''
+  !line=495 definition='complex(dp) b_ijr(6,6)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_ijr' type='complex' size='dp' dimension='6,6' comment='@1   stochastic kick in resonance basis' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%b_ijr, 2), ubound(input%b_ijr, 2)
     call json%create_array(json_list1, 'b_ijr')
@@ -10256,7 +10256,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=496 definition='real(dp) emittance(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='emittance' python_name='emittance' type='real' python_type='float' size='dp' dimension='3' comment='@1  Equilibrium emittances as defined by Chao (computed from s_ijr(2*i-1,2*i) i=1,2,3 )' fortran_default=None default=0.0 default_factory=''
+  !line=496 definition='real(dp) emittance(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='emittance' type='real' size='dp' dimension='3' comment='@1  Equilibrium emittances as defined by Chao (computed from s_ijr(2*i-1,2*i) i=1,2,3 )' default=None
   call json%create_array(json_list1, 'emittance')
   do i1 = lbound(input%emittance, 1), ubound(input%emittance, 1)
     call json%create_real(json_val, input%emittance(i1), '')
@@ -10265,7 +10265,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'nres', int(input%NRES))
-  !line=497 definition='integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='M' python_name='m' type='integer' python_type='int' size=None dimension='NDIM2t/2,NRESO' comment='@1 stores resonances to be left in the map, including spin (ms)' fortran_default=None default=0 default_factory=''
+  !line=497 definition='integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='M' type='integer' size=None dimension='NDIM2t/2,NRESO' comment='@1 stores resonances to be left in the map, including spin (ms)' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%M, 2), ubound(input%M, 2)
     call json%create_array(json_list1, 'm')
@@ -10278,7 +10278,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=497 definition='integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ms' python_name='ms' type='integer' python_type='int' size=None dimension='NRESO' comment='@1 stores resonances to be left in the map, including spin (ms)' fortran_default=None default=0 default_factory=''
+  !line=497 definition='integer NRES,M(NDIM2t/2,NRESO),ms(NRESO)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ms' type='integer' size=None dimension='NRESO' comment='@1 stores resonances to be left in the map, including spin (ms)' default=None
   call json%create_array(json_list1, 'ms')
   do i1 = lbound(input%ms, 1), ubound(input%ms, 1)
     call json%create_integer(json_val, input%ms(i1), '')
@@ -10286,7 +10286,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=498 definition='real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='tune' python_name='tune' type='real' python_type='float' size='dp' dimension='NDIM2t/2' comment='@1 Stores simple information' fortran_default=None default=0.0 default_factory=''
+  !line=498 definition='real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='tune' type='real' size='dp' dimension='NDIM2t/2' comment='@1 Stores simple information' default=None
   call json%create_array(json_list1, 'tune')
   do i1 = lbound(input%tune, 1), ubound(input%tune, 1)
     call json%create_real(json_val, input%tune(i1), '')
@@ -10294,7 +10294,7 @@ subroutine c_normal_form_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=498 definition='real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='damping' python_name='damping' type='real' python_type='float' size='dp' dimension='NDIM2t/2' comment='@1 Stores simple information' fortran_default=None default=0.0 default_factory=''
+  !line=498 definition='real(dp) tune(NDIM2t/2),damping(NDIM2t/2),spin_tune,quaternion_angle' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='damping' type='real' size='dp' dimension='NDIM2t/2' comment='@1 Stores simple information' default=None
   call json%create_array(json_list1, 'damping')
   do i1 = lbound(input%damping, 1), ubound(input%damping, 1)
     call json%create_real(json_val, input%damping(i1), '')
@@ -10348,7 +10348,7 @@ subroutine c_ray_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=521 definition='complex(dp) x(lnv)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' python_name='x' type='complex' python_type='Complex' size='dp' dimension='lnv' comment='# orbital and/or magnet modulation clocks' fortran_default=None default=0.0 default_factory=''
+  !line=521 definition='complex(dp) x(lnv)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x' type='complex' size='dp' dimension='lnv' comment='# orbital and/or magnet modulation clocks' default=None
   call json%create_array(json_list1, 'x')
   do i1 = lbound(input%x, 1), ubound(input%x, 1)
     call complex_to_json(input%x(i1), json_val, depth + 1)
@@ -10360,7 +10360,7 @@ subroutine c_ray_to_json (input, json_root, depth)
   call json%rename(json_val, 'q')
   call json%add(json_root, json_val)
   call json%add(json_root, 'n', int(input%n))
-  !line=524 definition='complex(dp) s1(3),s2(3),s3(3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s1' python_name='s1' type='complex' python_type='Complex' size='dp' dimension='3' comment='# 3 spin directions' fortran_default=None default=0.0 default_factory=''
+  !line=524 definition='complex(dp) s1(3),s2(3),s3(3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s1' type='complex' size='dp' dimension='3' comment='# 3 spin directions' default=None
   call json%create_array(json_list1, 's1')
   do i1 = lbound(input%s1, 1), ubound(input%s1, 1)
     call complex_to_json(input%s1(i1), json_val, depth + 1)
@@ -10368,7 +10368,7 @@ subroutine c_ray_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=524 definition='complex(dp) s1(3),s2(3),s3(3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s2' python_name='s2' type='complex' python_type='Complex' size='dp' dimension='3' comment='# 3 spin directions' fortran_default=None default=0.0 default_factory=''
+  !line=524 definition='complex(dp) s1(3),s2(3),s3(3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s2' type='complex' size='dp' dimension='3' comment='# 3 spin directions' default=None
   call json%create_array(json_list1, 's2')
   do i1 = lbound(input%s2, 1), ubound(input%s2, 1)
     call complex_to_json(input%s2(i1), json_val, depth + 1)
@@ -10376,7 +10376,7 @@ subroutine c_ray_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=524 definition='complex(dp) s1(3),s2(3),s3(3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s3' python_name='s3' type='complex' python_type='Complex' size='dp' dimension='3' comment='# 3 spin directions' fortran_default=None default=0.0 default_factory=''
+  !line=524 definition='complex(dp) s1(3),s2(3),s3(3)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s3' type='complex' size='dp' dimension='3' comment='# 3 spin directions' default=None
   call json%create_array(json_list1, 's3')
   do i1 = lbound(input%s3, 1), ubound(input%s3, 1)
     call complex_to_json(input%s3(i1), json_val, depth + 1)
@@ -10424,7 +10424,7 @@ subroutine fibre_array_to_json (input, json_root, depth)
     call json%add(json_root, 'vmax', input%vmax)
   endif
   if (associated(input%s)) then
-    !line=534 definition='real(dp), pointer :: s(:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s' python_name='s' type='real' python_type='float' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=534 definition='real(dp), pointer :: s(:)=> null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s' type='real' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 's')
     do i1 = lbound(input%s, 1), ubound(input%s, 1)
       call json%create_real(json_val, input%s(i1), '')
@@ -10475,7 +10475,7 @@ subroutine node_array_to_json (input, json_root, depth)
     call json%add(json_root, 'vmax', input%vmax)
   endif
   if (associated(input%s)) then
-    !line=543 definition='complex(dp), pointer :: s(:)=> null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s' python_name='s' type='complex' python_type='Complex' size='dp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=543 definition='complex(dp), pointer :: s(:)=> null()' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='s' type='complex' size='dp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 's')
     do i1 = lbound(input%s, 1), ubound(input%s, 1)
       call complex_to_json(input%s(i1), json_val, depth + 1)
@@ -10591,7 +10591,7 @@ subroutine fibrelist_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=2 definition='real(dp) GAMMA0I_GAMBET_MASS_AG(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='GAMMA0I_GAMBET_MASS_AG' python_name='gamma0i_gambet_mass_ag' type='real' python_type='float' size='dp' dimension='4' comment='GAMMA0I,GAMBET,MASS ,AG  BETA0 is computed' fortran_default=None default=0.0 default_factory=''
+  !line=2 definition='real(dp) GAMMA0I_GAMBET_MASS_AG(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='GAMMA0I_GAMBET_MASS_AG' type='real' size='dp' dimension='4' comment='GAMMA0I,GAMBET,MASS ,AG  BETA0 is computed' default=None
   call json%create_array(json_list1, 'gamma0i_gambet_mass_ag')
   do i1 = lbound(input%GAMMA0I_GAMBET_MASS_AG, 1), ubound(input%GAMMA0I_GAMBET_MASS_AG, 1)
     call json%create_real(json_val, input%GAMMA0I_GAMBET_MASS_AG(i1), '')
@@ -10630,7 +10630,7 @@ subroutine patchlist_to_json (input, json_root, depth)
   call json%add(json_root, 'a_x2', int(input%A_X2))
   call json%add(json_root, 'b_x1', int(input%B_X1))
   call json%add(json_root, 'b_x2', int(input%B_X2))
-  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A_D' python_name='a_d' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A_D' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'a_d')
   do i1 = lbound(input%A_D, 1), ubound(input%A_D, 1)
     call json%create_real(json_val, input%A_D(i1), '')
@@ -10638,7 +10638,7 @@ subroutine patchlist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B_D' python_name='b_d' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B_D' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'b_d')
   do i1 = lbound(input%B_D, 1), ubound(input%B_D, 1)
     call json%create_real(json_val, input%B_D(i1), '')
@@ -10646,7 +10646,7 @@ subroutine patchlist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A_ANG' python_name='a_ang' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='A_ANG' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'a_ang')
   do i1 = lbound(input%A_ANG, 1), ubound(input%A_ANG, 1)
     call json%create_real(json_val, input%A_ANG(i1), '')
@@ -10654,7 +10654,7 @@ subroutine patchlist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B_ANG' python_name='b_ang' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=12 definition='real(dp) A_D(3),B_D(3),A_ANG(3),B_ANG(3), A_L,B_L , A_T,B_T' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='B_ANG' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'b_ang')
   do i1 = lbound(input%B_ANG, 1), ubound(input%B_ANG, 1)
     call json%create_real(json_val, input%B_ANG(i1), '')
@@ -10694,7 +10694,7 @@ subroutine CHARTlist_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_IN' python_name='d_in' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_IN' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'd_in')
   do i1 = lbound(input%D_IN, 1), ubound(input%D_IN, 1)
     call json%create_real(json_val, input%D_IN(i1), '')
@@ -10702,7 +10702,7 @@ subroutine CHARTlist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_OUT' python_name='d_out' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='D_OUT' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'd_out')
   do i1 = lbound(input%D_OUT, 1), ubound(input%D_OUT, 1)
     call json%create_real(json_val, input%D_OUT(i1), '')
@@ -10710,7 +10710,7 @@ subroutine CHARTlist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_IN' python_name='ang_in' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_IN' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'ang_in')
   do i1 = lbound(input%ANG_IN, 1), ubound(input%ANG_IN, 1)
     call json%create_real(json_val, input%ANG_IN(i1), '')
@@ -10718,7 +10718,7 @@ subroutine CHARTlist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_OUT' python_name='ang_out' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=20 definition='real(dp) D_IN(3),D_OUT(3),ANG_IN(3),ANG_OUT(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ANG_OUT' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'ang_out')
   do i1 = lbound(input%ANG_OUT, 1), ubound(input%ANG_OUT, 1)
     call json%create_real(json_val, input%ANG_OUT(i1), '')
@@ -10750,7 +10750,7 @@ subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=26 definition='real(dp) LC_LD_B0_P0(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='LC_LD_B0_P0' python_name='lc_ld_b0_p0' type='real' python_type='float' size='dp' dimension='4' comment='LC LD B0 P0C' fortran_default=None default=0.0 default_factory=''
+  !line=26 definition='real(dp) LC_LD_B0_P0(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='LC_LD_B0_P0' type='real' size='dp' dimension='4' comment='LC LD B0 P0C' default=None
   call json%create_array(json_list1, 'lc_ld_b0_p0')
   do i1 = lbound(input%LC_LD_B0_P0, 1), ubound(input%LC_LD_B0_P0, 1)
     call json%create_real(json_val, input%LC_LD_B0_P0(i1), '')
@@ -10758,7 +10758,7 @@ subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=27 definition='real(dp) TILTD_EDGE(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TILTD_EDGE' python_name='tiltd_edge' type='real' python_type='float' size='dp' dimension='3' comment='TILTD EDGE' fortran_default=None default=0.0 default_factory=''
+  !line=27 definition='real(dp) TILTD_EDGE(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='TILTD_EDGE' type='real' size='dp' dimension='3' comment='TILTD EDGE' default=None
   call json%create_array(json_list1, 'tiltd_edge')
   do i1 = lbound(input%TILTD_EDGE, 1), ubound(input%TILTD_EDGE, 1)
     call json%create_real(json_val, input%TILTD_EDGE(i1), '')
@@ -10766,7 +10766,7 @@ subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=28 definition='LOGICAL(Lp) KIN_KEX_BENDFRINGE_EXACT(4)' type_info=TypeInformation(type='LOGICAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='Lp', static=False, target=False, value=False, volatile=False, attributes=()) name='KIN_KEX_BENDFRINGE_EXACT' python_name='kin_kex_bendfringe_exact' type='LOGICAL' python_type='bool' size='Lp' dimension='4' comment='KILL_ENT_FRINGE, KILL_EXI_FRINGE, bend_fringe,EXACT' fortran_default=None default=False default_factory=''
+  !line=28 definition='LOGICAL(Lp) KIN_KEX_BENDFRINGE_EXACT(4)' type_info=TypeInformation(type='LOGICAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='Lp', static=False, target=False, value=False, volatile=False, attributes=()) name='KIN_KEX_BENDFRINGE_EXACT' type='LOGICAL' size='Lp' dimension='4' comment='KILL_ENT_FRINGE, KILL_EXI_FRINGE, bend_fringe,EXACT' default=None
   call json%create_array(json_list1, 'kin_kex_bendfringe_exact')
   do i1 = lbound(input%KIN_KEX_BENDFRINGE_EXACT, 1), ubound(input%KIN_KEX_BENDFRINGE_EXACT, 1)
     call json%create_logical(json_val, input%KIN_KEX_BENDFRINGE_EXACT(i1), '')
@@ -10774,7 +10774,7 @@ subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=29 definition='INTEGER METHOD_NST_NMUL_permfringe_highest(5)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='METHOD_NST_NMUL_permfringe_highest' python_name='method_nst_nmul_permfringe_highest' type='INTEGER' python_type='int' size=None dimension='5' comment='METHOD,NST,NMUL,permfringr, highest_fringe' fortran_default=None default=0 default_factory=''
+  !line=29 definition='INTEGER METHOD_NST_NMUL_permfringe_highest(5)' type_info=TypeInformation(type='INTEGER', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='METHOD_NST_NMUL_permfringe_highest' type='INTEGER' size=None dimension='5' comment='METHOD,NST,NMUL,permfringr, highest_fringe' default=None
   call json%create_array(json_list1, 'method_nst_nmul_permfringe_highest')
   do i1 = lbound(input%METHOD_NST_NMUL_permfringe_highest, 1), ubound(input%METHOD_NST_NMUL_permfringe_highest, 1)
     call json%create_integer(json_val, input%METHOD_NST_NMUL_permfringe_highest(i1), '')
@@ -10782,7 +10782,7 @@ subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=30 definition='LOGICAL(Lp) kill_spin(2)' type_info=TypeInformation(type='LOGICAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='Lp', static=False, target=False, value=False, volatile=False, attributes=()) name='kill_spin' python_name='kill_spin' type='LOGICAL' python_type='bool' size='Lp' dimension='2' comment='' fortran_default=None default=False default_factory=''
+  !line=30 definition='LOGICAL(Lp) kill_spin(2)' type_info=TypeInformation(type='LOGICAL', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='Lp', static=False, target=False, value=False, volatile=False, attributes=()) name='kill_spin' type='LOGICAL' size='Lp' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'kill_spin')
   do i1 = lbound(input%kill_spin, 1), ubound(input%kill_spin, 1)
     call json%create_logical(json_val, input%kill_spin(i1), '')
@@ -10815,7 +10815,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'kind', int(input%KIND))
-  !line=39 definition='character(nlp) name_vorname(2)' type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='nlp', static=False, target=False, value=False, volatile=False, attributes=()) name='name_vorname' python_name='name_vorname' type='character' python_type='str' size='nlp' dimension='2' comment='' fortran_default=None default='' default_factory=''
+  !line=39 definition='character(nlp) name_vorname(2)' type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='nlp', static=False, target=False, value=False, volatile=False, attributes=()) name='name_vorname' type='character' size='nlp' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'name_vorname')
   do i1 = lbound(input%name_vorname, 1), ubound(input%name_vorname, 1)
     call json%create_string(json_val, trim(input%name_vorname(i1)), '')
@@ -10823,9 +10823,9 @@ subroutine ele_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  call json%add(json_root, 'L', input%L)
+  call json%add(json_root, 'l', input%L)
   call json%add(json_root, 'b_sol', input%B_SOL)
-  !line=41 definition='real(dp) an(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='an' python_name='an' type='real' python_type='float' size='dp' dimension='nmul_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=41 definition='real(dp) an(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='an' type='real' size='dp' dimension='nmul_max' comment='' default=None
   call json%create_array(json_list1, 'an')
   do i1 = lbound(input%an, 1), ubound(input%an, 1)
     call json%create_real(json_val, input%an(i1), '')
@@ -10833,7 +10833,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=42 definition='real(dp) bn(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bn' python_name='bn' type='real' python_type='float' size='dp' dimension='nmul_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=42 definition='real(dp) bn(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bn' type='real' size='dp' dimension='nmul_max' comment='' default=None
   call json%create_array(json_list1, 'bn')
   do i1 = lbound(input%bn, 1), ubound(input%bn, 1)
     call json%create_real(json_val, input%bn(i1), '')
@@ -10841,7 +10841,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=43 definition='real(dp) VOLT_FREQ_PHAS(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='VOLT_FREQ_PHAS' python_name='volt_freq_phas' type='real' python_type='float' size='dp' dimension='3' comment='alg not used' fortran_default=None default=0.0 default_factory=''
+  !line=43 definition='real(dp) VOLT_FREQ_PHAS(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='VOLT_FREQ_PHAS' type='real' size='dp' dimension='3' comment='alg not used' default=None
   call json%create_array(json_list1, 'volt_freq_phas')
   do i1 = lbound(input%VOLT_FREQ_PHAS, 1), ubound(input%VOLT_FREQ_PHAS, 1)
     call json%create_real(json_val, input%VOLT_FREQ_PHAS(i1), '')
@@ -10850,7 +10850,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'thin', input%THIN)
-  !line=45 definition='real(dp) fint_hgap_h1_h2_va_vs(8)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fint_hgap_h1_h2_va_vs' python_name='fint_hgap_h1_h2_va_vs' type='real' python_type='float' size='dp' dimension='8' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=45 definition='real(dp) fint_hgap_h1_h2_va_vs(8)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fint_hgap_h1_h2_va_vs' type='real' size='dp' dimension='8' comment='' default=None
   call json%create_array(json_list1, 'fint_hgap_h1_h2_va_vs')
   do i1 = lbound(input%fint_hgap_h1_h2_va_vs, 1), ubound(input%fint_hgap_h1_h2_va_vs, 1)
     call json%create_real(json_val, input%fint_hgap_h1_h2_va_vs(i1), '')
@@ -10858,7 +10858,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=46 definition='logical(lp) recut_even_electric_MIS(4)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lp', static=False, target=False, value=False, volatile=False, attributes=()) name='recut_even_electric_MIS' python_name='recut_even_electric_mis' type='logical' python_type='bool' size='lp' dimension='4' comment='' fortran_default=None default=False default_factory=''
+  !line=46 definition='logical(lp) recut_even_electric_MIS(4)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lp', static=False, target=False, value=False, volatile=False, attributes=()) name='recut_even_electric_MIS' type='logical' size='lp' dimension='4' comment='' default=None
   call json%create_array(json_list1, 'recut_even_electric_mis')
   do i1 = lbound(input%recut_even_electric_MIS, 1), ubound(input%recut_even_electric_MIS, 1)
     call json%create_logical(json_val, input%recut_even_electric_MIS(i1), '')
@@ -10867,7 +10867,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'slow_ac', int(input%slow_ac))
-  !line=48 definition='logical(lp) usebf_do1bf(4)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lp', static=False, target=False, value=False, volatile=False, attributes=()) name='usebf_do1bf' python_name='usebf_do1bf' type='logical' python_type='bool' size='lp' dimension='4' comment='' fortran_default=None default=False default_factory=''
+  !line=48 definition='logical(lp) usebf_do1bf(4)' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lp', static=False, target=False, value=False, volatile=False, attributes=()) name='usebf_do1bf' type='logical' size='lp' dimension='4' comment='' default=None
   call json%create_array(json_list1, 'usebf_do1bf')
   do i1 = lbound(input%usebf_do1bf, 1), ubound(input%usebf_do1bf, 1)
     call json%create_logical(json_val, input%usebf_do1bf(i1), '')
@@ -10875,7 +10875,7 @@ subroutine ele_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=49 definition='integer skipptcbf(2)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='skipptcbf' python_name='skipptcbf' type='integer' python_type='int' size=None dimension='2' comment='' fortran_default=None default=0 default_factory=''
+  !line=49 definition='integer skipptcbf(2)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='skipptcbf' type='integer' size=None dimension='2' comment='' default=None
   call json%create_array(json_list1, 'skipptcbf')
   do i1 = lbound(input%skipptcbf, 1), ubound(input%skipptcbf, 1)
     call json%create_integer(json_val, input%skipptcbf(i1), '')
@@ -10916,7 +10916,7 @@ subroutine cav_list_to_json (input, json_root, depth)
   call json%add(json_root, 't', input%t)
   call json%add(json_root, 'always_on', input%always_on)
   call json%add(json_root, 'xprime', input%xprime)
-  !line=64 definition='real(dp) F(harm_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='F' python_name='f' type='real' python_type='float' size='dp' dimension='harm_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=64 definition='real(dp) F(harm_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='F' type='real' size='dp' dimension='harm_max' comment='' default=None
   call json%create_array(json_list1, 'f')
   do i1 = lbound(input%F, 1), ubound(input%F, 1)
     call json%create_real(json_val, input%F(i1), '')
@@ -10924,7 +10924,7 @@ subroutine cav_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=65 definition='real(dp) PH(harm_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PH' python_name='ph' type='real' python_type='float' size='dp' dimension='harm_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=65 definition='real(dp) PH(harm_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PH' type='real' size='dp' dimension='harm_max' comment='' default=None
   call json%create_array(json_list1, 'ph')
   do i1 = lbound(input%PH, 1), ubound(input%PH, 1)
     call json%create_real(json_val, input%PH(i1), '')
@@ -10959,7 +10959,7 @@ subroutine hel_list_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'n_bessel', int(input%N_BESSEL))
-  !line=73 definition='real(dp) fake_shift(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fake_shift' python_name='fake_shift' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=73 definition='real(dp) fake_shift(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fake_shift' type='real' size='dp' dimension='6' comment='' default=None
   call json%create_array(json_list1, 'fake_shift')
   do i1 = lbound(input%fake_shift, 1), ubound(input%fake_shift, 1)
     call json%create_real(json_val, input%fake_shift(i1), '')
@@ -10999,7 +10999,7 @@ subroutine thin3_list_to_json (input, json_root, depth)
   call json%add(json_root, 'vf', input%vf)
   call json%add(json_root, 'ls', input%ls)
   call json%add(json_root, 'patch', input%patch)
-  !line=81 definition='real(dp) dx_dy_pitchx_pitchy(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dx_dy_pitchx_pitchy' python_name='dx_dy_pitchx_pitchy' type='real' python_type='float' size='dp' dimension='4' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=81 definition='real(dp) dx_dy_pitchx_pitchy(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dx_dy_pitchx_pitchy' type='real' size='dp' dimension='4' comment='' default=None
   call json%create_array(json_list1, 'dx_dy_pitchx_pitchy')
   do i1 = lbound(input%dx_dy_pitchx_pitchy, 1), ubound(input%dx_dy_pitchx_pitchy, 1)
     call json%create_real(json_val, input%dx_dy_pitchx_pitchy(i1), '')
@@ -11031,7 +11031,7 @@ subroutine sol5_list_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=88 definition='real(dp) dx_dy_pitchx_pitchy(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dx_dy_pitchx_pitchy' python_name='dx_dy_pitchx_pitchy' type='real' python_type='float' size='dp' dimension='4' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=88 definition='real(dp) dx_dy_pitchx_pitchy(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dx_dy_pitchx_pitchy' type='real' size='dp' dimension='4' comment='' default=None
   call json%create_array(json_list1, 'dx_dy_pitchx_pitchy')
   do i1 = lbound(input%dx_dy_pitchx_pitchy, 1), ubound(input%dx_dy_pitchx_pitchy, 1)
     call json%create_real(json_val, input%dx_dy_pitchx_pitchy(i1), '')
@@ -11064,7 +11064,7 @@ subroutine tp10_list_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'driftkick', input%DRIFTKICK)
-  !line=95 definition='real(dp) ae(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ae' python_name='ae' type='real' python_type='float' size='dp' dimension='nmul_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=95 definition='real(dp) ae(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ae' type='real' size='dp' dimension='nmul_max' comment='' default=None
   call json%create_array(json_list1, 'ae')
   do i1 = lbound(input%ae, 1), ubound(input%ae, 1)
     call json%create_real(json_val, input%ae(i1), '')
@@ -11072,7 +11072,7 @@ subroutine tp10_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=96 definition='real(dp) be(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='be' python_name='be' type='real' python_type='float' size='dp' dimension='nmul_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=96 definition='real(dp) be(nmul_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='be' type='real' size='dp' dimension='nmul_max' comment='' default=None
   call json%create_array(json_list1, 'be')
   do i1 = lbound(input%be, 1), ubound(input%be, 1)
     call json%create_real(json_val, input%be(i1), '')
@@ -11104,7 +11104,7 @@ subroutine ab_list_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=102 definition='integer n_m(2)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='n_m' python_name='n_m' type='integer' python_type='int' size=None dimension='2' comment='' fortran_default=None default=0 default_factory=''
+  !line=102 definition='integer n_m(2)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='n_m' type='integer' size=None dimension='2' comment='' default=None
   call json%create_array(json_list1, 'n_m')
   do i1 = lbound(input%n_m, 1), ubound(input%n_m, 1)
     call json%create_integer(json_val, input%n_m(i1), '')
@@ -11112,7 +11112,7 @@ subroutine ab_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=103 definition='complex(dp) b(nmul_max,nmul_max)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' python_name='b' type='complex' python_type='Complex' size='dp' dimension='nmul_max,nmul_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=103 definition='complex(dp) b(nmul_max,nmul_max)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' type='complex' size='dp' dimension='nmul_max,nmul_max' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%b, 2), ubound(input%b, 2)
     call json%create_array(json_list1, 'b')
@@ -11125,7 +11125,7 @@ subroutine ab_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=104 definition='complex(dp) E(nmul_max,nmul_max)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' python_name='e' type='complex' python_type='Complex' size='dp' dimension='nmul_max,nmul_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=104 definition='complex(dp) E(nmul_max,nmul_max)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' type='complex' size='dp' dimension='nmul_max,nmul_max' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%E, 2), ubound(input%E, 2)
     call json%create_array(json_list1, 'e')
@@ -11138,7 +11138,7 @@ subroutine ab_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=105 definition='real(dp) dz_t_te(3*nmul_max+3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dz_t_te' python_name='dz_t_te' type='real' python_type='float' size='dp' dimension='3*nmul_max+3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=105 definition='real(dp) dz_t_te(3*nmul_max+3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='dz_t_te' type='real' size='dp' dimension='3*nmul_max+3' comment='' default=None
   call json%create_array(json_list1, 'dz_t_te')
   do i1 = lbound(input%dz_t_te, 1), ubound(input%dz_t_te, 1)
     call json%create_real(json_val, input%dz_t_te(i1), '')
@@ -11146,7 +11146,7 @@ subroutine ab_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=106 definition='real(dp) scale_angc_xc_vc_dc_hc(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='scale_angc_xc_vc_dc_hc' python_name='scale_angc_xc_vc_dc_hc' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=106 definition='real(dp) scale_angc_xc_vc_dc_hc(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='scale_angc_xc_vc_dc_hc' type='real' size='dp' dimension='6' comment='' default=None
   call json%create_array(json_list1, 'scale_angc_xc_vc_dc_hc')
   do i1 = lbound(input%scale_angc_xc_vc_dc_hc, 1), ubound(input%scale_angc_xc_vc_dc_hc, 1)
     call json%create_real(json_val, input%scale_angc_xc_vc_dc_hc(i1), '')
@@ -11205,7 +11205,7 @@ subroutine ap_list_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'kind', int(input%KIND))
-  !line=119 definition='real(dp) r(2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' python_name='r' type='real' python_type='float' size='dp' dimension='2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=119 definition='real(dp) r(2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='dp' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'r')
   do i1 = lbound(input%r, 1), ubound(input%r, 1)
     call json%create_real(json_val, input%r(i1), '')
@@ -11242,7 +11242,7 @@ subroutine tcav_list_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=127 definition='real(dp) PSI_DPHAS_DVDS_phase0(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PSI_DPHAS_DVDS_phase0' python_name='psi_dphas_dvds_phase0' type='real' python_type='float' size='dp' dimension='4' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=127 definition='real(dp) PSI_DPHAS_DVDS_phase0(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='PSI_DPHAS_DVDS_phase0' type='real' size='dp' dimension='4' comment='' default=None
   call json%create_array(json_list1, 'psi_dphas_dvds_phase0')
   do i1 = lbound(input%PSI_DPHAS_DVDS_phase0, 1), ubound(input%PSI_DPHAS_DVDS_phase0, 1)
     call json%create_real(json_val, input%PSI_DPHAS_DVDS_phase0(i1), '')
@@ -11276,7 +11276,7 @@ subroutine siam_list_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=135 definition='real(dp) angle(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='angle' python_name='angle' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=135 definition='real(dp) angle(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='angle' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'angle')
   do i1 = lbound(input%angle, 1), ubound(input%angle, 1)
     call json%create_real(json_val, input%angle(i1), '')
@@ -11284,7 +11284,7 @@ subroutine siam_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=136 definition='real(dp) d(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='d' python_name='d' type='real' python_type='float' size='dp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=136 definition='real(dp) d(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='d' type='real' size='dp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'd')
   do i1 = lbound(input%d, 1), ubound(input%d, 1)
     call json%create_real(json_val, input%d(i1), '')
@@ -11317,7 +11317,7 @@ subroutine track_list_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'name', trim(input%name))
-  !line=143 definition='integer range(3),direction' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='range' python_name='range' type='integer' python_type='int' size=None dimension='3' comment='' fortran_default=None default=0 default_factory=''
+  !line=143 definition='integer range(3),direction' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='range' type='integer' size=None dimension='3' comment='' default=None
   call json%create_array(json_list1, 'range')
   do i1 = lbound(input%range, 1), ubound(input%range, 1)
     call json%create_integer(json_val, input%range(i1), '')
@@ -11351,7 +11351,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'offset', input%offset)
-  !line=152 definition='real(dp) internal(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='internal' python_name='internal' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=152 definition='real(dp) internal(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='internal' type='real' size='dp' dimension='6' comment='' default=None
   call json%create_array(json_list1, 'internal')
   do i1 = lbound(input%internal, 1), ubound(input%internal, 1)
     call json%create_real(json_val, input%internal(i1), '')
@@ -11359,7 +11359,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=153 definition='real(dp) ex(wiggler_suntao),ey(wiggler_suntao)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ex' python_name='ex' type='real' python_type='float' size='dp' dimension='wiggler_suntao' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=153 definition='real(dp) ex(wiggler_suntao),ey(wiggler_suntao)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ex' type='real' size='dp' dimension='wiggler_suntao' comment='' default=None
   call json%create_array(json_list1, 'ex')
   do i1 = lbound(input%ex, 1), ubound(input%ex, 1)
     call json%create_real(json_val, input%ex(i1), '')
@@ -11367,7 +11367,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=153 definition='real(dp) ex(wiggler_suntao),ey(wiggler_suntao)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ey' python_name='ey' type='real' python_type='float' size='dp' dimension='wiggler_suntao' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=153 definition='real(dp) ex(wiggler_suntao),ey(wiggler_suntao)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ey' type='real' size='dp' dimension='wiggler_suntao' comment='' default=None
   call json%create_array(json_list1, 'ey')
   do i1 = lbound(input%ey, 1), ubound(input%ey, 1)
     call json%create_real(json_val, input%ey(i1), '')
@@ -11376,7 +11376,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'n', int(input%n))
-  !line=155 definition='real(dp) a(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension='mode_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=155 definition='real(dp) a(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension='mode_max' comment='' default=None
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%a, 1), ubound(input%a, 1)
     call json%create_real(json_val, input%a(i1), '')
@@ -11384,7 +11384,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=156 definition='real(dp) f(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='f' python_name='f' type='real' python_type='float' size='dp' dimension='mode_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=156 definition='real(dp) f(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='f' type='real' size='dp' dimension='mode_max' comment='' default=None
   call json%create_array(json_list1, 'f')
   do i1 = lbound(input%f, 1), ubound(input%f, 1)
     call json%create_real(json_val, input%f(i1), '')
@@ -11392,7 +11392,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=157 definition='integer form(mode_max)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='form' python_name='form' type='integer' python_type='int' size=None dimension='mode_max' comment='' fortran_default=None default=0 default_factory=''
+  !line=157 definition='integer form(mode_max)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='form' type='integer' size=None dimension='mode_max' comment='' default=None
   call json%create_array(json_list1, 'form')
   do i1 = lbound(input%form, 1), ubound(input%form, 1)
     call json%create_integer(json_val, input%form(i1), '')
@@ -11400,7 +11400,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=158 definition='real(dp) k(3,mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='k' python_name='k' type='real' python_type='float' size='dp' dimension='3,mode_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=158 definition='real(dp) k(3,mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='k' type='real' size='dp' dimension='3,mode_max' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%k, 2), ubound(input%k, 2)
     call json%create_array(json_list1, 'k')
@@ -11414,7 +11414,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   call json%add(json_root, json_list2)
   nullify(json_list2)
   call json%add(json_root, 'ne', int(input%ne))
-  !line=160 definition='real(dp) ae(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ae' python_name='ae' type='real' python_type='float' size='dp' dimension='mode_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=160 definition='real(dp) ae(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ae' type='real' size='dp' dimension='mode_max' comment='' default=None
   call json%create_array(json_list1, 'ae')
   do i1 = lbound(input%ae, 1), ubound(input%ae, 1)
     call json%create_real(json_val, input%ae(i1), '')
@@ -11422,7 +11422,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=161 definition='real(dp) fe(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fe' python_name='fe' type='real' python_type='float' size='dp' dimension='mode_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=161 definition='real(dp) fe(mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='fe' type='real' size='dp' dimension='mode_max' comment='' default=None
   call json%create_array(json_list1, 'fe')
   do i1 = lbound(input%fe, 1), ubound(input%fe, 1)
     call json%create_real(json_val, input%fe(i1), '')
@@ -11430,7 +11430,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=162 definition='integer forme(mode_max)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='forme' python_name='forme' type='integer' python_type='int' size=None dimension='mode_max' comment='' fortran_default=None default=0 default_factory=''
+  !line=162 definition='integer forme(mode_max)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='forme' type='integer' size=None dimension='mode_max' comment='' default=None
   call json%create_array(json_list1, 'forme')
   do i1 = lbound(input%forme, 1), ubound(input%forme, 1)
     call json%create_integer(json_val, input%forme(i1), '')
@@ -11438,7 +11438,7 @@ subroutine wig_list_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=163 definition='real(dp) ke(3,mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ke' python_name='ke' type='real' python_type='float' size='dp' dimension='3,mode_max' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=163 definition='real(dp) ke(3,mode_max)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ke' type='real' size='dp' dimension='3,mode_max' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%ke, 2), ubound(input%ke, 2)
     call json%create_array(json_list1, 'ke')
@@ -11476,7 +11476,7 @@ subroutine hermite_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'n', int(input%n))
-  !line=82 definition='real(dp) :: h(2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='h' python_name='h' type='real' python_type='float' size='dp' dimension='2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=82 definition='real(dp) :: h(2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='h' type='real' size='dp' dimension='2' comment='' default=None
   call json%create_array(json_list1, 'h')
   do i1 = lbound(input%h, 1), ubound(input%h, 1)
     call json%create_real(json_val, input%h(i1), '')
@@ -11484,7 +11484,7 @@ subroutine hermite_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=83 definition='real(dp) :: a(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' python_name='a' type='real' python_type='float' size='dp' dimension='6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=83 definition='real(dp) :: a(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='a' type='real' size='dp' dimension='6,6' comment='' default='0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%a, 2), ubound(input%a, 2)
     call json%create_array(json_list1, 'a')
@@ -11497,7 +11497,7 @@ subroutine hermite_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=84 definition='real(dp):: ai(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ai' python_name='ai' type='real' python_type='float' size='dp' dimension='6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=84 definition='real(dp):: ai(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='ai' type='real' size='dp' dimension='6,6' comment='' default='0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%ai, 2), ubound(input%ai, 2)
     call json%create_array(json_list1, 'ai')
@@ -11510,7 +11510,7 @@ subroutine hermite_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=85 definition='real(dp):: m(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='m' python_name='m' type='real' python_type='float' size='dp' dimension='6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=85 definition='real(dp):: m(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='m' type='real' size='dp' dimension='6,6' comment='' default='0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%m, 2), ubound(input%m, 2)
     call json%create_array(json_list1, 'm')
@@ -11523,7 +11523,7 @@ subroutine hermite_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=86 definition='real(dp):: mi(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mi' python_name='mi' type='real' python_type='float' size='dp' dimension='6,6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=86 definition='real(dp):: mi(6,6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='mi' type='real' size='dp' dimension='6,6' comment='' default='0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%mi, 2), ubound(input%mi, 2)
     call json%create_array(json_list1, 'mi')
@@ -11536,7 +11536,7 @@ subroutine hermite_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=87 definition='real(dp) ::f(6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='f' python_name='f' type='real' python_type='float' size='dp' dimension='6' comment='' fortran_default='0' default=0 default_factory=''
+  !line=87 definition='real(dp) ::f(6)=0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='f' type='real' size='dp' dimension='6' comment='' default='0'
   call json%create_array(json_list1, 'f')
   do i1 = lbound(input%f, 1), ubound(input%f, 1)
     call json%create_real(json_val, input%f(i1), '')
@@ -11544,7 +11544,7 @@ subroutine hermite_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=88 definition='real(dp) b(2,2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' python_name='b' type='real' python_type='float' size='dp' dimension='2,2' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=88 definition='real(dp) b(2,2)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='b' type='real' size='dp' dimension='2,2' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%b, 2), ubound(input%b, 2)
     call json%create_array(json_list1, 'b')
@@ -11559,7 +11559,7 @@ subroutine hermite_to_json (input, json_root, depth)
   nullify(json_list2)
   call json%add(json_root, 'gen', int(input%gen))
   if (associated(input%ms)) then
-    !line=90 definition='type(damap), pointer :: ms(:,:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='damap', static=False, target=False, value=False, volatile=False, attributes=()) name='ms' python_name='ms' type='type' python_type='Damap' size='damap' dimension=':,:' comment='' fortran_default=None default=None default_factory=''
+    !line=90 definition='type(damap), pointer :: ms(:,:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='damap', static=False, target=False, value=False, volatile=False, attributes=()) name='ms' type='type' size='damap' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%ms, 2), ubound(input%ms, 2)
       call json%create_array(json_list1, 'ms')
@@ -11574,7 +11574,7 @@ subroutine hermite_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%p)) then
-    !line=91 definition='type(probe_8), pointer :: p(:,:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='probe_8', static=False, target=False, value=False, volatile=False, attributes=()) name='p' python_name='p' type='type' python_type='Probe8' size='probe_8' dimension=':,:' comment='' fortran_default=None default=None default_factory=''
+    !line=91 definition='type(probe_8), pointer :: p(:,:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='probe_8', static=False, target=False, value=False, volatile=False, attributes=()) name='p' type='type' size='probe_8' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%p, 2), ubound(input%p, 2)
       call json%create_array(json_list1, 'p')
@@ -11589,7 +11589,7 @@ subroutine hermite_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (associated(input%x0)) then
-    !line=92 definition='real(dp), pointer ::  x0(:,:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' python_name='x0' type='real' python_type='float' size='dp' dimension=':,:,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=92 definition='real(dp), pointer ::  x0(:,:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0' type='real' size='dp' dimension=':,:,:' comment='' default='null()'
     call json%create_array(json_list3, 'dim-3')
     do i3 = lbound(input%x0, 3), ubound(input%x0, 3)
       call json%create_array(json_list2, 'dim-2')
@@ -11624,7 +11624,7 @@ subroutine hermite_to_json (input, json_root, depth)
   call json%add(json_root, 'linear', input%linear)
   call json%add(json_root, 'eps', input%eps)
   if (associated(input%he)) then
-    !line=101 definition='real(dp), pointer ::  he(:,:,:,:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='he' python_name='he' type='real' python_type='float' size='dp' dimension=':,:,:,:,:' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=101 definition='real(dp), pointer ::  he(:,:,:,:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='he' type='real' size='dp' dimension=':,:,:,:,:' comment='' default='null()'
     call json%create_array(json_list5, 'dim-5')
     do i5 = lbound(input%he, 5), ubound(input%he, 5)
       call json%create_array(json_list4, 'dim-4')

@@ -30,7 +30,7 @@ from dataclasses import dataclass, field, fields
 from typing import Callable, Literal, NamedTuple
 
 import bmad_struct_parser
-from bmad_struct_parser import Structure as FortranStructure
+from bmad_struct_parser import Structure as ParsedStructure
 from bmad_struct_parser.parser import StructureMember
 
 
@@ -730,7 +730,7 @@ def get_c_arg(type_val: str) -> str:
 ##################################################################################
 ##################################################################################
 def argument_from_fstruct(
-    fstruct: FortranStructure, member: StructureMember
+    fstruct: ParsedStructure, member: StructureMember
 ) -> Argument:
     if member.size and member.type.lower() == "integer":
         type_ = INT8
@@ -754,16 +754,16 @@ def argument_from_fstruct(
         kind=member.kind or "",
         pointer_type=pointer_type,
         array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
-        init_value=str(member.fortran_default) if member.fortran_default else None,
+        init_value=str(member.default) if member.default else None,
         comment=member.comment,
     )
 
 
 def match_structure_definition(
-    fortran_structures: list[FortranStructure],
+    parsed_structures: list[ParsedStructure],
     struct: Structure,
 ):
-    for fstruct in fortran_structures:
+    for fstruct in parsed_structures:
         if struct.f_name == fstruct.name:
             break
     else:
@@ -773,8 +773,7 @@ def match_structure_definition(
     struct.short_name = fstruct.name.removesuffix("_struct")
     struct.cpp_class = "CPP_" + struct.short_name
     struct.arg = [
-        argument_from_fstruct(fstruct, member)
-        for member in fstruct.info.members.values()
+        argument_from_fstruct(fstruct, member) for member in fstruct.members.values()
     ]
 
 
@@ -1982,15 +1981,14 @@ for type_, transform in c_transforms.items():
     transform.replace_all("C_ARG", get_c_arg(type_.type))
     transform.replace_all("TEST_VALUE", transform.test_value)
 
-fortran_structures = bmad_struct_parser.load_all_structures(
+parsed_structures = bmad_struct_parser.load_all_structures(
     *params.struct_def_yaml_files
 )
-
 struct_definitions: list[Structure] = []
 
 for name in params.struct_list:
     struct = Structure(name)
-    match_structure_definition(fortran_structures, struct)
+    match_structure_definition(parsed_structures, struct)
     set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
 
     add_array_bound_info_for_pointer_structures(struct)

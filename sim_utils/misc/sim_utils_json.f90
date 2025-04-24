@@ -462,7 +462,7 @@ subroutine qp_state_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'max_digits', int(input%max_digits))
   call json%add(json_root, 'plot_file', trim(input%plot_file))
   call json%add(json_root, 'page_type', trim(input%page_type))
-  !line=176 definition="character(8) :: dflt_draw_units(3) = ['DATA ', 'GRAPH', 'LB   ' ]" type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='8', static=False, target=False, value=False, volatile=False, attributes=()) name='dflt_draw_units' python_name='dflt_draw_units' type='character' python_type='str' size='8' dimension='3' comment='' fortran_default="['DATA ', 'GRAPH', 'LB   ' ]" default=['DATA ', 'GRAPH', 'LB   '] default_factory=''
+  !line=176 definition="character(8) :: dflt_draw_units(3) = ['DATA ', 'GRAPH', 'LB   ' ]" type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='8', static=False, target=False, value=False, volatile=False, attributes=()) name='dflt_draw_units' type='character' size='8' dimension='3' comment='' default="['DATA ', 'GRAPH', 'LB   ' ]"
   call json%create_array(json_list1, 'dflt_draw_units')
   do i1 = lbound(input%dflt_draw_units, 1), ubound(input%dflt_draw_units, 1)
     call json%create_string(json_val, trim(input%dflt_draw_units(i1)), '')
@@ -470,7 +470,7 @@ subroutine qp_state_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=177 definition="character(8) :: dflt_set_units(3)  = ['INCH ', 'PAGE ', 'LB   ' ]" type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='8', static=False, target=False, value=False, volatile=False, attributes=()) name='dflt_set_units' python_name='dflt_set_units' type='character' python_type='str' size='8' dimension='3' comment='' fortran_default="['INCH ', 'PAGE ', 'LB   ' ]" default=['INCH ', 'PAGE ', 'LB   '] default_factory=''
+  !line=177 definition="character(8) :: dflt_set_units(3)  = ['INCH ', 'PAGE ', 'LB   ' ]" type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='8', static=False, target=False, value=False, volatile=False, attributes=()) name='dflt_set_units' type='character' size='8' dimension='3' comment='' default="['INCH ', 'PAGE ', 'LB   ' ]"
   call json%create_array(json_list1, 'dflt_set_units')
   do i1 = lbound(input%dflt_set_units, 1), ubound(input%dflt_set_units, 1)
     call json%create_string(json_val, trim(input%dflt_set_units(i1)), '')
@@ -506,7 +506,7 @@ subroutine temp_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call json%add(json_root, 'str_', trim(input%str))
+  call json%add(json_root, 'str', trim(input%str))
 end subroutine temp_struct_to_json
 subroutine object_struct_to_json (input, json_root, depth)
   use object_model_mod, only: object_struct
@@ -536,7 +536,7 @@ subroutine object_struct_to_json (input, json_root, depth)
   endif
   ! config skip_members: object_struct%parent (type, )
   if (allocated(input%token)) then
-    !line=67 definition='type (var_length_string_struct), allocatable :: token(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='var_length_string_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='token' python_name='token' type='type' python_type='VarLengthStringStruct' size='var_length_string_struct' dimension=':' comment='Array of tokens' fortran_default=None default=None default_factory=''
+    !line=67 definition='type (var_length_string_struct), allocatable :: token(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='var_length_string_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='token' type='type' size='var_length_string_struct' dimension=':' comment='Array of tokens' default=None
     call json%create_array(json_list1, 'token')
     do i1 = lbound(input%token, 1), ubound(input%token, 1)
       call var_length_string_struct_to_json(input%token(i1), json_val, depth + 1)
@@ -572,7 +572,7 @@ subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=29 definition='logical :: print_and_capture(-1:10) = .true.' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='print_and_capture' python_name='print_and_capture' type='logical' python_type='bool' size=None dimension='-1:10' comment='' fortran_default='.true.' default=True default_factory=''
+  !line=29 definition='logical :: print_and_capture(-1:10) = .true.' type_info=TypeInformation(type='logical', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='print_and_capture' type='logical' size=None dimension='-1:10' comment='' default='.true.'
   call json%create_array(json_list1, 'print_and_capture')
   do i1 = lbound(input%print_and_capture, 1), ubound(input%print_and_capture, 1)
     call json%create_logical(json_val, input%print_and_capture(i1), '')
@@ -580,7 +580,7 @@ subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=30 definition='integer :: file_unit(-1:10) = -1' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='file_unit' python_name='file_unit' type='integer' python_type='int' size=None dimension='-1:10' comment='' fortran_default='-1' default=-1 default_factory=''
+  !line=30 definition='integer :: file_unit(-1:10) = -1' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='file_unit' type='integer' size=None dimension='-1:10' comment='' default='-1'
   call json%create_array(json_list1, 'file_unit')
   do i1 = lbound(input%file_unit, 1), ubound(input%file_unit, 1)
     call json%create_integer(json_val, input%file_unit(i1), '')
@@ -612,7 +612,7 @@ subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=34 definition='integer :: indent_num(-1:10) = [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='indent_num' python_name='indent_num' type='integer' python_type='int' size=None dimension='-1:10' comment='' fortran_default='[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]' default=[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4] default_factory=''
+  !line=34 definition='integer :: indent_num(-1:10) = [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='indent_num' type='integer' size=None dimension='-1:10' comment='' default='[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]'
   call json%create_array(json_list1, 'indent_num')
   do i1 = lbound(input%indent_num, 1), ubound(input%indent_num, 1)
     call json%create_integer(json_val, input%indent_num(i1), '')
@@ -624,7 +624,7 @@ subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'capture_lines_null_terminated', input%capture_lines_null_terminated)
   call json%add(json_root, 'n_buffer_lines', int(input%n_buffer_lines))
   if (allocated(input%buffer)) then
-    !line=38 definition='character(300), allocatable :: buffer(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='300', static=False, target=False, value=False, volatile=False, attributes=()) name='buffer' python_name='buffer' type='character' python_type='str' size='300' dimension=':' comment='' fortran_default=None default='' default_factory='list'
+    !line=38 definition='character(300), allocatable :: buffer(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='300', static=False, target=False, value=False, volatile=False, attributes=()) name='buffer' type='character' size='300' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'buffer')
     do i1 = lbound(input%buffer, 1), ubound(input%buffer, 1)
       call json%create_string(json_val, trim(input%buffer(i1)), '')
@@ -659,7 +659,7 @@ subroutine wls_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%R1)) then
-    !line=40 definition='REAL(rp), ALLOCATABLE :: R1(:,:)' type_info=TypeInformation(type='REAL', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='R1' python_name='r1' type='REAL' python_type='float' size='rp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=40 definition='REAL(rp), ALLOCATABLE :: R1(:,:)' type_info=TypeInformation(type='REAL', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='R1' type='REAL' size='rp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%R1, 2), ubound(input%R1, 2)
       call json%create_array(json_list1, 'r1')
@@ -674,7 +674,7 @@ subroutine wls_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%Q1)) then
-    !line=41 definition='REAL(rp), ALLOCATABLE :: Q1(:,:)' type_info=TypeInformation(type='REAL', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='Q1' python_name='q1' type='REAL' python_type='float' size='rp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=41 definition='REAL(rp), ALLOCATABLE :: Q1(:,:)' type_info=TypeInformation(type='REAL', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='Q1' type='REAL' size='rp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%Q1, 2), ubound(input%Q1, 2)
       call json%create_array(json_list1, 'q1')
@@ -693,7 +693,7 @@ subroutine wls_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'der', int(input%der))
   call json%add(json_root, 'xend', input%xend)
   if (allocated(input%y)) then
-    !line=46 definition='REAL(rp), ALLOCATABLE :: y(:)' type_info=TypeInformation(type='REAL', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='y' python_name='y' type='REAL' python_type='float' size='rp' dimension=':' comment='holds data' fortran_default=None default=0.0 default_factory=''
+    !line=46 definition='REAL(rp), ALLOCATABLE :: y(:)' type_info=TypeInformation(type='REAL', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='y' type='REAL' size='rp' dimension=':' comment='holds data' default=None
     call json%create_array(json_list1, 'y')
     do i1 = lbound(input%y, 1), ubound(input%y, 1)
       call json%create_real(json_val, input%y(i1), '')
@@ -727,7 +727,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%covar)) then
-    !line=14 definition='real(rp), allocatable :: covar(:, :)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='covar' python_name='covar' type='real' python_type='float' size='rp' dimension=':, :' comment='Covariance matrix. See mrqmin in NR for more details.' fortran_default=None default=0.0 default_factory=''
+    !line=14 definition='real(rp), allocatable :: covar(:, :)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='covar' type='real' size='rp' dimension=':, :' comment='Covariance matrix. See mrqmin in NR for more details.' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%covar, 2), ubound(input%covar, 2)
       call json%create_array(json_list1, 'covar')
@@ -742,7 +742,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%alpha)) then
-    !line=15 definition='real(rp), allocatable :: alpha(:, :)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='alpha' python_name='alpha' type='real' python_type='float' size='rp' dimension=':, :' comment='Curvature matrix. See mrqmin in NR for more details.' fortran_default=None default=0.0 default_factory=''
+    !line=15 definition='real(rp), allocatable :: alpha(:, :)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='alpha' type='real' size='rp' dimension=':, :' comment='Curvature matrix. See mrqmin in NR for more details.' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%alpha, 2), ubound(input%alpha, 2)
       call json%create_array(json_list1, 'alpha')
@@ -757,7 +757,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%atry)) then
-    !line=16 definition='real(rp), allocatable :: atry(:), beta(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='atry' python_name='atry' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=16 definition='real(rp), allocatable :: atry(:), beta(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='atry' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'atry')
     do i1 = lbound(input%atry, 1), ubound(input%atry, 1)
       call json%create_real(json_val, input%atry(i1), '')
@@ -767,7 +767,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%beta)) then
-    !line=16 definition='real(rp), allocatable :: atry(:), beta(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='beta' python_name='beta' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=16 definition='real(rp), allocatable :: atry(:), beta(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='beta' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'beta')
     do i1 = lbound(input%beta, 1), ubound(input%beta, 1)
       call json%create_real(json_val, input%beta(i1), '')
@@ -777,7 +777,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%da)) then
-    !line=17 definition='real(rp), allocatable :: da(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='da' python_name='da' type='real' python_type='float' size='rp' dimension=':,:' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=17 definition='real(rp), allocatable :: da(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='da' type='real' size='rp' dimension=':,:' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%da, 2), ubound(input%da, 2)
       call json%create_array(json_list1, 'da')
@@ -793,7 +793,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
   endif
   call json%add(json_root, 'ochisq', input%ochisq)
   if (allocated(input%mask)) then
-    !line=19 definition='logical, allocatable :: mask(:)' type_info=TypeInformation(type='logical', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='mask' python_name='mask' type='logical' python_type='bool' size=None dimension=':' comment='' fortran_default=None default=False default_factory=''
+    !line=19 definition='logical, allocatable :: mask(:)' type_info=TypeInformation(type='logical', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='mask' type='logical' size=None dimension=':' comment='' default=None
     call json%create_array(json_list1, 'mask')
     do i1 = lbound(input%mask, 1), ubound(input%mask, 1)
       call json%create_logical(json_val, input%mask(i1), '')
@@ -803,7 +803,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%dyda)) then
-    !line=20 definition='real(rp), allocatable :: dyda(:, :)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dyda' python_name='dyda' type='real' python_type='float' size='rp' dimension=':, :' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=20 definition='real(rp), allocatable :: dyda(:, :)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dyda' type='real' size='rp' dimension=':, :' comment='' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%dyda, 2), ubound(input%dyda, 2)
       call json%create_array(json_list1, 'dyda')
@@ -818,7 +818,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%old_dy)) then
-    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='old_dy' python_name='old_dy' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='old_dy' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'old_dy')
     do i1 = lbound(input%old_dy, 1), ubound(input%old_dy, 1)
       call json%create_real(json_val, input%old_dy(i1), '')
@@ -828,7 +828,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%dy)) then
-    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dy' python_name='dy' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dy' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'dy')
     do i1 = lbound(input%dy, 1), ubound(input%dy, 1)
       call json%create_real(json_val, input%dy(i1), '')
@@ -838,7 +838,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%wt)) then
-    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='wt' python_name='wt' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='wt' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'wt')
     do i1 = lbound(input%wt, 1), ubound(input%wt, 1)
       call json%create_real(json_val, input%wt(i1), '')
@@ -848,7 +848,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%ymod)) then
-    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='ymod' python_name='ymod' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default=None default=0.0 default_factory=''
+    !line=21 definition='real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='ymod' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'ymod')
     do i1 = lbound(input%ymod, 1), ubound(input%ymod, 1)
       call json%create_real(json_val, input%ymod(i1), '')
@@ -891,7 +891,7 @@ subroutine random_state_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'gauss_converter', int(input%gauss_converter))
   call json%add(json_root, 'gauss_sigma_cut', input%gauss_sigma_cut)
   call json%add(json_root, 'in_sobseq', int(input%in_sobseq))
-  !line=38 definition='integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='i4_b', static=False, target=False, value=False, volatile=False, attributes=()) name='ix_sobseq' python_name='ix_sobseq' type='integer' python_type='int' size='i4_b' dimension='sobseq_maxdim' comment='' fortran_default='0' default=0 default_factory=''
+  !line=38 definition='integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='i4_b', static=False, target=False, value=False, volatile=False, attributes=()) name='ix_sobseq' type='integer' size='i4_b' dimension='sobseq_maxdim' comment='' default='0'
   call json%create_array(json_list1, 'ix_sobseq')
   do i1 = lbound(input%ix_sobseq, 1), ubound(input%ix_sobseq, 1)
     call json%create_integer(json_val, input%ix_sobseq(i1), '')
@@ -899,7 +899,7 @@ subroutine random_state_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=39 definition='real(rp) :: x_sobseq(sobseq_maxdim) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='x_sobseq' python_name='x_sobseq' type='real' python_type='float' size='rp' dimension='sobseq_maxdim' comment='' fortran_default='0' default=0 default_factory=''
+  !line=39 definition='real(rp) :: x_sobseq(sobseq_maxdim) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='x_sobseq' type='real' size='rp' dimension='sobseq_maxdim' comment='' default='0'
   call json%create_array(json_list1, 'x_sobseq')
   do i1 = lbound(input%x_sobseq, 1), ubound(input%x_sobseq, 1)
     call json%create_real(json_val, input%x_sobseq(i1), '')
@@ -959,7 +959,7 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=37 definition='type (field1_at_2D_pt_struct) pt(0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='field1_at_2D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' python_name='pt' type='type' python_type='Field1At2dPtStruct' size='field1_at_2D_pt_struct' dimension='0:1, 0:1' comment='' fortran_default=None default=None default_factory=''
+  !line=37 definition='type (field1_at_2D_pt_struct) pt(0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='field1_at_2D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='field1_at_2D_pt_struct' dimension='0:1, 0:1' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
     call json%create_array(json_list1, 'pt')
@@ -972,7 +972,7 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=38 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='2' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=38 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='2' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1004,7 +1004,7 @@ subroutine bicubic_coef_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=44 definition='real(rp) :: coef(0:3,0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' python_name='coef' type='real' python_type='float' size='rp' dimension='0:3,0:3' comment='Coefs' fortran_default='0' default=0 default_factory=''
+  !line=44 definition='real(rp) :: coef(0:3,0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' type='real' size='rp' dimension='0:3,0:3' comment='Coefs' default='0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
     call json%create_array(json_list1, 'coef')
@@ -1017,7 +1017,7 @@ subroutine bicubic_coef_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=45 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='2' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=45 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='2' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1085,7 +1085,7 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=64 definition='type (cmplx_field1_at_2D_pt_struct) pt(0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='cmplx_field1_at_2D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' python_name='pt' type='type' python_type='CmplxField1At2dPtStruct' size='cmplx_field1_at_2D_pt_struct' dimension='0:1, 0:1' comment='' fortran_default=None default=None default_factory=''
+  !line=64 definition='type (cmplx_field1_at_2D_pt_struct) pt(0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='cmplx_field1_at_2D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='cmplx_field1_at_2D_pt_struct' dimension='0:1, 0:1' comment='' default=None
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
     call json%create_array(json_list1, 'pt')
@@ -1098,7 +1098,7 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=65 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='2' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=65 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='2' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1130,7 +1130,7 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=71 definition='complex(rp) :: coef(0:3,0:3) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' python_name='coef' type='complex' python_type='Complex' size='rp' dimension='0:3,0:3' comment='Coefs' fortran_default='0' default=0 default_factory=''
+  !line=71 definition='complex(rp) :: coef(0:3,0:3) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' type='complex' size='rp' dimension='0:3,0:3' comment='Coefs' default='0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
     call json%create_array(json_list1, 'coef')
@@ -1143,7 +1143,7 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=72 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='2' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=72 definition='integer :: i_box(2) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='2' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1207,7 +1207,7 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=92 definition='type (field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='field1_at_3D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' python_name='pt' type='type' python_type='Field1At3dPtStruct' size='field1_at_3D_pt_struct' dimension='0:1, 0:1, 0:1' comment='' fortran_default=None default=None default_factory=''
+  !line=92 definition='type (field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='field1_at_3D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='field1_at_3D_pt_struct' dimension='0:1, 0:1, 0:1' comment='' default=None
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%pt, 3), ubound(input%pt, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -1225,7 +1225,7 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=93 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='3' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=93 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='3' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1257,7 +1257,7 @@ subroutine tricubic_coef_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=99 definition='real(rp) :: coef(0:3,0:3,0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' python_name='coef' type='real' python_type='float' size='rp' dimension='0:3,0:3,0:3' comment='Coefs' fortran_default='0' default=0 default_factory=''
+  !line=99 definition='real(rp) :: coef(0:3,0:3,0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' type='real' size='rp' dimension='0:3,0:3,0:3' comment='Coefs' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%coef, 3), ubound(input%coef, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -1275,7 +1275,7 @@ subroutine tricubic_coef_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=100 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='3' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=100 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='3' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1355,7 +1355,7 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=120 definition='type (cmplx_field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='cmplx_field1_at_3D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' python_name='pt' type='type' python_type='CmplxField1At3dPtStruct' size='cmplx_field1_at_3D_pt_struct' dimension='0:1, 0:1, 0:1' comment='' fortran_default=None default=None default_factory=''
+  !line=120 definition='type (cmplx_field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='cmplx_field1_at_3D_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='cmplx_field1_at_3D_pt_struct' dimension='0:1, 0:1, 0:1' comment='' default=None
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%pt, 3), ubound(input%pt, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -1373,7 +1373,7 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=121 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='3' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=121 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='3' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1405,7 +1405,7 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=127 definition='complex(rp) :: coef(0:3,0:3,0:3) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' python_name='coef' type='complex' python_type='Complex' size='rp' dimension='0:3,0:3,0:3' comment='Coefs' fortran_default='0' default=0 default_factory=''
+  !line=127 definition='complex(rp) :: coef(0:3,0:3,0:3) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' type='complex' size='rp' dimension='0:3,0:3,0:3' comment='Coefs' default='0'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%coef, 3), ubound(input%coef, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -1423,7 +1423,7 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=128 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' python_name='i_box' type='integer' python_type='int' size=None dimension='3' comment='index at lower box corner.' fortran_default='int_garbage$' default=0 default_factory=''
+  !line=128 definition='integer :: i_box(3) = int_garbage$' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i_box' type='integer' size=None dimension='3' comment='index at lower box corner.' default='int_garbage$'
   call json%create_array(json_list1, 'i_box')
   do i1 = lbound(input%i_box, 1), ubound(input%i_box, 1)
     call json%create_integer(json_val, input%i_box(i1), '')
@@ -1456,7 +1456,7 @@ subroutine bin_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%count)) then
-    !line=10 definition='real(rp), allocatable :: count(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='count' python_name='count' type='real' python_type='float' size='rp' dimension=':' comment='Counts (or weight) in each bin' fortran_default=None default=0.0 default_factory=''
+    !line=10 definition='real(rp), allocatable :: count(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='count' type='real' size='rp' dimension=':' comment='Counts (or weight) in each bin' default=None
     call json%create_array(json_list1, 'count')
     do i1 = lbound(input%count, 1), ubound(input%count, 1)
       call json%create_real(json_val, input%count(i1), '')
@@ -1494,7 +1494,7 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%count)) then
-    !line=18 definition='real(rp), allocatable :: count(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='count' python_name='count' type='real' python_type='float' size='rp' dimension=':' comment='Counts (or weight) in each bin' fortran_default=None default=0.0 default_factory=''
+    !line=18 definition='real(rp), allocatable :: count(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='count' type='real' size='rp' dimension=':' comment='Counts (or weight) in each bin' default=None
     call json%create_array(json_list1, 'count')
     do i1 = lbound(input%count, 1), ubound(input%count, 1)
       call json%create_real(json_val, input%count(i1), '')
@@ -1503,7 +1503,7 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !line=19 definition='real(rp) :: min(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='min' python_name='min' type='real' python_type='float' size='rp' dimension='3' comment='Bounds for the bins' fortran_default=None default=0.0 default_factory=''
+  !line=19 definition='real(rp) :: min(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='min' type='real' size='rp' dimension='3' comment='Bounds for the bins' default=None
   call json%create_array(json_list1, 'min')
   do i1 = lbound(input%min, 1), ubound(input%min, 1)
     call json%create_real(json_val, input%min(i1), '')
@@ -1511,7 +1511,7 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(rp) :: max(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='max' python_name='max' type='real' python_type='float' size='rp' dimension='3' comment='' fortran_default=None default=0.0 default_factory=''
+  !line=20 definition='real(rp) :: max(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='max' type='real' size='rp' dimension='3' comment='' default=None
   call json%create_array(json_list1, 'max')
   do i1 = lbound(input%max, 1), ubound(input%max, 1)
     call json%create_real(json_val, input%max(i1), '')
@@ -1519,7 +1519,7 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=21 definition='real(rp) :: delta(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='delta' python_name='delta' type='real' python_type='float' size='rp' dimension='3' comment='Size of a bin' fortran_default=None default=0.0 default_factory=''
+  !line=21 definition='real(rp) :: delta(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='delta' type='real' size='rp' dimension='3' comment='Size of a bin' default=None
   call json%create_array(json_list1, 'delta')
   do i1 = lbound(input%delta, 1), ubound(input%delta, 1)
     call json%create_real(json_val, input%delta(i1), '')
@@ -1528,7 +1528,7 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'dim', int(input%dim))
-  !line=23 definition='integer  :: n(3) = 1' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='n' python_name='n' type='integer' python_type='int' size=None dimension='3' comment='number of bins in each dimension' fortran_default='1' default=1 default_factory=''
+  !line=23 definition='integer  :: n(3) = 1' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='n' type='integer' size=None dimension='3' comment='number of bins in each dimension' default='1'
   call json%create_array(json_list1, 'n')
   do i1 = lbound(input%n, 1), ubound(input%n, 1)
     call json%create_integer(json_val, input%n(i1), '')
@@ -1563,7 +1563,7 @@ subroutine spline_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'x0', input%x0)
   call json%add(json_root, 'y0', input%y0)
   call json%add(json_root, 'x1', input%x1)
-  !line=21 definition='real(rp) :: coef(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' python_name='coef' type='real' python_type='float' size='rp' dimension='0:3' comment='coefficients for cubic spline' fortran_default='0' default=0 default_factory=''
+  !line=21 definition='real(rp) :: coef(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef' type='real' size='rp' dimension='0:3' comment='coefficients for cubic spline' default='0'
   call json%create_array(json_list1, 'coef')
   do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
     call json%create_real(json_val, input%coef(i1), '')
@@ -1603,6 +1603,42 @@ subroutine opti_de_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'randomize_f', input%randomize_F)
   call json%add(json_root, 'minimize_merit', input%minimize_merit)
 end subroutine opti_de_param_struct_to_json
+subroutine solution_struct_to_json (input, json_root, depth)
+  use opti_de_openmp_mod, only: solution_struct
+  use json_module
+  use json_string_utilities, only: integer_to_string
+  use json_kinds, only: CK
+  implicit none
+  type(json_core) :: json
+  type (solution_struct), pointer, intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  integer i1, i2, i3, i4, i5, i6
+  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
+  if (.not. present(depth)) depth = 0
+  if (depth > 10) then
+    call json%create_string(json_root, 'too deep', '')
+    return
+  endif
+  if (.not. associated(input)) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  call json%create_object(json_root, '')
+  if (allocated(input%vec)) then
+    !line=98 definition='real(rp), allocatable :: vec(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec' type='real' size='rp' dimension=':' comment='' default=None
+    call json%create_array(json_list1, 'vec')
+    do i1 = lbound(input%vec, 1), ubound(input%vec, 1)
+      call json%create_real(json_val, input%vec(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  call json%add(json_root, 'merit', input%merit)
+  call json%add(json_root, 'status', int(input%status))
+end subroutine solution_struct_to_json
 subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
   use geodesic_lm, only: geodesic_lm_param_struct
   use json_module
@@ -1683,7 +1719,7 @@ subroutine atom_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'z', int(input%z))
   call json%add(json_root, 'name', trim(input%name))
   call json%add(json_root, 'i_offset', int(input%i_offset))
-  !line=128 definition='real(rp) :: mass(0:46) = no_iso' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='mass' python_name='mass' type='real' python_type='float' size='rp' dimension='0:46' comment='isotope masses in units of the unified atomic mass unit.' fortran_default='no_iso' default=0.0 default_factory=''
+  !line=128 definition='real(rp) :: mass(0:46) = no_iso' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='mass' type='real' size='rp' dimension='0:46' comment='isotope masses in units of the unified atomic mass unit.' default='no_iso'
   call json%create_array(json_list1, 'mass')
   do i1 = lbound(input%mass, 1), ubound(input%mass, 1)
     call json%create_real(json_val, input%mass(i1), '')
@@ -1716,7 +1752,7 @@ subroutine var_length_string_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%str)) then
-    call json%add(json_root, 'str_', trim(input%str))
+    call json%add(json_root, 'str', trim(input%str))
   endif
 end subroutine var_length_string_struct_to_json
 subroutine str_index_struct_to_json (input, json_root, depth)
@@ -1743,7 +1779,7 @@ subroutine str_index_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%name)) then
-    !line=19 definition='type (var_length_string_struct), allocatable :: name(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='var_length_string_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='name' python_name='name' type='type' python_type='VarLengthStringStruct' size='var_length_string_struct' dimension=':' comment='Array of names.' fortran_default=None default=None default_factory=''
+    !line=19 definition='type (var_length_string_struct), allocatable :: name(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='var_length_string_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='name' type='type' size='var_length_string_struct' dimension=':' comment='Array of names.' default=None
     call json%create_array(json_list1, 'name')
     do i1 = lbound(input%name, 1), ubound(input%name, 1)
       call var_length_string_struct_to_json(input%name(i1), json_val, depth + 1)
@@ -1753,7 +1789,7 @@ subroutine str_index_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%index)) then
-    !line=20 definition='integer, allocatable :: index(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='index' python_name='index' type='integer' python_type='int' size=None dimension=':' comment='Sorted index for names(:) array.' fortran_default=None default=0 default_factory=''
+    !line=20 definition='integer, allocatable :: index(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='index' type='integer' size=None dimension=':' comment='Sorted index for names(:) array.' default=None
     call json%create_array(json_list1, 'index')
     do i1 = lbound(input%index, 1), ubound(input%index, 1)
       call json%create_integer(json_val, input%index(i1), '')
@@ -1789,7 +1825,7 @@ subroutine nametable_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%name)) then
-    !line=35 definition='character(40), allocatable :: name(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='name' python_name='name' type='character' python_type='str' size='40' dimension=':' comment='Array of names.' fortran_default=None default='' default_factory='list'
+    !line=35 definition='character(40), allocatable :: name(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='name' type='character' size='40' dimension=':' comment='Array of names.' default=None
     call json%create_array(json_list1, 'name')
     do i1 = lbound(input%name, 1), ubound(input%name, 1)
       call json%create_string(json_val, trim(input%name(i1)), '')
@@ -1799,7 +1835,7 @@ subroutine nametable_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%index)) then
-    !line=36 definition='integer, allocatable :: index(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='index' python_name='index' type='integer' python_type='int' size=None dimension=':' comment='Sorted index for names(:) array.' fortran_default=None default=0 default_factory=''
+    !line=36 definition='integer, allocatable :: index(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='index' type='integer' size=None dimension=':' comment='Sorted index for names(:) array.' default=None
     call json%create_array(json_list1, 'index')
     do i1 = lbound(input%index, 1), ubound(input%index, 1)
       call json%create_integer(json_val, input%index(i1), '')
@@ -1841,10 +1877,10 @@ subroutine all_pointer_struct_to_json (input, json_root, depth)
     call json%add(json_root, 'i', int(input%i))
   endif
   if (associated(input%l)) then
-    call json%add(json_root, 'L', input%l)
+    call json%add(json_root, 'l', input%l)
   endif
   if (associated(input%r1)) then
-    !line=49 definition='real(rp), pointer :: r1(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r1' python_name='r1' type='real' python_type='float' size='rp' dimension=':' comment='' fortran_default='null()' default=0.0 default_factory=''
+    !line=49 definition='real(rp), pointer :: r1(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r1' type='real' size='rp' dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'r1')
     do i1 = lbound(input%r1, 1), ubound(input%r1, 1)
       call json%create_real(json_val, input%r1(i1), '')
@@ -1854,7 +1890,7 @@ subroutine all_pointer_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%i1)) then
-    !line=50 definition='integer, pointer :: i1(:) => null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i1' python_name='i1' type='integer' python_type='int' size=None dimension=':' comment='' fortran_default='null()' default=0 default_factory=''
+    !line=50 definition='integer, pointer :: i1(:) => null()' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='i1' type='integer' size=None dimension=':' comment='' default='null()'
     call json%create_array(json_list1, 'i1')
     do i1 = lbound(input%i1, 1), ubound(input%i1, 1)
       call json%create_integer(json_val, input%i1(i1), '')
