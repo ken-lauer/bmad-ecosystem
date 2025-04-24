@@ -176,7 +176,7 @@ def indent(string: str, numspace: int) -> str:
 
 
 @dataclass
-class c_side_trans_class:
+class CSideTransform:
     c_class: str = ""  # EG: 'CPP_ele_Array'
     c_instantiation_suffix: str = ""  # EG: '[]'
 
@@ -242,7 +242,7 @@ class c_side_trans_class:
 
 
 @dataclass
-class f_side_trans_class:
+class FortranSideTransform:
     # Fortran -> C++:
     #
     # | Fortran   |  C++       |
@@ -343,9 +343,9 @@ class Argument:
         Initialization value.
     comment : str
         Comment from the Fortran structure definition.
-    f_side : f_side_trans_class
+    f_side : FortranSideTransform
         Fortran side translation.
-    c_side : c_side_trans_class
+    c_side : CSideTransform
         C++ side translation.
     """
 
@@ -358,8 +358,8 @@ class Argument:
     array: list[str] = field(default_factory=list)
     init_value: str | None = None
     comment: str = ""
-    f_side: f_side_trans_class = field(default_factory=f_side_trans_class)
-    c_side: c_side_trans_class = field(default_factory=c_side_trans_class)
+    f_side: FortranSideTransform = field(default_factory=FortranSideTransform)
+    c_side: CSideTransform = field(default_factory=CSideTransform)
     split_line: list[str] = field(default_factory=list)
 
     # Only for routine parameters:
@@ -605,6 +605,116 @@ class Subroutine(Structure):
     result_arg: str = ""
 
 
+@dataclasses.dataclass
+class TemplateImporter:
+    section: re.Pattern
+    section_with_match: re.Pattern
+    type: re.Pattern
+    begin: re.Pattern
+    end: re.Pattern
+    special_case: re.Pattern
+
+    @classmethod
+    def from_prefix(cls, prefix: str) -> TemplateImporter:
+        return TemplateImporter(
+            # These must be on their own line:
+            section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
+            section_with_match=re.compile(
+                rf"^\s*{prefix}\s*section:(.*)\s*$", flags=re.MULTILINE
+            ),
+            special_case=re.compile(
+                rf"^\s*{prefix}\s*case:(.*):(.*)\s*$\n^(.*)$", flags=re.MULTILINE
+            ),
+            type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
+            # This may appear anywhere in a line
+            begin=re.compile(rf"^.*{prefix}\s*begin:(.*).*\s*$", flags=re.MULTILINE),
+            end=re.compile(rf"{prefix}\s*end:(.*)\s*$", flags=re.MULTILINE),
+        )
+
+    def split_sections(self, contents: str) -> list[str]:
+        sections = self.section.split(contents)[1:]
+        for section in sections:
+            assert "section:" not in section
+        return sections
+
+    def get_special_cases(self, section: str) -> dict[FullType, dict[str, str]]:
+        res = {}
+        for type_str, tag, value in self.special_case.findall(section):
+            full_type = FullType.from_template(type_str)
+            res.setdefault(full_type, {})
+            res[full_type][tag] = value
+        return res
+
+    def split_tags(self, section: str) -> dict[str, str]:
+        by_tag = {}
+        for begin in self.begin.finditer(section):
+            tag = begin.group(1).lower()
+
+            tag_contents = section[begin.span()[1] :].lstrip("\n\r")
+            end = self.end.search(tag_contents)
+            if end is None:
+                raise RuntimeError(
+                    f"begin:{tag} without end:{tag}. Context:\n{tag_contents}"
+                )
+            if end.group(1).lower() != tag:
+                end_tag = end.group(1)
+                raise RuntimeError(
+                    f"begin:{tag} has a mismatched end tag end:{end_tag}  Context:\n{tag_contents}"
+                )
+
+            by_tag[tag] = tag_contents[: end.span()[0]].rstrip()
+        return by_tag
+
+    def get_types(self, contents: str) -> list[FullType]:
+        return [
+            FullType.from_template(type_str) for type_str in self.type.findall(contents)
+        ]
+
+
+def import_template(
+    cls,
+    template_contents: str,
+):
+    """Initialize the c_transforms dictionary with configured objects for all combinations."""
+    transformers = {}
+
+    if cls is CSideTransform:
+        importer = TemplateImporter.from_prefix("////")
+    elif cls is FortranSideTransform:
+        importer = TemplateImporter.from_prefix("!!!!")
+    else:
+        raise NotImplementedError(cls)
+
+    def check_tags(tags: list[str]):
+        for tag in tags:
+            if tag not in valid_fields and not hasattr(cls, tag):
+                raise ValueError(
+                    f"Unexpected special case tag: {tag!r} found in section:\n{section}"
+                )
+
+    valid_fields = {fld.name for fld in fields(cls)}
+    for section in importer.split_sections(template_contents):
+        types = importer.get_types(section)
+        tags = importer.split_tags(section)
+        special_cases = importer.get_special_cases(section)
+
+        check_tags(tags)
+        for full_type, tag_to_value in special_cases.items():
+            if full_type not in transformers:
+                transformers[full_type] = cls()
+            check_tags(list(tag_to_value))
+            for tag, value in tag_to_value.items():
+                setattr(transformers[full_type], tag, value)
+        for full_type in types:
+            if full_type not in transformers:
+                transformers[full_type] = cls()
+
+            for tag, value in tags.items():
+                setattr(transformers[full_type], tag, value)
+
+    return transformers
+
+
 def get_c_type(type_val: str) -> str:
     """Get the C++ type string for a given type value"""
     type_mapping = {
@@ -675,13 +785,6 @@ def argument_from_fstruct(
     )
 
 
-def arguments_from_fstruct(fstruct: FortranStructure) -> list[Argument]:
-    return [
-        argument_from_fstruct(fstruct, member)
-        for name, member in fstruct.info.members.items()
-    ]
-
-
 def match_structure_definition(
     fortran_structures: list[FortranStructure],
     struct: Structure,
@@ -695,7 +798,10 @@ def match_structure_definition(
     struct.f_name = fstruct.name
     struct.short_name = fstruct.name.removesuffix("_struct")
     struct.cpp_class = "CPP_" + struct.short_name
-    struct.arg = arguments_from_fstruct(fstruct)
+    struct.arg = [
+        argument_from_fstruct(fstruct, member)
+        for member in fstruct.info.members.values()
+    ]
 
 
 def set_translations(struct: Structure) -> None:
@@ -709,7 +815,7 @@ def set_translations(struct: Structure) -> None:
         translation_key = FullType(arg.type, n_dim, p_type)
 
         # Skip arguments without translation definitions
-        if translation_key not in f_side_trans:
+        if translation_key not in f_transforms:
             print(
                 f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} "
                 f"[{arg.type}, {n_dim}, {p_type}]",
@@ -721,11 +827,11 @@ def set_translations(struct: Structure) -> None:
         try:
             arg.f_side = f_side_trans_custom_overrides[arg_full_name]
         except KeyError:
-            arg.f_side = copy.deepcopy(f_side_trans[translation_key])
+            arg.f_side = copy.deepcopy(f_transforms[translation_key])
         try:
             arg.c_side = c_side_trans_custom_overrides[arg_full_name]
         except KeyError:
-            arg.c_side = copy.deepcopy(c_side_trans[translation_key])
+            arg.c_side = copy.deepcopy(c_transforms[translation_key])
 
 
 def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
@@ -746,8 +852,8 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
                 size_arg = Argument()
                 size_arg.is_component = False
                 size_arg.type = "integer"
-                size_arg.f_side = copy.deepcopy(f_side_trans[full_type])
-                size_arg.c_side = copy.deepcopy(c_side_trans[full_type])
+                size_arg.f_side = copy.deepcopy(f_transforms[full_type])
+                size_arg.c_side = copy.deepcopy(c_transforms[full_type])
                 size_arg.f_name = "n_" + arg.f_name
                 size_arg.c_name = "n_" + arg.c_name
 
@@ -765,8 +871,8 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
                 size_arg = Argument()
                 size_arg.is_component = False
                 size_arg.type = "integer"
-                size_arg.f_side = copy.deepcopy(f_side_trans[full_type])
-                size_arg.c_side = copy.deepcopy(c_side_trans[full_type])
+                size_arg.f_side = copy.deepcopy(f_transforms[full_type])
+                size_arg.c_side = copy.deepcopy(c_transforms[full_type])
                 size_arg.f_name = f"n{dim}_" + arg.f_name
                 size_arg.c_name = f"n{dim}_" + arg.c_name
 
@@ -1864,124 +1970,14 @@ c_side_trans_custom_overrides = {}
 f_side_trans_custom_overrides = {}
 
 
-@dataclasses.dataclass
-class TemplateImporter:
-    section: re.Pattern
-    section_with_match: re.Pattern
-    type: re.Pattern
-    begin: re.Pattern
-    end: re.Pattern
-    special_case: re.Pattern
-
-    @classmethod
-    def from_prefix(cls, prefix: str) -> TemplateImporter:
-        return TemplateImporter(
-            # These must be on their own line:
-            section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
-            section_with_match=re.compile(
-                rf"^\s*{prefix}\s*section:(.*)\s*$", flags=re.MULTILINE
-            ),
-            special_case=re.compile(
-                rf"^\s*{prefix}\s*case:(.*):(.*)\s*$\n^(.*)$", flags=re.MULTILINE
-            ),
-            type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
-            # This may appear anywhere in a line
-            begin=re.compile(rf"^.*{prefix}\s*begin:(.*).*\s*$", flags=re.MULTILINE),
-            end=re.compile(rf"{prefix}\s*end:(.*)\s*$", flags=re.MULTILINE),
-        )
-
-    def split_sections(self, contents: str) -> list[str]:
-        sections = self.section.split(contents)[1:]
-        for section in sections:
-            assert "section:" not in section
-        return sections
-
-    def get_special_cases(self, section: str) -> dict[FullType, dict[str, str]]:
-        res = {}
-        for type_str, tag, value in self.special_case.findall(section):
-            full_type = FullType.from_template(type_str)
-            res.setdefault(full_type, {})
-            res[full_type][tag] = value
-        return res
-
-    def split_tags(self, section: str) -> dict[str, str]:
-        by_tag = {}
-        for begin in self.begin.finditer(section):
-            tag = begin.group(1).lower()
-
-            tag_contents = section[begin.span()[1] :].lstrip("\n\r")
-            end = self.end.search(tag_contents)
-            if end is None:
-                raise RuntimeError(
-                    f"begin:{tag} without end:{tag}. Context:\n{tag_contents}"
-                )
-            if end.group(1).lower() != tag:
-                end_tag = end.group(1)
-                raise RuntimeError(
-                    f"begin:{tag} has a mismatched end tag end:{end_tag}  Context:\n{tag_contents}"
-                )
-
-            by_tag[tag] = tag_contents[: end.span()[0]].rstrip()
-        return by_tag
-
-    def get_types(self, contents: str) -> list[FullType]:
-        return [
-            FullType.from_template(type_str) for type_str in self.type.findall(contents)
-        ]
-
-
-def import_template(
-    cls,
-    template_contents: str,
-):
-    """Initialize the c_side_trans dictionary with configured objects for all combinations."""
-    transformers = {}
-
-    if cls is c_side_trans_class:
-        importer = TemplateImporter.from_prefix("////")
-    elif cls is f_side_trans_class:
-        importer = TemplateImporter.from_prefix("!!!!")
-    else:
-        raise NotImplementedError(cls)
-
-    def check_tags(tags: list[str]):
-        for tag in tags:
-            if tag not in valid_fields and not hasattr(cls, tag):
-                raise ValueError(
-                    f"Unexpected special case tag: {tag!r} found in section:\n{section}"
-                )
-
-    valid_fields = {fld.name for fld in fields(cls)}
-    for section in importer.split_sections(template_contents):
-        types = importer.get_types(section)
-        tags = importer.split_tags(section)
-        special_cases = importer.get_special_cases(section)
-
-        check_tags(tags)
-        for full_type, tag_to_value in special_cases.items():
-            if full_type not in transformers:
-                transformers[full_type] = cls()
-            check_tags(list(tag_to_value))
-            for tag, value in tag_to_value.items():
-                setattr(transformers[full_type], tag, value)
-        for full_type in types:
-            if full_type not in transformers:
-                transformers[full_type] = cls()
-
-            for tag, value in tags.items():
-                setattr(transformers[full_type], tag, value)
-
-    return transformers
-
-
-c_side_trans: dict[FullType, c_side_trans_class] = import_template(
-    c_side_trans_class, (TEMPLATES_PATH / "c_side.cpp").read_text()
+c_transforms: dict[FullType, CSideTransform] = import_template(
+    CSideTransform, (TEMPLATES_PATH / "c_side.cpp").read_text()
 )
-f_side_trans: dict[FullType, f_side_trans_class] = import_template(
-    f_side_trans_class, (TEMPLATES_PATH / "f_side.f90").read_text()
+f_transforms: dict[FullType, FortranSideTransform] = import_template(
+    FortranSideTransform, (TEMPLATES_PATH / "f_side.f90").read_text()
 )
 
-for type_, trans in f_side_trans.items():
+for type_, trans in f_transforms.items():
     if isinstance(trans.to_f2_var, str):
         trans.to_f2_var = trans.to_f2_var.splitlines()
     if isinstance(trans.to_c_var, str):
@@ -1992,7 +1988,7 @@ for type_, trans in f_side_trans.items():
         trans.replace_all("associated_or_allocated(", "associated(")
     trans.replace_all("TEST_VALUE", trans.test_value)
 
-for type_, trans in c_side_trans.items():
+for type_, trans in c_transforms.items():
     trans.replace_all("C_TYPE", get_c_type(type_.type))
     trans.replace_all("C_ARG", get_c_arg(type_.type))
     trans.replace_all("TEST_VALUE", trans.test_value)
