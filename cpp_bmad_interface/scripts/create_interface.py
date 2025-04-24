@@ -178,7 +178,6 @@ def indent(string: str, numspace: int) -> str:
 @dataclass
 class CSideTransform:
     c_class: str = ""  # EG: 'CPP_ele_Array'
-    c_instantiation_suffix: str = ""  # EG: '[]'
 
     # C++ --> Fortran
     # |   C++     |    Fortran |
@@ -360,11 +359,6 @@ class Argument:
     comment: str = ""
     f_side: FortranSideTransform = field(default_factory=FortranSideTransform)
     c_side: CSideTransform = field(default_factory=CSideTransform)
-    split_line: list[str] = field(default_factory=list)
-
-    # Only for routine parameters:
-    intent: Literal["inout", "in", "out", ""] = ""
-    optional: bool = False
 
     @property
     def lbound(self) -> list[str]:
@@ -593,10 +587,6 @@ class Structure:
     def __str__(self) -> str:
         return "[name: %s, #arg: %i]" % (self.short_name, len(self.arg))
 
-    @property
-    def by_f_name(self) -> dict[str, Argument]:
-        return {arg.f_name for arg in self.arguments}
-
 
 @dataclass
 class Subroutine(Structure):
@@ -608,7 +598,6 @@ class Subroutine(Structure):
 @dataclasses.dataclass
 class TemplateImporter:
     section: re.Pattern
-    section_with_match: re.Pattern
     type: re.Pattern
     begin: re.Pattern
     end: re.Pattern
@@ -619,9 +608,6 @@ class TemplateImporter:
         return TemplateImporter(
             # These must be on their own line:
             section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
-            section_with_match=re.compile(
-                rf"^\s*{prefix}\s*section:(.*)\s*$", flags=re.MULTILINE
-            ),
             special_case=re.compile(
                 rf"^\s*{prefix}\s*case:(.*):(.*)\s*$\n^(.*)$", flags=re.MULTILINE
             ),

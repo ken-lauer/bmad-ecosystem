@@ -27,10 +27,10 @@ class Opaque_spline_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_spline: public std::enable_shared_from_this<CPP_spline>  {
 public:
-      Real x0 =     {     0.0 };
-      Real y0 =     {     0.0 };
-      Real x1 =     {     0.0 };
-      FixedArray1D<Real, 4> coef =     {     0.0 };
+    Real x0 =   {   0.0 };
+    Real y0 =   {   0.0 };
+    Real x1 =   {   0.0 };
+    FixedArray1D<Real, 4> coef =   {   0.0 };
 
   CPP_spline() {
   
@@ -68,10 +68,10 @@ class Opaque_spin_polar_class {};  // Opaque class for pointers to corresponding
 
 class CPP_spin_polar: public std::enable_shared_from_this<CPP_spin_polar>  {
 public:
-      Real polarization =     { 1 };
-      Real theta =     {     0.0 };
-      Real phi =     {     0.0 };
-      Real xi =     {     0.0 };
+    Real polarization =   { 1 };
+    Real theta =   {   0.0 };
+    Real phi =   {   0.0 };
+    Real xi =   {   0.0 };
 
   CPP_spin_polar() {
   
@@ -109,9 +109,9 @@ class Opaque_ac_kicker_time_class {};  // Opaque class for pointers to correspon
 
 class CPP_ac_kicker_time: public std::enable_shared_from_this<CPP_ac_kicker_time>  {
 public:
-      Real amp =     {     0.0 };
-      Real time =     {     0.0 };
-      CPP_spline spline;
+    Real amp =   {   0.0 };
+    Real time =   {   0.0 };
+    CPP_spline spline;
 
   CPP_ac_kicker_time() {
   
@@ -148,10 +148,10 @@ class Opaque_ac_kicker_freq_class {};  // Opaque class for pointers to correspon
 
 class CPP_ac_kicker_freq: public std::enable_shared_from_this<CPP_ac_kicker_freq>  {
 public:
-      Real f =     {     0.0 };
-      Real amp =     {     0.0 };
-      Real phi =     {     0.0 };
-      Int rf_clock_harmonic =     {     0 };
+    Real f =   {   0.0 };
+    Real amp =   {   0.0 };
+    Real phi =   {   0.0 };
+    Int rf_clock_harmonic =   {   0 };
 
   CPP_ac_kicker_freq() {
   
@@ -189,8 +189,8 @@ class Opaque_ac_kicker_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_ac_kicker: public std::enable_shared_from_this<CPP_ac_kicker>  {
 public:
-      VariableArray1D<CPP_ac_kicker_time> amp_vs_time;
-      VariableArray1D<CPP_ac_kicker_freq> frequency;
+    VariableArray1D<CPP_ac_kicker_time> amp_vs_time;
+    VariableArray1D<CPP_ac_kicker_freq> frequency;
 
   CPP_ac_kicker() {
   
@@ -226,9 +226,9 @@ class Opaque_interval1_coef_class {};  // Opaque class for pointers to correspon
 
 class CPP_interval1_coef: public std::enable_shared_from_this<CPP_interval1_coef>  {
 public:
-      Real c0 =     {     0.0 };
-      Real c1 =     {     0.0 };
-      Real n_exp =     {     0.0 };
+    Real c0 =   {   0.0 };
+    Real c1 =   {   0.0 };
+    Real n_exp =   {   0.0 };
 
   CPP_interval1_coef() {
   
@@ -265,13 +265,13 @@ class Opaque_photon_reflect_table_class {};  // Opaque class for pointers to cor
 
 class CPP_photon_reflect_table: public std::enable_shared_from_this<CPP_photon_reflect_table>  {
 public:
-      VariableArray1D<Real> angle;
-      VariableArray1D<Real> energy;
-      VariableArray1D<CPP_interval1_coef> int1;
-      VariableArray2D<Real> p_reflect;
-      Real max_energy =     { -1 };
-      VariableArray1D<Real> p_reflect_scratch;
-      VariableArray1D<Real> bragg_angle;
+    VariableArray1D<Real> angle;
+    VariableArray1D<Real> energy;
+    VariableArray1D<CPP_interval1_coef> int1;
+    VariableArray2D<Real> p_reflect;
+    Real max_energy =   { -1 };
+    VariableArray1D<Real> p_reflect_scratch;
+    VariableArray1D<Real> bragg_angle;
 
   CPP_photon_reflect_table() {
   
@@ -312,13 +312,13 @@ class Opaque_photon_reflect_surface_class {};  // Opaque class for pointers to c
 
 class CPP_photon_reflect_surface: public std::enable_shared_from_this<CPP_photon_reflect_surface>  {
 public:
-      string name =     { "" };
-      string description =     { "" };
-      string reflectivity_file =     { "" };
-      VariableArray1D<CPP_photon_reflect_table> table;
-      Real surface_roughness_rms =     {     0.0 };
-      Real roughness_correlation_len =     {     0.0 };
-      Int ix_surface =     { -1 };
+    string name =   { "" };
+    string description =   { "" };
+    string reflectivity_file =   { "" };
+    VariableArray1D<CPP_photon_reflect_table> table;
+    Real surface_roughness_rms =   {   0.0 };
+    Real roughness_correlation_len =   {   0.0 };
+    Int ix_surface =   { -1 };
 
   CPP_photon_reflect_surface() {
   
@@ -359,27 +359,27 @@ class Opaque_coord_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_coord: public std::enable_shared_from_this<CPP_coord>  {
 public:
-      FixedArray1D<Real, 6> vec =     {     0.0 };
-      Real s =     {     0.0 };
-      Real t =     {     0.0 };
-      FixedArray1D<Real, 3> spin =     {     0.0 };
-      FixedArray1D<Real, 2> field =     {     0.0 };
-      FixedArray1D<Real, 2> phase =     {     0.0 };
-      Real charge =     {     0.0 };
-      Real dt_ref =     {     0.0 };
-      Real r =     {     0.0 };
-      Real p0c =     {     0.0 };
-      Real E_potential =     {     0.0 };
-      Real beta =     { -1 };
-      Int ix_ele =     { -1 };
-      Int ix_branch =     { -1 };
-      Int ix_turn =     {     0 };
-      Int ix_user =     { -1 };
-      Int state =     { Bmad::NOT_SET };
-      Int direction =     { 1 };
-      Int time_dir =     { 1 };
-      Int species =     { Bmad::NOT_SET };
-      Int location =     { Bmad::UPSTREAM_END };
+    FixedArray1D<Real, 6> vec =   {   0.0 };
+    Real s =   {   0.0 };
+    Real t =   {   0.0 };
+    FixedArray1D<Real, 3> spin =   {   0.0 };
+    FixedArray1D<Real, 2> field =   {   0.0 };
+    FixedArray1D<Real, 2> phase =   {   0.0 };
+    Real charge =   {   0.0 };
+    Real dt_ref =   {   0.0 };
+    Real r =   {   0.0 };
+    Real p0c =   {   0.0 };
+    Real E_potential =   {   0.0 };
+    Real beta =   { -1 };
+    Int ix_ele =   { -1 };
+    Int ix_branch =   { -1 };
+    Int ix_turn =   {   0 };
+    Int ix_user =   { -1 };
+    Int state =   { Bmad::NOT_SET };
+    Int direction =   { 1 };
+    Int time_dir =   { 1 };
+    Int species =   { Bmad::NOT_SET };
+    Int location =   { Bmad::UPSTREAM_END };
 
   CPP_coord() {
   
@@ -434,7 +434,7 @@ class Opaque_coord_array_class {};  // Opaque class for pointers to correspondin
 
 class CPP_coord_array: public std::enable_shared_from_this<CPP_coord_array>  {
 public:
-      VariableArray1D<CPP_coord> orbit;
+    VariableArray1D<CPP_coord> orbit;
 
   CPP_coord_array() {
   
@@ -469,16 +469,16 @@ class Opaque_bpm_phase_coupling_class {};  // Opaque class for pointers to corre
 
 class CPP_bpm_phase_coupling: public std::enable_shared_from_this<CPP_bpm_phase_coupling>  {
 public:
-      Real K_22a =     {     0.0 };
-      Real K_12a =     {     0.0 };
-      Real K_11b =     {     0.0 };
-      Real K_12b =     {     0.0 };
-      Real Cbar22_a =     {     0.0 };
-      Real Cbar12_a =     {     0.0 };
-      Real Cbar11_b =     {     0.0 };
-      Real Cbar12_b =     {     0.0 };
-      Real phi_a =     {     0.0 };
-      Real phi_b =     {     0.0 };
+    Real K_22a =   {   0.0 };
+    Real K_12a =   {   0.0 };
+    Real K_11b =   {   0.0 };
+    Real K_12b =   {   0.0 };
+    Real Cbar22_a =   {   0.0 };
+    Real Cbar12_a =   {   0.0 };
+    Real Cbar11_b =   {   0.0 };
+    Real Cbar12_b =   {   0.0 };
+    Real phi_a =   {   0.0 };
+    Real phi_b =   {   0.0 };
 
   CPP_bpm_phase_coupling() {
   
@@ -522,9 +522,9 @@ class Opaque_expression_atom_class {};  // Opaque class for pointers to correspo
 
 class CPP_expression_atom: public std::enable_shared_from_this<CPP_expression_atom>  {
 public:
-      string name =     { "" };
-      Int type =     {     0 };
-      Real value =     {     0.0 };
+    string name =   { "" };
+    Int type =   {   0 };
+    Real value =   {   0.0 };
 
   CPP_expression_atom() {
   
@@ -561,15 +561,15 @@ class Opaque_wake_sr_z_long_class {};  // Opaque class for pointers to correspon
 
 class CPP_wake_sr_z_long: public std::enable_shared_from_this<CPP_wake_sr_z_long>  {
 public:
-      VariableArray1D<Real> w;
-      VariableArray1D<Complex> fw;
-      VariableArray1D<Complex> fbunch;
-      VariableArray1D<Complex> w_out;
-      Real dz =     {     0.0 };
-      Real z0 =     {     0.0 };
-      Real smoothing_sigma =     {     0.0 };
-      Int position_dependence =     { Bmad::NONE };
-      Bool time_based =     { false };
+    VariableArray1D<Real> w;
+    VariableArray1D<Complex> fw;
+    VariableArray1D<Complex> fbunch;
+    VariableArray1D<Complex> w_out;
+    Real dz =   {   0.0 };
+    Real z0 =   {   0.0 };
+    Real smoothing_sigma =   {   0.0 };
+    Int position_dependence =   { Bmad::NONE };
+    Bool time_based =   { false };
 
   CPP_wake_sr_z_long() {
   
@@ -612,16 +612,16 @@ class Opaque_wake_sr_mode_class {};  // Opaque class for pointers to correspondi
 
 class CPP_wake_sr_mode: public std::enable_shared_from_this<CPP_wake_sr_mode>  {
 public:
-      Real amp =     {     0.0 };
-      Real damp =     {     0.0 };
-      Real k =     {     0.0 };
-      Real phi =     {     0.0 };
-      Real b_sin =     {     0.0 };
-      Real b_cos =     {     0.0 };
-      Real a_sin =     {     0.0 };
-      Real a_cos =     {     0.0 };
-      Int polarization =     { Bmad::NONE };
-      Int position_dependence =     { Bmad::NOT_SET };
+    Real amp =   {   0.0 };
+    Real damp =   {   0.0 };
+    Real k =   {   0.0 };
+    Real phi =   {   0.0 };
+    Real b_sin =   {   0.0 };
+    Real b_cos =   {   0.0 };
+    Real a_sin =   {   0.0 };
+    Real a_cos =   {   0.0 };
+    Int polarization =   { Bmad::NONE };
+    Int position_dependence =   { Bmad::NOT_SET };
 
   CPP_wake_sr_mode() {
   
@@ -665,16 +665,16 @@ class Opaque_wake_sr_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_wake_sr: public std::enable_shared_from_this<CPP_wake_sr>  {
 public:
-      string file =     { "" };
-      CPP_wake_sr_z_long z_long;
-      VariableArray1D<CPP_wake_sr_mode> long_wake;
-      VariableArray1D<CPP_wake_sr_mode> trans_wake;
-      Real z_ref_long =     {     0.0 };
-      Real z_ref_trans =     {     0.0 };
-      Real z_max =     {     0.0 };
-      Real amp_scale =     { 1 };
-      Real z_scale =     { 1 };
-      Bool scale_with_length =     { true };
+    string file =   { "" };
+    CPP_wake_sr_z_long z_long;
+    VariableArray1D<CPP_wake_sr_mode> long_wake;
+    VariableArray1D<CPP_wake_sr_mode> trans_wake;
+    Real z_ref_long =   {   0.0 };
+    Real z_ref_trans =   {   0.0 };
+    Real z_max =   {   0.0 };
+    Real amp_scale =   { 1 };
+    Real z_scale =   { 1 };
+    Bool scale_with_length =   { true };
 
   CPP_wake_sr() {
   
@@ -718,19 +718,19 @@ class Opaque_wake_lr_mode_class {};  // Opaque class for pointers to correspondi
 
 class CPP_wake_lr_mode: public std::enable_shared_from_this<CPP_wake_lr_mode>  {
 public:
-      Real freq =     {     0.0 };
-      Real freq_in =     {     0.0 };
-      Real R_over_Q =     {     0.0 };
-      Real Q =     { Bmad::REAL_GARBAGE };
-      Real damp =     {     0.0 };
-      Real phi =     {     0.0 };
-      Real angle =     {     0.0 };
-      Real b_sin =     {     0.0 };
-      Real b_cos =     {     0.0 };
-      Real a_sin =     {     0.0 };
-      Real a_cos =     {     0.0 };
-      Int m =     {     0 };
-      Bool polarized =     { false };
+    Real freq =   {   0.0 };
+    Real freq_in =   {   0.0 };
+    Real R_over_Q =   {   0.0 };
+    Real Q =   { Bmad::REAL_GARBAGE };
+    Real damp =   {   0.0 };
+    Real phi =   {   0.0 };
+    Real angle =   {   0.0 };
+    Real b_sin =   {   0.0 };
+    Real b_cos =   {   0.0 };
+    Real a_sin =   {   0.0 };
+    Real a_cos =   {   0.0 };
+    Int m =   {   0 };
+    Bool polarized =   { false };
 
   CPP_wake_lr_mode() {
   
@@ -777,13 +777,13 @@ class Opaque_wake_lr_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_wake_lr: public std::enable_shared_from_this<CPP_wake_lr>  {
 public:
-      string file =     { "" };
-      VariableArray1D<CPP_wake_lr_mode> mode;
-      Real t_ref =     {     0.0 };
-      Real freq_spread =     {     0.0 };
-      Real amp_scale =     { 1 };
-      Real time_scale =     { 1 };
-      Bool self_wake_on =     { true };
+    string file =   { "" };
+    VariableArray1D<CPP_wake_lr_mode> mode;
+    Real t_ref =   {   0.0 };
+    Real freq_spread =   {   0.0 };
+    Real amp_scale =   { 1 };
+    Real time_scale =   { 1 };
+    Bool self_wake_on =   { true };
 
   CPP_wake_lr() {
   
@@ -824,8 +824,8 @@ class Opaque_lat_ele_loc_class {};  // Opaque class for pointers to correspondin
 
 class CPP_lat_ele_loc: public std::enable_shared_from_this<CPP_lat_ele_loc>  {
 public:
-      Int ix_ele =     { -1 };
-      Int ix_branch =     {     0 };
+    Int ix_ele =   { -1 };
+    Int ix_branch =   {   0 };
 
   CPP_lat_ele_loc() {
   
@@ -861,8 +861,8 @@ class Opaque_wake_class {};  // Opaque class for pointers to corresponding fortr
 
 class CPP_wake: public std::enable_shared_from_this<CPP_wake>  {
 public:
-      CPP_wake_sr sr;
-      CPP_wake_lr lr;
+    CPP_wake_sr sr;
+    CPP_wake_lr lr;
 
   CPP_wake() {
   
@@ -898,8 +898,8 @@ class Opaque_taylor_term_class {};  // Opaque class for pointers to correspondin
 
 class CPP_taylor_term: public std::enable_shared_from_this<CPP_taylor_term>  {
 public:
-      Real coef =     {     0.0 };
-      FixedArray1D<Int, 6> expn =     {     0 };
+    Real coef =   {   0.0 };
+    FixedArray1D<Int, 6> expn =   {   0 };
 
   CPP_taylor_term() {
   
@@ -935,8 +935,8 @@ class Opaque_taylor_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_taylor: public std::enable_shared_from_this<CPP_taylor>  {
 public:
-      Real ref =     {     0.0 };
-      VariableArray1D<CPP_taylor_term> term;
+    Real ref =   {   0.0 };
+    VariableArray1D<CPP_taylor_term> term;
 
   CPP_taylor() {
   
@@ -972,8 +972,8 @@ class Opaque_em_taylor_term_class {};  // Opaque class for pointers to correspon
 
 class CPP_em_taylor_term: public std::enable_shared_from_this<CPP_em_taylor_term>  {
 public:
-      Real coef =     {     0.0 };
-      FixedArray1D<Int, 2> expn =     {     0 };
+    Real coef =   {   0.0 };
+    FixedArray1D<Int, 2> expn =   {   0 };
 
   CPP_em_taylor_term() {
   
@@ -1009,8 +1009,8 @@ class Opaque_em_taylor_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_em_taylor: public std::enable_shared_from_this<CPP_em_taylor>  {
 public:
-      Real ref =     {     0.0 };
-      VariableArray1D<CPP_em_taylor_term> term;
+    Real ref =   {   0.0 };
+    VariableArray1D<CPP_em_taylor_term> term;
 
   CPP_em_taylor() {
   
@@ -1046,15 +1046,15 @@ class Opaque_cartesian_map_term1_class {};  // Opaque class for pointers to corr
 
 class CPP_cartesian_map_term1: public std::enable_shared_from_this<CPP_cartesian_map_term1>  {
 public:
-      Real coef =     {     0.0 };
-      Real kx =     {     0.0 };
-      Real ky =     {     0.0 };
-      Real kz =     {     0.0 };
-      Real x0 =     {     0.0 };
-      Real y0 =     {     0.0 };
-      Real phi_z =     {     0.0 };
-      Int family =     {     0 };
-      Int form =     {     0 };
+    Real coef =   {   0.0 };
+    Real kx =   {   0.0 };
+    Real ky =   {   0.0 };
+    Real kz =   {   0.0 };
+    Real x0 =   {   0.0 };
+    Real y0 =   {   0.0 };
+    Real phi_z =   {   0.0 };
+    Int family =   {   0 };
+    Int form =   {   0 };
 
   CPP_cartesian_map_term1() {
   
@@ -1097,9 +1097,9 @@ class Opaque_cartesian_map_term_class {};  // Opaque class for pointers to corre
 
 class CPP_cartesian_map_term: public std::enable_shared_from_this<CPP_cartesian_map_term>  {
 public:
-      string file =     { "" };
-      Int n_link =     { 1 };
-      VariableArray1D<CPP_cartesian_map_term1> term;
+    string file =   { "" };
+    Int n_link =   { 1 };
+    VariableArray1D<CPP_cartesian_map_term1> term;
 
   CPP_cartesian_map_term() {
   
@@ -1136,12 +1136,12 @@ class Opaque_cartesian_map_class {};  // Opaque class for pointers to correspond
 
 class CPP_cartesian_map: public std::enable_shared_from_this<CPP_cartesian_map>  {
 public:
-      Real field_scale =     { 1 };
-      FixedArray1D<Real, 3> r0 =     {     0.0 };
-      Int master_parameter =     {     0 };
-      Int ele_anchor_pt =     { Bmad::ANCHOR_BEGINNING };
-      Int field_type =     { Bmad::MAGNETIC };
-      shared_ptr<CPP_cartesian_map_term> ptr =     nullptr;
+    Real field_scale =   { 1 };
+    FixedArray1D<Real, 3> r0 =   {   0.0 };
+    Int master_parameter =   {   0 };
+    Int ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    Int field_type =   { Bmad::MAGNETIC };
+    shared_ptr<CPP_cartesian_map_term> ptr =   nullptr;
 
   CPP_cartesian_map() {
   
@@ -1181,8 +1181,8 @@ class Opaque_cylindrical_map_term1_class {};  // Opaque class for pointers to co
 
 class CPP_cylindrical_map_term1: public std::enable_shared_from_this<CPP_cylindrical_map_term1>  {
 public:
-      Complex e_coef =     {     0.0 };
-      Complex b_coef =     {     0.0 };
+    Complex e_coef =   {   0.0 };
+    Complex b_coef =   {   0.0 };
 
   CPP_cylindrical_map_term1() {
   
@@ -1218,9 +1218,9 @@ class Opaque_cylindrical_map_term_class {};  // Opaque class for pointers to cor
 
 class CPP_cylindrical_map_term: public std::enable_shared_from_this<CPP_cylindrical_map_term>  {
 public:
-      string file =     { "" };
-      Int n_link =     { 1 };
-      VariableArray1D<CPP_cylindrical_map_term1> term;
+    string file =   { "" };
+    Int n_link =   { 1 };
+    VariableArray1D<CPP_cylindrical_map_term1> term;
 
   CPP_cylindrical_map_term() {
   
@@ -1257,16 +1257,16 @@ class Opaque_cylindrical_map_class {};  // Opaque class for pointers to correspo
 
 class CPP_cylindrical_map: public std::enable_shared_from_this<CPP_cylindrical_map>  {
 public:
-      Int m =     {     0 };
-      Int harmonic =     {     0 };
-      Real phi0_fieldmap =     {     0.0 };
-      Real theta0_azimuth =     {     0.0 };
-      Real field_scale =     { 1 };
-      Int master_parameter =     {     0 };
-      Int ele_anchor_pt =     { Bmad::ANCHOR_BEGINNING };
-      Real dz =     {     0.0 };
-      FixedArray1D<Real, 3> r0 =     {     0.0 };
-      shared_ptr<CPP_cylindrical_map_term> ptr =     nullptr;
+    Int m =   {   0 };
+    Int harmonic =   {   0 };
+    Real phi0_fieldmap =   {   0.0 };
+    Real theta0_azimuth =   {   0.0 };
+    Real field_scale =   { 1 };
+    Int master_parameter =   {   0 };
+    Int ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    Real dz =   {   0.0 };
+    FixedArray1D<Real, 3> r0 =   {   0.0 };
+    shared_ptr<CPP_cylindrical_map_term> ptr =   nullptr;
 
   CPP_cylindrical_map() {
   
@@ -1310,8 +1310,8 @@ class Opaque_grid_field_pt1_class {};  // Opaque class for pointers to correspon
 
 class CPP_grid_field_pt1: public std::enable_shared_from_this<CPP_grid_field_pt1>  {
 public:
-      FixedArray1D<Complex, 3> E =     {     0.0 };
-      FixedArray1D<Complex, 3> B =     {     0.0 };
+    FixedArray1D<Complex, 3> E =   {   0.0 };
+    FixedArray1D<Complex, 3> B =   {   0.0 };
 
   CPP_grid_field_pt1() {
   
@@ -1347,8 +1347,8 @@ class Opaque_grid_field_pt_class {};  // Opaque class for pointers to correspond
 
 class CPP_grid_field_pt: public std::enable_shared_from_this<CPP_grid_field_pt>  {
 public:
-      string file =     { "" };
-      Int n_link =     { 1 };
+    string file =   { "" };
+    Int n_link =   { 1 };
 
   CPP_grid_field_pt() {
   
@@ -1384,18 +1384,18 @@ class Opaque_grid_field_class {};  // Opaque class for pointers to corresponding
 
 class CPP_grid_field: public std::enable_shared_from_this<CPP_grid_field>  {
 public:
-      Int geometry =     {     0 };
-      Int harmonic =     {     0 };
-      Real phi0_fieldmap =     {     0.0 };
-      Real field_scale =     { 1 };
-      Int field_type =     { Bmad::MIXED };
-      Int master_parameter =     {     0 };
-      Int ele_anchor_pt =     { Bmad::ANCHOR_BEGINNING };
-      Int interpolation_order =     { 1 };
-      FixedArray1D<Real, 3> dr =     {     0.0 };
-      FixedArray1D<Real, 3> r0 =     {     0.0 };
-      Bool curved_ref_frame =     { false };
-      shared_ptr<CPP_grid_field_pt> ptr =     nullptr;
+    Int geometry =   {   0 };
+    Int harmonic =   {   0 };
+    Real phi0_fieldmap =   {   0.0 };
+    Real field_scale =   { 1 };
+    Int field_type =   { Bmad::MIXED };
+    Int master_parameter =   {   0 };
+    Int ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    Int interpolation_order =   { 1 };
+    FixedArray1D<Real, 3> dr =   {   0.0 };
+    FixedArray1D<Real, 3> r0 =   {   0.0 };
+    Bool curved_ref_frame =   { false };
+    shared_ptr<CPP_grid_field_pt> ptr =   nullptr;
 
   CPP_grid_field() {
   
@@ -1441,11 +1441,11 @@ class Opaque_floor_position_class {};  // Opaque class for pointers to correspon
 
 class CPP_floor_position: public std::enable_shared_from_this<CPP_floor_position>  {
 public:
-      FixedArray1D<Real, 3> r =     {     0.0 };
-      FixedArray2D<Real, 3, 3> w;
-      Real theta =     {     0.0 };
-      Real phi =     {     0.0 };
-      Real psi =     {     0.0 };
+    FixedArray1D<Real, 3> r =   {   0.0 };
+    FixedArray2D<Real, 3, 3> w;
+    Real theta =   {   0.0 };
+    Real phi =   {   0.0 };
+    Real psi =   {   0.0 };
 
   CPP_floor_position() {
   
@@ -1484,14 +1484,14 @@ class Opaque_high_energy_space_charge_class {};  // Opaque class for pointers to
 
 class CPP_high_energy_space_charge: public std::enable_shared_from_this<CPP_high_energy_space_charge>  {
 public:
-      CPP_coord closed_orb;
-      Real kick_const =     {     0.0 };
-      Real sig_x =     {     0.0 };
-      Real sig_y =     {     0.0 };
-      Real phi =     {     0.0 };
-      Real sin_phi =     {     0.0 };
-      Real cos_phi =     {     0.0 };
-      Real sig_z =     {     0.0 };
+    CPP_coord closed_orb;
+    Real kick_const =   {   0.0 };
+    Real sig_x =   {   0.0 };
+    Real sig_y =   {   0.0 };
+    Real phi =   {   0.0 };
+    Real sin_phi =   {   0.0 };
+    Real cos_phi =   {   0.0 };
+    Real sig_z =   {   0.0 };
 
   CPP_high_energy_space_charge() {
   
@@ -1533,10 +1533,10 @@ class Opaque_xy_disp_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_xy_disp: public std::enable_shared_from_this<CPP_xy_disp>  {
 public:
-      Real eta =     {     0.0 };
-      Real etap =     {     0.0 };
-      Real deta_ds =     {     0.0 };
-      Real sigma =     {     0.0 };
+    Real eta =   {   0.0 };
+    Real etap =   {   0.0 };
+    Real deta_ds =   {   0.0 };
+    Real sigma =   {   0.0 };
 
   CPP_xy_disp() {
   
@@ -1574,17 +1574,17 @@ class Opaque_twiss_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_twiss: public std::enable_shared_from_this<CPP_twiss>  {
 public:
-      Real beta =     {     0.0 };
-      Real alpha =     {     0.0 };
-      Real gamma =     {     0.0 };
-      Real phi =     {     0.0 };
-      Real eta =     {     0.0 };
-      Real etap =     {     0.0 };
-      Real deta_ds =     {     0.0 };
-      Real sigma =     {     0.0 };
-      Real sigma_p =     {     0.0 };
-      Real emit =     {     0.0 };
-      Real norm_emit =     {     0.0 };
+    Real beta =   {   0.0 };
+    Real alpha =   {   0.0 };
+    Real gamma =   {   0.0 };
+    Real phi =   {   0.0 };
+    Real eta =   {   0.0 };
+    Real etap =   {   0.0 };
+    Real deta_ds =   {   0.0 };
+    Real sigma =   {   0.0 };
+    Real sigma_p =   {   0.0 };
+    Real emit =   {   0.0 };
+    Real norm_emit =   {   0.0 };
 
   CPP_twiss() {
   
@@ -1629,12 +1629,12 @@ class Opaque_mode3_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_mode3: public std::enable_shared_from_this<CPP_mode3>  {
 public:
-      FixedArray2D<Real, 6, 6> v;
-      CPP_twiss a;
-      CPP_twiss b;
-      CPP_twiss c;
-      CPP_twiss x;
-      CPP_twiss y;
+    FixedArray2D<Real, 6, 6> v;
+    CPP_twiss a;
+    CPP_twiss b;
+    CPP_twiss c;
+    CPP_twiss x;
+    CPP_twiss y;
 
   CPP_mode3() {
   
@@ -1674,15 +1674,15 @@ class Opaque_bookkeeping_state_class {};  // Opaque class for pointers to corres
 
 class CPP_bookkeeping_state: public std::enable_shared_from_this<CPP_bookkeeping_state>  {
 public:
-      Int attributes =     { Bmad::STALE };
-      Int control =     { Bmad::STALE };
-      Int floor_position =     { Bmad::STALE };
-      Int s_position =     { Bmad::STALE };
-      Int ref_energy =     { Bmad::STALE };
-      Int mat6 =     { Bmad::STALE };
-      Int rad_int =     { Bmad::STALE };
-      Int ptc =     { Bmad::STALE };
-      Bool has_misalign =     { false };
+    Int attributes =   { Bmad::STALE };
+    Int control =   { Bmad::STALE };
+    Int floor_position =   { Bmad::STALE };
+    Int s_position =   { Bmad::STALE };
+    Int ref_energy =   { Bmad::STALE };
+    Int mat6 =   { Bmad::STALE };
+    Int rad_int =   { Bmad::STALE };
+    Int ptc =   { Bmad::STALE };
+    Bool has_misalign =   { false };
 
   CPP_bookkeeping_state() {
   
@@ -1725,11 +1725,11 @@ class Opaque_rad_map_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_rad_map: public std::enable_shared_from_this<CPP_rad_map>  {
 public:
-      FixedArray1D<Real, 6> ref_orb =     { -1 };
-      FixedArray2D<Real, 6, 6> damp_dmat;
-      FixedArray1D<Real, 6> xfer_damp_vec =     {     0.0 };
-      FixedArray2D<Real, 6, 6> xfer_damp_mat;
-      FixedArray2D<Real, 6, 6> stoc_mat;
+    FixedArray1D<Real, 6> ref_orb =   { -1 };
+    FixedArray2D<Real, 6, 6> damp_dmat;
+    FixedArray1D<Real, 6> xfer_damp_vec =   {   0.0 };
+    FixedArray2D<Real, 6, 6> xfer_damp_mat;
+    FixedArray2D<Real, 6, 6> stoc_mat;
 
   CPP_rad_map() {
   
@@ -1768,9 +1768,9 @@ class Opaque_rad_map_ele_class {};  // Opaque class for pointers to correspondin
 
 class CPP_rad_map_ele: public std::enable_shared_from_this<CPP_rad_map_ele>  {
 public:
-      CPP_rad_map rm0;
-      CPP_rad_map rm1;
-      Bool stale =     { true };
+    CPP_rad_map rm0;
+    CPP_rad_map rm1;
+    Bool stale =   { true };
 
   CPP_rad_map_ele() {
   
@@ -1807,10 +1807,10 @@ class Opaque_gen_grad1_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_gen_grad1: public std::enable_shared_from_this<CPP_gen_grad1>  {
 public:
-      Int m =     {     0 };
-      Int sincos =     {     0 };
-      Int n_deriv_max =     { -1 };
-      VariableArray2D<Real> deriv;
+    Int m =   {   0 };
+    Int sincos =   {   0 };
+    Int n_deriv_max =   { -1 };
+    VariableArray2D<Real> deriv;
 
   CPP_gen_grad1() {
   
@@ -1848,17 +1848,17 @@ class Opaque_gen_grad_map_class {};  // Opaque class for pointers to correspondi
 
 class CPP_gen_grad_map: public std::enable_shared_from_this<CPP_gen_grad_map>  {
 public:
-      string file =     { "" };
-      VariableArray1D<CPP_gen_grad1> gg;
-      Int ele_anchor_pt =     { Bmad::ANCHOR_BEGINNING };
-      Int field_type =     { Bmad::MAGNETIC };
-      Int iz0 =     { Bmad::INT_GARBAGE };
-      Int iz1 =     { Bmad::INT_GARBAGE };
-      Real dz =     {     0.0 };
-      FixedArray1D<Real, 3> r0 =     {     0.0 };
-      Real field_scale =     { 1 };
-      Int master_parameter =     {     0 };
-      Bool curved_ref_frame =     { false };
+    string file =   { "" };
+    VariableArray1D<CPP_gen_grad1> gg;
+    Int ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    Int field_type =   { Bmad::MAGNETIC };
+    Int iz0 =   { Bmad::INT_GARBAGE };
+    Int iz1 =   { Bmad::INT_GARBAGE };
+    Real dz =   {   0.0 };
+    FixedArray1D<Real, 3> r0 =   {   0.0 };
+    Real field_scale =   { 1 };
+    Int master_parameter =   {   0 };
+    Bool curved_ref_frame =   { false };
 
   CPP_gen_grad_map() {
   
@@ -1903,11 +1903,11 @@ class Opaque_surface_segmented_pt_class {};  // Opaque class for pointers to cor
 
 class CPP_surface_segmented_pt: public std::enable_shared_from_this<CPP_surface_segmented_pt>  {
 public:
-      Real x0 =     {     0.0 };
-      Real y0 =     {     0.0 };
-      Real z0 =     {     0.0 };
-      Real dz_dx =     {     0.0 };
-      Real dz_dy =     {     0.0 };
+    Real x0 =   {   0.0 };
+    Real y0 =   {   0.0 };
+    Real z0 =   {   0.0 };
+    Real dz_dx =   {   0.0 };
+    Real dz_dy =   {   0.0 };
 
   CPP_surface_segmented_pt() {
   
@@ -1946,10 +1946,10 @@ class Opaque_surface_segmented_class {};  // Opaque class for pointers to corres
 
 class CPP_surface_segmented: public std::enable_shared_from_this<CPP_surface_segmented>  {
 public:
-      Bool active =     { false };
-      FixedArray1D<Real, 2> dr =     {     0.0 };
-      FixedArray1D<Real, 2> r0 =     {     0.0 };
-      VariableArray2D<CPP_surface_segmented_pt> pt;
+    Bool active =   { false };
+    FixedArray1D<Real, 2> dr =   {   0.0 };
+    FixedArray1D<Real, 2> r0 =   {   0.0 };
+    VariableArray2D<CPP_surface_segmented_pt> pt;
 
   CPP_surface_segmented() {
   
@@ -1987,12 +1987,12 @@ class Opaque_surface_h_misalign_pt_class {};  // Opaque class for pointers to co
 
 class CPP_surface_h_misalign_pt: public std::enable_shared_from_this<CPP_surface_h_misalign_pt>  {
 public:
-      Real x0 =     {     0.0 };
-      Real y0 =     {     0.0 };
-      Real rot_y =     {     0.0 };
-      Real rot_t =     {     0.0 };
-      Real rot_y_rms =     {     0.0 };
-      Real rot_t_rms =     {     0.0 };
+    Real x0 =   {   0.0 };
+    Real y0 =   {   0.0 };
+    Real rot_y =   {   0.0 };
+    Real rot_t =   {   0.0 };
+    Real rot_y_rms =   {   0.0 };
+    Real rot_t_rms =   {   0.0 };
 
   CPP_surface_h_misalign_pt() {
   
@@ -2032,10 +2032,10 @@ class Opaque_surface_h_misalign_class {};  // Opaque class for pointers to corre
 
 class CPP_surface_h_misalign: public std::enable_shared_from_this<CPP_surface_h_misalign>  {
 public:
-      Bool active =     { false };
-      FixedArray1D<Real, 2> dr =     {     0.0 };
-      FixedArray1D<Real, 2> r0 =     {     0.0 };
-      VariableArray2D<CPP_surface_h_misalign_pt> pt;
+    Bool active =   { false };
+    FixedArray1D<Real, 2> dr =   {   0.0 };
+    FixedArray1D<Real, 2> r0 =   {   0.0 };
+    VariableArray2D<CPP_surface_h_misalign_pt> pt;
 
   CPP_surface_h_misalign() {
   
@@ -2073,12 +2073,12 @@ class Opaque_surface_displacement_pt_class {};  // Opaque class for pointers to 
 
 class CPP_surface_displacement_pt: public std::enable_shared_from_this<CPP_surface_displacement_pt>  {
 public:
-      Real x0 =     {     0.0 };
-      Real y0 =     {     0.0 };
-      Real z0 =     {     0.0 };
-      Real dz_dx =     {     0.0 };
-      Real dz_dy =     {     0.0 };
-      Real d2z_dxdy =     {     0.0 };
+    Real x0 =   {   0.0 };
+    Real y0 =   {   0.0 };
+    Real z0 =   {   0.0 };
+    Real dz_dx =   {   0.0 };
+    Real dz_dy =   {   0.0 };
+    Real d2z_dxdy =   {   0.0 };
 
   CPP_surface_displacement_pt() {
   
@@ -2118,10 +2118,10 @@ class Opaque_surface_displacement_class {};  // Opaque class for pointers to cor
 
 class CPP_surface_displacement: public std::enable_shared_from_this<CPP_surface_displacement>  {
 public:
-      Bool active =     { false };
-      FixedArray1D<Real, 2> dr =     {     0.0 };
-      FixedArray1D<Real, 2> r0 =     {     0.0 };
-      VariableArray2D<CPP_surface_displacement_pt> pt;
+    Bool active =   { false };
+    FixedArray1D<Real, 2> dr =   {   0.0 };
+    FixedArray1D<Real, 2> r0 =   {   0.0 };
+    VariableArray2D<CPP_surface_displacement_pt> pt;
 
   CPP_surface_displacement() {
   
@@ -2159,7 +2159,7 @@ class Opaque_target_point_class {};  // Opaque class for pointers to correspondi
 
 class CPP_target_point: public std::enable_shared_from_this<CPP_target_point>  {
 public:
-      FixedArray1D<Real, 3> r =     {     0.0 };
+    FixedArray1D<Real, 3> r =   {   0.0 };
 
   CPP_target_point() {
   
@@ -2194,10 +2194,10 @@ class Opaque_surface_curvature_class {};  // Opaque class for pointers to corres
 
 class CPP_surface_curvature: public std::enable_shared_from_this<CPP_surface_curvature>  {
 public:
-      FixedArray2D<Real, 7, 7> xy;
-      Real spherical =     {     0.0 };
-      FixedArray1D<Real, 3> elliptical =     {     0.0 };
-      Bool has_curvature =     { false };
+    FixedArray2D<Real, 7, 7> xy;
+    Real spherical =   {   0.0 };
+    FixedArray1D<Real, 3> elliptical =   {   0.0 };
+    Bool has_curvature =   { false };
 
   CPP_surface_curvature() {
   
@@ -2235,11 +2235,11 @@ class Opaque_photon_target_class {};  // Opaque class for pointers to correspond
 
 class CPP_photon_target: public std::enable_shared_from_this<CPP_photon_target>  {
 public:
-      Int type =     { Bmad::OFF };
-      Int n_corner =     {     0 };
-      CPP_lat_ele_loc ele_loc;
-      FixedArray1D<CPP_target_point, 8> corner;
-      CPP_target_point center;
+    Int type =   { Bmad::OFF };
+    Int n_corner =   {   0 };
+    CPP_lat_ele_loc ele_loc;
+    FixedArray1D<CPP_target_point, 8> corner;
+    CPP_target_point center;
 
   CPP_photon_target() {
   
@@ -2278,14 +2278,14 @@ class Opaque_photon_material_class {};  // Opaque class for pointers to correspo
 
 class CPP_photon_material: public std::enable_shared_from_this<CPP_photon_material>  {
 public:
-      Complex f0_m1 =     {     0.0 };
-      Complex f0_m2 =     {     0.0 };
-      Complex f_0 =     {     0.0 };
-      Complex f_h =     {     0.0 };
-      Complex f_hbar =     {     0.0 };
-      Complex f_hkl =     {     0.0 };
-      FixedArray1D<Real, 3> h_norm =     {     0.0 };
-      FixedArray1D<Real, 3> l_ref =     {     0.0 };
+    Complex f0_m1 =   {   0.0 };
+    Complex f0_m2 =   {   0.0 };
+    Complex f_0 =   {   0.0 };
+    Complex f_h =   {   0.0 };
+    Complex f_hbar =   {   0.0 };
+    Complex f_hkl =   {   0.0 };
+    FixedArray1D<Real, 3> h_norm =   {   0.0 };
+    FixedArray1D<Real, 3> l_ref =   {   0.0 };
 
   CPP_photon_material() {
   
@@ -2327,16 +2327,16 @@ class Opaque_pixel_pt_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_pixel_pt: public std::enable_shared_from_this<CPP_pixel_pt>  {
 public:
-      Int8 n_photon =     {     0 };
-      Complex E_x =     {     0.0 };
-      Complex E_y =     {     0.0 };
-      Real intensity_x =     {     0.0 };
-      Real intensity_y =     {     0.0 };
-      Real intensity =     {     0.0 };
-      FixedArray1D<Real, 6> orbit =     {     0.0 };
-      FixedArray1D<Real, 6> orbit_rms =     {     0.0 };
-      FixedArray1D<Real, 6> init_orbit =     {     0.0 };
-      FixedArray1D<Real, 6> init_orbit_rms =     {     0.0 };
+    Int8 n_photon =   {   0 };
+    Complex E_x =   {   0.0 };
+    Complex E_y =   {   0.0 };
+    Real intensity_x =   {   0.0 };
+    Real intensity_y =   {   0.0 };
+    Real intensity =   {   0.0 };
+    FixedArray1D<Real, 6> orbit =   {   0.0 };
+    FixedArray1D<Real, 6> orbit_rms =   {   0.0 };
+    FixedArray1D<Real, 6> init_orbit =   {   0.0 };
+    FixedArray1D<Real, 6> init_orbit_rms =   {   0.0 };
 
   CPP_pixel_pt() {
   
@@ -2380,12 +2380,12 @@ class Opaque_pixel_detec_class {};  // Opaque class for pointers to correspondin
 
 class CPP_pixel_detec: public std::enable_shared_from_this<CPP_pixel_detec>  {
 public:
-      FixedArray1D<Real, 2> dr =     {     0.0 };
-      FixedArray1D<Real, 2> r0 =     {     0.0 };
-      Int8 n_track_tot =     {     0 };
-      Int8 n_hit_detec =     {     0 };
-      Int8 n_hit_pixel =     {     0 };
-      VariableArray2D<CPP_pixel_pt> pt;
+    FixedArray1D<Real, 2> dr =   {   0.0 };
+    FixedArray1D<Real, 2> r0 =   {   0.0 };
+    Int8 n_track_tot =   {   0 };
+    Int8 n_hit_detec =   {   0 };
+    Int8 n_hit_pixel =   {   0 };
+    VariableArray2D<CPP_pixel_pt> pt;
 
   CPP_pixel_detec() {
   
@@ -2425,18 +2425,18 @@ class Opaque_photon_element_class {};  // Opaque class for pointers to correspon
 
 class CPP_photon_element: public std::enable_shared_from_this<CPP_photon_element>  {
 public:
-      CPP_surface_curvature curvature;
-      CPP_photon_target target;
-      CPP_photon_material material;
-      CPP_surface_segmented segmented;
-      CPP_surface_h_misalign h_misalign;
-      CPP_surface_displacement displacement;
-      CPP_pixel_detec pixel;
-      Int reflectivity_table_type =     { Bmad::NOT_SET };
-      CPP_photon_reflect_table reflectivity_table_sigma;
-      CPP_photon_reflect_table reflectivity_table_pi;
-      VariableArray1D<CPP_spline> init_energy_prob;
-      VariableArray1D<Real> integrated_init_energy_prob;
+    CPP_surface_curvature curvature;
+    CPP_photon_target target;
+    CPP_photon_material material;
+    CPP_surface_segmented segmented;
+    CPP_surface_h_misalign h_misalign;
+    CPP_surface_displacement displacement;
+    CPP_pixel_detec pixel;
+    Int reflectivity_table_type =   { Bmad::NOT_SET };
+    CPP_photon_reflect_table reflectivity_table_sigma;
+    CPP_photon_reflect_table reflectivity_table_pi;
+    VariableArray1D<CPP_spline> init_energy_prob;
+    VariableArray1D<Real> integrated_init_energy_prob;
 
   CPP_photon_element() {
   
@@ -2482,15 +2482,15 @@ class Opaque_wall3d_vertex_class {};  // Opaque class for pointers to correspond
 
 class CPP_wall3d_vertex: public std::enable_shared_from_this<CPP_wall3d_vertex>  {
 public:
-      Real x =     {     0.0 };
-      Real y =     {     0.0 };
-      Real radius_x =     {     0.0 };
-      Real radius_y =     {     0.0 };
-      Real tilt =     {     0.0 };
-      Real angle =     {     0.0 };
-      Real x0 =     {     0.0 };
-      Real y0 =     {     0.0 };
-      Int type =     { Bmad::NORMAL };
+    Real x =   {   0.0 };
+    Real y =   {   0.0 };
+    Real radius_x =   {   0.0 };
+    Real radius_y =   {   0.0 };
+    Real tilt =   {   0.0 };
+    Real angle =   {   0.0 };
+    Real x0 =   {   0.0 };
+    Real y0 =   {   0.0 };
+    Int type =   { Bmad::NORMAL };
 
   CPP_wall3d_vertex() {
   
@@ -2533,26 +2533,26 @@ class Opaque_wall3d_section_class {};  // Opaque class for pointers to correspon
 
 class CPP_wall3d_section: public std::enable_shared_from_this<CPP_wall3d_section>  {
 public:
-      string name =     { "" };
-      string material =     { "" };
-      VariableArray1D<CPP_wall3d_vertex> v;
-      shared_ptr<CPP_photon_reflect_surface> surface =     nullptr;
-      Int type =     { Bmad::NORMAL };
-      Int n_vertex_input =     {     0 };
-      Int ix_ele =     {     0 };
-      Int ix_branch =     {     0 };
-      Int vertices_state =     { Bmad::RELATIVE };
-      Bool patch_in_region =     { false };
-      Real thickness =     { -1 };
-      Real s =     {     0.0 };
-      FixedArray1D<Real, 2> r0 =     {     0.0 };
-      Real dx0_ds =     {     0.0 };
-      Real dy0_ds =     {     0.0 };
-      FixedArray1D<Real, 4> x0_coef =     {     0.0 };
-      FixedArray1D<Real, 4> y0_coef =     {     0.0 };
-      Real dr_ds =     { Bmad::REAL_GARBAGE };
-      FixedArray1D<Real, 3> p1_coef =     {     0.0 };
-      FixedArray1D<Real, 3> p2_coef =     {     0.0 };
+    string name =   { "" };
+    string material =   { "" };
+    VariableArray1D<CPP_wall3d_vertex> v;
+    shared_ptr<CPP_photon_reflect_surface> surface =   nullptr;
+    Int type =   { Bmad::NORMAL };
+    Int n_vertex_input =   {   0 };
+    Int ix_ele =   {   0 };
+    Int ix_branch =   {   0 };
+    Int vertices_state =   { Bmad::RELATIVE };
+    Bool patch_in_region =   { false };
+    Real thickness =   { -1 };
+    Real s =   {   0.0 };
+    FixedArray1D<Real, 2> r0 =   {   0.0 };
+    Real dx0_ds =   {   0.0 };
+    Real dy0_ds =   {   0.0 };
+    FixedArray1D<Real, 4> x0_coef =   {   0.0 };
+    FixedArray1D<Real, 4> y0_coef =   {   0.0 };
+    Real dr_ds =   { Bmad::REAL_GARBAGE };
+    FixedArray1D<Real, 3> p1_coef =   {   0.0 };
+    FixedArray1D<Real, 3> p2_coef =   {   0.0 };
 
   CPP_wall3d_section() {
   
@@ -2606,16 +2606,16 @@ class Opaque_wall3d_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_wall3d: public std::enable_shared_from_this<CPP_wall3d>  {
 public:
-      string name =     { "" };
-      Int type =     { Bmad::CHAMBER_WALL };
-      Int ix_wall3d =     {     0 };
-      Int n_link =     { 1 };
-      Real thickness =     { -1 };
-      string clear_material =     { "" };
-      string opaque_material =     { "" };
-      Bool superimpose =     { false };
-      Int ele_anchor_pt =     { Bmad::ANCHOR_BEGINNING };
-      VariableArray1D<CPP_wall3d_section> section;
+    string name =   { "" };
+    Int type =   { Bmad::CHAMBER_WALL };
+    Int ix_wall3d =   {   0 };
+    Int n_link =   { 1 };
+    Real thickness =   { -1 };
+    string clear_material =   { "" };
+    string opaque_material =   { "" };
+    Bool superimpose =   { false };
+    Int ele_anchor_pt =   { Bmad::ANCHOR_BEGINNING };
+    VariableArray1D<CPP_wall3d_section> section;
 
   CPP_wall3d() {
   
@@ -2659,9 +2659,9 @@ class Opaque_ramper_lord_class {};  // Opaque class for pointers to correspondin
 
 class CPP_ramper_lord: public std::enable_shared_from_this<CPP_ramper_lord>  {
 public:
-      Int ix_ele =     {     0 };
-      Int ix_con =     {     0 };
-      shared_ptr<Real> attrib_ptr =     nullptr;
+    Int ix_ele =   {   0 };
+    Int ix_con =   {   0 };
+    shared_ptr<Real> attrib_ptr =   nullptr;
 
   CPP_ramper_lord() {
   
@@ -2698,14 +2698,14 @@ class Opaque_control_class {};  // Opaque class for pointers to corresponding fo
 
 class CPP_control: public std::enable_shared_from_this<CPP_control>  {
 public:
-      Real value =     {     0.0 };
-      VariableArray1D<Real> y_knot;
-      VariableArray1D<CPP_expression_atom> stack;
-      CPP_lat_ele_loc slave;
-      CPP_lat_ele_loc lord;
-      string slave_name =     { "" };
-      string attribute =     { "" };
-      Int ix_attrib =     { -1 };
+    Real value =   {   0.0 };
+    VariableArray1D<Real> y_knot;
+    VariableArray1D<CPP_expression_atom> stack;
+    CPP_lat_ele_loc slave;
+    CPP_lat_ele_loc lord;
+    string slave_name =   { "" };
+    string attribute =   { "" };
+    Int ix_attrib =   { -1 };
 
   CPP_control() {
   
@@ -2747,9 +2747,9 @@ class Opaque_control_var1_class {};  // Opaque class for pointers to correspondi
 
 class CPP_control_var1: public std::enable_shared_from_this<CPP_control_var1>  {
 public:
-      string name =     { "" };
-      Real value =     {     0.0 };
-      Real old_value =     {     0.0 };
+    string name =   { "" };
+    Real value =   {   0.0 };
+    Real old_value =   {   0.0 };
 
   CPP_control_var1() {
   
@@ -2786,11 +2786,11 @@ class Opaque_control_ramp1_class {};  // Opaque class for pointers to correspond
 
 class CPP_control_ramp1: public std::enable_shared_from_this<CPP_control_ramp1>  {
 public:
-      VariableArray1D<Real> y_knot;
-      VariableArray1D<CPP_expression_atom> stack;
-      string attribute =     { "" };
-      string slave_name =     { "" };
-      Bool is_controller =     { false };
+    VariableArray1D<Real> y_knot;
+    VariableArray1D<CPP_expression_atom> stack;
+    string attribute =   { "" };
+    string slave_name =   { "" };
+    Bool is_controller =   { false };
 
   CPP_control_ramp1() {
   
@@ -2829,10 +2829,10 @@ class Opaque_controller_class {};  // Opaque class for pointers to corresponding
 
 class CPP_controller: public std::enable_shared_from_this<CPP_controller>  {
 public:
-      VariableArray1D<CPP_control_var1> var;
-      VariableArray1D<CPP_control_ramp1> ramp;
-      VariableArray1D<CPP_ramper_lord> ramper_lord;
-      VariableArray1D<Real> x_knot;
+    VariableArray1D<CPP_control_var1> var;
+    VariableArray1D<CPP_control_ramp1> ramp;
+    VariableArray1D<CPP_ramper_lord> ramper_lord;
+    VariableArray1D<Real> x_knot;
 
   CPP_controller() {
   
@@ -2870,9 +2870,9 @@ class Opaque_ellipse_beam_init_class {};  // Opaque class for pointers to corres
 
 class CPP_ellipse_beam_init: public std::enable_shared_from_this<CPP_ellipse_beam_init>  {
 public:
-      Int part_per_ellipse =     {     0 };
-      Int n_ellipse =     { 1 };
-      Real sigma_cutoff =     {     0.0 };
+    Int part_per_ellipse =   {   0 };
+    Int n_ellipse =   { 1 };
+    Real sigma_cutoff =   {   0.0 };
 
   CPP_ellipse_beam_init() {
   
@@ -2909,9 +2909,9 @@ class Opaque_kv_beam_init_class {};  // Opaque class for pointers to correspondi
 
 class CPP_kv_beam_init: public std::enable_shared_from_this<CPP_kv_beam_init>  {
 public:
-      FixedArray1D<Int, 2> part_per_phi =     {     0 };
-      Int n_I2 =     {     0 };
-      Real A =     {     0.0 };
+    FixedArray1D<Int, 2> part_per_phi =   {   0 };
+    Int n_I2 =   {   0 };
+    Real A =   {   0.0 };
 
   CPP_kv_beam_init() {
   
@@ -2948,12 +2948,12 @@ class Opaque_grid_beam_init_class {};  // Opaque class for pointers to correspon
 
 class CPP_grid_beam_init: public std::enable_shared_from_this<CPP_grid_beam_init>  {
 public:
-      Int n_x =     {     0 };
-      Int n_px =     {     0 };
-      Real x_min =     {     0.0 };
-      Real x_max =     {     0.0 };
-      Real px_min =     {     0.0 };
-      Real px_max =     {     0.0 };
+    Int n_x =   {   0 };
+    Int n_px =   {   0 };
+    Real x_min =   {   0.0 };
+    Real x_max =   {   0.0 };
+    Real px_min =   {   0.0 };
+    Real px_max =   {   0.0 };
 
   CPP_grid_beam_init() {
   
@@ -2993,41 +2993,41 @@ class Opaque_beam_init_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_beam_init: public std::enable_shared_from_this<CPP_beam_init>  {
 public:
-      string position_file =     { "" };
-      FixedArray1D<string, 3> distribution_type =     { "RAN_GAUSS" };
-      FixedArray1D<Real, 3> spin =     {     0.0 };
-      FixedArray1D<CPP_ellipse_beam_init, 3> ellipse;
-      CPP_kv_beam_init KV;
-      FixedArray1D<CPP_grid_beam_init, 3> grid;
-      FixedArray1D<Real, 6> center_jitter =     { 0.0 };
-      FixedArray1D<Real, 2> emit_jitter =     { 0.0 };
-      Real sig_z_jitter =     { 0.0 };
-      Real sig_pz_jitter =     { 0.0 };
-      Int n_particle =     {     0 };
-      Bool renorm_center =     { true };
-      Bool renorm_sigma =     { true };
-      string random_engine =     { "pseudo" };
-      string random_gauss_converter =     { "exact" };
-      Real random_sigma_cutoff =     { -1 };
-      Real a_norm_emit =     {     0.0 };
-      Real b_norm_emit =     {     0.0 };
-      Real a_emit =     {     0.0 };
-      Real b_emit =     {     0.0 };
-      Real dPz_dz =     {     0.0 };
-      FixedArray1D<Real, 6> center =     {     0.0 };
-      Real t_offset =     {     0.0 };
-      Real dt_bunch =     {     0.0 };
-      Real sig_z =     {     0.0 };
-      Real sig_pz =     {     0.0 };
-      Real bunch_charge =     {     0.0 };
-      Int n_bunch =     {     0 };
-      Int ix_turn =     {     0 };
-      string species =     { "" };
-      Bool full_6D_coupling_calc =     { false };
-      Bool use_particle_start =     { false };
-      Bool use_t_coords =     { false };
-      Bool use_z_as_t =     { false };
-      string file_name =     { "" };
+    string position_file =   { "" };
+    FixedArray1D<string, 3> distribution_type =   { "RAN_GAUSS" };
+    FixedArray1D<Real, 3> spin =   {   0.0 };
+    FixedArray1D<CPP_ellipse_beam_init, 3> ellipse;
+    CPP_kv_beam_init KV;
+    FixedArray1D<CPP_grid_beam_init, 3> grid;
+    FixedArray1D<Real, 6> center_jitter =   { 0.0 };
+    FixedArray1D<Real, 2> emit_jitter =   { 0.0 };
+    Real sig_z_jitter =   { 0.0 };
+    Real sig_pz_jitter =   { 0.0 };
+    Int n_particle =   {   0 };
+    Bool renorm_center =   { true };
+    Bool renorm_sigma =   { true };
+    string random_engine =   { "pseudo" };
+    string random_gauss_converter =   { "exact" };
+    Real random_sigma_cutoff =   { -1 };
+    Real a_norm_emit =   {   0.0 };
+    Real b_norm_emit =   {   0.0 };
+    Real a_emit =   {   0.0 };
+    Real b_emit =   {   0.0 };
+    Real dPz_dz =   {   0.0 };
+    FixedArray1D<Real, 6> center =   {   0.0 };
+    Real t_offset =   {   0.0 };
+    Real dt_bunch =   {   0.0 };
+    Real sig_z =   {   0.0 };
+    Real sig_pz =   {   0.0 };
+    Real bunch_charge =   {   0.0 };
+    Int n_bunch =   {   0 };
+    Int ix_turn =   {   0 };
+    string species =   { "" };
+    Bool full_6D_coupling_calc =   { false };
+    Bool use_particle_start =   { false };
+    Bool use_t_coords =   { false };
+    Bool use_z_as_t =   { false };
+    string file_name =   { "" };
 
   CPP_beam_init() {
   
@@ -3096,23 +3096,23 @@ class Opaque_lat_param_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_lat_param: public std::enable_shared_from_this<CPP_lat_param>  {
 public:
-      Real n_part =     {     0.0 };
-      Real total_length =     {     0.0 };
-      Real unstable_factor =     {     0.0 };
-      FixedArray2D<Real, 6, 6> t1_with_RF;
-      FixedArray2D<Real, 6, 6> t1_no_RF;
-      Real spin_tune =     {     0.0 };
-      Int particle =     { Bmad::NOT_SET };
-      Int default_tracking_species =     { Bmad::REF_PARTICLE };
-      Int geometry =     {     0 };
-      Int ixx =     {     0 };
-      Bool stable =     { false };
-      Bool live_branch =     { true };
-      Real g1_integral =     { -1 };
-      Real g2_integral =     { -1 };
-      Real g3_integral =     { -1 };
-      CPP_bookkeeping_state bookkeeping_state;
-      CPP_beam_init beam_init;
+    Real n_part =   {   0.0 };
+    Real total_length =   {   0.0 };
+    Real unstable_factor =   {   0.0 };
+    FixedArray2D<Real, 6, 6> t1_with_RF;
+    FixedArray2D<Real, 6, 6> t1_no_RF;
+    Real spin_tune =   {   0.0 };
+    Int particle =   { Bmad::NOT_SET };
+    Int default_tracking_species =   { Bmad::REF_PARTICLE };
+    Int geometry =   {   0 };
+    Int ixx =   {   0 };
+    Bool stable =   { false };
+    Bool live_branch =   { true };
+    Real g1_integral =   { -1 };
+    Real g2_integral =   { -1 };
+    Real g3_integral =   { -1 };
+    CPP_bookkeeping_state bookkeeping_state;
+    CPP_beam_init beam_init;
 
   CPP_lat_param() {
   
@@ -3163,12 +3163,12 @@ class Opaque_mode_info_class {};  // Opaque class for pointers to corresponding 
 
 class CPP_mode_info: public std::enable_shared_from_this<CPP_mode_info>  {
 public:
-      Bool stable =     { false };
-      Real tune =     {     0.0 };
-      Real emit =     {     0.0 };
-      Real chrom =     {     0.0 };
-      Real sigma =     {     0.0 };
-      Real sigmap =     {     0.0 };
+    Bool stable =   { false };
+    Real tune =   {   0.0 };
+    Real emit =   {   0.0 };
+    Real chrom =   {   0.0 };
+    Real sigma =   {   0.0 };
+    Real sigmap =   {   0.0 };
 
   CPP_mode_info() {
   
@@ -3208,10 +3208,10 @@ class Opaque_pre_tracker_class {};  // Opaque class for pointers to correspondin
 
 class CPP_pre_tracker: public std::enable_shared_from_this<CPP_pre_tracker>  {
 public:
-      Int who =     {     0 };
-      Int ix_ele_start =     {     0 };
-      Int ix_ele_end =     {     0 };
-      string input_file =     { "" };
+    Int who =   {   0 };
+    Int ix_ele_start =   {   0 };
+    Int ix_ele_end =   {   0 };
+    string input_file =   { "" };
 
   CPP_pre_tracker() {
   
@@ -3249,13 +3249,13 @@ class Opaque_anormal_mode_class {};  // Opaque class for pointers to correspondi
 
 class CPP_anormal_mode: public std::enable_shared_from_this<CPP_anormal_mode>  {
 public:
-      Real emittance =     {     0.0 };
-      Real emittance_no_vert =     {     0.0 };
-      FixedArray1D<Real, 3> synch_int =     {     0.0 };
-      Real j_damp =     {     0.0 };
-      Real alpha_damp =     {     0.0 };
-      Real chrom =     {     0.0 };
-      Real tune =     {     0.0 };
+    Real emittance =   {   0.0 };
+    Real emittance_no_vert =   {   0.0 };
+    FixedArray1D<Real, 3> synch_int =   {   0.0 };
+    Real j_damp =   {   0.0 };
+    Real alpha_damp =   {   0.0 };
+    Real chrom =   {   0.0 };
+    Real tune =   {   0.0 };
 
   CPP_anormal_mode() {
   
@@ -3296,13 +3296,13 @@ class Opaque_linac_normal_mode_class {};  // Opaque class for pointers to corres
 
 class CPP_linac_normal_mode: public std::enable_shared_from_this<CPP_linac_normal_mode>  {
 public:
-      Real i2_E4 =     {     0.0 };
-      Real i3_E7 =     {     0.0 };
-      Real i5a_E6 =     {     0.0 };
-      Real i5b_E6 =     {     0.0 };
-      Real sig_E1 =     {     0.0 };
-      Real a_emittance_end =     {     0.0 };
-      Real b_emittance_end =     {     0.0 };
+    Real i2_E4 =   {   0.0 };
+    Real i3_E7 =   {   0.0 };
+    Real i5a_E6 =   {   0.0 };
+    Real i5b_E6 =   {   0.0 };
+    Real sig_E1 =   {   0.0 };
+    Real a_emittance_end =   {   0.0 };
+    Real b_emittance_end =   {   0.0 };
 
   CPP_linac_normal_mode() {
   
@@ -3343,19 +3343,19 @@ class Opaque_normal_modes_class {};  // Opaque class for pointers to correspondi
 
 class CPP_normal_modes: public std::enable_shared_from_this<CPP_normal_modes>  {
 public:
-      FixedArray1D<Real, 4> synch_int =     {     0.0 };
-      Real sigE_E =     {     0.0 };
-      Real sig_z =     {     0.0 };
-      Real e_loss =     {     0.0 };
-      Real rf_voltage =     {     0.0 };
-      Real pz_aperture =     {     0.0 };
-      Real pz_average =     {     0.0 };
-      Real momentum_compaction =     {     0.0 };
-      Real dpz_damp =     {     0.0 };
-      CPP_anormal_mode a;
-      CPP_anormal_mode b;
-      CPP_anormal_mode z;
-      CPP_linac_normal_mode lin;
+    FixedArray1D<Real, 4> synch_int =   {   0.0 };
+    Real sigE_E =   {   0.0 };
+    Real sig_z =   {   0.0 };
+    Real e_loss =   {   0.0 };
+    Real rf_voltage =   {   0.0 };
+    Real pz_aperture =   {   0.0 };
+    Real pz_average =   {   0.0 };
+    Real momentum_compaction =   {   0.0 };
+    Real dpz_damp =   {   0.0 };
+    CPP_anormal_mode a;
+    CPP_anormal_mode b;
+    CPP_anormal_mode z;
+    CPP_linac_normal_mode lin;
 
   CPP_normal_modes() {
   
@@ -3402,13 +3402,13 @@ class Opaque_em_field_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_em_field: public std::enable_shared_from_this<CPP_em_field>  {
 public:
-      FixedArray1D<Real, 3> E =     {     0.0 };
-      FixedArray1D<Real, 3> B =     {     0.0 };
-      FixedArray2D<Real, 3, 3> dE;
-      FixedArray2D<Real, 3, 3> dB;
-      Real phi =     {     0.0 };
-      Real phi_B =     {     0.0 };
-      FixedArray1D<Real, 3> A =     {     0.0 };
+    FixedArray1D<Real, 3> E =   {   0.0 };
+    FixedArray1D<Real, 3> B =   {   0.0 };
+    FixedArray2D<Real, 3, 3> dE;
+    FixedArray2D<Real, 3, 3> dB;
+    Real phi =   {   0.0 };
+    Real phi_B =   {   0.0 };
+    FixedArray1D<Real, 3> A =   {   0.0 };
 
   CPP_em_field() {
   
@@ -3449,13 +3449,13 @@ class Opaque_strong_beam_class {};  // Opaque class for pointers to correspondin
 
 class CPP_strong_beam: public std::enable_shared_from_this<CPP_strong_beam>  {
 public:
-      Int ix_slice =     {     0 };
-      Real x_center =     {     0.0 };
-      Real y_center =     {     0.0 };
-      Real x_sigma =     {     0.0 };
-      Real y_sigma =     {     0.0 };
-      Real dx =     {     0.0 };
-      Real dy =     {     0.0 };
+    Int ix_slice =   {   0 };
+    Real x_center =   {   0.0 };
+    Real y_center =   {   0.0 };
+    Real x_sigma =   {   0.0 };
+    Real y_sigma =   {   0.0 };
+    Real dx =   {   0.0 };
+    Real dy =   {   0.0 };
 
   CPP_strong_beam() {
   
@@ -3496,12 +3496,12 @@ class Opaque_track_point_class {};  // Opaque class for pointers to correspondin
 
 class CPP_track_point: public std::enable_shared_from_this<CPP_track_point>  {
 public:
-      Real s_body =     {     0.0 };
-      CPP_coord orb;
-      CPP_em_field field;
-      CPP_strong_beam strong_beam;
-      FixedArray1D<Real, 6> vec0 =     {     0.0 };
-      FixedArray2D<Real, 6, 6> mat6;
+    Real s_body =   {   0.0 };
+    CPP_coord orb;
+    CPP_em_field field;
+    CPP_strong_beam strong_beam;
+    FixedArray1D<Real, 6> vec0 =   {   0.0 };
+    FixedArray2D<Real, 6, 6> mat6;
 
   CPP_track_point() {
   
@@ -3541,11 +3541,11 @@ class Opaque_track_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_track: public std::enable_shared_from_this<CPP_track>  {
 public:
-      VariableArray1D<CPP_track_point> pt;
-      Real ds_save =     { 1e-3 };
-      Int n_pt =     { -1 };
-      Int n_bad =     {     0 };
-      Int n_ok =     {     0 };
+    VariableArray1D<CPP_track_point> pt;
+    Real ds_save =   { 1e-3 };
+    Int n_pt =   { -1 };
+    Int n_bad =   {   0 };
+    Int n_ok =   {   0 };
 
   CPP_track() {
   
@@ -3584,23 +3584,23 @@ class Opaque_space_charge_common_class {};  // Opaque class for pointers to corr
 
 class CPP_space_charge_common: public std::enable_shared_from_this<CPP_space_charge_common>  {
 public:
-      Real ds_track_step =     {     0.0 };
-      Real dt_track_step =     { 1e-12 };
-      Real cathode_strength_cutoff =     { 0.01 };
-      Real rel_tol_tracking =     { 1e-8 };
-      Real abs_tol_tracking =     { 1e-10 };
-      Real beam_chamber_height =     {     0.0 };
-      Real lsc_sigma_cutoff =     { 0.1 };
-      Real particle_sigma_cutoff =     { -1 };
-      FixedArray1D<Int, 3> space_charge_mesh_size =     { 32 };
-      FixedArray1D<Int, 3> csr3d_mesh_size =     { 32 };
-      Int n_bin =     {     0 };
-      Int particle_bin_span =     { 2 };
-      Int n_shield_images =     {     0 };
-      Int sc_min_in_bin =     { 10 };
-      Bool lsc_kick_transverse_dependence =     { false };
-      Bool debug =     { false };
-      string diagnostic_output_file =     { "" };
+    Real ds_track_step =   {   0.0 };
+    Real dt_track_step =   { 1e-12 };
+    Real cathode_strength_cutoff =   { 0.01 };
+    Real rel_tol_tracking =   { 1e-8 };
+    Real abs_tol_tracking =   { 1e-10 };
+    Real beam_chamber_height =   {   0.0 };
+    Real lsc_sigma_cutoff =   { 0.1 };
+    Real particle_sigma_cutoff =   { -1 };
+    FixedArray1D<Int, 3> space_charge_mesh_size =   { 32 };
+    FixedArray1D<Int, 3> csr3d_mesh_size =   { 32 };
+    Int n_bin =   {   0 };
+    Int particle_bin_span =   { 2 };
+    Int n_shield_images =   {   0 };
+    Int sc_min_in_bin =   { 10 };
+    Bool lsc_kick_transverse_dependence =   { false };
+    Bool debug =   { false };
+    string diagnostic_output_file =   { "" };
 
   CPP_space_charge_common() {
   
@@ -3651,46 +3651,46 @@ class Opaque_bmad_common_class {};  // Opaque class for pointers to correspondin
 
 class CPP_bmad_common: public std::enable_shared_from_this<CPP_bmad_common>  {
 public:
-      Real max_aperture_limit =     { 1e3 };
-      FixedArray1D<Real, 6> d_orb =     { 1e-5 };
-      Real default_ds_step =     {     0.0 };
-      Real significant_length =     { 1e-10 };
-      Real rel_tol_tracking =     { 1e-9 };
-      Real abs_tol_tracking =     { 1e-12 };
-      Real rel_tol_adaptive_tracking =     { 1e-8 };
-      Real abs_tol_adaptive_tracking =     { 1e-10 };
-      Real init_ds_adaptive_tracking =     { 1e-3 };
-      Real min_ds_adaptive_tracking =     {     0.0 };
-      Real fatal_ds_adaptive_tracking =     { 1e-8 };
-      Real autoscale_amp_abs_tol =     {     0.0 };
-      Real autoscale_amp_rel_tol =     { 1e-6 };
-      Real autoscale_phase_tol =     { 1e-5 };
-      Real electric_dipole_moment =     {     0.0 };
-      Real synch_rad_scale =     {     0.0 };
-      Real sad_eps_scale =     { 5.0e-3 };
-      Real sad_amp_max =     { 5.0e-2 };
-      Int sad_n_div_max =     { 1000 };
-      Int taylor_order =     {     0 };
-      Int runge_kutta_order =     { 4 };
-      Int default_integ_order =     { 2 };
-      Int max_num_runge_kutta_step =     { 10000 };
-      Bool rf_phase_below_transition_ref =     { false };
-      Bool sr_wakes_on =     { true };
-      Bool lr_wakes_on =     { true };
-      Bool auto_bookkeeper =     { true };
-      Bool high_energy_space_charge_on =     { false };
-      Bool csr_and_space_charge_on =     { false };
-      Bool spin_tracking_on =     { false };
-      Bool spin_sokolov_ternov_flipping_on =     { false };
-      Bool radiation_damping_on =     { false };
-      Bool radiation_zero_average =     { false };
-      Bool radiation_fluctuations_on =     { false };
-      Bool conserve_taylor_maps =     { true };
-      Bool absolute_time_tracking =     { false };
-      Bool absolute_time_ref_shift =     { true };
-      Bool convert_to_kinetic_momentum =     { false };
-      Bool aperture_limit_on =     { true };
-      Bool debug =     { false };
+    Real max_aperture_limit =   { 1e3 };
+    FixedArray1D<Real, 6> d_orb =   { 1e-5 };
+    Real default_ds_step =   {   0.0 };
+    Real significant_length =   { 1e-10 };
+    Real rel_tol_tracking =   { 1e-9 };
+    Real abs_tol_tracking =   { 1e-12 };
+    Real rel_tol_adaptive_tracking =   { 1e-8 };
+    Real abs_tol_adaptive_tracking =   { 1e-10 };
+    Real init_ds_adaptive_tracking =   { 1e-3 };
+    Real min_ds_adaptive_tracking =   {   0.0 };
+    Real fatal_ds_adaptive_tracking =   { 1e-8 };
+    Real autoscale_amp_abs_tol =   {   0.0 };
+    Real autoscale_amp_rel_tol =   { 1e-6 };
+    Real autoscale_phase_tol =   { 1e-5 };
+    Real electric_dipole_moment =   {   0.0 };
+    Real synch_rad_scale =   {   0.0 };
+    Real sad_eps_scale =   { 5.0e-3 };
+    Real sad_amp_max =   { 5.0e-2 };
+    Int sad_n_div_max =   { 1000 };
+    Int taylor_order =   {   0 };
+    Int runge_kutta_order =   { 4 };
+    Int default_integ_order =   { 2 };
+    Int max_num_runge_kutta_step =   { 10000 };
+    Bool rf_phase_below_transition_ref =   { false };
+    Bool sr_wakes_on =   { true };
+    Bool lr_wakes_on =   { true };
+    Bool auto_bookkeeper =   { true };
+    Bool high_energy_space_charge_on =   { false };
+    Bool csr_and_space_charge_on =   { false };
+    Bool spin_tracking_on =   { false };
+    Bool spin_sokolov_ternov_flipping_on =   { false };
+    Bool radiation_damping_on =   { false };
+    Bool radiation_zero_average =   { false };
+    Bool radiation_fluctuations_on =   { false };
+    Bool conserve_taylor_maps =   { true };
+    Bool absolute_time_tracking =   { false };
+    Bool absolute_time_ref_shift =   { true };
+    Bool convert_to_kinetic_momentum =   { false };
+    Bool aperture_limit_on =   { true };
+    Bool debug =   { false };
 
   CPP_bmad_common() {
   
@@ -3764,24 +3764,24 @@ class Opaque_rad_int1_class {};  // Opaque class for pointers to corresponding f
 
 class CPP_rad_int1: public std::enable_shared_from_this<CPP_rad_int1>  {
 public:
-      Real i0 =     {     0.0 };
-      Real i1 =     {     0.0 };
-      Real i2 =     {     0.0 };
-      Real i3 =     {     0.0 };
-      Real i4a =     {     0.0 };
-      Real i4b =     {     0.0 };
-      Real i4z =     {     0.0 };
-      Real i5a =     {     0.0 };
-      Real i5b =     {     0.0 };
-      Real i6b =     {     0.0 };
-      Real lin_i2_E4 =     {     0.0 };
-      Real lin_i3_E7 =     {     0.0 };
-      Real lin_i5a_E6 =     {     0.0 };
-      Real lin_i5b_E6 =     {     0.0 };
-      Real lin_norm_emit_a =     {     0.0 };
-      Real lin_norm_emit_b =     {     0.0 };
-      Real lin_sig_E =     {     0.0 };
-      Real n_steps =     {     0.0 };
+    Real i0 =   {   0.0 };
+    Real i1 =   {   0.0 };
+    Real i2 =   {   0.0 };
+    Real i3 =   {   0.0 };
+    Real i4a =   {   0.0 };
+    Real i4b =   {   0.0 };
+    Real i4z =   {   0.0 };
+    Real i5a =   {   0.0 };
+    Real i5b =   {   0.0 };
+    Real i6b =   {   0.0 };
+    Real lin_i2_E4 =   {   0.0 };
+    Real lin_i3_E7 =   {   0.0 };
+    Real lin_i5a_E6 =   {   0.0 };
+    Real lin_i5b_E6 =   {   0.0 };
+    Real lin_norm_emit_a =   {   0.0 };
+    Real lin_norm_emit_b =   {   0.0 };
+    Real lin_sig_E =   {   0.0 };
+    Real n_steps =   {   0.0 };
 
   CPP_rad_int1() {
   
@@ -3833,7 +3833,7 @@ class Opaque_rad_int_branch_class {};  // Opaque class for pointers to correspon
 
 class CPP_rad_int_branch: public std::enable_shared_from_this<CPP_rad_int_branch>  {
 public:
-      VariableArray1D<CPP_rad_int1> ele;
+    VariableArray1D<CPP_rad_int1> ele;
 
   CPP_rad_int_branch() {
   
@@ -3868,7 +3868,7 @@ class Opaque_rad_int_all_ele_class {};  // Opaque class for pointers to correspo
 
 class CPP_rad_int_all_ele: public std::enable_shared_from_this<CPP_rad_int_all_ele>  {
 public:
-      VariableArray1D<CPP_rad_int_branch> branch;
+    VariableArray1D<CPP_rad_int_branch> branch;
 
   CPP_rad_int_all_ele() {
   
@@ -3903,92 +3903,92 @@ class Opaque_ele_class {};  // Opaque class for pointers to corresponding fortra
 
 class CPP_ele: public std::enable_shared_from_this<CPP_ele>  {
 public:
-      string name =     { "<Initialized>" };
-      string type =     { "" };
-      string alias =     { "" };
-      string component_name =     { "" };
-      shared_ptr<string> descrip =     nullptr;
-      CPP_twiss a;
-      CPP_twiss b;
-      CPP_twiss z;
-      CPP_xy_disp x;
-      CPP_xy_disp y;
-      shared_ptr<CPP_ac_kicker> ac_kick =     nullptr;
-      CPP_bookkeeping_state bookkeeping_state;
-      shared_ptr<CPP_controller> control =     nullptr;
-      CPP_floor_position floor;
-      shared_ptr<CPP_high_energy_space_charge> high_energy_space_charge =     nullptr;
-      shared_ptr<CPP_mode3> mode3 =     nullptr;
-      shared_ptr<CPP_photon_element> photon =     nullptr;
-      shared_ptr<CPP_rad_map_ele> rad_map =     nullptr;
-      FixedArray1D<CPP_taylor, 6> taylor;
-      FixedArray1D<Real, 6> spin_taylor_ref_orb_in =     { Bmad::REAL_GARBAGE };
-      FixedArray1D<CPP_taylor, 4> spin_taylor;
-      shared_ptr<CPP_wake> wake =     nullptr;
-      VariableArray1D<CPP_wall3d> wall3d;
-      VariableArray1D<CPP_cartesian_map> cartesian_map;
-      VariableArray1D<CPP_cylindrical_map> cylindrical_map;
-      VariableArray1D<CPP_gen_grad_map> gen_grad_map;
-      VariableArray1D<CPP_grid_field> grid_field;
-      CPP_coord map_ref_orb_in;
-      CPP_coord map_ref_orb_out;
-      CPP_coord time_ref_orb_in;
-      CPP_coord time_ref_orb_out;
-      FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1> value =     {     0.0 };
-      FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1> old_value =     {     0.0 };
-      FixedArray2D<Real, 4, 7> spin_q;
-      FixedArray1D<Real, 6> vec0 =     {     0.0 };
-      FixedArray2D<Real, 6, 6> mat6;
-      FixedArray2D<Real, 2, 2> c_mat;
-      Real gamma_c =     { 1 };
-      Real s_start =     {     0.0 };
-      Real s =     {     0.0 };
-      Real ref_time =     {     0.0 };
-      VariableArray1D<Real> a_pole;
-      VariableArray1D<Real> b_pole;
-      VariableArray1D<Real> a_pole_elec;
-      VariableArray1D<Real> b_pole_elec;
-      VariableArray1D<Real> custom;
-      VariableArray3D<Real> r;
-      Int key =     {     0 };
-      Int sub_key =     {     0 };
-      Int ix_ele =     { -1 };
-      Int ix_branch =     {     0 };
-      Int lord_status =     { Bmad::NOT_A_LORD };
-      Int n_slave =     {     0 };
-      Int n_slave_field =     {     0 };
-      Int ix1_slave =     {     0 };
-      Int slave_status =     { Bmad::FREE };
-      Int n_lord =     {     0 };
-      Int n_lord_field =     {     0 };
-      Int n_lord_ramper =     {     0 };
-      Int ic1_lord =     {     0 };
-      Int ix_pointer =     {     0 };
-      Int ixx =     {     0 };
-      Int iyy =     {     0 };
-      Int izz =     {     0 };
-      Int mat6_calc_method =     { Bmad::BMAD_STANDARD };
-      Int tracking_method =     { Bmad::BMAD_STANDARD };
-      Int spin_tracking_method =     { Bmad::TRACKING };
-      Int csr_method =     { Bmad::OFF };
-      Int space_charge_method =     { Bmad::OFF };
-      Int ptc_integration_type =     { Bmad::MATRIX_KICK };
-      Int field_calc =     { Bmad::BMAD_STANDARD };
-      Int aperture_at =     { Bmad::EXIT_END };
-      Int aperture_type =     { Bmad::RECTANGULAR };
-      Int ref_species =     { Bmad::NOT_SET };
-      Int orientation =     { 1 };
-      Bool symplectify =     { false };
-      Bool mode_flip =     { false };
-      Bool multipoles_on =     { true };
-      Bool scale_multipoles =     { true };
-      Bool taylor_map_includes_offsets =     { true };
-      Bool field_master =     { false };
-      Bool is_on =     { true };
-      Bool logic =     { false };
-      Bool bmad_logic =     { false };
-      Bool select =     { false };
-      Bool offset_moves_aperture =     { false };
+    string name =   { "<Initialized>" };
+    string type =   { "" };
+    string alias =   { "" };
+    string component_name =   { "" };
+    shared_ptr<string> descrip =   nullptr;
+    CPP_twiss a;
+    CPP_twiss b;
+    CPP_twiss z;
+    CPP_xy_disp x;
+    CPP_xy_disp y;
+    shared_ptr<CPP_ac_kicker> ac_kick =   nullptr;
+    CPP_bookkeeping_state bookkeeping_state;
+    shared_ptr<CPP_controller> control =   nullptr;
+    CPP_floor_position floor;
+    shared_ptr<CPP_high_energy_space_charge> high_energy_space_charge =   nullptr;
+    shared_ptr<CPP_mode3> mode3 =   nullptr;
+    shared_ptr<CPP_photon_element> photon =   nullptr;
+    shared_ptr<CPP_rad_map_ele> rad_map =   nullptr;
+    FixedArray1D<CPP_taylor, 6> taylor;
+    FixedArray1D<Real, 6> spin_taylor_ref_orb_in =   { Bmad::REAL_GARBAGE };
+    FixedArray1D<CPP_taylor, 4> spin_taylor;
+    shared_ptr<CPP_wake> wake =   nullptr;
+    VariableArray1D<CPP_wall3d> wall3d;
+    VariableArray1D<CPP_cartesian_map> cartesian_map;
+    VariableArray1D<CPP_cylindrical_map> cylindrical_map;
+    VariableArray1D<CPP_gen_grad_map> gen_grad_map;
+    VariableArray1D<CPP_grid_field> grid_field;
+    CPP_coord map_ref_orb_in;
+    CPP_coord map_ref_orb_out;
+    CPP_coord time_ref_orb_in;
+    CPP_coord time_ref_orb_out;
+    FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1> value =   {   0.0 };
+    FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1> old_value =   {   0.0 };
+    FixedArray2D<Real, 4, 7> spin_q;
+    FixedArray1D<Real, 6> vec0 =   {   0.0 };
+    FixedArray2D<Real, 6, 6> mat6;
+    FixedArray2D<Real, 2, 2> c_mat;
+    Real gamma_c =   { 1 };
+    Real s_start =   {   0.0 };
+    Real s =   {   0.0 };
+    Real ref_time =   {   0.0 };
+    VariableArray1D<Real> a_pole;
+    VariableArray1D<Real> b_pole;
+    VariableArray1D<Real> a_pole_elec;
+    VariableArray1D<Real> b_pole_elec;
+    VariableArray1D<Real> custom;
+    VariableArray3D<Real> r;
+    Int key =   {   0 };
+    Int sub_key =   {   0 };
+    Int ix_ele =   { -1 };
+    Int ix_branch =   {   0 };
+    Int lord_status =   { Bmad::NOT_A_LORD };
+    Int n_slave =   {   0 };
+    Int n_slave_field =   {   0 };
+    Int ix1_slave =   {   0 };
+    Int slave_status =   { Bmad::FREE };
+    Int n_lord =   {   0 };
+    Int n_lord_field =   {   0 };
+    Int n_lord_ramper =   {   0 };
+    Int ic1_lord =   {   0 };
+    Int ix_pointer =   {   0 };
+    Int ixx =   {   0 };
+    Int iyy =   {   0 };
+    Int izz =   {   0 };
+    Int mat6_calc_method =   { Bmad::BMAD_STANDARD };
+    Int tracking_method =   { Bmad::BMAD_STANDARD };
+    Int spin_tracking_method =   { Bmad::TRACKING };
+    Int csr_method =   { Bmad::OFF };
+    Int space_charge_method =   { Bmad::OFF };
+    Int ptc_integration_type =   { Bmad::MATRIX_KICK };
+    Int field_calc =   { Bmad::BMAD_STANDARD };
+    Int aperture_at =   { Bmad::EXIT_END };
+    Int aperture_type =   { Bmad::RECTANGULAR };
+    Int ref_species =   { Bmad::NOT_SET };
+    Int orientation =   { 1 };
+    Bool symplectify =   { false };
+    Bool mode_flip =   { false };
+    Bool multipoles_on =   { true };
+    Bool scale_multipoles =   { true };
+    Bool taylor_map_includes_offsets =   { true };
+    Bool field_master =   { false };
+    Bool is_on =   { true };
+    Bool logic =   { false };
+    Bool bmad_logic =   { false };
+    Bool select =   { false };
+    Bool offset_moves_aperture =   { false };
 
   void class_init (const int key_) {
     key = key_;
@@ -4130,8 +4130,8 @@ class Opaque_complex_taylor_term_class {};  // Opaque class for pointers to corr
 
 class CPP_complex_taylor_term: public std::enable_shared_from_this<CPP_complex_taylor_term>  {
 public:
-      Complex coef =     {     0.0 };
-      FixedArray1D<Int, 6> expn =     {     0 };
+    Complex coef =   {   0.0 };
+    FixedArray1D<Int, 6> expn =   {   0 };
 
   CPP_complex_taylor_term() {
   
@@ -4167,8 +4167,8 @@ class Opaque_complex_taylor_class {};  // Opaque class for pointers to correspon
 
 class CPP_complex_taylor: public std::enable_shared_from_this<CPP_complex_taylor>  {
 public:
-      Complex ref =     {     0.0 };
-      VariableArray1D<CPP_complex_taylor_term> term;
+    Complex ref =   {   0.0 };
+    VariableArray1D<CPP_complex_taylor_term> term;
 
   CPP_complex_taylor() {
   
@@ -4204,19 +4204,19 @@ class Opaque_branch_class {};  // Opaque class for pointers to corresponding for
 
 class CPP_branch: public std::enable_shared_from_this<CPP_branch>  {
 public:
-      string name =     { "" };
-      Int ix_branch =     { -1 };
-      Int ix_from_branch =     { -1 };
-      Int ix_from_ele =     { -1 };
-      Int ix_to_ele =     { -1 };
-      Int n_ele_track =     {     0 };
-      Int n_ele_max =     {     0 };
-      CPP_mode_info a;
-      CPP_mode_info b;
-      CPP_mode_info z;
-      VariableArray1D<CPP_ele> ele;
-      CPP_lat_param param;
-      VariableArray1D<CPP_wall3d> wall3d;
+    string name =   { "" };
+    Int ix_branch =   { -1 };
+    Int ix_from_branch =   { -1 };
+    Int ix_from_ele =   { -1 };
+    Int ix_to_ele =   { -1 };
+    Int n_ele_track =   {   0 };
+    Int n_ele_max =   {   0 };
+    CPP_mode_info a;
+    CPP_mode_info b;
+    CPP_mode_info z;
+    VariableArray1D<CPP_ele> ele;
+    CPP_lat_param param;
+    VariableArray1D<CPP_wall3d> wall3d;
 
   CPP_branch() {
   
@@ -4263,36 +4263,36 @@ class Opaque_lat_class {};  // Opaque class for pointers to corresponding fortra
 
 class CPP_lat: public std::enable_shared_from_this<CPP_lat>  {
 public:
-      string use_name =     { "" };
-      string lattice =     { "" };
-      string machine =     { "" };
-      string input_file_name =     { "" };
-      string title =     { "" };
-      VariableArray1D<string> print_str;
-      VariableArray1D<CPP_expression_atom> constant;
-      shared_ptr<CPP_mode_info> a =     nullptr;
-      shared_ptr<CPP_mode_info> b =     nullptr;
-      shared_ptr<CPP_mode_info> z =     nullptr;
-      shared_ptr<CPP_lat_param> param =     nullptr;
-      CPP_bookkeeping_state lord_state;
-      CPP_ele ele_init;
-      VariableArray1D<CPP_ele> ele;
-      VariableArray1D<CPP_branch> branch;
-      VariableArray1D<CPP_control> control;
-      CPP_coord particle_start;
-      CPP_beam_init beam_init;
-      CPP_pre_tracker pre_tracker;
-      VariableArray1D<Real> custom;
-      Int version =     { -1 };
-      shared_ptr<Int> n_ele_track =     nullptr;
-      shared_ptr<Int> n_ele_max =     nullptr;
-      Int n_control_max =     {     0 };
-      Int n_ic_max =     {     0 };
-      Int input_taylor_order =     {     0 };
-      VariableArray1D<Int> ic;
-      Int photon_type =     { Bmad::INCOHERENT };
-      Int creation_hash =     {     0 };
-      Int ramper_slave_bookkeeping =     { Bmad::STALE };
+    string use_name =   { "" };
+    string lattice =   { "" };
+    string machine =   { "" };
+    string input_file_name =   { "" };
+    string title =   { "" };
+    VariableArray1D<string> print_str;
+    VariableArray1D<CPP_expression_atom> constant;
+    shared_ptr<CPP_mode_info> a =   nullptr;
+    shared_ptr<CPP_mode_info> b =   nullptr;
+    shared_ptr<CPP_mode_info> z =   nullptr;
+    shared_ptr<CPP_lat_param> param =   nullptr;
+    CPP_bookkeeping_state lord_state;
+    CPP_ele ele_init;
+    VariableArray1D<CPP_ele> ele;
+    VariableArray1D<CPP_branch> branch;
+    VariableArray1D<CPP_control> control;
+    CPP_coord particle_start;
+    CPP_beam_init beam_init;
+    CPP_pre_tracker pre_tracker;
+    VariableArray1D<Real> custom;
+    Int version =   { -1 };
+    shared_ptr<Int> n_ele_track =   nullptr;
+    shared_ptr<Int> n_ele_max =   nullptr;
+    Int n_control_max =   {   0 };
+    Int n_ic_max =   {   0 };
+    Int input_taylor_order =   {   0 };
+    VariableArray1D<Int> ic;
+    Int photon_type =   { Bmad::INCOHERENT };
+    Int creation_hash =   {   0 };
+    Int ramper_slave_bookkeeping =   { Bmad::STALE };
 
   CPP_lat() {
   
@@ -4356,20 +4356,20 @@ class Opaque_bunch_class {};  // Opaque class for pointers to corresponding fort
 
 class CPP_bunch: public std::enable_shared_from_this<CPP_bunch>  {
 public:
-      VariableArray1D<CPP_coord> particle;
-      VariableArray1D<Int> ix_z;
-      Real charge_tot =     {     0.0 };
-      Real charge_live =     {     0.0 };
-      Real z_center =     {     0.0 };
-      Real t_center =     {     0.0 };
-      Real t0 =     { Bmad::REAL_GARBAGE };
-      Bool drift_between_t_and_s =     { false };
-      Int ix_ele =     {     0 };
-      Int ix_bunch =     {     0 };
-      Int ix_turn =     {     0 };
-      Int n_live =     {     0 };
-      Int n_good =     {     0 };
-      Int n_bad =     {     0 };
+    VariableArray1D<CPP_coord> particle;
+    VariableArray1D<Int> ix_z;
+    Real charge_tot =   {   0.0 };
+    Real charge_live =   {   0.0 };
+    Real z_center =   {   0.0 };
+    Real t_center =   {   0.0 };
+    Real t0 =   { Bmad::REAL_GARBAGE };
+    Bool drift_between_t_and_s =   { false };
+    Int ix_ele =   {   0 };
+    Int ix_bunch =   {   0 };
+    Int ix_turn =   {   0 };
+    Int n_live =   {   0 };
+    Int n_good =   {   0 };
+    Int n_bad =   {   0 };
 
   CPP_bunch() {
   
@@ -4417,29 +4417,29 @@ class Opaque_bunch_params_class {};  // Opaque class for pointers to correspondi
 
 class CPP_bunch_params: public std::enable_shared_from_this<CPP_bunch_params>  {
 public:
-      CPP_coord centroid;
-      CPP_twiss x;
-      CPP_twiss y;
-      CPP_twiss z;
-      CPP_twiss a;
-      CPP_twiss b;
-      CPP_twiss c;
-      FixedArray2D<Real, 6, 6> sigma;
-      FixedArray1D<Real, 7> rel_max =     {     0.0 };
-      FixedArray1D<Real, 7> rel_min =     {     0.0 };
-      Real s =     { -1 };
-      Real t =     { -1 };
-      Real sigma_t =     {     0.0 };
-      Real charge_live =     {     0.0 };
-      Real charge_tot =     {     0.0 };
-      Int n_particle_tot =     {     0 };
-      Int n_particle_live =     {     0 };
-      Int n_particle_lost_in_ele =     {     0 };
-      Int n_good_steps =     {     0 };
-      Int n_bad_steps =     {     0 };
-      Int ix_ele =     { -1 };
-      Int location =     { Bmad::NOT_SET };
-      Bool twiss_valid =     { false };
+    CPP_coord centroid;
+    CPP_twiss x;
+    CPP_twiss y;
+    CPP_twiss z;
+    CPP_twiss a;
+    CPP_twiss b;
+    CPP_twiss c;
+    FixedArray2D<Real, 6, 6> sigma;
+    FixedArray1D<Real, 7> rel_max =   {   0.0 };
+    FixedArray1D<Real, 7> rel_min =   {   0.0 };
+    Real s =   { -1 };
+    Real t =   { -1 };
+    Real sigma_t =   {   0.0 };
+    Real charge_live =   {   0.0 };
+    Real charge_tot =   {   0.0 };
+    Int n_particle_tot =   {   0 };
+    Int n_particle_live =   {   0 };
+    Int n_particle_lost_in_ele =   {   0 };
+    Int n_good_steps =   {   0 };
+    Int n_bad_steps =   {   0 };
+    Int ix_ele =   { -1 };
+    Int location =   { Bmad::NOT_SET };
+    Bool twiss_valid =   { false };
 
   CPP_bunch_params() {
   
@@ -4496,7 +4496,7 @@ class Opaque_beam_class {};  // Opaque class for pointers to corresponding fortr
 
 class CPP_beam: public std::enable_shared_from_this<CPP_beam>  {
 public:
-      VariableArray1D<CPP_bunch> bunch;
+    VariableArray1D<CPP_bunch> bunch;
 
   CPP_beam() {
   
@@ -4531,11 +4531,11 @@ class Opaque_aperture_point_class {};  // Opaque class for pointers to correspon
 
 class CPP_aperture_point: public std::enable_shared_from_this<CPP_aperture_point>  {
 public:
-      Real x =     {     0.0 };
-      Real y =     {     0.0 };
-      Int plane =     {     0 };
-      Int ix_ele =     {     0 };
-      Int i_turn =     {     0 };
+    Real x =   {   0.0 };
+    Real y =   {   0.0 };
+    Int plane =   {   0 };
+    Int ix_ele =   {   0 };
+    Int i_turn =   {   0 };
 
   CPP_aperture_point() {
   
@@ -4574,15 +4574,15 @@ class Opaque_aperture_param_class {};  // Opaque class for pointers to correspon
 
 class CPP_aperture_param: public std::enable_shared_from_this<CPP_aperture_param>  {
 public:
-      Real min_angle =     {     0.0 };
-      Real max_angle =     { Bmad::pi };
-      Int n_angle =     { 9 };
-      Int n_turn =     { 100 };
-      Real x_init =     {     0.0 };
-      Real y_init =     {     0.0 };
-      Real rel_accuracy =     {     0.0 };
-      Real abs_accuracy =     {     0.0 };
-      string start_ele =     { "" };
+    Real min_angle =   {   0.0 };
+    Real max_angle =   { Bmad::pi };
+    Int n_angle =   { 9 };
+    Int n_turn =   { 100 };
+    Real x_init =   {   0.0 };
+    Real y_init =   {   0.0 };
+    Real rel_accuracy =   {   0.0 };
+    Real abs_accuracy =   {   0.0 };
+    string start_ele =   { "" };
 
   CPP_aperture_param() {
   
@@ -4625,9 +4625,9 @@ class Opaque_aperture_scan_class {};  // Opaque class for pointers to correspond
 
 class CPP_aperture_scan: public std::enable_shared_from_this<CPP_aperture_scan>  {
 public:
-      VariableArray1D<CPP_aperture_point> point;
-      CPP_coord ref_orb;
-      Real pz_start =     {     0.0 };
+    VariableArray1D<CPP_aperture_point> point;
+    CPP_coord ref_orb;
+    Real pz_start =   {   0.0 };
 
   CPP_aperture_scan() {
   
