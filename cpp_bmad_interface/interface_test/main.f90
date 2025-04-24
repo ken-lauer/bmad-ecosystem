@@ -1,4 +1,3 @@
-
 program cpp_bmad_interface_test
 
 use bmad_cpp_test_mod
@@ -101,12 +100,11 @@ call test1_f_beam(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_point(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_param(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_scan(ok); if (.not. ok) all_ok = .false.
-
 print *
 if (all_ok) then
-  print *, 'Bottom Line: Everything OK!'
+print *, 'Bottom Line: Everything OK!'
 else
-  print *, 'BOTTOM LINE: PROBLEMS FOUND!'
+print *, 'BOTTOM LINE: PROBLEMS FOUND!'
 endif
 
 end program

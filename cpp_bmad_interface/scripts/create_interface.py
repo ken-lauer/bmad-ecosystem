@@ -821,10 +821,10 @@ def set_translations(struct: Structure, c_overrides, f_overrides) -> None:
 
 
 def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
-    ia = 0
-    while ia < len(struct.arg):
-        arg = struct.arg[ia]
-        ia += 1  # Increment early since we'll be inserting elements
+    idx_argument = 0
+    while idx_argument < len(struct.arg):
+        arg = struct.arg[idx_argument]
+        idx_argument += 1  # Increment early since we'll be inserting elements
 
         # Skip non-pointer types
         if arg.pointer_type == NOT:
@@ -835,16 +835,16 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
             if "n_" in arg.c_side.to_f_setup:
                 full_type = FullType(SIZE, 1, NOT)
                 # Insert size parameter for the scalar pointer
-                size_arg = Argument()
-                size_arg.is_component = False
-                size_arg.type = "integer"
-                size_arg.f_side = copy.deepcopy(f_transforms[full_type])
-                size_arg.c_side = copy.deepcopy(c_transforms[full_type])
-                size_arg.f_name = "n_" + arg.f_name
-                size_arg.c_name = "n_" + arg.c_name
-
-                struct.arg.insert(ia, size_arg)
-                ia += 1
+                size_arg = Argument(
+                    is_component=False,
+                    type="integer",
+                    f_side=copy.deepcopy(f_transforms[full_type]),
+                    c_side=copy.deepcopy(c_transforms[full_type]),
+                    f_name="n_" + arg.f_name,
+                    c_name="n_" + arg.c_name,
+                )
+                struct.arg.insert(idx_argument, size_arg)
+                idx_argument += 1
             continue
 
         # Handle array pointers
@@ -854,94 +854,17 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
                 1, min(len(arg.array) + 1, 4)
             ):  # Support up to 3 dimensions
                 full_type = FullType(SIZE, dim, NOT)
-                size_arg = Argument()
-                size_arg.is_component = False
-                size_arg.type = "integer"
-                size_arg.f_side = copy.deepcopy(f_transforms[full_type])
-                size_arg.c_side = copy.deepcopy(c_transforms[full_type])
-                size_arg.f_name = f"n{dim}_" + arg.f_name
-                size_arg.c_name = f"n{dim}_" + arg.c_name
+                size_arg = Argument(
+                    is_component=False,
+                    type="integer",
+                    f_side=copy.deepcopy(f_transforms[full_type]),
+                    c_side=copy.deepcopy(c_transforms[full_type]),
+                    f_name=f"n{dim}_" + arg.f_name,
+                    c_name=f"n{dim}_" + arg.c_name,
+                )
 
-                struct.arg.insert(ia, size_arg)
-                ia += 1
-
-
-# def parse_bmad_routine_file(fortran_code):
-#     """
-#     Parse a Fortran file containing subroutines and return a dictionary
-#     mapping subroutine names to their content.
-#     """
-#     subroutine_blocks = {}
-#
-#     # Split the code into lines
-#     lines = fortran_code.strip().split("\n")
-#
-#     current_subroutine = None
-#     current_content = []
-#
-#     for line in lines:
-#         line = line.strip()
-#         lower = line.lower()
-#         if lower.startswith("subroutine ") or lower.startswith("recursive subroutine "):
-#             if lower.startswith("recursive "):
-#                 lower = lower.removeprefix("recursive ")
-#             # If we were already collecting a subroutine, save it before starting a new one
-#             if current_subroutine:
-#                 subroutine_blocks[current_subroutine] = "\n".join(current_content)
-#
-#             subroutine_name = line.split()[1].split("(")[0]
-#             arguments = tuple(
-#                 arg.strip() for arg in line.split("(")[1].rstrip(")").split(",")
-#             )
-#             current_subroutine = (subroutine_name, arguments)
-#             current_content = [line]
-#         elif line.lower().startswith("end subroutine"):
-#             current_content.append(line)
-#             assert current_subroutine is not None
-#             subroutine_blocks[current_subroutine] = "\n".join(current_content)
-#             current_subroutine = None
-#             current_content = []
-#         elif current_subroutine:
-#             current_content.append(line)
-#
-#     # In case there's a final subroutine without an explicit end
-#     if current_subroutine:
-#         subroutine_blocks[current_subroutine] = "\n".join(current_content)
-#
-#     return subroutine_blocks
-
-
-# def parse_bmad_routines(params):
-#     subroutines = {}
-#
-#     for fn in params.routine_interface_files:
-#         fortran_code = pathlib.Path(fn).read_text()
-#         lines = fortran_code.splitlines()
-#         lines = lines[lines.index("interface") :]
-#         lines = lines[: lines.index("end interface")]
-#         name_to_subroutine_contents = parse_bmad_routine_file("\n".join(lines))
-#
-#         for (name, args), contents in name_to_subroutine_contents.items():
-#             subroutine = Subroutine(name, arg_order=args)
-#             parse_struct_components(
-#                 lines=[
-#                     line.strip()
-#                     for line in contents.splitlines()[1:]
-#                     if line.strip() and line.strip() not in ("import", "implicit none")
-#                 ],
-#                 struct=subroutine,
-#                 params=params,
-#             )
-#             for arg in subroutine.arg:
-#                 if arg.pointer_type == "NOT" and arg.array:
-#                     arg.pointer_type = "ALLOC"
-#                     # arg.c_side.c_class = f"{arg.c_side.c_class}*"
-#
-#             set_translations(subroutine)
-#             for arg in subroutine.arg:
-#                 arg.fix_struct_arg_placeholders(struct)
-#             subroutines[name] = subroutine
-#     return subroutines
+                struct.arg.insert(idx_argument, size_arg)
+                idx_argument += 1
 
 
 # ******************************************************************************
@@ -1101,7 +1024,8 @@ interface
                 )
 
         f_face.write(
-            f"""  end subroutine
+            f"""\
+end subroutine
 end interface
 
 type(c_ptr), value :: Fp
@@ -1302,17 +1226,21 @@ contains
 
 
 def write_tests_main(f_test):
-    f_test.write("""
-program cpp_bmad_interface_test
+    f_test.write(
+        textwrap.dedent(
+            """\
+            program cpp_bmad_interface_test
 
-use bmad_cpp_test_mod
+            use bmad_cpp_test_mod
 
-logical ok, all_ok
+            logical ok, all_ok
 
-!
+            !
 
-all_ok = .true.
-""")
+            all_ok = .true.
+            """
+        )
+    )
 
     for struct in struct_definitions:
         f_test.write(
@@ -1321,28 +1249,34 @@ all_ok = .true.
             + "(ok); if (.not. ok) all_ok = .false.\n"
         )
 
-    f_test.write("""
-print *
-if (all_ok) then
-  print *, 'Bottom Line: Everything OK!'
-else
-  print *, 'BOTTOM LINE: PROBLEMS FOUND!'
-endif
+    f_test.write(
+        textwrap.dedent(
+            """\
+            print *
+            if (all_ok) then
+            print *, 'Bottom Line: Everything OK!'
+            else
+            print *, 'BOTTOM LINE: PROBLEMS FOUND!'
+            endif
 
-end program
-""")
+            end program
+            """
+        )
+    )
 
 
 def write_tests_mod(f_test):
     f_test.write(
-        f"""
-module bmad_cpp_test_mod
+        textwrap.dedent(
+            f"""\
+            module bmad_cpp_test_mod
 
-use json_module, only: json_core, json_value
+            use json_module, only: json_core, json_value
 
-use bmad_cpp_convert_mod
-use {params.equality_mod_file}
-"""
+            use bmad_cpp_convert_mod
+            use {params.equality_mod_file}
+            """
+        )
     )
 
     f_test.write("\n".join(params.test_use_statements) + "\n\n")
@@ -1351,117 +1285,119 @@ use {params.equality_mod_file}
 
     for struct in struct_definitions:
         f_test.write(
-            f"""
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
+            textwrap.dedent(
+                f"""\
+                !---------------------------------------------------------------------------------
+                !---------------------------------------------------------------------------------
+                !---------------------------------------------------------------------------------
 
-subroutine test1_f_{struct.short_name} (ok)
+                subroutine test1_f_{struct.short_name} (ok)
 
-implicit none
+                implicit none
 
-type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
+                type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
 
-type(json_core) :: json
-type(json_value), pointer :: json_root
+                type(json_core) :: json
+                type(json_value), pointer :: json_root
 
-logical(c_bool) c_ok
-logical ok
+                logical(c_bool) c_ok
+                logical ok
 
-interface
-  subroutine test_c_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
-    import c_ptr, c_bool
-    type(c_ptr), value :: c_{struct.short_name}
-    logical(c_bool) c_ok
-  end subroutine
-end interface
+                interface
+                subroutine test_c_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
+                    import c_ptr, c_bool
+                    type(c_ptr), value :: c_{struct.short_name}
+                    logical(c_bool) c_ok
+                end subroutine
+                end interface
 
-!
+                !
 
-ok = .true.
-call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 1)
+                ok = .true.
+                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 1)
 
-call test_c_{struct.short_name}(c_loc(f2_{struct.short_name}), c_ok)
-if (.not. f_logic(c_ok)) ok = .false.
+                call test_c_{struct.short_name}(c_loc(f2_{struct.short_name}), c_ok)
+                if (.not. f_logic(c_ok)) ok = .false.
 
-call set_{struct.short_name}_test_pattern (f_{struct.short_name}, 4)
-if (f_{struct.short_name} == f2_{struct.short_name}) then
-  print *, '[4] {struct.short_name}: C side convert C->F: Good'
-else
-  print *, '[4] {struct.short_name}: C SIDE CONVERT C->F: FAILED!'
-  ok = .false.
+                call set_{struct.short_name}_test_pattern (f_{struct.short_name}, 4)
+                if (f_{struct.short_name} == f2_{struct.short_name}) then
+                  print *, '[4] {struct.short_name}: C side convert C->F: Good'
+                else
+                  print *, '[4] {struct.short_name}: C SIDE CONVERT C->F: FAILED!'
+                  ok = .false.
 
-  nullify(json_root)
-  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
-  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_expected_f.json')
-  call json%destroy(json_root)
+                  nullify(json_root)
+                  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
+                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_expected_f.json')
+                  call json%destroy(json_root)
 
-  nullify(json_root)
-  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
-  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_actual_f2cpp.json')
-  call json%destroy(json_root)
+                  nullify(json_root)
+                  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
+                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_actual_f2cpp.json')
+                  call json%destroy(json_root)
+    
+                endif
 
-endif
+                end subroutine test1_f_{struct.short_name}
 
-end subroutine test1_f_{struct.short_name}
+                !---------------------------------------------------------------------------------
+                !---------------------------------------------------------------------------------
 
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
+                subroutine test2_f_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
 
-subroutine test2_f_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
+                implicit none
 
-implicit none
+                type(json_core) :: json
+                type(json_value), pointer :: json_root
 
-type(json_core) :: json
-type(json_value), pointer :: json_root
+                type(c_ptr), value :: c_{struct.short_name}
+                type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
+                logical(c_bool) c_ok
 
-type(c_ptr), value :: c_{struct.short_name}
-type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
-logical(c_bool) c_ok
+                !
 
-!
+                c_ok = c_logic(.true.)
+                call {struct.short_name}_to_f (c_{struct.short_name}, c_loc(f_{struct.short_name}))
 
-c_ok = c_logic(.true.)
-call {struct.short_name}_to_f (c_{struct.short_name}, c_loc(f_{struct.short_name}))
+                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 2)
+                if (f_{struct.short_name} == f2_{struct.short_name}) then
+                  print *, '[2] {struct.short_name}: F side convert C->F: Good'
+                else
+                  print *, '[2] {struct.short_name}: F SIDE CONVERT C->F: FAILED!'
+                  c_ok = c_logic(.false.)
 
-call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 2)
-if (f_{struct.short_name} == f2_{struct.short_name}) then
-  print *, '[2] {struct.short_name}: F side convert C->F: Good'
-else
-  print *, '[2] {struct.short_name}: F SIDE CONVERT C->F: FAILED!'
-  c_ok = c_logic(.false.)
+                  nullify(json_root)
+                  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
+                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_actual_fcpp.json')
+                  call json%destroy(json_root)
 
-  nullify(json_root)
-  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
-  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_actual_fcpp.json')
-  call json%destroy(json_root)
+                  nullify(json_root)
+                  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
+                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_expected_f2.json')
+                  call json%destroy(json_root)
 
-  nullify(json_root)
-  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
-  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_expected_f2.json')
-  call json%destroy(json_root)
+                endif
 
-endif
+                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 3)
+                call {struct.short_name}_to_c (c_loc(f2_{struct.short_name}), c_{struct.short_name})
+                end subroutine test2_f_{struct.short_name}
 
-call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 3)
-call {struct.short_name}_to_c (c_loc(f2_{struct.short_name}), c_{struct.short_name})
-end subroutine test2_f_{struct.short_name}
+                !---------------------------------------------------------------------------------
+                !---------------------------------------------------------------------------------
 
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
+                subroutine set_{struct.short_name}_test_pattern (F, ix_patt)
 
-subroutine set_{struct.short_name}_test_pattern (F, ix_patt)
+                implicit none
 
-implicit none
+                type({struct.short_name}_struct) F
+                integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 
-type({struct.short_name}_struct) F
-integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+                !
 
-!
+                offset = 100 * ix_patt
 
-offset = 100 * ix_patt
-
-"""
+                """
+            )
         )
 
         for i, arg in enumerate(struct.arg, 1):
@@ -1842,8 +1778,8 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [1] {struct.short_name}: C side convert F->C: Good" << endl;
   }} else {{
     cout << " [1] {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }}
 
@@ -1857,8 +1793,8 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [3] {struct.short_name}: F side convert F->C: Good" << endl;
   }} else {{
     cout << " [3] {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }}
 

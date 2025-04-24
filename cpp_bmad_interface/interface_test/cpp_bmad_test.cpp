@@ -53,8 +53,8 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
     cout << " [1] spline: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] spline: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -68,8 +68,8 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
     cout << " [3] spline: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] spline: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -116,8 +116,8 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
     cout << " [1] spin_polar: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] spin_polar: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -131,8 +131,8 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
     cout << " [3] spin_polar: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] spin_polar: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -177,8 +177,8 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
     cout << " [1] ac_kicker_time: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ac_kicker_time: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -192,8 +192,8 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
     cout << " [3] ac_kicker_time: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ac_kicker_time: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -240,8 +240,8 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
     cout << " [1] ac_kicker_freq: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ac_kicker_freq: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -255,8 +255,8 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
     cout << " [3] ac_kicker_freq: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ac_kicker_freq: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -311,8 +311,8 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
     cout << " [1] ac_kicker: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ac_kicker: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -326,8 +326,8 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
     cout << " [3] ac_kicker: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ac_kicker: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -372,8 +372,8 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
     cout << " [1] interval1_coef: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] interval1_coef: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -387,8 +387,8 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
     cout << " [3] interval1_coef: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] interval1_coef: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -475,8 +475,8 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
     cout << " [1] photon_reflect_table: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_reflect_table: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -490,8 +490,8 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
     cout << " [3] photon_reflect_table: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_reflect_table: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -556,8 +556,8 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
     cout << " [1] photon_reflect_surface: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_reflect_surface: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -571,8 +571,8 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
     cout << " [3] photon_reflect_surface: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_reflect_surface: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -657,8 +657,8 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
     cout << " [1] coord: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] coord: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -672,8 +672,8 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
     cout << " [3] coord: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] coord: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -720,8 +720,8 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
     cout << " [1] coord_array: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] coord_array: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -735,8 +735,8 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
     cout << " [3] coord_array: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] coord_array: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -795,8 +795,8 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
     cout << " [1] bpm_phase_coupling: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bpm_phase_coupling: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -810,8 +810,8 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
     cout << " [3] bpm_phase_coupling: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bpm_phase_coupling: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -858,8 +858,8 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
     cout << " [1] expression_atom: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] expression_atom: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -873,8 +873,8 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
     cout << " [3] expression_atom: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] expression_atom: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -951,8 +951,8 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
     cout << " [1] wake_sr_z_long: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_sr_z_long: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -966,8 +966,8 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
     cout << " [3] wake_sr_z_long: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_sr_z_long: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1026,8 +1026,8 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
     cout << " [1] wake_sr_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_sr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1041,8 +1041,8 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
     cout << " [3] wake_sr_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_sr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1115,8 +1115,8 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
     cout << " [1] wake_sr: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_sr: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1130,8 +1130,8 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
     cout << " [3] wake_sr: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_sr: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1196,8 +1196,8 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
     cout << " [1] wake_lr_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_lr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1211,8 +1211,8 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
     cout << " [3] wake_lr_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_lr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1273,8 +1273,8 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
     cout << " [1] wake_lr: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_lr: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1288,8 +1288,8 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
     cout << " [3] wake_lr: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_lr: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1332,8 +1332,8 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
     cout << " [1] lat_ele_loc: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] lat_ele_loc: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1347,8 +1347,8 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
     cout << " [3] lat_ele_loc: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] lat_ele_loc: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1391,8 +1391,8 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
     cout << " [1] wake: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1406,8 +1406,8 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
     cout << " [3] wake: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1451,8 +1451,8 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
     cout << " [1] taylor_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1466,8 +1466,8 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
     cout << " [3] taylor_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1516,8 +1516,8 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
     cout << " [1] taylor: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] taylor: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1531,8 +1531,8 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
     cout << " [3] taylor: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] taylor: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1576,8 +1576,8 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
     cout << " [1] em_taylor_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] em_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1591,8 +1591,8 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
     cout << " [3] em_taylor_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] em_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1641,8 +1641,8 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
     cout << " [1] em_taylor: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] em_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1656,8 +1656,8 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
     cout << " [3] em_taylor: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] em_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1714,8 +1714,8 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
     cout << " [1] cartesian_map_term1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cartesian_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1729,8 +1729,8 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
     cout << " [3] cartesian_map_term1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cartesian_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1783,8 +1783,8 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
     cout << " [1] cartesian_map_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cartesian_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1798,8 +1798,8 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
     cout << " [3] cartesian_map_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cartesian_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1856,8 +1856,8 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
     cout << " [1] cartesian_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cartesian_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1871,8 +1871,8 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
     cout << " [3] cartesian_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cartesian_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1915,8 +1915,8 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
     cout << " [1] cylindrical_map_term1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cylindrical_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1930,8 +1930,8 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
     cout << " [3] cylindrical_map_term1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cylindrical_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1984,8 +1984,8 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
     cout << " [1] cylindrical_map_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cylindrical_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -1999,8 +1999,8 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
     cout << " [3] cylindrical_map_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cylindrical_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2065,8 +2065,8 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
     cout << " [1] cylindrical_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cylindrical_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2080,8 +2080,8 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
     cout << " [3] cylindrical_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cylindrical_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2126,8 +2126,8 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
     cout << " [1] grid_field_pt1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_field_pt1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2141,8 +2141,8 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
     cout << " [3] grid_field_pt1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_field_pt1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2187,8 +2187,8 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
     cout << " [1] grid_field_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_field_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2202,8 +2202,8 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
     cout << " [3] grid_field_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_field_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2273,8 +2273,8 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
     cout << " [1] grid_field: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_field: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2288,8 +2288,8 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
     cout << " [3] grid_field: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_field: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2341,8 +2341,8 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
     cout << " [1] floor_position: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] floor_position: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2356,8 +2356,8 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
     cout << " [3] floor_position: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] floor_position: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2412,8 +2412,8 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
     cout << " [1] high_energy_space_charge: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] high_energy_space_charge: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2427,8 +2427,8 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
     cout << " [3] high_energy_space_charge: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] high_energy_space_charge: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2475,8 +2475,8 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
     cout << " [1] xy_disp: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] xy_disp: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2490,8 +2490,8 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
     cout << " [3] xy_disp: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] xy_disp: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2552,8 +2552,8 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
     cout << " [1] twiss: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] twiss: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2567,8 +2567,8 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
     cout << " [3] twiss: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] twiss: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2621,8 +2621,8 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
     cout << " [1] mode3: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] mode3: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2636,8 +2636,8 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
     cout << " [3] mode3: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] mode3: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2694,8 +2694,8 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
     cout << " [1] bookkeeping_state: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bookkeeping_state: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2709,8 +2709,8 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
     cout << " [3] bookkeeping_state: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bookkeeping_state: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2767,8 +2767,8 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
     cout << " [1] rad_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2782,8 +2782,8 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
     cout << " [3] rad_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2828,8 +2828,8 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
     cout << " [1] rad_map_ele: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_map_ele: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2843,8 +2843,8 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
     cout << " [3] rad_map_ele: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_map_ele: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2899,8 +2899,8 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
     cout << " [1] gen_grad1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] gen_grad1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2914,8 +2914,8 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
     cout << " [3] gen_grad1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] gen_grad1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -2985,8 +2985,8 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
     cout << " [1] gen_grad_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] gen_grad_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3000,8 +3000,8 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
     cout << " [3] gen_grad_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] gen_grad_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3050,8 +3050,8 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
     cout << " [1] surface_segmented_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_segmented_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3065,8 +3065,8 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
     cout << " [3] surface_segmented_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_segmented_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3127,8 +3127,8 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
     cout << " [1] surface_segmented: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_segmented: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3142,8 +3142,8 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
     cout << " [3] surface_segmented: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_segmented: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3194,8 +3194,8 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
     cout << " [1] surface_h_misalign_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_h_misalign_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3209,8 +3209,8 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
     cout << " [3] surface_h_misalign_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_h_misalign_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3271,8 +3271,8 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
     cout << " [1] surface_h_misalign: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_h_misalign: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3286,8 +3286,8 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
     cout << " [3] surface_h_misalign: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_h_misalign: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3338,8 +3338,8 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
     cout << " [1] surface_displacement_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_displacement_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3353,8 +3353,8 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
     cout << " [3] surface_displacement_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_displacement_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3415,8 +3415,8 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
     cout << " [1] surface_displacement: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_displacement: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3430,8 +3430,8 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
     cout << " [3] surface_displacement: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_displacement: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3473,8 +3473,8 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
     cout << " [1] target_point: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] target_point: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3488,8 +3488,8 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
     cout << " [3] target_point: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] target_point: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3539,8 +3539,8 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
     cout << " [1] surface_curvature: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_curvature: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3554,8 +3554,8 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
     cout << " [3] surface_curvature: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_curvature: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3606,8 +3606,8 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
     cout << " [1] photon_target: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_target: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3621,8 +3621,8 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
     cout << " [3] photon_target: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_target: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3679,8 +3679,8 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
     cout << " [1] photon_material: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_material: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3694,8 +3694,8 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
     cout << " [3] photon_material: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_material: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3758,8 +3758,8 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
     cout << " [1] pixel_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] pixel_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3773,8 +3773,8 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
     cout << " [3] pixel_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] pixel_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3839,8 +3839,8 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
     cout << " [1] pixel_detec: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] pixel_detec: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3854,8 +3854,8 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
     cout << " [3] pixel_detec: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] pixel_detec: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3929,8 +3929,8 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
     cout << " [1] photon_element: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_element: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -3944,8 +3944,8 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
     cout << " [3] photon_element: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_element: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4002,8 +4002,8 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
     cout << " [1] wall3d_vertex: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wall3d_vertex: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4017,8 +4017,8 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
     cout << " [3] wall3d_vertex: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wall3d_vertex: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4117,8 +4117,8 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
     cout << " [1] wall3d_section: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wall3d_section: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4132,8 +4132,8 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
     cout << " [3] wall3d_section: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wall3d_section: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4204,8 +4204,8 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
     cout << " [1] wall3d: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wall3d: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4219,8 +4219,8 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
     cout << " [3] wall3d: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wall3d: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4270,8 +4270,8 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
     cout << " [1] ramper_lord: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ramper_lord: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4285,8 +4285,8 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
     cout << " [3] ramper_lord: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ramper_lord: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4356,8 +4356,8 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
     cout << " [1] control: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] control: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4371,8 +4371,8 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
     cout << " [3] control: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] control: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4419,8 +4419,8 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
     cout << " [1] control_var1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] control_var1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4434,8 +4434,8 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
     cout << " [3] control_var1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] control_var1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4499,8 +4499,8 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
     cout << " [1] control_ramp1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] control_ramp1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4514,8 +4514,8 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
     cout << " [3] control_ramp1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] control_ramp1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4585,8 +4585,8 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
     cout << " [1] controller: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] controller: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4600,8 +4600,8 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
     cout << " [3] controller: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] controller: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4646,8 +4646,8 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
     cout << " [1] ellipse_beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ellipse_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4661,8 +4661,8 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
     cout << " [3] ellipse_beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ellipse_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4708,8 +4708,8 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
     cout << " [1] kv_beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] kv_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4723,8 +4723,8 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
     cout << " [3] kv_beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] kv_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4775,8 +4775,8 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
     cout << " [1] grid_beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4790,8 +4790,8 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
     cout << " [3] grid_beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4922,8 +4922,8 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
     cout << " [1] beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -4937,8 +4937,8 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
     cout << " [3] beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5015,8 +5015,8 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
     cout << " [1] lat_param: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] lat_param: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5030,8 +5030,8 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
     cout << " [3] lat_param: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] lat_param: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5082,8 +5082,8 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
     cout << " [1] mode_info: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] mode_info: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5097,8 +5097,8 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
     cout << " [3] mode_info: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] mode_info: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5147,8 +5147,8 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
     cout << " [1] pre_tracker: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] pre_tracker: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5162,8 +5162,8 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
     cout << " [3] pre_tracker: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] pre_tracker: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5217,8 +5217,8 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
     cout << " [1] anormal_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] anormal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5232,8 +5232,8 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
     cout << " [3] anormal_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] anormal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5286,8 +5286,8 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
     cout << " [1] linac_normal_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] linac_normal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5301,8 +5301,8 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
     cout << " [3] linac_normal_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] linac_normal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5368,8 +5368,8 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
     cout << " [1] normal_modes: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] normal_modes: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5383,8 +5383,8 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
     cout << " [3] normal_modes: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] normal_modes: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5444,8 +5444,8 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
     cout << " [1] em_field: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] em_field: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5459,8 +5459,8 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
     cout << " [3] em_field: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] em_field: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5513,8 +5513,8 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
     cout << " [1] strong_beam: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] strong_beam: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5528,8 +5528,8 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
     cout << " [3] strong_beam: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] strong_beam: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5583,8 +5583,8 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
     cout << " [1] track_point: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] track_point: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5598,8 +5598,8 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
     cout << " [3] track_point: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] track_point: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5654,8 +5654,8 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
     cout << " [1] track: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] track: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5669,8 +5669,8 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
     cout << " [3] track: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] track: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5747,8 +5747,8 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
     cout << " [1] space_charge_common: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] space_charge_common: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5762,8 +5762,8 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
     cout << " [3] space_charge_common: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] space_charge_common: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5883,8 +5883,8 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
     cout << " [1] bmad_common: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bmad_common: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5898,8 +5898,8 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
     cout << " [3] bmad_common: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bmad_common: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5974,8 +5974,8 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
     cout << " [1] rad_int1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_int1: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -5989,8 +5989,8 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
     cout << " [3] rad_int1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_int1: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6037,8 +6037,8 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
     cout << " [1] rad_int_branch: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_int_branch: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6052,8 +6052,8 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
     cout << " [3] rad_int_branch: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_int_branch: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6100,8 +6100,8 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
     cout << " [1] rad_int_all_ele: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_int_all_ele: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6115,8 +6115,8 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
     cout << " [3] rad_int_all_ele: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_int_all_ele: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6467,8 +6467,8 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
     cout << " [1] ele: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ele: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6482,8 +6482,8 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
     cout << " [3] ele: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ele: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6527,8 +6527,8 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
     cout << " [1] complex_taylor_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] complex_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6542,8 +6542,8 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
     cout << " [3] complex_taylor_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] complex_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6592,8 +6592,8 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
     cout << " [1] complex_taylor: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] complex_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6607,8 +6607,8 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
     cout << " [3] complex_taylor: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] complex_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6687,8 +6687,8 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
     cout << " [1] branch: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] branch: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6702,8 +6702,8 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
     cout << " [3] branch: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] branch: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6885,8 +6885,8 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
     cout << " [1] lat: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] lat: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6900,8 +6900,8 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
     cout << " [3] lat: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] lat: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6979,8 +6979,8 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
     cout << " [1] bunch: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bunch: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -6994,8 +6994,8 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
     cout << " [3] bunch: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bunch: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7084,8 +7084,8 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
     cout << " [1] bunch_params: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bunch_params: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7099,8 +7099,8 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
     cout << " [3] bunch_params: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bunch_params: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7147,8 +7147,8 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
     cout << " [1] beam: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] beam: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7162,8 +7162,8 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
     cout << " [3] beam: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] beam: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7212,8 +7212,8 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
     cout << " [1] aperture_point: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] aperture_point: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7227,8 +7227,8 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
     cout << " [3] aperture_point: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] aperture_point: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7287,8 +7287,8 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
     cout << " [1] aperture_param: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] aperture_param: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7302,8 +7302,8 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
     cout << " [3] aperture_param: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] aperture_param: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7354,8 +7354,8 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
     cout << " [1] aperture_scan: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] aperture_scan: C SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [1] C  = " << C << endl;
-    cout << " [1] C2 = " << C2 << endl;
+    // cout << " [1] C  = " << C << endl;
+    // cout << " [1] C2 = " << C2 << endl;
     c_ok = false;
   }
 
@@ -7369,8 +7369,8 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
     cout << " [3] aperture_scan: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] aperture_scan: F SIDE CONVERT F->C: FAILED!" << endl;
-    cout << " [3] C  = " << C << endl;
-    cout << " [3] C2 = " << C2 << endl;
+    // cout << " [3] C  = " << C << endl;
+    // cout << " [3] C2 = " << C2 << endl;
     c_ok = false;
   }
 

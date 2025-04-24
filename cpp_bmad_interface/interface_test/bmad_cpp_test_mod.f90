@@ -1,4 +1,3 @@
-
 module bmad_cpp_test_mod
 
 use json_module, only: json_core, json_value
@@ -9,7 +8,6 @@ use bmad_json
 use sim_utils_json
 
 contains
-
 
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -28,11 +26,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_spline (c_spline, c_ok) bind(c)
+subroutine test_c_spline (c_spline, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_spline
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -133,7 +131,6 @@ F%coef(jd1+lb1) = rhs
 enddo
 
 end subroutine set_spline_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -151,11 +148,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_spin_polar (c_spin_polar, c_ok) bind(c)
+subroutine test_c_spin_polar (c_spin_polar, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_spin_polar
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -253,7 +250,6 @@ rhs = 3 + offset; F%phi = rhs
 rhs = 4 + offset; F%xi = rhs
 
 end subroutine set_spin_polar_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -271,11 +267,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_ac_kicker_time (c_ac_kicker_time, c_ok) bind(c)
+subroutine test_c_ac_kicker_time (c_ac_kicker_time, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_ac_kicker_time
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -371,7 +367,6 @@ rhs = 2 + offset; F%time = rhs
 call set_spline_test_pattern (F%spline, ix_patt)
 
 end subroutine set_ac_kicker_time_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -389,11 +384,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_ac_kicker_freq (c_ac_kicker_freq, c_ok) bind(c)
+subroutine test_c_ac_kicker_freq (c_ac_kicker_freq, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_ac_kicker_freq
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -491,7 +486,6 @@ rhs = 3 + offset; F%phi = rhs
 rhs = 4 + offset; F%rf_clock_harmonic = rhs
 
 end subroutine set_ac_kicker_freq_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -509,11 +503,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_ac_kicker (c_ac_kicker, c_ok) bind(c)
+subroutine test_c_ac_kicker (c_ac_kicker, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_ac_kicker
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -621,7 +615,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_ac_kicker_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -639,11 +632,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_interval1_coef (c_interval1_coef, c_ok) bind(c)
+subroutine test_c_interval1_coef (c_interval1_coef, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_interval1_coef
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -739,7 +732,6 @@ rhs = 2 + offset; F%c1 = rhs
 rhs = 3 + offset; F%n_exp = rhs
 
 end subroutine set_interval1_coef_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -757,11 +749,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_photon_reflect_table (c_photon_reflect_table, c_ok) bind(c)
+subroutine test_c_photon_reflect_table (c_photon_reflect_table, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_photon_reflect_table
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -913,7 +905,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_photon_reflect_table_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -931,11 +922,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_photon_reflect_surface (c_photon_reflect_surface, c_ok) bind(c)
+subroutine test_c_photon_reflect_surface (c_photon_reflect_surface, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_photon_reflect_surface
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1052,7 +1043,6 @@ rhs = 7 + offset; F%roughness_correlation_len = rhs
 rhs = 8 + offset; F%ix_surface = rhs
 
 end subroutine set_photon_reflect_surface_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1070,11 +1060,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_coord (c_coord, c_ok) bind(c)
+subroutine test_c_coord (c_coord, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_coord
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1218,7 +1208,6 @@ rhs = 20 + offset; F%species = rhs
 rhs = 21 + offset; F%location = rhs
 
 end subroutine set_coord_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1236,11 +1225,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_coord_array (c_coord_array, c_ok) bind(c)
+subroutine test_c_coord_array (c_coord_array, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_coord_array
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1339,7 +1328,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_coord_array_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1357,11 +1345,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_bpm_phase_coupling (c_bpm_phase_coupling, c_ok) bind(c)
+subroutine test_c_bpm_phase_coupling (c_bpm_phase_coupling, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_bpm_phase_coupling
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1471,7 +1459,6 @@ rhs = 9 + offset; F%phi_a = rhs
 rhs = 10 + offset; F%phi_b = rhs
 
 end subroutine set_bpm_phase_coupling_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1489,11 +1476,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_expression_atom (c_expression_atom, c_ok) bind(c)
+subroutine test_c_expression_atom (c_expression_atom, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_expression_atom
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1591,7 +1578,6 @@ rhs = 2 + offset; F%type = rhs
 rhs = 3 + offset; F%value = rhs
 
 end subroutine set_expression_atom_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1609,11 +1595,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wake_sr_z_long (c_wake_sr_z_long, c_ok) bind(c)
+subroutine test_c_wake_sr_z_long (c_wake_sr_z_long, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wake_sr_z_long
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1753,7 +1739,6 @@ rhs = 12 + offset; F%position_dependence = rhs
 rhs = 13 + offset; F%time_based = (modulo(rhs, 2) == 0)
 
 end subroutine set_wake_sr_z_long_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1771,11 +1756,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wake_sr_mode (c_wake_sr_mode, c_ok) bind(c)
+subroutine test_c_wake_sr_mode (c_wake_sr_mode, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wake_sr_mode
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -1885,7 +1870,6 @@ rhs = 9 + offset; F%polarization = rhs
 rhs = 10 + offset; F%position_dependence = rhs
 
 end subroutine set_wake_sr_mode_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -1903,11 +1887,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wake_sr (c_wake_sr, c_ok) bind(c)
+subroutine test_c_wake_sr (c_wake_sr, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wake_sr
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2033,7 +2017,6 @@ rhs = 11 + offset; F%z_scale = rhs
 rhs = 12 + offset; F%scale_with_length = (modulo(rhs, 2) == 0)
 
 end subroutine set_wake_sr_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2051,11 +2034,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wake_lr_mode (c_wake_lr_mode, c_ok) bind(c)
+subroutine test_c_wake_lr_mode (c_wake_lr_mode, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wake_lr_mode
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2171,7 +2154,6 @@ rhs = 12 + offset; F%m = rhs
 rhs = 13 + offset; F%polarized = (modulo(rhs, 2) == 0)
 
 end subroutine set_wake_lr_mode_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2189,11 +2171,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wake_lr (c_wake_lr, c_ok) bind(c)
+subroutine test_c_wake_lr (c_wake_lr, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wake_lr
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2306,7 +2288,6 @@ rhs = 7 + offset; F%time_scale = rhs
 rhs = 8 + offset; F%self_wake_on = (modulo(rhs, 2) == 0)
 
 end subroutine set_wake_lr_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2324,11 +2305,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_lat_ele_loc (c_lat_ele_loc, c_ok) bind(c)
+subroutine test_c_lat_ele_loc (c_lat_ele_loc, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_lat_ele_loc
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2422,7 +2403,6 @@ rhs = 1 + offset; F%ix_ele = rhs
 rhs = 2 + offset; F%ix_branch = rhs
 
 end subroutine set_lat_ele_loc_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2440,11 +2420,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wake (c_wake, c_ok) bind(c)
+subroutine test_c_wake (c_wake, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wake
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2538,7 +2518,6 @@ call set_wake_sr_test_pattern (F%sr, ix_patt)
 call set_wake_lr_test_pattern (F%lr, ix_patt)
 
 end subroutine set_wake_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2556,11 +2535,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_taylor_term (c_taylor_term, c_ok) bind(c)
+subroutine test_c_taylor_term (c_taylor_term, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_taylor_term
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2657,7 +2636,6 @@ F%expn(jd1+lb1) = rhs
 enddo
 
 end subroutine set_taylor_term_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2675,11 +2653,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_taylor (c_taylor, c_ok) bind(c)
+subroutine test_c_taylor (c_taylor, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_taylor
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2780,7 +2758,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_taylor_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2798,11 +2775,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_em_taylor_term (c_em_taylor_term, c_ok) bind(c)
+subroutine test_c_em_taylor_term (c_em_taylor_term, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_em_taylor_term
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -2899,7 +2876,6 @@ F%expn(jd1+lb1) = rhs
 enddo
 
 end subroutine set_em_taylor_term_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -2917,11 +2893,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_em_taylor (c_em_taylor, c_ok) bind(c)
+subroutine test_c_em_taylor (c_em_taylor, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_em_taylor
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3022,7 +2998,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_em_taylor_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3040,11 +3015,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_cartesian_map_term1 (c_cartesian_map_term1, c_ok) bind(c)
+subroutine test_c_cartesian_map_term1 (c_cartesian_map_term1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_cartesian_map_term1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3152,7 +3127,6 @@ rhs = 8 + offset; F%family = rhs
 rhs = 9 + offset; F%form = rhs
 
 end subroutine set_cartesian_map_term1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3170,11 +3144,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_cartesian_map_term (c_cartesian_map_term, c_ok) bind(c)
+subroutine test_c_cartesian_map_term (c_cartesian_map_term, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_cartesian_map_term
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3279,7 +3253,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_cartesian_map_term_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3297,11 +3270,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_cartesian_map (c_cartesian_map, c_ok) bind(c)
+subroutine test_c_cartesian_map (c_cartesian_map, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_cartesian_map
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3412,7 +3385,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_cartesian_map_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3430,11 +3402,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_cylindrical_map_term1 (c_cylindrical_map_term1, c_ok) bind(c)
+subroutine test_c_cylindrical_map_term1 (c_cylindrical_map_term1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_cylindrical_map_term1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3528,7 +3500,6 @@ rhs = 1 + offset; F%e_coef = cmplx(rhs, 100+rhs)
 rhs = 2 + offset; F%b_coef = cmplx(rhs, 100+rhs)
 
 end subroutine set_cylindrical_map_term1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3546,11 +3517,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_cylindrical_map_term (c_cylindrical_map_term, c_ok) bind(c)
+subroutine test_c_cylindrical_map_term (c_cylindrical_map_term, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_cylindrical_map_term
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3655,7 +3626,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_cylindrical_map_term_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3673,11 +3643,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_cylindrical_map (c_cylindrical_map, c_ok) bind(c)
+subroutine test_c_cylindrical_map (c_cylindrical_map, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_cylindrical_map
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3796,7 +3766,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_cylindrical_map_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3814,11 +3783,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_grid_field_pt1 (c_grid_field_pt1, c_ok) bind(c)
+subroutine test_c_grid_field_pt1 (c_grid_field_pt1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_grid_field_pt1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -3918,7 +3887,6 @@ F%B(jd1+lb1) = cmplx(rhs, 100+rhs)
 enddo
 
 end subroutine set_grid_field_pt1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -3936,11 +3904,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_grid_field_pt (c_grid_field_pt, c_ok) bind(c)
+subroutine test_c_grid_field_pt (c_grid_field_pt, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_grid_field_pt
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4036,7 +4004,6 @@ enddo
 rhs = 2 + offset; F%n_link = rhs
 
 end subroutine set_grid_field_pt_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4054,11 +4021,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_grid_field (c_grid_field, c_ok) bind(c)
+subroutine test_c_grid_field (c_grid_field, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_grid_field
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4184,7 +4151,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_grid_field_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4202,11 +4168,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_floor_position (c_floor_position, c_ok) bind(c)
+subroutine test_c_floor_position (c_floor_position, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_floor_position
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4313,7 +4279,6 @@ rhs = 4 + offset; F%phi = rhs
 rhs = 5 + offset; F%psi = rhs
 
 end subroutine set_floor_position_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4331,11 +4296,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_high_energy_space_charge (c_high_energy_space_charge, c_ok) bind(c)
+subroutine test_c_high_energy_space_charge (c_high_energy_space_charge, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_high_energy_space_charge
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4441,7 +4406,6 @@ rhs = 7 + offset; F%cos_phi = rhs
 rhs = 8 + offset; F%sig_z = rhs
 
 end subroutine set_high_energy_space_charge_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4459,11 +4423,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_xy_disp (c_xy_disp, c_ok) bind(c)
+subroutine test_c_xy_disp (c_xy_disp, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_xy_disp
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4561,7 +4525,6 @@ rhs = 3 + offset; F%deta_ds = rhs
 rhs = 4 + offset; F%sigma = rhs
 
 end subroutine set_xy_disp_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4579,11 +4542,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_twiss (c_twiss, c_ok) bind(c)
+subroutine test_c_twiss (c_twiss, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_twiss
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4695,7 +4658,6 @@ rhs = 10 + offset; F%emit = rhs
 rhs = 11 + offset; F%norm_emit = rhs
 
 end subroutine set_twiss_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4713,11 +4675,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_mode3 (c_mode3, c_ok) bind(c)
+subroutine test_c_mode3 (c_mode3, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_mode3
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4823,7 +4785,6 @@ call set_twiss_test_pattern (F%x, ix_patt)
 call set_twiss_test_pattern (F%y, ix_patt)
 
 end subroutine set_mode3_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4841,11 +4802,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_bookkeeping_state (c_bookkeeping_state, c_ok) bind(c)
+subroutine test_c_bookkeeping_state (c_bookkeeping_state, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_bookkeeping_state
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -4953,7 +4914,6 @@ rhs = 8 + offset; F%ptc = rhs
 rhs = 9 + offset; F%has_misalign = (modulo(rhs, 2) == 0)
 
 end subroutine set_bookkeeping_state_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -4971,11 +4931,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_rad_map (c_rad_map, c_ok) bind(c)
+subroutine test_c_rad_map (c_rad_map, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_rad_map
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5093,7 +5053,6 @@ F%stoc_mat(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
 
 end subroutine set_rad_map_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5111,11 +5070,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_rad_map_ele (c_rad_map_ele, c_ok) bind(c)
+subroutine test_c_rad_map_ele (c_rad_map_ele, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_rad_map_ele
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5211,7 +5170,6 @@ call set_rad_map_test_pattern (F%rm1, ix_patt)
 rhs = 3 + offset; F%stale = (modulo(rhs, 2) == 0)
 
 end subroutine set_rad_map_ele_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5229,11 +5187,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_gen_grad1 (c_gen_grad1, c_ok) bind(c)
+subroutine test_c_gen_grad1 (c_gen_grad1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_gen_grad1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5340,7 +5298,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_gen_grad1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5358,11 +5315,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_gen_grad_map (c_gen_grad_map, c_ok) bind(c)
+subroutine test_c_gen_grad_map (c_gen_grad_map, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_gen_grad_map
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5486,7 +5443,6 @@ rhs = 11 + offset; F%master_parameter = rhs
 rhs = 12 + offset; F%curved_ref_frame = (modulo(rhs, 2) == 0)
 
 end subroutine set_gen_grad_map_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5504,11 +5460,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_segmented_pt (c_surface_segmented_pt, c_ok) bind(c)
+subroutine test_c_surface_segmented_pt (c_surface_segmented_pt, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_segmented_pt
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5608,7 +5564,6 @@ rhs = 4 + offset; F%dz_dx = rhs
 rhs = 5 + offset; F%dz_dy = rhs
 
 end subroutine set_surface_segmented_pt_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5626,11 +5581,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_segmented (c_surface_segmented, c_ok) bind(c)
+subroutine test_c_surface_segmented (c_surface_segmented, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_segmented
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5743,7 +5698,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_surface_segmented_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5761,11 +5715,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_h_misalign_pt (c_surface_h_misalign_pt, c_ok) bind(c)
+subroutine test_c_surface_h_misalign_pt (c_surface_h_misalign_pt, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_h_misalign_pt
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -5867,7 +5821,6 @@ rhs = 5 + offset; F%rot_y_rms = rhs
 rhs = 6 + offset; F%rot_t_rms = rhs
 
 end subroutine set_surface_h_misalign_pt_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -5885,11 +5838,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_h_misalign (c_surface_h_misalign, c_ok) bind(c)
+subroutine test_c_surface_h_misalign (c_surface_h_misalign, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_h_misalign
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6002,7 +5955,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_surface_h_misalign_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6020,11 +5972,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_displacement_pt (c_surface_displacement_pt, c_ok) bind(c)
+subroutine test_c_surface_displacement_pt (c_surface_displacement_pt, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_displacement_pt
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6126,7 +6078,6 @@ rhs = 5 + offset; F%dz_dy = rhs
 rhs = 6 + offset; F%d2z_dxdy = rhs
 
 end subroutine set_surface_displacement_pt_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6144,11 +6095,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_displacement (c_surface_displacement, c_ok) bind(c)
+subroutine test_c_surface_displacement (c_surface_displacement, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_displacement
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6261,7 +6212,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_surface_displacement_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6279,11 +6229,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_target_point (c_target_point, c_ok) bind(c)
+subroutine test_c_target_point (c_target_point, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_target_point
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6378,7 +6328,6 @@ F%r(jd1+lb1) = rhs
 enddo
 
 end subroutine set_target_point_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6396,11 +6345,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_surface_curvature (c_surface_curvature, c_ok) bind(c)
+subroutine test_c_surface_curvature (c_surface_curvature, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_surface_curvature
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6505,7 +6454,6 @@ enddo
 rhs = 4 + offset; F%has_curvature = (modulo(rhs, 2) == 0)
 
 end subroutine set_surface_curvature_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6523,11 +6471,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_photon_target (c_photon_target, c_ok) bind(c)
+subroutine test_c_photon_target (c_photon_target, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_photon_target
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6630,7 +6578,6 @@ enddo
 call set_target_point_test_pattern (F%center, ix_patt)
 
 end subroutine set_photon_target_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6648,11 +6595,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_photon_material (c_photon_material, c_ok) bind(c)
+subroutine test_c_photon_material (c_photon_material, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_photon_material
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6764,7 +6711,6 @@ F%l_ref(jd1+lb1) = rhs
 enddo
 
 end subroutine set_photon_material_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6782,11 +6728,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_pixel_pt (c_pixel_pt, c_ok) bind(c)
+subroutine test_c_pixel_pt (c_pixel_pt, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_pixel_pt
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -6908,7 +6854,6 @@ F%init_orbit_rms(jd1+lb1) = rhs
 enddo
 
 end subroutine set_pixel_pt_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -6926,11 +6871,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_pixel_detec (c_pixel_detec, c_ok) bind(c)
+subroutine test_c_pixel_detec (c_pixel_detec, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_pixel_detec
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7047,7 +6992,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_pixel_detec_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7065,11 +7009,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_photon_element (c_photon_element, c_ok) bind(c)
+subroutine test_c_photon_element (c_photon_element, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_photon_element
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7198,7 +7142,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_photon_element_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7216,11 +7159,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wall3d_vertex (c_wall3d_vertex, c_ok) bind(c)
+subroutine test_c_wall3d_vertex (c_wall3d_vertex, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wall3d_vertex
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7328,7 +7271,6 @@ rhs = 8 + offset; F%y0 = rhs
 rhs = 9 + offset; F%type = rhs
 
 end subroutine set_wall3d_vertex_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7346,11 +7288,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wall3d_section (c_wall3d_section, c_ok) bind(c)
+subroutine test_c_wall3d_section (c_wall3d_section, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wall3d_section
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7512,7 +7454,6 @@ F%p2_coef(jd1+lb1) = rhs
 enddo
 
 end subroutine set_wall3d_section_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7530,11 +7471,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_wall3d (c_wall3d, c_ok) bind(c)
+subroutine test_c_wall3d (c_wall3d, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_wall3d
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7657,7 +7598,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_wall3d_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7675,11 +7615,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_ramper_lord (c_ramper_lord, c_ok) bind(c)
+subroutine test_c_ramper_lord (c_ramper_lord, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_ramper_lord
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7781,7 +7721,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_ramper_lord_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7799,11 +7738,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_control (c_control, c_ok) bind(c)
+subroutine test_c_control (c_control, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_control
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -7928,7 +7867,6 @@ enddo
 rhs = 10 + offset; F%ix_attrib = rhs
 
 end subroutine set_control_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -7946,11 +7884,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_control_var1 (c_control_var1, c_ok) bind(c)
+subroutine test_c_control_var1 (c_control_var1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_control_var1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8048,7 +7986,6 @@ rhs = 2 + offset; F%value = rhs
 rhs = 3 + offset; F%old_value = rhs
 
 end subroutine set_control_var1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8066,11 +8003,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_control_ramp1 (c_control_ramp1, c_ok) bind(c)
+subroutine test_c_control_ramp1 (c_control_ramp1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_control_ramp1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8189,7 +8126,6 @@ enddo
 rhs = 7 + offset; F%is_controller = (modulo(rhs, 2) == 0)
 
 end subroutine set_control_ramp1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8207,11 +8143,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_controller (c_controller, c_ok) bind(c)
+subroutine test_c_controller (c_controller, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_controller
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8338,7 +8274,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_controller_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8356,11 +8291,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_ellipse_beam_init (c_ellipse_beam_init, c_ok) bind(c)
+subroutine test_c_ellipse_beam_init (c_ellipse_beam_init, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_ellipse_beam_init
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8456,7 +8391,6 @@ rhs = 2 + offset; F%n_ellipse = rhs
 rhs = 3 + offset; F%sigma_cutoff = rhs
 
 end subroutine set_ellipse_beam_init_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8474,11 +8408,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_kv_beam_init (c_kv_beam_init, c_ok) bind(c)
+subroutine test_c_kv_beam_init (c_kv_beam_init, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_kv_beam_init
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8577,7 +8511,6 @@ rhs = 2 + offset; F%n_I2 = rhs
 rhs = 3 + offset; F%A = rhs
 
 end subroutine set_kv_beam_init_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8595,11 +8528,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_grid_beam_init (c_grid_beam_init, c_ok) bind(c)
+subroutine test_c_grid_beam_init (c_grid_beam_init, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_grid_beam_init
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8701,7 +8634,6 @@ rhs = 5 + offset; F%px_min = rhs
 rhs = 6 + offset; F%px_max = rhs
 
 end subroutine set_grid_beam_init_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8719,11 +8651,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_beam_init (c_beam_init, c_ok) bind(c)
+subroutine test_c_beam_init (c_beam_init, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_beam_init
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -8915,7 +8847,6 @@ F%file_name(jd1:jd1) = char(ichar("a") + modulo(100+35+offset+jd1, 26))
 enddo
 
 end subroutine set_beam_init_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -8933,11 +8864,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_lat_param (c_lat_param, c_ok) bind(c)
+subroutine test_c_lat_param (c_lat_param, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_lat_param
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9069,7 +9000,6 @@ call set_bookkeeping_state_test_pattern (F%bookkeeping_state, ix_patt)
 call set_beam_init_test_pattern (F%beam_init, ix_patt)
 
 end subroutine set_lat_param_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9087,11 +9017,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_mode_info (c_mode_info, c_ok) bind(c)
+subroutine test_c_mode_info (c_mode_info, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_mode_info
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9193,7 +9123,6 @@ rhs = 5 + offset; F%sigma = rhs
 rhs = 6 + offset; F%sigmap = rhs
 
 end subroutine set_mode_info_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9211,11 +9140,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_pre_tracker (c_pre_tracker, c_ok) bind(c)
+subroutine test_c_pre_tracker (c_pre_tracker, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_pre_tracker
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9315,7 +9244,6 @@ F%input_file(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
 enddo
 
 end subroutine set_pre_tracker_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9333,11 +9261,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_anormal_mode (c_anormal_mode, c_ok) bind(c)
+subroutine test_c_anormal_mode (c_anormal_mode, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_anormal_mode
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9444,7 +9372,6 @@ rhs = 6 + offset; F%chrom = rhs
 rhs = 7 + offset; F%tune = rhs
 
 end subroutine set_anormal_mode_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9462,11 +9389,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_linac_normal_mode (c_linac_normal_mode, c_ok) bind(c)
+subroutine test_c_linac_normal_mode (c_linac_normal_mode, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_linac_normal_mode
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9570,7 +9497,6 @@ rhs = 6 + offset; F%a_emittance_end = rhs
 rhs = 7 + offset; F%b_emittance_end = rhs
 
 end subroutine set_linac_normal_mode_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9588,11 +9514,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_normal_modes (c_normal_modes, c_ok) bind(c)
+subroutine test_c_normal_modes (c_normal_modes, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_normal_modes
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9711,7 +9637,6 @@ call set_anormal_mode_test_pattern (F%z, ix_patt)
 call set_linac_normal_mode_test_pattern (F%lin, ix_patt)
 
 end subroutine set_normal_modes_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9729,11 +9654,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_em_field (c_em_field, c_ok) bind(c)
+subroutine test_c_em_field (c_em_field, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_em_field
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9854,7 +9779,6 @@ F%A(jd1+lb1) = rhs
 enddo
 
 end subroutine set_em_field_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9872,11 +9796,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_strong_beam (c_strong_beam, c_ok) bind(c)
+subroutine test_c_strong_beam (c_strong_beam, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_strong_beam
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -9980,7 +9904,6 @@ rhs = 6 + offset; F%dx = rhs
 rhs = 7 + offset; F%dy = rhs
 
 end subroutine set_strong_beam_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -9998,11 +9921,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_track_point (c_track_point, c_ok) bind(c)
+subroutine test_c_track_point (c_track_point, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_track_point
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10111,7 +10034,6 @@ F%mat6(jd1+lb1,jd2+lb2) = rhs
 enddo; enddo
 
 end subroutine set_track_point_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10129,11 +10051,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_track (c_track, c_ok) bind(c)
+subroutine test_c_track (c_track, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_track
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10240,7 +10162,6 @@ rhs = 5 + offset; F%n_bad = rhs
 rhs = 6 + offset; F%n_ok = rhs
 
 end subroutine set_track_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10258,11 +10179,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_space_charge_common (c_space_charge_common, c_ok) bind(c)
+subroutine test_c_space_charge_common (c_space_charge_common, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_space_charge_common
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10394,7 +10315,6 @@ F%diagnostic_output_file(jd1:jd1) = char(ichar("a") + modulo(100+17+offset+jd1, 
 enddo
 
 end subroutine set_space_charge_common_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10412,11 +10332,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_bmad_common (c_bmad_common, c_ok) bind(c)
+subroutine test_c_bmad_common (c_bmad_common, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_bmad_common
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10589,7 +10509,6 @@ rhs = 39 + offset; F%aperture_limit_on = (modulo(rhs, 2) == 0)
 rhs = 40 + offset; F%debug = (modulo(rhs, 2) == 0)
 
 end subroutine set_bmad_common_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10607,11 +10526,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_rad_int1 (c_rad_int1, c_ok) bind(c)
+subroutine test_c_rad_int1 (c_rad_int1, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_rad_int1
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10737,7 +10656,6 @@ rhs = 17 + offset; F%lin_sig_E = rhs
 rhs = 18 + offset; F%n_steps = rhs
 
 end subroutine set_rad_int1_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10755,11 +10673,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_rad_int_branch (c_rad_int_branch, c_ok) bind(c)
+subroutine test_c_rad_int_branch (c_rad_int_branch, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_rad_int_branch
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10858,7 +10776,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_rad_int_branch_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10876,11 +10793,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_rad_int_all_ele (c_rad_int_all_ele, c_ok) bind(c)
+subroutine test_c_rad_int_all_ele (c_rad_int_all_ele, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_rad_int_all_ele
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -10979,7 +10896,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_rad_int_all_ele_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -10997,11 +10913,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_ele (c_ele, c_ok) bind(c)
+subroutine test_c_ele (c_ele, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_ele
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -11435,7 +11351,6 @@ rhs = 106 + offset; F%select = (modulo(rhs, 2) == 0)
 rhs = 107 + offset; F%offset_moves_aperture = (modulo(rhs, 2) == 0)
 
 end subroutine set_ele_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -11453,11 +11368,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_complex_taylor_term (c_complex_taylor_term, c_ok) bind(c)
+subroutine test_c_complex_taylor_term (c_complex_taylor_term, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_complex_taylor_term
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -11554,7 +11469,6 @@ F%expn(jd1+lb1) = rhs
 enddo
 
 end subroutine set_complex_taylor_term_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -11572,11 +11486,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_complex_taylor (c_complex_taylor, c_ok) bind(c)
+subroutine test_c_complex_taylor (c_complex_taylor, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_complex_taylor
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -11677,7 +11591,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_complex_taylor_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -11695,11 +11608,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_branch (c_branch, c_ok) bind(c)
+subroutine test_c_branch (c_branch, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_branch
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -11831,7 +11744,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_branch_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -11849,11 +11761,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_lat (c_lat, c_ok) bind(c)
+subroutine test_c_lat (c_lat, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_lat
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -12101,7 +12013,6 @@ rhs = 42 + offset; F%creation_hash = rhs
 rhs = 43 + offset; F%ramper_slave_bookkeeping = rhs
 
 end subroutine set_lat_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -12119,11 +12030,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_bunch (c_bunch, c_ok) bind(c)
+subroutine test_c_bunch (c_bunch, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_bunch
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -12256,7 +12167,6 @@ rhs = 15 + offset; F%n_good = rhs
 rhs = 16 + offset; F%n_bad = rhs
 
 end subroutine set_bunch_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -12274,11 +12184,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_bunch_params (c_bunch_params, c_ok) bind(c)
+subroutine test_c_bunch_params (c_bunch_params, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_bunch_params
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -12424,7 +12334,6 @@ rhs = 22 + offset; F%location = rhs
 rhs = 23 + offset; F%twiss_valid = (modulo(rhs, 2) == 0)
 
 end subroutine set_bunch_params_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -12442,11 +12351,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_beam (c_beam, c_ok) bind(c)
+subroutine test_c_beam (c_beam, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_beam
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -12545,7 +12454,6 @@ if (ix_patt < 3) then
 endif
 
 end subroutine set_beam_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -12563,11 +12471,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_aperture_point (c_aperture_point, c_ok) bind(c)
+subroutine test_c_aperture_point (c_aperture_point, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_aperture_point
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -12667,7 +12575,6 @@ rhs = 4 + offset; F%ix_ele = rhs
 rhs = 5 + offset; F%i_turn = rhs
 
 end subroutine set_aperture_point_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -12685,11 +12592,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_aperture_param (c_aperture_param, c_ok) bind(c)
+subroutine test_c_aperture_param (c_aperture_param, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_aperture_param
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
@@ -12799,7 +12706,6 @@ F%start_ele(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
 enddo
 
 end subroutine set_aperture_param_test_pattern
-
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
@@ -12817,11 +12723,11 @@ logical(c_bool) c_ok
 logical ok
 
 interface
-  subroutine test_c_aperture_scan (c_aperture_scan, c_ok) bind(c)
+subroutine test_c_aperture_scan (c_aperture_scan, c_ok) bind(c)
     import c_ptr, c_bool
     type(c_ptr), value :: c_aperture_scan
     logical(c_bool) c_ok
-  end subroutine
+end subroutine
 end interface
 
 !
