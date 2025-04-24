@@ -434,37 +434,8 @@ class Argument:
 
     def replace_name_placeholders(self):
         """Replace NAME placeholders with argument names on both C and Fortran sides."""
-        # Fortran side
-        self.f_side.to_c_var = [
-            var.replace("NAME", self.f_name) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("NAME", self.f_name)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace("NAME", self.f_name)
-        self.f_side.to_c2_name = self.f_side.to_c2_name.replace("NAME", self.f_name)
-        self.f_side.to_f2_var = [
-            var.replace("NAME", self.f_name) for var in self.f_side.to_f2_var
-        ]
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("NAME", self.f_name)
-        self.f_side.to_f2_name = self.f_side.to_f2_name.replace("NAME", self.f_name)
-        self.f_side.equality_test = self.f_side.equality_test.replace(
-            "NAME", self.f_name
-        )
-        self.f_side.test_pat = self.f_side.test_pat.replace("NAME", self.f_name)
-
-        # C side
-        self.c_side.to_c2_arg = self.c_side.to_c2_arg.replace("NAME", self.c_name)
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("NAME", self.c_name)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("NAME", self.c_name)
-        self.c_side.to_f_cleanup = self.c_side.to_f_cleanup.replace("NAME", self.c_name)
-        self.c_side.to_f2_call = self.c_side.to_f2_call.replace("NAME", self.c_name)
-        self.c_side.equality_test = self.c_side.equality_test.replace(
-            "NAME", self.c_name
-        )
-        self.c_side.test_pat = self.c_side.test_pat.replace("NAME", self.c_name)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "NAME", self.c_name
-        )
-        self.c_side.destructor = self.c_side.destructor.replace("NAME", self.c_name)
+        self.f_side.replace_all("NAME", self.f_name)
+        self.c_side.replace_all("NAME", self.c_name)
 
     def _replace_string_length_placeholders(self) -> None:
         """Replace STR_LEN placeholders with the argument's kind."""
@@ -490,89 +461,8 @@ class Argument:
 
         if not kind:
             raise RuntimeError("Kind is empty?")
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("KIND", kind)
-        self.f_side.to_f2_var = [
-            var.replace("KIND", kind) for var in self.f_side.to_f2_var
-        ]
-        self.f_side.test_pat = self.f_side.test_pat.replace("KIND", kind)
-        self.c_side.test_pat = self.c_side.test_pat.replace("KIND", kind)
-        self.c_side.c_class = self.c_side.c_class.replace("KIND", kind)
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("KIND", kind)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("KIND", kind)
-        self.c_side.to_f2_arg = self.c_side.to_f2_arg.replace("KIND", kind)
-        self.c_side.to_c2_arg = self.c_side.to_c2_arg.replace("KIND", kind)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "KIND", kind
-        )
-
-    def _handle_first_dimension(self) -> None:
-        """Handle the first dimension of an array argument."""
-        if not self.lbound:
-            return
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM1", self.c_dim1)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM1", self.f_dim1)
-        self.f_side.test_pat = self.f_side.test_pat.replace("DIM1", self.f_dim1)
-        self.f_side.to_c_var = [
-            var.replace("DIM1", self.f_dim1) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM1", self.f_dim1)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace("DIM1", self.f_dim1)
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM1", self.c_dim1)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "DIM1", self.c_dim1
-        )
-        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
-            "DIM1", self.c_dim1
-        )
-        self.c_side.c_class = self.c_side.c_class.replace("DIM1", self.c_dim1)
-
-    def _handle_second_dimension(self) -> None:
-        """Handle the second dimension of an array argument."""
-        if not self.lbound:
-            return
-        dim2 = str(self.dim2)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM2", dim2)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM2", dim2)
-        self.f_side.test_pat = self.f_side.test_pat.replace("DIM2", dim2)
-        self.f_side.to_c_var = [
-            var.replace("DIM2", dim2) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM2", dim2)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
-            "DIM2", self.f_dim1 + "*" + dim2
-        )
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM2", dim2)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "DIM2", dim2
-        )
-        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
-            "DIM2", dim2
-        )
-        self.c_side.c_class = self.c_side.c_class.replace("DIM2", str(self.dim2))
-
-    def _handle_third_dimension(self) -> None:
-        """Handle the third dimension of an array argument."""
-        if not self.lbound:
-            return
-        dim3 = str(self.dim3)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM3", dim3)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM3", dim3)
-        self.f_side.test_pat = self.f_side.test_pat.replace("DIM3", dim3)
-        self.f_side.to_c_var = [
-            var.replace("DIM3", dim3) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM3", dim3)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
-            "DIM3", f"{self.f_dim1}*{self.dim2}*{dim3}"
-        )
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM3", dim3)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "DIM3", dim3
-        )
-        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
-            "DIM3", dim3
-        )
-        self.c_side.c_class = self.c_side.c_class.replace("DIM3", str(self.dim3))
+        self.f_side.replace_all("KIND", kind)
+        self.c_side.replace_all("KIND", kind)
 
     def _handle_init_values(self) -> None:
         """
@@ -652,13 +542,22 @@ class Argument:
             # not a pointer/dynamically allocated type;
             # replace DIM1, DIM2, DIM3 here
             if len(self.array) >= 1:
-                self._handle_first_dimension()
+                self.f_side.replace_all("DIM1", self.f_dim1)
+                self.c_side.replace_all("DIM1", self.c_dim1)
 
             if len(self.array) >= 2:
-                self._handle_second_dimension()
+                self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
+                    "DIM2", f"{self.f_dim1}*{self.dim2}"
+                )
+                self.f_side.replace_all("DIM2", str(self.dim2))
+                self.c_side.replace_all("DIM2", str(self.dim2))
 
             if len(self.array) >= 3:
-                self._handle_third_dimension()
+                self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
+                    "DIM3", f"{self.f_dim1}*{self.dim2}*{self.dim3}"
+                )
+                self.f_side.replace_all("DIM3", str(self.dim3))
+                self.c_side.replace_all("DIM3", str(self.dim3))
 
         # Replace name placeholders
         self.replace_name_placeholders()
