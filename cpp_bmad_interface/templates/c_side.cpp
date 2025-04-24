@@ -12,131 +12,90 @@ public:
 
 //// section:to_f
 //// type:0D_NOT_character
-void to_f__variant_a (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Char
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME.c_str()
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_NOT_complex
-void to_f__variant_b (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Complex&
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_NOT_integer
-void to_f__variant_c (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int&
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_NOT_integer8
-void to_f__variant_d (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8&
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_NOT_logical
-void to_f__variant_e (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Bool&
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_NOT_real
-void to_f__variant_f (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Real&
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_NOT_size
+//// type:0D_NOT_type
+//// type:1D_NOT_complex
+//// type:1D_NOT_integer
+//// type:1D_NOT_integer8
+//// type:1D_NOT_logical
+//// type:1D_NOT_real
 //// type:1D_NOT_size
 //// type:2D_NOT_size
 //// type:3D_NOT_size
-void to_f__variant_g (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_0 (const CppClass& C, OpaqueClass* F) {
 
   to_f2(F, /*
-  //// begin:to_f2_arg
+  //// case:0D_NOT_character:to_f2_arg
+  c_Char
+  //// case:0D_NOT_complex:to_f2_arg
+  c_Complex&
+  //// case:0D_NOT_integer:to_f2_arg
+  c_Int&
+  //// case:0D_NOT_integer8:to_f2_arg
+  c_Int8&
+  //// case:0D_NOT_logical:to_f2_arg
+  c_Bool&
+  //// case:0D_NOT_real:to_f2_arg
+  c_Real&
+  //// case:0D_NOT_size:to_f2_arg
   Int
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  NAME
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
-//// type:0D_NOT_type
-void to_f__variant_h (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
+  //// case:0D_NOT_type:to_f2_arg
   const CPP_KIND&
-  //// end:to_f2_arg
+  //// case:1D_NOT_complex:to_f2_arg
+  c_ComplexArr
+  //// case:1D_NOT_integer:to_f2_arg
+  c_IntArr
+  //// case:1D_NOT_integer8:to_f2_arg
+  c_Int8Arr
+  //// case:1D_NOT_logical:to_f2_arg
+  c_BoolArr
+  //// case:1D_NOT_real:to_f2_arg
+  c_RealArr
+  //// case:1D_NOT_size:to_f2_arg
+  Int
+  //// case:2D_NOT_size:to_f2_arg
+  Int
+  //// case:3D_NOT_size:to_f2_arg
+  Int
   */
-  //// begin:to_f2_call
-  C.NAME
-  //// end:to_f2_call
+  //// case:0D_NOT_character:to_f2_call
+  C.NAME.c_str(),
+  //// case:0D_NOT_complex:to_f2_call
+  C.NAME,
+  //// case:0D_NOT_integer:to_f2_call
+  C.NAME,
+  //// case:0D_NOT_integer8:to_f2_call
+  C.NAME,
+  //// case:0D_NOT_logical:to_f2_call
+  C.NAME,
+  //// case:0D_NOT_real:to_f2_call
+  C.NAME,
+  //// case:0D_NOT_size:to_f2_call
+  NAME,
+  //// case:0D_NOT_type:to_f2_call
+  C.NAME,
+  //// case:1D_NOT_complex:to_f2_call
+  &C.NAME[0],
+  //// case:1D_NOT_integer:to_f2_call
+  &C.NAME[0],
+  //// case:1D_NOT_integer8:to_f2_call
+  &C.NAME[0],
+  //// case:1D_NOT_logical:to_f2_call
+  &C.NAME[0],
+  //// case:1D_NOT_real:to_f2_call
+  &C.NAME[0],
+  //// case:1D_NOT_size:to_f2_call
+  NAME,
+  //// case:2D_NOT_size:to_f2_call
+  NAME,
+  //// case:3D_NOT_size:to_f2_call
+  NAME,
+  //// end special cases
   );
 
 }
@@ -144,7 +103,7 @@ void to_f__variant_h (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:0D_ALLOC_character
 //// type:0D_PTR_character
-void to_f__variant_i (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_1 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   size_t n_NAME = 0;
   const char* z_NAME = nullptr;
@@ -168,127 +127,80 @@ void to_f__variant_i (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:0D_ALLOC_complex
-//// type:0D_PTR_complex
-void to_f__variant_j (const CppClass& C, OpaqueClass* F) {
-  //// begin:to_f_setup
-  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME.get()
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_ALLOC_integer
-//// type:0D_PTR_integer
-void to_f__variant_k (const CppClass& C, OpaqueClass* F) {
-  //// begin:to_f_setup
-  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME.get()
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_ALLOC_integer8
-//// type:0D_PTR_integer8
-void to_f__variant_l (const CppClass& C, OpaqueClass* F) {
-  //// begin:to_f_setup
-  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME.get()
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_ALLOC_logical
-//// type:0D_PTR_logical
-void to_f__variant_m (const CppClass& C, OpaqueClass* F) {
-  //// begin:to_f_setup
-  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME.get()
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_ALLOC_real
-//// type:0D_PTR_real
-void to_f__variant_n (const CppClass& C, OpaqueClass* F) {
-  //// begin:to_f_setup
-  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_RealArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  C.NAME.get()
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:0D_ALLOC_type
+//// type:0D_PTR_complex
+//// type:0D_PTR_integer
+//// type:0D_PTR_integer8
+//// type:0D_PTR_logical
+//// type:0D_PTR_real
 //// type:0D_PTR_type
-void to_f__variant_o (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_2 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;
   //// end:to_f_setup
 
   to_f2(F, /*
-  //// begin:to_f2_arg
+  //// case:0D_ALLOC_complex:to_f2_arg
+  c_ComplexArr
+  //// case:0D_ALLOC_integer:to_f2_arg
+  c_IntArr
+  //// case:0D_ALLOC_integer8:to_f2_arg
+  c_Int8Arr
+  //// case:0D_ALLOC_logical:to_f2_arg
+  c_BoolArr
+  //// case:0D_ALLOC_real:to_f2_arg
+  c_RealArr
+  //// case:0D_ALLOC_type:to_f2_arg
   const CPP_KIND&
-  //// end:to_f2_arg
+  //// case:0D_PTR_complex:to_f2_arg
+  c_ComplexArr
+  //// case:0D_PTR_integer:to_f2_arg
+  c_IntArr
+  //// case:0D_PTR_integer8:to_f2_arg
+  c_Int8Arr
+  //// case:0D_PTR_logical:to_f2_arg
+  c_BoolArr
+  //// case:0D_PTR_real:to_f2_arg
+  c_RealArr
+  //// case:0D_PTR_type:to_f2_arg
+  const CPP_KIND&
   */
-  //// begin:to_f2_call
-  *C.NAME
-  //// end:to_f2_call
+  //// case:0D_ALLOC_complex:to_f2_call
+  C.NAME.get(),
+  //// case:0D_ALLOC_integer:to_f2_call
+  C.NAME.get(),
+  //// case:0D_ALLOC_integer8:to_f2_call
+  C.NAME.get(),
+  //// case:0D_ALLOC_logical:to_f2_call
+  C.NAME.get(),
+  //// case:0D_ALLOC_real:to_f2_call
+  C.NAME.get(),
+  //// case:0D_ALLOC_type:to_f2_call
+  *C.NAME,
+  //// case:0D_PTR_complex:to_f2_call
+  C.NAME.get(),
+  //// case:0D_PTR_integer:to_f2_call
+  C.NAME.get(),
+  //// case:0D_PTR_integer8:to_f2_call
+  C.NAME.get(),
+  //// case:0D_PTR_logical:to_f2_call
+  C.NAME.get(),
+  //// case:0D_PTR_real:to_f2_call
+  C.NAME.get(),
+  //// case:0D_PTR_type:to_f2_call
+  *C.NAME,
+  //// end special cases
   );
 
 }
 
 //// section:to_f
 //// type:1D_NOT_character
-void to_f__variant_p (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_3 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   c_Char z_NAME[DIM1];
   for (auto i{0}; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
@@ -307,88 +219,8 @@ void to_f__variant_p (const CppClass& C, OpaqueClass* F) {
 }
 
 //// section:to_f
-//// type:1D_NOT_complex
-void to_f__variant_q (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  &C.NAME[0]
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
-//// type:1D_NOT_integer
-void to_f__variant_r (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  &C.NAME[0]
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
-//// type:1D_NOT_integer8
-void to_f__variant_s (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  &C.NAME[0]
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
-//// type:1D_NOT_logical
-void to_f__variant_t (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  &C.NAME[0]
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
-//// type:1D_NOT_real
-void to_f__variant_u (const CppClass& C, OpaqueClass* F) {
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_RealArr
-  //// end:to_f2_arg
-  */
-  //// begin:to_f2_call
-  &C.NAME[0]
-  //// end:to_f2_call
-  );
-
-}
-
-//// section:to_f
 //// type:1D_NOT_type
-void to_f__variant_v (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_4 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   const CPP_KIND* z_NAME[DIM1];
   for (int i = 0; i < DIM1; i++) {z_NAME[i] = &C.NAME[i];}
@@ -409,7 +241,7 @@ void to_f__variant_v (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_character
 //// type:1D_PTR_character
-void to_f__variant_w (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_5 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME{ C.NAME.size() };
   c_Char* z_NAME = nullptr;
@@ -437,7 +269,7 @@ void to_f__variant_w (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_complex
 //// type:1D_PTR_complex
-void to_f__variant_x (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_6 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME = C.NAME.size();
   c_ComplexArr z_NAME = nullptr;
@@ -461,7 +293,7 @@ void to_f__variant_x (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_integer
 //// type:1D_PTR_integer
-void to_f__variant_y (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_7 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME = C.NAME.size();
   c_IntArr z_NAME = nullptr;
@@ -485,7 +317,7 @@ void to_f__variant_y (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_integer8
 //// type:1D_PTR_integer8
-void to_f__variant_z (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_8 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME = C.NAME.size();
   c_Int8Arr z_NAME = nullptr;
@@ -509,7 +341,7 @@ void to_f__variant_z (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_logical
 //// type:1D_PTR_logical
-void to_f__variant_A (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_9 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME = C.NAME.size();
   c_BoolArr z_NAME = nullptr;
@@ -533,7 +365,7 @@ void to_f__variant_A (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_real
 //// type:1D_PTR_real
-void to_f__variant_B (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_10 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME = C.NAME.size();
   c_RealArr z_NAME = nullptr;
@@ -557,7 +389,7 @@ void to_f__variant_B (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:1D_ALLOC_type
 //// type:1D_PTR_type
-void to_f__variant_C (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_11 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME = C.NAME.size();
   const CPP_KIND** z_NAME = nullptr;
@@ -584,7 +416,7 @@ void to_f__variant_C (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:2D_NOT_complex
-void to_f__variant_D (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_12 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Complex z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -603,7 +435,7 @@ void to_f__variant_D (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:2D_NOT_integer
-void to_f__variant_E (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_13 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Int z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -622,7 +454,7 @@ void to_f__variant_E (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:2D_NOT_integer8
-void to_f__variant_F (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_14 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Int8 z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -641,7 +473,7 @@ void to_f__variant_F (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:2D_NOT_logical
-void to_f__variant_G (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_15 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Bool z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -660,7 +492,7 @@ void to_f__variant_G (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:2D_NOT_real
-void to_f__variant_H (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_16 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Real z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -679,7 +511,7 @@ void to_f__variant_H (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:2D_NOT_type
-void to_f__variant_I (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_17 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   const CPP_KIND* z_NAME[DIM1*DIM2];
   for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j < C.NAME[0].size(); j++)
@@ -701,7 +533,7 @@ void to_f__variant_I (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:2D_ALLOC_complex
 //// type:2D_PTR_complex
-void to_f__variant_J (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_18 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -731,7 +563,7 @@ void to_f__variant_J (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:2D_ALLOC_integer
 //// type:2D_PTR_integer
-void to_f__variant_K (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_19 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -761,7 +593,7 @@ void to_f__variant_K (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:2D_ALLOC_integer8
 //// type:2D_PTR_integer8
-void to_f__variant_L (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_20 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -791,7 +623,7 @@ void to_f__variant_L (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:2D_ALLOC_logical
 //// type:2D_PTR_logical
-void to_f__variant_M (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_21 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -821,7 +653,7 @@ void to_f__variant_M (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:2D_ALLOC_real
 //// type:2D_PTR_real
-void to_f__variant_N (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_22 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -851,7 +683,7 @@ void to_f__variant_N (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:2D_ALLOC_type
 //// type:2D_PTR_type
-void to_f__variant_O (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_23 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -884,7 +716,7 @@ void to_f__variant_O (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:3D_NOT_complex
-void to_f__variant_P (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_24 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Complex z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -903,7 +735,7 @@ void to_f__variant_P (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:3D_NOT_integer
-void to_f__variant_Q (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_25 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Int z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -922,7 +754,7 @@ void to_f__variant_Q (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:3D_NOT_integer8
-void to_f__variant_R (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_26 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Int8 z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -941,7 +773,7 @@ void to_f__variant_R (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:3D_NOT_logical
-void to_f__variant_S (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_27 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Bool z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -960,7 +792,7 @@ void to_f__variant_S (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:3D_NOT_real
-void to_f__variant_T (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_28 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   Real z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
@@ -979,7 +811,7 @@ void to_f__variant_T (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_f
 //// type:3D_NOT_type
-void to_f__variant_U (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_29 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   const CPP_KIND* z_NAME[DIM1*DIM2*DIM3];
   for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j < C.NAME[0].size(); j++)   for (size_t k = 0; k < C.NAME[0][0].size(); k++)
@@ -1001,7 +833,7 @@ void to_f__variant_U (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:3D_ALLOC_complex
 //// type:3D_PTR_complex
-void to_f__variant_V (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_30 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -1033,7 +865,7 @@ void to_f__variant_V (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:3D_ALLOC_integer
 //// type:3D_PTR_integer
-void to_f__variant_W (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_31 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -1065,7 +897,7 @@ void to_f__variant_W (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:3D_ALLOC_integer8
 //// type:3D_PTR_integer8
-void to_f__variant_X (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_32 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -1097,7 +929,7 @@ void to_f__variant_X (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:3D_ALLOC_logical
 //// type:3D_PTR_logical
-void to_f__variant_Y (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_33 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -1129,7 +961,7 @@ void to_f__variant_Y (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:3D_ALLOC_real
 //// type:3D_PTR_real
-void to_f__variant_Z (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_34 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -1161,7 +993,7 @@ void to_f__variant_Z (const CppClass& C, OpaqueClass* F) {
 //// section:to_f
 //// type:3D_ALLOC_type
 //// type:3D_PTR_type
-void to_f__variant_a (const CppClass& C, OpaqueClass* F) {
+void to_f__variant_35 (const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   auto n1_NAME { C.NAME.size() };
   auto n2_NAME { std::size_t{0} };
@@ -1198,85 +1030,37 @@ void to_f__variant_a (const CppClass& C, OpaqueClass* F) {
 
 //// section:to_c2
 //// type:0D_NOT_character
-void to_c2__variant_a (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Char z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME = z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:0D_NOT_complex
-void to_c2__variant_b (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Complex& z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME = z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:0D_NOT_integer
-void to_c2__variant_c (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Int& z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME = z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:0D_NOT_integer8
-void to_c2__variant_d (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Int8& z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME = z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:0D_NOT_logical
-void to_c2__variant_e (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Bool& z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME = z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:0D_NOT_real
-void to_c2__variant_f (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Real& z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME = z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:0D_NOT_size
 //// type:1D_NOT_size
 //// type:2D_NOT_size
 //// type:3D_NOT_size
-void to_c2__variant_g (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  Int NAME
-  //// end:to_c2_arg
+void to_c2__variant_0 (STRUCT_CPP_CLASS& C,
+  //// case:0D_NOT_character:to_c2_arg
+  c_Char z_NAME,
+  //// case:0D_NOT_complex:to_c2_arg
+  c_Complex& z_NAME,
+  //// case:0D_NOT_integer:to_c2_arg
+  c_Int& z_NAME,
+  //// case:0D_NOT_integer8:to_c2_arg
+  c_Int8& z_NAME,
+  //// case:0D_NOT_logical:to_c2_arg
+  c_Bool& z_NAME,
+  //// case:0D_NOT_real:to_c2_arg
+  c_Real& z_NAME,
+  //// case:0D_NOT_size:to_c2_arg
+  Int NAME,
+  //// case:1D_NOT_size:to_c2_arg
+  Int NAME,
+  //// case:2D_NOT_size:to_c2_arg
+  Int NAME,
+  //// case:3D_NOT_size:to_c2_arg
+  Int NAME,
+  //// end special cases
 ) {
   //// begin:to_c2_set
   C.NAME = z_NAME;
@@ -1285,7 +1069,7 @@ void to_c2__variant_g (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:0D_NOT_type
-void to_c2__variant_h (STRUCT_CPP_CLASS& C,
+void to_c2__variant_1 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   const Opaque_KIND_class* z_NAME
   //// end:to_c2_arg
@@ -1298,7 +1082,7 @@ void to_c2__variant_h (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_character
 //// type:0D_PTR_character
-void to_c2__variant_i (STRUCT_CPP_CLASS& C,
+void to_c2__variant_2 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_Char z_NAME
   //// end:to_c2_arg
@@ -1316,7 +1100,7 @@ void to_c2__variant_i (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_complex
 //// type:0D_PTR_complex
-void to_c2__variant_j (STRUCT_CPP_CLASS& C,
+void to_c2__variant_3 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_ComplexArr z_NAME
   //// end:to_c2_arg
@@ -1334,7 +1118,7 @@ void to_c2__variant_j (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_integer
 //// type:0D_PTR_integer
-void to_c2__variant_k (STRUCT_CPP_CLASS& C,
+void to_c2__variant_4 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_IntArr z_NAME
   //// end:to_c2_arg
@@ -1352,7 +1136,7 @@ void to_c2__variant_k (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_integer8
 //// type:0D_PTR_integer8
-void to_c2__variant_l (STRUCT_CPP_CLASS& C,
+void to_c2__variant_5 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_Int8Arr z_NAME
   //// end:to_c2_arg
@@ -1370,7 +1154,7 @@ void to_c2__variant_l (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_logical
 //// type:0D_PTR_logical
-void to_c2__variant_m (STRUCT_CPP_CLASS& C,
+void to_c2__variant_6 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_BoolArr z_NAME
   //// end:to_c2_arg
@@ -1388,7 +1172,7 @@ void to_c2__variant_m (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_real
 //// type:0D_PTR_real
-void to_c2__variant_n (STRUCT_CPP_CLASS& C,
+void to_c2__variant_7 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_RealArr z_NAME
   //// end:to_c2_arg
@@ -1406,7 +1190,7 @@ void to_c2__variant_n (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:0D_ALLOC_type
 //// type:0D_PTR_type
-void to_c2__variant_o (STRUCT_CPP_CLASS& C,
+void to_c2__variant_8 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   Opaque_KIND_class* z_NAME
   //// end:to_c2_arg
@@ -1423,7 +1207,7 @@ void to_c2__variant_o (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:1D_NOT_character
-void to_c2__variant_p (STRUCT_CPP_CLASS& C,
+void to_c2__variant_9 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_Char* z_NAME
   //// end:to_c2_arg
@@ -1435,68 +1219,52 @@ void to_c2__variant_p (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:1D_NOT_complex
-//// type:2D_NOT_complex
-//// type:3D_NOT_complex
-void to_c2__variant_q (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_ComplexArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_NOT_integer
-//// type:2D_NOT_integer
-//// type:3D_NOT_integer
-void to_c2__variant_r (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_IntArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_NOT_integer8
-//// type:2D_NOT_integer8
-//// type:3D_NOT_integer8
-void to_c2__variant_s (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Int8Arr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_NOT_logical
-//// type:2D_NOT_logical
-//// type:3D_NOT_logical
-void to_c2__variant_t (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_BoolArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_NOT_real
+//// type:2D_NOT_complex
+//// type:2D_NOT_integer
+//// type:2D_NOT_integer8
+//// type:2D_NOT_logical
 //// type:2D_NOT_real
+//// type:3D_NOT_complex
+//// type:3D_NOT_integer
+//// type:3D_NOT_integer8
+//// type:3D_NOT_logical
 //// type:3D_NOT_real
-void to_c2__variant_u (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_RealArr z_NAME
-  //// end:to_c2_arg
+void to_c2__variant_10 (STRUCT_CPP_CLASS& C,
+  //// case:1D_NOT_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:1D_NOT_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:1D_NOT_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:1D_NOT_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:1D_NOT_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// case:2D_NOT_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:2D_NOT_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:2D_NOT_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:2D_NOT_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:2D_NOT_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// case:3D_NOT_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:3D_NOT_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:3D_NOT_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:3D_NOT_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:3D_NOT_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// end special cases
 ) {
   //// begin:to_c2_set
   C.NAME << z_NAME;
@@ -1505,7 +1273,7 @@ void to_c2__variant_u (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:1D_NOT_type
-void to_c2__variant_v (STRUCT_CPP_CLASS& C,
+void to_c2__variant_11 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   const Opaque_KIND_class** z_NAME
   //// end:to_c2_arg
@@ -1519,7 +1287,7 @@ for (size_t i = 0; i < C.NAME.size(); i++)
 //// section:to_c2
 //// type:1D_ALLOC_character
 //// type:1D_PTR_character
-void to_c2__variant_w (STRUCT_CPP_CLASS& C,
+void to_c2__variant_12 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   c_Char* z_NAME
   //// end:to_c2_arg
@@ -1532,71 +1300,37 @@ void to_c2__variant_w (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:1D_ALLOC_complex
-//// type:1D_PTR_complex
-void to_c2__variant_x (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_ComplexArr z_NAME
-  //// end:to_c2_arg
-) {
-//// begin:to_c2_set
-
-  C.NAME.resize(n1_NAME);
-  C.NAME << z_NAME;
-//// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_ALLOC_integer
-//// type:1D_PTR_integer
-void to_c2__variant_y (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_IntArr z_NAME
-  //// end:to_c2_arg
-) {
-//// begin:to_c2_set
-
-  C.NAME.resize(n1_NAME);
-  C.NAME << z_NAME;
-//// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_ALLOC_integer8
-//// type:1D_PTR_integer8
-void to_c2__variant_z (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Int8Arr z_NAME
-  //// end:to_c2_arg
-) {
-//// begin:to_c2_set
-
-  C.NAME.resize(n1_NAME);
-  C.NAME << z_NAME;
-//// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_ALLOC_logical
-//// type:1D_PTR_logical
-void to_c2__variant_A (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_BoolArr z_NAME
-  //// end:to_c2_arg
-) {
-//// begin:to_c2_set
-
-  C.NAME.resize(n1_NAME);
-  C.NAME << z_NAME;
-//// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:1D_ALLOC_real
+//// type:1D_PTR_complex
+//// type:1D_PTR_integer
+//// type:1D_PTR_integer8
+//// type:1D_PTR_logical
 //// type:1D_PTR_real
-void to_c2__variant_B (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_RealArr z_NAME
-  //// end:to_c2_arg
+void to_c2__variant_13 (STRUCT_CPP_CLASS& C,
+  //// case:1D_ALLOC_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:1D_ALLOC_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:1D_ALLOC_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:1D_ALLOC_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:1D_ALLOC_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// case:1D_PTR_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:1D_PTR_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:1D_PTR_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:1D_PTR_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:1D_PTR_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// end special cases
 ) {
 //// begin:to_c2_set
 
@@ -1608,7 +1342,7 @@ void to_c2__variant_B (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:1D_ALLOC_type
 //// type:1D_PTR_type
-void to_c2__variant_C (STRUCT_CPP_CLASS& C,
+void to_c2__variant_14 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   Opaque_KIND_class** z_NAME
   //// end:to_c2_arg
@@ -1621,7 +1355,7 @@ void to_c2__variant_C (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:2D_NOT_type
-void to_c2__variant_D (STRUCT_CPP_CLASS& C,
+void to_c2__variant_15 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   const Opaque_KIND_class** z_NAME
   //// end:to_c2_arg
@@ -1634,71 +1368,37 @@ void to_c2__variant_D (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:2D_ALLOC_complex
-//// type:2D_PTR_complex
-void to_c2__variant_E (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_ComplexArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:2D_ALLOC_integer
-//// type:2D_PTR_integer
-void to_c2__variant_F (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_IntArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:2D_ALLOC_integer8
-//// type:2D_PTR_integer8
-void to_c2__variant_G (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Int8Arr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:2D_ALLOC_logical
-//// type:2D_PTR_logical
-void to_c2__variant_H (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_BoolArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:2D_ALLOC_real
+//// type:2D_PTR_complex
+//// type:2D_PTR_integer
+//// type:2D_PTR_integer8
+//// type:2D_PTR_logical
 //// type:2D_PTR_real
-void to_c2__variant_I (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_RealArr z_NAME
-  //// end:to_c2_arg
+void to_c2__variant_16 (STRUCT_CPP_CLASS& C,
+  //// case:2D_ALLOC_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:2D_ALLOC_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:2D_ALLOC_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:2D_ALLOC_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:2D_ALLOC_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// case:2D_PTR_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:2D_PTR_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:2D_PTR_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:2D_PTR_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:2D_PTR_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// end special cases
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
@@ -1710,7 +1410,7 @@ void to_c2__variant_I (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:2D_ALLOC_type
 //// type:2D_PTR_type
-void to_c2__variant_J (STRUCT_CPP_CLASS& C,
+void to_c2__variant_17 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   Opaque_KIND_class** z_NAME
   //// end:to_c2_arg
@@ -1729,7 +1429,7 @@ void to_c2__variant_J (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:3D_NOT_type
-void to_c2__variant_K (STRUCT_CPP_CLASS& C,
+void to_c2__variant_18 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   const Opaque_KIND_class** z_NAME
   //// end:to_c2_arg
@@ -1742,87 +1442,37 @@ void to_c2__variant_K (STRUCT_CPP_CLASS& C,
 
 //// section:to_c2
 //// type:3D_ALLOC_complex
-//// type:3D_PTR_complex
-void to_c2__variant_L (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_ComplexArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (size_t i = 0; i < C.NAME.size(); i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      C.NAME[i][j].resize(n3_NAME);
-  }
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:3D_ALLOC_integer
-//// type:3D_PTR_integer
-void to_c2__variant_M (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_IntArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (size_t i = 0; i < C.NAME.size(); i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      C.NAME[i][j].resize(n3_NAME);
-  }
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:3D_ALLOC_integer8
-//// type:3D_PTR_integer8
-void to_c2__variant_N (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_Int8Arr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (size_t i = 0; i < C.NAME.size(); i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      C.NAME[i][j].resize(n3_NAME);
-  }
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:3D_ALLOC_logical
-//// type:3D_PTR_logical
-void to_c2__variant_O (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_BoolArr z_NAME
-  //// end:to_c2_arg
-) {
-  //// begin:to_c2_set
-  C.NAME.resize(n1_NAME);
-  for (size_t i = 0; i < C.NAME.size(); i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      C.NAME[i][j].resize(n3_NAME);
-  }
-  C.NAME << z_NAME;
-  //// end:to_c2_set
-}
-
-//// section:to_c2
 //// type:3D_ALLOC_real
+//// type:3D_PTR_complex
+//// type:3D_PTR_integer
+//// type:3D_PTR_integer8
+//// type:3D_PTR_logical
 //// type:3D_PTR_real
-void to_c2__variant_P (STRUCT_CPP_CLASS& C,
-  //// begin:to_c2_arg
-  c_RealArr z_NAME
-  //// end:to_c2_arg
+void to_c2__variant_19 (STRUCT_CPP_CLASS& C,
+  //// case:3D_ALLOC_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:3D_ALLOC_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:3D_ALLOC_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:3D_ALLOC_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:3D_ALLOC_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// case:3D_PTR_complex:to_c2_arg
+  c_ComplexArr z_NAME,
+  //// case:3D_PTR_integer:to_c2_arg
+  c_IntArr z_NAME,
+  //// case:3D_PTR_integer8:to_c2_arg
+  c_Int8Arr z_NAME,
+  //// case:3D_PTR_logical:to_c2_arg
+  c_BoolArr z_NAME,
+  //// case:3D_PTR_real:to_c2_arg
+  c_RealArr z_NAME,
+  //// end special cases
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
@@ -1838,7 +1488,7 @@ void to_c2__variant_P (STRUCT_CPP_CLASS& C,
 //// section:to_c2
 //// type:3D_ALLOC_type
 //// type:3D_PTR_type
-void to_c2__variant_Q (STRUCT_CPP_CLASS& C,
+void to_c2__variant_20 (STRUCT_CPP_CLASS& C,
   //// begin:to_c2_arg
   Opaque_KIND_class** z_NAME
   //// end:to_c2_arg

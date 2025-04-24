@@ -684,18 +684,19 @@ def import_template(
         tags = importer.split_tags(section)
         special_cases = importer.get_special_cases(section)
 
-        check_tags(tags)
-        for full_type, tag_to_value in special_cases.items():
-            if full_type not in transformers:
-                transformers[full_type] = cls()
-            check_tags(list(tag_to_value))
-            for tag, value in tag_to_value.items():
-                setattr(transformers[full_type], tag, value)
+        check_tags(list(tags))
         for full_type in types:
             if full_type not in transformers:
                 transformers[full_type] = cls()
 
             for tag, value in tags.items():
+                setattr(transformers[full_type], tag, value)
+
+        for full_type, tag_to_value in special_cases.items():
+            if full_type not in transformers:
+                transformers[full_type] = cls()
+            check_tags(list(tag_to_value))
+            for tag, value in tag_to_value.items():
                 setattr(transformers[full_type], tag, value)
 
     return transformers
@@ -1963,21 +1964,23 @@ f_transforms: dict[FullType, FortranSideTransform] = import_template(
     FortranSideTransform, (TEMPLATES_PATH / "f_side.f90").read_text()
 )
 
-for type_, trans in f_transforms.items():
-    if isinstance(trans.to_f2_var, str):
-        trans.to_f2_var = trans.to_f2_var.splitlines()
-    if isinstance(trans.to_c_var, str):
-        trans.to_c_var = trans.to_c_var.splitlines()
+for type_, transform in f_transforms.items():
+    if isinstance(transform.to_f2_var, str):
+        transform.to_f2_var = transform.to_f2_var.splitlines()
+    if isinstance(transform.to_c_var, str):
+        transform.to_c_var = transform.to_c_var.splitlines()
     if type_.ptr == ALLOC:
-        trans.replace_all("associated_or_allocated(", "allocated(")
+        transform.replace_all("associated_or_allocated(", "allocated(")
     else:
-        trans.replace_all("associated_or_allocated(", "associated(")
-    trans.replace_all("TEST_VALUE", trans.test_value)
+        transform.replace_all("associated_or_allocated(", "associated(")
+    transform.replace_all("TEST_VALUE", transform.test_value)
 
-for type_, trans in c_transforms.items():
-    trans.replace_all("C_TYPE", get_c_type(type_.type))
-    trans.replace_all("C_ARG", get_c_arg(type_.type))
-    trans.replace_all("TEST_VALUE", trans.test_value)
+for type_, transform in c_transforms.items():
+    transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
+    transform.to_f2_call = transform.to_f2_call.rstrip(", ")
+    transform.replace_all("C_TYPE", get_c_type(type_.type))
+    transform.replace_all("C_ARG", get_c_arg(type_.type))
+    transform.replace_all("TEST_VALUE", transform.test_value)
 
 fortran_structures = bmad_struct_parser.load_all_structures(
     *params.struct_def_yaml_files
