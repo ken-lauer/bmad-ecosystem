@@ -1231,33 +1231,33 @@ type(c_ptr), value :: C
 type(ac_kicker_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_amp_vs_time(:)
-integer(c_int) :: n1_amp_vs_time
-type(c_ptr), allocatable :: z_frequency(:)
-integer(c_int) :: n1_frequency
+  type(c_ptr), allocatable :: z_amp_vs_time(:)
+  integer(c_int) :: n1_amp_vs_time
+  type(c_ptr), allocatable :: z_frequency(:)
+  integer(c_int) :: n1_frequency
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_amp_vs_time = 0
-if (allocated(F%amp_vs_time)) then
-  n1_amp_vs_time = size(F%amp_vs_time); lb1 = lbound(F%amp_vs_time, 1) - 1
-  allocate (z_amp_vs_time(n1_amp_vs_time))
-  do jd1 = 1, n1_amp_vs_time
-    z_amp_vs_time(jd1) = c_loc(F%amp_vs_time(jd1+lb1))
-  enddo
-endif
+  n1_amp_vs_time = 0
+  if (allocated(F%amp_vs_time)) then
+    n1_amp_vs_time = size(F%amp_vs_time); lb1 = lbound(F%amp_vs_time, 1) - 1
+    allocate (z_amp_vs_time(n1_amp_vs_time))
+    do jd1 = 1, n1_amp_vs_time
+      z_amp_vs_time(jd1) = c_loc(F%amp_vs_time(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_frequency = 0
-if (allocated(F%frequency)) then
-  n1_frequency = size(F%frequency); lb1 = lbound(F%frequency, 1) - 1
-  allocate (z_frequency(n1_frequency))
-  do jd1 = 1, n1_frequency
-    z_frequency(jd1) = c_loc(F%frequency(jd1+lb1))
-  enddo
-endif
+  n1_frequency = 0
+  if (allocated(F%frequency)) then
+    n1_frequency = size(F%frequency); lb1 = lbound(F%frequency, 1) - 1
+    allocate (z_frequency(n1_frequency))
+    do jd1 = 1, n1_frequency
+      z_frequency(jd1) = c_loc(F%frequency(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call ac_kicker_to_c2 (C, z_amp_vs_time, n1_amp_vs_time, z_frequency, n1_frequency)
@@ -1308,7 +1308,6 @@ else
     call ac_kicker_time_to_f (z_amp_vs_time(jd1), c_loc(F%amp_vs_time(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_frequency == 0) then
   if (allocated(F%frequency)) deallocate(F%frequency)
@@ -1322,7 +1321,6 @@ else
     call ac_kicker_freq_to_f (z_frequency(jd1), c_loc(F%frequency(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine ac_kicker_to_f2
 
@@ -1447,55 +1445,55 @@ type(c_ptr), value :: C
 type(photon_reflect_table_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n1_angle
-integer(c_int) :: n1_energy
-type(c_ptr), allocatable :: z_int1(:)
-integer(c_int) :: n1_int1
-integer(c_int) :: n1_p_reflect
-integer(c_int) :: n2_p_reflect
-integer(c_int) :: n1_p_reflect_scratch
-integer(c_int) :: n1_bragg_angle
+  integer(c_int) :: n1_angle
+  integer(c_int) :: n1_energy
+  type(c_ptr), allocatable :: z_int1(:)
+  integer(c_int) :: n1_int1
+  integer(c_int) :: n1_p_reflect
+  integer(c_int) :: n2_p_reflect
+  integer(c_int) :: n1_p_reflect_scratch
+  integer(c_int) :: n1_bragg_angle
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_angle = 0
-if (allocated(F%angle)) then
-  n1_angle = size(F%angle, 1)
-endif
+  n1_angle = 0
+  if (allocated(F%angle)) then
+    n1_angle = size(F%angle, 1)
+  endif
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_energy = 0
-if (allocated(F%energy)) then
-  n1_energy = size(F%energy, 1)
-endif
+  n1_energy = 0
+  if (allocated(F%energy)) then
+    n1_energy = size(F%energy, 1)
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_int1 = 0
-if (allocated(F%int1)) then
-  n1_int1 = size(F%int1); lb1 = lbound(F%int1, 1) - 1
-  allocate (z_int1(n1_int1))
-  do jd1 = 1, n1_int1
-    z_int1(jd1) = c_loc(F%int1(jd1+lb1))
-  enddo
-endif
+  n1_int1 = 0
+  if (allocated(F%int1)) then
+    n1_int1 = size(F%int1); lb1 = lbound(F%int1, 1) - 1
+    allocate (z_int1(n1_int1))
+    do jd1 = 1, n1_int1
+      z_int1(jd1) = c_loc(F%int1(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[real, 2, ALLOC]
-if (allocated(F%p_reflect)) then
-  n1_p_reflect = size(F%p_reflect, 1)
-  n2_p_reflect = size(F%p_reflect, 2)
-else
-  n1_p_reflect = 0; n2_p_reflect = 0
-endif
+  if (allocated(F%p_reflect)) then
+    n1_p_reflect = size(F%p_reflect, 1)
+    n2_p_reflect = size(F%p_reflect, 2)
+  else
+    n1_p_reflect = 0; n2_p_reflect = 0
+  endif
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_p_reflect_scratch = 0
-if (allocated(F%p_reflect_scratch)) then
-  n1_p_reflect_scratch = size(F%p_reflect_scratch, 1)
-endif
+  n1_p_reflect_scratch = 0
+  if (allocated(F%p_reflect_scratch)) then
+    n1_p_reflect_scratch = size(F%p_reflect_scratch, 1)
+  endif
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_bragg_angle = 0
-if (allocated(F%bragg_angle)) then
-  n1_bragg_angle = size(F%bragg_angle, 1)
-endif
+  n1_bragg_angle = 0
+  if (allocated(F%bragg_angle)) then
+    n1_bragg_angle = size(F%bragg_angle, 1)
+  endif
 
 !! f_side.to_c2_call
 call photon_reflect_table_to_c2 (C, fvec2vec(F%angle, n1_angle), n1_angle, fvec2vec(F%energy, &
@@ -1553,7 +1551,6 @@ if (n1_angle /= 0) then
 else
   if (allocated(F%angle)) deallocate(F%angle)
 endif
-
 !! f_side.to_f2_trans[real, 1, ALLOC]
 if (allocated(F%energy)) then
   if (n1_energy == 0 .or. any(shape(F%energy) /= [n1_energy])) deallocate(F%energy)
@@ -1566,7 +1563,6 @@ if (n1_energy /= 0) then
 else
   if (allocated(F%energy)) deallocate(F%energy)
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_int1 == 0) then
   if (allocated(F%int1)) deallocate(F%int1)
@@ -1580,7 +1576,6 @@ else
     call interval1_coef_to_f (z_int1(jd1), c_loc(F%int1(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 2, ALLOC]
 if (allocated(F%p_reflect)) then
   if (n1_p_reflect == 0 .or. any(shape(F%p_reflect) /= [n1_p_reflect, n2_p_reflect])) deallocate(F%p_reflect)
@@ -1593,7 +1588,6 @@ if (n1_p_reflect /= 0) then
 else
   if (allocated(F%p_reflect)) deallocate(F%p_reflect)
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%max_energy = z_max_energy
 !! f_side.to_f2_trans[real, 1, ALLOC]
@@ -1608,7 +1602,6 @@ if (n1_p_reflect_scratch /= 0) then
 else
   if (allocated(F%p_reflect_scratch)) deallocate(F%p_reflect_scratch)
 endif
-
 !! f_side.to_f2_trans[real, 1, ALLOC]
 if (allocated(F%bragg_angle)) then
   if (n1_bragg_angle == 0 .or. any(shape(F%bragg_angle) /= [n1_bragg_angle])) deallocate(F%bragg_angle)
@@ -1621,7 +1614,6 @@ if (n1_bragg_angle /= 0) then
 else
   if (allocated(F%bragg_angle)) deallocate(F%bragg_angle)
 endif
-
 
 end subroutine photon_reflect_table_to_f2
 
@@ -1665,22 +1657,22 @@ type(c_ptr), value :: C
 type(photon_reflect_surface_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_table(:)
-integer(c_int) :: n1_table
+  type(c_ptr), allocatable :: z_table(:)
+  integer(c_int) :: n1_table
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_table = 0
-if (allocated(F%table)) then
-  n1_table = size(F%table); lb1 = lbound(F%table, 1) - 1
-  allocate (z_table(n1_table))
-  do jd1 = 1, n1_table
-    z_table(jd1) = c_loc(F%table(jd1+lb1))
-  enddo
-endif
+  n1_table = 0
+  if (allocated(F%table)) then
+    n1_table = size(F%table); lb1 = lbound(F%table, 1) - 1
+    allocate (z_table(n1_table))
+    do jd1 = 1, n1_table
+      z_table(jd1) = c_loc(F%table(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call photon_reflect_surface_to_c2 (C, trim(F%name) // c_null_char, trim(F%description) // &
@@ -1743,7 +1735,6 @@ else
     call photon_reflect_table_to_f (z_table(jd1), c_loc(F%table(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%surface_roughness_rms = z_surface_roughness_rms
 !! f_side.to_f2_trans[real, 0, NOT]
@@ -1919,22 +1910,22 @@ type(c_ptr), value :: C
 type(coord_array_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_orbit(:)
-integer(c_int) :: n1_orbit
+  type(c_ptr), allocatable :: z_orbit(:)
+  integer(c_int) :: n1_orbit
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_orbit = 0
-if (allocated(F%orbit)) then
-  n1_orbit = size(F%orbit); lb1 = lbound(F%orbit, 1) - 1
-  allocate (z_orbit(n1_orbit))
-  do jd1 = 1, n1_orbit
-    z_orbit(jd1) = c_loc(F%orbit(jd1+lb1))
-  enddo
-endif
+  n1_orbit = 0
+  if (allocated(F%orbit)) then
+    n1_orbit = size(F%orbit); lb1 = lbound(F%orbit, 1) - 1
+    allocate (z_orbit(n1_orbit))
+    do jd1 = 1, n1_orbit
+      z_orbit(jd1) = c_loc(F%orbit(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call coord_array_to_c2 (C, z_orbit, n1_orbit)
@@ -1984,7 +1975,6 @@ else
     call coord_to_f (z_orbit(jd1), c_loc(F%orbit(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine coord_array_to_f2
 
@@ -2216,35 +2206,35 @@ type(c_ptr), value :: C
 type(wake_sr_z_long_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n1_w
-integer(c_int) :: n1_fw
-integer(c_int) :: n1_fbunch
-integer(c_int) :: n1_w_out
+  integer(c_int) :: n1_w
+  integer(c_int) :: n1_fw
+  integer(c_int) :: n1_fbunch
+  integer(c_int) :: n1_w_out
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_w = 0
-if (allocated(F%w)) then
-  n1_w = size(F%w, 1)
-endif
+  n1_w = 0
+  if (allocated(F%w)) then
+    n1_w = size(F%w, 1)
+  endif
 !! f_side.to_c_trans[complex, 1, ALLOC]
-n1_fw = 0
-if (allocated(F%fw)) then
-  n1_fw = size(F%fw, 1)
-endif
+  n1_fw = 0
+  if (allocated(F%fw)) then
+    n1_fw = size(F%fw, 1)
+  endif
 !! f_side.to_c_trans[complex, 1, ALLOC]
-n1_fbunch = 0
-if (allocated(F%fbunch)) then
-  n1_fbunch = size(F%fbunch, 1)
-endif
+  n1_fbunch = 0
+  if (allocated(F%fbunch)) then
+    n1_fbunch = size(F%fbunch, 1)
+  endif
 !! f_side.to_c_trans[complex, 1, ALLOC]
-n1_w_out = 0
-if (allocated(F%w_out)) then
-  n1_w_out = size(F%w_out, 1)
-endif
+  n1_w_out = 0
+  if (allocated(F%w_out)) then
+    n1_w_out = size(F%w_out, 1)
+  endif
 
 !! f_side.to_c2_call
 call wake_sr_z_long_to_c2 (C, fvec2vec(F%w, n1_w), n1_w, fvec2vec(F%fw, n1_fw), n1_fw, &
@@ -2301,7 +2291,6 @@ if (n1_w /= 0) then
 else
   if (allocated(F%w)) deallocate(F%w)
 endif
-
 !! f_side.to_f2_trans[complex, 1, ALLOC]
 if (allocated(F%fw)) then
   if (n1_fw == 0 .or. any(shape(F%fw) /= [n1_fw])) deallocate(F%fw)
@@ -2314,7 +2303,6 @@ if (n1_fw /= 0) then
 else
   if (allocated(F%fw)) deallocate(F%fw)
 endif
-
 !! f_side.to_f2_trans[complex, 1, ALLOC]
 if (allocated(F%fbunch)) then
   if (n1_fbunch == 0 .or. any(shape(F%fbunch) /= [n1_fbunch])) deallocate(F%fbunch)
@@ -2327,7 +2315,6 @@ if (n1_fbunch /= 0) then
 else
   if (allocated(F%fbunch)) deallocate(F%fbunch)
 endif
-
 !! f_side.to_f2_trans[complex, 1, ALLOC]
 if (allocated(F%w_out)) then
   if (n1_w_out == 0 .or. any(shape(F%w_out) /= [n1_w_out])) deallocate(F%w_out)
@@ -2340,7 +2327,6 @@ if (n1_w_out /= 0) then
 else
   if (allocated(F%w_out)) deallocate(F%w_out)
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%dz = z_dz
 !! f_side.to_f2_trans[real, 0, NOT]
@@ -2499,33 +2485,33 @@ type(c_ptr), value :: C
 type(wake_sr_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_long(:)
-integer(c_int) :: n1_long
-type(c_ptr), allocatable :: z_trans(:)
-integer(c_int) :: n1_trans
+  type(c_ptr), allocatable :: z_long(:)
+  integer(c_int) :: n1_long
+  type(c_ptr), allocatable :: z_trans(:)
+  integer(c_int) :: n1_trans
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_long = 0
-if (allocated(F%long)) then
-  n1_long = size(F%long); lb1 = lbound(F%long, 1) - 1
-  allocate (z_long(n1_long))
-  do jd1 = 1, n1_long
-    z_long(jd1) = c_loc(F%long(jd1+lb1))
-  enddo
-endif
+  n1_long = 0
+  if (allocated(F%long)) then
+    n1_long = size(F%long); lb1 = lbound(F%long, 1) - 1
+    allocate (z_long(n1_long))
+    do jd1 = 1, n1_long
+      z_long(jd1) = c_loc(F%long(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_trans = 0
-if (allocated(F%trans)) then
-  n1_trans = size(F%trans); lb1 = lbound(F%trans, 1) - 1
-  allocate (z_trans(n1_trans))
-  do jd1 = 1, n1_trans
-    z_trans(jd1) = c_loc(F%trans(jd1+lb1))
-  enddo
-endif
+  n1_trans = 0
+  if (allocated(F%trans)) then
+    n1_trans = size(F%trans); lb1 = lbound(F%trans, 1) - 1
+    allocate (z_trans(n1_trans))
+    do jd1 = 1, n1_trans
+      z_trans(jd1) = c_loc(F%trans(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call wake_sr_to_c2 (C, trim(F%file) // c_null_char, c_loc(F%z_long), z_long, n1_long, z_trans, &
@@ -2586,7 +2572,6 @@ else
     call wake_sr_mode_to_f (z_long(jd1), c_loc(F%long(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_trans == 0) then
   if (allocated(F%trans)) deallocate(F%trans)
@@ -2600,7 +2585,6 @@ else
     call wake_sr_mode_to_f (z_trans(jd1), c_loc(F%trans(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%z_ref_long = z_z_ref_long
 !! f_side.to_f2_trans[real, 0, NOT]
@@ -2767,22 +2751,22 @@ type(c_ptr), value :: C
 type(wake_lr_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_mode(:)
-integer(c_int) :: n1_mode
+  type(c_ptr), allocatable :: z_mode(:)
+  integer(c_int) :: n1_mode
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_mode = 0
-if (allocated(F%mode)) then
-  n1_mode = size(F%mode); lb1 = lbound(F%mode, 1) - 1
-  allocate (z_mode(n1_mode))
-  do jd1 = 1, n1_mode
-    z_mode(jd1) = c_loc(F%mode(jd1+lb1))
-  enddo
-endif
+  n1_mode = 0
+  if (allocated(F%mode)) then
+    n1_mode = size(F%mode); lb1 = lbound(F%mode, 1) - 1
+    allocate (z_mode(n1_mode))
+    do jd1 = 1, n1_mode
+      z_mode(jd1) = c_loc(F%mode(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call wake_lr_to_c2 (C, trim(F%file) // c_null_char, z_mode, n1_mode, F%t_ref, F%freq_spread, &
@@ -2839,7 +2823,6 @@ else
     call wake_lr_mode_to_f (z_mode(jd1), c_loc(F%mode(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%t_ref = z_t_ref
 !! f_side.to_f2_trans[real, 0, NOT]
@@ -3134,22 +3117,22 @@ type(c_ptr), value :: C
 type(taylor_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_term(:)
-integer(c_int) :: n1_term
+  type(c_ptr), allocatable :: z_term(:)
+  integer(c_int) :: n1_term
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, PTR]
- n1_term = 0
-if (associated(F%term)) then
-  n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
-  allocate (z_term(n1_term))
-  do jd1 = 1, n1_term
-    z_term(jd1) = c_loc(F%term(jd1+lb1))
-  enddo
-endif
+  n1_term = 0
+  if (associated(F%term)) then
+    n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
+    allocate (z_term(n1_term))
+    do jd1 = 1, n1_term
+      z_term(jd1) = c_loc(F%term(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call taylor_to_c2 (C, F%ref, z_term, n1_term)
@@ -3202,7 +3185,6 @@ else
     call taylor_term_to_f (z_term(jd1), c_loc(F%term(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine taylor_to_f2
 
@@ -3325,22 +3307,22 @@ type(c_ptr), value :: C
 type(em_taylor_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_term(:)
-integer(c_int) :: n1_term
+  type(c_ptr), allocatable :: z_term(:)
+  integer(c_int) :: n1_term
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_term = 0
-if (allocated(F%term)) then
-  n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
-  allocate (z_term(n1_term))
-  do jd1 = 1, n1_term
-    z_term(jd1) = c_loc(F%term(jd1+lb1))
-  enddo
-endif
+  n1_term = 0
+  if (allocated(F%term)) then
+    n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
+    allocate (z_term(n1_term))
+    do jd1 = 1, n1_term
+      z_term(jd1) = c_loc(F%term(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call em_taylor_to_c2 (C, F%ref, z_term, n1_term)
@@ -3393,7 +3375,6 @@ else
     call em_taylor_term_to_f (z_term(jd1), c_loc(F%term(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine em_taylor_to_f2
 
@@ -3534,22 +3515,22 @@ type(c_ptr), value :: C
 type(cartesian_map_term_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_term(:)
-integer(c_int) :: n1_term
+  type(c_ptr), allocatable :: z_term(:)
+  integer(c_int) :: n1_term
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_term = 0
-if (allocated(F%term)) then
-  n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
-  allocate (z_term(n1_term))
-  do jd1 = 1, n1_term
-    z_term(jd1) = c_loc(F%term(jd1+lb1))
-  enddo
-endif
+  n1_term = 0
+  if (allocated(F%term)) then
+    n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
+    allocate (z_term(n1_term))
+    do jd1 = 1, n1_term
+      z_term(jd1) = c_loc(F%term(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call cartesian_map_term_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_term, n1_term)
@@ -3606,7 +3587,6 @@ else
   enddo
 endif
 
-
 end subroutine cartesian_map_term_to_f2
 
 !--------------------------------------------------------------------------
@@ -3647,15 +3627,15 @@ type(c_ptr), value :: C
 type(cartesian_map_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n_ptr
+  integer(c_int) :: n_ptr
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 0, PTR]
-n_ptr = 0
-if (associated(F%ptr)) n_ptr = 1
+  n_ptr = 0
+  if (associated(F%ptr)) n_ptr = 1
 
 !! f_side.to_c2_call
 call cartesian_map_to_c2 (C, F%field_scale, fvec2vec(F%r0, 3), F%master_parameter, &
@@ -3714,7 +3694,6 @@ else
   if (.not. associated(F%ptr)) allocate(F%ptr)
   call cartesian_map_term_to_f (z_ptr, c_loc(F%ptr))
 endif
-
 
 end subroutine cartesian_map_to_f2
 
@@ -3836,22 +3815,22 @@ type(c_ptr), value :: C
 type(cylindrical_map_term_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_term(:)
-integer(c_int) :: n1_term
+  type(c_ptr), allocatable :: z_term(:)
+  integer(c_int) :: n1_term
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_term = 0
-if (allocated(F%term)) then
-  n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
-  allocate (z_term(n1_term))
-  do jd1 = 1, n1_term
-    z_term(jd1) = c_loc(F%term(jd1+lb1))
-  enddo
-endif
+  n1_term = 0
+  if (allocated(F%term)) then
+    n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
+    allocate (z_term(n1_term))
+    do jd1 = 1, n1_term
+      z_term(jd1) = c_loc(F%term(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call cylindrical_map_term_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_term, n1_term)
@@ -3908,7 +3887,6 @@ else
   enddo
 endif
 
-
 end subroutine cylindrical_map_term_to_f2
 
 !--------------------------------------------------------------------------
@@ -3949,15 +3927,15 @@ type(c_ptr), value :: C
 type(cylindrical_map_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n_ptr
+  integer(c_int) :: n_ptr
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 0, PTR]
-n_ptr = 0
-if (associated(F%ptr)) n_ptr = 1
+  n_ptr = 0
+  if (associated(F%ptr)) n_ptr = 1
 
 !! f_side.to_c2_call
 call cylindrical_map_to_c2 (C, F%m, F%harmonic, F%phi0_fieldmap, F%theta0_azimuth, &
@@ -4025,7 +4003,6 @@ else
   if (.not. associated(F%ptr)) allocate(F%ptr)
   call cylindrical_map_term_to_f (z_ptr, c_loc(F%ptr))
 endif
-
 
 end subroutine cylindrical_map_to_f2
 
@@ -4233,15 +4210,15 @@ type(c_ptr), value :: C
 type(grid_field_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n_ptr
+  integer(c_int) :: n_ptr
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 0, PTR]
-n_ptr = 0
-if (associated(F%ptr)) n_ptr = 1
+  n_ptr = 0
+  if (associated(F%ptr)) n_ptr = 1
 
 !! f_side.to_c2_call
 call grid_field_to_c2 (C, F%geometry, F%harmonic, F%phi0_fieldmap, F%field_scale, F%field_type, &
@@ -4315,7 +4292,6 @@ else
   if (.not. associated(F%ptr)) allocate(F%ptr)
   call grid_field_pt_to_f (z_ptr, c_loc(F%ptr))
 endif
-
 
 end subroutine grid_field_to_f2
 
@@ -5099,20 +5075,20 @@ type(c_ptr), value :: C
 type(gen_grad1_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n1_deriv
-integer(c_int) :: n2_deriv
+  integer(c_int) :: n1_deriv
+  integer(c_int) :: n2_deriv
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[real, 2, ALLOC]
-if (allocated(F%deriv)) then
-  n1_deriv = size(F%deriv, 1)
-  n2_deriv = size(F%deriv, 2)
-else
-  n1_deriv = 0; n2_deriv = 0
-endif
+  if (allocated(F%deriv)) then
+    n1_deriv = size(F%deriv, 1)
+    n2_deriv = size(F%deriv, 2)
+  else
+    n1_deriv = 0; n2_deriv = 0
+  endif
 
 !! f_side.to_c2_call
 call gen_grad1_to_c2 (C, F%m, F%sincos, F%n_deriv_max, mat2vec(F%deriv, n1_deriv*n2_deriv), &
@@ -5172,7 +5148,6 @@ else
   if (allocated(F%deriv)) deallocate(F%deriv)
 endif
 
-
 end subroutine gen_grad1_to_f2
 
 !--------------------------------------------------------------------------
@@ -5215,22 +5190,22 @@ type(c_ptr), value :: C
 type(gen_grad_map_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_gg(:)
-integer(c_int) :: n1_gg
+  type(c_ptr), allocatable :: z_gg(:)
+  integer(c_int) :: n1_gg
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_gg = 0
-if (allocated(F%gg)) then
-  n1_gg = size(F%gg); lb1 = lbound(F%gg, 1) - 1
-  allocate (z_gg(n1_gg))
-  do jd1 = 1, n1_gg
-    z_gg(jd1) = c_loc(F%gg(jd1+lb1))
-  enddo
-endif
+  n1_gg = 0
+  if (allocated(F%gg)) then
+    n1_gg = size(F%gg); lb1 = lbound(F%gg, 1) - 1
+    allocate (z_gg(n1_gg))
+    do jd1 = 1, n1_gg
+      z_gg(jd1) = c_loc(F%gg(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call gen_grad_map_to_c2 (C, trim(F%file) // c_null_char, z_gg, n1_gg, F%ele_anchor_pt, &
@@ -5289,7 +5264,6 @@ else
     call gen_grad1_to_f (z_gg(jd1), c_loc(F%gg(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%ele_anchor_pt = z_ele_anchor_pt
 !! f_side.to_f2_trans[integer, 0, NOT]
@@ -5435,25 +5409,25 @@ type(c_ptr), value :: C
 type(surface_segmented_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_pt(:)
-integer(c_int) :: n1_pt
-integer(c_int) :: n2_pt
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
+  integer(c_int) :: n2_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 2, ALLOC]
-if (allocated(F%pt)) then
-  n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
-  n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
-  allocate (z_pt(n1_pt * n2_pt))
-  do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
-    z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
-  enddo;  enddo
-else
-  n1_pt = 0; n2_pt = 0
-endif
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
+    n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
+    allocate (z_pt(n1_pt * n2_pt))
+    do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
+      z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
+    enddo;  enddo
+  else
+    n1_pt = 0; n2_pt = 0
+  endif
 
 !! f_side.to_c2_call
 call surface_segmented_to_c2 (C, c_logic(F%active), fvec2vec(F%dr, 2), fvec2vec(F%r0, 2), z_pt, &
@@ -5514,7 +5488,6 @@ else
   enddo
   enddo
 endif
-
 
 end subroutine surface_segmented_to_f2
 
@@ -5646,25 +5619,25 @@ type(c_ptr), value :: C
 type(surface_h_misalign_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_pt(:)
-integer(c_int) :: n1_pt
-integer(c_int) :: n2_pt
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
+  integer(c_int) :: n2_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 2, ALLOC]
-if (allocated(F%pt)) then
-  n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
-  n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
-  allocate (z_pt(n1_pt * n2_pt))
-  do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
-    z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
-  enddo;  enddo
-else
-  n1_pt = 0; n2_pt = 0
-endif
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
+    n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
+    allocate (z_pt(n1_pt * n2_pt))
+    do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
+      z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
+    enddo;  enddo
+  else
+    n1_pt = 0; n2_pt = 0
+  endif
 
 !! f_side.to_c2_call
 call surface_h_misalign_to_c2 (C, c_logic(F%active), fvec2vec(F%dr, 2), fvec2vec(F%r0, 2), &
@@ -5725,7 +5698,6 @@ else
   enddo
   enddo
 endif
-
 
 end subroutine surface_h_misalign_to_f2
 
@@ -5857,25 +5829,25 @@ type(c_ptr), value :: C
 type(surface_displacement_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_pt(:)
-integer(c_int) :: n1_pt
-integer(c_int) :: n2_pt
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
+  integer(c_int) :: n2_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 2, ALLOC]
-if (allocated(F%pt)) then
-  n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
-  n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
-  allocate (z_pt(n1_pt * n2_pt))
-  do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
-    z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
-  enddo;  enddo
-else
-  n1_pt = 0; n2_pt = 0
-endif
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
+    n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
+    allocate (z_pt(n1_pt * n2_pt))
+    do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
+      z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
+    enddo;  enddo
+  else
+    n1_pt = 0; n2_pt = 0
+  endif
 
 !! f_side.to_c2_call
 call surface_displacement_to_c2 (C, c_logic(F%active), fvec2vec(F%dr, 2), fvec2vec(F%r0, 2), &
@@ -5936,7 +5908,6 @@ else
   enddo
   enddo
 endif
-
 
 end subroutine surface_displacement_to_f2
 
@@ -6145,16 +6116,16 @@ type(c_ptr), value :: C
 type(photon_target_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr) :: z_corner(8)
+  type(c_ptr) :: z_corner(8)
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, NOT]
-do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
-  z_corner(jd1) = c_loc(F%corner(jd1+lb1))
-enddo
+  do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
+    z_corner(jd1) = c_loc(F%corner(jd1+lb1))
+  enddo
 
 !! f_side.to_c2_call
 call photon_target_to_c2 (C, F%type, F%n_corner, c_loc(F%ele_loc), z_corner, c_loc(F%center))
@@ -6448,25 +6419,25 @@ type(c_ptr), value :: C
 type(pixel_detec_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_pt(:)
-integer(c_int) :: n1_pt
-integer(c_int) :: n2_pt
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
+  integer(c_int) :: n2_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 2, ALLOC]
-if (allocated(F%pt)) then
-  n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
-  n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
-  allocate (z_pt(n1_pt * n2_pt))
-  do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
-    z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
-  enddo;  enddo
-else
-  n1_pt = 0; n2_pt = 0
-endif
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
+    n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
+    allocate (z_pt(n1_pt * n2_pt))
+    do jd1 = 1, n1_pt; do jd2 = 1, n2_pt
+      z_pt(n2_pt*(jd1-1) + jd2) = c_loc(F%pt(jd1+lb1, jd2+lb2))
+    enddo;  enddo
+  else
+    n1_pt = 0; n2_pt = 0
+  endif
 
 !! f_side.to_c2_call
 call pixel_detec_to_c2 (C, fvec2vec(F%dr, 2), fvec2vec(F%r0, 2), F%n_track_tot, F%n_hit_detec, &
@@ -6533,7 +6504,6 @@ else
   enddo
 endif
 
-
 end subroutine pixel_detec_to_f2
 
 !--------------------------------------------------------------------------
@@ -6579,28 +6549,28 @@ type(c_ptr), value :: C
 type(photon_element_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_init_energy_prob(:)
-integer(c_int) :: n1_init_energy_prob
-integer(c_int) :: n1_integrated_init_energy_prob
+  type(c_ptr), allocatable :: z_init_energy_prob(:)
+  integer(c_int) :: n1_init_energy_prob
+  integer(c_int) :: n1_integrated_init_energy_prob
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_init_energy_prob = 0
-if (allocated(F%init_energy_prob)) then
-  n1_init_energy_prob = size(F%init_energy_prob); lb1 = lbound(F%init_energy_prob, 1) - 1
-  allocate (z_init_energy_prob(n1_init_energy_prob))
-  do jd1 = 1, n1_init_energy_prob
-    z_init_energy_prob(jd1) = c_loc(F%init_energy_prob(jd1+lb1))
-  enddo
-endif
+  n1_init_energy_prob = 0
+  if (allocated(F%init_energy_prob)) then
+    n1_init_energy_prob = size(F%init_energy_prob); lb1 = lbound(F%init_energy_prob, 1) - 1
+    allocate (z_init_energy_prob(n1_init_energy_prob))
+    do jd1 = 1, n1_init_energy_prob
+      z_init_energy_prob(jd1) = c_loc(F%init_energy_prob(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_integrated_init_energy_prob = 0
-if (allocated(F%integrated_init_energy_prob)) then
-  n1_integrated_init_energy_prob = size(F%integrated_init_energy_prob, 1)
-endif
+  n1_integrated_init_energy_prob = 0
+  if (allocated(F%integrated_init_energy_prob)) then
+    n1_integrated_init_energy_prob = size(F%integrated_init_energy_prob, 1)
+  endif
 
 !! f_side.to_c2_call
 call photon_element_to_c2 (C, c_loc(F%curvature), c_loc(F%target), c_loc(F%material), &
@@ -6682,7 +6652,6 @@ else
     call spline_to_f (z_init_energy_prob(jd1), c_loc(F%init_energy_prob(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 1, ALLOC]
 if (allocated(F%integrated_init_energy_prob)) then
   if (n1_integrated_init_energy_prob == 0 .or. any(shape(F%integrated_init_energy_prob) /= [n1_integrated_init_energy_prob])) deallocate(F%integrated_init_energy_prob)
@@ -6695,7 +6664,6 @@ if (n1_integrated_init_energy_prob /= 0) then
 else
   if (allocated(F%integrated_init_energy_prob)) deallocate(F%integrated_init_energy_prob)
 endif
-
 
 end subroutine photon_element_to_f2
 
@@ -6845,26 +6813,26 @@ type(c_ptr), value :: C
 type(wall3d_section_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_v(:)
-integer(c_int) :: n1_v
-integer(c_int) :: n_surface
+  type(c_ptr), allocatable :: z_v(:)
+  integer(c_int) :: n1_v
+  integer(c_int) :: n_surface
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_v = 0
-if (allocated(F%v)) then
-  n1_v = size(F%v); lb1 = lbound(F%v, 1) - 1
-  allocate (z_v(n1_v))
-  do jd1 = 1, n1_v
-    z_v(jd1) = c_loc(F%v(jd1+lb1))
-  enddo
-endif
+  n1_v = 0
+  if (allocated(F%v)) then
+    n1_v = size(F%v); lb1 = lbound(F%v, 1) - 1
+    allocate (z_v(n1_v))
+    do jd1 = 1, n1_v
+      z_v(jd1) = c_loc(F%v(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 0, PTR]
-n_surface = 0
-if (associated(F%surface)) n_surface = 1
+  n_surface = 0
+  if (associated(F%surface)) n_surface = 1
 
 !! f_side.to_c2_call
 call wall3d_section_to_c2 (C, trim(F%name) // c_null_char, trim(F%material) // c_null_char, &
@@ -6932,7 +6900,6 @@ else
     call wall3d_vertex_to_f (z_v(jd1), c_loc(F%v(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_surface == 0) then
   if (associated(F%surface)) deallocate(F%surface)
@@ -6940,7 +6907,6 @@ else
   if (.not. associated(F%surface)) allocate(F%surface)
   call photon_reflect_surface_to_f (z_surface, c_loc(F%surface))
 endif
-
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%type = z_type
 !! f_side.to_f2_trans[integer, 0, NOT]
@@ -7017,22 +6983,22 @@ type(c_ptr), value :: C
 type(wall3d_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_section(:)
-integer(c_int) :: n1_section
+  type(c_ptr), allocatable :: z_section(:)
+  integer(c_int) :: n1_section
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_section = 0
-if (allocated(F%section)) then
-  n1_section = size(F%section); lb1 = lbound(F%section, 1) - 1
-  allocate (z_section(n1_section))
-  do jd1 = 1, n1_section
-    z_section(jd1) = c_loc(F%section(jd1+lb1))
-  enddo
-endif
+  n1_section = 0
+  if (allocated(F%section)) then
+    n1_section = size(F%section); lb1 = lbound(F%section, 1) - 1
+    allocate (z_section(n1_section))
+    do jd1 = 1, n1_section
+      z_section(jd1) = c_loc(F%section(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call wall3d_to_c2 (C, trim(F%name) // c_null_char, F%type, F%ix_wall3d, F%n_link, F%thickness, &
@@ -7109,7 +7075,6 @@ else
   enddo
 endif
 
-
 end subroutine wall3d_to_f2
 
 !--------------------------------------------------------------------------
@@ -7148,15 +7113,15 @@ type(c_ptr), value :: C
 type(ramper_lord_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n_attrib_ptr
+  integer(c_int) :: n_attrib_ptr
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[real, 0, PTR]
-n_attrib_ptr = 0
-if (associated(F%attrib_ptr)) n_attrib_ptr = 1
+  n_attrib_ptr = 0
+  if (associated(F%attrib_ptr)) n_attrib_ptr = 1
 
 !! f_side.to_c2_call
 call ramper_lord_to_c2 (C, F%ix_ele, F%ix_con, F%attrib_ptr, n_attrib_ptr)
@@ -7200,14 +7165,13 @@ F%ix_ele = z_ix_ele
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%ix_con = z_ix_con
 !! f_side.to_f2_trans[real, 0, PTR]
-if (n_attrib_ptr == 0) then                                                                                  
-  if (associated(F%attrib_ptr)) deallocate(F%attrib_ptr)                                                           
-else                                                                                                   
-  call c_f_pointer (z_attrib_ptr, f_attrib_ptr)                                                                    
-  if (.not. associated(F%attrib_ptr)) allocate(F%attrib_ptr)                                                       
+if (n_attrib_ptr == 0) then
+  if (associated(F%attrib_ptr)) deallocate(F%attrib_ptr)
+else
+  call c_f_pointer (z_attrib_ptr, f_attrib_ptr)
+  if (.not. associated(F%attrib_ptr)) allocate(F%attrib_ptr)
   F%attrib_ptr = f_attrib_ptr
-endif                                                                                                  
-
+endif
 
 end subroutine ramper_lord_to_f2
 
@@ -7251,28 +7215,28 @@ type(c_ptr), value :: C
 type(control_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n1_y_knot
-type(c_ptr), allocatable :: z_stack(:)
-integer(c_int) :: n1_stack
+  integer(c_int) :: n1_y_knot
+  type(c_ptr), allocatable :: z_stack(:)
+  integer(c_int) :: n1_stack
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_y_knot = 0
-if (allocated(F%y_knot)) then
-  n1_y_knot = size(F%y_knot, 1)
-endif
+  n1_y_knot = 0
+  if (allocated(F%y_knot)) then
+    n1_y_knot = size(F%y_knot, 1)
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_stack = 0
-if (allocated(F%stack)) then
-  n1_stack = size(F%stack); lb1 = lbound(F%stack, 1) - 1
-  allocate (z_stack(n1_stack))
-  do jd1 = 1, n1_stack
-    z_stack(jd1) = c_loc(F%stack(jd1+lb1))
-  enddo
-endif
+  n1_stack = 0
+  if (allocated(F%stack)) then
+    n1_stack = size(F%stack); lb1 = lbound(F%stack, 1) - 1
+    allocate (z_stack(n1_stack))
+    do jd1 = 1, n1_stack
+      z_stack(jd1) = c_loc(F%stack(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call control_to_c2 (C, F%value, fvec2vec(F%y_knot, n1_y_knot), n1_y_knot, z_stack, n1_stack, &
@@ -7331,7 +7295,6 @@ if (n1_y_knot /= 0) then
 else
   if (allocated(F%y_knot)) deallocate(F%y_knot)
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_stack == 0) then
   if (allocated(F%stack)) deallocate(F%stack)
@@ -7345,7 +7308,6 @@ else
     call expression_atom_to_f (z_stack(jd1), c_loc(F%stack(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call lat_ele_loc_to_f(z_slave, c_loc(F%slave))
 !! f_side.to_f2_trans[type, 0, NOT]
@@ -7483,28 +7445,28 @@ type(c_ptr), value :: C
 type(control_ramp1_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-integer(c_int) :: n1_y_knot
-type(c_ptr), allocatable :: z_stack(:)
-integer(c_int) :: n1_stack
+  integer(c_int) :: n1_y_knot
+  type(c_ptr), allocatable :: z_stack(:)
+  integer(c_int) :: n1_stack
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_y_knot = 0
-if (allocated(F%y_knot)) then
-  n1_y_knot = size(F%y_knot, 1)
-endif
+  n1_y_knot = 0
+  if (allocated(F%y_knot)) then
+    n1_y_knot = size(F%y_knot, 1)
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_stack = 0
-if (allocated(F%stack)) then
-  n1_stack = size(F%stack); lb1 = lbound(F%stack, 1) - 1
-  allocate (z_stack(n1_stack))
-  do jd1 = 1, n1_stack
-    z_stack(jd1) = c_loc(F%stack(jd1+lb1))
-  enddo
-endif
+  n1_stack = 0
+  if (allocated(F%stack)) then
+    n1_stack = size(F%stack); lb1 = lbound(F%stack, 1) - 1
+    allocate (z_stack(n1_stack))
+    do jd1 = 1, n1_stack
+      z_stack(jd1) = c_loc(F%stack(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call control_ramp1_to_c2 (C, fvec2vec(F%y_knot, n1_y_knot), n1_y_knot, z_stack, n1_stack, &
@@ -7560,7 +7522,6 @@ if (n1_y_knot /= 0) then
 else
   if (allocated(F%y_knot)) deallocate(F%y_knot)
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_stack == 0) then
   if (allocated(F%stack)) deallocate(F%stack)
@@ -7574,7 +7535,6 @@ else
     call expression_atom_to_f (z_stack(jd1), c_loc(F%stack(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[character, 0, NOT]
 call to_f_str(z_attribute, F%attribute)
 !! f_side.to_f2_trans[character, 0, NOT]
@@ -7621,50 +7581,50 @@ type(c_ptr), value :: C
 type(controller_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_var(:)
-integer(c_int) :: n1_var
-type(c_ptr), allocatable :: z_ramp(:)
-integer(c_int) :: n1_ramp
-type(c_ptr), allocatable :: z_ramper_lord(:)
-integer(c_int) :: n1_ramper_lord
-integer(c_int) :: n1_x_knot
+  type(c_ptr), allocatable :: z_var(:)
+  integer(c_int) :: n1_var
+  type(c_ptr), allocatable :: z_ramp(:)
+  integer(c_int) :: n1_ramp
+  type(c_ptr), allocatable :: z_ramper_lord(:)
+  integer(c_int) :: n1_ramper_lord
+  integer(c_int) :: n1_x_knot
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_var = 0
-if (allocated(F%var)) then
-  n1_var = size(F%var); lb1 = lbound(F%var, 1) - 1
-  allocate (z_var(n1_var))
-  do jd1 = 1, n1_var
-    z_var(jd1) = c_loc(F%var(jd1+lb1))
-  enddo
-endif
+  n1_var = 0
+  if (allocated(F%var)) then
+    n1_var = size(F%var); lb1 = lbound(F%var, 1) - 1
+    allocate (z_var(n1_var))
+    do jd1 = 1, n1_var
+      z_var(jd1) = c_loc(F%var(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_ramp = 0
-if (allocated(F%ramp)) then
-  n1_ramp = size(F%ramp); lb1 = lbound(F%ramp, 1) - 1
-  allocate (z_ramp(n1_ramp))
-  do jd1 = 1, n1_ramp
-    z_ramp(jd1) = c_loc(F%ramp(jd1+lb1))
-  enddo
-endif
+  n1_ramp = 0
+  if (allocated(F%ramp)) then
+    n1_ramp = size(F%ramp); lb1 = lbound(F%ramp, 1) - 1
+    allocate (z_ramp(n1_ramp))
+    do jd1 = 1, n1_ramp
+      z_ramp(jd1) = c_loc(F%ramp(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_ramper_lord = 0
-if (allocated(F%ramper_lord)) then
-  n1_ramper_lord = size(F%ramper_lord); lb1 = lbound(F%ramper_lord, 1) - 1
-  allocate (z_ramper_lord(n1_ramper_lord))
-  do jd1 = 1, n1_ramper_lord
-    z_ramper_lord(jd1) = c_loc(F%ramper_lord(jd1+lb1))
-  enddo
-endif
+  n1_ramper_lord = 0
+  if (allocated(F%ramper_lord)) then
+    n1_ramper_lord = size(F%ramper_lord); lb1 = lbound(F%ramper_lord, 1) - 1
+    allocate (z_ramper_lord(n1_ramper_lord))
+    do jd1 = 1, n1_ramper_lord
+      z_ramper_lord(jd1) = c_loc(F%ramper_lord(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_x_knot = 0
-if (allocated(F%x_knot)) then
-  n1_x_knot = size(F%x_knot, 1)
-endif
+  n1_x_knot = 0
+  if (allocated(F%x_knot)) then
+    n1_x_knot = size(F%x_knot, 1)
+  endif
 
 !! f_side.to_c2_call
 call controller_to_c2 (C, z_var, n1_var, z_ramp, n1_ramp, z_ramper_lord, n1_ramper_lord, &
@@ -7718,7 +7678,6 @@ else
     call control_var1_to_f (z_var(jd1), c_loc(F%var(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_ramp == 0) then
   if (allocated(F%ramp)) deallocate(F%ramp)
@@ -7732,7 +7691,6 @@ else
     call control_ramp1_to_f (z_ramp(jd1), c_loc(F%ramp(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_ramper_lord == 0) then
   if (allocated(F%ramper_lord)) deallocate(F%ramper_lord)
@@ -7746,7 +7704,6 @@ else
     call ramper_lord_to_f (z_ramper_lord(jd1), c_loc(F%ramper_lord(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 1, ALLOC]
 if (allocated(F%x_knot)) then
   if (n1_x_knot == 0 .or. any(shape(F%x_knot) /= [n1_x_knot])) deallocate(F%x_knot)
@@ -7759,7 +7716,6 @@ if (n1_x_knot /= 0) then
 else
   if (allocated(F%x_knot)) deallocate(F%x_knot)
 endif
-
 
 end subroutine controller_to_f2
 
@@ -8075,28 +8031,28 @@ type(c_ptr), value :: C
 type(beam_init_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr) :: z_distribution_type(3)
-character(16+1), target :: a_distribution_type(3)
-type(c_ptr) :: z_ellipse(3)
-type(c_ptr) :: z_grid(3)
+  type(c_ptr) :: z_distribution_type(3)
+  character(16+1), target :: a_distribution_type(3)
+  type(c_ptr) :: z_ellipse(3)
+  type(c_ptr) :: z_grid(3)
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[character, 1, NOT]
-do jd1 = 1, size(F%distribution_type,1); lb1 = lbound(F%distribution_type,1) - 1
-  a_distribution_type(jd1) = trim(F%distribution_type(jd1+lb1)) // c_null_char
-  z_distribution_type(jd1) = c_loc(a_distribution_type(jd1))
-enddo
+  do jd1 = 1, size(F%distribution_type,1); lb1 = lbound(F%distribution_type,1) - 1
+    a_distribution_type(jd1) = trim(F%distribution_type(jd1+lb1)) // c_null_char
+    z_distribution_type(jd1) = c_loc(a_distribution_type(jd1))
+  enddo
 !! f_side.to_c_trans[type, 1, NOT]
-do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
-  z_ellipse(jd1) = c_loc(F%ellipse(jd1+lb1))
-enddo
+  do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
+    z_ellipse(jd1) = c_loc(F%ellipse(jd1+lb1))
+  enddo
 !! f_side.to_c_trans[type, 1, NOT]
-do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
-  z_grid(jd1) = c_loc(F%grid(jd1+lb1))
-enddo
+  do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
+    z_grid(jd1) = c_loc(F%grid(jd1+lb1))
+  enddo
 
 !! f_side.to_c2_call
 call beam_init_to_c2 (C, trim(F%position_file) // c_null_char, z_distribution_type, &
@@ -8161,7 +8117,6 @@ do jd1 = 1, size(F%distribution_type,1); lb1 = lbound(F%distribution_type,1) - 1
   call c_f_pointer (z_distribution_type(jd1), f_distribution_type)
   call to_f_str(f_distribution_type, F%distribution_type(jd1+lb1))
 enddo
-
 !! f_side.to_f2_trans[real, 1, NOT]
 F%spin = z_spin(1:3)
 !! f_side.to_f2_trans[type, 1, NOT]
@@ -9162,22 +9117,22 @@ type(c_ptr), value :: C
 type(track_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_pt(:)
-integer(c_int) :: n1_pt
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_pt = 0
-if (allocated(F%pt)) then
-  n1_pt = size(F%pt); lb1 = lbound(F%pt, 1) - 1
-  allocate (z_pt(n1_pt))
-  do jd1 = 1, n1_pt
-    z_pt(jd1) = c_loc(F%pt(jd1+lb1))
-  enddo
-endif
+  n1_pt = 0
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt); lb1 = lbound(F%pt, 1) - 1
+    allocate (z_pt(n1_pt))
+    do jd1 = 1, n1_pt
+      z_pt(jd1) = c_loc(F%pt(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call track_to_c2 (C, z_pt, n1_pt, F%ds_save, F%n_pt, F%n_bad, F%n_ok)
@@ -9229,7 +9184,6 @@ else
     call track_point_to_f (z_pt(jd1), c_loc(F%pt(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%ds_save = z_ds_save
 !! f_side.to_f2_trans[integer, 0, NOT]
@@ -9736,22 +9690,22 @@ type(c_ptr), value :: C
 type(rad_int_branch_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_ele(:)
-integer(c_int) :: n1_ele
+  type(c_ptr), allocatable :: z_ele(:)
+  integer(c_int) :: n1_ele
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_ele = 0
-if (allocated(F%ele)) then
-  n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
-  allocate (z_ele(n1_ele))
-  do jd1 = 1, n1_ele
-    z_ele(jd1) = c_loc(F%ele(jd1+lb1))
-  enddo
-endif
+  n1_ele = 0
+  if (allocated(F%ele)) then
+    n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
+    allocate (z_ele(n1_ele))
+    do jd1 = 1, n1_ele
+      z_ele(jd1) = c_loc(F%ele(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call rad_int_branch_to_c2 (C, z_ele, n1_ele)
@@ -9802,7 +9756,6 @@ else
   enddo
 endif
 
-
 end subroutine rad_int_branch_to_f2
 
 !--------------------------------------------------------------------------
@@ -9840,22 +9793,22 @@ type(c_ptr), value :: C
 type(rad_int_all_ele_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_branch(:)
-integer(c_int) :: n1_branch
+  type(c_ptr), allocatable :: z_branch(:)
+  integer(c_int) :: n1_branch
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_branch = 0
-if (allocated(F%branch)) then
-  n1_branch = size(F%branch); lb1 = lbound(F%branch, 1) - 1
-  allocate (z_branch(n1_branch))
-  do jd1 = 1, n1_branch
-    z_branch(jd1) = c_loc(F%branch(jd1+lb1))
-  enddo
-endif
+  n1_branch = 0
+  if (allocated(F%branch)) then
+    n1_branch = size(F%branch); lb1 = lbound(F%branch, 1) - 1
+    allocate (z_branch(n1_branch))
+    do jd1 = 1, n1_branch
+      z_branch(jd1) = c_loc(F%branch(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call rad_int_all_ele_to_c2 (C, z_branch, n1_branch)
@@ -9905,7 +9858,6 @@ else
     call rad_int_branch_to_f (z_branch(jd1), c_loc(F%branch(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine rad_int_all_ele_to_f2
 
@@ -9976,153 +9928,153 @@ type(c_ptr), value :: C
 type(ele_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-character(200+1), target :: f_descrip
-integer(c_int) :: n_descrip
-integer(c_int) :: n_ac_kick
-integer(c_int) :: n_control
-integer(c_int) :: n_high_energy_space_charge
-integer(c_int) :: n_mode3
-integer(c_int) :: n_photon
-integer(c_int) :: n_rad_map
-type(c_ptr) :: z_taylor(6)
-type(c_ptr) :: z_spin_taylor(4)
-integer(c_int) :: n_wake
-type(c_ptr), allocatable :: z_wall3d(:)
-integer(c_int) :: n1_wall3d
-type(c_ptr), allocatable :: z_cartesian_map(:)
-integer(c_int) :: n1_cartesian_map
-type(c_ptr), allocatable :: z_cylindrical_map(:)
-integer(c_int) :: n1_cylindrical_map
-type(c_ptr), allocatable :: z_gen_grad_map(:)
-integer(c_int) :: n1_gen_grad_map
-type(c_ptr), allocatable :: z_grid_field(:)
-integer(c_int) :: n1_grid_field
-integer(c_int) :: n1_a_pole
-integer(c_int) :: n1_b_pole
-integer(c_int) :: n1_a_pole_elec
-integer(c_int) :: n1_b_pole_elec
-integer(c_int) :: n1_custom
-integer(c_int) :: n1_r
-integer(c_int) :: n2_r
-integer(c_int) :: n3_r
+  character(200+1), target :: f_descrip
+  integer(c_int) :: n_descrip
+  integer(c_int) :: n_ac_kick
+  integer(c_int) :: n_control
+  integer(c_int) :: n_high_energy_space_charge
+  integer(c_int) :: n_mode3
+  integer(c_int) :: n_photon
+  integer(c_int) :: n_rad_map
+  type(c_ptr) :: z_taylor(6)
+  type(c_ptr) :: z_spin_taylor(4)
+  integer(c_int) :: n_wake
+  type(c_ptr), allocatable :: z_wall3d(:)
+  integer(c_int) :: n1_wall3d
+  type(c_ptr), allocatable :: z_cartesian_map(:)
+  integer(c_int) :: n1_cartesian_map
+  type(c_ptr), allocatable :: z_cylindrical_map(:)
+  integer(c_int) :: n1_cylindrical_map
+  type(c_ptr), allocatable :: z_gen_grad_map(:)
+  integer(c_int) :: n1_gen_grad_map
+  type(c_ptr), allocatable :: z_grid_field(:)
+  integer(c_int) :: n1_grid_field
+  integer(c_int) :: n1_a_pole
+  integer(c_int) :: n1_b_pole
+  integer(c_int) :: n1_a_pole_elec
+  integer(c_int) :: n1_b_pole_elec
+  integer(c_int) :: n1_custom
+  integer(c_int) :: n1_r
+  integer(c_int) :: n2_r
+  integer(c_int) :: n3_r
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[character, 0, PTR]
-n_descrip = 0
-if (associated(F%descrip)) then
-  n_descrip = 1
-  f_descrip = trim(F%descrip) // c_null_char 
-endif
+  n_descrip = 0
+  if (associated(F%descrip)) then
+    n_descrip = 1
+    f_descrip = trim(F%descrip) // c_null_char
+  endif
 !! f_side.to_c_trans[type, 0, PTR]
-n_ac_kick = 0
-if (associated(F%ac_kick)) n_ac_kick = 1
+  n_ac_kick = 0
+  if (associated(F%ac_kick)) n_ac_kick = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_control = 0
-if (associated(F%control)) n_control = 1
+  n_control = 0
+  if (associated(F%control)) n_control = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_high_energy_space_charge = 0
-if (associated(F%high_energy_space_charge)) n_high_energy_space_charge = 1
+  n_high_energy_space_charge = 0
+  if (associated(F%high_energy_space_charge)) n_high_energy_space_charge = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_mode3 = 0
-if (associated(F%mode3)) n_mode3 = 1
+  n_mode3 = 0
+  if (associated(F%mode3)) n_mode3 = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_photon = 0
-if (associated(F%photon)) n_photon = 1
+  n_photon = 0
+  if (associated(F%photon)) n_photon = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_rad_map = 0
-if (associated(F%rad_map)) n_rad_map = 1
+  n_rad_map = 0
+  if (associated(F%rad_map)) n_rad_map = 1
 !! f_side.to_c_trans[type, 1, NOT]
-do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
-  z_taylor(jd1) = c_loc(F%taylor(jd1+lb1))
-enddo
+  do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
+    z_taylor(jd1) = c_loc(F%taylor(jd1+lb1))
+  enddo
 !! f_side.to_c_trans[type, 1, NOT]
-do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
-  z_spin_taylor(jd1) = c_loc(F%spin_taylor(jd1+lb1))
-enddo
+  do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
+    z_spin_taylor(jd1) = c_loc(F%spin_taylor(jd1+lb1))
+  enddo
 !! f_side.to_c_trans[type, 0, PTR]
-n_wake = 0
-if (associated(F%wake)) n_wake = 1
+  n_wake = 0
+  if (associated(F%wake)) n_wake = 1
 !! f_side.to_c_trans[type, 1, PTR]
- n1_wall3d = 0
-if (associated(F%wall3d)) then
-  n1_wall3d = size(F%wall3d); lb1 = lbound(F%wall3d, 1) - 1
-  allocate (z_wall3d(n1_wall3d))
-  do jd1 = 1, n1_wall3d
-    z_wall3d(jd1) = c_loc(F%wall3d(jd1+lb1))
-  enddo
-endif
+  n1_wall3d = 0
+  if (associated(F%wall3d)) then
+    n1_wall3d = size(F%wall3d); lb1 = lbound(F%wall3d, 1) - 1
+    allocate (z_wall3d(n1_wall3d))
+    do jd1 = 1, n1_wall3d
+      z_wall3d(jd1) = c_loc(F%wall3d(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, PTR]
- n1_cartesian_map = 0
-if (associated(F%cartesian_map)) then
-  n1_cartesian_map = size(F%cartesian_map); lb1 = lbound(F%cartesian_map, 1) - 1
-  allocate (z_cartesian_map(n1_cartesian_map))
-  do jd1 = 1, n1_cartesian_map
-    z_cartesian_map(jd1) = c_loc(F%cartesian_map(jd1+lb1))
-  enddo
-endif
+  n1_cartesian_map = 0
+  if (associated(F%cartesian_map)) then
+    n1_cartesian_map = size(F%cartesian_map); lb1 = lbound(F%cartesian_map, 1) - 1
+    allocate (z_cartesian_map(n1_cartesian_map))
+    do jd1 = 1, n1_cartesian_map
+      z_cartesian_map(jd1) = c_loc(F%cartesian_map(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, PTR]
- n1_cylindrical_map = 0
-if (associated(F%cylindrical_map)) then
-  n1_cylindrical_map = size(F%cylindrical_map); lb1 = lbound(F%cylindrical_map, 1) - 1
-  allocate (z_cylindrical_map(n1_cylindrical_map))
-  do jd1 = 1, n1_cylindrical_map
-    z_cylindrical_map(jd1) = c_loc(F%cylindrical_map(jd1+lb1))
-  enddo
-endif
+  n1_cylindrical_map = 0
+  if (associated(F%cylindrical_map)) then
+    n1_cylindrical_map = size(F%cylindrical_map); lb1 = lbound(F%cylindrical_map, 1) - 1
+    allocate (z_cylindrical_map(n1_cylindrical_map))
+    do jd1 = 1, n1_cylindrical_map
+      z_cylindrical_map(jd1) = c_loc(F%cylindrical_map(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, PTR]
- n1_gen_grad_map = 0
-if (associated(F%gen_grad_map)) then
-  n1_gen_grad_map = size(F%gen_grad_map); lb1 = lbound(F%gen_grad_map, 1) - 1
-  allocate (z_gen_grad_map(n1_gen_grad_map))
-  do jd1 = 1, n1_gen_grad_map
-    z_gen_grad_map(jd1) = c_loc(F%gen_grad_map(jd1+lb1))
-  enddo
-endif
+  n1_gen_grad_map = 0
+  if (associated(F%gen_grad_map)) then
+    n1_gen_grad_map = size(F%gen_grad_map); lb1 = lbound(F%gen_grad_map, 1) - 1
+    allocate (z_gen_grad_map(n1_gen_grad_map))
+    do jd1 = 1, n1_gen_grad_map
+      z_gen_grad_map(jd1) = c_loc(F%gen_grad_map(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, PTR]
- n1_grid_field = 0
-if (associated(F%grid_field)) then
-  n1_grid_field = size(F%grid_field); lb1 = lbound(F%grid_field, 1) - 1
-  allocate (z_grid_field(n1_grid_field))
-  do jd1 = 1, n1_grid_field
-    z_grid_field(jd1) = c_loc(F%grid_field(jd1+lb1))
-  enddo
-endif
+  n1_grid_field = 0
+  if (associated(F%grid_field)) then
+    n1_grid_field = size(F%grid_field); lb1 = lbound(F%grid_field, 1) - 1
+    allocate (z_grid_field(n1_grid_field))
+    do jd1 = 1, n1_grid_field
+      z_grid_field(jd1) = c_loc(F%grid_field(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[real, 1, PTR]
-n1_a_pole = 0
-if (associated(F%a_pole)) then
-  n1_a_pole = size(F%a_pole, 1)
-endif
+  n1_a_pole = 0
+  if (associated(F%a_pole)) then
+    n1_a_pole = size(F%a_pole, 1)
+  endif
 !! f_side.to_c_trans[real, 1, PTR]
-n1_b_pole = 0
-if (associated(F%b_pole)) then
-  n1_b_pole = size(F%b_pole, 1)
-endif
+  n1_b_pole = 0
+  if (associated(F%b_pole)) then
+    n1_b_pole = size(F%b_pole, 1)
+  endif
 !! f_side.to_c_trans[real, 1, PTR]
-n1_a_pole_elec = 0
-if (associated(F%a_pole_elec)) then
-  n1_a_pole_elec = size(F%a_pole_elec, 1)
-endif
+  n1_a_pole_elec = 0
+  if (associated(F%a_pole_elec)) then
+    n1_a_pole_elec = size(F%a_pole_elec, 1)
+  endif
 !! f_side.to_c_trans[real, 1, PTR]
-n1_b_pole_elec = 0
-if (associated(F%b_pole_elec)) then
-  n1_b_pole_elec = size(F%b_pole_elec, 1)
-endif
+  n1_b_pole_elec = 0
+  if (associated(F%b_pole_elec)) then
+    n1_b_pole_elec = size(F%b_pole_elec, 1)
+  endif
 !! f_side.to_c_trans[real, 1, PTR]
-n1_custom = 0
-if (associated(F%custom)) then
-  n1_custom = size(F%custom, 1)
-endif
+  n1_custom = 0
+  if (associated(F%custom)) then
+    n1_custom = size(F%custom, 1)
+  endif
 !! f_side.to_c_trans[real, 3, PTR]
-if (associated(F%r)) then
-  n1_r = size(F%r, 1)
-  n2_r = size(F%r, 2)
-  n3_r = size(F%r, 3)
-else
-  n1_r = 0; n2_r = 0; n3_r = 0
-endif
+  if (associated(F%r)) then
+    n1_r = size(F%r, 1)
+    n2_r = size(F%r, 2)
+    n3_r = size(F%r, 3)
+  else
+    n1_r = 0; n2_r = 0; n3_r = 0
+  endif
 
 !! f_side.to_c2_call
 call ele_to_c2 (C, trim(F%name) // c_null_char, trim(F%type) // c_null_char, trim(F%alias) // &
@@ -10238,7 +10190,6 @@ else
   if (.not. associated(F%descrip)) allocate(F%descrip)
   call to_f_str(z_descrip, F%descrip)
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call twiss_to_f(z_a, c_loc(F%a))
 !! f_side.to_f2_trans[type, 0, NOT]
@@ -10256,7 +10207,6 @@ else
   if (.not. associated(F%ac_kick)) allocate(F%ac_kick)
   call ac_kicker_to_f (z_ac_kick, c_loc(F%ac_kick))
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call bookkeeping_state_to_f(z_bookkeeping_state, c_loc(F%bookkeeping_state))
 !! f_side.to_f2_trans[type, 0, PTR]
@@ -10266,7 +10216,6 @@ else
   if (.not. associated(F%control)) allocate(F%control)
   call controller_to_f (z_control, c_loc(F%control))
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call floor_position_to_f(z_floor, c_loc(F%floor))
 !! f_side.to_f2_trans[type, 0, PTR]
@@ -10276,7 +10225,6 @@ else
   if (.not. associated(F%high_energy_space_charge)) allocate(F%high_energy_space_charge)
   call high_energy_space_charge_to_f (z_high_energy_space_charge, c_loc(F%high_energy_space_charge))
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_mode3 == 0) then
   if (associated(F%mode3)) deallocate(F%mode3)
@@ -10284,7 +10232,6 @@ else
   if (.not. associated(F%mode3)) allocate(F%mode3)
   call mode3_to_f (z_mode3, c_loc(F%mode3))
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_photon == 0) then
   if (associated(F%photon)) deallocate(F%photon)
@@ -10292,7 +10239,6 @@ else
   if (.not. associated(F%photon)) allocate(F%photon)
   call photon_element_to_f (z_photon, c_loc(F%photon))
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_rad_map == 0) then
   if (associated(F%rad_map)) deallocate(F%rad_map)
@@ -10300,7 +10246,6 @@ else
   if (.not. associated(F%rad_map)) allocate(F%rad_map)
   call rad_map_ele_to_f (z_rad_map, c_loc(F%rad_map))
 endif
-
 !! f_side.to_f2_trans[type, 1, NOT]
 do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
   call taylor_to_f(z_taylor(jd1), c_loc(F%taylor(jd1+lb1)))
@@ -10318,7 +10263,6 @@ else
   if (.not. associated(F%wake)) allocate(F%wake)
   call wake_to_f (z_wake, c_loc(F%wake))
 endif
-
 !! f_side.to_f2_trans[type, 1, PTR]
 if (n1_wall3d == 0) then
   if (associated(F%wall3d)) deallocate(F%wall3d)
@@ -10332,7 +10276,6 @@ else
     call wall3d_to_f (z_wall3d(jd1), c_loc(F%wall3d(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, PTR]
 if (n1_cartesian_map == 0) then
   if (associated(F%cartesian_map)) deallocate(F%cartesian_map)
@@ -10346,7 +10289,6 @@ else
     call cartesian_map_to_f (z_cartesian_map(jd1), c_loc(F%cartesian_map(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, PTR]
 if (n1_cylindrical_map == 0) then
   if (associated(F%cylindrical_map)) deallocate(F%cylindrical_map)
@@ -10360,7 +10302,6 @@ else
     call cylindrical_map_to_f (z_cylindrical_map(jd1), c_loc(F%cylindrical_map(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, PTR]
 if (n1_gen_grad_map == 0) then
   if (associated(F%gen_grad_map)) deallocate(F%gen_grad_map)
@@ -10374,7 +10315,6 @@ else
     call gen_grad_map_to_f (z_gen_grad_map(jd1), c_loc(F%gen_grad_map(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, PTR]
 if (n1_grid_field == 0) then
   if (associated(F%grid_field)) deallocate(F%grid_field)
@@ -10388,7 +10328,6 @@ else
     call grid_field_to_f (z_grid_field(jd1), c_loc(F%grid_field(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call coord_to_f(z_map_ref_orb_in, c_loc(F%map_ref_orb_in))
 !! f_side.to_f2_trans[type, 0, NOT]
@@ -10429,7 +10368,6 @@ if (n1_a_pole /= 0) then
 else
   if (associated(F%a_pole)) deallocate(F%a_pole)
 endif
-
 !! f_side.to_f2_trans[real, 1, PTR]
 if (associated(F%b_pole)) then
   if (n1_b_pole == 0 .or. any(shape(F%b_pole) /= [n1_b_pole])) deallocate(F%b_pole)
@@ -10442,7 +10380,6 @@ if (n1_b_pole /= 0) then
 else
   if (associated(F%b_pole)) deallocate(F%b_pole)
 endif
-
 !! f_side.to_f2_trans[real, 1, PTR]
 if (associated(F%a_pole_elec)) then
   if (n1_a_pole_elec == 0 .or. any(shape(F%a_pole_elec) /= [n1_a_pole_elec])) deallocate(F%a_pole_elec)
@@ -10455,7 +10392,6 @@ if (n1_a_pole_elec /= 0) then
 else
   if (associated(F%a_pole_elec)) deallocate(F%a_pole_elec)
 endif
-
 !! f_side.to_f2_trans[real, 1, PTR]
 if (associated(F%b_pole_elec)) then
   if (n1_b_pole_elec == 0 .or. any(shape(F%b_pole_elec) /= [n1_b_pole_elec])) deallocate(F%b_pole_elec)
@@ -10468,7 +10404,6 @@ if (n1_b_pole_elec /= 0) then
 else
   if (associated(F%b_pole_elec)) deallocate(F%b_pole_elec)
 endif
-
 !! f_side.to_f2_trans[real, 1, PTR]
 if (associated(F%custom)) then
   if (n1_custom == 0 .or. any(shape(F%custom) /= [n1_custom])) deallocate(F%custom)
@@ -10481,7 +10416,6 @@ if (n1_custom /= 0) then
 else
   if (associated(F%custom)) deallocate(F%custom)
 endif
-
 !! f_side.to_f2_trans[real, 3, PTR]
 if (associated(F%r)) then
   if (n1_r == 0 .or. any(shape(F%r) /= [n1_r, n2_r, n3_r])) deallocate(F%r)
@@ -10494,7 +10428,6 @@ if (n1_r /= 0) then
 else
   if (associated(F%r)) deallocate(F%r)
 endif
-
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%key = z_key
 !! f_side.to_f2_trans[integer, 0, NOT]
@@ -10695,22 +10628,22 @@ type(c_ptr), value :: C
 type(complex_taylor_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_term(:)
-integer(c_int) :: n1_term
+  type(c_ptr), allocatable :: z_term(:)
+  integer(c_int) :: n1_term
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, PTR]
- n1_term = 0
-if (associated(F%term)) then
-  n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
-  allocate (z_term(n1_term))
-  do jd1 = 1, n1_term
-    z_term(jd1) = c_loc(F%term(jd1+lb1))
-  enddo
-endif
+  n1_term = 0
+  if (associated(F%term)) then
+    n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
+    allocate (z_term(n1_term))
+    do jd1 = 1, n1_term
+      z_term(jd1) = c_loc(F%term(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call complex_taylor_to_c2 (C, F%ref, z_term, n1_term)
@@ -10764,7 +10697,6 @@ else
   enddo
 endif
 
-
 end subroutine complex_taylor_to_f2
 
 !--------------------------------------------------------------------------
@@ -10807,33 +10739,33 @@ type(c_ptr), value :: C
 type(branch_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_ele(:)
-integer(c_int) :: n1_ele
-type(c_ptr), allocatable :: z_wall3d(:)
-integer(c_int) :: n1_wall3d
+  type(c_ptr), allocatable :: z_ele(:)
+  integer(c_int) :: n1_ele
+  type(c_ptr), allocatable :: z_wall3d(:)
+  integer(c_int) :: n1_wall3d
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, PTR]
- n1_ele = 0
-if (associated(F%ele)) then
-  n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
-  allocate (z_ele(n1_ele))
-  do jd1 = 1, n1_ele
-    z_ele(jd1) = c_loc(F%ele(jd1+lb1))
-  enddo
-endif
+  n1_ele = 0
+  if (associated(F%ele)) then
+    n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
+    allocate (z_ele(n1_ele))
+    do jd1 = 1, n1_ele
+      z_ele(jd1) = c_loc(F%ele(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, PTR]
- n1_wall3d = 0
-if (associated(F%wall3d)) then
-  n1_wall3d = size(F%wall3d); lb1 = lbound(F%wall3d, 1) - 1
-  allocate (z_wall3d(n1_wall3d))
-  do jd1 = 1, n1_wall3d
-    z_wall3d(jd1) = c_loc(F%wall3d(jd1+lb1))
-  enddo
-endif
+  n1_wall3d = 0
+  if (associated(F%wall3d)) then
+    n1_wall3d = size(F%wall3d); lb1 = lbound(F%wall3d, 1) - 1
+    allocate (z_wall3d(n1_wall3d))
+    do jd1 = 1, n1_wall3d
+      z_wall3d(jd1) = c_loc(F%wall3d(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call branch_to_c2 (C, trim(F%name) // c_null_char, F%ix_branch, F%ix_from_branch, &
@@ -10910,7 +10842,6 @@ else
     call ele_to_f (z_ele(jd1), c_loc(F%ele(jd1+0-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call lat_param_to_f(z_param, c_loc(F%param))
 !! f_side.to_f2_trans[type, 1, PTR]
@@ -10926,7 +10857,6 @@ else
     call wall3d_to_f (z_wall3d(jd1), c_loc(F%wall3d(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine branch_to_f2
 
@@ -10978,105 +10908,105 @@ type(c_ptr), value :: C
 type(lat_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_print_str(:)
-character(100+1), allocatable, target :: a_print_str(:)
-integer(c_int) :: n1_print_str
-type(c_ptr), allocatable :: z_constant(:)
-integer(c_int) :: n1_constant
-integer(c_int) :: n_a
-integer(c_int) :: n_b
-integer(c_int) :: n_z
-integer(c_int) :: n_param
-type(c_ptr), allocatable :: z_ele(:)
-integer(c_int) :: n1_ele
-type(c_ptr), allocatable :: z_branch(:)
-integer(c_int) :: n1_branch
-type(c_ptr), allocatable :: z_control(:)
-integer(c_int) :: n1_control
-integer(c_int) :: n1_custom
-integer(c_int) :: n_n_ele_track
-integer(c_int) :: n_n_ele_max
-integer(c_int) :: n1_ic
+  type(c_ptr), allocatable :: z_print_str(:)
+  character(100+1), allocatable, target :: a_print_str(:)
+  integer(c_int) :: n1_print_str
+  type(c_ptr), allocatable :: z_constant(:)
+  integer(c_int) :: n1_constant
+  integer(c_int) :: n_a
+  integer(c_int) :: n_b
+  integer(c_int) :: n_z
+  integer(c_int) :: n_param
+  type(c_ptr), allocatable :: z_ele(:)
+  integer(c_int) :: n1_ele
+  type(c_ptr), allocatable :: z_branch(:)
+  integer(c_int) :: n1_branch
+  type(c_ptr), allocatable :: z_control(:)
+  integer(c_int) :: n1_control
+  integer(c_int) :: n1_custom
+  integer(c_int) :: n_n_ele_track
+  integer(c_int) :: n_n_ele_max
+  integer(c_int) :: n1_ic
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[character, 1, ALLOC]
-n1_print_str = 0
-if (allocated(F%print_str)) then
-  n1_print_str = size(F%print_str); lb1 = lbound(F%print_str, 1) - 1
-  allocate (a_print_str(n1_print_str))
-  allocate (z_print_str(n1_print_str))
-  do jd1 = 1, n1_print_str
-    a_print_str(jd1) = trim(F%print_str(jd1+lb1)) // c_null_char
-    z_print_str(jd1) = c_loc(a_print_str(jd1))
-  enddo
-endif
+  n1_print_str = 0
+  if (allocated(F%print_str)) then
+    n1_print_str = size(F%print_str); lb1 = lbound(F%print_str, 1) - 1
+    allocate (a_print_str(n1_print_str))
+    allocate (z_print_str(n1_print_str))
+    do jd1 = 1, n1_print_str
+      a_print_str(jd1) = trim(F%print_str(jd1+lb1)) // c_null_char
+      z_print_str(jd1) = c_loc(a_print_str(jd1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_constant = 0
-if (allocated(F%constant)) then
-  n1_constant = size(F%constant); lb1 = lbound(F%constant, 1) - 1
-  allocate (z_constant(n1_constant))
-  do jd1 = 1, n1_constant
-    z_constant(jd1) = c_loc(F%constant(jd1+lb1))
-  enddo
-endif
+  n1_constant = 0
+  if (allocated(F%constant)) then
+    n1_constant = size(F%constant); lb1 = lbound(F%constant, 1) - 1
+    allocate (z_constant(n1_constant))
+    do jd1 = 1, n1_constant
+      z_constant(jd1) = c_loc(F%constant(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 0, PTR]
-n_a = 0
-if (associated(F%a)) n_a = 1
+  n_a = 0
+  if (associated(F%a)) n_a = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_b = 0
-if (associated(F%b)) n_b = 1
+  n_b = 0
+  if (associated(F%b)) n_b = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_z = 0
-if (associated(F%z)) n_z = 1
+  n_z = 0
+  if (associated(F%z)) n_z = 1
 !! f_side.to_c_trans[type, 0, PTR]
-n_param = 0
-if (associated(F%param)) n_param = 1
+  n_param = 0
+  if (associated(F%param)) n_param = 1
 !! f_side.to_c_trans[type, 1, PTR]
- n1_ele = 0
-if (associated(F%ele)) then
-  n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
-  allocate (z_ele(n1_ele))
-  do jd1 = 1, n1_ele
-    z_ele(jd1) = c_loc(F%ele(jd1+lb1))
-  enddo
-endif
+  n1_ele = 0
+  if (associated(F%ele)) then
+    n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
+    allocate (z_ele(n1_ele))
+    do jd1 = 1, n1_ele
+      z_ele(jd1) = c_loc(F%ele(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_branch = 0
-if (allocated(F%branch)) then
-  n1_branch = size(F%branch); lb1 = lbound(F%branch, 1) - 1
-  allocate (z_branch(n1_branch))
-  do jd1 = 1, n1_branch
-    z_branch(jd1) = c_loc(F%branch(jd1+lb1))
-  enddo
-endif
+  n1_branch = 0
+  if (allocated(F%branch)) then
+    n1_branch = size(F%branch); lb1 = lbound(F%branch, 1) - 1
+    allocate (z_branch(n1_branch))
+    do jd1 = 1, n1_branch
+      z_branch(jd1) = c_loc(F%branch(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_control = 0
-if (allocated(F%control)) then
-  n1_control = size(F%control); lb1 = lbound(F%control, 1) - 1
-  allocate (z_control(n1_control))
-  do jd1 = 1, n1_control
-    z_control(jd1) = c_loc(F%control(jd1+lb1))
-  enddo
-endif
+  n1_control = 0
+  if (allocated(F%control)) then
+    n1_control = size(F%control); lb1 = lbound(F%control, 1) - 1
+    allocate (z_control(n1_control))
+    do jd1 = 1, n1_control
+      z_control(jd1) = c_loc(F%control(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[real, 1, ALLOC]
-n1_custom = 0
-if (allocated(F%custom)) then
-  n1_custom = size(F%custom, 1)
-endif
+  n1_custom = 0
+  if (allocated(F%custom)) then
+    n1_custom = size(F%custom, 1)
+  endif
 !! f_side.to_c_trans[integer, 0, PTR]
-n_n_ele_track = 0
-if (associated(F%n_ele_track)) n_n_ele_track = 1
+  n_n_ele_track = 0
+  if (associated(F%n_ele_track)) n_n_ele_track = 1
 !! f_side.to_c_trans[integer, 0, PTR]
-n_n_ele_max = 0
-if (associated(F%n_ele_max)) n_n_ele_max = 1
+  n_n_ele_max = 0
+  if (associated(F%n_ele_max)) n_n_ele_max = 1
 !! f_side.to_c_trans[integer, 1, ALLOC]
-n1_ic = 0
-if (allocated(F%ic)) then
-  n1_ic = size(F%ic, 1)
-endif
+  n1_ic = 0
+  if (allocated(F%ic)) then
+    n1_ic = size(F%ic, 1)
+  endif
 
 !! f_side.to_c2_call
 call lat_to_c2 (C, trim(F%use_name) // c_null_char, trim(F%lattice) // c_null_char, &
@@ -11161,7 +11091,6 @@ else
     call to_f_str(f_print_str, F%print_str(jd1+1-1))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_constant == 0) then
   if (allocated(F%constant)) deallocate(F%constant)
@@ -11175,7 +11104,6 @@ else
     call expression_atom_to_f (z_constant(jd1), c_loc(F%constant(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_a == 0) then
   if (associated(F%a)) deallocate(F%a)
@@ -11183,7 +11111,6 @@ else
   if (.not. associated(F%a)) allocate(F%a)
   call mode_info_to_f (z_a, c_loc(F%a))
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_b == 0) then
   if (associated(F%b)) deallocate(F%b)
@@ -11191,7 +11118,6 @@ else
   if (.not. associated(F%b)) allocate(F%b)
   call mode_info_to_f (z_b, c_loc(F%b))
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_z == 0) then
   if (associated(F%z)) deallocate(F%z)
@@ -11199,7 +11125,6 @@ else
   if (.not. associated(F%z)) allocate(F%z)
   call mode_info_to_f (z_z, c_loc(F%z))
 endif
-
 !! f_side.to_f2_trans[type, 0, PTR]
 if (n_param == 0) then
   if (associated(F%param)) deallocate(F%param)
@@ -11207,7 +11132,6 @@ else
   if (.not. associated(F%param)) allocate(F%param)
   call lat_param_to_f (z_param, c_loc(F%param))
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call bookkeeping_state_to_f(z_lord_state, c_loc(F%lord_state))
 !! f_side.to_f2_trans[type, 0, NOT]
@@ -11225,7 +11149,6 @@ else
     call ele_to_f (z_ele(jd1), c_loc(F%ele(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_branch == 0) then
   if (allocated(F%branch)) deallocate(F%branch)
@@ -11239,7 +11162,6 @@ else
     call branch_to_f (z_branch(jd1), c_loc(F%branch(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 1, ALLOC]
 if (n1_control == 0) then
   if (allocated(F%control)) deallocate(F%control)
@@ -11253,7 +11175,6 @@ else
     call control_to_f (z_control(jd1), c_loc(F%control(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call coord_to_f(z_particle_start, c_loc(F%particle_start))
 !! f_side.to_f2_trans[type, 0, NOT]
@@ -11272,27 +11193,24 @@ if (n1_custom /= 0) then
 else
   if (allocated(F%custom)) deallocate(F%custom)
 endif
-
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%version = z_version
 !! f_side.to_f2_trans[integer, 0, PTR]
-if (n_n_ele_track == 0) then                                                                                  
-  if (associated(F%n_ele_track)) deallocate(F%n_ele_track)                                                           
-else                                                                                                   
-  call c_f_pointer (z_n_ele_track, f_n_ele_track)                                                                    
-  if (.not. associated(F%n_ele_track)) allocate(F%n_ele_track)                                                       
+if (n_n_ele_track == 0) then
+  if (associated(F%n_ele_track)) deallocate(F%n_ele_track)
+else
+  call c_f_pointer (z_n_ele_track, f_n_ele_track)
+  if (.not. associated(F%n_ele_track)) allocate(F%n_ele_track)
   F%n_ele_track = f_n_ele_track
-endif                                                                                                  
-
+endif
 !! f_side.to_f2_trans[integer, 0, PTR]
-if (n_n_ele_max == 0) then                                                                                  
-  if (associated(F%n_ele_max)) deallocate(F%n_ele_max)                                                           
-else                                                                                                   
-  call c_f_pointer (z_n_ele_max, f_n_ele_max)                                                                    
-  if (.not. associated(F%n_ele_max)) allocate(F%n_ele_max)                                                       
+if (n_n_ele_max == 0) then
+  if (associated(F%n_ele_max)) deallocate(F%n_ele_max)
+else
+  call c_f_pointer (z_n_ele_max, f_n_ele_max)
+  if (.not. associated(F%n_ele_max)) allocate(F%n_ele_max)
   F%n_ele_max = f_n_ele_max
-endif                                                                                                  
-
+endif
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%n_control_max = z_n_control_max
 !! f_side.to_f2_trans[integer, 0, NOT]
@@ -11311,7 +11229,6 @@ if (n1_ic /= 0) then
 else
   if (allocated(F%ic)) deallocate(F%ic)
 endif
-
 !! f_side.to_f2_trans[integer, 0, NOT]
 F%photon_type = z_photon_type
 !! f_side.to_f2_trans[integer, 0, NOT]
@@ -11361,28 +11278,28 @@ type(c_ptr), value :: C
 type(bunch_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_particle(:)
-integer(c_int) :: n1_particle
-integer(c_int) :: n1_ix_z
+  type(c_ptr), allocatable :: z_particle(:)
+  integer(c_int) :: n1_particle
+  integer(c_int) :: n1_ix_z
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_particle = 0
-if (allocated(F%particle)) then
-  n1_particle = size(F%particle); lb1 = lbound(F%particle, 1) - 1
-  allocate (z_particle(n1_particle))
-  do jd1 = 1, n1_particle
-    z_particle(jd1) = c_loc(F%particle(jd1+lb1))
-  enddo
-endif
+  n1_particle = 0
+  if (allocated(F%particle)) then
+    n1_particle = size(F%particle); lb1 = lbound(F%particle, 1) - 1
+    allocate (z_particle(n1_particle))
+    do jd1 = 1, n1_particle
+      z_particle(jd1) = c_loc(F%particle(jd1+lb1))
+    enddo
+  endif
 !! f_side.to_c_trans[integer, 1, ALLOC]
-n1_ix_z = 0
-if (allocated(F%ix_z)) then
-  n1_ix_z = size(F%ix_z, 1)
-endif
+  n1_ix_z = 0
+  if (allocated(F%ix_z)) then
+    n1_ix_z = size(F%ix_z, 1)
+  endif
 
 !! f_side.to_c2_call
 call bunch_to_c2 (C, z_particle, n1_particle, fvec2vec(F%ix_z, n1_ix_z), n1_ix_z, F%charge_tot, &
@@ -11441,7 +11358,6 @@ else
     call coord_to_f (z_particle(jd1), c_loc(F%particle(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[integer, 1, ALLOC]
 if (allocated(F%ix_z)) then
   if (n1_ix_z == 0 .or. any(shape(F%ix_z) /= [n1_ix_z])) deallocate(F%ix_z)
@@ -11454,7 +11370,6 @@ if (n1_ix_z /= 0) then
 else
   if (allocated(F%ix_z)) deallocate(F%ix_z)
 endif
-
 !! f_side.to_f2_trans[real, 0, NOT]
 F%charge_tot = z_charge_tot
 !! f_side.to_f2_trans[real, 0, NOT]
@@ -11658,22 +11573,22 @@ type(c_ptr), value :: C
 type(beam_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_bunch(:)
-integer(c_int) :: n1_bunch
+  type(c_ptr), allocatable :: z_bunch(:)
+  integer(c_int) :: n1_bunch
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_bunch = 0
-if (allocated(F%bunch)) then
-  n1_bunch = size(F%bunch); lb1 = lbound(F%bunch, 1) - 1
-  allocate (z_bunch(n1_bunch))
-  do jd1 = 1, n1_bunch
-    z_bunch(jd1) = c_loc(F%bunch(jd1+lb1))
-  enddo
-endif
+  n1_bunch = 0
+  if (allocated(F%bunch)) then
+    n1_bunch = size(F%bunch); lb1 = lbound(F%bunch, 1) - 1
+    allocate (z_bunch(n1_bunch))
+    do jd1 = 1, n1_bunch
+      z_bunch(jd1) = c_loc(F%bunch(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call beam_to_c2 (C, z_bunch, n1_bunch)
@@ -11723,7 +11638,6 @@ else
     call bunch_to_f (z_bunch(jd1), c_loc(F%bunch(jd1+1-1)))
   enddo
 endif
-
 
 end subroutine beam_to_f2
 
@@ -11955,22 +11869,22 @@ type(c_ptr), value :: C
 type(aperture_scan_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
-type(c_ptr), allocatable :: z_point(:)
-integer(c_int) :: n1_point
+  type(c_ptr), allocatable :: z_point(:)
+  integer(c_int) :: n1_point
 
 !
 
 call c_f_pointer (Fp, F)
 
 !! f_side.to_c_trans[type, 1, ALLOC]
- n1_point = 0
-if (allocated(F%point)) then
-  n1_point = size(F%point); lb1 = lbound(F%point, 1) - 1
-  allocate (z_point(n1_point))
-  do jd1 = 1, n1_point
-    z_point(jd1) = c_loc(F%point(jd1+lb1))
-  enddo
-endif
+  n1_point = 0
+  if (allocated(F%point)) then
+    n1_point = size(F%point); lb1 = lbound(F%point, 1) - 1
+    allocate (z_point(n1_point))
+    do jd1 = 1, n1_point
+      z_point(jd1) = c_loc(F%point(jd1+lb1))
+    enddo
+  endif
 
 !! f_side.to_c2_call
 call aperture_scan_to_c2 (C, z_point, n1_point, c_loc(F%ref_orb), F%pz_start)
@@ -12022,7 +11936,6 @@ else
     call aperture_point_to_f (z_point(jd1), c_loc(F%point(jd1+1-1)))
   enddo
 endif
-
 !! f_side.to_f2_trans[type, 0, NOT]
 call coord_to_f(z_ref_orb, c_loc(F%ref_orb))
 !! f_side.to_f2_trans[real, 0, NOT]

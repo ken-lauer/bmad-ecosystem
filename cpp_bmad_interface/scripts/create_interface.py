@@ -261,8 +261,6 @@ class f_side_trans_class:
     to_c2_type: str = ""
     # F -> C2: the name for the fortran variable in to_c:
     to_c2_name: str = ""
-    # F -> C2: the Fortran subroutine argument specification of to_c2:
-    to_c2_f2_sub_arg: str = "z_NAME"
 
     # C++ -> Fortran:
     #
@@ -279,6 +277,12 @@ class f_side_trans_class:
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
     test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
     test_value: str = ""
+
+    @property
+    def to_c2_f2_sub_arg(self) -> str:
+        if "(" in self.to_f2_name:
+            return self.to_f2_name.split("(")[0].strip()
+        return self.to_f2_name.strip()
 
     def replace_all(self, old: str, new: str) -> None:
         for fld in fields(self):
@@ -436,9 +440,6 @@ class Argument:
         ]
         self.f_side.to_c_trans = self.f_side.to_c_trans.replace("NAME", self.f_name)
         self.f_side.to_c2_call = self.f_side.to_c2_call.replace("NAME", self.f_name)
-        self.f_side.to_c2_f2_sub_arg = self.f_side.to_c2_f2_sub_arg.replace(
-            "NAME", self.f_name
-        )
         self.f_side.to_c2_name = self.f_side.to_c2_name.replace("NAME", self.f_name)
         self.f_side.to_f2_var = [
             var.replace("NAME", self.f_name) for var in self.f_side.to_f2_var
@@ -713,6 +714,8 @@ def get_c_type(type_val: str) -> str:
         INT: "Int",
         INT8: "Int8",
         LOGIC: "Bool",
+        CHAR: "string",
+        SIZE: "Int",
         STRUCT: "CPP_KIND",
     }
 
@@ -730,6 +733,8 @@ def get_c_arg(type_val: str) -> str:
         INT: "c_Int",
         INT8: "c_Int8",
         LOGIC: "c_Bool",
+        CHAR: "c_Char",
+        SIZE: "c_Int",
         STRUCT: "const CPP_KIND",
     }
 
@@ -1087,7 +1092,7 @@ interface
 
         line = f"subroutine {s_name}_to_c2 (C"
         for arg in struct.arg:
-            line += f", {arg.f_side.to_c2_f2_sub_arg.strip()}"
+            line += f", {arg.f_side.to_c2_f2_sub_arg}"
         line += ") bind(c)\n"
 
         f_face.write("  !! f_side.to_c2_f2_sub_arg\n")
@@ -1171,7 +1176,7 @@ end subroutine {s_name}_to_c
         f_face.write("!! f_side.to_c2_f2_sub_arg\n")
         line = f"subroutine {struct.short_name}_to_f2 (Fp"
         for arg in struct.arg:
-            line += f", {arg.f_side.to_c2_f2_sub_arg.strip()}"
+            line += f", {arg.f_side.to_c2_f2_sub_arg}"
         line += ") bind(c)"
         f_face.write(wrap_line(line, "", " &"))
 
@@ -2096,7 +2101,14 @@ for type_, trans in f_side_trans.items():
         trans.replace_all("associated_or_allocated(", "allocated(")
     else:
         trans.replace_all("associated_or_allocated(", "associated(")
+    # trans.replace_all("TO_F2_TYPE", trans.to_f2_type)
+    trans.replace_all("TEST_VALUE", trans.test_value)
+    assert "TO_F2_TYPE" not in str(trans)
 
+for type_, trans in c_side_trans.items():
+    trans.replace_all("C_TYPE", get_c_type(type_.type))
+    trans.replace_all("C_ARG", get_c_arg(type_.type))
+    trans.replace_all("TEST_VALUE", trans.test_value)
 
 fortran_structures = bmad_struct_parser.load_all_structures(
     *params.struct_def_yaml_files
