@@ -2006,6 +2006,7 @@ class TemplateImporter:
     type: re.Pattern
     begin: re.Pattern
     end: re.Pattern
+    special_case: re.Pattern
 
     @classmethod
     def from_prefix(cls, prefix: str) -> TemplateImporter:
@@ -2014,6 +2015,9 @@ class TemplateImporter:
             section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
             section_with_match=re.compile(
                 rf"^\s*{prefix}\s*section:(.*)\s*$", flags=re.MULTILINE
+            ),
+            special_case=re.compile(
+                rf"^\s*{prefix}\s*case:(.*):(.*)\s*$\n^(.*)$", flags=re.MULTILINE
             ),
             type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
             # This may appear anywhere in a line
@@ -2026,6 +2030,14 @@ class TemplateImporter:
         for section in sections:
             assert "section:" not in section
         return sections
+
+    def get_special_cases(self, section: str) -> dict[FullType, dict[str, str]]:
+        res = {}
+        for type_str, tag, value in self.special_case.findall(section):
+            full_type = FullType.from_template(type_str)
+            res.setdefault(full_type, {})
+            res[full_type][tag] = value
+        return res
 
     def split_tags(self, section: str) -> dict[str, str]:
         by_tag = {}
@@ -2047,8 +2059,10 @@ class TemplateImporter:
             by_tag[tag] = tag_contents[: end.span()[0]].rstrip()
         return by_tag
 
-    def get_types(self, contents: str) -> list[str]:
-        return self.type.findall(contents)
+    def get_types(self, contents: str) -> list[FullType]:
+        return [
+            FullType.from_template(type_str) for type_str in self.type.findall(contents)
+        ]
 
 
 def import_template(
@@ -2065,17 +2079,27 @@ def import_template(
     else:
         raise NotImplementedError(cls)
 
+    def check_tags(tags: list[str]):
+        for tag in tags:
+            if tag not in valid_fields and not hasattr(cls, tag):
+                raise ValueError(
+                    f"Unexpected special case tag: {tag!r} found in section:\n{section}"
+                )
+
     valid_fields = {fld.name for fld in fields(cls)}
     for section in importer.split_sections(template_contents):
         types = importer.get_types(section)
         tags = importer.split_tags(section)
-        for tag in tags:
-            if tag not in valid_fields and not hasattr(cls, tag):
-                raise ValueError(
-                    f"Unexpected tag: {tag!r} found in section:\n{section}"
-                )
-        for type_str in types:
-            full_type = FullType.from_template(type_str)
+        special_cases = importer.get_special_cases(section)
+
+        check_tags(tags)
+        for full_type, tag_to_value in special_cases.items():
+            if full_type not in transformers:
+                transformers[full_type] = cls()
+            check_tags(list(tag_to_value))
+            for tag, value in tag_to_value.items():
+                setattr(transformers[full_type], tag, value)
+        for full_type in types:
             if full_type not in transformers:
                 transformers[full_type] = cls()
 
