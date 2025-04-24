@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import copy
 import dataclasses
-import os
 import pathlib
 import re
 import string
@@ -33,6 +32,7 @@ import bmad_struct_parser
 from bmad_struct_parser import Structure as ParsedStructure
 from bmad_struct_parser.parser import StructureMember
 
+import interface_input_params as params
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
@@ -423,7 +423,7 @@ class Argument:
 
     @property
     def dim3(self) -> int:
-        return 1 + int(arg.ubound[2]) - int(arg.lbound[2])
+        return 1 + int(self.ubound[2]) - int(self.lbound[2])
 
     def should_translate(self, struct_name: str) -> bool:
         return (
@@ -573,13 +573,6 @@ class Structure:
 
     def __str__(self) -> str:
         return "[name: %s, #arg: %i]" % (self.short_name, len(self.arg))
-
-
-@dataclass
-class Subroutine(Structure):
-    # Reusing Structure as a base class, for better or worse...
-    arg_order: list[str] = field(default_factory=list)  # arguments, as defined in the
-    result_arg: str = ""
 
 
 @dataclasses.dataclass
@@ -798,14 +791,8 @@ def set_translations(struct: Structure, c_overrides, f_overrides) -> None:
             continue
 
         arg_full_name = f"{struct.f_name}%{arg.f_name}"
-        try:
-            arg.f_side = f_side_trans_custom_overrides[arg_full_name]
-        except KeyError:
-            arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
-        try:
-            arg.c_side = c_side_trans_custom_overrides[arg_full_name]
-        except KeyError:
-            arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
+        arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
+        arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
 
         for key, value in c_overrides.items():
             override_arg, attr = key.split(".", 1)
@@ -884,7 +871,7 @@ def write_parsed_structures(struct_definitions, fn):
                 f_out.write(f"    {arg.original_repr()}\n")
 
 
-def check_missing():
+def check_missing(struct_definitions: list[Structure]):
     # Report any structs not found
     missing_structs = [
         struct.f_name for struct in struct_definitions if struct.short_name == ""
@@ -893,7 +880,7 @@ def check_missing():
         print(f"NOT FOUND: {name}", file=sys.stderr)
 
     # Exit if any structs are missing
-    if n_found < n_total:
+    if missing_structs:
         sys.exit("COULD NOT FIND ALL THE STRUCTS! STOPPING HERE!")
 
     # Create set of defined struct names
@@ -1148,7 +1135,7 @@ end subroutine {s_name}_to_f2
     f_face.write("end module\n")
 
 
-def create_fortran_equality_check_code(f_equ):
+def create_fortran_equality_check_code(f_equ, struct_definitions):
     f_equ.write(
         textwrap.dedent(f"""\
         !+
@@ -1225,7 +1212,7 @@ contains
     f_equ.write("end module\n")
 
 
-def write_tests_main(f_test):
+def write_tests_main(f_test, struct_definitions: list[Structure]):
     f_test.write(
         textwrap.dedent(
             """\
@@ -1265,7 +1252,7 @@ def write_tests_main(f_test):
     )
 
 
-def write_tests_mod(f_test):
+def write_tests_mod(f_test, struct_definitions: list[Structure]):
     f_test.write(
         textwrap.dedent(
             f"""\
@@ -1537,7 +1524,7 @@ def get_class_lines(struct: Structure) -> list[str]:
     ).splitlines()
 
 
-def write_cpp_classes(file) -> None:
+def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     header_template = string.Template(
         textwrap.dedent(
@@ -1584,7 +1571,7 @@ def write_cpp_classes(file) -> None:
     )
 
 
-def write_cpp_convert(file, header: str):
+def write_cpp_convert(file, header: str, struct_definitions: list[Structure]):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     file.write(header)
 
@@ -1671,7 +1658,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("}\n")
 
 
-def write_cpp_equality(file, header: str):
+def write_cpp_equality(file, header: str, struct_definitions: list[Structure]):
     file.write(header)
 
     for struct in struct_definitions:
@@ -1698,7 +1685,7 @@ def write_cpp_equality(file, header: str):
         file.write("};\n\n")
 
 
-def write_cpp_test(file):
+def write_cpp_test(file, struct_definitions: list[Structure]):
     file.write("""
 //+
 // C++ classes definitions for Bmad / C++ structure interface.
@@ -1868,118 +1855,144 @@ def write_if_differs(
     return False
 
 
-# NOTE: the script is meant to be run from '/cpp_bmad_interface'.
-os.chdir(CPP_INTERFACE_ROOT)
+def generate():
+    # TODO refactor globals
+    global params
 
-if not os.path.exists("include"):
-    os.makedirs("include")
+    include_dir = CPP_INTERFACE_ROOT / "include"
+    include_dir.mkdir(exist_ok=True)
 
-if len(sys.argv) > 1:
-    master_input_file = sys.argv[1]
-    params = __import__(sys.argv[1])
-else:
-    master_input_file = "interface_input_params"
-    import interface_input_params as params
+    if len(sys.argv) > 1:
+        master_input_file = sys.argv[1]
+        params = __import__(sys.argv[1])
+        print(f"Custom input file: {master_input_file}", file=sys.stderr)
 
-print("Input file: " + master_input_file, file=sys.stderr)
+    if not (CPP_INTERFACE_ROOT / params.test_dir).exists():
+        sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
 
-if not os.path.exists(params.test_dir):
-    sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
+    parsed_structures = bmad_struct_parser.load_all_structures(
+        *[CPP_INTERFACE_ROOT / fn for fn in params.struct_def_yaml_files]
+    )
+    struct_definitions: list[Structure] = []
 
-c_side_trans_custom_overrides = {}
-f_side_trans_custom_overrides = {}
+    for name in params.struct_list:
+        struct = Structure(name)
+        match_structure_definition(parsed_structures, struct)
+        set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
+
+        add_array_bound_info_for_pointer_structures(struct)
+        print_debug("\nStruct: " + str(struct))
+        for arg in struct.arg:
+            arg.fix_struct_arg_placeholders(struct)
+
+        struct_definitions.append(struct)
+
+    n_found = sum(1 for struct in struct_definitions if struct.short_name != "")
+    n_total = len(struct_definitions)
+
+    # Print diagnostics
+    print(f"Number of structs in input list: {n_total}", file=sys.stderr)
+    print(f"Number of structs found:         {n_found}", file=sys.stderr)
+
+    check_missing(struct_definitions)
+    write_output(struct_definitions)
+
+
+def write_output(struct_definitions: list[Structure]) -> None:
+    if DEBUG:
+        write_parsed_structures(struct_definitions, "f_structs.parsed")
+
+    write_if_differs(
+        create_fortran_interface,
+        pathlib.Path(params.code_dir) / "bmad_cpp_convert_mod.f90",
+        struct_definitions,
+        params,
+    )
+    write_if_differs(
+        create_fortran_equality_check_code,
+        CPP_INTERFACE_ROOT
+        / params.equality_mod_dir
+        / (params.equality_mod_file + ".f90"),
+        struct_definitions,
+    )
+
+    write_if_differs(
+        write_tests_main,
+        CPP_INTERFACE_ROOT / params.test_dir / "main.f90",
+        struct_definitions,
+    )
+    write_if_differs(
+        write_tests_mod,
+        CPP_INTERFACE_ROOT / params.test_dir / "bmad_cpp_test_mod.f90",
+        struct_definitions,
+    )
+    write_if_differs(
+        write_cpp_classes,
+        CPP_INTERFACE_ROOT / "include" / "cpp_bmad_classes.h",
+        struct_definitions,
+    )
+    convert_header = (SCRIPTS_PATH / "convert_template.cpp").read_text()
+
+    write_if_differs(
+        write_cpp_convert,
+        CPP_INTERFACE_ROOT / params.code_dir / "cpp_bmad_convert.cpp",
+        convert_header,
+        struct_definitions,
+    )
+
+    equality_header = (SCRIPTS_PATH / "equality_template.cpp").read_text()
+    write_if_differs(
+        write_cpp_equality,
+        CPP_INTERFACE_ROOT / params.code_dir / "cpp_equality.cpp",
+        equality_header,
+        struct_definitions,
+    )
+    write_if_differs(
+        write_cpp_test,
+        CPP_INTERFACE_ROOT / params.test_dir / "cpp_bmad_test.cpp",
+        struct_definitions,
+    )
+
+
+def load_transforms():
+    # TODO: refactor globals
+    global c_transforms
+    global f_transforms
+    global c_overrides
+    global f_overrides
+
+    c_transforms, c_overrides = TemplateImporter.from_file(
+        CSideTransform, (TEMPLATES_PATH / "c_side.cpp").read_text()
+    )
+    f_transforms, f_overrides = TemplateImporter.from_file(
+        FortranSideTransform, (TEMPLATES_PATH / "f_side.f90").read_text()
+    )
+
+    for type_, transform in f_transforms.items():
+        if isinstance(transform.to_f2_var, str):
+            transform.to_f2_var = transform.to_f2_var.splitlines()
+        if isinstance(transform.to_c_var, str):
+            transform.to_c_var = transform.to_c_var.splitlines()
+        if type_.ptr == ALLOC:
+            transform.replace_all("associated_or_allocated(", "allocated(")
+        else:
+            transform.replace_all("associated_or_allocated(", "associated(")
+        transform.replace_all("TEST_VALUE", transform.test_value)
+
+    for type_, transform in c_transforms.items():
+        transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
+        transform.to_f2_call = transform.to_f2_call.rstrip(", ")
+        transform.replace_all("C_TYPE", get_c_type(type_.type))
+        transform.replace_all("C_ARG", get_c_arg(type_.type))
+        transform.replace_all("TEST_VALUE", transform.test_value)
+
 
 c_transforms: dict[FullType, CSideTransform]
 f_transforms: dict[FullType, FortranSideTransform]
+c_overrides: dict[str, str]
+f_overrides: dict[str, str]
 
-c_transforms, c_overrides = TemplateImporter.from_file(
-    CSideTransform, (TEMPLATES_PATH / "c_side.cpp").read_text()
-)
-f_transforms, f_overrides = TemplateImporter.from_file(
-    FortranSideTransform, (TEMPLATES_PATH / "f_side.f90").read_text()
-)
+load_transforms()
 
-for type_, transform in f_transforms.items():
-    if isinstance(transform.to_f2_var, str):
-        transform.to_f2_var = transform.to_f2_var.splitlines()
-    if isinstance(transform.to_c_var, str):
-        transform.to_c_var = transform.to_c_var.splitlines()
-    if type_.ptr == ALLOC:
-        transform.replace_all("associated_or_allocated(", "allocated(")
-    else:
-        transform.replace_all("associated_or_allocated(", "associated(")
-    transform.replace_all("TEST_VALUE", transform.test_value)
-
-for type_, transform in c_transforms.items():
-    transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
-    transform.to_f2_call = transform.to_f2_call.rstrip(", ")
-    transform.replace_all("C_TYPE", get_c_type(type_.type))
-    transform.replace_all("C_ARG", get_c_arg(type_.type))
-    transform.replace_all("TEST_VALUE", transform.test_value)
-
-parsed_structures = bmad_struct_parser.load_all_structures(
-    *params.struct_def_yaml_files
-)
-struct_definitions: list[Structure] = []
-
-for name in params.struct_list:
-    struct = Structure(name)
-    match_structure_definition(parsed_structures, struct)
-    set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
-
-    add_array_bound_info_for_pointer_structures(struct)
-    print_debug("\nStruct: " + str(struct))
-    for arg in struct.arg:
-        arg.fix_struct_arg_placeholders(struct)
-
-    struct_definitions.append(struct)
-
-# *Customization hook*
-
-# params.customize(struct_definitions)
-
-# routines = parse_bmad_routines(params)
-
-if DEBUG:
-    write_parsed_structures(struct_definitions, "f_structs.parsed")
-
-n_found = sum(1 for struct in struct_definitions if struct.short_name != "")
-n_total = len(struct_definitions)
-
-# Print diagnostics
-print(f"Number of structs in input list: {n_total}", file=sys.stderr)
-print(f"Number of structs found:         {n_found}", file=sys.stderr)
-
-check_missing()
-
-write_if_differs(
-    create_fortran_interface,
-    pathlib.Path(params.code_dir) / "bmad_cpp_convert_mod.f90",
-    struct_definitions,
-    params,
-)
-write_if_differs(
-    create_fortran_equality_check_code,
-    pathlib.Path(params.equality_mod_dir) / (params.equality_mod_file + ".f90"),
-)
-
-write_if_differs(write_tests_main, pathlib.Path(params.test_dir) / "main.f90")
-write_if_differs(
-    write_tests_mod, pathlib.Path(params.test_dir) / "bmad_cpp_test_mod.f90"
-)
-write_if_differs(write_cpp_classes, pathlib.Path("include") / "cpp_bmad_classes.h")
-convert_header = (SCRIPTS_PATH / "convert_template.cpp").read_text()
-
-write_if_differs(
-    write_cpp_convert,
-    pathlib.Path(params.code_dir) / "cpp_bmad_convert.cpp",
-    convert_header,
-)
-
-equality_header = (SCRIPTS_PATH / "equality_template.cpp").read_text()
-write_if_differs(
-    write_cpp_equality,
-    pathlib.Path(params.code_dir) / "cpp_equality.cpp",
-    equality_header,
-)
-write_if_differs(write_cpp_test, pathlib.Path(params.test_dir) / "cpp_bmad_test.cpp")
+if __name__ == "__main__":
+    generate()
