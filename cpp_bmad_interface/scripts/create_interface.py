@@ -1855,6 +1855,27 @@ def write_if_differs(
     return False
 
 
+def get_structure_definitions() -> list[Structure]:
+    parsed_structures = bmad_struct_parser.load_all_structures(
+        *[CPP_INTERFACE_ROOT / fn for fn in params.struct_def_yaml_files]
+    )
+
+    structs: list[Structure] = []
+
+    for name in params.struct_list:
+        struct = Structure(name)
+        match_structure_definition(parsed_structures, struct)
+        set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
+
+        add_array_bound_info_for_pointer_structures(struct)
+        print_debug("\nStruct: " + str(struct))
+        for arg in struct.arg:
+            arg.fix_struct_arg_placeholders(struct)
+
+        structs.append(struct)
+    return structs
+
+
 def generate():
     # TODO refactor globals
     global params
@@ -1867,35 +1888,18 @@ def generate():
         params = __import__(sys.argv[1])
         print(f"Custom input file: {master_input_file}", file=sys.stderr)
 
+    structs = get_structure_definitions()
     if not (CPP_INTERFACE_ROOT / params.test_dir).exists():
         sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
 
-    parsed_structures = bmad_struct_parser.load_all_structures(
-        *[CPP_INTERFACE_ROOT / fn for fn in params.struct_def_yaml_files]
-    )
-    struct_definitions: list[Structure] = []
-
-    for name in params.struct_list:
-        struct = Structure(name)
-        match_structure_definition(parsed_structures, struct)
-        set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
-
-        add_array_bound_info_for_pointer_structures(struct)
-        print_debug("\nStruct: " + str(struct))
-        for arg in struct.arg:
-            arg.fix_struct_arg_placeholders(struct)
-
-        struct_definitions.append(struct)
-
-    n_found = sum(1 for struct in struct_definitions if struct.short_name != "")
-    n_total = len(struct_definitions)
+    n_found = sum(1 for struct in structs if struct.short_name)
 
     # Print diagnostics
-    print(f"Number of structs in input list: {n_total}", file=sys.stderr)
+    print(f"Number of structs in input list: {len(structs)}", file=sys.stderr)
     print(f"Number of structs found:         {n_found}", file=sys.stderr)
 
-    check_missing(struct_definitions)
-    write_output(struct_definitions)
+    check_missing(structs)
+    write_output(structs)
 
 
 def write_output(struct_definitions: list[Structure]) -> None:
