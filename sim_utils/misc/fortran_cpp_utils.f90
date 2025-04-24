@@ -57,6 +57,7 @@ end interface
 ! Overloads:
 !   bool_fvec2vec  (bool_f_vec, n)  result (bool_c_vec)
 !   int_fvec2vec   (int_f_vec, n)   result (int_c_vec)
+!   int8_fvec2vec   (int_f_vec, n)  result (int64_c_vec)
 !   cmplx_fvec2vec (cmplx_f_vec, n) result (cmplx_c_vec)
 !   real_fvec2vec  (real_f_vec, n)  result (real_c_vec)
 !
@@ -76,6 +77,7 @@ end interface
 interface fvec2vec
   module procedure real_fvec2vec
   module procedure int_fvec2vec
+  module procedure int8_fvec2vec
   module procedure cmplx_fvec2vec
   module procedure bool_fvec2vec
 end interface
@@ -94,6 +96,7 @@ end interface
 ! Overloaded functions:
 !   real_mat2vec   (real_mat)   result (real_vec)
 !   int_mat2vec    (int_mat)    result (int_vec)
+!   int8_mat2vec   (int_mat)    result (int_vec)
 !   cmplx_mat2vec  (cmplx_mat)  result (cmplx_vec)
 !   bool_mat2vec   (bool_mat)   result (bool_vec)
 !
@@ -115,6 +118,7 @@ end interface
 interface mat2vec
   module procedure real_mat2vec
   module procedure int_mat2vec
+  module procedure int8_mat2vec
   module procedure cmplx_mat2vec
   module procedure bool_mat2vec
 end interface
@@ -142,6 +146,7 @@ end interface
 interface tensor2vec
   module procedure real_tensor2vec
   module procedure int_tensor2vec
+  module procedure int8_tensor2vec
   module procedure cmplx_tensor2vec
   module procedure bool_tensor2vec
 end interface
@@ -159,6 +164,7 @@ end interface
 ! Overloaded functions:
 !   real_vec2mat
 !   int_vec2mat
+!   int8_vec2mat
 !   cmplx_vec2mat
 !   bool_vec2mat
 !
@@ -174,6 +180,7 @@ end interface
 interface vec2mat
   module procedure real_vec2mat
   module procedure int_vec2mat
+  module procedure int8_vec2mat
   module procedure cmplx_vec2mat
   module procedure bool_vec2mat
 end interface
@@ -201,6 +208,7 @@ end interface
 interface vec2tensor
   module procedure real_vec2tensor
   module procedure int_vec2tensor
+  module procedure int8_vec2tensor
   module procedure cmplx_vec2tensor
   module procedure bool_vec2tensor
 end interface
@@ -701,6 +709,27 @@ end function int_fvec2vec
 !-----------------------------------------------------------------------------
 !-----------------------------------------------------------------------------
 !+
+! Function int8_fvec2vec (f_vec, n) result (c_vec)
+!
+! Function transform from Fortran to C.
+! See fvec2vec for more details
+!-
+
+function int8_fvec2vec (f_vec, n) result (c_vec)
+
+implicit none
+
+integer n, i
+integer(8) f_vec(:)
+integer(c_int64_t), target :: c_vec(n)
+
+forall (i = 1:n) c_vec(i) = f_vec(i)
+ 
+end function int8_fvec2vec
+
+!-----------------------------------------------------------------------------
+!-----------------------------------------------------------------------------
+!+
 ! Function cmplx_fvec2vec (f_vec, n) result (c_vec)
 !
 ! Function transform from Fortran to C.
@@ -801,6 +830,36 @@ n1 = size(mat, 1); n2 = size(mat, 2)
 forall (i = 1:n1, j = 1:n2) vec(n2*(i-1) + j) = mat(i,j)
  
 end function int_mat2vec
+!-----------------------------------------------------------------------------
+!-----------------------------------------------------------------------------
+!+
+! Function int8_mat2vec (mat, n) result (vec)
+!
+! Function to take a matrix and turn it into an array:
+!   vec(n2*(i-1) + j) = mat(i,j)
+! See mat2vec for more details
+!
+! Input:
+!   mat(:,:)  -- integer: Input matrix
+!
+! Output:
+!   vec(:)   -- integer(c_int): Output array 
+!-
+
+function int8_mat2vec (mat, n) result (vec)
+
+implicit none
+
+integer n
+integer(8) mat(:,:)
+integer(c_int64_t) vec(n)
+integer i, j, n1, n2
+
+if (n == 0) return ! Real arg not allocated
+n1 = size(mat, 1); n2 = size(mat, 2)
+forall (i = 1:n1, j = 1:n2) vec(n2*(i-1) + j) = mat(i,j)
+ 
+end function int8_mat2vec
 
 !-----------------------------------------------------------------------------
 !-----------------------------------------------------------------------------
@@ -931,6 +990,36 @@ forall (i = 1:n1, j = 1:n2, k = 1:n3) vec(n3*n2*(i-1) + n3*(j-1) + k) = tensor(i
  
 end function int_tensor2vec
 
+!-----------------------------------------------------------------------------
+!-----------------------------------------------------------------------------
+!+
+! Function int8_tensor2vec (tensor, n) result (vec)
+!
+! Function to take a tensor and turn it into an array:
+!   vec(n3*n2*(i-1) + n3*(j - 1) + k) = tensor(i,j, k)
+! See tensor2vec for more details
+!
+! Input:
+!   tensor(:,:,:)  -- Integer: Input tensorrix
+!
+! Output:
+!   vec(:)   -- Integer(c_int): Output array 
+!-
+
+function int8_tensor2vec (tensor, n) result (vec)
+
+implicit none
+
+integer n
+integer(8) tensor(:,:,:)
+integer(c_int64_t), target :: vec(n)
+integer i, j, k, n1, n2, n3
+
+if (n == 0) return ! Real arg not allocated
+n1 = size(tensor, 1); n2 = size(tensor, 2); n3 = size(tensor, 3)
+forall (i = 1:n1, j = 1:n2, k = 1:n3) vec(n3*n2*(i-1) + n3*(j-1) + k) = tensor(i,j,k)
+ 
+end function int8_tensor2vec
 !-----------------------------------------------------------------------------
 !-----------------------------------------------------------------------------
 !+
@@ -1082,6 +1171,35 @@ end subroutine int_vec2mat
 !-----------------------------------------------------------------------------
 !-----------------------------------------------------------------------------
 !+
+! Subroutine int8_vec2mat (vec, mat)
+!
+! Subroutine to take a an array and turn it into a matrix:
+!   mat(i,j) = vec(n2*(i-1) + j) 
+! This is used for getting matrices from C++ routines.
+!
+! Input:
+!   vec(*)   -- integer: Input array.
+!
+! Output:
+!   mat(:,:)  -- integer: Output matrix
+!-
+
+subroutine int8_vec2mat (vec, mat)
+
+implicit none
+
+integer i, j, n1, n2
+integer(c_int64_t) vec(*)
+integer(8) mat(:,:)
+
+n1 = size(mat, 1); n2 = size(mat, 2)
+forall (i = 1:n1, j = 1:n2) mat(i,j) = vec(n2*(i-1) + j) 
+ 
+end subroutine int8_vec2mat
+
+!-----------------------------------------------------------------------------
+!-----------------------------------------------------------------------------
+!+
 ! Subroutine bool_vec2mat (vec, mat)
 !
 ! Subroutine to take a an array and turn it into a matrix:
@@ -1198,6 +1316,35 @@ n1 = size(tensor, 1); n2 = size(tensor, 2); n3 = size(tensor,3)
 forall (i = 1:n1, j = 1:n2, k = 1:n3) tensor(i,j,k) = vec(n3*n2*(i-1) + n3*(j-1) + k) 
  
 end subroutine int_vec2tensor
+
+!-----------------------------------------------------------------------------
+!-----------------------------------------------------------------------------
+!+
+! Subroutine int8_vec2tensor (vec, tensor)
+!
+! Subroutine to take a an array and turn it into a tensor:
+!   tensor(i,j) = vec(n3*n2*(i-1) + n3*j + k) 
+! This is used for getting tensorrices from C++ routines.
+!
+! Input:
+!   vec(*)   -- integer: Input array.
+!
+! Output:
+!   tensor(:,:,:)  -- integer(c_int): Output tensor.
+!-
+
+subroutine int8_vec2tensor (vec, tensor)
+
+implicit none
+
+integer i, j, k, n1, n2, n3
+integer(c_int64_t) vec(*)
+integer(8) tensor(:,:,:)
+
+n1 = size(tensor, 1); n2 = size(tensor, 2); n3 = size(tensor,3)
+forall (i = 1:n1, j = 1:n2, k = 1:n3) tensor(i,j,k) = vec(n3*n2*(i-1) + n3*(j-1) + k) 
+ 
+end subroutine int8_vec2tensor
 
 !-----------------------------------------------------------------------------
 !-----------------------------------------------------------------------------

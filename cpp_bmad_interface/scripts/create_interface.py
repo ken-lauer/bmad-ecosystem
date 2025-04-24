@@ -18,6 +18,7 @@ is nullified and whose length is 1 otherwise.
 from __future__ import annotations
 
 import copy
+import dataclasses
 import os
 import pathlib
 import re
@@ -25,11 +26,23 @@ import string
 import sys
 import tempfile
 import textwrap
-from dataclasses import dataclass, field
-from typing import Any, Callable, Literal
+from dataclasses import dataclass, field, fields
+from typing import Callable, Literal, NamedTuple
+
+import bmad_struct_parser
+from bmad_struct_parser import Structure as FortranStructure
+from bmad_struct_parser.parser import StructureMember
+
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
+ACC_ROOT_DIR = CPP_INTERFACE_ROOT.parent
+STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
+TEMPLATES_PATH = SCRIPTS_PATH.parent / "templates"
+
+DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "config.yaml"
+
+assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}"
 
 ##################################################################################
 ##################################################################################
@@ -56,6 +69,45 @@ NOT = "NOT"
 PTR = "PTR"
 ALLOC = "ALLOC"
 PointerType = Literal["NOT", "PTR", "ALLOC"]
+
+
+class FullType(NamedTuple):
+    type: ArgumentType
+    dim: int
+    ptr: PointerType
+
+    def sort_key(self):
+        return (self.dim, self.ptr, self.type)
+
+    def __str__(self) -> str:
+        return f"{self.dim}D_{self.ptr}_{self.type}"
+
+    @staticmethod
+    def from_template(type: str) -> FullType:
+        dim, ptr, type_name = type.split("_")
+
+        try:
+            dim = int(dim.lower().rstrip("d"))
+        except TypeError:
+            raise ValueError(
+                f"Dimension of type from template is not integer: {type=} {dim=}"
+            )
+
+        if type_name not in (
+            "real",
+            "complex",
+            "integer",
+            "integer8",
+            "logical",
+            "character",
+            "type",
+            "size",
+        ):
+            raise ValueError(f"Unexpected type: {type_name}")
+        if ptr not in ("NOT", "PTR", "ALLOC"):
+            raise ValueError(f"Invalid pointer type: {type=} {ptr=}")
+        return FullType(type_name, dim, ptr)
+
 
 do_not_share_classes = {
     # "CPP_grid_field_pt",
@@ -125,9 +177,8 @@ def indent(string: str, numspace: int) -> str:
 
 
 @dataclass
-class c_side_trans_class:
+class CSideTransform:
     c_class: str = ""  # EG: 'CPP_ele_Array'
-    c_instantiation_suffix: str = ""  # EG: '[]'
 
     # C++ --> Fortran
     # |   C++     |    Fortran |
@@ -172,6 +223,15 @@ class c_side_trans_class:
     # "TEST_VALUE" in "test_pat" gets replaced with this.
     test_value: str = ""
 
+    def replace_all(self, old: str, new: str) -> None:
+        for fld in fields(self):
+            value = getattr(self, fld.name)
+
+            if isinstance(value, str):
+                setattr(self, fld.name, value.replace(old, new))
+            else:
+                setattr(self, fld.name, [v.replace(old, new) for v in value])
+
     def __str__(self):
         return "{},  {},  {},  {}".format(
             self.c_class,
@@ -182,7 +242,7 @@ class c_side_trans_class:
 
 
 @dataclass
-class f_side_trans_class:
+class FortranSideTransform:
     # Fortran -> C++:
     #
     # | Fortran   |  C++       |
@@ -201,8 +261,6 @@ class f_side_trans_class:
     to_c2_type: str = ""
     # F -> C2: the name for the fortran variable in to_c:
     to_c2_name: str = ""
-    # F -> C2: the Fortran subroutine argument specification of to_c2:
-    to_c2_f2_sub_arg: str = "z_NAME"
 
     # C++ -> Fortran:
     #
@@ -218,10 +276,42 @@ class f_side_trans_class:
 
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
     test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
-    size_var: list[str] = field(
-        default_factory=list
-    )  # For communicating the size of allocatable and pointer variables
     test_value: str = ""
+
+    @property
+    def to_c2_f2_sub_arg(self) -> str:
+        if "(" in self.to_f2_name:
+            return self.to_f2_name.split("(")[0].strip()
+        return self.to_f2_name.strip()
+
+    def replace_all(self, old: str, new: str) -> None:
+        for fld in fields(self):
+            value = getattr(self, fld.name)
+
+            if isinstance(value, str):
+                setattr(self, fld.name, value.replace(old, new))
+            else:
+                setattr(self, fld.name, [v.replace(old, new) for v in value])
+
+    @property
+    def to_c2_type_and_name(self):
+        return f"{self.to_c2_type} :: {self.to_c2_name}"
+
+    @to_c2_type_and_name.setter
+    def to_c2_type_and_name(self, value):
+        type, name = value.split("::")
+        self.to_c2_type = type.strip()
+        self.to_c2_name = name.strip()
+
+    @property
+    def to_f2_type_and_name(self):
+        return f"{self.to_f2_type} :: {self.to_f2_name}"
+
+    @to_f2_type_and_name.setter
+    def to_f2_type_and_name(self, value):
+        type, name = value.split("::")
+        self.to_f2_type = type.strip()
+        self.to_f2_name = name.strip()
 
 
 @dataclass
@@ -245,8 +335,6 @@ class Argument:
         Pointer type: NOT, PTR, or ALLOC.
     array : List[str]
         Array dimension specifications, e.g., [':', ':'] or ['0:6', '3'].
-    full_array : str
-        Complete array specification, e.g., '(:,:)', '(0:6, 3)'.
     lbound : List[Any]
         Lower bounds for each array dimension.
     ubound : List[Any]
@@ -255,9 +343,9 @@ class Argument:
         Initialization value.
     comment : str
         Comment from the Fortran structure definition.
-    f_side : f_side_trans_class
+    f_side : FortranSideTransform
         Fortran side translation.
-    c_side : c_side_trans_class
+    c_side : CSideTransform
         C++ side translation.
     """
 
@@ -268,18 +356,28 @@ class Argument:
     kind: str = ""
     pointer_type: PointerType = NOT
     array: list[str] = field(default_factory=list)
-    full_array: str = ""
-    lbound: list[Any] = field(default_factory=list)
-    ubound: list[Any] = field(default_factory=list)
-    init_value: str = ""
+    init_value: str | None = None
     comment: str = ""
-    f_side: f_side_trans_class = field(default_factory=f_side_trans_class)
-    c_side: c_side_trans_class = field(default_factory=c_side_trans_class)
-    split_line: list[str] = field(default_factory=list)
+    f_side: FortranSideTransform = field(default_factory=FortranSideTransform)
+    c_side: CSideTransform = field(default_factory=CSideTransform)
 
-    # Only for routine parameters:
-    intent: Literal["inout", "in", "out", ""] = ""
-    optional: bool = False
+    @property
+    def full_type(self):
+        return FullType(self.type, len(self.array), self.pointer_type)
+
+    @property
+    def lbound(self) -> list[str]:
+        if not self.array or self.array[0] == ":":
+            return []
+
+        return [dim.split(":")[0] if ":" in dim else "1" for dim in self.array]
+
+    @property
+    def ubound(self) -> list[str]:
+        if not self.array or self.array[0] == ":":
+            return []
+
+        return [dim.split(":")[1] if ":" in dim else dim for dim in self.array]
 
     def get_dim1(self) -> tuple[str, str]:
         if self.ubound[0][-1] == "$":
@@ -327,49 +425,11 @@ class Argument:
     def dim3(self) -> int:
         return 1 + int(arg.ubound[2]) - int(arg.lbound[2])
 
-    def replace_name_placeholders(self):
-        """Replace NAME placeholders with argument names on both C and Fortran sides."""
-        # Fortran side
-        self.f_side.to_c_var = [
-            var.replace("NAME", self.f_name) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("NAME", self.f_name)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace("NAME", self.f_name)
-        self.f_side.to_c2_f2_sub_arg = self.f_side.to_c2_f2_sub_arg.replace(
-            "NAME", self.f_name
+    def should_translate(self, struct_name: str) -> bool:
+        return (
+            self.kind not in params.component_no_translate_list
+            and f"{struct_name}%{self.f_name}" not in params.component_no_translate_list
         )
-        self.f_side.to_c2_name = self.f_side.to_c2_name.replace("NAME", self.f_name)
-        self.f_side.to_f2_var = [
-            var.replace("NAME", self.f_name) for var in self.f_side.to_f2_var
-        ]
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("NAME", self.f_name)
-        self.f_side.to_f2_name = self.f_side.to_f2_name.replace("NAME", self.f_name)
-        self.f_side.equality_test = self.f_side.equality_test.replace(
-            "NAME", self.f_name
-        )
-        self.f_side.test_pat = self.f_side.test_pat.replace("NAME", self.f_name)
-
-        # C side
-        self.c_side.to_c2_arg = self.c_side.to_c2_arg.replace("NAME", self.c_name)
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("NAME", self.c_name)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("NAME", self.c_name)
-        self.c_side.to_f_cleanup = self.c_side.to_f_cleanup.replace("NAME", self.c_name)
-        self.c_side.to_f2_call = self.c_side.to_f2_call.replace("NAME", self.c_name)
-        self.c_side.equality_test = self.c_side.equality_test.replace(
-            "NAME", self.c_name
-        )
-        self.c_side.test_pat = self.c_side.test_pat.replace("NAME", self.c_name)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "NAME", self.c_name
-        )
-        self.c_side.destructor = self.c_side.destructor.replace("NAME", self.c_name)
-
-    def _replace_string_length_placeholders(self) -> None:
-        """Replace STR_LEN placeholders with the argument's kind."""
-        self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
-        self.f_side.to_c_var = [
-            var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
-        ]
 
     def _handle_lbound(self, struct: Structure) -> None:
         """Handle the lower bound replacement."""
@@ -379,84 +439,17 @@ class Argument:
 
     def _handle_type_argument(self) -> None:
         """Process 'type' arguments by replacing KIND placeholders."""
-        kind = self.kind[:-7]
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("KIND", kind)
-        self.f_side.to_f2_var = [
-            var.replace("KIND", kind) for var in self.f_side.to_f2_var
-        ]
-        self.f_side.test_pat = self.f_side.test_pat.replace("KIND", kind)
-        self.c_side.test_pat = self.c_side.test_pat.replace("KIND", kind)
-        self.c_side.c_class = self.c_side.c_class.replace("KIND", kind)
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("KIND", kind)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("KIND", kind)
-        self.c_side.to_f2_arg = self.c_side.to_f2_arg.replace("KIND", kind)
-        self.c_side.to_c2_arg = self.c_side.to_c2_arg.replace("KIND", kind)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "KIND", kind
-        )
+        if self.type.lower() != "type":
+            return
 
-    def _handle_first_dimension(self) -> None:
-        """Handle the first dimension of an array argument."""
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM1", self.c_dim1)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM1", self.f_dim1)
-        self.f_side.test_pat = self.f_side.test_pat.replace("DIM1", self.f_dim1)
-        self.f_side.to_c_var = [
-            var.replace("DIM1", self.f_dim1) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM1", self.f_dim1)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace("DIM1", self.f_dim1)
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM1", self.c_dim1)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "DIM1", self.c_dim1
-        )
-        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
-            "DIM1", self.c_dim1
-        )
-        self.c_side.c_class = self.c_side.c_class.replace("DIM1", self.c_dim1)
+        kind = self.kind
+        if kind.lower().endswith("_struct"):
+            kind = kind[: -len("_struct")]
 
-    def _handle_second_dimension(self) -> None:
-        """Handle the second dimension of an array argument."""
-        dim2 = str(self.dim2)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM2", dim2)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM2", dim2)
-        self.f_side.test_pat = self.f_side.test_pat.replace("DIM2", dim2)
-        self.f_side.to_c_var = [
-            var.replace("DIM2", dim2) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM2", dim2)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
-            "DIM2", self.f_dim1 + "*" + dim2
-        )
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM2", dim2)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "DIM2", dim2
-        )
-        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
-            "DIM2", dim2
-        )
-        self.c_side.c_class = self.c_side.c_class.replace("DIM2", str(self.dim2))
-
-    def _handle_third_dimension(self) -> None:
-        """Handle the third dimension of an array argument."""
-        dim3 = str(self.dim3)
-        self.c_side.to_f_setup = self.c_side.to_f_setup.replace("DIM3", dim3)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("DIM3", dim3)
-        self.f_side.test_pat = self.f_side.test_pat.replace("DIM3", dim3)
-        self.f_side.to_c_var = [
-            var.replace("DIM3", dim3) for var in self.f_side.to_c_var
-        ]
-        self.f_side.to_c_trans = self.f_side.to_c_trans.replace("DIM3", dim3)
-        self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
-            "DIM3", f"{self.f_dim1}*{self.dim2}*{dim3}"
-        )
-        self.c_side.to_c2_set = self.c_side.to_c2_set.replace("DIM3", dim3)
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "DIM3", dim3
-        )
-        self.c_side.c_instantiation_suffix = self.c_side.c_instantiation_suffix.replace(
-            "DIM3", dim3
-        )
-        self.c_side.c_class = self.c_side.c_class.replace("DIM3", str(self.dim3))
+        if not kind:
+            raise RuntimeError("Kind is empty?")
+        self.f_side.replace_all("KIND", kind)
+        self.c_side.replace_all("KIND", kind)
 
     def _handle_init_values(self) -> None:
         """
@@ -467,7 +460,7 @@ class Argument:
         # On Fortran side "complex abc(2) = 0" is allowed but on C++ side want "0.0" for init value.
         # Therefore, ignore "0" as an init value.
 
-        if self.init_value == "":
+        if not self.init_value:
             pass
         elif self.init_value == "0":
             pass
@@ -519,45 +512,47 @@ class Argument:
             The structure definition containing the argument
         """
         print_debug("self: " + str(self))
-        p_type = self.pointer_type
+        self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
+        self.f_side.to_c_var = [
+            var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
+        ]
 
-        # Replace string length placeholders
-        self._replace_string_length_placeholders()
-
-        # Handle array bounds
         self._handle_lbound(struct)
-
-        # Handle 'type' arguments
         if self.type == "type":
             self._handle_type_argument()
 
-        # Handle array dimensions
-        if p_type == NOT:
+        if self.pointer_type == NOT:
             # not a pointer/dynamically allocated type;
             # replace DIM1, DIM2, DIM3 here
             if len(self.array) >= 1:
-                self._handle_first_dimension()
+                self.f_side.replace_all("DIM1", self.f_dim1)
+                self.c_side.replace_all("DIM1", self.c_dim1)
 
             if len(self.array) >= 2:
-                self._handle_second_dimension()
+                self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
+                    "DIM2", f"{self.f_dim1}*{self.dim2}"
+                )
+                self.f_side.replace_all("DIM2", str(self.dim2))
+                self.c_side.replace_all("DIM2", str(self.dim2))
 
             if len(self.array) >= 3:
-                self._handle_third_dimension()
+                self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
+                    "DIM3", f"{self.f_dim1}*{self.dim2}*{self.dim3}"
+                )
+                self.f_side.replace_all("DIM3", str(self.dim3))
+                self.c_side.replace_all("DIM3", str(self.dim3))
 
-        # Replace name placeholders
-        self.replace_name_placeholders()
-
-        # Handle initialization values
+        self.f_side.replace_all("NAME", self.f_name)
+        self.c_side.replace_all("NAME", self.c_name)
         self._handle_init_values()
 
     def original_repr(self) -> str:
-        return '["{}({})", "{}", "{}", {}, "{}" {} {} "{}"]'.format(
+        return '["{}({})", "{}", "{}", {}, {} {} "{}"]'.format(
             self.type,
             self.kind,
             self.pointer_type,
             self.f_name,
             self.array,
-            self.full_array,
             self.lbound,
             self.ubound,
             self.init_value,
@@ -579,10 +574,6 @@ class Structure:
     def __str__(self) -> str:
         return "[name: %s, #arg: %i]" % (self.short_name, len(self.arg))
 
-    @property
-    def by_f_name(self) -> dict[str, Argument]:
-        return {arg.f_name for arg in self.arguments}
-
 
 @dataclass
 class Subroutine(Structure):
@@ -591,1232 +582,111 @@ class Subroutine(Structure):
     result_arg: str = ""
 
 
-x2 = " " * 2
-x4 = " " * 4
-x6 = " " * 6
-x8 = " " * 8
+@dataclasses.dataclass
+class TemplateImporter:
+    section: re.Pattern
+    type: re.Pattern
+    begin: re.Pattern
+    end: re.Pattern
+    special_case: re.Pattern
 
-jd1_loop = "do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1\n"
-jd2_loop = "do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1\n"
-jd3_loop = "do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1\n"
-
-rhs1 = "  rhs = 100 + jd1 + ARGIDX + offset\n"
-rhs2 = "  rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset\n"
-rhs3 = "  rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset\n"
-
-set1 = "  F%NAME(jd1+lb1) = TEST_VALUE\n"
-set2 = "  F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE\n"
-set3 = "  F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE\n"
-
-
-def initialize_f_side_trans() -> dict[tuple[str, int, str], f_side_trans_class]:
-    f_side_trans: dict[tuple[str, int, str], f_side_trans_class] = {}
-
-    for type in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
-        for dim in range(4):
-            f_side_trans[type, dim, NOT] = make_f_side_trans_basic(type, dim)
-            f_side_trans[type, dim, PTR] = make_f_side_trans_ptr(
-                f_side_trans[type, dim, NOT], type, dim
-            )
-
-    make_special_f_trans(f_side_trans)
-    return f_side_trans
-
-
-# --------------------------------------
-def make_f_side_trans_basic(type: str, dim: int):
-    test_pat1 = f"{jd1_loop}{rhs1}{set1}enddo\n"
-    test_pat2 = f"{jd1_loop}{jd2_loop}{rhs2}{set2}enddo; enddo\n"
-    test_pat3 = f"{jd1_loop}{jd2_loop}{jd3_loop}{rhs3}{set3}enddo; enddo; enddo\n"
-
-    f = f_side_trans_class()
-
-    # Set type-specific properties
-    if type == REAL:
-        f.to_c2_type = "real(c_double)"
-        f.test_value = "rhs"
-    elif type == CMPLX:
-        f.to_c2_type = "complex(c_double_complex)"
-        f.test_value = "cmplx(rhs, 100+rhs)"
-    elif type == INT:
-        f.to_c2_type = "integer(c_int)"
-        f.test_value = "rhs"
-    elif type == INT8:
-        f.to_c2_type = "integer(c_long)"
-        f.test_value = "rhs"
-    elif type == LOGIC:
-        f.to_c2_type = "logical(c_bool)"
-        f.test_value = "(modulo(rhs, 2) == 0)"
-    elif type == STRUCT:
-        f.to_c2_type = "type(c_ptr)"
-        f.test_value = "TEST_VALUE"
-    elif type == SIZE:
-        f.to_c2_call = "NAME"
-        f.to_c2_type = "integer(c_int), value"
-        f.to_c2_name = "NAME"
-        f.to_f2_type = "integer(c_int), value"
-        f.to_f2_name = "NAME"
-        f.to_f2_trans = ""
-        f.to_c2_f2_sub_arg = "NAME"
-        f.to_c_var = ["integer(c_int) :: NAME"]
-        f.test_value = ""
-        return f
-
-    # Dimension-specific properties
-    if dim == 0:
-        f.to_c2_name = "z_NAME"
-        f.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
-        f.to_c2_call = "F%NAME"
-
-        if type == LOGIC:
-            f.to_c2_call = "c_logic(F%NAME)"
-            f.to_f2_trans = "F%NAME = f_logic(z_NAME)"
-            f.equality_test = f.equality_test.replace("==", ".eqv.")
-        elif type == STRUCT:
-            f.to_c2_type = "type(c_ptr), value"
-            f.to_c2_call = "c_loc(F%NAME)"
-            f.to_f2_trans = "call KIND_to_f(z_NAME, c_loc(F%NAME))"
-            f.test_pat = "call set_KIND_test_pattern (F%NAME, ix_patt)\n"
-
-    elif dim == 1:
-        f.to_c2_call = "fvec2vec(F%NAME, DIM1)"
-        f.to_c2_name = "z_NAME(*)"
-        f.to_f2_trans = "F%NAME = z_NAME(1:DIM1)"
-        f.test_pat = test_pat1
-
-        if type == LOGIC:
-            f.to_f2_trans = "call vec2fvec (z_NAME, F%NAME)"
-            f.equality_test = f.equality_test.replace("==", ".eqv.")
-        elif type == STRUCT:
-            f.to_c2_call = "z_NAME"
-            f.to_f2_trans = f"{jd1_loop}  call KIND_to_f(z_NAME(jd1), c_loc(F%NAME(jd1+lb1)))\nenddo"
-            f.test_pat = f"{jd1_loop}{rhs1}  call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\nenddo\n"
-            f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1)"]
-            f.to_c_trans = f"{jd1_loop}  z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))\nenddo\n"
-
-    elif dim == 2:
-        f.to_f2_trans = "call vec2mat(z_NAME, F%NAME)"
-        f.to_c2_call = "mat2vec(F%NAME, DIM2)"
-        f.to_c2_name = "z_NAME(*)"
-        f.test_pat = test_pat2
-
-        if type == LOGIC:
-            f.equality_test = f.equality_test.replace("==", ".eqv.")
-        elif type == STRUCT:
-            f.to_c2_call = "z_NAME"
-            f.to_f2_trans = (
-                f"{jd1_loop}{jd2_loop}  call KIND_to_f(z_NAME(DIM2*(jd1-1) + jd2), "
-                f"c_loc(F%NAME(jd1+lb1,jd2+lb2)))\nenddo; enddo\n"
-            )
-            f.test_pat = (
-                f"{jd1_loop}{jd2_loop}{rhs2}  call set_KIND_test_pattern "
-                f"(F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)\nenddo; enddo\n"
-            )
-            f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2)"]
-            f.to_c_trans = (
-                f"{jd1_loop}{jd2_loop}  z_NAME(DIM2*(jd1-1) + jd2) = "
-                f"c_loc(F%NAME(jd1+lb1,jd2+lb2))\nenddo; enddo\n"
-            )
-
-    elif dim == 3:
-        f.to_f2_trans = "call vec2tensor(z_NAME, F%NAME)"
-        f.to_c2_call = "tensor2vec(F%NAME, DIM3)"
-        f.to_c2_name = "z_NAME(*)"
-        f.test_pat = test_pat3
-
-        if type == LOGIC:
-            f.equality_test = f.equality_test.replace("==", ".eqv.")
-        elif type == STRUCT:
-            f.to_c2_call = "z_NAME"
-            f.to_f2_trans = (
-                f"{jd1_loop}{jd2_loop}{jd3_loop}  call KIND_to_f(z_NAME(DIM3*DIM2*(jd1-1) + "
-                f"DIM3*(jd2-1) + jd3), c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3)))\n"
-                f"enddo; enddo; enddo\n"
-            )
-            f.test_pat = (
-                f"{jd1_loop}{jd2_loop}{jd3_loop}{rhs3}  call set_KIND_test_pattern "
-                f"(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)\n"
-                f"enddo; enddo; enddo\n"
-            )
-            f.to_c_var = ["type(c_ptr) :: z_NAME(DIM1*DIM2*DIM3)"]
-            f.to_c_trans = (
-                f"{jd1_loop}{jd2_loop}{jd3_loop}  z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3) = "
-                f"c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3))\nenddo; enddo; enddo\n"
-            )
-
-    # Final processing
-    f.test_pat = f.test_pat.replace("TEST_VALUE", f.test_value)
-    if f.to_f2_type == "":
-        f.to_f2_type = f.to_c2_type
-    if f.to_f2_name == "":
-        f.to_f2_name = f.to_c2_name
-
-    return f
-
-
-def make_f_side_trans_ptr(f: f_side_trans_class, type: str, dim: int):
-    equality_test_pointer = """\
-is_eq = is_eq .and. (associated(f1%NAME) .eqv. associated(f2%NAME))
-if (.not. is_eq) return
-if (associated(f1%NAME)) is_eq = all(shape(f1%NAME) == shape(f2%NAME))
-if (.not. is_eq) return
-if (associated(f1%NAME)) is_eq = all(f1%NAME == f2%NAME)
-"""
-    to_f2_trans_pointer = """\
-if (associated(F%NAME)) then
-  if (n1_NAME == 0 .or. any(shape(F%NAME) /= [DIMS])) deallocate(F%NAME)
-  if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
-endif
-if (n1_NAME /= 0) then
-  call c_f_pointer (z_NAME, f_NAME, [TOTDIM])
-  if (.not. associated(F%NAME)) allocate(F%NAME(DIMS))
-  SET
-else
-  if (associated(F%NAME)) deallocate(F%NAME)
-endif
-"""
-
-    fp = f_side_trans_class()
-    fp.to_c2_type = f.to_c2_type
-    fp.to_c2_name = "z_NAME(*)"
-    fp.to_f2_type = "type(c_ptr), value"
-    fp.to_f2_name = "z_NAME"
-    fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME(:)"]
-
-    # ---------------------
-    # Pointer, dim = 0
-
-    if dim == 0:
-        fp.to_f2_var = [f.to_f2_type + ", pointer :: f_NAME"]
-        fp.to_c2_name = "z_NAME"
-        fp.to_c2_call = "F%NAME"
-        fp.to_f2_trans = """\
-if (n_NAME == 0) then                                                                                  
-  if (associated(F%NAME)) deallocate(F%NAME)                                                           
-else                                                                                                   
-  call c_f_pointer (z_NAME, f_NAME)                                                                    
-  if (.not. associated(F%NAME)) allocate(F%NAME)                                                       
-  F%NAME = f_NAME
-endif                                                                                                  
-"""
-
-        fp.to_c_trans = """\
-n_NAME = 0
-if (associated(F%NAME)) n_NAME = 1
-"""
-
-        fp.equality_test = """
-is_eq = is_eq .and. (associated(f1%NAME) .eqv. associated(f2%NAME))
-if (.not. is_eq) return
-if (associated(f1%NAME)) is_eq = (f1%NAME == f2%NAME)
-"""
-
-        test_pat = """\
-if (ix_patt < 3) then
-  if (associated(F%NAME)) deallocate (F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate (F%NAME)
-  rhs = ARGIDX + offset
-  SET
-endif
-"""
-
-        fp.test_pat = test_pat.replace("SET", "F%NAME = " + f.test_value)
-
-        if type == LOGIC:
-            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-            fp.to_f2_trans = fp.to_f2_trans.replace("= f_NAME", "= f_logic(f_NAME)")
-            fp.to_c2_call = "fscalar2scalar(F%NAME, n_NAME)"
-            fp.to_c2_type = "logical(c_bool)"
-
-        if type == STRUCT:
-            fp.to_c2_call = "c_loc(F%NAME)"
-            fp.to_c2_type = "type(c_ptr), value"
-            fp.to_f2_var = ["type(KIND_struct), pointer :: f_NAME"]
-            fp.test_pat = test_pat.replace(
-                "SET", "call set_KIND_test_pattern (F%NAME, ix_patt)"
-            )
-            fp.to_f2_trans = """\
-if (n_NAME == 0) then
-  if (associated(F%NAME)) deallocate(F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate(F%NAME)
-  call KIND_to_f (z_NAME, c_loc(F%NAME))
-endif
-"""
-
-    # ---------------------
-    # Pointer, dim = 1
-
-    if dim == 1:
-        fp.to_c2_call = "fvec2vec(F%NAME, n1_NAME)"
-        fp.to_f2_trans = (
-            to_f2_trans_pointer.replace("DIMS", "n1_NAME")
-            .replace("TOTDIM", "n1_NAME")
-            .replace("SET", "F%NAME = f_NAME(1:n1_NAME)")
-        )
-        fp.equality_test = equality_test_pointer
-
-        fp.to_c_trans = """\
-n1_NAME = 0
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME, 1)
-endif
-"""
-        tp1 = """
-if (ix_patt < 3) then
-  if (associated(F%NAME)) deallocate (F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate (F%NAME(-1:1))
-"""
-
-        fp.test_pat = "".join(
-            (
-                tp1,
-                x2,
-                jd1_loop,
-                x2,
-                rhs1,
-                x2,
-                set1.replace("TEST_VALUE", f.test_value),
-                "  enddo\n",
-                "endif\n",
-            )
+    @classmethod
+    def from_prefix(cls, prefix: str) -> TemplateImporter:
+        return TemplateImporter(
+            # These must be on their own line:
+            section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
+            special_case=re.compile(
+                rf"^\s*{prefix}\s*case:(.*):(.*)$\n^(.*)$", flags=re.MULTILINE
+            ),
+            type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
+            # This may appear anywhere in a line
+            begin=re.compile(rf"^.*{prefix}\s*begin:(.*).*\s*$", flags=re.MULTILINE),
+            end=re.compile(rf"{prefix}\s*end:(.*)\s*$", flags=re.MULTILINE),
         )
 
-        if type == LOGIC:
-            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-            fp.to_f2_trans = fp.to_f2_trans.replace(
-                "F%NAME = f_NAME(1:n1_NAME)", "call vec2fvec (f_NAME, F%NAME)"
-            )
-
-        if type == STRUCT:
-            fp.to_c2_call = "z_NAME"
-            fp.to_c2_type = "type(c_ptr)"
-            fp.to_c2_name = "z_NAME(*)"
-            fp.to_f2_type = fp.to_c2_type
-            fp.to_f2_name = fp.to_c2_name
-            fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
-            fp.to_f2_var = []
-            fp.test_pat = (
-                tp1
-                + x2
-                + jd1_loop
-                + x4
-                + "call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)\n"
-                + "  enddo\n"
-                + "endif\n"
-            )
-            ## fp.equality_test = fp.equality_test.replace
-            fp.to_c_trans = """ \
-n1_NAME = 0
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME); lb1 = lbound(F%NAME, 1) - 1
-  allocate (z_NAME(n1_NAME))
-  do jd1 = 1, n1_NAME
-    z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))
-  enddo
-endif
-"""
-            fp.to_f2_trans = """\
-if (n1_NAME == 0) then
-  if (associated(F%NAME)) deallocate(F%NAME)
-else
-  if (associated(F%NAME)) then
-    if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME])) deallocate(F%NAME)
-    if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
-  endif
-  if (.not. associated(F%NAME)) allocate(F%NAME(LBOUND:n1_NAME+LBOUND-1))
-  do jd1 = 1, n1_NAME
-    call KIND_to_f (z_NAME(jd1), c_loc(F%NAME(jd1+LBOUND-1)))
-  enddo
-endif
-"""
-
-    # ---------------------
-    # Pointer, dim = 2
-
-    if dim == 2:
-        fp.to_c2_call = "mat2vec(F%NAME, n1_NAME*n2_NAME)"
-        fp.to_f2_trans = (
-            to_f2_trans_pointer.replace("DIMS", "n1_NAME, n2_NAME")
-            .replace("TOTDIM", "n1_NAME*n2_NAME")
-            .replace("SET", "call vec2mat(f_NAME, F%NAME)")
-        )
-        fp.equality_test = equality_test_pointer
-
-        fp.to_c_trans = """\
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME, 1)
-  n2_NAME = size(F%NAME, 2)
-else
-  n1_NAME = 0; n2_NAME = 0
-endif
-"""
-        tp2 = """
-if (ix_patt < 3) then
-  if (associated(F%NAME)) deallocate (F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate (F%NAME(-1:1, 2))
-"""
-        fp.test_pat = (
-            tp2
-            + x2
-            + jd1_loop
-            + x2
-            + jd2_loop
-            + x2
-            + rhs2
-            + x2
-            + set2.replace("TEST_VALUE", f.test_value)
-            + "  enddo; enddo\n"
-            + "endif\n"
-        )
-
-        if type == LOGIC:
-            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-
-        if type == STRUCT:
-            fp.to_c2_call = "z_NAME"
-            fp.to_c2_type = "type(c_ptr)"
-            fp.to_c2_name = "z_NAME(*)"
-            fp.to_f2_type = fp.to_c2_type
-            fp.to_f2_name = fp.to_c2_name
-            fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
-            fp.to_f2_var = []
-            fp.test_pat = (
-                tp2
-                + x2
-                + jd1_loop
-                + x2
-                + jd2_loop
-                + x4
-                + "call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)\n"
-                + "  enddo\n"
-                + "  enddo\n"
-                + "endif\n"
-            )
-            ## fp.equality_test = fp.equality_test.replace
-            fp.to_c_trans = """\
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME, 1); lb1 = lbound(F%NAME, 1) - 1
-  n2_NAME = size(F%NAME, 2); lb2 = lbound(F%NAME, 2) - 1
-  allocate (z_NAME(n1_NAME * n2_NAME))
-  do jd1 = 1, n1_NAME; do jd2 = 1, n2_NAME
-    z_NAME(n2_NAME*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1, jd2+lb2))
-  enddo;  enddo
-else
-  n1_NAME = 0; n2_NAME = 0
-endif
-"""
-            fp.to_f2_trans = """\
-if (n1_NAME == 0) then
-  if (associated(F%NAME)) deallocate(F%NAME)
-else
-  if (associated(F%NAME)) then
-    if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME, n2_NAME])) deallocate(F%NAME)
-    if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
-  endif
-  if (.not. associated(F%NAME)) allocate(F%NAME(LBOUND:n1_NAME+LBOUND-1, LBOUND:n2_NAME+LBOUND-1))
-  do jd1 = 1, n1_NAME
-  do jd2 = 1, n2_NAME
-    call KIND_to_f (z_NAME(n2_NAME*(jd1-1) + jd2), c_loc(F%NAME(jd1+LBOUND-1,jd2+LBOUND-1)))
-  enddo
-  enddo
-endif
-"""
-
-    # ---------------------
-    # Pointer, dim = 3
-
-    if dim == 3:
-        fp.to_c2_call = "tensor2vec(F%NAME, n1_NAME*n2_NAME*n3_NAME)"
-        fp.to_f2_trans = (
-            to_f2_trans_pointer.replace("DIMS", "n1_NAME, n2_NAME, n3_NAME")
-            .replace("TOTDIM", "n1_NAME*n2_NAME*n3_NAME")
-            .replace("SET", "call vec2tensor(f_NAME, F%NAME)")
-        )
-        fp.equality_test = equality_test_pointer
-
-        fp.to_c_trans = """\
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME, 1)
-  n2_NAME = size(F%NAME, 2)
-  n3_NAME = size(F%NAME, 3)
-else
-  n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
-endif
-"""
-
-        tp3 = """\
-if (ix_patt < 3) then
-  if (associated(F%NAME)) deallocate (F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate (F%NAME(-1:1, 2, 1))
-"""
-        fp.test_pat = (
-            tp3
-            + x2
-            + jd1_loop
-            + x2
-            + jd2_loop
-            + x2
-            + jd3_loop
-            + x2
-            + rhs3
-            + x2
-            + set3.replace("TEST_VALUE", f.test_value)
-            + "  enddo; enddo; enddo\n"
-            + "endif\n"
-        )
-
-        if type == LOGIC:
-            fp.equality_test = fp.equality_test.replace("== f", ".eqv. f")
-
-        if type == STRUCT:
-            fp.to_c2_call = "z_NAME"
-            fp.to_c2_type = "type(c_ptr)"
-            fp.to_c2_name = "z_NAME(*)"
-            fp.to_f2_type = fp.to_c2_type
-            fp.to_f2_name = fp.to_c2_name
-            fp.to_c_var = ["type(c_ptr), allocatable :: z_NAME(:)"]
-            fp.to_f2_var = []
-            fp.test_pat = (
-                tp3
-                + x2
-                + jd1_loop
-                + x2
-                + jd2_loop
-                + x2
-                + jd3_loop
-                + x4
-                + "call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+2*jd2+3*jd3)\n"
-                + "  enddo\n"
-                + "  enddo\n"
-                + "  enddo\n"
-                + "endif\n"
-            )
-            ## fp.equality_test = fp.equality_test.replace
-            fp.to_c_trans = """\
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME, 1); lb1 = lbound(F%NAME, 1) - 1
-  n2_NAME = size(F%NAME, 2); lb2 = lbound(F%NAME, 2) - 1
-  n3_NAME = size(F%NAME, 3); lb3 = lbound(F%NAME, 3) - 1
-  allocate (z_NAME(n1_NAME * n2_NAME * n3_NAME))
-  do jd1 = 1, n1_NAME; do jd2 = 1, n2_NAME; do jd3 = 1, n3_NAME
-    z_NAME(n3_NAME*n2_NAME*(jd1-1) + n3_NAME*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1, jd2+lb2, jd3+lb3))
-  enddo;  enddo; enddo
-else
-  n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
-endif
-"""
-            fp.to_f2_trans = """\
-if (n1_NAME == 0) then
-  if (associated(F%NAME)) deallocate(F%NAME)
-else
-  if (associated(F%NAME)) then
-    if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME, n2_NAME, n3_NAME])) deallocate(F%NAME)
-    if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
-  endif
-  if (.not. associated(F%NAME)) allocate(F%NAME(LBOUND:n1_NAME+LBOUND-1, LBOUND:n2_NAME+LBOUND-1, LBOUND:n3_NAME+LBOUND-1))
-  do jd1 = 1, n1_NAME;  do jd2 = 1, n2_NAME;  do jd3 = 1, n3_NAME
-    call KIND_to_f (z_NAME(n3_NAME*n2_NAME*(jd1-1) + n3_NAME*(jd2-1) + jd3), c_loc(F%NAME(jd1+LBOUND-1,jd2+LBOUND-1,jd3+LBOUND-1)))
-  enddo;  enddo;  enddo
-endif
-"""
-    return fp
-
-
-def make_special_f_trans(f_side_trans):
-    # ---------------------------
-    # CHAR 0 NOT - Character scalar, not a pointer/allocatable
-
-    f_side_trans[CHAR, 0, NOT] = f_side_trans_class()
-    fc = f_side_trans[CHAR, 0, NOT]
-    fc.to_c2_call = "trim(F%NAME) // c_null_char"
-    fc.to_c2_type = "character(c_char)"
-    fc.to_c2_name = "z_NAME(*)"
-    fc.to_f2_type = fc.to_c2_type
-    fc.to_f2_name = fc.to_c2_name
-    fc.equality_test = "is_eq = is_eq .and. (f1%NAME == f2%NAME)\n"
-    fc.test_pat = (
-        "do jd1 = 1, len(F%NAME)\n"
-        '  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))\n'
-        "enddo\n"
-    )
-    fc.to_f2_trans = "call to_f_str(z_NAME, F%NAME)"
-
-    # CHAR 0 PTR - Character scalar pointer
-
-    f_side_trans[CHAR, 0, PTR] = copy.deepcopy(f_side_trans[INT, 0, PTR])
-    fc = f_side_trans[CHAR, 0, PTR]
-    fc.to_c2_type = "character(c_char)"
-    fc.to_c2_name = "z_NAME(*)"
-    fc.to_f2_type = fc.to_c2_type
-    fc.to_f2_name = fc.to_c2_name
-    fc.to_f2_trans = """\
-if (n_NAME == 0) then
-  if (associated(F%NAME)) deallocate(F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate(F%NAME)
-  call to_f_str(z_NAME, F%NAME)
-endif
-"""
-    fc.to_c_var = ["character(STR_LEN+1), target :: f_NAME"]
-    fc.to_c_trans = """\
-n_NAME = 0
-if (associated(F%NAME)) then
-  n_NAME = 1
-  f_NAME = trim(F%NAME) // c_null_char 
-endif
-"""
-    fc.to_c2_call = "f_NAME"
-    fc.test_pat = """\
-if (ix_patt < 3) then
-  if (associated(F%NAME)) deallocate (F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate (F%NAME)
-  do jd1 = 1, len(F%NAME)
-    F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))
-  enddo
-endif
-"""
-
-    # CHAR 1 NOT - Character array, not a pointer/allocatable
-
-    f_side_trans[CHAR, 1, NOT] = copy.deepcopy(f_side_trans[STRUCT, 1, NOT])
-    fc = f_side_trans[CHAR, 1, NOT]
-    fc.to_c2_name = "z_NAME(*)"
-    fc.to_f2_type = fc.to_c2_type
-    fc.to_f2_name = fc.to_c2_name
-    fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
-    fc.test_pat = """\
-do jd1 = lbound(F%NAME, 1), ubound(F%NAME, 1)
-  do jd = 1, len(F%NAME(jd1))
-    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
-  enddo
-enddo
-"""
-    fc.to_f2_trans = "\n".join(
-        [
-            jd1_loop.rstrip(),
-            "  call c_f_pointer (z_NAME(jd1), f_NAME)",
-            "  call to_f_str(f_NAME, F%NAME(jd1+lb1))",
-            "enddo",
-            "",
-        ]
-    )
-
-    fc.to_c_trans = "\n".join(
-        [
-            jd1_loop.rstrip(),
-            "  a_NAME(jd1) = trim(F%NAME(jd1+lb1)) // c_null_char",
-            "  z_NAME(jd1) = c_loc(a_NAME(jd1))",
-            "enddo",
-            "",
-        ]
-    )
-    fc.to_c_var += ["character(STR_LEN+1), target :: a_NAME(DIM1)"]
-
-    # CHAR 1 PTR - Character array pointer
-
-    f_side_trans[CHAR, 1, PTR] = copy.deepcopy(f_side_trans[STRUCT, 1, PTR])
-    fc = f_side_trans[CHAR, 1, PTR]
-    fc.to_c2_type = "type(c_ptr)"
-    fc.to_c2_name = "z_NAME(*)"
-    fc.to_f2_type = fc.to_c2_type
-    fc.to_f2_name = fc.to_c2_name
-    fc.to_f2_var = ["character(c_char), pointer :: f_NAME"]
-    fc.test_pat = """\
-if (ix_patt < 3) then
-  if (associated(F%NAME)) deallocate (F%NAME)
-else
-  if (.not. associated(F%NAME)) allocate (F%NAME(3))
-  do jd1 = 1, 3
-  do jd = 1, len(F%NAME)
-    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
-  enddo; enddo
-endif
-"""
-    fc.to_f2_trans = """\
-if (n1_NAME == 0) then
-  if (associated(F%NAME)) deallocate(F%NAME)
-else
-  if (associated(F%NAME)) then
-    if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME])) deallocate(F%NAME)
-    if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
-  endif
-  if (.not. associated(F%NAME)) allocate(F%NAME(LBOUND:n1_NAME+LBOUND-1))
-  do jd1 = 1, n1_NAME
-    call c_f_pointer (z_NAME(jd1), f_NAME)
-    call to_f_str(f_NAME, F%NAME(jd1+LBOUND-1))
-  enddo
-endif
-"""
-    fc.to_c_trans = """\
-n1_NAME = 0
-if (associated(F%NAME)) then
-  n1_NAME = size(F%NAME); lb1 = lbound(F%NAME, 1) - 1
-  allocate (a_NAME(n1_NAME))
-  allocate (z_NAME(n1_NAME))
-  do jd1 = 1, n1_NAME
-    a_NAME(jd1) = trim(F%NAME(jd1+lb1)) // c_null_char
-    z_NAME(jd1) = c_loc(a_NAME(jd1))
-  enddo
-endif
-"""
-    fc.to_c_var += ["character(STR_LEN+1), allocatable, target :: a_NAME(:)"]
-
-    # --------------------------------------------------------------------------------------
-    # Allocatable components are very similar to pointer components
-    # with the simple replacement of 'associated' for 'allocated'.
-
-    for trans in list(f_side_trans.keys()):
-        if trans[2] == PTR:
-            trans_alloc = (trans[0], trans[1], ALLOC)
-            f_side_trans[trans_alloc] = copy.deepcopy(f_side_trans[trans])
-            t = f_side_trans[trans_alloc]
-            t.to_f2_trans = t.to_f2_trans.replace("associated", "allocated")
-            t.to_c_trans = t.to_c_trans.replace("associated", "allocated")
-            t.test_pat = t.test_pat.replace("associated", "allocated")
-            t.equality_test = t.equality_test.replace("associated", "allocated")
-
-
-test_pat_pointer1 = """\
-  if (ix_patt < 3) 
-    C.NAME.resize(0);
-  else {
-    C.NAME.resize(3);
-"""
-
-equality_test_pointer = """\
-  is_eq = is_eq && ((x.NAME == NULL) == (y.NAME == NULL));
-  if (!is_eq) return false;
-  if (x.NAME != NULL) is_eq = TEST;
-"""
-
-for1 = "  for (size_t i = 0; i < C.NAME.size(); i++)"
-for2 = "  for (size_t j = 0; j < C.NAME[0].size(); j++) "
-for3 = "  for (size_t k = 0; k < C.NAME[0][0].size(); k++)"
-
-test_pat1 = (
-    for1 + "\n    {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = TEST_VALUE;}"
-)
-test_pat2 = (
-    for1
-    + for2
-    + "\n    {int rhs = 101 + i + 10*(j+1) + ARGIDX + offset; C.NAME[i][j] = TEST_VALUE;}"
-)
-test_pat3 = (
-    for1
-    + for2
-    + for3
-    + "\n"
-    + x4
-    + "{int rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset; C.NAME[i][j][k] = TEST_VALUE;}"
-)
-
-
-def configure_c_side_trans_by_type(
-    type: str,
-    dim: int,
-    c: c_side_trans_class,
-):
-    """Configure a c_side_trans object based on type, dimension. Not a pointer type."""
-    if type == REAL:
-        c_type = "Real"
-        c_arg = "c_Real"
-        c.test_value = "rhs"
-        c.construct_value = "0.0"
-    elif type == CMPLX:
-        c_type = "Complex"
-        c_arg = "c_Complex"
-        c.test_value = "Complex(rhs, 100+rhs)"
-        c.construct_value = "0.0"
-    elif type == INT:
-        c_type = "Int"
-        c_arg = "c_Int"
-        c.test_value = "rhs"
-        c.construct_value = "0"
-    elif type == INT8:
-        c_type = "Int8"
-        c_arg = "c_Int8"
-        c.test_value = "rhs"
-        c.construct_value = "0"
-    elif type == LOGIC:
-        c_type = "Bool"
-        c_arg = "c_Bool"
-        c.test_value = "(rhs % 2 == 0)"
-        c.construct_value = "false"
-    elif type == STRUCT:
-        c_type = "CPP_KIND"
-        c_arg = "const CPP_KIND"
-        c.test_value = ""
-        c.construct_value = ""
-    elif type == SIZE:
-        c.to_f2_arg = "Int"
-        c.to_f2_call = "NAME"
-        c.to_c2_arg = "Int NAME"
-        return
-    else:
-        raise NotImplementedError(type)
-
-    # Configure based on dimension
-    if dim == 0:
-        configure_c_dim0_non_ptr(c, c_type, c_arg, type)
-    elif dim == 1:
-        configure_c_dim1_non_ptr(c, c_type, c_arg, type)
-    elif dim == 2:
-        configure_c_dim2_non_ptr(c, c_type, c_arg, type)
-    elif dim == 3:
-        configure_c_dim3_non_ptr(c, c_type, c_arg, type)
-
-    # Apply test pattern
-    c.test_pat = c.test_pat.replace("TEST_VALUE", c.test_value)
-
-    # Special handling for STRUCT type
-    if type == STRUCT:
-        c.to_c2_arg = "const Opaque_KIND_class* z_NAME"
-        if dim > 0:
-            c.to_f2_arg = c.to_f2_arg.replace("Arr", "**")
-            c.to_c2_arg = "const Opaque_KIND_class** z_NAME"
-            c.to_f2_call = "z_NAME"
-
-
-def configure_c_dim0_non_ptr(c, c_type, c_arg, type):
-    """Configure for dimension 0"""
-    c.c_class = c_type
-    c.to_f2_arg = c_arg + "&"
-    c.to_f2_call = "C.NAME"
-    c.to_c2_arg = c_arg + "& z_NAME"
-
-    if type == STRUCT:
-        c.class_initializer = ""
-        c.to_c2_set = "  KIND_to_c(z_NAME, C.NAME);"
-        c.test_pat = "  set_CPP_KIND_test_pattern(C.NAME, ix_patt);\n"
-
-
-def configure_c_dim1_non_ptr(c, c_type, c_arg, type):
-    """Configure for dimension 1"""
-    c.c_class = f"FixedArray1D<{c_type}, DIM1>"
-    c.c_instantiation_suffix = "{VALUE}"
-    c.to_f2_arg = c_arg + "Arr"
-    c.to_f2_call = "&C.NAME[0]"
-    c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-
-    if type == STRUCT:
-        c.class_initializer = ""
-        c.to_c2_set = "\n".join(
-            (
-                "for (size_t i = 0; i < C.NAME.size(); i++)",
-                "{ KIND_to_c(z_NAME[i], C.NAME[i]); }",
-            )
-        )
-        c.test_pat = test_pat1.replace(
-            "C.NAME[i] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1)",
-        )
-        c.to_f_setup = """\
-  const CPP_KIND* z_NAME[DIM1];
-  for (int i = 0; i < DIM1; i++) {z_NAME[i] = &C.NAME[i];}
-"""
-    else:
-        c.to_c2_set = "  C.NAME << z_NAME;"
-        c.test_pat = test_pat1
-
-
-def configure_c_dim2_non_ptr(c, c_type, c_arg, type):
-    """Configure for dimension 2"""
-    c.c_class = f"FixedArray2D<{c_type}, DIM1, DIM2>"
-    c.to_f2_arg = c_arg + "Arr"
-    c.to_f2_call = "z_NAME"
-    c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.class_initializer = ""
-    c.to_c2_set = "  C.NAME << z_NAME;"
-    c.test_pat = test_pat2
-    c.to_f_setup = (
-        "  " + c_type + " z_NAME[DIM1*DIM2]; matrix_to_vec(C.NAME, z_NAME);\n"
-    )
-    c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-
-    if type == STRUCT:
-        c.c_class = f"SharedVector2D<{c_type}>"
-        c.to_c2_set = (
-            for1
-            + for2
-            + "\n    {auto m = DIM2*i + j; KIND_to_c(z_NAME[m], *C.NAME[i][j].get());}"
-        )
-        c.test_pat = test_pat2.replace(
-            "C.NAME[i][j] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt+i+1+10*(j+1))",
-        )
-        c.to_f_setup = (
-            "  const CPP_KIND* z_NAME[DIM1*DIM2];\n"
-            + for1
-            + for2
-            + "\n    {auto m = DIM2*i + j; z_NAME[m] = C.NAME[i][j].get();}\n"
-        )
-
-
-def configure_c_dim3_non_ptr(c, c_type, c_arg, type):
-    """Configure for dimension 3"""
-    c.c_class = f"FixedArray3D<{c_type}, DIM1, DIM2, DIM3>"
-    c.to_f2_arg = c_arg + "Arr"
-    c.to_f2_call = "z_NAME"
-    c.to_c2_arg = c_arg + "Arr z_NAME"
-    c.class_initializer = ""
-    c.to_c2_set = "  C.NAME << z_NAME;"
-    c.test_pat = test_pat3
-    c.to_f_setup = (
-        "  " + c_type + " z_NAME[DIM1*DIM2*DIM3]; tensor_to_vec(C.NAME, z_NAME);\n"
-    )
-    c.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-
-    if type == STRUCT:
-        c.c_class = f"SharedVector3D<{c_type}>"
-        c.to_c2_set = (
-            for1
-            + for2
-            + for3
-            + "\n    {auto m = DIM3*DIM2*i + DIM3*j + k; KIND_to_c(z_NAME[m], *C.NAME[i][j][k].get());}"
-        )
-        c.test_pat = c.test_pat.replace(
-            "C.NAME[i][j][k] = TEST_VALUE",
-            "set_CPP_KIND_test_pattern(*C.NAME[i][j][k], ix_patt+i+1+10*(j+1)+100*(k+1))",
-        )
-        c.to_f_setup = (
-            "  const CPP_KIND* z_NAME[DIM1*DIM2*DIM3];\n"
-            + for1
-            + for2
-            + for3
-            + "\n    {auto m = DIM3*DIM2*i + DIM3*j + k; z_NAME[m] = C.NAME[i][j][k].get();}\n"
-        )
-
-
-def configure_c_pointer(
-    cp: c_side_trans_class,
-    c: c_side_trans_class,
-    dim: int,
-    type: str,
-    c_type: str,
-    c_arg: str,
-):
-    """Configure pointer version of the class"""
-    # Copy the original configuration
-    cp.destructor = ""
-
-    if type == STRUCT:
-        cp.to_c2_arg = "Opaque_KIND_class** z_NAME"
-    else:
-        cp.to_f2_arg = c_arg + "Arr"
-        cp.to_c2_arg = cp.to_f2_arg + " z_NAME"
-
-    # Dimension-specific pointer configuration
-    if dim == 0:
-        configure_c_dim0_ptr(cp, c, c_type, type)
-    elif dim == 1:
-        configure_c_dim1_ptr(cp, c, c_type, type)
-    elif dim == 2:
-        configure_c_dim2_ptr(cp, c, c_type, type)
-    elif dim == 3:
-        configure_c_dim3_ptr(cp, c, c_type, type)
-    else:
-        raise NotImplementedError(dim)
-
-    cp.test_pat = cp.test_pat.replace("TEST_VALUE", c.test_value)
-
-
-def configure_c_dim0_ptr(
-    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
-):
-    """Configure pointer for dimension 0"""
-    cp.c_class = f"shared_ptr<{cp.c_class}>"
-    cp.class_initializer = "nullptr"
-    cp.destructor = ""
-    cp.test_pat = "\n".join(
-        (
-            "  if (ix_patt < 3) ",
-            "    C.NAME = nullptr;",
-            "  else {",
-            f"    C.NAME = make_shared<{c_type}>();",
-            indent(c.test_pat.replace("C.NAME", "(*C.NAME)"), 2) + "  }",
-        )
-    )
-    cp.to_f_setup = "  size_t n_NAME = 0; if (C.NAME != nullptr) n_NAME = 1;\n"
-    cp.equality_test = """\
-  is_eq = is_eq && ((x.NAME == NULL) == (y.NAME == NULL));
-  if (!is_eq) return false;
-  if (x.NAME != NULL) is_eq = (*x.NAME == *y.NAME);
-"""
-    cp.to_c2_set = """\
-  if (n_NAME == 0) {
-    C.NAME = nullptr;
-  } else {
-    C.NAME = make_shared<KIND>();
-    SET
-  }
-""".replace("KIND", c_type)
-
-    if type == STRUCT:
-        cp.to_f2_call = "*C.NAME"
-        cp.to_c2_arg = "Opaque_KIND_class* z_NAME"
-        cp.to_c2_set = cp.to_c2_set.replace("SET", "KIND_to_c(z_NAME, *C.NAME);")
-    else:
-        cp.to_f2_call = "C.NAME.get()"
-        cp.to_c2_set = cp.to_c2_set.replace("SET", "*C.NAME = *z_NAME;")
-
-
-def configure_c_dim1_ptr(
-    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
-):
-    """Configure pointer for dimension 1"""
-    cp.c_class = f"VariableArray1D<{c_type}>"
-    cp.class_initializer = cp.class_initializer.replace("DIM1", "0")
-    cp.c_instantiation_suffix = ""
-    cp.to_f2_call = "z_NAME"
-    cp.to_c2_set = """
-  C.NAME.resize(n1_NAME);
-  C.NAME << z_NAME;
-"""
-    cp.test_pat = test_pat_pointer1 + indent(c.test_pat, 2) + "  }\n"
-    cp.to_f_setup = """\
-  auto n1_NAME = C.NAME.size();
-  c_TYPEArr z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    z_NAME = &C.NAME[0];
-  }
-""".replace("TYPE", c_type)
-
-    if type == STRUCT:
-        cp.class_initializer = ""
-        cp.test_pat = (
-            test_pat_pointer1
-            + x2
-            + for1
-            + "  {set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1);}\n"
-            + "  }\n"
-        )
-        cp.to_f_setup = """\
-  auto n1_NAME = C.NAME.size();
-  const CPP_KIND** z_NAME = nullptr;
-  if (n1_NAME != 0) {
-    z_NAME = new const CPP_KIND*[n1_NAME];
-    for (auto i{0}; i < n1_NAME; i++) z_NAME[i] = &C.NAME[i];
-  }
-"""
-        cp.to_c2_set = """\
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) { KIND_to_c(z_NAME[i], C.NAME[i]); }
-"""
-        cp.to_f_cleanup = " if (z_NAME) delete[] z_NAME;\n"
-
-
-def configure_c_dim2_ptr(
-    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
-):
-    """Configure pointer for dimension 2"""
-    cp.c_class = f"VariableArray2D<{c_type}>"
-    cp.class_initializer = cp.class_initializer.replace("DIM1", "0").replace(
-        "DIM2", "0"
-    )
-    cp.c_instantiation_suffix = ""
-    cp.to_c2_set = """\
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) C.NAME[i].resize(n2_NAME);
-  C.NAME << z_NAME;
-"""
-    cp.test_pat = (
-        test_pat_pointer1
-        + indent((for1 + "\n    C.NAME[i].resize(2);\n" + c.test_pat), 2)
-        + "  }\n"
-    )
-    cp.to_f_cleanup = "  delete z_NAME;\n"
-    cp.to_f_setup = """\
-  auto n1_NAME { C.NAME.size() };
-  auto n2_NAME { std::size_t{0} };
-  TYPE* z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    z_NAME = new TYPE [n1_NAME*n2_NAME];
-    matrix_to_vec (C.NAME, z_NAME);
-  }
-""".replace("TYPE", c_type)
-    cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
-
-    if type == STRUCT:
-        cp.test_pat = (
-            test_pat_pointer1
-            + """\
-    for (size_t i = 0; i < C.NAME.size(); i++) {
-      C.NAME[i].resize(2);\n
-      for (size_t j = 0; j < C.NAME[0].size(); j++) {
-        auto &item = C.NAME[i][j];
-        set_CPP_KIND_test_pattern(item, ix_patt+i+2*j+3);
-      }
-    }
-  }
-"""
-        )
-        cp.to_c2_set = """\
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (auto j{0}; j < n2_NAME; j++) {
-        auto &item = C.NAME[i][j];
-        KIND_to_c(z_NAME[n2_NAME*i+j], item);
-    }
-  }
-"""
-        cp.to_f_setup = """
-  auto n1_NAME { C.NAME.size() };
-  auto n2_NAME { std::size_t{0} };
-  const TYPE** z_NAME { nullptr };
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    z_NAME = new const TYPE* [n1_NAME*n2_NAME];
-    for (auto i{0}; i < n1_NAME; i++) {
-      for (auto j{0}; j < n2_NAME; j++) {
-        z_NAME[i*n2_NAME + j] = &C.NAME[i][j];
-      }
-    }
-  }
-""".replace("TYPE", c_type)
-
-
-def configure_c_dim3_ptr(
-    cp: c_side_trans_class, c: c_side_trans_class, c_type: str, type: str
-):
-    """Configure pointer for dimension 3"""
-    cp.c_class = f"VariableArray3D<{c_type}>"
-    cp.c_instantiation_suffix = ""
-    cp.class_initializer = (
-        cp.class_initializer.replace("DIM1", "0")
-        .replace("DIM2", "0")
-        .replace("DIM3", "0")
-    )
-
-    cp.to_c2_set = """\
-  C.NAME.resize(n1_NAME);
-  for (size_t i = 0; i < C.NAME.size(); i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      C.NAME[i][j].resize(n3_NAME);
-  }
-  C.NAME << z_NAME;
-"""
-
-    cp.test_pat = """\
-  if (ix_patt < 3) 
-    C.NAME.resize(0);
-  else {
-    C.NAME.resize(3);
-    for (size_t i = 0; i < C.NAME.size(); i++) {
-      C.NAME[i].resize(2);
-      for (size_t j = 0; j < C.NAME[0].size(); j++) {
-        C.NAME[i][j].resize(1);
-        for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-          auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset;
-          C.NAME[i][j][k] = TEST_VALUE;
-        }
-      }
-    }
-  }
-"""
-
-    cp.to_f_cleanup = "  delete z_NAME;\n"
-    cp.to_f_setup = """
-  auto n1_NAME { C.NAME.size() };
-  auto n2_NAME { std::size_t{0} };
-  auto n3_NAME { std::size_t{0} };
-  TYPE* z_NAME { nullptr };
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME = new TYPE [C.NAME.size()*C.NAME[0].size()*C.NAME[0][0].size()];
-    tensor_to_vec (C.NAME, z_NAME);
-  }
-""".replace("TYPE", c_type)
-    cp.to_f_cleanup = "  if (z_NAME) delete[] z_NAME;\n"
-
-    if type == STRUCT:
-        cp.to_c2_set = """
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) {
-    C.NAME[i].resize(n2_NAME);
-    for (auto j{0}; j < n2_NAME; j++) {
-      C.NAME[i][j].resize(n3_NAME);
-      for (auto k{0}; k < n3_NAME; k++) {
-        // C.NAME[i][j][k] = make_shared<CPP_KIND>();
-        KIND_to_c(z_NAME[n3_NAME*n2_NAME*i+n3_NAME*j+k], C.NAME[i][j][k]);
-    } } }
-"""
-        cp.test_pat = """\
-  if (ix_patt < 3) 
-    C.NAME.resize(0);
-  else {
-    C.NAME.resize(3);
-    for (size_t i = 0; i < C.NAME.size(); i++) {
-      C.NAME[i].resize(2);
-      for (size_t j = 0; j < C.NAME[0].size(); j++) {
-        C.NAME[i][j].resize(1);
-        for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-          // C.NAME[i][j][k] = make_shared<CPP_KIND>();
-          set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
-        }
-      }
-    }
-  }
-"""
-        cp.to_f_setup = """
-  auto n1_NAME { C.NAME.size() };
-  auto n2_NAME { std::size_t{0} };
-  auto n3_NAME { std::size_t{0} };
-  const TYPE** z_NAME { nullptr };
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME = new const TYPE* [n1_NAME*n2_NAME*n3_NAME];
-    for (auto i{0}; i < n1_NAME; i++) {
-      for (auto j{0}; j < n2_NAME; j++) {
-        for (auto k{0}; k < n3_NAME; k++) {
-          z_NAME[i*n2_NAME*n3_NAME + j*n3_NAME + k] = &C.NAME[i][j][k];
-        }
-      }
-    }
-  }
-""".replace("TYPE", c_type)
-
-
-def setup_common_c_side_trans():
-    """Initialize the c_side_trans dictionary with configured objects for all combinations."""
-    c_side_trans = {}
-
-    for type_val in [REAL, CMPLX, INT, INT8, LOGIC, STRUCT, SIZE]:
-        for dim in range(4):
-            # Create and configure non-pointer version
-            c_side_trans[type_val, dim, NOT] = c_side_trans_class()
-            c = c_side_trans[type_val, dim, NOT]
-
-            configure_c_side_trans_by_type(type_val, dim, c)
-
-            # Create and configure pointer version (except for SIZE type)
-            if type_val != SIZE:
-                # Create a deep copy of the non-pointer version
-                c_side_trans[type_val, dim, PTR] = copy.deepcopy(c)
-                cp = c_side_trans[type_val, dim, PTR]
-
-                # Configure pointer-specific attributes
-                configure_c_pointer(
-                    cp,
-                    c,
-                    dim,
-                    type_val,
-                    get_c_type(type_val),
-                    get_c_arg(type_val),
+    def split_sections(self, contents: str) -> list[str]:
+        sections = self.section.split(contents)[1:]
+        for section in sections:
+            assert "section:" not in section
+        return sections
+
+    def get_special_cases(self, section: str) -> dict[FullType, dict[str, str]]:
+        res = {}
+        for type_str, tag, value in self.special_case.findall(section):
+            full_type = FullType.from_template(type_str)
+            res.setdefault(full_type, {})
+            res[full_type][tag] = value
+        return res
+
+    def split_tags(self, section: str) -> dict[str, str]:
+        by_tag = {}
+        for begin in self.begin.finditer(section):
+            tag = begin.group(1).lower()
+
+            tag_contents = section[begin.span()[1] :].lstrip("\n\r")
+            end = self.end.search(tag_contents)
+            if end is None:
+                raise RuntimeError(
+                    f"begin:{tag} without end:{tag}. Context:\n{tag_contents}"
+                )
+            if end.group(1).lower() != tag:
+                end_tag = end.group(1)
+                raise RuntimeError(
+                    f"begin:{tag} has a mismatched end tag end:{end_tag}  Context:\n{tag_contents}"
                 )
 
-    return c_side_trans
+            by_tag[tag] = tag_contents[: end.span()[0]].rstrip()
+        return by_tag
+
+    def get_types(self, contents: str) -> list[FullType]:
+        return [
+            FullType.from_template(type_str) for type_str in self.type.findall(contents)
+        ]
+
+    @classmethod
+    def from_file(cls, transform_cls, template_contents: str):
+        transforms = {}
+        custom_overrides = {}
+
+        if transform_cls is CSideTransform:
+            importer = TemplateImporter.from_prefix("////")
+        elif transform_cls is FortranSideTransform:
+            importer = TemplateImporter.from_prefix("!!!!")
+        else:
+            raise NotImplementedError(transform_cls)
+
+        def set_tag(full_type: FullType, tag: str, value: str) -> None:
+            if tag not in valid_fields and not hasattr(transform_cls, tag):
+                raise ValueError(
+                    f"Unexpected special case tag: {tag!r} found in section:\n{section}"
+                )
+            if full_type not in transforms:
+                transforms[full_type] = transform_cls()
+
+            if "!!!! " in value or "//// " in value:
+                raise ValueError(
+                    f"Special characters found in value: {value=}. Section:\n{section}"
+                )
+            setattr(transforms[full_type], tag, value)
+
+        valid_fields = {fld.name for fld in fields(transform_cls)}
+        for section in importer.split_sections(template_contents):
+            types = importer.get_types(section)
+            tags = importer.split_tags(section)
+            special_cases = importer.get_special_cases(section)
+            for full_type in types:
+                for tag, value in tags.items():
+                    set_tag(full_type, tag, value)
+
+            for full_type, tag_to_value in special_cases.items():
+                for tag, value in tag_to_value.items():
+                    set_tag(full_type, tag, value)
+
+            for tag, value in tags.items():
+                if "%" in tag:
+                    custom_overrides[tag] = value
+
+        return transforms, custom_overrides
 
 
 def get_c_type(type_val: str) -> str:
@@ -1827,6 +697,8 @@ def get_c_type(type_val: str) -> str:
         INT: "Int",
         INT8: "Int8",
         LOGIC: "Bool",
+        CHAR: "string",
+        SIZE: "Int",
         STRUCT: "CPP_KIND",
     }
 
@@ -1844,6 +716,8 @@ def get_c_arg(type_val: str) -> str:
         INT: "c_Int",
         INT8: "c_Int8",
         LOGIC: "c_Bool",
+        CHAR: "c_Char",
+        SIZE: "c_Int",
         STRUCT: "const CPP_KIND",
     }
 
@@ -1853,566 +727,98 @@ def get_c_arg(type_val: str) -> str:
     raise NotImplementedError(f"Unknown type: {type_val}")
 
 
-def setup_char_not_pointer(c_side_trans):
-    """Set up translation for CHAR, 0, NOT (character scalar, not pointer)."""
-    c_side_trans[CHAR, 0, NOT] = c_side_trans_class()
-    c_side_trans[CHAR, 0, NOT].c_class = "string"
-    c_side_trans[CHAR, 0, NOT].to_f2_arg = "c_Char"
-    c_side_trans[CHAR, 0, NOT].to_f2_call = "C.NAME.c_str()"
-    c_side_trans[CHAR, 0, NOT].to_c2_arg = "c_Char z_NAME"
-    c_side_trans[CHAR, 0, NOT].test_pat = (
-        "  C.NAME.resize(STR_LEN);\n"
-        + test_pat1.replace("TEST_VALUE", "'a' + rhs % 26")
-    )
-    # c_side_trans[CHAR, 0, NOT].class_initializer = ""
+##################################################################################
+##################################################################################
+def argument_from_fstruct(
+    fstruct: FortranStructure, member: StructureMember
+) -> Argument:
+    if member.size and member.type.lower() == "integer":
+        type_ = INT8
+    else:
+        type_ = member.type
 
+    if member.type_info.pointer:
+        pointer_type = PTR
+    elif member.type_info.allocatable:
+        pointer_type = ALLOC
+    else:
+        pointer_type = NOT
 
-def setup_char_pointer(c_side_trans):
-    """Set up translation for CHAR, 0, PTR (character scalar pointer)."""
-    c_side_trans[CHAR, 0, PTR] = copy.deepcopy(c_side_trans[STRUCT, 0, PTR])
-    cc = c_side_trans[CHAR, 0, PTR]
-    cc.c_class = "shared_ptr<string>"
-    cc.destructor = ""
-    cc.to_f2_call = "z_NAME"
-    cc.to_f2_arg = "c_Char"
-    cc.to_f_setup = """\
-  size_t n_NAME = 0;
-  const char* z_NAME = nullptr;
-  if (C.NAME != NULL) {
-    z_NAME = C.NAME->c_str();
-    n_NAME = 1;
-  }
-"""
-    cc.to_c2_arg = "c_Char z_NAME"
-    cc.to_c2_set = """\
-  if (n_NAME == 0) {
-    C.NAME = nullptr;
-  }
-  else {
-    C.NAME = make_shared<string>(z_NAME);
-  }
-"""
-    cc.test_pat = """\
-  if (ix_patt < 3) 
-    C.NAME = nullptr;
-  else {
-    C.NAME = make_shared<string>(STR_LEN, ' ');
-    for (size_t i = 0; i < C.NAME->size(); i++) {
-      (*C.NAME)[i] = 'a' + (101 + i + ARGIDX + offset) % 26; }
-  }
-"""
-
-
-def setup_char_array(c_side_trans):
-    """Set up translation for CHAR, 1, NOT (character array, not pointer)."""
-    c_side_trans[CHAR, 1, NOT] = c_side_trans_class()
-    cc = c_side_trans[CHAR, 1, NOT]
-    cc.c_class = "FixedArray1D<string, DIM1>"
-    cc.to_f2_arg = "c_Char*"
-    cc.to_f_setup = """\
-  c_Char z_NAME[DIM1];
-  for (auto i{0}; i < DIM1; i++) {z_NAME[i] = C.NAME[i].c_str();}
-"""
-    cc.to_c2_arg = "c_Char* z_NAME"
-    cc.test_pat = (
-        for1
-        + """ {
-    C.NAME[i].resize(STR_LEN);
-    for (size_t j = 0; j < C.NAME[i].size(); j++) 
-      {C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + ARGIDX + offset) % 26;}
-  }
-"""
-    )
-    cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-    cc.to_f2_call = c_side_trans[STRUCT, 1, NOT].to_f2_call
-    cc.to_c2_set = for1 + " C.NAME[i] = z_NAME[i];"
-
-
-def setup_char_array_pointer(c_side_trans):
-    """Set up translation for CHAR, 1, PTR (character array pointer)."""
-    c_side_trans[CHAR, 1, PTR] = copy.deepcopy(c_side_trans[STRUCT, 1, PTR])
-    cc = c_side_trans[CHAR, 1, PTR]
-    cc.c_class = "VariableArray1D<string>"
-    cc.destructor = ""
-    cc.equality_test = "  is_eq = is_eq && is_all_equal(x.NAME, y.NAME);\n"
-    cc.to_f2_arg = "c_Char*"
-    cc.to_c2_arg = "c_Char* z_NAME"
-    cc.to_f_setup = """\
-  auto n1_NAME{ C.NAME.size() };
-  c_Char* z_NAME = nullptr;
-  if (n1_NAME != 0) {
-    z_NAME = new c_Char[n1_NAME];
-    for (auto i{0}; i < n1_NAME; i++) z_NAME[i] = C.NAME[i].c_str();
-  }
-"""
-    cc.to_c2_set = """\
-  C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) C.NAME[i] = z_NAME[i];
-"""
-    cc.test_pat = (
-        test_pat_pointer1
-        + x2
-        + for1
-        + "{\n"
-        + x6
-        + "C.NAME[i].resize(STR_LEN);\n"
-        + x4
-        + for2
-        + "{\n"
-        + x8
-        + "C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + ARGIDX + offset) % 26;\n"
-        + x4
-        + "} }\n"
-        + x2
-        + "}\n"
+    return Argument(
+        is_component=True,
+        f_name=member.name,
+        c_name=params.c_side_name_translation.get(
+            f"{fstruct.name}%{member.name}", member.name
+        ),
+        type=type_,
+        kind=member.kind or "",
+        pointer_type=pointer_type,
+        array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
+        init_value=str(member.fortran_default) if member.fortran_default else None,
+        comment=member.comment,
     )
 
 
-def setup_allocatable_components(c_side_trans):
-    """Set up allocatable components based on pointer components."""
-    for trans in list(c_side_trans.keys()):
-        if trans[2] == PTR:
-            trans_alloc = (trans[0], trans[1], ALLOC)
-            c_side_trans[trans_alloc] = copy.deepcopy(c_side_trans[trans])
-
-
-def initialize_c_side_trans() -> dict[tuple[str, int, str], c_side_trans_class]:
-    """Initialize the c_side_trans dictionary with all required translations."""
-    c_side_trans = setup_common_c_side_trans()
-
-    # Set up different character type handlers
-    setup_char_not_pointer(c_side_trans)
-    setup_char_pointer(c_side_trans)
-    setup_char_array(c_side_trans)
-    setup_char_array_pointer(c_side_trans)
-
-    # Set up allocatable components
-    setup_allocatable_components(c_side_trans)
-
-    return c_side_trans
-
-
-##################################################################################
-##################################################################################
-# Get the list of structs
-# See test_interface_input.py (or whatever file is used).
-
-# Regular expressions for parsing
-re_end_type = re.compile(
-    r"^\s*end\s+(type|subroutine)"
-)  # Match to: 'end type' or 'end subroutine'
-# Regular expression for initial parsing splits
-re_match1 = re.compile(r"([,(]|::|\s+)")  # Match to: ',', '::', '(', ' '
-# Regular expression for additional parsing splits
-re_match2 = re.compile("([=[,(]|::)")  # Match to: ',', '::', '(', '[', '='
-#    Regular expression to match 'contains' statement
-re_contains = re.compile(
-    r"^\s*contains"
-)  # Match to: 'contains' (indicating type procedures are defined.)
-
-
-##################################################################################
-##################################################################################
-def parse_structure_definitions(struct_definitions, params):
-    """
-    Parse Fortran structure definitions from specified files.
-
-    Parameters
-    ----------
-    struct_definitions : list
-        List to store structure definitions
-    params : object
-        Parameters containing file paths and translation dictionaries
-
-    Notes
-    -----
-    Parsing handles various Fortran type definitions. Current restrictions to avoid:
-      1) Line continuations: '&'
-      2) Dimensions: "integer, dimension(7) :: abc"
-      3) Kind: "integer(kind = 8) abc"
-      4) Variable inits using "," or "(" characters: "real abc(2) = [1, 2]"
-    """
-
-    for file_name in params.struct_def_files:
-        parse_struct_file(
-            file_name,
-            struct_definitions,
-            params,
-        )
-
-
-def parse_struct_file(
-    file_name: str,
-    struct_definitions: list,
-    params,
-) -> None:
-    """
-    Parse a single Fortran module file for structure definitions.
-
-    Parameters
-    ----------
-    file_name : str
-        Path to the Fortran module file
-    struct_definitions : list
-        List to store structure definitions
-    params : object
-        Parameters containing name translation dictionaries
-    """
-    with open(file_name) as f_module_file:
-        for line in f_module_file:
-            split_line = line.lower().split()
-            if len(split_line) < 2 or split_line[0] != "type":
-                continue
-
-            for struct in struct_definitions:
-                if struct.f_name == split_line[1]:
-                    break
-            else:
-                continue
-
-            struct.short_name = struct.f_name[:-7]  # Remove '_struct' suffix
-            struct.cpp_class = "CPP_" + struct.short_name
-
-            # Collect the struct components
-            parse_struct_components(
-                f_module_file,
-                struct,
-                params,
-            )
-            remove_untranslated(struct)
-
-
-def parse_struct_components(lines, struct, params) -> None:
-    """
-    Parse components of a Fortran structure.
-
-    Parameters
-    ----------
-    lines : list of str or file obj
-        Open file handle to the Fortran module file
-    struct : object
-        Structure object to populate with component information
-    params : object
-        Parameters containing name translation dictionaries
-    """
-    found_contains_statement = False
-
-    for line in lines:
-        if re_end_type.match(line):
-            break
-        if re_contains.match(line):
-            found_contains_statement = True
-        if found_contains_statement:
-            continue
-
-        print_debug("\nStart: " + line.strip())
-
-        # Remove comments
-        part = line.partition("!")
-        comment = part[2].strip()
-        line = part[0].strip()
-
-        if not line:
-            continue  # Blank line
-
-        print_debug("P1: " + line.strip())
-
-        base_arg = parse_component_line(line, comment)
-        if base_arg:
-            # Process all components on this line
-            process_components(base_arg, line, struct, params)
-
-
-def parse_component_line(line: str, comment: str) -> Argument:
-    """
-    Parse a single line containing Fortran structure component definitions.
-
-    Parameters
-    ----------
-    line : str
-        Line of Fortran code (comments removed)
-    comment : str
-        Comment for this line
-
-    Returns
-    -------
-    arg_class
-        Base argument with type information parsed
-    """
-    base_arg = Argument()
-    base_arg.comment = comment
-
-    if ", optional" in line:
-        line = line.replace(", optional", "")
-        base_arg.optional = True
-    else:
-        base_arg.optional = False
-
-    for intent in ("in", "out", "inout"):
-        intent_attr = f", intent({intent})"
-        if intent_attr in line:
-            line = line.replace(intent_attr, "")
-            base_arg.intent = intent
+def match_structure_definition(
+    fortran_structures: list[FortranStructure],
+    struct: Structure,
+):
+    for fstruct in fortran_structures:
+        if struct.f_name == fstruct.name:
             break
     else:
-        base_arg.intent = ""
+        raise RuntimeError(f"Structure not found: {struct.f_name}")
 
-    # Get base_arg.type
-    split_line = re_match1.split(line, 1)
-    print_debug("P2: " + str(split_line))
-
-    base_arg.type = split_line.pop(0)
-    if base_arg.type == "integer" and split_line[0][0] == "(":
-        base_arg.type = "integer8"
-
-    if split_line[0][0] == " ":
-        split_line = re_match2.split(split_line[1], 1)
-        if split_line[0] == "":
-            split_line.pop(0)
-
-    print_debug("P3: " + str(split_line))
-
-    # Add type information if there is more...
-    if split_line[0] == "(":
-        split_line = split_line[1].partition(")")
-        base_arg.kind = split_line[0].strip()
-        split_line = re_match2.split(split_line[2].lstrip(), 1)
-        if split_line[0] == "":
-            split_line.pop(0)  # EG: "real(rp) :: ..."
-
-    print_debug("P4: " + str(split_line))
-
-    if split_line[0] == ",":
-        split_line = split_line[1].partition("::")
-
-        if split_line[0].strip() == "allocatable":
-            base_arg.pointer_type = ALLOC
-        elif split_line[0].strip() == "pointer":
-            base_arg.pointer_type = PTR
-
-        split_line = [split_line[2].lstrip()]
-
-    if split_line[0] == "::":
-        split_line.pop(0)
-
-    # Join split_line into one string so that we are starting from a definite state
-    if len(split_line) > 1:
-        split_line = ["".join(split_line)]
-
-    print_debug("P5: " + str(split_line))
-
-    base_arg.split_line = split_line
-    return base_arg
-
-
-def process_components(base_arg: Argument, line: str, struct, params) -> None:
-    """
-    Process all components defined on a single line.
-
-    Parameters
-    ----------
-    base_arg : Argument
-        Base argument with type information
-    line : str
-        Original line of Fortran code
-    struct : object
-        Structure object to add components to
-    params : object
-        Parameters containing name translation dictionaries
-    """
-    split_line = base_arg.split_line
-
-    while True:
-        print_debug("L1: " + str(split_line))
-
-        if len(split_line) > 1:
-            print(
-                "Confused parsing of struct component: "
-                + line.strip()
-                + " in: "
-                + struct.f_name,
-                file=sys.stderr,
-            )
-
-        split_line = re_match2.split(split_line[0], 1)
-        print_debug("L2: " + str(split_line))
-
-        arg = copy.deepcopy(base_arg)
-        arg.f_name = split_line.pop(0).strip().lower()
-
-        # Handle reserved words on the C++ side
-        full_name = struct.f_name + "%" + arg.f_name
-        if full_name in params.c_side_name_translation:
-            arg.c_name = params.c_side_name_translation[full_name]
-        else:
-            arg.c_name = arg.f_name
-
-        if len(split_line) == 0:
-            struct.arg.append(arg)
-            break
-
-        # Get array bounds
-        if split_line[0] == "(":
-            arg = parse_array_bounds(arg, split_line)
-            split_line = arg.split_line
-
-        print_debug("L3: " + str(split_line))
-
-        if len(split_line) == 0:
-            struct.arg.append(arg)
-            break
-
-        # Get initial value
-        if split_line[0] == "=":
-            arg, split_line = parse_init_value(arg, split_line)
-
-        print_debug("L4: " + str(split_line))
-
-        struct.arg.append(arg)
-        if len(split_line) == 0 or split_line[0] == "":
-            break
-
-        if split_line[0] != ",":
-            print(
-                'Expected "," while parsing: ' + line.strip() + " in: " + struct.f_name,
-                file=sys.stderr,
-            )
-
-        split_line.pop(0)
-
-
-def parse_array_bounds(arg: Argument, split_line: list) -> Argument:
-    """
-    Parse array bounds from a component definition.
-
-    Parameters
-    ----------
-    arg : Argument
-        Argument to update with array information
-    split_line : list
-        Current split line being processed
-
-    Returns
-    -------
-    Argument
-        Updated argument with array bounds
-    """
-    split_line = split_line[1].lstrip().partition(")")
-    arg.full_array = "(" + split_line[0].strip().replace(" ", "") + ")"
-    arg.array = arg.full_array[1:-1].split(",")
-
-    print_debug("L2p1: " + str(split_line))
-
-    split_line = re_match2.split(split_line[2].lstrip(), 1)
-    print_debug("L2p2: " + str(split_line))
-
-    if split_line[0] == "":
-        split_line.pop(0)  # Needed for EG: "integer aaa(5)"
-
-    if arg.array[0] != ":":  # If has explicit bounds...
-        for dim in arg.array:
-            if ":" in dim:
-                arg.lbound.append(dim.partition(":")[0])
-                arg.ubound.append(dim.partition(":")[2])
-            else:
-                arg.lbound.append("1")
-                arg.ubound.append(dim)
-
-    arg.split_line = split_line
-    return arg
-
-
-def parse_init_value(arg: Argument, split_line: list) -> tuple:
-    """
-    Parse initialization value from a component definition.
-
-    Parameters
-    ----------
-    arg : Argument
-        Argument to update with initialization information
-    split_line : list
-        Current split line being processed
-
-    Returns
-    -------
-    tuple
-        (updated arg, updated split_line)
-    """
-    split_line = re_match2.split(split_line[1].lstrip(), 1)
-    print_debug("L3p1: " + str(split_line))
-
-    # If have EG: "b(2) = [3, 4], c => null()" need to
-    # combine back "(...)" or "[...]" construct which is part of init string.
-    if len(split_line) > 1 and (split_line[1] == "(" or split_line[1] == "["):
-        split0 = split_line[0] + split_line[1]
-        n_parens = 1
-
-        ix = 0
-        for ix, char in enumerate(split_line[2]):
-            split0 = split0 + char
-            if char == "(" or char == "[":
-                n_parens = n_parens + 1
-            if char == ")" or char == "]":
-                n_parens = n_parens - 1
-            if n_parens == 0:
-                break
-        split1 = split_line[2][ix + 1 :]
-        if split1 == "":
-            split_line = [split0]
-        elif split1[0] == ",":
-            split_line = [split0, ",", split1[1:]]
-        else:
-            raise RuntimeError(f"Parse init value failed: {split_line}")
-
-    print_debug("L3p2: " + str(split_line))
-
-    arg.init_value = split_line[0]
-    if len(split_line) == 1:
-        split_line[0] = ""
-    else:
-        split_line.pop(0)
-
-    return arg, split_line
-
-
-def remove_untranslated(struct: Structure) -> None:
-    # Throw out any sub-structures that are not to be translated
+    struct.f_name = fstruct.name
+    struct.short_name = fstruct.name.removesuffix("_struct")
+    struct.cpp_class = "CPP_" + struct.short_name
     struct.arg = [
-        arg
-        for arg in struct.arg
-        if not (
-            arg.kind in params.component_no_translate_list
-            or f"{struct.f_name}%{arg.f_name}" in params.component_no_translate_list
-        )
+        argument_from_fstruct(fstruct, member)
+        for member in fstruct.info.members.values()
     ]
+
+
+def set_translations(struct: Structure, c_overrides, f_overrides) -> None:
+    # Throw out any sub-structures that are not to be translated
+    struct.arg = [arg for arg in struct.arg if arg.should_translate(struct.f_name)]
+
+    for key, value in c_overrides.items():
+        override_arg, attr = key.split(".", 1)
+        if override_arg == f"{struct.f_name}%":
+            assert attr in [fld.name for fld in fields(Structure)], key
+            setattr(struct, attr, value.rstrip("; \n"))
 
     # Add translation info to each argument
     for arg in struct.arg:
-        n_dim = len(arg.array)
-        p_type = arg.pointer_type
-        translation_key = (arg.type, n_dim, p_type)
-
         # Skip arguments without translation definitions
-        if translation_key not in f_side_trans:
+        if arg.full_type not in f_transforms:
             print(
-                f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} "
-                f"[{arg.type}, {n_dim}, {p_type}]",
+                f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} [{arg.full_type}]",
                 file=sys.stderr,
             )
             continue
 
-        # Apply translations
-
         arg_full_name = f"{struct.f_name}%{arg.f_name}"
-
         try:
             arg.f_side = f_side_trans_custom_overrides[arg_full_name]
         except KeyError:
-            arg.f_side = copy.deepcopy(f_side_trans[translation_key])
+            arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
         try:
             arg.c_side = c_side_trans_custom_overrides[arg_full_name]
         except KeyError:
-            arg.c_side = copy.deepcopy(c_side_trans[translation_key])
+            arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
+
+        for key, value in c_overrides.items():
+            override_arg, attr = key.split(".", 1)
+            if arg_full_name == override_arg:
+                assert attr in [fld.name for fld in fields(CSideTransform)], key
+                setattr(arg.c_side, attr, value.rstrip(" \n;"))
+
+        for key, value in f_overrides.items():
+            override_arg, attr = key.split(".", 1)
+            if arg_full_name == override_arg:
+                assert attr in [fld.name for fld in fields(FortranSideTransform)], key
+                setattr(arg.f_side, attr, value)
 
 
 def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
@@ -2428,12 +834,13 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
         # Handle scalar pointers
         if len(arg.array) == 0:
             if "n_" in arg.c_side.to_f_setup:
+                full_type = FullType(SIZE, 1, NOT)
                 # Insert size parameter for the scalar pointer
                 size_arg = Argument()
                 size_arg.is_component = False
                 size_arg.type = "integer"
-                size_arg.f_side = copy.deepcopy(f_side_trans[SIZE, 1, NOT])
-                size_arg.c_side = copy.deepcopy(c_side_trans[SIZE, 1, NOT])
+                size_arg.f_side = copy.deepcopy(f_transforms[full_type])
+                size_arg.c_side = copy.deepcopy(c_transforms[full_type])
                 size_arg.f_name = "n_" + arg.f_name
                 size_arg.c_name = "n_" + arg.c_name
 
@@ -2447,11 +854,12 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
             for dim in range(
                 1, min(len(arg.array) + 1, 4)
             ):  # Support up to 3 dimensions
+                full_type = FullType(SIZE, dim, NOT)
                 size_arg = Argument()
                 size_arg.is_component = False
                 size_arg.type = "integer"
-                size_arg.f_side = copy.deepcopy(f_side_trans[SIZE, dim, NOT])
-                size_arg.c_side = copy.deepcopy(c_side_trans[SIZE, dim, NOT])
+                size_arg.f_side = copy.deepcopy(f_transforms[full_type])
+                size_arg.c_side = copy.deepcopy(c_transforms[full_type])
                 size_arg.f_name = f"n{dim}_" + arg.f_name
                 size_arg.c_name = f"n{dim}_" + arg.c_name
 
@@ -2459,82 +867,82 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
                 ia += 1
 
 
-def parse_bmad_routine_file(fortran_code):
-    """
-    Parse a Fortran file containing subroutines and return a dictionary
-    mapping subroutine names to their content.
-    """
-    subroutine_blocks = {}
+# def parse_bmad_routine_file(fortran_code):
+#     """
+#     Parse a Fortran file containing subroutines and return a dictionary
+#     mapping subroutine names to their content.
+#     """
+#     subroutine_blocks = {}
+#
+#     # Split the code into lines
+#     lines = fortran_code.strip().split("\n")
+#
+#     current_subroutine = None
+#     current_content = []
+#
+#     for line in lines:
+#         line = line.strip()
+#         lower = line.lower()
+#         if lower.startswith("subroutine ") or lower.startswith("recursive subroutine "):
+#             if lower.startswith("recursive "):
+#                 lower = lower.removeprefix("recursive ")
+#             # If we were already collecting a subroutine, save it before starting a new one
+#             if current_subroutine:
+#                 subroutine_blocks[current_subroutine] = "\n".join(current_content)
+#
+#             subroutine_name = line.split()[1].split("(")[0]
+#             arguments = tuple(
+#                 arg.strip() for arg in line.split("(")[1].rstrip(")").split(",")
+#             )
+#             current_subroutine = (subroutine_name, arguments)
+#             current_content = [line]
+#         elif line.lower().startswith("end subroutine"):
+#             current_content.append(line)
+#             assert current_subroutine is not None
+#             subroutine_blocks[current_subroutine] = "\n".join(current_content)
+#             current_subroutine = None
+#             current_content = []
+#         elif current_subroutine:
+#             current_content.append(line)
+#
+#     # In case there's a final subroutine without an explicit end
+#     if current_subroutine:
+#         subroutine_blocks[current_subroutine] = "\n".join(current_content)
+#
+#     return subroutine_blocks
 
-    # Split the code into lines
-    lines = fortran_code.strip().split("\n")
 
-    current_subroutine = None
-    current_content = []
-
-    for line in lines:
-        line = line.strip()
-        lower = line.lower()
-        if lower.startswith("subroutine ") or lower.startswith("recursive subroutine "):
-            if lower.startswith("recursive "):
-                lower = lower.removeprefix("recursive ")
-            # If we were already collecting a subroutine, save it before starting a new one
-            if current_subroutine:
-                subroutine_blocks[current_subroutine] = "\n".join(current_content)
-
-            subroutine_name = line.split()[1].split("(")[0]
-            arguments = tuple(
-                arg.strip() for arg in line.split("(")[1].rstrip(")").split(",")
-            )
-            current_subroutine = (subroutine_name, arguments)
-            current_content = [line]
-        elif line.lower().startswith("end subroutine"):
-            current_content.append(line)
-            assert current_subroutine is not None
-            subroutine_blocks[current_subroutine] = "\n".join(current_content)
-            current_subroutine = None
-            current_content = []
-        elif current_subroutine:
-            current_content.append(line)
-
-    # In case there's a final subroutine without an explicit end
-    if current_subroutine:
-        subroutine_blocks[current_subroutine] = "\n".join(current_content)
-
-    return subroutine_blocks
-
-
-def parse_bmad_routines(params):
-    subroutines = {}
-
-    for fn in params.routine_interface_files:
-        fortran_code = pathlib.Path(fn).read_text()
-        lines = fortran_code.splitlines()
-        lines = lines[lines.index("interface") :]
-        lines = lines[: lines.index("end interface")]
-        name_to_subroutine_contents = parse_bmad_routine_file("\n".join(lines))
-
-        for (name, args), contents in name_to_subroutine_contents.items():
-            subroutine = Subroutine(name, arg_order=args)
-            parse_struct_components(
-                lines=[
-                    line.strip()
-                    for line in contents.splitlines()[1:]
-                    if line.strip() and line.strip() not in ("import", "implicit none")
-                ],
-                struct=subroutine,
-                params=params,
-            )
-            for arg in subroutine.arg:
-                if arg.pointer_type == "NOT" and arg.array:
-                    arg.pointer_type = "ALLOC"
-                    # arg.c_side.c_class = f"{arg.c_side.c_class}*"
-
-            remove_untranslated(subroutine)
-            for arg in subroutine.arg:
-                arg.fix_struct_arg_placeholders(struct)
-            subroutines[name] = subroutine
-    return subroutines
+# def parse_bmad_routines(params):
+#     subroutines = {}
+#
+#     for fn in params.routine_interface_files:
+#         fortran_code = pathlib.Path(fn).read_text()
+#         lines = fortran_code.splitlines()
+#         lines = lines[lines.index("interface") :]
+#         lines = lines[: lines.index("end interface")]
+#         name_to_subroutine_contents = parse_bmad_routine_file("\n".join(lines))
+#
+#         for (name, args), contents in name_to_subroutine_contents.items():
+#             subroutine = Subroutine(name, arg_order=args)
+#             parse_struct_components(
+#                 lines=[
+#                     line.strip()
+#                     for line in contents.splitlines()[1:]
+#                     if line.strip() and line.strip() not in ("import", "implicit none")
+#                 ],
+#                 struct=subroutine,
+#                 params=params,
+#             )
+#             for arg in subroutine.arg:
+#                 if arg.pointer_type == "NOT" and arg.array:
+#                     arg.pointer_type = "ALLOC"
+#                     # arg.c_side.c_class = f"{arg.c_side.c_class}*"
+#
+#             set_translations(subroutine)
+#             for arg in subroutine.arg:
+#                 arg.fix_struct_arg_placeholders(struct)
+#             subroutines[name] = subroutine
+#     return subroutines
 
 
 # ******************************************************************************
@@ -2686,6 +1094,8 @@ interface
         f_face.write("    !! f_side.to_c2_type :: f_side.to_c2_name\n")
         f_face.write("    type(c_ptr), value :: C\n")
         for arg_type, args in list(to_c2_call_def.items()):
+            if not arg_type:
+                raise RuntimeError("No argument type?")
             for i in range(1 + (len(args) - 1) // 7):
                 f_face.write(
                     f"    {arg_type} :: {', '.join(args[i * 7 : i * 7 + 7])}\n"
@@ -2722,13 +1132,13 @@ call c_f_pointer (Fp, F)
             f_face.write(
                 f"!! f_side.to_c_trans[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            f_face.write(arg.f_side.to_c_trans)
+            print(arg.f_side.to_c_trans, file=f_face)
 
         f_face.write("\n" + "!! f_side.to_c2_call\n")
 
         line = f"call {s_name}_to_c2 (C"
         for arg in struct.arg:
-            line += f", {arg.f_side.to_c2_call}"
+            line += f", {arg.f_side.to_c2_call.strip()}"
         line += ")"
         f_face.write(wrap_line(line, "", " &"))
 
@@ -2817,21 +1227,21 @@ end subroutine {s_name}_to_f2
 
 def create_fortran_equality_check_code(f_equ):
     f_equ.write(
-        f"""\
-!+
-! Module {params.equality_mod_file}
-!
-! This module defines a set of functions which overload the equality operator ("==").
-! These functions test for equality between instances of a given structure. 
-!
-! This file is generated as a by product of the Bmad/C++ interface code generation
-! The code generation files can be found in cpp_bmad_interface.
-!
-! DO NOT EDIT THIS FILE DIRECTLY! 
-!- 
+        textwrap.dedent(f"""\
+        !+
+        ! Module {params.equality_mod_file}
+        !
+        ! This module defines a set of functions which overload the equality operator ("==").
+        ! These functions test for equality between instances of a given structure. 
+        !
+        ! This file is generated as a by product of the Bmad/C++ interface code generation
+        ! The code generation files can be found in cpp_bmad_interface.
+        !
+        ! DO NOT EDIT THIS FILE DIRECTLY! 
+        !- 
 
-module {params.equality_mod_file}
-"""
+        module {params.equality_mod_file}
+        """)
     )
 
     f_equ.write("\n".join(params.equality_use_statements))
@@ -2856,21 +1266,22 @@ contains
 
     for struct in struct_definitions:
         f_equ.write(
-            f"""
-!--------------------------------------------------------------------------------
-!--------------------------------------------------------------------------------
+            textwrap.dedent(f"""
 
-elemental function eq_{struct.short_name} (f1, f2) result (is_eq)
+            !--------------------------------------------------------------------------------
+            !--------------------------------------------------------------------------------
 
-implicit none
+            elemental function eq_{struct.short_name} (f1, f2) result (is_eq)
 
-type({struct.short_name}_struct), intent(in) :: f1, f2
-logical is_eq
+            implicit none
 
-!
+            type({struct.short_name}_struct), intent(in) :: f1, f2
+            logical is_eq
 
-is_eq = .true.
-"""
+            !
+
+            is_eq = .true.
+            """)
         )
 
         for arg in struct.arg:
@@ -2883,7 +1294,7 @@ is_eq = .true.
                 f"!! f_side.equality_test[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
 
-            f_equ.write(arg.f_side.equality_test)
+            print(arg.f_side.equality_test, file=f_equ)
             # f_equ.write('std::cout << ')
 
         f_equ.write(f"\nend function eq_{struct.short_name}\n")
@@ -2929,8 +1340,6 @@ def write_tests_mod(f_test):
 module bmad_cpp_test_mod
 
 use json_module, only: json_core, json_value
-use bmad_json
-use sim_utils_json
 
 use bmad_cpp_convert_mod
 use {params.equality_mod_file}
@@ -2942,26 +1351,6 @@ use {params.equality_mod_file}
     f_test.write("contains\n\n")
 
     for struct in struct_definitions:
-        # if struct.cpp_class == "CPP_ele":
-        #
-        #     def debug_arg(arg: Argument):
-        #         if arg.pointer_type != "NOT":
-        #             if arg.type == "type":
-        #                 return "! skip"
-        #             return f"""\
-        #             if (associated(f2_ele%{arg.f_name})) then
-        #                 print *, "f2_ele%{arg.f_name}=", f2_ele%{arg.f_name}
-        #             endif
-        #             """
-        #         return f'\
-        #             print *, "f2_ele%{arg.f_name}=", f2_ele%{arg.f_name}'
-        #
-        #     f_debug_code = "\n".join(
-        #         f"! {arg}\n" + debug_arg(arg) for arg in struct.arg if arg.is_component
-        #     )
-        # else:
-        #     f_debug_code = ""
-        f_debug_code = ""
         f_test.write(
             f"""
 !---------------------------------------------------------------------------------
@@ -3027,7 +1416,7 @@ implicit none
 type(json_core) :: json
 type(json_value), pointer :: json_root
 
-type(c_ptr), value ::  c_{struct.short_name}
+type(c_ptr), value :: c_{struct.short_name}
 type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
 logical(c_bool) c_ok
 
@@ -3055,8 +1444,6 @@ else
 
 endif
 
-{f_debug_code}
-
 call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 3)
 call {struct.short_name}_to_c (c_loc(f2_{struct.short_name}), c_{struct.short_name})
 end subroutine test2_f_{struct.short_name}
@@ -3083,11 +1470,9 @@ offset = 100 * ix_patt
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            f_test.write(
-                f"!! f_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
-            )
+            f_test.write(f"!! f_side.test_pat[{arg.full_type}] {arg.c_side.c_class}\n")
 
-            f_test.write(arg.f_side.test_pat.replace("ARGIDX", str(i)))
+            print(arg.f_side.test_pat.replace("ARGIDX", str(i)), file=f_test)
 
         f_test.write(
             f"""
@@ -3253,15 +1638,10 @@ def write_cpp_classes(file) -> None:
         )
     )
 
-    # Build the include headers string
     include_headers = "\n".join(params.include_header_files)
-
-    # Build the class definitions string
     class_definitions = "\n".join(
         "\n".join(get_class_lines(struct)) for struct in struct_definitions
     )
-
-    # Write the file content at once
     file.write(
         header_template.substitute(
             include_headers=include_headers, class_definitions=class_definitions
@@ -3288,7 +1668,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         line = f'extern "C" void {struct.short_name}_to_f2 (Opaque_{struct.short_name}_class*'
         for arg in struct.arg:
-            line += f", {arg.c_side.to_f2_arg}"
+            line += f", {arg.c_side.to_f2_arg.strip()}"
         line += ");"
 
         file.write(wrap_line(line, "", ""))
@@ -3305,7 +1685,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             file.write(
                 f"  // c_side.to_f_setup[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
             )
-            file.write(arg.c_side.to_f_setup)
+            print(arg.c_side.to_f_setup, file=file)
 
         file.write("\n")
         file.write("  // c_side.to_f2_call\n")
@@ -3318,7 +1698,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         line = f"{struct.short_name}_to_f2 (F"
         for arg in struct.arg:
-            line += f", {arg.c_side.to_f2_call}"
+            line += f", {arg.c_side.to_f2_call.strip()}"
         line += ");"
         file.write(wrap_line(line, "  ", ""))
 
@@ -3330,7 +1710,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             file.write(
                 f"  // c_side.to_f_cleanup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
             )
-            file.write(arg.c_side.to_f_cleanup)
+            print(arg.c_side.to_f_cleanup, file=file)
 
         file.write("}\n")
 
@@ -3340,7 +1720,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         line = f'extern "C" void {struct.short_name}_to_c2 ({struct.cpp_class}& C'
         for arg in struct.arg:
-            line += f", {arg.c_side.to_c2_arg}"
+            line += f", {arg.c_side.to_c2_arg.strip()}"
         line += ") {"
         file.write(wrap_line(line, "", ""))
 
@@ -3373,7 +1753,7 @@ def write_cpp_equality(file, header: str):
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            file.write(arg.c_side.equality_test)
+            print(arg.c_side.equality_test, file=file)
             if DEBUG:
                 file.write(
                     f'  if (!is_eq) {{ std::cout << "not equal: {struct.cpp_class}.{arg.c_name}" << "\\n"; }}\n'
@@ -3381,13 +1761,6 @@ def write_cpp_equality(file, header: str):
 
         file.write("  return is_eq;\n")
         file.write("};\n\n")
-
-        # file.write(
-        #     f"template bool is_all_equal (const FixedArray1D<{struct.cpp_class}>&, const FixedArray1D<{struct.cpp_class}>&);\n"
-        # )
-        # file.write(
-        #     f"template bool is_all_equal (const Matrix<{struct.cpp_class}>&, const Matrix<{struct.cpp_class}>&);\n"
-        # )
 
 
 def write_cpp_test(file):
@@ -3578,31 +1951,60 @@ print("Input file: " + master_input_file, file=sys.stderr)
 if not os.path.exists(params.test_dir):
     sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
 
-f_side_trans = initialize_f_side_trans()
-c_side_trans = initialize_c_side_trans()
-
 c_side_trans_custom_overrides = {}
 f_side_trans_custom_overrides = {}
 
+c_transforms: dict[FullType, CSideTransform]
+f_transforms: dict[FullType, FortranSideTransform]
+
+c_transforms, c_overrides = TemplateImporter.from_file(
+    CSideTransform, (TEMPLATES_PATH / "c_side.cpp").read_text()
+)
+f_transforms, f_overrides = TemplateImporter.from_file(
+    FortranSideTransform, (TEMPLATES_PATH / "f_side.f90").read_text()
+)
+
+for type_, transform in f_transforms.items():
+    if isinstance(transform.to_f2_var, str):
+        transform.to_f2_var = transform.to_f2_var.splitlines()
+    if isinstance(transform.to_c_var, str):
+        transform.to_c_var = transform.to_c_var.splitlines()
+    if type_.ptr == ALLOC:
+        transform.replace_all("associated_or_allocated(", "allocated(")
+    else:
+        transform.replace_all("associated_or_allocated(", "associated(")
+    transform.replace_all("TEST_VALUE", transform.test_value)
+
+for type_, transform in c_transforms.items():
+    transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
+    transform.to_f2_call = transform.to_f2_call.rstrip(", ")
+    transform.replace_all("C_TYPE", get_c_type(type_.type))
+    transform.replace_all("C_ARG", get_c_arg(type_.type))
+    transform.replace_all("TEST_VALUE", transform.test_value)
+
+fortran_structures = bmad_struct_parser.load_all_structures(
+    *params.struct_def_yaml_files
+)
+
 struct_definitions: list[Structure] = []
+
 for name in params.struct_list:
-    struct_definitions.append(Structure(name))
+    struct = Structure(name)
+    match_structure_definition(fortran_structures, struct)
+    set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
 
-parse_structure_definitions(struct_definitions, params)
-
-for struct in struct_definitions:
     add_array_bound_info_for_pointer_structures(struct)
-
-for struct in struct_definitions:
     print_debug("\nStruct: " + str(struct))
     for arg in struct.arg:
         arg.fix_struct_arg_placeholders(struct)
 
+    struct_definitions.append(struct)
+
 # *Customization hook*
 
-params.customize(struct_definitions)
+# params.customize(struct_definitions)
 
-routines = parse_bmad_routines(params)
+# routines = parse_bmad_routines(params)
 
 if DEBUG:
     write_parsed_structures(struct_definitions, "f_structs.parsed")

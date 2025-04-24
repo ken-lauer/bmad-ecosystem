@@ -16,7 +16,8 @@ import yaml
 
 logger = logging.getLogger(__name__)
 
-size_ignore = {"rp", "dp", "hsize_t"}
+size_ignore = {}
+# size_ignore = {"rp", "dp", "hsize_t"}
 
 DefaultType = (
     bool
@@ -101,6 +102,7 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
 class StructureMember(pydantic.BaseModel):
     line: int
     definition: str
+    type_info: TypeInformation
     name: str = ""
     python_name: str = ""
     type: str = ""
@@ -112,18 +114,18 @@ class StructureMember(pydantic.BaseModel):
     default: DefaultType = ""
     default_factory: str = ""
 
-    @property
-    def is_structure(self) -> bool:
-        return self.python_type not in {"int", "float", "bool", "str", "Complex"}
-
     @pydantic.field_validator("size")
     @classmethod
     def _validate_size(cls, size: str | None):
         if not size:
             return None
-        if size in size_ignore or not size.isnumeric():
+        if size in size_ignore:  #  or not size.isnumeric():
             return None
         return size
+
+    @property
+    def kind(self) -> str | None:
+        return self.size
 
 
 class StructureInfo(pydantic.BaseModel):
@@ -140,6 +142,7 @@ class Structure(pydantic.BaseModel):
     line: int
     name: str
     module: str
+    private: bool = False
     lines: list[str] = pydantic.Field(default_factory=list, exclude=True)
     info: StructureInfo = pydantic.Field(default_factory=StructureInfo)
 
@@ -178,6 +181,7 @@ class Structure(pydantic.BaseModel):
                     name=decl.name,
                     python_name=get_python_member_name(decl.name),
                     type=type_info.type,
+                    type_info=type_info,
                     python_type=python_type,
                     line=lineno,
                     definition=line,
@@ -189,6 +193,45 @@ class Structure(pydantic.BaseModel):
                     default_factory=default_factory,
                 )
                 last_member = self.info.members[decl.name]
+
+
+def path_with_respect_to_env(path: pathlib.Path, env_var_name: str) -> pathlib.Path:
+    """
+    Convert an absolute path to a path relative to an environment variable.
+
+    If the path starts with the value of the environment variable, it will be
+    replaced with the variable name prefixed with a dollar sign.
+
+    Parameters
+    ----------
+    path : pathlib.Path
+        The absolute path to convert.
+    env_var_name : str
+        The name of the environment variable to use as a base path.
+
+    Returns
+    -------
+    pathlib.Path
+        If the path starts with the environment variable's value, returns the path
+        with the prefix replaced with $ENV_VAR_NAME. Otherwise, returns the original path.
+
+    Examples
+    --------
+    >>> os.environ['HOME'] = '/home/user'
+    >>> path = pathlib.Path('/home/user/documents/file.txt')
+    >>> path_with_respect_to_env(path, 'HOME')
+    PosixPath('$HOME/documents/file.txt')
+    """
+    try:
+        env_var = os.environ[env_var_name]
+    except KeyError:
+        return path
+
+    env_path = pathlib.Path(env_var)
+    if path.parts[: len(env_path.parts)] != env_path.parts:
+        return path
+
+    return pathlib.Path(f"${env_var_name}", *path.parts[len(env_path.parts) :])
 
 
 def case_insensitive_match(name: str, options: Sequence[str]) -> str:
@@ -262,11 +305,7 @@ def get_type_from_line(line: str) -> TypeInformation:
     parts = _split_variables(line)
 
     type_name = parts[0]
-    if type_name.lower().startswith("type(") or type_name.lower().startswith("type "):
-        if "(" in line:
-            type_name = get_in_parenthesis(line)
-        size = None
-    elif "(" in type_name:
+    if "(" in type_name:
         size = get_in_parenthesis(type_name)
         type_name = type_name.split("(")[0].strip()
     elif "*" in type_name:
@@ -366,7 +405,7 @@ def get_type_from_line(line: str) -> TypeInformation:
 
     return TypeInformation(
         type=type_name,
-        size=size,
+        kind=size,
         dimension=dimension,
         allocatable=allocatable,
         pointer=pointer,
@@ -427,7 +466,7 @@ def _split_variables(line: str) -> list[str]:
     return variables
 
 
-class TypeInformation(NamedTuple):
+class TypeInformation(pydantic.BaseModel, frozen=True):
     """
     A structured representation of a Fortran type declaration with all its attributes.
 
@@ -437,7 +476,7 @@ class TypeInformation(NamedTuple):
     - CHARACTER(LEN=100), ALLOCATABLE :: dynamic_string
     """
 
-    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER')
+    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER', 'TYPE')
 
     allocatable: bool = False  # Whether the variable is allocatable
     asynchronous: bool = False  # Whether the variable can be used in async operations
@@ -454,13 +493,18 @@ class TypeInformation(NamedTuple):
     protected: bool = False  # Whether the variable is protected
     public: bool = False  # Whether the variable has PUBLIC access
     save: bool = False  # Whether the variable has SAVE attribute
-    size: str | None = None  # Size or kind specification
+    kind: str | None = None  # Size or kind specification
     static: bool = False  # Whether the variable has STATIC attribute
     target: bool = False  # Whether the variable can be target of a pointer
     value: bool = False  # Whether the parameter is passed by value
     volatile: bool = False  # Whether the variable has VOLATILE attribute
 
     attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
+
+    @property
+    def size(self):
+        # TODO: redo this; 'kind' is more appropriate here
+        return self.kind  # back-compat
 
 
 class FileLine(NamedTuple):
@@ -631,31 +675,30 @@ def get_python_type(type_info: TypeInformation) -> str:
         "complex": "Complex",  #  -> builtin type not supported
     }
     # name_case = name
-    name = type_info.type.lower()
-    if name in type_map:
-        return type_map[name]
-    for delim in "(, ":
-        part = name.split(delim)[0]
-        if part in type_map:
-            # logical, allocatable (for example)
-            return type_map[part]
-    assert not name.startswith("character")
-    # if name.endswith("_struct"):
-    # name = name.split(",")[0].strip()
-    # if name == "type":
-    #     return "type"
+    try:
+        return type_map[type_info.type.lower()]
+    except KeyError:
+        pass
+
+    if type_info.type.lower() != "type":
+        raise NotImplementedError(f"Type not supported: {type_info.type}")
+
+    if type_info.kind is None:
+        raise ValueError(f"type() without kind is unsupported ({type_info=})")
+
+    type_name = type_info.kind.lower()
     renames = {
         "TreeElementZhe": "TreeElement",
     }
-    class_name = to_class_name(name)
+    class_name = to_class_name(type_name)
     return renames.get(class_name, class_name)
-    # raise NotImplementedError(name_case)
 
 
 def find_structs(
     file_lines: list[FileLine],
     by_class_name: dict[str, Structure],
     filename: pathlib.Path,
+    include_private: bool = False,
 ) -> list[Structure]:
     structs: list[Structure] = []
     struct = None
@@ -707,7 +750,7 @@ def find_structs(
                 class_name += "_"
 
             struct = Structure(
-                filename=file_line.filename,
+                filename=path_with_respect_to_env(file_line.filename, "ACC_ROOT_DIR"),
                 module=module,
                 name=struct_name,
                 line=file_line.lineno,
@@ -751,12 +794,14 @@ def find_structs(
             for struct in list(structs):
                 if (
                     struct.name.lower() == private_name.lower()
-                    and struct.filename == file_line.filename
+                    and struct.filename.name == file_line.filename.name
                 ):
-                    logger.debug(
-                        f"Skipping private struct: {private_name} (from 'private' designation at {file_line})"
-                    )
-                    structs.remove(struct)
+                    struct.private = True
+                    if not include_private:
+                        logger.debug(
+                            f"Skipping private struct: {private_name} (from 'private' designation at {file_line})"
+                        )
+                        structs.remove(struct)
 
     return structs
 
@@ -876,10 +921,10 @@ def convert(
             info.parse()
 
     info_adapter = pydantic.TypeAdapter(dict[pathlib.Path, dict[str, Structure]])
-    dumped = json.loads(info_adapter.dump_json(by_file))
+    dumped = json.loads(info_adapter.dump_json(by_file, exclude_defaults=True))
 
     with open(yaml_path, "w") as fp:
-        yaml.safe_dump(dumped, fp)
+        yaml.safe_dump(dumped, fp, sort_keys=False)
 
     for item in sorted(todo):
         logger.error(f"(TODO) not yet supported: {item}")
@@ -895,6 +940,14 @@ def load_structures(fn: pathlib.Path | str) -> StructureFile:
         loaded = yaml.safe_load(fp)
     info_adapter = pydantic.TypeAdapter(StructureFile)
     return info_adapter.validate_python(loaded)
+
+
+def load_all_structures(*yaml_paths: pathlib.Path | str) -> list[Structure]:
+    all_structs = []
+    for yaml_path in yaml_paths:
+        for _, structs in load_structures(yaml_path).items():
+            all_structs.extend(list(structs.values()))
+    return all_structs
 
 
 # def load_all_structures_by_class_name() -> dict[str, Structure]:

@@ -44,8 +44,16 @@ sources:
     json_config:
       skip_files: []
       skip_members:
-        # TODO recursive json calls
+        # TODO recursive json calls or those that should have references instead
+        - branch_struct%ptc
         - ele_struct%lord
+        - ele_struct%branch
+        - ele_struct%converter
+        - ele_struct%multipole_cache
+        - ele_struct%foil
+        - lat_struct%nametable
+        - branch_struct%lat
+        # TODO: make references to branch, etc.
         # TODO: Found no matching specific binding for the call to the GENERIC ‘create_integer’ at (1)
         - hdf5_info_struct%data_dim
         # TODO: tree_element_zhe renaming (Ci_tpsa.f90 skipped)

@@ -8,13 +8,27 @@ struct_def_files = [
     "../bmad/modules/complex_taylor_mod.f90",
 ]
 
+struct_def_yaml_files = [
+    "../structs/yaml/bmad_structs.yaml",
+    "../structs/yaml/forest_structs.yaml",
+    "../structs/yaml/sim_utils_structs.yaml",
+    "../structs/yaml/tao_structs.yaml",
+]
+
 routine_interface_files = ["../bmad/modules/bmad_routine_interface.f90"]
 
 # List of use statements needed in various Fortran modules.
 
-conversion_use_statements = ["use bmad_struct"]
-equality_use_statements = ["use bmad_struct"]
-test_use_statements = []
+conversion_use_statements = [
+    "use bmad_struct",
+]
+equality_use_statements = [
+    "use bmad_struct",
+]
+test_use_statements = [
+    "use bmad_json",
+    "use sim_utils_json",
+]
 
 # List of structures to setup interfaces for.
 # List must be in ordered such that if struct A is a component of struct B,
@@ -121,26 +135,24 @@ struct_list = [
 #   <component_struct_name>        or
 #   <struct>%<component_name>
 
-component_no_translate_list = set(
-    [
-        "fibre",
-        "ptc_branch1_info_struct",
-        "layout",
-        "exact_bend_multipole_struct",
-        "branch_struct%ptc",
-        "ele_struct%lord",
-        "ele_struct%branch",
-        "ele_struct%converter",
-        "ele_struct%multipole_cache",
-        "ele_struct%foil",
-        "lat_struct%nametable",
-        "branch_struct%lat",
-        "normal_form_struct",
-        "grid_field_struct%bi_coef",
-        "grid_field_struct%tri_coef",
-        "grid_field_pt_struct%pt",  # NOTE: this can be massive for large lattices
-    ]
-)
+component_no_translate_list = {
+    "fibre",
+    "ptc_branch1_info_struct",
+    "layout",
+    "exact_bend_multipole_struct",
+    "branch_struct%ptc",
+    "ele_struct%lord",
+    "ele_struct%branch",
+    "ele_struct%converter",
+    "ele_struct%multipole_cache",
+    "ele_struct%foil",
+    "lat_struct%nametable",
+    "branch_struct%lat",
+    "normal_form_struct",
+    "grid_field_struct%bi_coef",
+    "grid_field_struct%tri_coef",
+    "grid_field_pt_struct%pt",  # NOTE: this can be massive for large lattices
+}
 
 # List of structure components links:
 # Structure components that are just links to other structures are handled differently.
@@ -148,19 +160,17 @@ component_no_translate_list = set(
 #   2) Ignore in Fortran and C++ equality tests (could go around in circles).
 #   3) Do not create a test pattern in interface test code.
 
-interface_ignore_list = set(
-    [
-        "ele_struct%branch",
-        "branch_struct%lat",
-        "pixel_grid_struct",
-    ]
-)
+interface_ignore_list = {
+    "ele_struct%branch",
+    "branch_struct%lat",
+    "pixel_grid_struct",
+}
 
 # List of structure components that are structures and are defined externally.
 # There are no such structures for the cpp_bmad_interface library but there
 # are for the cpp_tao_interface library.
 
-structs_defined_externally = set([])
+structs_defined_externally = set()
 
 # Translations on C++ side to avoid clash with reserved words
 
@@ -189,100 +199,4 @@ code_dir = "code"
 def f_side_lbound(id_name):
     if id_name == "branch%ele":
         return "0"
-    else:
-        return "1"
-
-
-# custom C++ side init
-
-c_custom_constructors = {
-    "ele%key": "key(key_)",
-    "ele%value": "value(Bmad::NUM_ELE_ATTRIB+1, double(0))",
-    "ele%old_value": "old_value(Bmad::NUM_ELE_ATTRIB+1, double(0))",
-    "ele%ix_ele": "ix_ele(-1)",
-    "ele%slave_status": "slave_status(Bmad::FREE)",
-    "ele%ix2_slave": "ix2_slave(-1)",
-    "ele%lord_status": "lord_status(Bmad::NOT_A_LORD)",
-    "ele%ic2_lord": "ic2_lord(-1)",
-    "ele%mat6_calc_method": "mat6_calc_method(Bmad::BMAD_STANDARD)",
-    "ele%tracking_method": "tracking_method(Bmad::BMAD_STANDARD)",
-    "ele%spin_tracking_method": "spin_tracking_method(Bmad::BMAD_STANDARD)",
-    "ele%field_calc": "field_calc(Bmad::BMAD_STANDARD)",
-    "ele%ptc_integration_type": "ptc_integration_type(Bmad::MATRIX_KICK)",
-    "ele%aperture_at": "aperture_at(Bmad::DOWNSTREAM_END)",
-    "ele%aperture_type": "aperture_type(Bmad::RECTANGULAR)",
-    "ele%multipoles_on": "multipoles_on(true)",
-    "ele%scale_multipoles": "scale_multipoles(true)",
-    "ele%map_with_offsets": "map_with_offsets(true)",
-    "ele%is_on": "is_on(true)",
-    "ele%csr_calc_on": "csr_calc_on(true)",
-    "ele%orientation": "orientation(1)",
-    # "floor_position%w": "w(Real_ARRAY(0.0, 3), 3)",
-    "aperture_param%max_angle": "max_angle(Bmad::PI)",
-    "bmad_common%space_charge_mesh_size": "space_charge_mesh_size(32, 3)",
-    # 'rad_map%xfer_damp_mat' : 'xfer_damp_mat(Real_ARRAY(0.0, 6), 6)',
-}
-
-# -----------------------------------------------
-# Function to customize the interface code.
-
-
-def customize(struct_definitions):
-    for struct in struct_definitions:
-        if struct.f_name == "ele_struct":
-            struct.c_constructor_arg_list = "const int key_ = 0"
-            struct.c_extra_methods = """
-  void class_init (const int key_) {
-    key = key_;
-
-    if (key == Bmad::LCAVITY) {
-      value[Bmad::COUPLER_AT] = Bmad::DOWNSTREAM_END;
-      value[Bmad::FIELD_AUTOSCALE] = 1;
-      value[Bmad::N_CELL] = 1;
-    }
-
-    if (key == Bmad::RFCAVITY) {
-      value[Bmad::COUPLER_AT] = Bmad::DOWNSTREAM_END;
-      value[Bmad::FIELD_AUTOSCALE] = 1;
-      value[Bmad::N_CELL] = 1;
-    }
-
-    if (key == Bmad::RBEND || key == Bmad::SBEND) {
-      value[Bmad::FRINGE_AT] = Bmad::BOTH_ENDS;
-      value[Bmad::FRINGE_TYPE] = Bmad::BASIC_BEND;
-      value[Bmad::PTC_FIELD_GEOMETRY] = Bmad::SECTOR;
-    }
-  }
-"""
-
-            struct.c_constructor_body = """\
-    {
-      class_init(key);
-    }
-"""
-        for arg in struct.arg:
-            id_name = struct.short_name + "%" + arg.f_name
-
-            if id_name in c_custom_constructors:
-                arg.c_side.constructor = c_custom_constructors[id_name]
-
-            # ele%value and ele%old_value must be handled specially since the array sizes are different
-            # between Fortran and C++.
-
-            if id_name == "ele%value" or id_name == "ele%old_value":
-                arg.c_side.to_c2_set = """\
-  // (custom - off-by-one ele attribs)
-  C.NAME[0] = 0;
-  for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++) C.NAME[i] = z_NAME[i-1];
-""".replace("NAME", arg.f_name)
-
-                arg.c_side.test_pat = """\
-  // (custom - off-by-one ele attribs)
-  C.NAME[0] = 0;
-  for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB+1; i++)
-    {int rhs = 100 + i + ARGIDX + offset; C.NAME[i] = rhs;}
-""".replace("NAME", arg.f_name)
-
-                arg.f_side.to_f2_trans = "F%NAME = z_NAME(2:num_ele_attrib$+1)".replace(
-                    "NAME", arg.f_name
-                )
+    return "1"
