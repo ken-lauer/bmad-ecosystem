@@ -106,7 +106,7 @@ void to_f__variant_1(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   size_t n_NAME = 0;
   const char *z_NAME = nullptr;
-  if (C.NAME != NULL) {
+  if (C.NAME) {
     z_NAME = C.NAME->c_str();
     n_NAME = 1;
   }
@@ -138,9 +138,7 @@ void to_f__variant_1(const CppClass &C, OpaqueClass *F) {
 //// type:0D_PTR_type
 void to_f__variant_2(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  size_t n_NAME = 0;
-  if (C.NAME != nullptr)
-    n_NAME = 1;
+  auto n_NAME = C.NAME ? 1 : 0;
   //// end:to_f_setup
 
   to_f2(F, /*
@@ -167,33 +165,36 @@ void to_f__variant_2(const CppClass &C, OpaqueClass *F) {
   //// case:0D_PTR_real:to_f2_arg
   c_RealArr
   //// case:0D_PTR_type:to_f2_arg
-  const CPP_KIND&
+  const CPP_KIND*
+
+  // to_f2_call
+
+  //// case:0D_ALLOC_complex:to_f2_call
+  C.NAME,
+  //// case:0D_ALLOC_integer:to_f2_call
+  C.NAME,
+  //// case:0D_ALLOC_integer8:to_f2_call
+  C.NAME,
+  //// case:0D_ALLOC_logical:to_f2_call
+  C.NAME,
+  //// case:0D_ALLOC_real:to_f2_call
+  C.NAME,
+  //// case:0D_ALLOC_type:to_f2_call
+  *C.NAME,
+  //// case:0D_PTR_complex:to_f2_call
+  (C.NAME ? &C.NAME.value() : nullptr),
+  //// case:0D_PTR_integer:to_f2_call
+  (C.NAME ? &C.NAME.value() : nullptr),
+  //// case:0D_PTR_integer8:to_f2_call
+  (C.NAME ? &C.NAME.value() : nullptr),
+  //// case:0D_PTR_logical:to_f2_call
+  (C.NAME ? &C.NAME.value() : nullptr),
+  //// case:0D_PTR_real:to_f2_call
+  (C.NAME ? &C.NAME.value() : nullptr),
+  //// case:0D_PTR_type:to_f2_call
+  (C.NAME ? &C.NAME.value() : nullptr),
+  //// end special cases
   */
-        //// case:0D_ALLOC_complex:to_f2_call
-        C.NAME.get(),
-        //// case:0D_ALLOC_integer:to_f2_call
-        C.NAME.get(),
-        //// case:0D_ALLOC_integer8:to_f2_call
-        C.NAME.get(),
-        //// case:0D_ALLOC_logical:to_f2_call
-        C.NAME.get(),
-        //// case:0D_ALLOC_real:to_f2_call
-        C.NAME.get(),
-        //// case:0D_ALLOC_type:to_f2_call
-        *C.NAME,
-        //// case:0D_PTR_complex:to_f2_call
-        C.NAME.get(),
-        //// case:0D_PTR_integer:to_f2_call
-        C.NAME.get(),
-        //// case:0D_PTR_integer8:to_f2_call
-        C.NAME.get(),
-        //// case:0D_PTR_logical:to_f2_call
-        C.NAME.get(),
-        //// case:0D_PTR_real:to_f2_call
-        C.NAME.get(),
-        //// case:0D_PTR_type:to_f2_call
-        *C.NAME,
-        //// end special cases
   );
 }
 
@@ -1107,9 +1108,9 @@ void to_c2__variant_2(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<string>(z_NAME);
+    C.NAME.emplace(z_NAME);
   }
   //// end:to_c2_set
 }
@@ -1124,10 +1125,9 @@ void to_c2__variant_3(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<Complex>();
-    *C.NAME = *z_NAME;
+    C.NAME.emplace(*z_NAME);
   }
   //// end:to_c2_set
 }
@@ -1142,10 +1142,9 @@ void to_c2__variant_4(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<Int>();
-    *C.NAME = *z_NAME;
+    C.NAME.emplace(*z_NAME);
   }
   //// end:to_c2_set
 }
@@ -1160,10 +1159,9 @@ void to_c2__variant_5(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<Int8>();
-    *C.NAME = *z_NAME;
+    C.NAME.emplace(*z_NAME);
   }
   //// end:to_c2_set
 }
@@ -1178,10 +1176,9 @@ void to_c2__variant_6(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<Bool>();
-    *C.NAME = *z_NAME;
+    C.NAME.emplace(*z_NAME);
   }
   //// end:to_c2_set
 }
@@ -1196,10 +1193,9 @@ void to_c2__variant_7(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<Real>();
-    *C.NAME = *z_NAME;
+    C.NAME.emplace(*z_NAME);
   }
   //// end:to_c2_set
 }
@@ -1214,9 +1210,9 @@ void to_c2__variant_8(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   if (n_NAME == 0) {
-    C.NAME = nullptr;
+    C.NAME.reset();
   } else {
-    C.NAME = make_shared<CPP_KIND>();
+    C.NAME.emplace();
     KIND_to_c(z_NAME, *C.NAME);
   }
   //// end:to_c2_set
@@ -1386,7 +1382,7 @@ void to_c2__variant_15(STRUCT_CPP_CLASS &C,
   for (size_t i = 0; i < C.NAME.size(); i++)
     for (size_t j = 0; j < C.NAME[0].size(); j++) {
       auto m = DIM2 * i + j;
-      KIND_to_c(z_NAME[m], *C.NAME[i][j].get());
+      KIND_to_c(z_NAME[m], *C.NAME[i][j]);
     }
   //// end:to_c2_set
 }
@@ -1465,7 +1461,7 @@ void to_c2__variant_18(STRUCT_CPP_CLASS &C,
     for (size_t j = 0; j < C.NAME[0].size(); j++)
       for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
         auto m = DIM3 * DIM2 * i + DIM3 * j + k;
-        KIND_to_c(z_NAME[m], *C.NAME[i][j][k].get());
+        KIND_to_c(z_NAME[m], *C.NAME[i][j][k]);
       }
   //// end:to_c2_set
 }
@@ -1531,7 +1527,6 @@ void to_c2__variant_20(STRUCT_CPP_CLASS &C,
     for (auto j{0}; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
       for (auto k{0}; k < n3_NAME; k++) {
-        // C.NAME[i][j][k] = make_shared<CPP_KIND>();
         KIND_to_c(z_NAME[n3_NAME * n2_NAME * i + n3_NAME * j + k],
                   C.NAME[i][j][k]);
       }
@@ -1558,9 +1553,9 @@ void EQUALITY_TEST(STRUCT_CPP_CLASS &C) {
     //// type:0D_PTR_real
     //// type:0D_PTR_type
     //// begin:equality_test
-    is_eq = is_eq && ((x.NAME == NULL) == (y.NAME == NULL));
+    is_eq = is_eq && (x.NAME.has_value() == y.NAME.has_value());
     if (!is_eq) return false;
-    if (x.NAME != NULL) is_eq = (*x.NAME == *y.NAME);
+    if (x.NAME) is_eq = (*x.NAME == *y.NAME);
     //// end:equality_test
 
     //// section:equality_test
@@ -1778,10 +1773,10 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<Bool>();
-      rhs = ARGIDX + offset; (*C.NAME) = TEST_VALUE;
+      rhs = ARGIDX + offset;
+      C.NAME.emplace(TEST_VALUE);
     }
     //// end:test_pat
 
@@ -1793,9 +1788,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<CPP_KIND>();
+      C.NAME.emplace();
       set_CPP_KIND_test_pattern((*C.NAME), ix_patt);
     }
     //// end:test_pat
@@ -1808,10 +1803,10 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<Complex>();
-      rhs = ARGIDX + offset; (*C.NAME) = TEST_VALUE;
+      rhs = ARGIDX + offset;
+      C.NAME.emplace(TEST_VALUE);
     }
     //// end:test_pat
 
@@ -1823,10 +1818,10 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<Int8>();
-      rhs = ARGIDX + offset; (*C.NAME) = TEST_VALUE;
+      rhs = ARGIDX + offset;
+      C.NAME.emplace(TEST_VALUE);
     }
     //// end:test_pat
 
@@ -1838,10 +1833,10 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<Int>();
-      rhs = ARGIDX + offset; (*C.NAME) = TEST_VALUE;
+      rhs = ARGIDX + offset;
+      C.NAME.emplace(TEST_VALUE);
     }
     //// end:test_pat
 
@@ -1853,10 +1848,10 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<Real>();
-      rhs = ARGIDX + offset; (*C.NAME) = TEST_VALUE;
+      rhs = ARGIDX + offset;
+      C.NAME.emplace(TEST_VALUE);
     }
     //// end:test_pat
 
@@ -1868,9 +1863,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     //// end:test_value
     //// begin:test_pat
     if (ix_patt < 3)
-      C.NAME = nullptr;
+      C.NAME.reset();
     else {
-      C.NAME = make_shared<string>(STR_LEN, ' ');
+      C.NAME.emplace(STR_LEN, ' ');
       for (size_t i = 0; i < C.NAME->size(); i++) {
         (*C.NAME)[i] = 'a' + (101 + i + ARGIDX + offset) % 26; }
     }
@@ -2013,7 +2008,6 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
         for (size_t j = 0; j < C.NAME[0].size(); j++) {
           C.NAME[i][j].resize(1);
           for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-            // C.NAME[i][j][k] = make_shared<CPP_KIND>();
             set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
           }
         }
@@ -2429,49 +2423,49 @@ void C_CLASS(STRUCT_CPP_CLASS &C) {
     //// type:0D_ALLOC_logical
     //// type:0D_PTR_logical
     //// begin:c_class
-    shared_ptr<Bool>
+    std::optional<Bool>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_ALLOC_type
     //// type:0D_PTR_type
     //// begin:c_class
-    shared_ptr<CPP_KIND>
+    std::optional<CPP_KIND>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_ALLOC_complex
     //// type:0D_PTR_complex
     //// begin:c_class
-    shared_ptr<Complex>
+    std::optional<Complex>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_ALLOC_integer8
     //// type:0D_PTR_integer8
     //// begin:c_class
-    shared_ptr<Int8>
+    std::optional<Int8>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_ALLOC_integer
     //// type:0D_PTR_integer
     //// begin:c_class
-    shared_ptr<Int>
+    std::optional<Int>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_ALLOC_real
     //// type:0D_PTR_real
     //// begin:c_class
-    shared_ptr<Real>
+    std::optional<Real>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_ALLOC_character
     //// type:0D_PTR_character
     //// begin:c_class
-    shared_ptr<string>
+    std::optional<string>
     //// end:c_class
 
     //// section:c_class
@@ -2556,7 +2550,6 @@ void CLASS_INITIALIZER(STRUCT_CPP_CLASS &C) {
     //// type:0D_PTR_real
     //// type:0D_PTR_type
     //// begin:class_initializer
-    nullptr
     //// end:class_initializer
 
     //// section:class_initializer

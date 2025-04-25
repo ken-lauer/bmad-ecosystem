@@ -1782,9 +1782,9 @@ void set_CPP_cartesian_map_test_pattern (CPP_cartesian_map& C, int ix_patt) {
     rhs = 5 + offset; C.field_type =     rhs;
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.ptr = nullptr;
+      C.ptr.reset();
     else {
-      C.ptr = make_shared<CPP_cartesian_map_term>();
+      C.ptr.emplace();
       set_CPP_cartesian_map_term_test_pattern((*C.ptr), ix_patt);
     }
 
@@ -1985,9 +1985,9 @@ void set_CPP_cylindrical_map_test_pattern (CPP_cylindrical_map& C, int ix_patt) 
       {int rhs = 101 + i + 9 + offset; C.r0[i] =     rhs;}
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.ptr = nullptr;
+      C.ptr.reset();
     else {
-      C.ptr = make_shared<CPP_cylindrical_map_term>();
+      C.ptr.emplace();
       set_CPP_cylindrical_map_term_test_pattern((*C.ptr), ix_patt);
     }
 
@@ -2187,9 +2187,9 @@ void set_CPP_grid_field_test_pattern (CPP_grid_field& C, int ix_patt) {
     rhs = 11 + offset; C.curved_ref_frame =     (rhs % 2 == 0);
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.ptr = nullptr;
+      C.ptr.reset();
     else {
-      C.ptr = make_shared<CPP_grid_field_pt>();
+      C.ptr.emplace();
       set_CPP_grid_field_pt_test_pattern((*C.ptr), ix_patt);
     }
 
@@ -3944,9 +3944,9 @@ void set_CPP_wall3d_section_test_pattern (CPP_wall3d_section& C, int ix_patt) {
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.surface = nullptr;
+      C.surface.reset();
     else {
-      C.surface = make_shared<CPP_photon_reflect_surface>();
+      C.surface.emplace();
       set_CPP_photon_reflect_surface_test_pattern((*C.surface), ix_patt);
     }
   // c_side.test_pat[0D_NOT_integer]
@@ -4130,10 +4130,10 @@ void set_CPP_ramper_lord_test_pattern (CPP_ramper_lord& C, int ix_patt) {
     rhs = 2 + offset; C.ix_con =     rhs;
   // c_side.test_pat[0D_PTR_real]
     if (ix_patt < 3)
-      C.attrib_ptr = nullptr;
+      C.attrib_ptr.reset();
     else {
-      C.attrib_ptr = make_shared<Real>();
-      rhs = 3 + offset; (*C.attrib_ptr) =     rhs;
+      rhs = 3 + offset;
+      C.attrib_ptr.emplace(    rhs);
     }
 
 }
@@ -5990,9 +5990,9 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
       {int rhs = 101 + i + 4 + offset; C.component_name[i] = 'a' + rhs % 26;}
   // c_side.test_pat[0D_PTR_character]
     if (ix_patt < 3)
-      C.descrip = nullptr;
+      C.descrip.reset();
     else {
-      C.descrip = make_shared<string>(200, ' ');
+      C.descrip.emplace(200, ' ');
       for (size_t i = 0; i < C.descrip->size(); i++) {
         (*C.descrip)[i] = 'a' + (101 + i + 5 + offset) % 26; }
     }
@@ -6008,48 +6008,48 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     set_CPP_xy_disp_test_pattern(C.y, ix_patt);
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.ac_kick = nullptr;
+      C.ac_kick.reset();
     else {
-      C.ac_kick = make_shared<CPP_ac_kicker>();
+      C.ac_kick.emplace();
       set_CPP_ac_kicker_test_pattern((*C.ac_kick), ix_patt);
     }
   // c_side.test_pat[0D_NOT_type]
     set_CPP_bookkeeping_state_test_pattern(C.bookkeeping_state, ix_patt);
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.control = nullptr;
+      C.control.reset();
     else {
-      C.control = make_shared<CPP_controller>();
+      C.control.emplace();
       set_CPP_controller_test_pattern((*C.control), ix_patt);
     }
   // c_side.test_pat[0D_NOT_type]
     set_CPP_floor_position_test_pattern(C.floor, ix_patt);
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.high_energy_space_charge = nullptr;
+      C.high_energy_space_charge.reset();
     else {
-      C.high_energy_space_charge = make_shared<CPP_high_energy_space_charge>();
+      C.high_energy_space_charge.emplace();
       set_CPP_high_energy_space_charge_test_pattern((*C.high_energy_space_charge), ix_patt);
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.mode3 = nullptr;
+      C.mode3.reset();
     else {
-      C.mode3 = make_shared<CPP_mode3>();
+      C.mode3.emplace();
       set_CPP_mode3_test_pattern((*C.mode3), ix_patt);
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.photon = nullptr;
+      C.photon.reset();
     else {
-      C.photon = make_shared<CPP_photon_element>();
+      C.photon.emplace();
       set_CPP_photon_element_test_pattern((*C.photon), ix_patt);
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.rad_map = nullptr;
+      C.rad_map.reset();
     else {
-      C.rad_map = make_shared<CPP_rad_map_ele>();
+      C.rad_map.emplace();
       set_CPP_rad_map_ele_test_pattern((*C.rad_map), ix_patt);
     }
   // c_side.test_pat[1D_NOT_type]
@@ -6065,9 +6065,9 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     ix_patt+i+1);}
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.wake = nullptr;
+      C.wake.reset();
     else {
-      C.wake = make_shared<CPP_wake>();
+      C.wake.emplace();
       set_CPP_wake_test_pattern((*C.wake), ix_patt);
     }
   // c_side.test_pat[1D_PTR_type]
@@ -6592,30 +6592,30 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.a = nullptr;
+      C.a.reset();
     else {
-      C.a = make_shared<CPP_mode_info>();
+      C.a.emplace();
       set_CPP_mode_info_test_pattern((*C.a), ix_patt);
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.b = nullptr;
+      C.b.reset();
     else {
-      C.b = make_shared<CPP_mode_info>();
+      C.b.emplace();
       set_CPP_mode_info_test_pattern((*C.b), ix_patt);
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.z = nullptr;
+      C.z.reset();
     else {
-      C.z = make_shared<CPP_mode_info>();
+      C.z.emplace();
       set_CPP_mode_info_test_pattern((*C.z), ix_patt);
     }
   // c_side.test_pat[0D_PTR_type]
     if (ix_patt < 3)
-      C.param = nullptr;
+      C.param.reset();
     else {
-      C.param = make_shared<CPP_lat_param>();
+      C.param.emplace();
       set_CPP_lat_param_test_pattern((*C.param), ix_patt);
     }
   // c_side.test_pat[0D_NOT_type]
@@ -6663,17 +6663,17 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     rhs = 31 + offset; C.version =     rhs;
   // c_side.test_pat[0D_PTR_integer]
     if (ix_patt < 3)
-      C.n_ele_track = nullptr;
+      C.n_ele_track.reset();
     else {
-      C.n_ele_track = make_shared<Int>();
-      rhs = 32 + offset; (*C.n_ele_track) =     rhs;
+      rhs = 32 + offset;
+      C.n_ele_track.emplace(    rhs);
     }
   // c_side.test_pat[0D_PTR_integer]
     if (ix_patt < 3)
-      C.n_ele_max = nullptr;
+      C.n_ele_max.reset();
     else {
-      C.n_ele_max = make_shared<Int>();
-      rhs = 34 + offset; (*C.n_ele_max) =     rhs;
+      rhs = 34 + offset;
+      C.n_ele_max.emplace(    rhs);
     }
   // c_side.test_pat[0D_NOT_integer]
     rhs = 36 + offset; C.n_control_max =     rhs;

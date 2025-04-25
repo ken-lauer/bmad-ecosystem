@@ -1362,7 +1362,7 @@ def get_class_repr(struct: Structure) -> str:
 
         if arg.pointer_type == "PTR" and not arg.array:
             lines.append(
-                f'os << "{arg.c_name}="; if (obj.{arg.c_name} == nullptr) {{ os << "nullptr"; }} else {{ os << obj.{arg.c_name}; }}; os << ", ";'
+                f'os << "{arg.c_name}="; if (obj.{arg.c_name}) os << *obj.{arg.c_name} << ", "; else os << "nullptr, ";'
             )
         else:
             lines.append(f'os << "{arg.c_name}=" << obj.{arg.c_name} << ", ";')
@@ -1395,7 +1395,6 @@ def get_class_lines(struct: Structure) -> list[str]:
     for arg in struct.arg:
         if not arg.is_component:
             continue
-
         class_initializer = (
             "{" + arg.c_side.class_initializer.strip() + "}"
             if arg.c_side.class_initializer.strip()
