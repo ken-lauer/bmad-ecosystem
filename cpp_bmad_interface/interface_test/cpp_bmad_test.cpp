@@ -75,8 +75,6 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
 
   set_CPP_spline_test_pattern (C2, 4);
   spline_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -138,8 +136,6 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
 
   set_CPP_spin_polar_test_pattern (C2, 4);
   spin_polar_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -199,8 +195,6 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
 
   set_CPP_ac_kicker_time_test_pattern (C2, 4);
   ac_kicker_time_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -262,8 +256,6 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
 
   set_CPP_ac_kicker_freq_test_pattern (C2, 4);
   ac_kicker_freq_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -333,8 +325,6 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
 
   set_CPP_ac_kicker_test_pattern (C2, 4);
   ac_kicker_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -394,8 +384,6 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
 
   set_CPP_interval1_coef_test_pattern (C2, 4);
   interval1_coef_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -497,8 +485,6 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
 
   set_CPP_photon_reflect_table_test_pattern (C2, 4);
   photon_reflect_table_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -578,8 +564,6 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
 
   set_CPP_photon_reflect_surface_test_pattern (C2, 4);
   photon_reflect_surface_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -679,8 +663,6 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
 
   set_CPP_coord_test_pattern (C2, 4);
   coord_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -742,8 +724,6 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
 
   set_CPP_coord_array_test_pattern (C2, 4);
   coord_array_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -817,8 +797,6 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
 
   set_CPP_bpm_phase_coupling_test_pattern (C2, 4);
   bpm_phase_coupling_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -880,8 +858,6 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
 
   set_CPP_expression_atom_test_pattern (C2, 4);
   expression_atom_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -973,8 +949,6 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
 
   set_CPP_wake_sr_z_long_test_pattern (C2, 4);
   wake_sr_z_long_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1048,8 +1022,6 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
 
   set_CPP_wake_sr_mode_test_pattern (C2, 4);
   wake_sr_mode_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1137,8 +1109,6 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
 
   set_CPP_wake_sr_test_pattern (C2, 4);
   wake_sr_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1218,8 +1188,6 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
 
   set_CPP_wake_lr_mode_test_pattern (C2, 4);
   wake_lr_mode_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1295,8 +1263,6 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
 
   set_CPP_wake_lr_test_pattern (C2, 4);
   wake_lr_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1354,8 +1320,6 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
 
   set_CPP_lat_ele_loc_test_pattern (C2, 4);
   lat_ele_loc_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1413,8 +1377,6 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
 
   set_CPP_wake_test_pattern (C2, 4);
   wake_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1473,8 +1435,6 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
 
   set_CPP_taylor_term_test_pattern (C2, 4);
   taylor_term_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1538,8 +1498,6 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
 
   set_CPP_taylor_test_pattern (C2, 4);
   taylor_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1598,8 +1556,6 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
 
   set_CPP_em_taylor_term_test_pattern (C2, 4);
   em_taylor_term_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1663,8 +1619,6 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
 
   set_CPP_em_taylor_test_pattern (C2, 4);
   em_taylor_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1736,8 +1690,6 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
 
   set_CPP_cartesian_map_term1_test_pattern (C2, 4);
   cartesian_map_term1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1805,8 +1757,6 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
 
   set_CPP_cartesian_map_term_test_pattern (C2, 4);
   cartesian_map_term_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1878,8 +1828,6 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
 
   set_CPP_cartesian_map_test_pattern (C2, 4);
   cartesian_map_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -1937,8 +1885,6 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
 
   set_CPP_cylindrical_map_term1_test_pattern (C2, 4);
   cylindrical_map_term1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2006,8 +1952,6 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
 
   set_CPP_cylindrical_map_term_test_pattern (C2, 4);
   cylindrical_map_term_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2087,8 +2031,6 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
 
   set_CPP_cylindrical_map_test_pattern (C2, 4);
   cylindrical_map_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2148,8 +2090,6 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
 
   set_CPP_grid_field_pt1_test_pattern (C2, 4);
   grid_field_pt1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2209,8 +2149,6 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
 
   set_CPP_grid_field_pt_test_pattern (C2, 4);
   grid_field_pt_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2295,8 +2233,6 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
 
   set_CPP_grid_field_test_pattern (C2, 4);
   grid_field_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2363,8 +2299,6 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
 
   set_CPP_floor_position_test_pattern (C2, 4);
   floor_position_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2434,8 +2368,6 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
 
   set_CPP_high_energy_space_charge_test_pattern (C2, 4);
   high_energy_space_charge_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2497,8 +2429,6 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
 
   set_CPP_xy_disp_test_pattern (C2, 4);
   xy_disp_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2574,8 +2504,6 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
 
   set_CPP_twiss_test_pattern (C2, 4);
   twiss_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2643,8 +2571,6 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
 
   set_CPP_mode3_test_pattern (C2, 4);
   mode3_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2716,8 +2642,6 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
 
   set_CPP_bookkeeping_state_test_pattern (C2, 4);
   bookkeeping_state_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2789,8 +2713,6 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
 
   set_CPP_rad_map_test_pattern (C2, 4);
   rad_map_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2850,8 +2772,6 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
 
   set_CPP_rad_map_ele_test_pattern (C2, 4);
   rad_map_ele_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -2921,8 +2841,6 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
 
   set_CPP_gen_grad1_test_pattern (C2, 4);
   gen_grad1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3007,8 +2925,6 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
 
   set_CPP_gen_grad_map_test_pattern (C2, 4);
   gen_grad_map_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3072,8 +2988,6 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
 
   set_CPP_surface_segmented_pt_test_pattern (C2, 4);
   surface_segmented_pt_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3149,8 +3063,6 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
 
   set_CPP_surface_segmented_test_pattern (C2, 4);
   surface_segmented_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3216,8 +3128,6 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
 
   set_CPP_surface_h_misalign_pt_test_pattern (C2, 4);
   surface_h_misalign_pt_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3293,8 +3203,6 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
 
   set_CPP_surface_h_misalign_test_pattern (C2, 4);
   surface_h_misalign_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3360,8 +3268,6 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
 
   set_CPP_surface_displacement_pt_test_pattern (C2, 4);
   surface_displacement_pt_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3437,8 +3343,6 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
 
   set_CPP_surface_displacement_test_pattern (C2, 4);
   surface_displacement_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3495,8 +3399,6 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
 
   set_CPP_target_point_test_pattern (C2, 4);
   target_point_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3561,8 +3463,6 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
 
   set_CPP_surface_curvature_test_pattern (C2, 4);
   surface_curvature_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3628,8 +3528,6 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
 
   set_CPP_photon_target_test_pattern (C2, 4);
   photon_target_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3701,8 +3599,6 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
 
   set_CPP_photon_material_test_pattern (C2, 4);
   photon_material_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3780,8 +3676,6 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
 
   set_CPP_pixel_pt_test_pattern (C2, 4);
   pixel_pt_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3861,8 +3755,6 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
 
   set_CPP_pixel_detec_test_pattern (C2, 4);
   pixel_detec_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -3951,8 +3843,6 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
 
   set_CPP_photon_element_test_pattern (C2, 4);
   photon_element_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4024,8 +3914,6 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
 
   set_CPP_wall3d_vertex_test_pattern (C2, 4);
   wall3d_vertex_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4139,8 +4027,6 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
 
   set_CPP_wall3d_section_test_pattern (C2, 4);
   wall3d_section_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4226,8 +4112,6 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
 
   set_CPP_wall3d_test_pattern (C2, 4);
   wall3d_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4292,8 +4176,6 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
 
   set_CPP_ramper_lord_test_pattern (C2, 4);
   ramper_lord_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4378,8 +4260,6 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
 
   set_CPP_control_test_pattern (C2, 4);
   control_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4441,8 +4321,6 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
 
   set_CPP_control_var1_test_pattern (C2, 4);
   control_var1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4521,8 +4399,6 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
 
   set_CPP_control_ramp1_test_pattern (C2, 4);
   control_ramp1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4607,8 +4483,6 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
 
   set_CPP_controller_test_pattern (C2, 4);
   controller_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4668,8 +4542,6 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
 
   set_CPP_ellipse_beam_init_test_pattern (C2, 4);
   ellipse_beam_init_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4730,8 +4602,6 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
 
   set_CPP_kv_beam_init_test_pattern (C2, 4);
   kv_beam_init_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4797,8 +4667,6 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
 
   set_CPP_grid_beam_init_test_pattern (C2, 4);
   grid_beam_init_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -4944,8 +4812,6 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
 
   set_CPP_beam_init_test_pattern (C2, 4);
   beam_init_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5037,8 +4903,6 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
 
   set_CPP_lat_param_test_pattern (C2, 4);
   lat_param_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5104,8 +4968,6 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
 
   set_CPP_mode_info_test_pattern (C2, 4);
   mode_info_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5169,8 +5031,6 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
 
   set_CPP_pre_tracker_test_pattern (C2, 4);
   pre_tracker_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5239,8 +5099,6 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
 
   set_CPP_anormal_mode_test_pattern (C2, 4);
   anormal_mode_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5308,8 +5166,6 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
 
   set_CPP_linac_normal_mode_test_pattern (C2, 4);
   linac_normal_mode_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5390,8 +5246,6 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
 
   set_CPP_normal_modes_test_pattern (C2, 4);
   normal_modes_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5466,8 +5320,6 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
 
   set_CPP_em_field_test_pattern (C2, 4);
   em_field_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5535,8 +5387,6 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
 
   set_CPP_strong_beam_test_pattern (C2, 4);
   strong_beam_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5605,8 +5455,6 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
 
   set_CPP_track_point_test_pattern (C2, 4);
   track_point_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5676,8 +5524,6 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
 
   set_CPP_track_test_pattern (C2, 4);
   track_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5769,8 +5615,6 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
 
   set_CPP_space_charge_common_test_pattern (C2, 4);
   space_charge_common_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5905,8 +5749,6 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
 
   set_CPP_bmad_common_test_pattern (C2, 4);
   bmad_common_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -5996,8 +5838,6 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
 
   set_CPP_rad_int1_test_pattern (C2, 4);
   rad_int1_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6059,8 +5899,6 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
 
   set_CPP_rad_int_branch_test_pattern (C2, 4);
   rad_int_branch_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6122,8 +5960,6 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
 
   set_CPP_rad_int_all_ele_test_pattern (C2, 4);
   rad_int_all_ele_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6489,8 +6325,6 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
 
   set_CPP_ele_test_pattern (C2, 4);
   ele_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6549,8 +6383,6 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
 
   set_CPP_complex_taylor_term_test_pattern (C2, 4);
   complex_taylor_term_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6614,8 +6446,6 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
 
   set_CPP_complex_taylor_test_pattern (C2, 4);
   complex_taylor_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6709,8 +6539,6 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
 
   set_CPP_branch_test_pattern (C2, 4);
   branch_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -6907,8 +6735,6 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
 
   set_CPP_lat_test_pattern (C2, 4);
   lat_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -7001,8 +6827,6 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
 
   set_CPP_bunch_test_pattern (C2, 4);
   bunch_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -7106,8 +6930,6 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
 
   set_CPP_bunch_params_test_pattern (C2, 4);
   bunch_params_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -7169,8 +6991,6 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
 
   set_CPP_beam_test_pattern (C2, 4);
   beam_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -7234,8 +7054,6 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
 
   set_CPP_aperture_point_test_pattern (C2, 4);
   aperture_point_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -7309,8 +7127,6 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
 
   set_CPP_aperture_param_test_pattern (C2, 4);
   aperture_param_to_f (C2, F);
-
-  
 }
 
 //--------------------------------------------------------------
@@ -7376,6 +7192,4 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
 
   set_CPP_aperture_scan_test_pattern (C2, 4);
   aperture_scan_to_f (C2, F);
-
-  
 }

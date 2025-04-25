@@ -109,16 +109,6 @@ class FullType(NamedTuple):
         return FullType(type_name, dim, ptr)
 
 
-do_not_share_classes = {
-    # "CPP_grid_field_pt",
-    # "CPP_grid_field_pt1",
-    # "CPP_surface_segmented_pt",
-    # "CPP_pixel_pt",
-    # "CPP_surface_displacement_pt",
-    # "CPP_surface_h_misalign_pt",
-    # "CPP_surface_segmented_pt",
-}
-
 ##################################################################################
 ##################################################################################
 
@@ -680,44 +670,6 @@ class TemplateImporter:
                     custom_overrides[tag] = value
 
         return transforms, custom_overrides
-
-
-def get_c_type(type_val: str) -> str:
-    """Get the C++ type string for a given type value"""
-    type_mapping = {
-        REAL: "Real",
-        CMPLX: "Complex",
-        INT: "Int",
-        INT8: "Int8",
-        LOGIC: "Bool",
-        CHAR: "string",
-        SIZE: "Int",
-        STRUCT: "CPP_KIND",
-    }
-
-    if type_val in type_mapping:
-        return type_mapping[type_val]
-
-    raise NotImplementedError(f"Unknown type: {type_val}")
-
-
-def get_c_arg(type_val: str) -> str:
-    """Get the C++ argument type string for a given type value"""
-    type_mapping = {
-        REAL: "c_Real",
-        CMPLX: "c_Complex",
-        INT: "c_Int",
-        INT8: "c_Int8",
-        LOGIC: "c_Bool",
-        CHAR: "c_Char",
-        SIZE: "c_Int",
-        STRUCT: "const CPP_KIND",
-    }
-
-    if type_val in type_mapping:
-        return type_mapping[type_val]
-
-    raise NotImplementedError(f"Unknown type: {type_val}")
 
 
 ##################################################################################
@@ -1439,14 +1391,6 @@ def get_class_repr(struct: Structure) -> str:
 
 
 def get_class_lines(struct: Structure) -> list[str]:
-    is_shared = struct.cpp_class not in do_not_share_classes
-    maybe_shared = (
-        f": public std::enable_shared_from_this<{struct.cpp_class}> "
-        if is_shared
-        else ""
-    )
-
-    # Build class member variables
     member_vars = []
     for arg in struct.arg:
         if not arg.is_component:
@@ -1461,25 +1405,11 @@ def get_class_lines(struct: Structure) -> list[str]:
             f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};"
         )
 
-    # Build constructor body
     constructor_body = ""
     if DEBUG:
-        debug_constructed = (
+        constructor_body = (
             f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
         )
-        constructor_body = debug_constructed
-
-    # Build destructor content
-    destructor_content = ""
-    if is_shared:
-        destructor_lines = []
-        for arg in struct.arg:
-            if arg.c_side.destructor == "":
-                continue
-            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
-                continue
-            destructor_lines.append(f"    {arg.c_side.destructor}")
-        destructor_content = "\n".join(destructor_lines)
 
     repr_lines = get_class_repr(struct).splitlines()
     template = string.Template(
@@ -1489,14 +1419,17 @@ def get_class_lines(struct: Structure) -> list[str]:
         
         class Opaque_${short_name}_class {};  // Opaque class for pointers to corresponding fortran structs.
         
-        class ${cpp_class}${maybe_shared} {
+        class ${cpp_class}: public std::enable_shared_from_this<${cpp_class}> {
         public:
         ${member_vars}
         ${c_extra_methods}
           ${cpp_class}(${c_constructor_arg_list}) {
           ${constructor_body}
           }
-        ${destructor}${repr_methods}
+
+        virtual ~${cpp_class}() { }
+        std::shared_ptr<${cpp_class}> getptr() { return shared_from_this(); }
+        ${repr_methods}
         };
         
         extern "C" void ${short_name}_to_c (const Opaque_${short_name}_class*, ${cpp_class}&);
@@ -1508,17 +1441,10 @@ def get_class_lines(struct: Structure) -> list[str]:
     return template.substitute(
         cpp_class=struct.cpp_class,
         short_name=struct.short_name,
-        maybe_shared=maybe_shared,
         member_vars="\n".join(member_vars),
         c_extra_methods=struct.c_extra_methods,
         c_constructor_arg_list=struct.c_constructor_arg_list,
         constructor_body=constructor_body,
-        destructor=f"""
-  virtual ~{struct.cpp_class}() {{ {destructor_content} }}
-  std::shared_ptr<{struct.cpp_class}> getptr() {{ return shared_from_this(); }}
-"""
-        if is_shared
-        else "",
         repr_methods="\n".join(repr_lines),
     ).splitlines()
 
@@ -1704,20 +1630,6 @@ using namespace Bmad;
         file.write(f"void set_CPP_{head}_test_pattern (CPP_{head}& C, int ix_patt);\n")
 
     for struct in struct_definitions:
-        c_debug_code = ""
-        # c_debug_code = ""
-        # if struct.cpp_class == "CPP_ele":
-        #     c_debug_code = """
-        #
-        #  set_CPP_ele_test_pattern(C2, 4);
-        #  ele_to_f(C2, F);
-        #  cout << " [4] C2 = " << C2 << endl;
-        #  ele_to_c(F, C);
-        #  cout << " back " << endl;
-        #  cout << " [4] C = " << C << endl;
-        #
-        #      """
-
         file.write(f"""
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -1780,8 +1692,6 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 
   set_{struct.cpp_class}_test_pattern (C2, 4);
   {struct.short_name}_to_f (C2, F);
-
-  {c_debug_code}
 }}
 """)
 
@@ -1979,8 +1889,6 @@ def load_transforms():
     for type_, transform in c_transforms.items():
         transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
         transform.to_f2_call = transform.to_f2_call.rstrip(", ")
-        transform.replace_all("C_TYPE", get_c_type(type_.type))
-        transform.replace_all("C_ARG", get_c_arg(type_.type))
         transform.replace_all("TEST_VALUE", transform.test_value)
 
 

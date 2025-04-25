@@ -25,7 +25,7 @@ using std::ostream;
 
 class Opaque_spline_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_spline: public std::enable_shared_from_this<CPP_spline>  {
+class CPP_spline: public std::enable_shared_from_this<CPP_spline> {
 public:
       Real x0{0.0};
       Real y0{0.0};
@@ -36,8 +36,8 @@ public:
   
   }
 
-  virtual ~CPP_spline() {  }
-  std::shared_ptr<CPP_spline> getptr() { return shared_from_this(); }
+virtual ~CPP_spline() { }
+std::shared_ptr<CPP_spline> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_spline& obj) {
     os << "CPP_spline{";
@@ -66,7 +66,7 @@ bool operator== (const CPP_spline&, const CPP_spline&);
 
 class Opaque_spin_polar_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_spin_polar: public std::enable_shared_from_this<CPP_spin_polar>  {
+class CPP_spin_polar: public std::enable_shared_from_this<CPP_spin_polar> {
 public:
       Real polarization{1};
       Real theta{0.0};
@@ -77,8 +77,8 @@ public:
   
   }
 
-  virtual ~CPP_spin_polar() {  }
-  std::shared_ptr<CPP_spin_polar> getptr() { return shared_from_this(); }
+virtual ~CPP_spin_polar() { }
+std::shared_ptr<CPP_spin_polar> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_spin_polar& obj) {
     os << "CPP_spin_polar{";
@@ -107,7 +107,7 @@ bool operator== (const CPP_spin_polar&, const CPP_spin_polar&);
 
 class Opaque_ac_kicker_time_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_ac_kicker_time: public std::enable_shared_from_this<CPP_ac_kicker_time>  {
+class CPP_ac_kicker_time: public std::enable_shared_from_this<CPP_ac_kicker_time> {
 public:
       Real amp{0.0};
       Real time{0.0};
@@ -117,8 +117,8 @@ public:
   
   }
 
-  virtual ~CPP_ac_kicker_time() {  }
-  std::shared_ptr<CPP_ac_kicker_time> getptr() { return shared_from_this(); }
+virtual ~CPP_ac_kicker_time() { }
+std::shared_ptr<CPP_ac_kicker_time> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker_time& obj) {
     os << "CPP_ac_kicker_time{";
@@ -146,7 +146,7 @@ bool operator== (const CPP_ac_kicker_time&, const CPP_ac_kicker_time&);
 
 class Opaque_ac_kicker_freq_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_ac_kicker_freq: public std::enable_shared_from_this<CPP_ac_kicker_freq>  {
+class CPP_ac_kicker_freq: public std::enable_shared_from_this<CPP_ac_kicker_freq> {
 public:
       Real f{0.0};
       Real amp{0.0};
@@ -157,8 +157,8 @@ public:
   
   }
 
-  virtual ~CPP_ac_kicker_freq() {  }
-  std::shared_ptr<CPP_ac_kicker_freq> getptr() { return shared_from_this(); }
+virtual ~CPP_ac_kicker_freq() { }
+std::shared_ptr<CPP_ac_kicker_freq> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker_freq& obj) {
     os << "CPP_ac_kicker_freq{";
@@ -187,7 +187,7 @@ bool operator== (const CPP_ac_kicker_freq&, const CPP_ac_kicker_freq&);
 
 class Opaque_ac_kicker_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_ac_kicker: public std::enable_shared_from_this<CPP_ac_kicker>  {
+class CPP_ac_kicker: public std::enable_shared_from_this<CPP_ac_kicker> {
 public:
       VariableArray1D<CPP_ac_kicker_time> amp_vs_time;
       VariableArray1D<CPP_ac_kicker_freq> frequency;
@@ -196,8 +196,8 @@ public:
   
   }
 
-  virtual ~CPP_ac_kicker() {  }
-  std::shared_ptr<CPP_ac_kicker> getptr() { return shared_from_this(); }
+virtual ~CPP_ac_kicker() { }
+std::shared_ptr<CPP_ac_kicker> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker& obj) {
     os << "CPP_ac_kicker{";
@@ -224,7 +224,7 @@ bool operator== (const CPP_ac_kicker&, const CPP_ac_kicker&);
 
 class Opaque_interval1_coef_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_interval1_coef: public std::enable_shared_from_this<CPP_interval1_coef>  {
+class CPP_interval1_coef: public std::enable_shared_from_this<CPP_interval1_coef> {
 public:
       Real c0{0.0};
       Real c1{0.0};
@@ -234,8 +234,8 @@ public:
   
   }
 
-  virtual ~CPP_interval1_coef() {  }
-  std::shared_ptr<CPP_interval1_coef> getptr() { return shared_from_this(); }
+virtual ~CPP_interval1_coef() { }
+std::shared_ptr<CPP_interval1_coef> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_interval1_coef& obj) {
     os << "CPP_interval1_coef{";
@@ -263,7 +263,7 @@ bool operator== (const CPP_interval1_coef&, const CPP_interval1_coef&);
 
 class Opaque_photon_reflect_table_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_photon_reflect_table: public std::enable_shared_from_this<CPP_photon_reflect_table>  {
+class CPP_photon_reflect_table: public std::enable_shared_from_this<CPP_photon_reflect_table> {
 public:
       VariableArray1D<Real> angle;
       VariableArray1D<Real> energy;
@@ -277,8 +277,8 @@ public:
   
   }
 
-  virtual ~CPP_photon_reflect_table() {  }
-  std::shared_ptr<CPP_photon_reflect_table> getptr() { return shared_from_this(); }
+virtual ~CPP_photon_reflect_table() { }
+std::shared_ptr<CPP_photon_reflect_table> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_reflect_table& obj) {
     os << "CPP_photon_reflect_table{";
@@ -310,7 +310,7 @@ bool operator== (const CPP_photon_reflect_table&, const CPP_photon_reflect_table
 
 class Opaque_photon_reflect_surface_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_photon_reflect_surface: public std::enable_shared_from_this<CPP_photon_reflect_surface>  {
+class CPP_photon_reflect_surface: public std::enable_shared_from_this<CPP_photon_reflect_surface> {
 public:
       string name{""};
       string description{""};
@@ -324,8 +324,8 @@ public:
   
   }
 
-  virtual ~CPP_photon_reflect_surface() {  }
-  std::shared_ptr<CPP_photon_reflect_surface> getptr() { return shared_from_this(); }
+virtual ~CPP_photon_reflect_surface() { }
+std::shared_ptr<CPP_photon_reflect_surface> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_reflect_surface& obj) {
     os << "CPP_photon_reflect_surface{";
@@ -357,7 +357,7 @@ bool operator== (const CPP_photon_reflect_surface&, const CPP_photon_reflect_sur
 
 class Opaque_coord_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_coord: public std::enable_shared_from_this<CPP_coord>  {
+class CPP_coord: public std::enable_shared_from_this<CPP_coord> {
 public:
       FixedArray1D<Real, 6> vec{0.0};
       Real s{0.0};
@@ -385,8 +385,8 @@ public:
   
   }
 
-  virtual ~CPP_coord() {  }
-  std::shared_ptr<CPP_coord> getptr() { return shared_from_this(); }
+virtual ~CPP_coord() { }
+std::shared_ptr<CPP_coord> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_coord& obj) {
     os << "CPP_coord{";
@@ -432,7 +432,7 @@ bool operator== (const CPP_coord&, const CPP_coord&);
 
 class Opaque_coord_array_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_coord_array: public std::enable_shared_from_this<CPP_coord_array>  {
+class CPP_coord_array: public std::enable_shared_from_this<CPP_coord_array> {
 public:
       VariableArray1D<CPP_coord> orbit;
 
@@ -440,8 +440,8 @@ public:
   
   }
 
-  virtual ~CPP_coord_array() {  }
-  std::shared_ptr<CPP_coord_array> getptr() { return shared_from_this(); }
+virtual ~CPP_coord_array() { }
+std::shared_ptr<CPP_coord_array> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_coord_array& obj) {
     os << "CPP_coord_array{";
@@ -467,7 +467,7 @@ bool operator== (const CPP_coord_array&, const CPP_coord_array&);
 
 class Opaque_bpm_phase_coupling_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_bpm_phase_coupling: public std::enable_shared_from_this<CPP_bpm_phase_coupling>  {
+class CPP_bpm_phase_coupling: public std::enable_shared_from_this<CPP_bpm_phase_coupling> {
 public:
       Real K_22a{0.0};
       Real K_12a{0.0};
@@ -484,8 +484,8 @@ public:
   
   }
 
-  virtual ~CPP_bpm_phase_coupling() {  }
-  std::shared_ptr<CPP_bpm_phase_coupling> getptr() { return shared_from_this(); }
+virtual ~CPP_bpm_phase_coupling() { }
+std::shared_ptr<CPP_bpm_phase_coupling> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bpm_phase_coupling& obj) {
     os << "CPP_bpm_phase_coupling{";
@@ -520,7 +520,7 @@ bool operator== (const CPP_bpm_phase_coupling&, const CPP_bpm_phase_coupling&);
 
 class Opaque_expression_atom_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_expression_atom: public std::enable_shared_from_this<CPP_expression_atom>  {
+class CPP_expression_atom: public std::enable_shared_from_this<CPP_expression_atom> {
 public:
       string name{""};
       Int type{0};
@@ -530,8 +530,8 @@ public:
   
   }
 
-  virtual ~CPP_expression_atom() {  }
-  std::shared_ptr<CPP_expression_atom> getptr() { return shared_from_this(); }
+virtual ~CPP_expression_atom() { }
+std::shared_ptr<CPP_expression_atom> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_expression_atom& obj) {
     os << "CPP_expression_atom{";
@@ -559,7 +559,7 @@ bool operator== (const CPP_expression_atom&, const CPP_expression_atom&);
 
 class Opaque_wake_sr_z_long_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wake_sr_z_long: public std::enable_shared_from_this<CPP_wake_sr_z_long>  {
+class CPP_wake_sr_z_long: public std::enable_shared_from_this<CPP_wake_sr_z_long> {
 public:
       VariableArray1D<Real> w;
       VariableArray1D<Complex> fw;
@@ -575,8 +575,8 @@ public:
   
   }
 
-  virtual ~CPP_wake_sr_z_long() {  }
-  std::shared_ptr<CPP_wake_sr_z_long> getptr() { return shared_from_this(); }
+virtual ~CPP_wake_sr_z_long() { }
+std::shared_ptr<CPP_wake_sr_z_long> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_sr_z_long& obj) {
     os << "CPP_wake_sr_z_long{";
@@ -610,7 +610,7 @@ bool operator== (const CPP_wake_sr_z_long&, const CPP_wake_sr_z_long&);
 
 class Opaque_wake_sr_mode_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wake_sr_mode: public std::enable_shared_from_this<CPP_wake_sr_mode>  {
+class CPP_wake_sr_mode: public std::enable_shared_from_this<CPP_wake_sr_mode> {
 public:
       Real amp{0.0};
       Real damp{0.0};
@@ -627,8 +627,8 @@ public:
   
   }
 
-  virtual ~CPP_wake_sr_mode() {  }
-  std::shared_ptr<CPP_wake_sr_mode> getptr() { return shared_from_this(); }
+virtual ~CPP_wake_sr_mode() { }
+std::shared_ptr<CPP_wake_sr_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_sr_mode& obj) {
     os << "CPP_wake_sr_mode{";
@@ -663,7 +663,7 @@ bool operator== (const CPP_wake_sr_mode&, const CPP_wake_sr_mode&);
 
 class Opaque_wake_sr_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wake_sr: public std::enable_shared_from_this<CPP_wake_sr>  {
+class CPP_wake_sr: public std::enable_shared_from_this<CPP_wake_sr> {
 public:
       string file{""};
       CPP_wake_sr_z_long z_long;
@@ -680,8 +680,8 @@ public:
   
   }
 
-  virtual ~CPP_wake_sr() {  }
-  std::shared_ptr<CPP_wake_sr> getptr() { return shared_from_this(); }
+virtual ~CPP_wake_sr() { }
+std::shared_ptr<CPP_wake_sr> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_sr& obj) {
     os << "CPP_wake_sr{";
@@ -716,7 +716,7 @@ bool operator== (const CPP_wake_sr&, const CPP_wake_sr&);
 
 class Opaque_wake_lr_mode_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wake_lr_mode: public std::enable_shared_from_this<CPP_wake_lr_mode>  {
+class CPP_wake_lr_mode: public std::enable_shared_from_this<CPP_wake_lr_mode> {
 public:
       Real freq{0.0};
       Real freq_in{0.0};
@@ -736,8 +736,8 @@ public:
   
   }
 
-  virtual ~CPP_wake_lr_mode() {  }
-  std::shared_ptr<CPP_wake_lr_mode> getptr() { return shared_from_this(); }
+virtual ~CPP_wake_lr_mode() { }
+std::shared_ptr<CPP_wake_lr_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_lr_mode& obj) {
     os << "CPP_wake_lr_mode{";
@@ -775,7 +775,7 @@ bool operator== (const CPP_wake_lr_mode&, const CPP_wake_lr_mode&);
 
 class Opaque_wake_lr_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wake_lr: public std::enable_shared_from_this<CPP_wake_lr>  {
+class CPP_wake_lr: public std::enable_shared_from_this<CPP_wake_lr> {
 public:
       string file{""};
       VariableArray1D<CPP_wake_lr_mode> mode;
@@ -789,8 +789,8 @@ public:
   
   }
 
-  virtual ~CPP_wake_lr() {  }
-  std::shared_ptr<CPP_wake_lr> getptr() { return shared_from_this(); }
+virtual ~CPP_wake_lr() { }
+std::shared_ptr<CPP_wake_lr> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake_lr& obj) {
     os << "CPP_wake_lr{";
@@ -822,7 +822,7 @@ bool operator== (const CPP_wake_lr&, const CPP_wake_lr&);
 
 class Opaque_lat_ele_loc_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_lat_ele_loc: public std::enable_shared_from_this<CPP_lat_ele_loc>  {
+class CPP_lat_ele_loc: public std::enable_shared_from_this<CPP_lat_ele_loc> {
 public:
       Int ix_ele{-1};
       Int ix_branch{0};
@@ -831,8 +831,8 @@ public:
   
   }
 
-  virtual ~CPP_lat_ele_loc() {  }
-  std::shared_ptr<CPP_lat_ele_loc> getptr() { return shared_from_this(); }
+virtual ~CPP_lat_ele_loc() { }
+std::shared_ptr<CPP_lat_ele_loc> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_lat_ele_loc& obj) {
     os << "CPP_lat_ele_loc{";
@@ -859,7 +859,7 @@ bool operator== (const CPP_lat_ele_loc&, const CPP_lat_ele_loc&);
 
 class Opaque_wake_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wake: public std::enable_shared_from_this<CPP_wake>  {
+class CPP_wake: public std::enable_shared_from_this<CPP_wake> {
 public:
       CPP_wake_sr sr;
       CPP_wake_lr lr;
@@ -868,8 +868,8 @@ public:
   
   }
 
-  virtual ~CPP_wake() {  }
-  std::shared_ptr<CPP_wake> getptr() { return shared_from_this(); }
+virtual ~CPP_wake() { }
+std::shared_ptr<CPP_wake> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wake& obj) {
     os << "CPP_wake{";
@@ -896,7 +896,7 @@ bool operator== (const CPP_wake&, const CPP_wake&);
 
 class Opaque_taylor_term_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_taylor_term: public std::enable_shared_from_this<CPP_taylor_term>  {
+class CPP_taylor_term: public std::enable_shared_from_this<CPP_taylor_term> {
 public:
       Real coef{0.0};
       FixedArray1D<Int, 6> expn{0};
@@ -905,8 +905,8 @@ public:
   
   }
 
-  virtual ~CPP_taylor_term() {  }
-  std::shared_ptr<CPP_taylor_term> getptr() { return shared_from_this(); }
+virtual ~CPP_taylor_term() { }
+std::shared_ptr<CPP_taylor_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_taylor_term& obj) {
     os << "CPP_taylor_term{";
@@ -933,7 +933,7 @@ bool operator== (const CPP_taylor_term&, const CPP_taylor_term&);
 
 class Opaque_taylor_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_taylor: public std::enable_shared_from_this<CPP_taylor>  {
+class CPP_taylor: public std::enable_shared_from_this<CPP_taylor> {
 public:
       Real ref{0.0};
       VariableArray1D<CPP_taylor_term> term;
@@ -942,8 +942,8 @@ public:
   
   }
 
-  virtual ~CPP_taylor() {  }
-  std::shared_ptr<CPP_taylor> getptr() { return shared_from_this(); }
+virtual ~CPP_taylor() { }
+std::shared_ptr<CPP_taylor> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_taylor& obj) {
     os << "CPP_taylor{";
@@ -970,7 +970,7 @@ bool operator== (const CPP_taylor&, const CPP_taylor&);
 
 class Opaque_em_taylor_term_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_em_taylor_term: public std::enable_shared_from_this<CPP_em_taylor_term>  {
+class CPP_em_taylor_term: public std::enable_shared_from_this<CPP_em_taylor_term> {
 public:
       Real coef{0.0};
       FixedArray1D<Int, 2> expn{0};
@@ -979,8 +979,8 @@ public:
   
   }
 
-  virtual ~CPP_em_taylor_term() {  }
-  std::shared_ptr<CPP_em_taylor_term> getptr() { return shared_from_this(); }
+virtual ~CPP_em_taylor_term() { }
+std::shared_ptr<CPP_em_taylor_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_em_taylor_term& obj) {
     os << "CPP_em_taylor_term{";
@@ -1007,7 +1007,7 @@ bool operator== (const CPP_em_taylor_term&, const CPP_em_taylor_term&);
 
 class Opaque_em_taylor_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_em_taylor: public std::enable_shared_from_this<CPP_em_taylor>  {
+class CPP_em_taylor: public std::enable_shared_from_this<CPP_em_taylor> {
 public:
       Real ref{0.0};
       VariableArray1D<CPP_em_taylor_term> term;
@@ -1016,8 +1016,8 @@ public:
   
   }
 
-  virtual ~CPP_em_taylor() {  }
-  std::shared_ptr<CPP_em_taylor> getptr() { return shared_from_this(); }
+virtual ~CPP_em_taylor() { }
+std::shared_ptr<CPP_em_taylor> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_em_taylor& obj) {
     os << "CPP_em_taylor{";
@@ -1044,7 +1044,7 @@ bool operator== (const CPP_em_taylor&, const CPP_em_taylor&);
 
 class Opaque_cartesian_map_term1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_cartesian_map_term1: public std::enable_shared_from_this<CPP_cartesian_map_term1>  {
+class CPP_cartesian_map_term1: public std::enable_shared_from_this<CPP_cartesian_map_term1> {
 public:
       Real coef{0.0};
       Real kx{0.0};
@@ -1060,8 +1060,8 @@ public:
   
   }
 
-  virtual ~CPP_cartesian_map_term1() {  }
-  std::shared_ptr<CPP_cartesian_map_term1> getptr() { return shared_from_this(); }
+virtual ~CPP_cartesian_map_term1() { }
+std::shared_ptr<CPP_cartesian_map_term1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map_term1& obj) {
     os << "CPP_cartesian_map_term1{";
@@ -1095,7 +1095,7 @@ bool operator== (const CPP_cartesian_map_term1&, const CPP_cartesian_map_term1&)
 
 class Opaque_cartesian_map_term_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_cartesian_map_term: public std::enable_shared_from_this<CPP_cartesian_map_term>  {
+class CPP_cartesian_map_term: public std::enable_shared_from_this<CPP_cartesian_map_term> {
 public:
       string file{""};
       Int n_link{1};
@@ -1105,8 +1105,8 @@ public:
   
   }
 
-  virtual ~CPP_cartesian_map_term() {  }
-  std::shared_ptr<CPP_cartesian_map_term> getptr() { return shared_from_this(); }
+virtual ~CPP_cartesian_map_term() { }
+std::shared_ptr<CPP_cartesian_map_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map_term& obj) {
     os << "CPP_cartesian_map_term{";
@@ -1134,7 +1134,7 @@ bool operator== (const CPP_cartesian_map_term&, const CPP_cartesian_map_term&);
 
 class Opaque_cartesian_map_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_cartesian_map: public std::enable_shared_from_this<CPP_cartesian_map>  {
+class CPP_cartesian_map: public std::enable_shared_from_this<CPP_cartesian_map> {
 public:
       Real field_scale{1};
       FixedArray1D<Real, 3> r0{0.0};
@@ -1147,8 +1147,8 @@ public:
   
   }
 
-  virtual ~CPP_cartesian_map() {  }
-  std::shared_ptr<CPP_cartesian_map> getptr() { return shared_from_this(); }
+virtual ~CPP_cartesian_map() { }
+std::shared_ptr<CPP_cartesian_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map& obj) {
     os << "CPP_cartesian_map{";
@@ -1179,7 +1179,7 @@ bool operator== (const CPP_cartesian_map&, const CPP_cartesian_map&);
 
 class Opaque_cylindrical_map_term1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_cylindrical_map_term1: public std::enable_shared_from_this<CPP_cylindrical_map_term1>  {
+class CPP_cylindrical_map_term1: public std::enable_shared_from_this<CPP_cylindrical_map_term1> {
 public:
       Complex e_coef{0.0};
       Complex b_coef{0.0};
@@ -1188,8 +1188,8 @@ public:
   
   }
 
-  virtual ~CPP_cylindrical_map_term1() {  }
-  std::shared_ptr<CPP_cylindrical_map_term1> getptr() { return shared_from_this(); }
+virtual ~CPP_cylindrical_map_term1() { }
+std::shared_ptr<CPP_cylindrical_map_term1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map_term1& obj) {
     os << "CPP_cylindrical_map_term1{";
@@ -1216,7 +1216,7 @@ bool operator== (const CPP_cylindrical_map_term1&, const CPP_cylindrical_map_ter
 
 class Opaque_cylindrical_map_term_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_cylindrical_map_term: public std::enable_shared_from_this<CPP_cylindrical_map_term>  {
+class CPP_cylindrical_map_term: public std::enable_shared_from_this<CPP_cylindrical_map_term> {
 public:
       string file{""};
       Int n_link{1};
@@ -1226,8 +1226,8 @@ public:
   
   }
 
-  virtual ~CPP_cylindrical_map_term() {  }
-  std::shared_ptr<CPP_cylindrical_map_term> getptr() { return shared_from_this(); }
+virtual ~CPP_cylindrical_map_term() { }
+std::shared_ptr<CPP_cylindrical_map_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map_term& obj) {
     os << "CPP_cylindrical_map_term{";
@@ -1255,7 +1255,7 @@ bool operator== (const CPP_cylindrical_map_term&, const CPP_cylindrical_map_term
 
 class Opaque_cylindrical_map_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_cylindrical_map: public std::enable_shared_from_this<CPP_cylindrical_map>  {
+class CPP_cylindrical_map: public std::enable_shared_from_this<CPP_cylindrical_map> {
 public:
       Int m{0};
       Int harmonic{0};
@@ -1272,8 +1272,8 @@ public:
   
   }
 
-  virtual ~CPP_cylindrical_map() {  }
-  std::shared_ptr<CPP_cylindrical_map> getptr() { return shared_from_this(); }
+virtual ~CPP_cylindrical_map() { }
+std::shared_ptr<CPP_cylindrical_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map& obj) {
     os << "CPP_cylindrical_map{";
@@ -1308,7 +1308,7 @@ bool operator== (const CPP_cylindrical_map&, const CPP_cylindrical_map&);
 
 class Opaque_grid_field_pt1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_grid_field_pt1: public std::enable_shared_from_this<CPP_grid_field_pt1>  {
+class CPP_grid_field_pt1: public std::enable_shared_from_this<CPP_grid_field_pt1> {
 public:
       FixedArray1D<Complex, 3> E{0.0};
       FixedArray1D<Complex, 3> B{0.0};
@@ -1317,8 +1317,8 @@ public:
   
   }
 
-  virtual ~CPP_grid_field_pt1() {  }
-  std::shared_ptr<CPP_grid_field_pt1> getptr() { return shared_from_this(); }
+virtual ~CPP_grid_field_pt1() { }
+std::shared_ptr<CPP_grid_field_pt1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_field_pt1& obj) {
     os << "CPP_grid_field_pt1{";
@@ -1345,7 +1345,7 @@ bool operator== (const CPP_grid_field_pt1&, const CPP_grid_field_pt1&);
 
 class Opaque_grid_field_pt_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_grid_field_pt: public std::enable_shared_from_this<CPP_grid_field_pt>  {
+class CPP_grid_field_pt: public std::enable_shared_from_this<CPP_grid_field_pt> {
 public:
       string file{""};
       Int n_link{1};
@@ -1354,8 +1354,8 @@ public:
   
   }
 
-  virtual ~CPP_grid_field_pt() {  }
-  std::shared_ptr<CPP_grid_field_pt> getptr() { return shared_from_this(); }
+virtual ~CPP_grid_field_pt() { }
+std::shared_ptr<CPP_grid_field_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_field_pt& obj) {
     os << "CPP_grid_field_pt{";
@@ -1382,7 +1382,7 @@ bool operator== (const CPP_grid_field_pt&, const CPP_grid_field_pt&);
 
 class Opaque_grid_field_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_grid_field: public std::enable_shared_from_this<CPP_grid_field>  {
+class CPP_grid_field: public std::enable_shared_from_this<CPP_grid_field> {
 public:
       Int geometry{0};
       Int harmonic{0};
@@ -1401,8 +1401,8 @@ public:
   
   }
 
-  virtual ~CPP_grid_field() {  }
-  std::shared_ptr<CPP_grid_field> getptr() { return shared_from_this(); }
+virtual ~CPP_grid_field() { }
+std::shared_ptr<CPP_grid_field> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_field& obj) {
     os << "CPP_grid_field{";
@@ -1439,7 +1439,7 @@ bool operator== (const CPP_grid_field&, const CPP_grid_field&);
 
 class Opaque_floor_position_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_floor_position: public std::enable_shared_from_this<CPP_floor_position>  {
+class CPP_floor_position: public std::enable_shared_from_this<CPP_floor_position> {
 public:
       FixedArray1D<Real, 3> r{0.0};
       FixedArray2D<Real, 3, 3> w;
@@ -1451,8 +1451,8 @@ public:
   
   }
 
-  virtual ~CPP_floor_position() {  }
-  std::shared_ptr<CPP_floor_position> getptr() { return shared_from_this(); }
+virtual ~CPP_floor_position() { }
+std::shared_ptr<CPP_floor_position> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_floor_position& obj) {
     os << "CPP_floor_position{";
@@ -1482,7 +1482,7 @@ bool operator== (const CPP_floor_position&, const CPP_floor_position&);
 
 class Opaque_high_energy_space_charge_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_high_energy_space_charge: public std::enable_shared_from_this<CPP_high_energy_space_charge>  {
+class CPP_high_energy_space_charge: public std::enable_shared_from_this<CPP_high_energy_space_charge> {
 public:
       CPP_coord closed_orb;
       Real kick_const{0.0};
@@ -1497,8 +1497,8 @@ public:
   
   }
 
-  virtual ~CPP_high_energy_space_charge() {  }
-  std::shared_ptr<CPP_high_energy_space_charge> getptr() { return shared_from_this(); }
+virtual ~CPP_high_energy_space_charge() { }
+std::shared_ptr<CPP_high_energy_space_charge> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_high_energy_space_charge& obj) {
     os << "CPP_high_energy_space_charge{";
@@ -1531,7 +1531,7 @@ bool operator== (const CPP_high_energy_space_charge&, const CPP_high_energy_spac
 
 class Opaque_xy_disp_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_xy_disp: public std::enable_shared_from_this<CPP_xy_disp>  {
+class CPP_xy_disp: public std::enable_shared_from_this<CPP_xy_disp> {
 public:
       Real eta{0.0};
       Real etap{0.0};
@@ -1542,8 +1542,8 @@ public:
   
   }
 
-  virtual ~CPP_xy_disp() {  }
-  std::shared_ptr<CPP_xy_disp> getptr() { return shared_from_this(); }
+virtual ~CPP_xy_disp() { }
+std::shared_ptr<CPP_xy_disp> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_xy_disp& obj) {
     os << "CPP_xy_disp{";
@@ -1572,7 +1572,7 @@ bool operator== (const CPP_xy_disp&, const CPP_xy_disp&);
 
 class Opaque_twiss_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_twiss: public std::enable_shared_from_this<CPP_twiss>  {
+class CPP_twiss: public std::enable_shared_from_this<CPP_twiss> {
 public:
       Real beta{0.0};
       Real alpha{0.0};
@@ -1590,8 +1590,8 @@ public:
   
   }
 
-  virtual ~CPP_twiss() {  }
-  std::shared_ptr<CPP_twiss> getptr() { return shared_from_this(); }
+virtual ~CPP_twiss() { }
+std::shared_ptr<CPP_twiss> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_twiss& obj) {
     os << "CPP_twiss{";
@@ -1627,7 +1627,7 @@ bool operator== (const CPP_twiss&, const CPP_twiss&);
 
 class Opaque_mode3_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_mode3: public std::enable_shared_from_this<CPP_mode3>  {
+class CPP_mode3: public std::enable_shared_from_this<CPP_mode3> {
 public:
       FixedArray2D<Real, 6, 6> v;
       CPP_twiss a;
@@ -1640,8 +1640,8 @@ public:
   
   }
 
-  virtual ~CPP_mode3() {  }
-  std::shared_ptr<CPP_mode3> getptr() { return shared_from_this(); }
+virtual ~CPP_mode3() { }
+std::shared_ptr<CPP_mode3> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_mode3& obj) {
     os << "CPP_mode3{";
@@ -1672,7 +1672,7 @@ bool operator== (const CPP_mode3&, const CPP_mode3&);
 
 class Opaque_bookkeeping_state_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_bookkeeping_state: public std::enable_shared_from_this<CPP_bookkeeping_state>  {
+class CPP_bookkeeping_state: public std::enable_shared_from_this<CPP_bookkeeping_state> {
 public:
       Int attributes{Bmad::STALE};
       Int control{Bmad::STALE};
@@ -1688,8 +1688,8 @@ public:
   
   }
 
-  virtual ~CPP_bookkeeping_state() {  }
-  std::shared_ptr<CPP_bookkeeping_state> getptr() { return shared_from_this(); }
+virtual ~CPP_bookkeeping_state() { }
+std::shared_ptr<CPP_bookkeeping_state> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bookkeeping_state& obj) {
     os << "CPP_bookkeeping_state{";
@@ -1723,7 +1723,7 @@ bool operator== (const CPP_bookkeeping_state&, const CPP_bookkeeping_state&);
 
 class Opaque_rad_map_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_rad_map: public std::enable_shared_from_this<CPP_rad_map>  {
+class CPP_rad_map: public std::enable_shared_from_this<CPP_rad_map> {
 public:
       FixedArray1D<Real, 6> ref_orb{-1};
       FixedArray2D<Real, 6, 6> damp_dmat;
@@ -1735,8 +1735,8 @@ public:
   
   }
 
-  virtual ~CPP_rad_map() {  }
-  std::shared_ptr<CPP_rad_map> getptr() { return shared_from_this(); }
+virtual ~CPP_rad_map() { }
+std::shared_ptr<CPP_rad_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_map& obj) {
     os << "CPP_rad_map{";
@@ -1766,7 +1766,7 @@ bool operator== (const CPP_rad_map&, const CPP_rad_map&);
 
 class Opaque_rad_map_ele_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_rad_map_ele: public std::enable_shared_from_this<CPP_rad_map_ele>  {
+class CPP_rad_map_ele: public std::enable_shared_from_this<CPP_rad_map_ele> {
 public:
       CPP_rad_map rm0;
       CPP_rad_map rm1;
@@ -1776,8 +1776,8 @@ public:
   
   }
 
-  virtual ~CPP_rad_map_ele() {  }
-  std::shared_ptr<CPP_rad_map_ele> getptr() { return shared_from_this(); }
+virtual ~CPP_rad_map_ele() { }
+std::shared_ptr<CPP_rad_map_ele> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_map_ele& obj) {
     os << "CPP_rad_map_ele{";
@@ -1805,7 +1805,7 @@ bool operator== (const CPP_rad_map_ele&, const CPP_rad_map_ele&);
 
 class Opaque_gen_grad1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_gen_grad1: public std::enable_shared_from_this<CPP_gen_grad1>  {
+class CPP_gen_grad1: public std::enable_shared_from_this<CPP_gen_grad1> {
 public:
       Int m{0};
       Int sincos{0};
@@ -1816,8 +1816,8 @@ public:
   
   }
 
-  virtual ~CPP_gen_grad1() {  }
-  std::shared_ptr<CPP_gen_grad1> getptr() { return shared_from_this(); }
+virtual ~CPP_gen_grad1() { }
+std::shared_ptr<CPP_gen_grad1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_gen_grad1& obj) {
     os << "CPP_gen_grad1{";
@@ -1846,7 +1846,7 @@ bool operator== (const CPP_gen_grad1&, const CPP_gen_grad1&);
 
 class Opaque_gen_grad_map_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_gen_grad_map: public std::enable_shared_from_this<CPP_gen_grad_map>  {
+class CPP_gen_grad_map: public std::enable_shared_from_this<CPP_gen_grad_map> {
 public:
       string file{""};
       VariableArray1D<CPP_gen_grad1> gg;
@@ -1864,8 +1864,8 @@ public:
   
   }
 
-  virtual ~CPP_gen_grad_map() {  }
-  std::shared_ptr<CPP_gen_grad_map> getptr() { return shared_from_this(); }
+virtual ~CPP_gen_grad_map() { }
+std::shared_ptr<CPP_gen_grad_map> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_gen_grad_map& obj) {
     os << "CPP_gen_grad_map{";
@@ -1901,7 +1901,7 @@ bool operator== (const CPP_gen_grad_map&, const CPP_gen_grad_map&);
 
 class Opaque_surface_segmented_pt_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_segmented_pt: public std::enable_shared_from_this<CPP_surface_segmented_pt>  {
+class CPP_surface_segmented_pt: public std::enable_shared_from_this<CPP_surface_segmented_pt> {
 public:
       Real x0{0.0};
       Real y0{0.0};
@@ -1913,8 +1913,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_segmented_pt() {  }
-  std::shared_ptr<CPP_surface_segmented_pt> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_segmented_pt() { }
+std::shared_ptr<CPP_surface_segmented_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_segmented_pt& obj) {
     os << "CPP_surface_segmented_pt{";
@@ -1944,7 +1944,7 @@ bool operator== (const CPP_surface_segmented_pt&, const CPP_surface_segmented_pt
 
 class Opaque_surface_segmented_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_segmented: public std::enable_shared_from_this<CPP_surface_segmented>  {
+class CPP_surface_segmented: public std::enable_shared_from_this<CPP_surface_segmented> {
 public:
       Bool active{false};
       FixedArray1D<Real, 2> dr{0.0};
@@ -1955,8 +1955,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_segmented() {  }
-  std::shared_ptr<CPP_surface_segmented> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_segmented() { }
+std::shared_ptr<CPP_surface_segmented> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_segmented& obj) {
     os << "CPP_surface_segmented{";
@@ -1985,7 +1985,7 @@ bool operator== (const CPP_surface_segmented&, const CPP_surface_segmented&);
 
 class Opaque_surface_h_misalign_pt_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_h_misalign_pt: public std::enable_shared_from_this<CPP_surface_h_misalign_pt>  {
+class CPP_surface_h_misalign_pt: public std::enable_shared_from_this<CPP_surface_h_misalign_pt> {
 public:
       Real x0{0.0};
       Real y0{0.0};
@@ -1998,8 +1998,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_h_misalign_pt() {  }
-  std::shared_ptr<CPP_surface_h_misalign_pt> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_h_misalign_pt() { }
+std::shared_ptr<CPP_surface_h_misalign_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_h_misalign_pt& obj) {
     os << "CPP_surface_h_misalign_pt{";
@@ -2030,7 +2030,7 @@ bool operator== (const CPP_surface_h_misalign_pt&, const CPP_surface_h_misalign_
 
 class Opaque_surface_h_misalign_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_h_misalign: public std::enable_shared_from_this<CPP_surface_h_misalign>  {
+class CPP_surface_h_misalign: public std::enable_shared_from_this<CPP_surface_h_misalign> {
 public:
       Bool active{false};
       FixedArray1D<Real, 2> dr{0.0};
@@ -2041,8 +2041,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_h_misalign() {  }
-  std::shared_ptr<CPP_surface_h_misalign> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_h_misalign() { }
+std::shared_ptr<CPP_surface_h_misalign> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_h_misalign& obj) {
     os << "CPP_surface_h_misalign{";
@@ -2071,7 +2071,7 @@ bool operator== (const CPP_surface_h_misalign&, const CPP_surface_h_misalign&);
 
 class Opaque_surface_displacement_pt_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_displacement_pt: public std::enable_shared_from_this<CPP_surface_displacement_pt>  {
+class CPP_surface_displacement_pt: public std::enable_shared_from_this<CPP_surface_displacement_pt> {
 public:
       Real x0{0.0};
       Real y0{0.0};
@@ -2084,8 +2084,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_displacement_pt() {  }
-  std::shared_ptr<CPP_surface_displacement_pt> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_displacement_pt() { }
+std::shared_ptr<CPP_surface_displacement_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_displacement_pt& obj) {
     os << "CPP_surface_displacement_pt{";
@@ -2116,7 +2116,7 @@ bool operator== (const CPP_surface_displacement_pt&, const CPP_surface_displacem
 
 class Opaque_surface_displacement_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_displacement: public std::enable_shared_from_this<CPP_surface_displacement>  {
+class CPP_surface_displacement: public std::enable_shared_from_this<CPP_surface_displacement> {
 public:
       Bool active{false};
       FixedArray1D<Real, 2> dr{0.0};
@@ -2127,8 +2127,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_displacement() {  }
-  std::shared_ptr<CPP_surface_displacement> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_displacement() { }
+std::shared_ptr<CPP_surface_displacement> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_displacement& obj) {
     os << "CPP_surface_displacement{";
@@ -2157,7 +2157,7 @@ bool operator== (const CPP_surface_displacement&, const CPP_surface_displacement
 
 class Opaque_target_point_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_target_point: public std::enable_shared_from_this<CPP_target_point>  {
+class CPP_target_point: public std::enable_shared_from_this<CPP_target_point> {
 public:
       FixedArray1D<Real, 3> r{0.0};
 
@@ -2165,8 +2165,8 @@ public:
   
   }
 
-  virtual ~CPP_target_point() {  }
-  std::shared_ptr<CPP_target_point> getptr() { return shared_from_this(); }
+virtual ~CPP_target_point() { }
+std::shared_ptr<CPP_target_point> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_target_point& obj) {
     os << "CPP_target_point{";
@@ -2192,7 +2192,7 @@ bool operator== (const CPP_target_point&, const CPP_target_point&);
 
 class Opaque_surface_curvature_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_surface_curvature: public std::enable_shared_from_this<CPP_surface_curvature>  {
+class CPP_surface_curvature: public std::enable_shared_from_this<CPP_surface_curvature> {
 public:
       FixedArray2D<Real, 7, 7> xy;
       Real spherical{0.0};
@@ -2203,8 +2203,8 @@ public:
   
   }
 
-  virtual ~CPP_surface_curvature() {  }
-  std::shared_ptr<CPP_surface_curvature> getptr() { return shared_from_this(); }
+virtual ~CPP_surface_curvature() { }
+std::shared_ptr<CPP_surface_curvature> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_surface_curvature& obj) {
     os << "CPP_surface_curvature{";
@@ -2233,7 +2233,7 @@ bool operator== (const CPP_surface_curvature&, const CPP_surface_curvature&);
 
 class Opaque_photon_target_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_photon_target: public std::enable_shared_from_this<CPP_photon_target>  {
+class CPP_photon_target: public std::enable_shared_from_this<CPP_photon_target> {
 public:
       Int type{Bmad::OFF};
       Int n_corner{0};
@@ -2245,8 +2245,8 @@ public:
   
   }
 
-  virtual ~CPP_photon_target() {  }
-  std::shared_ptr<CPP_photon_target> getptr() { return shared_from_this(); }
+virtual ~CPP_photon_target() { }
+std::shared_ptr<CPP_photon_target> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_target& obj) {
     os << "CPP_photon_target{";
@@ -2276,7 +2276,7 @@ bool operator== (const CPP_photon_target&, const CPP_photon_target&);
 
 class Opaque_photon_material_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_photon_material: public std::enable_shared_from_this<CPP_photon_material>  {
+class CPP_photon_material: public std::enable_shared_from_this<CPP_photon_material> {
 public:
       Complex f0_m1{0.0};
       Complex f0_m2{0.0};
@@ -2291,8 +2291,8 @@ public:
   
   }
 
-  virtual ~CPP_photon_material() {  }
-  std::shared_ptr<CPP_photon_material> getptr() { return shared_from_this(); }
+virtual ~CPP_photon_material() { }
+std::shared_ptr<CPP_photon_material> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_material& obj) {
     os << "CPP_photon_material{";
@@ -2325,7 +2325,7 @@ bool operator== (const CPP_photon_material&, const CPP_photon_material&);
 
 class Opaque_pixel_pt_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_pixel_pt: public std::enable_shared_from_this<CPP_pixel_pt>  {
+class CPP_pixel_pt: public std::enable_shared_from_this<CPP_pixel_pt> {
 public:
       Int8 n_photon{0};
       Complex E_x{0.0};
@@ -2342,8 +2342,8 @@ public:
   
   }
 
-  virtual ~CPP_pixel_pt() {  }
-  std::shared_ptr<CPP_pixel_pt> getptr() { return shared_from_this(); }
+virtual ~CPP_pixel_pt() { }
+std::shared_ptr<CPP_pixel_pt> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_pixel_pt& obj) {
     os << "CPP_pixel_pt{";
@@ -2378,7 +2378,7 @@ bool operator== (const CPP_pixel_pt&, const CPP_pixel_pt&);
 
 class Opaque_pixel_detec_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_pixel_detec: public std::enable_shared_from_this<CPP_pixel_detec>  {
+class CPP_pixel_detec: public std::enable_shared_from_this<CPP_pixel_detec> {
 public:
       FixedArray1D<Real, 2> dr{0.0};
       FixedArray1D<Real, 2> r0{0.0};
@@ -2391,8 +2391,8 @@ public:
   
   }
 
-  virtual ~CPP_pixel_detec() {  }
-  std::shared_ptr<CPP_pixel_detec> getptr() { return shared_from_this(); }
+virtual ~CPP_pixel_detec() { }
+std::shared_ptr<CPP_pixel_detec> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_pixel_detec& obj) {
     os << "CPP_pixel_detec{";
@@ -2423,7 +2423,7 @@ bool operator== (const CPP_pixel_detec&, const CPP_pixel_detec&);
 
 class Opaque_photon_element_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_photon_element: public std::enable_shared_from_this<CPP_photon_element>  {
+class CPP_photon_element: public std::enable_shared_from_this<CPP_photon_element> {
 public:
       CPP_surface_curvature curvature;
       CPP_photon_target target;
@@ -2442,8 +2442,8 @@ public:
   
   }
 
-  virtual ~CPP_photon_element() {  }
-  std::shared_ptr<CPP_photon_element> getptr() { return shared_from_this(); }
+virtual ~CPP_photon_element() { }
+std::shared_ptr<CPP_photon_element> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_photon_element& obj) {
     os << "CPP_photon_element{";
@@ -2480,7 +2480,7 @@ bool operator== (const CPP_photon_element&, const CPP_photon_element&);
 
 class Opaque_wall3d_vertex_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wall3d_vertex: public std::enable_shared_from_this<CPP_wall3d_vertex>  {
+class CPP_wall3d_vertex: public std::enable_shared_from_this<CPP_wall3d_vertex> {
 public:
       Real x{0.0};
       Real y{0.0};
@@ -2496,8 +2496,8 @@ public:
   
   }
 
-  virtual ~CPP_wall3d_vertex() {  }
-  std::shared_ptr<CPP_wall3d_vertex> getptr() { return shared_from_this(); }
+virtual ~CPP_wall3d_vertex() { }
+std::shared_ptr<CPP_wall3d_vertex> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wall3d_vertex& obj) {
     os << "CPP_wall3d_vertex{";
@@ -2531,7 +2531,7 @@ bool operator== (const CPP_wall3d_vertex&, const CPP_wall3d_vertex&);
 
 class Opaque_wall3d_section_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wall3d_section: public std::enable_shared_from_this<CPP_wall3d_section>  {
+class CPP_wall3d_section: public std::enable_shared_from_this<CPP_wall3d_section> {
 public:
       string name{""};
       string material{""};
@@ -2558,8 +2558,8 @@ public:
   
   }
 
-  virtual ~CPP_wall3d_section() {  }
-  std::shared_ptr<CPP_wall3d_section> getptr() { return shared_from_this(); }
+virtual ~CPP_wall3d_section() { }
+std::shared_ptr<CPP_wall3d_section> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wall3d_section& obj) {
     os << "CPP_wall3d_section{";
@@ -2604,7 +2604,7 @@ bool operator== (const CPP_wall3d_section&, const CPP_wall3d_section&);
 
 class Opaque_wall3d_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_wall3d: public std::enable_shared_from_this<CPP_wall3d>  {
+class CPP_wall3d: public std::enable_shared_from_this<CPP_wall3d> {
 public:
       string name{""};
       Int type{Bmad::CHAMBER_WALL};
@@ -2621,8 +2621,8 @@ public:
   
   }
 
-  virtual ~CPP_wall3d() {  }
-  std::shared_ptr<CPP_wall3d> getptr() { return shared_from_this(); }
+virtual ~CPP_wall3d() { }
+std::shared_ptr<CPP_wall3d> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_wall3d& obj) {
     os << "CPP_wall3d{";
@@ -2657,7 +2657,7 @@ bool operator== (const CPP_wall3d&, const CPP_wall3d&);
 
 class Opaque_ramper_lord_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_ramper_lord: public std::enable_shared_from_this<CPP_ramper_lord>  {
+class CPP_ramper_lord: public std::enable_shared_from_this<CPP_ramper_lord> {
 public:
       Int ix_ele{0};
       Int ix_con{0};
@@ -2667,8 +2667,8 @@ public:
   
   }
 
-  virtual ~CPP_ramper_lord() {  }
-  std::shared_ptr<CPP_ramper_lord> getptr() { return shared_from_this(); }
+virtual ~CPP_ramper_lord() { }
+std::shared_ptr<CPP_ramper_lord> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ramper_lord& obj) {
     os << "CPP_ramper_lord{";
@@ -2696,7 +2696,7 @@ bool operator== (const CPP_ramper_lord&, const CPP_ramper_lord&);
 
 class Opaque_control_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_control: public std::enable_shared_from_this<CPP_control>  {
+class CPP_control: public std::enable_shared_from_this<CPP_control> {
 public:
       Real value{0.0};
       VariableArray1D<Real> y_knot;
@@ -2711,8 +2711,8 @@ public:
   
   }
 
-  virtual ~CPP_control() {  }
-  std::shared_ptr<CPP_control> getptr() { return shared_from_this(); }
+virtual ~CPP_control() { }
+std::shared_ptr<CPP_control> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_control& obj) {
     os << "CPP_control{";
@@ -2745,7 +2745,7 @@ bool operator== (const CPP_control&, const CPP_control&);
 
 class Opaque_control_var1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_control_var1: public std::enable_shared_from_this<CPP_control_var1>  {
+class CPP_control_var1: public std::enable_shared_from_this<CPP_control_var1> {
 public:
       string name{""};
       Real value{0.0};
@@ -2755,8 +2755,8 @@ public:
   
   }
 
-  virtual ~CPP_control_var1() {  }
-  std::shared_ptr<CPP_control_var1> getptr() { return shared_from_this(); }
+virtual ~CPP_control_var1() { }
+std::shared_ptr<CPP_control_var1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_control_var1& obj) {
     os << "CPP_control_var1{";
@@ -2784,7 +2784,7 @@ bool operator== (const CPP_control_var1&, const CPP_control_var1&);
 
 class Opaque_control_ramp1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_control_ramp1: public std::enable_shared_from_this<CPP_control_ramp1>  {
+class CPP_control_ramp1: public std::enable_shared_from_this<CPP_control_ramp1> {
 public:
       VariableArray1D<Real> y_knot;
       VariableArray1D<CPP_expression_atom> stack;
@@ -2796,8 +2796,8 @@ public:
   
   }
 
-  virtual ~CPP_control_ramp1() {  }
-  std::shared_ptr<CPP_control_ramp1> getptr() { return shared_from_this(); }
+virtual ~CPP_control_ramp1() { }
+std::shared_ptr<CPP_control_ramp1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_control_ramp1& obj) {
     os << "CPP_control_ramp1{";
@@ -2827,7 +2827,7 @@ bool operator== (const CPP_control_ramp1&, const CPP_control_ramp1&);
 
 class Opaque_controller_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_controller: public std::enable_shared_from_this<CPP_controller>  {
+class CPP_controller: public std::enable_shared_from_this<CPP_controller> {
 public:
       VariableArray1D<CPP_control_var1> var;
       VariableArray1D<CPP_control_ramp1> ramp;
@@ -2838,8 +2838,8 @@ public:
   
   }
 
-  virtual ~CPP_controller() {  }
-  std::shared_ptr<CPP_controller> getptr() { return shared_from_this(); }
+virtual ~CPP_controller() { }
+std::shared_ptr<CPP_controller> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_controller& obj) {
     os << "CPP_controller{";
@@ -2868,7 +2868,7 @@ bool operator== (const CPP_controller&, const CPP_controller&);
 
 class Opaque_ellipse_beam_init_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_ellipse_beam_init: public std::enable_shared_from_this<CPP_ellipse_beam_init>  {
+class CPP_ellipse_beam_init: public std::enable_shared_from_this<CPP_ellipse_beam_init> {
 public:
       Int part_per_ellipse{0};
       Int n_ellipse{1};
@@ -2878,8 +2878,8 @@ public:
   
   }
 
-  virtual ~CPP_ellipse_beam_init() {  }
-  std::shared_ptr<CPP_ellipse_beam_init> getptr() { return shared_from_this(); }
+virtual ~CPP_ellipse_beam_init() { }
+std::shared_ptr<CPP_ellipse_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ellipse_beam_init& obj) {
     os << "CPP_ellipse_beam_init{";
@@ -2907,7 +2907,7 @@ bool operator== (const CPP_ellipse_beam_init&, const CPP_ellipse_beam_init&);
 
 class Opaque_kv_beam_init_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_kv_beam_init: public std::enable_shared_from_this<CPP_kv_beam_init>  {
+class CPP_kv_beam_init: public std::enable_shared_from_this<CPP_kv_beam_init> {
 public:
       FixedArray1D<Int, 2> part_per_phi{0};
       Int n_I2{0};
@@ -2917,8 +2917,8 @@ public:
   
   }
 
-  virtual ~CPP_kv_beam_init() {  }
-  std::shared_ptr<CPP_kv_beam_init> getptr() { return shared_from_this(); }
+virtual ~CPP_kv_beam_init() { }
+std::shared_ptr<CPP_kv_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_kv_beam_init& obj) {
     os << "CPP_kv_beam_init{";
@@ -2946,7 +2946,7 @@ bool operator== (const CPP_kv_beam_init&, const CPP_kv_beam_init&);
 
 class Opaque_grid_beam_init_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_grid_beam_init: public std::enable_shared_from_this<CPP_grid_beam_init>  {
+class CPP_grid_beam_init: public std::enable_shared_from_this<CPP_grid_beam_init> {
 public:
       Int n_x{0};
       Int n_px{0};
@@ -2959,8 +2959,8 @@ public:
   
   }
 
-  virtual ~CPP_grid_beam_init() {  }
-  std::shared_ptr<CPP_grid_beam_init> getptr() { return shared_from_this(); }
+virtual ~CPP_grid_beam_init() { }
+std::shared_ptr<CPP_grid_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_grid_beam_init& obj) {
     os << "CPP_grid_beam_init{";
@@ -2991,7 +2991,7 @@ bool operator== (const CPP_grid_beam_init&, const CPP_grid_beam_init&);
 
 class Opaque_beam_init_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_beam_init: public std::enable_shared_from_this<CPP_beam_init>  {
+class CPP_beam_init: public std::enable_shared_from_this<CPP_beam_init> {
 public:
       string position_file{""};
       FixedArray1D<string, 3> distribution_type{"RAN_GAUSS"};
@@ -3033,8 +3033,8 @@ public:
   
   }
 
-  virtual ~CPP_beam_init() {  }
-  std::shared_ptr<CPP_beam_init> getptr() { return shared_from_this(); }
+virtual ~CPP_beam_init() { }
+std::shared_ptr<CPP_beam_init> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_beam_init& obj) {
     os << "CPP_beam_init{";
@@ -3094,7 +3094,7 @@ bool operator== (const CPP_beam_init&, const CPP_beam_init&);
 
 class Opaque_lat_param_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_lat_param: public std::enable_shared_from_this<CPP_lat_param>  {
+class CPP_lat_param: public std::enable_shared_from_this<CPP_lat_param> {
 public:
       Real n_part{0.0};
       Real total_length{0.0};
@@ -3118,8 +3118,8 @@ public:
   
   }
 
-  virtual ~CPP_lat_param() {  }
-  std::shared_ptr<CPP_lat_param> getptr() { return shared_from_this(); }
+virtual ~CPP_lat_param() { }
+std::shared_ptr<CPP_lat_param> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_lat_param& obj) {
     os << "CPP_lat_param{";
@@ -3161,7 +3161,7 @@ bool operator== (const CPP_lat_param&, const CPP_lat_param&);
 
 class Opaque_mode_info_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_mode_info: public std::enable_shared_from_this<CPP_mode_info>  {
+class CPP_mode_info: public std::enable_shared_from_this<CPP_mode_info> {
 public:
       Bool stable{false};
       Real tune{0.0};
@@ -3174,8 +3174,8 @@ public:
   
   }
 
-  virtual ~CPP_mode_info() {  }
-  std::shared_ptr<CPP_mode_info> getptr() { return shared_from_this(); }
+virtual ~CPP_mode_info() { }
+std::shared_ptr<CPP_mode_info> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_mode_info& obj) {
     os << "CPP_mode_info{";
@@ -3206,7 +3206,7 @@ bool operator== (const CPP_mode_info&, const CPP_mode_info&);
 
 class Opaque_pre_tracker_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_pre_tracker: public std::enable_shared_from_this<CPP_pre_tracker>  {
+class CPP_pre_tracker: public std::enable_shared_from_this<CPP_pre_tracker> {
 public:
       Int who{0};
       Int ix_ele_start{0};
@@ -3217,8 +3217,8 @@ public:
   
   }
 
-  virtual ~CPP_pre_tracker() {  }
-  std::shared_ptr<CPP_pre_tracker> getptr() { return shared_from_this(); }
+virtual ~CPP_pre_tracker() { }
+std::shared_ptr<CPP_pre_tracker> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_pre_tracker& obj) {
     os << "CPP_pre_tracker{";
@@ -3247,7 +3247,7 @@ bool operator== (const CPP_pre_tracker&, const CPP_pre_tracker&);
 
 class Opaque_anormal_mode_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_anormal_mode: public std::enable_shared_from_this<CPP_anormal_mode>  {
+class CPP_anormal_mode: public std::enable_shared_from_this<CPP_anormal_mode> {
 public:
       Real emittance{0.0};
       Real emittance_no_vert{0.0};
@@ -3261,8 +3261,8 @@ public:
   
   }
 
-  virtual ~CPP_anormal_mode() {  }
-  std::shared_ptr<CPP_anormal_mode> getptr() { return shared_from_this(); }
+virtual ~CPP_anormal_mode() { }
+std::shared_ptr<CPP_anormal_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_anormal_mode& obj) {
     os << "CPP_anormal_mode{";
@@ -3294,7 +3294,7 @@ bool operator== (const CPP_anormal_mode&, const CPP_anormal_mode&);
 
 class Opaque_linac_normal_mode_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_linac_normal_mode: public std::enable_shared_from_this<CPP_linac_normal_mode>  {
+class CPP_linac_normal_mode: public std::enable_shared_from_this<CPP_linac_normal_mode> {
 public:
       Real i2_E4{0.0};
       Real i3_E7{0.0};
@@ -3308,8 +3308,8 @@ public:
   
   }
 
-  virtual ~CPP_linac_normal_mode() {  }
-  std::shared_ptr<CPP_linac_normal_mode> getptr() { return shared_from_this(); }
+virtual ~CPP_linac_normal_mode() { }
+std::shared_ptr<CPP_linac_normal_mode> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_linac_normal_mode& obj) {
     os << "CPP_linac_normal_mode{";
@@ -3341,7 +3341,7 @@ bool operator== (const CPP_linac_normal_mode&, const CPP_linac_normal_mode&);
 
 class Opaque_normal_modes_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_normal_modes: public std::enable_shared_from_this<CPP_normal_modes>  {
+class CPP_normal_modes: public std::enable_shared_from_this<CPP_normal_modes> {
 public:
       FixedArray1D<Real, 4> synch_int{0.0};
       Real sigE_E{0.0};
@@ -3361,8 +3361,8 @@ public:
   
   }
 
-  virtual ~CPP_normal_modes() {  }
-  std::shared_ptr<CPP_normal_modes> getptr() { return shared_from_this(); }
+virtual ~CPP_normal_modes() { }
+std::shared_ptr<CPP_normal_modes> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_normal_modes& obj) {
     os << "CPP_normal_modes{";
@@ -3400,7 +3400,7 @@ bool operator== (const CPP_normal_modes&, const CPP_normal_modes&);
 
 class Opaque_em_field_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_em_field: public std::enable_shared_from_this<CPP_em_field>  {
+class CPP_em_field: public std::enable_shared_from_this<CPP_em_field> {
 public:
       FixedArray1D<Real, 3> E{0.0};
       FixedArray1D<Real, 3> B{0.0};
@@ -3414,8 +3414,8 @@ public:
   
   }
 
-  virtual ~CPP_em_field() {  }
-  std::shared_ptr<CPP_em_field> getptr() { return shared_from_this(); }
+virtual ~CPP_em_field() { }
+std::shared_ptr<CPP_em_field> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_em_field& obj) {
     os << "CPP_em_field{";
@@ -3447,7 +3447,7 @@ bool operator== (const CPP_em_field&, const CPP_em_field&);
 
 class Opaque_strong_beam_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_strong_beam: public std::enable_shared_from_this<CPP_strong_beam>  {
+class CPP_strong_beam: public std::enable_shared_from_this<CPP_strong_beam> {
 public:
       Int ix_slice{0};
       Real x_center{0.0};
@@ -3461,8 +3461,8 @@ public:
   
   }
 
-  virtual ~CPP_strong_beam() {  }
-  std::shared_ptr<CPP_strong_beam> getptr() { return shared_from_this(); }
+virtual ~CPP_strong_beam() { }
+std::shared_ptr<CPP_strong_beam> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_strong_beam& obj) {
     os << "CPP_strong_beam{";
@@ -3494,7 +3494,7 @@ bool operator== (const CPP_strong_beam&, const CPP_strong_beam&);
 
 class Opaque_track_point_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_track_point: public std::enable_shared_from_this<CPP_track_point>  {
+class CPP_track_point: public std::enable_shared_from_this<CPP_track_point> {
 public:
       Real s_body{0.0};
       CPP_coord orb;
@@ -3507,8 +3507,8 @@ public:
   
   }
 
-  virtual ~CPP_track_point() {  }
-  std::shared_ptr<CPP_track_point> getptr() { return shared_from_this(); }
+virtual ~CPP_track_point() { }
+std::shared_ptr<CPP_track_point> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_track_point& obj) {
     os << "CPP_track_point{";
@@ -3539,7 +3539,7 @@ bool operator== (const CPP_track_point&, const CPP_track_point&);
 
 class Opaque_track_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_track: public std::enable_shared_from_this<CPP_track>  {
+class CPP_track: public std::enable_shared_from_this<CPP_track> {
 public:
       VariableArray1D<CPP_track_point> pt;
       Real ds_save{1e-3};
@@ -3551,8 +3551,8 @@ public:
   
   }
 
-  virtual ~CPP_track() {  }
-  std::shared_ptr<CPP_track> getptr() { return shared_from_this(); }
+virtual ~CPP_track() { }
+std::shared_ptr<CPP_track> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_track& obj) {
     os << "CPP_track{";
@@ -3582,7 +3582,7 @@ bool operator== (const CPP_track&, const CPP_track&);
 
 class Opaque_space_charge_common_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_space_charge_common: public std::enable_shared_from_this<CPP_space_charge_common>  {
+class CPP_space_charge_common: public std::enable_shared_from_this<CPP_space_charge_common> {
 public:
       Real ds_track_step{0.0};
       Real dt_track_step{1e-12};
@@ -3606,8 +3606,8 @@ public:
   
   }
 
-  virtual ~CPP_space_charge_common() {  }
-  std::shared_ptr<CPP_space_charge_common> getptr() { return shared_from_this(); }
+virtual ~CPP_space_charge_common() { }
+std::shared_ptr<CPP_space_charge_common> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_space_charge_common& obj) {
     os << "CPP_space_charge_common{";
@@ -3649,7 +3649,7 @@ bool operator== (const CPP_space_charge_common&, const CPP_space_charge_common&)
 
 class Opaque_bmad_common_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_bmad_common: public std::enable_shared_from_this<CPP_bmad_common>  {
+class CPP_bmad_common: public std::enable_shared_from_this<CPP_bmad_common> {
 public:
       Real max_aperture_limit{1e3};
       FixedArray1D<Real, 6> d_orb{1e-5};
@@ -3696,8 +3696,8 @@ public:
   
   }
 
-  virtual ~CPP_bmad_common() {  }
-  std::shared_ptr<CPP_bmad_common> getptr() { return shared_from_this(); }
+virtual ~CPP_bmad_common() { }
+std::shared_ptr<CPP_bmad_common> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bmad_common& obj) {
     os << "CPP_bmad_common{";
@@ -3762,7 +3762,7 @@ bool operator== (const CPP_bmad_common&, const CPP_bmad_common&);
 
 class Opaque_rad_int1_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_rad_int1: public std::enable_shared_from_this<CPP_rad_int1>  {
+class CPP_rad_int1: public std::enable_shared_from_this<CPP_rad_int1> {
 public:
       Real i0{0.0};
       Real i1{0.0};
@@ -3787,8 +3787,8 @@ public:
   
   }
 
-  virtual ~CPP_rad_int1() {  }
-  std::shared_ptr<CPP_rad_int1> getptr() { return shared_from_this(); }
+virtual ~CPP_rad_int1() { }
+std::shared_ptr<CPP_rad_int1> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_int1& obj) {
     os << "CPP_rad_int1{";
@@ -3831,7 +3831,7 @@ bool operator== (const CPP_rad_int1&, const CPP_rad_int1&);
 
 class Opaque_rad_int_branch_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_rad_int_branch: public std::enable_shared_from_this<CPP_rad_int_branch>  {
+class CPP_rad_int_branch: public std::enable_shared_from_this<CPP_rad_int_branch> {
 public:
       VariableArray1D<CPP_rad_int1> ele;
 
@@ -3839,8 +3839,8 @@ public:
   
   }
 
-  virtual ~CPP_rad_int_branch() {  }
-  std::shared_ptr<CPP_rad_int_branch> getptr() { return shared_from_this(); }
+virtual ~CPP_rad_int_branch() { }
+std::shared_ptr<CPP_rad_int_branch> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_int_branch& obj) {
     os << "CPP_rad_int_branch{";
@@ -3866,7 +3866,7 @@ bool operator== (const CPP_rad_int_branch&, const CPP_rad_int_branch&);
 
 class Opaque_rad_int_all_ele_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_rad_int_all_ele: public std::enable_shared_from_this<CPP_rad_int_all_ele>  {
+class CPP_rad_int_all_ele: public std::enable_shared_from_this<CPP_rad_int_all_ele> {
 public:
       VariableArray1D<CPP_rad_int_branch> branch;
 
@@ -3874,8 +3874,8 @@ public:
   
   }
 
-  virtual ~CPP_rad_int_all_ele() {  }
-  std::shared_ptr<CPP_rad_int_all_ele> getptr() { return shared_from_this(); }
+virtual ~CPP_rad_int_all_ele() { }
+std::shared_ptr<CPP_rad_int_all_ele> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_rad_int_all_ele& obj) {
     os << "CPP_rad_int_all_ele{";
@@ -3901,7 +3901,7 @@ bool operator== (const CPP_rad_int_all_ele&, const CPP_rad_int_all_ele&);
 
 class Opaque_ele_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_ele: public std::enable_shared_from_this<CPP_ele>  {
+class CPP_ele: public std::enable_shared_from_this<CPP_ele> {
 public:
       string name{"<Initialized>"};
       string type{""};
@@ -4014,8 +4014,8 @@ public:
   
   }
 
-  virtual ~CPP_ele() {  }
-  std::shared_ptr<CPP_ele> getptr() { return shared_from_this(); }
+virtual ~CPP_ele() { }
+std::shared_ptr<CPP_ele> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_ele& obj) {
     os << "CPP_ele{";
@@ -4126,7 +4126,7 @@ bool operator== (const CPP_ele&, const CPP_ele&);
 
 class Opaque_complex_taylor_term_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_complex_taylor_term: public std::enable_shared_from_this<CPP_complex_taylor_term>  {
+class CPP_complex_taylor_term: public std::enable_shared_from_this<CPP_complex_taylor_term> {
 public:
       Complex coef{0.0};
       FixedArray1D<Int, 6> expn{0};
@@ -4135,8 +4135,8 @@ public:
   
   }
 
-  virtual ~CPP_complex_taylor_term() {  }
-  std::shared_ptr<CPP_complex_taylor_term> getptr() { return shared_from_this(); }
+virtual ~CPP_complex_taylor_term() { }
+std::shared_ptr<CPP_complex_taylor_term> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_complex_taylor_term& obj) {
     os << "CPP_complex_taylor_term{";
@@ -4163,7 +4163,7 @@ bool operator== (const CPP_complex_taylor_term&, const CPP_complex_taylor_term&)
 
 class Opaque_complex_taylor_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_complex_taylor: public std::enable_shared_from_this<CPP_complex_taylor>  {
+class CPP_complex_taylor: public std::enable_shared_from_this<CPP_complex_taylor> {
 public:
       Complex ref{0.0};
       VariableArray1D<CPP_complex_taylor_term> term;
@@ -4172,8 +4172,8 @@ public:
   
   }
 
-  virtual ~CPP_complex_taylor() {  }
-  std::shared_ptr<CPP_complex_taylor> getptr() { return shared_from_this(); }
+virtual ~CPP_complex_taylor() { }
+std::shared_ptr<CPP_complex_taylor> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_complex_taylor& obj) {
     os << "CPP_complex_taylor{";
@@ -4200,7 +4200,7 @@ bool operator== (const CPP_complex_taylor&, const CPP_complex_taylor&);
 
 class Opaque_branch_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_branch: public std::enable_shared_from_this<CPP_branch>  {
+class CPP_branch: public std::enable_shared_from_this<CPP_branch> {
 public:
       string name{""};
       Int ix_branch{-1};
@@ -4220,8 +4220,8 @@ public:
   
   }
 
-  virtual ~CPP_branch() {  }
-  std::shared_ptr<CPP_branch> getptr() { return shared_from_this(); }
+virtual ~CPP_branch() { }
+std::shared_ptr<CPP_branch> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_branch& obj) {
     os << "CPP_branch{";
@@ -4259,7 +4259,7 @@ bool operator== (const CPP_branch&, const CPP_branch&);
 
 class Opaque_lat_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_lat: public std::enable_shared_from_this<CPP_lat>  {
+class CPP_lat: public std::enable_shared_from_this<CPP_lat> {
 public:
       string use_name{""};
       string lattice{""};
@@ -4296,8 +4296,8 @@ public:
   
   }
 
-  virtual ~CPP_lat() {  }
-  std::shared_ptr<CPP_lat> getptr() { return shared_from_this(); }
+virtual ~CPP_lat() { }
+std::shared_ptr<CPP_lat> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_lat& obj) {
     os << "CPP_lat{";
@@ -4352,7 +4352,7 @@ bool operator== (const CPP_lat&, const CPP_lat&);
 
 class Opaque_bunch_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_bunch: public std::enable_shared_from_this<CPP_bunch>  {
+class CPP_bunch: public std::enable_shared_from_this<CPP_bunch> {
 public:
       VariableArray1D<CPP_coord> particle;
       VariableArray1D<Int> ix_z;
@@ -4373,8 +4373,8 @@ public:
   
   }
 
-  virtual ~CPP_bunch() {  }
-  std::shared_ptr<CPP_bunch> getptr() { return shared_from_this(); }
+virtual ~CPP_bunch() { }
+std::shared_ptr<CPP_bunch> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bunch& obj) {
     os << "CPP_bunch{";
@@ -4413,7 +4413,7 @@ bool operator== (const CPP_bunch&, const CPP_bunch&);
 
 class Opaque_bunch_params_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_bunch_params: public std::enable_shared_from_this<CPP_bunch_params>  {
+class CPP_bunch_params: public std::enable_shared_from_this<CPP_bunch_params> {
 public:
       CPP_coord centroid;
       CPP_twiss x;
@@ -4443,8 +4443,8 @@ public:
   
   }
 
-  virtual ~CPP_bunch_params() {  }
-  std::shared_ptr<CPP_bunch_params> getptr() { return shared_from_this(); }
+virtual ~CPP_bunch_params() { }
+std::shared_ptr<CPP_bunch_params> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_bunch_params& obj) {
     os << "CPP_bunch_params{";
@@ -4492,7 +4492,7 @@ bool operator== (const CPP_bunch_params&, const CPP_bunch_params&);
 
 class Opaque_beam_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_beam: public std::enable_shared_from_this<CPP_beam>  {
+class CPP_beam: public std::enable_shared_from_this<CPP_beam> {
 public:
       VariableArray1D<CPP_bunch> bunch;
 
@@ -4500,8 +4500,8 @@ public:
   
   }
 
-  virtual ~CPP_beam() {  }
-  std::shared_ptr<CPP_beam> getptr() { return shared_from_this(); }
+virtual ~CPP_beam() { }
+std::shared_ptr<CPP_beam> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_beam& obj) {
     os << "CPP_beam{";
@@ -4527,7 +4527,7 @@ bool operator== (const CPP_beam&, const CPP_beam&);
 
 class Opaque_aperture_point_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_aperture_point: public std::enable_shared_from_this<CPP_aperture_point>  {
+class CPP_aperture_point: public std::enable_shared_from_this<CPP_aperture_point> {
 public:
       Real x{0.0};
       Real y{0.0};
@@ -4539,8 +4539,8 @@ public:
   
   }
 
-  virtual ~CPP_aperture_point() {  }
-  std::shared_ptr<CPP_aperture_point> getptr() { return shared_from_this(); }
+virtual ~CPP_aperture_point() { }
+std::shared_ptr<CPP_aperture_point> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_aperture_point& obj) {
     os << "CPP_aperture_point{";
@@ -4570,7 +4570,7 @@ bool operator== (const CPP_aperture_point&, const CPP_aperture_point&);
 
 class Opaque_aperture_param_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_aperture_param: public std::enable_shared_from_this<CPP_aperture_param>  {
+class CPP_aperture_param: public std::enable_shared_from_this<CPP_aperture_param> {
 public:
       Real min_angle{0.0};
       Real max_angle{Bmad::pi};
@@ -4586,8 +4586,8 @@ public:
   
   }
 
-  virtual ~CPP_aperture_param() {  }
-  std::shared_ptr<CPP_aperture_param> getptr() { return shared_from_this(); }
+virtual ~CPP_aperture_param() { }
+std::shared_ptr<CPP_aperture_param> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_aperture_param& obj) {
     os << "CPP_aperture_param{";
@@ -4621,7 +4621,7 @@ bool operator== (const CPP_aperture_param&, const CPP_aperture_param&);
 
 class Opaque_aperture_scan_class {};  // Opaque class for pointers to corresponding fortran structs.
 
-class CPP_aperture_scan: public std::enable_shared_from_this<CPP_aperture_scan>  {
+class CPP_aperture_scan: public std::enable_shared_from_this<CPP_aperture_scan> {
 public:
       VariableArray1D<CPP_aperture_point> point;
       CPP_coord ref_orb;
@@ -4631,8 +4631,8 @@ public:
   
   }
 
-  virtual ~CPP_aperture_scan() {  }
-  std::shared_ptr<CPP_aperture_scan> getptr() { return shared_from_this(); }
+virtual ~CPP_aperture_scan() { }
+std::shared_ptr<CPP_aperture_scan> getptr() { return shared_from_this(); }
 
   friend ostream& operator<<(ostream& os, const CPP_aperture_scan& obj) {
     os << "CPP_aperture_scan{";
