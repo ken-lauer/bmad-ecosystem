@@ -3375,7 +3375,7 @@ rhs = 3 + offset; F%master_parameter = rhs
 rhs = 4 + offset; F%ele_anchor_pt = rhs
 !! f_side.test_pat[0D_NOT_integer]     Int
 rhs = 5 + offset; F%field_type = rhs
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_cartesian_map_term>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_cartesian_map_term>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
   else
@@ -3756,7 +3756,7 @@ do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
 rhs = 100 + jd1 + 9 + offset
 F%r0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_cylindrical_map_term>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_cylindrical_map_term>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
   else
@@ -4141,7 +4141,7 @@ F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_logical]     Bool
 rhs = 11 + offset; F%curved_ref_frame = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_grid_field_pt>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_grid_field_pt>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
   else
@@ -7397,7 +7397,7 @@ if (ix_patt < 3) then
   call set_wall3d_vertex_test_pattern (F%v(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_photon_reflect_surface>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_photon_reflect_surface>
 if (ix_patt < 3) then
   if (associated(F%surface)) deallocate (F%surface)
   else
@@ -7711,7 +7711,7 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%ix_ele = rhs
 !! f_side.test_pat[0D_NOT_integer]     Int
 rhs = 2 + offset; F%ix_con = rhs
-!! f_side.test_pat[0D_PTR_real]     shared_ptr<Real>
+!! f_side.test_pat[0D_PTR_real]     std::optional<Real>
 if (ix_patt < 3) then
   if (associated(F%attrib_ptr)) deallocate (F%attrib_ptr)
   else
@@ -11021,7 +11021,7 @@ enddo
 do jd1 = 1, len(F%component_name)
 F%component_name(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
 enddo
-!! f_side.test_pat[0D_PTR_character]     shared_ptr<string>
+!! f_side.test_pat[0D_PTR_character]     std::optional<string>
 if (ix_patt < 3) then
   if (associated(F%descrip)) deallocate (F%descrip)
   else
@@ -11040,7 +11040,7 @@ call set_twiss_test_pattern (F%z, ix_patt)
 call set_xy_disp_test_pattern (F%x, ix_patt)
 !! f_side.test_pat[0D_NOT_type]     CPP_xy_disp
 call set_xy_disp_test_pattern (F%y, ix_patt)
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_ac_kicker>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_ac_kicker>
 if (ix_patt < 3) then
   if (associated(F%ac_kick)) deallocate (F%ac_kick)
   else
@@ -11050,7 +11050,7 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_type]     CPP_bookkeeping_state
 call set_bookkeeping_state_test_pattern (F%bookkeeping_state, ix_patt)
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_controller>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_controller>
 if (ix_patt < 3) then
   if (associated(F%control)) deallocate (F%control)
   else
@@ -11060,7 +11060,7 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_type]     CPP_floor_position
 call set_floor_position_test_pattern (F%floor, ix_patt)
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_high_energy_space_charge>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_high_energy_space_charge>
 if (ix_patt < 3) then
   if (associated(F%high_energy_space_charge)) deallocate (F%high_energy_space_charge)
   else
@@ -11068,7 +11068,7 @@ if (ix_patt < 3) then
   rhs = 18 + offset
   call set_high_energy_space_charge_test_pattern (F%high_energy_space_charge, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_mode3>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_mode3>
 if (ix_patt < 3) then
   if (associated(F%mode3)) deallocate (F%mode3)
   else
@@ -11076,7 +11076,7 @@ if (ix_patt < 3) then
   rhs = 20 + offset
   call set_mode3_test_pattern (F%mode3, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_photon_element>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_photon_element>
 if (ix_patt < 3) then
   if (associated(F%photon)) deallocate (F%photon)
   else
@@ -11084,7 +11084,7 @@ if (ix_patt < 3) then
   rhs = 22 + offset
   call set_photon_element_test_pattern (F%photon, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_rad_map_ele>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_rad_map_ele>
 if (ix_patt < 3) then
   if (associated(F%rad_map)) deallocate (F%rad_map)
   else
@@ -11107,7 +11107,7 @@ do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
 rhs = 100 + jd1 + 28 + offset
 call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_wake>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_wake>
 if (ix_patt < 3) then
   if (associated(F%wake)) deallocate (F%wake)
   else
@@ -11892,7 +11892,7 @@ if (ix_patt < 3) then
   call set_expression_atom_test_pattern (F%constant(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_mode_info>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_mode_info>
 if (ix_patt < 3) then
   if (associated(F%a)) deallocate (F%a)
   else
@@ -11900,7 +11900,7 @@ if (ix_patt < 3) then
   rhs = 10 + offset
   call set_mode_info_test_pattern (F%a, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_mode_info>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_mode_info>
 if (ix_patt < 3) then
   if (associated(F%b)) deallocate (F%b)
   else
@@ -11908,7 +11908,7 @@ if (ix_patt < 3) then
   rhs = 12 + offset
   call set_mode_info_test_pattern (F%b, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_mode_info>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_mode_info>
 if (ix_patt < 3) then
   if (associated(F%z)) deallocate (F%z)
   else
@@ -11916,7 +11916,7 @@ if (ix_patt < 3) then
   rhs = 14 + offset
   call set_mode_info_test_pattern (F%z, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]     shared_ptr<CPP_lat_param>
+!! f_side.test_pat[0D_PTR_type]     std::optional<CPP_lat_param>
 if (ix_patt < 3) then
   if (associated(F%param)) deallocate (F%param)
   else
@@ -11973,7 +11973,7 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_integer]     Int
 rhs = 31 + offset; F%version = rhs
-!! f_side.test_pat[0D_PTR_integer]     shared_ptr<Int>
+!! f_side.test_pat[0D_PTR_integer]     std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_track)) deallocate (F%n_ele_track)
   else
@@ -11981,7 +11981,7 @@ if (ix_patt < 3) then
   rhs = 32 + offset
   F%n_ele_track = rhs
 endif
-!! f_side.test_pat[0D_PTR_integer]     shared_ptr<Int>
+!! f_side.test_pat[0D_PTR_integer]     std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_max)) deallocate (F%n_ele_max)
   else

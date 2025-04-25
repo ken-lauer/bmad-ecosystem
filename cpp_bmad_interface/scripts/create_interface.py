@@ -1416,7 +1416,7 @@ def get_class_repr(struct: Structure) -> str:
 
         if arg.pointer_type == "PTR" and not arg.array:
             lines.append(
-                f'os << "{arg.c_name}="; if (obj.{arg.c_name} == nullptr) {{ os << "nullptr"; }} else {{ os << obj.{arg.c_name}; }}; os << ", ";'
+                f'os << "{arg.c_name}="; if (obj.{arg.c_name}) os << *obj.{arg.c_name} << ", "; else os << "nullptr, ";'
             )
         else:
             lines.append(f'os << "{arg.c_name}=" << obj.{arg.c_name} << ", ";')
@@ -1464,7 +1464,7 @@ def get_class_lines(struct: Structure) -> list[str]:
             else ""
         )
         member_vars.append(
-            f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};"
+            f"  {arg.c_side.c_class.strip()} {arg.c_name}{class_initializer.strip()};"
         )
 
     # Build constructor body
@@ -1610,7 +1610,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             if arg.c_side.to_f_setup == "":
                 continue
             file.write(
-                f"  // c_side.to_f_setup[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
+                f"  // c_side.to_f_setup[{arg.full_type}] {arg.c_side.c_class}\n"
             )
             print(arg.c_side.to_f_setup, file=file)
 

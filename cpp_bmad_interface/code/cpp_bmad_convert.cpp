@@ -146,7 +146,7 @@ extern "C" void ac_kicker_to_f2 (Opaque_ac_kicker_class*, const CPP_ac_kicker_ti
     const CPP_ac_kicker_freq**, Int);
 
 extern "C" void ac_kicker_to_f (const CPP_ac_kicker& C, Opaque_ac_kicker_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_ac_kicker_time>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_ac_kicker_time>
   auto n1_amp_vs_time = C.amp_vs_time.size();
   const CPP_ac_kicker_time **z_amp_vs_time = nullptr;
   if (n1_amp_vs_time != 0) {
@@ -154,7 +154,7 @@ extern "C" void ac_kicker_to_f (const CPP_ac_kicker& C, Opaque_ac_kicker_class* 
     for (auto i{0}; i < n1_amp_vs_time; i++)
       z_amp_vs_time[i] = &C.amp_vs_time[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_ac_kicker_freq>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_ac_kicker_freq>
   auto n1_frequency = C.frequency.size();
   const CPP_ac_kicker_freq **z_frequency = nullptr;
   if (n1_frequency != 0) {
@@ -230,19 +230,19 @@ extern "C" void photon_reflect_table_to_f2 (Opaque_photon_reflect_table_class*, 
     Int, c_RealArr, Int);
 
 extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Opaque_photon_reflect_table_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_angle = C.angle.size();
   c_RealArr z_angle = nullptr;
   if (n1_angle > 0) {
     z_angle = &C.angle[0];
   }
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_energy = C.energy.size();
   c_RealArr z_energy = nullptr;
   if (n1_energy > 0) {
     z_energy = &C.energy[0];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_interval1_coef>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_interval1_coef>
   auto n1_int1 = C.int1.size();
   const CPP_interval1_coef **z_int1 = nullptr;
   if (n1_int1 != 0) {
@@ -250,7 +250,7 @@ extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Op
     for (auto i{0}; i < n1_int1; i++)
       z_int1[i] = &C.int1[i];
   }
-  // c_side.to_f_setup[real, 2, ALLOC]     VariableArray2D<Real>
+  // c_side.to_f_setup[2D_ALLOC_real]     VariableArray2D<Real>
   auto n1_p_reflect{C.p_reflect.size()};
   auto n2_p_reflect{std::size_t{0}};
   Real *z_p_reflect = nullptr;
@@ -259,13 +259,13 @@ extern "C" void photon_reflect_table_to_f (const CPP_photon_reflect_table& C, Op
     z_p_reflect = new Real[n1_p_reflect * n2_p_reflect];
     matrix_to_vec(C.p_reflect, z_p_reflect);
   }
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_p_reflect_scratch = C.p_reflect_scratch.size();
   c_RealArr z_p_reflect_scratch = nullptr;
   if (n1_p_reflect_scratch > 0) {
     z_p_reflect_scratch = &C.p_reflect_scratch[0];
   }
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_bragg_angle = C.bragg_angle.size();
   c_RealArr z_bragg_angle = nullptr;
   if (n1_bragg_angle > 0) {
@@ -329,7 +329,7 @@ extern "C" void photon_reflect_surface_to_f2 (Opaque_photon_reflect_surface_clas
     c_Char, c_Char, const CPP_photon_reflect_table**, Int, c_Real&, c_Real&, c_Int&);
 
 extern "C" void photon_reflect_surface_to_f (const CPP_photon_reflect_surface& C, Opaque_photon_reflect_surface_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_photon_reflect_table>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_photon_reflect_table>
   auto n1_table = C.table.size();
   const CPP_photon_reflect_table **z_table = nullptr;
   if (n1_table != 0) {
@@ -454,7 +454,7 @@ extern "C" void coord_array_to_c (const Opaque_coord_array_class*, CPP_coord_arr
 extern "C" void coord_array_to_f2 (Opaque_coord_array_class*, const CPP_coord**, Int);
 
 extern "C" void coord_array_to_f (const CPP_coord_array& C, Opaque_coord_array_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_coord>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_coord>
   auto n1_orbit = C.orbit.size();
   const CPP_coord **z_orbit = nullptr;
   if (n1_orbit != 0) {
@@ -567,25 +567,25 @@ extern "C" void wake_sr_z_long_to_f2 (Opaque_wake_sr_z_long_class*, c_RealArr, I
     c_Bool&);
 
 extern "C" void wake_sr_z_long_to_f (const CPP_wake_sr_z_long& C, Opaque_wake_sr_z_long_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_w = C.w.size();
   c_RealArr z_w = nullptr;
   if (n1_w > 0) {
     z_w = &C.w[0];
   }
-  // c_side.to_f_setup[complex, 1, ALLOC]     VariableArray1D<Complex>
+  // c_side.to_f_setup[1D_ALLOC_complex]     VariableArray1D<Complex>
   auto n1_fw = C.fw.size();
   c_ComplexArr z_fw = nullptr;
   if (n1_fw > 0) {
     z_fw = &C.fw[0];
   }
-  // c_side.to_f_setup[complex, 1, ALLOC]     VariableArray1D<Complex>
+  // c_side.to_f_setup[1D_ALLOC_complex]     VariableArray1D<Complex>
   auto n1_fbunch = C.fbunch.size();
   c_ComplexArr z_fbunch = nullptr;
   if (n1_fbunch > 0) {
     z_fbunch = &C.fbunch[0];
   }
-  // c_side.to_f_setup[complex, 1, ALLOC]     VariableArray1D<Complex>
+  // c_side.to_f_setup[1D_ALLOC_complex]     VariableArray1D<Complex>
   auto n1_w_out = C.w_out.size();
   c_ComplexArr z_w_out = nullptr;
   if (n1_w_out > 0) {
@@ -685,7 +685,7 @@ extern "C" void wake_sr_to_f2 (Opaque_wake_sr_class*, c_Char, const CPP_wake_sr_
     c_Real&, c_Bool&);
 
 extern "C" void wake_sr_to_f (const CPP_wake_sr& C, Opaque_wake_sr_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_wake_sr_mode>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_wake_sr_mode>
   auto n1_long_wake = C.long_wake.size();
   const CPP_wake_sr_mode **z_long_wake = nullptr;
   if (n1_long_wake != 0) {
@@ -693,7 +693,7 @@ extern "C" void wake_sr_to_f (const CPP_wake_sr& C, Opaque_wake_sr_class* F) {
     for (auto i{0}; i < n1_long_wake; i++)
       z_long_wake[i] = &C.long_wake[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_wake_sr_mode>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_wake_sr_mode>
   auto n1_trans_wake = C.trans_wake.size();
   const CPP_wake_sr_mode **z_trans_wake = nullptr;
   if (n1_trans_wake != 0) {
@@ -813,7 +813,7 @@ extern "C" void wake_lr_to_f2 (Opaque_wake_lr_class*, c_Char, const CPP_wake_lr_
     c_Real&, c_Real&, c_Real&, c_Real&, c_Bool&);
 
 extern "C" void wake_lr_to_f (const CPP_wake_lr& C, Opaque_wake_lr_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_wake_lr_mode>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_wake_lr_mode>
   auto n1_mode = C.mode.size();
   const CPP_wake_lr_mode **z_mode = nullptr;
   if (n1_mode != 0) {
@@ -941,7 +941,7 @@ extern "C" void taylor_to_c (const Opaque_taylor_class*, CPP_taylor&);
 extern "C" void taylor_to_f2 (Opaque_taylor_class*, c_Real&, const CPP_taylor_term**, Int);
 
 extern "C" void taylor_to_f (const CPP_taylor& C, Opaque_taylor_class* F) {
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_taylor_term>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_taylor_term>
   auto n1_term = C.term.size();
   const CPP_taylor_term **z_term = nullptr;
   if (n1_term != 0) {
@@ -1007,7 +1007,7 @@ extern "C" void em_taylor_to_f2 (Opaque_em_taylor_class*, c_Real&, const CPP_em_
     Int);
 
 extern "C" void em_taylor_to_f (const CPP_em_taylor& C, Opaque_em_taylor_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_em_taylor_term>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_em_taylor_term>
   auto n1_term = C.term.size();
   const CPP_em_taylor_term **z_term = nullptr;
   if (n1_term != 0) {
@@ -1091,7 +1091,7 @@ extern "C" void cartesian_map_term_to_f2 (Opaque_cartesian_map_term_class*, c_Ch
     const CPP_cartesian_map_term1**, Int);
 
 extern "C" void cartesian_map_term_to_f (const CPP_cartesian_map_term& C, Opaque_cartesian_map_term_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_cartesian_map_term1>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_cartesian_map_term1>
   auto n1_term = C.term.size();
   const CPP_cartesian_map_term1 **z_term = nullptr;
   if (n1_term != 0) {
@@ -1131,17 +1131,15 @@ extern "C" void cartesian_map_to_c (const Opaque_cartesian_map_class*, CPP_carte
 
 // c_side.to_f2_arg
 extern "C" void cartesian_map_to_f2 (Opaque_cartesian_map_class*, c_Real&, c_RealArr, c_Int&,
-    c_Int&, c_Int&, const CPP_cartesian_map_term&, Int);
+    c_Int&, c_Int&, const CPP_cartesian_map_term*, Int);
 
 extern "C" void cartesian_map_to_f (const CPP_cartesian_map& C, Opaque_cartesian_map_class* F) {
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_cartesian_map_term>
-  size_t n_ptr = 0;
-  if (C.ptr != nullptr)
-    n_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_cartesian_map_term>
+  auto n_ptr = C.ptr ? 1 : 0;
 
   // c_side.to_f2_call
   cartesian_map_to_f2 (F, C.field_scale, &C.r0[0], C.master_parameter, C.ele_anchor_pt,
-      C.field_type, *C.ptr, n_ptr);
+      C.field_type, (C.ptr ? &C.ptr.value() : nullptr), n_ptr);
 
 }
 
@@ -1160,11 +1158,11 @@ extern "C" void cartesian_map_to_c2 (CPP_cartesian_map& C, c_Real &z_field_scale
   C.ele_anchor_pt = z_ele_anchor_pt;
   // c_side.to_c2_set[integer, 0, NOT]     Int
   C.field_type = z_field_type;
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_cartesian_map_term>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_cartesian_map_term>
   if (n_ptr == 0) {
-    C.ptr = nullptr;
+    C.ptr.reset();
   } else {
-    C.ptr = make_shared<CPP_cartesian_map_term>();
+    C.ptr.emplace();
     cartesian_map_term_to_c(z_ptr, *C.ptr);
   }
 }
@@ -1207,7 +1205,7 @@ extern "C" void cylindrical_map_term_to_f2 (Opaque_cylindrical_map_term_class*, 
     const CPP_cylindrical_map_term1**, Int);
 
 extern "C" void cylindrical_map_term_to_f (const CPP_cylindrical_map_term& C, Opaque_cylindrical_map_term_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_cylindrical_map_term1>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_cylindrical_map_term1>
   auto n1_term = C.term.size();
   const CPP_cylindrical_map_term1 **z_term = nullptr;
   if (n1_term != 0) {
@@ -1247,18 +1245,17 @@ extern "C" void cylindrical_map_to_c (const Opaque_cylindrical_map_class*, CPP_c
 
 // c_side.to_f2_arg
 extern "C" void cylindrical_map_to_f2 (Opaque_cylindrical_map_class*, c_Int&, c_Int&, c_Real&,
-    c_Real&, c_Real&, c_Int&, c_Int&, c_Real&, c_RealArr, const CPP_cylindrical_map_term&,
+    c_Real&, c_Real&, c_Int&, c_Int&, c_Real&, c_RealArr, const CPP_cylindrical_map_term*,
     Int);
 
 extern "C" void cylindrical_map_to_f (const CPP_cylindrical_map& C, Opaque_cylindrical_map_class* F) {
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_cylindrical_map_term>
-  size_t n_ptr = 0;
-  if (C.ptr != nullptr)
-    n_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_cylindrical_map_term>
+  auto n_ptr = C.ptr ? 1 : 0;
 
   // c_side.to_f2_call
   cylindrical_map_to_f2 (F, C.m, C.harmonic, C.phi0_fieldmap, C.theta0_azimuth, C.field_scale,
-      C.master_parameter, C.ele_anchor_pt, C.dz, &C.r0[0], *C.ptr, n_ptr);
+      C.master_parameter, C.ele_anchor_pt, C.dz, &C.r0[0], (C.ptr ? &C.ptr.value() : nullptr),
+      n_ptr);
 
 }
 
@@ -1286,11 +1283,11 @@ extern "C" void cylindrical_map_to_c2 (CPP_cylindrical_map& C, c_Int &z_m, c_Int
   C.dz = z_dz;
   // c_side.to_c2_set[real, 1, NOT]     FixedArray1D<Real, 3>
   C.r0 << z_r0;
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_cylindrical_map_term>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_cylindrical_map_term>
   if (n_ptr == 0) {
-    C.ptr = nullptr;
+    C.ptr.reset();
   } else {
-    C.ptr = make_shared<CPP_cylindrical_map_term>();
+    C.ptr.emplace();
     cylindrical_map_term_to_c(z_ptr, *C.ptr);
   }
 }
@@ -1355,19 +1352,17 @@ extern "C" void grid_field_to_c (const Opaque_grid_field_class*, CPP_grid_field&
 
 // c_side.to_f2_arg
 extern "C" void grid_field_to_f2 (Opaque_grid_field_class*, c_Int&, c_Int&, c_Real&, c_Real&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_RealArr, c_RealArr, c_Bool&, const CPP_grid_field_pt&,
+    c_Int&, c_Int&, c_Int&, c_Int&, c_RealArr, c_RealArr, c_Bool&, const CPP_grid_field_pt*,
     Int);
 
 extern "C" void grid_field_to_f (const CPP_grid_field& C, Opaque_grid_field_class* F) {
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_grid_field_pt>
-  size_t n_ptr = 0;
-  if (C.ptr != nullptr)
-    n_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_grid_field_pt>
+  auto n_ptr = C.ptr ? 1 : 0;
 
   // c_side.to_f2_call
   grid_field_to_f2 (F, C.geometry, C.harmonic, C.phi0_fieldmap, C.field_scale, C.field_type,
       C.master_parameter, C.ele_anchor_pt, C.interpolation_order, &C.dr[0], &C.r0[0],
-      C.curved_ref_frame, *C.ptr, n_ptr);
+      C.curved_ref_frame, (C.ptr ? &C.ptr.value() : nullptr), n_ptr);
 
 }
 
@@ -1399,11 +1394,11 @@ extern "C" void grid_field_to_c2 (CPP_grid_field& C, c_Int &z_geometry, c_Int &z
   C.r0 << z_r0;
   // c_side.to_c2_set[logical, 0, NOT]     Bool
   C.curved_ref_frame = z_curved_ref_frame;
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_grid_field_pt>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_grid_field_pt>
   if (n_ptr == 0) {
-    C.ptr = nullptr;
+    C.ptr.reset();
   } else {
-    C.ptr = make_shared<CPP_grid_field_pt>();
+    C.ptr.emplace();
     grid_field_pt_to_c(z_ptr, *C.ptr);
   }
 }
@@ -1419,7 +1414,7 @@ extern "C" void floor_position_to_f2 (Opaque_floor_position_class*, c_RealArr, c
     c_Real&, c_Real&, c_Real&);
 
 extern "C" void floor_position_to_f (const CPP_floor_position& C, Opaque_floor_position_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 3, 3>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 3, 3>
   Real z_w[3 * 3];
   matrix_to_vec(C.w, z_w);
 
@@ -1573,7 +1568,7 @@ extern "C" void mode3_to_f2 (Opaque_mode3_class*, c_RealArr, const CPP_twiss&, c
     CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_twiss&);
 
 extern "C" void mode3_to_f (const CPP_mode3& C, Opaque_mode3_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_v[6 * 6];
   matrix_to_vec(C.v, z_v);
 
@@ -1655,13 +1650,13 @@ extern "C" void rad_map_to_f2 (Opaque_rad_map_class*, c_RealArr, c_RealArr, c_Re
     c_RealArr, c_RealArr);
 
 extern "C" void rad_map_to_f (const CPP_rad_map& C, Opaque_rad_map_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_damp_dmat[6 * 6];
   matrix_to_vec(C.damp_dmat, z_damp_dmat);
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_xfer_damp_mat[6 * 6];
   matrix_to_vec(C.xfer_damp_mat, z_xfer_damp_mat);
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_stoc_mat[6 * 6];
   matrix_to_vec(C.stoc_mat, z_stoc_mat);
 
@@ -1727,7 +1722,7 @@ extern "C" void gen_grad1_to_f2 (Opaque_gen_grad1_class*, c_Int&, c_Int&, c_Int&
     Int, Int);
 
 extern "C" void gen_grad1_to_f (const CPP_gen_grad1& C, Opaque_gen_grad1_class* F) {
-  // c_side.to_f_setup[real, 2, ALLOC]     VariableArray2D<Real>
+  // c_side.to_f_setup[2D_ALLOC_real]     VariableArray2D<Real>
   auto n1_deriv{C.deriv.size()};
   auto n2_deriv{std::size_t{0}};
   Real *z_deriv = nullptr;
@@ -1773,7 +1768,7 @@ extern "C" void gen_grad_map_to_f2 (Opaque_gen_grad_map_class*, c_Char, const CP
     Int, c_Int&, c_Int&, c_Int&, c_Int&, c_Real&, c_RealArr, c_Real&, c_Int&, c_Bool&);
 
 extern "C" void gen_grad_map_to_f (const CPP_gen_grad_map& C, Opaque_gen_grad_map_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_gen_grad1>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_gen_grad1>
   auto n1_gg = C.gg.size();
   const CPP_gen_grad1 **z_gg = nullptr;
   if (n1_gg != 0) {
@@ -1868,7 +1863,7 @@ extern "C" void surface_segmented_to_f2 (Opaque_surface_segmented_class*, c_Bool
     c_RealArr, const CPP_surface_segmented_pt**, Int, Int);
 
 extern "C" void surface_segmented_to_f (const CPP_surface_segmented& C, Opaque_surface_segmented_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC]     VariableArray2D<CPP_surface_segmented_pt>
+  // c_side.to_f_setup[2D_ALLOC_type]     VariableArray2D<CPP_surface_segmented_pt>
   auto n1_pt{C.pt.size()};
   auto n2_pt{std::size_t{0}};
   const CPP_surface_segmented_pt **z_pt{nullptr};
@@ -1957,7 +1952,7 @@ extern "C" void surface_h_misalign_to_f2 (Opaque_surface_h_misalign_class*, c_Bo
     c_RealArr, const CPP_surface_h_misalign_pt**, Int, Int);
 
 extern "C" void surface_h_misalign_to_f (const CPP_surface_h_misalign& C, Opaque_surface_h_misalign_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC]     VariableArray2D<CPP_surface_h_misalign_pt>
+  // c_side.to_f_setup[2D_ALLOC_type]     VariableArray2D<CPP_surface_h_misalign_pt>
   auto n1_pt{C.pt.size()};
   auto n2_pt{std::size_t{0}};
   const CPP_surface_h_misalign_pt **z_pt{nullptr};
@@ -2047,7 +2042,7 @@ extern "C" void surface_displacement_to_f2 (Opaque_surface_displacement_class*, 
     c_RealArr, c_RealArr, const CPP_surface_displacement_pt**, Int, Int);
 
 extern "C" void surface_displacement_to_f (const CPP_surface_displacement& C, Opaque_surface_displacement_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC]     VariableArray2D<CPP_surface_displacement_pt>
+  // c_side.to_f_setup[2D_ALLOC_type]     VariableArray2D<CPP_surface_displacement_pt>
   auto n1_pt{C.pt.size()};
   auto n2_pt{std::size_t{0}};
   const CPP_surface_displacement_pt **z_pt{nullptr};
@@ -2125,7 +2120,7 @@ extern "C" void surface_curvature_to_f2 (Opaque_surface_curvature_class*, c_Real
     c_RealArr, c_Bool&);
 
 extern "C" void surface_curvature_to_f (const CPP_surface_curvature& C, Opaque_surface_curvature_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 7, 7>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 7, 7>
   Real z_xy[7 * 7];
   matrix_to_vec(C.xy, z_xy);
 
@@ -2159,7 +2154,7 @@ extern "C" void photon_target_to_f2 (Opaque_photon_target_class*, c_Int&, c_Int&
     CPP_lat_ele_loc&, const CPP_target_point**, const CPP_target_point&);
 
 extern "C" void photon_target_to_f (const CPP_photon_target& C, Opaque_photon_target_class* F) {
-  // c_side.to_f_setup[type, 1, NOT]     FixedArray1D<CPP_target_point, 8>
+  // c_side.to_f_setup[1D_NOT_type]     FixedArray1D<CPP_target_point, 8>
   const CPP_target_point *z_corner[8];
   for (int i = 0; i < 8; i++) {
     z_corner[i] = &C.corner[i];
@@ -2287,7 +2282,7 @@ extern "C" void pixel_detec_to_f2 (Opaque_pixel_detec_class*, c_RealArr, c_RealA
     c_Int8&, c_Int8&, const CPP_pixel_pt**, Int, Int);
 
 extern "C" void pixel_detec_to_f (const CPP_pixel_detec& C, Opaque_pixel_detec_class* F) {
-  // c_side.to_f_setup[type, 2, ALLOC]     VariableArray2D<CPP_pixel_pt>
+  // c_side.to_f_setup[2D_ALLOC_type]     VariableArray2D<CPP_pixel_pt>
   auto n1_pt{C.pt.size()};
   auto n2_pt{std::size_t{0}};
   const CPP_pixel_pt **z_pt{nullptr};
@@ -2350,7 +2345,7 @@ extern "C" void photon_element_to_f2 (Opaque_photon_element_class*, const
     CPP_photon_reflect_table&, const CPP_spline**, Int, c_RealArr, Int);
 
 extern "C" void photon_element_to_f (const CPP_photon_element& C, Opaque_photon_element_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_spline>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_spline>
   auto n1_init_energy_prob = C.init_energy_prob.size();
   const CPP_spline **z_init_energy_prob = nullptr;
   if (n1_init_energy_prob != 0) {
@@ -2358,7 +2353,7 @@ extern "C" void photon_element_to_f (const CPP_photon_element& C, Opaque_photon_
     for (auto i{0}; i < n1_init_energy_prob; i++)
       z_init_energy_prob[i] = &C.init_energy_prob[i];
   }
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_integrated_init_energy_prob = C.integrated_init_energy_prob.size();
   c_RealArr z_integrated_init_energy_prob = nullptr;
   if (n1_integrated_init_energy_prob > 0) {
@@ -2469,12 +2464,12 @@ extern "C" void wall3d_section_to_c (const Opaque_wall3d_section_class*, CPP_wal
 
 // c_side.to_f2_arg
 extern "C" void wall3d_section_to_f2 (Opaque_wall3d_section_class*, c_Char, c_Char, const
-    CPP_wall3d_vertex**, Int, const CPP_photon_reflect_surface&, Int, c_Int&, c_Int&, c_Int&,
+    CPP_wall3d_vertex**, Int, const CPP_photon_reflect_surface*, Int, c_Int&, c_Int&, c_Int&,
     c_Int&, c_Int&, c_Bool&, c_Real&, c_Real&, c_RealArr, c_Real&, c_Real&, c_RealArr,
     c_RealArr, c_Real&, c_RealArr, c_RealArr);
 
 extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_section_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_wall3d_vertex>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_wall3d_vertex>
   auto n1_v = C.v.size();
   const CPP_wall3d_vertex **z_v = nullptr;
   if (n1_v != 0) {
@@ -2482,16 +2477,14 @@ extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_
     for (auto i{0}; i < n1_v; i++)
       z_v[i] = &C.v[i];
   }
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_photon_reflect_surface>
-  size_t n_surface = 0;
-  if (C.surface != nullptr)
-    n_surface = 1;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_photon_reflect_surface>
+  auto n_surface = C.surface ? 1 : 0;
 
   // c_side.to_f2_call
-  wall3d_section_to_f2 (F, C.name.c_str(), C.material.c_str(), z_v, n1_v, *C.surface,
-      n_surface, C.type, C.n_vertex_input, C.ix_ele, C.ix_branch, C.vertices_state,
-      C.patch_in_region, C.thickness, C.s, &C.r0[0], C.dx0_ds, C.dy0_ds, &C.x0_coef[0],
-      &C.y0_coef[0], C.dr_ds, &C.p1_coef[0], &C.p2_coef[0]);
+  wall3d_section_to_f2 (F, C.name.c_str(), C.material.c_str(), z_v, n1_v, (C.surface ?
+      &C.surface.value() : nullptr), n_surface, C.type, C.n_vertex_input, C.ix_ele,
+      C.ix_branch, C.vertices_state, C.patch_in_region, C.thickness, C.s, &C.r0[0], C.dx0_ds,
+      C.dy0_ds, &C.x0_coef[0], &C.y0_coef[0], C.dr_ds, &C.p1_coef[0], &C.p2_coef[0]);
 
   // c_side.to_f_cleanup[type, 1, ALLOC]
   if (z_v)
@@ -2515,11 +2508,11 @@ extern "C" void wall3d_section_to_c2 (CPP_wall3d_section& C, c_Char z_name, c_Ch
   for (auto i{0}; i < n1_v; i++) {
     wall3d_vertex_to_c(z_v[i], C.v[i]);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_photon_reflect_surface>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_photon_reflect_surface>
   if (n_surface == 0) {
-    C.surface = nullptr;
+    C.surface.reset();
   } else {
-    C.surface = make_shared<CPP_photon_reflect_surface>();
+    C.surface.emplace();
     photon_reflect_surface_to_c(z_surface, *C.surface);
   }
   // c_side.to_c2_set[integer, 0, NOT]     Int
@@ -2567,7 +2560,7 @@ extern "C" void wall3d_to_f2 (Opaque_wall3d_class*, c_Char, c_Int&, c_Int&, c_In
     c_Char, c_Char, c_Bool&, c_Int&, const CPP_wall3d_section**, Int);
 
 extern "C" void wall3d_to_f (const CPP_wall3d& C, Opaque_wall3d_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_wall3d_section>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_wall3d_section>
   auto n1_section = C.section.size();
   const CPP_wall3d_section **z_section = nullptr;
   if (n1_section != 0) {
@@ -2627,13 +2620,12 @@ extern "C" void ramper_lord_to_c (const Opaque_ramper_lord_class*, CPP_ramper_lo
 extern "C" void ramper_lord_to_f2 (Opaque_ramper_lord_class*, c_Int&, c_Int&, c_RealArr, Int);
 
 extern "C" void ramper_lord_to_f (const CPP_ramper_lord& C, Opaque_ramper_lord_class* F) {
-  // c_side.to_f_setup[real, 0, PTR]     shared_ptr<Real>
-  size_t n_attrib_ptr = 0;
-  if (C.attrib_ptr != nullptr)
-    n_attrib_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_real]     std::optional<Real>
+  auto n_attrib_ptr = C.attrib_ptr ? 1 : 0;
 
   // c_side.to_f2_call
-  ramper_lord_to_f2 (F, C.ix_ele, C.ix_con, C.attrib_ptr.get(), n_attrib_ptr);
+  ramper_lord_to_f2 (F, C.ix_ele, C.ix_con, (C.attrib_ptr ? &C.attrib_ptr.value() : nullptr),
+      n_attrib_ptr);
 
 }
 
@@ -2645,12 +2637,11 @@ extern "C" void ramper_lord_to_c2 (CPP_ramper_lord& C, c_Int &z_ix_ele, c_Int &z
   C.ix_ele = z_ix_ele;
   // c_side.to_c2_set[integer, 0, NOT]     Int
   C.ix_con = z_ix_con;
-  // c_side.to_c2_set[real, 0, PTR]     shared_ptr<Real>
+  // c_side.to_c2_set[real, 0, PTR]     std::optional<Real>
   if (n_attrib_ptr == 0) {
-    C.attrib_ptr = nullptr;
+    C.attrib_ptr.reset();
   } else {
-    C.attrib_ptr = make_shared<Real>();
-    *C.attrib_ptr = *z_attrib_ptr;
+    C.attrib_ptr.emplace(*z_attrib_ptr);
   }
 }
 
@@ -2666,13 +2657,13 @@ extern "C" void control_to_f2 (Opaque_control_class*, c_Real&, c_RealArr, Int, c
     c_Int&);
 
 extern "C" void control_to_f (const CPP_control& C, Opaque_control_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_y_knot = C.y_knot.size();
   c_RealArr z_y_knot = nullptr;
   if (n1_y_knot > 0) {
     z_y_knot = &C.y_knot[0];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_expression_atom>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_expression_atom>
   auto n1_stack = C.stack.size();
   const CPP_expression_atom **z_stack = nullptr;
   if (n1_stack != 0) {
@@ -2757,13 +2748,13 @@ extern "C" void control_ramp1_to_f2 (Opaque_control_ramp1_class*, c_RealArr, Int
     CPP_expression_atom**, Int, c_Char, c_Char, c_Bool&);
 
 extern "C" void control_ramp1_to_f (const CPP_control_ramp1& C, Opaque_control_ramp1_class* F) {
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_y_knot = C.y_knot.size();
   c_RealArr z_y_knot = nullptr;
   if (n1_y_knot > 0) {
     z_y_knot = &C.y_knot[0];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_expression_atom>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_expression_atom>
   auto n1_stack = C.stack.size();
   const CPP_expression_atom **z_stack = nullptr;
   if (n1_stack != 0) {
@@ -2813,7 +2804,7 @@ extern "C" void controller_to_f2 (Opaque_controller_class*, const CPP_control_va
     const CPP_control_ramp1**, Int, const CPP_ramper_lord**, Int, c_RealArr, Int);
 
 extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_control_var1>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_control_var1>
   auto n1_var = C.var.size();
   const CPP_control_var1 **z_var = nullptr;
   if (n1_var != 0) {
@@ -2821,7 +2812,7 @@ extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_clas
     for (auto i{0}; i < n1_var; i++)
       z_var[i] = &C.var[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_control_ramp1>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_control_ramp1>
   auto n1_ramp = C.ramp.size();
   const CPP_control_ramp1 **z_ramp = nullptr;
   if (n1_ramp != 0) {
@@ -2829,7 +2820,7 @@ extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_clas
     for (auto i{0}; i < n1_ramp; i++)
       z_ramp[i] = &C.ramp[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_ramper_lord>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_ramper_lord>
   auto n1_ramper_lord = C.ramper_lord.size();
   const CPP_ramper_lord **z_ramper_lord = nullptr;
   if (n1_ramper_lord != 0) {
@@ -2837,7 +2828,7 @@ extern "C" void controller_to_f (const CPP_controller& C, Opaque_controller_clas
     for (auto i{0}; i < n1_ramper_lord; i++)
       z_ramper_lord[i] = &C.ramper_lord[i];
   }
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_x_knot = C.x_knot.size();
   c_RealArr z_x_knot = nullptr;
   if (n1_x_knot > 0) {
@@ -2990,17 +2981,17 @@ extern "C" void beam_init_to_f2 (Opaque_beam_init_class*, c_Char, c_Char*, c_Rea
     c_Int&, c_Int&, c_Char, c_Bool&, c_Bool&, c_Bool&, c_Bool&, c_Char);
 
 extern "C" void beam_init_to_f (const CPP_beam_init& C, Opaque_beam_init_class* F) {
-  // c_side.to_f_setup[character, 1, NOT]     FixedArray1D<string, 3>
+  // c_side.to_f_setup[1D_NOT_character]     FixedArray1D<string, 3>
   c_Char z_distribution_type[3];
   for (auto i{0}; i < 3; i++) {
     z_distribution_type[i] = C.distribution_type[i].c_str();
   }
-  // c_side.to_f_setup[type, 1, NOT]     FixedArray1D<CPP_ellipse_beam_init, 3>
+  // c_side.to_f_setup[1D_NOT_type]     FixedArray1D<CPP_ellipse_beam_init, 3>
   const CPP_ellipse_beam_init *z_ellipse[3];
   for (int i = 0; i < 3; i++) {
     z_ellipse[i] = &C.ellipse[i];
   }
-  // c_side.to_f_setup[type, 1, NOT]     FixedArray1D<CPP_grid_beam_init, 3>
+  // c_side.to_f_setup[1D_NOT_type]     FixedArray1D<CPP_grid_beam_init, 3>
   const CPP_grid_beam_init *z_grid[3];
   for (int i = 0; i < 3; i++) {
     z_grid[i] = &C.grid[i];
@@ -3119,10 +3110,10 @@ extern "C" void lat_param_to_f2 (Opaque_lat_param_class*, c_Real&, c_Real&, c_Re
     c_Real&, const CPP_bookkeeping_state&, const CPP_beam_init&);
 
 extern "C" void lat_param_to_f (const CPP_lat_param& C, Opaque_lat_param_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_t1_with_RF[6 * 6];
   matrix_to_vec(C.t1_with_RF, z_t1_with_RF);
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_t1_no_RF[6 * 6];
   matrix_to_vec(C.t1_no_RF, z_t1_no_RF);
 
@@ -3386,10 +3377,10 @@ extern "C" void em_field_to_f2 (Opaque_em_field_class*, c_RealArr, c_RealArr, c_
     c_RealArr, c_Real&, c_Real&, c_RealArr);
 
 extern "C" void em_field_to_f (const CPP_em_field& C, Opaque_em_field_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 3, 3>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 3, 3>
   Real z_dE[3 * 3];
   matrix_to_vec(C.dE, z_dE);
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 3, 3>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 3, 3>
   Real z_dB[3 * 3];
   matrix_to_vec(C.dB, z_dB);
 
@@ -3466,7 +3457,7 @@ extern "C" void track_point_to_f2 (Opaque_track_point_class*, c_Real&, const CPP
     CPP_em_field&, const CPP_strong_beam&, c_RealArr, c_RealArr);
 
 extern "C" void track_point_to_f (const CPP_track_point& C, Opaque_track_point_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_mat6[6 * 6];
   matrix_to_vec(C.mat6, z_mat6);
 
@@ -3505,7 +3496,7 @@ extern "C" void track_to_f2 (Opaque_track_class*, const CPP_track_point**, Int, 
     c_Int&, c_Int&, c_Int&);
 
 extern "C" void track_to_f (const CPP_track& C, Opaque_track_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_track_point>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_track_point>
   auto n1_pt = C.pt.size();
   const CPP_track_point **z_pt = nullptr;
   if (n1_pt != 0) {
@@ -3815,7 +3806,7 @@ extern "C" void rad_int_branch_to_c (const Opaque_rad_int_branch_class*, CPP_rad
 extern "C" void rad_int_branch_to_f2 (Opaque_rad_int_branch_class*, const CPP_rad_int1**, Int);
 
 extern "C" void rad_int_branch_to_f (const CPP_rad_int_branch& C, Opaque_rad_int_branch_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_rad_int1>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_rad_int1>
   auto n1_ele = C.ele.size();
   const CPP_rad_int1 **z_ele = nullptr;
   if (n1_ele != 0) {
@@ -3854,7 +3845,7 @@ extern "C" void rad_int_all_ele_to_f2 (Opaque_rad_int_all_ele_class*, const
     CPP_rad_int_branch**, Int);
 
 extern "C" void rad_int_all_ele_to_f (const CPP_rad_int_all_ele& C, Opaque_rad_int_all_ele_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_rad_int_branch>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_rad_int_branch>
   auto n1_branch = C.branch.size();
   const CPP_rad_int_branch **z_branch = nullptr;
   if (n1_branch != 0) {
@@ -3891,10 +3882,10 @@ extern "C" void ele_to_c (const Opaque_ele_class*, CPP_ele&);
 // c_side.to_f2_arg
 extern "C" void ele_to_f2 (Opaque_ele_class*, c_Char, c_Char, c_Char, c_Char, c_Char, Int,
     const CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_xy_disp&, const
-    CPP_xy_disp&, const CPP_ac_kicker&, Int, const CPP_bookkeeping_state&, const
-    CPP_controller&, Int, const CPP_floor_position&, const CPP_high_energy_space_charge&, Int,
-    const CPP_mode3&, Int, const CPP_photon_element&, Int, const CPP_rad_map_ele&, Int, const
-    CPP_taylor**, c_RealArr, const CPP_taylor**, const CPP_wake&, Int, const CPP_wall3d**, Int,
+    CPP_xy_disp&, const CPP_ac_kicker*, Int, const CPP_bookkeeping_state&, const
+    CPP_controller*, Int, const CPP_floor_position&, const CPP_high_energy_space_charge*, Int,
+    const CPP_mode3*, Int, const CPP_photon_element*, Int, const CPP_rad_map_ele*, Int, const
+    CPP_taylor**, c_RealArr, const CPP_taylor**, const CPP_wake*, Int, const CPP_wall3d**, Int,
     const CPP_cartesian_map**, Int, const CPP_cylindrical_map**, Int, const CPP_gen_grad_map**,
     Int, const CPP_grid_field**, Int, const CPP_coord&, const CPP_coord&, const CPP_coord&,
     const CPP_coord&, c_RealArr, c_RealArr, c_RealArr, c_RealArr, c_RealArr, c_RealArr,
@@ -3906,52 +3897,38 @@ extern "C" void ele_to_f2 (Opaque_ele_class*, c_Char, c_Char, c_Char, c_Char, c_
     c_Bool&, c_Bool&, c_Bool&);
 
 extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
-  // c_side.to_f_setup[character, 0, PTR]     shared_ptr<string>
+  // c_side.to_f_setup[0D_PTR_character]     std::optional<string>
   size_t n_descrip = 0;
   const char *z_descrip = nullptr;
-  if (C.descrip != NULL) {
+  if (C.descrip) {
     z_descrip = C.descrip->c_str();
     n_descrip = 1;
   }
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_ac_kicker>
-  size_t n_ac_kick = 0;
-  if (C.ac_kick != nullptr)
-    n_ac_kick = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_controller>
-  size_t n_control = 0;
-  if (C.control != nullptr)
-    n_control = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_high_energy_space_charge>
-  size_t n_high_energy_space_charge = 0;
-  if (C.high_energy_space_charge != nullptr)
-    n_high_energy_space_charge = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_mode3>
-  size_t n_mode3 = 0;
-  if (C.mode3 != nullptr)
-    n_mode3 = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_photon_element>
-  size_t n_photon = 0;
-  if (C.photon != nullptr)
-    n_photon = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_rad_map_ele>
-  size_t n_rad_map = 0;
-  if (C.rad_map != nullptr)
-    n_rad_map = 1;
-  // c_side.to_f_setup[type, 1, NOT]     FixedArray1D<CPP_taylor, 6>
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_ac_kicker>
+  auto n_ac_kick = C.ac_kick ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_controller>
+  auto n_control = C.control ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_high_energy_space_charge>
+  auto n_high_energy_space_charge = C.high_energy_space_charge ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_mode3>
+  auto n_mode3 = C.mode3 ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_photon_element>
+  auto n_photon = C.photon ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_rad_map_ele>
+  auto n_rad_map = C.rad_map ? 1 : 0;
+  // c_side.to_f_setup[1D_NOT_type]     FixedArray1D<CPP_taylor, 6>
   const CPP_taylor *z_taylor[6];
   for (int i = 0; i < 6; i++) {
     z_taylor[i] = &C.taylor[i];
   }
-  // c_side.to_f_setup[type, 1, NOT]     FixedArray1D<CPP_taylor, 4>
+  // c_side.to_f_setup[1D_NOT_type]     FixedArray1D<CPP_taylor, 4>
   const CPP_taylor *z_spin_taylor[4];
   for (int i = 0; i < 4; i++) {
     z_spin_taylor[i] = &C.spin_taylor[i];
   }
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_wake>
-  size_t n_wake = 0;
-  if (C.wake != nullptr)
-    n_wake = 1;
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_wall3d>
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_wake>
+  auto n_wake = C.wake ? 1 : 0;
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_wall3d>
   auto n1_wall3d = C.wall3d.size();
   const CPP_wall3d **z_wall3d = nullptr;
   if (n1_wall3d != 0) {
@@ -3959,7 +3936,7 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     for (auto i{0}; i < n1_wall3d; i++)
       z_wall3d[i] = &C.wall3d[i];
   }
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_cartesian_map>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_cartesian_map>
   auto n1_cartesian_map = C.cartesian_map.size();
   const CPP_cartesian_map **z_cartesian_map = nullptr;
   if (n1_cartesian_map != 0) {
@@ -3967,7 +3944,7 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     for (auto i{0}; i < n1_cartesian_map; i++)
       z_cartesian_map[i] = &C.cartesian_map[i];
   }
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_cylindrical_map>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_cylindrical_map>
   auto n1_cylindrical_map = C.cylindrical_map.size();
   const CPP_cylindrical_map **z_cylindrical_map = nullptr;
   if (n1_cylindrical_map != 0) {
@@ -3975,7 +3952,7 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     for (auto i{0}; i < n1_cylindrical_map; i++)
       z_cylindrical_map[i] = &C.cylindrical_map[i];
   }
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_gen_grad_map>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_gen_grad_map>
   auto n1_gen_grad_map = C.gen_grad_map.size();
   const CPP_gen_grad_map **z_gen_grad_map = nullptr;
   if (n1_gen_grad_map != 0) {
@@ -3983,7 +3960,7 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     for (auto i{0}; i < n1_gen_grad_map; i++)
       z_gen_grad_map[i] = &C.gen_grad_map[i];
   }
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_grid_field>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_grid_field>
   auto n1_grid_field = C.grid_field.size();
   const CPP_grid_field **z_grid_field = nullptr;
   if (n1_grid_field != 0) {
@@ -3991,46 +3968,46 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
     for (auto i{0}; i < n1_grid_field; i++)
       z_grid_field[i] = &C.grid_field[i];
   }
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 4, 7>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 4, 7>
   Real z_spin_q[4 * 7];
   matrix_to_vec(C.spin_q, z_spin_q);
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_mat6[6 * 6];
   matrix_to_vec(C.mat6, z_mat6);
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 2, 2>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 2, 2>
   Real z_c_mat[2 * 2];
   matrix_to_vec(C.c_mat, z_c_mat);
-  // c_side.to_f_setup[real, 1, PTR]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_PTR_real]     VariableArray1D<Real>
   auto n1_a_pole = C.a_pole.size();
   c_RealArr z_a_pole = nullptr;
   if (n1_a_pole > 0) {
     z_a_pole = &C.a_pole[0];
   }
-  // c_side.to_f_setup[real, 1, PTR]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_PTR_real]     VariableArray1D<Real>
   auto n1_b_pole = C.b_pole.size();
   c_RealArr z_b_pole = nullptr;
   if (n1_b_pole > 0) {
     z_b_pole = &C.b_pole[0];
   }
-  // c_side.to_f_setup[real, 1, PTR]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_PTR_real]     VariableArray1D<Real>
   auto n1_a_pole_elec = C.a_pole_elec.size();
   c_RealArr z_a_pole_elec = nullptr;
   if (n1_a_pole_elec > 0) {
     z_a_pole_elec = &C.a_pole_elec[0];
   }
-  // c_side.to_f_setup[real, 1, PTR]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_PTR_real]     VariableArray1D<Real>
   auto n1_b_pole_elec = C.b_pole_elec.size();
   c_RealArr z_b_pole_elec = nullptr;
   if (n1_b_pole_elec > 0) {
     z_b_pole_elec = &C.b_pole_elec[0];
   }
-  // c_side.to_f_setup[real, 1, PTR]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_PTR_real]     VariableArray1D<Real>
   auto n1_custom = C.custom.size();
   c_RealArr z_custom = nullptr;
   if (n1_custom > 0) {
     z_custom = &C.custom[0];
   }
-  // c_side.to_f_setup[real, 3, PTR]     VariableArray3D<Real>
+  // c_side.to_f_setup[3D_PTR_real]     VariableArray3D<Real>
   auto n1_r{C.r.size()};
   auto n2_r{std::size_t{0}};
   auto n3_r{std::size_t{0}};
@@ -4044,23 +4021,26 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
 
   // c_side.to_f2_call
   ele_to_f2 (F, C.name.c_str(), C.type.c_str(), C.alias.c_str(), C.component_name.c_str(),
-      z_descrip, n_descrip, C.a, C.b, C.z, C.x, C.y, *C.ac_kick, n_ac_kick,
-      C.bookkeeping_state, *C.control, n_control, C.floor, *C.high_energy_space_charge,
-      n_high_energy_space_charge, *C.mode3, n_mode3, *C.photon, n_photon, *C.rad_map,
-      n_rad_map, z_taylor, &C.spin_taylor_ref_orb_in[0], z_spin_taylor, *C.wake, n_wake,
-      z_wall3d, n1_wall3d, z_cartesian_map, n1_cartesian_map, z_cylindrical_map,
-      n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, z_grid_field, n1_grid_field,
-      C.map_ref_orb_in, C.map_ref_orb_out, C.time_ref_orb_in, C.time_ref_orb_out, &C.value[0],
-      &C.old_value[0], z_spin_q, &C.vec0[0], z_mat6, z_c_mat, C.gamma_c, C.s_start, C.s,
-      C.ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole, z_a_pole_elec, n1_a_pole_elec,
-      z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r, n1_r, n2_r, n3_r, C.key,
-      C.sub_key, C.ix_ele, C.ix_branch, C.lord_status, C.n_slave, C.n_slave_field, C.ix1_slave,
-      C.slave_status, C.n_lord, C.n_lord_field, C.n_lord_ramper, C.ic1_lord, C.ix_pointer,
-      C.ixx, C.iyy, C.izz, C.mat6_calc_method, C.tracking_method, C.spin_tracking_method,
-      C.csr_method, C.space_charge_method, C.ptc_integration_type, C.field_calc, C.aperture_at,
-      C.aperture_type, C.ref_species, C.orientation, C.symplectify, C.mode_flip,
-      C.multipoles_on, C.scale_multipoles, C.taylor_map_includes_offsets, C.field_master,
-      C.is_on, C.logic, C.bmad_logic, C.select, C.offset_moves_aperture);
+      z_descrip, n_descrip, C.a, C.b, C.z, C.x, C.y, (C.ac_kick ? &C.ac_kick.value() :
+      nullptr), n_ac_kick, C.bookkeeping_state, (C.control ? &C.control.value() : nullptr),
+      n_control, C.floor, (C.high_energy_space_charge ? &C.high_energy_space_charge.value() :
+      nullptr), n_high_energy_space_charge, (C.mode3 ? &C.mode3.value() : nullptr), n_mode3,
+      (C.photon ? &C.photon.value() : nullptr), n_photon, (C.rad_map ? &C.rad_map.value() :
+      nullptr), n_rad_map, z_taylor, &C.spin_taylor_ref_orb_in[0], z_spin_taylor, (C.wake ?
+      &C.wake.value() : nullptr), n_wake, z_wall3d, n1_wall3d, z_cartesian_map,
+      n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map,
+      z_grid_field, n1_grid_field, C.map_ref_orb_in, C.map_ref_orb_out, C.time_ref_orb_in,
+      C.time_ref_orb_out, &C.value[0], &C.old_value[0], z_spin_q, &C.vec0[0], z_mat6, z_c_mat,
+      C.gamma_c, C.s_start, C.s, C.ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole,
+      z_a_pole_elec, n1_a_pole_elec, z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r,
+      n1_r, n2_r, n3_r, C.key, C.sub_key, C.ix_ele, C.ix_branch, C.lord_status, C.n_slave,
+      C.n_slave_field, C.ix1_slave, C.slave_status, C.n_lord, C.n_lord_field, C.n_lord_ramper,
+      C.ic1_lord, C.ix_pointer, C.ixx, C.iyy, C.izz, C.mat6_calc_method, C.tracking_method,
+      C.spin_tracking_method, C.csr_method, C.space_charge_method, C.ptc_integration_type,
+      C.field_calc, C.aperture_at, C.aperture_type, C.ref_species, C.orientation,
+      C.symplectify, C.mode_flip, C.multipoles_on, C.scale_multipoles,
+      C.taylor_map_includes_offsets, C.field_master, C.is_on, C.logic, C.bmad_logic, C.select,
+      C.offset_moves_aperture);
 
   // c_side.to_f_cleanup[type, 1, PTR]
   if (z_wall3d)
@@ -4124,11 +4104,11 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   C.alias = z_alias;
   // c_side.to_c2_set[character, 0, NOT]     string
   C.component_name = z_component_name;
-  // c_side.to_c2_set[character, 0, PTR]     shared_ptr<string>
+  // c_side.to_c2_set[character, 0, PTR]     std::optional<string>
   if (n_descrip == 0) {
-    C.descrip = nullptr;
+    C.descrip.reset();
   } else {
-    C.descrip = make_shared<string>(z_descrip);
+    C.descrip.emplace(z_descrip);
   }
   // c_side.to_c2_set[type, 0, NOT]     CPP_twiss
   twiss_to_c(z_a, C.a);
@@ -4140,50 +4120,50 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   xy_disp_to_c(z_x, C.x);
   // c_side.to_c2_set[type, 0, NOT]     CPP_xy_disp
   xy_disp_to_c(z_y, C.y);
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_ac_kicker>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_ac_kicker>
   if (n_ac_kick == 0) {
-    C.ac_kick = nullptr;
+    C.ac_kick.reset();
   } else {
-    C.ac_kick = make_shared<CPP_ac_kicker>();
+    C.ac_kick.emplace();
     ac_kicker_to_c(z_ac_kick, *C.ac_kick);
   }
   // c_side.to_c2_set[type, 0, NOT]     CPP_bookkeeping_state
   bookkeeping_state_to_c(z_bookkeeping_state, C.bookkeeping_state);
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_controller>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_controller>
   if (n_control == 0) {
-    C.control = nullptr;
+    C.control.reset();
   } else {
-    C.control = make_shared<CPP_controller>();
+    C.control.emplace();
     controller_to_c(z_control, *C.control);
   }
   // c_side.to_c2_set[type, 0, NOT]     CPP_floor_position
   floor_position_to_c(z_floor, C.floor);
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_high_energy_space_charge>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_high_energy_space_charge>
   if (n_high_energy_space_charge == 0) {
-    C.high_energy_space_charge = nullptr;
+    C.high_energy_space_charge.reset();
   } else {
-    C.high_energy_space_charge = make_shared<CPP_high_energy_space_charge>();
+    C.high_energy_space_charge.emplace();
     high_energy_space_charge_to_c(z_high_energy_space_charge, *C.high_energy_space_charge);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_mode3>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_mode3>
   if (n_mode3 == 0) {
-    C.mode3 = nullptr;
+    C.mode3.reset();
   } else {
-    C.mode3 = make_shared<CPP_mode3>();
+    C.mode3.emplace();
     mode3_to_c(z_mode3, *C.mode3);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_photon_element>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_photon_element>
   if (n_photon == 0) {
-    C.photon = nullptr;
+    C.photon.reset();
   } else {
-    C.photon = make_shared<CPP_photon_element>();
+    C.photon.emplace();
     photon_element_to_c(z_photon, *C.photon);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_rad_map_ele>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_rad_map_ele>
   if (n_rad_map == 0) {
-    C.rad_map = nullptr;
+    C.rad_map.reset();
   } else {
-    C.rad_map = make_shared<CPP_rad_map_ele>();
+    C.rad_map.emplace();
     rad_map_ele_to_c(z_rad_map, *C.rad_map);
   }
   // c_side.to_c2_set[type, 1, NOT]     FixedArray1D<CPP_taylor, 6>
@@ -4196,11 +4176,11 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   for (size_t i = 0; i < C.spin_taylor.size(); i++) {
     taylor_to_c(z_spin_taylor[i], C.spin_taylor[i]);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_wake>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_wake>
   if (n_wake == 0) {
-    C.wake = nullptr;
+    C.wake.reset();
   } else {
-    C.wake = make_shared<CPP_wake>();
+    C.wake.emplace();
     wake_to_c(z_wake, *C.wake);
   }
   // c_side.to_c2_set[type, 1, PTR]     VariableArray1D<CPP_wall3d>
@@ -4405,7 +4385,7 @@ extern "C" void complex_taylor_to_f2 (Opaque_complex_taylor_class*, c_Complex&, 
     CPP_complex_taylor_term**, Int);
 
 extern "C" void complex_taylor_to_f (const CPP_complex_taylor& C, Opaque_complex_taylor_class* F) {
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_complex_taylor_term>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_complex_taylor_term>
   auto n1_term = C.term.size();
   const CPP_complex_taylor_term **z_term = nullptr;
   if (n1_term != 0) {
@@ -4447,7 +4427,7 @@ extern "C" void branch_to_f2 (Opaque_branch_class*, c_Char, c_Int&, c_Int&, c_In
     CPP_ele**, Int, const CPP_lat_param&, const CPP_wall3d**, Int);
 
 extern "C" void branch_to_f (const CPP_branch& C, Opaque_branch_class* F) {
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_ele>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_ele>
   auto n1_ele = C.ele.size();
   const CPP_ele **z_ele = nullptr;
   if (n1_ele != 0) {
@@ -4455,7 +4435,7 @@ extern "C" void branch_to_f (const CPP_branch& C, Opaque_branch_class* F) {
     for (auto i{0}; i < n1_ele; i++)
       z_ele[i] = &C.ele[i];
   }
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_wall3d>
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_wall3d>
   auto n1_wall3d = C.wall3d.size();
   const CPP_wall3d **z_wall3d = nullptr;
   if (n1_wall3d != 0) {
@@ -4525,15 +4505,15 @@ extern "C" void lat_to_c (const Opaque_lat_class*, CPP_lat&);
 
 // c_side.to_f2_arg
 extern "C" void lat_to_f2 (Opaque_lat_class*, c_Char, c_Char, c_Char, c_Char, c_Char, c_Char*,
-    Int, const CPP_expression_atom**, Int, const CPP_mode_info&, Int, const CPP_mode_info&,
-    Int, const CPP_mode_info&, Int, const CPP_lat_param&, Int, const CPP_bookkeeping_state&,
+    Int, const CPP_expression_atom**, Int, const CPP_mode_info*, Int, const CPP_mode_info*,
+    Int, const CPP_mode_info*, Int, const CPP_lat_param*, Int, const CPP_bookkeeping_state&,
     const CPP_ele&, const CPP_ele**, Int, const CPP_branch**, Int, const CPP_control**, Int,
     const CPP_coord&, const CPP_beam_init&, const CPP_pre_tracker&, c_RealArr, Int, c_Int&,
     c_IntArr, Int, c_IntArr, Int, c_Int&, c_Int&, c_Int&, c_IntArr, Int, c_Int&, c_Int&,
     c_Int&);
 
 extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
-  // c_side.to_f_setup[character, 1, ALLOC]     VariableArray1D<string>
+  // c_side.to_f_setup[1D_ALLOC_character]     VariableArray1D<string>
   auto n1_print_str{C.print_str.size()};
   c_Char *z_print_str = nullptr;
   if (n1_print_str != 0) {
@@ -4541,7 +4521,7 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     for (auto i{0}; i < n1_print_str; i++)
       z_print_str[i] = C.print_str[i].c_str();
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_expression_atom>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_expression_atom>
   auto n1_constant = C.constant.size();
   const CPP_expression_atom **z_constant = nullptr;
   if (n1_constant != 0) {
@@ -4549,23 +4529,15 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     for (auto i{0}; i < n1_constant; i++)
       z_constant[i] = &C.constant[i];
   }
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_mode_info>
-  size_t n_a = 0;
-  if (C.a != nullptr)
-    n_a = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_mode_info>
-  size_t n_b = 0;
-  if (C.b != nullptr)
-    n_b = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_mode_info>
-  size_t n_z = 0;
-  if (C.z != nullptr)
-    n_z = 1;
-  // c_side.to_f_setup[type, 0, PTR]     shared_ptr<CPP_lat_param>
-  size_t n_param = 0;
-  if (C.param != nullptr)
-    n_param = 1;
-  // c_side.to_f_setup[type, 1, PTR]     VariableArray1D<CPP_ele>
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_mode_info>
+  auto n_a = C.a ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_mode_info>
+  auto n_b = C.b ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_mode_info>
+  auto n_z = C.z ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]     std::optional<CPP_lat_param>
+  auto n_param = C.param ? 1 : 0;
+  // c_side.to_f_setup[1D_PTR_type]     VariableArray1D<CPP_ele>
   auto n1_ele = C.ele.size();
   const CPP_ele **z_ele = nullptr;
   if (n1_ele != 0) {
@@ -4573,7 +4545,7 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     for (auto i{0}; i < n1_ele; i++)
       z_ele[i] = &C.ele[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_branch>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_branch>
   auto n1_branch = C.branch.size();
   const CPP_branch **z_branch = nullptr;
   if (n1_branch != 0) {
@@ -4581,7 +4553,7 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     for (auto i{0}; i < n1_branch; i++)
       z_branch[i] = &C.branch[i];
   }
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_control>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_control>
   auto n1_control = C.control.size();
   const CPP_control **z_control = nullptr;
   if (n1_control != 0) {
@@ -4589,21 +4561,17 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     for (auto i{0}; i < n1_control; i++)
       z_control[i] = &C.control[i];
   }
-  // c_side.to_f_setup[real, 1, ALLOC]     VariableArray1D<Real>
+  // c_side.to_f_setup[1D_ALLOC_real]     VariableArray1D<Real>
   auto n1_custom = C.custom.size();
   c_RealArr z_custom = nullptr;
   if (n1_custom > 0) {
     z_custom = &C.custom[0];
   }
-  // c_side.to_f_setup[integer, 0, PTR]     shared_ptr<Int>
-  size_t n_n_ele_track = 0;
-  if (C.n_ele_track != nullptr)
-    n_n_ele_track = 1;
-  // c_side.to_f_setup[integer, 0, PTR]     shared_ptr<Int>
-  size_t n_n_ele_max = 0;
-  if (C.n_ele_max != nullptr)
-    n_n_ele_max = 1;
-  // c_side.to_f_setup[integer, 1, ALLOC]     VariableArray1D<Int>
+  // c_side.to_f_setup[0D_PTR_integer]     std::optional<Int>
+  auto n_n_ele_track = C.n_ele_track ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_integer]     std::optional<Int>
+  auto n_n_ele_max = C.n_ele_max ? 1 : 0;
+  // c_side.to_f_setup[1D_ALLOC_integer]     VariableArray1D<Int>
   auto n1_ic = C.ic.size();
   c_IntArr z_ic = nullptr;
   if (n1_ic > 0) {
@@ -4613,10 +4581,12 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
   // c_side.to_f2_call
   lat_to_f2 (F, C.use_name.c_str(), C.lattice.c_str(), C.machine.c_str(),
       C.input_file_name.c_str(), C.title.c_str(), z_print_str, n1_print_str, z_constant,
-      n1_constant, *C.a, n_a, *C.b, n_b, *C.z, n_z, *C.param, n_param, C.lord_state,
-      C.ele_init, z_ele, n1_ele, z_branch, n1_branch, z_control, n1_control, C.particle_start,
-      C.beam_init, C.pre_tracker, z_custom, n1_custom, C.version, C.n_ele_track.get(),
-      n_n_ele_track, C.n_ele_max.get(), n_n_ele_max, C.n_control_max, C.n_ic_max,
+      n1_constant, (C.a ? &C.a.value() : nullptr), n_a, (C.b ? &C.b.value() : nullptr), n_b,
+      (C.z ? &C.z.value() : nullptr), n_z, (C.param ? &C.param.value() : nullptr), n_param,
+      C.lord_state, C.ele_init, z_ele, n1_ele, z_branch, n1_branch, z_control, n1_control,
+      C.particle_start, C.beam_init, C.pre_tracker, z_custom, n1_custom, C.version,
+      (C.n_ele_track ? &C.n_ele_track.value() : nullptr), n_n_ele_track, (C.n_ele_max ?
+      &C.n_ele_max.value() : nullptr), n_n_ele_max, C.n_control_max, C.n_ic_max,
       C.input_taylor_order, z_ic, n1_ic, C.photon_type, C.creation_hash,
       C.ramper_slave_bookkeeping);
 
@@ -4671,32 +4641,32 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   for (auto i{0}; i < n1_constant; i++) {
     expression_atom_to_c(z_constant[i], C.constant[i]);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_mode_info>
   if (n_a == 0) {
-    C.a = nullptr;
+    C.a.reset();
   } else {
-    C.a = make_shared<CPP_mode_info>();
+    C.a.emplace();
     mode_info_to_c(z_a, *C.a);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_mode_info>
   if (n_b == 0) {
-    C.b = nullptr;
+    C.b.reset();
   } else {
-    C.b = make_shared<CPP_mode_info>();
+    C.b.emplace();
     mode_info_to_c(z_b, *C.b);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_mode_info>
   if (n_z == 0) {
-    C.z = nullptr;
+    C.z.reset();
   } else {
-    C.z = make_shared<CPP_mode_info>();
+    C.z.emplace();
     mode_info_to_c(z_z, *C.z);
   }
-  // c_side.to_c2_set[type, 0, PTR]     shared_ptr<CPP_lat_param>
+  // c_side.to_c2_set[type, 0, PTR]     std::optional<CPP_lat_param>
   if (n_param == 0) {
-    C.param = nullptr;
+    C.param.reset();
   } else {
-    C.param = make_shared<CPP_lat_param>();
+    C.param.emplace();
     lat_param_to_c(z_param, *C.param);
   }
   // c_side.to_c2_set[type, 0, NOT]     CPP_bookkeeping_state
@@ -4729,19 +4699,17 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   C.custom << z_custom;
   // c_side.to_c2_set[integer, 0, NOT]     Int
   C.version = z_version;
-  // c_side.to_c2_set[integer, 0, PTR]     shared_ptr<Int>
+  // c_side.to_c2_set[integer, 0, PTR]     std::optional<Int>
   if (n_n_ele_track == 0) {
-    C.n_ele_track = nullptr;
+    C.n_ele_track.reset();
   } else {
-    C.n_ele_track = make_shared<Int>();
-    *C.n_ele_track = *z_n_ele_track;
+    C.n_ele_track.emplace(*z_n_ele_track);
   }
-  // c_side.to_c2_set[integer, 0, PTR]     shared_ptr<Int>
+  // c_side.to_c2_set[integer, 0, PTR]     std::optional<Int>
   if (n_n_ele_max == 0) {
-    C.n_ele_max = nullptr;
+    C.n_ele_max.reset();
   } else {
-    C.n_ele_max = make_shared<Int>();
-    *C.n_ele_max = *z_n_ele_max;
+    C.n_ele_max.emplace(*z_n_ele_max);
   }
   // c_side.to_c2_set[integer, 0, NOT]     Int
   C.n_control_max = z_n_control_max;
@@ -4772,7 +4740,7 @@ extern "C" void bunch_to_f2 (Opaque_bunch_class*, const CPP_coord**, Int, c_IntA
     c_Int&, c_Int&);
 
 extern "C" void bunch_to_f (const CPP_bunch& C, Opaque_bunch_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_coord>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_coord>
   auto n1_particle = C.particle.size();
   const CPP_coord **z_particle = nullptr;
   if (n1_particle != 0) {
@@ -4780,7 +4748,7 @@ extern "C" void bunch_to_f (const CPP_bunch& C, Opaque_bunch_class* F) {
     for (auto i{0}; i < n1_particle; i++)
       z_particle[i] = &C.particle[i];
   }
-  // c_side.to_f_setup[integer, 1, ALLOC]     VariableArray1D<Int>
+  // c_side.to_f_setup[1D_ALLOC_integer]     VariableArray1D<Int>
   auto n1_ix_z = C.ix_z.size();
   c_IntArr z_ix_z = nullptr;
   if (n1_ix_z > 0) {
@@ -4851,7 +4819,7 @@ extern "C" void bunch_params_to_f2 (Opaque_bunch_params_class*, const CPP_coord&
     c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Int&, c_Bool&);
 
 extern "C" void bunch_params_to_f (const CPP_bunch_params& C, Opaque_bunch_params_class* F) {
-  // c_side.to_f_setup[real, 2, NOT]     FixedArray2D<Real, 6, 6>
+  // c_side.to_f_setup[2D_NOT_real]     FixedArray2D<Real, 6, 6>
   Real z_sigma[6 * 6];
   matrix_to_vec(C.sigma, z_sigma);
 
@@ -4931,7 +4899,7 @@ extern "C" void beam_to_c (const Opaque_beam_class*, CPP_beam&);
 extern "C" void beam_to_f2 (Opaque_beam_class*, const CPP_bunch**, Int);
 
 extern "C" void beam_to_f (const CPP_beam& C, Opaque_beam_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_bunch>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_bunch>
   auto n1_bunch = C.bunch.size();
   const CPP_bunch **z_bunch = nullptr;
   if (n1_bunch != 0) {
@@ -5045,7 +5013,7 @@ extern "C" void aperture_scan_to_f2 (Opaque_aperture_scan_class*, const CPP_aper
     Int, const CPP_coord&, c_Real&);
 
 extern "C" void aperture_scan_to_f (const CPP_aperture_scan& C, Opaque_aperture_scan_class* F) {
-  // c_side.to_f_setup[type, 1, ALLOC]     VariableArray1D<CPP_aperture_point>
+  // c_side.to_f_setup[1D_ALLOC_type]     VariableArray1D<CPP_aperture_point>
   auto n1_point = C.point.size();
   const CPP_aperture_point **z_point = nullptr;
   if (n1_point != 0) {
