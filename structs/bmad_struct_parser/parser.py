@@ -774,17 +774,17 @@ def convert(
             )
         except Exception as ex:
             failed[source_fn] = ex
-            raise
 
     for to_skip in source_config.skip_structs:
+        found = False
         for struct in list(structs):
             if struct.name.lower() == to_skip.lower():
                 logger.debug(
                     f"User config skipped struct: {to_skip} (found in {struct.filename})"
                 )
                 structs.remove(struct)
-                break
-        else:
+                found = True
+        if not found:
             logger.warning(f"Unknown user-specified struct skip: {to_skip}")
 
     unique_files = set(struct.filename for struct in structs)

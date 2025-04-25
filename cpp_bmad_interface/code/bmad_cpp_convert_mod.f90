@@ -927,13 +927,13 @@ real(c_double) :: z_x0, z_y0, z_x1, z_coef(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x0 = z_x0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y0 = z_y0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x1 = z_x1
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%coef = z_coef(1:4)
 
 end subroutine spline_to_f2
@@ -1012,13 +1012,13 @@ real(c_double) :: z_polarization, z_theta, z_phi, z_xi
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%polarization = z_polarization
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%theta = z_theta
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%xi = z_xi
 
 end subroutine spin_polar_to_f2
@@ -1099,11 +1099,11 @@ type(c_ptr), value :: z_spline
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%amp = z_amp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%time = z_time
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call spline_to_f(z_spline, c_loc(F%spline))
 
 end subroutine ac_kicker_time_to_f2
@@ -1184,13 +1184,13 @@ integer(c_int) :: z_rf_clock_harmonic
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%f = z_f
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%amp = z_amp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%rf_clock_harmonic = z_rf_clock_harmonic
 
 end subroutine ac_kicker_freq_to_f2
@@ -1240,7 +1240,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_amp_vs_time = 0
   if (allocated(F%amp_vs_time)) then
     n1_amp_vs_time = size(F%amp_vs_time); lb1 = lbound(F%amp_vs_time, 1) - 1
@@ -1249,7 +1249,7 @@ call c_f_pointer (Fp, F)
     z_amp_vs_time(jd1) = c_loc(F%amp_vs_time(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_frequency = 0
   if (allocated(F%frequency)) then
     n1_frequency = size(F%frequency); lb1 = lbound(F%frequency, 1) - 1
@@ -1295,7 +1295,7 @@ integer(c_int), value :: n1_amp_vs_time, n1_frequency
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_amp_vs_time == 0) then
     if (allocated(F%amp_vs_time)) deallocate(F%amp_vs_time)
     else
@@ -1308,7 +1308,7 @@ call c_f_pointer (Fp, F)
     call ac_kicker_time_to_f (z_amp_vs_time(jd1), c_loc(F%amp_vs_time(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_frequency == 0) then
     if (allocated(F%frequency)) deallocate(F%frequency)
     else
@@ -1398,11 +1398,11 @@ real(c_double) :: z_c0, z_c1, z_n_exp
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%c0 = z_c0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%c1 = z_c1
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%n_exp = z_n_exp
 
 end subroutine interval1_coef_to_f2
@@ -1458,17 +1458,17 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_angle = 0
   if (allocated(F%angle)) then
     n1_angle = size(F%angle, 1)
   endif
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_energy = 0
   if (allocated(F%energy)) then
     n1_energy = size(F%energy, 1)
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_int1 = 0
   if (allocated(F%int1)) then
     n1_int1 = size(F%int1); lb1 = lbound(F%int1, 1) - 1
@@ -1477,19 +1477,19 @@ call c_f_pointer (Fp, F)
     z_int1(jd1) = c_loc(F%int1(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[real, 2, ALLOC]
+!! f_side.to_c_trans[2D_ALLOC_real]
   if (allocated(F%p_reflect)) then
     n1_p_reflect = size(F%p_reflect, 1)
     n2_p_reflect = size(F%p_reflect, 2)
     else
     n1_p_reflect = 0; n2_p_reflect = 0
   endif
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_p_reflect_scratch = 0
   if (allocated(F%p_reflect_scratch)) then
     n1_p_reflect_scratch = size(F%p_reflect_scratch, 1)
   endif
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_bragg_angle = 0
   if (allocated(F%bragg_angle)) then
     n1_bragg_angle = size(F%bragg_angle, 1)
@@ -1539,7 +1539,7 @@ real(c_double) :: z_max_energy
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%angle)) then
     if (n1_angle == 0 .or. any(shape(F%angle) /= [n1_angle])) deallocate(F%angle)
     if (any(lbound(F%angle) /= 1)) deallocate(F%angle)
@@ -1551,7 +1551,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%angle)) deallocate(F%angle)
   endif
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%energy)) then
     if (n1_energy == 0 .or. any(shape(F%energy) /= [n1_energy])) deallocate(F%energy)
     if (any(lbound(F%energy) /= 1)) deallocate(F%energy)
@@ -1563,7 +1563,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%energy)) deallocate(F%energy)
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_int1 == 0) then
     if (allocated(F%int1)) deallocate(F%int1)
     else
@@ -1576,7 +1576,7 @@ call c_f_pointer (Fp, F)
     call interval1_coef_to_f (z_int1(jd1), c_loc(F%int1(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 2, ALLOC]
+!! f_side.to_f2_trans[2D_ALLOC_real]
   if (allocated(F%p_reflect)) then
     if (n1_p_reflect == 0 .or. any(shape(F%p_reflect) /= [n1_p_reflect, n2_p_reflect])) deallocate(F%p_reflect)
     if (any(lbound(F%p_reflect) /= 1)) deallocate(F%p_reflect)
@@ -1588,9 +1588,9 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%p_reflect)) deallocate(F%p_reflect)
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%max_energy = z_max_energy
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%p_reflect_scratch)) then
     if (n1_p_reflect_scratch == 0 .or. any(shape(F%p_reflect_scratch) /= [n1_p_reflect_scratch])) deallocate(F%p_reflect_scratch)
     if (any(lbound(F%p_reflect_scratch) /= 1)) deallocate(F%p_reflect_scratch)
@@ -1602,7 +1602,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%p_reflect_scratch)) deallocate(F%p_reflect_scratch)
   endif
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%bragg_angle)) then
     if (n1_bragg_angle == 0 .or. any(shape(F%bragg_angle) /= [n1_bragg_angle])) deallocate(F%bragg_angle)
     if (any(lbound(F%bragg_angle) /= 1)) deallocate(F%bragg_angle)
@@ -1664,7 +1664,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_table = 0
   if (allocated(F%table)) then
     n1_table = size(F%table); lb1 = lbound(F%table, 1) - 1
@@ -1716,13 +1716,13 @@ integer(c_int) :: z_ix_surface
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_description, F%description)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_reflectivity_file, F%reflectivity_file)
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_table == 0) then
     if (allocated(F%table)) deallocate(F%table)
     else
@@ -1735,11 +1735,11 @@ call c_f_pointer (Fp, F)
     call photon_reflect_table_to_f (z_table(jd1), c_loc(F%table(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%surface_roughness_rms = z_surface_roughness_rms
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%roughness_correlation_len = z_roughness_correlation_len
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_surface = z_ix_surface
 
 end subroutine photon_reflect_surface_to_f2
@@ -1830,47 +1830,47 @@ integer(c_int) :: z_species, z_location
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%vec = z_vec(1:6)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%s = z_s
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%t = z_t
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%spin = z_spin(1:3)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%field = z_field(1:2)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%phase = z_phase(1:2)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%charge = z_charge
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dt_ref = z_dt_ref
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%r = z_r
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%p0c = z_p0c
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%E_potential = z_E_potential
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%beta = z_beta
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_branch = z_ix_branch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_turn = z_ix_turn
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_user = z_ix_user
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%state = z_state
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%direction = z_direction
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%time_dir = z_time_dir
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%species = z_species
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%location = z_location
 
 end subroutine coord_to_f2
@@ -1917,7 +1917,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_orbit = 0
   if (allocated(F%orbit)) then
     n1_orbit = size(F%orbit); lb1 = lbound(F%orbit, 1) - 1
@@ -1962,7 +1962,7 @@ integer(c_int), value :: n1_orbit
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_orbit == 0) then
     if (allocated(F%orbit)) deallocate(F%orbit)
     else
@@ -2057,25 +2057,25 @@ real(c_double) :: z_Cbar12_b, z_phi_a, z_phi_b
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%K_22a = z_K_22a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%K_12a = z_K_12a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%K_11b = z_K_11b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%K_12b = z_K_12b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%Cbar22_a = z_Cbar22_a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%Cbar12_a = z_Cbar12_a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%Cbar11_b = z_Cbar11_b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%Cbar12_b = z_Cbar12_b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi_a = z_phi_a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi_b = z_phi_b
 
 end subroutine bpm_phase_coupling_to_f2
@@ -2158,11 +2158,11 @@ real(c_double) :: z_value
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%type = z_type
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%value = z_value
 
 end subroutine expression_atom_to_f2
@@ -2215,22 +2215,22 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_w = 0
   if (allocated(F%w)) then
     n1_w = size(F%w, 1)
   endif
-!! f_side.to_c_trans[complex, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_complex]
   n1_fw = 0
   if (allocated(F%fw)) then
     n1_fw = size(F%fw, 1)
   endif
-!! f_side.to_c_trans[complex, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_complex]
   n1_fbunch = 0
   if (allocated(F%fbunch)) then
     n1_fbunch = size(F%fbunch, 1)
   endif
-!! f_side.to_c_trans[complex, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_complex]
   n1_w_out = 0
   if (allocated(F%w_out)) then
     n1_w_out = size(F%w_out, 1)
@@ -2279,7 +2279,7 @@ logical(c_bool) :: z_time_based
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%w)) then
     if (n1_w == 0 .or. any(shape(F%w) /= [n1_w])) deallocate(F%w)
     if (any(lbound(F%w) /= 1)) deallocate(F%w)
@@ -2291,7 +2291,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%w)) deallocate(F%w)
   endif
-!! f_side.to_f2_trans[complex, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_complex]
   if (allocated(F%fw)) then
     if (n1_fw == 0 .or. any(shape(F%fw) /= [n1_fw])) deallocate(F%fw)
     if (any(lbound(F%fw) /= 1)) deallocate(F%fw)
@@ -2303,7 +2303,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%fw)) deallocate(F%fw)
   endif
-!! f_side.to_f2_trans[complex, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_complex]
   if (allocated(F%fbunch)) then
     if (n1_fbunch == 0 .or. any(shape(F%fbunch) /= [n1_fbunch])) deallocate(F%fbunch)
     if (any(lbound(F%fbunch) /= 1)) deallocate(F%fbunch)
@@ -2315,7 +2315,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%fbunch)) deallocate(F%fbunch)
   endif
-!! f_side.to_f2_trans[complex, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_complex]
   if (allocated(F%w_out)) then
     if (n1_w_out == 0 .or. any(shape(F%w_out) /= [n1_w_out])) deallocate(F%w_out)
     if (any(lbound(F%w_out) /= 1)) deallocate(F%w_out)
@@ -2327,15 +2327,15 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%w_out)) deallocate(F%w_out)
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz = z_dz
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z0 = z_z0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%smoothing_sigma = z_smoothing_sigma
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%position_dependence = z_position_dependence
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%time_based = f_logic(z_time_based)
 
 end subroutine wake_sr_z_long_to_f2
@@ -2421,25 +2421,25 @@ integer(c_int) :: z_polarization, z_position_dependence
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%amp = z_amp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%damp = z_damp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%k = z_k
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_sin = z_b_sin
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_cos = z_b_cos
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_sin = z_a_sin
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_cos = z_a_cos
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%polarization = z_polarization
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%position_dependence = z_position_dependence
 
 end subroutine wake_sr_mode_to_f2
@@ -2494,7 +2494,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_long = 0
   if (allocated(F%long)) then
     n1_long = size(F%long); lb1 = lbound(F%long, 1) - 1
@@ -2503,7 +2503,7 @@ call c_f_pointer (Fp, F)
     z_long(jd1) = c_loc(F%long(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_trans = 0
   if (allocated(F%trans)) then
     n1_trans = size(F%trans); lb1 = lbound(F%trans, 1) - 1
@@ -2555,11 +2555,11 @@ logical(c_bool) :: z_scale_with_length
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file, F%file)
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call wake_sr_z_long_to_f(z_z_long, c_loc(F%z_long))
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_long == 0) then
     if (allocated(F%long)) deallocate(F%long)
     else
@@ -2572,7 +2572,7 @@ call c_f_pointer (Fp, F)
     call wake_sr_mode_to_f (z_long(jd1), c_loc(F%long(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_trans == 0) then
     if (allocated(F%trans)) deallocate(F%trans)
     else
@@ -2585,17 +2585,17 @@ call c_f_pointer (Fp, F)
     call wake_sr_mode_to_f (z_trans(jd1), c_loc(F%trans(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z_ref_long = z_z_ref_long
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z_ref_trans = z_z_ref_trans
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z_max = z_z_max
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%amp_scale = z_amp_scale
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z_scale = z_z_scale
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%scale_with_length = f_logic(z_scale_with_length)
 
 end subroutine wake_sr_to_f2
@@ -2683,31 +2683,31 @@ logical(c_bool) :: z_polarized
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%freq = z_freq
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%freq_in = z_freq_in
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%R_over_Q = z_R_over_Q
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%Q = z_Q
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%damp = z_damp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%angle = z_angle
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_sin = z_b_sin
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_cos = z_b_cos
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_sin = z_a_sin
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_cos = z_a_cos
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%m = z_m
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%polarized = f_logic(z_polarized)
 
 end subroutine wake_lr_mode_to_f2
@@ -2758,7 +2758,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_mode = 0
   if (allocated(F%mode)) then
     n1_mode = size(F%mode); lb1 = lbound(F%mode, 1) - 1
@@ -2808,9 +2808,9 @@ logical(c_bool) :: z_self_wake_on
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file, F%file)
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_mode == 0) then
     if (allocated(F%mode)) deallocate(F%mode)
     else
@@ -2823,15 +2823,15 @@ call c_f_pointer (Fp, F)
     call wake_lr_mode_to_f (z_mode(jd1), c_loc(F%mode(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%t_ref = z_t_ref
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%freq_spread = z_freq_spread
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%amp_scale = z_amp_scale
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%time_scale = z_time_scale
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%self_wake_on = f_logic(z_self_wake_on)
 
 end subroutine wake_lr_to_f2
@@ -2910,9 +2910,9 @@ integer(c_int) :: z_ix_ele, z_ix_branch
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_branch = z_ix_branch
 
 end subroutine lat_ele_loc_to_f2
@@ -2991,9 +2991,9 @@ type(c_ptr), value :: z_sr, z_lr
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call wake_sr_to_f(z_sr, c_loc(F%sr))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call wake_lr_to_f(z_lr, c_loc(F%lr))
 
 end subroutine wake_to_f2
@@ -3074,9 +3074,9 @@ integer(c_int) :: z_expn(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%coef = z_coef
-!! f_side.to_f2_trans[integer, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_integer]
   F%expn = z_expn(1:6)
 
 end subroutine taylor_term_to_f2
@@ -3124,7 +3124,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_term = 0
   if (associated(F%term)) then
     n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
@@ -3170,9 +3170,9 @@ integer(c_int), value :: n1_term
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%ref = z_ref
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_term == 0) then
     if (associated(F%term)) deallocate(F%term)
     else
@@ -3264,9 +3264,9 @@ integer(c_int) :: z_expn(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%coef = z_coef
-!! f_side.to_f2_trans[integer, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_integer]
   F%expn = z_expn(1:2)
 
 end subroutine em_taylor_term_to_f2
@@ -3314,7 +3314,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_term = 0
   if (allocated(F%term)) then
     n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
@@ -3360,9 +3360,9 @@ integer(c_int), value :: n1_term
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%ref = z_ref
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_term == 0) then
     if (allocated(F%term)) deallocate(F%term)
     else
@@ -3457,23 +3457,23 @@ integer(c_int) :: z_family, z_form
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%coef = z_coef
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%kx = z_kx
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%ky = z_ky
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%kz = z_kz
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x0 = z_x0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y0 = z_y0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi_z = z_phi_z
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%family = z_family
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%form = z_form
 
 end subroutine cartesian_map_term1_to_f2
@@ -3522,7 +3522,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_term = 0
   if (allocated(F%term)) then
     n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
@@ -3569,11 +3569,11 @@ integer(c_int), value :: n1_term
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file, F%file)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_link = z_n_link
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_term == 0) then
     if (allocated(F%term)) deallocate(F%term)
     else
@@ -3633,7 +3633,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_ptr = 0
   if (associated(F%ptr)) n_ptr = 1
 
@@ -3677,17 +3677,17 @@ integer(c_int), value :: n_ptr
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%field_scale = z_field_scale
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:3)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%master_parameter = z_master_parameter
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ele_anchor_pt = z_ele_anchor_pt
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%field_type = z_field_type
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_ptr == 0) then
     if (associated(F%ptr)) deallocate(F%ptr)
     else
@@ -3771,9 +3771,9 @@ complex(c_double_complex) :: z_e_coef, z_b_coef
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%e_coef = z_e_coef
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%b_coef = z_b_coef
 
 end subroutine cylindrical_map_term1_to_f2
@@ -3822,7 +3822,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_term = 0
   if (allocated(F%term)) then
     n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
@@ -3869,11 +3869,11 @@ integer(c_int), value :: n1_term
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file, F%file)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_link = z_n_link
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_term == 0) then
     if (allocated(F%term)) deallocate(F%term)
     else
@@ -3933,7 +3933,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_ptr = 0
   if (associated(F%ptr)) n_ptr = 1
 
@@ -3978,25 +3978,25 @@ integer(c_int), value :: n_ptr
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%m = z_m
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%harmonic = z_harmonic
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi0_fieldmap = z_phi0_fieldmap
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%theta0_azimuth = z_theta0_azimuth
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%field_scale = z_field_scale
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%master_parameter = z_master_parameter
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ele_anchor_pt = z_ele_anchor_pt
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz = z_dz
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:3)
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_ptr == 0) then
     if (associated(F%ptr)) deallocate(F%ptr)
     else
@@ -4080,9 +4080,9 @@ complex(c_double_complex) :: z_E(*), z_B(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[complex, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_complex]
   F%E = z_E(1:3)
-!! f_side.to_f2_trans[complex, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_complex]
   F%B = z_B(1:3)
 
 end subroutine grid_field_pt1_to_f2
@@ -4163,9 +4163,9 @@ integer(c_int) :: z_n_link
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file, F%file)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_link = z_n_link
 
 end subroutine grid_field_pt_to_f2
@@ -4216,7 +4216,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_ptr = 0
   if (associated(F%ptr)) n_ptr = 1
 
@@ -4263,29 +4263,29 @@ integer(c_int), value :: n_ptr
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%geometry = z_geometry
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%harmonic = z_harmonic
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi0_fieldmap = z_phi0_fieldmap
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%field_scale = z_field_scale
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%field_type = z_field_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%master_parameter = z_master_parameter
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ele_anchor_pt = z_ele_anchor_pt
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%interpolation_order = z_interpolation_order
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%dr = z_dr(1:3)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:3)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%curved_ref_frame = f_logic(z_curved_ref_frame)
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_ptr == 0) then
     if (associated(F%ptr)) deallocate(F%ptr)
     else
@@ -4369,15 +4369,15 @@ real(c_double) :: z_r(*), z_w(*), z_theta, z_phi, z_psi
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r = z_r(1:3)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_w, F%w)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%theta = z_theta
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%psi = z_psi
 
 end subroutine floor_position_to_f2
@@ -4461,21 +4461,21 @@ real(c_double) :: z_kick_const, z_sig_x, z_sig_y, z_phi, z_sin_phi, z_cos_phi, z
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_closed_orb, c_loc(F%closed_orb))
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%kick_const = z_kick_const
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_x = z_sig_x
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_y = z_sig_y
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sin_phi = z_sin_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%cos_phi = z_cos_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_z = z_sig_z
 
 end subroutine high_energy_space_charge_to_f2
@@ -4554,13 +4554,13 @@ real(c_double) :: z_eta, z_etap, z_deta_ds, z_sigma
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%eta = z_eta
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%etap = z_etap
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%deta_ds = z_deta_ds
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigma = z_sigma
 
 end subroutine xy_disp_to_f2
@@ -4644,27 +4644,27 @@ real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%beta = z_beta
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%alpha = z_alpha
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%gamma = z_gamma
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%eta = z_eta
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%etap = z_etap
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%deta_ds = z_deta_ds
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigma = z_sigma
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigma_p = z_sigma_p
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%emit = z_emit
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%norm_emit = z_norm_emit
 
 end subroutine twiss_to_f2
@@ -4746,17 +4746,17 @@ type(c_ptr), value :: z_a, z_b, z_c, z_x, z_y
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_v, F%v)
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_a, c_loc(F%a))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_b, c_loc(F%b))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_c, c_loc(F%c))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_x, c_loc(F%x))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_y, c_loc(F%y))
 
 end subroutine mode3_to_f2
@@ -4842,23 +4842,23 @@ logical(c_bool) :: z_has_misalign
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%attributes = z_attributes
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%control = z_control
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%floor_position = z_floor_position
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%s_position = z_s_position
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ref_energy = z_ref_energy
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%mat6 = z_mat6
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%rad_int = z_rad_int
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ptc = z_ptc
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%has_misalign = f_logic(z_has_misalign)
 
 end subroutine bookkeeping_state_to_f2
@@ -4940,15 +4940,15 @@ real(c_double) :: z_ref_orb(*), z_damp_dmat(*), z_xfer_damp_vec(*), z_xfer_damp_
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%ref_orb = z_ref_orb(1:6)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_damp_dmat, F%damp_dmat)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%xfer_damp_vec = z_xfer_damp_vec(1:6)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_xfer_damp_mat, F%xfer_damp_mat)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_stoc_mat, F%stoc_mat)
 
 end subroutine rad_map_to_f2
@@ -5029,11 +5029,11 @@ logical(c_bool) :: z_stale
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call rad_map_to_f(z_rm0, c_loc(F%rm0))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call rad_map_to_f(z_rm1, c_loc(F%rm1))
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%stale = f_logic(z_stale)
 
 end subroutine rad_map_ele_to_f2
@@ -5082,7 +5082,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[real, 2, ALLOC]
+!! f_side.to_c_trans[2D_ALLOC_real]
   if (allocated(F%deriv)) then
     n1_deriv = size(F%deriv, 1)
     n2_deriv = size(F%deriv, 2)
@@ -5129,13 +5129,13 @@ integer(c_int), value :: n1_deriv, n2_deriv
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%m = z_m
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%sincos = z_sincos
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_deriv_max = z_n_deriv_max
-!! f_side.to_f2_trans[real, 2, ALLOC]
+!! f_side.to_f2_trans[2D_ALLOC_real]
   if (allocated(F%deriv)) then
     if (n1_deriv == 0 .or. any(shape(F%deriv) /= [n1_deriv, n2_deriv])) deallocate(F%deriv)
     if (any(lbound(F%deriv) /= 1)) deallocate(F%deriv)
@@ -5197,7 +5197,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_gg = 0
   if (allocated(F%gg)) then
     n1_gg = size(F%gg); lb1 = lbound(F%gg, 1) - 1
@@ -5249,9 +5249,9 @@ logical(c_bool) :: z_curved_ref_frame
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file, F%file)
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_gg == 0) then
     if (allocated(F%gg)) deallocate(F%gg)
     else
@@ -5264,23 +5264,23 @@ call c_f_pointer (Fp, F)
     call gen_grad1_to_f (z_gg(jd1), c_loc(F%gg(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ele_anchor_pt = z_ele_anchor_pt
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%field_type = z_field_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%iz0 = z_iz0
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%iz1 = z_iz1
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz = z_dz
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:3)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%field_scale = z_field_scale
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%master_parameter = z_master_parameter
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%curved_ref_frame = f_logic(z_curved_ref_frame)
 
 end subroutine gen_grad_map_to_f2
@@ -5359,15 +5359,15 @@ real(c_double) :: z_x0, z_y0, z_z0, z_dz_dx, z_dz_dy
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x0 = z_x0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y0 = z_y0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z0 = z_z0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz_dx = z_dz_dx
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz_dy = z_dz_dy
 
 end subroutine surface_segmented_pt_to_f2
@@ -5417,7 +5417,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 2, ALLOC]
+!! f_side.to_c_trans[2D_ALLOC_type]
   if (allocated(F%pt)) then
     n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
     n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
@@ -5467,13 +5467,13 @@ integer(c_int), value :: n1_pt, n2_pt
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%active = f_logic(z_active)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%dr = z_dr(1:2)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:2)
-!! f_side.to_f2_trans[type, 2, ALLOC]
+!! f_side.to_f2_trans[2D_ALLOC_type]
   if (n1_pt == 0) then
     if (allocated(F%pt)) deallocate(F%pt)
     else
@@ -5567,17 +5567,17 @@ real(c_double) :: z_x0, z_y0, z_rot_y, z_rot_t, z_rot_y_rms, z_rot_t_rms
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x0 = z_x0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y0 = z_y0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rot_y = z_rot_y
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rot_t = z_rot_t
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rot_y_rms = z_rot_y_rms
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rot_t_rms = z_rot_t_rms
 
 end subroutine surface_h_misalign_pt_to_f2
@@ -5627,7 +5627,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 2, ALLOC]
+!! f_side.to_c_trans[2D_ALLOC_type]
   if (allocated(F%pt)) then
     n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
     n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
@@ -5677,13 +5677,13 @@ integer(c_int), value :: n1_pt, n2_pt
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%active = f_logic(z_active)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%dr = z_dr(1:2)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:2)
-!! f_side.to_f2_trans[type, 2, ALLOC]
+!! f_side.to_f2_trans[2D_ALLOC_type]
   if (n1_pt == 0) then
     if (allocated(F%pt)) deallocate(F%pt)
     else
@@ -5777,17 +5777,17 @@ real(c_double) :: z_x0, z_y0, z_z0, z_dz_dx, z_dz_dy, z_d2z_dxdy
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x0 = z_x0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y0 = z_y0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z0 = z_z0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz_dx = z_dz_dx
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dz_dy = z_dz_dy
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%d2z_dxdy = z_d2z_dxdy
 
 end subroutine surface_displacement_pt_to_f2
@@ -5837,7 +5837,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 2, ALLOC]
+!! f_side.to_c_trans[2D_ALLOC_type]
   if (allocated(F%pt)) then
     n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
     n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
@@ -5887,13 +5887,13 @@ integer(c_int), value :: n1_pt, n2_pt
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%active = f_logic(z_active)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%dr = z_dr(1:2)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:2)
-!! f_side.to_f2_trans[type, 2, ALLOC]
+!! f_side.to_f2_trans[2D_ALLOC_type]
   if (n1_pt == 0) then
     if (allocated(F%pt)) deallocate(F%pt)
     else
@@ -5985,7 +5985,7 @@ real(c_double) :: z_r(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r = z_r(1:3)
 
 end subroutine target_point_to_f2
@@ -6069,13 +6069,13 @@ logical(c_bool) :: z_has_curvature
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_xy, F%xy)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%spherical = z_spherical
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%elliptical = z_elliptical(1:3)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%has_curvature = f_logic(z_has_curvature)
 
 end subroutine surface_curvature_to_f2
@@ -6122,7 +6122,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, NOT]
+!! f_side.to_c_trans[1D_NOT_type]
   do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
   z_corner(jd1) = c_loc(F%corner(jd1+lb1))
   enddo
@@ -6163,17 +6163,17 @@ type(c_ptr) :: z_corner(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%type = z_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_corner = z_n_corner
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call lat_ele_loc_to_f(z_ele_loc, c_loc(F%ele_loc))
-!! f_side.to_f2_trans[type, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_type]
   do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
   call target_point_to_f(z_corner(jd1), c_loc(F%corner(jd1+lb1)))
   enddo
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call target_point_to_f(z_center, c_loc(F%center))
 
 end subroutine photon_target_to_f2
@@ -6257,21 +6257,21 @@ real(c_double) :: z_h_norm(*), z_l_ref(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%f0_m1 = z_f0_m1
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%f0_m2 = z_f0_m2
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%f_0 = z_f_0
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%f_h = z_f_h
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%f_hbar = z_f_hbar
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%f_hkl = z_f_hkl
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%h_norm = z_h_norm(1:3)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%l_ref = z_l_ref(1:3)
 
 end subroutine photon_material_to_f2
@@ -6358,25 +6358,25 @@ real(c_double) :: z_intensity_x, z_intensity_y, z_intensity, z_orbit(*), z_orbit
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer8, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer8]
   F%n_photon = z_n_photon
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%E_x = z_E_x
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%E_y = z_E_y
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%intensity_x = z_intensity_x
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%intensity_y = z_intensity_y
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%intensity = z_intensity
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%orbit = z_orbit(1:6)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%orbit_rms = z_orbit_rms(1:6)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%init_orbit = z_init_orbit(1:6)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%init_orbit_rms = z_init_orbit_rms(1:6)
 
 end subroutine pixel_pt_to_f2
@@ -6427,7 +6427,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 2, ALLOC]
+!! f_side.to_c_trans[2D_ALLOC_type]
   if (allocated(F%pt)) then
     n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
     n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
@@ -6478,17 +6478,17 @@ integer(c_int), value :: n1_pt, n2_pt
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%dr = z_dr(1:2)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:2)
-!! f_side.to_f2_trans[integer8, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer8]
   F%n_track_tot = z_n_track_tot
-!! f_side.to_f2_trans[integer8, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer8]
   F%n_hit_detec = z_n_hit_detec
-!! f_side.to_f2_trans[integer8, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer8]
   F%n_hit_pixel = z_n_hit_pixel
-!! f_side.to_f2_trans[type, 2, ALLOC]
+!! f_side.to_f2_trans[2D_ALLOC_type]
   if (n1_pt == 0) then
     if (allocated(F%pt)) deallocate(F%pt)
     else
@@ -6557,7 +6557,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_init_energy_prob = 0
   if (allocated(F%init_energy_prob)) then
     n1_init_energy_prob = size(F%init_energy_prob); lb1 = lbound(F%init_energy_prob, 1) - 1
@@ -6566,7 +6566,7 @@ call c_f_pointer (Fp, F)
     z_init_energy_prob(jd1) = c_loc(F%init_energy_prob(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_integrated_init_energy_prob = 0
   if (allocated(F%integrated_init_energy_prob)) then
     n1_integrated_init_energy_prob = size(F%integrated_init_energy_prob, 1)
@@ -6619,27 +6619,27 @@ real(c_double), pointer :: f_integrated_init_energy_prob(:)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call surface_curvature_to_f(z_curvature, c_loc(F%curvature))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call photon_target_to_f(z_target, c_loc(F%target))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call photon_material_to_f(z_material, c_loc(F%material))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call surface_segmented_to_f(z_segmented, c_loc(F%segmented))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call surface_h_misalign_to_f(z_h_misalign, c_loc(F%h_misalign))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call surface_displacement_to_f(z_displacement, c_loc(F%displacement))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call pixel_detec_to_f(z_pixel, c_loc(F%pixel))
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%reflectivity_table_type = z_reflectivity_table_type
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call photon_reflect_table_to_f(z_reflectivity_table_sigma, c_loc(F%reflectivity_table_sigma))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call photon_reflect_table_to_f(z_reflectivity_table_pi, c_loc(F%reflectivity_table_pi))
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_init_energy_prob == 0) then
     if (allocated(F%init_energy_prob)) deallocate(F%init_energy_prob)
     else
@@ -6652,7 +6652,7 @@ call c_f_pointer (Fp, F)
     call spline_to_f (z_init_energy_prob(jd1), c_loc(F%init_energy_prob(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%integrated_init_energy_prob)) then
     if (n1_integrated_init_energy_prob == 0 .or. any(shape(F%integrated_init_energy_prob) /= [n1_integrated_init_energy_prob])) deallocate(F%integrated_init_energy_prob)
     if (any(lbound(F%integrated_init_energy_prob) /= 1)) deallocate(F%integrated_init_energy_prob)
@@ -6748,23 +6748,23 @@ integer(c_int) :: z_type
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x = z_x
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y = z_y
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%radius_x = z_radius_x
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%radius_y = z_radius_y
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%tilt = z_tilt
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%angle = z_angle
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x0 = z_x0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y0 = z_y0
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%type = z_type
 
 end subroutine wall3d_vertex_to_f2
@@ -6821,7 +6821,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_v = 0
   if (allocated(F%v)) then
     n1_v = size(F%v); lb1 = lbound(F%v, 1) - 1
@@ -6830,7 +6830,7 @@ call c_f_pointer (Fp, F)
     z_v(jd1) = c_loc(F%v(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_surface = 0
   if (associated(F%surface)) n_surface = 1
 
@@ -6883,11 +6883,11 @@ real(c_double) :: z_dr_ds, z_p1_coef(*), z_p2_coef(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_material, F%material)
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_v == 0) then
     if (allocated(F%v)) deallocate(F%v)
     else
@@ -6900,44 +6900,44 @@ call c_f_pointer (Fp, F)
     call wall3d_vertex_to_f (z_v(jd1), c_loc(F%v(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_surface == 0) then
     if (associated(F%surface)) deallocate(F%surface)
     else
     if (.not. associated(F%surface)) allocate(F%surface)
     call photon_reflect_surface_to_f (z_surface, c_loc(F%surface))
   endif
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%type = z_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_vertex_input = z_n_vertex_input
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_branch = z_ix_branch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%vertices_state = z_vertices_state
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%patch_in_region = f_logic(z_patch_in_region)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%thickness = z_thickness
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%s = z_s
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%r0 = z_r0(1:2)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dx0_ds = z_dx0_ds
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dy0_ds = z_dy0_ds
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%x0_coef = z_x0_coef(1:4)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%y0_coef = z_y0_coef(1:4)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dr_ds = z_dr_ds
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%p1_coef = z_p1_coef(1:3)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%p2_coef = z_p2_coef(1:3)
 
 end subroutine wall3d_section_to_f2
@@ -6990,7 +6990,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_section = 0
   if (allocated(F%section)) then
     n1_section = size(F%section); lb1 = lbound(F%section, 1) - 1
@@ -7043,25 +7043,25 @@ integer(c_int), value :: n1_section
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%type = z_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_wall3d = z_ix_wall3d
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_link = z_n_link
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%thickness = z_thickness
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_clear_material, F%clear_material)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_opaque_material, F%opaque_material)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%superimpose = f_logic(z_superimpose)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ele_anchor_pt = z_ele_anchor_pt
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_section == 0) then
     if (allocated(F%section)) deallocate(F%section)
     else
@@ -7119,7 +7119,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[real, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_real]
   n_attrib_ptr = 0
   if (associated(F%attrib_ptr)) n_attrib_ptr = 1
 
@@ -7160,11 +7160,11 @@ integer(c_int), value :: n_attrib_ptr
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_con = z_ix_con
-!! f_side.to_f2_trans[real, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_real]
   if (n_attrib_ptr == 0) then
     if (associated(F%attrib_ptr)) deallocate(F%attrib_ptr)
     else
@@ -7223,12 +7223,12 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_y_knot = 0
   if (allocated(F%y_knot)) then
     n1_y_knot = size(F%y_knot, 1)
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_stack = 0
   if (allocated(F%stack)) then
     n1_stack = size(F%stack); lb1 = lbound(F%stack, 1) - 1
@@ -7281,9 +7281,9 @@ integer(c_int) :: z_ix_attrib
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%value = z_value
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%y_knot)) then
     if (n1_y_knot == 0 .or. any(shape(F%y_knot) /= [n1_y_knot])) deallocate(F%y_knot)
     if (any(lbound(F%y_knot) /= 1)) deallocate(F%y_knot)
@@ -7295,7 +7295,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%y_knot)) deallocate(F%y_knot)
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_stack == 0) then
     if (allocated(F%stack)) deallocate(F%stack)
     else
@@ -7308,15 +7308,15 @@ call c_f_pointer (Fp, F)
     call expression_atom_to_f (z_stack(jd1), c_loc(F%stack(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call lat_ele_loc_to_f(z_slave, c_loc(F%slave))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call lat_ele_loc_to_f(z_lord, c_loc(F%lord))
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_slave_name, F%slave_name)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_attribute, F%attribute)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_attrib = z_ix_attrib
 
 end subroutine control_to_f2
@@ -7397,11 +7397,11 @@ real(c_double) :: z_value, z_old_value
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%value = z_value
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%old_value = z_old_value
 
 end subroutine control_var1_to_f2
@@ -7453,12 +7453,12 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_y_knot = 0
   if (allocated(F%y_knot)) then
     n1_y_knot = size(F%y_knot, 1)
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_stack = 0
   if (allocated(F%stack)) then
     n1_stack = size(F%stack); lb1 = lbound(F%stack, 1) - 1
@@ -7510,7 +7510,7 @@ logical(c_bool) :: z_is_controller
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%y_knot)) then
     if (n1_y_knot == 0 .or. any(shape(F%y_knot) /= [n1_y_knot])) deallocate(F%y_knot)
     if (any(lbound(F%y_knot) /= 1)) deallocate(F%y_knot)
@@ -7522,7 +7522,7 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%y_knot)) deallocate(F%y_knot)
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_stack == 0) then
     if (allocated(F%stack)) deallocate(F%stack)
     else
@@ -7535,11 +7535,11 @@ call c_f_pointer (Fp, F)
     call expression_atom_to_f (z_stack(jd1), c_loc(F%stack(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_attribute, F%attribute)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_slave_name, F%slave_name)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%is_controller = f_logic(z_is_controller)
 
 end subroutine control_ramp1_to_f2
@@ -7593,7 +7593,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_var = 0
   if (allocated(F%var)) then
     n1_var = size(F%var); lb1 = lbound(F%var, 1) - 1
@@ -7602,7 +7602,7 @@ call c_f_pointer (Fp, F)
     z_var(jd1) = c_loc(F%var(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_ramp = 0
   if (allocated(F%ramp)) then
     n1_ramp = size(F%ramp); lb1 = lbound(F%ramp, 1) - 1
@@ -7611,7 +7611,7 @@ call c_f_pointer (Fp, F)
     z_ramp(jd1) = c_loc(F%ramp(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_ramper_lord = 0
   if (allocated(F%ramper_lord)) then
     n1_ramper_lord = size(F%ramper_lord); lb1 = lbound(F%ramper_lord, 1) - 1
@@ -7620,7 +7620,7 @@ call c_f_pointer (Fp, F)
     z_ramper_lord(jd1) = c_loc(F%ramper_lord(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_x_knot = 0
   if (allocated(F%x_knot)) then
     n1_x_knot = size(F%x_knot, 1)
@@ -7665,7 +7665,7 @@ real(c_double), pointer :: f_x_knot(:)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_var == 0) then
     if (allocated(F%var)) deallocate(F%var)
     else
@@ -7678,7 +7678,7 @@ call c_f_pointer (Fp, F)
     call control_var1_to_f (z_var(jd1), c_loc(F%var(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_ramp == 0) then
     if (allocated(F%ramp)) deallocate(F%ramp)
     else
@@ -7691,7 +7691,7 @@ call c_f_pointer (Fp, F)
     call control_ramp1_to_f (z_ramp(jd1), c_loc(F%ramp(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_ramper_lord == 0) then
     if (allocated(F%ramper_lord)) deallocate(F%ramper_lord)
     else
@@ -7704,7 +7704,7 @@ call c_f_pointer (Fp, F)
     call ramper_lord_to_f (z_ramper_lord(jd1), c_loc(F%ramper_lord(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%x_knot)) then
     if (n1_x_knot == 0 .or. any(shape(F%x_knot) /= [n1_x_knot])) deallocate(F%x_knot)
     if (any(lbound(F%x_knot) /= 1)) deallocate(F%x_knot)
@@ -7797,11 +7797,11 @@ real(c_double) :: z_sigma_cutoff
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%part_per_ellipse = z_part_per_ellipse
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_ellipse = z_n_ellipse
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigma_cutoff = z_sigma_cutoff
 
 end subroutine ellipse_beam_init_to_f2
@@ -7882,11 +7882,11 @@ real(c_double) :: z_A
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_integer]
   F%part_per_phi = z_part_per_phi(1:2)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_I2 = z_n_I2
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%A = z_A
 
 end subroutine kv_beam_init_to_f2
@@ -7969,17 +7969,17 @@ real(c_double) :: z_x_min, z_x_max, z_px_min, z_px_max
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_x = z_n_x
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_px = z_n_px
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x_min = z_x_min
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x_max = z_x_max
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%px_min = z_px_min
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%px_max = z_px_max
 
 end subroutine grid_beam_init_to_f2
@@ -8040,16 +8040,16 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[character, 1, NOT]
+!! f_side.to_c_trans[1D_NOT_character]
   do jd1 = 1, size(F%distribution_type,1); lb1 = lbound(F%distribution_type,1) - 1
   a_distribution_type(jd1) = trim(F%distribution_type(jd1+lb1)) // c_null_char
   z_distribution_type(jd1) = c_loc(a_distribution_type(jd1))
   enddo
-!! f_side.to_c_trans[type, 1, NOT]
+!! f_side.to_c_trans[1D_NOT_type]
   do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
   z_ellipse(jd1) = c_loc(F%ellipse(jd1+lb1))
   enddo
-!! f_side.to_c_trans[type, 1, NOT]
+!! f_side.to_c_trans[1D_NOT_type]
   do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
   z_grid(jd1) = c_loc(F%grid(jd1+lb1))
   enddo
@@ -8110,82 +8110,82 @@ logical(c_bool) :: z_renorm_center, z_renorm_sigma, z_full_6D_coupling_calc, z_u
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_position_file, F%position_file)
-!! f_side.to_f2_trans[character, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_character]
   do jd1 = 1, size(F%distribution_type,1); lb1 = lbound(F%distribution_type,1) - 1
   call c_f_pointer (z_distribution_type(jd1), f_distribution_type)
   call to_f_str(f_distribution_type, F%distribution_type(jd1+lb1))
   enddo
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%spin = z_spin(1:3)
-!! f_side.to_f2_trans[type, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_type]
   do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
   call ellipse_beam_init_to_f(z_ellipse(jd1), c_loc(F%ellipse(jd1+lb1)))
   enddo
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call kv_beam_init_to_f(z_KV, c_loc(F%KV))
-!! f_side.to_f2_trans[type, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_type]
   do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
   call grid_beam_init_to_f(z_grid(jd1), c_loc(F%grid(jd1+lb1)))
   enddo
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%center_jitter = z_center_jitter(1:6)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%emit_jitter = z_emit_jitter(1:2)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_z_jitter = z_sig_z_jitter
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_pz_jitter = z_sig_pz_jitter
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_particle = z_n_particle
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%renorm_center = f_logic(z_renorm_center)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%renorm_sigma = f_logic(z_renorm_sigma)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_random_engine, F%random_engine)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_random_gauss_converter, F%random_gauss_converter)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%random_sigma_cutoff = z_random_sigma_cutoff
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_norm_emit = z_a_norm_emit
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_norm_emit = z_b_norm_emit
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_emit = z_a_emit
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_emit = z_b_emit
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dPz_dz = z_dPz_dz
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%center = z_center(1:6)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%t_offset = z_t_offset
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dt_bunch = z_dt_bunch
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_z = z_sig_z
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_pz = z_sig_pz
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%bunch_charge = z_bunch_charge
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_bunch = z_n_bunch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_turn = z_ix_turn
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_species, F%species)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%full_6D_coupling_calc = f_logic(z_full_6D_coupling_calc)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%use_particle_start = f_logic(z_use_particle_start)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%use_t_coords = f_logic(z_use_t_coords)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%use_z_as_t = f_logic(z_use_z_as_t)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_file_name, F%file_name)
 
 end subroutine beam_init_to_f2
@@ -8281,39 +8281,39 @@ type(c_ptr), value :: z_bookkeeping_state, z_beam_init
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%n_part = z_n_part
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%total_length = z_total_length
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%unstable_factor = z_unstable_factor
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_t1_with_RF, F%t1_with_RF)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_t1_no_RF, F%t1_no_RF)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%spin_tune = z_spin_tune
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%particle = z_particle
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%default_tracking_species = z_default_tracking_species
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%geometry = z_geometry
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ixx = z_ixx
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%stable = f_logic(z_stable)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%live_branch = f_logic(z_live_branch)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%g1_integral = z_g1_integral
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%g2_integral = z_g2_integral
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%g3_integral = z_g3_integral
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call bookkeeping_state_to_f(z_bookkeeping_state, c_loc(F%bookkeeping_state))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call beam_init_to_f(z_beam_init, c_loc(F%beam_init))
 
 end subroutine lat_param_to_f2
@@ -8394,17 +8394,17 @@ real(c_double) :: z_tune, z_emit, z_chrom, z_sigma, z_sigmap
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%stable = f_logic(z_stable)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%tune = z_tune
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%emit = z_emit
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%chrom = z_chrom
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigma = z_sigma
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigmap = z_sigmap
 
 end subroutine mode_info_to_f2
@@ -8486,13 +8486,13 @@ character(c_char) :: z_input_file(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%who = z_who
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele_start = z_ix_ele_start
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele_end = z_ix_ele_end
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_input_file, F%input_file)
 
 end subroutine pre_tracker_to_f2
@@ -8574,19 +8574,19 @@ real(c_double) :: z_emittance, z_emittance_no_vert, z_synch_int(*), z_j_damp, z_
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%emittance = z_emittance
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%emittance_no_vert = z_emittance_no_vert
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%synch_int = z_synch_int(1:3)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%j_damp = z_j_damp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%alpha_damp = z_alpha_damp
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%chrom = z_chrom
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%tune = z_tune
 
 end subroutine anormal_mode_to_f2
@@ -8668,19 +8668,19 @@ real(c_double) :: z_i2_E4, z_i3_E7, z_i5a_E6, z_i5b_E6, z_sig_E1, z_a_emittance_
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i2_E4 = z_i2_E4
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i3_E7 = z_i3_E7
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i5a_E6 = z_i5a_E6
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i5b_E6 = z_i5b_E6
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_E1 = z_sig_E1
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%a_emittance_end = z_a_emittance_end
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%b_emittance_end = z_b_emittance_end
 
 end subroutine linac_normal_mode_to_f2
@@ -8769,31 +8769,31 @@ type(c_ptr), value :: z_a, z_b, z_z, z_lin
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%synch_int = z_synch_int(1:4)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigE_E = z_sigE_E
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sig_z = z_sig_z
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%e_loss = z_e_loss
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rf_voltage = z_rf_voltage
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%pz_aperture = z_pz_aperture
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%pz_average = z_pz_average
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%momentum_compaction = z_momentum_compaction
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dpz_damp = z_dpz_damp
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call anormal_mode_to_f(z_a, c_loc(F%a))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call anormal_mode_to_f(z_b, c_loc(F%b))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call anormal_mode_to_f(z_z, c_loc(F%z))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call linac_normal_mode_to_f(z_lin, c_loc(F%lin))
 
 end subroutine normal_modes_to_f2
@@ -8873,19 +8873,19 @@ real(c_double) :: z_E(*), z_B(*), z_dE(*), z_dB(*), z_phi, z_phi_B, z_A(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%E = z_E(1:3)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%B = z_B(1:3)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_dE, F%dE)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_dB, F%dB)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi = z_phi
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%phi_B = z_phi_B
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%A = z_A(1:3)
 
 end subroutine em_field_to_f2
@@ -8969,19 +8969,19 @@ real(c_double) :: z_x_center, z_y_center, z_x_sigma, z_y_sigma, z_dx, z_dy
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_slice = z_ix_slice
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x_center = z_x_center
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y_center = z_y_center
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x_sigma = z_x_sigma
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y_sigma = z_y_sigma
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dx = z_dx
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dy = z_dy
 
 end subroutine strong_beam_to_f2
@@ -9065,17 +9065,17 @@ type(c_ptr), value :: z_orb, z_field, z_strong_beam
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%s_body = z_s_body
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_orb, c_loc(F%orb))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call em_field_to_f(z_field, c_loc(F%field))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call strong_beam_to_f(z_strong_beam, c_loc(F%strong_beam))
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%vec0 = z_vec0(1:6)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_mat6, F%mat6)
 
 end subroutine track_point_to_f2
@@ -9124,7 +9124,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_pt = 0
   if (allocated(F%pt)) then
     n1_pt = size(F%pt); lb1 = lbound(F%pt, 1) - 1
@@ -9171,7 +9171,7 @@ integer(c_int) :: z_n_pt, z_n_bad, z_n_ok
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_pt == 0) then
     if (allocated(F%pt)) deallocate(F%pt)
     else
@@ -9184,13 +9184,13 @@ call c_f_pointer (Fp, F)
     call track_point_to_f (z_pt(jd1), c_loc(F%pt(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%ds_save = z_ds_save
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_pt = z_n_pt
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_bad = z_n_bad
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_ok = z_n_ok
 
 end subroutine track_to_f2
@@ -9290,39 +9290,39 @@ character(c_char) :: z_diagnostic_output_file(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%ds_track_step = z_ds_track_step
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%dt_track_step = z_dt_track_step
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%cathode_strength_cutoff = z_cathode_strength_cutoff
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rel_tol_tracking = z_rel_tol_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%abs_tol_tracking = z_abs_tol_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%beam_chamber_height = z_beam_chamber_height
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lsc_sigma_cutoff = z_lsc_sigma_cutoff
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%particle_sigma_cutoff = z_particle_sigma_cutoff
-!! f_side.to_f2_trans[integer, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_integer]
   F%space_charge_mesh_size = z_space_charge_mesh_size(1:3)
-!! f_side.to_f2_trans[integer, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_integer]
   F%csr3d_mesh_size = z_csr3d_mesh_size(1:3)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_bin = z_n_bin
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%particle_bin_span = z_particle_bin_span
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_shield_images = z_n_shield_images
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%sc_min_in_bin = z_sc_min_in_bin
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%lsc_kick_transverse_dependence = f_logic(z_lsc_kick_transverse_dependence)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%debug = f_logic(z_debug)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_diagnostic_output_file, F%diagnostic_output_file)
 
 end subroutine space_charge_common_to_f2
@@ -9449,85 +9449,85 @@ logical(c_bool) :: z_convert_to_kinetic_momentum, z_aperture_limit_on, z_debug
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%max_aperture_limit = z_max_aperture_limit
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%d_orb = z_d_orb(1:6)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%default_ds_step = z_default_ds_step
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%significant_length = z_significant_length
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rel_tol_tracking = z_rel_tol_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%abs_tol_tracking = z_abs_tol_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rel_tol_adaptive_tracking = z_rel_tol_adaptive_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%abs_tol_adaptive_tracking = z_abs_tol_adaptive_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%init_ds_adaptive_tracking = z_init_ds_adaptive_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%min_ds_adaptive_tracking = z_min_ds_adaptive_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%fatal_ds_adaptive_tracking = z_fatal_ds_adaptive_tracking
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%autoscale_amp_abs_tol = z_autoscale_amp_abs_tol
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%autoscale_amp_rel_tol = z_autoscale_amp_rel_tol
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%autoscale_phase_tol = z_autoscale_phase_tol
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%electric_dipole_moment = z_electric_dipole_moment
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%synch_rad_scale = z_synch_rad_scale
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sad_eps_scale = z_sad_eps_scale
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sad_amp_max = z_sad_amp_max
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%sad_n_div_max = z_sad_n_div_max
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%taylor_order = z_taylor_order
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%runge_kutta_order = z_runge_kutta_order
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%default_integ_order = z_default_integ_order
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%max_num_runge_kutta_step = z_max_num_runge_kutta_step
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%rf_phase_below_transition_ref = f_logic(z_rf_phase_below_transition_ref)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%sr_wakes_on = f_logic(z_sr_wakes_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%lr_wakes_on = f_logic(z_lr_wakes_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%auto_bookkeeper = f_logic(z_auto_bookkeeper)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%high_energy_space_charge_on = f_logic(z_high_energy_space_charge_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%csr_and_space_charge_on = f_logic(z_csr_and_space_charge_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%spin_tracking_on = f_logic(z_spin_tracking_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%spin_sokolov_ternov_flipping_on = f_logic(z_spin_sokolov_ternov_flipping_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%radiation_damping_on = f_logic(z_radiation_damping_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%radiation_zero_average = f_logic(z_radiation_zero_average)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%radiation_fluctuations_on = f_logic(z_radiation_fluctuations_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%conserve_taylor_maps = f_logic(z_conserve_taylor_maps)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%absolute_time_tracking = f_logic(z_absolute_time_tracking)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%absolute_time_ref_shift = f_logic(z_absolute_time_ref_shift)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%convert_to_kinetic_momentum = f_logic(z_convert_to_kinetic_momentum)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%aperture_limit_on = f_logic(z_aperture_limit_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%debug = f_logic(z_debug)
 
 end subroutine bmad_common_to_f2
@@ -9616,41 +9616,41 @@ real(c_double) :: z_lin_norm_emit_a, z_lin_norm_emit_b, z_lin_sig_E, z_n_steps
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i0 = z_i0
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i1 = z_i1
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i2 = z_i2
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i3 = z_i3
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i4a = z_i4a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i4b = z_i4b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i4z = z_i4z
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i5a = z_i5a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i5b = z_i5b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%i6b = z_i6b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_i2_E4 = z_lin_i2_E4
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_i3_E7 = z_lin_i3_E7
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_i5a_E6 = z_lin_i5a_E6
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_i5b_E6 = z_lin_i5b_E6
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_norm_emit_a = z_lin_norm_emit_a
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_norm_emit_b = z_lin_norm_emit_b
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%lin_sig_E = z_lin_sig_E
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%n_steps = z_n_steps
 
 end subroutine rad_int1_to_f2
@@ -9697,7 +9697,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_ele = 0
   if (allocated(F%ele)) then
     n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
@@ -9742,7 +9742,7 @@ integer(c_int), value :: n1_ele
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_ele == 0) then
     if (allocated(F%ele)) deallocate(F%ele)
     else
@@ -9800,7 +9800,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_branch = 0
   if (allocated(F%branch)) then
     n1_branch = size(F%branch); lb1 = lbound(F%branch, 1) - 1
@@ -9845,7 +9845,7 @@ integer(c_int), value :: n1_branch
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_branch == 0) then
     if (allocated(F%branch)) deallocate(F%branch)
     else
@@ -9962,42 +9962,42 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[character, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_character]
   n_descrip = 0
   if (associated(F%descrip)) then
     n_descrip = 1
     f_descrip = trim(F%descrip) // c_null_char
   endif
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_ac_kick = 0
   if (associated(F%ac_kick)) n_ac_kick = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_control = 0
   if (associated(F%control)) n_control = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_high_energy_space_charge = 0
   if (associated(F%high_energy_space_charge)) n_high_energy_space_charge = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_mode3 = 0
   if (associated(F%mode3)) n_mode3 = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_photon = 0
   if (associated(F%photon)) n_photon = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_rad_map = 0
   if (associated(F%rad_map)) n_rad_map = 1
-!! f_side.to_c_trans[type, 1, NOT]
+!! f_side.to_c_trans[1D_NOT_type]
   do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
   z_taylor(jd1) = c_loc(F%taylor(jd1+lb1))
   enddo
-!! f_side.to_c_trans[type, 1, NOT]
+!! f_side.to_c_trans[1D_NOT_type]
   do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
   z_spin_taylor(jd1) = c_loc(F%spin_taylor(jd1+lb1))
   enddo
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_wake = 0
   if (associated(F%wake)) n_wake = 1
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_wall3d = 0
   if (associated(F%wall3d)) then
     n1_wall3d = size(F%wall3d); lb1 = lbound(F%wall3d, 1) - 1
@@ -10006,7 +10006,7 @@ call c_f_pointer (Fp, F)
     z_wall3d(jd1) = c_loc(F%wall3d(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_cartesian_map = 0
   if (associated(F%cartesian_map)) then
     n1_cartesian_map = size(F%cartesian_map); lb1 = lbound(F%cartesian_map, 1) - 1
@@ -10015,7 +10015,7 @@ call c_f_pointer (Fp, F)
     z_cartesian_map(jd1) = c_loc(F%cartesian_map(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_cylindrical_map = 0
   if (associated(F%cylindrical_map)) then
     n1_cylindrical_map = size(F%cylindrical_map); lb1 = lbound(F%cylindrical_map, 1) - 1
@@ -10024,7 +10024,7 @@ call c_f_pointer (Fp, F)
     z_cylindrical_map(jd1) = c_loc(F%cylindrical_map(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_gen_grad_map = 0
   if (associated(F%gen_grad_map)) then
     n1_gen_grad_map = size(F%gen_grad_map); lb1 = lbound(F%gen_grad_map, 1) - 1
@@ -10033,7 +10033,7 @@ call c_f_pointer (Fp, F)
     z_gen_grad_map(jd1) = c_loc(F%gen_grad_map(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_grid_field = 0
   if (associated(F%grid_field)) then
     n1_grid_field = size(F%grid_field); lb1 = lbound(F%grid_field, 1) - 1
@@ -10042,32 +10042,32 @@ call c_f_pointer (Fp, F)
     z_grid_field(jd1) = c_loc(F%grid_field(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[real, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_real]
   n1_a_pole = 0
   if (associated(F%a_pole)) then
     n1_a_pole = size(F%a_pole, 1)
   endif
-!! f_side.to_c_trans[real, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_real]
   n1_b_pole = 0
   if (associated(F%b_pole)) then
     n1_b_pole = size(F%b_pole, 1)
   endif
-!! f_side.to_c_trans[real, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_real]
   n1_a_pole_elec = 0
   if (associated(F%a_pole_elec)) then
     n1_a_pole_elec = size(F%a_pole_elec, 1)
   endif
-!! f_side.to_c_trans[real, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_real]
   n1_b_pole_elec = 0
   if (associated(F%b_pole_elec)) then
     n1_b_pole_elec = size(F%b_pole_elec, 1)
   endif
-!! f_side.to_c_trans[real, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_real]
   n1_custom = 0
   if (associated(F%custom)) then
     n1_custom = size(F%custom, 1)
   endif
-!! f_side.to_c_trans[real, 3, PTR]
+!! f_side.to_c_trans[3D_PTR_real]
   if (associated(F%r)) then
     n1_r = size(F%r, 1)
     n2_r = size(F%r, 2)
@@ -10175,95 +10175,95 @@ logical(c_bool) :: z_logic, z_bmad_logic, z_select, z_offset_moves_aperture
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_type, F%type)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_alias, F%alias)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_component_name, F%component_name)
-!! f_side.to_f2_trans[character, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_character]
   if (n_descrip == 0) then
     if (associated(F%descrip)) deallocate(F%descrip)
     else
     if (.not. associated(F%descrip)) allocate(F%descrip)
     call to_f_str(z_descrip, F%descrip)
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_a, c_loc(F%a))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_b, c_loc(F%b))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_z, c_loc(F%z))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call xy_disp_to_f(z_x, c_loc(F%x))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call xy_disp_to_f(z_y, c_loc(F%y))
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_ac_kick == 0) then
     if (associated(F%ac_kick)) deallocate(F%ac_kick)
     else
     if (.not. associated(F%ac_kick)) allocate(F%ac_kick)
     call ac_kicker_to_f (z_ac_kick, c_loc(F%ac_kick))
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call bookkeeping_state_to_f(z_bookkeeping_state, c_loc(F%bookkeeping_state))
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_control == 0) then
     if (associated(F%control)) deallocate(F%control)
     else
     if (.not. associated(F%control)) allocate(F%control)
     call controller_to_f (z_control, c_loc(F%control))
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call floor_position_to_f(z_floor, c_loc(F%floor))
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_high_energy_space_charge == 0) then
     if (associated(F%high_energy_space_charge)) deallocate(F%high_energy_space_charge)
     else
     if (.not. associated(F%high_energy_space_charge)) allocate(F%high_energy_space_charge)
     call high_energy_space_charge_to_f (z_high_energy_space_charge, c_loc(F%high_energy_space_charge))
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_mode3 == 0) then
     if (associated(F%mode3)) deallocate(F%mode3)
     else
     if (.not. associated(F%mode3)) allocate(F%mode3)
     call mode3_to_f (z_mode3, c_loc(F%mode3))
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_photon == 0) then
     if (associated(F%photon)) deallocate(F%photon)
     else
     if (.not. associated(F%photon)) allocate(F%photon)
     call photon_element_to_f (z_photon, c_loc(F%photon))
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_rad_map == 0) then
     if (associated(F%rad_map)) deallocate(F%rad_map)
     else
     if (.not. associated(F%rad_map)) allocate(F%rad_map)
     call rad_map_ele_to_f (z_rad_map, c_loc(F%rad_map))
   endif
-!! f_side.to_f2_trans[type, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_type]
   do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
   call taylor_to_f(z_taylor(jd1), c_loc(F%taylor(jd1+lb1)))
   enddo
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%spin_taylor_ref_orb_in = z_spin_taylor_ref_orb_in(1:6)
-!! f_side.to_f2_trans[type, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_type]
   do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
   call taylor_to_f(z_spin_taylor(jd1), c_loc(F%spin_taylor(jd1+lb1)))
   enddo
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_wake == 0) then
     if (associated(F%wake)) deallocate(F%wake)
     else
     if (.not. associated(F%wake)) allocate(F%wake)
     call wake_to_f (z_wake, c_loc(F%wake))
   endif
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_wall3d == 0) then
     if (associated(F%wall3d)) deallocate(F%wall3d)
     else
@@ -10276,7 +10276,7 @@ call c_f_pointer (Fp, F)
     call wall3d_to_f (z_wall3d(jd1), c_loc(F%wall3d(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_cartesian_map == 0) then
     if (associated(F%cartesian_map)) deallocate(F%cartesian_map)
     else
@@ -10289,7 +10289,7 @@ call c_f_pointer (Fp, F)
     call cartesian_map_to_f (z_cartesian_map(jd1), c_loc(F%cartesian_map(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_cylindrical_map == 0) then
     if (associated(F%cylindrical_map)) deallocate(F%cylindrical_map)
     else
@@ -10302,7 +10302,7 @@ call c_f_pointer (Fp, F)
     call cylindrical_map_to_f (z_cylindrical_map(jd1), c_loc(F%cylindrical_map(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_gen_grad_map == 0) then
     if (associated(F%gen_grad_map)) deallocate(F%gen_grad_map)
     else
@@ -10315,7 +10315,7 @@ call c_f_pointer (Fp, F)
     call gen_grad_map_to_f (z_gen_grad_map(jd1), c_loc(F%gen_grad_map(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_grid_field == 0) then
     if (associated(F%grid_field)) deallocate(F%grid_field)
     else
@@ -10328,37 +10328,37 @@ call c_f_pointer (Fp, F)
     call grid_field_to_f (z_grid_field(jd1), c_loc(F%grid_field(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_map_ref_orb_in, c_loc(F%map_ref_orb_in))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_map_ref_orb_out, c_loc(F%map_ref_orb_out))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_time_ref_orb_in, c_loc(F%time_ref_orb_in))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_time_ref_orb_out, c_loc(F%time_ref_orb_out))
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   ! custom fix (ele_struct_fixes)
   F%value = z_value(2 : num_ele_attrib$ + 1)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   ! custom fix (ele_struct_fixes)
   F%old_value = z_old_value(2 : num_ele_attrib$ + 1)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_spin_q, F%spin_q)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%vec0 = z_vec0(1:6)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_mat6, F%mat6)
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_c_mat, F%c_mat)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%gamma_c = z_gamma_c
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%s_start = z_s_start
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%s = z_s
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%ref_time = z_ref_time
-!! f_side.to_f2_trans[real, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_real]
   if (associated(F%a_pole)) then
     if (n1_a_pole == 0 .or. any(shape(F%a_pole) /= [n1_a_pole])) deallocate(F%a_pole)
     if (any(lbound(F%a_pole) /= 1)) deallocate(F%a_pole)
@@ -10370,7 +10370,7 @@ call c_f_pointer (Fp, F)
     else
     if (associated(F%a_pole)) deallocate(F%a_pole)
   endif
-!! f_side.to_f2_trans[real, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_real]
   if (associated(F%b_pole)) then
     if (n1_b_pole == 0 .or. any(shape(F%b_pole) /= [n1_b_pole])) deallocate(F%b_pole)
     if (any(lbound(F%b_pole) /= 1)) deallocate(F%b_pole)
@@ -10382,7 +10382,7 @@ call c_f_pointer (Fp, F)
     else
     if (associated(F%b_pole)) deallocate(F%b_pole)
   endif
-!! f_side.to_f2_trans[real, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_real]
   if (associated(F%a_pole_elec)) then
     if (n1_a_pole_elec == 0 .or. any(shape(F%a_pole_elec) /= [n1_a_pole_elec])) deallocate(F%a_pole_elec)
     if (any(lbound(F%a_pole_elec) /= 1)) deallocate(F%a_pole_elec)
@@ -10394,7 +10394,7 @@ call c_f_pointer (Fp, F)
     else
     if (associated(F%a_pole_elec)) deallocate(F%a_pole_elec)
   endif
-!! f_side.to_f2_trans[real, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_real]
   if (associated(F%b_pole_elec)) then
     if (n1_b_pole_elec == 0 .or. any(shape(F%b_pole_elec) /= [n1_b_pole_elec])) deallocate(F%b_pole_elec)
     if (any(lbound(F%b_pole_elec) /= 1)) deallocate(F%b_pole_elec)
@@ -10406,7 +10406,7 @@ call c_f_pointer (Fp, F)
     else
     if (associated(F%b_pole_elec)) deallocate(F%b_pole_elec)
   endif
-!! f_side.to_f2_trans[real, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_real]
   if (associated(F%custom)) then
     if (n1_custom == 0 .or. any(shape(F%custom) /= [n1_custom])) deallocate(F%custom)
     if (any(lbound(F%custom) /= 1)) deallocate(F%custom)
@@ -10418,7 +10418,7 @@ call c_f_pointer (Fp, F)
     else
     if (associated(F%custom)) deallocate(F%custom)
   endif
-!! f_side.to_f2_trans[real, 3, PTR]
+!! f_side.to_f2_trans[3D_PTR_real]
   if (associated(F%r)) then
     if (n1_r == 0 .or. any(shape(F%r) /= [n1_r, n2_r, n3_r])) deallocate(F%r)
     if (any(lbound(F%r) /= 1)) deallocate(F%r)
@@ -10430,83 +10430,83 @@ call c_f_pointer (Fp, F)
     else
     if (associated(F%r)) deallocate(F%r)
   endif
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%key = z_key
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%sub_key = z_sub_key
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_branch = z_ix_branch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%lord_status = z_lord_status
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_slave = z_n_slave
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_slave_field = z_n_slave_field
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix1_slave = z_ix1_slave
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%slave_status = z_slave_status
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_lord = z_n_lord
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_lord_field = z_n_lord_field
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_lord_ramper = z_n_lord_ramper
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ic1_lord = z_ic1_lord
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_pointer = z_ix_pointer
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ixx = z_ixx
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%iyy = z_iyy
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%izz = z_izz
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%mat6_calc_method = z_mat6_calc_method
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%tracking_method = z_tracking_method
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%spin_tracking_method = z_spin_tracking_method
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%csr_method = z_csr_method
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%space_charge_method = z_space_charge_method
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ptc_integration_type = z_ptc_integration_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%field_calc = z_field_calc
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%aperture_at = z_aperture_at
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%aperture_type = z_aperture_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ref_species = z_ref_species
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%orientation = z_orientation
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%symplectify = f_logic(z_symplectify)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%mode_flip = f_logic(z_mode_flip)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%multipoles_on = f_logic(z_multipoles_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%scale_multipoles = f_logic(z_scale_multipoles)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%taylor_map_includes_offsets = f_logic(z_taylor_map_includes_offsets)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%field_master = f_logic(z_field_master)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%is_on = f_logic(z_is_on)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%logic = f_logic(z_logic)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%bmad_logic = f_logic(z_bmad_logic)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%select = f_logic(z_select)
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%offset_moves_aperture = f_logic(z_offset_moves_aperture)
 
 end subroutine ele_to_f2
@@ -10587,9 +10587,9 @@ integer(c_int) :: z_expn(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%coef = z_coef
-!! f_side.to_f2_trans[integer, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_integer]
   F%expn = z_expn(1:6)
 
 end subroutine complex_taylor_term_to_f2
@@ -10637,7 +10637,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_term = 0
   if (associated(F%term)) then
     n1_term = size(F%term); lb1 = lbound(F%term, 1) - 1
@@ -10683,9 +10683,9 @@ integer(c_int), value :: n1_term
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[complex, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_complex]
   F%ref = z_ref
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_term == 0) then
     if (associated(F%term)) deallocate(F%term)
     else
@@ -10750,7 +10750,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_ele = 0
   if (associated(F%ele)) then
     n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
@@ -10759,7 +10759,7 @@ call c_f_pointer (Fp, F)
     z_ele(jd1) = c_loc(F%ele(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_wall3d = 0
   if (associated(F%wall3d)) then
     n1_wall3d = size(F%wall3d); lb1 = lbound(F%wall3d, 1) - 1
@@ -10811,27 +10811,27 @@ integer(c_int), value :: n1_ele, n1_wall3d
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_name, F%name)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_branch = z_ix_branch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_from_branch = z_ix_from_branch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_from_ele = z_ix_from_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_to_ele = z_ix_to_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_ele_track = z_n_ele_track
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_ele_max = z_n_ele_max
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call mode_info_to_f(z_a, c_loc(F%a))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call mode_info_to_f(z_b, c_loc(F%b))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call mode_info_to_f(z_z, c_loc(F%z))
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_ele == 0) then
     if (associated(F%ele)) deallocate(F%ele)
     else
@@ -10844,9 +10844,9 @@ call c_f_pointer (Fp, F)
     call ele_to_f (z_ele(jd1), c_loc(F%ele(jd1+0-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call lat_param_to_f(z_param, c_loc(F%param))
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_wall3d == 0) then
     if (associated(F%wall3d)) deallocate(F%wall3d)
     else
@@ -10934,7 +10934,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[character, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_character]
   n1_print_str = 0
   if (allocated(F%print_str)) then
     n1_print_str = size(F%print_str); lb1 = lbound(F%print_str, 1) - 1
@@ -10945,7 +10945,7 @@ call c_f_pointer (Fp, F)
     z_print_str(jd1) = c_loc(a_print_str(jd1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_constant = 0
   if (allocated(F%constant)) then
     n1_constant = size(F%constant); lb1 = lbound(F%constant, 1) - 1
@@ -10954,19 +10954,19 @@ call c_f_pointer (Fp, F)
     z_constant(jd1) = c_loc(F%constant(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_a = 0
   if (associated(F%a)) n_a = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_b = 0
   if (associated(F%b)) n_b = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_z = 0
   if (associated(F%z)) n_z = 1
-!! f_side.to_c_trans[type, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_type]
   n_param = 0
   if (associated(F%param)) n_param = 1
-!! f_side.to_c_trans[type, 1, PTR]
+!! f_side.to_c_trans[1D_PTR_type]
   n1_ele = 0
   if (associated(F%ele)) then
     n1_ele = size(F%ele); lb1 = lbound(F%ele, 1) - 1
@@ -10975,7 +10975,7 @@ call c_f_pointer (Fp, F)
     z_ele(jd1) = c_loc(F%ele(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_branch = 0
   if (allocated(F%branch)) then
     n1_branch = size(F%branch); lb1 = lbound(F%branch, 1) - 1
@@ -10984,7 +10984,7 @@ call c_f_pointer (Fp, F)
     z_branch(jd1) = c_loc(F%branch(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_control = 0
   if (allocated(F%control)) then
     n1_control = size(F%control); lb1 = lbound(F%control, 1) - 1
@@ -10993,18 +10993,18 @@ call c_f_pointer (Fp, F)
     z_control(jd1) = c_loc(F%control(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[real, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_real]
   n1_custom = 0
   if (allocated(F%custom)) then
     n1_custom = size(F%custom, 1)
   endif
-!! f_side.to_c_trans[integer, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_integer]
   n_n_ele_track = 0
   if (associated(F%n_ele_track)) n_n_ele_track = 1
-!! f_side.to_c_trans[integer, 0, PTR]
+!! f_side.to_c_trans[0D_PTR_integer]
   n_n_ele_max = 0
   if (associated(F%n_ele_max)) n_n_ele_max = 1
-!! f_side.to_c_trans[integer, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_integer]
   n1_ic = 0
   if (allocated(F%ic)) then
     n1_ic = size(F%ic, 1)
@@ -11069,17 +11069,17 @@ integer(c_int), pointer :: f_n_ele_track, f_n_ele_max, f_ic(:)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_use_name, F%use_name)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_lattice, F%lattice)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_machine, F%machine)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_input_file_name, F%input_file_name)
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_title, F%title)
-!! f_side.to_f2_trans[character, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_character]
   if (n1_print_str == 0) then
     if (allocated(F%print_str)) deallocate(F%print_str)
     else
@@ -11093,7 +11093,7 @@ call c_f_pointer (Fp, F)
     call to_f_str(f_print_str, F%print_str(jd1+1-1))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_constant == 0) then
     if (allocated(F%constant)) deallocate(F%constant)
     else
@@ -11106,39 +11106,39 @@ call c_f_pointer (Fp, F)
     call expression_atom_to_f (z_constant(jd1), c_loc(F%constant(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_a == 0) then
     if (associated(F%a)) deallocate(F%a)
     else
     if (.not. associated(F%a)) allocate(F%a)
     call mode_info_to_f (z_a, c_loc(F%a))
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_b == 0) then
     if (associated(F%b)) deallocate(F%b)
     else
     if (.not. associated(F%b)) allocate(F%b)
     call mode_info_to_f (z_b, c_loc(F%b))
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_z == 0) then
     if (associated(F%z)) deallocate(F%z)
     else
     if (.not. associated(F%z)) allocate(F%z)
     call mode_info_to_f (z_z, c_loc(F%z))
   endif
-!! f_side.to_f2_trans[type, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_type]
   if (n_param == 0) then
     if (associated(F%param)) deallocate(F%param)
     else
     if (.not. associated(F%param)) allocate(F%param)
     call lat_param_to_f (z_param, c_loc(F%param))
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call bookkeeping_state_to_f(z_lord_state, c_loc(F%lord_state))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call ele_to_f(z_ele_init, c_loc(F%ele_init))
-!! f_side.to_f2_trans[type, 1, PTR]
+!! f_side.to_f2_trans[1D_PTR_type]
   if (n1_ele == 0) then
     if (associated(F%ele)) deallocate(F%ele)
     else
@@ -11151,7 +11151,7 @@ call c_f_pointer (Fp, F)
     call ele_to_f (z_ele(jd1), c_loc(F%ele(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_branch == 0) then
     if (allocated(F%branch)) deallocate(F%branch)
     else
@@ -11164,7 +11164,7 @@ call c_f_pointer (Fp, F)
     call branch_to_f (z_branch(jd1), c_loc(F%branch(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_control == 0) then
     if (allocated(F%control)) deallocate(F%control)
     else
@@ -11177,13 +11177,13 @@ call c_f_pointer (Fp, F)
     call control_to_f (z_control(jd1), c_loc(F%control(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_particle_start, c_loc(F%particle_start))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call beam_init_to_f(z_beam_init, c_loc(F%beam_init))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call pre_tracker_to_f(z_pre_tracker, c_loc(F%pre_tracker))
-!! f_side.to_f2_trans[real, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_real]
   if (allocated(F%custom)) then
     if (n1_custom == 0 .or. any(shape(F%custom) /= [n1_custom])) deallocate(F%custom)
     if (any(lbound(F%custom) /= 1)) deallocate(F%custom)
@@ -11195,9 +11195,9 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%custom)) deallocate(F%custom)
   endif
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%version = z_version
-!! f_side.to_f2_trans[integer, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_integer]
   if (n_n_ele_track == 0) then
     if (associated(F%n_ele_track)) deallocate(F%n_ele_track)
     else
@@ -11205,7 +11205,7 @@ call c_f_pointer (Fp, F)
     if (.not. associated(F%n_ele_track)) allocate(F%n_ele_track)
     F%n_ele_track = f_n_ele_track
   endif
-!! f_side.to_f2_trans[integer, 0, PTR]
+!! f_side.to_f2_trans[0D_PTR_integer]
   if (n_n_ele_max == 0) then
     if (associated(F%n_ele_max)) deallocate(F%n_ele_max)
     else
@@ -11213,13 +11213,13 @@ call c_f_pointer (Fp, F)
     if (.not. associated(F%n_ele_max)) allocate(F%n_ele_max)
     F%n_ele_max = f_n_ele_max
   endif
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_control_max = z_n_control_max
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_ic_max = z_n_ic_max
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%input_taylor_order = z_input_taylor_order
-!! f_side.to_f2_trans[integer, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_integer]
   if (allocated(F%ic)) then
     if (n1_ic == 0 .or. any(shape(F%ic) /= [n1_ic])) deallocate(F%ic)
     if (any(lbound(F%ic) /= 1)) deallocate(F%ic)
@@ -11231,11 +11231,11 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%ic)) deallocate(F%ic)
   endif
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%photon_type = z_photon_type
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%creation_hash = z_creation_hash
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ramper_slave_bookkeeping = z_ramper_slave_bookkeeping
 
 end subroutine lat_to_f2
@@ -11288,7 +11288,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_particle = 0
   if (allocated(F%particle)) then
     n1_particle = size(F%particle); lb1 = lbound(F%particle, 1) - 1
@@ -11297,7 +11297,7 @@ call c_f_pointer (Fp, F)
     z_particle(jd1) = c_loc(F%particle(jd1+lb1))
     enddo
   endif
-!! f_side.to_c_trans[integer, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_integer]
   n1_ix_z = 0
   if (allocated(F%ix_z)) then
     n1_ix_z = size(F%ix_z, 1)
@@ -11347,7 +11347,7 @@ integer(c_int) :: z_ix_ele, z_ix_bunch, z_ix_turn, z_n_live, z_n_good, z_n_bad
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_particle == 0) then
     if (allocated(F%particle)) deallocate(F%particle)
     else
@@ -11360,7 +11360,7 @@ call c_f_pointer (Fp, F)
     call coord_to_f (z_particle(jd1), c_loc(F%particle(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[integer, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_integer]
   if (allocated(F%ix_z)) then
     if (n1_ix_z == 0 .or. any(shape(F%ix_z) /= [n1_ix_z])) deallocate(F%ix_z)
     if (any(lbound(F%ix_z) /= 1)) deallocate(F%ix_z)
@@ -11372,29 +11372,29 @@ call c_f_pointer (Fp, F)
     else
     if (allocated(F%ix_z)) deallocate(F%ix_z)
   endif
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%charge_tot = z_charge_tot
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%charge_live = z_charge_live
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%z_center = z_z_center
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%t_center = z_t_center
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%t0 = z_t0
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%drift_between_t_and_s = f_logic(z_drift_between_t_and_s)
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_bunch = z_ix_bunch
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_turn = z_ix_turn
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_live = z_n_live
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_good = z_n_good
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_bad = z_n_bad
 
 end subroutine bunch_to_f2
@@ -11491,51 +11491,51 @@ logical(c_bool) :: z_twiss_valid
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_centroid, c_loc(F%centroid))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_x, c_loc(F%x))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_y, c_loc(F%y))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_z, c_loc(F%z))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_a, c_loc(F%a))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_b, c_loc(F%b))
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call twiss_to_f(z_c, c_loc(F%c))
-!! f_side.to_f2_trans[real, 2, NOT]
+!! f_side.to_f2_trans[2D_NOT_real]
   call vec2mat(z_sigma, F%sigma)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%rel_max = z_rel_max(1:7)
-!! f_side.to_f2_trans[real, 1, NOT]
+!! f_side.to_f2_trans[1D_NOT_real]
   F%rel_min = z_rel_min(1:7)
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%s = z_s
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%t = z_t
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%sigma_t = z_sigma_t
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%charge_live = z_charge_live
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%charge_tot = z_charge_tot
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_particle_tot = z_n_particle_tot
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_particle_live = z_n_particle_live
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_particle_lost_in_ele = z_n_particle_lost_in_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_good_steps = z_n_good_steps
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_bad_steps = z_n_bad_steps
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%location = z_location
-!! f_side.to_f2_trans[logical, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%twiss_valid = f_logic(z_twiss_valid)
 
 end subroutine bunch_params_to_f2
@@ -11582,7 +11582,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_bunch = 0
   if (allocated(F%bunch)) then
     n1_bunch = size(F%bunch); lb1 = lbound(F%bunch, 1) - 1
@@ -11627,7 +11627,7 @@ integer(c_int), value :: n1_bunch
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_bunch == 0) then
     if (allocated(F%bunch)) deallocate(F%bunch)
     else
@@ -11719,15 +11719,15 @@ integer(c_int) :: z_plane, z_ix_ele, z_i_turn
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x = z_x
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y = z_y
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%plane = z_plane
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%i_turn = z_i_turn
 
 end subroutine aperture_point_to_f2
@@ -11813,23 +11813,23 @@ character(c_char) :: z_start_ele(*)
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%min_angle = z_min_angle
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%max_angle = z_max_angle
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_angle = z_n_angle
-!! f_side.to_f2_trans[integer, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_integer]
   F%n_turn = z_n_turn
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%x_init = z_x_init
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%y_init = z_y_init
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%rel_accuracy = z_rel_accuracy
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%abs_accuracy = z_abs_accuracy
-!! f_side.to_f2_trans[character, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_character]
   call to_f_str(z_start_ele, F%start_ele)
 
 end subroutine aperture_param_to_f2
@@ -11878,7 +11878,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_c_trans[type, 1, ALLOC]
+!! f_side.to_c_trans[1D_ALLOC_type]
   n1_point = 0
   if (allocated(F%point)) then
     n1_point = size(F%point); lb1 = lbound(F%point, 1) - 1
@@ -11925,7 +11925,7 @@ real(c_double) :: z_pz_start
 
 call c_f_pointer (Fp, F)
 
-!! f_side.to_f2_trans[type, 1, ALLOC]
+!! f_side.to_f2_trans[1D_ALLOC_type]
   if (n1_point == 0) then
     if (allocated(F%point)) deallocate(F%point)
     else
@@ -11938,9 +11938,9 @@ call c_f_pointer (Fp, F)
     call aperture_point_to_f (z_point(jd1), c_loc(F%point(jd1+1-1)))
     enddo
   endif
-!! f_side.to_f2_trans[type, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_type]
   call coord_to_f(z_ref_orb, c_loc(F%ref_orb))
-!! f_side.to_f2_trans[real, 0, NOT]
+!! f_side.to_f2_trans[0D_NOT_real]
   F%pz_start = z_pz_start
 
 end subroutine aperture_scan_to_f2

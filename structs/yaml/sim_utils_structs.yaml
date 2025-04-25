@@ -2582,43 +2582,6 @@
       dimension: ''
       comment: Alternative is to maximize.
       default: .true.
-- filename: $ACC_ROOT_DIR/sim_utils/optimizers/opti_de_openmp_mod.f90
-  line: 97
-  name: solution_struct
-  module: opti_de_openmp_mod
-  members:
-    vec:
-      line: 98
-      definition: 'real(rp), allocatable :: vec(:)'
-      type_info:
-        type: real
-        allocatable: true
-        kind: rp
-      name: vec
-      type: real
-      size: rp
-      dimension: ':'
-      default: null
-    merit:
-      line: 99
-      definition: real(rp) merit
-      type_info:
-        type: real
-        kind: rp
-      name: merit
-      type: real
-      size: rp
-      dimension: ''
-      default: null
-    status:
-      line: 100
-      definition: integer status
-      type_info:
-        type: integer
-      name: status
-      type: integer
-      dimension: ''
-      default: null
 - filename: $ACC_ROOT_DIR/sim_utils/geodesic_lm/geodesic_lm.f90
   line: 5
   name: geodesic_lm_param_struct

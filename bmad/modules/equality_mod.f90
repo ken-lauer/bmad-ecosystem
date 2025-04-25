@@ -51,13 +51,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x0 == f2%x0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y0 == f2%y0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x1 == f2%x1)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%coef == f2%coef)
 
 end function eq_spline
@@ -76,13 +76,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%polarization == f2%polarization)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%theta == f2%theta)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%xi == f2%xi)
 
 end function eq_spin_polar
@@ -101,11 +101,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%amp == f2%amp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%time == f2%time)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%spline == f2%spline)
 
 end function eq_ac_kicker_time
@@ -124,13 +124,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%f == f2%f)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%amp == f2%amp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%rf_clock_harmonic == f2%rf_clock_harmonic)
 
 end function eq_ac_kicker_freq
@@ -149,13 +149,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%amp_vs_time) .eqv. allocated(f2%amp_vs_time))
 if (.not. is_eq) return
 if (allocated(f1%amp_vs_time)) is_eq = all(shape(f1%amp_vs_time) == shape(f2%amp_vs_time))
 if (.not. is_eq) return
 if (allocated(f1%amp_vs_time)) is_eq = all(f1%amp_vs_time == f2%amp_vs_time)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%frequency) .eqv. allocated(f2%frequency))
 if (.not. is_eq) return
 if (allocated(f1%frequency)) is_eq = all(shape(f1%frequency) == shape(f2%frequency))
@@ -178,11 +178,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%c0 == f2%c0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%c1 == f2%c1)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%n_exp == f2%n_exp)
 
 end function eq_interval1_coef
@@ -201,39 +201,39 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%angle) .eqv. allocated(f2%angle))
 if (.not. is_eq) return
 if (allocated(f1%angle)) is_eq = all(shape(f1%angle) == shape(f2%angle))
 if (.not. is_eq) return
 if (allocated(f1%angle)) is_eq = all(f1%angle == f2%angle)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%energy) .eqv. allocated(f2%energy))
 if (.not. is_eq) return
 if (allocated(f1%energy)) is_eq = all(shape(f1%energy) == shape(f2%energy))
 if (.not. is_eq) return
 if (allocated(f1%energy)) is_eq = all(f1%energy == f2%energy)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%int1) .eqv. allocated(f2%int1))
 if (.not. is_eq) return
 if (allocated(f1%int1)) is_eq = all(shape(f1%int1) == shape(f2%int1))
 if (.not. is_eq) return
 if (allocated(f1%int1)) is_eq = all(f1%int1 == f2%int1)
-!! f_side.equality_test[real, 2, ALLOC]
+!! f_side.equality_test[2D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%p_reflect) .eqv. allocated(f2%p_reflect))
 if (.not. is_eq) return
 if (allocated(f1%p_reflect)) is_eq = all(shape(f1%p_reflect) == shape(f2%p_reflect))
 if (.not. is_eq) return
 if (allocated(f1%p_reflect)) is_eq = all(f1%p_reflect == f2%p_reflect)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%max_energy == f2%max_energy)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%p_reflect_scratch) .eqv. allocated(f2%p_reflect_scratch))
 if (.not. is_eq) return
 if (allocated(f1%p_reflect_scratch)) is_eq = all(shape(f1%p_reflect_scratch) == shape(f2%p_reflect_scratch))
 if (.not. is_eq) return
 if (allocated(f1%p_reflect_scratch)) is_eq = all(f1%p_reflect_scratch == f2%p_reflect_scratch)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%bragg_angle) .eqv. allocated(f2%bragg_angle))
 if (.not. is_eq) return
 if (allocated(f1%bragg_angle)) is_eq = all(shape(f1%bragg_angle) == shape(f2%bragg_angle))
@@ -256,23 +256,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%description == f2%description)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%reflectivity_file == f2%reflectivity_file)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%table) .eqv. allocated(f2%table))
 if (.not. is_eq) return
 if (allocated(f1%table)) is_eq = all(shape(f1%table) == shape(f2%table))
 if (.not. is_eq) return
 if (allocated(f1%table)) is_eq = all(f1%table == f2%table)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%surface_roughness_rms == f2%surface_roughness_rms)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%roughness_correlation_len == f2%roughness_correlation_len)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_surface == f2%ix_surface)
 
 end function eq_photon_reflect_surface
@@ -291,47 +291,47 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%vec == f2%vec)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s == f2%s)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%t == f2%t)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%spin == f2%spin)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%field == f2%field)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%phase == f2%phase)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%charge == f2%charge)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dt_ref == f2%dt_ref)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%r == f2%r)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%p0c == f2%p0c)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%E_potential == f2%E_potential)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%beta == f2%beta)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_turn == f2%ix_turn)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_user == f2%ix_user)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%state == f2%state)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%direction == f2%direction)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%time_dir == f2%time_dir)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%species == f2%species)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%location == f2%location)
 
 end function eq_coord
@@ -350,7 +350,7 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%orbit) .eqv. allocated(f2%orbit))
 if (.not. is_eq) return
 if (allocated(f1%orbit)) is_eq = all(shape(f1%orbit) == shape(f2%orbit))
@@ -373,25 +373,25 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%K_22a == f2%K_22a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%K_12a == f2%K_12a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%K_11b == f2%K_11b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%K_12b == f2%K_12b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%Cbar22_a == f2%Cbar22_a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%Cbar12_a == f2%Cbar12_a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%Cbar11_b == f2%Cbar11_b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%Cbar12_b == f2%Cbar12_b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi_a == f2%phi_a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi_b == f2%phi_b)
 
 end function eq_bpm_phase_coupling
@@ -410,11 +410,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%type == f2%type)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%value == f2%value)
 
 end function eq_expression_atom
@@ -433,39 +433,39 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%w) .eqv. allocated(f2%w))
 if (.not. is_eq) return
 if (allocated(f1%w)) is_eq = all(shape(f1%w) == shape(f2%w))
 if (.not. is_eq) return
 if (allocated(f1%w)) is_eq = all(f1%w == f2%w)
-!! f_side.equality_test[complex, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_complex]
 is_eq = is_eq .and. (allocated(f1%fw) .eqv. allocated(f2%fw))
 if (.not. is_eq) return
 if (allocated(f1%fw)) is_eq = all(shape(f1%fw) == shape(f2%fw))
 if (.not. is_eq) return
 if (allocated(f1%fw)) is_eq = all(f1%fw == f2%fw)
-!! f_side.equality_test[complex, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_complex]
 is_eq = is_eq .and. (allocated(f1%fbunch) .eqv. allocated(f2%fbunch))
 if (.not. is_eq) return
 if (allocated(f1%fbunch)) is_eq = all(shape(f1%fbunch) == shape(f2%fbunch))
 if (.not. is_eq) return
 if (allocated(f1%fbunch)) is_eq = all(f1%fbunch == f2%fbunch)
-!! f_side.equality_test[complex, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_complex]
 is_eq = is_eq .and. (allocated(f1%w_out) .eqv. allocated(f2%w_out))
 if (.not. is_eq) return
 if (allocated(f1%w_out)) is_eq = all(shape(f1%w_out) == shape(f2%w_out))
 if (.not. is_eq) return
 if (allocated(f1%w_out)) is_eq = all(f1%w_out == f2%w_out)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz == f2%dz)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z0 == f2%z0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%smoothing_sigma == f2%smoothing_sigma)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%position_dependence == f2%position_dependence)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%time_based .eqv. f2%time_based)
 
 end function eq_wake_sr_z_long
@@ -484,25 +484,25 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%amp == f2%amp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%damp == f2%damp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%k == f2%k)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_sin == f2%b_sin)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_cos == f2%b_cos)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_sin == f2%a_sin)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_cos == f2%a_cos)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%polarization == f2%polarization)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%position_dependence == f2%position_dependence)
 
 end function eq_wake_sr_mode
@@ -521,33 +521,33 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file == f2%file)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%z_long == f2%z_long)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%long) .eqv. allocated(f2%long))
 if (.not. is_eq) return
 if (allocated(f1%long)) is_eq = all(shape(f1%long) == shape(f2%long))
 if (.not. is_eq) return
 if (allocated(f1%long)) is_eq = all(f1%long == f2%long)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%trans) .eqv. allocated(f2%trans))
 if (.not. is_eq) return
 if (allocated(f1%trans)) is_eq = all(shape(f1%trans) == shape(f2%trans))
 if (.not. is_eq) return
 if (allocated(f1%trans)) is_eq = all(f1%trans == f2%trans)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z_ref_long == f2%z_ref_long)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z_ref_trans == f2%z_ref_trans)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z_max == f2%z_max)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%amp_scale == f2%amp_scale)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z_scale == f2%z_scale)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%scale_with_length .eqv. f2%scale_with_length)
 
 end function eq_wake_sr
@@ -566,31 +566,31 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%freq == f2%freq)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%freq_in == f2%freq_in)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%R_over_Q == f2%R_over_Q)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%Q == f2%Q)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%damp == f2%damp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%angle == f2%angle)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_sin == f2%b_sin)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_cos == f2%b_cos)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_sin == f2%a_sin)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_cos == f2%a_cos)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%m == f2%m)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%polarized .eqv. f2%polarized)
 
 end function eq_wake_lr_mode
@@ -609,23 +609,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file == f2%file)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%mode) .eqv. allocated(f2%mode))
 if (.not. is_eq) return
 if (allocated(f1%mode)) is_eq = all(shape(f1%mode) == shape(f2%mode))
 if (.not. is_eq) return
 if (allocated(f1%mode)) is_eq = all(f1%mode == f2%mode)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%t_ref == f2%t_ref)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%freq_spread == f2%freq_spread)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%amp_scale == f2%amp_scale)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%time_scale == f2%time_scale)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%self_wake_on .eqv. f2%self_wake_on)
 
 end function eq_wake_lr
@@ -644,9 +644,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
 
 end function eq_lat_ele_loc
@@ -665,9 +665,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%sr == f2%sr)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%lr == f2%lr)
 
 end function eq_wake
@@ -686,9 +686,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%coef == f2%coef)
-!! f_side.equality_test[integer, 1, NOT]
+!! f_side.equality_test[1D_NOT_integer]
 is_eq = is_eq .and. all(f1%expn == f2%expn)
 
 end function eq_taylor_term
@@ -707,9 +707,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%ref == f2%ref)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%term) .eqv. associated(f2%term))
 if (.not. is_eq) return
 if (associated(f1%term)) is_eq = all(shape(f1%term) == shape(f2%term))
@@ -732,9 +732,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%coef == f2%coef)
-!! f_side.equality_test[integer, 1, NOT]
+!! f_side.equality_test[1D_NOT_integer]
 is_eq = is_eq .and. all(f1%expn == f2%expn)
 
 end function eq_em_taylor_term
@@ -753,9 +753,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%ref == f2%ref)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%term) .eqv. allocated(f2%term))
 if (.not. is_eq) return
 if (allocated(f1%term)) is_eq = all(shape(f1%term) == shape(f2%term))
@@ -778,23 +778,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%coef == f2%coef)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%kx == f2%kx)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%ky == f2%ky)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%kz == f2%kz)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x0 == f2%x0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y0 == f2%y0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi_z == f2%phi_z)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%family == f2%family)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%form == f2%form)
 
 end function eq_cartesian_map_term1
@@ -813,11 +813,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file == f2%file)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_link == f2%n_link)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%term) .eqv. allocated(f2%term))
 if (.not. is_eq) return
 if (allocated(f1%term)) is_eq = all(shape(f1%term) == shape(f2%term))
@@ -840,17 +840,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%field_scale == f2%field_scale)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%master_parameter == f2%master_parameter)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ele_anchor_pt == f2%ele_anchor_pt)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%field_type == f2%field_type)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
@@ -871,9 +871,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%e_coef == f2%e_coef)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%b_coef == f2%b_coef)
 
 end function eq_cylindrical_map_term1
@@ -892,11 +892,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file == f2%file)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_link == f2%n_link)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%term) .eqv. allocated(f2%term))
 if (.not. is_eq) return
 if (allocated(f1%term)) is_eq = all(shape(f1%term) == shape(f2%term))
@@ -919,25 +919,25 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%m == f2%m)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%harmonic == f2%harmonic)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi0_fieldmap == f2%phi0_fieldmap)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%theta0_azimuth == f2%theta0_azimuth)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%field_scale == f2%field_scale)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%master_parameter == f2%master_parameter)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ele_anchor_pt == f2%ele_anchor_pt)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz == f2%dz)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
@@ -958,9 +958,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[complex, 1, NOT]
+!! f_side.equality_test[1D_NOT_complex]
 is_eq = is_eq .and. all(f1%E == f2%E)
-!! f_side.equality_test[complex, 1, NOT]
+!! f_side.equality_test[1D_NOT_complex]
 is_eq = is_eq .and. all(f1%B == f2%B)
 
 end function eq_grid_field_pt1
@@ -979,9 +979,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file == f2%file)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_link == f2%n_link)
 
 end function eq_grid_field_pt
@@ -1000,29 +1000,29 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%geometry == f2%geometry)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%harmonic == f2%harmonic)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi0_fieldmap == f2%phi0_fieldmap)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%field_scale == f2%field_scale)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%field_type == f2%field_type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%master_parameter == f2%master_parameter)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ele_anchor_pt == f2%ele_anchor_pt)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%interpolation_order == f2%interpolation_order)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%dr == f2%dr)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%curved_ref_frame .eqv. f2%curved_ref_frame)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
@@ -1043,15 +1043,15 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r == f2%r)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%w == f2%w)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%theta == f2%theta)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%psi == f2%psi)
 
 end function eq_floor_position
@@ -1070,21 +1070,21 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%closed_orb == f2%closed_orb)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%kick_const == f2%kick_const)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_x == f2%sig_x)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_y == f2%sig_y)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sin_phi == f2%sin_phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%cos_phi == f2%cos_phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_z == f2%sig_z)
 
 end function eq_high_energy_space_charge
@@ -1103,13 +1103,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%eta == f2%eta)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%etap == f2%etap)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%deta_ds == f2%deta_ds)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma == f2%sigma)
 
 end function eq_xy_disp
@@ -1128,27 +1128,27 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%beta == f2%beta)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%alpha == f2%alpha)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%gamma == f2%gamma)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%eta == f2%eta)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%etap == f2%etap)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%deta_ds == f2%deta_ds)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma == f2%sigma)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma_p == f2%sigma_p)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%emit == f2%emit)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%norm_emit == f2%norm_emit)
 
 end function eq_twiss
@@ -1167,17 +1167,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%v == f2%v)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%a == f2%a)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%b == f2%b)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%c == f2%c)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%x == f2%x)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%y == f2%y)
 
 end function eq_mode3
@@ -1196,23 +1196,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%attributes == f2%attributes)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%control == f2%control)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%floor_position == f2%floor_position)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%s_position == f2%s_position)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ref_energy == f2%ref_energy)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%mat6 == f2%mat6)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%rad_int == f2%rad_int)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ptc == f2%ptc)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%has_misalign .eqv. f2%has_misalign)
 
 end function eq_bookkeeping_state
@@ -1231,15 +1231,15 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%ref_orb == f2%ref_orb)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%damp_dmat == f2%damp_dmat)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%xfer_damp_vec == f2%xfer_damp_vec)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%xfer_damp_mat == f2%xfer_damp_mat)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%stoc_mat == f2%stoc_mat)
 
 end function eq_rad_map
@@ -1258,11 +1258,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%rm0 == f2%rm0)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%rm1 == f2%rm1)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%stale .eqv. f2%stale)
 
 end function eq_rad_map_ele
@@ -1281,13 +1281,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%m == f2%m)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%sincos == f2%sincos)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_deriv_max == f2%n_deriv_max)
-!! f_side.equality_test[real, 2, ALLOC]
+!! f_side.equality_test[2D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%deriv) .eqv. allocated(f2%deriv))
 if (.not. is_eq) return
 if (allocated(f1%deriv)) is_eq = all(shape(f1%deriv) == shape(f2%deriv))
@@ -1310,31 +1310,31 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file == f2%file)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%gg) .eqv. allocated(f2%gg))
 if (.not. is_eq) return
 if (allocated(f1%gg)) is_eq = all(shape(f1%gg) == shape(f2%gg))
 if (.not. is_eq) return
 if (allocated(f1%gg)) is_eq = all(f1%gg == f2%gg)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ele_anchor_pt == f2%ele_anchor_pt)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%field_type == f2%field_type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%iz0 == f2%iz0)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%iz1 == f2%iz1)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz == f2%dz)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%field_scale == f2%field_scale)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%master_parameter == f2%master_parameter)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%curved_ref_frame .eqv. f2%curved_ref_frame)
 
 end function eq_gen_grad_map
@@ -1353,15 +1353,15 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x0 == f2%x0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y0 == f2%y0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z0 == f2%z0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz_dx == f2%dz_dx)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz_dy == f2%dz_dy)
 
 end function eq_surface_segmented_pt
@@ -1380,13 +1380,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%active .eqv. f2%active)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%dr == f2%dr)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[type, 2, ALLOC]
+!! f_side.equality_test[2D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
 if (.not. is_eq) return
 if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
@@ -1409,17 +1409,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x0 == f2%x0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y0 == f2%y0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rot_y == f2%rot_y)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rot_t == f2%rot_t)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rot_y_rms == f2%rot_y_rms)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rot_t_rms == f2%rot_t_rms)
 
 end function eq_surface_h_misalign_pt
@@ -1438,13 +1438,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%active .eqv. f2%active)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%dr == f2%dr)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[type, 2, ALLOC]
+!! f_side.equality_test[2D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
 if (.not. is_eq) return
 if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
@@ -1467,17 +1467,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x0 == f2%x0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y0 == f2%y0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z0 == f2%z0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz_dx == f2%dz_dx)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dz_dy == f2%dz_dy)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%d2z_dxdy == f2%d2z_dxdy)
 
 end function eq_surface_displacement_pt
@@ -1496,13 +1496,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%active .eqv. f2%active)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%dr == f2%dr)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[type, 2, ALLOC]
+!! f_side.equality_test[2D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
 if (.not. is_eq) return
 if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
@@ -1525,7 +1525,7 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r == f2%r)
 
 end function eq_target_point
@@ -1544,13 +1544,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%xy == f2%xy)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%spherical == f2%spherical)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%elliptical == f2%elliptical)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%has_curvature .eqv. f2%has_curvature)
 
 end function eq_surface_curvature
@@ -1569,15 +1569,15 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%type == f2%type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_corner == f2%n_corner)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%ele_loc == f2%ele_loc)
-!! f_side.equality_test[type, 1, NOT]
+!! f_side.equality_test[1D_NOT_type]
 is_eq = is_eq .and. all(f1%corner == f2%corner)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%center == f2%center)
 
 end function eq_photon_target
@@ -1596,21 +1596,21 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%f0_m1 == f2%f0_m1)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%f0_m2 == f2%f0_m2)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%f_0 == f2%f_0)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%f_h == f2%f_h)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%f_hbar == f2%f_hbar)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%f_hkl == f2%f_hkl)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%h_norm == f2%h_norm)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%l_ref == f2%l_ref)
 
 end function eq_photon_material
@@ -1629,25 +1629,25 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer8, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer8]
 is_eq = is_eq .and. (f1%n_photon == f2%n_photon)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%E_x == f2%E_x)
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%E_y == f2%E_y)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%intensity_x == f2%intensity_x)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%intensity_y == f2%intensity_y)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%intensity == f2%intensity)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%orbit == f2%orbit)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%orbit_rms == f2%orbit_rms)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%init_orbit == f2%init_orbit)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%init_orbit_rms == f2%init_orbit_rms)
 
 end function eq_pixel_pt
@@ -1666,17 +1666,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%dr == f2%dr)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[integer8, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer8]
 is_eq = is_eq .and. (f1%n_track_tot == f2%n_track_tot)
-!! f_side.equality_test[integer8, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer8]
 is_eq = is_eq .and. (f1%n_hit_detec == f2%n_hit_detec)
-!! f_side.equality_test[integer8, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer8]
 is_eq = is_eq .and. (f1%n_hit_pixel == f2%n_hit_pixel)
-!! f_side.equality_test[type, 2, ALLOC]
+!! f_side.equality_test[2D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
 if (.not. is_eq) return
 if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
@@ -1699,33 +1699,33 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%curvature == f2%curvature)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%target == f2%target)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%material == f2%material)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%segmented == f2%segmented)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%h_misalign == f2%h_misalign)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%displacement == f2%displacement)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%pixel == f2%pixel)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%reflectivity_table_type == f2%reflectivity_table_type)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%reflectivity_table_sigma == f2%reflectivity_table_sigma)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%reflectivity_table_pi == f2%reflectivity_table_pi)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%init_energy_prob) .eqv. allocated(f2%init_energy_prob))
 if (.not. is_eq) return
 if (allocated(f1%init_energy_prob)) is_eq = all(shape(f1%init_energy_prob) == shape(f2%init_energy_prob))
 if (.not. is_eq) return
 if (allocated(f1%init_energy_prob)) is_eq = all(f1%init_energy_prob == f2%init_energy_prob)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%integrated_init_energy_prob) .eqv. allocated(f2%integrated_init_energy_prob))
 if (.not. is_eq) return
 if (allocated(f1%integrated_init_energy_prob)) is_eq = all(shape(f1%integrated_init_energy_prob) == shape(f2%integrated_init_energy_prob))
@@ -1748,23 +1748,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x == f2%x)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y == f2%y)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%radius_x == f2%radius_x)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%radius_y == f2%radius_y)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%tilt == f2%tilt)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%angle == f2%angle)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x0 == f2%x0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y0 == f2%y0)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%type == f2%type)
 
 end function eq_wall3d_vertex
@@ -1783,51 +1783,51 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%material == f2%material)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%v) .eqv. allocated(f2%v))
 if (.not. is_eq) return
 if (allocated(f1%v)) is_eq = all(shape(f1%v) == shape(f2%v))
 if (.not. is_eq) return
 if (allocated(f1%v)) is_eq = all(f1%v == f2%v)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%surface) .eqv. associated(f2%surface))
 if (.not. is_eq) return
 if (associated(f1%surface)) is_eq = (f1%surface == f2%surface)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%type == f2%type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_vertex_input == f2%n_vertex_input)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%vertices_state == f2%vertices_state)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%patch_in_region .eqv. f2%patch_in_region)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%thickness == f2%thickness)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s == f2%s)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%r0 == f2%r0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dx0_ds == f2%dx0_ds)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dy0_ds == f2%dy0_ds)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%x0_coef == f2%x0_coef)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%y0_coef == f2%y0_coef)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dr_ds == f2%dr_ds)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%p1_coef == f2%p1_coef)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%p2_coef == f2%p2_coef)
 
 end function eq_wall3d_section
@@ -1846,25 +1846,25 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%type == f2%type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_wall3d == f2%ix_wall3d)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_link == f2%n_link)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%thickness == f2%thickness)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%clear_material == f2%clear_material)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%opaque_material == f2%opaque_material)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%superimpose .eqv. f2%superimpose)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ele_anchor_pt == f2%ele_anchor_pt)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%section) .eqv. allocated(f2%section))
 if (.not. is_eq) return
 if (allocated(f1%section)) is_eq = all(shape(f1%section) == shape(f2%section))
@@ -1887,11 +1887,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_con == f2%ix_con)
-!! f_side.equality_test[real, 0, PTR]
+!! f_side.equality_test[0D_PTR_real]
 is_eq = is_eq .and. (associated(f1%attrib_ptr) .eqv. associated(f2%attrib_ptr))
 if (.not. is_eq) return
 if (associated(f1%attrib_ptr)) is_eq = (f1%attrib_ptr == f2%attrib_ptr)
@@ -1912,29 +1912,29 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%value == f2%value)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%y_knot) .eqv. allocated(f2%y_knot))
 if (.not. is_eq) return
 if (allocated(f1%y_knot)) is_eq = all(shape(f1%y_knot) == shape(f2%y_knot))
 if (.not. is_eq) return
 if (allocated(f1%y_knot)) is_eq = all(f1%y_knot == f2%y_knot)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%stack) .eqv. allocated(f2%stack))
 if (.not. is_eq) return
 if (allocated(f1%stack)) is_eq = all(shape(f1%stack) == shape(f2%stack))
 if (.not. is_eq) return
 if (allocated(f1%stack)) is_eq = all(f1%stack == f2%stack)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%slave == f2%slave)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%lord == f2%lord)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%slave_name == f2%slave_name)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%attribute == f2%attribute)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_attrib == f2%ix_attrib)
 
 end function eq_control
@@ -1953,11 +1953,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%value == f2%value)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%old_value == f2%old_value)
 
 end function eq_control_var1
@@ -1976,23 +1976,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%y_knot) .eqv. allocated(f2%y_knot))
 if (.not. is_eq) return
 if (allocated(f1%y_knot)) is_eq = all(shape(f1%y_knot) == shape(f2%y_knot))
 if (.not. is_eq) return
 if (allocated(f1%y_knot)) is_eq = all(f1%y_knot == f2%y_knot)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%stack) .eqv. allocated(f2%stack))
 if (.not. is_eq) return
 if (allocated(f1%stack)) is_eq = all(shape(f1%stack) == shape(f2%stack))
 if (.not. is_eq) return
 if (allocated(f1%stack)) is_eq = all(f1%stack == f2%stack)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%attribute == f2%attribute)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%slave_name == f2%slave_name)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%is_controller .eqv. f2%is_controller)
 
 end function eq_control_ramp1
@@ -2011,25 +2011,25 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%var) .eqv. allocated(f2%var))
 if (.not. is_eq) return
 if (allocated(f1%var)) is_eq = all(shape(f1%var) == shape(f2%var))
 if (.not. is_eq) return
 if (allocated(f1%var)) is_eq = all(f1%var == f2%var)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%ramp) .eqv. allocated(f2%ramp))
 if (.not. is_eq) return
 if (allocated(f1%ramp)) is_eq = all(shape(f1%ramp) == shape(f2%ramp))
 if (.not. is_eq) return
 if (allocated(f1%ramp)) is_eq = all(f1%ramp == f2%ramp)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%ramper_lord) .eqv. allocated(f2%ramper_lord))
 if (.not. is_eq) return
 if (allocated(f1%ramper_lord)) is_eq = all(shape(f1%ramper_lord) == shape(f2%ramper_lord))
 if (.not. is_eq) return
 if (allocated(f1%ramper_lord)) is_eq = all(f1%ramper_lord == f2%ramper_lord)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%x_knot) .eqv. allocated(f2%x_knot))
 if (.not. is_eq) return
 if (allocated(f1%x_knot)) is_eq = all(shape(f1%x_knot) == shape(f2%x_knot))
@@ -2052,11 +2052,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%part_per_ellipse == f2%part_per_ellipse)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ellipse == f2%n_ellipse)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma_cutoff == f2%sigma_cutoff)
 
 end function eq_ellipse_beam_init
@@ -2075,11 +2075,11 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 1, NOT]
+!! f_side.equality_test[1D_NOT_integer]
 is_eq = is_eq .and. all(f1%part_per_phi == f2%part_per_phi)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_I2 == f2%n_I2)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%A == f2%A)
 
 end function eq_kv_beam_init
@@ -2098,17 +2098,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_x == f2%n_x)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_px == f2%n_px)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x_min == f2%x_min)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x_max == f2%x_max)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%px_min == f2%px_min)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%px_max == f2%px_max)
 
 end function eq_grid_beam_init
@@ -2127,75 +2127,75 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%position_file == f2%position_file)
-!! f_side.equality_test[character, 1, NOT]
+!! f_side.equality_test[1D_NOT_character]
 is_eq = is_eq .and. all(f1%distribution_type == f2%distribution_type)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%spin == f2%spin)
-!! f_side.equality_test[type, 1, NOT]
+!! f_side.equality_test[1D_NOT_type]
 is_eq = is_eq .and. all(f1%ellipse == f2%ellipse)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%KV == f2%KV)
-!! f_side.equality_test[type, 1, NOT]
+!! f_side.equality_test[1D_NOT_type]
 is_eq = is_eq .and. all(f1%grid == f2%grid)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%center_jitter == f2%center_jitter)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%emit_jitter == f2%emit_jitter)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_z_jitter == f2%sig_z_jitter)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_pz_jitter == f2%sig_pz_jitter)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_particle == f2%n_particle)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%renorm_center .eqv. f2%renorm_center)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%renorm_sigma .eqv. f2%renorm_sigma)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%random_engine == f2%random_engine)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%random_gauss_converter == f2%random_gauss_converter)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%random_sigma_cutoff == f2%random_sigma_cutoff)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_norm_emit == f2%a_norm_emit)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_norm_emit == f2%b_norm_emit)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_emit == f2%a_emit)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_emit == f2%b_emit)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dPz_dz == f2%dPz_dz)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%center == f2%center)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%t_offset == f2%t_offset)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dt_bunch == f2%dt_bunch)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_z == f2%sig_z)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_pz == f2%sig_pz)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%bunch_charge == f2%bunch_charge)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_bunch == f2%n_bunch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_turn == f2%ix_turn)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%species == f2%species)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%full_6D_coupling_calc .eqv. f2%full_6D_coupling_calc)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%use_particle_start .eqv. f2%use_particle_start)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%use_t_coords .eqv. f2%use_t_coords)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%use_z_as_t .eqv. f2%use_z_as_t)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%file_name == f2%file_name)
 
 end function eq_beam_init
@@ -2214,39 +2214,39 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%n_part == f2%n_part)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%total_length == f2%total_length)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%unstable_factor == f2%unstable_factor)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%t1_with_RF == f2%t1_with_RF)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%t1_no_RF == f2%t1_no_RF)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%spin_tune == f2%spin_tune)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%particle == f2%particle)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%default_tracking_species == f2%default_tracking_species)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%geometry == f2%geometry)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ixx == f2%ixx)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%stable .eqv. f2%stable)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%live_branch .eqv. f2%live_branch)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%g1_integral == f2%g1_integral)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%g2_integral == f2%g2_integral)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%g3_integral == f2%g3_integral)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%bookkeeping_state == f2%bookkeeping_state)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%beam_init == f2%beam_init)
 
 end function eq_lat_param
@@ -2265,17 +2265,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%stable .eqv. f2%stable)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%tune == f2%tune)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%emit == f2%emit)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%chrom == f2%chrom)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma == f2%sigma)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigmap == f2%sigmap)
 
 end function eq_mode_info
@@ -2294,13 +2294,13 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%who == f2%who)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele_start == f2%ix_ele_start)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele_end == f2%ix_ele_end)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%input_file == f2%input_file)
 
 end function eq_pre_tracker
@@ -2319,19 +2319,19 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%emittance == f2%emittance)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%emittance_no_vert == f2%emittance_no_vert)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%synch_int == f2%synch_int)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%j_damp == f2%j_damp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%alpha_damp == f2%alpha_damp)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%chrom == f2%chrom)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%tune == f2%tune)
 
 end function eq_anormal_mode
@@ -2350,19 +2350,19 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i2_E4 == f2%i2_E4)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i3_E7 == f2%i3_E7)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i5a_E6 == f2%i5a_E6)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i5b_E6 == f2%i5b_E6)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_E1 == f2%sig_E1)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%a_emittance_end == f2%a_emittance_end)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%b_emittance_end == f2%b_emittance_end)
 
 end function eq_linac_normal_mode
@@ -2381,31 +2381,31 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%synch_int == f2%synch_int)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigE_E == f2%sigE_E)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sig_z == f2%sig_z)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%e_loss == f2%e_loss)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rf_voltage == f2%rf_voltage)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%pz_aperture == f2%pz_aperture)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%pz_average == f2%pz_average)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%momentum_compaction == f2%momentum_compaction)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dpz_damp == f2%dpz_damp)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%a == f2%a)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%b == f2%b)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%z == f2%z)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%lin == f2%lin)
 
 end function eq_normal_modes
@@ -2424,19 +2424,19 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%E == f2%E)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%B == f2%B)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%dE == f2%dE)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%dB == f2%dB)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi == f2%phi)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%phi_B == f2%phi_B)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%A == f2%A)
 
 end function eq_em_field
@@ -2455,19 +2455,19 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_slice == f2%ix_slice)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x_center == f2%x_center)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y_center == f2%y_center)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x_sigma == f2%x_sigma)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y_sigma == f2%y_sigma)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dx == f2%dx)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dy == f2%dy)
 
 end function eq_strong_beam
@@ -2486,17 +2486,17 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s_body == f2%s_body)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%orb == f2%orb)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%field == f2%field)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%strong_beam == f2%strong_beam)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%vec0 == f2%vec0)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%mat6 == f2%mat6)
 
 end function eq_track_point
@@ -2515,19 +2515,19 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
 if (.not. is_eq) return
 if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
 if (.not. is_eq) return
 if (allocated(f1%pt)) is_eq = all(f1%pt == f2%pt)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%ds_save == f2%ds_save)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_pt == f2%n_pt)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_bad == f2%n_bad)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ok == f2%n_ok)
 
 end function eq_track
@@ -2546,39 +2546,39 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%ds_track_step == f2%ds_track_step)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dt_track_step == f2%dt_track_step)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%cathode_strength_cutoff == f2%cathode_strength_cutoff)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rel_tol_tracking == f2%rel_tol_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%abs_tol_tracking == f2%abs_tol_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%beam_chamber_height == f2%beam_chamber_height)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lsc_sigma_cutoff == f2%lsc_sigma_cutoff)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%particle_sigma_cutoff == f2%particle_sigma_cutoff)
-!! f_side.equality_test[integer, 1, NOT]
+!! f_side.equality_test[1D_NOT_integer]
 is_eq = is_eq .and. all(f1%space_charge_mesh_size == f2%space_charge_mesh_size)
-!! f_side.equality_test[integer, 1, NOT]
+!! f_side.equality_test[1D_NOT_integer]
 is_eq = is_eq .and. all(f1%csr3d_mesh_size == f2%csr3d_mesh_size)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_bin == f2%n_bin)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%particle_bin_span == f2%particle_bin_span)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_shield_images == f2%n_shield_images)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%sc_min_in_bin == f2%sc_min_in_bin)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%lsc_kick_transverse_dependence .eqv. f2%lsc_kick_transverse_dependence)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%debug .eqv. f2%debug)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%diagnostic_output_file == f2%diagnostic_output_file)
 
 end function eq_space_charge_common
@@ -2597,85 +2597,85 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%max_aperture_limit == f2%max_aperture_limit)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%d_orb == f2%d_orb)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%default_ds_step == f2%default_ds_step)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%significant_length == f2%significant_length)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rel_tol_tracking == f2%rel_tol_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%abs_tol_tracking == f2%abs_tol_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rel_tol_adaptive_tracking == f2%rel_tol_adaptive_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%abs_tol_adaptive_tracking == f2%abs_tol_adaptive_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%init_ds_adaptive_tracking == f2%init_ds_adaptive_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%min_ds_adaptive_tracking == f2%min_ds_adaptive_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%fatal_ds_adaptive_tracking == f2%fatal_ds_adaptive_tracking)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%autoscale_amp_abs_tol == f2%autoscale_amp_abs_tol)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%autoscale_amp_rel_tol == f2%autoscale_amp_rel_tol)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%autoscale_phase_tol == f2%autoscale_phase_tol)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%electric_dipole_moment == f2%electric_dipole_moment)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%synch_rad_scale == f2%synch_rad_scale)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sad_eps_scale == f2%sad_eps_scale)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sad_amp_max == f2%sad_amp_max)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%sad_n_div_max == f2%sad_n_div_max)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%taylor_order == f2%taylor_order)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%runge_kutta_order == f2%runge_kutta_order)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%default_integ_order == f2%default_integ_order)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%max_num_runge_kutta_step == f2%max_num_runge_kutta_step)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%rf_phase_below_transition_ref .eqv. f2%rf_phase_below_transition_ref)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%sr_wakes_on .eqv. f2%sr_wakes_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%lr_wakes_on .eqv. f2%lr_wakes_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%auto_bookkeeper .eqv. f2%auto_bookkeeper)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%high_energy_space_charge_on .eqv. f2%high_energy_space_charge_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%csr_and_space_charge_on .eqv. f2%csr_and_space_charge_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%spin_tracking_on .eqv. f2%spin_tracking_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%spin_sokolov_ternov_flipping_on .eqv. f2%spin_sokolov_ternov_flipping_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%radiation_damping_on .eqv. f2%radiation_damping_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%radiation_zero_average .eqv. f2%radiation_zero_average)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%radiation_fluctuations_on .eqv. f2%radiation_fluctuations_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%conserve_taylor_maps .eqv. f2%conserve_taylor_maps)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%absolute_time_tracking .eqv. f2%absolute_time_tracking)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%absolute_time_ref_shift .eqv. f2%absolute_time_ref_shift)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%convert_to_kinetic_momentum .eqv. f2%convert_to_kinetic_momentum)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%aperture_limit_on .eqv. f2%aperture_limit_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%debug .eqv. f2%debug)
 
 end function eq_bmad_common
@@ -2694,41 +2694,41 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i0 == f2%i0)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i1 == f2%i1)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i2 == f2%i2)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i3 == f2%i3)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i4a == f2%i4a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i4b == f2%i4b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i4z == f2%i4z)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i5a == f2%i5a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i5b == f2%i5b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%i6b == f2%i6b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_i2_E4 == f2%lin_i2_E4)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_i3_E7 == f2%lin_i3_E7)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_i5a_E6 == f2%lin_i5a_E6)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_i5b_E6 == f2%lin_i5b_E6)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_norm_emit_a == f2%lin_norm_emit_a)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_norm_emit_b == f2%lin_norm_emit_b)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%lin_sig_E == f2%lin_sig_E)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%n_steps == f2%n_steps)
 
 end function eq_rad_int1
@@ -2747,7 +2747,7 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%ele) .eqv. allocated(f2%ele))
 if (.not. is_eq) return
 if (allocated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
@@ -2770,7 +2770,7 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%branch) .eqv. allocated(f2%branch))
 if (.not. is_eq) return
 if (allocated(f1%branch)) is_eq = all(shape(f1%branch) == shape(f2%branch))
@@ -2793,237 +2793,237 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%type == f2%type)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%alias == f2%alias)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%component_name == f2%component_name)
-!! f_side.equality_test[character, 0, PTR]
+!! f_side.equality_test[0D_PTR_character]
 is_eq = is_eq .and. (associated(f1%descrip) .eqv. associated(f2%descrip))
 if (.not. is_eq) return
 if (associated(f1%descrip)) is_eq = (f1%descrip == f2%descrip)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%a == f2%a)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%b == f2%b)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%z == f2%z)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%x == f2%x)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%y == f2%y)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%ac_kick) .eqv. associated(f2%ac_kick))
 if (.not. is_eq) return
 if (associated(f1%ac_kick)) is_eq = (f1%ac_kick == f2%ac_kick)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%bookkeeping_state == f2%bookkeeping_state)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%control) .eqv. associated(f2%control))
 if (.not. is_eq) return
 if (associated(f1%control)) is_eq = (f1%control == f2%control)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%floor == f2%floor)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%high_energy_space_charge) .eqv. associated(f2%high_energy_space_charge))
 if (.not. is_eq) return
 if (associated(f1%high_energy_space_charge)) is_eq = (f1%high_energy_space_charge == f2%high_energy_space_charge)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%mode3) .eqv. associated(f2%mode3))
 if (.not. is_eq) return
 if (associated(f1%mode3)) is_eq = (f1%mode3 == f2%mode3)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%photon) .eqv. associated(f2%photon))
 if (.not. is_eq) return
 if (associated(f1%photon)) is_eq = (f1%photon == f2%photon)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%rad_map) .eqv. associated(f2%rad_map))
 if (.not. is_eq) return
 if (associated(f1%rad_map)) is_eq = (f1%rad_map == f2%rad_map)
-!! f_side.equality_test[type, 1, NOT]
+!! f_side.equality_test[1D_NOT_type]
 is_eq = is_eq .and. all(f1%taylor == f2%taylor)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%spin_taylor_ref_orb_in == f2%spin_taylor_ref_orb_in)
-!! f_side.equality_test[type, 1, NOT]
+!! f_side.equality_test[1D_NOT_type]
 is_eq = is_eq .and. all(f1%spin_taylor == f2%spin_taylor)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%wake) .eqv. associated(f2%wake))
 if (.not. is_eq) return
 if (associated(f1%wake)) is_eq = (f1%wake == f2%wake)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%wall3d) .eqv. associated(f2%wall3d))
 if (.not. is_eq) return
 if (associated(f1%wall3d)) is_eq = all(shape(f1%wall3d) == shape(f2%wall3d))
 if (.not. is_eq) return
 if (associated(f1%wall3d)) is_eq = all(f1%wall3d == f2%wall3d)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%cartesian_map) .eqv. associated(f2%cartesian_map))
 if (.not. is_eq) return
 if (associated(f1%cartesian_map)) is_eq = all(shape(f1%cartesian_map) == shape(f2%cartesian_map))
 if (.not. is_eq) return
 if (associated(f1%cartesian_map)) is_eq = all(f1%cartesian_map == f2%cartesian_map)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%cylindrical_map) .eqv. associated(f2%cylindrical_map))
 if (.not. is_eq) return
 if (associated(f1%cylindrical_map)) is_eq = all(shape(f1%cylindrical_map) == shape(f2%cylindrical_map))
 if (.not. is_eq) return
 if (associated(f1%cylindrical_map)) is_eq = all(f1%cylindrical_map == f2%cylindrical_map)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%gen_grad_map) .eqv. associated(f2%gen_grad_map))
 if (.not. is_eq) return
 if (associated(f1%gen_grad_map)) is_eq = all(shape(f1%gen_grad_map) == shape(f2%gen_grad_map))
 if (.not. is_eq) return
 if (associated(f1%gen_grad_map)) is_eq = all(f1%gen_grad_map == f2%gen_grad_map)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%grid_field) .eqv. associated(f2%grid_field))
 if (.not. is_eq) return
 if (associated(f1%grid_field)) is_eq = all(shape(f1%grid_field) == shape(f2%grid_field))
 if (.not. is_eq) return
 if (associated(f1%grid_field)) is_eq = all(f1%grid_field == f2%grid_field)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%map_ref_orb_in == f2%map_ref_orb_in)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%map_ref_orb_out == f2%map_ref_orb_out)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%time_ref_orb_in == f2%time_ref_orb_in)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%time_ref_orb_out == f2%time_ref_orb_out)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%value == f2%value)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%old_value == f2%old_value)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%spin_q == f2%spin_q)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%vec0 == f2%vec0)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%mat6 == f2%mat6)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%c_mat == f2%c_mat)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%gamma_c == f2%gamma_c)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s_start == f2%s_start)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s == f2%s)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%ref_time == f2%ref_time)
-!! f_side.equality_test[real, 1, PTR]
+!! f_side.equality_test[1D_PTR_real]
 is_eq = is_eq .and. (associated(f1%a_pole) .eqv. associated(f2%a_pole))
 if (.not. is_eq) return
 if (associated(f1%a_pole)) is_eq = all(shape(f1%a_pole) == shape(f2%a_pole))
 if (.not. is_eq) return
 if (associated(f1%a_pole)) is_eq = all(f1%a_pole == f2%a_pole)
-!! f_side.equality_test[real, 1, PTR]
+!! f_side.equality_test[1D_PTR_real]
 is_eq = is_eq .and. (associated(f1%b_pole) .eqv. associated(f2%b_pole))
 if (.not. is_eq) return
 if (associated(f1%b_pole)) is_eq = all(shape(f1%b_pole) == shape(f2%b_pole))
 if (.not. is_eq) return
 if (associated(f1%b_pole)) is_eq = all(f1%b_pole == f2%b_pole)
-!! f_side.equality_test[real, 1, PTR]
+!! f_side.equality_test[1D_PTR_real]
 is_eq = is_eq .and. (associated(f1%a_pole_elec) .eqv. associated(f2%a_pole_elec))
 if (.not. is_eq) return
 if (associated(f1%a_pole_elec)) is_eq = all(shape(f1%a_pole_elec) == shape(f2%a_pole_elec))
 if (.not. is_eq) return
 if (associated(f1%a_pole_elec)) is_eq = all(f1%a_pole_elec == f2%a_pole_elec)
-!! f_side.equality_test[real, 1, PTR]
+!! f_side.equality_test[1D_PTR_real]
 is_eq = is_eq .and. (associated(f1%b_pole_elec) .eqv. associated(f2%b_pole_elec))
 if (.not. is_eq) return
 if (associated(f1%b_pole_elec)) is_eq = all(shape(f1%b_pole_elec) == shape(f2%b_pole_elec))
 if (.not. is_eq) return
 if (associated(f1%b_pole_elec)) is_eq = all(f1%b_pole_elec == f2%b_pole_elec)
-!! f_side.equality_test[real, 1, PTR]
+!! f_side.equality_test[1D_PTR_real]
 is_eq = is_eq .and. (associated(f1%custom) .eqv. associated(f2%custom))
 if (.not. is_eq) return
 if (associated(f1%custom)) is_eq = all(shape(f1%custom) == shape(f2%custom))
 if (.not. is_eq) return
 if (associated(f1%custom)) is_eq = all(f1%custom == f2%custom)
-!! f_side.equality_test[real, 3, PTR]
+!! f_side.equality_test[3D_PTR_real]
 is_eq = is_eq .and. (associated(f1%r) .eqv. associated(f2%r))
 if (.not. is_eq) return
 if (associated(f1%r)) is_eq = all(shape(f1%r) == shape(f2%r))
 if (.not. is_eq) return
 if (associated(f1%r)) is_eq = all(f1%r == f2%r)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%key == f2%key)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%sub_key == f2%sub_key)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%lord_status == f2%lord_status)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_slave == f2%n_slave)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_slave_field == f2%n_slave_field)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix1_slave == f2%ix1_slave)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%slave_status == f2%slave_status)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_lord == f2%n_lord)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_lord_field == f2%n_lord_field)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_lord_ramper == f2%n_lord_ramper)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ic1_lord == f2%ic1_lord)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_pointer == f2%ix_pointer)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ixx == f2%ixx)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%iyy == f2%iyy)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%izz == f2%izz)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%mat6_calc_method == f2%mat6_calc_method)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%tracking_method == f2%tracking_method)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%spin_tracking_method == f2%spin_tracking_method)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%csr_method == f2%csr_method)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%space_charge_method == f2%space_charge_method)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ptc_integration_type == f2%ptc_integration_type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%field_calc == f2%field_calc)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%aperture_at == f2%aperture_at)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%aperture_type == f2%aperture_type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ref_species == f2%ref_species)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%orientation == f2%orientation)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%symplectify .eqv. f2%symplectify)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%mode_flip .eqv. f2%mode_flip)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%multipoles_on .eqv. f2%multipoles_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%scale_multipoles .eqv. f2%scale_multipoles)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%taylor_map_includes_offsets .eqv. f2%taylor_map_includes_offsets)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%field_master .eqv. f2%field_master)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%is_on .eqv. f2%is_on)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%logic .eqv. f2%logic)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%bmad_logic .eqv. f2%bmad_logic)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%select .eqv. f2%select)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%offset_moves_aperture .eqv. f2%offset_moves_aperture)
 
 end function eq_ele
@@ -3042,9 +3042,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%coef == f2%coef)
-!! f_side.equality_test[integer, 1, NOT]
+!! f_side.equality_test[1D_NOT_integer]
 is_eq = is_eq .and. all(f1%expn == f2%expn)
 
 end function eq_complex_taylor_term
@@ -3063,9 +3063,9 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[complex, 0, NOT]
+!! f_side.equality_test[0D_NOT_complex]
 is_eq = is_eq .and. (f1%ref == f2%ref)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%term) .eqv. associated(f2%term))
 if (.not. is_eq) return
 if (associated(f1%term)) is_eq = all(shape(f1%term) == shape(f2%term))
@@ -3088,35 +3088,35 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_from_branch == f2%ix_from_branch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_from_ele == f2%ix_from_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_to_ele == f2%ix_to_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ele_track == f2%n_ele_track)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ele_max == f2%n_ele_max)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%a == f2%a)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%b == f2%b)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%z == f2%z)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%ele) .eqv. associated(f2%ele))
 if (.not. is_eq) return
 if (associated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
 if (.not. is_eq) return
 if (associated(f1%ele)) is_eq = all(f1%ele == f2%ele)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%param == f2%param)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%wall3d) .eqv. associated(f2%wall3d))
 if (.not. is_eq) return
 if (associated(f1%wall3d)) is_eq = all(shape(f1%wall3d) == shape(f2%wall3d))
@@ -3139,105 +3139,105 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%use_name == f2%use_name)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%lattice == f2%lattice)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%machine == f2%machine)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%input_file_name == f2%input_file_name)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%title == f2%title)
-!! f_side.equality_test[character, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_character]
 is_eq = is_eq .and. (allocated(f1%print_str) .eqv. allocated(f2%print_str))
 if (.not. is_eq) return
 if (allocated(f1%print_str)) is_eq = all(shape(f1%print_str) == shape(f2%print_str))
 if (.not. is_eq) return
 if (allocated(f1%print_str)) is_eq = all(f1%print_str == f2%print_str)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%constant) .eqv. allocated(f2%constant))
 if (.not. is_eq) return
 if (allocated(f1%constant)) is_eq = all(shape(f1%constant) == shape(f2%constant))
 if (.not. is_eq) return
 if (allocated(f1%constant)) is_eq = all(f1%constant == f2%constant)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%a) .eqv. associated(f2%a))
 if (.not. is_eq) return
 if (associated(f1%a)) is_eq = (f1%a == f2%a)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%b) .eqv. associated(f2%b))
 if (.not. is_eq) return
 if (associated(f1%b)) is_eq = (f1%b == f2%b)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%z) .eqv. associated(f2%z))
 if (.not. is_eq) return
 if (associated(f1%z)) is_eq = (f1%z == f2%z)
-!! f_side.equality_test[type, 0, PTR]
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%param) .eqv. associated(f2%param))
 if (.not. is_eq) return
 if (associated(f1%param)) is_eq = (f1%param == f2%param)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%lord_state == f2%lord_state)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%ele_init == f2%ele_init)
-!! f_side.equality_test[type, 1, PTR]
+!! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%ele) .eqv. associated(f2%ele))
 if (.not. is_eq) return
 if (associated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
 if (.not. is_eq) return
 if (associated(f1%ele)) is_eq = all(f1%ele == f2%ele)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%branch) .eqv. allocated(f2%branch))
 if (.not. is_eq) return
 if (allocated(f1%branch)) is_eq = all(shape(f1%branch) == shape(f2%branch))
 if (.not. is_eq) return
 if (allocated(f1%branch)) is_eq = all(f1%branch == f2%branch)
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%control) .eqv. allocated(f2%control))
 if (.not. is_eq) return
 if (allocated(f1%control)) is_eq = all(shape(f1%control) == shape(f2%control))
 if (.not. is_eq) return
 if (allocated(f1%control)) is_eq = all(f1%control == f2%control)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%particle_start == f2%particle_start)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%beam_init == f2%beam_init)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%pre_tracker == f2%pre_tracker)
-!! f_side.equality_test[real, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_real]
 is_eq = is_eq .and. (allocated(f1%custom) .eqv. allocated(f2%custom))
 if (.not. is_eq) return
 if (allocated(f1%custom)) is_eq = all(shape(f1%custom) == shape(f2%custom))
 if (.not. is_eq) return
 if (allocated(f1%custom)) is_eq = all(f1%custom == f2%custom)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%version == f2%version)
-!! f_side.equality_test[integer, 0, PTR]
+!! f_side.equality_test[0D_PTR_integer]
 is_eq = is_eq .and. (associated(f1%n_ele_track) .eqv. associated(f2%n_ele_track))
 if (.not. is_eq) return
 if (associated(f1%n_ele_track)) is_eq = (f1%n_ele_track == f2%n_ele_track)
-!! f_side.equality_test[integer, 0, PTR]
+!! f_side.equality_test[0D_PTR_integer]
 is_eq = is_eq .and. (associated(f1%n_ele_max) .eqv. associated(f2%n_ele_max))
 if (.not. is_eq) return
 if (associated(f1%n_ele_max)) is_eq = (f1%n_ele_max == f2%n_ele_max)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_control_max == f2%n_control_max)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ic_max == f2%n_ic_max)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%input_taylor_order == f2%input_taylor_order)
-!! f_side.equality_test[integer, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_integer]
 is_eq = is_eq .and. (allocated(f1%ic) .eqv. allocated(f2%ic))
 if (.not. is_eq) return
 if (allocated(f1%ic)) is_eq = all(shape(f1%ic) == shape(f2%ic))
 if (.not. is_eq) return
 if (allocated(f1%ic)) is_eq = all(f1%ic == f2%ic)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%photon_type == f2%photon_type)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%creation_hash == f2%creation_hash)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ramper_slave_bookkeeping == f2%ramper_slave_bookkeeping)
 
 end function eq_lat
@@ -3256,41 +3256,41 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%particle) .eqv. allocated(f2%particle))
 if (.not. is_eq) return
 if (allocated(f1%particle)) is_eq = all(shape(f1%particle) == shape(f2%particle))
 if (.not. is_eq) return
 if (allocated(f1%particle)) is_eq = all(f1%particle == f2%particle)
-!! f_side.equality_test[integer, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_integer]
 is_eq = is_eq .and. (allocated(f1%ix_z) .eqv. allocated(f2%ix_z))
 if (.not. is_eq) return
 if (allocated(f1%ix_z)) is_eq = all(shape(f1%ix_z) == shape(f2%ix_z))
 if (.not. is_eq) return
 if (allocated(f1%ix_z)) is_eq = all(f1%ix_z == f2%ix_z)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%charge_tot == f2%charge_tot)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%charge_live == f2%charge_live)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%z_center == f2%z_center)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%t_center == f2%t_center)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%t0 == f2%t0)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%drift_between_t_and_s .eqv. f2%drift_between_t_and_s)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_bunch == f2%ix_bunch)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_turn == f2%ix_turn)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_live == f2%n_live)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_good == f2%n_good)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_bad == f2%n_bad)
 
 end function eq_bunch
@@ -3309,51 +3309,51 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%centroid == f2%centroid)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%x == f2%x)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%y == f2%y)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%z == f2%z)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%a == f2%a)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%b == f2%b)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%c == f2%c)
-!! f_side.equality_test[real, 2, NOT]
+!! f_side.equality_test[2D_NOT_real]
 is_eq = is_eq .and. all(f1%sigma == f2%sigma)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%rel_max == f2%rel_max)
-!! f_side.equality_test[real, 1, NOT]
+!! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%rel_min == f2%rel_min)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s == f2%s)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%t == f2%t)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma_t == f2%sigma_t)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%charge_live == f2%charge_live)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%charge_tot == f2%charge_tot)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_particle_tot == f2%n_particle_tot)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_particle_live == f2%n_particle_live)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_particle_lost_in_ele == f2%n_particle_lost_in_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_good_steps == f2%n_good_steps)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_bad_steps == f2%n_bad_steps)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%location == f2%location)
-!! f_side.equality_test[logical, 0, NOT]
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%twiss_valid .eqv. f2%twiss_valid)
 
 end function eq_bunch_params
@@ -3372,7 +3372,7 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%bunch) .eqv. allocated(f2%bunch))
 if (.not. is_eq) return
 if (allocated(f1%bunch)) is_eq = all(shape(f1%bunch) == shape(f2%bunch))
@@ -3395,15 +3395,15 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x == f2%x)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y == f2%y)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%plane == f2%plane)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%i_turn == f2%i_turn)
 
 end function eq_aperture_point
@@ -3422,23 +3422,23 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%min_angle == f2%min_angle)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%max_angle == f2%max_angle)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_angle == f2%n_angle)
-!! f_side.equality_test[integer, 0, NOT]
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_turn == f2%n_turn)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%x_init == f2%x_init)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%y_init == f2%y_init)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%rel_accuracy == f2%rel_accuracy)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%abs_accuracy == f2%abs_accuracy)
-!! f_side.equality_test[character, 0, NOT]
+!! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%start_ele == f2%start_ele)
 
 end function eq_aperture_param
@@ -3457,15 +3457,15 @@ logical is_eq
 !
 
 is_eq = .true.
-!! f_side.equality_test[type, 1, ALLOC]
+!! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%point) .eqv. allocated(f2%point))
 if (.not. is_eq) return
 if (allocated(f1%point)) is_eq = all(shape(f1%point) == shape(f2%point))
 if (.not. is_eq) return
 if (allocated(f1%point)) is_eq = all(f1%point == f2%point)
-!! f_side.equality_test[type, 0, NOT]
+!! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%ref_orb == f2%ref_orb)
-!! f_side.equality_test[real, 0, NOT]
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%pz_start == f2%pz_start)
 
 end function eq_aperture_scan

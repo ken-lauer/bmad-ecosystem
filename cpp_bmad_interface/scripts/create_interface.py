@@ -1039,9 +1039,7 @@ call c_f_pointer (Fp, F)
         for arg in struct.arg:
             if arg.f_side.to_c_trans == "":
                 continue
-            f_face.write(
-                f"!! f_side.to_c_trans[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
-            )
+            f_face.write(f"!! f_side.to_c_trans[{arg.full_type}]\n")
             print(arg.f_side.to_c_trans, file=f_face)
 
         f_face.write("\n" + "!! f_side.to_c2_call\n")
@@ -1118,9 +1116,7 @@ call c_f_pointer (Fp, F)
         for arg in struct.arg:
             if not arg.f_side.to_f2_trans:
                 continue
-            f_face.write(
-                f"!! f_side.to_f2_trans[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
-            )
+            f_face.write(f"!! f_side.to_f2_trans[{arg.full_type}]\n")
             f_face.write(f"{arg.f_side.to_f2_trans}\n")
 
         f_face.write(
@@ -1200,9 +1196,7 @@ contains
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
 
-            f_equ.write(
-                f"!! f_side.equality_test[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
-            )
+            f_equ.write(f"!! f_side.equality_test[{arg.full_type}]\n")
 
             print(arg.f_side.equality_test, file=f_equ)
             # f_equ.write('std::cout << ')
@@ -1457,10 +1451,15 @@ def get_class_lines(struct: Structure) -> list[str]:
     for arg in struct.arg:
         if not arg.is_component:
             continue
-        init = (
-            f" = {arg.c_side.class_initializer}" if arg.c_side.class_initializer else ""
+
+        class_initializer = (
+            "{" + arg.c_side.class_initializer.strip() + "}"
+            if arg.c_side.class_initializer.strip()
+            else ""
         )
-        member_vars.append(f"  {arg.c_side.c_class} {arg.c_name}{init};")
+        member_vars.append(
+            f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};"
+        )
 
     # Build constructor body
     constructor_body = ""
@@ -1605,7 +1604,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             if arg.c_side.to_f_setup == "":
                 continue
             file.write(
-                f"  // c_side.to_f_setup[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
+                f"  // c_side.to_f_setup[{arg.full_type}] {arg.c_side.c_class}\n"
             )
             print(arg.c_side.to_f_setup, file=file)
 
@@ -1615,7 +1614,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         if DEBUG:
             for arg in struct.arg:
                 file.write(
-                    f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.type} {len(arg.array)} {arg.pointer_type}\n"
+                    f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.full_type}\n"
                 )
 
         line = f"{struct.short_name}_to_f2 (F"
@@ -1629,9 +1628,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         for arg in struct.arg:
             if arg.c_side.to_f_cleanup == "":
                 continue
-            file.write(
-                f"  // c_side.to_f_cleanup[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
-            )
+            file.write(f"  // c_side.to_f_cleanup[{arg.full_type}]\n")
             print(arg.c_side.to_f_cleanup, file=file)
 
         file.write("}\n")
@@ -1650,9 +1647,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         for arg in struct.arg:
             if not arg.is_component:
                 continue
-            file.write(
-                f"  // c_side.to_c2_set[{arg.type}, {len(arg.array)}, {arg.pointer_type}] {arg.c_side.c_class}\n"
-            )
+            file.write(f"  // c_side.to_c2_set[{arg.full_type}] {arg.c_side.c_class}\n")
             file.write(f"{arg.c_side.to_c2_set}\n")
 
         file.write("}\n")
@@ -1741,9 +1736,7 @@ void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
                 continue
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
-            file.write(
-                f"  // c_side.test_pat[{arg.type}, {len(arg.array)}, {arg.pointer_type}]\n"
-            )
+            file.write(f"  // c_side.test_pat[{arg.full_type}]\n")
             file.write(arg.c_side.test_pat.replace("ARGIDX", str(i)) + "\n")
 
         file.write(f"""

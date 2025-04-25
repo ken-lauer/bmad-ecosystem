@@ -2577,7 +2577,7 @@ void CLASS_INITIALIZER(STRUCT_CPP_CLASS &C) {
     //// type:2D_NOT_size
     //// type:3D_NOT_size
     //// begin:class_initializer
-    { VALUE }
+    VALUE
     //// end:class_initializer
 
   */
