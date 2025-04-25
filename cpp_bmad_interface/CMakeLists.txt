@@ -5,23 +5,13 @@ set(LIBNAME cpp_bmad_interface)
 set(CREATE_SHARED true)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
-execute_process(
-  COMMAND python3 -m pybind11 --includes
-  OUTPUT_VARIABLE PYBIND11_INCLUDES
-  OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-string(REPLACE "-I" "" PYBIND11_INCLUDES "${PYBIND11_INCLUDES}")
-string(REPLACE " " ";" PYBIND11_INCLUDES "${PYBIND11_INCLUDES}")
-
 set(INC_DIRS
   include
   $ENV{ACC_CONDA_PATH}/include
-  ${PYBIND11_INCLUDES}
 )
 
 set(SRC_DIRS
   code
-  python
 )
 
 set(EXE_SPECS
@@ -37,3 +27,9 @@ set(SHARED_DEPS
 SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
 
 include($ENV{ACC_BUILD_SYSTEM}/Master.cmake)
+
+FOREACH(target ${TARGETS})
+
+  set_property(TARGET ${target} PROPERTY CXX_STANDARD 17)
+
+ENDFOREACH()

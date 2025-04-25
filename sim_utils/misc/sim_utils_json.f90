@@ -1603,42 +1603,6 @@ subroutine opti_de_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'randomize_f', input%randomize_F)
   call json%add(json_root, 'minimize_merit', input%minimize_merit)
 end subroutine opti_de_param_struct_to_json
-subroutine solution_struct_to_json (input, json_root, depth)
-  use opti_de_openmp_mod, only: solution_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
-  implicit none
-  type(json_core) :: json
-  type (solution_struct), pointer, intent(in) :: input
-  type (json_value), pointer :: json_val
-  type (json_value), pointer, intent(inout) :: json_root
-  integer, optional, value :: depth
-  integer i1, i2, i3, i4, i5, i6
-  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
-  if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
-    return
-  endif
-  if (.not. associated(input)) then
-    call json%create_null(json_root, '')
-    return
-  endif
-  call json%create_object(json_root, '')
-  if (allocated(input%vec)) then
-    !line=98 definition='real(rp), allocatable :: vec(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec' type='real' size='rp' dimension=':' comment='' default=None
-    call json%create_array(json_list1, 'vec')
-    do i1 = lbound(input%vec, 1), ubound(input%vec, 1)
-      call json%create_real(json_val, input%vec(i1), '')
-      call json%add(json_list1, json_val)
-    enddo
-    call json%add(json_root, json_list1)
-    nullify(json_list1)
-  endif
-  call json%add(json_root, 'merit', input%merit)
-  call json%add(json_root, 'status', int(input%status))
-end subroutine solution_struct_to_json
 subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
   use geodesic_lm, only: geodesic_lm_param_struct
   use json_module

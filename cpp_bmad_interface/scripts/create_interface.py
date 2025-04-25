@@ -1457,10 +1457,15 @@ def get_class_lines(struct: Structure) -> list[str]:
     for arg in struct.arg:
         if not arg.is_component:
             continue
-        init = (
-            f" = {arg.c_side.class_initializer}" if arg.c_side.class_initializer else ""
+
+        class_initializer = (
+            "{" + arg.c_side.class_initializer.strip() + "}"
+            if arg.c_side.class_initializer.strip()
+            else ""
         )
-        member_vars.append(f"  {arg.c_side.c_class} {arg.c_name}{init};")
+        member_vars.append(
+            f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};"
+        )
 
     # Build constructor body
     constructor_body = ""
