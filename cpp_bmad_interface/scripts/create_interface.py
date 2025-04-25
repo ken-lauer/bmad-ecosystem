@@ -91,7 +91,7 @@ class FullType(NamedTuple):
         except TypeError:
             raise ValueError(
                 f"Dimension of type from template is not integer: {type=} {dim=}"
-            )
+            ) from None
 
         if type_name not in (
             "real",
@@ -1413,7 +1413,7 @@ def get_class_lines(struct: Structure) -> list[str]:
 
     repr_lines = get_class_repr(struct).splitlines()
     template = string.Template(
-        textwrap.dedent("""\
+        textwrap.dedent(r"""\
         //--------------------------------------------------------------------
         // ${cpp_class}
         
@@ -1427,7 +1427,8 @@ def get_class_lines(struct: Structure) -> list[str]:
           ${constructor_body}
           }
 
-        virtual ~${cpp_class}() { }
+        virtual ~${cpp_class}() {
+        }
         std::shared_ptr<${cpp_class}> getptr() { return shared_from_this(); }
         ${repr_methods}
         };
@@ -1886,7 +1887,8 @@ def load_transforms():
             transform.replace_all("associated_or_allocated(", "associated(")
         transform.replace_all("TEST_VALUE", transform.test_value)
 
-    for type_, transform in c_transforms.items():
+    for _type, transform in c_transforms.items():
+        transform.c_class = transform.c_class.strip()
         transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
         transform.to_f2_call = transform.to_f2_call.rstrip(", ")
         transform.replace_all("TEST_VALUE", transform.test_value)
