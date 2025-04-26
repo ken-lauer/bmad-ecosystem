@@ -24,7 +24,7 @@ set(SHARED_DEPS
 )
 
 # TODO: macos only
-SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
+# SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -undefined dynamic_lookup")
 
 include($ENV{ACC_BUILD_SYSTEM}/Master.cmake)
 

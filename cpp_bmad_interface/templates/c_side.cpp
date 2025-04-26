@@ -43,7 +43,7 @@ void to_f__variant_0(const CppClass &C, OpaqueClass *F) {
   //// case:0D_NOT_real:to_f2_arg
   c_Real&
   //// case:0D_NOT_size:to_f2_arg
-  Int
+  size_t
   //// case:0D_NOT_type:to_f2_arg
   const CPP_KIND&
   //// case:1D_NOT_complex:to_f2_arg
@@ -57,11 +57,11 @@ void to_f__variant_0(const CppClass &C, OpaqueClass *F) {
   //// case:1D_NOT_real:to_f2_arg
   c_RealArr
   //// case:1D_NOT_size:to_f2_arg
-  Int
+  size_t
   //// case:2D_NOT_size:to_f2_arg
-  Int
+  size_t
   //// case:3D_NOT_size:to_f2_arg
-  Int
+  size_t
   */
         //// case:0D_NOT_character:to_f2_call
         C.NAME.c_str(),
@@ -203,7 +203,7 @@ void to_f__variant_2(const CppClass &C, OpaqueClass *F) {
 void to_f__variant_3(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   c_Char z_NAME[DIM1];
-  for (auto i{0}; i < DIM1; i++) {
+  for (size_t i{0}; i < DIM1; i++) {
     z_NAME[i] = C.NAME[i].c_str();
   }
   //// end:to_f_setup
@@ -245,11 +245,11 @@ void to_f__variant_4(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_character
 void to_f__variant_5(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
+  size_t n1_NAME{C.NAME.size()};
   c_Char *z_NAME = nullptr;
   if (n1_NAME != 0) {
     z_NAME = new c_Char[n1_NAME];
-    for (auto i{0}; i < n1_NAME; i++)
+    for (size_t i{0}; i < n1_NAME; i++)
       z_NAME[i] = C.NAME[i].c_str();
   }
   //// end:to_f_setup
@@ -275,7 +275,7 @@ void to_f__variant_5(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_complex
 void to_f__variant_6(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME = C.NAME.size();
+  size_t n1_NAME = C.NAME.size();
   c_ComplexArr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
@@ -298,7 +298,7 @@ void to_f__variant_6(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_integer
 void to_f__variant_7(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME = C.NAME.size();
+  size_t n1_NAME = C.NAME.size();
   c_IntArr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
@@ -321,7 +321,7 @@ void to_f__variant_7(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_integer8
 void to_f__variant_8(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME = C.NAME.size();
+  size_t n1_NAME = C.NAME.size();
   c_Int8Arr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
@@ -344,7 +344,7 @@ void to_f__variant_8(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_logical
 void to_f__variant_9(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME = C.NAME.size();
+  size_t n1_NAME = C.NAME.size();
   c_BoolArr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
@@ -367,7 +367,7 @@ void to_f__variant_9(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_real
 void to_f__variant_10(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME = C.NAME.size();
+  size_t n1_NAME = C.NAME.size();
   c_RealArr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
@@ -390,11 +390,11 @@ void to_f__variant_10(const CppClass &C, OpaqueClass *F) {
 //// type:1D_PTR_type
 void to_f__variant_11(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME = C.NAME.size();
+  size_t n1_NAME = C.NAME.size();
   const CPP_KIND **z_NAME = nullptr;
   if (n1_NAME != 0) {
     z_NAME = new const CPP_KIND *[n1_NAME];
-    for (auto i{0}; i < n1_NAME; i++)
+    for (size_t i{0}; i < n1_NAME; i++)
       z_NAME[i] = &C.NAME[i];
   }
   //// end:to_f_setup
@@ -515,8 +515,8 @@ void to_f__variant_16(const CppClass &C, OpaqueClass *F) {
 void to_f__variant_17(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   const CPP_KIND *z_NAME[DIM1 * DIM2];
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++) {
       auto m = DIM2 * i + j;
       z_NAME[m] = C.NAME[i][j].get();
     }
@@ -538,8 +538,8 @@ void to_f__variant_17(const CppClass &C, OpaqueClass *F) {
 //// type:2D_PTR_complex
 void to_f__variant_18(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
   Complex *z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -569,8 +569,8 @@ void to_f__variant_18(const CppClass &C, OpaqueClass *F) {
 //// type:2D_PTR_integer
 void to_f__variant_19(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
   Int *z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -600,8 +600,8 @@ void to_f__variant_19(const CppClass &C, OpaqueClass *F) {
 //// type:2D_PTR_integer8
 void to_f__variant_20(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
   Int8 *z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -631,8 +631,8 @@ void to_f__variant_20(const CppClass &C, OpaqueClass *F) {
 //// type:2D_PTR_logical
 void to_f__variant_21(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
   Bool *z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -662,8 +662,8 @@ void to_f__variant_21(const CppClass &C, OpaqueClass *F) {
 //// type:2D_PTR_real
 void to_f__variant_22(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
   Real *z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -693,14 +693,14 @@ void to_f__variant_22(const CppClass &C, OpaqueClass *F) {
 //// type:2D_PTR_type
 void to_f__variant_23(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
   const CPP_KIND **z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     z_NAME = new const CPP_KIND *[n1_NAME * n2_NAME];
-    for (auto i{0}; i < n1_NAME; i++) {
-      for (auto j{0}; j < n2_NAME; j++) {
+    for (size_t i{0}; i < n1_NAME; i++) {
+      for (size_t j{0}; j < n2_NAME; j++) {
         z_NAME[i * n2_NAME + j] = &C.NAME[i][j];
       }
     }
@@ -823,9 +823,9 @@ void to_f__variant_28(const CppClass &C, OpaqueClass *F) {
 void to_f__variant_29(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   const CPP_KIND *z_NAME[DIM1 * DIM2 * DIM3];
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++)
-      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++)
+      for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
         auto m = DIM3 * DIM2 * i + DIM3 * j + k;
         z_NAME[m] = C.NAME[i][j][k].get();
       }
@@ -847,9 +847,9 @@ void to_f__variant_29(const CppClass &C, OpaqueClass *F) {
 //// type:3D_PTR_complex
 void to_f__variant_30(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
-  auto n3_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
   Complex *z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -881,9 +881,9 @@ void to_f__variant_30(const CppClass &C, OpaqueClass *F) {
 //// type:3D_PTR_integer
 void to_f__variant_31(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
-  auto n3_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
   Int *z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -914,9 +914,9 @@ void to_f__variant_31(const CppClass &C, OpaqueClass *F) {
 //// type:3D_PTR_integer8
 void to_f__variant_32(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
-  auto n3_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
   Int8 *z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -947,9 +947,9 @@ void to_f__variant_32(const CppClass &C, OpaqueClass *F) {
 //// type:3D_PTR_logical
 void to_f__variant_33(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
-  auto n3_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
   Bool *z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -980,9 +980,9 @@ void to_f__variant_33(const CppClass &C, OpaqueClass *F) {
 //// type:3D_PTR_real
 void to_f__variant_34(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
-  auto n3_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
   Real *z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
@@ -1013,17 +1013,17 @@ void to_f__variant_34(const CppClass &C, OpaqueClass *F) {
 //// type:3D_PTR_type
 void to_f__variant_35(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  auto n1_NAME{C.NAME.size()};
-  auto n2_NAME{std::size_t{0}};
-  auto n3_NAME{std::size_t{0}};
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
   const CPP_KIND **z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
     z_NAME = new const CPP_KIND *[n1_NAME * n2_NAME * n3_NAME];
-    for (auto i{0}; i < n1_NAME; i++) {
-      for (auto j{0}; j < n2_NAME; j++) {
-        for (auto k{0}; k < n3_NAME; k++) {
+    for (size_t i{0}; i < n1_NAME; i++) {
+      for (size_t j{0}; j < n2_NAME; j++) {
+        for (size_t k{0}; k < n3_NAME; k++) {
           z_NAME[i * n2_NAME * n3_NAME + j * n3_NAME + k] = &C.NAME[i][j][k];
         }
       }
@@ -1069,13 +1069,13 @@ void to_c2__variant_0(STRUCT_CPP_CLASS &C,
                       //// case:0D_NOT_real:to_c2_arg
                       c_Real &z_NAME,
                       //// case:0D_NOT_size:to_c2_arg
-                      Int NAME,
+                      size_t NAME,
                       //// case:1D_NOT_size:to_c2_arg
-                      Int NAME,
+                      size_t NAME,
                       //// case:2D_NOT_size:to_c2_arg
-                      Int NAME,
+                      size_t NAME,
                       //// case:3D_NOT_size:to_c2_arg
-                      Int NAME,
+                      size_t NAME,
                       //// end special cases
 ) {
   //// begin:to_c2_set
@@ -1235,7 +1235,7 @@ void to_c2__variant_9(STRUCT_CPP_CLASS &C,
                       //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (auto i{0}; i < C.NAME.size(); i++)
+  for (size_t i{0}; i < C.NAME.size(); i++)
     C.NAME[i] = z_NAME[i];
   //// end:to_c2_set
 }
@@ -1302,7 +1302,7 @@ void to_c2__variant_11(STRUCT_CPP_CLASS &C,
                        //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (auto i{0}; i < C.NAME.size(); i++) {
+  for (size_t i{0}; i < C.NAME.size(); i++) {
     KIND_to_c(z_NAME[i], C.NAME[i]);
   }
   //// end:to_c2_set
@@ -1318,7 +1318,7 @@ void to_c2__variant_12(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++)
+  for (size_t i{0}; i < n1_NAME; i++)
     C.NAME[i] = z_NAME[i];
   //// end:to_c2_set
 }
@@ -1374,7 +1374,7 @@ void to_c2__variant_14(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) {
+  for (size_t i{0}; i < n1_NAME; i++) {
     KIND_to_c(z_NAME[i], C.NAME[i]);
   }
   //// end:to_c2_set
@@ -1388,8 +1388,8 @@ void to_c2__variant_15(STRUCT_CPP_CLASS &C,
                        //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++) {
       auto m = DIM2 * i + j;
       KIND_to_c(z_NAME[m], *C.NAME[i][j]);
     }
@@ -1432,7 +1432,7 @@ void to_c2__variant_16(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++)
+  for (size_t i{0}; i < n1_NAME; i++)
     C.NAME[i].resize(n2_NAME);
   C.NAME << z_NAME;
   //// end:to_c2_set
@@ -1448,9 +1448,9 @@ void to_c2__variant_17(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) {
+  for (size_t i{0}; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (auto j{0}; j < n2_NAME; j++) {
+    for (size_t j{0}; j < n2_NAME; j++) {
       auto &item = C.NAME[i][j];
       KIND_to_c(z_NAME[n2_NAME * i + j], item);
     }
@@ -1466,9 +1466,9 @@ void to_c2__variant_18(STRUCT_CPP_CLASS &C,
                        //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++)
-      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++)
+      for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
         auto m = DIM3 * DIM2 * i + DIM3 * j + k;
         KIND_to_c(z_NAME[m], *C.NAME[i][j][k]);
       }
@@ -1511,9 +1511,9 @@ void to_c2__variant_19(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < C.NAME.size(); i++) {
+  for (size_t i{0}; i < C.NAME.size(); i++) {
     C.NAME[i].resize(n2_NAME);
-    for (auto j{0}; j < C.NAME[0].size(); j++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++)
       C.NAME[i][j].resize(n3_NAME);
   }
   C.NAME << z_NAME;
@@ -1531,11 +1531,11 @@ void to_c2__variant_20(STRUCT_CPP_CLASS &C,
   //// begin:to_c2_set
 
   C.NAME.resize(n1_NAME);
-  for (auto i{0}; i < n1_NAME; i++) {
+  for (size_t i{0}; i < n1_NAME; i++) {
     C.NAME[i].resize(n2_NAME);
-    for (auto j{0}; j < n2_NAME; j++) {
+    for (size_t j{0}; j < n2_NAME; j++) {
       C.NAME[i][j].resize(n3_NAME);
-      for (auto k{0}; k < n3_NAME; k++) {
+      for (size_t k{0}; k < n3_NAME; k++) {
         KIND_to_c(z_NAME[n3_NAME * n2_NAME * i + n3_NAME * j + k],
                   C.NAME[i][j][k]);
       }
@@ -1655,7 +1655,7 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// end:test_value
   //// begin:test_pat
   C.NAME.resize(STR_LEN);
-  for (auto i{0}; i < C.NAME.size(); i++) {
+  for (size_t i{0}; i < C.NAME.size(); i++) {
     int rhs = 101 + i + ARGIDX + offset;
     C.NAME[i] = 'a' + rhs % 26;
   }
@@ -1678,7 +1678,7 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// case:1D_NOT_real:test_value
   rhs;
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++) {
+  for (size_t i{0}; i < C.NAME.size(); i++) {
     int rhs = 101 + i + ARGIDX + offset;
     C.NAME[i] = TEST_VALUE;
   }
@@ -1690,7 +1690,7 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++) {
+  for (size_t i{0}; i < C.NAME.size(); i++) {
     int rhs = 101 + i + ARGIDX + offset;
     set_CPP_KIND_test_pattern(C.NAME[i], ix_patt + i + 1);
   }
@@ -1713,8 +1713,8 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// case:2D_NOT_real:test_value
   rhs;
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++) {
       int rhs = 101 + i + 10 * (j + 1) + ARGIDX + offset;
       C.NAME[i][j] = TEST_VALUE;
     }
@@ -1726,8 +1726,8 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++) {
       int rhs = 101 + i + 10 * (j + 1) + ARGIDX + offset;
       set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt + i + 1 + 10 * (j + 1));
     }
@@ -1750,9 +1750,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// case:3D_NOT_real:test_value
   rhs;
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++)
-      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++)
+      for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
         int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
         C.NAME[i][j][k] = TEST_VALUE;
       }
@@ -1764,9 +1764,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++)
-    for (auto j{0}; j < C.NAME[0].size(); j++)
-      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+  for (size_t i{0}; i < C.NAME.size(); i++)
+    for (size_t j{0}; j < C.NAME[0].size(); j++)
+      for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
         int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
         set_CPP_KIND_test_pattern(
             *C.NAME[i][j][k], ix_patt + i + 1 + 10 * (j + 1) + 100 * (k + 1));
@@ -1779,9 +1779,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   rhs;
   //// end:test_value
   //// begin:test_pat
-  for (auto i{0}; i < C.NAME.size(); i++) {
+  for (size_t i{0}; i < C.NAME.size(); i++) {
     C.NAME[i].resize(STR_LEN);
-    for (auto j{0}; j < C.NAME[i].size(); j++) {
+    for (size_t j{0}; j < C.NAME[i].size(); j++) {
       C.NAME[i][j] = 'a' + (101 + i + 10 * (j + 1) + ARGIDX + offset) % 26;
     }
   }
@@ -1888,7 +1888,7 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.reset();
   else {
     auto str = std::string(STR_LEN, ' ');
-    for (auto i{0}; i < STR_LEN; i++) {
+    for (size_t i{0}; i < STR_LEN; i++) {
       str[i] = 'a' + (101 + i + ARGIDX + offset) % 26;
     }
     C.NAME.emplace(str);
@@ -1931,9 +1931,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
-      for (auto j{0}; j < C.NAME[0].size(); j++) {
+      for (size_t j{0}; j < C.NAME[0].size(); j++) {
         int rhs = 101 + i + 10 * (j + 1) + ARGIDX + offset;
         C.NAME[i][j] = TEST_VALUE;
       }
@@ -1977,7 +1977,7 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       int rhs = 101 + i + ARGIDX + offset;
       C.NAME[i] = TEST_VALUE;
     }
@@ -1995,7 +1995,7 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       set_CPP_KIND_test_pattern(C.NAME[i], ix_patt + i + 1);
     }
   }
@@ -2012,9 +2012,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
-      for (auto j{0}; j < C.NAME[0].size(); j++) {
+      for (size_t j{0}; j < C.NAME[0].size(); j++) {
         auto &item = C.NAME[i][j];
         set_CPP_KIND_test_pattern(item, ix_patt + i + 2 * j + 3);
       }
@@ -2033,11 +2033,11 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
-      for (auto j{0}; j < C.NAME[0].size(); j++) {
+      for (size_t j{0}; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
-        for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+        for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
           set_CPP_KIND_test_pattern(C.NAME[i][j][k],
                                     ix_patt + i + 2 * j + 3 * k + 6);
         }
@@ -2081,11 +2081,11 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
       if (ix_patt < 3) C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
-      for (auto j{0}; j < C.NAME[0].size(); j++) {
+      for (size_t j{0}; j < C.NAME[0].size(); j++) {
         C.NAME[i][j].resize(1);
-        for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+        for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
           auto rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
           C.NAME[i][j][k] = TEST_VALUE;
         }
@@ -2105,9 +2105,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
     C.NAME.resize(0);
   else {
     C.NAME.resize(3);
-    for (auto i{0}; i < C.NAME.size(); i++) {
+    for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(STR_LEN);
-      for (auto j{0}; j < C.NAME[0].size(); j++) {
+      for (size_t j{0}; j < C.NAME[0].size(); j++) {
         C.NAME[i][j] = 'a' + (101 + i + 10 * (j + 1) + ARGIDX + offset) % 26;
       }
     }

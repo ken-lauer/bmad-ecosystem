@@ -1470,6 +1470,7 @@ def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
             
             #include <iostream>
             #include <memory>
+            #include <optional>
             
             #include "converter_templates.h"
             ${include_headers}
@@ -1477,6 +1478,7 @@ def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
             using namespace Bmad;
             using std::shared_ptr, std::make_shared;
             using std::ostream;
+            using std::size_t;
             
             ${class_definitions}
             

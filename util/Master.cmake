@@ -414,12 +414,14 @@ IF (DEBUG)
   set (PACKAGES_OUTPUT_BASEDIR ${PACKAGES_DIR}/debug)
   set (BASE_Fortran_FLAGS "${BASE_Fortran_FLAGS} ${COMPILER_SPECIFIC_DEBUG_F_FLAGS}")
   # TODO: remove/move around
-  set (BASE_CXX_FLAGS "${BASE_CXX_FLAGS} -DPYBIND11_DETAILED_ERROR_MESSAGES -fno-omit-frame-pointer -fstack-protector-all -ftrapv")
+  # set (BASE_CXX_FLAGS "${BASE_CXX_FLAGS} -DPYBIND11_DETAILED_ERROR_MESSAGES -fno-omit-frame-pointer -fstack-protector-all -ftrapv")
+  # TODO: make address sanitization options an additional flag
   IF ("${CMAKE_SYSTEM_NAME}" MATCHES "Darwin")
     # No address sanitization options
   ELSE ()
-    set (BASE_CXX_FLAGS "${BASE_CXX_FLAGS} -fsanitize=address,undefined")
-    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address,undefined -static-libsan")
+    set(BASE_CXX_FLAGS "${BASE_CXX_FLAGS} -fsanitize=address,undefined")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fsanitize=address,undefined")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address,undefined")
   ENDIF()
 ELSE ()
   message("Build type           : Production   -- ${this_date}")

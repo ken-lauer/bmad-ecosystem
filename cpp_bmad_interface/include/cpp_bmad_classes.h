@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <memory>
+#include <optional>
 
 #include "converter_templates.h"
 #include "bmad_enums.h"
@@ -19,6 +20,7 @@
 using namespace Bmad;
 using std::shared_ptr, std::make_shared;
 using std::ostream;
+using std::size_t;
 
 \
         //--------------------------------------------------------------------
