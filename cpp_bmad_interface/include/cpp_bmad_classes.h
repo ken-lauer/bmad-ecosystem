@@ -43,10 +43,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_spline& obj) {
     os << "CPP_spline{";
-    os << "x0=" << obj.x0 << ", ";
-    os << "y0=" << obj.y0 << ", ";
-    os << "x1=" << obj.x1 << ", ";
-    os << "coef=" << obj.coef;
+    os << "\n  x0=" << obj.x0 << ", ";
+    os << "\n  y0=" << obj.y0 << ", ";
+    os << "\n  x1=" << obj.x1 << ", ";
+    os << "\n  coef=" << obj.coef;
     os << "}";
     return os;
   }
@@ -86,10 +86,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_spin_polar& obj) {
     os << "CPP_spin_polar{";
-    os << "polarization=" << obj.polarization << ", ";
-    os << "theta=" << obj.theta << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "xi=" << obj.xi;
+    os << "\n  polarization=" << obj.polarization << ", ";
+    os << "\n  theta=" << obj.theta << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  xi=" << obj.xi;
     os << "}";
     return os;
   }
@@ -128,9 +128,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker_time& obj) {
     os << "CPP_ac_kicker_time{";
-    os << "amp=" << obj.amp << ", ";
-    os << "time=" << obj.time << ", ";
-    os << "spline=" << obj.spline;
+    os << "\n  amp=" << obj.amp << ", ";
+    os << "\n  time=" << obj.time << ", ";
+    os << "\n  spline=" << obj.spline;
     os << "}";
     return os;
   }
@@ -170,10 +170,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker_freq& obj) {
     os << "CPP_ac_kicker_freq{";
-    os << "f=" << obj.f << ", ";
-    os << "amp=" << obj.amp << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "rf_clock_harmonic=" << obj.rf_clock_harmonic;
+    os << "\n  f=" << obj.f << ", ";
+    os << "\n  amp=" << obj.amp << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  rf_clock_harmonic=" << obj.rf_clock_harmonic;
     os << "}";
     return os;
   }
@@ -211,8 +211,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_ac_kicker& obj) {
     os << "CPP_ac_kicker{";
-    os << "amp_vs_time=" << obj.amp_vs_time << ", ";
-    os << "frequency=" << obj.frequency;
+    os << "\n  amp_vs_time=" << obj.amp_vs_time << ", ";
+    os << "\n  frequency=" << obj.frequency;
     os << "}";
     return os;
   }
@@ -251,9 +251,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_interval1_coef& obj) {
     os << "CPP_interval1_coef{";
-    os << "c0=" << obj.c0 << ", ";
-    os << "c1=" << obj.c1 << ", ";
-    os << "n_exp=" << obj.n_exp;
+    os << "\n  c0=" << obj.c0 << ", ";
+    os << "\n  c1=" << obj.c1 << ", ";
+    os << "\n  n_exp=" << obj.n_exp;
     os << "}";
     return os;
   }
@@ -296,13 +296,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_photon_reflect_table& obj) {
     os << "CPP_photon_reflect_table{";
-    os << "angle=" << obj.angle << ", ";
-    os << "energy=" << obj.energy << ", ";
-    os << "int1=" << obj.int1 << ", ";
-    os << "p_reflect=" << obj.p_reflect << ", ";
-    os << "max_energy=" << obj.max_energy << ", ";
-    os << "p_reflect_scratch=" << obj.p_reflect_scratch << ", ";
-    os << "bragg_angle=" << obj.bragg_angle;
+    os << "\n  angle=" << obj.angle << ", ";
+    os << "\n  energy=" << obj.energy << ", ";
+    os << "\n  int1=" << obj.int1 << ", ";
+    os << "\n  p_reflect=" << obj.p_reflect << ", ";
+    os << "\n  max_energy=" << obj.max_energy << ", ";
+    os << "\n  p_reflect_scratch=" << obj.p_reflect_scratch << ", ";
+    os << "\n  bragg_angle=" << obj.bragg_angle;
     os << "}";
     return os;
   }
@@ -345,13 +345,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_photon_reflect_surface& obj) {
     os << "CPP_photon_reflect_surface{";
-    os << "name=" << obj.name << ", ";
-    os << "description=" << obj.description << ", ";
-    os << "reflectivity_file=" << obj.reflectivity_file << ", ";
-    os << "table=" << obj.table << ", ";
-    os << "surface_roughness_rms=" << obj.surface_roughness_rms << ", ";
-    os << "roughness_correlation_len=" << obj.roughness_correlation_len << ", ";
-    os << "ix_surface=" << obj.ix_surface;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  description=" << obj.description << ", ";
+    os << "\n  reflectivity_file=" << obj.reflectivity_file << ", ";
+    os << "\n  table=" << obj.table << ", ";
+    os << "\n  surface_roughness_rms=" << obj.surface_roughness_rms << ", ";
+    os << "\n  roughness_correlation_len=" << obj.roughness_correlation_len << ", ";
+    os << "\n  ix_surface=" << obj.ix_surface;
     os << "}";
     return os;
   }
@@ -408,27 +408,27 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_coord& obj) {
     os << "CPP_coord{";
-    os << "vec=" << obj.vec << ", ";
-    os << "s=" << obj.s << ", ";
-    os << "t=" << obj.t << ", ";
-    os << "spin=" << obj.spin << ", ";
-    os << "field=" << obj.field << ", ";
-    os << "phase=" << obj.phase << ", ";
-    os << "charge=" << obj.charge << ", ";
-    os << "dt_ref=" << obj.dt_ref << ", ";
-    os << "r=" << obj.r << ", ";
-    os << "p0c=" << obj.p0c << ", ";
-    os << "E_potential=" << obj.E_potential << ", ";
-    os << "beta=" << obj.beta << ", ";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "ix_branch=" << obj.ix_branch << ", ";
-    os << "ix_turn=" << obj.ix_turn << ", ";
-    os << "ix_user=" << obj.ix_user << ", ";
-    os << "state=" << obj.state << ", ";
-    os << "direction=" << obj.direction << ", ";
-    os << "time_dir=" << obj.time_dir << ", ";
-    os << "species=" << obj.species << ", ";
-    os << "location=" << obj.location;
+    os << "\n  vec=" << obj.vec << ", ";
+    os << "\n  s=" << obj.s << ", ";
+    os << "\n  t=" << obj.t << ", ";
+    os << "\n  spin=" << obj.spin << ", ";
+    os << "\n  field=" << obj.field << ", ";
+    os << "\n  phase=" << obj.phase << ", ";
+    os << "\n  charge=" << obj.charge << ", ";
+    os << "\n  dt_ref=" << obj.dt_ref << ", ";
+    os << "\n  r=" << obj.r << ", ";
+    os << "\n  p0c=" << obj.p0c << ", ";
+    os << "\n  E_potential=" << obj.E_potential << ", ";
+    os << "\n  beta=" << obj.beta << ", ";
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  ix_branch=" << obj.ix_branch << ", ";
+    os << "\n  ix_turn=" << obj.ix_turn << ", ";
+    os << "\n  ix_user=" << obj.ix_user << ", ";
+    os << "\n  state=" << obj.state << ", ";
+    os << "\n  direction=" << obj.direction << ", ";
+    os << "\n  time_dir=" << obj.time_dir << ", ";
+    os << "\n  species=" << obj.species << ", ";
+    os << "\n  location=" << obj.location;
     os << "}";
     return os;
   }
@@ -465,7 +465,7 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_coord_array& obj) {
     os << "CPP_coord_array{";
-    os << "orbit=" << obj.orbit;
+    os << "\n  orbit=" << obj.orbit;
     os << "}";
     return os;
   }
@@ -511,16 +511,16 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_bpm_phase_coupling& obj) {
     os << "CPP_bpm_phase_coupling{";
-    os << "K_22a=" << obj.K_22a << ", ";
-    os << "K_12a=" << obj.K_12a << ", ";
-    os << "K_11b=" << obj.K_11b << ", ";
-    os << "K_12b=" << obj.K_12b << ", ";
-    os << "Cbar22_a=" << obj.Cbar22_a << ", ";
-    os << "Cbar12_a=" << obj.Cbar12_a << ", ";
-    os << "Cbar11_b=" << obj.Cbar11_b << ", ";
-    os << "Cbar12_b=" << obj.Cbar12_b << ", ";
-    os << "phi_a=" << obj.phi_a << ", ";
-    os << "phi_b=" << obj.phi_b;
+    os << "\n  K_22a=" << obj.K_22a << ", ";
+    os << "\n  K_12a=" << obj.K_12a << ", ";
+    os << "\n  K_11b=" << obj.K_11b << ", ";
+    os << "\n  K_12b=" << obj.K_12b << ", ";
+    os << "\n  Cbar22_a=" << obj.Cbar22_a << ", ";
+    os << "\n  Cbar12_a=" << obj.Cbar12_a << ", ";
+    os << "\n  Cbar11_b=" << obj.Cbar11_b << ", ";
+    os << "\n  Cbar12_b=" << obj.Cbar12_b << ", ";
+    os << "\n  phi_a=" << obj.phi_a << ", ";
+    os << "\n  phi_b=" << obj.phi_b;
     os << "}";
     return os;
   }
@@ -559,9 +559,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_expression_atom& obj) {
     os << "CPP_expression_atom{";
-    os << "name=" << obj.name << ", ";
-    os << "type=" << obj.type << ", ";
-    os << "value=" << obj.value;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  type=" << obj.type << ", ";
+    os << "\n  value=" << obj.value;
     os << "}";
     return os;
   }
@@ -606,15 +606,15 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wake_sr_z_long& obj) {
     os << "CPP_wake_sr_z_long{";
-    os << "w=" << obj.w << ", ";
-    os << "fw=" << obj.fw << ", ";
-    os << "fbunch=" << obj.fbunch << ", ";
-    os << "w_out=" << obj.w_out << ", ";
-    os << "dz=" << obj.dz << ", ";
-    os << "z0=" << obj.z0 << ", ";
-    os << "smoothing_sigma=" << obj.smoothing_sigma << ", ";
-    os << "position_dependence=" << obj.position_dependence << ", ";
-    os << "time_based=" << obj.time_based;
+    os << "\n  w=" << obj.w << ", ";
+    os << "\n  fw=" << obj.fw << ", ";
+    os << "\n  fbunch=" << obj.fbunch << ", ";
+    os << "\n  w_out=" << obj.w_out << ", ";
+    os << "\n  dz=" << obj.dz << ", ";
+    os << "\n  z0=" << obj.z0 << ", ";
+    os << "\n  smoothing_sigma=" << obj.smoothing_sigma << ", ";
+    os << "\n  position_dependence=" << obj.position_dependence << ", ";
+    os << "\n  time_based=" << obj.time_based;
     os << "}";
     return os;
   }
@@ -660,16 +660,16 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wake_sr_mode& obj) {
     os << "CPP_wake_sr_mode{";
-    os << "amp=" << obj.amp << ", ";
-    os << "damp=" << obj.damp << ", ";
-    os << "k=" << obj.k << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "b_sin=" << obj.b_sin << ", ";
-    os << "b_cos=" << obj.b_cos << ", ";
-    os << "a_sin=" << obj.a_sin << ", ";
-    os << "a_cos=" << obj.a_cos << ", ";
-    os << "polarization=" << obj.polarization << ", ";
-    os << "position_dependence=" << obj.position_dependence;
+    os << "\n  amp=" << obj.amp << ", ";
+    os << "\n  damp=" << obj.damp << ", ";
+    os << "\n  k=" << obj.k << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  b_sin=" << obj.b_sin << ", ";
+    os << "\n  b_cos=" << obj.b_cos << ", ";
+    os << "\n  a_sin=" << obj.a_sin << ", ";
+    os << "\n  a_cos=" << obj.a_cos << ", ";
+    os << "\n  polarization=" << obj.polarization << ", ";
+    os << "\n  position_dependence=" << obj.position_dependence;
     os << "}";
     return os;
   }
@@ -715,16 +715,16 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wake_sr& obj) {
     os << "CPP_wake_sr{";
-    os << "file=" << obj.file << ", ";
-    os << "z_long=" << obj.z_long << ", ";
-    os << "long_wake=" << obj.long_wake << ", ";
-    os << "trans_wake=" << obj.trans_wake << ", ";
-    os << "z_ref_long=" << obj.z_ref_long << ", ";
-    os << "z_ref_trans=" << obj.z_ref_trans << ", ";
-    os << "z_max=" << obj.z_max << ", ";
-    os << "amp_scale=" << obj.amp_scale << ", ";
-    os << "z_scale=" << obj.z_scale << ", ";
-    os << "scale_with_length=" << obj.scale_with_length;
+    os << "\n  file=" << obj.file << ", ";
+    os << "\n  z_long=" << obj.z_long << ", ";
+    os << "\n  long_wake=" << obj.long_wake << ", ";
+    os << "\n  trans_wake=" << obj.trans_wake << ", ";
+    os << "\n  z_ref_long=" << obj.z_ref_long << ", ";
+    os << "\n  z_ref_trans=" << obj.z_ref_trans << ", ";
+    os << "\n  z_max=" << obj.z_max << ", ";
+    os << "\n  amp_scale=" << obj.amp_scale << ", ";
+    os << "\n  z_scale=" << obj.z_scale << ", ";
+    os << "\n  scale_with_length=" << obj.scale_with_length;
     os << "}";
     return os;
   }
@@ -773,19 +773,19 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wake_lr_mode& obj) {
     os << "CPP_wake_lr_mode{";
-    os << "freq=" << obj.freq << ", ";
-    os << "freq_in=" << obj.freq_in << ", ";
-    os << "R_over_Q=" << obj.R_over_Q << ", ";
-    os << "Q=" << obj.Q << ", ";
-    os << "damp=" << obj.damp << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "angle=" << obj.angle << ", ";
-    os << "b_sin=" << obj.b_sin << ", ";
-    os << "b_cos=" << obj.b_cos << ", ";
-    os << "a_sin=" << obj.a_sin << ", ";
-    os << "a_cos=" << obj.a_cos << ", ";
-    os << "m=" << obj.m << ", ";
-    os << "polarized=" << obj.polarized;
+    os << "\n  freq=" << obj.freq << ", ";
+    os << "\n  freq_in=" << obj.freq_in << ", ";
+    os << "\n  R_over_Q=" << obj.R_over_Q << ", ";
+    os << "\n  Q=" << obj.Q << ", ";
+    os << "\n  damp=" << obj.damp << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  angle=" << obj.angle << ", ";
+    os << "\n  b_sin=" << obj.b_sin << ", ";
+    os << "\n  b_cos=" << obj.b_cos << ", ";
+    os << "\n  a_sin=" << obj.a_sin << ", ";
+    os << "\n  a_cos=" << obj.a_cos << ", ";
+    os << "\n  m=" << obj.m << ", ";
+    os << "\n  polarized=" << obj.polarized;
     os << "}";
     return os;
   }
@@ -828,13 +828,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wake_lr& obj) {
     os << "CPP_wake_lr{";
-    os << "file=" << obj.file << ", ";
-    os << "mode=" << obj.mode << ", ";
-    os << "t_ref=" << obj.t_ref << ", ";
-    os << "freq_spread=" << obj.freq_spread << ", ";
-    os << "amp_scale=" << obj.amp_scale << ", ";
-    os << "time_scale=" << obj.time_scale << ", ";
-    os << "self_wake_on=" << obj.self_wake_on;
+    os << "\n  file=" << obj.file << ", ";
+    os << "\n  mode=" << obj.mode << ", ";
+    os << "\n  t_ref=" << obj.t_ref << ", ";
+    os << "\n  freq_spread=" << obj.freq_spread << ", ";
+    os << "\n  amp_scale=" << obj.amp_scale << ", ";
+    os << "\n  time_scale=" << obj.time_scale << ", ";
+    os << "\n  self_wake_on=" << obj.self_wake_on;
     os << "}";
     return os;
   }
@@ -872,8 +872,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_lat_ele_loc& obj) {
     os << "CPP_lat_ele_loc{";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "ix_branch=" << obj.ix_branch;
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  ix_branch=" << obj.ix_branch;
     os << "}";
     return os;
   }
@@ -911,8 +911,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wake& obj) {
     os << "CPP_wake{";
-    os << "sr=" << obj.sr << ", ";
-    os << "lr=" << obj.lr;
+    os << "\n  sr=" << obj.sr << ", ";
+    os << "\n  lr=" << obj.lr;
     os << "}";
     return os;
   }
@@ -950,8 +950,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_taylor_term& obj) {
     os << "CPP_taylor_term{";
-    os << "coef=" << obj.coef << ", ";
-    os << "expn=" << obj.expn;
+    os << "\n  coef=" << obj.coef << ", ";
+    os << "\n  expn=" << obj.expn;
     os << "}";
     return os;
   }
@@ -989,8 +989,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_taylor& obj) {
     os << "CPP_taylor{";
-    os << "ref=" << obj.ref << ", ";
-    os << "term=" << obj.term;
+    os << "\n  ref=" << obj.ref << ", ";
+    os << "\n  term=" << obj.term;
     os << "}";
     return os;
   }
@@ -1028,8 +1028,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_em_taylor_term& obj) {
     os << "CPP_em_taylor_term{";
-    os << "coef=" << obj.coef << ", ";
-    os << "expn=" << obj.expn;
+    os << "\n  coef=" << obj.coef << ", ";
+    os << "\n  expn=" << obj.expn;
     os << "}";
     return os;
   }
@@ -1067,8 +1067,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_em_taylor& obj) {
     os << "CPP_em_taylor{";
-    os << "ref=" << obj.ref << ", ";
-    os << "term=" << obj.term;
+    os << "\n  ref=" << obj.ref << ", ";
+    os << "\n  term=" << obj.term;
     os << "}";
     return os;
   }
@@ -1113,15 +1113,15 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map_term1& obj) {
     os << "CPP_cartesian_map_term1{";
-    os << "coef=" << obj.coef << ", ";
-    os << "kx=" << obj.kx << ", ";
-    os << "ky=" << obj.ky << ", ";
-    os << "kz=" << obj.kz << ", ";
-    os << "x0=" << obj.x0 << ", ";
-    os << "y0=" << obj.y0 << ", ";
-    os << "phi_z=" << obj.phi_z << ", ";
-    os << "family=" << obj.family << ", ";
-    os << "form=" << obj.form;
+    os << "\n  coef=" << obj.coef << ", ";
+    os << "\n  kx=" << obj.kx << ", ";
+    os << "\n  ky=" << obj.ky << ", ";
+    os << "\n  kz=" << obj.kz << ", ";
+    os << "\n  x0=" << obj.x0 << ", ";
+    os << "\n  y0=" << obj.y0 << ", ";
+    os << "\n  phi_z=" << obj.phi_z << ", ";
+    os << "\n  family=" << obj.family << ", ";
+    os << "\n  form=" << obj.form;
     os << "}";
     return os;
   }
@@ -1160,9 +1160,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map_term& obj) {
     os << "CPP_cartesian_map_term{";
-    os << "file=" << obj.file << ", ";
-    os << "n_link=" << obj.n_link << ", ";
-    os << "term=" << obj.term;
+    os << "\n  file=" << obj.file << ", ";
+    os << "\n  n_link=" << obj.n_link << ", ";
+    os << "\n  term=" << obj.term;
     os << "}";
     return os;
   }
@@ -1192,7 +1192,7 @@ using std::ostream;
   Int master_parameter{0};
   Int ele_anchor_pt{Bmad::ANCHOR_BEGINNING};
   Int field_type{Bmad::MAGNETIC};
-  shared_ptr<CPP_cartesian_map_term> ptr{nullptr};
+  std::optional<CPP_cartesian_map_term> ptr;
         
           CPP_cartesian_map() {
           
@@ -1204,12 +1204,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_cartesian_map& obj) {
     os << "CPP_cartesian_map{";
-    os << "field_scale=" << obj.field_scale << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "master_parameter=" << obj.master_parameter << ", ";
-    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
-    os << "field_type=" << obj.field_type << ", ";
-    os << "ptr="; if (obj.ptr == nullptr) { os << "nullptr"; } else { os << obj.ptr; }; 
+    os << "\n  field_scale=" << obj.field_scale << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  master_parameter=" << obj.master_parameter << ", ";
+    os << "\n  ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "\n  field_type=" << obj.field_type << ", ";
+    os << "\n  ptr="; if (obj.ptr) os << *obj.ptr; else os << "nullptr, ";
     os << "}";
     return os;
   }
@@ -1247,8 +1247,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map_term1& obj) {
     os << "CPP_cylindrical_map_term1{";
-    os << "e_coef=" << obj.e_coef << ", ";
-    os << "b_coef=" << obj.b_coef;
+    os << "\n  e_coef=" << obj.e_coef << ", ";
+    os << "\n  b_coef=" << obj.b_coef;
     os << "}";
     return os;
   }
@@ -1287,9 +1287,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map_term& obj) {
     os << "CPP_cylindrical_map_term{";
-    os << "file=" << obj.file << ", ";
-    os << "n_link=" << obj.n_link << ", ";
-    os << "term=" << obj.term;
+    os << "\n  file=" << obj.file << ", ";
+    os << "\n  n_link=" << obj.n_link << ", ";
+    os << "\n  term=" << obj.term;
     os << "}";
     return os;
   }
@@ -1323,7 +1323,7 @@ using std::ostream;
   Int ele_anchor_pt{Bmad::ANCHOR_BEGINNING};
   Real dz{0.0};
   FixedArray1D<Real, 3> r0{0.0};
-  shared_ptr<CPP_cylindrical_map_term> ptr{nullptr};
+  std::optional<CPP_cylindrical_map_term> ptr;
         
           CPP_cylindrical_map() {
           
@@ -1335,16 +1335,16 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_cylindrical_map& obj) {
     os << "CPP_cylindrical_map{";
-    os << "m=" << obj.m << ", ";
-    os << "harmonic=" << obj.harmonic << ", ";
-    os << "phi0_fieldmap=" << obj.phi0_fieldmap << ", ";
-    os << "theta0_azimuth=" << obj.theta0_azimuth << ", ";
-    os << "field_scale=" << obj.field_scale << ", ";
-    os << "master_parameter=" << obj.master_parameter << ", ";
-    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
-    os << "dz=" << obj.dz << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "ptr="; if (obj.ptr == nullptr) { os << "nullptr"; } else { os << obj.ptr; }; 
+    os << "\n  m=" << obj.m << ", ";
+    os << "\n  harmonic=" << obj.harmonic << ", ";
+    os << "\n  phi0_fieldmap=" << obj.phi0_fieldmap << ", ";
+    os << "\n  theta0_azimuth=" << obj.theta0_azimuth << ", ";
+    os << "\n  field_scale=" << obj.field_scale << ", ";
+    os << "\n  master_parameter=" << obj.master_parameter << ", ";
+    os << "\n  ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "\n  dz=" << obj.dz << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  ptr="; if (obj.ptr) os << *obj.ptr; else os << "nullptr, ";
     os << "}";
     return os;
   }
@@ -1382,8 +1382,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_grid_field_pt1& obj) {
     os << "CPP_grid_field_pt1{";
-    os << "E=" << obj.E << ", ";
-    os << "B=" << obj.B;
+    os << "\n  E=" << obj.E << ", ";
+    os << "\n  B=" << obj.B;
     os << "}";
     return os;
   }
@@ -1421,8 +1421,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_grid_field_pt& obj) {
     os << "CPP_grid_field_pt{";
-    os << "file=" << obj.file << ", ";
-    os << "n_link=" << obj.n_link;
+    os << "\n  file=" << obj.file << ", ";
+    os << "\n  n_link=" << obj.n_link;
     os << "}";
     return os;
   }
@@ -1458,7 +1458,7 @@ using std::ostream;
   FixedArray1D<Real, 3> dr{0.0};
   FixedArray1D<Real, 3> r0{0.0};
   Bool curved_ref_frame{false};
-  shared_ptr<CPP_grid_field_pt> ptr{nullptr};
+  std::optional<CPP_grid_field_pt> ptr;
         
           CPP_grid_field() {
           
@@ -1470,18 +1470,18 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_grid_field& obj) {
     os << "CPP_grid_field{";
-    os << "geometry=" << obj.geometry << ", ";
-    os << "harmonic=" << obj.harmonic << ", ";
-    os << "phi0_fieldmap=" << obj.phi0_fieldmap << ", ";
-    os << "field_scale=" << obj.field_scale << ", ";
-    os << "field_type=" << obj.field_type << ", ";
-    os << "master_parameter=" << obj.master_parameter << ", ";
-    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
-    os << "interpolation_order=" << obj.interpolation_order << ", ";
-    os << "dr=" << obj.dr << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "curved_ref_frame=" << obj.curved_ref_frame << ", ";
-    os << "ptr="; if (obj.ptr == nullptr) { os << "nullptr"; } else { os << obj.ptr; }; 
+    os << "\n  geometry=" << obj.geometry << ", ";
+    os << "\n  harmonic=" << obj.harmonic << ", ";
+    os << "\n  phi0_fieldmap=" << obj.phi0_fieldmap << ", ";
+    os << "\n  field_scale=" << obj.field_scale << ", ";
+    os << "\n  field_type=" << obj.field_type << ", ";
+    os << "\n  master_parameter=" << obj.master_parameter << ", ";
+    os << "\n  ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "\n  interpolation_order=" << obj.interpolation_order << ", ";
+    os << "\n  dr=" << obj.dr << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  curved_ref_frame=" << obj.curved_ref_frame << ", ";
+    os << "\n  ptr="; if (obj.ptr) os << *obj.ptr; else os << "nullptr, ";
     os << "}";
     return os;
   }
@@ -1522,11 +1522,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_floor_position& obj) {
     os << "CPP_floor_position{";
-    os << "r=" << obj.r << ", ";
-    os << "w=" << obj.w << ", ";
-    os << "theta=" << obj.theta << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "psi=" << obj.psi;
+    os << "\n  r=" << obj.r << ", ";
+    os << "\n  w=" << obj.w << ", ";
+    os << "\n  theta=" << obj.theta << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  psi=" << obj.psi;
     os << "}";
     return os;
   }
@@ -1570,14 +1570,14 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_high_energy_space_charge& obj) {
     os << "CPP_high_energy_space_charge{";
-    os << "closed_orb=" << obj.closed_orb << ", ";
-    os << "kick_const=" << obj.kick_const << ", ";
-    os << "sig_x=" << obj.sig_x << ", ";
-    os << "sig_y=" << obj.sig_y << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "sin_phi=" << obj.sin_phi << ", ";
-    os << "cos_phi=" << obj.cos_phi << ", ";
-    os << "sig_z=" << obj.sig_z;
+    os << "\n  closed_orb=" << obj.closed_orb << ", ";
+    os << "\n  kick_const=" << obj.kick_const << ", ";
+    os << "\n  sig_x=" << obj.sig_x << ", ";
+    os << "\n  sig_y=" << obj.sig_y << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  sin_phi=" << obj.sin_phi << ", ";
+    os << "\n  cos_phi=" << obj.cos_phi << ", ";
+    os << "\n  sig_z=" << obj.sig_z;
     os << "}";
     return os;
   }
@@ -1617,10 +1617,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_xy_disp& obj) {
     os << "CPP_xy_disp{";
-    os << "eta=" << obj.eta << ", ";
-    os << "etap=" << obj.etap << ", ";
-    os << "deta_ds=" << obj.deta_ds << ", ";
-    os << "sigma=" << obj.sigma;
+    os << "\n  eta=" << obj.eta << ", ";
+    os << "\n  etap=" << obj.etap << ", ";
+    os << "\n  deta_ds=" << obj.deta_ds << ", ";
+    os << "\n  sigma=" << obj.sigma;
     os << "}";
     return os;
   }
@@ -1667,17 +1667,17 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_twiss& obj) {
     os << "CPP_twiss{";
-    os << "beta=" << obj.beta << ", ";
-    os << "alpha=" << obj.alpha << ", ";
-    os << "gamma=" << obj.gamma << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "eta=" << obj.eta << ", ";
-    os << "etap=" << obj.etap << ", ";
-    os << "deta_ds=" << obj.deta_ds << ", ";
-    os << "sigma=" << obj.sigma << ", ";
-    os << "sigma_p=" << obj.sigma_p << ", ";
-    os << "emit=" << obj.emit << ", ";
-    os << "norm_emit=" << obj.norm_emit;
+    os << "\n  beta=" << obj.beta << ", ";
+    os << "\n  alpha=" << obj.alpha << ", ";
+    os << "\n  gamma=" << obj.gamma << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  eta=" << obj.eta << ", ";
+    os << "\n  etap=" << obj.etap << ", ";
+    os << "\n  deta_ds=" << obj.deta_ds << ", ";
+    os << "\n  sigma=" << obj.sigma << ", ";
+    os << "\n  sigma_p=" << obj.sigma_p << ", ";
+    os << "\n  emit=" << obj.emit << ", ";
+    os << "\n  norm_emit=" << obj.norm_emit;
     os << "}";
     return os;
   }
@@ -1719,12 +1719,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_mode3& obj) {
     os << "CPP_mode3{";
-    os << "v=" << obj.v << ", ";
-    os << "a=" << obj.a << ", ";
-    os << "b=" << obj.b << ", ";
-    os << "c=" << obj.c << ", ";
-    os << "x=" << obj.x << ", ";
-    os << "y=" << obj.y;
+    os << "\n  v=" << obj.v << ", ";
+    os << "\n  a=" << obj.a << ", ";
+    os << "\n  b=" << obj.b << ", ";
+    os << "\n  c=" << obj.c << ", ";
+    os << "\n  x=" << obj.x << ", ";
+    os << "\n  y=" << obj.y;
     os << "}";
     return os;
   }
@@ -1769,15 +1769,15 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_bookkeeping_state& obj) {
     os << "CPP_bookkeeping_state{";
-    os << "attributes=" << obj.attributes << ", ";
-    os << "control=" << obj.control << ", ";
-    os << "floor_position=" << obj.floor_position << ", ";
-    os << "s_position=" << obj.s_position << ", ";
-    os << "ref_energy=" << obj.ref_energy << ", ";
-    os << "mat6=" << obj.mat6 << ", ";
-    os << "rad_int=" << obj.rad_int << ", ";
-    os << "ptc=" << obj.ptc << ", ";
-    os << "has_misalign=" << obj.has_misalign;
+    os << "\n  attributes=" << obj.attributes << ", ";
+    os << "\n  control=" << obj.control << ", ";
+    os << "\n  floor_position=" << obj.floor_position << ", ";
+    os << "\n  s_position=" << obj.s_position << ", ";
+    os << "\n  ref_energy=" << obj.ref_energy << ", ";
+    os << "\n  mat6=" << obj.mat6 << ", ";
+    os << "\n  rad_int=" << obj.rad_int << ", ";
+    os << "\n  ptc=" << obj.ptc << ", ";
+    os << "\n  has_misalign=" << obj.has_misalign;
     os << "}";
     return os;
   }
@@ -1818,11 +1818,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_rad_map& obj) {
     os << "CPP_rad_map{";
-    os << "ref_orb=" << obj.ref_orb << ", ";
-    os << "damp_dmat=" << obj.damp_dmat << ", ";
-    os << "xfer_damp_vec=" << obj.xfer_damp_vec << ", ";
-    os << "xfer_damp_mat=" << obj.xfer_damp_mat << ", ";
-    os << "stoc_mat=" << obj.stoc_mat;
+    os << "\n  ref_orb=" << obj.ref_orb << ", ";
+    os << "\n  damp_dmat=" << obj.damp_dmat << ", ";
+    os << "\n  xfer_damp_vec=" << obj.xfer_damp_vec << ", ";
+    os << "\n  xfer_damp_mat=" << obj.xfer_damp_mat << ", ";
+    os << "\n  stoc_mat=" << obj.stoc_mat;
     os << "}";
     return os;
   }
@@ -1861,9 +1861,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_rad_map_ele& obj) {
     os << "CPP_rad_map_ele{";
-    os << "rm0=" << obj.rm0 << ", ";
-    os << "rm1=" << obj.rm1 << ", ";
-    os << "stale=" << obj.stale;
+    os << "\n  rm0=" << obj.rm0 << ", ";
+    os << "\n  rm1=" << obj.rm1 << ", ";
+    os << "\n  stale=" << obj.stale;
     os << "}";
     return os;
   }
@@ -1903,10 +1903,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_gen_grad1& obj) {
     os << "CPP_gen_grad1{";
-    os << "m=" << obj.m << ", ";
-    os << "sincos=" << obj.sincos << ", ";
-    os << "n_deriv_max=" << obj.n_deriv_max << ", ";
-    os << "deriv=" << obj.deriv;
+    os << "\n  m=" << obj.m << ", ";
+    os << "\n  sincos=" << obj.sincos << ", ";
+    os << "\n  n_deriv_max=" << obj.n_deriv_max << ", ";
+    os << "\n  deriv=" << obj.deriv;
     os << "}";
     return os;
   }
@@ -1953,17 +1953,17 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_gen_grad_map& obj) {
     os << "CPP_gen_grad_map{";
-    os << "file=" << obj.file << ", ";
-    os << "gg=" << obj.gg << ", ";
-    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
-    os << "field_type=" << obj.field_type << ", ";
-    os << "iz0=" << obj.iz0 << ", ";
-    os << "iz1=" << obj.iz1 << ", ";
-    os << "dz=" << obj.dz << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "field_scale=" << obj.field_scale << ", ";
-    os << "master_parameter=" << obj.master_parameter << ", ";
-    os << "curved_ref_frame=" << obj.curved_ref_frame;
+    os << "\n  file=" << obj.file << ", ";
+    os << "\n  gg=" << obj.gg << ", ";
+    os << "\n  ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "\n  field_type=" << obj.field_type << ", ";
+    os << "\n  iz0=" << obj.iz0 << ", ";
+    os << "\n  iz1=" << obj.iz1 << ", ";
+    os << "\n  dz=" << obj.dz << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  field_scale=" << obj.field_scale << ", ";
+    os << "\n  master_parameter=" << obj.master_parameter << ", ";
+    os << "\n  curved_ref_frame=" << obj.curved_ref_frame;
     os << "}";
     return os;
   }
@@ -2004,11 +2004,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_segmented_pt& obj) {
     os << "CPP_surface_segmented_pt{";
-    os << "x0=" << obj.x0 << ", ";
-    os << "y0=" << obj.y0 << ", ";
-    os << "z0=" << obj.z0 << ", ";
-    os << "dz_dx=" << obj.dz_dx << ", ";
-    os << "dz_dy=" << obj.dz_dy;
+    os << "\n  x0=" << obj.x0 << ", ";
+    os << "\n  y0=" << obj.y0 << ", ";
+    os << "\n  z0=" << obj.z0 << ", ";
+    os << "\n  dz_dx=" << obj.dz_dx << ", ";
+    os << "\n  dz_dy=" << obj.dz_dy;
     os << "}";
     return os;
   }
@@ -2048,10 +2048,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_segmented& obj) {
     os << "CPP_surface_segmented{";
-    os << "active=" << obj.active << ", ";
-    os << "dr=" << obj.dr << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "pt=" << obj.pt;
+    os << "\n  active=" << obj.active << ", ";
+    os << "\n  dr=" << obj.dr << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  pt=" << obj.pt;
     os << "}";
     return os;
   }
@@ -2093,12 +2093,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_h_misalign_pt& obj) {
     os << "CPP_surface_h_misalign_pt{";
-    os << "x0=" << obj.x0 << ", ";
-    os << "y0=" << obj.y0 << ", ";
-    os << "rot_y=" << obj.rot_y << ", ";
-    os << "rot_t=" << obj.rot_t << ", ";
-    os << "rot_y_rms=" << obj.rot_y_rms << ", ";
-    os << "rot_t_rms=" << obj.rot_t_rms;
+    os << "\n  x0=" << obj.x0 << ", ";
+    os << "\n  y0=" << obj.y0 << ", ";
+    os << "\n  rot_y=" << obj.rot_y << ", ";
+    os << "\n  rot_t=" << obj.rot_t << ", ";
+    os << "\n  rot_y_rms=" << obj.rot_y_rms << ", ";
+    os << "\n  rot_t_rms=" << obj.rot_t_rms;
     os << "}";
     return os;
   }
@@ -2138,10 +2138,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_h_misalign& obj) {
     os << "CPP_surface_h_misalign{";
-    os << "active=" << obj.active << ", ";
-    os << "dr=" << obj.dr << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "pt=" << obj.pt;
+    os << "\n  active=" << obj.active << ", ";
+    os << "\n  dr=" << obj.dr << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  pt=" << obj.pt;
     os << "}";
     return os;
   }
@@ -2183,12 +2183,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_displacement_pt& obj) {
     os << "CPP_surface_displacement_pt{";
-    os << "x0=" << obj.x0 << ", ";
-    os << "y0=" << obj.y0 << ", ";
-    os << "z0=" << obj.z0 << ", ";
-    os << "dz_dx=" << obj.dz_dx << ", ";
-    os << "dz_dy=" << obj.dz_dy << ", ";
-    os << "d2z_dxdy=" << obj.d2z_dxdy;
+    os << "\n  x0=" << obj.x0 << ", ";
+    os << "\n  y0=" << obj.y0 << ", ";
+    os << "\n  z0=" << obj.z0 << ", ";
+    os << "\n  dz_dx=" << obj.dz_dx << ", ";
+    os << "\n  dz_dy=" << obj.dz_dy << ", ";
+    os << "\n  d2z_dxdy=" << obj.d2z_dxdy;
     os << "}";
     return os;
   }
@@ -2228,10 +2228,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_displacement& obj) {
     os << "CPP_surface_displacement{";
-    os << "active=" << obj.active << ", ";
-    os << "dr=" << obj.dr << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "pt=" << obj.pt;
+    os << "\n  active=" << obj.active << ", ";
+    os << "\n  dr=" << obj.dr << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  pt=" << obj.pt;
     os << "}";
     return os;
   }
@@ -2268,7 +2268,7 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_target_point& obj) {
     os << "CPP_target_point{";
-    os << "r=" << obj.r;
+    os << "\n  r=" << obj.r;
     os << "}";
     return os;
   }
@@ -2308,10 +2308,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_surface_curvature& obj) {
     os << "CPP_surface_curvature{";
-    os << "xy=" << obj.xy << ", ";
-    os << "spherical=" << obj.spherical << ", ";
-    os << "elliptical=" << obj.elliptical << ", ";
-    os << "has_curvature=" << obj.has_curvature;
+    os << "\n  xy=" << obj.xy << ", ";
+    os << "\n  spherical=" << obj.spherical << ", ";
+    os << "\n  elliptical=" << obj.elliptical << ", ";
+    os << "\n  has_curvature=" << obj.has_curvature;
     os << "}";
     return os;
   }
@@ -2352,11 +2352,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_photon_target& obj) {
     os << "CPP_photon_target{";
-    os << "type=" << obj.type << ", ";
-    os << "n_corner=" << obj.n_corner << ", ";
-    os << "ele_loc=" << obj.ele_loc << ", ";
-    os << "corner=" << obj.corner << ", ";
-    os << "center=" << obj.center;
+    os << "\n  type=" << obj.type << ", ";
+    os << "\n  n_corner=" << obj.n_corner << ", ";
+    os << "\n  ele_loc=" << obj.ele_loc << ", ";
+    os << "\n  corner=" << obj.corner << ", ";
+    os << "\n  center=" << obj.center;
     os << "}";
     return os;
   }
@@ -2400,14 +2400,14 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_photon_material& obj) {
     os << "CPP_photon_material{";
-    os << "f0_m1=" << obj.f0_m1 << ", ";
-    os << "f0_m2=" << obj.f0_m2 << ", ";
-    os << "f_0=" << obj.f_0 << ", ";
-    os << "f_h=" << obj.f_h << ", ";
-    os << "f_hbar=" << obj.f_hbar << ", ";
-    os << "f_hkl=" << obj.f_hkl << ", ";
-    os << "h_norm=" << obj.h_norm << ", ";
-    os << "l_ref=" << obj.l_ref;
+    os << "\n  f0_m1=" << obj.f0_m1 << ", ";
+    os << "\n  f0_m2=" << obj.f0_m2 << ", ";
+    os << "\n  f_0=" << obj.f_0 << ", ";
+    os << "\n  f_h=" << obj.f_h << ", ";
+    os << "\n  f_hbar=" << obj.f_hbar << ", ";
+    os << "\n  f_hkl=" << obj.f_hkl << ", ";
+    os << "\n  h_norm=" << obj.h_norm << ", ";
+    os << "\n  l_ref=" << obj.l_ref;
     os << "}";
     return os;
   }
@@ -2453,16 +2453,16 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_pixel_pt& obj) {
     os << "CPP_pixel_pt{";
-    os << "n_photon=" << obj.n_photon << ", ";
-    os << "E_x=" << obj.E_x << ", ";
-    os << "E_y=" << obj.E_y << ", ";
-    os << "intensity_x=" << obj.intensity_x << ", ";
-    os << "intensity_y=" << obj.intensity_y << ", ";
-    os << "intensity=" << obj.intensity << ", ";
-    os << "orbit=" << obj.orbit << ", ";
-    os << "orbit_rms=" << obj.orbit_rms << ", ";
-    os << "init_orbit=" << obj.init_orbit << ", ";
-    os << "init_orbit_rms=" << obj.init_orbit_rms;
+    os << "\n  n_photon=" << obj.n_photon << ", ";
+    os << "\n  E_x=" << obj.E_x << ", ";
+    os << "\n  E_y=" << obj.E_y << ", ";
+    os << "\n  intensity_x=" << obj.intensity_x << ", ";
+    os << "\n  intensity_y=" << obj.intensity_y << ", ";
+    os << "\n  intensity=" << obj.intensity << ", ";
+    os << "\n  orbit=" << obj.orbit << ", ";
+    os << "\n  orbit_rms=" << obj.orbit_rms << ", ";
+    os << "\n  init_orbit=" << obj.init_orbit << ", ";
+    os << "\n  init_orbit_rms=" << obj.init_orbit_rms;
     os << "}";
     return os;
   }
@@ -2504,12 +2504,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_pixel_detec& obj) {
     os << "CPP_pixel_detec{";
-    os << "dr=" << obj.dr << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "n_track_tot=" << obj.n_track_tot << ", ";
-    os << "n_hit_detec=" << obj.n_hit_detec << ", ";
-    os << "n_hit_pixel=" << obj.n_hit_pixel << ", ";
-    os << "pt=" << obj.pt;
+    os << "\n  dr=" << obj.dr << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  n_track_tot=" << obj.n_track_tot << ", ";
+    os << "\n  n_hit_detec=" << obj.n_hit_detec << ", ";
+    os << "\n  n_hit_pixel=" << obj.n_hit_pixel << ", ";
+    os << "\n  pt=" << obj.pt;
     os << "}";
     return os;
   }
@@ -2557,18 +2557,18 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_photon_element& obj) {
     os << "CPP_photon_element{";
-    os << "curvature=" << obj.curvature << ", ";
-    os << "target=" << obj.target << ", ";
-    os << "material=" << obj.material << ", ";
-    os << "segmented=" << obj.segmented << ", ";
-    os << "h_misalign=" << obj.h_misalign << ", ";
-    os << "displacement=" << obj.displacement << ", ";
-    os << "pixel=" << obj.pixel << ", ";
-    os << "reflectivity_table_type=" << obj.reflectivity_table_type << ", ";
-    os << "reflectivity_table_sigma=" << obj.reflectivity_table_sigma << ", ";
-    os << "reflectivity_table_pi=" << obj.reflectivity_table_pi << ", ";
-    os << "init_energy_prob=" << obj.init_energy_prob << ", ";
-    os << "integrated_init_energy_prob=" << obj.integrated_init_energy_prob;
+    os << "\n  curvature=" << obj.curvature << ", ";
+    os << "\n  target=" << obj.target << ", ";
+    os << "\n  material=" << obj.material << ", ";
+    os << "\n  segmented=" << obj.segmented << ", ";
+    os << "\n  h_misalign=" << obj.h_misalign << ", ";
+    os << "\n  displacement=" << obj.displacement << ", ";
+    os << "\n  pixel=" << obj.pixel << ", ";
+    os << "\n  reflectivity_table_type=" << obj.reflectivity_table_type << ", ";
+    os << "\n  reflectivity_table_sigma=" << obj.reflectivity_table_sigma << ", ";
+    os << "\n  reflectivity_table_pi=" << obj.reflectivity_table_pi << ", ";
+    os << "\n  init_energy_prob=" << obj.init_energy_prob << ", ";
+    os << "\n  integrated_init_energy_prob=" << obj.integrated_init_energy_prob;
     os << "}";
     return os;
   }
@@ -2613,15 +2613,15 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wall3d_vertex& obj) {
     os << "CPP_wall3d_vertex{";
-    os << "x=" << obj.x << ", ";
-    os << "y=" << obj.y << ", ";
-    os << "radius_x=" << obj.radius_x << ", ";
-    os << "radius_y=" << obj.radius_y << ", ";
-    os << "tilt=" << obj.tilt << ", ";
-    os << "angle=" << obj.angle << ", ";
-    os << "x0=" << obj.x0 << ", ";
-    os << "y0=" << obj.y0 << ", ";
-    os << "type=" << obj.type;
+    os << "\n  x=" << obj.x << ", ";
+    os << "\n  y=" << obj.y << ", ";
+    os << "\n  radius_x=" << obj.radius_x << ", ";
+    os << "\n  radius_y=" << obj.radius_y << ", ";
+    os << "\n  tilt=" << obj.tilt << ", ";
+    os << "\n  angle=" << obj.angle << ", ";
+    os << "\n  x0=" << obj.x0 << ", ";
+    os << "\n  y0=" << obj.y0 << ", ";
+    os << "\n  type=" << obj.type;
     os << "}";
     return os;
   }
@@ -2649,7 +2649,7 @@ using std::ostream;
           string name{""};
   string material{""};
   VariableArray1D<CPP_wall3d_vertex> v;
-  shared_ptr<CPP_photon_reflect_surface> surface{nullptr};
+  std::optional<CPP_photon_reflect_surface> surface;
   Int type{Bmad::NORMAL};
   Int n_vertex_input{0};
   Int ix_ele{0};
@@ -2677,26 +2677,26 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wall3d_section& obj) {
     os << "CPP_wall3d_section{";
-    os << "name=" << obj.name << ", ";
-    os << "material=" << obj.material << ", ";
-    os << "v=" << obj.v << ", ";
-    os << "surface="; if (obj.surface == nullptr) { os << "nullptr"; } else { os << obj.surface; }; os << ", ";
-    os << "type=" << obj.type << ", ";
-    os << "n_vertex_input=" << obj.n_vertex_input << ", ";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "ix_branch=" << obj.ix_branch << ", ";
-    os << "vertices_state=" << obj.vertices_state << ", ";
-    os << "patch_in_region=" << obj.patch_in_region << ", ";
-    os << "thickness=" << obj.thickness << ", ";
-    os << "s=" << obj.s << ", ";
-    os << "r0=" << obj.r0 << ", ";
-    os << "dx0_ds=" << obj.dx0_ds << ", ";
-    os << "dy0_ds=" << obj.dy0_ds << ", ";
-    os << "x0_coef=" << obj.x0_coef << ", ";
-    os << "y0_coef=" << obj.y0_coef << ", ";
-    os << "dr_ds=" << obj.dr_ds << ", ";
-    os << "p1_coef=" << obj.p1_coef << ", ";
-    os << "p2_coef=" << obj.p2_coef;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  material=" << obj.material << ", ";
+    os << "\n  v=" << obj.v << ", ";
+    os << "\n  surface="; if (obj.surface) os << *obj.surface << ", "; else os << "nullptr, ";
+    os << "\n  type=" << obj.type << ", ";
+    os << "\n  n_vertex_input=" << obj.n_vertex_input << ", ";
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  ix_branch=" << obj.ix_branch << ", ";
+    os << "\n  vertices_state=" << obj.vertices_state << ", ";
+    os << "\n  patch_in_region=" << obj.patch_in_region << ", ";
+    os << "\n  thickness=" << obj.thickness << ", ";
+    os << "\n  s=" << obj.s << ", ";
+    os << "\n  r0=" << obj.r0 << ", ";
+    os << "\n  dx0_ds=" << obj.dx0_ds << ", ";
+    os << "\n  dy0_ds=" << obj.dy0_ds << ", ";
+    os << "\n  x0_coef=" << obj.x0_coef << ", ";
+    os << "\n  y0_coef=" << obj.y0_coef << ", ";
+    os << "\n  dr_ds=" << obj.dr_ds << ", ";
+    os << "\n  p1_coef=" << obj.p1_coef << ", ";
+    os << "\n  p2_coef=" << obj.p2_coef;
     os << "}";
     return os;
   }
@@ -2742,16 +2742,16 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_wall3d& obj) {
     os << "CPP_wall3d{";
-    os << "name=" << obj.name << ", ";
-    os << "type=" << obj.type << ", ";
-    os << "ix_wall3d=" << obj.ix_wall3d << ", ";
-    os << "n_link=" << obj.n_link << ", ";
-    os << "thickness=" << obj.thickness << ", ";
-    os << "clear_material=" << obj.clear_material << ", ";
-    os << "opaque_material=" << obj.opaque_material << ", ";
-    os << "superimpose=" << obj.superimpose << ", ";
-    os << "ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
-    os << "section=" << obj.section;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  type=" << obj.type << ", ";
+    os << "\n  ix_wall3d=" << obj.ix_wall3d << ", ";
+    os << "\n  n_link=" << obj.n_link << ", ";
+    os << "\n  thickness=" << obj.thickness << ", ";
+    os << "\n  clear_material=" << obj.clear_material << ", ";
+    os << "\n  opaque_material=" << obj.opaque_material << ", ";
+    os << "\n  superimpose=" << obj.superimpose << ", ";
+    os << "\n  ele_anchor_pt=" << obj.ele_anchor_pt << ", ";
+    os << "\n  section=" << obj.section;
     os << "}";
     return os;
   }
@@ -2778,7 +2778,7 @@ using std::ostream;
         public:
           Int ix_ele{0};
   Int ix_con{0};
-  shared_ptr<Real> attrib_ptr{nullptr};
+  std::optional<Real> attrib_ptr;
         
           CPP_ramper_lord() {
           
@@ -2790,9 +2790,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_ramper_lord& obj) {
     os << "CPP_ramper_lord{";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "ix_con=" << obj.ix_con << ", ";
-    os << "attrib_ptr="; if (obj.attrib_ptr == nullptr) { os << "nullptr"; } else { os << obj.attrib_ptr; }; 
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  ix_con=" << obj.ix_con << ", ";
+    os << "\n  attrib_ptr="; if (obj.attrib_ptr) os << *obj.attrib_ptr; else os << "nullptr, ";
     os << "}";
     return os;
   }
@@ -2836,14 +2836,14 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_control& obj) {
     os << "CPP_control{";
-    os << "value=" << obj.value << ", ";
-    os << "y_knot=" << obj.y_knot << ", ";
-    os << "stack=" << obj.stack << ", ";
-    os << "slave=" << obj.slave << ", ";
-    os << "lord=" << obj.lord << ", ";
-    os << "slave_name=" << obj.slave_name << ", ";
-    os << "attribute=" << obj.attribute << ", ";
-    os << "ix_attrib=" << obj.ix_attrib;
+    os << "\n  value=" << obj.value << ", ";
+    os << "\n  y_knot=" << obj.y_knot << ", ";
+    os << "\n  stack=" << obj.stack << ", ";
+    os << "\n  slave=" << obj.slave << ", ";
+    os << "\n  lord=" << obj.lord << ", ";
+    os << "\n  slave_name=" << obj.slave_name << ", ";
+    os << "\n  attribute=" << obj.attribute << ", ";
+    os << "\n  ix_attrib=" << obj.ix_attrib;
     os << "}";
     return os;
   }
@@ -2882,9 +2882,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_control_var1& obj) {
     os << "CPP_control_var1{";
-    os << "name=" << obj.name << ", ";
-    os << "value=" << obj.value << ", ";
-    os << "old_value=" << obj.old_value;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  value=" << obj.value << ", ";
+    os << "\n  old_value=" << obj.old_value;
     os << "}";
     return os;
   }
@@ -2925,11 +2925,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_control_ramp1& obj) {
     os << "CPP_control_ramp1{";
-    os << "y_knot=" << obj.y_knot << ", ";
-    os << "stack=" << obj.stack << ", ";
-    os << "attribute=" << obj.attribute << ", ";
-    os << "slave_name=" << obj.slave_name << ", ";
-    os << "is_controller=" << obj.is_controller;
+    os << "\n  y_knot=" << obj.y_knot << ", ";
+    os << "\n  stack=" << obj.stack << ", ";
+    os << "\n  attribute=" << obj.attribute << ", ";
+    os << "\n  slave_name=" << obj.slave_name << ", ";
+    os << "\n  is_controller=" << obj.is_controller;
     os << "}";
     return os;
   }
@@ -2969,10 +2969,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_controller& obj) {
     os << "CPP_controller{";
-    os << "var=" << obj.var << ", ";
-    os << "ramp=" << obj.ramp << ", ";
-    os << "ramper_lord=" << obj.ramper_lord << ", ";
-    os << "x_knot=" << obj.x_knot;
+    os << "\n  var=" << obj.var << ", ";
+    os << "\n  ramp=" << obj.ramp << ", ";
+    os << "\n  ramper_lord=" << obj.ramper_lord << ", ";
+    os << "\n  x_knot=" << obj.x_knot;
     os << "}";
     return os;
   }
@@ -3011,9 +3011,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_ellipse_beam_init& obj) {
     os << "CPP_ellipse_beam_init{";
-    os << "part_per_ellipse=" << obj.part_per_ellipse << ", ";
-    os << "n_ellipse=" << obj.n_ellipse << ", ";
-    os << "sigma_cutoff=" << obj.sigma_cutoff;
+    os << "\n  part_per_ellipse=" << obj.part_per_ellipse << ", ";
+    os << "\n  n_ellipse=" << obj.n_ellipse << ", ";
+    os << "\n  sigma_cutoff=" << obj.sigma_cutoff;
     os << "}";
     return os;
   }
@@ -3052,9 +3052,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_kv_beam_init& obj) {
     os << "CPP_kv_beam_init{";
-    os << "part_per_phi=" << obj.part_per_phi << ", ";
-    os << "n_I2=" << obj.n_I2 << ", ";
-    os << "A=" << obj.A;
+    os << "\n  part_per_phi=" << obj.part_per_phi << ", ";
+    os << "\n  n_I2=" << obj.n_I2 << ", ";
+    os << "\n  A=" << obj.A;
     os << "}";
     return os;
   }
@@ -3096,12 +3096,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_grid_beam_init& obj) {
     os << "CPP_grid_beam_init{";
-    os << "n_x=" << obj.n_x << ", ";
-    os << "n_px=" << obj.n_px << ", ";
-    os << "x_min=" << obj.x_min << ", ";
-    os << "x_max=" << obj.x_max << ", ";
-    os << "px_min=" << obj.px_min << ", ";
-    os << "px_max=" << obj.px_max;
+    os << "\n  n_x=" << obj.n_x << ", ";
+    os << "\n  n_px=" << obj.n_px << ", ";
+    os << "\n  x_min=" << obj.x_min << ", ";
+    os << "\n  x_max=" << obj.x_max << ", ";
+    os << "\n  px_min=" << obj.px_min << ", ";
+    os << "\n  px_max=" << obj.px_max;
     os << "}";
     return os;
   }
@@ -3172,41 +3172,41 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_beam_init& obj) {
     os << "CPP_beam_init{";
-    os << "position_file=" << obj.position_file << ", ";
-    os << "distribution_type=" << obj.distribution_type << ", ";
-    os << "spin=" << obj.spin << ", ";
-    os << "ellipse=" << obj.ellipse << ", ";
-    os << "KV=" << obj.KV << ", ";
-    os << "grid=" << obj.grid << ", ";
-    os << "center_jitter=" << obj.center_jitter << ", ";
-    os << "emit_jitter=" << obj.emit_jitter << ", ";
-    os << "sig_z_jitter=" << obj.sig_z_jitter << ", ";
-    os << "sig_pz_jitter=" << obj.sig_pz_jitter << ", ";
-    os << "n_particle=" << obj.n_particle << ", ";
-    os << "renorm_center=" << obj.renorm_center << ", ";
-    os << "renorm_sigma=" << obj.renorm_sigma << ", ";
-    os << "random_engine=" << obj.random_engine << ", ";
-    os << "random_gauss_converter=" << obj.random_gauss_converter << ", ";
-    os << "random_sigma_cutoff=" << obj.random_sigma_cutoff << ", ";
-    os << "a_norm_emit=" << obj.a_norm_emit << ", ";
-    os << "b_norm_emit=" << obj.b_norm_emit << ", ";
-    os << "a_emit=" << obj.a_emit << ", ";
-    os << "b_emit=" << obj.b_emit << ", ";
-    os << "dPz_dz=" << obj.dPz_dz << ", ";
-    os << "center=" << obj.center << ", ";
-    os << "t_offset=" << obj.t_offset << ", ";
-    os << "dt_bunch=" << obj.dt_bunch << ", ";
-    os << "sig_z=" << obj.sig_z << ", ";
-    os << "sig_pz=" << obj.sig_pz << ", ";
-    os << "bunch_charge=" << obj.bunch_charge << ", ";
-    os << "n_bunch=" << obj.n_bunch << ", ";
-    os << "ix_turn=" << obj.ix_turn << ", ";
-    os << "species=" << obj.species << ", ";
-    os << "full_6D_coupling_calc=" << obj.full_6D_coupling_calc << ", ";
-    os << "use_particle_start=" << obj.use_particle_start << ", ";
-    os << "use_t_coords=" << obj.use_t_coords << ", ";
-    os << "use_z_as_t=" << obj.use_z_as_t << ", ";
-    os << "file_name=" << obj.file_name;
+    os << "\n  position_file=" << obj.position_file << ", ";
+    os << "\n  distribution_type=" << obj.distribution_type << ", ";
+    os << "\n  spin=" << obj.spin << ", ";
+    os << "\n  ellipse=" << obj.ellipse << ", ";
+    os << "\n  KV=" << obj.KV << ", ";
+    os << "\n  grid=" << obj.grid << ", ";
+    os << "\n  center_jitter=" << obj.center_jitter << ", ";
+    os << "\n  emit_jitter=" << obj.emit_jitter << ", ";
+    os << "\n  sig_z_jitter=" << obj.sig_z_jitter << ", ";
+    os << "\n  sig_pz_jitter=" << obj.sig_pz_jitter << ", ";
+    os << "\n  n_particle=" << obj.n_particle << ", ";
+    os << "\n  renorm_center=" << obj.renorm_center << ", ";
+    os << "\n  renorm_sigma=" << obj.renorm_sigma << ", ";
+    os << "\n  random_engine=" << obj.random_engine << ", ";
+    os << "\n  random_gauss_converter=" << obj.random_gauss_converter << ", ";
+    os << "\n  random_sigma_cutoff=" << obj.random_sigma_cutoff << ", ";
+    os << "\n  a_norm_emit=" << obj.a_norm_emit << ", ";
+    os << "\n  b_norm_emit=" << obj.b_norm_emit << ", ";
+    os << "\n  a_emit=" << obj.a_emit << ", ";
+    os << "\n  b_emit=" << obj.b_emit << ", ";
+    os << "\n  dPz_dz=" << obj.dPz_dz << ", ";
+    os << "\n  center=" << obj.center << ", ";
+    os << "\n  t_offset=" << obj.t_offset << ", ";
+    os << "\n  dt_bunch=" << obj.dt_bunch << ", ";
+    os << "\n  sig_z=" << obj.sig_z << ", ";
+    os << "\n  sig_pz=" << obj.sig_pz << ", ";
+    os << "\n  bunch_charge=" << obj.bunch_charge << ", ";
+    os << "\n  n_bunch=" << obj.n_bunch << ", ";
+    os << "\n  ix_turn=" << obj.ix_turn << ", ";
+    os << "\n  species=" << obj.species << ", ";
+    os << "\n  full_6D_coupling_calc=" << obj.full_6D_coupling_calc << ", ";
+    os << "\n  use_particle_start=" << obj.use_particle_start << ", ";
+    os << "\n  use_t_coords=" << obj.use_t_coords << ", ";
+    os << "\n  use_z_as_t=" << obj.use_z_as_t << ", ";
+    os << "\n  file_name=" << obj.file_name;
     os << "}";
     return os;
   }
@@ -3259,23 +3259,23 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_lat_param& obj) {
     os << "CPP_lat_param{";
-    os << "n_part=" << obj.n_part << ", ";
-    os << "total_length=" << obj.total_length << ", ";
-    os << "unstable_factor=" << obj.unstable_factor << ", ";
-    os << "t1_with_RF=" << obj.t1_with_RF << ", ";
-    os << "t1_no_RF=" << obj.t1_no_RF << ", ";
-    os << "spin_tune=" << obj.spin_tune << ", ";
-    os << "particle=" << obj.particle << ", ";
-    os << "default_tracking_species=" << obj.default_tracking_species << ", ";
-    os << "geometry=" << obj.geometry << ", ";
-    os << "ixx=" << obj.ixx << ", ";
-    os << "stable=" << obj.stable << ", ";
-    os << "live_branch=" << obj.live_branch << ", ";
-    os << "g1_integral=" << obj.g1_integral << ", ";
-    os << "g2_integral=" << obj.g2_integral << ", ";
-    os << "g3_integral=" << obj.g3_integral << ", ";
-    os << "bookkeeping_state=" << obj.bookkeeping_state << ", ";
-    os << "beam_init=" << obj.beam_init;
+    os << "\n  n_part=" << obj.n_part << ", ";
+    os << "\n  total_length=" << obj.total_length << ", ";
+    os << "\n  unstable_factor=" << obj.unstable_factor << ", ";
+    os << "\n  t1_with_RF=" << obj.t1_with_RF << ", ";
+    os << "\n  t1_no_RF=" << obj.t1_no_RF << ", ";
+    os << "\n  spin_tune=" << obj.spin_tune << ", ";
+    os << "\n  particle=" << obj.particle << ", ";
+    os << "\n  default_tracking_species=" << obj.default_tracking_species << ", ";
+    os << "\n  geometry=" << obj.geometry << ", ";
+    os << "\n  ixx=" << obj.ixx << ", ";
+    os << "\n  stable=" << obj.stable << ", ";
+    os << "\n  live_branch=" << obj.live_branch << ", ";
+    os << "\n  g1_integral=" << obj.g1_integral << ", ";
+    os << "\n  g2_integral=" << obj.g2_integral << ", ";
+    os << "\n  g3_integral=" << obj.g3_integral << ", ";
+    os << "\n  bookkeeping_state=" << obj.bookkeeping_state << ", ";
+    os << "\n  beam_init=" << obj.beam_init;
     os << "}";
     return os;
   }
@@ -3317,12 +3317,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_mode_info& obj) {
     os << "CPP_mode_info{";
-    os << "stable=" << obj.stable << ", ";
-    os << "tune=" << obj.tune << ", ";
-    os << "emit=" << obj.emit << ", ";
-    os << "chrom=" << obj.chrom << ", ";
-    os << "sigma=" << obj.sigma << ", ";
-    os << "sigmap=" << obj.sigmap;
+    os << "\n  stable=" << obj.stable << ", ";
+    os << "\n  tune=" << obj.tune << ", ";
+    os << "\n  emit=" << obj.emit << ", ";
+    os << "\n  chrom=" << obj.chrom << ", ";
+    os << "\n  sigma=" << obj.sigma << ", ";
+    os << "\n  sigmap=" << obj.sigmap;
     os << "}";
     return os;
   }
@@ -3362,10 +3362,10 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_pre_tracker& obj) {
     os << "CPP_pre_tracker{";
-    os << "who=" << obj.who << ", ";
-    os << "ix_ele_start=" << obj.ix_ele_start << ", ";
-    os << "ix_ele_end=" << obj.ix_ele_end << ", ";
-    os << "input_file=" << obj.input_file;
+    os << "\n  who=" << obj.who << ", ";
+    os << "\n  ix_ele_start=" << obj.ix_ele_start << ", ";
+    os << "\n  ix_ele_end=" << obj.ix_ele_end << ", ";
+    os << "\n  input_file=" << obj.input_file;
     os << "}";
     return os;
   }
@@ -3408,13 +3408,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_anormal_mode& obj) {
     os << "CPP_anormal_mode{";
-    os << "emittance=" << obj.emittance << ", ";
-    os << "emittance_no_vert=" << obj.emittance_no_vert << ", ";
-    os << "synch_int=" << obj.synch_int << ", ";
-    os << "j_damp=" << obj.j_damp << ", ";
-    os << "alpha_damp=" << obj.alpha_damp << ", ";
-    os << "chrom=" << obj.chrom << ", ";
-    os << "tune=" << obj.tune;
+    os << "\n  emittance=" << obj.emittance << ", ";
+    os << "\n  emittance_no_vert=" << obj.emittance_no_vert << ", ";
+    os << "\n  synch_int=" << obj.synch_int << ", ";
+    os << "\n  j_damp=" << obj.j_damp << ", ";
+    os << "\n  alpha_damp=" << obj.alpha_damp << ", ";
+    os << "\n  chrom=" << obj.chrom << ", ";
+    os << "\n  tune=" << obj.tune;
     os << "}";
     return os;
   }
@@ -3457,13 +3457,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_linac_normal_mode& obj) {
     os << "CPP_linac_normal_mode{";
-    os << "i2_E4=" << obj.i2_E4 << ", ";
-    os << "i3_E7=" << obj.i3_E7 << ", ";
-    os << "i5a_E6=" << obj.i5a_E6 << ", ";
-    os << "i5b_E6=" << obj.i5b_E6 << ", ";
-    os << "sig_E1=" << obj.sig_E1 << ", ";
-    os << "a_emittance_end=" << obj.a_emittance_end << ", ";
-    os << "b_emittance_end=" << obj.b_emittance_end;
+    os << "\n  i2_E4=" << obj.i2_E4 << ", ";
+    os << "\n  i3_E7=" << obj.i3_E7 << ", ";
+    os << "\n  i5a_E6=" << obj.i5a_E6 << ", ";
+    os << "\n  i5b_E6=" << obj.i5b_E6 << ", ";
+    os << "\n  sig_E1=" << obj.sig_E1 << ", ";
+    os << "\n  a_emittance_end=" << obj.a_emittance_end << ", ";
+    os << "\n  b_emittance_end=" << obj.b_emittance_end;
     os << "}";
     return os;
   }
@@ -3512,19 +3512,19 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_normal_modes& obj) {
     os << "CPP_normal_modes{";
-    os << "synch_int=" << obj.synch_int << ", ";
-    os << "sigE_E=" << obj.sigE_E << ", ";
-    os << "sig_z=" << obj.sig_z << ", ";
-    os << "e_loss=" << obj.e_loss << ", ";
-    os << "rf_voltage=" << obj.rf_voltage << ", ";
-    os << "pz_aperture=" << obj.pz_aperture << ", ";
-    os << "pz_average=" << obj.pz_average << ", ";
-    os << "momentum_compaction=" << obj.momentum_compaction << ", ";
-    os << "dpz_damp=" << obj.dpz_damp << ", ";
-    os << "a=" << obj.a << ", ";
-    os << "b=" << obj.b << ", ";
-    os << "z=" << obj.z << ", ";
-    os << "lin=" << obj.lin;
+    os << "\n  synch_int=" << obj.synch_int << ", ";
+    os << "\n  sigE_E=" << obj.sigE_E << ", ";
+    os << "\n  sig_z=" << obj.sig_z << ", ";
+    os << "\n  e_loss=" << obj.e_loss << ", ";
+    os << "\n  rf_voltage=" << obj.rf_voltage << ", ";
+    os << "\n  pz_aperture=" << obj.pz_aperture << ", ";
+    os << "\n  pz_average=" << obj.pz_average << ", ";
+    os << "\n  momentum_compaction=" << obj.momentum_compaction << ", ";
+    os << "\n  dpz_damp=" << obj.dpz_damp << ", ";
+    os << "\n  a=" << obj.a << ", ";
+    os << "\n  b=" << obj.b << ", ";
+    os << "\n  z=" << obj.z << ", ";
+    os << "\n  lin=" << obj.lin;
     os << "}";
     return os;
   }
@@ -3567,13 +3567,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_em_field& obj) {
     os << "CPP_em_field{";
-    os << "E=" << obj.E << ", ";
-    os << "B=" << obj.B << ", ";
-    os << "dE=" << obj.dE << ", ";
-    os << "dB=" << obj.dB << ", ";
-    os << "phi=" << obj.phi << ", ";
-    os << "phi_B=" << obj.phi_B << ", ";
-    os << "A=" << obj.A;
+    os << "\n  E=" << obj.E << ", ";
+    os << "\n  B=" << obj.B << ", ";
+    os << "\n  dE=" << obj.dE << ", ";
+    os << "\n  dB=" << obj.dB << ", ";
+    os << "\n  phi=" << obj.phi << ", ";
+    os << "\n  phi_B=" << obj.phi_B << ", ";
+    os << "\n  A=" << obj.A;
     os << "}";
     return os;
   }
@@ -3616,13 +3616,13 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_strong_beam& obj) {
     os << "CPP_strong_beam{";
-    os << "ix_slice=" << obj.ix_slice << ", ";
-    os << "x_center=" << obj.x_center << ", ";
-    os << "y_center=" << obj.y_center << ", ";
-    os << "x_sigma=" << obj.x_sigma << ", ";
-    os << "y_sigma=" << obj.y_sigma << ", ";
-    os << "dx=" << obj.dx << ", ";
-    os << "dy=" << obj.dy;
+    os << "\n  ix_slice=" << obj.ix_slice << ", ";
+    os << "\n  x_center=" << obj.x_center << ", ";
+    os << "\n  y_center=" << obj.y_center << ", ";
+    os << "\n  x_sigma=" << obj.x_sigma << ", ";
+    os << "\n  y_sigma=" << obj.y_sigma << ", ";
+    os << "\n  dx=" << obj.dx << ", ";
+    os << "\n  dy=" << obj.dy;
     os << "}";
     return os;
   }
@@ -3664,12 +3664,12 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_track_point& obj) {
     os << "CPP_track_point{";
-    os << "s_body=" << obj.s_body << ", ";
-    os << "orb=" << obj.orb << ", ";
-    os << "field=" << obj.field << ", ";
-    os << "strong_beam=" << obj.strong_beam << ", ";
-    os << "vec0=" << obj.vec0 << ", ";
-    os << "mat6=" << obj.mat6;
+    os << "\n  s_body=" << obj.s_body << ", ";
+    os << "\n  orb=" << obj.orb << ", ";
+    os << "\n  field=" << obj.field << ", ";
+    os << "\n  strong_beam=" << obj.strong_beam << ", ";
+    os << "\n  vec0=" << obj.vec0 << ", ";
+    os << "\n  mat6=" << obj.mat6;
     os << "}";
     return os;
   }
@@ -3710,11 +3710,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_track& obj) {
     os << "CPP_track{";
-    os << "pt=" << obj.pt << ", ";
-    os << "ds_save=" << obj.ds_save << ", ";
-    os << "n_pt=" << obj.n_pt << ", ";
-    os << "n_bad=" << obj.n_bad << ", ";
-    os << "n_ok=" << obj.n_ok;
+    os << "\n  pt=" << obj.pt << ", ";
+    os << "\n  ds_save=" << obj.ds_save << ", ";
+    os << "\n  n_pt=" << obj.n_pt << ", ";
+    os << "\n  n_bad=" << obj.n_bad << ", ";
+    os << "\n  n_ok=" << obj.n_ok;
     os << "}";
     return os;
   }
@@ -3767,23 +3767,23 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_space_charge_common& obj) {
     os << "CPP_space_charge_common{";
-    os << "ds_track_step=" << obj.ds_track_step << ", ";
-    os << "dt_track_step=" << obj.dt_track_step << ", ";
-    os << "cathode_strength_cutoff=" << obj.cathode_strength_cutoff << ", ";
-    os << "rel_tol_tracking=" << obj.rel_tol_tracking << ", ";
-    os << "abs_tol_tracking=" << obj.abs_tol_tracking << ", ";
-    os << "beam_chamber_height=" << obj.beam_chamber_height << ", ";
-    os << "lsc_sigma_cutoff=" << obj.lsc_sigma_cutoff << ", ";
-    os << "particle_sigma_cutoff=" << obj.particle_sigma_cutoff << ", ";
-    os << "space_charge_mesh_size=" << obj.space_charge_mesh_size << ", ";
-    os << "csr3d_mesh_size=" << obj.csr3d_mesh_size << ", ";
-    os << "n_bin=" << obj.n_bin << ", ";
-    os << "particle_bin_span=" << obj.particle_bin_span << ", ";
-    os << "n_shield_images=" << obj.n_shield_images << ", ";
-    os << "sc_min_in_bin=" << obj.sc_min_in_bin << ", ";
-    os << "lsc_kick_transverse_dependence=" << obj.lsc_kick_transverse_dependence << ", ";
-    os << "debug=" << obj.debug << ", ";
-    os << "diagnostic_output_file=" << obj.diagnostic_output_file;
+    os << "\n  ds_track_step=" << obj.ds_track_step << ", ";
+    os << "\n  dt_track_step=" << obj.dt_track_step << ", ";
+    os << "\n  cathode_strength_cutoff=" << obj.cathode_strength_cutoff << ", ";
+    os << "\n  rel_tol_tracking=" << obj.rel_tol_tracking << ", ";
+    os << "\n  abs_tol_tracking=" << obj.abs_tol_tracking << ", ";
+    os << "\n  beam_chamber_height=" << obj.beam_chamber_height << ", ";
+    os << "\n  lsc_sigma_cutoff=" << obj.lsc_sigma_cutoff << ", ";
+    os << "\n  particle_sigma_cutoff=" << obj.particle_sigma_cutoff << ", ";
+    os << "\n  space_charge_mesh_size=" << obj.space_charge_mesh_size << ", ";
+    os << "\n  csr3d_mesh_size=" << obj.csr3d_mesh_size << ", ";
+    os << "\n  n_bin=" << obj.n_bin << ", ";
+    os << "\n  particle_bin_span=" << obj.particle_bin_span << ", ";
+    os << "\n  n_shield_images=" << obj.n_shield_images << ", ";
+    os << "\n  sc_min_in_bin=" << obj.sc_min_in_bin << ", ";
+    os << "\n  lsc_kick_transverse_dependence=" << obj.lsc_kick_transverse_dependence << ", ";
+    os << "\n  debug=" << obj.debug << ", ";
+    os << "\n  diagnostic_output_file=" << obj.diagnostic_output_file;
     os << "}";
     return os;
   }
@@ -3859,46 +3859,46 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_bmad_common& obj) {
     os << "CPP_bmad_common{";
-    os << "max_aperture_limit=" << obj.max_aperture_limit << ", ";
-    os << "d_orb=" << obj.d_orb << ", ";
-    os << "default_ds_step=" << obj.default_ds_step << ", ";
-    os << "significant_length=" << obj.significant_length << ", ";
-    os << "rel_tol_tracking=" << obj.rel_tol_tracking << ", ";
-    os << "abs_tol_tracking=" << obj.abs_tol_tracking << ", ";
-    os << "rel_tol_adaptive_tracking=" << obj.rel_tol_adaptive_tracking << ", ";
-    os << "abs_tol_adaptive_tracking=" << obj.abs_tol_adaptive_tracking << ", ";
-    os << "init_ds_adaptive_tracking=" << obj.init_ds_adaptive_tracking << ", ";
-    os << "min_ds_adaptive_tracking=" << obj.min_ds_adaptive_tracking << ", ";
-    os << "fatal_ds_adaptive_tracking=" << obj.fatal_ds_adaptive_tracking << ", ";
-    os << "autoscale_amp_abs_tol=" << obj.autoscale_amp_abs_tol << ", ";
-    os << "autoscale_amp_rel_tol=" << obj.autoscale_amp_rel_tol << ", ";
-    os << "autoscale_phase_tol=" << obj.autoscale_phase_tol << ", ";
-    os << "electric_dipole_moment=" << obj.electric_dipole_moment << ", ";
-    os << "synch_rad_scale=" << obj.synch_rad_scale << ", ";
-    os << "sad_eps_scale=" << obj.sad_eps_scale << ", ";
-    os << "sad_amp_max=" << obj.sad_amp_max << ", ";
-    os << "sad_n_div_max=" << obj.sad_n_div_max << ", ";
-    os << "taylor_order=" << obj.taylor_order << ", ";
-    os << "runge_kutta_order=" << obj.runge_kutta_order << ", ";
-    os << "default_integ_order=" << obj.default_integ_order << ", ";
-    os << "max_num_runge_kutta_step=" << obj.max_num_runge_kutta_step << ", ";
-    os << "rf_phase_below_transition_ref=" << obj.rf_phase_below_transition_ref << ", ";
-    os << "sr_wakes_on=" << obj.sr_wakes_on << ", ";
-    os << "lr_wakes_on=" << obj.lr_wakes_on << ", ";
-    os << "auto_bookkeeper=" << obj.auto_bookkeeper << ", ";
-    os << "high_energy_space_charge_on=" << obj.high_energy_space_charge_on << ", ";
-    os << "csr_and_space_charge_on=" << obj.csr_and_space_charge_on << ", ";
-    os << "spin_tracking_on=" << obj.spin_tracking_on << ", ";
-    os << "spin_sokolov_ternov_flipping_on=" << obj.spin_sokolov_ternov_flipping_on << ", ";
-    os << "radiation_damping_on=" << obj.radiation_damping_on << ", ";
-    os << "radiation_zero_average=" << obj.radiation_zero_average << ", ";
-    os << "radiation_fluctuations_on=" << obj.radiation_fluctuations_on << ", ";
-    os << "conserve_taylor_maps=" << obj.conserve_taylor_maps << ", ";
-    os << "absolute_time_tracking=" << obj.absolute_time_tracking << ", ";
-    os << "absolute_time_ref_shift=" << obj.absolute_time_ref_shift << ", ";
-    os << "convert_to_kinetic_momentum=" << obj.convert_to_kinetic_momentum << ", ";
-    os << "aperture_limit_on=" << obj.aperture_limit_on << ", ";
-    os << "debug=" << obj.debug;
+    os << "\n  max_aperture_limit=" << obj.max_aperture_limit << ", ";
+    os << "\n  d_orb=" << obj.d_orb << ", ";
+    os << "\n  default_ds_step=" << obj.default_ds_step << ", ";
+    os << "\n  significant_length=" << obj.significant_length << ", ";
+    os << "\n  rel_tol_tracking=" << obj.rel_tol_tracking << ", ";
+    os << "\n  abs_tol_tracking=" << obj.abs_tol_tracking << ", ";
+    os << "\n  rel_tol_adaptive_tracking=" << obj.rel_tol_adaptive_tracking << ", ";
+    os << "\n  abs_tol_adaptive_tracking=" << obj.abs_tol_adaptive_tracking << ", ";
+    os << "\n  init_ds_adaptive_tracking=" << obj.init_ds_adaptive_tracking << ", ";
+    os << "\n  min_ds_adaptive_tracking=" << obj.min_ds_adaptive_tracking << ", ";
+    os << "\n  fatal_ds_adaptive_tracking=" << obj.fatal_ds_adaptive_tracking << ", ";
+    os << "\n  autoscale_amp_abs_tol=" << obj.autoscale_amp_abs_tol << ", ";
+    os << "\n  autoscale_amp_rel_tol=" << obj.autoscale_amp_rel_tol << ", ";
+    os << "\n  autoscale_phase_tol=" << obj.autoscale_phase_tol << ", ";
+    os << "\n  electric_dipole_moment=" << obj.electric_dipole_moment << ", ";
+    os << "\n  synch_rad_scale=" << obj.synch_rad_scale << ", ";
+    os << "\n  sad_eps_scale=" << obj.sad_eps_scale << ", ";
+    os << "\n  sad_amp_max=" << obj.sad_amp_max << ", ";
+    os << "\n  sad_n_div_max=" << obj.sad_n_div_max << ", ";
+    os << "\n  taylor_order=" << obj.taylor_order << ", ";
+    os << "\n  runge_kutta_order=" << obj.runge_kutta_order << ", ";
+    os << "\n  default_integ_order=" << obj.default_integ_order << ", ";
+    os << "\n  max_num_runge_kutta_step=" << obj.max_num_runge_kutta_step << ", ";
+    os << "\n  rf_phase_below_transition_ref=" << obj.rf_phase_below_transition_ref << ", ";
+    os << "\n  sr_wakes_on=" << obj.sr_wakes_on << ", ";
+    os << "\n  lr_wakes_on=" << obj.lr_wakes_on << ", ";
+    os << "\n  auto_bookkeeper=" << obj.auto_bookkeeper << ", ";
+    os << "\n  high_energy_space_charge_on=" << obj.high_energy_space_charge_on << ", ";
+    os << "\n  csr_and_space_charge_on=" << obj.csr_and_space_charge_on << ", ";
+    os << "\n  spin_tracking_on=" << obj.spin_tracking_on << ", ";
+    os << "\n  spin_sokolov_ternov_flipping_on=" << obj.spin_sokolov_ternov_flipping_on << ", ";
+    os << "\n  radiation_damping_on=" << obj.radiation_damping_on << ", ";
+    os << "\n  radiation_zero_average=" << obj.radiation_zero_average << ", ";
+    os << "\n  radiation_fluctuations_on=" << obj.radiation_fluctuations_on << ", ";
+    os << "\n  conserve_taylor_maps=" << obj.conserve_taylor_maps << ", ";
+    os << "\n  absolute_time_tracking=" << obj.absolute_time_tracking << ", ";
+    os << "\n  absolute_time_ref_shift=" << obj.absolute_time_ref_shift << ", ";
+    os << "\n  convert_to_kinetic_momentum=" << obj.convert_to_kinetic_momentum << ", ";
+    os << "\n  aperture_limit_on=" << obj.aperture_limit_on << ", ";
+    os << "\n  debug=" << obj.debug;
     os << "}";
     return os;
   }
@@ -3952,24 +3952,24 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_rad_int1& obj) {
     os << "CPP_rad_int1{";
-    os << "i0=" << obj.i0 << ", ";
-    os << "i1=" << obj.i1 << ", ";
-    os << "i2=" << obj.i2 << ", ";
-    os << "i3=" << obj.i3 << ", ";
-    os << "i4a=" << obj.i4a << ", ";
-    os << "i4b=" << obj.i4b << ", ";
-    os << "i4z=" << obj.i4z << ", ";
-    os << "i5a=" << obj.i5a << ", ";
-    os << "i5b=" << obj.i5b << ", ";
-    os << "i6b=" << obj.i6b << ", ";
-    os << "lin_i2_E4=" << obj.lin_i2_E4 << ", ";
-    os << "lin_i3_E7=" << obj.lin_i3_E7 << ", ";
-    os << "lin_i5a_E6=" << obj.lin_i5a_E6 << ", ";
-    os << "lin_i5b_E6=" << obj.lin_i5b_E6 << ", ";
-    os << "lin_norm_emit_a=" << obj.lin_norm_emit_a << ", ";
-    os << "lin_norm_emit_b=" << obj.lin_norm_emit_b << ", ";
-    os << "lin_sig_E=" << obj.lin_sig_E << ", ";
-    os << "n_steps=" << obj.n_steps;
+    os << "\n  i0=" << obj.i0 << ", ";
+    os << "\n  i1=" << obj.i1 << ", ";
+    os << "\n  i2=" << obj.i2 << ", ";
+    os << "\n  i3=" << obj.i3 << ", ";
+    os << "\n  i4a=" << obj.i4a << ", ";
+    os << "\n  i4b=" << obj.i4b << ", ";
+    os << "\n  i4z=" << obj.i4z << ", ";
+    os << "\n  i5a=" << obj.i5a << ", ";
+    os << "\n  i5b=" << obj.i5b << ", ";
+    os << "\n  i6b=" << obj.i6b << ", ";
+    os << "\n  lin_i2_E4=" << obj.lin_i2_E4 << ", ";
+    os << "\n  lin_i3_E7=" << obj.lin_i3_E7 << ", ";
+    os << "\n  lin_i5a_E6=" << obj.lin_i5a_E6 << ", ";
+    os << "\n  lin_i5b_E6=" << obj.lin_i5b_E6 << ", ";
+    os << "\n  lin_norm_emit_a=" << obj.lin_norm_emit_a << ", ";
+    os << "\n  lin_norm_emit_b=" << obj.lin_norm_emit_b << ", ";
+    os << "\n  lin_sig_E=" << obj.lin_sig_E << ", ";
+    os << "\n  n_steps=" << obj.n_steps;
     os << "}";
     return os;
   }
@@ -4006,7 +4006,7 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_rad_int_branch& obj) {
     os << "CPP_rad_int_branch{";
-    os << "ele=" << obj.ele;
+    os << "\n  ele=" << obj.ele;
     os << "}";
     return os;
   }
@@ -4043,7 +4043,7 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_rad_int_all_ele& obj) {
     os << "CPP_rad_int_all_ele{";
-    os << "branch=" << obj.branch;
+    os << "\n  branch=" << obj.branch;
     os << "}";
     return os;
   }
@@ -4072,24 +4072,24 @@ using std::ostream;
   string type{""};
   string alias{""};
   string component_name{""};
-  shared_ptr<string> descrip{nullptr};
+  std::optional<string> descrip;
   CPP_twiss a;
   CPP_twiss b;
   CPP_twiss z;
   CPP_xy_disp x;
   CPP_xy_disp y;
-  shared_ptr<CPP_ac_kicker> ac_kick{nullptr};
+  std::optional<CPP_ac_kicker> ac_kick;
   CPP_bookkeeping_state bookkeeping_state;
-  shared_ptr<CPP_controller> control{nullptr};
+  std::optional<CPP_controller> control;
   CPP_floor_position floor;
-  shared_ptr<CPP_high_energy_space_charge> high_energy_space_charge{nullptr};
-  shared_ptr<CPP_mode3> mode3{nullptr};
-  shared_ptr<CPP_photon_element> photon{nullptr};
-  shared_ptr<CPP_rad_map_ele> rad_map{nullptr};
+  std::optional<CPP_high_energy_space_charge> high_energy_space_charge;
+  std::optional<CPP_mode3> mode3;
+  std::optional<CPP_photon_element> photon;
+  std::optional<CPP_rad_map_ele> rad_map;
   FixedArray1D<CPP_taylor, 6> taylor;
   FixedArray1D<Real, 6> spin_taylor_ref_orb_in{Bmad::REAL_GARBAGE};
   FixedArray1D<CPP_taylor, 4> spin_taylor;
-  shared_ptr<CPP_wake> wake{nullptr};
+  std::optional<CPP_wake> wake;
   VariableArray1D<CPP_wall3d> wall3d;
   VariableArray1D<CPP_cartesian_map> cartesian_map;
   VariableArray1D<CPP_cylindrical_map> cylindrical_map;
@@ -4185,92 +4185,92 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_ele& obj) {
     os << "CPP_ele{";
-    os << "name=" << obj.name << ", ";
-    os << "type=" << obj.type << ", ";
-    os << "alias=" << obj.alias << ", ";
-    os << "component_name=" << obj.component_name << ", ";
-    os << "descrip="; if (obj.descrip == nullptr) { os << "nullptr"; } else { os << obj.descrip; }; os << ", ";
-    os << "a=" << obj.a << ", ";
-    os << "b=" << obj.b << ", ";
-    os << "z=" << obj.z << ", ";
-    os << "x=" << obj.x << ", ";
-    os << "y=" << obj.y << ", ";
-    os << "ac_kick="; if (obj.ac_kick == nullptr) { os << "nullptr"; } else { os << obj.ac_kick; }; os << ", ";
-    os << "bookkeeping_state=" << obj.bookkeeping_state << ", ";
-    os << "control="; if (obj.control == nullptr) { os << "nullptr"; } else { os << obj.control; }; os << ", ";
-    os << "floor=" << obj.floor << ", ";
-    os << "high_energy_space_charge="; if (obj.high_energy_space_charge == nullptr) { os << "nullptr"; } else { os << obj.high_energy_space_charge; }; os << ", ";
-    os << "mode3="; if (obj.mode3 == nullptr) { os << "nullptr"; } else { os << obj.mode3; }; os << ", ";
-    os << "photon="; if (obj.photon == nullptr) { os << "nullptr"; } else { os << obj.photon; }; os << ", ";
-    os << "rad_map="; if (obj.rad_map == nullptr) { os << "nullptr"; } else { os << obj.rad_map; }; os << ", ";
-    os << "taylor=" << obj.taylor << ", ";
-    os << "spin_taylor_ref_orb_in=" << obj.spin_taylor_ref_orb_in << ", ";
-    os << "spin_taylor=" << obj.spin_taylor << ", ";
-    os << "wake="; if (obj.wake == nullptr) { os << "nullptr"; } else { os << obj.wake; }; os << ", ";
-    os << "wall3d=" << obj.wall3d << ", ";
-    os << "cartesian_map=" << obj.cartesian_map << ", ";
-    os << "cylindrical_map=" << obj.cylindrical_map << ", ";
-    os << "gen_grad_map=" << obj.gen_grad_map << ", ";
-    os << "grid_field=" << obj.grid_field << ", ";
-    os << "map_ref_orb_in=" << obj.map_ref_orb_in << ", ";
-    os << "map_ref_orb_out=" << obj.map_ref_orb_out << ", ";
-    os << "time_ref_orb_in=" << obj.time_ref_orb_in << ", ";
-    os << "time_ref_orb_out=" << obj.time_ref_orb_out << ", ";
-    os << "value=" << obj.value << ", ";
-    os << "old_value=" << obj.old_value << ", ";
-    os << "spin_q=" << obj.spin_q << ", ";
-    os << "vec0=" << obj.vec0 << ", ";
-    os << "mat6=" << obj.mat6 << ", ";
-    os << "c_mat=" << obj.c_mat << ", ";
-    os << "gamma_c=" << obj.gamma_c << ", ";
-    os << "s_start=" << obj.s_start << ", ";
-    os << "s=" << obj.s << ", ";
-    os << "ref_time=" << obj.ref_time << ", ";
-    os << "a_pole=" << obj.a_pole << ", ";
-    os << "b_pole=" << obj.b_pole << ", ";
-    os << "a_pole_elec=" << obj.a_pole_elec << ", ";
-    os << "b_pole_elec=" << obj.b_pole_elec << ", ";
-    os << "custom=" << obj.custom << ", ";
-    os << "r=" << obj.r << ", ";
-    os << "key=" << obj.key << ", ";
-    os << "sub_key=" << obj.sub_key << ", ";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "ix_branch=" << obj.ix_branch << ", ";
-    os << "lord_status=" << obj.lord_status << ", ";
-    os << "n_slave=" << obj.n_slave << ", ";
-    os << "n_slave_field=" << obj.n_slave_field << ", ";
-    os << "ix1_slave=" << obj.ix1_slave << ", ";
-    os << "slave_status=" << obj.slave_status << ", ";
-    os << "n_lord=" << obj.n_lord << ", ";
-    os << "n_lord_field=" << obj.n_lord_field << ", ";
-    os << "n_lord_ramper=" << obj.n_lord_ramper << ", ";
-    os << "ic1_lord=" << obj.ic1_lord << ", ";
-    os << "ix_pointer=" << obj.ix_pointer << ", ";
-    os << "ixx=" << obj.ixx << ", ";
-    os << "iyy=" << obj.iyy << ", ";
-    os << "izz=" << obj.izz << ", ";
-    os << "mat6_calc_method=" << obj.mat6_calc_method << ", ";
-    os << "tracking_method=" << obj.tracking_method << ", ";
-    os << "spin_tracking_method=" << obj.spin_tracking_method << ", ";
-    os << "csr_method=" << obj.csr_method << ", ";
-    os << "space_charge_method=" << obj.space_charge_method << ", ";
-    os << "ptc_integration_type=" << obj.ptc_integration_type << ", ";
-    os << "field_calc=" << obj.field_calc << ", ";
-    os << "aperture_at=" << obj.aperture_at << ", ";
-    os << "aperture_type=" << obj.aperture_type << ", ";
-    os << "ref_species=" << obj.ref_species << ", ";
-    os << "orientation=" << obj.orientation << ", ";
-    os << "symplectify=" << obj.symplectify << ", ";
-    os << "mode_flip=" << obj.mode_flip << ", ";
-    os << "multipoles_on=" << obj.multipoles_on << ", ";
-    os << "scale_multipoles=" << obj.scale_multipoles << ", ";
-    os << "taylor_map_includes_offsets=" << obj.taylor_map_includes_offsets << ", ";
-    os << "field_master=" << obj.field_master << ", ";
-    os << "is_on=" << obj.is_on << ", ";
-    os << "logic=" << obj.logic << ", ";
-    os << "bmad_logic=" << obj.bmad_logic << ", ";
-    os << "select=" << obj.select << ", ";
-    os << "offset_moves_aperture=" << obj.offset_moves_aperture;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  type=" << obj.type << ", ";
+    os << "\n  alias=" << obj.alias << ", ";
+    os << "\n  component_name=" << obj.component_name << ", ";
+    os << "\n  descrip="; if (obj.descrip) os << *obj.descrip << ", "; else os << "nullptr, ";
+    os << "\n  a=" << obj.a << ", ";
+    os << "\n  b=" << obj.b << ", ";
+    os << "\n  z=" << obj.z << ", ";
+    os << "\n  x=" << obj.x << ", ";
+    os << "\n  y=" << obj.y << ", ";
+    os << "\n  ac_kick="; if (obj.ac_kick) os << *obj.ac_kick << ", "; else os << "nullptr, ";
+    os << "\n  bookkeeping_state=" << obj.bookkeeping_state << ", ";
+    os << "\n  control="; if (obj.control) os << *obj.control << ", "; else os << "nullptr, ";
+    os << "\n  floor=" << obj.floor << ", ";
+    os << "\n  high_energy_space_charge="; if (obj.high_energy_space_charge) os << *obj.high_energy_space_charge << ", "; else os << "nullptr, ";
+    os << "\n  mode3="; if (obj.mode3) os << *obj.mode3 << ", "; else os << "nullptr, ";
+    os << "\n  photon="; if (obj.photon) os << *obj.photon << ", "; else os << "nullptr, ";
+    os << "\n  rad_map="; if (obj.rad_map) os << *obj.rad_map << ", "; else os << "nullptr, ";
+    os << "\n  taylor=" << obj.taylor << ", ";
+    os << "\n  spin_taylor_ref_orb_in=" << obj.spin_taylor_ref_orb_in << ", ";
+    os << "\n  spin_taylor=" << obj.spin_taylor << ", ";
+    os << "\n  wake="; if (obj.wake) os << *obj.wake << ", "; else os << "nullptr, ";
+    os << "\n  wall3d=" << obj.wall3d << ", ";
+    os << "\n  cartesian_map=" << obj.cartesian_map << ", ";
+    os << "\n  cylindrical_map=" << obj.cylindrical_map << ", ";
+    os << "\n  gen_grad_map=" << obj.gen_grad_map << ", ";
+    os << "\n  grid_field=" << obj.grid_field << ", ";
+    os << "\n  map_ref_orb_in=" << obj.map_ref_orb_in << ", ";
+    os << "\n  map_ref_orb_out=" << obj.map_ref_orb_out << ", ";
+    os << "\n  time_ref_orb_in=" << obj.time_ref_orb_in << ", ";
+    os << "\n  time_ref_orb_out=" << obj.time_ref_orb_out << ", ";
+    os << "\n  value=" << obj.value << ", ";
+    os << "\n  old_value=" << obj.old_value << ", ";
+    os << "\n  spin_q=" << obj.spin_q << ", ";
+    os << "\n  vec0=" << obj.vec0 << ", ";
+    os << "\n  mat6=" << obj.mat6 << ", ";
+    os << "\n  c_mat=" << obj.c_mat << ", ";
+    os << "\n  gamma_c=" << obj.gamma_c << ", ";
+    os << "\n  s_start=" << obj.s_start << ", ";
+    os << "\n  s=" << obj.s << ", ";
+    os << "\n  ref_time=" << obj.ref_time << ", ";
+    os << "\n  a_pole=" << obj.a_pole << ", ";
+    os << "\n  b_pole=" << obj.b_pole << ", ";
+    os << "\n  a_pole_elec=" << obj.a_pole_elec << ", ";
+    os << "\n  b_pole_elec=" << obj.b_pole_elec << ", ";
+    os << "\n  custom=" << obj.custom << ", ";
+    os << "\n  r=" << obj.r << ", ";
+    os << "\n  key=" << obj.key << ", ";
+    os << "\n  sub_key=" << obj.sub_key << ", ";
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  ix_branch=" << obj.ix_branch << ", ";
+    os << "\n  lord_status=" << obj.lord_status << ", ";
+    os << "\n  n_slave=" << obj.n_slave << ", ";
+    os << "\n  n_slave_field=" << obj.n_slave_field << ", ";
+    os << "\n  ix1_slave=" << obj.ix1_slave << ", ";
+    os << "\n  slave_status=" << obj.slave_status << ", ";
+    os << "\n  n_lord=" << obj.n_lord << ", ";
+    os << "\n  n_lord_field=" << obj.n_lord_field << ", ";
+    os << "\n  n_lord_ramper=" << obj.n_lord_ramper << ", ";
+    os << "\n  ic1_lord=" << obj.ic1_lord << ", ";
+    os << "\n  ix_pointer=" << obj.ix_pointer << ", ";
+    os << "\n  ixx=" << obj.ixx << ", ";
+    os << "\n  iyy=" << obj.iyy << ", ";
+    os << "\n  izz=" << obj.izz << ", ";
+    os << "\n  mat6_calc_method=" << obj.mat6_calc_method << ", ";
+    os << "\n  tracking_method=" << obj.tracking_method << ", ";
+    os << "\n  spin_tracking_method=" << obj.spin_tracking_method << ", ";
+    os << "\n  csr_method=" << obj.csr_method << ", ";
+    os << "\n  space_charge_method=" << obj.space_charge_method << ", ";
+    os << "\n  ptc_integration_type=" << obj.ptc_integration_type << ", ";
+    os << "\n  field_calc=" << obj.field_calc << ", ";
+    os << "\n  aperture_at=" << obj.aperture_at << ", ";
+    os << "\n  aperture_type=" << obj.aperture_type << ", ";
+    os << "\n  ref_species=" << obj.ref_species << ", ";
+    os << "\n  orientation=" << obj.orientation << ", ";
+    os << "\n  symplectify=" << obj.symplectify << ", ";
+    os << "\n  mode_flip=" << obj.mode_flip << ", ";
+    os << "\n  multipoles_on=" << obj.multipoles_on << ", ";
+    os << "\n  scale_multipoles=" << obj.scale_multipoles << ", ";
+    os << "\n  taylor_map_includes_offsets=" << obj.taylor_map_includes_offsets << ", ";
+    os << "\n  field_master=" << obj.field_master << ", ";
+    os << "\n  is_on=" << obj.is_on << ", ";
+    os << "\n  logic=" << obj.logic << ", ";
+    os << "\n  bmad_logic=" << obj.bmad_logic << ", ";
+    os << "\n  select=" << obj.select << ", ";
+    os << "\n  offset_moves_aperture=" << obj.offset_moves_aperture;
     os << "}";
     return os;
   }
@@ -4308,8 +4308,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_complex_taylor_term& obj) {
     os << "CPP_complex_taylor_term{";
-    os << "coef=" << obj.coef << ", ";
-    os << "expn=" << obj.expn;
+    os << "\n  coef=" << obj.coef << ", ";
+    os << "\n  expn=" << obj.expn;
     os << "}";
     return os;
   }
@@ -4347,8 +4347,8 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_complex_taylor& obj) {
     os << "CPP_complex_taylor{";
-    os << "ref=" << obj.ref << ", ";
-    os << "term=" << obj.term;
+    os << "\n  ref=" << obj.ref << ", ";
+    os << "\n  term=" << obj.term;
     os << "}";
     return os;
   }
@@ -4397,19 +4397,19 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_branch& obj) {
     os << "CPP_branch{";
-    os << "name=" << obj.name << ", ";
-    os << "ix_branch=" << obj.ix_branch << ", ";
-    os << "ix_from_branch=" << obj.ix_from_branch << ", ";
-    os << "ix_from_ele=" << obj.ix_from_ele << ", ";
-    os << "ix_to_ele=" << obj.ix_to_ele << ", ";
-    os << "n_ele_track=" << obj.n_ele_track << ", ";
-    os << "n_ele_max=" << obj.n_ele_max << ", ";
-    os << "a=" << obj.a << ", ";
-    os << "b=" << obj.b << ", ";
-    os << "z=" << obj.z << ", ";
-    os << "ele=" << obj.ele << ", ";
-    os << "param=" << obj.param << ", ";
-    os << "wall3d=" << obj.wall3d;
+    os << "\n  name=" << obj.name << ", ";
+    os << "\n  ix_branch=" << obj.ix_branch << ", ";
+    os << "\n  ix_from_branch=" << obj.ix_from_branch << ", ";
+    os << "\n  ix_from_ele=" << obj.ix_from_ele << ", ";
+    os << "\n  ix_to_ele=" << obj.ix_to_ele << ", ";
+    os << "\n  n_ele_track=" << obj.n_ele_track << ", ";
+    os << "\n  n_ele_max=" << obj.n_ele_max << ", ";
+    os << "\n  a=" << obj.a << ", ";
+    os << "\n  b=" << obj.b << ", ";
+    os << "\n  z=" << obj.z << ", ";
+    os << "\n  ele=" << obj.ele << ", ";
+    os << "\n  param=" << obj.param << ", ";
+    os << "\n  wall3d=" << obj.wall3d;
     os << "}";
     return os;
   }
@@ -4441,10 +4441,10 @@ using std::ostream;
   string title{""};
   VariableArray1D<string> print_str;
   VariableArray1D<CPP_expression_atom> constant;
-  shared_ptr<CPP_mode_info> a{nullptr};
-  shared_ptr<CPP_mode_info> b{nullptr};
-  shared_ptr<CPP_mode_info> z{nullptr};
-  shared_ptr<CPP_lat_param> param{nullptr};
+  std::optional<CPP_mode_info> a;
+  std::optional<CPP_mode_info> b;
+  std::optional<CPP_mode_info> z;
+  std::optional<CPP_lat_param> param;
   CPP_bookkeeping_state lord_state;
   CPP_ele ele_init;
   VariableArray1D<CPP_ele> ele;
@@ -4455,8 +4455,8 @@ using std::ostream;
   CPP_pre_tracker pre_tracker;
   VariableArray1D<Real> custom;
   Int version{-1};
-  shared_ptr<Int> n_ele_track{nullptr};
-  shared_ptr<Int> n_ele_max{nullptr};
+  std::optional<Int> n_ele_track;
+  std::optional<Int> n_ele_max;
   Int n_control_max{0};
   Int n_ic_max{0};
   Int input_taylor_order{0};
@@ -4475,36 +4475,36 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_lat& obj) {
     os << "CPP_lat{";
-    os << "use_name=" << obj.use_name << ", ";
-    os << "lattice=" << obj.lattice << ", ";
-    os << "machine=" << obj.machine << ", ";
-    os << "input_file_name=" << obj.input_file_name << ", ";
-    os << "title=" << obj.title << ", ";
-    os << "print_str=" << obj.print_str << ", ";
-    os << "constant=" << obj.constant << ", ";
-    os << "a="; if (obj.a == nullptr) { os << "nullptr"; } else { os << obj.a; }; os << ", ";
-    os << "b="; if (obj.b == nullptr) { os << "nullptr"; } else { os << obj.b; }; os << ", ";
-    os << "z="; if (obj.z == nullptr) { os << "nullptr"; } else { os << obj.z; }; os << ", ";
-    os << "param="; if (obj.param == nullptr) { os << "nullptr"; } else { os << obj.param; }; os << ", ";
-    os << "lord_state=" << obj.lord_state << ", ";
-    os << "ele_init=" << obj.ele_init << ", ";
-    os << "ele=" << obj.ele << ", ";
-    os << "branch=" << obj.branch << ", ";
-    os << "control=" << obj.control << ", ";
-    os << "particle_start=" << obj.particle_start << ", ";
-    os << "beam_init=" << obj.beam_init << ", ";
-    os << "pre_tracker=" << obj.pre_tracker << ", ";
-    os << "custom=" << obj.custom << ", ";
-    os << "version=" << obj.version << ", ";
-    os << "n_ele_track="; if (obj.n_ele_track == nullptr) { os << "nullptr"; } else { os << obj.n_ele_track; }; os << ", ";
-    os << "n_ele_max="; if (obj.n_ele_max == nullptr) { os << "nullptr"; } else { os << obj.n_ele_max; }; os << ", ";
-    os << "n_control_max=" << obj.n_control_max << ", ";
-    os << "n_ic_max=" << obj.n_ic_max << ", ";
-    os << "input_taylor_order=" << obj.input_taylor_order << ", ";
-    os << "ic=" << obj.ic << ", ";
-    os << "photon_type=" << obj.photon_type << ", ";
-    os << "creation_hash=" << obj.creation_hash << ", ";
-    os << "ramper_slave_bookkeeping=" << obj.ramper_slave_bookkeeping;
+    os << "\n  use_name=" << obj.use_name << ", ";
+    os << "\n  lattice=" << obj.lattice << ", ";
+    os << "\n  machine=" << obj.machine << ", ";
+    os << "\n  input_file_name=" << obj.input_file_name << ", ";
+    os << "\n  title=" << obj.title << ", ";
+    os << "\n  print_str=" << obj.print_str << ", ";
+    os << "\n  constant=" << obj.constant << ", ";
+    os << "\n  a="; if (obj.a) os << *obj.a << ", "; else os << "nullptr, ";
+    os << "\n  b="; if (obj.b) os << *obj.b << ", "; else os << "nullptr, ";
+    os << "\n  z="; if (obj.z) os << *obj.z << ", "; else os << "nullptr, ";
+    os << "\n  param="; if (obj.param) os << *obj.param << ", "; else os << "nullptr, ";
+    os << "\n  lord_state=" << obj.lord_state << ", ";
+    os << "\n  ele_init=" << obj.ele_init << ", ";
+    os << "\n  ele=" << obj.ele << ", ";
+    os << "\n  branch=" << obj.branch << ", ";
+    os << "\n  control=" << obj.control << ", ";
+    os << "\n  particle_start=" << obj.particle_start << ", ";
+    os << "\n  beam_init=" << obj.beam_init << ", ";
+    os << "\n  pre_tracker=" << obj.pre_tracker << ", ";
+    os << "\n  custom=" << obj.custom << ", ";
+    os << "\n  version=" << obj.version << ", ";
+    os << "\n  n_ele_track="; if (obj.n_ele_track) os << *obj.n_ele_track << ", "; else os << "nullptr, ";
+    os << "\n  n_ele_max="; if (obj.n_ele_max) os << *obj.n_ele_max << ", "; else os << "nullptr, ";
+    os << "\n  n_control_max=" << obj.n_control_max << ", ";
+    os << "\n  n_ic_max=" << obj.n_ic_max << ", ";
+    os << "\n  input_taylor_order=" << obj.input_taylor_order << ", ";
+    os << "\n  ic=" << obj.ic << ", ";
+    os << "\n  photon_type=" << obj.photon_type << ", ";
+    os << "\n  creation_hash=" << obj.creation_hash << ", ";
+    os << "\n  ramper_slave_bookkeeping=" << obj.ramper_slave_bookkeeping;
     os << "}";
     return os;
   }
@@ -4554,20 +4554,20 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_bunch& obj) {
     os << "CPP_bunch{";
-    os << "particle=" << obj.particle << ", ";
-    os << "ix_z=" << obj.ix_z << ", ";
-    os << "charge_tot=" << obj.charge_tot << ", ";
-    os << "charge_live=" << obj.charge_live << ", ";
-    os << "z_center=" << obj.z_center << ", ";
-    os << "t_center=" << obj.t_center << ", ";
-    os << "t0=" << obj.t0 << ", ";
-    os << "drift_between_t_and_s=" << obj.drift_between_t_and_s << ", ";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "ix_bunch=" << obj.ix_bunch << ", ";
-    os << "ix_turn=" << obj.ix_turn << ", ";
-    os << "n_live=" << obj.n_live << ", ";
-    os << "n_good=" << obj.n_good << ", ";
-    os << "n_bad=" << obj.n_bad;
+    os << "\n  particle=" << obj.particle << ", ";
+    os << "\n  ix_z=" << obj.ix_z << ", ";
+    os << "\n  charge_tot=" << obj.charge_tot << ", ";
+    os << "\n  charge_live=" << obj.charge_live << ", ";
+    os << "\n  z_center=" << obj.z_center << ", ";
+    os << "\n  t_center=" << obj.t_center << ", ";
+    os << "\n  t0=" << obj.t0 << ", ";
+    os << "\n  drift_between_t_and_s=" << obj.drift_between_t_and_s << ", ";
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  ix_bunch=" << obj.ix_bunch << ", ";
+    os << "\n  ix_turn=" << obj.ix_turn << ", ";
+    os << "\n  n_live=" << obj.n_live << ", ";
+    os << "\n  n_good=" << obj.n_good << ", ";
+    os << "\n  n_bad=" << obj.n_bad;
     os << "}";
     return os;
   }
@@ -4626,29 +4626,29 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_bunch_params& obj) {
     os << "CPP_bunch_params{";
-    os << "centroid=" << obj.centroid << ", ";
-    os << "x=" << obj.x << ", ";
-    os << "y=" << obj.y << ", ";
-    os << "z=" << obj.z << ", ";
-    os << "a=" << obj.a << ", ";
-    os << "b=" << obj.b << ", ";
-    os << "c=" << obj.c << ", ";
-    os << "sigma=" << obj.sigma << ", ";
-    os << "rel_max=" << obj.rel_max << ", ";
-    os << "rel_min=" << obj.rel_min << ", ";
-    os << "s=" << obj.s << ", ";
-    os << "t=" << obj.t << ", ";
-    os << "sigma_t=" << obj.sigma_t << ", ";
-    os << "charge_live=" << obj.charge_live << ", ";
-    os << "charge_tot=" << obj.charge_tot << ", ";
-    os << "n_particle_tot=" << obj.n_particle_tot << ", ";
-    os << "n_particle_live=" << obj.n_particle_live << ", ";
-    os << "n_particle_lost_in_ele=" << obj.n_particle_lost_in_ele << ", ";
-    os << "n_good_steps=" << obj.n_good_steps << ", ";
-    os << "n_bad_steps=" << obj.n_bad_steps << ", ";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "location=" << obj.location << ", ";
-    os << "twiss_valid=" << obj.twiss_valid;
+    os << "\n  centroid=" << obj.centroid << ", ";
+    os << "\n  x=" << obj.x << ", ";
+    os << "\n  y=" << obj.y << ", ";
+    os << "\n  z=" << obj.z << ", ";
+    os << "\n  a=" << obj.a << ", ";
+    os << "\n  b=" << obj.b << ", ";
+    os << "\n  c=" << obj.c << ", ";
+    os << "\n  sigma=" << obj.sigma << ", ";
+    os << "\n  rel_max=" << obj.rel_max << ", ";
+    os << "\n  rel_min=" << obj.rel_min << ", ";
+    os << "\n  s=" << obj.s << ", ";
+    os << "\n  t=" << obj.t << ", ";
+    os << "\n  sigma_t=" << obj.sigma_t << ", ";
+    os << "\n  charge_live=" << obj.charge_live << ", ";
+    os << "\n  charge_tot=" << obj.charge_tot << ", ";
+    os << "\n  n_particle_tot=" << obj.n_particle_tot << ", ";
+    os << "\n  n_particle_live=" << obj.n_particle_live << ", ";
+    os << "\n  n_particle_lost_in_ele=" << obj.n_particle_lost_in_ele << ", ";
+    os << "\n  n_good_steps=" << obj.n_good_steps << ", ";
+    os << "\n  n_bad_steps=" << obj.n_bad_steps << ", ";
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  location=" << obj.location << ", ";
+    os << "\n  twiss_valid=" << obj.twiss_valid;
     os << "}";
     return os;
   }
@@ -4685,7 +4685,7 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_beam& obj) {
     os << "CPP_beam{";
-    os << "bunch=" << obj.bunch;
+    os << "\n  bunch=" << obj.bunch;
     os << "}";
     return os;
   }
@@ -4726,11 +4726,11 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_aperture_point& obj) {
     os << "CPP_aperture_point{";
-    os << "x=" << obj.x << ", ";
-    os << "y=" << obj.y << ", ";
-    os << "plane=" << obj.plane << ", ";
-    os << "ix_ele=" << obj.ix_ele << ", ";
-    os << "i_turn=" << obj.i_turn;
+    os << "\n  x=" << obj.x << ", ";
+    os << "\n  y=" << obj.y << ", ";
+    os << "\n  plane=" << obj.plane << ", ";
+    os << "\n  ix_ele=" << obj.ix_ele << ", ";
+    os << "\n  i_turn=" << obj.i_turn;
     os << "}";
     return os;
   }
@@ -4775,15 +4775,15 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_aperture_param& obj) {
     os << "CPP_aperture_param{";
-    os << "min_angle=" << obj.min_angle << ", ";
-    os << "max_angle=" << obj.max_angle << ", ";
-    os << "n_angle=" << obj.n_angle << ", ";
-    os << "n_turn=" << obj.n_turn << ", ";
-    os << "x_init=" << obj.x_init << ", ";
-    os << "y_init=" << obj.y_init << ", ";
-    os << "rel_accuracy=" << obj.rel_accuracy << ", ";
-    os << "abs_accuracy=" << obj.abs_accuracy << ", ";
-    os << "start_ele=" << obj.start_ele;
+    os << "\n  min_angle=" << obj.min_angle << ", ";
+    os << "\n  max_angle=" << obj.max_angle << ", ";
+    os << "\n  n_angle=" << obj.n_angle << ", ";
+    os << "\n  n_turn=" << obj.n_turn << ", ";
+    os << "\n  x_init=" << obj.x_init << ", ";
+    os << "\n  y_init=" << obj.y_init << ", ";
+    os << "\n  rel_accuracy=" << obj.rel_accuracy << ", ";
+    os << "\n  abs_accuracy=" << obj.abs_accuracy << ", ";
+    os << "\n  start_ele=" << obj.start_ele;
     os << "}";
     return os;
   }
@@ -4822,9 +4822,9 @@ using std::ostream;
         
   friend ostream& operator<<(ostream& os, const CPP_aperture_scan& obj) {
     os << "CPP_aperture_scan{";
-    os << "point=" << obj.point << ", ";
-    os << "ref_orb=" << obj.ref_orb << ", ";
-    os << "pz_start=" << obj.pz_start;
+    os << "\n  point=" << obj.point << ", ";
+    os << "\n  ref_orb=" << obj.ref_orb << ", ";
+    os << "\n  pz_start=" << obj.pz_start;
     os << "}";
     return os;
   }

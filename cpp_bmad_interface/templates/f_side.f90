@@ -756,7 +756,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     call to_f_str(z_NAME, F%NAME)
   endif
@@ -1788,7 +1788,7 @@ rhs
 !!!! end:test_value
 !!!! begin:test_pat
 do jd1 = 1, len(F%NAME)
-F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))
+  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))
 enddo
 !!!! end:test_pat
 
@@ -2150,11 +2150,11 @@ rhs
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
-  if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
-  do jd1 = 1, len(F%NAME)
-  F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))
-  enddo
+else
+    if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
+    do jd1 = 1, len(F%NAME)
+      F%NAME(jd1:jd1) = char(ichar("a") + modulo(100+ARGIDX+offset+jd1, 26))
+    enddo
 endif
 !!!! end:test_pat
 

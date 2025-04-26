@@ -102,9 +102,11 @@ call test1_f_aperture_param(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_scan(ok); if (.not. ok) all_ok = .false.
 print *
 if (all_ok) then
-print *, 'Bottom Line: Everything OK!'
+  print *, 'Bottom Line: Everything OK!'
+  call exit(0)
 else
-print *, 'BOTTOM LINE: PROBLEMS FOUND!'
+  print *, 'BOTTOM LINE: PROBLEMS FOUND!'
+  call exit(1)
 endif
 
 end program

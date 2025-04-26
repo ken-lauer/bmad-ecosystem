@@ -9,6 +9,7 @@
 //-
 
 #include <stdio.h>
+#include <fstream>
 #include <iostream>
 #include "cpp_bmad_classes.h"
 
@@ -26,14 +27,19 @@ void set_CPP_spline_test_pattern (CPP_spline& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.x0 =     rhs;
+  rhs = 1 + offset;
+  C.x0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.y0 =     rhs;
+  rhs = 2 + offset;
+  C.y0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.x1 =     rhs;
+  rhs = 3 + offset;
+  C.x1 =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.coef.size(); i++)
-      {int rhs = 101 + i + 4 + offset; C.coef[i] =     rhs;}
+  for (auto i{0}; i < C.coef.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    C.coef[i] =   rhs;
+  }
 
 }
 
@@ -53,8 +59,19 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
     cout << " [1] spline: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] spline: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("spline.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("spline.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to spline.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to spline.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -68,8 +85,20 @@ extern "C" void test_c_spline (Opaque_spline_class* F, bool& c_ok) {
     cout << " [3] spline: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] spline: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("spline.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("spline.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to spline.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to spline.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -88,13 +117,17 @@ void set_CPP_spin_polar_test_pattern (CPP_spin_polar& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.polarization =     rhs;
+  rhs = 1 + offset;
+  C.polarization =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.theta =     rhs;
+  rhs = 2 + offset;
+  C.theta =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.phi =     rhs;
+  rhs = 3 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.xi =     rhs;
+  rhs = 4 + offset;
+  C.xi =   rhs;
 
 }
 
@@ -114,8 +147,19 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
     cout << " [1] spin_polar: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] spin_polar: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("spin_polar.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("spin_polar.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to spin_polar.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to spin_polar.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -129,8 +173,20 @@ extern "C" void test_c_spin_polar (Opaque_spin_polar_class* F, bool& c_ok) {
     cout << " [3] spin_polar: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] spin_polar: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("spin_polar.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("spin_polar.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to spin_polar.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to spin_polar.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -149,11 +205,13 @@ void set_CPP_ac_kicker_time_test_pattern (CPP_ac_kicker_time& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.amp =     rhs;
+  rhs = 1 + offset;
+  C.amp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.time =     rhs;
+  rhs = 2 + offset;
+  C.time =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_spline_test_pattern(C.spline, ix_patt);
+  set_CPP_spline_test_pattern(C.spline, ix_patt);
 
 }
 
@@ -173,8 +231,19 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
     cout << " [1] ac_kicker_time: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ac_kicker_time: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("ac_kicker_time.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ac_kicker_time.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to ac_kicker_time.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to ac_kicker_time.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -188,8 +257,20 @@ extern "C" void test_c_ac_kicker_time (Opaque_ac_kicker_time_class* F, bool& c_o
     cout << " [3] ac_kicker_time: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ac_kicker_time: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("ac_kicker_time.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ac_kicker_time.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to ac_kicker_time.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to ac_kicker_time.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -208,13 +289,17 @@ void set_CPP_ac_kicker_freq_test_pattern (CPP_ac_kicker_freq& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.f =     rhs;
+  rhs = 1 + offset;
+  C.f =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.amp =     rhs;
+  rhs = 2 + offset;
+  C.amp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.phi =     rhs;
+  rhs = 3 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.rf_clock_harmonic =     rhs;
+  rhs = 4 + offset;
+  C.rf_clock_harmonic =   rhs;
 
 }
 
@@ -234,8 +319,19 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
     cout << " [1] ac_kicker_freq: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ac_kicker_freq: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("ac_kicker_freq.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ac_kicker_freq.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to ac_kicker_freq.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to ac_kicker_freq.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -249,8 +345,20 @@ extern "C" void test_c_ac_kicker_freq (Opaque_ac_kicker_freq_class* F, bool& c_o
     cout << " [3] ac_kicker_freq: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ac_kicker_freq: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("ac_kicker_freq.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ac_kicker_freq.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to ac_kicker_freq.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to ac_kicker_freq.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -269,21 +377,23 @@ void set_CPP_ac_kicker_test_pattern (CPP_ac_kicker& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.amp_vs_time.resize(0);
-    else {
-      C.amp_vs_time.resize(3);
-      for (size_t i = 0; i < C.amp_vs_time.size(); i++)
-    {set_CPP_ac_kicker_time_test_pattern(C.amp_vs_time[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.amp_vs_time.resize(0);
+  else {
+    C.amp_vs_time.resize(3);
+    for (auto i{0}; i < C.amp_vs_time.size(); i++) {
+      set_CPP_ac_kicker_time_test_pattern(C.amp_vs_time[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.frequency.resize(0);
-    else {
-      C.frequency.resize(3);
-      for (size_t i = 0; i < C.frequency.size(); i++)
-    {set_CPP_ac_kicker_freq_test_pattern(C.frequency[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.frequency.resize(0);
+  else {
+    C.frequency.resize(3);
+    for (auto i{0}; i < C.frequency.size(); i++) {
+      set_CPP_ac_kicker_freq_test_pattern(C.frequency[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -303,8 +413,19 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
     cout << " [1] ac_kicker: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ac_kicker: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("ac_kicker.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ac_kicker.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to ac_kicker.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to ac_kicker.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -318,8 +439,20 @@ extern "C" void test_c_ac_kicker (Opaque_ac_kicker_class* F, bool& c_ok) {
     cout << " [3] ac_kicker: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ac_kicker: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("ac_kicker.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ac_kicker.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to ac_kicker.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to ac_kicker.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -338,11 +471,14 @@ void set_CPP_interval1_coef_test_pattern (CPP_interval1_coef& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.c0 =     rhs;
+  rhs = 1 + offset;
+  C.c0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.c1 =     rhs;
+  rhs = 2 + offset;
+  C.c1 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.n_exp =     rhs;
+  rhs = 3 + offset;
+  C.n_exp =   rhs;
 
 }
 
@@ -362,8 +498,19 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
     cout << " [1] interval1_coef: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] interval1_coef: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("interval1_coef.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("interval1_coef.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to interval1_coef.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to interval1_coef.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -377,8 +524,20 @@ extern "C" void test_c_interval1_coef (Opaque_interval1_coef_class* F, bool& c_o
     cout << " [3] interval1_coef: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] interval1_coef: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("interval1_coef.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("interval1_coef.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to interval1_coef.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to interval1_coef.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -397,53 +556,70 @@ void set_CPP_photon_reflect_table_test_pattern (CPP_photon_reflect_table& C, int
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.angle.resize(0);
-    else {
-      C.angle.resize(3);
-      for (size_t i = 0; i < C.angle.size(); i++)
-        {int rhs = 101 + i + 1 + offset; C.angle[i] =     rhs;}  }
-  // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.energy.resize(0);
-    else {
-      C.energy.resize(3);
-      for (size_t i = 0; i < C.energy.size(); i++)
-        {int rhs = 101 + i + 3 + offset; C.energy[i] =     rhs;}  }
-  // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.int1.resize(0);
-    else {
-      C.int1.resize(3);
-      for (size_t i = 0; i < C.int1.size(); i++)
-    {set_CPP_interval1_coef_test_pattern(C.int1[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.angle.resize(0);
+  else {
+    C.angle.resize(3);
+    for (auto i{0}; i < C.angle.size(); i++) {
+      int rhs = 101 + i + 1 + offset;
+      C.angle[i] =   rhs;
     }
+  }
+  // c_side.test_pat[1D_ALLOC_real]
+  if (ix_patt < 3)
+    C.energy.resize(0);
+  else {
+    C.energy.resize(3);
+    for (auto i{0}; i < C.energy.size(); i++) {
+      int rhs = 101 + i + 3 + offset;
+      C.energy[i] =   rhs;
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3)
+    C.int1.resize(0);
+  else {
+    C.int1.resize(3);
+    for (auto i{0}; i < C.int1.size(); i++) {
+      set_CPP_interval1_coef_test_pattern(C.int1[i], ix_patt + i + 1);
+    }
+  }
   // c_side.test_pat[2D_ALLOC_real]
-    if (ix_patt < 3)
-      C.p_reflect.resize(0);
-    else {
-      C.p_reflect.resize(3);
-      for (size_t i = 0; i < C.p_reflect.size(); i++)
-        C.p_reflect[i].resize(2);
-      for (size_t i = 0; i < C.p_reflect.size(); i++)  for (size_t j = 0; j <
-    C.p_reflect[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 7 + offset;
-    C.p_reflect[i][j] =     rhs;}  }
+  if (ix_patt < 3)
+    C.p_reflect.resize(0);
+  else {
+    C.p_reflect.resize(3);
+    for (auto i{0}; i < C.p_reflect.size(); i++) {
+      C.p_reflect[i].resize(2);
+      for (auto j{0}; j < C.p_reflect[0].size(); j++) {
+        int rhs = 101 + i + 10 * (j + 1) + 7 + offset;
+        C.p_reflect[i][j] =   rhs;
+      }
+    }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.max_energy =     rhs;
+  rhs = 10 + offset;
+  C.max_energy =   rhs;
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.p_reflect_scratch.resize(0);
-    else {
-      C.p_reflect_scratch.resize(3);
-      for (size_t i = 0; i < C.p_reflect_scratch.size(); i++)
-        {int rhs = 101 + i + 11 + offset; C.p_reflect_scratch[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.p_reflect_scratch.resize(0);
+  else {
+    C.p_reflect_scratch.resize(3);
+    for (auto i{0}; i < C.p_reflect_scratch.size(); i++) {
+      int rhs = 101 + i + 11 + offset;
+      C.p_reflect_scratch[i] =   rhs;
+    }
+  }
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.bragg_angle.resize(0);
-    else {
-      C.bragg_angle.resize(3);
-      for (size_t i = 0; i < C.bragg_angle.size(); i++)
-        {int rhs = 101 + i + 13 + offset; C.bragg_angle[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.bragg_angle.resize(0);
+  else {
+    C.bragg_angle.resize(3);
+    for (auto i{0}; i < C.bragg_angle.size(); i++) {
+      int rhs = 101 + i + 13 + offset;
+      C.bragg_angle[i] =   rhs;
+    }
+  }
 
 }
 
@@ -463,8 +639,19 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
     cout << " [1] photon_reflect_table: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_reflect_table: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("photon_reflect_table.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_reflect_table.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to photon_reflect_table.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to photon_reflect_table.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -478,8 +665,20 @@ extern "C" void test_c_photon_reflect_table (Opaque_photon_reflect_table_class* 
     cout << " [3] photon_reflect_table: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_reflect_table: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("photon_reflect_table.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_reflect_table.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to photon_reflect_table.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to photon_reflect_table.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -498,31 +697,44 @@ void set_CPP_photon_reflect_surface_test_pattern (CPP_photon_reflect_surface& C,
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.description.resize(80);
-    for (size_t i = 0; i < C.description.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.description[i] = 'a' + rhs % 26;}
+  auto str = std::string(80, ' ');
+  for (auto i{0}; i < C.description.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.description.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.reflectivity_file.resize(200);
-    for (size_t i = 0; i < C.reflectivity_file.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.reflectivity_file[i] = 'a' + rhs % 26;}
+  auto str = std::string(200, ' ');
+  for (auto i{0}; i < C.reflectivity_file.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.reflectivity_file.emplace(str);
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.table.resize(0);
-    else {
-      C.table.resize(3);
-      for (size_t i = 0; i < C.table.size(); i++)
-    {set_CPP_photon_reflect_table_test_pattern(C.table[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.table.resize(0);
+  else {
+    C.table.resize(3);
+    for (auto i{0}; i < C.table.size(); i++) {
+      set_CPP_photon_reflect_table_test_pattern(C.table[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.surface_roughness_rms =     rhs;
+  rhs = 6 + offset;
+  C.surface_roughness_rms =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.roughness_correlation_len =     rhs;
+  rhs = 7 + offset;
+  C.roughness_correlation_len =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.ix_surface =     rhs;
+  rhs = 8 + offset;
+  C.ix_surface =   rhs;
 
 }
 
@@ -542,8 +754,19 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
     cout << " [1] photon_reflect_surface: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_reflect_surface: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("photon_reflect_surface.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_reflect_surface.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to photon_reflect_surface.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to photon_reflect_surface.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -557,8 +780,20 @@ extern "C" void test_c_photon_reflect_surface (Opaque_photon_reflect_surface_cla
     cout << " [3] photon_reflect_surface: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_reflect_surface: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("photon_reflect_surface.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_reflect_surface.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to photon_reflect_surface.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to photon_reflect_surface.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -577,51 +812,76 @@ void set_CPP_coord_test_pattern (CPP_coord& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.vec.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.vec[i] =     rhs;}
+  for (auto i{0}; i < C.vec.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.vec[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.s =     rhs;
+  rhs = 2 + offset;
+  C.s =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.t =     rhs;
+  rhs = 3 + offset;
+  C.t =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.spin.size(); i++)
-      {int rhs = 101 + i + 4 + offset; C.spin[i] =     rhs;}
+  for (auto i{0}; i < C.spin.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    C.spin[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.field.size(); i++)
-      {int rhs = 101 + i + 5 + offset; C.field[i] =     rhs;}
+  for (auto i{0}; i < C.field.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    C.field[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.phase.size(); i++)
-      {int rhs = 101 + i + 6 + offset; C.phase[i] =     rhs;}
+  for (auto i{0}; i < C.phase.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    C.phase[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.charge =     rhs;
+  rhs = 7 + offset;
+  C.charge =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.dt_ref =     rhs;
+  rhs = 8 + offset;
+  C.dt_ref =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.r =     rhs;
+  rhs = 9 + offset;
+  C.r =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.p0c =     rhs;
+  rhs = 10 + offset;
+  C.p0c =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.E_potential =     rhs;
+  rhs = 11 + offset;
+  C.E_potential =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 12 + offset; C.beta =     rhs;
+  rhs = 12 + offset;
+  C.beta =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 13 + offset; C.ix_ele =     rhs;
+  rhs = 13 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 14 + offset; C.ix_branch =     rhs;
+  rhs = 14 + offset;
+  C.ix_branch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 15 + offset; C.ix_turn =     rhs;
+  rhs = 15 + offset;
+  C.ix_turn =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 16 + offset; C.ix_user =     rhs;
+  rhs = 16 + offset;
+  C.ix_user =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 17 + offset; C.state =     rhs;
+  rhs = 17 + offset;
+  C.state =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 18 + offset; C.direction =     rhs;
+  rhs = 18 + offset;
+  C.direction =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 19 + offset; C.time_dir =     rhs;
+  rhs = 19 + offset;
+  C.time_dir =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 20 + offset; C.species =     rhs;
+  rhs = 20 + offset;
+  C.species =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 21 + offset; C.location =     rhs;
+  rhs = 21 + offset;
+  C.location =   rhs;
 
 }
 
@@ -641,8 +901,19 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
     cout << " [1] coord: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] coord: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("coord.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("coord.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to coord.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to coord.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -656,8 +927,20 @@ extern "C" void test_c_coord (Opaque_coord_class* F, bool& c_ok) {
     cout << " [3] coord: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] coord: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("coord.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("coord.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to coord.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to coord.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -676,13 +959,14 @@ void set_CPP_coord_array_test_pattern (CPP_coord_array& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.orbit.resize(0);
-    else {
-      C.orbit.resize(3);
-      for (size_t i = 0; i < C.orbit.size(); i++)
-    {set_CPP_coord_test_pattern(C.orbit[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.orbit.resize(0);
+  else {
+    C.orbit.resize(3);
+    for (auto i{0}; i < C.orbit.size(); i++) {
+      set_CPP_coord_test_pattern(C.orbit[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -702,8 +986,19 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
     cout << " [1] coord_array: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] coord_array: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("coord_array.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("coord_array.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to coord_array.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to coord_array.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -717,8 +1012,20 @@ extern "C" void test_c_coord_array (Opaque_coord_array_class* F, bool& c_ok) {
     cout << " [3] coord_array: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] coord_array: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("coord_array.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("coord_array.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to coord_array.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to coord_array.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -737,25 +1044,35 @@ void set_CPP_bpm_phase_coupling_test_pattern (CPP_bpm_phase_coupling& C, int ix_
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.K_22a =     rhs;
+  rhs = 1 + offset;
+  C.K_22a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.K_12a =     rhs;
+  rhs = 2 + offset;
+  C.K_12a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.K_11b =     rhs;
+  rhs = 3 + offset;
+  C.K_11b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.K_12b =     rhs;
+  rhs = 4 + offset;
+  C.K_12b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.Cbar22_a =     rhs;
+  rhs = 5 + offset;
+  C.Cbar22_a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.Cbar12_a =     rhs;
+  rhs = 6 + offset;
+  C.Cbar12_a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.Cbar11_b =     rhs;
+  rhs = 7 + offset;
+  C.Cbar11_b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.Cbar12_b =     rhs;
+  rhs = 8 + offset;
+  C.Cbar12_b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.phi_a =     rhs;
+  rhs = 9 + offset;
+  C.phi_a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.phi_b =     rhs;
+  rhs = 10 + offset;
+  C.phi_b =   rhs;
 
 }
 
@@ -775,8 +1092,19 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
     cout << " [1] bpm_phase_coupling: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bpm_phase_coupling: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("bpm_phase_coupling.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bpm_phase_coupling.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to bpm_phase_coupling.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to bpm_phase_coupling.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -790,8 +1118,20 @@ extern "C" void test_c_bpm_phase_coupling (Opaque_bpm_phase_coupling_class* F, b
     cout << " [3] bpm_phase_coupling: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bpm_phase_coupling: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("bpm_phase_coupling.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bpm_phase_coupling.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to bpm_phase_coupling.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to bpm_phase_coupling.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -810,13 +1150,18 @@ void set_CPP_expression_atom_test_pattern (CPP_expression_atom& C, int ix_patt) 
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.type =     rhs;
+  rhs = 2 + offset;
+  C.type =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.value =     rhs;
+  rhs = 3 + offset;
+  C.value =   rhs;
 
 }
 
@@ -836,8 +1181,19 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
     cout << " [1] expression_atom: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] expression_atom: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("expression_atom.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("expression_atom.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to expression_atom.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to expression_atom.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -851,8 +1207,20 @@ extern "C" void test_c_expression_atom (Opaque_expression_atom_class* F, bool& c
     cout << " [3] expression_atom: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] expression_atom: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("expression_atom.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("expression_atom.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to expression_atom.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to expression_atom.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -871,43 +1239,60 @@ void set_CPP_wake_sr_z_long_test_pattern (CPP_wake_sr_z_long& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.w.resize(0);
-    else {
-      C.w.resize(3);
-      for (size_t i = 0; i < C.w.size(); i++)
-        {int rhs = 101 + i + 1 + offset; C.w[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.w.resize(0);
+  else {
+    C.w.resize(3);
+    for (auto i{0}; i < C.w.size(); i++) {
+      int rhs = 101 + i + 1 + offset;
+      C.w[i] =   rhs;
+    }
+  }
   // c_side.test_pat[1D_ALLOC_complex]
-    if (ix_patt < 3)
-      C.fw.resize(0);
-    else {
-      C.fw.resize(3);
-      for (size_t i = 0; i < C.fw.size(); i++)
-        {int rhs = 101 + i + 3 + offset; C.fw[i] =     Complex(rhs, 100+rhs);}  }
+  if (ix_patt < 3)
+    C.fw.resize(0);
+  else {
+    C.fw.resize(3);
+    for (auto i{0}; i < C.fw.size(); i++) {
+      int rhs = 101 + i + 3 + offset;
+      C.fw[i] =   Complex(rhs, 100 + rhs);
+    }
+  }
   // c_side.test_pat[1D_ALLOC_complex]
-    if (ix_patt < 3)
-      C.fbunch.resize(0);
-    else {
-      C.fbunch.resize(3);
-      for (size_t i = 0; i < C.fbunch.size(); i++)
-        {int rhs = 101 + i + 5 + offset; C.fbunch[i] =     Complex(rhs, 100+rhs);}  }
+  if (ix_patt < 3)
+    C.fbunch.resize(0);
+  else {
+    C.fbunch.resize(3);
+    for (auto i{0}; i < C.fbunch.size(); i++) {
+      int rhs = 101 + i + 5 + offset;
+      C.fbunch[i] =   Complex(rhs, 100 + rhs);
+    }
+  }
   // c_side.test_pat[1D_ALLOC_complex]
-    if (ix_patt < 3)
-      C.w_out.resize(0);
-    else {
-      C.w_out.resize(3);
-      for (size_t i = 0; i < C.w_out.size(); i++)
-        {int rhs = 101 + i + 7 + offset; C.w_out[i] =     Complex(rhs, 100+rhs);}  }
+  if (ix_patt < 3)
+    C.w_out.resize(0);
+  else {
+    C.w_out.resize(3);
+    for (auto i{0}; i < C.w_out.size(); i++) {
+      int rhs = 101 + i + 7 + offset;
+      C.w_out[i] =   Complex(rhs, 100 + rhs);
+    }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.dz =     rhs;
+  rhs = 9 + offset;
+  C.dz =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.z0 =     rhs;
+  rhs = 10 + offset;
+  C.z0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.smoothing_sigma =     rhs;
+  rhs = 11 + offset;
+  C.smoothing_sigma =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 12 + offset; C.position_dependence =     rhs;
+  rhs = 12 + offset;
+  C.position_dependence =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 13 + offset; C.time_based =     (rhs % 2 == 0);
+  rhs = 13 + offset;
+  C.time_based =   (rhs % 2 == 0);
 
 }
 
@@ -927,8 +1312,19 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
     cout << " [1] wake_sr_z_long: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_sr_z_long: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wake_sr_z_long.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_sr_z_long.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wake_sr_z_long.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wake_sr_z_long.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -942,8 +1338,20 @@ extern "C" void test_c_wake_sr_z_long (Opaque_wake_sr_z_long_class* F, bool& c_o
     cout << " [3] wake_sr_z_long: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_sr_z_long: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wake_sr_z_long.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_sr_z_long.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wake_sr_z_long.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wake_sr_z_long.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -962,25 +1370,35 @@ void set_CPP_wake_sr_mode_test_pattern (CPP_wake_sr_mode& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.amp =     rhs;
+  rhs = 1 + offset;
+  C.amp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.damp =     rhs;
+  rhs = 2 + offset;
+  C.damp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.k =     rhs;
+  rhs = 3 + offset;
+  C.k =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.phi =     rhs;
+  rhs = 4 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.b_sin =     rhs;
+  rhs = 5 + offset;
+  C.b_sin =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.b_cos =     rhs;
+  rhs = 6 + offset;
+  C.b_cos =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.a_sin =     rhs;
+  rhs = 7 + offset;
+  C.a_sin =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.a_cos =     rhs;
+  rhs = 8 + offset;
+  C.a_cos =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 9 + offset; C.polarization =     rhs;
+  rhs = 9 + offset;
+  C.polarization =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 10 + offset; C.position_dependence =     rhs;
+  rhs = 10 + offset;
+  C.position_dependence =   rhs;
 
 }
 
@@ -1000,8 +1418,19 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
     cout << " [1] wake_sr_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_sr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wake_sr_mode.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_sr_mode.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wake_sr_mode.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wake_sr_mode.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1015,8 +1444,20 @@ extern "C" void test_c_wake_sr_mode (Opaque_wake_sr_mode_class* F, bool& c_ok) {
     cout << " [3] wake_sr_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_sr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wake_sr_mode.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_sr_mode.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wake_sr_mode.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wake_sr_mode.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1035,39 +1476,50 @@ void set_CPP_wake_sr_test_pattern (CPP_wake_sr& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.file.resize(400);
-    for (size_t i = 0; i < C.file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file.emplace(str);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_wake_sr_z_long_test_pattern(C.z_long, ix_patt);
+  set_CPP_wake_sr_z_long_test_pattern(C.z_long, ix_patt);
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.long_wake.resize(0);
-    else {
-      C.long_wake.resize(3);
-      for (size_t i = 0; i < C.long_wake.size(); i++)
-    {set_CPP_wake_sr_mode_test_pattern(C.long_wake[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.long_wake.resize(0);
+  else {
+    C.long_wake.resize(3);
+    for (auto i{0}; i < C.long_wake.size(); i++) {
+      set_CPP_wake_sr_mode_test_pattern(C.long_wake[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.trans_wake.resize(0);
-    else {
-      C.trans_wake.resize(3);
-      for (size_t i = 0; i < C.trans_wake.size(); i++)
-    {set_CPP_wake_sr_mode_test_pattern(C.trans_wake[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.trans_wake.resize(0);
+  else {
+    C.trans_wake.resize(3);
+    for (auto i{0}; i < C.trans_wake.size(); i++) {
+      set_CPP_wake_sr_mode_test_pattern(C.trans_wake[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.z_ref_long =     rhs;
+  rhs = 7 + offset;
+  C.z_ref_long =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.z_ref_trans =     rhs;
+  rhs = 8 + offset;
+  C.z_ref_trans =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.z_max =     rhs;
+  rhs = 9 + offset;
+  C.z_max =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.amp_scale =     rhs;
+  rhs = 10 + offset;
+  C.amp_scale =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.z_scale =     rhs;
+  rhs = 11 + offset;
+  C.z_scale =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 12 + offset; C.scale_with_length =     (rhs % 2 == 0);
+  rhs = 12 + offset;
+  C.scale_with_length =   (rhs % 2 == 0);
 
 }
 
@@ -1087,8 +1539,19 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
     cout << " [1] wake_sr: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_sr: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wake_sr.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_sr.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wake_sr.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wake_sr.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1102,8 +1565,20 @@ extern "C" void test_c_wake_sr (Opaque_wake_sr_class* F, bool& c_ok) {
     cout << " [3] wake_sr: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_sr: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wake_sr.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_sr.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wake_sr.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wake_sr.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1122,31 +1597,44 @@ void set_CPP_wake_lr_mode_test_pattern (CPP_wake_lr_mode& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.freq =     rhs;
+  rhs = 1 + offset;
+  C.freq =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.freq_in =     rhs;
+  rhs = 2 + offset;
+  C.freq_in =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.R_over_Q =     rhs;
+  rhs = 3 + offset;
+  C.R_over_Q =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.Q =     rhs;
+  rhs = 4 + offset;
+  C.Q =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.damp =     rhs;
+  rhs = 5 + offset;
+  C.damp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.phi =     rhs;
+  rhs = 6 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.angle =     rhs;
+  rhs = 7 + offset;
+  C.angle =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.b_sin =     rhs;
+  rhs = 8 + offset;
+  C.b_sin =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.b_cos =     rhs;
+  rhs = 9 + offset;
+  C.b_cos =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.a_sin =     rhs;
+  rhs = 10 + offset;
+  C.a_sin =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.a_cos =     rhs;
+  rhs = 11 + offset;
+  C.a_cos =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 12 + offset; C.m =     rhs;
+  rhs = 12 + offset;
+  C.m =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 13 + offset; C.polarized =     (rhs % 2 == 0);
+  rhs = 13 + offset;
+  C.polarized =   (rhs % 2 == 0);
 
 }
 
@@ -1166,8 +1654,19 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
     cout << " [1] wake_lr_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_lr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wake_lr_mode.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_lr_mode.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wake_lr_mode.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wake_lr_mode.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1181,8 +1680,20 @@ extern "C" void test_c_wake_lr_mode (Opaque_wake_lr_mode_class* F, bool& c_ok) {
     cout << " [3] wake_lr_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_lr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wake_lr_mode.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_lr_mode.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wake_lr_mode.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wake_lr_mode.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1201,27 +1712,36 @@ void set_CPP_wake_lr_test_pattern (CPP_wake_lr& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.file.resize(400);
-    for (size_t i = 0; i < C.file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file.emplace(str);
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.mode.resize(0);
-    else {
-      C.mode.resize(3);
-      for (size_t i = 0; i < C.mode.size(); i++)
-    {set_CPP_wake_lr_mode_test_pattern(C.mode[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.mode.resize(0);
+  else {
+    C.mode.resize(3);
+    for (auto i{0}; i < C.mode.size(); i++) {
+      set_CPP_wake_lr_mode_test_pattern(C.mode[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.t_ref =     rhs;
+  rhs = 4 + offset;
+  C.t_ref =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.freq_spread =     rhs;
+  rhs = 5 + offset;
+  C.freq_spread =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.amp_scale =     rhs;
+  rhs = 6 + offset;
+  C.amp_scale =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.time_scale =     rhs;
+  rhs = 7 + offset;
+  C.time_scale =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 8 + offset; C.self_wake_on =     (rhs % 2 == 0);
+  rhs = 8 + offset;
+  C.self_wake_on =   (rhs % 2 == 0);
 
 }
 
@@ -1241,8 +1761,19 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
     cout << " [1] wake_lr: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake_lr: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wake_lr.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_lr.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wake_lr.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wake_lr.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1256,8 +1787,20 @@ extern "C" void test_c_wake_lr (Opaque_wake_lr_class* F, bool& c_ok) {
     cout << " [3] wake_lr: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake_lr: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wake_lr.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake_lr.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wake_lr.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wake_lr.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1276,9 +1819,11 @@ void set_CPP_lat_ele_loc_test_pattern (CPP_lat_ele_loc& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.ix_ele =     rhs;
+  rhs = 1 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.ix_branch =     rhs;
+  rhs = 2 + offset;
+  C.ix_branch =   rhs;
 
 }
 
@@ -1298,8 +1843,19 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
     cout << " [1] lat_ele_loc: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] lat_ele_loc: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("lat_ele_loc.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("lat_ele_loc.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to lat_ele_loc.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to lat_ele_loc.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1313,8 +1869,20 @@ extern "C" void test_c_lat_ele_loc (Opaque_lat_ele_loc_class* F, bool& c_ok) {
     cout << " [3] lat_ele_loc: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] lat_ele_loc: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("lat_ele_loc.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("lat_ele_loc.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to lat_ele_loc.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to lat_ele_loc.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1333,9 +1901,9 @@ void set_CPP_wake_test_pattern (CPP_wake& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_wake_sr_test_pattern(C.sr, ix_patt);
+  set_CPP_wake_sr_test_pattern(C.sr, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_wake_lr_test_pattern(C.lr, ix_patt);
+  set_CPP_wake_lr_test_pattern(C.lr, ix_patt);
 
 }
 
@@ -1355,8 +1923,19 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
     cout << " [1] wake: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wake: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wake.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wake.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wake.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1370,8 +1949,20 @@ extern "C" void test_c_wake (Opaque_wake_class* F, bool& c_ok) {
     cout << " [3] wake: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wake: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wake.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wake.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wake.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wake.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1390,10 +1981,13 @@ void set_CPP_taylor_term_test_pattern (CPP_taylor_term& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.coef =     rhs;
+  rhs = 1 + offset;
+  C.coef =   rhs;
   // c_side.test_pat[1D_NOT_integer]
-    for (size_t i = 0; i < C.expn.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.expn[i] =     rhs;}
+  for (auto i{0}; i < C.expn.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.expn[i] =   rhs;
+  }
 
 }
 
@@ -1413,8 +2007,19 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
     cout << " [1] taylor_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("taylor_term.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("taylor_term.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to taylor_term.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to taylor_term.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1428,8 +2033,20 @@ extern "C" void test_c_taylor_term (Opaque_taylor_term_class* F, bool& c_ok) {
     cout << " [3] taylor_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("taylor_term.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("taylor_term.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to taylor_term.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to taylor_term.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1448,15 +2065,17 @@ void set_CPP_taylor_test_pattern (CPP_taylor& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.ref =     rhs;
+  rhs = 1 + offset;
+  C.ref =   rhs;
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.term.resize(0);
-    else {
-      C.term.resize(3);
-      for (size_t i = 0; i < C.term.size(); i++)
-    {set_CPP_taylor_term_test_pattern(C.term[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.term.resize(0);
+  else {
+    C.term.resize(3);
+    for (auto i{0}; i < C.term.size(); i++) {
+      set_CPP_taylor_term_test_pattern(C.term[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -1476,8 +2095,19 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
     cout << " [1] taylor: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] taylor: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("taylor.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("taylor.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to taylor.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to taylor.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1491,8 +2121,20 @@ extern "C" void test_c_taylor (Opaque_taylor_class* F, bool& c_ok) {
     cout << " [3] taylor: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] taylor: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("taylor.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("taylor.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to taylor.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to taylor.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1511,10 +2153,13 @@ void set_CPP_em_taylor_term_test_pattern (CPP_em_taylor_term& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.coef =     rhs;
+  rhs = 1 + offset;
+  C.coef =   rhs;
   // c_side.test_pat[1D_NOT_integer]
-    for (size_t i = 0; i < C.expn.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.expn[i] =     rhs;}
+  for (auto i{0}; i < C.expn.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.expn[i] =   rhs;
+  }
 
 }
 
@@ -1534,8 +2179,19 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
     cout << " [1] em_taylor_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] em_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("em_taylor_term.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("em_taylor_term.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to em_taylor_term.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to em_taylor_term.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1549,8 +2205,20 @@ extern "C" void test_c_em_taylor_term (Opaque_em_taylor_term_class* F, bool& c_o
     cout << " [3] em_taylor_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] em_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("em_taylor_term.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("em_taylor_term.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to em_taylor_term.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to em_taylor_term.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1569,15 +2237,17 @@ void set_CPP_em_taylor_test_pattern (CPP_em_taylor& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.ref =     rhs;
+  rhs = 1 + offset;
+  C.ref =   rhs;
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.term.resize(0);
-    else {
-      C.term.resize(3);
-      for (size_t i = 0; i < C.term.size(); i++)
-    {set_CPP_em_taylor_term_test_pattern(C.term[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.term.resize(0);
+  else {
+    C.term.resize(3);
+    for (auto i{0}; i < C.term.size(); i++) {
+      set_CPP_em_taylor_term_test_pattern(C.term[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -1597,8 +2267,19 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
     cout << " [1] em_taylor: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] em_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("em_taylor.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("em_taylor.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to em_taylor.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to em_taylor.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1612,8 +2293,20 @@ extern "C" void test_c_em_taylor (Opaque_em_taylor_class* F, bool& c_ok) {
     cout << " [3] em_taylor: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] em_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("em_taylor.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("em_taylor.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to em_taylor.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to em_taylor.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1632,23 +2325,32 @@ void set_CPP_cartesian_map_term1_test_pattern (CPP_cartesian_map_term1& C, int i
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.coef =     rhs;
+  rhs = 1 + offset;
+  C.coef =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.kx =     rhs;
+  rhs = 2 + offset;
+  C.kx =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.ky =     rhs;
+  rhs = 3 + offset;
+  C.ky =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.kz =     rhs;
+  rhs = 4 + offset;
+  C.kz =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.x0 =     rhs;
+  rhs = 5 + offset;
+  C.x0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.y0 =     rhs;
+  rhs = 6 + offset;
+  C.y0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.phi_z =     rhs;
+  rhs = 7 + offset;
+  C.phi_z =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.family =     rhs;
+  rhs = 8 + offset;
+  C.family =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 9 + offset; C.form =     rhs;
+  rhs = 9 + offset;
+  C.form =   rhs;
 
 }
 
@@ -1668,8 +2370,19 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
     cout << " [1] cartesian_map_term1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cartesian_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("cartesian_map_term1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cartesian_map_term1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to cartesian_map_term1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to cartesian_map_term1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1683,8 +2396,20 @@ extern "C" void test_c_cartesian_map_term1 (Opaque_cartesian_map_term1_class* F,
     cout << " [3] cartesian_map_term1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cartesian_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("cartesian_map_term1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cartesian_map_term1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to cartesian_map_term1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to cartesian_map_term1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1703,19 +2428,24 @@ void set_CPP_cartesian_map_term_test_pattern (CPP_cartesian_map_term& C, int ix_
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.file.resize(400);
-    for (size_t i = 0; i < C.file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_link =     rhs;
+  rhs = 2 + offset;
+  C.n_link =   rhs;
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.term.resize(0);
-    else {
-      C.term.resize(3);
-      for (size_t i = 0; i < C.term.size(); i++)
-    {set_CPP_cartesian_map_term1_test_pattern(C.term[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.term.resize(0);
+  else {
+    C.term.resize(3);
+    for (auto i{0}; i < C.term.size(); i++) {
+      set_CPP_cartesian_map_term1_test_pattern(C.term[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -1735,8 +2465,19 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
     cout << " [1] cartesian_map_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cartesian_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("cartesian_map_term.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cartesian_map_term.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to cartesian_map_term.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to cartesian_map_term.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1750,8 +2491,20 @@ extern "C" void test_c_cartesian_map_term (Opaque_cartesian_map_term_class* F, b
     cout << " [3] cartesian_map_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cartesian_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("cartesian_map_term.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cartesian_map_term.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to cartesian_map_term.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to cartesian_map_term.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1770,23 +2523,29 @@ void set_CPP_cartesian_map_test_pattern (CPP_cartesian_map& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.field_scale =     rhs;
+  rhs = 1 + offset;
+  C.field_scale =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.master_parameter =     rhs;
+  rhs = 3 + offset;
+  C.master_parameter =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.ele_anchor_pt =     rhs;
+  rhs = 4 + offset;
+  C.ele_anchor_pt =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.field_type =     rhs;
+  rhs = 5 + offset;
+  C.field_type =   rhs;
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.ptr.reset();
-    else {
-      C.ptr.emplace();
-      set_CPP_cartesian_map_term_test_pattern((*C.ptr), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.ptr.reset();
+  else {
+    C.ptr.emplace();
+    set_CPP_cartesian_map_term_test_pattern(C.ptr.value(), ix_patt);
+  }
 
 }
 
@@ -1806,8 +2565,19 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
     cout << " [1] cartesian_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cartesian_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("cartesian_map.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cartesian_map.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to cartesian_map.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to cartesian_map.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1821,8 +2591,20 @@ extern "C" void test_c_cartesian_map (Opaque_cartesian_map_class* F, bool& c_ok)
     cout << " [3] cartesian_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cartesian_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("cartesian_map.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cartesian_map.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to cartesian_map.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to cartesian_map.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1841,9 +2623,11 @@ void set_CPP_cylindrical_map_term1_test_pattern (CPP_cylindrical_map_term1& C, i
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 1 + offset; C.e_coef =     Complex(rhs, 100+rhs);
+  rhs = 1 + offset;
+  C.e_coef =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 2 + offset; C.b_coef =     Complex(rhs, 100+rhs);
+  rhs = 2 + offset;
+  C.b_coef =   Complex(rhs, 100 + rhs);
 
 }
 
@@ -1863,8 +2647,19 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
     cout << " [1] cylindrical_map_term1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cylindrical_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("cylindrical_map_term1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cylindrical_map_term1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to cylindrical_map_term1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to cylindrical_map_term1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1878,8 +2673,20 @@ extern "C" void test_c_cylindrical_map_term1 (Opaque_cylindrical_map_term1_class
     cout << " [3] cylindrical_map_term1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cylindrical_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("cylindrical_map_term1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cylindrical_map_term1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to cylindrical_map_term1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to cylindrical_map_term1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1898,19 +2705,24 @@ void set_CPP_cylindrical_map_term_test_pattern (CPP_cylindrical_map_term& C, int
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.file.resize(400);
-    for (size_t i = 0; i < C.file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_link =     rhs;
+  rhs = 2 + offset;
+  C.n_link =   rhs;
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.term.resize(0);
-    else {
-      C.term.resize(3);
-      for (size_t i = 0; i < C.term.size(); i++)
-    {set_CPP_cylindrical_map_term1_test_pattern(C.term[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.term.resize(0);
+  else {
+    C.term.resize(3);
+    for (auto i{0}; i < C.term.size(); i++) {
+      set_CPP_cylindrical_map_term1_test_pattern(C.term[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -1930,8 +2742,19 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
     cout << " [1] cylindrical_map_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cylindrical_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("cylindrical_map_term.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cylindrical_map_term.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to cylindrical_map_term.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to cylindrical_map_term.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -1945,8 +2768,20 @@ extern "C" void test_c_cylindrical_map_term (Opaque_cylindrical_map_term_class* 
     cout << " [3] cylindrical_map_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cylindrical_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("cylindrical_map_term.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cylindrical_map_term.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to cylindrical_map_term.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to cylindrical_map_term.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -1965,31 +2800,41 @@ void set_CPP_cylindrical_map_test_pattern (CPP_cylindrical_map& C, int ix_patt) 
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.m =     rhs;
+  rhs = 1 + offset;
+  C.m =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.harmonic =     rhs;
+  rhs = 2 + offset;
+  C.harmonic =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.phi0_fieldmap =     rhs;
+  rhs = 3 + offset;
+  C.phi0_fieldmap =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.theta0_azimuth =     rhs;
+  rhs = 4 + offset;
+  C.theta0_azimuth =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.field_scale =     rhs;
+  rhs = 5 + offset;
+  C.field_scale =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 6 + offset; C.master_parameter =     rhs;
+  rhs = 6 + offset;
+  C.master_parameter =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.ele_anchor_pt =     rhs;
+  rhs = 7 + offset;
+  C.ele_anchor_pt =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.dz =     rhs;
+  rhs = 8 + offset;
+  C.dz =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.ptr.reset();
-    else {
-      C.ptr.emplace();
-      set_CPP_cylindrical_map_term_test_pattern((*C.ptr), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.ptr.reset();
+  else {
+    C.ptr.emplace();
+    set_CPP_cylindrical_map_term_test_pattern(C.ptr.value(), ix_patt);
+  }
 
 }
 
@@ -2009,8 +2854,19 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
     cout << " [1] cylindrical_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] cylindrical_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("cylindrical_map.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cylindrical_map.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to cylindrical_map.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to cylindrical_map.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2024,8 +2880,20 @@ extern "C" void test_c_cylindrical_map (Opaque_cylindrical_map_class* F, bool& c
     cout << " [3] cylindrical_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] cylindrical_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("cylindrical_map.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("cylindrical_map.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to cylindrical_map.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to cylindrical_map.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2044,11 +2912,15 @@ void set_CPP_grid_field_pt1_test_pattern (CPP_grid_field_pt1& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_complex]
-    for (size_t i = 0; i < C.E.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.E[i] =     Complex(rhs, 100+rhs);}
+  for (auto i{0}; i < C.E.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.E[i] =   Complex(rhs, 100 + rhs);
+  }
   // c_side.test_pat[1D_NOT_complex]
-    for (size_t i = 0; i < C.B.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.B[i] =     Complex(rhs, 100+rhs);}
+  for (auto i{0}; i < C.B.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.B[i] =   Complex(rhs, 100 + rhs);
+  }
 
 }
 
@@ -2068,8 +2940,19 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
     cout << " [1] grid_field_pt1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_field_pt1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("grid_field_pt1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_field_pt1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to grid_field_pt1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to grid_field_pt1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2083,8 +2966,20 @@ extern "C" void test_c_grid_field_pt1 (Opaque_grid_field_pt1_class* F, bool& c_o
     cout << " [3] grid_field_pt1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_field_pt1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("grid_field_pt1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_field_pt1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to grid_field_pt1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to grid_field_pt1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2103,11 +2998,15 @@ void set_CPP_grid_field_pt_test_pattern (CPP_grid_field_pt& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.file.resize(400);
-    for (size_t i = 0; i < C.file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_link =     rhs;
+  rhs = 2 + offset;
+  C.n_link =   rhs;
 
 }
 
@@ -2127,8 +3026,19 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
     cout << " [1] grid_field_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_field_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("grid_field_pt.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_field_pt.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to grid_field_pt.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to grid_field_pt.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2142,8 +3052,20 @@ extern "C" void test_c_grid_field_pt (Opaque_grid_field_pt_class* F, bool& c_ok)
     cout << " [3] grid_field_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_field_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("grid_field_pt.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_field_pt.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to grid_field_pt.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to grid_field_pt.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2162,36 +3084,49 @@ void set_CPP_grid_field_test_pattern (CPP_grid_field& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.geometry =     rhs;
+  rhs = 1 + offset;
+  C.geometry =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.harmonic =     rhs;
+  rhs = 2 + offset;
+  C.harmonic =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.phi0_fieldmap =     rhs;
+  rhs = 3 + offset;
+  C.phi0_fieldmap =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.field_scale =     rhs;
+  rhs = 4 + offset;
+  C.field_scale =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.field_type =     rhs;
+  rhs = 5 + offset;
+  C.field_type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 6 + offset; C.master_parameter =     rhs;
+  rhs = 6 + offset;
+  C.master_parameter =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.ele_anchor_pt =     rhs;
+  rhs = 7 + offset;
+  C.ele_anchor_pt =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.interpolation_order =     rhs;
+  rhs = 8 + offset;
+  C.interpolation_order =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.dr.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.dr[i] =     rhs;}
+  for (auto i{0}; i < C.dr.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.dr[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 10 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 10 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 11 + offset; C.curved_ref_frame =     (rhs % 2 == 0);
+  rhs = 11 + offset;
+  C.curved_ref_frame =   (rhs % 2 == 0);
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.ptr.reset();
-    else {
-      C.ptr.emplace();
-      set_CPP_grid_field_pt_test_pattern((*C.ptr), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.ptr.reset();
+  else {
+    C.ptr.emplace();
+    set_CPP_grid_field_pt_test_pattern(C.ptr.value(), ix_patt);
+  }
 
 }
 
@@ -2211,8 +3146,19 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
     cout << " [1] grid_field: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_field: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("grid_field.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_field.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to grid_field.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to grid_field.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2226,8 +3172,20 @@ extern "C" void test_c_grid_field (Opaque_grid_field_class* F, bool& c_ok) {
     cout << " [3] grid_field: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_field: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("grid_field.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_field.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to grid_field.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to grid_field.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2246,18 +3204,25 @@ void set_CPP_floor_position_test_pattern (CPP_floor_position& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.r[i] =     rhs;}
+  for (auto i{0}; i < C.r.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.r[i] =   rhs;
+  }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.w.size(); i++)  for (size_t j = 0; j <
-    C.w[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 2 + offset;
-    C.w[i][j] =     rhs;}
+  for (auto i{0}; i < C.w.size(); i++)
+    for (auto j{0}; j < C.w[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 2 + offset;
+      C.w[i][j] =   rhs;
+    }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.theta =     rhs;
+  rhs = 3 + offset;
+  C.theta =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.phi =     rhs;
+  rhs = 4 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.psi =     rhs;
+  rhs = 5 + offset;
+  C.psi =   rhs;
 
 }
 
@@ -2277,8 +3242,19 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
     cout << " [1] floor_position: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] floor_position: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("floor_position.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("floor_position.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to floor_position.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to floor_position.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2292,8 +3268,20 @@ extern "C" void test_c_floor_position (Opaque_floor_position_class* F, bool& c_o
     cout << " [3] floor_position: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] floor_position: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("floor_position.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("floor_position.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to floor_position.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to floor_position.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2312,21 +3300,28 @@ void set_CPP_high_energy_space_charge_test_pattern (CPP_high_energy_space_charge
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.closed_orb, ix_patt);
+  set_CPP_coord_test_pattern(C.closed_orb, ix_patt);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.kick_const =     rhs;
+  rhs = 2 + offset;
+  C.kick_const =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.sig_x =     rhs;
+  rhs = 3 + offset;
+  C.sig_x =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.sig_y =     rhs;
+  rhs = 4 + offset;
+  C.sig_y =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.phi =     rhs;
+  rhs = 5 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.sin_phi =     rhs;
+  rhs = 6 + offset;
+  C.sin_phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.cos_phi =     rhs;
+  rhs = 7 + offset;
+  C.cos_phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.sig_z =     rhs;
+  rhs = 8 + offset;
+  C.sig_z =   rhs;
 
 }
 
@@ -2346,8 +3341,19 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
     cout << " [1] high_energy_space_charge: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] high_energy_space_charge: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("high_energy_space_charge.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("high_energy_space_charge.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to high_energy_space_charge.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to high_energy_space_charge.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2361,8 +3367,20 @@ extern "C" void test_c_high_energy_space_charge (Opaque_high_energy_space_charge
     cout << " [3] high_energy_space_charge: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] high_energy_space_charge: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("high_energy_space_charge.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("high_energy_space_charge.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to high_energy_space_charge.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to high_energy_space_charge.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2381,13 +3399,17 @@ void set_CPP_xy_disp_test_pattern (CPP_xy_disp& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.eta =     rhs;
+  rhs = 1 + offset;
+  C.eta =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.etap =     rhs;
+  rhs = 2 + offset;
+  C.etap =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.deta_ds =     rhs;
+  rhs = 3 + offset;
+  C.deta_ds =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.sigma =     rhs;
+  rhs = 4 + offset;
+  C.sigma =   rhs;
 
 }
 
@@ -2407,8 +3429,19 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
     cout << " [1] xy_disp: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] xy_disp: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("xy_disp.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("xy_disp.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to xy_disp.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to xy_disp.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2422,8 +3455,20 @@ extern "C" void test_c_xy_disp (Opaque_xy_disp_class* F, bool& c_ok) {
     cout << " [3] xy_disp: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] xy_disp: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("xy_disp.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("xy_disp.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to xy_disp.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to xy_disp.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2442,27 +3487,38 @@ void set_CPP_twiss_test_pattern (CPP_twiss& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.beta =     rhs;
+  rhs = 1 + offset;
+  C.beta =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.alpha =     rhs;
+  rhs = 2 + offset;
+  C.alpha =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.gamma =     rhs;
+  rhs = 3 + offset;
+  C.gamma =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.phi =     rhs;
+  rhs = 4 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.eta =     rhs;
+  rhs = 5 + offset;
+  C.eta =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.etap =     rhs;
+  rhs = 6 + offset;
+  C.etap =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.deta_ds =     rhs;
+  rhs = 7 + offset;
+  C.deta_ds =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.sigma =     rhs;
+  rhs = 8 + offset;
+  C.sigma =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.sigma_p =     rhs;
+  rhs = 9 + offset;
+  C.sigma_p =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.emit =     rhs;
+  rhs = 10 + offset;
+  C.emit =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.norm_emit =     rhs;
+  rhs = 11 + offset;
+  C.norm_emit =   rhs;
 
 }
 
@@ -2482,8 +3538,19 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
     cout << " [1] twiss: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] twiss: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("twiss.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("twiss.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to twiss.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to twiss.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2497,8 +3564,20 @@ extern "C" void test_c_twiss (Opaque_twiss_class* F, bool& c_ok) {
     cout << " [3] twiss: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] twiss: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("twiss.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("twiss.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to twiss.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to twiss.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2517,19 +3596,21 @@ void set_CPP_mode3_test_pattern (CPP_mode3& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.v.size(); i++)  for (size_t j = 0; j <
-    C.v[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 1 + offset;
-    C.v[i][j] =     rhs;}
+  for (auto i{0}; i < C.v.size(); i++)
+    for (auto j{0}; j < C.v[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 1 + offset;
+      C.v[i][j] =   rhs;
+    }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.a, ix_patt);
+  set_CPP_twiss_test_pattern(C.a, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.b, ix_patt);
+  set_CPP_twiss_test_pattern(C.b, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.c, ix_patt);
+  set_CPP_twiss_test_pattern(C.c, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.x, ix_patt);
+  set_CPP_twiss_test_pattern(C.x, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.y, ix_patt);
+  set_CPP_twiss_test_pattern(C.y, ix_patt);
 
 }
 
@@ -2549,8 +3630,19 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
     cout << " [1] mode3: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] mode3: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("mode3.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("mode3.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to mode3.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to mode3.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2564,8 +3656,20 @@ extern "C" void test_c_mode3 (Opaque_mode3_class* F, bool& c_ok) {
     cout << " [3] mode3: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] mode3: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("mode3.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("mode3.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to mode3.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to mode3.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2584,23 +3688,32 @@ void set_CPP_bookkeeping_state_test_pattern (CPP_bookkeeping_state& C, int ix_pa
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.attributes =     rhs;
+  rhs = 1 + offset;
+  C.attributes =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.control =     rhs;
+  rhs = 2 + offset;
+  C.control =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.floor_position =     rhs;
+  rhs = 3 + offset;
+  C.floor_position =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.s_position =     rhs;
+  rhs = 4 + offset;
+  C.s_position =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.ref_energy =     rhs;
+  rhs = 5 + offset;
+  C.ref_energy =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 6 + offset; C.mat6 =     rhs;
+  rhs = 6 + offset;
+  C.mat6 =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.rad_int =     rhs;
+  rhs = 7 + offset;
+  C.rad_int =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.ptc =     rhs;
+  rhs = 8 + offset;
+  C.ptc =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 9 + offset; C.has_misalign =     (rhs % 2 == 0);
+  rhs = 9 + offset;
+  C.has_misalign =   (rhs % 2 == 0);
 
 }
 
@@ -2620,8 +3733,19 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
     cout << " [1] bookkeeping_state: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bookkeeping_state: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("bookkeeping_state.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bookkeeping_state.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to bookkeeping_state.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to bookkeeping_state.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2635,8 +3759,20 @@ extern "C" void test_c_bookkeeping_state (Opaque_bookkeeping_state_class* F, boo
     cout << " [3] bookkeeping_state: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bookkeeping_state: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("bookkeeping_state.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bookkeeping_state.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to bookkeeping_state.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to bookkeeping_state.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2655,23 +3791,33 @@ void set_CPP_rad_map_test_pattern (CPP_rad_map& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.ref_orb.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.ref_orb[i] =     rhs;}
+  for (auto i{0}; i < C.ref_orb.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.ref_orb[i] =   rhs;
+  }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.damp_dmat.size(); i++)  for (size_t j = 0; j <
-    C.damp_dmat[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 2 + offset;
-    C.damp_dmat[i][j] =     rhs;}
+  for (auto i{0}; i < C.damp_dmat.size(); i++)
+    for (auto j{0}; j < C.damp_dmat[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 2 + offset;
+      C.damp_dmat[i][j] =   rhs;
+    }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.xfer_damp_vec.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.xfer_damp_vec[i] =     rhs;}
+  for (auto i{0}; i < C.xfer_damp_vec.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.xfer_damp_vec[i] =   rhs;
+  }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.xfer_damp_mat.size(); i++)  for (size_t j = 0; j <
-    C.xfer_damp_mat[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 4 + offset;
-    C.xfer_damp_mat[i][j] =     rhs;}
+  for (auto i{0}; i < C.xfer_damp_mat.size(); i++)
+    for (auto j{0}; j < C.xfer_damp_mat[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 4 + offset;
+      C.xfer_damp_mat[i][j] =   rhs;
+    }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.stoc_mat.size(); i++)  for (size_t j = 0; j <
-    C.stoc_mat[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 5 + offset;
-    C.stoc_mat[i][j] =     rhs;}
+  for (auto i{0}; i < C.stoc_mat.size(); i++)
+    for (auto j{0}; j < C.stoc_mat[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 5 + offset;
+      C.stoc_mat[i][j] =   rhs;
+    }
 
 }
 
@@ -2691,8 +3837,19 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
     cout << " [1] rad_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("rad_map.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_map.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to rad_map.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to rad_map.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2706,8 +3863,20 @@ extern "C" void test_c_rad_map (Opaque_rad_map_class* F, bool& c_ok) {
     cout << " [3] rad_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("rad_map.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_map.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to rad_map.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to rad_map.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2726,11 +3895,12 @@ void set_CPP_rad_map_ele_test_pattern (CPP_rad_map_ele& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_rad_map_test_pattern(C.rm0, ix_patt);
+  set_CPP_rad_map_test_pattern(C.rm0, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_rad_map_test_pattern(C.rm1, ix_patt);
+  set_CPP_rad_map_test_pattern(C.rm1, ix_patt);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 3 + offset; C.stale =     (rhs % 2 == 0);
+  rhs = 3 + offset;
+  C.stale =   (rhs % 2 == 0);
 
 }
 
@@ -2750,8 +3920,19 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
     cout << " [1] rad_map_ele: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_map_ele: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("rad_map_ele.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_map_ele.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to rad_map_ele.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to rad_map_ele.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2765,8 +3946,20 @@ extern "C" void test_c_rad_map_ele (Opaque_rad_map_ele_class* F, bool& c_ok) {
     cout << " [3] rad_map_ele: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_map_ele: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("rad_map_ele.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_map_ele.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to rad_map_ele.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to rad_map_ele.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2785,21 +3978,27 @@ void set_CPP_gen_grad1_test_pattern (CPP_gen_grad1& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.m =     rhs;
+  rhs = 1 + offset;
+  C.m =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.sincos =     rhs;
+  rhs = 2 + offset;
+  C.sincos =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.n_deriv_max =     rhs;
+  rhs = 3 + offset;
+  C.n_deriv_max =   rhs;
   // c_side.test_pat[2D_ALLOC_real]
-    if (ix_patt < 3)
-      C.deriv.resize(0);
-    else {
-      C.deriv.resize(3);
-      for (size_t i = 0; i < C.deriv.size(); i++)
-        C.deriv[i].resize(2);
-      for (size_t i = 0; i < C.deriv.size(); i++)  for (size_t j = 0; j <
-    C.deriv[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 4 + offset;
-    C.deriv[i][j] =     rhs;}  }
+  if (ix_patt < 3)
+    C.deriv.resize(0);
+  else {
+    C.deriv.resize(3);
+    for (auto i{0}; i < C.deriv.size(); i++) {
+      C.deriv[i].resize(2);
+      for (auto j{0}; j < C.deriv[0].size(); j++) {
+        int rhs = 101 + i + 10 * (j + 1) + 4 + offset;
+        C.deriv[i][j] =   rhs;
+      }
+    }
+  }
 
 }
 
@@ -2819,8 +4018,19 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
     cout << " [1] gen_grad1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] gen_grad1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("gen_grad1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("gen_grad1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to gen_grad1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to gen_grad1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2834,8 +4044,20 @@ extern "C" void test_c_gen_grad1 (Opaque_gen_grad1_class* F, bool& c_ok) {
     cout << " [3] gen_grad1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] gen_grad1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("gen_grad1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("gen_grad1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to gen_grad1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to gen_grad1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2854,36 +4076,50 @@ void set_CPP_gen_grad_map_test_pattern (CPP_gen_grad_map& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.file.resize(400);
-    for (size_t i = 0; i < C.file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file.emplace(str);
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.gg.resize(0);
-    else {
-      C.gg.resize(3);
-      for (size_t i = 0; i < C.gg.size(); i++)
-    {set_CPP_gen_grad1_test_pattern(C.gg[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.gg.resize(0);
+  else {
+    C.gg.resize(3);
+    for (auto i{0}; i < C.gg.size(); i++) {
+      set_CPP_gen_grad1_test_pattern(C.gg[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.ele_anchor_pt =     rhs;
+  rhs = 4 + offset;
+  C.ele_anchor_pt =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.field_type =     rhs;
+  rhs = 5 + offset;
+  C.field_type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 6 + offset; C.iz0 =     rhs;
+  rhs = 6 + offset;
+  C.iz0 =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.iz1 =     rhs;
+  rhs = 7 + offset;
+  C.iz1 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.dz =     rhs;
+  rhs = 8 + offset;
+  C.dz =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.field_scale =     rhs;
+  rhs = 10 + offset;
+  C.field_scale =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 11 + offset; C.master_parameter =     rhs;
+  rhs = 11 + offset;
+  C.master_parameter =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 12 + offset; C.curved_ref_frame =     (rhs % 2 == 0);
+  rhs = 12 + offset;
+  C.curved_ref_frame =   (rhs % 2 == 0);
 
 }
 
@@ -2903,8 +4139,19 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
     cout << " [1] gen_grad_map: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] gen_grad_map: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("gen_grad_map.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("gen_grad_map.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to gen_grad_map.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to gen_grad_map.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2918,8 +4165,20 @@ extern "C" void test_c_gen_grad_map (Opaque_gen_grad_map_class* F, bool& c_ok) {
     cout << " [3] gen_grad_map: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] gen_grad_map: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("gen_grad_map.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("gen_grad_map.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to gen_grad_map.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to gen_grad_map.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -2938,15 +4197,20 @@ void set_CPP_surface_segmented_pt_test_pattern (CPP_surface_segmented_pt& C, int
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.x0 =     rhs;
+  rhs = 1 + offset;
+  C.x0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.y0 =     rhs;
+  rhs = 2 + offset;
+  C.y0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.z0 =     rhs;
+  rhs = 3 + offset;
+  C.z0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.dz_dx =     rhs;
+  rhs = 4 + offset;
+  C.dz_dx =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.dz_dy =     rhs;
+  rhs = 5 + offset;
+  C.dz_dy =   rhs;
 
 }
 
@@ -2966,8 +4230,19 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
     cout << " [1] surface_segmented_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_segmented_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_segmented_pt.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_segmented_pt.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_segmented_pt.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_segmented_pt.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -2981,8 +4256,20 @@ extern "C" void test_c_surface_segmented_pt (Opaque_surface_segmented_pt_class* 
     cout << " [3] surface_segmented_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_segmented_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_segmented_pt.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_segmented_pt.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_segmented_pt.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_segmented_pt.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3001,27 +4288,31 @@ void set_CPP_surface_segmented_test_pattern (CPP_surface_segmented& C, int ix_pa
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 1 + offset; C.active =     (rhs % 2 == 0);
+  rhs = 1 + offset;
+  C.active =   (rhs % 2 == 0);
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.dr.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.dr[i] =     rhs;}
+  for (auto i{0}; i < C.dr.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.dr[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[2D_ALLOC_type]
-    if (ix_patt < 3)
-      C.pt.resize(0);
-    else {
-      C.pt.resize(3);
-      for (size_t i = 0; i < C.pt.size(); i++) {
-        C.pt[i].resize(2);
-
-        for (size_t j = 0; j < C.pt[0].size(); j++) {
-          auto &item = C.pt[i][j];
-          set_CPP_surface_segmented_pt_test_pattern(item, ix_patt+i+2*j+3);
-        }
+  if (ix_patt < 3)
+    C.pt.resize(0);
+  else {
+    C.pt.resize(3);
+    for (auto i{0}; i < C.pt.size(); i++) {
+      C.pt[i].resize(2);
+      for (auto j{0}; j < C.pt[0].size(); j++) {
+        auto &item = C.pt[i][j];
+        set_CPP_surface_segmented_pt_test_pattern(item, ix_patt + i + 2 * j + 3);
       }
     }
+  }
 
 }
 
@@ -3041,8 +4332,19 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
     cout << " [1] surface_segmented: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_segmented: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_segmented.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_segmented.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_segmented.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_segmented.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3056,8 +4358,20 @@ extern "C" void test_c_surface_segmented (Opaque_surface_segmented_class* F, boo
     cout << " [3] surface_segmented: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_segmented: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_segmented.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_segmented.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_segmented.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_segmented.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3076,17 +4390,23 @@ void set_CPP_surface_h_misalign_pt_test_pattern (CPP_surface_h_misalign_pt& C, i
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.x0 =     rhs;
+  rhs = 1 + offset;
+  C.x0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.y0 =     rhs;
+  rhs = 2 + offset;
+  C.y0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.rot_y =     rhs;
+  rhs = 3 + offset;
+  C.rot_y =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.rot_t =     rhs;
+  rhs = 4 + offset;
+  C.rot_t =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.rot_y_rms =     rhs;
+  rhs = 5 + offset;
+  C.rot_y_rms =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.rot_t_rms =     rhs;
+  rhs = 6 + offset;
+  C.rot_t_rms =   rhs;
 
 }
 
@@ -3106,8 +4426,19 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
     cout << " [1] surface_h_misalign_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_h_misalign_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_h_misalign_pt.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_h_misalign_pt.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_h_misalign_pt.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_h_misalign_pt.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3121,8 +4452,20 @@ extern "C" void test_c_surface_h_misalign_pt (Opaque_surface_h_misalign_pt_class
     cout << " [3] surface_h_misalign_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_h_misalign_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_h_misalign_pt.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_h_misalign_pt.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_h_misalign_pt.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_h_misalign_pt.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3141,27 +4484,31 @@ void set_CPP_surface_h_misalign_test_pattern (CPP_surface_h_misalign& C, int ix_
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 1 + offset; C.active =     (rhs % 2 == 0);
+  rhs = 1 + offset;
+  C.active =   (rhs % 2 == 0);
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.dr.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.dr[i] =     rhs;}
+  for (auto i{0}; i < C.dr.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.dr[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[2D_ALLOC_type]
-    if (ix_patt < 3)
-      C.pt.resize(0);
-    else {
-      C.pt.resize(3);
-      for (size_t i = 0; i < C.pt.size(); i++) {
-        C.pt[i].resize(2);
-
-        for (size_t j = 0; j < C.pt[0].size(); j++) {
-          auto &item = C.pt[i][j];
-          set_CPP_surface_h_misalign_pt_test_pattern(item, ix_patt+i+2*j+3);
-        }
+  if (ix_patt < 3)
+    C.pt.resize(0);
+  else {
+    C.pt.resize(3);
+    for (auto i{0}; i < C.pt.size(); i++) {
+      C.pt[i].resize(2);
+      for (auto j{0}; j < C.pt[0].size(); j++) {
+        auto &item = C.pt[i][j];
+        set_CPP_surface_h_misalign_pt_test_pattern(item, ix_patt + i + 2 * j + 3);
       }
     }
+  }
 
 }
 
@@ -3181,8 +4528,19 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
     cout << " [1] surface_h_misalign: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_h_misalign: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_h_misalign.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_h_misalign.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_h_misalign.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_h_misalign.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3196,8 +4554,20 @@ extern "C" void test_c_surface_h_misalign (Opaque_surface_h_misalign_class* F, b
     cout << " [3] surface_h_misalign: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_h_misalign: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_h_misalign.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_h_misalign.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_h_misalign.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_h_misalign.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3216,17 +4586,23 @@ void set_CPP_surface_displacement_pt_test_pattern (CPP_surface_displacement_pt& 
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.x0 =     rhs;
+  rhs = 1 + offset;
+  C.x0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.y0 =     rhs;
+  rhs = 2 + offset;
+  C.y0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.z0 =     rhs;
+  rhs = 3 + offset;
+  C.z0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.dz_dx =     rhs;
+  rhs = 4 + offset;
+  C.dz_dx =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.dz_dy =     rhs;
+  rhs = 5 + offset;
+  C.dz_dy =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.d2z_dxdy =     rhs;
+  rhs = 6 + offset;
+  C.d2z_dxdy =   rhs;
 
 }
 
@@ -3246,8 +4622,19 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
     cout << " [1] surface_displacement_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_displacement_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_displacement_pt.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_displacement_pt.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_displacement_pt.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_displacement_pt.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3261,8 +4648,20 @@ extern "C" void test_c_surface_displacement_pt (Opaque_surface_displacement_pt_c
     cout << " [3] surface_displacement_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_displacement_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_displacement_pt.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_displacement_pt.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_displacement_pt.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_displacement_pt.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3281,27 +4680,31 @@ void set_CPP_surface_displacement_test_pattern (CPP_surface_displacement& C, int
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 1 + offset; C.active =     (rhs % 2 == 0);
+  rhs = 1 + offset;
+  C.active =   (rhs % 2 == 0);
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.dr.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.dr[i] =     rhs;}
+  for (auto i{0}; i < C.dr.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.dr[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[2D_ALLOC_type]
-    if (ix_patt < 3)
-      C.pt.resize(0);
-    else {
-      C.pt.resize(3);
-      for (size_t i = 0; i < C.pt.size(); i++) {
-        C.pt[i].resize(2);
-
-        for (size_t j = 0; j < C.pt[0].size(); j++) {
-          auto &item = C.pt[i][j];
-          set_CPP_surface_displacement_pt_test_pattern(item, ix_patt+i+2*j+3);
-        }
+  if (ix_patt < 3)
+    C.pt.resize(0);
+  else {
+    C.pt.resize(3);
+    for (auto i{0}; i < C.pt.size(); i++) {
+      C.pt[i].resize(2);
+      for (auto j{0}; j < C.pt[0].size(); j++) {
+        auto &item = C.pt[i][j];
+        set_CPP_surface_displacement_pt_test_pattern(item, ix_patt + i + 2 * j + 3);
       }
     }
+  }
 
 }
 
@@ -3321,8 +4724,19 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
     cout << " [1] surface_displacement: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_displacement: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_displacement.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_displacement.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_displacement.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_displacement.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3336,8 +4750,20 @@ extern "C" void test_c_surface_displacement (Opaque_surface_displacement_class* 
     cout << " [3] surface_displacement: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_displacement: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_displacement.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_displacement.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_displacement.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_displacement.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3356,8 +4782,10 @@ void set_CPP_target_point_test_pattern (CPP_target_point& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.r[i] =     rhs;}
+  for (auto i{0}; i < C.r.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.r[i] =   rhs;
+  }
 
 }
 
@@ -3377,8 +4805,19 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
     cout << " [1] target_point: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] target_point: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("target_point.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("target_point.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to target_point.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to target_point.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3392,8 +4831,20 @@ extern "C" void test_c_target_point (Opaque_target_point_class* F, bool& c_ok) {
     cout << " [3] target_point: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] target_point: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("target_point.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("target_point.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to target_point.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to target_point.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3412,16 +4863,22 @@ void set_CPP_surface_curvature_test_pattern (CPP_surface_curvature& C, int ix_pa
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.xy.size(); i++)  for (size_t j = 0; j <
-    C.xy[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 1 + offset;
-    C.xy[i][j] =     rhs;}
+  for (auto i{0}; i < C.xy.size(); i++)
+    for (auto j{0}; j < C.xy[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 1 + offset;
+      C.xy[i][j] =   rhs;
+    }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.spherical =     rhs;
+  rhs = 2 + offset;
+  C.spherical =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.elliptical.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.elliptical[i] =     rhs;}
+  for (auto i{0}; i < C.elliptical.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.elliptical[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 4 + offset; C.has_curvature =     (rhs % 2 == 0);
+  rhs = 4 + offset;
+  C.has_curvature =   (rhs % 2 == 0);
 
 }
 
@@ -3441,8 +4898,19 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
     cout << " [1] surface_curvature: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] surface_curvature: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("surface_curvature.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_curvature.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to surface_curvature.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to surface_curvature.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3456,8 +4924,20 @@ extern "C" void test_c_surface_curvature (Opaque_surface_curvature_class* F, boo
     cout << " [3] surface_curvature: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] surface_curvature: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("surface_curvature.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("surface_curvature.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to surface_curvature.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to surface_curvature.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3476,17 +4956,20 @@ void set_CPP_photon_target_test_pattern (CPP_photon_target& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.type =     rhs;
+  rhs = 1 + offset;
+  C.type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_corner =     rhs;
+  rhs = 2 + offset;
+  C.n_corner =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_lat_ele_loc_test_pattern(C.ele_loc, ix_patt);
+  set_CPP_lat_ele_loc_test_pattern(C.ele_loc, ix_patt);
   // c_side.test_pat[1D_NOT_type]
-    for (size_t i = 0; i < C.corner.size(); i++)
-      {int rhs = 101 + i + 4 + offset; set_CPP_target_point_test_pattern(C.corner[i],
-    ix_patt+i+1);}
+  for (auto i{0}; i < C.corner.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    set_CPP_target_point_test_pattern(C.corner[i], ix_patt + i + 1);
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_target_point_test_pattern(C.center, ix_patt);
+  set_CPP_target_point_test_pattern(C.center, ix_patt);
 
 }
 
@@ -3506,8 +4989,19 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
     cout << " [1] photon_target: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_target: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("photon_target.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_target.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to photon_target.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to photon_target.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3521,8 +5015,20 @@ extern "C" void test_c_photon_target (Opaque_photon_target_class* F, bool& c_ok)
     cout << " [3] photon_target: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_target: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("photon_target.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_target.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to photon_target.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to photon_target.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3541,23 +5047,33 @@ void set_CPP_photon_material_test_pattern (CPP_photon_material& C, int ix_patt) 
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 1 + offset; C.f0_m1 =     Complex(rhs, 100+rhs);
+  rhs = 1 + offset;
+  C.f0_m1 =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 2 + offset; C.f0_m2 =     Complex(rhs, 100+rhs);
+  rhs = 2 + offset;
+  C.f0_m2 =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 3 + offset; C.f_0 =     Complex(rhs, 100+rhs);
+  rhs = 3 + offset;
+  C.f_0 =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 4 + offset; C.f_h =     Complex(rhs, 100+rhs);
+  rhs = 4 + offset;
+  C.f_h =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 5 + offset; C.f_hbar =     Complex(rhs, 100+rhs);
+  rhs = 5 + offset;
+  C.f_hbar =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 6 + offset; C.f_hkl =     Complex(rhs, 100+rhs);
+  rhs = 6 + offset;
+  C.f_hkl =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.h_norm.size(); i++)
-      {int rhs = 101 + i + 7 + offset; C.h_norm[i] =     rhs;}
+  for (auto i{0}; i < C.h_norm.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    C.h_norm[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.l_ref.size(); i++)
-      {int rhs = 101 + i + 8 + offset; C.l_ref[i] =     rhs;}
+  for (auto i{0}; i < C.l_ref.size(); i++) {
+    int rhs = 101 + i + 8 + offset;
+    C.l_ref[i] =   rhs;
+  }
 
 }
 
@@ -3577,8 +5093,19 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
     cout << " [1] photon_material: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_material: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("photon_material.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_material.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to photon_material.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to photon_material.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3592,8 +5119,20 @@ extern "C" void test_c_photon_material (Opaque_photon_material_class* F, bool& c
     cout << " [3] photon_material: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_material: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("photon_material.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_material.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to photon_material.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to photon_material.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3612,29 +5151,43 @@ void set_CPP_pixel_pt_test_pattern (CPP_pixel_pt& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer8]
-    rhs = 1 + offset; C.n_photon =     rhs;
+  rhs = 1 + offset;
+  C.n_photon =   rhs;
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 2 + offset; C.E_x =     Complex(rhs, 100+rhs);
+  rhs = 2 + offset;
+  C.E_x =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 3 + offset; C.E_y =     Complex(rhs, 100+rhs);
+  rhs = 3 + offset;
+  C.E_y =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.intensity_x =     rhs;
+  rhs = 4 + offset;
+  C.intensity_x =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.intensity_y =     rhs;
+  rhs = 5 + offset;
+  C.intensity_y =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.intensity =     rhs;
+  rhs = 6 + offset;
+  C.intensity =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.orbit.size(); i++)
-      {int rhs = 101 + i + 7 + offset; C.orbit[i] =     rhs;}
+  for (auto i{0}; i < C.orbit.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    C.orbit[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.orbit_rms.size(); i++)
-      {int rhs = 101 + i + 8 + offset; C.orbit_rms[i] =     rhs;}
+  for (auto i{0}; i < C.orbit_rms.size(); i++) {
+    int rhs = 101 + i + 8 + offset;
+    C.orbit_rms[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.init_orbit.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.init_orbit[i] =     rhs;}
+  for (auto i{0}; i < C.init_orbit.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.init_orbit[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.init_orbit_rms.size(); i++)
-      {int rhs = 101 + i + 10 + offset; C.init_orbit_rms[i] =     rhs;}
+  for (auto i{0}; i < C.init_orbit_rms.size(); i++) {
+    int rhs = 101 + i + 10 + offset;
+    C.init_orbit_rms[i] =   rhs;
+  }
 
 }
 
@@ -3654,8 +5207,19 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
     cout << " [1] pixel_pt: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] pixel_pt: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("pixel_pt.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("pixel_pt.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to pixel_pt.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to pixel_pt.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3669,8 +5233,20 @@ extern "C" void test_c_pixel_pt (Opaque_pixel_pt_class* F, bool& c_ok) {
     cout << " [3] pixel_pt: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] pixel_pt: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("pixel_pt.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("pixel_pt.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to pixel_pt.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to pixel_pt.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3689,31 +5265,37 @@ void set_CPP_pixel_detec_test_pattern (CPP_pixel_detec& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.dr.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.dr[i] =     rhs;}
+  for (auto i{0}; i < C.dr.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.dr[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_integer8]
-    rhs = 3 + offset; C.n_track_tot =     rhs;
+  rhs = 3 + offset;
+  C.n_track_tot =   rhs;
   // c_side.test_pat[0D_NOT_integer8]
-    rhs = 4 + offset; C.n_hit_detec =     rhs;
+  rhs = 4 + offset;
+  C.n_hit_detec =   rhs;
   // c_side.test_pat[0D_NOT_integer8]
-    rhs = 5 + offset; C.n_hit_pixel =     rhs;
+  rhs = 5 + offset;
+  C.n_hit_pixel =   rhs;
   // c_side.test_pat[2D_ALLOC_type]
-    if (ix_patt < 3)
-      C.pt.resize(0);
-    else {
-      C.pt.resize(3);
-      for (size_t i = 0; i < C.pt.size(); i++) {
-        C.pt[i].resize(2);
-
-        for (size_t j = 0; j < C.pt[0].size(); j++) {
-          auto &item = C.pt[i][j];
-          set_CPP_pixel_pt_test_pattern(item, ix_patt+i+2*j+3);
-        }
+  if (ix_patt < 3)
+    C.pt.resize(0);
+  else {
+    C.pt.resize(3);
+    for (auto i{0}; i < C.pt.size(); i++) {
+      C.pt[i].resize(2);
+      for (auto j{0}; j < C.pt[0].size(); j++) {
+        auto &item = C.pt[i][j];
+        set_CPP_pixel_pt_test_pattern(item, ix_patt + i + 2 * j + 3);
       }
     }
+  }
 
 }
 
@@ -3733,8 +5315,19 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
     cout << " [1] pixel_detec: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] pixel_detec: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("pixel_detec.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("pixel_detec.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to pixel_detec.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to pixel_detec.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3748,8 +5341,20 @@ extern "C" void test_c_pixel_detec (Opaque_pixel_detec_class* F, bool& c_ok) {
     cout << " [3] pixel_detec: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] pixel_detec: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("pixel_detec.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("pixel_detec.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to pixel_detec.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to pixel_detec.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3768,40 +5373,45 @@ void set_CPP_photon_element_test_pattern (CPP_photon_element& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_surface_curvature_test_pattern(C.curvature, ix_patt);
+  set_CPP_surface_curvature_test_pattern(C.curvature, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_photon_target_test_pattern(C.target, ix_patt);
+  set_CPP_photon_target_test_pattern(C.target, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_photon_material_test_pattern(C.material, ix_patt);
+  set_CPP_photon_material_test_pattern(C.material, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_surface_segmented_test_pattern(C.segmented, ix_patt);
+  set_CPP_surface_segmented_test_pattern(C.segmented, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_surface_h_misalign_test_pattern(C.h_misalign, ix_patt);
+  set_CPP_surface_h_misalign_test_pattern(C.h_misalign, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_surface_displacement_test_pattern(C.displacement, ix_patt);
+  set_CPP_surface_displacement_test_pattern(C.displacement, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_pixel_detec_test_pattern(C.pixel, ix_patt);
+  set_CPP_pixel_detec_test_pattern(C.pixel, ix_patt);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.reflectivity_table_type =     rhs;
+  rhs = 8 + offset;
+  C.reflectivity_table_type =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_photon_reflect_table_test_pattern(C.reflectivity_table_sigma, ix_patt);
+  set_CPP_photon_reflect_table_test_pattern(C.reflectivity_table_sigma, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_photon_reflect_table_test_pattern(C.reflectivity_table_pi, ix_patt);
+  set_CPP_photon_reflect_table_test_pattern(C.reflectivity_table_pi, ix_patt);
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.init_energy_prob.resize(0);
-    else {
-      C.init_energy_prob.resize(3);
-      for (size_t i = 0; i < C.init_energy_prob.size(); i++)
-    {set_CPP_spline_test_pattern(C.init_energy_prob[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.init_energy_prob.resize(0);
+  else {
+    C.init_energy_prob.resize(3);
+    for (auto i{0}; i < C.init_energy_prob.size(); i++) {
+      set_CPP_spline_test_pattern(C.init_energy_prob[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.integrated_init_energy_prob.resize(0);
-    else {
-      C.integrated_init_energy_prob.resize(3);
-      for (size_t i = 0; i < C.integrated_init_energy_prob.size(); i++)
-        {int rhs = 101 + i + 13 + offset; C.integrated_init_energy_prob[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.integrated_init_energy_prob.resize(0);
+  else {
+    C.integrated_init_energy_prob.resize(3);
+    for (auto i{0}; i < C.integrated_init_energy_prob.size(); i++) {
+      int rhs = 101 + i + 13 + offset;
+      C.integrated_init_energy_prob[i] =   rhs;
+    }
+  }
 
 }
 
@@ -3821,8 +5431,19 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
     cout << " [1] photon_element: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] photon_element: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("photon_element.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_element.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to photon_element.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to photon_element.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3836,8 +5457,20 @@ extern "C" void test_c_photon_element (Opaque_photon_element_class* F, bool& c_o
     cout << " [3] photon_element: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] photon_element: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("photon_element.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("photon_element.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to photon_element.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to photon_element.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3856,23 +5489,32 @@ void set_CPP_wall3d_vertex_test_pattern (CPP_wall3d_vertex& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.x =     rhs;
+  rhs = 1 + offset;
+  C.x =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.y =     rhs;
+  rhs = 2 + offset;
+  C.y =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.radius_x =     rhs;
+  rhs = 3 + offset;
+  C.radius_x =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.radius_y =     rhs;
+  rhs = 4 + offset;
+  C.radius_y =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.tilt =     rhs;
+  rhs = 5 + offset;
+  C.tilt =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.angle =     rhs;
+  rhs = 6 + offset;
+  C.angle =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.x0 =     rhs;
+  rhs = 7 + offset;
+  C.x0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.y0 =     rhs;
+  rhs = 8 + offset;
+  C.y0 =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 9 + offset; C.type =     rhs;
+  rhs = 9 + offset;
+  C.type =   rhs;
 
 }
 
@@ -3892,8 +5534,19 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
     cout << " [1] wall3d_vertex: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wall3d_vertex: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wall3d_vertex.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wall3d_vertex.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wall3d_vertex.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wall3d_vertex.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -3907,8 +5560,20 @@ extern "C" void test_c_wall3d_vertex (Opaque_wall3d_vertex_class* F, bool& c_ok)
     cout << " [3] wall3d_vertex: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wall3d_vertex: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wall3d_vertex.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wall3d_vertex.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wall3d_vertex.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wall3d_vertex.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -3927,65 +5592,93 @@ void set_CPP_wall3d_section_test_pattern (CPP_wall3d_section& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.material.resize(20);
-    for (size_t i = 0; i < C.material.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.material[i] = 'a' + rhs % 26;}
+  auto str = std::string(20, ' ');
+  for (auto i{0}; i < C.material.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.material.emplace(str);
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.v.resize(0);
-    else {
-      C.v.resize(3);
-      for (size_t i = 0; i < C.v.size(); i++)
-    {set_CPP_wall3d_vertex_test_pattern(C.v[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.v.resize(0);
+  else {
+    C.v.resize(3);
+    for (auto i{0}; i < C.v.size(); i++) {
+      set_CPP_wall3d_vertex_test_pattern(C.v[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.surface.reset();
-    else {
-      C.surface.emplace();
-      set_CPP_photon_reflect_surface_test_pattern((*C.surface), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.surface.reset();
+  else {
+    C.surface.emplace();
+    set_CPP_photon_reflect_surface_test_pattern(C.surface.value(), ix_patt);
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.type =     rhs;
+  rhs = 7 + offset;
+  C.type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.n_vertex_input =     rhs;
+  rhs = 8 + offset;
+  C.n_vertex_input =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 9 + offset; C.ix_ele =     rhs;
+  rhs = 9 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 10 + offset; C.ix_branch =     rhs;
+  rhs = 10 + offset;
+  C.ix_branch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 11 + offset; C.vertices_state =     rhs;
+  rhs = 11 + offset;
+  C.vertices_state =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 12 + offset; C.patch_in_region =     (rhs % 2 == 0);
+  rhs = 12 + offset;
+  C.patch_in_region =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 13 + offset; C.thickness =     rhs;
+  rhs = 13 + offset;
+  C.thickness =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 14 + offset; C.s =     rhs;
+  rhs = 14 + offset;
+  C.s =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.r0.size(); i++)
-      {int rhs = 101 + i + 15 + offset; C.r0[i] =     rhs;}
+  for (auto i{0}; i < C.r0.size(); i++) {
+    int rhs = 101 + i + 15 + offset;
+    C.r0[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 16 + offset; C.dx0_ds =     rhs;
+  rhs = 16 + offset;
+  C.dx0_ds =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 17 + offset; C.dy0_ds =     rhs;
+  rhs = 17 + offset;
+  C.dy0_ds =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.x0_coef.size(); i++)
-      {int rhs = 101 + i + 18 + offset; C.x0_coef[i] =     rhs;}
+  for (auto i{0}; i < C.x0_coef.size(); i++) {
+    int rhs = 101 + i + 18 + offset;
+    C.x0_coef[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.y0_coef.size(); i++)
-      {int rhs = 101 + i + 19 + offset; C.y0_coef[i] =     rhs;}
+  for (auto i{0}; i < C.y0_coef.size(); i++) {
+    int rhs = 101 + i + 19 + offset;
+    C.y0_coef[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 20 + offset; C.dr_ds =     rhs;
+  rhs = 20 + offset;
+  C.dr_ds =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.p1_coef.size(); i++)
-      {int rhs = 101 + i + 21 + offset; C.p1_coef[i] =     rhs;}
+  for (auto i{0}; i < C.p1_coef.size(); i++) {
+    int rhs = 101 + i + 21 + offset;
+    C.p1_coef[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.p2_coef.size(); i++)
-      {int rhs = 101 + i + 22 + offset; C.p2_coef[i] =     rhs;}
+  for (auto i{0}; i < C.p2_coef.size(); i++) {
+    int rhs = 101 + i + 22 + offset;
+    C.p2_coef[i] =   rhs;
+  }
 
 }
 
@@ -4005,8 +5698,19 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
     cout << " [1] wall3d_section: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wall3d_section: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wall3d_section.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wall3d_section.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wall3d_section.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wall3d_section.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4020,8 +5724,20 @@ extern "C" void test_c_wall3d_section (Opaque_wall3d_section_class* F, bool& c_o
     cout << " [3] wall3d_section: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wall3d_section: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wall3d_section.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wall3d_section.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wall3d_section.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wall3d_section.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4040,37 +5756,53 @@ void set_CPP_wall3d_test_pattern (CPP_wall3d& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.type =     rhs;
+  rhs = 2 + offset;
+  C.type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.ix_wall3d =     rhs;
+  rhs = 3 + offset;
+  C.ix_wall3d =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.n_link =     rhs;
+  rhs = 4 + offset;
+  C.n_link =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.thickness =     rhs;
+  rhs = 5 + offset;
+  C.thickness =   rhs;
   // c_side.test_pat[0D_NOT_character]
-    C.clear_material.resize(20);
-    for (size_t i = 0; i < C.clear_material.size(); i++)
-      {int rhs = 101 + i + 6 + offset; C.clear_material[i] = 'a' + rhs % 26;}
+  auto str = std::string(20, ' ');
+  for (auto i{0}; i < C.clear_material.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.clear_material.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.opaque_material.resize(20);
-    for (size_t i = 0; i < C.opaque_material.size(); i++)
-      {int rhs = 101 + i + 7 + offset; C.opaque_material[i] = 'a' + rhs % 26;}
+  auto str = std::string(20, ' ');
+  for (auto i{0}; i < C.opaque_material.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.opaque_material.emplace(str);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 8 + offset; C.superimpose =     (rhs % 2 == 0);
+  rhs = 8 + offset;
+  C.superimpose =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 9 + offset; C.ele_anchor_pt =     rhs;
+  rhs = 9 + offset;
+  C.ele_anchor_pt =   rhs;
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.section.resize(0);
-    else {
-      C.section.resize(3);
-      for (size_t i = 0; i < C.section.size(); i++)
-    {set_CPP_wall3d_section_test_pattern(C.section[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.section.resize(0);
+  else {
+    C.section.resize(3);
+    for (auto i{0}; i < C.section.size(); i++) {
+      set_CPP_wall3d_section_test_pattern(C.section[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -4090,8 +5822,19 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
     cout << " [1] wall3d: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] wall3d: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("wall3d.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wall3d.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to wall3d.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to wall3d.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4105,8 +5848,20 @@ extern "C" void test_c_wall3d (Opaque_wall3d_class* F, bool& c_ok) {
     cout << " [3] wall3d: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] wall3d: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("wall3d.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("wall3d.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to wall3d.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to wall3d.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4125,16 +5880,18 @@ void set_CPP_ramper_lord_test_pattern (CPP_ramper_lord& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.ix_ele =     rhs;
+  rhs = 1 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.ix_con =     rhs;
+  rhs = 2 + offset;
+  C.ix_con =   rhs;
   // c_side.test_pat[0D_PTR_real]
-    if (ix_patt < 3)
-      C.attrib_ptr.reset();
-    else {
-      rhs = 3 + offset;
-      C.attrib_ptr.emplace(    rhs);
-    }
+  if (ix_patt < 3)
+    C.attrib_ptr.reset();
+  else {
+    rhs = 3 + offset;
+    C.attrib_ptr.emplace(  rhs);
+  }
 
 }
 
@@ -4154,8 +5911,19 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
     cout << " [1] ramper_lord: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ramper_lord: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("ramper_lord.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ramper_lord.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to ramper_lord.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to ramper_lord.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4169,8 +5937,20 @@ extern "C" void test_c_ramper_lord (Opaque_ramper_lord_class* F, bool& c_ok) {
     cout << " [3] ramper_lord: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ramper_lord: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("ramper_lord.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ramper_lord.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to ramper_lord.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to ramper_lord.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4189,36 +5969,48 @@ void set_CPP_control_test_pattern (CPP_control& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.value =     rhs;
+  rhs = 1 + offset;
+  C.value =   rhs;
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.y_knot.resize(0);
-    else {
-      C.y_knot.resize(3);
-      for (size_t i = 0; i < C.y_knot.size(); i++)
-        {int rhs = 101 + i + 2 + offset; C.y_knot[i] =     rhs;}  }
-  // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.stack.resize(0);
-    else {
-      C.stack.resize(3);
-      for (size_t i = 0; i < C.stack.size(); i++)
-    {set_CPP_expression_atom_test_pattern(C.stack[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.y_knot.resize(0);
+  else {
+    C.y_knot.resize(3);
+    for (auto i{0}; i < C.y_knot.size(); i++) {
+      int rhs = 101 + i + 2 + offset;
+      C.y_knot[i] =   rhs;
     }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3)
+    C.stack.resize(0);
+  else {
+    C.stack.resize(3);
+    for (auto i{0}; i < C.stack.size(); i++) {
+      set_CPP_expression_atom_test_pattern(C.stack[i], ix_patt + i + 1);
+    }
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_lat_ele_loc_test_pattern(C.slave, ix_patt);
+  set_CPP_lat_ele_loc_test_pattern(C.slave, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_lat_ele_loc_test_pattern(C.lord, ix_patt);
+  set_CPP_lat_ele_loc_test_pattern(C.lord, ix_patt);
   // c_side.test_pat[0D_NOT_character]
-    C.slave_name.resize(40);
-    for (size_t i = 0; i < C.slave_name.size(); i++)
-      {int rhs = 101 + i + 8 + offset; C.slave_name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.slave_name.size(); i++) {
+    int rhs = 101 + i + 8 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.slave_name.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.attribute.resize(40);
-    for (size_t i = 0; i < C.attribute.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.attribute[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.attribute.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.attribute.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 10 + offset; C.ix_attrib =     rhs;
+  rhs = 10 + offset;
+  C.ix_attrib =   rhs;
 
 }
 
@@ -4238,8 +6030,19 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
     cout << " [1] control: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] control: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("control.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("control.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to control.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to control.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4253,8 +6056,20 @@ extern "C" void test_c_control (Opaque_control_class* F, bool& c_ok) {
     cout << " [3] control: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] control: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("control.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("control.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to control.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to control.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4273,13 +6088,18 @@ void set_CPP_control_var1_test_pattern (CPP_control_var1& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.value =     rhs;
+  rhs = 2 + offset;
+  C.value =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.old_value =     rhs;
+  rhs = 3 + offset;
+  C.old_value =   rhs;
 
 }
 
@@ -4299,8 +6119,19 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
     cout << " [1] control_var1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] control_var1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("control_var1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("control_var1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to control_var1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to control_var1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4314,8 +6145,20 @@ extern "C" void test_c_control_var1 (Opaque_control_var1_class* F, bool& c_ok) {
     cout << " [3] control_var1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] control_var1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("control_var1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("control_var1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to control_var1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to control_var1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4334,30 +6177,41 @@ void set_CPP_control_ramp1_test_pattern (CPP_control_ramp1& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.y_knot.resize(0);
-    else {
-      C.y_knot.resize(3);
-      for (size_t i = 0; i < C.y_knot.size(); i++)
-        {int rhs = 101 + i + 1 + offset; C.y_knot[i] =     rhs;}  }
-  // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.stack.resize(0);
-    else {
-      C.stack.resize(3);
-      for (size_t i = 0; i < C.stack.size(); i++)
-    {set_CPP_expression_atom_test_pattern(C.stack[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.y_knot.resize(0);
+  else {
+    C.y_knot.resize(3);
+    for (auto i{0}; i < C.y_knot.size(); i++) {
+      int rhs = 101 + i + 1 + offset;
+      C.y_knot[i] =   rhs;
     }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3)
+    C.stack.resize(0);
+  else {
+    C.stack.resize(3);
+    for (auto i{0}; i < C.stack.size(); i++) {
+      set_CPP_expression_atom_test_pattern(C.stack[i], ix_patt + i + 1);
+    }
+  }
   // c_side.test_pat[0D_NOT_character]
-    C.attribute.resize(40);
-    for (size_t i = 0; i < C.attribute.size(); i++)
-      {int rhs = 101 + i + 5 + offset; C.attribute[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.attribute.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.attribute.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.slave_name.resize(40);
-    for (size_t i = 0; i < C.slave_name.size(); i++)
-      {int rhs = 101 + i + 6 + offset; C.slave_name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.slave_name.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.slave_name.emplace(str);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 7 + offset; C.is_controller =     (rhs % 2 == 0);
+  rhs = 7 + offset;
+  C.is_controller =   (rhs % 2 == 0);
 
 }
 
@@ -4377,8 +6231,19 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
     cout << " [1] control_ramp1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] control_ramp1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("control_ramp1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("control_ramp1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to control_ramp1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to control_ramp1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4392,8 +6257,20 @@ extern "C" void test_c_control_ramp1 (Opaque_control_ramp1_class* F, bool& c_ok)
     cout << " [3] control_ramp1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] control_ramp1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("control_ramp1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("control_ramp1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to control_ramp1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to control_ramp1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4412,36 +6289,42 @@ void set_CPP_controller_test_pattern (CPP_controller& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.var.resize(0);
-    else {
-      C.var.resize(3);
-      for (size_t i = 0; i < C.var.size(); i++)
-    {set_CPP_control_var1_test_pattern(C.var[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.var.resize(0);
+  else {
+    C.var.resize(3);
+    for (auto i{0}; i < C.var.size(); i++) {
+      set_CPP_control_var1_test_pattern(C.var[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.ramp.resize(0);
-    else {
-      C.ramp.resize(3);
-      for (size_t i = 0; i < C.ramp.size(); i++)
-    {set_CPP_control_ramp1_test_pattern(C.ramp[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.ramp.resize(0);
+  else {
+    C.ramp.resize(3);
+    for (auto i{0}; i < C.ramp.size(); i++) {
+      set_CPP_control_ramp1_test_pattern(C.ramp[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.ramper_lord.resize(0);
-    else {
-      C.ramper_lord.resize(3);
-      for (size_t i = 0; i < C.ramper_lord.size(); i++)
-    {set_CPP_ramper_lord_test_pattern(C.ramper_lord[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.ramper_lord.resize(0);
+  else {
+    C.ramper_lord.resize(3);
+    for (auto i{0}; i < C.ramper_lord.size(); i++) {
+      set_CPP_ramper_lord_test_pattern(C.ramper_lord[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.x_knot.resize(0);
-    else {
-      C.x_knot.resize(3);
-      for (size_t i = 0; i < C.x_knot.size(); i++)
-        {int rhs = 101 + i + 7 + offset; C.x_knot[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.x_knot.resize(0);
+  else {
+    C.x_knot.resize(3);
+    for (auto i{0}; i < C.x_knot.size(); i++) {
+      int rhs = 101 + i + 7 + offset;
+      C.x_knot[i] =   rhs;
+    }
+  }
 
 }
 
@@ -4461,8 +6344,19 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
     cout << " [1] controller: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] controller: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("controller.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("controller.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to controller.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to controller.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4476,8 +6370,20 @@ extern "C" void test_c_controller (Opaque_controller_class* F, bool& c_ok) {
     cout << " [3] controller: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] controller: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("controller.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("controller.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to controller.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to controller.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4496,11 +6402,14 @@ void set_CPP_ellipse_beam_init_test_pattern (CPP_ellipse_beam_init& C, int ix_pa
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.part_per_ellipse =     rhs;
+  rhs = 1 + offset;
+  C.part_per_ellipse =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_ellipse =     rhs;
+  rhs = 2 + offset;
+  C.n_ellipse =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.sigma_cutoff =     rhs;
+  rhs = 3 + offset;
+  C.sigma_cutoff =   rhs;
 
 }
 
@@ -4520,8 +6429,19 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
     cout << " [1] ellipse_beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ellipse_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("ellipse_beam_init.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ellipse_beam_init.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to ellipse_beam_init.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to ellipse_beam_init.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4535,8 +6455,20 @@ extern "C" void test_c_ellipse_beam_init (Opaque_ellipse_beam_init_class* F, boo
     cout << " [3] ellipse_beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ellipse_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("ellipse_beam_init.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ellipse_beam_init.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to ellipse_beam_init.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to ellipse_beam_init.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4555,12 +6487,16 @@ void set_CPP_kv_beam_init_test_pattern (CPP_kv_beam_init& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_integer]
-    for (size_t i = 0; i < C.part_per_phi.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.part_per_phi[i] =     rhs;}
+  for (auto i{0}; i < C.part_per_phi.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.part_per_phi[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_I2 =     rhs;
+  rhs = 2 + offset;
+  C.n_I2 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.A =     rhs;
+  rhs = 3 + offset;
+  C.A =   rhs;
 
 }
 
@@ -4580,8 +6516,19 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
     cout << " [1] kv_beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] kv_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("kv_beam_init.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("kv_beam_init.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to kv_beam_init.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to kv_beam_init.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4595,8 +6542,20 @@ extern "C" void test_c_kv_beam_init (Opaque_kv_beam_init_class* F, bool& c_ok) {
     cout << " [3] kv_beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] kv_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("kv_beam_init.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("kv_beam_init.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to kv_beam_init.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to kv_beam_init.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4615,17 +6574,23 @@ void set_CPP_grid_beam_init_test_pattern (CPP_grid_beam_init& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.n_x =     rhs;
+  rhs = 1 + offset;
+  C.n_x =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.n_px =     rhs;
+  rhs = 2 + offset;
+  C.n_px =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.x_min =     rhs;
+  rhs = 3 + offset;
+  C.x_min =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.x_max =     rhs;
+  rhs = 4 + offset;
+  C.x_max =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.px_min =     rhs;
+  rhs = 5 + offset;
+  C.px_min =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.px_max =     rhs;
+  rhs = 6 + offset;
+  C.px_max =   rhs;
 
 }
 
@@ -4645,8 +6610,19 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
     cout << " [1] grid_beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] grid_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("grid_beam_init.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_beam_init.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to grid_beam_init.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to grid_beam_init.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4660,8 +6636,20 @@ extern "C" void test_c_grid_beam_init (Opaque_grid_beam_init_class* F, bool& c_o
     cout << " [3] grid_beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] grid_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("grid_beam_init.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("grid_beam_init.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to grid_beam_init.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to grid_beam_init.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4680,97 +6668,145 @@ void set_CPP_beam_init_test_pattern (CPP_beam_init& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.position_file.resize(400);
-    for (size_t i = 0; i < C.position_file.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.position_file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.position_file.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.position_file.emplace(str);
   // c_side.test_pat[1D_NOT_character]
-    for (size_t i = 0; i < C.distribution_type.size(); i++) {
-      C.distribution_type[i].resize(16);
-      for (size_t j = 0; j < C.distribution_type[i].size(); j++)
-        {C.distribution_type[i][j] = 'a' + (101 + i + 10*(j+1) + 2 + offset) % 26;}
+  for (auto i{0}; i < C.distribution_type.size(); i++) {
+    C.distribution_type[i].resize(16);
+    for (auto j{0}; j < C.distribution_type[i].size(); j++) {
+      C.distribution_type[i][j] = 'a' + (101 + i + 10 * (j + 1) + 2 + offset) % 26;
     }
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.spin.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.spin[i] =     rhs;}
+  for (auto i{0}; i < C.spin.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.spin[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_type]
-    for (size_t i = 0; i < C.ellipse.size(); i++)
-      {int rhs = 101 + i + 4 + offset; set_CPP_ellipse_beam_init_test_pattern(C.ellipse[i],
-    ix_patt+i+1);}
+  for (auto i{0}; i < C.ellipse.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    set_CPP_ellipse_beam_init_test_pattern(C.ellipse[i], ix_patt + i + 1);
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_kv_beam_init_test_pattern(C.KV, ix_patt);
+  set_CPP_kv_beam_init_test_pattern(C.KV, ix_patt);
   // c_side.test_pat[1D_NOT_type]
-    for (size_t i = 0; i < C.grid.size(); i++)
-      {int rhs = 101 + i + 6 + offset; set_CPP_grid_beam_init_test_pattern(C.grid[i],
-    ix_patt+i+1);}
+  for (auto i{0}; i < C.grid.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    set_CPP_grid_beam_init_test_pattern(C.grid[i], ix_patt + i + 1);
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.center_jitter.size(); i++)
-      {int rhs = 101 + i + 7 + offset; C.center_jitter[i] =     rhs;}
+  for (auto i{0}; i < C.center_jitter.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    C.center_jitter[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.emit_jitter.size(); i++)
-      {int rhs = 101 + i + 8 + offset; C.emit_jitter[i] =     rhs;}
+  for (auto i{0}; i < C.emit_jitter.size(); i++) {
+    int rhs = 101 + i + 8 + offset;
+    C.emit_jitter[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.sig_z_jitter =     rhs;
+  rhs = 9 + offset;
+  C.sig_z_jitter =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.sig_pz_jitter =     rhs;
+  rhs = 10 + offset;
+  C.sig_pz_jitter =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 11 + offset; C.n_particle =     rhs;
+  rhs = 11 + offset;
+  C.n_particle =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 12 + offset; C.renorm_center =     (rhs % 2 == 0);
+  rhs = 12 + offset;
+  C.renorm_center =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 13 + offset; C.renorm_sigma =     (rhs % 2 == 0);
+  rhs = 13 + offset;
+  C.renorm_sigma =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_character]
-    C.random_engine.resize(16);
-    for (size_t i = 0; i < C.random_engine.size(); i++)
-      {int rhs = 101 + i + 14 + offset; C.random_engine[i] = 'a' + rhs % 26;}
+  auto str = std::string(16, ' ');
+  for (auto i{0}; i < C.random_engine.size(); i++) {
+    int rhs = 101 + i + 14 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.random_engine.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.random_gauss_converter.resize(16);
-    for (size_t i = 0; i < C.random_gauss_converter.size(); i++)
-      {int rhs = 101 + i + 15 + offset; C.random_gauss_converter[i] = 'a' + rhs % 26;}
+  auto str = std::string(16, ' ');
+  for (auto i{0}; i < C.random_gauss_converter.size(); i++) {
+    int rhs = 101 + i + 15 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.random_gauss_converter.emplace(str);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 16 + offset; C.random_sigma_cutoff =     rhs;
+  rhs = 16 + offset;
+  C.random_sigma_cutoff =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 17 + offset; C.a_norm_emit =     rhs;
+  rhs = 17 + offset;
+  C.a_norm_emit =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 18 + offset; C.b_norm_emit =     rhs;
+  rhs = 18 + offset;
+  C.b_norm_emit =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 19 + offset; C.a_emit =     rhs;
+  rhs = 19 + offset;
+  C.a_emit =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 20 + offset; C.b_emit =     rhs;
+  rhs = 20 + offset;
+  C.b_emit =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 21 + offset; C.dPz_dz =     rhs;
+  rhs = 21 + offset;
+  C.dPz_dz =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.center.size(); i++)
-      {int rhs = 101 + i + 22 + offset; C.center[i] =     rhs;}
+  for (auto i{0}; i < C.center.size(); i++) {
+    int rhs = 101 + i + 22 + offset;
+    C.center[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 23 + offset; C.t_offset =     rhs;
+  rhs = 23 + offset;
+  C.t_offset =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 24 + offset; C.dt_bunch =     rhs;
+  rhs = 24 + offset;
+  C.dt_bunch =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 25 + offset; C.sig_z =     rhs;
+  rhs = 25 + offset;
+  C.sig_z =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 26 + offset; C.sig_pz =     rhs;
+  rhs = 26 + offset;
+  C.sig_pz =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 27 + offset; C.bunch_charge =     rhs;
+  rhs = 27 + offset;
+  C.bunch_charge =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 28 + offset; C.n_bunch =     rhs;
+  rhs = 28 + offset;
+  C.n_bunch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 29 + offset; C.ix_turn =     rhs;
+  rhs = 29 + offset;
+  C.ix_turn =   rhs;
   // c_side.test_pat[0D_NOT_character]
-    C.species.resize(16);
-    for (size_t i = 0; i < C.species.size(); i++)
-      {int rhs = 101 + i + 30 + offset; C.species[i] = 'a' + rhs % 26;}
+  auto str = std::string(16, ' ');
+  for (auto i{0}; i < C.species.size(); i++) {
+    int rhs = 101 + i + 30 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.species.emplace(str);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 31 + offset; C.full_6D_coupling_calc =     (rhs % 2 == 0);
+  rhs = 31 + offset;
+  C.full_6D_coupling_calc =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 32 + offset; C.use_particle_start =     (rhs % 2 == 0);
+  rhs = 32 + offset;
+  C.use_particle_start =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 33 + offset; C.use_t_coords =     (rhs % 2 == 0);
+  rhs = 33 + offset;
+  C.use_t_coords =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 34 + offset; C.use_z_as_t =     (rhs % 2 == 0);
+  rhs = 34 + offset;
+  C.use_z_as_t =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_character]
-    C.file_name.resize(200);
-    for (size_t i = 0; i < C.file_name.size(); i++)
-      {int rhs = 101 + i + 35 + offset; C.file_name[i] = 'a' + rhs % 26;}
+  auto str = std::string(200, ' ');
+  for (auto i{0}; i < C.file_name.size(); i++) {
+    int rhs = 101 + i + 35 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.file_name.emplace(str);
 
 }
 
@@ -4790,8 +6826,19 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
     cout << " [1] beam_init: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("beam_init.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("beam_init.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to beam_init.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to beam_init.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4805,8 +6852,20 @@ extern "C" void test_c_beam_init (Opaque_beam_init_class* F, bool& c_ok) {
     cout << " [3] beam_init: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("beam_init.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("beam_init.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to beam_init.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to beam_init.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4825,43 +6884,60 @@ void set_CPP_lat_param_test_pattern (CPP_lat_param& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.n_part =     rhs;
+  rhs = 1 + offset;
+  C.n_part =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.total_length =     rhs;
+  rhs = 2 + offset;
+  C.total_length =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.unstable_factor =     rhs;
+  rhs = 3 + offset;
+  C.unstable_factor =   rhs;
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.t1_with_RF.size(); i++)  for (size_t j = 0; j <
-    C.t1_with_RF[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 4 + offset;
-    C.t1_with_RF[i][j] =     rhs;}
+  for (auto i{0}; i < C.t1_with_RF.size(); i++)
+    for (auto j{0}; j < C.t1_with_RF[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 4 + offset;
+      C.t1_with_RF[i][j] =   rhs;
+    }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.t1_no_RF.size(); i++)  for (size_t j = 0; j <
-    C.t1_no_RF[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 5 + offset;
-    C.t1_no_RF[i][j] =     rhs;}
+  for (auto i{0}; i < C.t1_no_RF.size(); i++)
+    for (auto j{0}; j < C.t1_no_RF[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 5 + offset;
+      C.t1_no_RF[i][j] =   rhs;
+    }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.spin_tune =     rhs;
+  rhs = 6 + offset;
+  C.spin_tune =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.particle =     rhs;
+  rhs = 7 + offset;
+  C.particle =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 8 + offset; C.default_tracking_species =     rhs;
+  rhs = 8 + offset;
+  C.default_tracking_species =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 9 + offset; C.geometry =     rhs;
+  rhs = 9 + offset;
+  C.geometry =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 10 + offset; C.ixx =     rhs;
+  rhs = 10 + offset;
+  C.ixx =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 11 + offset; C.stable =     (rhs % 2 == 0);
+  rhs = 11 + offset;
+  C.stable =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 12 + offset; C.live_branch =     (rhs % 2 == 0);
+  rhs = 12 + offset;
+  C.live_branch =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 13 + offset; C.g1_integral =     rhs;
+  rhs = 13 + offset;
+  C.g1_integral =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 14 + offset; C.g2_integral =     rhs;
+  rhs = 14 + offset;
+  C.g2_integral =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 15 + offset; C.g3_integral =     rhs;
+  rhs = 15 + offset;
+  C.g3_integral =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_bookkeeping_state_test_pattern(C.bookkeeping_state, ix_patt);
+  set_CPP_bookkeeping_state_test_pattern(C.bookkeeping_state, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_beam_init_test_pattern(C.beam_init, ix_patt);
+  set_CPP_beam_init_test_pattern(C.beam_init, ix_patt);
 
 }
 
@@ -4881,8 +6957,19 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
     cout << " [1] lat_param: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] lat_param: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("lat_param.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("lat_param.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to lat_param.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to lat_param.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4896,8 +6983,20 @@ extern "C" void test_c_lat_param (Opaque_lat_param_class* F, bool& c_ok) {
     cout << " [3] lat_param: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] lat_param: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("lat_param.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("lat_param.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to lat_param.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to lat_param.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4916,17 +7015,23 @@ void set_CPP_mode_info_test_pattern (CPP_mode_info& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 1 + offset; C.stable =     (rhs % 2 == 0);
+  rhs = 1 + offset;
+  C.stable =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.tune =     rhs;
+  rhs = 2 + offset;
+  C.tune =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.emit =     rhs;
+  rhs = 3 + offset;
+  C.emit =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.chrom =     rhs;
+  rhs = 4 + offset;
+  C.chrom =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.sigma =     rhs;
+  rhs = 5 + offset;
+  C.sigma =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.sigmap =     rhs;
+  rhs = 6 + offset;
+  C.sigmap =   rhs;
 
 }
 
@@ -4946,8 +7051,19 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
     cout << " [1] mode_info: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] mode_info: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("mode_info.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("mode_info.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to mode_info.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to mode_info.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -4961,8 +7077,20 @@ extern "C" void test_c_mode_info (Opaque_mode_info_class* F, bool& c_ok) {
     cout << " [3] mode_info: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] mode_info: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("mode_info.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("mode_info.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to mode_info.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to mode_info.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -4981,15 +7109,21 @@ void set_CPP_pre_tracker_test_pattern (CPP_pre_tracker& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.who =     rhs;
+  rhs = 1 + offset;
+  C.who =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.ix_ele_start =     rhs;
+  rhs = 2 + offset;
+  C.ix_ele_start =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.ix_ele_end =     rhs;
+  rhs = 3 + offset;
+  C.ix_ele_end =   rhs;
   // c_side.test_pat[0D_NOT_character]
-    C.input_file.resize(400);
-    for (size_t i = 0; i < C.input_file.size(); i++)
-      {int rhs = 101 + i + 4 + offset; C.input_file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.input_file.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.input_file.emplace(str);
 
 }
 
@@ -5009,8 +7143,19 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
     cout << " [1] pre_tracker: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] pre_tracker: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("pre_tracker.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("pre_tracker.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to pre_tracker.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to pre_tracker.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5024,8 +7169,20 @@ extern "C" void test_c_pre_tracker (Opaque_pre_tracker_class* F, bool& c_ok) {
     cout << " [3] pre_tracker: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] pre_tracker: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("pre_tracker.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("pre_tracker.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to pre_tracker.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to pre_tracker.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5044,20 +7201,28 @@ void set_CPP_anormal_mode_test_pattern (CPP_anormal_mode& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.emittance =     rhs;
+  rhs = 1 + offset;
+  C.emittance =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.emittance_no_vert =     rhs;
+  rhs = 2 + offset;
+  C.emittance_no_vert =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.synch_int.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.synch_int[i] =     rhs;}
+  for (auto i{0}; i < C.synch_int.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.synch_int[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.j_damp =     rhs;
+  rhs = 4 + offset;
+  C.j_damp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.alpha_damp =     rhs;
+  rhs = 5 + offset;
+  C.alpha_damp =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.chrom =     rhs;
+  rhs = 6 + offset;
+  C.chrom =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.tune =     rhs;
+  rhs = 7 + offset;
+  C.tune =   rhs;
 
 }
 
@@ -5077,8 +7242,19 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
     cout << " [1] anormal_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] anormal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("anormal_mode.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("anormal_mode.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to anormal_mode.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to anormal_mode.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5092,8 +7268,20 @@ extern "C" void test_c_anormal_mode (Opaque_anormal_mode_class* F, bool& c_ok) {
     cout << " [3] anormal_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] anormal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("anormal_mode.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("anormal_mode.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to anormal_mode.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to anormal_mode.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5112,19 +7300,26 @@ void set_CPP_linac_normal_mode_test_pattern (CPP_linac_normal_mode& C, int ix_pa
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.i2_E4 =     rhs;
+  rhs = 1 + offset;
+  C.i2_E4 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.i3_E7 =     rhs;
+  rhs = 2 + offset;
+  C.i3_E7 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.i5a_E6 =     rhs;
+  rhs = 3 + offset;
+  C.i5a_E6 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.i5b_E6 =     rhs;
+  rhs = 4 + offset;
+  C.i5b_E6 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.sig_E1 =     rhs;
+  rhs = 5 + offset;
+  C.sig_E1 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.a_emittance_end =     rhs;
+  rhs = 6 + offset;
+  C.a_emittance_end =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.b_emittance_end =     rhs;
+  rhs = 7 + offset;
+  C.b_emittance_end =   rhs;
 
 }
 
@@ -5144,8 +7339,19 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
     cout << " [1] linac_normal_mode: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] linac_normal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("linac_normal_mode.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("linac_normal_mode.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to linac_normal_mode.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to linac_normal_mode.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5159,8 +7365,20 @@ extern "C" void test_c_linac_normal_mode (Opaque_linac_normal_mode_class* F, boo
     cout << " [3] linac_normal_mode: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] linac_normal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("linac_normal_mode.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("linac_normal_mode.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to linac_normal_mode.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to linac_normal_mode.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5179,32 +7397,42 @@ void set_CPP_normal_modes_test_pattern (CPP_normal_modes& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.synch_int.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.synch_int[i] =     rhs;}
+  for (auto i{0}; i < C.synch_int.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.synch_int[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.sigE_E =     rhs;
+  rhs = 2 + offset;
+  C.sigE_E =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.sig_z =     rhs;
+  rhs = 3 + offset;
+  C.sig_z =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.e_loss =     rhs;
+  rhs = 4 + offset;
+  C.e_loss =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.rf_voltage =     rhs;
+  rhs = 5 + offset;
+  C.rf_voltage =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.pz_aperture =     rhs;
+  rhs = 6 + offset;
+  C.pz_aperture =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.pz_average =     rhs;
+  rhs = 7 + offset;
+  C.pz_average =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.momentum_compaction =     rhs;
+  rhs = 8 + offset;
+  C.momentum_compaction =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.dpz_damp =     rhs;
+  rhs = 9 + offset;
+  C.dpz_damp =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_anormal_mode_test_pattern(C.a, ix_patt);
+  set_CPP_anormal_mode_test_pattern(C.a, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_anormal_mode_test_pattern(C.b, ix_patt);
+  set_CPP_anormal_mode_test_pattern(C.b, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_anormal_mode_test_pattern(C.z, ix_patt);
+  set_CPP_anormal_mode_test_pattern(C.z, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_linac_normal_mode_test_pattern(C.lin, ix_patt);
+  set_CPP_linac_normal_mode_test_pattern(C.lin, ix_patt);
 
 }
 
@@ -5224,8 +7452,19 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
     cout << " [1] normal_modes: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] normal_modes: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("normal_modes.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("normal_modes.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to normal_modes.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to normal_modes.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5239,8 +7478,20 @@ extern "C" void test_c_normal_modes (Opaque_normal_modes_class* F, bool& c_ok) {
     cout << " [3] normal_modes: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] normal_modes: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("normal_modes.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("normal_modes.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to normal_modes.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to normal_modes.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5259,26 +7510,38 @@ void set_CPP_em_field_test_pattern (CPP_em_field& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.E.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.E[i] =     rhs;}
+  for (auto i{0}; i < C.E.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.E[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.B.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.B[i] =     rhs;}
+  for (auto i{0}; i < C.B.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.B[i] =   rhs;
+  }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.dE.size(); i++)  for (size_t j = 0; j <
-    C.dE[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 3 + offset;
-    C.dE[i][j] =     rhs;}
+  for (auto i{0}; i < C.dE.size(); i++)
+    for (auto j{0}; j < C.dE[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 3 + offset;
+      C.dE[i][j] =   rhs;
+    }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.dB.size(); i++)  for (size_t j = 0; j <
-    C.dB[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 4 + offset;
-    C.dB[i][j] =     rhs;}
+  for (auto i{0}; i < C.dB.size(); i++)
+    for (auto j{0}; j < C.dB[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 4 + offset;
+      C.dB[i][j] =   rhs;
+    }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.phi =     rhs;
+  rhs = 5 + offset;
+  C.phi =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.phi_B =     rhs;
+  rhs = 6 + offset;
+  C.phi_B =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.A.size(); i++)
-      {int rhs = 101 + i + 7 + offset; C.A[i] =     rhs;}
+  for (auto i{0}; i < C.A.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    C.A[i] =   rhs;
+  }
 
 }
 
@@ -5298,8 +7561,19 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
     cout << " [1] em_field: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] em_field: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("em_field.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("em_field.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to em_field.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to em_field.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5313,8 +7587,20 @@ extern "C" void test_c_em_field (Opaque_em_field_class* F, bool& c_ok) {
     cout << " [3] em_field: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] em_field: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("em_field.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("em_field.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to em_field.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to em_field.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5333,19 +7619,26 @@ void set_CPP_strong_beam_test_pattern (CPP_strong_beam& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 1 + offset; C.ix_slice =     rhs;
+  rhs = 1 + offset;
+  C.ix_slice =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.x_center =     rhs;
+  rhs = 2 + offset;
+  C.x_center =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.y_center =     rhs;
+  rhs = 3 + offset;
+  C.y_center =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.x_sigma =     rhs;
+  rhs = 4 + offset;
+  C.x_sigma =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.y_sigma =     rhs;
+  rhs = 5 + offset;
+  C.y_sigma =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.dx =     rhs;
+  rhs = 6 + offset;
+  C.dx =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.dy =     rhs;
+  rhs = 7 + offset;
+  C.dy =   rhs;
 
 }
 
@@ -5365,8 +7658,19 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
     cout << " [1] strong_beam: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] strong_beam: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("strong_beam.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("strong_beam.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to strong_beam.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to strong_beam.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5380,8 +7684,20 @@ extern "C" void test_c_strong_beam (Opaque_strong_beam_class* F, bool& c_ok) {
     cout << " [3] strong_beam: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] strong_beam: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("strong_beam.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("strong_beam.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to strong_beam.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to strong_beam.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5400,20 +7716,25 @@ void set_CPP_track_point_test_pattern (CPP_track_point& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.s_body =     rhs;
+  rhs = 1 + offset;
+  C.s_body =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.orb, ix_patt);
+  set_CPP_coord_test_pattern(C.orb, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_em_field_test_pattern(C.field, ix_patt);
+  set_CPP_em_field_test_pattern(C.field, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_strong_beam_test_pattern(C.strong_beam, ix_patt);
+  set_CPP_strong_beam_test_pattern(C.strong_beam, ix_patt);
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.vec0.size(); i++)
-      {int rhs = 101 + i + 5 + offset; C.vec0[i] =     rhs;}
+  for (auto i{0}; i < C.vec0.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    C.vec0[i] =   rhs;
+  }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.mat6.size(); i++)  for (size_t j = 0; j <
-    C.mat6[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 6 + offset;
-    C.mat6[i][j] =     rhs;}
+  for (auto i{0}; i < C.mat6.size(); i++)
+    for (auto j{0}; j < C.mat6[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 6 + offset;
+      C.mat6[i][j] =   rhs;
+    }
 
 }
 
@@ -5433,8 +7754,19 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
     cout << " [1] track_point: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] track_point: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("track_point.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("track_point.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to track_point.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to track_point.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5448,8 +7780,20 @@ extern "C" void test_c_track_point (Opaque_track_point_class* F, bool& c_ok) {
     cout << " [3] track_point: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] track_point: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("track_point.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("track_point.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to track_point.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to track_point.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5468,21 +7812,26 @@ void set_CPP_track_test_pattern (CPP_track& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.pt.resize(0);
-    else {
-      C.pt.resize(3);
-      for (size_t i = 0; i < C.pt.size(); i++)
-    {set_CPP_track_point_test_pattern(C.pt[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.pt.resize(0);
+  else {
+    C.pt.resize(3);
+    for (auto i{0}; i < C.pt.size(); i++) {
+      set_CPP_track_point_test_pattern(C.pt[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.ds_save =     rhs;
+  rhs = 3 + offset;
+  C.ds_save =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.n_pt =     rhs;
+  rhs = 4 + offset;
+  C.n_pt =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.n_bad =     rhs;
+  rhs = 5 + offset;
+  C.n_bad =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 6 + offset; C.n_ok =     rhs;
+  rhs = 6 + offset;
+  C.n_ok =   rhs;
 
 }
 
@@ -5502,8 +7851,19 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
     cout << " [1] track: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] track: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("track.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("track.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to track.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to track.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5517,8 +7877,20 @@ extern "C" void test_c_track (Opaque_track_class* F, bool& c_ok) {
     cout << " [3] track: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] track: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("track.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("track.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to track.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to track.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5537,43 +7909,64 @@ void set_CPP_space_charge_common_test_pattern (CPP_space_charge_common& C, int i
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.ds_track_step =     rhs;
+  rhs = 1 + offset;
+  C.ds_track_step =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.dt_track_step =     rhs;
+  rhs = 2 + offset;
+  C.dt_track_step =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.cathode_strength_cutoff =     rhs;
+  rhs = 3 + offset;
+  C.cathode_strength_cutoff =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.rel_tol_tracking =     rhs;
+  rhs = 4 + offset;
+  C.rel_tol_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.abs_tol_tracking =     rhs;
+  rhs = 5 + offset;
+  C.abs_tol_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.beam_chamber_height =     rhs;
+  rhs = 6 + offset;
+  C.beam_chamber_height =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.lsc_sigma_cutoff =     rhs;
+  rhs = 7 + offset;
+  C.lsc_sigma_cutoff =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.particle_sigma_cutoff =     rhs;
+  rhs = 8 + offset;
+  C.particle_sigma_cutoff =   rhs;
   // c_side.test_pat[1D_NOT_integer]
-    for (size_t i = 0; i < C.space_charge_mesh_size.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.space_charge_mesh_size[i] =     rhs;}
+  for (auto i{0}; i < C.space_charge_mesh_size.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.space_charge_mesh_size[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_integer]
-    for (size_t i = 0; i < C.csr3d_mesh_size.size(); i++)
-      {int rhs = 101 + i + 10 + offset; C.csr3d_mesh_size[i] =     rhs;}
+  for (auto i{0}; i < C.csr3d_mesh_size.size(); i++) {
+    int rhs = 101 + i + 10 + offset;
+    C.csr3d_mesh_size[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 11 + offset; C.n_bin =     rhs;
+  rhs = 11 + offset;
+  C.n_bin =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 12 + offset; C.particle_bin_span =     rhs;
+  rhs = 12 + offset;
+  C.particle_bin_span =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 13 + offset; C.n_shield_images =     rhs;
+  rhs = 13 + offset;
+  C.n_shield_images =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 14 + offset; C.sc_min_in_bin =     rhs;
+  rhs = 14 + offset;
+  C.sc_min_in_bin =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 15 + offset; C.lsc_kick_transverse_dependence =     (rhs % 2 == 0);
+  rhs = 15 + offset;
+  C.lsc_kick_transverse_dependence =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 16 + offset; C.debug =     (rhs % 2 == 0);
+  rhs = 16 + offset;
+  C.debug =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_character]
-    C.diagnostic_output_file.resize(400);
-    for (size_t i = 0; i < C.diagnostic_output_file.size(); i++)
-      {int rhs = 101 + i + 17 + offset; C.diagnostic_output_file[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.diagnostic_output_file.size(); i++) {
+    int rhs = 101 + i + 17 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.diagnostic_output_file.emplace(str);
 
 }
 
@@ -5593,8 +7986,19 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
     cout << " [1] space_charge_common: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] space_charge_common: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("space_charge_common.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("space_charge_common.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to space_charge_common.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to space_charge_common.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5608,8 +8012,20 @@ extern "C" void test_c_space_charge_common (Opaque_space_charge_common_class* F,
     cout << " [3] space_charge_common: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] space_charge_common: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("space_charge_common.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("space_charge_common.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to space_charge_common.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to space_charge_common.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5628,86 +8044,127 @@ void set_CPP_bmad_common_test_pattern (CPP_bmad_common& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.max_aperture_limit =     rhs;
+  rhs = 1 + offset;
+  C.max_aperture_limit =   rhs;
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.d_orb.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.d_orb[i] =     rhs;}
+  for (auto i{0}; i < C.d_orb.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.d_orb[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.default_ds_step =     rhs;
+  rhs = 3 + offset;
+  C.default_ds_step =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.significant_length =     rhs;
+  rhs = 4 + offset;
+  C.significant_length =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.rel_tol_tracking =     rhs;
+  rhs = 5 + offset;
+  C.rel_tol_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.abs_tol_tracking =     rhs;
+  rhs = 6 + offset;
+  C.abs_tol_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.rel_tol_adaptive_tracking =     rhs;
+  rhs = 7 + offset;
+  C.rel_tol_adaptive_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.abs_tol_adaptive_tracking =     rhs;
+  rhs = 8 + offset;
+  C.abs_tol_adaptive_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.init_ds_adaptive_tracking =     rhs;
+  rhs = 9 + offset;
+  C.init_ds_adaptive_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.min_ds_adaptive_tracking =     rhs;
+  rhs = 10 + offset;
+  C.min_ds_adaptive_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.fatal_ds_adaptive_tracking =     rhs;
+  rhs = 11 + offset;
+  C.fatal_ds_adaptive_tracking =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 12 + offset; C.autoscale_amp_abs_tol =     rhs;
+  rhs = 12 + offset;
+  C.autoscale_amp_abs_tol =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 13 + offset; C.autoscale_amp_rel_tol =     rhs;
+  rhs = 13 + offset;
+  C.autoscale_amp_rel_tol =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 14 + offset; C.autoscale_phase_tol =     rhs;
+  rhs = 14 + offset;
+  C.autoscale_phase_tol =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 15 + offset; C.electric_dipole_moment =     rhs;
+  rhs = 15 + offset;
+  C.electric_dipole_moment =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 16 + offset; C.synch_rad_scale =     rhs;
+  rhs = 16 + offset;
+  C.synch_rad_scale =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 17 + offset; C.sad_eps_scale =     rhs;
+  rhs = 17 + offset;
+  C.sad_eps_scale =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 18 + offset; C.sad_amp_max =     rhs;
+  rhs = 18 + offset;
+  C.sad_amp_max =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 19 + offset; C.sad_n_div_max =     rhs;
+  rhs = 19 + offset;
+  C.sad_n_div_max =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 20 + offset; C.taylor_order =     rhs;
+  rhs = 20 + offset;
+  C.taylor_order =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 21 + offset; C.runge_kutta_order =     rhs;
+  rhs = 21 + offset;
+  C.runge_kutta_order =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 22 + offset; C.default_integ_order =     rhs;
+  rhs = 22 + offset;
+  C.default_integ_order =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 23 + offset; C.max_num_runge_kutta_step =     rhs;
+  rhs = 23 + offset;
+  C.max_num_runge_kutta_step =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 24 + offset; C.rf_phase_below_transition_ref =     (rhs % 2 == 0);
+  rhs = 24 + offset;
+  C.rf_phase_below_transition_ref =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 25 + offset; C.sr_wakes_on =     (rhs % 2 == 0);
+  rhs = 25 + offset;
+  C.sr_wakes_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 26 + offset; C.lr_wakes_on =     (rhs % 2 == 0);
+  rhs = 26 + offset;
+  C.lr_wakes_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 27 + offset; C.auto_bookkeeper =     (rhs % 2 == 0);
+  rhs = 27 + offset;
+  C.auto_bookkeeper =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 28 + offset; C.high_energy_space_charge_on =     (rhs % 2 == 0);
+  rhs = 28 + offset;
+  C.high_energy_space_charge_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 29 + offset; C.csr_and_space_charge_on =     (rhs % 2 == 0);
+  rhs = 29 + offset;
+  C.csr_and_space_charge_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 30 + offset; C.spin_tracking_on =     (rhs % 2 == 0);
+  rhs = 30 + offset;
+  C.spin_tracking_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 31 + offset; C.spin_sokolov_ternov_flipping_on =     (rhs % 2 == 0);
+  rhs = 31 + offset;
+  C.spin_sokolov_ternov_flipping_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 32 + offset; C.radiation_damping_on =     (rhs % 2 == 0);
+  rhs = 32 + offset;
+  C.radiation_damping_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 33 + offset; C.radiation_zero_average =     (rhs % 2 == 0);
+  rhs = 33 + offset;
+  C.radiation_zero_average =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 34 + offset; C.radiation_fluctuations_on =     (rhs % 2 == 0);
+  rhs = 34 + offset;
+  C.radiation_fluctuations_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 35 + offset; C.conserve_taylor_maps =     (rhs % 2 == 0);
+  rhs = 35 + offset;
+  C.conserve_taylor_maps =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 36 + offset; C.absolute_time_tracking =     (rhs % 2 == 0);
+  rhs = 36 + offset;
+  C.absolute_time_tracking =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 37 + offset; C.absolute_time_ref_shift =     (rhs % 2 == 0);
+  rhs = 37 + offset;
+  C.absolute_time_ref_shift =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 38 + offset; C.convert_to_kinetic_momentum =     (rhs % 2 == 0);
+  rhs = 38 + offset;
+  C.convert_to_kinetic_momentum =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 39 + offset; C.aperture_limit_on =     (rhs % 2 == 0);
+  rhs = 39 + offset;
+  C.aperture_limit_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 40 + offset; C.debug =     (rhs % 2 == 0);
+  rhs = 40 + offset;
+  C.debug =   (rhs % 2 == 0);
 
 }
 
@@ -5727,8 +8184,19 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
     cout << " [1] bmad_common: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bmad_common: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("bmad_common.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bmad_common.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to bmad_common.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to bmad_common.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5742,8 +8210,20 @@ extern "C" void test_c_bmad_common (Opaque_bmad_common_class* F, bool& c_ok) {
     cout << " [3] bmad_common: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bmad_common: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("bmad_common.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bmad_common.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to bmad_common.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to bmad_common.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5762,41 +8242,59 @@ void set_CPP_rad_int1_test_pattern (CPP_rad_int1& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.i0 =     rhs;
+  rhs = 1 + offset;
+  C.i0 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.i1 =     rhs;
+  rhs = 2 + offset;
+  C.i1 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 3 + offset; C.i2 =     rhs;
+  rhs = 3 + offset;
+  C.i2 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.i3 =     rhs;
+  rhs = 4 + offset;
+  C.i3 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.i4a =     rhs;
+  rhs = 5 + offset;
+  C.i4a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.i4b =     rhs;
+  rhs = 6 + offset;
+  C.i4b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.i4z =     rhs;
+  rhs = 7 + offset;
+  C.i4z =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.i5a =     rhs;
+  rhs = 8 + offset;
+  C.i5a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.i5b =     rhs;
+  rhs = 9 + offset;
+  C.i5b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 10 + offset; C.i6b =     rhs;
+  rhs = 10 + offset;
+  C.i6b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.lin_i2_E4 =     rhs;
+  rhs = 11 + offset;
+  C.lin_i2_E4 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 12 + offset; C.lin_i3_E7 =     rhs;
+  rhs = 12 + offset;
+  C.lin_i3_E7 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 13 + offset; C.lin_i5a_E6 =     rhs;
+  rhs = 13 + offset;
+  C.lin_i5a_E6 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 14 + offset; C.lin_i5b_E6 =     rhs;
+  rhs = 14 + offset;
+  C.lin_i5b_E6 =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 15 + offset; C.lin_norm_emit_a =     rhs;
+  rhs = 15 + offset;
+  C.lin_norm_emit_a =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 16 + offset; C.lin_norm_emit_b =     rhs;
+  rhs = 16 + offset;
+  C.lin_norm_emit_b =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 17 + offset; C.lin_sig_E =     rhs;
+  rhs = 17 + offset;
+  C.lin_sig_E =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 18 + offset; C.n_steps =     rhs;
+  rhs = 18 + offset;
+  C.n_steps =   rhs;
 
 }
 
@@ -5816,8 +8314,19 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
     cout << " [1] rad_int1: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_int1: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("rad_int1.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_int1.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to rad_int1.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to rad_int1.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5831,8 +8340,20 @@ extern "C" void test_c_rad_int1 (Opaque_rad_int1_class* F, bool& c_ok) {
     cout << " [3] rad_int1: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_int1: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("rad_int1.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_int1.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to rad_int1.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to rad_int1.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5851,13 +8372,14 @@ void set_CPP_rad_int_branch_test_pattern (CPP_rad_int_branch& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.ele.resize(0);
-    else {
-      C.ele.resize(3);
-      for (size_t i = 0; i < C.ele.size(); i++)
-    {set_CPP_rad_int1_test_pattern(C.ele[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.ele.resize(0);
+  else {
+    C.ele.resize(3);
+    for (auto i{0}; i < C.ele.size(); i++) {
+      set_CPP_rad_int1_test_pattern(C.ele[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -5877,8 +8399,19 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
     cout << " [1] rad_int_branch: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_int_branch: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("rad_int_branch.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_int_branch.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to rad_int_branch.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to rad_int_branch.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5892,8 +8425,20 @@ extern "C" void test_c_rad_int_branch (Opaque_rad_int_branch_class* F, bool& c_o
     cout << " [3] rad_int_branch: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_int_branch: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("rad_int_branch.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_int_branch.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to rad_int_branch.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to rad_int_branch.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5912,13 +8457,14 @@ void set_CPP_rad_int_all_ele_test_pattern (CPP_rad_int_all_ele& C, int ix_patt) 
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.branch.resize(0);
-    else {
-      C.branch.resize(3);
-      for (size_t i = 0; i < C.branch.size(); i++)
-    {set_CPP_rad_int_branch_test_pattern(C.branch[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.branch.resize(0);
+  else {
+    C.branch.resize(3);
+    for (auto i{0}; i < C.branch.size(); i++) {
+      set_CPP_rad_int_branch_test_pattern(C.branch[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -5938,8 +8484,19 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
     cout << " [1] rad_int_all_ele: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] rad_int_all_ele: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("rad_int_all_ele.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_int_all_ele.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to rad_int_all_ele.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to rad_int_all_ele.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -5953,8 +8510,20 @@ extern "C" void test_c_rad_int_all_ele (Opaque_rad_int_all_ele_class* F, bool& c
     cout << " [3] rad_int_all_ele: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] rad_int_all_ele: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("rad_int_all_ele.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("rad_int_all_ele.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to rad_int_all_ele.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to rad_int_all_ele.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -5973,151 +8542,174 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.type.resize(40);
-    for (size_t i = 0; i < C.type.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.type[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.type.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.type.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.alias.resize(40);
-    for (size_t i = 0; i < C.alias.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.alias[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.alias.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.alias.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.component_name.resize(40);
-    for (size_t i = 0; i < C.component_name.size(); i++)
-      {int rhs = 101 + i + 4 + offset; C.component_name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.component_name.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.component_name.emplace(str);
   // c_side.test_pat[0D_PTR_character]
-    if (ix_patt < 3)
-      C.descrip.reset();
-    else {
-      C.descrip.emplace(200, ' ');
-      for (size_t i = 0; i < C.descrip->size(); i++) {
-        (*C.descrip)[i] = 'a' + (101 + i + 5 + offset) % 26; }
+  if (ix_patt < 3)
+    C.descrip.reset();
+  else {
+    auto str = std::string(200, ' ');
+    for (auto i{0}; i < 200; i++) {
+      str[i] = 'a' + (101 + i + 5 + offset) % 26;
     }
+    C.descrip.emplace(str);
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.a, ix_patt);
+  set_CPP_twiss_test_pattern(C.a, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.b, ix_patt);
+  set_CPP_twiss_test_pattern(C.b, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.z, ix_patt);
+  set_CPP_twiss_test_pattern(C.z, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_xy_disp_test_pattern(C.x, ix_patt);
+  set_CPP_xy_disp_test_pattern(C.x, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_xy_disp_test_pattern(C.y, ix_patt);
+  set_CPP_xy_disp_test_pattern(C.y, ix_patt);
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.ac_kick.reset();
-    else {
-      C.ac_kick.emplace();
-      set_CPP_ac_kicker_test_pattern((*C.ac_kick), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.ac_kick.reset();
+  else {
+    C.ac_kick.emplace();
+    set_CPP_ac_kicker_test_pattern(C.ac_kick.value(), ix_patt);
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_bookkeeping_state_test_pattern(C.bookkeeping_state, ix_patt);
+  set_CPP_bookkeeping_state_test_pattern(C.bookkeeping_state, ix_patt);
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.control.reset();
-    else {
-      C.control.emplace();
-      set_CPP_controller_test_pattern((*C.control), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.control.reset();
+  else {
+    C.control.emplace();
+    set_CPP_controller_test_pattern(C.control.value(), ix_patt);
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_floor_position_test_pattern(C.floor, ix_patt);
+  set_CPP_floor_position_test_pattern(C.floor, ix_patt);
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.high_energy_space_charge.reset();
-    else {
-      C.high_energy_space_charge.emplace();
-      set_CPP_high_energy_space_charge_test_pattern((*C.high_energy_space_charge), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.high_energy_space_charge.reset();
+  else {
+    C.high_energy_space_charge.emplace();
+    set_CPP_high_energy_space_charge_test_pattern(C.high_energy_space_charge.value(), ix_patt);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.mode3.reset();
-    else {
-      C.mode3.emplace();
-      set_CPP_mode3_test_pattern((*C.mode3), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.mode3.reset();
+  else {
+    C.mode3.emplace();
+    set_CPP_mode3_test_pattern(C.mode3.value(), ix_patt);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.photon.reset();
-    else {
-      C.photon.emplace();
-      set_CPP_photon_element_test_pattern((*C.photon), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.photon.reset();
+  else {
+    C.photon.emplace();
+    set_CPP_photon_element_test_pattern(C.photon.value(), ix_patt);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.rad_map.reset();
-    else {
-      C.rad_map.emplace();
-      set_CPP_rad_map_ele_test_pattern((*C.rad_map), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.rad_map.reset();
+  else {
+    C.rad_map.emplace();
+    set_CPP_rad_map_ele_test_pattern(C.rad_map.value(), ix_patt);
+  }
   // c_side.test_pat[1D_NOT_type]
-    for (size_t i = 0; i < C.taylor.size(); i++)
-      {int rhs = 101 + i + 26 + offset; set_CPP_taylor_test_pattern(C.taylor[i],
-    ix_patt+i+1);}
+  for (auto i{0}; i < C.taylor.size(); i++) {
+    int rhs = 101 + i + 26 + offset;
+    set_CPP_taylor_test_pattern(C.taylor[i], ix_patt + i + 1);
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.spin_taylor_ref_orb_in.size(); i++)
-      {int rhs = 101 + i + 27 + offset; C.spin_taylor_ref_orb_in[i] =     rhs;}
+  for (auto i{0}; i < C.spin_taylor_ref_orb_in.size(); i++) {
+    int rhs = 101 + i + 27 + offset;
+    C.spin_taylor_ref_orb_in[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_type]
-    for (size_t i = 0; i < C.spin_taylor.size(); i++)
-      {int rhs = 101 + i + 28 + offset; set_CPP_taylor_test_pattern(C.spin_taylor[i],
-    ix_patt+i+1);}
+  for (auto i{0}; i < C.spin_taylor.size(); i++) {
+    int rhs = 101 + i + 28 + offset;
+    set_CPP_taylor_test_pattern(C.spin_taylor[i], ix_patt + i + 1);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.wake.reset();
-    else {
-      C.wake.emplace();
-      set_CPP_wake_test_pattern((*C.wake), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.wake.reset();
+  else {
+    C.wake.emplace();
+    set_CPP_wake_test_pattern(C.wake.value(), ix_patt);
+  }
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.wall3d.resize(0);
-    else {
-      C.wall3d.resize(3);
-      for (size_t i = 0; i < C.wall3d.size(); i++)
-    {set_CPP_wall3d_test_pattern(C.wall3d[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.wall3d.resize(0);
+  else {
+    C.wall3d.resize(3);
+    for (auto i{0}; i < C.wall3d.size(); i++) {
+      set_CPP_wall3d_test_pattern(C.wall3d[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.cartesian_map.resize(0);
-    else {
-      C.cartesian_map.resize(3);
-      for (size_t i = 0; i < C.cartesian_map.size(); i++)
-    {set_CPP_cartesian_map_test_pattern(C.cartesian_map[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.cartesian_map.resize(0);
+  else {
+    C.cartesian_map.resize(3);
+    for (auto i{0}; i < C.cartesian_map.size(); i++) {
+      set_CPP_cartesian_map_test_pattern(C.cartesian_map[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.cylindrical_map.resize(0);
-    else {
-      C.cylindrical_map.resize(3);
-      for (size_t i = 0; i < C.cylindrical_map.size(); i++)
-    {set_CPP_cylindrical_map_test_pattern(C.cylindrical_map[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.cylindrical_map.resize(0);
+  else {
+    C.cylindrical_map.resize(3);
+    for (auto i{0}; i < C.cylindrical_map.size(); i++) {
+      set_CPP_cylindrical_map_test_pattern(C.cylindrical_map[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.gen_grad_map.resize(0);
-    else {
-      C.gen_grad_map.resize(3);
-      for (size_t i = 0; i < C.gen_grad_map.size(); i++)
-    {set_CPP_gen_grad_map_test_pattern(C.gen_grad_map[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.gen_grad_map.resize(0);
+  else {
+    C.gen_grad_map.resize(3);
+    for (auto i{0}; i < C.gen_grad_map.size(); i++) {
+      set_CPP_gen_grad_map_test_pattern(C.gen_grad_map[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.grid_field.resize(0);
-    else {
-      C.grid_field.resize(3);
-      for (size_t i = 0; i < C.grid_field.size(); i++)
-    {set_CPP_grid_field_test_pattern(C.grid_field[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.grid_field.resize(0);
+  else {
+    C.grid_field.resize(3);
+    for (auto i{0}; i < C.grid_field.size(); i++) {
+      set_CPP_grid_field_test_pattern(C.grid_field[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.map_ref_orb_in, ix_patt);
+  set_CPP_coord_test_pattern(C.map_ref_orb_in, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.map_ref_orb_out, ix_patt);
+  set_CPP_coord_test_pattern(C.map_ref_orb_out, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.time_ref_orb_in, ix_patt);
+  set_CPP_coord_test_pattern(C.time_ref_orb_in, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.time_ref_orb_out, ix_patt);
+  set_CPP_coord_test_pattern(C.time_ref_orb_out, ix_patt);
   // c_side.test_pat[1D_NOT_real]
   // (custom - off-by-one ele attribs)
   C.value[0] = 0;
@@ -6133,157 +8725,222 @@ void set_CPP_ele_test_pattern (CPP_ele& C, int ix_patt) {
     C.old_value[i] = rhs;
   }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.spin_q.size(); i++)  for (size_t j = 0; j <
-    C.spin_q[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 47 + offset;
-    C.spin_q[i][j] =     rhs;}
+  for (auto i{0}; i < C.spin_q.size(); i++)
+    for (auto j{0}; j < C.spin_q[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 47 + offset;
+      C.spin_q[i][j] =   rhs;
+    }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.vec0.size(); i++)
-      {int rhs = 101 + i + 48 + offset; C.vec0[i] =     rhs;}
+  for (auto i{0}; i < C.vec0.size(); i++) {
+    int rhs = 101 + i + 48 + offset;
+    C.vec0[i] =   rhs;
+  }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.mat6.size(); i++)  for (size_t j = 0; j <
-    C.mat6[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 49 + offset;
-    C.mat6[i][j] =     rhs;}
+  for (auto i{0}; i < C.mat6.size(); i++)
+    for (auto j{0}; j < C.mat6[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 49 + offset;
+      C.mat6[i][j] =   rhs;
+    }
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.c_mat.size(); i++)  for (size_t j = 0; j <
-    C.c_mat[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 50 + offset;
-    C.c_mat[i][j] =     rhs;}
+  for (auto i{0}; i < C.c_mat.size(); i++)
+    for (auto j{0}; j < C.c_mat[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 50 + offset;
+      C.c_mat[i][j] =   rhs;
+    }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 51 + offset; C.gamma_c =     rhs;
+  rhs = 51 + offset;
+  C.gamma_c =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 52 + offset; C.s_start =     rhs;
+  rhs = 52 + offset;
+  C.s_start =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 53 + offset; C.s =     rhs;
+  rhs = 53 + offset;
+  C.s =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 54 + offset; C.ref_time =     rhs;
+  rhs = 54 + offset;
+  C.ref_time =   rhs;
   // c_side.test_pat[1D_PTR_real]
-    if (ix_patt < 3)
-      C.a_pole.resize(0);
-    else {
-      C.a_pole.resize(3);
-      for (size_t i = 0; i < C.a_pole.size(); i++)
-        {int rhs = 101 + i + 55 + offset; C.a_pole[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.a_pole.resize(0);
+  else {
+    C.a_pole.resize(3);
+    for (auto i{0}; i < C.a_pole.size(); i++) {
+      int rhs = 101 + i + 55 + offset;
+      C.a_pole[i] =   rhs;
+    }
+  }
   // c_side.test_pat[1D_PTR_real]
-    if (ix_patt < 3)
-      C.b_pole.resize(0);
-    else {
-      C.b_pole.resize(3);
-      for (size_t i = 0; i < C.b_pole.size(); i++)
-        {int rhs = 101 + i + 57 + offset; C.b_pole[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.b_pole.resize(0);
+  else {
+    C.b_pole.resize(3);
+    for (auto i{0}; i < C.b_pole.size(); i++) {
+      int rhs = 101 + i + 57 + offset;
+      C.b_pole[i] =   rhs;
+    }
+  }
   // c_side.test_pat[1D_PTR_real]
-    if (ix_patt < 3)
-      C.a_pole_elec.resize(0);
-    else {
-      C.a_pole_elec.resize(3);
-      for (size_t i = 0; i < C.a_pole_elec.size(); i++)
-        {int rhs = 101 + i + 59 + offset; C.a_pole_elec[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.a_pole_elec.resize(0);
+  else {
+    C.a_pole_elec.resize(3);
+    for (auto i{0}; i < C.a_pole_elec.size(); i++) {
+      int rhs = 101 + i + 59 + offset;
+      C.a_pole_elec[i] =   rhs;
+    }
+  }
   // c_side.test_pat[1D_PTR_real]
-    if (ix_patt < 3)
-      C.b_pole_elec.resize(0);
-    else {
-      C.b_pole_elec.resize(3);
-      for (size_t i = 0; i < C.b_pole_elec.size(); i++)
-        {int rhs = 101 + i + 61 + offset; C.b_pole_elec[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.b_pole_elec.resize(0);
+  else {
+    C.b_pole_elec.resize(3);
+    for (auto i{0}; i < C.b_pole_elec.size(); i++) {
+      int rhs = 101 + i + 61 + offset;
+      C.b_pole_elec[i] =   rhs;
+    }
+  }
   // c_side.test_pat[1D_PTR_real]
-    if (ix_patt < 3)
-      C.custom.resize(0);
-    else {
-      C.custom.resize(3);
-      for (size_t i = 0; i < C.custom.size(); i++)
-        {int rhs = 101 + i + 63 + offset; C.custom[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.custom.resize(0);
+  else {
+    C.custom.resize(3);
+    for (auto i{0}; i < C.custom.size(); i++) {
+      int rhs = 101 + i + 63 + offset;
+      C.custom[i] =   rhs;
+    }
+  }
   // c_side.test_pat[3D_PTR_real]
-    if (ix_patt < 3)
-      C.r.resize(0);
-    else {
-      C.r.resize(3);
-      for (size_t i = 0; i < C.r.size(); i++) {
-        C.r[i].resize(2);
-        for (size_t j = 0; j < C.r[0].size(); j++) {
-          C.r[i][j].resize(1);
-          for (size_t k = 0; k < C.r[0][0].size(); k++) {
-            auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + 65 + offset;
-            C.r[i][j][k] =     rhs;
-          }
+      if (ix_patt < 3) C.r.resize(0);
+  else {
+    C.r.resize(3);
+    for (auto i{0}; i < C.r.size(); i++) {
+      C.r[i].resize(2);
+      for (auto j{0}; j < C.r[0].size(); j++) {
+        C.r[i][j].resize(1);
+        for (auto k{0}; k < C.r[0][0].size(); k++) {
+          auto rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + 65 + offset;
+          C.r[i][j][k] =       rhs;
         }
       }
     }
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 69 + offset; C.key =     rhs;
+  rhs = 69 + offset;
+  C.key =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 70 + offset; C.sub_key =     rhs;
+  rhs = 70 + offset;
+  C.sub_key =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 71 + offset; C.ix_ele =     rhs;
+  rhs = 71 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 72 + offset; C.ix_branch =     rhs;
+  rhs = 72 + offset;
+  C.ix_branch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 73 + offset; C.lord_status =     rhs;
+  rhs = 73 + offset;
+  C.lord_status =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 74 + offset; C.n_slave =     rhs;
+  rhs = 74 + offset;
+  C.n_slave =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 75 + offset; C.n_slave_field =     rhs;
+  rhs = 75 + offset;
+  C.n_slave_field =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 76 + offset; C.ix1_slave =     rhs;
+  rhs = 76 + offset;
+  C.ix1_slave =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 77 + offset; C.slave_status =     rhs;
+  rhs = 77 + offset;
+  C.slave_status =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 78 + offset; C.n_lord =     rhs;
+  rhs = 78 + offset;
+  C.n_lord =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 79 + offset; C.n_lord_field =     rhs;
+  rhs = 79 + offset;
+  C.n_lord_field =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 80 + offset; C.n_lord_ramper =     rhs;
+  rhs = 80 + offset;
+  C.n_lord_ramper =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 81 + offset; C.ic1_lord =     rhs;
+  rhs = 81 + offset;
+  C.ic1_lord =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 82 + offset; C.ix_pointer =     rhs;
+  rhs = 82 + offset;
+  C.ix_pointer =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 83 + offset; C.ixx =     rhs;
+  rhs = 83 + offset;
+  C.ixx =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 84 + offset; C.iyy =     rhs;
+  rhs = 84 + offset;
+  C.iyy =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 85 + offset; C.izz =     rhs;
+  rhs = 85 + offset;
+  C.izz =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 86 + offset; C.mat6_calc_method =     rhs;
+  rhs = 86 + offset;
+  C.mat6_calc_method =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 87 + offset; C.tracking_method =     rhs;
+  rhs = 87 + offset;
+  C.tracking_method =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 88 + offset; C.spin_tracking_method =     rhs;
+  rhs = 88 + offset;
+  C.spin_tracking_method =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 89 + offset; C.csr_method =     rhs;
+  rhs = 89 + offset;
+  C.csr_method =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 90 + offset; C.space_charge_method =     rhs;
+  rhs = 90 + offset;
+  C.space_charge_method =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 91 + offset; C.ptc_integration_type =     rhs;
+  rhs = 91 + offset;
+  C.ptc_integration_type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 92 + offset; C.field_calc =     rhs;
+  rhs = 92 + offset;
+  C.field_calc =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 93 + offset; C.aperture_at =     rhs;
+  rhs = 93 + offset;
+  C.aperture_at =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 94 + offset; C.aperture_type =     rhs;
+  rhs = 94 + offset;
+  C.aperture_type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 95 + offset; C.ref_species =     rhs;
+  rhs = 95 + offset;
+  C.ref_species =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 96 + offset; C.orientation =     rhs;
+  rhs = 96 + offset;
+  C.orientation =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 97 + offset; C.symplectify =     (rhs % 2 == 0);
+  rhs = 97 + offset;
+  C.symplectify =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 98 + offset; C.mode_flip =     (rhs % 2 == 0);
+  rhs = 98 + offset;
+  C.mode_flip =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 99 + offset; C.multipoles_on =     (rhs % 2 == 0);
+  rhs = 99 + offset;
+  C.multipoles_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 100 + offset; C.scale_multipoles =     (rhs % 2 == 0);
+  rhs = 100 + offset;
+  C.scale_multipoles =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 101 + offset; C.taylor_map_includes_offsets =     (rhs % 2 == 0);
+  rhs = 101 + offset;
+  C.taylor_map_includes_offsets =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 102 + offset; C.field_master =     (rhs % 2 == 0);
+  rhs = 102 + offset;
+  C.field_master =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 103 + offset; C.is_on =     (rhs % 2 == 0);
+  rhs = 103 + offset;
+  C.is_on =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 104 + offset; C.logic =     (rhs % 2 == 0);
+  rhs = 104 + offset;
+  C.logic =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 105 + offset; C.bmad_logic =     (rhs % 2 == 0);
+  rhs = 105 + offset;
+  C.bmad_logic =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 106 + offset; C.select =     (rhs % 2 == 0);
+  rhs = 106 + offset;
+  C.select =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 107 + offset; C.offset_moves_aperture =     (rhs % 2 == 0);
+  rhs = 107 + offset;
+  C.offset_moves_aperture =   (rhs % 2 == 0);
 
 }
 
@@ -6303,8 +8960,19 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
     cout << " [1] ele: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] ele: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("ele.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ele.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to ele.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to ele.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6318,8 +8986,20 @@ extern "C" void test_c_ele (Opaque_ele_class* F, bool& c_ok) {
     cout << " [3] ele: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] ele: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("ele.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("ele.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to ele.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to ele.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6338,10 +9018,13 @@ void set_CPP_complex_taylor_term_test_pattern (CPP_complex_taylor_term& C, int i
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 1 + offset; C.coef =     Complex(rhs, 100+rhs);
+  rhs = 1 + offset;
+  C.coef =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[1D_NOT_integer]
-    for (size_t i = 0; i < C.expn.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.expn[i] =     rhs;}
+  for (auto i{0}; i < C.expn.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.expn[i] =   rhs;
+  }
 
 }
 
@@ -6361,8 +9044,19 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
     cout << " [1] complex_taylor_term: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] complex_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("complex_taylor_term.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("complex_taylor_term.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to complex_taylor_term.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to complex_taylor_term.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6376,8 +9070,20 @@ extern "C" void test_c_complex_taylor_term (Opaque_complex_taylor_term_class* F,
     cout << " [3] complex_taylor_term: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] complex_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("complex_taylor_term.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("complex_taylor_term.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to complex_taylor_term.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to complex_taylor_term.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6396,15 +9102,17 @@ void set_CPP_complex_taylor_test_pattern (CPP_complex_taylor& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_complex]
-    rhs = 1 + offset; C.ref =     Complex(rhs, 100+rhs);
+  rhs = 1 + offset;
+  C.ref =   Complex(rhs, 100 + rhs);
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.term.resize(0);
-    else {
-      C.term.resize(3);
-      for (size_t i = 0; i < C.term.size(); i++)
-    {set_CPP_complex_taylor_term_test_pattern(C.term[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.term.resize(0);
+  else {
+    C.term.resize(3);
+    for (auto i{0}; i < C.term.size(); i++) {
+      set_CPP_complex_taylor_term_test_pattern(C.term[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -6424,8 +9132,19 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
     cout << " [1] complex_taylor: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] complex_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("complex_taylor.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("complex_taylor.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to complex_taylor.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to complex_taylor.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6439,8 +9158,20 @@ extern "C" void test_c_complex_taylor (Opaque_complex_taylor_class* F, bool& c_o
     cout << " [3] complex_taylor: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] complex_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("complex_taylor.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("complex_taylor.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to complex_taylor.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to complex_taylor.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6459,45 +9190,56 @@ void set_CPP_branch_test_pattern (CPP_branch& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.name.resize(40);
-    for (size_t i = 0; i < C.name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.name[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.name.emplace(str);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 2 + offset; C.ix_branch =     rhs;
+  rhs = 2 + offset;
+  C.ix_branch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.ix_from_branch =     rhs;
+  rhs = 3 + offset;
+  C.ix_from_branch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.ix_from_ele =     rhs;
+  rhs = 4 + offset;
+  C.ix_from_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.ix_to_ele =     rhs;
+  rhs = 5 + offset;
+  C.ix_to_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 6 + offset; C.n_ele_track =     rhs;
+  rhs = 6 + offset;
+  C.n_ele_track =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 7 + offset; C.n_ele_max =     rhs;
+  rhs = 7 + offset;
+  C.n_ele_max =   rhs;
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_mode_info_test_pattern(C.a, ix_patt);
+  set_CPP_mode_info_test_pattern(C.a, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_mode_info_test_pattern(C.b, ix_patt);
+  set_CPP_mode_info_test_pattern(C.b, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_mode_info_test_pattern(C.z, ix_patt);
+  set_CPP_mode_info_test_pattern(C.z, ix_patt);
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.ele.resize(0);
-    else {
-      C.ele.resize(3);
-      for (size_t i = 0; i < C.ele.size(); i++)
-    {set_CPP_ele_test_pattern(C.ele[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.ele.resize(0);
+  else {
+    C.ele.resize(3);
+    for (auto i{0}; i < C.ele.size(); i++) {
+      set_CPP_ele_test_pattern(C.ele[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_lat_param_test_pattern(C.param, ix_patt);
+  set_CPP_lat_param_test_pattern(C.param, ix_patt);
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.wall3d.resize(0);
-    else {
-      C.wall3d.resize(3);
-      for (size_t i = 0; i < C.wall3d.size(); i++)
-    {set_CPP_wall3d_test_pattern(C.wall3d[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.wall3d.resize(0);
+  else {
+    C.wall3d.resize(3);
+    for (auto i{0}; i < C.wall3d.size(); i++) {
+      set_CPP_wall3d_test_pattern(C.wall3d[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -6517,8 +9259,19 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
     cout << " [1] branch: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] branch: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("branch.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("branch.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to branch.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to branch.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6532,8 +9285,20 @@ extern "C" void test_c_branch (Opaque_branch_class* F, bool& c_ok) {
     cout << " [3] branch: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] branch: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("branch.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("branch.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to branch.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to branch.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6552,148 +9317,181 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-    C.use_name.resize(200);
-    for (size_t i = 0; i < C.use_name.size(); i++)
-      {int rhs = 101 + i + 1 + offset; C.use_name[i] = 'a' + rhs % 26;}
+  auto str = std::string(200, ' ');
+  for (auto i{0}; i < C.use_name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.use_name.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.lattice.resize(40);
-    for (size_t i = 0; i < C.lattice.size(); i++)
-      {int rhs = 101 + i + 2 + offset; C.lattice[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.lattice.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.lattice.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.machine.resize(40);
-    for (size_t i = 0; i < C.machine.size(); i++)
-      {int rhs = 101 + i + 3 + offset; C.machine[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.machine.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.machine.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.input_file_name.resize(400);
-    for (size_t i = 0; i < C.input_file_name.size(); i++)
-      {int rhs = 101 + i + 4 + offset; C.input_file_name[i] = 'a' + rhs % 26;}
+  auto str = std::string(400, ' ');
+  for (auto i{0}; i < C.input_file_name.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.input_file_name.emplace(str);
   // c_side.test_pat[0D_NOT_character]
-    C.title.resize(80);
-    for (size_t i = 0; i < C.title.size(); i++)
-      {int rhs = 101 + i + 5 + offset; C.title[i] = 'a' + rhs % 26;}
+  auto str = std::string(80, ' ');
+  for (auto i{0}; i < C.title.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.title.emplace(str);
   // c_side.test_pat[1D_ALLOC_character]
-    if (ix_patt < 3)
-      C.print_str.resize(0);
-    else {
-      C.print_str.resize(3);
-      for (size_t i = 0; i < C.print_str.size(); i++){
-        C.print_str[i].resize(100);
-        for (size_t j = 0; j < C.print_str[0].size(); j++) {
-          C.print_str[i][j] = 'a' + (101 + i + 10*(j+1) + 6 + offset) % 26;
-      } }
+  if (ix_patt < 3)
+    C.print_str.resize(0);
+  else {
+    C.print_str.resize(3);
+    for (auto i{0}; i < C.print_str.size(); i++) {
+      C.print_str[i].resize(100);
+      for (auto j{0}; j < C.print_str[0].size(); j++) {
+        C.print_str[i][j] = 'a' + (101 + i + 10 * (j + 1) + 6 + offset) % 26;
+      }
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.constant.resize(0);
-    else {
-      C.constant.resize(3);
-      for (size_t i = 0; i < C.constant.size(); i++)
-    {set_CPP_expression_atom_test_pattern(C.constant[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.constant.resize(0);
+  else {
+    C.constant.resize(3);
+    for (auto i{0}; i < C.constant.size(); i++) {
+      set_CPP_expression_atom_test_pattern(C.constant[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.a.reset();
-    else {
-      C.a.emplace();
-      set_CPP_mode_info_test_pattern((*C.a), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.a.reset();
+  else {
+    C.a.emplace();
+    set_CPP_mode_info_test_pattern(C.a.value(), ix_patt);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.b.reset();
-    else {
-      C.b.emplace();
-      set_CPP_mode_info_test_pattern((*C.b), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.b.reset();
+  else {
+    C.b.emplace();
+    set_CPP_mode_info_test_pattern(C.b.value(), ix_patt);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.z.reset();
-    else {
-      C.z.emplace();
-      set_CPP_mode_info_test_pattern((*C.z), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.z.reset();
+  else {
+    C.z.emplace();
+    set_CPP_mode_info_test_pattern(C.z.value(), ix_patt);
+  }
   // c_side.test_pat[0D_PTR_type]
-    if (ix_patt < 3)
-      C.param.reset();
-    else {
-      C.param.emplace();
-      set_CPP_lat_param_test_pattern((*C.param), ix_patt);
-    }
+  if (ix_patt < 3)
+    C.param.reset();
+  else {
+    C.param.emplace();
+    set_CPP_lat_param_test_pattern(C.param.value(), ix_patt);
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_bookkeeping_state_test_pattern(C.lord_state, ix_patt);
+  set_CPP_bookkeeping_state_test_pattern(C.lord_state, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_ele_test_pattern(C.ele_init, ix_patt);
+  set_CPP_ele_test_pattern(C.ele_init, ix_patt);
   // c_side.test_pat[1D_PTR_type]
-    if (ix_patt < 3)
-      C.ele.resize(0);
-    else {
-      C.ele.resize(3);
-      for (size_t i = 0; i < C.ele.size(); i++)
-    {set_CPP_ele_test_pattern(C.ele[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.ele.resize(0);
+  else {
+    C.ele.resize(3);
+    for (auto i{0}; i < C.ele.size(); i++) {
+      set_CPP_ele_test_pattern(C.ele[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.branch.resize(0);
-    else {
-      C.branch.resize(3);
-      for (size_t i = 0; i < C.branch.size(); i++)
-    {set_CPP_branch_test_pattern(C.branch[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.branch.resize(0);
+  else {
+    C.branch.resize(3);
+    for (auto i{0}; i < C.branch.size(); i++) {
+      set_CPP_branch_test_pattern(C.branch[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.control.resize(0);
-    else {
-      C.control.resize(3);
-      for (size_t i = 0; i < C.control.size(); i++)
-    {set_CPP_control_test_pattern(C.control[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.control.resize(0);
+  else {
+    C.control.resize(3);
+    for (auto i{0}; i < C.control.size(); i++) {
+      set_CPP_control_test_pattern(C.control[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.particle_start, ix_patt);
+  set_CPP_coord_test_pattern(C.particle_start, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_beam_init_test_pattern(C.beam_init, ix_patt);
+  set_CPP_beam_init_test_pattern(C.beam_init, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_pre_tracker_test_pattern(C.pre_tracker, ix_patt);
+  set_CPP_pre_tracker_test_pattern(C.pre_tracker, ix_patt);
   // c_side.test_pat[1D_ALLOC_real]
-    if (ix_patt < 3)
-      C.custom.resize(0);
-    else {
-      C.custom.resize(3);
-      for (size_t i = 0; i < C.custom.size(); i++)
-        {int rhs = 101 + i + 29 + offset; C.custom[i] =     rhs;}  }
-  // c_side.test_pat[0D_NOT_integer]
-    rhs = 31 + offset; C.version =     rhs;
-  // c_side.test_pat[0D_PTR_integer]
-    if (ix_patt < 3)
-      C.n_ele_track.reset();
-    else {
-      rhs = 32 + offset;
-      C.n_ele_track.emplace(    rhs);
+  if (ix_patt < 3)
+    C.custom.resize(0);
+  else {
+    C.custom.resize(3);
+    for (auto i{0}; i < C.custom.size(); i++) {
+      int rhs = 101 + i + 29 + offset;
+      C.custom[i] =   rhs;
     }
+  }
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 31 + offset;
+  C.version =   rhs;
   // c_side.test_pat[0D_PTR_integer]
-    if (ix_patt < 3)
-      C.n_ele_max.reset();
-    else {
-      rhs = 34 + offset;
-      C.n_ele_max.emplace(    rhs);
-    }
+  if (ix_patt < 3)
+    C.n_ele_track.reset();
+  else {
+    rhs = 32 + offset;
+    C.n_ele_track.emplace(  rhs);
+  }
+  // c_side.test_pat[0D_PTR_integer]
+  if (ix_patt < 3)
+    C.n_ele_max.reset();
+  else {
+    rhs = 34 + offset;
+    C.n_ele_max.emplace(  rhs);
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 36 + offset; C.n_control_max =     rhs;
+  rhs = 36 + offset;
+  C.n_control_max =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 37 + offset; C.n_ic_max =     rhs;
+  rhs = 37 + offset;
+  C.n_ic_max =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 38 + offset; C.input_taylor_order =     rhs;
+  rhs = 38 + offset;
+  C.input_taylor_order =   rhs;
   // c_side.test_pat[1D_ALLOC_integer]
-    if (ix_patt < 3)
-      C.ic.resize(0);
-    else {
-      C.ic.resize(3);
-      for (size_t i = 0; i < C.ic.size(); i++)
-        {int rhs = 101 + i + 39 + offset; C.ic[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.ic.resize(0);
+  else {
+    C.ic.resize(3);
+    for (auto i{0}; i < C.ic.size(); i++) {
+      int rhs = 101 + i + 39 + offset;
+      C.ic[i] =   rhs;
+    }
+  }
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 41 + offset; C.photon_type =     rhs;
+  rhs = 41 + offset;
+  C.photon_type =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 42 + offset; C.creation_hash =     rhs;
+  rhs = 42 + offset;
+  C.creation_hash =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 43 + offset; C.ramper_slave_bookkeeping =     rhs;
+  rhs = 43 + offset;
+  C.ramper_slave_bookkeeping =   rhs;
 
 }
 
@@ -6713,8 +9511,19 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
     cout << " [1] lat: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] lat: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("lat.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("lat.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to lat.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to lat.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6728,8 +9537,20 @@ extern "C" void test_c_lat (Opaque_lat_class* F, bool& c_ok) {
     cout << " [3] lat: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] lat: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("lat.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("lat.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to lat.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to lat.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6748,44 +9569,60 @@ void set_CPP_bunch_test_pattern (CPP_bunch& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.particle.resize(0);
-    else {
-      C.particle.resize(3);
-      for (size_t i = 0; i < C.particle.size(); i++)
-    {set_CPP_coord_test_pattern(C.particle[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.particle.resize(0);
+  else {
+    C.particle.resize(3);
+    for (auto i{0}; i < C.particle.size(); i++) {
+      set_CPP_coord_test_pattern(C.particle[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[1D_ALLOC_integer]
-    if (ix_patt < 3)
-      C.ix_z.resize(0);
-    else {
-      C.ix_z.resize(3);
-      for (size_t i = 0; i < C.ix_z.size(); i++)
-        {int rhs = 101 + i + 3 + offset; C.ix_z[i] =     rhs;}  }
+  if (ix_patt < 3)
+    C.ix_z.resize(0);
+  else {
+    C.ix_z.resize(3);
+    for (auto i{0}; i < C.ix_z.size(); i++) {
+      int rhs = 101 + i + 3 + offset;
+      C.ix_z[i] =   rhs;
+    }
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.charge_tot =     rhs;
+  rhs = 5 + offset;
+  C.charge_tot =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.charge_live =     rhs;
+  rhs = 6 + offset;
+  C.charge_live =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.z_center =     rhs;
+  rhs = 7 + offset;
+  C.z_center =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.t_center =     rhs;
+  rhs = 8 + offset;
+  C.t_center =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 9 + offset; C.t0 =     rhs;
+  rhs = 9 + offset;
+  C.t0 =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 10 + offset; C.drift_between_t_and_s =     (rhs % 2 == 0);
+  rhs = 10 + offset;
+  C.drift_between_t_and_s =   (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 11 + offset; C.ix_ele =     rhs;
+  rhs = 11 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 12 + offset; C.ix_bunch =     rhs;
+  rhs = 12 + offset;
+  C.ix_bunch =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 13 + offset; C.ix_turn =     rhs;
+  rhs = 13 + offset;
+  C.ix_turn =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 14 + offset; C.n_live =     rhs;
+  rhs = 14 + offset;
+  C.n_live =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 15 + offset; C.n_good =     rhs;
+  rhs = 15 + offset;
+  C.n_good =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 16 + offset; C.n_bad =     rhs;
+  rhs = 16 + offset;
+  C.n_bad =   rhs;
 
 }
 
@@ -6805,8 +9642,19 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
     cout << " [1] bunch: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bunch: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("bunch.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bunch.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to bunch.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to bunch.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6820,8 +9668,20 @@ extern "C" void test_c_bunch (Opaque_bunch_class* F, bool& c_ok) {
     cout << " [3] bunch: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bunch: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("bunch.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bunch.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to bunch.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to bunch.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6840,55 +9700,74 @@ void set_CPP_bunch_params_test_pattern (CPP_bunch_params& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.centroid, ix_patt);
+  set_CPP_coord_test_pattern(C.centroid, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.x, ix_patt);
+  set_CPP_twiss_test_pattern(C.x, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.y, ix_patt);
+  set_CPP_twiss_test_pattern(C.y, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.z, ix_patt);
+  set_CPP_twiss_test_pattern(C.z, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.a, ix_patt);
+  set_CPP_twiss_test_pattern(C.a, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.b, ix_patt);
+  set_CPP_twiss_test_pattern(C.b, ix_patt);
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_twiss_test_pattern(C.c, ix_patt);
+  set_CPP_twiss_test_pattern(C.c, ix_patt);
   // c_side.test_pat[2D_NOT_real]
-    for (size_t i = 0; i < C.sigma.size(); i++)  for (size_t j = 0; j <
-    C.sigma[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + 8 + offset;
-    C.sigma[i][j] =     rhs;}
+  for (auto i{0}; i < C.sigma.size(); i++)
+    for (auto j{0}; j < C.sigma[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 8 + offset;
+      C.sigma[i][j] =   rhs;
+    }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.rel_max.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.rel_max[i] =     rhs;}
+  for (auto i{0}; i < C.rel_max.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.rel_max[i] =   rhs;
+  }
   // c_side.test_pat[1D_NOT_real]
-    for (size_t i = 0; i < C.rel_min.size(); i++)
-      {int rhs = 101 + i + 10 + offset; C.rel_min[i] =     rhs;}
+  for (auto i{0}; i < C.rel_min.size(); i++) {
+    int rhs = 101 + i + 10 + offset;
+    C.rel_min[i] =   rhs;
+  }
   // c_side.test_pat[0D_NOT_real]
-    rhs = 11 + offset; C.s =     rhs;
+  rhs = 11 + offset;
+  C.s =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 12 + offset; C.t =     rhs;
+  rhs = 12 + offset;
+  C.t =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 13 + offset; C.sigma_t =     rhs;
+  rhs = 13 + offset;
+  C.sigma_t =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 14 + offset; C.charge_live =     rhs;
+  rhs = 14 + offset;
+  C.charge_live =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 15 + offset; C.charge_tot =     rhs;
+  rhs = 15 + offset;
+  C.charge_tot =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 16 + offset; C.n_particle_tot =     rhs;
+  rhs = 16 + offset;
+  C.n_particle_tot =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 17 + offset; C.n_particle_live =     rhs;
+  rhs = 17 + offset;
+  C.n_particle_live =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 18 + offset; C.n_particle_lost_in_ele =     rhs;
+  rhs = 18 + offset;
+  C.n_particle_lost_in_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 19 + offset; C.n_good_steps =     rhs;
+  rhs = 19 + offset;
+  C.n_good_steps =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 20 + offset; C.n_bad_steps =     rhs;
+  rhs = 20 + offset;
+  C.n_bad_steps =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 21 + offset; C.ix_ele =     rhs;
+  rhs = 21 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 22 + offset; C.location =     rhs;
+  rhs = 22 + offset;
+  C.location =   rhs;
   // c_side.test_pat[0D_NOT_logical]
-    rhs = 23 + offset; C.twiss_valid =     (rhs % 2 == 0);
+  rhs = 23 + offset;
+  C.twiss_valid =   (rhs % 2 == 0);
 
 }
 
@@ -6908,8 +9787,19 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
     cout << " [1] bunch_params: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] bunch_params: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("bunch_params.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bunch_params.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to bunch_params.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to bunch_params.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6923,8 +9813,20 @@ extern "C" void test_c_bunch_params (Opaque_bunch_params_class* F, bool& c_ok) {
     cout << " [3] bunch_params: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] bunch_params: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("bunch_params.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("bunch_params.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to bunch_params.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to bunch_params.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -6943,13 +9845,14 @@ void set_CPP_beam_test_pattern (CPP_beam& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.bunch.resize(0);
-    else {
-      C.bunch.resize(3);
-      for (size_t i = 0; i < C.bunch.size(); i++)
-    {set_CPP_bunch_test_pattern(C.bunch[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.bunch.resize(0);
+  else {
+    C.bunch.resize(3);
+    for (auto i{0}; i < C.bunch.size(); i++) {
+      set_CPP_bunch_test_pattern(C.bunch[i], ix_patt + i + 1);
     }
+  }
 
 }
 
@@ -6969,8 +9872,19 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
     cout << " [1] beam: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] beam: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("beam.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("beam.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to beam.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to beam.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -6984,8 +9898,20 @@ extern "C" void test_c_beam (Opaque_beam_class* F, bool& c_ok) {
     cout << " [3] beam: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] beam: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("beam.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("beam.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to beam.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to beam.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -7004,15 +9930,20 @@ void set_CPP_aperture_point_test_pattern (CPP_aperture_point& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.x =     rhs;
+  rhs = 1 + offset;
+  C.x =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.y =     rhs;
+  rhs = 2 + offset;
+  C.y =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.plane =     rhs;
+  rhs = 3 + offset;
+  C.plane =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.ix_ele =     rhs;
+  rhs = 4 + offset;
+  C.ix_ele =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 5 + offset; C.i_turn =     rhs;
+  rhs = 5 + offset;
+  C.i_turn =   rhs;
 
 }
 
@@ -7032,8 +9963,19 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
     cout << " [1] aperture_point: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] aperture_point: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("aperture_point.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("aperture_point.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to aperture_point.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to aperture_point.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -7047,8 +9989,20 @@ extern "C" void test_c_aperture_point (Opaque_aperture_point_class* F, bool& c_o
     cout << " [3] aperture_point: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] aperture_point: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("aperture_point.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("aperture_point.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to aperture_point.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to aperture_point.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -7067,25 +10021,36 @@ void set_CPP_aperture_param_test_pattern (CPP_aperture_param& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_real]
-    rhs = 1 + offset; C.min_angle =     rhs;
+  rhs = 1 + offset;
+  C.min_angle =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 2 + offset; C.max_angle =     rhs;
+  rhs = 2 + offset;
+  C.max_angle =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 3 + offset; C.n_angle =     rhs;
+  rhs = 3 + offset;
+  C.n_angle =   rhs;
   // c_side.test_pat[0D_NOT_integer]
-    rhs = 4 + offset; C.n_turn =     rhs;
+  rhs = 4 + offset;
+  C.n_turn =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 5 + offset; C.x_init =     rhs;
+  rhs = 5 + offset;
+  C.x_init =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 6 + offset; C.y_init =     rhs;
+  rhs = 6 + offset;
+  C.y_init =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 7 + offset; C.rel_accuracy =     rhs;
+  rhs = 7 + offset;
+  C.rel_accuracy =   rhs;
   // c_side.test_pat[0D_NOT_real]
-    rhs = 8 + offset; C.abs_accuracy =     rhs;
+  rhs = 8 + offset;
+  C.abs_accuracy =   rhs;
   // c_side.test_pat[0D_NOT_character]
-    C.start_ele.resize(40);
-    for (size_t i = 0; i < C.start_ele.size(); i++)
-      {int rhs = 101 + i + 9 + offset; C.start_ele[i] = 'a' + rhs % 26;}
+  auto str = std::string(40, ' ');
+  for (auto i{0}; i < C.start_ele.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    str[i] = 'a' + rhs % 26;
+  }
+  C.start_ele.emplace(str);
 
 }
 
@@ -7105,8 +10070,19 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
     cout << " [1] aperture_param: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] aperture_param: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("aperture_param.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("aperture_param.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to aperture_param.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to aperture_param.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -7120,8 +10096,20 @@ extern "C" void test_c_aperture_param (Opaque_aperture_param_class* F, bool& c_o
     cout << " [3] aperture_param: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] aperture_param: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("aperture_param.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("aperture_param.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to aperture_param.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to aperture_param.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 
@@ -7140,17 +10128,19 @@ void set_CPP_aperture_scan_test_pattern (CPP_aperture_scan& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[1D_ALLOC_type]
-    if (ix_patt < 3)
-      C.point.resize(0);
-    else {
-      C.point.resize(3);
-      for (size_t i = 0; i < C.point.size(); i++)
-    {set_CPP_aperture_point_test_pattern(C.point[i], ix_patt+i+1);}
+  if (ix_patt < 3)
+    C.point.resize(0);
+  else {
+    C.point.resize(3);
+    for (auto i{0}; i < C.point.size(); i++) {
+      set_CPP_aperture_point_test_pattern(C.point[i], ix_patt + i + 1);
     }
+  }
   // c_side.test_pat[0D_NOT_type]
-    set_CPP_coord_test_pattern(C.ref_orb, ix_patt);
+  set_CPP_coord_test_pattern(C.ref_orb, ix_patt);
   // c_side.test_pat[0D_NOT_real]
-    rhs = 4 + offset; C.pz_start =     rhs;
+  rhs = 4 + offset;
+  C.pz_start =   rhs;
 
 }
 
@@ -7170,8 +10160,19 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
     cout << " [1] aperture_scan: C side convert F->C: Good" << endl;
   } else {
     cout << " [1] aperture_scan: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {
+        std::ofstream c_file("aperture_scan.pat1.c.actual.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("aperture_scan.pat1.c2.expected.txt");
+        c2_file << C2;
+    }
+    
+    cout << "     C written to aperture_scan.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to aperture_scan.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }
 
@@ -7185,8 +10186,20 @@ extern "C" void test_c_aperture_scan (Opaque_aperture_scan_class* F, bool& c_ok)
     cout << " [3] aperture_scan: F side convert F->C: Good" << endl;
   } else {
     cout << " [3] aperture_scan: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {
+        std::ofstream c_file("aperture_scan.pat3.c.expected.txt");
+        c_file << C;
+    }
+    
+    {
+        std::ofstream c2_file("aperture_scan.pat3.c2.actual.txt");
+        c2_file << C2;
+    }
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to aperture_scan.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to aperture_scan.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }
 

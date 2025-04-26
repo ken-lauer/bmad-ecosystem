@@ -1151,7 +1151,6 @@ contains
             f_equ.write(f"!! f_side.equality_test[{arg.full_type}]\n")
 
             print(arg.f_side.equality_test, file=f_equ)
-            # f_equ.write('std::cout << ')
 
         f_equ.write(f"\nend function eq_{struct.short_name}\n")
 
@@ -1187,9 +1186,11 @@ def write_tests_main(f_test, struct_definitions: list[Structure]):
             """\
             print *
             if (all_ok) then
-            print *, 'Bottom Line: Everything OK!'
+              print *, 'Bottom Line: Everything OK!'
+              call exit(0)
             else
-            print *, 'BOTTOM LINE: PROBLEMS FOUND!'
+              print *, 'BOTTOM LINE: PROBLEMS FOUND!'
+              call exit(1)
             endif
 
             end program
@@ -1268,6 +1269,7 @@ def write_tests_mod(f_test, struct_definitions: list[Structure]):
                   call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
                   call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_actual_f2cpp.json')
                   call json%destroy(json_root)
+                  print *, '    Wrote JSON files for comparison (test_f_{struct.short_name}_pattern_4_*.json)'
     
                 endif
 
@@ -1308,6 +1310,7 @@ def write_tests_mod(f_test, struct_definitions: list[Structure]):
                   call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
                   call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_expected_f2.json')
                   call json%destroy(json_root)
+                  print *, '    Wrote JSON files for comparison (test_f_{struct.short_name}_pattern_2_*.json)'
 
                 endif
 
@@ -1362,10 +1365,10 @@ def get_class_repr(struct: Structure) -> str:
 
         if arg.pointer_type == "PTR" and not arg.array:
             lines.append(
-                f'os << "{arg.c_name}="; if (obj.{arg.c_name}) os << *obj.{arg.c_name} << ", "; else os << "nullptr, ";'
+                rf'os << "\n  {arg.c_name}="; if (obj.{arg.c_name}) os << *obj.{arg.c_name} << ", "; else os << "nullptr, ";'
             )
         else:
-            lines.append(f'os << "{arg.c_name}=" << obj.{arg.c_name} << ", ";')
+            lines.append(rf'os << "\n  {arg.c_name}=" << obj.{arg.c_name} << ", ";')
 
     if lines:
         lines[-1] = lines[-1].replace('os << ", ";', "")
@@ -1618,6 +1621,7 @@ def write_cpp_test(file, struct_definitions: list[Structure]):
 //-
 
 #include <stdio.h>
+#include <fstream>
 #include <iostream>
 #include "cpp_bmad_classes.h"
 
@@ -1656,7 +1660,9 @@ void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
 
 //--------------------------------------------------------------
 
-extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F, bool& c_ok) {{
+extern "C" void test_c_{struct.short_name} (Opaque_{
+            struct.short_name
+        }_class* F, bool& c_ok) {{
 
   {struct.cpp_class} C, C2;
 
@@ -1670,8 +1676,19 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [1] {struct.short_name}: C side convert F->C: Good" << endl;
   }} else {{
     cout << " [1] {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [1] C  = " << C << endl;
-    // cout << " [1] C2 = " << C2 << endl;
+
+    {{
+        std::ofstream c_file("{struct.short_name}.pat1.c.actual.txt");
+        c_file << C;
+    }}
+    
+    {{
+        std::ofstream c2_file("{struct.short_name}.pat1.c2.expected.txt");
+        c2_file << C2;
+    }}
+    
+    cout << "     C written to {struct.short_name}.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to {struct.short_name}.pat1.c2.expected.txt" << endl;
     c_ok = false;
   }}
 
@@ -1685,8 +1702,20 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [3] {struct.short_name}: F side convert F->C: Good" << endl;
   }} else {{
     cout << " [3] {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
-    // cout << " [3] C  = " << C << endl;
-    // cout << " [3] C2 = " << C2 << endl;
+    {{
+        std::ofstream c_file("{struct.short_name}.pat3.c.expected.txt");
+        c_file << C;
+    }}
+    
+    {{
+        std::ofstream c2_file("{struct.short_name}.pat3.c2.actual.txt");
+        c2_file << C2;
+    }}
+   
+    throw std::runtime_error("foo");
+
+    cout << "     C written to {struct.short_name}.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to {struct.short_name}.pat3.c2.actual.txt" << endl;
     c_ok = false;
   }}
 
@@ -1890,7 +1919,7 @@ def load_transforms():
         transform.c_class = transform.c_class.strip()
         transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
         transform.to_f2_call = transform.to_f2_call.rstrip(", ")
-        transform.replace_all("TEST_VALUE", transform.test_value)
+        transform.replace_all("TEST_VALUE", transform.test_value.rstrip(" ;"))
 
 
 c_transforms: dict[FullType, CSideTransform]

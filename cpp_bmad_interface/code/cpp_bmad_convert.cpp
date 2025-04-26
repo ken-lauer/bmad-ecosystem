@@ -355,11 +355,11 @@ extern "C" void photon_reflect_surface_to_c2 (CPP_photon_reflect_surface& C, c_C
     &z_roughness_correlation_len, c_Int &z_ix_surface) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.description = z_description;
+  C.description = std::string{z_description};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.reflectivity_file = z_reflectivity_file;
+  C.reflectivity_file = std::string{z_reflectivity_file};
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_photon_reflect_table>
   C.table.resize(n1_table);
   for (auto i{0}; i < n1_table; i++) {
@@ -548,7 +548,7 @@ extern "C" void expression_atom_to_c2 (CPP_expression_atom& C, c_Char z_name, c_
     c_Real &z_value) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.type = z_type;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -723,7 +723,7 @@ extern "C" void wake_sr_to_c2 (CPP_wake_sr& C, c_Char z_file, const Opaque_wake_
     &z_scale_with_length) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file = z_file;
+  C.file = std::string{z_file};
   // c_side.to_c2_set[0D_NOT_type] CPP_wake_sr_z_long
   wake_sr_z_long_to_c(z_z_long, C.z_long);
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_wake_sr_mode>
@@ -837,7 +837,7 @@ extern "C" void wake_lr_to_c2 (CPP_wake_lr& C, c_Char z_file, Opaque_wake_lr_mod
     &z_time_scale, c_Bool &z_self_wake_on) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file = z_file;
+  C.file = std::string{z_file};
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_wake_lr_mode>
   C.mode.resize(n1_mode);
   for (auto i{0}; i < n1_mode; i++) {
@@ -1113,7 +1113,7 @@ extern "C" void cartesian_map_term_to_c2 (CPP_cartesian_map_term& C, c_Char z_fi
     &z_n_link, Opaque_cartesian_map_term1_class **z_term, Int n1_term) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file = z_file;
+  C.file = std::string{z_file};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.n_link = z_n_link;
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_cartesian_map_term1>
@@ -1131,17 +1131,15 @@ extern "C" void cartesian_map_to_c (const Opaque_cartesian_map_class*, CPP_carte
 
 // c_side.to_f2_arg
 extern "C" void cartesian_map_to_f2 (Opaque_cartesian_map_class*, c_Real&, c_RealArr, c_Int&,
-    c_Int&, c_Int&, const CPP_cartesian_map_term&, Int);
+    c_Int&, c_Int&, const CPP_cartesian_map_term*, Int);
 
 extern "C" void cartesian_map_to_f (const CPP_cartesian_map& C, Opaque_cartesian_map_class* F) {
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_cartesian_map_term>
-  size_t n_ptr = 0;
-  if (C.ptr != nullptr)
-    n_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_cartesian_map_term>
+  auto n_ptr = C.ptr ? 1 : 0;
 
   // c_side.to_f2_call
   cartesian_map_to_f2 (F, C.field_scale, &C.r0[0], C.master_parameter, C.ele_anchor_pt,
-      C.field_type, *C.ptr, n_ptr);
+      C.field_type, (C.ptr ? &C.ptr.value() : nullptr), n_ptr);
 
 }
 
@@ -1160,12 +1158,12 @@ extern "C" void cartesian_map_to_c2 (CPP_cartesian_map& C, c_Real &z_field_scale
   C.ele_anchor_pt = z_ele_anchor_pt;
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.field_type = z_field_type;
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_cartesian_map_term>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_cartesian_map_term>
   if (n_ptr == 0) {
-    C.ptr = nullptr;
+    C.ptr.reset();
   } else {
-    C.ptr = make_shared<CPP_cartesian_map_term>();
-    cartesian_map_term_to_c(z_ptr, *C.ptr);
+    C.ptr.emplace();
+    cartesian_map_term_to_c(z_ptr, C.ptr.value());
   }
 }
 
@@ -1229,7 +1227,7 @@ extern "C" void cylindrical_map_term_to_c2 (CPP_cylindrical_map_term& C, c_Char 
     &z_n_link, Opaque_cylindrical_map_term1_class **z_term, Int n1_term) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file = z_file;
+  C.file = std::string{z_file};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.n_link = z_n_link;
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_cylindrical_map_term1>
@@ -1247,18 +1245,17 @@ extern "C" void cylindrical_map_to_c (const Opaque_cylindrical_map_class*, CPP_c
 
 // c_side.to_f2_arg
 extern "C" void cylindrical_map_to_f2 (Opaque_cylindrical_map_class*, c_Int&, c_Int&, c_Real&,
-    c_Real&, c_Real&, c_Int&, c_Int&, c_Real&, c_RealArr, const CPP_cylindrical_map_term&,
+    c_Real&, c_Real&, c_Int&, c_Int&, c_Real&, c_RealArr, const CPP_cylindrical_map_term*,
     Int);
 
 extern "C" void cylindrical_map_to_f (const CPP_cylindrical_map& C, Opaque_cylindrical_map_class* F) {
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_cylindrical_map_term>
-  size_t n_ptr = 0;
-  if (C.ptr != nullptr)
-    n_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_cylindrical_map_term>
+  auto n_ptr = C.ptr ? 1 : 0;
 
   // c_side.to_f2_call
   cylindrical_map_to_f2 (F, C.m, C.harmonic, C.phi0_fieldmap, C.theta0_azimuth, C.field_scale,
-      C.master_parameter, C.ele_anchor_pt, C.dz, &C.r0[0], *C.ptr, n_ptr);
+      C.master_parameter, C.ele_anchor_pt, C.dz, &C.r0[0], (C.ptr ? &C.ptr.value() : nullptr),
+      n_ptr);
 
 }
 
@@ -1286,12 +1283,12 @@ extern "C" void cylindrical_map_to_c2 (CPP_cylindrical_map& C, c_Int &z_m, c_Int
   C.dz = z_dz;
   // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
   C.r0 << z_r0;
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_cylindrical_map_term>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_cylindrical_map_term>
   if (n_ptr == 0) {
-    C.ptr = nullptr;
+    C.ptr.reset();
   } else {
-    C.ptr = make_shared<CPP_cylindrical_map_term>();
-    cylindrical_map_term_to_c(z_ptr, *C.ptr);
+    C.ptr.emplace();
+    cylindrical_map_term_to_c(z_ptr, C.ptr.value());
   }
 }
 
@@ -1342,7 +1339,7 @@ extern "C" void grid_field_pt_to_f (const CPP_grid_field_pt& C, Opaque_grid_fiel
 extern "C" void grid_field_pt_to_c2 (CPP_grid_field_pt& C, c_Char z_file, c_Int &z_n_link) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file = z_file;
+  C.file = std::string{z_file};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.n_link = z_n_link;
 }
@@ -1355,19 +1352,17 @@ extern "C" void grid_field_to_c (const Opaque_grid_field_class*, CPP_grid_field&
 
 // c_side.to_f2_arg
 extern "C" void grid_field_to_f2 (Opaque_grid_field_class*, c_Int&, c_Int&, c_Real&, c_Real&,
-    c_Int&, c_Int&, c_Int&, c_Int&, c_RealArr, c_RealArr, c_Bool&, const CPP_grid_field_pt&,
+    c_Int&, c_Int&, c_Int&, c_Int&, c_RealArr, c_RealArr, c_Bool&, const CPP_grid_field_pt*,
     Int);
 
 extern "C" void grid_field_to_f (const CPP_grid_field& C, Opaque_grid_field_class* F) {
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_grid_field_pt>
-  size_t n_ptr = 0;
-  if (C.ptr != nullptr)
-    n_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_grid_field_pt>
+  auto n_ptr = C.ptr ? 1 : 0;
 
   // c_side.to_f2_call
   grid_field_to_f2 (F, C.geometry, C.harmonic, C.phi0_fieldmap, C.field_scale, C.field_type,
       C.master_parameter, C.ele_anchor_pt, C.interpolation_order, &C.dr[0], &C.r0[0],
-      C.curved_ref_frame, *C.ptr, n_ptr);
+      C.curved_ref_frame, (C.ptr ? &C.ptr.value() : nullptr), n_ptr);
 
 }
 
@@ -1399,12 +1394,12 @@ extern "C" void grid_field_to_c2 (CPP_grid_field& C, c_Int &z_geometry, c_Int &z
   C.r0 << z_r0;
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.curved_ref_frame = z_curved_ref_frame;
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_grid_field_pt>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_grid_field_pt>
   if (n_ptr == 0) {
-    C.ptr = nullptr;
+    C.ptr.reset();
   } else {
-    C.ptr = make_shared<CPP_grid_field_pt>();
-    grid_field_pt_to_c(z_ptr, *C.ptr);
+    C.ptr.emplace();
+    grid_field_pt_to_c(z_ptr, C.ptr.value());
   }
 }
 
@@ -1798,7 +1793,7 @@ extern "C" void gen_grad_map_to_c2 (CPP_gen_grad_map& C, c_Char z_file, Opaque_g
     &z_curved_ref_frame) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file = z_file;
+  C.file = std::string{z_file};
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_gen_grad1>
   C.gg.resize(n1_gg);
   for (auto i{0}; i < n1_gg; i++) {
@@ -2182,7 +2177,7 @@ extern "C" void photon_target_to_c2 (CPP_photon_target& C, c_Int &z_type, c_Int 
   // c_side.to_c2_set[0D_NOT_type] CPP_lat_ele_loc
   lat_ele_loc_to_c(z_ele_loc, C.ele_loc);
   // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_target_point, 8>
-  for (size_t i = 0; i < C.corner.size(); i++) {
+  for (auto i{0}; i < C.corner.size(); i++) {
     target_point_to_c(z_corner[i], C.corner[i]);
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_target_point
@@ -2469,7 +2464,7 @@ extern "C" void wall3d_section_to_c (const Opaque_wall3d_section_class*, CPP_wal
 
 // c_side.to_f2_arg
 extern "C" void wall3d_section_to_f2 (Opaque_wall3d_section_class*, c_Char, c_Char, const
-    CPP_wall3d_vertex**, Int, const CPP_photon_reflect_surface&, Int, c_Int&, c_Int&, c_Int&,
+    CPP_wall3d_vertex**, Int, const CPP_photon_reflect_surface*, Int, c_Int&, c_Int&, c_Int&,
     c_Int&, c_Int&, c_Bool&, c_Real&, c_Real&, c_RealArr, c_Real&, c_Real&, c_RealArr,
     c_RealArr, c_Real&, c_RealArr, c_RealArr);
 
@@ -2482,16 +2477,14 @@ extern "C" void wall3d_section_to_f (const CPP_wall3d_section& C, Opaque_wall3d_
     for (auto i{0}; i < n1_v; i++)
       z_v[i] = &C.v[i];
   }
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_photon_reflect_surface>
-  size_t n_surface = 0;
-  if (C.surface != nullptr)
-    n_surface = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_photon_reflect_surface>
+  auto n_surface = C.surface ? 1 : 0;
 
   // c_side.to_f2_call
-  wall3d_section_to_f2 (F, C.name.c_str(), C.material.c_str(), z_v, n1_v, *C.surface,
-      n_surface, C.type, C.n_vertex_input, C.ix_ele, C.ix_branch, C.vertices_state,
-      C.patch_in_region, C.thickness, C.s, &C.r0[0], C.dx0_ds, C.dy0_ds, &C.x0_coef[0],
-      &C.y0_coef[0], C.dr_ds, &C.p1_coef[0], &C.p2_coef[0]);
+  wall3d_section_to_f2 (F, C.name.c_str(), C.material.c_str(), z_v, n1_v, (C.surface ?
+      &C.surface.value() : nullptr), n_surface, C.type, C.n_vertex_input, C.ix_ele,
+      C.ix_branch, C.vertices_state, C.patch_in_region, C.thickness, C.s, &C.r0[0], C.dx0_ds,
+      C.dy0_ds, &C.x0_coef[0], &C.y0_coef[0], C.dr_ds, &C.p1_coef[0], &C.p2_coef[0]);
 
   // c_side.to_f_cleanup[1D_ALLOC_type]
   if (z_v)
@@ -2507,20 +2500,20 @@ extern "C" void wall3d_section_to_c2 (CPP_wall3d_section& C, c_Char z_name, c_Ch
     z_y0_coef, c_Real &z_dr_ds, c_RealArr z_p1_coef, c_RealArr z_p2_coef) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.material = z_material;
+  C.material = std::string{z_material};
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_wall3d_vertex>
   C.v.resize(n1_v);
   for (auto i{0}; i < n1_v; i++) {
     wall3d_vertex_to_c(z_v[i], C.v[i]);
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_photon_reflect_surface>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_photon_reflect_surface>
   if (n_surface == 0) {
-    C.surface = nullptr;
+    C.surface.reset();
   } else {
-    C.surface = make_shared<CPP_photon_reflect_surface>();
-    photon_reflect_surface_to_c(z_surface, *C.surface);
+    C.surface.emplace();
+    photon_reflect_surface_to_c(z_surface, C.surface.value());
   }
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.type = z_type;
@@ -2593,7 +2586,7 @@ extern "C" void wall3d_to_c2 (CPP_wall3d& C, c_Char z_name, c_Int &z_type, c_Int
     n1_section) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.type = z_type;
   // c_side.to_c2_set[0D_NOT_integer] Int
@@ -2603,9 +2596,9 @@ extern "C" void wall3d_to_c2 (CPP_wall3d& C, c_Char z_name, c_Int &z_type, c_Int
   // c_side.to_c2_set[0D_NOT_real] Real
   C.thickness = z_thickness;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.clear_material = z_clear_material;
+  C.clear_material = std::string{z_clear_material};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.opaque_material = z_opaque_material;
+  C.opaque_material = std::string{z_opaque_material};
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.superimpose = z_superimpose;
   // c_side.to_c2_set[0D_NOT_integer] Int
@@ -2627,13 +2620,12 @@ extern "C" void ramper_lord_to_c (const Opaque_ramper_lord_class*, CPP_ramper_lo
 extern "C" void ramper_lord_to_f2 (Opaque_ramper_lord_class*, c_Int&, c_Int&, c_RealArr, Int);
 
 extern "C" void ramper_lord_to_f (const CPP_ramper_lord& C, Opaque_ramper_lord_class* F) {
-  // c_side.to_f_setup[0D_PTR_real] shared_ptr<Real>
-  size_t n_attrib_ptr = 0;
-  if (C.attrib_ptr != nullptr)
-    n_attrib_ptr = 1;
+  // c_side.to_f_setup[0D_PTR_real] std::optional<Real>
+  auto n_attrib_ptr = C.attrib_ptr ? 1 : 0;
 
   // c_side.to_f2_call
-  ramper_lord_to_f2 (F, C.ix_ele, C.ix_con, C.attrib_ptr.get(), n_attrib_ptr);
+  ramper_lord_to_f2 (F, C.ix_ele, C.ix_con, (C.attrib_ptr ? &C.attrib_ptr.value() : nullptr),
+      n_attrib_ptr);
 
 }
 
@@ -2645,12 +2637,11 @@ extern "C" void ramper_lord_to_c2 (CPP_ramper_lord& C, c_Int &z_ix_ele, c_Int &z
   C.ix_ele = z_ix_ele;
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ix_con = z_ix_con;
-  // c_side.to_c2_set[0D_PTR_real] shared_ptr<Real>
+  // c_side.to_c2_set[0D_PTR_real] std::optional<Real>
   if (n_attrib_ptr == 0) {
-    C.attrib_ptr = nullptr;
+    C.attrib_ptr.reset();
   } else {
-    C.attrib_ptr = make_shared<Real>();
-    *C.attrib_ptr = *z_attrib_ptr;
+    C.attrib_ptr.emplace(*z_attrib_ptr);
   }
 }
 
@@ -2711,9 +2702,9 @@ extern "C" void control_to_c2 (CPP_control& C, c_Real &z_value, c_RealArr z_y_kn
   // c_side.to_c2_set[0D_NOT_type] CPP_lat_ele_loc
   lat_ele_loc_to_c(z_lord, C.lord);
   // c_side.to_c2_set[0D_NOT_character] string
-  C.slave_name = z_slave_name;
+  C.slave_name = std::string{z_slave_name};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.attribute = z_attribute;
+  C.attribute = std::string{z_attribute};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ix_attrib = z_ix_attrib;
 }
@@ -2739,7 +2730,7 @@ extern "C" void control_var1_to_c2 (CPP_control_var1& C, c_Char z_name, c_Real &
     &z_old_value) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_real] Real
   C.value = z_value;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -2795,9 +2786,9 @@ extern "C" void control_ramp1_to_c2 (CPP_control_ramp1& C, c_RealArr z_y_knot, I
     expression_atom_to_c(z_stack[i], C.stack[i]);
   }
   // c_side.to_c2_set[0D_NOT_character] string
-  C.attribute = z_attribute;
+  C.attribute = std::string{z_attribute};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.slave_name = z_slave_name;
+  C.slave_name = std::string{z_slave_name};
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.is_controller = z_is_controller;
 }
@@ -3031,20 +3022,20 @@ extern "C" void beam_init_to_c2 (CPP_beam_init& C, c_Char z_position_file, c_Cha
     &z_use_t_coords, c_Bool &z_use_z_as_t, c_Char z_file_name) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.position_file = z_position_file;
+  C.position_file = std::string{z_position_file};
   // c_side.to_c2_set[1D_NOT_character] FixedArray1D<string, 3>
-  for (size_t i = 0; i < C.distribution_type.size(); i++)
+  for (auto i{0}; i < C.distribution_type.size(); i++)
     C.distribution_type[i] = z_distribution_type[i];
   // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
   C.spin << z_spin;
   // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_ellipse_beam_init, 3>
-  for (size_t i = 0; i < C.ellipse.size(); i++) {
+  for (auto i{0}; i < C.ellipse.size(); i++) {
     ellipse_beam_init_to_c(z_ellipse[i], C.ellipse[i]);
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_kv_beam_init
   kv_beam_init_to_c(z_KV, C.KV);
   // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_grid_beam_init, 3>
-  for (size_t i = 0; i < C.grid.size(); i++) {
+  for (auto i{0}; i < C.grid.size(); i++) {
     grid_beam_init_to_c(z_grid[i], C.grid[i]);
   }
   // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 6>
@@ -3062,9 +3053,9 @@ extern "C" void beam_init_to_c2 (CPP_beam_init& C, c_Char z_position_file, c_Cha
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.renorm_sigma = z_renorm_sigma;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.random_engine = z_random_engine;
+  C.random_engine = std::string{z_random_engine};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.random_gauss_converter = z_random_gauss_converter;
+  C.random_gauss_converter = std::string{z_random_gauss_converter};
   // c_side.to_c2_set[0D_NOT_real] Real
   C.random_sigma_cutoff = z_random_sigma_cutoff;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -3094,7 +3085,7 @@ extern "C" void beam_init_to_c2 (CPP_beam_init& C, c_Char z_position_file, c_Cha
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ix_turn = z_ix_turn;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.species = z_species;
+  C.species = std::string{z_species};
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.full_6D_coupling_calc = z_full_6D_coupling_calc;
   // c_side.to_c2_set[0D_NOT_logical] Bool
@@ -3104,7 +3095,7 @@ extern "C" void beam_init_to_c2 (CPP_beam_init& C, c_Char z_position_file, c_Cha
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.use_z_as_t = z_use_z_as_t;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.file_name = z_file_name;
+  C.file_name = std::string{z_file_name};
 }
 
 //--------------------------------------------------------------------
@@ -3240,7 +3231,7 @@ extern "C" void pre_tracker_to_c2 (CPP_pre_tracker& C, c_Int &z_who, c_Int &z_ix
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ix_ele_end = z_ix_ele_end;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.input_file = z_input_file;
+  C.input_file = std::string{z_input_file};
 }
 
 //--------------------------------------------------------------------
@@ -3605,7 +3596,7 @@ extern "C" void space_charge_common_to_c2 (CPP_space_charge_common& C, c_Real &z
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.debug = z_debug;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.diagnostic_output_file = z_diagnostic_output_file;
+  C.diagnostic_output_file = std::string{z_diagnostic_output_file};
 }
 
 //--------------------------------------------------------------------
@@ -3891,10 +3882,10 @@ extern "C" void ele_to_c (const Opaque_ele_class*, CPP_ele&);
 // c_side.to_f2_arg
 extern "C" void ele_to_f2 (Opaque_ele_class*, c_Char, c_Char, c_Char, c_Char, c_Char, Int,
     const CPP_twiss&, const CPP_twiss&, const CPP_twiss&, const CPP_xy_disp&, const
-    CPP_xy_disp&, const CPP_ac_kicker&, Int, const CPP_bookkeeping_state&, const
-    CPP_controller&, Int, const CPP_floor_position&, const CPP_high_energy_space_charge&, Int,
-    const CPP_mode3&, Int, const CPP_photon_element&, Int, const CPP_rad_map_ele&, Int, const
-    CPP_taylor**, c_RealArr, const CPP_taylor**, const CPP_wake&, Int, const CPP_wall3d**, Int,
+    CPP_xy_disp&, const CPP_ac_kicker*, Int, const CPP_bookkeeping_state&, const
+    CPP_controller*, Int, const CPP_floor_position&, const CPP_high_energy_space_charge*, Int,
+    const CPP_mode3*, Int, const CPP_photon_element*, Int, const CPP_rad_map_ele*, Int, const
+    CPP_taylor**, c_RealArr, const CPP_taylor**, const CPP_wake*, Int, const CPP_wall3d**, Int,
     const CPP_cartesian_map**, Int, const CPP_cylindrical_map**, Int, const CPP_gen_grad_map**,
     Int, const CPP_grid_field**, Int, const CPP_coord&, const CPP_coord&, const CPP_coord&,
     const CPP_coord&, c_RealArr, c_RealArr, c_RealArr, c_RealArr, c_RealArr, c_RealArr,
@@ -3906,37 +3897,25 @@ extern "C" void ele_to_f2 (Opaque_ele_class*, c_Char, c_Char, c_Char, c_Char, c_
     c_Bool&, c_Bool&, c_Bool&);
 
 extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
-  // c_side.to_f_setup[0D_PTR_character] shared_ptr<string>
+  // c_side.to_f_setup[0D_PTR_character] std::optional<string>
   size_t n_descrip = 0;
   const char *z_descrip = nullptr;
-  if (C.descrip != NULL) {
+  if (C.descrip) {
     z_descrip = C.descrip->c_str();
     n_descrip = 1;
   }
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_ac_kicker>
-  size_t n_ac_kick = 0;
-  if (C.ac_kick != nullptr)
-    n_ac_kick = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_controller>
-  size_t n_control = 0;
-  if (C.control != nullptr)
-    n_control = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_high_energy_space_charge>
-  size_t n_high_energy_space_charge = 0;
-  if (C.high_energy_space_charge != nullptr)
-    n_high_energy_space_charge = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_mode3>
-  size_t n_mode3 = 0;
-  if (C.mode3 != nullptr)
-    n_mode3 = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_photon_element>
-  size_t n_photon = 0;
-  if (C.photon != nullptr)
-    n_photon = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_rad_map_ele>
-  size_t n_rad_map = 0;
-  if (C.rad_map != nullptr)
-    n_rad_map = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_ac_kicker>
+  auto n_ac_kick = C.ac_kick ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_controller>
+  auto n_control = C.control ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
+  auto n_high_energy_space_charge = C.high_energy_space_charge ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_mode3>
+  auto n_mode3 = C.mode3 ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_photon_element>
+  auto n_photon = C.photon ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_rad_map_ele>
+  auto n_rad_map = C.rad_map ? 1 : 0;
   // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
   const CPP_taylor *z_taylor[6];
   for (int i = 0; i < 6; i++) {
@@ -3947,10 +3926,8 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
   for (int i = 0; i < 4; i++) {
     z_spin_taylor[i] = &C.spin_taylor[i];
   }
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_wake>
-  size_t n_wake = 0;
-  if (C.wake != nullptr)
-    n_wake = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_wake>
+  auto n_wake = C.wake ? 1 : 0;
   // c_side.to_f_setup[1D_PTR_type] VariableArray1D<CPP_wall3d>
   auto n1_wall3d = C.wall3d.size();
   const CPP_wall3d **z_wall3d = nullptr;
@@ -4044,23 +4021,26 @@ extern "C" void ele_to_f (const CPP_ele& C, Opaque_ele_class* F) {
 
   // c_side.to_f2_call
   ele_to_f2 (F, C.name.c_str(), C.type.c_str(), C.alias.c_str(), C.component_name.c_str(),
-      z_descrip, n_descrip, C.a, C.b, C.z, C.x, C.y, *C.ac_kick, n_ac_kick,
-      C.bookkeeping_state, *C.control, n_control, C.floor, *C.high_energy_space_charge,
-      n_high_energy_space_charge, *C.mode3, n_mode3, *C.photon, n_photon, *C.rad_map,
-      n_rad_map, z_taylor, &C.spin_taylor_ref_orb_in[0], z_spin_taylor, *C.wake, n_wake,
-      z_wall3d, n1_wall3d, z_cartesian_map, n1_cartesian_map, z_cylindrical_map,
-      n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, z_grid_field, n1_grid_field,
-      C.map_ref_orb_in, C.map_ref_orb_out, C.time_ref_orb_in, C.time_ref_orb_out, &C.value[0],
-      &C.old_value[0], z_spin_q, &C.vec0[0], z_mat6, z_c_mat, C.gamma_c, C.s_start, C.s,
-      C.ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole, z_a_pole_elec, n1_a_pole_elec,
-      z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r, n1_r, n2_r, n3_r, C.key,
-      C.sub_key, C.ix_ele, C.ix_branch, C.lord_status, C.n_slave, C.n_slave_field, C.ix1_slave,
-      C.slave_status, C.n_lord, C.n_lord_field, C.n_lord_ramper, C.ic1_lord, C.ix_pointer,
-      C.ixx, C.iyy, C.izz, C.mat6_calc_method, C.tracking_method, C.spin_tracking_method,
-      C.csr_method, C.space_charge_method, C.ptc_integration_type, C.field_calc, C.aperture_at,
-      C.aperture_type, C.ref_species, C.orientation, C.symplectify, C.mode_flip,
-      C.multipoles_on, C.scale_multipoles, C.taylor_map_includes_offsets, C.field_master,
-      C.is_on, C.logic, C.bmad_logic, C.select, C.offset_moves_aperture);
+      z_descrip, n_descrip, C.a, C.b, C.z, C.x, C.y, (C.ac_kick ? &C.ac_kick.value() :
+      nullptr), n_ac_kick, C.bookkeeping_state, (C.control ? &C.control.value() : nullptr),
+      n_control, C.floor, (C.high_energy_space_charge ? &C.high_energy_space_charge.value() :
+      nullptr), n_high_energy_space_charge, (C.mode3 ? &C.mode3.value() : nullptr), n_mode3,
+      (C.photon ? &C.photon.value() : nullptr), n_photon, (C.rad_map ? &C.rad_map.value() :
+      nullptr), n_rad_map, z_taylor, &C.spin_taylor_ref_orb_in[0], z_spin_taylor, (C.wake ?
+      &C.wake.value() : nullptr), n_wake, z_wall3d, n1_wall3d, z_cartesian_map,
+      n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map,
+      z_grid_field, n1_grid_field, C.map_ref_orb_in, C.map_ref_orb_out, C.time_ref_orb_in,
+      C.time_ref_orb_out, &C.value[0], &C.old_value[0], z_spin_q, &C.vec0[0], z_mat6, z_c_mat,
+      C.gamma_c, C.s_start, C.s, C.ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole,
+      z_a_pole_elec, n1_a_pole_elec, z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r,
+      n1_r, n2_r, n3_r, C.key, C.sub_key, C.ix_ele, C.ix_branch, C.lord_status, C.n_slave,
+      C.n_slave_field, C.ix1_slave, C.slave_status, C.n_lord, C.n_lord_field, C.n_lord_ramper,
+      C.ic1_lord, C.ix_pointer, C.ixx, C.iyy, C.izz, C.mat6_calc_method, C.tracking_method,
+      C.spin_tracking_method, C.csr_method, C.space_charge_method, C.ptc_integration_type,
+      C.field_calc, C.aperture_at, C.aperture_type, C.ref_species, C.orientation,
+      C.symplectify, C.mode_flip, C.multipoles_on, C.scale_multipoles,
+      C.taylor_map_includes_offsets, C.field_master, C.is_on, C.logic, C.bmad_logic, C.select,
+      C.offset_moves_aperture);
 
   // c_side.to_f_cleanup[1D_PTR_type]
   if (z_wall3d)
@@ -4117,18 +4097,18 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
     &z_select, c_Bool &z_offset_moves_aperture) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.type = z_type;
+  C.type = std::string{z_type};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.alias = z_alias;
+  C.alias = std::string{z_alias};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.component_name = z_component_name;
-  // c_side.to_c2_set[0D_PTR_character] shared_ptr<string>
+  C.component_name = std::string{z_component_name};
+  // c_side.to_c2_set[0D_PTR_character] std::optional<string>
   if (n_descrip == 0) {
-    C.descrip = nullptr;
+    C.descrip.reset();
   } else {
-    C.descrip = make_shared<string>(z_descrip);
+    C.descrip.emplace(std::string{z_descrip});
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_twiss
   twiss_to_c(z_a, C.a);
@@ -4140,68 +4120,68 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   xy_disp_to_c(z_x, C.x);
   // c_side.to_c2_set[0D_NOT_type] CPP_xy_disp
   xy_disp_to_c(z_y, C.y);
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_ac_kicker>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_ac_kicker>
   if (n_ac_kick == 0) {
-    C.ac_kick = nullptr;
+    C.ac_kick.reset();
   } else {
-    C.ac_kick = make_shared<CPP_ac_kicker>();
-    ac_kicker_to_c(z_ac_kick, *C.ac_kick);
+    C.ac_kick.emplace();
+    ac_kicker_to_c(z_ac_kick, C.ac_kick.value());
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_bookkeeping_state
   bookkeeping_state_to_c(z_bookkeeping_state, C.bookkeeping_state);
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_controller>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_controller>
   if (n_control == 0) {
-    C.control = nullptr;
+    C.control.reset();
   } else {
-    C.control = make_shared<CPP_controller>();
-    controller_to_c(z_control, *C.control);
+    C.control.emplace();
+    controller_to_c(z_control, C.control.value());
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_floor_position
   floor_position_to_c(z_floor, C.floor);
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_high_energy_space_charge>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
   if (n_high_energy_space_charge == 0) {
-    C.high_energy_space_charge = nullptr;
+    C.high_energy_space_charge.reset();
   } else {
-    C.high_energy_space_charge = make_shared<CPP_high_energy_space_charge>();
-    high_energy_space_charge_to_c(z_high_energy_space_charge, *C.high_energy_space_charge);
+    C.high_energy_space_charge.emplace();
+    high_energy_space_charge_to_c(z_high_energy_space_charge, C.high_energy_space_charge.value());
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_mode3>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_mode3>
   if (n_mode3 == 0) {
-    C.mode3 = nullptr;
+    C.mode3.reset();
   } else {
-    C.mode3 = make_shared<CPP_mode3>();
-    mode3_to_c(z_mode3, *C.mode3);
+    C.mode3.emplace();
+    mode3_to_c(z_mode3, C.mode3.value());
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_photon_element>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_photon_element>
   if (n_photon == 0) {
-    C.photon = nullptr;
+    C.photon.reset();
   } else {
-    C.photon = make_shared<CPP_photon_element>();
-    photon_element_to_c(z_photon, *C.photon);
+    C.photon.emplace();
+    photon_element_to_c(z_photon, C.photon.value());
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_rad_map_ele>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_rad_map_ele>
   if (n_rad_map == 0) {
-    C.rad_map = nullptr;
+    C.rad_map.reset();
   } else {
-    C.rad_map = make_shared<CPP_rad_map_ele>();
-    rad_map_ele_to_c(z_rad_map, *C.rad_map);
+    C.rad_map.emplace();
+    rad_map_ele_to_c(z_rad_map, C.rad_map.value());
   }
   // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
-  for (size_t i = 0; i < C.taylor.size(); i++) {
+  for (auto i{0}; i < C.taylor.size(); i++) {
     taylor_to_c(z_taylor[i], C.taylor[i]);
   }
   // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 6>
   C.spin_taylor_ref_orb_in << z_spin_taylor_ref_orb_in;
   // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_taylor, 4>
-  for (size_t i = 0; i < C.spin_taylor.size(); i++) {
+  for (auto i{0}; i < C.spin_taylor.size(); i++) {
     taylor_to_c(z_spin_taylor[i], C.spin_taylor[i]);
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_wake>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_wake>
   if (n_wake == 0) {
-    C.wake = nullptr;
+    C.wake.reset();
   } else {
-    C.wake = make_shared<CPP_wake>();
-    wake_to_c(z_wake, *C.wake);
+    C.wake.emplace();
+    wake_to_c(z_wake, C.wake.value());
   }
   // c_side.to_c2_set[1D_PTR_type] VariableArray1D<CPP_wall3d>
   C.wall3d.resize(n1_wall3d);
@@ -4281,9 +4261,9 @@ extern "C" void ele_to_c2 (CPP_ele& C, c_Char z_name, c_Char z_type, c_Char z_al
   C.custom << z_custom;
   // c_side.to_c2_set[3D_PTR_real] VariableArray3D<Real>
   C.r.resize(n1_r);
-  for (size_t i = 0; i < C.r.size(); i++) {
+  for (auto i{0}; i < C.r.size(); i++) {
     C.r[i].resize(n2_r);
-    for (size_t j = 0; j < C.r[0].size(); j++)
+    for (auto j{0}; j < C.r[0].size(); j++)
       C.r[i][j].resize(n3_r);
   }
   C.r << z_r;
@@ -4484,7 +4464,7 @@ extern "C" void branch_to_c2 (CPP_branch& C, c_Char z_name, c_Int &z_ix_branch, 
     Opaque_lat_param_class *z_param, Opaque_wall3d_class **z_wall3d, Int n1_wall3d) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.name = z_name;
+  C.name = std::string{z_name};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ix_branch = z_ix_branch;
   // c_side.to_c2_set[0D_NOT_integer] Int
@@ -4525,8 +4505,8 @@ extern "C" void lat_to_c (const Opaque_lat_class*, CPP_lat&);
 
 // c_side.to_f2_arg
 extern "C" void lat_to_f2 (Opaque_lat_class*, c_Char, c_Char, c_Char, c_Char, c_Char, c_Char*,
-    Int, const CPP_expression_atom**, Int, const CPP_mode_info&, Int, const CPP_mode_info&,
-    Int, const CPP_mode_info&, Int, const CPP_lat_param&, Int, const CPP_bookkeeping_state&,
+    Int, const CPP_expression_atom**, Int, const CPP_mode_info*, Int, const CPP_mode_info*,
+    Int, const CPP_mode_info*, Int, const CPP_lat_param*, Int, const CPP_bookkeeping_state&,
     const CPP_ele&, const CPP_ele**, Int, const CPP_branch**, Int, const CPP_control**, Int,
     const CPP_coord&, const CPP_beam_init&, const CPP_pre_tracker&, c_RealArr, Int, c_Int&,
     c_IntArr, Int, c_IntArr, Int, c_Int&, c_Int&, c_Int&, c_IntArr, Int, c_Int&, c_Int&,
@@ -4549,22 +4529,14 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
     for (auto i{0}; i < n1_constant; i++)
       z_constant[i] = &C.constant[i];
   }
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_mode_info>
-  size_t n_a = 0;
-  if (C.a != nullptr)
-    n_a = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_mode_info>
-  size_t n_b = 0;
-  if (C.b != nullptr)
-    n_b = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_mode_info>
-  size_t n_z = 0;
-  if (C.z != nullptr)
-    n_z = 1;
-  // c_side.to_f_setup[0D_PTR_type] shared_ptr<CPP_lat_param>
-  size_t n_param = 0;
-  if (C.param != nullptr)
-    n_param = 1;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_mode_info>
+  auto n_a = C.a ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_mode_info>
+  auto n_b = C.b ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_mode_info>
+  auto n_z = C.z ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_lat_param>
+  auto n_param = C.param ? 1 : 0;
   // c_side.to_f_setup[1D_PTR_type] VariableArray1D<CPP_ele>
   auto n1_ele = C.ele.size();
   const CPP_ele **z_ele = nullptr;
@@ -4595,14 +4567,10 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
   if (n1_custom > 0) {
     z_custom = &C.custom[0];
   }
-  // c_side.to_f_setup[0D_PTR_integer] shared_ptr<Int>
-  size_t n_n_ele_track = 0;
-  if (C.n_ele_track != nullptr)
-    n_n_ele_track = 1;
-  // c_side.to_f_setup[0D_PTR_integer] shared_ptr<Int>
-  size_t n_n_ele_max = 0;
-  if (C.n_ele_max != nullptr)
-    n_n_ele_max = 1;
+  // c_side.to_f_setup[0D_PTR_integer] std::optional<Int>
+  auto n_n_ele_track = C.n_ele_track ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_integer] std::optional<Int>
+  auto n_n_ele_max = C.n_ele_max ? 1 : 0;
   // c_side.to_f_setup[1D_ALLOC_integer] VariableArray1D<Int>
   auto n1_ic = C.ic.size();
   c_IntArr z_ic = nullptr;
@@ -4613,10 +4581,12 @@ extern "C" void lat_to_f (const CPP_lat& C, Opaque_lat_class* F) {
   // c_side.to_f2_call
   lat_to_f2 (F, C.use_name.c_str(), C.lattice.c_str(), C.machine.c_str(),
       C.input_file_name.c_str(), C.title.c_str(), z_print_str, n1_print_str, z_constant,
-      n1_constant, *C.a, n_a, *C.b, n_b, *C.z, n_z, *C.param, n_param, C.lord_state,
-      C.ele_init, z_ele, n1_ele, z_branch, n1_branch, z_control, n1_control, C.particle_start,
-      C.beam_init, C.pre_tracker, z_custom, n1_custom, C.version, C.n_ele_track.get(),
-      n_n_ele_track, C.n_ele_max.get(), n_n_ele_max, C.n_control_max, C.n_ic_max,
+      n1_constant, (C.a ? &C.a.value() : nullptr), n_a, (C.b ? &C.b.value() : nullptr), n_b,
+      (C.z ? &C.z.value() : nullptr), n_z, (C.param ? &C.param.value() : nullptr), n_param,
+      C.lord_state, C.ele_init, z_ele, n1_ele, z_branch, n1_branch, z_control, n1_control,
+      C.particle_start, C.beam_init, C.pre_tracker, z_custom, n1_custom, C.version,
+      (C.n_ele_track ? &C.n_ele_track.value() : nullptr), n_n_ele_track, (C.n_ele_max ?
+      &C.n_ele_max.value() : nullptr), n_n_ele_max, C.n_control_max, C.n_ic_max,
       C.input_taylor_order, z_ic, n1_ic, C.photon_type, C.creation_hash,
       C.ramper_slave_bookkeeping);
 
@@ -4653,15 +4623,15 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
     &z_creation_hash, c_Int &z_ramper_slave_bookkeeping) {
 
   // c_side.to_c2_set[0D_NOT_character] string
-  C.use_name = z_use_name;
+  C.use_name = std::string{z_use_name};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.lattice = z_lattice;
+  C.lattice = std::string{z_lattice};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.machine = z_machine;
+  C.machine = std::string{z_machine};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.input_file_name = z_input_file_name;
+  C.input_file_name = std::string{z_input_file_name};
   // c_side.to_c2_set[0D_NOT_character] string
-  C.title = z_title;
+  C.title = std::string{z_title};
   // c_side.to_c2_set[1D_ALLOC_character] VariableArray1D<string>
   C.print_str.resize(n1_print_str);
   for (auto i{0}; i < n1_print_str; i++)
@@ -4671,33 +4641,33 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   for (auto i{0}; i < n1_constant; i++) {
     expression_atom_to_c(z_constant[i], C.constant[i]);
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_mode_info>
   if (n_a == 0) {
-    C.a = nullptr;
+    C.a.reset();
   } else {
-    C.a = make_shared<CPP_mode_info>();
-    mode_info_to_c(z_a, *C.a);
+    C.a.emplace();
+    mode_info_to_c(z_a, C.a.value());
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_mode_info>
   if (n_b == 0) {
-    C.b = nullptr;
+    C.b.reset();
   } else {
-    C.b = make_shared<CPP_mode_info>();
-    mode_info_to_c(z_b, *C.b);
+    C.b.emplace();
+    mode_info_to_c(z_b, C.b.value());
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_mode_info>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_mode_info>
   if (n_z == 0) {
-    C.z = nullptr;
+    C.z.reset();
   } else {
-    C.z = make_shared<CPP_mode_info>();
-    mode_info_to_c(z_z, *C.z);
+    C.z.emplace();
+    mode_info_to_c(z_z, C.z.value());
   }
-  // c_side.to_c2_set[0D_PTR_type] shared_ptr<CPP_lat_param>
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_lat_param>
   if (n_param == 0) {
-    C.param = nullptr;
+    C.param.reset();
   } else {
-    C.param = make_shared<CPP_lat_param>();
-    lat_param_to_c(z_param, *C.param);
+    C.param.emplace();
+    lat_param_to_c(z_param, C.param.value());
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_bookkeeping_state
   bookkeeping_state_to_c(z_lord_state, C.lord_state);
@@ -4729,19 +4699,17 @@ extern "C" void lat_to_c2 (CPP_lat& C, c_Char z_use_name, c_Char z_lattice, c_Ch
   C.custom << z_custom;
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.version = z_version;
-  // c_side.to_c2_set[0D_PTR_integer] shared_ptr<Int>
+  // c_side.to_c2_set[0D_PTR_integer] std::optional<Int>
   if (n_n_ele_track == 0) {
-    C.n_ele_track = nullptr;
+    C.n_ele_track.reset();
   } else {
-    C.n_ele_track = make_shared<Int>();
-    *C.n_ele_track = *z_n_ele_track;
+    C.n_ele_track.emplace(*z_n_ele_track);
   }
-  // c_side.to_c2_set[0D_PTR_integer] shared_ptr<Int>
+  // c_side.to_c2_set[0D_PTR_integer] std::optional<Int>
   if (n_n_ele_max == 0) {
-    C.n_ele_max = nullptr;
+    C.n_ele_max.reset();
   } else {
-    C.n_ele_max = make_shared<Int>();
-    *C.n_ele_max = *z_n_ele_max;
+    C.n_ele_max.emplace(*z_n_ele_max);
   }
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.n_control_max = z_n_control_max;
@@ -5031,7 +4999,7 @@ extern "C" void aperture_param_to_c2 (CPP_aperture_param& C, c_Real &z_min_angle
   // c_side.to_c2_set[0D_NOT_real] Real
   C.abs_accuracy = z_abs_accuracy;
   // c_side.to_c2_set[0D_NOT_character] string
-  C.start_ele = z_start_ele;
+  C.start_ele = std::string{z_start_ele};
 }
 
 //--------------------------------------------------------------------

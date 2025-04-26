@@ -10186,7 +10186,7 @@ call c_f_pointer (Fp, F)
 !! f_side.to_f2_trans[0D_PTR_character]
   if (n_descrip == 0) then
     if (associated(F%descrip)) deallocate(F%descrip)
-    else
+  else
     if (.not. associated(F%descrip)) allocate(F%descrip)
     call to_f_str(z_descrip, F%descrip)
   endif

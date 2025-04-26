@@ -57,6 +57,7 @@ else
   call spline_struct_to_json(f2_spline, json_root)
   call json%print(json_root, 'test_f_spline_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spline_pattern_4_*.json)'
 
 endif
 
@@ -97,6 +98,7 @@ else
   call spline_struct_to_json(f2_spline, json_root)
   call json%print(json_root, 'test_f_spline_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spline_pattern_2_*.json)'
 
 endif
 
@@ -179,6 +181,7 @@ else
   call spin_polar_struct_to_json(f2_spin_polar, json_root)
   call json%print(json_root, 'test_f_spin_polar_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spin_polar_pattern_4_*.json)'
 
 endif
 
@@ -219,6 +222,7 @@ else
   call spin_polar_struct_to_json(f2_spin_polar, json_root)
   call json%print(json_root, 'test_f_spin_polar_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spin_polar_pattern_2_*.json)'
 
 endif
 
@@ -298,6 +302,7 @@ else
   call ac_kicker_time_struct_to_json(f2_ac_kicker_time, json_root)
   call json%print(json_root, 'test_f_ac_kicker_time_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ac_kicker_time_pattern_4_*.json)'
 
 endif
 
@@ -338,6 +343,7 @@ else
   call ac_kicker_time_struct_to_json(f2_ac_kicker_time, json_root)
   call json%print(json_root, 'test_f_ac_kicker_time_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ac_kicker_time_pattern_2_*.json)'
 
 endif
 
@@ -415,6 +421,7 @@ else
   call ac_kicker_freq_struct_to_json(f2_ac_kicker_freq, json_root)
   call json%print(json_root, 'test_f_ac_kicker_freq_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ac_kicker_freq_pattern_4_*.json)'
 
 endif
 
@@ -455,6 +462,7 @@ else
   call ac_kicker_freq_struct_to_json(f2_ac_kicker_freq, json_root)
   call json%print(json_root, 'test_f_ac_kicker_freq_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ac_kicker_freq_pattern_2_*.json)'
 
 endif
 
@@ -534,6 +542,7 @@ else
   call ac_kicker_struct_to_json(f2_ac_kicker, json_root)
   call json%print(json_root, 'test_f_ac_kicker_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ac_kicker_pattern_4_*.json)'
 
 endif
 
@@ -574,6 +583,7 @@ else
   call ac_kicker_struct_to_json(f2_ac_kicker, json_root)
   call json%print(json_root, 'test_f_ac_kicker_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ac_kicker_pattern_2_*.json)'
 
 endif
 
@@ -663,6 +673,7 @@ else
   call interval1_coef_struct_to_json(f2_interval1_coef, json_root)
   call json%print(json_root, 'test_f_interval1_coef_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_interval1_coef_pattern_4_*.json)'
 
 endif
 
@@ -703,6 +714,7 @@ else
   call interval1_coef_struct_to_json(f2_interval1_coef, json_root)
   call json%print(json_root, 'test_f_interval1_coef_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_interval1_coef_pattern_2_*.json)'
 
 endif
 
@@ -780,6 +792,7 @@ else
   call photon_reflect_table_struct_to_json(f2_photon_reflect_table, json_root)
   call json%print(json_root, 'test_f_photon_reflect_table_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_reflect_table_pattern_4_*.json)'
 
 endif
 
@@ -820,6 +833,7 @@ else
   call photon_reflect_table_struct_to_json(f2_photon_reflect_table, json_root)
   call json%print(json_root, 'test_f_photon_reflect_table_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_reflect_table_pattern_2_*.json)'
 
 endif
 
@@ -953,6 +967,7 @@ else
   call photon_reflect_surface_struct_to_json(f2_photon_reflect_surface, json_root)
   call json%print(json_root, 'test_f_photon_reflect_surface_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_reflect_surface_pattern_4_*.json)'
 
 endif
 
@@ -993,6 +1008,7 @@ else
   call photon_reflect_surface_struct_to_json(f2_photon_reflect_surface, json_root)
   call json%print(json_root, 'test_f_photon_reflect_surface_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_reflect_surface_pattern_2_*.json)'
 
 endif
 
@@ -1016,15 +1032,15 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%description)
-F%description(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+  F%description(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%reflectivity_file)
-F%reflectivity_file(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
+  F%reflectivity_file(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_photon_reflect_table>
 if (ix_patt < 3) then
@@ -1091,6 +1107,7 @@ else
   call coord_struct_to_json(f2_coord, json_root)
   call json%print(json_root, 'test_f_coord_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_coord_pattern_4_*.json)'
 
 endif
 
@@ -1131,6 +1148,7 @@ else
   call coord_struct_to_json(f2_coord, json_root)
   call json%print(json_root, 'test_f_coord_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_coord_pattern_2_*.json)'
 
 endif
 
@@ -1256,6 +1274,7 @@ else
   call coord_array_struct_to_json(f2_coord_array, json_root)
   call json%print(json_root, 'test_f_coord_array_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_coord_array_pattern_4_*.json)'
 
 endif
 
@@ -1296,6 +1315,7 @@ else
   call coord_array_struct_to_json(f2_coord_array, json_root)
   call json%print(json_root, 'test_f_coord_array_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_coord_array_pattern_2_*.json)'
 
 endif
 
@@ -1376,6 +1396,7 @@ else
   call bpm_phase_coupling_struct_to_json(f2_bpm_phase_coupling, json_root)
   call json%print(json_root, 'test_f_bpm_phase_coupling_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bpm_phase_coupling_pattern_4_*.json)'
 
 endif
 
@@ -1416,6 +1437,7 @@ else
   call bpm_phase_coupling_struct_to_json(f2_bpm_phase_coupling, json_root)
   call json%print(json_root, 'test_f_bpm_phase_coupling_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bpm_phase_coupling_pattern_2_*.json)'
 
 endif
 
@@ -1507,6 +1529,7 @@ else
   call expression_atom_struct_to_json(f2_expression_atom, json_root)
   call json%print(json_root, 'test_f_expression_atom_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_expression_atom_pattern_4_*.json)'
 
 endif
 
@@ -1547,6 +1570,7 @@ else
   call expression_atom_struct_to_json(f2_expression_atom, json_root)
   call json%print(json_root, 'test_f_expression_atom_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_expression_atom_pattern_2_*.json)'
 
 endif
 
@@ -1570,7 +1594,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%type = rhs
@@ -1626,6 +1650,7 @@ else
   call wake_sr_z_long_struct_to_json(f2_wake_sr_z_long, json_root)
   call json%print(json_root, 'test_f_wake_sr_z_long_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_sr_z_long_pattern_4_*.json)'
 
 endif
 
@@ -1666,6 +1691,7 @@ else
   call wake_sr_z_long_struct_to_json(f2_wake_sr_z_long, json_root)
   call json%print(json_root, 'test_f_wake_sr_z_long_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_sr_z_long_pattern_2_*.json)'
 
 endif
 
@@ -1787,6 +1813,7 @@ else
   call wake_sr_mode_struct_to_json(f2_wake_sr_mode, json_root)
   call json%print(json_root, 'test_f_wake_sr_mode_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_sr_mode_pattern_4_*.json)'
 
 endif
 
@@ -1827,6 +1854,7 @@ else
   call wake_sr_mode_struct_to_json(f2_wake_sr_mode, json_root)
   call json%print(json_root, 'test_f_wake_sr_mode_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_sr_mode_pattern_2_*.json)'
 
 endif
 
@@ -1918,6 +1946,7 @@ else
   call wake_sr_struct_to_json(f2_wake_sr, json_root)
   call json%print(json_root, 'test_f_wake_sr_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_sr_pattern_4_*.json)'
 
 endif
 
@@ -1958,6 +1987,7 @@ else
   call wake_sr_struct_to_json(f2_wake_sr, json_root)
   call json%print(json_root, 'test_f_wake_sr_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_sr_pattern_2_*.json)'
 
 endif
 
@@ -1981,7 +2011,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file)
-F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_type] CPP_wake_sr_z_long
 call set_wake_sr_z_long_test_pattern (F%z_long, ix_patt)
@@ -2065,6 +2095,7 @@ else
   call wake_lr_mode_struct_to_json(f2_wake_lr_mode, json_root)
   call json%print(json_root, 'test_f_wake_lr_mode_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_lr_mode_pattern_4_*.json)'
 
 endif
 
@@ -2105,6 +2136,7 @@ else
   call wake_lr_mode_struct_to_json(f2_wake_lr_mode, json_root)
   call json%print(json_root, 'test_f_wake_lr_mode_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_lr_mode_pattern_2_*.json)'
 
 endif
 
@@ -2202,6 +2234,7 @@ else
   call wake_lr_struct_to_json(f2_wake_lr, json_root)
   call json%print(json_root, 'test_f_wake_lr_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_lr_pattern_4_*.json)'
 
 endif
 
@@ -2242,6 +2275,7 @@ else
   call wake_lr_struct_to_json(f2_wake_lr, json_root)
   call json%print(json_root, 'test_f_wake_lr_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_lr_pattern_2_*.json)'
 
 endif
 
@@ -2265,7 +2299,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file)
-F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wake_lr_mode>
 if (ix_patt < 3) then
@@ -2336,6 +2370,7 @@ else
   call lat_ele_loc_struct_to_json(f2_lat_ele_loc, json_root)
   call json%print(json_root, 'test_f_lat_ele_loc_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_loc_pattern_4_*.json)'
 
 endif
 
@@ -2376,6 +2411,7 @@ else
   call lat_ele_loc_struct_to_json(f2_lat_ele_loc, json_root)
   call json%print(json_root, 'test_f_lat_ele_loc_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_loc_pattern_2_*.json)'
 
 endif
 
@@ -2451,6 +2487,7 @@ else
   call wake_struct_to_json(f2_wake, json_root)
   call json%print(json_root, 'test_f_wake_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_pattern_4_*.json)'
 
 endif
 
@@ -2491,6 +2528,7 @@ else
   call wake_struct_to_json(f2_wake, json_root)
   call json%print(json_root, 'test_f_wake_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wake_pattern_2_*.json)'
 
 endif
 
@@ -2566,6 +2604,7 @@ else
   call taylor_term_struct_to_json(f2_taylor_term, json_root)
   call json%print(json_root, 'test_f_taylor_term_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_taylor_term_pattern_4_*.json)'
 
 endif
 
@@ -2606,6 +2645,7 @@ else
   call taylor_term_struct_to_json(f2_taylor_term, json_root)
   call json%print(json_root, 'test_f_taylor_term_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_taylor_term_pattern_2_*.json)'
 
 endif
 
@@ -2684,6 +2724,7 @@ else
   call taylor_struct_to_json(f2_taylor, json_root)
   call json%print(json_root, 'test_f_taylor_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_taylor_pattern_4_*.json)'
 
 endif
 
@@ -2724,6 +2765,7 @@ else
   call taylor_struct_to_json(f2_taylor, json_root)
   call json%print(json_root, 'test_f_taylor_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_taylor_pattern_2_*.json)'
 
 endif
 
@@ -2806,6 +2848,7 @@ else
   call em_taylor_term_struct_to_json(f2_em_taylor_term, json_root)
   call json%print(json_root, 'test_f_em_taylor_term_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_em_taylor_term_pattern_4_*.json)'
 
 endif
 
@@ -2846,6 +2889,7 @@ else
   call em_taylor_term_struct_to_json(f2_em_taylor_term, json_root)
   call json%print(json_root, 'test_f_em_taylor_term_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_em_taylor_term_pattern_2_*.json)'
 
 endif
 
@@ -2924,6 +2968,7 @@ else
   call em_taylor_struct_to_json(f2_em_taylor, json_root)
   call json%print(json_root, 'test_f_em_taylor_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_em_taylor_pattern_4_*.json)'
 
 endif
 
@@ -2964,6 +3009,7 @@ else
   call em_taylor_struct_to_json(f2_em_taylor, json_root)
   call json%print(json_root, 'test_f_em_taylor_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_em_taylor_pattern_2_*.json)'
 
 endif
 
@@ -3046,6 +3092,7 @@ else
   call cartesian_map_term1_struct_to_json(f2_cartesian_map_term1, json_root)
   call json%print(json_root, 'test_f_cartesian_map_term1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cartesian_map_term1_pattern_4_*.json)'
 
 endif
 
@@ -3086,6 +3133,7 @@ else
   call cartesian_map_term1_struct_to_json(f2_cartesian_map_term1, json_root)
   call json%print(json_root, 'test_f_cartesian_map_term1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cartesian_map_term1_pattern_2_*.json)'
 
 endif
 
@@ -3175,6 +3223,7 @@ else
   call cartesian_map_term_struct_to_json(f2_cartesian_map_term, json_root)
   call json%print(json_root, 'test_f_cartesian_map_term_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cartesian_map_term_pattern_4_*.json)'
 
 endif
 
@@ -3215,6 +3264,7 @@ else
   call cartesian_map_term_struct_to_json(f2_cartesian_map_term, json_root)
   call json%print(json_root, 'test_f_cartesian_map_term_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cartesian_map_term_pattern_2_*.json)'
 
 endif
 
@@ -3238,7 +3288,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file)
-F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%n_link = rhs
@@ -3301,6 +3351,7 @@ else
   call cartesian_map_struct_to_json(f2_cartesian_map, json_root)
   call json%print(json_root, 'test_f_cartesian_map_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cartesian_map_pattern_4_*.json)'
 
 endif
 
@@ -3341,6 +3392,7 @@ else
   call cartesian_map_struct_to_json(f2_cartesian_map, json_root)
   call json%print(json_root, 'test_f_cartesian_map_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cartesian_map_pattern_2_*.json)'
 
 endif
 
@@ -3375,7 +3427,7 @@ rhs = 3 + offset; F%master_parameter = rhs
 rhs = 4 + offset; F%ele_anchor_pt = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 5 + offset; F%field_type = rhs
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_cartesian_map_term>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_cartesian_map_term>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
   else
@@ -3433,6 +3485,7 @@ else
   call cylindrical_map_term1_struct_to_json(f2_cylindrical_map_term1, json_root)
   call json%print(json_root, 'test_f_cylindrical_map_term1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cylindrical_map_term1_pattern_4_*.json)'
 
 endif
 
@@ -3473,6 +3526,7 @@ else
   call cylindrical_map_term1_struct_to_json(f2_cylindrical_map_term1, json_root)
   call json%print(json_root, 'test_f_cylindrical_map_term1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cylindrical_map_term1_pattern_2_*.json)'
 
 endif
 
@@ -3548,6 +3602,7 @@ else
   call cylindrical_map_term_struct_to_json(f2_cylindrical_map_term, json_root)
   call json%print(json_root, 'test_f_cylindrical_map_term_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cylindrical_map_term_pattern_4_*.json)'
 
 endif
 
@@ -3588,6 +3643,7 @@ else
   call cylindrical_map_term_struct_to_json(f2_cylindrical_map_term, json_root)
   call json%print(json_root, 'test_f_cylindrical_map_term_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cylindrical_map_term_pattern_2_*.json)'
 
 endif
 
@@ -3611,7 +3667,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file)
-F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%n_link = rhs
@@ -3674,6 +3730,7 @@ else
   call cylindrical_map_struct_to_json(f2_cylindrical_map, json_root)
   call json%print(json_root, 'test_f_cylindrical_map_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cylindrical_map_pattern_4_*.json)'
 
 endif
 
@@ -3714,6 +3771,7 @@ else
   call cylindrical_map_struct_to_json(f2_cylindrical_map, json_root)
   call json%print(json_root, 'test_f_cylindrical_map_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_cylindrical_map_pattern_2_*.json)'
 
 endif
 
@@ -3756,7 +3814,7 @@ do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
 rhs = 100 + jd1 + 9 + offset
 F%r0(jd1+lb1) = rhs
 enddo
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_cylindrical_map_term>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_cylindrical_map_term>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
   else
@@ -3814,6 +3872,7 @@ else
   call grid_field_pt1_struct_to_json(f2_grid_field_pt1, json_root)
   call json%print(json_root, 'test_f_grid_field_pt1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_field_pt1_pattern_4_*.json)'
 
 endif
 
@@ -3854,6 +3913,7 @@ else
   call grid_field_pt1_struct_to_json(f2_grid_field_pt1, json_root)
   call json%print(json_root, 'test_f_grid_field_pt1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_field_pt1_pattern_2_*.json)'
 
 endif
 
@@ -3935,6 +3995,7 @@ else
   call grid_field_pt_struct_to_json(f2_grid_field_pt, json_root)
   call json%print(json_root, 'test_f_grid_field_pt_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_field_pt_pattern_4_*.json)'
 
 endif
 
@@ -3975,6 +4036,7 @@ else
   call grid_field_pt_struct_to_json(f2_grid_field_pt, json_root)
   call json%print(json_root, 'test_f_grid_field_pt_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_field_pt_pattern_2_*.json)'
 
 endif
 
@@ -3998,7 +4060,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file)
-F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%n_link = rhs
@@ -4052,6 +4114,7 @@ else
   call grid_field_struct_to_json(f2_grid_field, json_root)
   call json%print(json_root, 'test_f_grid_field_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_field_pattern_4_*.json)'
 
 endif
 
@@ -4092,6 +4155,7 @@ else
   call grid_field_struct_to_json(f2_grid_field, json_root)
   call json%print(json_root, 'test_f_grid_field_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_field_pattern_2_*.json)'
 
 endif
 
@@ -4141,7 +4205,7 @@ F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 11 + offset; F%curved_ref_frame = (modulo(rhs, 2) == 0)
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_grid_field_pt>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_grid_field_pt>
 if (ix_patt < 3) then
   if (associated(F%ptr)) deallocate (F%ptr)
   else
@@ -4199,6 +4263,7 @@ else
   call floor_position_struct_to_json(f2_floor_position, json_root)
   call json%print(json_root, 'test_f_floor_position_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_floor_position_pattern_4_*.json)'
 
 endif
 
@@ -4239,6 +4304,7 @@ else
   call floor_position_struct_to_json(f2_floor_position, json_root)
   call json%print(json_root, 'test_f_floor_position_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_floor_position_pattern_2_*.json)'
 
 endif
 
@@ -4327,6 +4393,7 @@ else
   call high_energy_space_charge_struct_to_json(f2_high_energy_space_charge, json_root)
   call json%print(json_root, 'test_f_high_energy_space_charge_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_high_energy_space_charge_pattern_4_*.json)'
 
 endif
 
@@ -4367,6 +4434,7 @@ else
   call high_energy_space_charge_struct_to_json(f2_high_energy_space_charge, json_root)
   call json%print(json_root, 'test_f_high_energy_space_charge_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_high_energy_space_charge_pattern_2_*.json)'
 
 endif
 
@@ -4454,6 +4522,7 @@ else
   call xy_disp_struct_to_json(f2_xy_disp, json_root)
   call json%print(json_root, 'test_f_xy_disp_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_xy_disp_pattern_4_*.json)'
 
 endif
 
@@ -4494,6 +4563,7 @@ else
   call xy_disp_struct_to_json(f2_xy_disp, json_root)
   call json%print(json_root, 'test_f_xy_disp_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_xy_disp_pattern_2_*.json)'
 
 endif
 
@@ -4573,6 +4643,7 @@ else
   call twiss_struct_to_json(f2_twiss, json_root)
   call json%print(json_root, 'test_f_twiss_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_twiss_pattern_4_*.json)'
 
 endif
 
@@ -4613,6 +4684,7 @@ else
   call twiss_struct_to_json(f2_twiss, json_root)
   call json%print(json_root, 'test_f_twiss_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_twiss_pattern_2_*.json)'
 
 endif
 
@@ -4706,6 +4778,7 @@ else
   call mode3_struct_to_json(f2_mode3, json_root)
   call json%print(json_root, 'test_f_mode3_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_mode3_pattern_4_*.json)'
 
 endif
 
@@ -4746,6 +4819,7 @@ else
   call mode3_struct_to_json(f2_mode3, json_root)
   call json%print(json_root, 'test_f_mode3_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_mode3_pattern_2_*.json)'
 
 endif
 
@@ -4833,6 +4907,7 @@ else
   call bookkeeping_state_struct_to_json(f2_bookkeeping_state, json_root)
   call json%print(json_root, 'test_f_bookkeeping_state_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bookkeeping_state_pattern_4_*.json)'
 
 endif
 
@@ -4873,6 +4948,7 @@ else
   call bookkeeping_state_struct_to_json(f2_bookkeeping_state, json_root)
   call json%print(json_root, 'test_f_bookkeeping_state_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bookkeeping_state_pattern_2_*.json)'
 
 endif
 
@@ -4962,6 +5038,7 @@ else
   call rad_map_struct_to_json(f2_rad_map, json_root)
   call json%print(json_root, 'test_f_rad_map_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_map_pattern_4_*.json)'
 
 endif
 
@@ -5002,6 +5079,7 @@ else
   call rad_map_struct_to_json(f2_rad_map, json_root)
   call json%print(json_root, 'test_f_rad_map_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_map_pattern_2_*.json)'
 
 endif
 
@@ -5101,6 +5179,7 @@ else
   call rad_map_ele_struct_to_json(f2_rad_map_ele, json_root)
   call json%print(json_root, 'test_f_rad_map_ele_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_map_ele_pattern_4_*.json)'
 
 endif
 
@@ -5141,6 +5220,7 @@ else
   call rad_map_ele_struct_to_json(f2_rad_map_ele, json_root)
   call json%print(json_root, 'test_f_rad_map_ele_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_map_ele_pattern_2_*.json)'
 
 endif
 
@@ -5218,6 +5298,7 @@ else
   call gen_grad1_struct_to_json(f2_gen_grad1, json_root)
   call json%print(json_root, 'test_f_gen_grad1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_gen_grad1_pattern_4_*.json)'
 
 endif
 
@@ -5258,6 +5339,7 @@ else
   call gen_grad1_struct_to_json(f2_gen_grad1, json_root)
   call json%print(json_root, 'test_f_gen_grad1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_gen_grad1_pattern_2_*.json)'
 
 endif
 
@@ -5346,6 +5428,7 @@ else
   call gen_grad_map_struct_to_json(f2_gen_grad_map, json_root)
   call json%print(json_root, 'test_f_gen_grad_map_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_gen_grad_map_pattern_4_*.json)'
 
 endif
 
@@ -5386,6 +5469,7 @@ else
   call gen_grad_map_struct_to_json(f2_gen_grad_map, json_root)
   call json%print(json_root, 'test_f_gen_grad_map_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_gen_grad_map_pattern_2_*.json)'
 
 endif
 
@@ -5409,7 +5493,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file)
-F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_gen_grad1>
 if (ix_patt < 3) then
@@ -5491,6 +5575,7 @@ else
   call surface_segmented_pt_struct_to_json(f2_surface_segmented_pt, json_root)
   call json%print(json_root, 'test_f_surface_segmented_pt_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_segmented_pt_pattern_4_*.json)'
 
 endif
 
@@ -5531,6 +5616,7 @@ else
   call surface_segmented_pt_struct_to_json(f2_surface_segmented_pt, json_root)
   call json%print(json_root, 'test_f_surface_segmented_pt_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_segmented_pt_pattern_2_*.json)'
 
 endif
 
@@ -5612,6 +5698,7 @@ else
   call surface_segmented_struct_to_json(f2_surface_segmented, json_root)
   call json%print(json_root, 'test_f_surface_segmented_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_segmented_pattern_4_*.json)'
 
 endif
 
@@ -5652,6 +5739,7 @@ else
   call surface_segmented_struct_to_json(f2_surface_segmented, json_root)
   call json%print(json_root, 'test_f_surface_segmented_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_segmented_pattern_2_*.json)'
 
 endif
 
@@ -5746,6 +5834,7 @@ else
   call surface_h_misalign_pt_struct_to_json(f2_surface_h_misalign_pt, json_root)
   call json%print(json_root, 'test_f_surface_h_misalign_pt_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_h_misalign_pt_pattern_4_*.json)'
 
 endif
 
@@ -5786,6 +5875,7 @@ else
   call surface_h_misalign_pt_struct_to_json(f2_surface_h_misalign_pt, json_root)
   call json%print(json_root, 'test_f_surface_h_misalign_pt_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_h_misalign_pt_pattern_2_*.json)'
 
 endif
 
@@ -5869,6 +5959,7 @@ else
   call surface_h_misalign_struct_to_json(f2_surface_h_misalign, json_root)
   call json%print(json_root, 'test_f_surface_h_misalign_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_h_misalign_pattern_4_*.json)'
 
 endif
 
@@ -5909,6 +6000,7 @@ else
   call surface_h_misalign_struct_to_json(f2_surface_h_misalign, json_root)
   call json%print(json_root, 'test_f_surface_h_misalign_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_h_misalign_pattern_2_*.json)'
 
 endif
 
@@ -6003,6 +6095,7 @@ else
   call surface_displacement_pt_struct_to_json(f2_surface_displacement_pt, json_root)
   call json%print(json_root, 'test_f_surface_displacement_pt_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_displacement_pt_pattern_4_*.json)'
 
 endif
 
@@ -6043,6 +6136,7 @@ else
   call surface_displacement_pt_struct_to_json(f2_surface_displacement_pt, json_root)
   call json%print(json_root, 'test_f_surface_displacement_pt_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_displacement_pt_pattern_2_*.json)'
 
 endif
 
@@ -6126,6 +6220,7 @@ else
   call surface_displacement_struct_to_json(f2_surface_displacement, json_root)
   call json%print(json_root, 'test_f_surface_displacement_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_displacement_pattern_4_*.json)'
 
 endif
 
@@ -6166,6 +6261,7 @@ else
   call surface_displacement_struct_to_json(f2_surface_displacement, json_root)
   call json%print(json_root, 'test_f_surface_displacement_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_displacement_pattern_2_*.json)'
 
 endif
 
@@ -6260,6 +6356,7 @@ else
   call target_point_struct_to_json(f2_target_point, json_root)
   call json%print(json_root, 'test_f_target_point_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_target_point_pattern_4_*.json)'
 
 endif
 
@@ -6300,6 +6397,7 @@ else
   call target_point_struct_to_json(f2_target_point, json_root)
   call json%print(json_root, 'test_f_target_point_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_target_point_pattern_2_*.json)'
 
 endif
 
@@ -6376,6 +6474,7 @@ else
   call surface_curvature_struct_to_json(f2_surface_curvature, json_root)
   call json%print(json_root, 'test_f_surface_curvature_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_curvature_pattern_4_*.json)'
 
 endif
 
@@ -6416,6 +6515,7 @@ else
   call surface_curvature_struct_to_json(f2_surface_curvature, json_root)
   call json%print(json_root, 'test_f_surface_curvature_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_surface_curvature_pattern_2_*.json)'
 
 endif
 
@@ -6502,6 +6602,7 @@ else
   call photon_target_struct_to_json(f2_photon_target, json_root)
   call json%print(json_root, 'test_f_photon_target_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_target_pattern_4_*.json)'
 
 endif
 
@@ -6542,6 +6643,7 @@ else
   call photon_target_struct_to_json(f2_photon_target, json_root)
   call json%print(json_root, 'test_f_photon_target_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_target_pattern_2_*.json)'
 
 endif
 
@@ -6626,6 +6728,7 @@ else
   call photon_material_struct_to_json(f2_photon_material, json_root)
   call json%print(json_root, 'test_f_photon_material_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_material_pattern_4_*.json)'
 
 endif
 
@@ -6666,6 +6769,7 @@ else
   call photon_material_struct_to_json(f2_photon_material, json_root)
   call json%print(json_root, 'test_f_photon_material_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_material_pattern_2_*.json)'
 
 endif
 
@@ -6759,6 +6863,7 @@ else
   call pixel_pt_struct_to_json(f2_pixel_pt, json_root)
   call json%print(json_root, 'test_f_pixel_pt_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_pixel_pt_pattern_4_*.json)'
 
 endif
 
@@ -6799,6 +6904,7 @@ else
   call pixel_pt_struct_to_json(f2_pixel_pt, json_root)
   call json%print(json_root, 'test_f_pixel_pt_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_pixel_pt_pattern_2_*.json)'
 
 endif
 
@@ -6902,6 +7008,7 @@ else
   call pixel_detec_struct_to_json(f2_pixel_detec, json_root)
   call json%print(json_root, 'test_f_pixel_detec_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_pixel_detec_pattern_4_*.json)'
 
 endif
 
@@ -6942,6 +7049,7 @@ else
   call pixel_detec_struct_to_json(f2_pixel_detec, json_root)
   call json%print(json_root, 'test_f_pixel_detec_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_pixel_detec_pattern_2_*.json)'
 
 endif
 
@@ -7040,6 +7148,7 @@ else
   call photon_element_struct_to_json(f2_photon_element, json_root)
   call json%print(json_root, 'test_f_photon_element_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_element_pattern_4_*.json)'
 
 endif
 
@@ -7080,6 +7189,7 @@ else
   call photon_element_struct_to_json(f2_photon_element, json_root)
   call json%print(json_root, 'test_f_photon_element_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_photon_element_pattern_2_*.json)'
 
 endif
 
@@ -7190,6 +7300,7 @@ else
   call wall3d_vertex_struct_to_json(f2_wall3d_vertex, json_root)
   call json%print(json_root, 'test_f_wall3d_vertex_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wall3d_vertex_pattern_4_*.json)'
 
 endif
 
@@ -7230,6 +7341,7 @@ else
   call wall3d_vertex_struct_to_json(f2_wall3d_vertex, json_root)
   call json%print(json_root, 'test_f_wall3d_vertex_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wall3d_vertex_pattern_2_*.json)'
 
 endif
 
@@ -7319,6 +7431,7 @@ else
   call wall3d_section_struct_to_json(f2_wall3d_section, json_root)
   call json%print(json_root, 'test_f_wall3d_section_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wall3d_section_pattern_4_*.json)'
 
 endif
 
@@ -7359,6 +7472,7 @@ else
   call wall3d_section_struct_to_json(f2_wall3d_section, json_root)
   call json%print(json_root, 'test_f_wall3d_section_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wall3d_section_pattern_2_*.json)'
 
 endif
 
@@ -7382,11 +7496,11 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%material)
-F%material(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+  F%material(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wall3d_vertex>
 if (ix_patt < 3) then
@@ -7397,7 +7511,7 @@ if (ix_patt < 3) then
   call set_wall3d_vertex_test_pattern (F%v(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_photon_reflect_surface>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_photon_reflect_surface>
 if (ix_patt < 3) then
   if (associated(F%surface)) deallocate (F%surface)
   else
@@ -7502,6 +7616,7 @@ else
   call wall3d_struct_to_json(f2_wall3d, json_root)
   call json%print(json_root, 'test_f_wall3d_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wall3d_pattern_4_*.json)'
 
 endif
 
@@ -7542,6 +7657,7 @@ else
   call wall3d_struct_to_json(f2_wall3d, json_root)
   call json%print(json_root, 'test_f_wall3d_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_wall3d_pattern_2_*.json)'
 
 endif
 
@@ -7565,7 +7681,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%type = rhs
@@ -7577,11 +7693,11 @@ rhs = 4 + offset; F%n_link = rhs
 rhs = 5 + offset; F%thickness = rhs
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%clear_material)
-F%clear_material(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
+  F%clear_material(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%opaque_material)
-F%opaque_material(jd1:jd1) = char(ichar("a") + modulo(100+7+offset+jd1, 26))
+  F%opaque_material(jd1:jd1) = char(ichar("a") + modulo(100+7+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 8 + offset; F%superimpose = (modulo(rhs, 2) == 0)
@@ -7646,6 +7762,7 @@ else
   call ramper_lord_struct_to_json(f2_ramper_lord, json_root)
   call json%print(json_root, 'test_f_ramper_lord_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ramper_lord_pattern_4_*.json)'
 
 endif
 
@@ -7686,6 +7803,7 @@ else
   call ramper_lord_struct_to_json(f2_ramper_lord, json_root)
   call json%print(json_root, 'test_f_ramper_lord_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ramper_lord_pattern_2_*.json)'
 
 endif
 
@@ -7711,7 +7829,7 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%ix_ele = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%ix_con = rhs
-!! f_side.test_pat[0D_PTR_real] shared_ptr<Real>
+!! f_side.test_pat[0D_PTR_real] std::optional<Real>
 if (ix_patt < 3) then
   if (associated(F%attrib_ptr)) deallocate (F%attrib_ptr)
   else
@@ -7769,6 +7887,7 @@ else
   call control_struct_to_json(f2_control, json_root)
   call json%print(json_root, 'test_f_control_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_control_pattern_4_*.json)'
 
 endif
 
@@ -7809,6 +7928,7 @@ else
   call control_struct_to_json(f2_control, json_root)
   call json%print(json_root, 'test_f_control_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_control_pattern_2_*.json)'
 
 endif
 
@@ -7857,11 +7977,11 @@ call set_lat_ele_loc_test_pattern (F%slave, ix_patt)
 call set_lat_ele_loc_test_pattern (F%lord, ix_patt)
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%slave_name)
-F%slave_name(jd1:jd1) = char(ichar("a") + modulo(100+8+offset+jd1, 26))
+  F%slave_name(jd1:jd1) = char(ichar("a") + modulo(100+8+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%attribute)
-F%attribute(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
+  F%attribute(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 10 + offset; F%ix_attrib = rhs
@@ -7915,6 +8035,7 @@ else
   call control_var1_struct_to_json(f2_control_var1, json_root)
   call json%print(json_root, 'test_f_control_var1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_control_var1_pattern_4_*.json)'
 
 endif
 
@@ -7955,6 +8076,7 @@ else
   call control_var1_struct_to_json(f2_control_var1, json_root)
   call json%print(json_root, 'test_f_control_var1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_control_var1_pattern_2_*.json)'
 
 endif
 
@@ -7978,7 +8100,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 2 + offset; F%value = rhs
@@ -8034,6 +8156,7 @@ else
   call control_ramp1_struct_to_json(f2_control_ramp1, json_root)
   call json%print(json_root, 'test_f_control_ramp1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_control_ramp1_pattern_4_*.json)'
 
 endif
 
@@ -8074,6 +8197,7 @@ else
   call control_ramp1_struct_to_json(f2_control_ramp1, json_root)
   call json%print(json_root, 'test_f_control_ramp1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_control_ramp1_pattern_2_*.json)'
 
 endif
 
@@ -8116,11 +8240,11 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%attribute)
-F%attribute(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
+  F%attribute(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%slave_name)
-F%slave_name(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
+  F%slave_name(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 7 + offset; F%is_controller = (modulo(rhs, 2) == 0)
@@ -8174,6 +8298,7 @@ else
   call controller_struct_to_json(f2_controller, json_root)
   call json%print(json_root, 'test_f_controller_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_controller_pattern_4_*.json)'
 
 endif
 
@@ -8214,6 +8339,7 @@ else
   call controller_struct_to_json(f2_controller, json_root)
   call json%print(json_root, 'test_f_controller_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_controller_pattern_2_*.json)'
 
 endif
 
@@ -8322,6 +8448,7 @@ else
   call ellipse_beam_init_struct_to_json(f2_ellipse_beam_init, json_root)
   call json%print(json_root, 'test_f_ellipse_beam_init_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ellipse_beam_init_pattern_4_*.json)'
 
 endif
 
@@ -8362,6 +8489,7 @@ else
   call ellipse_beam_init_struct_to_json(f2_ellipse_beam_init, json_root)
   call json%print(json_root, 'test_f_ellipse_beam_init_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ellipse_beam_init_pattern_2_*.json)'
 
 endif
 
@@ -8439,6 +8567,7 @@ else
   call kv_beam_init_struct_to_json(f2_kv_beam_init, json_root)
   call json%print(json_root, 'test_f_kv_beam_init_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_kv_beam_init_pattern_4_*.json)'
 
 endif
 
@@ -8479,6 +8608,7 @@ else
   call kv_beam_init_struct_to_json(f2_kv_beam_init, json_root)
   call json%print(json_root, 'test_f_kv_beam_init_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_kv_beam_init_pattern_2_*.json)'
 
 endif
 
@@ -8559,6 +8689,7 @@ else
   call grid_beam_init_struct_to_json(f2_grid_beam_init, json_root)
   call json%print(json_root, 'test_f_grid_beam_init_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_beam_init_pattern_4_*.json)'
 
 endif
 
@@ -8599,6 +8730,7 @@ else
   call grid_beam_init_struct_to_json(f2_grid_beam_init, json_root)
   call json%print(json_root, 'test_f_grid_beam_init_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_grid_beam_init_pattern_2_*.json)'
 
 endif
 
@@ -8682,6 +8814,7 @@ else
   call beam_init_struct_to_json(f2_beam_init, json_root)
   call json%print(json_root, 'test_f_beam_init_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_beam_init_pattern_4_*.json)'
 
 endif
 
@@ -8722,6 +8855,7 @@ else
   call beam_init_struct_to_json(f2_beam_init, json_root)
   call json%print(json_root, 'test_f_beam_init_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_beam_init_pattern_2_*.json)'
 
 endif
 
@@ -8745,7 +8879,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%position_file)
-F%position_file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%position_file(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[1D_NOT_character] FixedArray1D<string, 3>
 do jd1 = lbound(F%distribution_type, 1), ubound(F%distribution_type, 1)
@@ -8792,11 +8926,11 @@ rhs = 12 + offset; F%renorm_center = (modulo(rhs, 2) == 0)
 rhs = 13 + offset; F%renorm_sigma = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%random_engine)
-F%random_engine(jd1:jd1) = char(ichar("a") + modulo(100+14+offset+jd1, 26))
+  F%random_engine(jd1:jd1) = char(ichar("a") + modulo(100+14+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%random_gauss_converter)
-F%random_gauss_converter(jd1:jd1) = char(ichar("a") + modulo(100+15+offset+jd1, 26))
+  F%random_gauss_converter(jd1:jd1) = char(ichar("a") + modulo(100+15+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 16 + offset; F%random_sigma_cutoff = rhs
@@ -8831,7 +8965,7 @@ rhs = 28 + offset; F%n_bunch = rhs
 rhs = 29 + offset; F%ix_turn = rhs
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%species)
-F%species(jd1:jd1) = char(ichar("a") + modulo(100+30+offset+jd1, 26))
+  F%species(jd1:jd1) = char(ichar("a") + modulo(100+30+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 31 + offset; F%full_6D_coupling_calc = (modulo(rhs, 2) == 0)
@@ -8843,7 +8977,7 @@ rhs = 33 + offset; F%use_t_coords = (modulo(rhs, 2) == 0)
 rhs = 34 + offset; F%use_z_as_t = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%file_name)
-F%file_name(jd1:jd1) = char(ichar("a") + modulo(100+35+offset+jd1, 26))
+  F%file_name(jd1:jd1) = char(ichar("a") + modulo(100+35+offset+jd1, 26))
 enddo
 
 end subroutine set_beam_init_test_pattern
@@ -8895,6 +9029,7 @@ else
   call lat_param_struct_to_json(f2_lat_param, json_root)
   call json%print(json_root, 'test_f_lat_param_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_param_pattern_4_*.json)'
 
 endif
 
@@ -8935,6 +9070,7 @@ else
   call lat_param_struct_to_json(f2_lat_param, json_root)
   call json%print(json_root, 'test_f_lat_param_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_param_pattern_2_*.json)'
 
 endif
 
@@ -9048,6 +9184,7 @@ else
   call mode_info_struct_to_json(f2_mode_info, json_root)
   call json%print(json_root, 'test_f_mode_info_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_mode_info_pattern_4_*.json)'
 
 endif
 
@@ -9088,6 +9225,7 @@ else
   call mode_info_struct_to_json(f2_mode_info, json_root)
   call json%print(json_root, 'test_f_mode_info_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_mode_info_pattern_2_*.json)'
 
 endif
 
@@ -9171,6 +9309,7 @@ else
   call pre_tracker_struct_to_json(f2_pre_tracker, json_root)
   call json%print(json_root, 'test_f_pre_tracker_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_pre_tracker_pattern_4_*.json)'
 
 endif
 
@@ -9211,6 +9350,7 @@ else
   call pre_tracker_struct_to_json(f2_pre_tracker, json_root)
   call json%print(json_root, 'test_f_pre_tracker_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_pre_tracker_pattern_2_*.json)'
 
 endif
 
@@ -9240,7 +9380,7 @@ rhs = 2 + offset; F%ix_ele_start = rhs
 rhs = 3 + offset; F%ix_ele_end = rhs
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%input_file)
-F%input_file(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
+  F%input_file(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
 enddo
 
 end subroutine set_pre_tracker_test_pattern
@@ -9292,6 +9432,7 @@ else
   call anormal_mode_struct_to_json(f2_anormal_mode, json_root)
   call json%print(json_root, 'test_f_anormal_mode_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_anormal_mode_pattern_4_*.json)'
 
 endif
 
@@ -9332,6 +9473,7 @@ else
   call anormal_mode_struct_to_json(f2_anormal_mode, json_root)
   call json%print(json_root, 'test_f_anormal_mode_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_anormal_mode_pattern_2_*.json)'
 
 endif
 
@@ -9420,6 +9562,7 @@ else
   call linac_normal_mode_struct_to_json(f2_linac_normal_mode, json_root)
   call json%print(json_root, 'test_f_linac_normal_mode_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_linac_normal_mode_pattern_4_*.json)'
 
 endif
 
@@ -9460,6 +9603,7 @@ else
   call linac_normal_mode_struct_to_json(f2_linac_normal_mode, json_root)
   call json%print(json_root, 'test_f_linac_normal_mode_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_linac_normal_mode_pattern_2_*.json)'
 
 endif
 
@@ -9545,6 +9689,7 @@ else
   call normal_modes_struct_to_json(f2_normal_modes, json_root)
   call json%print(json_root, 'test_f_normal_modes_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_normal_modes_pattern_4_*.json)'
 
 endif
 
@@ -9585,6 +9730,7 @@ else
   call normal_modes_struct_to_json(f2_normal_modes, json_root)
   call json%print(json_root, 'test_f_normal_modes_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_normal_modes_pattern_2_*.json)'
 
 endif
 
@@ -9685,6 +9831,7 @@ else
   call em_field_struct_to_json(f2_em_field, json_root)
   call json%print(json_root, 'test_f_em_field_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_em_field_pattern_4_*.json)'
 
 endif
 
@@ -9725,6 +9872,7 @@ else
   call em_field_struct_to_json(f2_em_field, json_root)
   call json%print(json_root, 'test_f_em_field_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_em_field_pattern_2_*.json)'
 
 endif
 
@@ -9827,6 +9975,7 @@ else
   call strong_beam_struct_to_json(f2_strong_beam, json_root)
   call json%print(json_root, 'test_f_strong_beam_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_strong_beam_pattern_4_*.json)'
 
 endif
 
@@ -9867,6 +10016,7 @@ else
   call strong_beam_struct_to_json(f2_strong_beam, json_root)
   call json%print(json_root, 'test_f_strong_beam_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_strong_beam_pattern_2_*.json)'
 
 endif
 
@@ -9952,6 +10102,7 @@ else
   call track_point_struct_to_json(f2_track_point, json_root)
   call json%print(json_root, 'test_f_track_point_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_track_point_pattern_4_*.json)'
 
 endif
 
@@ -9992,6 +10143,7 @@ else
   call track_point_struct_to_json(f2_track_point, json_root)
   call json%print(json_root, 'test_f_track_point_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_track_point_pattern_2_*.json)'
 
 endif
 
@@ -10082,6 +10234,7 @@ else
   call track_struct_to_json(f2_track, json_root)
   call json%print(json_root, 'test_f_track_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_track_pattern_4_*.json)'
 
 endif
 
@@ -10122,6 +10275,7 @@ else
   call track_struct_to_json(f2_track, json_root)
   call json%print(json_root, 'test_f_track_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_track_pattern_2_*.json)'
 
 endif
 
@@ -10210,6 +10364,7 @@ else
   call space_charge_common_struct_to_json(f2_space_charge_common, json_root)
   call json%print(json_root, 'test_f_space_charge_common_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_space_charge_common_pattern_4_*.json)'
 
 endif
 
@@ -10250,6 +10405,7 @@ else
   call space_charge_common_struct_to_json(f2_space_charge_common, json_root)
   call json%print(json_root, 'test_f_space_charge_common_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_space_charge_common_pattern_2_*.json)'
 
 endif
 
@@ -10311,7 +10467,7 @@ rhs = 15 + offset; F%lsc_kick_transverse_dependence = (modulo(rhs, 2) == 0)
 rhs = 16 + offset; F%debug = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%diagnostic_output_file)
-F%diagnostic_output_file(jd1:jd1) = char(ichar("a") + modulo(100+17+offset+jd1, 26))
+  F%diagnostic_output_file(jd1:jd1) = char(ichar("a") + modulo(100+17+offset+jd1, 26))
 enddo
 
 end subroutine set_space_charge_common_test_pattern
@@ -10363,6 +10519,7 @@ else
   call bmad_common_struct_to_json(f2_bmad_common, json_root)
   call json%print(json_root, 'test_f_bmad_common_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bmad_common_pattern_4_*.json)'
 
 endif
 
@@ -10403,6 +10560,7 @@ else
   call bmad_common_struct_to_json(f2_bmad_common, json_root)
   call json%print(json_root, 'test_f_bmad_common_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bmad_common_pattern_2_*.json)'
 
 endif
 
@@ -10557,6 +10715,7 @@ else
   call rad_int1_struct_to_json(f2_rad_int1, json_root)
   call json%print(json_root, 'test_f_rad_int1_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_int1_pattern_4_*.json)'
 
 endif
 
@@ -10597,6 +10756,7 @@ else
   call rad_int1_struct_to_json(f2_rad_int1, json_root)
   call json%print(json_root, 'test_f_rad_int1_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_int1_pattern_2_*.json)'
 
 endif
 
@@ -10704,6 +10864,7 @@ else
   call rad_int_branch_struct_to_json(f2_rad_int_branch, json_root)
   call json%print(json_root, 'test_f_rad_int_branch_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_int_branch_pattern_4_*.json)'
 
 endif
 
@@ -10744,6 +10905,7 @@ else
   call rad_int_branch_struct_to_json(f2_rad_int_branch, json_root)
   call json%print(json_root, 'test_f_rad_int_branch_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_int_branch_pattern_2_*.json)'
 
 endif
 
@@ -10824,6 +10986,7 @@ else
   call rad_int_all_ele_struct_to_json(f2_rad_int_all_ele, json_root)
   call json%print(json_root, 'test_f_rad_int_all_ele_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_int_all_ele_pattern_4_*.json)'
 
 endif
 
@@ -10864,6 +11027,7 @@ else
   call rad_int_all_ele_struct_to_json(f2_rad_int_all_ele, json_root)
   call json%print(json_root, 'test_f_rad_int_all_ele_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rad_int_all_ele_pattern_2_*.json)'
 
 endif
 
@@ -10944,6 +11108,7 @@ else
   call ele_struct_to_json(f2_ele, json_root)
   call json%print(json_root, 'test_f_ele_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ele_pattern_4_*.json)'
 
 endif
 
@@ -10984,6 +11149,7 @@ else
   call ele_struct_to_json(f2_ele, json_root)
   call json%print(json_root, 'test_f_ele_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ele_pattern_2_*.json)'
 
 endif
 
@@ -11007,28 +11173,28 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%type)
-F%type(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+  F%type(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%alias)
-F%alias(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
+  F%alias(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%component_name)
-F%component_name(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
+  F%component_name(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
 enddo
-!! f_side.test_pat[0D_PTR_character] shared_ptr<string>
+!! f_side.test_pat[0D_PTR_character] std::optional<string>
 if (ix_patt < 3) then
   if (associated(F%descrip)) deallocate (F%descrip)
-  else
-  if (.not. associated(F%descrip)) allocate (F%descrip)
-  do jd1 = 1, len(F%descrip)
-  F%descrip(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
-  enddo
+else
+    if (.not. associated(F%descrip)) allocate (F%descrip)
+    do jd1 = 1, len(F%descrip)
+      F%descrip(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
+    enddo
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_twiss
 call set_twiss_test_pattern (F%a, ix_patt)
@@ -11040,7 +11206,7 @@ call set_twiss_test_pattern (F%z, ix_patt)
 call set_xy_disp_test_pattern (F%x, ix_patt)
 !! f_side.test_pat[0D_NOT_type] CPP_xy_disp
 call set_xy_disp_test_pattern (F%y, ix_patt)
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_ac_kicker>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_ac_kicker>
 if (ix_patt < 3) then
   if (associated(F%ac_kick)) deallocate (F%ac_kick)
   else
@@ -11050,7 +11216,7 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_bookkeeping_state
 call set_bookkeeping_state_test_pattern (F%bookkeeping_state, ix_patt)
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_controller>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_controller>
 if (ix_patt < 3) then
   if (associated(F%control)) deallocate (F%control)
   else
@@ -11060,7 +11226,7 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_floor_position
 call set_floor_position_test_pattern (F%floor, ix_patt)
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_high_energy_space_charge>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
 if (ix_patt < 3) then
   if (associated(F%high_energy_space_charge)) deallocate (F%high_energy_space_charge)
   else
@@ -11068,7 +11234,7 @@ if (ix_patt < 3) then
   rhs = 18 + offset
   call set_high_energy_space_charge_test_pattern (F%high_energy_space_charge, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_mode3>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode3>
 if (ix_patt < 3) then
   if (associated(F%mode3)) deallocate (F%mode3)
   else
@@ -11076,7 +11242,7 @@ if (ix_patt < 3) then
   rhs = 20 + offset
   call set_mode3_test_pattern (F%mode3, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_photon_element>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_photon_element>
 if (ix_patt < 3) then
   if (associated(F%photon)) deallocate (F%photon)
   else
@@ -11084,7 +11250,7 @@ if (ix_patt < 3) then
   rhs = 22 + offset
   call set_photon_element_test_pattern (F%photon, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_rad_map_ele>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_rad_map_ele>
 if (ix_patt < 3) then
   if (associated(F%rad_map)) deallocate (F%rad_map)
   else
@@ -11107,7 +11273,7 @@ do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
 rhs = 100 + jd1 + 28 + offset
 call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
 enddo
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_wake>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_wake>
 if (ix_patt < 3) then
   if (associated(F%wake)) deallocate (F%wake)
   else
@@ -11399,6 +11565,7 @@ else
   call complex_taylor_term_struct_to_json(f2_complex_taylor_term, json_root)
   call json%print(json_root, 'test_f_complex_taylor_term_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_complex_taylor_term_pattern_4_*.json)'
 
 endif
 
@@ -11439,6 +11606,7 @@ else
   call complex_taylor_term_struct_to_json(f2_complex_taylor_term, json_root)
   call json%print(json_root, 'test_f_complex_taylor_term_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_complex_taylor_term_pattern_2_*.json)'
 
 endif
 
@@ -11517,6 +11685,7 @@ else
   call complex_taylor_struct_to_json(f2_complex_taylor, json_root)
   call json%print(json_root, 'test_f_complex_taylor_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_complex_taylor_pattern_4_*.json)'
 
 endif
 
@@ -11557,6 +11726,7 @@ else
   call complex_taylor_struct_to_json(f2_complex_taylor, json_root)
   call json%print(json_root, 'test_f_complex_taylor_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_complex_taylor_pattern_2_*.json)'
 
 endif
 
@@ -11639,6 +11809,7 @@ else
   call branch_struct_to_json(f2_branch, json_root)
   call json%print(json_root, 'test_f_branch_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_branch_pattern_4_*.json)'
 
 endif
 
@@ -11679,6 +11850,7 @@ else
   call branch_struct_to_json(f2_branch, json_root)
   call json%print(json_root, 'test_f_branch_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_branch_pattern_2_*.json)'
 
 endif
 
@@ -11702,7 +11874,7 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%name)
-F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%ix_branch = rhs
@@ -11792,6 +11964,7 @@ else
   call lat_struct_to_json(f2_lat, json_root)
   call json%print(json_root, 'test_f_lat_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_pattern_4_*.json)'
 
 endif
 
@@ -11832,6 +12005,7 @@ else
   call lat_struct_to_json(f2_lat, json_root)
   call json%print(json_root, 'test_f_lat_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_pattern_2_*.json)'
 
 endif
 
@@ -11855,23 +12029,23 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%use_name)
-F%use_name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+  F%use_name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%lattice)
-F%lattice(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+  F%lattice(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%machine)
-F%machine(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
+  F%machine(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%input_file_name)
-F%input_file_name(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
+  F%input_file_name(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
 enddo
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%title)
-F%title(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
+  F%title(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
 enddo
 !! f_side.test_pat[1D_ALLOC_character] VariableArray1D<string>
 if (ix_patt < 3) then
@@ -11892,7 +12066,7 @@ if (ix_patt < 3) then
   call set_expression_atom_test_pattern (F%constant(jd1+lb1), ix_patt+jd1)
   enddo
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_mode_info>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode_info>
 if (ix_patt < 3) then
   if (associated(F%a)) deallocate (F%a)
   else
@@ -11900,7 +12074,7 @@ if (ix_patt < 3) then
   rhs = 10 + offset
   call set_mode_info_test_pattern (F%a, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_mode_info>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode_info>
 if (ix_patt < 3) then
   if (associated(F%b)) deallocate (F%b)
   else
@@ -11908,7 +12082,7 @@ if (ix_patt < 3) then
   rhs = 12 + offset
   call set_mode_info_test_pattern (F%b, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_mode_info>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode_info>
 if (ix_patt < 3) then
   if (associated(F%z)) deallocate (F%z)
   else
@@ -11916,7 +12090,7 @@ if (ix_patt < 3) then
   rhs = 14 + offset
   call set_mode_info_test_pattern (F%z, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type] shared_ptr<CPP_lat_param>
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_lat_param>
 if (ix_patt < 3) then
   if (associated(F%param)) deallocate (F%param)
   else
@@ -11973,7 +12147,7 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 31 + offset; F%version = rhs
-!! f_side.test_pat[0D_PTR_integer] shared_ptr<Int>
+!! f_side.test_pat[0D_PTR_integer] std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_track)) deallocate (F%n_ele_track)
   else
@@ -11981,7 +12155,7 @@ if (ix_patt < 3) then
   rhs = 32 + offset
   F%n_ele_track = rhs
 endif
-!! f_side.test_pat[0D_PTR_integer] shared_ptr<Int>
+!! f_side.test_pat[0D_PTR_integer] std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_max)) deallocate (F%n_ele_max)
   else
@@ -12061,6 +12235,7 @@ else
   call bunch_struct_to_json(f2_bunch, json_root)
   call json%print(json_root, 'test_f_bunch_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bunch_pattern_4_*.json)'
 
 endif
 
@@ -12101,6 +12276,7 @@ else
   call bunch_struct_to_json(f2_bunch, json_root)
   call json%print(json_root, 'test_f_bunch_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bunch_pattern_2_*.json)'
 
 endif
 
@@ -12215,6 +12391,7 @@ else
   call bunch_params_struct_to_json(f2_bunch_params, json_root)
   call json%print(json_root, 'test_f_bunch_params_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bunch_params_pattern_4_*.json)'
 
 endif
 
@@ -12255,6 +12432,7 @@ else
   call bunch_params_struct_to_json(f2_bunch_params, json_root)
   call json%print(json_root, 'test_f_bunch_params_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bunch_params_pattern_2_*.json)'
 
 endif
 
@@ -12382,6 +12560,7 @@ else
   call beam_struct_to_json(f2_beam, json_root)
   call json%print(json_root, 'test_f_beam_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_beam_pattern_4_*.json)'
 
 endif
 
@@ -12422,6 +12601,7 @@ else
   call beam_struct_to_json(f2_beam, json_root)
   call json%print(json_root, 'test_f_beam_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_beam_pattern_2_*.json)'
 
 endif
 
@@ -12502,6 +12682,7 @@ else
   call aperture_point_struct_to_json(f2_aperture_point, json_root)
   call json%print(json_root, 'test_f_aperture_point_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_aperture_point_pattern_4_*.json)'
 
 endif
 
@@ -12542,6 +12723,7 @@ else
   call aperture_point_struct_to_json(f2_aperture_point, json_root)
   call json%print(json_root, 'test_f_aperture_point_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_aperture_point_pattern_2_*.json)'
 
 endif
 
@@ -12623,6 +12805,7 @@ else
   call aperture_param_struct_to_json(f2_aperture_param, json_root)
   call json%print(json_root, 'test_f_aperture_param_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_aperture_param_pattern_4_*.json)'
 
 endif
 
@@ -12663,6 +12846,7 @@ else
   call aperture_param_struct_to_json(f2_aperture_param, json_root)
   call json%print(json_root, 'test_f_aperture_param_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_aperture_param_pattern_2_*.json)'
 
 endif
 
@@ -12702,7 +12886,7 @@ rhs = 7 + offset; F%rel_accuracy = rhs
 rhs = 8 + offset; F%abs_accuracy = rhs
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%start_ele)
-F%start_ele(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
+  F%start_ele(jd1:jd1) = char(ichar("a") + modulo(100+9+offset+jd1, 26))
 enddo
 
 end subroutine set_aperture_param_test_pattern
@@ -12754,6 +12938,7 @@ else
   call aperture_scan_struct_to_json(f2_aperture_scan, json_root)
   call json%print(json_root, 'test_f_aperture_scan_pattern_4_actual_f2cpp.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_aperture_scan_pattern_4_*.json)'
 
 endif
 
@@ -12794,6 +12979,7 @@ else
   call aperture_scan_struct_to_json(f2_aperture_scan, json_root)
   call json%print(json_root, 'test_f_aperture_scan_pattern_2_expected_f2.json')
   call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_aperture_scan_pattern_2_*.json)'
 
 endif
 

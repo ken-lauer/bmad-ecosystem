@@ -255,10 +255,10 @@ void to_f__variant_5(const CppClass &C, OpaqueClass *F) {
   //// end:to_f_setup
 
   to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Char*
-  //// end:to_f2_arg
-  */
+        //// begin:to_f2_arg
+        c_Char*
+        //// end:to_f2_arg
+        */
         //// begin:to_f2_call
         z_NAME
         //// end:to_f2_call
@@ -515,8 +515,8 @@ void to_f__variant_16(const CppClass &C, OpaqueClass *F) {
 void to_f__variant_17(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   const CPP_KIND *z_NAME[DIM1 * DIM2];
-  for (size_t i = 0; i < C.NAME.size(); i++)
-    for (size_t j = 0; j < C.NAME[0].size(); j++) {
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++) {
       auto m = DIM2 * i + j;
       z_NAME[m] = C.NAME[i][j].get();
     }
@@ -823,9 +823,9 @@ void to_f__variant_28(const CppClass &C, OpaqueClass *F) {
 void to_f__variant_29(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   const CPP_KIND *z_NAME[DIM1 * DIM2 * DIM3];
-  for (size_t i = 0; i < C.NAME.size(); i++)
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++)
+      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
         auto m = DIM3 * DIM2 * i + DIM3 * j + k;
         z_NAME[m] = C.NAME[i][j][k].get();
       }
@@ -1048,7 +1048,6 @@ void to_f__variant_35(const CppClass &C, OpaqueClass *F) {
 }
 
 //// section:to_c2
-//// type:0D_NOT_character
 //// type:0D_NOT_complex
 //// type:0D_NOT_integer
 //// type:0D_NOT_integer8
@@ -1059,8 +1058,6 @@ void to_f__variant_35(const CppClass &C, OpaqueClass *F) {
 //// type:2D_NOT_size
 //// type:3D_NOT_size
 void to_c2__variant_0(STRUCT_CPP_CLASS &C,
-                      //// case:0D_NOT_character:to_c2_arg
-                      c_Char z_NAME,
                       //// case:0D_NOT_complex:to_c2_arg
                       c_Complex &z_NAME,
                       //// case:0D_NOT_integer:to_c2_arg
@@ -1083,6 +1080,18 @@ void to_c2__variant_0(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME = z_NAME;
+  //// end:to_c2_set
+}
+
+//// section:to_c2
+//// type:0D_NOT_character
+void to_c2__variant_0(STRUCT_CPP_CLASS &C,
+                      //// begin:to_c2_arg
+                      c_Char z_NAME,
+                      //// end:to_c2_arg
+) {
+  //// begin:to_c2_set
+  C.NAME = std::string{z_NAME};
   //// end:to_c2_set
 }
 
@@ -1110,7 +1119,7 @@ void to_c2__variant_2(STRUCT_CPP_CLASS &C,
   if (n_NAME == 0) {
     C.NAME.reset();
   } else {
-    C.NAME.emplace(z_NAME);
+    C.NAME.emplace(std::string{z_NAME});
   }
   //// end:to_c2_set
 }
@@ -1213,7 +1222,7 @@ void to_c2__variant_8(STRUCT_CPP_CLASS &C,
     C.NAME.reset();
   } else {
     C.NAME.emplace();
-    KIND_to_c(z_NAME, *C.NAME);
+    KIND_to_c(z_NAME, C.NAME.value());
   }
   //// end:to_c2_set
 }
@@ -1226,7 +1235,7 @@ void to_c2__variant_9(STRUCT_CPP_CLASS &C,
                       //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (size_t i = 0; i < C.NAME.size(); i++)
+  for (auto i{0}; i < C.NAME.size(); i++)
     C.NAME[i] = z_NAME[i];
   //// end:to_c2_set
 }
@@ -1293,7 +1302,7 @@ void to_c2__variant_11(STRUCT_CPP_CLASS &C,
                        //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (size_t i = 0; i < C.NAME.size(); i++) {
+  for (auto i{0}; i < C.NAME.size(); i++) {
     KIND_to_c(z_NAME[i], C.NAME[i]);
   }
   //// end:to_c2_set
@@ -1379,8 +1388,8 @@ void to_c2__variant_15(STRUCT_CPP_CLASS &C,
                        //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (size_t i = 0; i < C.NAME.size(); i++)
-    for (size_t j = 0; j < C.NAME[0].size(); j++) {
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++) {
       auto m = DIM2 * i + j;
       KIND_to_c(z_NAME[m], *C.NAME[i][j]);
     }
@@ -1457,9 +1466,9 @@ void to_c2__variant_18(STRUCT_CPP_CLASS &C,
                        //// end:to_c2_arg
 ) {
   //// begin:to_c2_set
-  for (size_t i = 0; i < C.NAME.size(); i++)
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
-      for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++)
+      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
         auto m = DIM3 * DIM2 * i + DIM3 * j + k;
         KIND_to_c(z_NAME[m], *C.NAME[i][j][k]);
       }
@@ -1502,9 +1511,9 @@ void to_c2__variant_19(STRUCT_CPP_CLASS &C,
 ) {
   //// begin:to_c2_set
   C.NAME.resize(n1_NAME);
-  for (size_t i = 0; i < C.NAME.size(); i++) {
+  for (auto i{0}; i < C.NAME.size(); i++) {
     C.NAME[i].resize(n2_NAME);
-    for (size_t j = 0; j < C.NAME[0].size(); j++)
+    for (auto j{0}; j < C.NAME[0].size(); j++)
       C.NAME[i][j].resize(n3_NAME);
   }
   C.NAME << z_NAME;
@@ -1639,492 +1648,513 @@ void EQUALITY_TEST(STRUCT_CPP_CLASS &C) {
   */
 }
 void TEST_PAT(STRUCT_CPP_CLASS &C) {
-  /*
-    //// section:test_pat
-    //// type:0D_NOT_character
-    //// begin:test_value
-    rhs
-    //// end:test_value
-    //// begin:test_pat
-    C.NAME.resize(STR_LEN);
-    for (size_t i = 0; i < C.NAME.size(); i++)
-      {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = 'a' + rhs % 26;}
-    //// end:test_pat
+  //// section:test_pat
+  //// type:0D_NOT_character
+  //// begin:test_value
+  rhs;
+  //// end:test_value
+  //// begin:test_pat
+  C.NAME.resize(STR_LEN);
+  for (auto i{0}; i < C.NAME.size(); i++) {
+    int rhs = 101 + i + ARGIDX + offset;
+    C.NAME[i] = 'a' + rhs % 26;
+  }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:1D_NOT_complex
-    //// type:1D_NOT_integer
-    //// type:1D_NOT_integer8
-    //// type:1D_NOT_logical
-    //// type:1D_NOT_real
-    //// case:1D_NOT_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:1D_NOT_integer:test_value
-    rhs
-    //// case:1D_NOT_integer8:test_value
-    rhs
-    //// case:1D_NOT_logical:test_value
-    (rhs % 2 == 0)
-    //// case:1D_NOT_real:test_value
-    rhs
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++)
-      {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = TEST_VALUE;}
-    //// end:test_pat
+  //// section:test_pat
+  //// type:1D_NOT_complex
+  //// type:1D_NOT_integer
+  //// type:1D_NOT_integer8
+  //// type:1D_NOT_logical
+  //// type:1D_NOT_real
+  //// case:1D_NOT_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:1D_NOT_integer:test_value
+  rhs;
+  //// case:1D_NOT_integer8:test_value
+  rhs;
+  //// case:1D_NOT_logical:test_value
+  (rhs % 2 == 0);
+  //// case:1D_NOT_real:test_value
+  rhs;
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++) {
+    int rhs = 101 + i + ARGIDX + offset;
+    C.NAME[i] = TEST_VALUE;
+  }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:1D_NOT_type
-    //// begin:test_value
+  //// section:test_pat
+  //// type:1D_NOT_type
+  //// begin:test_value
 
-    //// end:test_value
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++)
-      {int rhs = 101 + i + ARGIDX + offset; set_CPP_KIND_test_pattern(C.NAME[i],
-    ix_patt+i+1);}
-    //// end:test_pat
+  //// end:test_value
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++) {
+    int rhs = 101 + i + ARGIDX + offset;
+    set_CPP_KIND_test_pattern(C.NAME[i], ix_patt + i + 1);
+  }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:2D_NOT_complex
-    //// type:2D_NOT_integer
-    //// type:2D_NOT_integer8
-    //// type:2D_NOT_logical
-    //// type:2D_NOT_real
-    //// case:2D_NOT_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:2D_NOT_integer:test_value
-    rhs
-    //// case:2D_NOT_integer8:test_value
-    rhs
-    //// case:2D_NOT_logical:test_value
-    (rhs % 2 == 0)
-    //// case:2D_NOT_real:test_value
-    rhs
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j <
-    C.NAME[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + ARGIDX + offset;
-    C.NAME[i][j] = TEST_VALUE;}
-    //// end:test_pat
+  //// section:test_pat
+  //// type:2D_NOT_complex
+  //// type:2D_NOT_integer
+  //// type:2D_NOT_integer8
+  //// type:2D_NOT_logical
+  //// type:2D_NOT_real
+  //// case:2D_NOT_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:2D_NOT_integer:test_value
+  rhs;
+  //// case:2D_NOT_integer8:test_value
+  rhs;
+  //// case:2D_NOT_logical:test_value
+  (rhs % 2 == 0);
+  //// case:2D_NOT_real:test_value
+  rhs;
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + ARGIDX + offset;
+      C.NAME[i][j] = TEST_VALUE;
+    }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:2D_NOT_type
-    //// begin:test_value
+  //// section:test_pat
+  //// type:2D_NOT_type
+  //// begin:test_value
 
-    //// end:test_value
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j <
-    C.NAME[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + ARGIDX + offset;
-    set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt+i+1+10*(j+1));}
-    //// end:test_pat
+  //// end:test_value
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + ARGIDX + offset;
+      set_CPP_KIND_test_pattern(*C.NAME[i][j], ix_patt + i + 1 + 10 * (j + 1));
+    }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:3D_NOT_complex
-    //// type:3D_NOT_integer
-    //// type:3D_NOT_integer8
-    //// type:3D_NOT_logical
-    //// type:3D_NOT_real
-    //// case:3D_NOT_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:3D_NOT_integer:test_value
-    rhs
-    //// case:3D_NOT_integer8:test_value
-    rhs
-    //// case:3D_NOT_logical:test_value
-    (rhs % 2 == 0)
-    //// case:3D_NOT_real:test_value
-    rhs
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j <
-    C.NAME[0].size(); j++)   for (size_t k = 0; k < C.NAME[0][0].size(); k++)
-      {int rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset;
-    C.NAME[i][j][k] = TEST_VALUE;}
-    //// end:test_pat
+  //// section:test_pat
+  //// type:3D_NOT_complex
+  //// type:3D_NOT_integer
+  //// type:3D_NOT_integer8
+  //// type:3D_NOT_logical
+  //// type:3D_NOT_real
+  //// case:3D_NOT_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:3D_NOT_integer:test_value
+  rhs;
+  //// case:3D_NOT_integer8:test_value
+  rhs;
+  //// case:3D_NOT_logical:test_value
+  (rhs % 2 == 0);
+  //// case:3D_NOT_real:test_value
+  rhs;
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++)
+      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+        int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
+        C.NAME[i][j][k] = TEST_VALUE;
+      }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:3D_NOT_type
-    //// begin:test_value
+  //// section:test_pat
+  //// type:3D_NOT_type
+  //// begin:test_value
 
-    //// end:test_value
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j <
-    C.NAME[0].size(); j++)   for (size_t k = 0; k < C.NAME[0][0].size(); k++)
-      {int rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset;
-    set_CPP_KIND_test_pattern(*C.NAME[i][j][k],
-    ix_patt+i+1+10*(j+1)+100*(k+1));}
-    //// end:test_pat
+  //// end:test_value
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++)
+    for (auto j{0}; j < C.NAME[0].size(); j++)
+      for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+        int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
+        set_CPP_KIND_test_pattern(
+            *C.NAME[i][j][k], ix_patt + i + 1 + 10 * (j + 1) + 100 * (k + 1));
+      }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:1D_NOT_character
-    //// begin:test_value
-    rhs
-    //// end:test_value
-    //// begin:test_pat
-    for (size_t i = 0; i < C.NAME.size(); i++) {
+  //// section:test_pat
+  //// type:1D_NOT_character
+  //// begin:test_value
+  rhs;
+  //// end:test_value
+  //// begin:test_pat
+  for (auto i{0}; i < C.NAME.size(); i++) {
+    C.NAME[i].resize(STR_LEN);
+    for (auto j{0}; j < C.NAME[i].size(); j++) {
+      C.NAME[i][j] = 'a' + (101 + i + 10 * (j + 1) + ARGIDX + offset) % 26;
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_logical
+  //// type:0D_PTR_logical
+  //// begin:test_value
+  (rhs % 2 == 0);
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    rhs = ARGIDX + offset;
+    C.NAME.emplace(TEST_VALUE);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_type
+  //// type:0D_PTR_type
+  //// begin:test_value
+
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    C.NAME.emplace();
+    set_CPP_KIND_test_pattern(C.NAME.value(), ix_patt);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_complex
+  //// type:0D_PTR_complex
+  //// begin:test_value
+  Complex(rhs, 100 + rhs);
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    rhs = ARGIDX + offset;
+    C.NAME.emplace(TEST_VALUE);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_integer8
+  //// type:0D_PTR_integer8
+  //// begin:test_value
+  rhs;
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    rhs = ARGIDX + offset;
+    C.NAME.emplace(TEST_VALUE);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_integer
+  //// type:0D_PTR_integer
+  //// begin:test_value
+  rhs;
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    rhs = ARGIDX + offset;
+    C.NAME.emplace(TEST_VALUE);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_real
+  //// type:0D_PTR_real
+  //// begin:test_value
+  rhs;
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    rhs = ARGIDX + offset;
+    C.NAME.emplace(TEST_VALUE);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:0D_ALLOC_character
+  //// type:0D_PTR_character
+  //// begin:test_value
+
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.reset();
+  else {
+    auto str = std::string(STR_LEN, ' ');
+    for (auto i{0}; i < STR_LEN; i++) {
+      str[i] = 'a' + (101 + i + ARGIDX + offset) % 26;
+    }
+    C.NAME.emplace(str);
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:2D_ALLOC_complex
+  //// type:2D_ALLOC_integer
+  //// type:2D_ALLOC_integer8
+  //// type:2D_ALLOC_logical
+  //// type:2D_ALLOC_real
+  //// type:2D_PTR_complex
+  //// type:2D_PTR_integer
+  //// type:2D_PTR_integer8
+  //// type:2D_PTR_logical
+  //// type:2D_PTR_real
+  //// case:2D_ALLOC_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:2D_ALLOC_integer:test_value
+  rhs;
+  //// case:2D_ALLOC_integer8:test_value
+  rhs;
+  //// case:2D_ALLOC_logical:test_value
+  (rhs % 2 == 0);
+  //// case:2D_ALLOC_real:test_value
+  rhs;
+  //// case:2D_PTR_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:2D_PTR_integer:test_value
+  rhs;
+  //// case:2D_PTR_integer8:test_value
+  rhs;
+  //// case:2D_PTR_logical:test_value
+  (rhs % 2 == 0);
+  //// case:2D_PTR_real:test_value
+  rhs;
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
+      C.NAME[i].resize(2);
+      for (auto j{0}; j < C.NAME[0].size(); j++) {
+        int rhs = 101 + i + 10 * (j + 1) + ARGIDX + offset;
+        C.NAME[i][j] = TEST_VALUE;
+      }
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:1D_ALLOC_complex
+  //// type:1D_ALLOC_integer
+  //// type:1D_ALLOC_integer8
+  //// type:1D_ALLOC_logical
+  //// type:1D_ALLOC_real
+  //// type:1D_PTR_complex
+  //// type:1D_PTR_integer
+  //// type:1D_PTR_integer8
+  //// type:1D_PTR_logical
+  //// type:1D_PTR_real
+  //// case:1D_ALLOC_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:1D_ALLOC_integer:test_value
+  rhs;
+  //// case:1D_ALLOC_integer8:test_value
+  rhs;
+  //// case:1D_ALLOC_logical:test_value
+  (rhs % 2 == 0);
+  //// case:1D_ALLOC_real:test_value
+  rhs;
+  //// case:1D_PTR_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:1D_PTR_integer:test_value
+  rhs;
+  //// case:1D_PTR_integer8:test_value
+  rhs;
+  //// case:1D_PTR_logical:test_value
+  (rhs % 2 == 0);
+  //// case:1D_PTR_real:test_value
+  rhs;
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
+      int rhs = 101 + i + ARGIDX + offset;
+      C.NAME[i] = TEST_VALUE;
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:1D_ALLOC_type
+  //// type:1D_PTR_type
+  //// begin:test_value
+
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
+      set_CPP_KIND_test_pattern(C.NAME[i], ix_patt + i + 1);
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:2D_ALLOC_type
+  //// type:2D_PTR_type
+  //// begin:test_value
+
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
+      C.NAME[i].resize(2);
+      for (auto j{0}; j < C.NAME[0].size(); j++) {
+        auto &item = C.NAME[i][j];
+        set_CPP_KIND_test_pattern(item, ix_patt + i + 2 * j + 3);
+      }
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:3D_ALLOC_type
+  //// type:3D_PTR_type
+  //// begin:test_value
+
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
+      C.NAME[i].resize(2);
+      for (auto j{0}; j < C.NAME[0].size(); j++) {
+        C.NAME[i][j].resize(1);
+        for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+          set_CPP_KIND_test_pattern(C.NAME[i][j][k],
+                                    ix_patt + i + 2 * j + 3 * k + 6);
+        }
+      }
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:3D_ALLOC_complex
+  //// type:3D_ALLOC_integer
+  //// type:3D_ALLOC_integer8
+  //// type:3D_ALLOC_logical
+  //// type:3D_ALLOC_real
+  //// type:3D_PTR_complex
+  //// type:3D_PTR_integer
+  //// type:3D_PTR_integer8
+  //// type:3D_PTR_logical
+  //// type:3D_PTR_real
+  //// case:3D_ALLOC_complex:test_value
+  Complex(rhs, 100 + rhs)
+      //// case:3D_ALLOC_integer:test_value
+      rhs
+          //// case:3D_ALLOC_integer8:test_value
+          rhs
+      //// case:3D_ALLOC_logical:test_value
+      (rhs % 2 == 0)
+      //// case:3D_ALLOC_real:test_value
+      rhs
+          //// case:3D_PTR_complex:test_value
+          Complex(rhs, 100 + rhs)
+      //// case:3D_PTR_integer:test_value
+      rhs
+          //// case:3D_PTR_integer8:test_value
+          rhs
+      //// case:3D_PTR_logical:test_value
+      (rhs % 2 == 0)
+      //// case:3D_PTR_real:test_value
+      rhs
+      //// begin:test_pat
+      if (ix_patt < 3) C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
+      C.NAME[i].resize(2);
+      for (auto j{0}; j < C.NAME[0].size(); j++) {
+        C.NAME[i][j].resize(1);
+        for (auto k{0}; k < C.NAME[0][0].size(); k++) {
+          auto rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
+          C.NAME[i][j][k] = TEST_VALUE;
+        }
+      }
+    }
+  }
+  //// end:test_pat
+
+  //// section:test_pat
+  //// type:1D_ALLOC_character
+  //// type:1D_PTR_character
+  //// begin:test_value
+
+  //// end:test_value
+  //// begin:test_pat
+  if (ix_patt < 3)
+    C.NAME.resize(0);
+  else {
+    C.NAME.resize(3);
+    for (auto i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(STR_LEN);
-      for (size_t j = 0; j < C.NAME[i].size(); j++)
-        {C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + ARGIDX + offset) % 26;}
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_logical
-    //// type:0D_PTR_logical
-    //// begin:test_value
-    (rhs % 2 == 0)
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      rhs = ARGIDX + offset;
-      C.NAME.emplace(TEST_VALUE);
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_type
-    //// type:0D_PTR_type
-    //// begin:test_value
-
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      C.NAME.emplace();
-      set_CPP_KIND_test_pattern((*C.NAME), ix_patt);
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_complex
-    //// type:0D_PTR_complex
-    //// begin:test_value
-    Complex(rhs, 100+rhs)
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      rhs = ARGIDX + offset;
-      C.NAME.emplace(TEST_VALUE);
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_integer8
-    //// type:0D_PTR_integer8
-    //// begin:test_value
-    rhs
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      rhs = ARGIDX + offset;
-      C.NAME.emplace(TEST_VALUE);
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_integer
-    //// type:0D_PTR_integer
-    //// begin:test_value
-    rhs
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      rhs = ARGIDX + offset;
-      C.NAME.emplace(TEST_VALUE);
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_real
-    //// type:0D_PTR_real
-    //// begin:test_value
-    rhs
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      rhs = ARGIDX + offset;
-      C.NAME.emplace(TEST_VALUE);
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_ALLOC_character
-    //// type:0D_PTR_character
-    //// begin:test_value
-
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.reset();
-    else {
-      C.NAME.emplace(STR_LEN, ' ');
-      for (size_t i = 0; i < C.NAME->size(); i++) {
-        (*C.NAME)[i] = 'a' + (101 + i + ARGIDX + offset) % 26; }
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:2D_ALLOC_complex
-    //// type:2D_ALLOC_integer
-    //// type:2D_ALLOC_integer8
-    //// type:2D_ALLOC_logical
-    //// type:2D_ALLOC_real
-    //// type:2D_PTR_complex
-    //// type:2D_PTR_integer
-    //// type:2D_PTR_integer8
-    //// type:2D_PTR_logical
-    //// type:2D_PTR_real
-    //// case:2D_ALLOC_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:2D_ALLOC_integer:test_value
-    rhs
-    //// case:2D_ALLOC_integer8:test_value
-    rhs
-    //// case:2D_ALLOC_logical:test_value
-    (rhs % 2 == 0)
-    //// case:2D_ALLOC_real:test_value
-    rhs
-    //// case:2D_PTR_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:2D_PTR_integer:test_value
-    rhs
-    //// case:2D_PTR_integer8:test_value
-    rhs
-    //// case:2D_PTR_logical:test_value
-    (rhs % 2 == 0)
-    //// case:2D_PTR_real:test_value
-    rhs
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++)
-        C.NAME[i].resize(2);
-      for (size_t i = 0; i < C.NAME.size(); i++)  for (size_t j = 0; j <
-    C.NAME[0].size(); j++) {int rhs = 101 + i + 10*(j+1) + ARGIDX + offset;
-    C.NAME[i][j] = TEST_VALUE;}  }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:1D_ALLOC_complex
-    //// type:1D_ALLOC_integer
-    //// type:1D_ALLOC_integer8
-    //// type:1D_ALLOC_logical
-    //// type:1D_ALLOC_real
-    //// type:1D_PTR_complex
-    //// type:1D_PTR_integer
-    //// type:1D_PTR_integer8
-    //// type:1D_PTR_logical
-    //// type:1D_PTR_real
-    //// case:1D_ALLOC_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:1D_ALLOC_integer:test_value
-    rhs
-    //// case:1D_ALLOC_integer8:test_value
-    rhs
-    //// case:1D_ALLOC_logical:test_value
-    (rhs % 2 == 0)
-    //// case:1D_ALLOC_real:test_value
-    rhs
-    //// case:1D_PTR_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:1D_PTR_integer:test_value
-    rhs
-    //// case:1D_PTR_integer8:test_value
-    rhs
-    //// case:1D_PTR_logical:test_value
-    (rhs % 2 == 0)
-    //// case:1D_PTR_real:test_value
-    rhs
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++)
-        {int rhs = 101 + i + ARGIDX + offset; C.NAME[i] = TEST_VALUE;}  }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:1D_ALLOC_type
-    //// type:1D_PTR_type
-    //// begin:test_value
-
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++)
-    {set_CPP_KIND_test_pattern(C.NAME[i], ix_patt+i+1);}
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:2D_ALLOC_type
-    //// type:2D_PTR_type
-    //// begin:test_value
-
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++) {
-        C.NAME[i].resize(2);
-
-        for (size_t j = 0; j < C.NAME[0].size(); j++) {
-          auto &item = C.NAME[i][j];
-          set_CPP_KIND_test_pattern(item, ix_patt+i+2*j+3);
-        }
+      for (auto j{0}; j < C.NAME[0].size(); j++) {
+        C.NAME[i][j] = 'a' + (101 + i + 10 * (j + 1) + ARGIDX + offset) % 26;
       }
     }
-    //// end:test_pat
+  }
+  //// end:test_pat
 
-    //// section:test_pat
-    //// type:3D_ALLOC_type
-    //// type:3D_PTR_type
-    //// begin:test_value
+  //// section:test_pat
+  //// type:0D_NOT_complex
+  //// type:0D_NOT_integer
+  //// type:0D_NOT_integer8
+  //// type:0D_NOT_logical
+  //// type:0D_NOT_real
+  //// type:0D_NOT_size
+  //// type:1D_NOT_size
+  //// type:2D_NOT_size
+  //// type:3D_NOT_size
+  //// case:0D_NOT_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:0D_NOT_integer:test_value
+  rhs;
+  //// case:0D_NOT_integer8:test_value
+  rhs;
+  //// case:0D_NOT_logical:test_value
+  (rhs % 2 == 0);
+  //// case:0D_NOT_real:test_value
+  rhs;
+  //// case:0D_NOT_size:test_value
+  rhs;
+  //// case:1D_NOT_size:test_value
+  rhs;
+  //// case:2D_NOT_size:test_value
+  rhs;
+  //// case:3D_NOT_size:test_value
+  rhs;
+  //// begin:test_pat
+  rhs = ARGIDX + offset;
+  C.NAME = TEST_VALUE;
+  //// end:test_pat
 
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++) {
-        C.NAME[i].resize(2);
-        for (size_t j = 0; j < C.NAME[0].size(); j++) {
-          C.NAME[i][j].resize(1);
-          for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-            set_CPP_KIND_test_pattern(C.NAME[i][j][k], ix_patt+i+2*j+3*k+6);
-          }
-        }
-      }
-    }
-    //// end:test_pat
+  //// section:test_pat
+  //// type:0D_NOT_type
+  //// begin:test_value
 
-    //// section:test_pat
-    //// type:3D_ALLOC_complex
-    //// type:3D_ALLOC_integer
-    //// type:3D_ALLOC_integer8
-    //// type:3D_ALLOC_logical
-    //// type:3D_ALLOC_real
-    //// type:3D_PTR_complex
-    //// type:3D_PTR_integer
-    //// type:3D_PTR_integer8
-    //// type:3D_PTR_logical
-    //// type:3D_PTR_real
-    //// case:3D_ALLOC_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:3D_ALLOC_integer:test_value
-    rhs
-    //// case:3D_ALLOC_integer8:test_value
-    rhs
-    //// case:3D_ALLOC_logical:test_value
-    (rhs % 2 == 0)
-    //// case:3D_ALLOC_real:test_value
-    rhs
-    //// case:3D_PTR_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:3D_PTR_integer:test_value
-    rhs
-    //// case:3D_PTR_integer8:test_value
-    rhs
-    //// case:3D_PTR_logical:test_value
-    (rhs % 2 == 0)
-    //// case:3D_PTR_real:test_value
-    rhs
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++) {
-        C.NAME[i].resize(2);
-        for (size_t j = 0; j < C.NAME[0].size(); j++) {
-          C.NAME[i][j].resize(1);
-          for (size_t k = 0; k < C.NAME[0][0].size(); k++) {
-            auto rhs = 101 + i + 10*(j+1) + 100*(k+1) + ARGIDX + offset;
-            C.NAME[i][j][k] = TEST_VALUE;
-          }
-        }
-      }
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:1D_ALLOC_character
-    //// type:1D_PTR_character
-    //// begin:test_value
-
-    //// end:test_value
-    //// begin:test_pat
-    if (ix_patt < 3)
-      C.NAME.resize(0);
-    else {
-      C.NAME.resize(3);
-      for (size_t i = 0; i < C.NAME.size(); i++){
-        C.NAME[i].resize(STR_LEN);
-        for (size_t j = 0; j < C.NAME[0].size(); j++) {
-          C.NAME[i][j] = 'a' + (101 + i + 10*(j+1) + ARGIDX + offset) % 26;
-      } }
-    }
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_NOT_complex
-    //// type:0D_NOT_integer
-    //// type:0D_NOT_integer8
-    //// type:0D_NOT_logical
-    //// type:0D_NOT_real
-    //// type:0D_NOT_size
-    //// type:1D_NOT_size
-    //// type:2D_NOT_size
-    //// type:3D_NOT_size
-    //// case:0D_NOT_complex:test_value
-    Complex(rhs, 100+rhs)
-    //// case:0D_NOT_integer:test_value
-    rhs
-    //// case:0D_NOT_integer8:test_value
-    rhs
-    //// case:0D_NOT_logical:test_value
-    (rhs % 2 == 0)
-    //// case:0D_NOT_real:test_value
-    rhs
-    //// case:0D_NOT_size:test_value
-    rhs
-    //// case:1D_NOT_size:test_value
-    rhs
-    //// case:2D_NOT_size:test_value
-    rhs
-    //// case:3D_NOT_size:test_value
-    rhs
-    //// begin:test_pat
-    rhs = ARGIDX + offset; C.NAME = TEST_VALUE;
-    //// end:test_pat
-
-    //// section:test_pat
-    //// type:0D_NOT_type
-    //// begin:test_value
-
-    //// end:test_value
-    //// begin:test_pat
-    set_CPP_KIND_test_pattern(C.NAME, ix_patt);
-    //// end:test_pat
-
-  */
+  //// end:test_value
+  //// begin:test_pat
+  set_CPP_KIND_test_pattern(C.NAME, ix_patt);
+  //// end:test_pat
 }
 void C_CLASS(STRUCT_CPP_CLASS &C) {
   /*
