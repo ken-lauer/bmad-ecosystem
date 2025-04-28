@@ -9316,9 +9316,9 @@ void set_CPP_lat_test_pattern (CPP_lat& C, int ix_patt) {
     C.title[i] = 'a' + rhs % 26;
   }
   // c_side.test_pat[1D_ALLOC_character]
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.print_str.resize(0);
-  else {
+  } else {
     C.print_str.resize(3);
     for (size_t i{0}; i < C.print_str.size(); i++) {
       C.print_str[i].resize(100);

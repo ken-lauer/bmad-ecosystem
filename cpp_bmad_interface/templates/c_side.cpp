@@ -43,7 +43,7 @@ void to_f__variant_0(const CppClass &C, OpaqueClass *F) {
   //// case:0D_NOT_real:to_f2_arg
   c_Real&
   //// case:0D_NOT_size:to_f2_arg
-  size_t
+  c_Int
   //// case:0D_NOT_type:to_f2_arg
   const CPP_KIND&
   //// case:1D_NOT_complex:to_f2_arg
@@ -57,11 +57,11 @@ void to_f__variant_0(const CppClass &C, OpaqueClass *F) {
   //// case:1D_NOT_real:to_f2_arg
   c_RealArr
   //// case:1D_NOT_size:to_f2_arg
-  size_t
+  c_Int
   //// case:2D_NOT_size:to_f2_arg
-  size_t
+  c_Int
   //// case:3D_NOT_size:to_f2_arg
-  size_t
+  c_Int
   */
         //// case:0D_NOT_character:to_f2_call
         C.NAME.c_str(),
@@ -540,13 +540,13 @@ void to_c2__variant_0(STRUCT_CPP_CLASS &C,
                       //// case:0D_NOT_real:to_c2_arg
                       c_Real &z_NAME,
                       //// case:0D_NOT_size:to_c2_arg
-                      size_t NAME,
+                      c_Int NAME,
                       //// case:1D_NOT_size:to_c2_arg
-                      size_t NAME,
+                      c_Int NAME,
                       //// case:2D_NOT_size:to_c2_arg
-                      size_t NAME,
+                      c_Int NAME,
                       //// case:3D_NOT_size:to_c2_arg
-                      size_t NAME,
+                      c_Int NAME,
                       //// end special cases
 ) {
   //// begin:to_c2_set

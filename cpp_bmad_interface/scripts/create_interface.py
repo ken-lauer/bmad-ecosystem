@@ -348,6 +348,7 @@ class Argument:
     array: list[str] = field(default_factory=list)
     init_value: str | None = None
     comment: str = ""
+    member: StructureMember | None = None
     f_side: FortranSideTransform = field(default_factory=FortranSideTransform)
     c_side: CSideTransform = field(default_factory=CSideTransform)
 
@@ -701,6 +702,7 @@ def argument_from_fstruct(
         array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
         init_value=str(member.default) if member.default else None,
         comment=member.comment,
+        member=member,
     )
 
 
@@ -860,7 +862,7 @@ def check_missing(struct_definitions: list[Structure]):
         sys.exit(1)
 
 
-def create_fortran_interface(f_face, struct_definitions, params):
+def create_fortran_interface(f_face, struct_definitions: list[Structure], params):
     # Create Fortran side of interface...
 
     # First the header
@@ -994,6 +996,24 @@ call c_f_pointer (Fp, F)
                 print(arg.f_side.to_c_trans, file=f_face)
 
         f_face.write("\n" + "!! f_side.to_c2_call\n")
+        #
+        # for arg in struct.arg:
+        #     if arg.is_component:
+        #         if arg.member.type_info.allocatable:
+        #             print(
+        #                 f"if (allocated(F%{arg.f_name})) then",
+        #                 file=f_face,
+        #             )
+        #         print(
+        #             f"print *, 'to_c_trans {arg.f_name} ({arg.full_type})=', {arg.f_side.to_c2_call.strip()}",
+        #             file=f_face,
+        #         )
+        #         if arg.member.type_info.allocatable:
+        #             print(f"else", file=f_face)
+        #             print(
+        #                 f"print *, 'to_c_trans {arg.f_name} not allocated'", file=f_face
+        #             )
+        #             print(f"endif", file=f_face)
 
         line = f"call {s_name}_to_c2 (C"
         for arg in struct.arg:
