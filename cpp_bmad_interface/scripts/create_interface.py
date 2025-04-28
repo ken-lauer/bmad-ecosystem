@@ -996,24 +996,6 @@ call c_f_pointer (Fp, F)
                 print(arg.f_side.to_c_trans, file=f_face)
 
         f_face.write("\n" + "!! f_side.to_c2_call\n")
-        #
-        # for arg in struct.arg:
-        #     if arg.is_component:
-        #         if arg.member.type_info.allocatable:
-        #             print(
-        #                 f"if (allocated(F%{arg.f_name})) then",
-        #                 file=f_face,
-        #             )
-        #         print(
-        #             f"print *, 'to_c_trans {arg.f_name} ({arg.full_type})=', {arg.f_side.to_c2_call.strip()}",
-        #             file=f_face,
-        #         )
-        #         if arg.member.type_info.allocatable:
-        #             print(f"else", file=f_face)
-        #             print(
-        #                 f"print *, 'to_c_trans {arg.f_name} not allocated'", file=f_face
-        #             )
-        #             print(f"endif", file=f_face)
 
         line = f"call {s_name}_to_c2 (C"
         for arg in struct.arg:
@@ -1435,11 +1417,9 @@ def get_class_lines(struct: Structure) -> list[str]:
             f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};"
         )
 
-    constructor_body = ""
+    constructor_body = struct.c_constructor_body
     if DEBUG:
-        constructor_body = (
-            f'std::cout << "{struct.cpp_class}(): " << this << std::endl;'
-        )
+        constructor_body = f'{constructor_body}\nstd::cout << "{struct.cpp_class}(): " << this << std::endl;'
 
     repr_lines = get_class_repr(struct).splitlines()
     template = string.Template(

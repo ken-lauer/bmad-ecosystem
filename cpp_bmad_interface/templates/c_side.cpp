@@ -2279,9 +2279,10 @@ void ele_struct_fixes() {
   }
   //// end:ele_struct%.c_extra_methods
   //// begin:ele_struct%.c_constructor_body
-  {
-    class_init(key);
-  }
+  // Special constructor for ele_struct
+  class_init(key);
+  // End special constructor for ele_struct
+
   //// end:ele_struct%.c_constructor_body
 
   // ** ele_struct%value customization **

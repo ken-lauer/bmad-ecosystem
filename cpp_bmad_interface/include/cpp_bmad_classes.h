@@ -4178,7 +4178,9 @@ using std::size_t;
     }
   }
           CPP_ele(  const int key_ = 0) {
-          
+            // Special constructor for ele_struct
+  class_init(key);
+  // End special constructor for ele_struct
           }
 
         virtual ~CPP_ele() {
