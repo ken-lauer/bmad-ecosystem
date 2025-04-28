@@ -19,9 +19,12 @@ from __future__ import annotations
 
 import copy
 import dataclasses
+import os
 import pathlib
 import re
+import shutil
 import string
+import subprocess
 import sys
 import tempfile
 import textwrap
@@ -41,6 +44,7 @@ STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
 TEMPLATES_PATH = SCRIPTS_PATH.parent / "templates"
 
 DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "config.yaml"
+CLANG_FORMAT_PATH = os.environ.get("CLANG_FORMAT_PATH", shutil.which("clang-format"))
 
 assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}"
 
@@ -1772,7 +1776,21 @@ def write_if_differs(
 
         temp_file.flush()
         temp_file.seek(0)
+
         content = temp_file.read()
+
+    if CLANG_FORMAT_PATH and target_path.suffix in (".h", ".cpp"):
+        try:
+            formatted_content = subprocess.run(
+                [CLANG_FORMAT_PATH],
+                input=content.encode(),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+            )
+            content = formatted_content.stdout.decode()
+        except subprocess.SubprocessError:
+            print_debug(f"Clang-format failed for {target_path}")
 
     if not target_path.exists():
         target_path.parent.mkdir(parents=True, exist_ok=True)
