@@ -273,102 +273,18 @@ void to_f__variant_5(const CppClass &C, OpaqueClass *F) {
 //// section:to_f
 //// type:1D_ALLOC_complex
 //// type:1D_PTR_complex
-void to_f__variant_6(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME = C.NAME.size();
-  c_ComplexArr z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    z_NAME = &C.NAME[0];
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:1D_ALLOC_integer
 //// type:1D_PTR_integer
-void to_f__variant_7(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME = C.NAME.size();
-  c_IntArr z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    z_NAME = &C.NAME[0];
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:1D_ALLOC_integer8
 //// type:1D_PTR_integer8
-void to_f__variant_8(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME = C.NAME.size();
-  c_Int8Arr z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    z_NAME = &C.NAME[0];
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:1D_ALLOC_logical
 //// type:1D_PTR_logical
-void to_f__variant_9(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME = C.NAME.size();
-  c_BoolArr z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    z_NAME = &C.NAME[0];
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:1D_ALLOC_real
 //// type:1D_PTR_real
 void to_f__variant_10(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   size_t n1_NAME = C.NAME.size();
-  c_RealArr z_NAME = nullptr;
+  c_CTYPEArr z_NAME = nullptr;
   if (n1_NAME > 0) {
     z_NAME = &C.NAME[0];
   }
@@ -376,7 +292,7 @@ void to_f__variant_10(const CppClass &C, OpaqueClass *F) {
 
   to_f2(F, /*
   //// begin:to_f2_arg
-  c_RealArr
+  c_CTYPEArr
   //// end:to_f2_arg
   */
         //// begin:to_f2_call
@@ -417,91 +333,19 @@ void to_f__variant_11(const CppClass &C, OpaqueClass *F) {
 
 //// section:to_f
 //// type:2D_NOT_complex
-void to_f__variant_12(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Complex z_NAME[DIM1 * DIM2];
-  matrix_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:2D_NOT_integer
-void to_f__variant_13(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Int z_NAME[DIM1 * DIM2];
-  matrix_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:2D_NOT_integer8
-void to_f__variant_14(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Int8 z_NAME[DIM1 * DIM2];
-  matrix_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:2D_NOT_logical
-void to_f__variant_15(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Bool z_NAME[DIM1 * DIM2];
-  matrix_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:2D_NOT_real
 void to_f__variant_16(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  Real z_NAME[DIM1 * DIM2];
+  CTYPE z_NAME[DIM1 * DIM2];
   matrix_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
 
   to_f2(F, /*
   //// begin:to_f2_arg
-  c_RealArr
+  c_CTYPEArr
   //// end:to_f2_arg
   */
         //// begin:to_f2_call
@@ -535,146 +379,30 @@ void to_f__variant_17(const CppClass &C, OpaqueClass *F) {
 
 //// section:to_f
 //// type:2D_ALLOC_complex
-//// type:2D_PTR_complex
-void to_f__variant_18(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  Complex *z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    z_NAME = new Complex[n1_NAME * n2_NAME];
-    matrix_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:2D_ALLOC_integer
-//// type:2D_PTR_integer
-void to_f__variant_19(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  Int *z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    z_NAME = new Int[n1_NAME * n2_NAME];
-    matrix_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:2D_ALLOC_integer8
-//// type:2D_PTR_integer8
-void to_f__variant_20(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  Int8 *z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    z_NAME = new Int8[n1_NAME * n2_NAME];
-    matrix_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:2D_ALLOC_logical
-//// type:2D_PTR_logical
-void to_f__variant_21(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  Bool *z_NAME = nullptr;
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    z_NAME = new Bool[n1_NAME * n2_NAME];
-    matrix_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:2D_ALLOC_real
+//// type:2D_PTR_complex
+//// type:2D_PTR_integer
+//// type:2D_PTR_integer8
+//// type:2D_PTR_logical
 //// type:2D_PTR_real
 void to_f__variant_22(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   size_t n1_NAME{C.NAME.size()};
   size_t n2_NAME{size_t{0}};
-  Real *z_NAME = nullptr;
+  CTYPE *z_NAME = nullptr;
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
-    z_NAME = new Real[n1_NAME * n2_NAME];
+    z_NAME = new CTYPE[n1_NAME * n2_NAME];
     matrix_to_vec(C.NAME, z_NAME);
   }
   //// end:to_f_setup
 
   to_f2(F, /*
   //// begin:to_f2_arg
-  c_RealArr
+  c_CTYPEArr
   //// end:to_f2_arg
   */
         //// begin:to_f2_call
@@ -724,92 +452,20 @@ void to_f__variant_23(const CppClass &C, OpaqueClass *F) {
 }
 
 //// section:to_f
-//// type:3D_NOT_complex
-void to_f__variant_24(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Complex z_NAME[DIM1 * DIM2 * DIM3];
-  tensor_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
-//// type:3D_NOT_integer
-void to_f__variant_25(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Int z_NAME[DIM1 * DIM2 * DIM3];
-  tensor_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:3D_NOT_integer8
+//// type:3D_NOT_logical
+//// type:3D_NOT_real
+//// type:3D_NOT_integer
+//// type:3D_NOT_complex
 void to_f__variant_26(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
-  Int8 z_NAME[DIM1 * DIM2 * DIM3];
+  CTYPE z_NAME[DIM1 * DIM2 * DIM3];
   tensor_to_vec(C.NAME, z_NAME);
   //// end:to_f_setup
 
   to_f2(F, /*
   //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
-//// type:3D_NOT_logical
-void to_f__variant_27(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Bool z_NAME[DIM1 * DIM2 * DIM3];
-  tensor_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
-//// type:3D_NOT_real
-void to_f__variant_28(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  Real z_NAME[DIM1 * DIM2 * DIM3];
-  tensor_to_vec(C.NAME, z_NAME);
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_RealArr
+  c_CTYPEArr
   //// end:to_f2_arg
   */
         //// begin:to_f2_call
@@ -820,164 +476,18 @@ void to_f__variant_28(const CppClass &C, OpaqueClass *F) {
 
 //// section:to_f
 //// type:3D_NOT_type
-void to_f__variant_29(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  const CPP_KIND *z_NAME[DIM1 * DIM2 * DIM3];
-  for (size_t i{0}; i < C.NAME.size(); i++)
-    for (size_t j{0}; j < C.NAME[0].size(); j++)
-      for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
-        auto m = DIM3 * DIM2 * i + DIM3 * j + k;
-        z_NAME[m] = C.NAME[i][j][k].get();
-      }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  const CPP_KIND**
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-}
-
-//// section:to_f
 //// type:3D_ALLOC_complex
 //// type:3D_PTR_complex
-void to_f__variant_30(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  size_t n3_NAME{size_t{0}};
-  Complex *z_NAME{nullptr};
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME =
-        new Complex[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
-    tensor_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_ComplexArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:3D_ALLOC_integer
 //// type:3D_PTR_integer
-void to_f__variant_31(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  size_t n3_NAME{size_t{0}};
-  Int *z_NAME{nullptr};
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME = new Int[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
-    tensor_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_IntArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:3D_ALLOC_integer8
 //// type:3D_PTR_integer8
-void to_f__variant_32(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  size_t n3_NAME{size_t{0}};
-  Int8 *z_NAME{nullptr};
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME = new Int8[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
-    tensor_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_Int8Arr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
-//// type:3D_ALLOC_logical
-//// type:3D_PTR_logical
-void to_f__variant_33(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  size_t n3_NAME{size_t{0}};
-  Bool *z_NAME{nullptr};
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME = new Bool[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
-    tensor_to_vec(C.NAME, z_NAME);
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  c_BoolArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
 //// type:3D_ALLOC_real
 //// type:3D_PTR_real
+//// type:3D_ALLOC_logical
+//// type:3D_PTR_logical
+//// type:3D_ALLOC_type
+//// type:3D_PTR_type
 void to_f__variant_34(const CppClass &C, OpaqueClass *F) {
   //// begin:to_f_setup
   size_t n1_NAME{C.NAME.size()};
@@ -987,55 +497,16 @@ void to_f__variant_34(const CppClass &C, OpaqueClass *F) {
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
-    z_NAME = new Real[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
+    z_NAME = new CTYPE[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
     tensor_to_vec(C.NAME, z_NAME);
   }
   //// end:to_f_setup
 
   to_f2(F, /*
-  //// begin:to_f2_arg
-  c_RealArr
-  //// end:to_f2_arg
-  */
-        //// begin:to_f2_call
-        z_NAME
-        //// end:to_f2_call
-  );
-
-  //// begin:to_f_cleanup
-  if (z_NAME)
-    delete[] z_NAME;
-  //// end:to_f_cleanup
-}
-
-//// section:to_f
-//// type:3D_ALLOC_type
-//// type:3D_PTR_type
-void to_f__variant_35(const CppClass &C, OpaqueClass *F) {
-  //// begin:to_f_setup
-  size_t n1_NAME{C.NAME.size()};
-  size_t n2_NAME{size_t{0}};
-  size_t n3_NAME{size_t{0}};
-  const CPP_KIND **z_NAME{nullptr};
-  if (n1_NAME > 0) {
-    n2_NAME = C.NAME[0].size();
-    n3_NAME = C.NAME[0][0].size();
-    z_NAME = new const CPP_KIND *[n1_NAME * n2_NAME * n3_NAME];
-    for (size_t i{0}; i < n1_NAME; i++) {
-      for (size_t j{0}; j < n2_NAME; j++) {
-        for (size_t k{0}; k < n3_NAME; k++) {
-          z_NAME[i * n2_NAME * n3_NAME + j * n3_NAME + k] = &C.NAME[i][j][k];
-        }
-      }
-    }
-  }
-  //// end:to_f_setup
-
-  to_f2(F, /*
-  //// begin:to_f2_arg
-  const CPP_KIND**
-  //// end:to_f2_arg
-  */
+        //// begin:to_f2_arg
+        c_CTYPEArr
+        //// end:to_f2_arg
+        */
         //// begin:to_f2_call
         z_NAME
         //// end:to_f2_call
@@ -1794,9 +1265,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   (rhs % 2 == 0);
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     rhs = ARGIDX + offset;
     C.NAME.emplace(TEST_VALUE);
   }
@@ -1809,9 +1280,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     C.NAME.emplace();
     set_CPP_KIND_test_pattern(C.NAME.value(), ix_patt);
   }
@@ -1824,9 +1295,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   Complex(rhs, 100 + rhs);
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     rhs = ARGIDX + offset;
     C.NAME.emplace(TEST_VALUE);
   }
@@ -1839,9 +1310,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   rhs;
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     rhs = ARGIDX + offset;
     C.NAME.emplace(TEST_VALUE);
   }
@@ -1854,9 +1325,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   rhs;
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     rhs = ARGIDX + offset;
     C.NAME.emplace(TEST_VALUE);
   }
@@ -1869,9 +1340,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   rhs;
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     rhs = ARGIDX + offset;
     C.NAME.emplace(TEST_VALUE);
   }
@@ -1884,9 +1355,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.reset();
-  else {
+  } else {
     auto str = std::string(STR_LEN, ' ');
     for (size_t i{0}; i < STR_LEN; i++) {
       str[i] = 'a' + (101 + i + ARGIDX + offset) % 26;
@@ -1927,9 +1398,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// case:2D_PTR_real:test_value
   rhs;
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.resize(0);
-  else {
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
@@ -1973,9 +1444,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// case:1D_PTR_real:test_value
   rhs;
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.resize(0);
-  else {
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       int rhs = 101 + i + ARGIDX + offset;
@@ -1991,9 +1462,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.resize(0);
-  else {
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       set_CPP_KIND_test_pattern(C.NAME[i], ix_patt + i + 1);
@@ -2008,9 +1479,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.resize(0);
-  else {
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
@@ -2029,9 +1500,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.resize(0);
-  else {
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
@@ -2058,28 +1529,29 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
   //// type:3D_PTR_logical
   //// type:3D_PTR_real
   //// case:3D_ALLOC_complex:test_value
-  Complex(rhs, 100 + rhs)
-      //// case:3D_ALLOC_integer:test_value
-      rhs
-          //// case:3D_ALLOC_integer8:test_value
-          rhs
-      //// case:3D_ALLOC_logical:test_value
-      (rhs % 2 == 0)
-      //// case:3D_ALLOC_real:test_value
-      rhs
-          //// case:3D_PTR_complex:test_value
-          Complex(rhs, 100 + rhs)
-      //// case:3D_PTR_integer:test_value
-      rhs
-          //// case:3D_PTR_integer8:test_value
-          rhs
-      //// case:3D_PTR_logical:test_value
-      (rhs % 2 == 0)
-      //// case:3D_PTR_real:test_value
-      rhs
-      //// begin:test_pat
-      if (ix_patt < 3) C.NAME.resize(0);
-  else {
+  Complex(rhs, 100 + rhs);
+  //// case:3D_ALLOC_integer:test_value
+  rhs;
+  //// case:3D_ALLOC_integer8:test_value
+  rhs;
+  //// case:3D_ALLOC_logical:test_value
+  (rhs % 2 == 0);
+  //// case:3D_ALLOC_real:test_value
+  rhs;
+  //// case:3D_PTR_complex:test_value
+  Complex(rhs, 100 + rhs);
+  //// case:3D_PTR_integer:test_value
+  rhs;
+  //// case:3D_PTR_integer8:test_value
+  rhs;
+  //// case:3D_PTR_logical:test_value
+  (rhs % 2 == 0);
+  //// case:3D_PTR_real:test_value
+  rhs;
+  //// begin:test_pat
+  if (ix_patt < 3) {
+    C.NAME.resize(0);
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(2);
@@ -2101,9 +1573,9 @@ void TEST_PAT(STRUCT_CPP_CLASS &C) {
 
   //// end:test_value
   //// begin:test_pat
-  if (ix_patt < 3)
+  if (ix_patt < 3) {
     C.NAME.resize(0);
-  else {
+  } else {
     C.NAME.resize(3);
     for (size_t i{0}; i < C.NAME.size(); i++) {
       C.NAME[i].resize(STR_LEN);

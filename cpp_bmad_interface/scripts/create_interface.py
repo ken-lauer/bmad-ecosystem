@@ -990,8 +990,8 @@ call c_f_pointer (Fp, F)
 
         for arg in struct.arg:
             if arg.f_side.to_c_trans:
-              f_face.write(f"!! f_side.to_c_trans[{arg.full_type}]\n")
-              print(arg.f_side.to_c_trans, file=f_face)
+                f_face.write(f"!! f_side.to_c_trans[{arg.full_type}]\n")
+                print(arg.f_side.to_c_trans, file=f_face)
 
         f_face.write("\n" + "!! f_side.to_c2_call\n")
 
@@ -1900,6 +1900,25 @@ def write_output(struct_definitions: list[Structure]) -> None:
     )
 
 
+def get_c_type(type_val: str) -> str:
+    """Get the C++ type string for a given type value"""
+    type_mapping = {
+        REAL: "Real",
+        CMPLX: "Complex",
+        INT: "Int",
+        INT8: "Int8",
+        LOGIC: "Bool",
+        CHAR: "string",
+        SIZE: "Int",
+        STRUCT: "CPP_KIND",
+    }
+
+    if type_val in type_mapping:
+        return type_mapping[type_val]
+
+    raise NotImplementedError(f"Unknown type: {type_val}")
+
+
 def load_transforms():
     # TODO: refactor globals
     global c_transforms
@@ -1925,11 +1944,12 @@ def load_transforms():
             transform.replace_all("associated_or_allocated(", "associated(")
         transform.replace_all("TEST_VALUE", transform.test_value)
 
-    for _type, transform in c_transforms.items():
+    for type_, transform in c_transforms.items():
         transform.c_class = transform.c_class.strip()
         transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
         transform.to_f2_call = transform.to_f2_call.rstrip(", ")
         transform.replace_all("TEST_VALUE", transform.test_value.rstrip(" ;"))
+        transform.replace_all("CTYPE", get_c_type(type_.type))
 
 
 c_transforms: dict[FullType, CSideTransform]
