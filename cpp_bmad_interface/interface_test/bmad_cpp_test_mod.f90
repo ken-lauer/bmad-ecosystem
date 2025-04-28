@@ -61,6 +61,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spline_test_pattern (f_spline, -1)
+call set_spline_test_pattern (f2_spline, -1)
+
 end subroutine test1_f_spline
 
 !---------------------------------------------------------------------------------
@@ -104,6 +108,11 @@ endif
 
 call set_spline_test_pattern (f2_spline, 3)
 call spline_to_c (c_loc(f2_spline), c_spline)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spline_test_pattern (f_spline, -1)
+call set_spline_test_pattern (f2_spline, -1)
+
 end subroutine test2_f_spline
 
 !---------------------------------------------------------------------------------
@@ -128,8 +137,8 @@ rhs = 2 + offset; F%y0 = rhs
 rhs = 3 + offset; F%x1 = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%coef,1); lb1 = lbound(F%coef,1) - 1
-rhs = 100 + jd1 + 4 + offset
-F%coef(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 4 + offset
+  F%coef(jd1+lb1) = rhs
 enddo
 
 end subroutine set_spline_test_pattern
@@ -185,6 +194,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spin_polar_test_pattern (f_spin_polar, -1)
+call set_spin_polar_test_pattern (f2_spin_polar, -1)
+
 end subroutine test1_f_spin_polar
 
 !---------------------------------------------------------------------------------
@@ -228,6 +241,11 @@ endif
 
 call set_spin_polar_test_pattern (f2_spin_polar, 3)
 call spin_polar_to_c (c_loc(f2_spin_polar), c_spin_polar)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spin_polar_test_pattern (f_spin_polar, -1)
+call set_spin_polar_test_pattern (f2_spin_polar, -1)
+
 end subroutine test2_f_spin_polar
 
 !---------------------------------------------------------------------------------
@@ -306,6 +324,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ac_kicker_time_test_pattern (f_ac_kicker_time, -1)
+call set_ac_kicker_time_test_pattern (f2_ac_kicker_time, -1)
+
 end subroutine test1_f_ac_kicker_time
 
 !---------------------------------------------------------------------------------
@@ -349,6 +371,11 @@ endif
 
 call set_ac_kicker_time_test_pattern (f2_ac_kicker_time, 3)
 call ac_kicker_time_to_c (c_loc(f2_ac_kicker_time), c_ac_kicker_time)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ac_kicker_time_test_pattern (f_ac_kicker_time, -1)
+call set_ac_kicker_time_test_pattern (f2_ac_kicker_time, -1)
+
 end subroutine test2_f_ac_kicker_time
 
 !---------------------------------------------------------------------------------
@@ -425,6 +452,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ac_kicker_freq_test_pattern (f_ac_kicker_freq, -1)
+call set_ac_kicker_freq_test_pattern (f2_ac_kicker_freq, -1)
+
 end subroutine test1_f_ac_kicker_freq
 
 !---------------------------------------------------------------------------------
@@ -468,6 +499,11 @@ endif
 
 call set_ac_kicker_freq_test_pattern (f2_ac_kicker_freq, 3)
 call ac_kicker_freq_to_c (c_loc(f2_ac_kicker_freq), c_ac_kicker_freq)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ac_kicker_freq_test_pattern (f_ac_kicker_freq, -1)
+call set_ac_kicker_freq_test_pattern (f2_ac_kicker_freq, -1)
+
 end subroutine test2_f_ac_kicker_freq
 
 !---------------------------------------------------------------------------------
@@ -546,6 +582,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ac_kicker_test_pattern (f_ac_kicker, -1)
+call set_ac_kicker_test_pattern (f2_ac_kicker, -1)
+
 end subroutine test1_f_ac_kicker
 
 !---------------------------------------------------------------------------------
@@ -589,6 +629,11 @@ endif
 
 call set_ac_kicker_test_pattern (f2_ac_kicker, 3)
 call ac_kicker_to_c (c_loc(f2_ac_kicker), c_ac_kicker)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ac_kicker_test_pattern (f_ac_kicker, -1)
+call set_ac_kicker_test_pattern (f2_ac_kicker, -1)
+
 end subroutine test2_f_ac_kicker
 
 !---------------------------------------------------------------------------------
@@ -607,20 +652,38 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_ac_kicker_time>
 if (ix_patt < 3) then
-  if (allocated(F%amp_vs_time)) deallocate (F%amp_vs_time)
-  else
-  if (.not. allocated(F%amp_vs_time)) allocate (F%amp_vs_time(-1:1))
-  do jd1 = 1, size(F%amp_vs_time,1); lb1 = lbound(F%amp_vs_time,1) - 1
-  call set_ac_kicker_time_test_pattern (F%amp_vs_time(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%amp_vs_time)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%amp_vs_time,1), ubound(F%amp_vs_time,1)
+      call set_ac_kicker_time_test_pattern (F%amp_vs_time(jd1), -1)
+    enddo
+    deallocate (F%amp_vs_time)
+  endif
+else
+  if (.not. allocated(F%amp_vs_time)) then
+    allocate (F%amp_vs_time(-1:1))
+  endif
+  do jd1 = 1, size(F%amp_vs_time,1)
+    lb1 = lbound(F%amp_vs_time,1) - 1
+    call set_ac_kicker_time_test_pattern (F%amp_vs_time(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_ac_kicker_freq>
 if (ix_patt < 3) then
-  if (allocated(F%frequency)) deallocate (F%frequency)
-  else
-  if (.not. allocated(F%frequency)) allocate (F%frequency(-1:1))
-  do jd1 = 1, size(F%frequency,1); lb1 = lbound(F%frequency,1) - 1
-  call set_ac_kicker_freq_test_pattern (F%frequency(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%frequency)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%frequency,1), ubound(F%frequency,1)
+      call set_ac_kicker_freq_test_pattern (F%frequency(jd1), -1)
+    enddo
+    deallocate (F%frequency)
+  endif
+else
+  if (.not. allocated(F%frequency)) then
+    allocate (F%frequency(-1:1))
+  endif
+  do jd1 = 1, size(F%frequency,1)
+    lb1 = lbound(F%frequency,1) - 1
+    call set_ac_kicker_freq_test_pattern (F%frequency(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -677,6 +740,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_interval1_coef_test_pattern (f_interval1_coef, -1)
+call set_interval1_coef_test_pattern (f2_interval1_coef, -1)
+
 end subroutine test1_f_interval1_coef
 
 !---------------------------------------------------------------------------------
@@ -720,6 +787,11 @@ endif
 
 call set_interval1_coef_test_pattern (f2_interval1_coef, 3)
 call interval1_coef_to_c (c_loc(f2_interval1_coef), c_interval1_coef)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_interval1_coef_test_pattern (f_interval1_coef, -1)
+call set_interval1_coef_test_pattern (f2_interval1_coef, -1)
+
 end subroutine test2_f_interval1_coef
 
 !---------------------------------------------------------------------------------
@@ -796,6 +868,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_reflect_table_test_pattern (f_photon_reflect_table, -1)
+call set_photon_reflect_table_test_pattern (f2_photon_reflect_table, -1)
+
 end subroutine test1_f_photon_reflect_table
 
 !---------------------------------------------------------------------------------
@@ -839,6 +915,11 @@ endif
 
 call set_photon_reflect_table_test_pattern (f2_photon_reflect_table, 3)
 call photon_reflect_table_to_c (c_loc(f2_photon_reflect_table), c_photon_reflect_table)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_reflect_table_test_pattern (f_photon_reflect_table, -1)
+call set_photon_reflect_table_test_pattern (f2_photon_reflect_table, -1)
+
 end subroutine test2_f_photon_reflect_table
 
 !---------------------------------------------------------------------------------
@@ -857,31 +938,50 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%angle)) deallocate (F%angle)
-  else
-  if (.not. allocated(F%angle)) allocate (F%angle(-1:1))
-  do jd1 = 1, size(F%angle,1); lb1 = lbound(F%angle,1) - 1
-  rhs = 100 + jd1 + 1 + offset
-  F%angle(jd1+lb1) = rhs
+  if (allocated(F%angle)) then
+     deallocate (F%angle)
+  endif
+else
+  if (.not. allocated(F%angle)) then
+    allocate (F%angle(-1:1))
+  endif
+  do jd1 = 1, size(F%angle,1)
+    lb1 = lbound(F%angle,1) - 1
+    rhs = 100 + jd1 + 1 + offset
+    F%angle(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%energy)) deallocate (F%energy)
-  else
-  if (.not. allocated(F%energy)) allocate (F%energy(-1:1))
-  do jd1 = 1, size(F%energy,1); lb1 = lbound(F%energy,1) - 1
-  rhs = 100 + jd1 + 3 + offset
-  F%energy(jd1+lb1) = rhs
+  if (allocated(F%energy)) then
+     deallocate (F%energy)
+  endif
+else
+  if (.not. allocated(F%energy)) then
+    allocate (F%energy(-1:1))
+  endif
+  do jd1 = 1, size(F%energy,1)
+    lb1 = lbound(F%energy,1) - 1
+    rhs = 100 + jd1 + 3 + offset
+    F%energy(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_interval1_coef>
 if (ix_patt < 3) then
-  if (allocated(F%int1)) deallocate (F%int1)
-  else
-  if (.not. allocated(F%int1)) allocate (F%int1(-1:1))
-  do jd1 = 1, size(F%int1,1); lb1 = lbound(F%int1,1) - 1
-  call set_interval1_coef_test_pattern (F%int1(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%int1)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%int1,1), ubound(F%int1,1)
+      call set_interval1_coef_test_pattern (F%int1(jd1), -1)
+    enddo
+    deallocate (F%int1)
+  endif
+else
+  if (.not. allocated(F%int1)) then
+    allocate (F%int1(-1:1))
+  endif
+  do jd1 = 1, size(F%int1,1)
+    lb1 = lbound(F%int1,1) - 1
+    call set_interval1_coef_test_pattern (F%int1(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[2D_ALLOC_real] VariableArray2D<Real>
@@ -899,22 +999,32 @@ endif
 rhs = 10 + offset; F%max_energy = rhs
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%p_reflect_scratch)) deallocate (F%p_reflect_scratch)
-  else
-  if (.not. allocated(F%p_reflect_scratch)) allocate (F%p_reflect_scratch(-1:1))
-  do jd1 = 1, size(F%p_reflect_scratch,1); lb1 = lbound(F%p_reflect_scratch,1) - 1
-  rhs = 100 + jd1 + 11 + offset
-  F%p_reflect_scratch(jd1+lb1) = rhs
+  if (allocated(F%p_reflect_scratch)) then
+     deallocate (F%p_reflect_scratch)
+  endif
+else
+  if (.not. allocated(F%p_reflect_scratch)) then
+    allocate (F%p_reflect_scratch(-1:1))
+  endif
+  do jd1 = 1, size(F%p_reflect_scratch,1)
+    lb1 = lbound(F%p_reflect_scratch,1) - 1
+    rhs = 100 + jd1 + 11 + offset
+    F%p_reflect_scratch(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%bragg_angle)) deallocate (F%bragg_angle)
-  else
-  if (.not. allocated(F%bragg_angle)) allocate (F%bragg_angle(-1:1))
-  do jd1 = 1, size(F%bragg_angle,1); lb1 = lbound(F%bragg_angle,1) - 1
-  rhs = 100 + jd1 + 13 + offset
-  F%bragg_angle(jd1+lb1) = rhs
+  if (allocated(F%bragg_angle)) then
+     deallocate (F%bragg_angle)
+  endif
+else
+  if (.not. allocated(F%bragg_angle)) then
+    allocate (F%bragg_angle(-1:1))
+  endif
+  do jd1 = 1, size(F%bragg_angle,1)
+    lb1 = lbound(F%bragg_angle,1) - 1
+    rhs = 100 + jd1 + 13 + offset
+    F%bragg_angle(jd1+lb1) = rhs
   enddo
 endif
 
@@ -971,6 +1081,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_reflect_surface_test_pattern (f_photon_reflect_surface, -1)
+call set_photon_reflect_surface_test_pattern (f2_photon_reflect_surface, -1)
+
 end subroutine test1_f_photon_reflect_surface
 
 !---------------------------------------------------------------------------------
@@ -1014,6 +1128,11 @@ endif
 
 call set_photon_reflect_surface_test_pattern (f2_photon_reflect_surface, 3)
 call photon_reflect_surface_to_c (c_loc(f2_photon_reflect_surface), c_photon_reflect_surface)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_reflect_surface_test_pattern (f_photon_reflect_surface, -1)
+call set_photon_reflect_surface_test_pattern (f2_photon_reflect_surface, -1)
+
 end subroutine test2_f_photon_reflect_surface
 
 !---------------------------------------------------------------------------------
@@ -1044,11 +1163,20 @@ do jd1 = 1, len(F%reflectivity_file)
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_photon_reflect_table>
 if (ix_patt < 3) then
-  if (allocated(F%table)) deallocate (F%table)
-  else
-  if (.not. allocated(F%table)) allocate (F%table(-1:1))
-  do jd1 = 1, size(F%table,1); lb1 = lbound(F%table,1) - 1
-  call set_photon_reflect_table_test_pattern (F%table(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%table)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%table,1), ubound(F%table,1)
+      call set_photon_reflect_table_test_pattern (F%table(jd1), -1)
+    enddo
+    deallocate (F%table)
+  endif
+else
+  if (.not. allocated(F%table)) then
+    allocate (F%table(-1:1))
+  endif
+  do jd1 = 1, size(F%table,1)
+    lb1 = lbound(F%table,1) - 1
+    call set_photon_reflect_table_test_pattern (F%table(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_real] Real
@@ -1111,6 +1239,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_coord_test_pattern (f_coord, -1)
+call set_coord_test_pattern (f2_coord, -1)
+
 end subroutine test1_f_coord
 
 !---------------------------------------------------------------------------------
@@ -1154,6 +1286,11 @@ endif
 
 call set_coord_test_pattern (f2_coord, 3)
 call coord_to_c (c_loc(f2_coord), c_coord)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_coord_test_pattern (f_coord, -1)
+call set_coord_test_pattern (f2_coord, -1)
+
 end subroutine test2_f_coord
 
 !---------------------------------------------------------------------------------
@@ -1172,8 +1309,8 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec,1); lb1 = lbound(F%vec,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%vec(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%vec(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 2 + offset; F%s = rhs
@@ -1181,18 +1318,18 @@ rhs = 2 + offset; F%s = rhs
 rhs = 3 + offset; F%t = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1
-rhs = 100 + jd1 + 4 + offset
-F%spin(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 4 + offset
+  F%spin(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%field,1); lb1 = lbound(F%field,1) - 1
-rhs = 100 + jd1 + 5 + offset
-F%field(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 5 + offset
+  F%field(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%phase,1); lb1 = lbound(F%phase,1) - 1
-rhs = 100 + jd1 + 6 + offset
-F%phase(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 6 + offset
+  F%phase(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 7 + offset; F%charge = rhs
@@ -1278,6 +1415,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_coord_array_test_pattern (f_coord_array, -1)
+call set_coord_array_test_pattern (f2_coord_array, -1)
+
 end subroutine test1_f_coord_array
 
 !---------------------------------------------------------------------------------
@@ -1321,6 +1462,11 @@ endif
 
 call set_coord_array_test_pattern (f2_coord_array, 3)
 call coord_array_to_c (c_loc(f2_coord_array), c_coord_array)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_coord_array_test_pattern (f_coord_array, -1)
+call set_coord_array_test_pattern (f2_coord_array, -1)
+
 end subroutine test2_f_coord_array
 
 !---------------------------------------------------------------------------------
@@ -1339,11 +1485,20 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_coord>
 if (ix_patt < 3) then
-  if (allocated(F%orbit)) deallocate (F%orbit)
-  else
-  if (.not. allocated(F%orbit)) allocate (F%orbit(-1:1))
-  do jd1 = 1, size(F%orbit,1); lb1 = lbound(F%orbit,1) - 1
-  call set_coord_test_pattern (F%orbit(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%orbit)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%orbit,1), ubound(F%orbit,1)
+      call set_coord_test_pattern (F%orbit(jd1), -1)
+    enddo
+    deallocate (F%orbit)
+  endif
+else
+  if (.not. allocated(F%orbit)) then
+    allocate (F%orbit(-1:1))
+  endif
+  do jd1 = 1, size(F%orbit,1)
+    lb1 = lbound(F%orbit,1) - 1
+    call set_coord_test_pattern (F%orbit(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -1400,6 +1555,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bpm_phase_coupling_test_pattern (f_bpm_phase_coupling, -1)
+call set_bpm_phase_coupling_test_pattern (f2_bpm_phase_coupling, -1)
+
 end subroutine test1_f_bpm_phase_coupling
 
 !---------------------------------------------------------------------------------
@@ -1443,6 +1602,11 @@ endif
 
 call set_bpm_phase_coupling_test_pattern (f2_bpm_phase_coupling, 3)
 call bpm_phase_coupling_to_c (c_loc(f2_bpm_phase_coupling), c_bpm_phase_coupling)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bpm_phase_coupling_test_pattern (f_bpm_phase_coupling, -1)
+call set_bpm_phase_coupling_test_pattern (f2_bpm_phase_coupling, -1)
+
 end subroutine test2_f_bpm_phase_coupling
 
 !---------------------------------------------------------------------------------
@@ -1533,6 +1697,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_expression_atom_test_pattern (f_expression_atom, -1)
+call set_expression_atom_test_pattern (f2_expression_atom, -1)
+
 end subroutine test1_f_expression_atom
 
 !---------------------------------------------------------------------------------
@@ -1576,6 +1744,11 @@ endif
 
 call set_expression_atom_test_pattern (f2_expression_atom, 3)
 call expression_atom_to_c (c_loc(f2_expression_atom), c_expression_atom)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_expression_atom_test_pattern (f_expression_atom, -1)
+call set_expression_atom_test_pattern (f2_expression_atom, -1)
+
 end subroutine test2_f_expression_atom
 
 !---------------------------------------------------------------------------------
@@ -1654,6 +1827,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_sr_z_long_test_pattern (f_wake_sr_z_long, -1)
+call set_wake_sr_z_long_test_pattern (f2_wake_sr_z_long, -1)
+
 end subroutine test1_f_wake_sr_z_long
 
 !---------------------------------------------------------------------------------
@@ -1697,6 +1874,11 @@ endif
 
 call set_wake_sr_z_long_test_pattern (f2_wake_sr_z_long, 3)
 call wake_sr_z_long_to_c (c_loc(f2_wake_sr_z_long), c_wake_sr_z_long)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_sr_z_long_test_pattern (f_wake_sr_z_long, -1)
+call set_wake_sr_z_long_test_pattern (f2_wake_sr_z_long, -1)
+
 end subroutine test2_f_wake_sr_z_long
 
 !---------------------------------------------------------------------------------
@@ -1715,42 +1897,62 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%w)) deallocate (F%w)
-  else
-  if (.not. allocated(F%w)) allocate (F%w(-1:1))
-  do jd1 = 1, size(F%w,1); lb1 = lbound(F%w,1) - 1
-  rhs = 100 + jd1 + 1 + offset
-  F%w(jd1+lb1) = rhs
+  if (allocated(F%w)) then
+     deallocate (F%w)
+  endif
+else
+  if (.not. allocated(F%w)) then
+    allocate (F%w(-1:1))
+  endif
+  do jd1 = 1, size(F%w,1)
+    lb1 = lbound(F%w,1) - 1
+    rhs = 100 + jd1 + 1 + offset
+    F%w(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_complex] VariableArray1D<Complex>
 if (ix_patt < 3) then
-  if (allocated(F%fw)) deallocate (F%fw)
-  else
-  if (.not. allocated(F%fw)) allocate (F%fw(-1:1))
-  do jd1 = 1, size(F%fw,1); lb1 = lbound(F%fw,1) - 1
-  rhs = 100 + jd1 + 3 + offset
-  F%fw(jd1+lb1) = cmplx(rhs, 100+rhs)
+  if (allocated(F%fw)) then
+     deallocate (F%fw)
+  endif
+else
+  if (.not. allocated(F%fw)) then
+    allocate (F%fw(-1:1))
+  endif
+  do jd1 = 1, size(F%fw,1)
+    lb1 = lbound(F%fw,1) - 1
+    rhs = 100 + jd1 + 3 + offset
+    F%fw(jd1+lb1) = cmplx(rhs, 100+rhs)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_complex] VariableArray1D<Complex>
 if (ix_patt < 3) then
-  if (allocated(F%fbunch)) deallocate (F%fbunch)
-  else
-  if (.not. allocated(F%fbunch)) allocate (F%fbunch(-1:1))
-  do jd1 = 1, size(F%fbunch,1); lb1 = lbound(F%fbunch,1) - 1
-  rhs = 100 + jd1 + 5 + offset
-  F%fbunch(jd1+lb1) = cmplx(rhs, 100+rhs)
+  if (allocated(F%fbunch)) then
+     deallocate (F%fbunch)
+  endif
+else
+  if (.not. allocated(F%fbunch)) then
+    allocate (F%fbunch(-1:1))
+  endif
+  do jd1 = 1, size(F%fbunch,1)
+    lb1 = lbound(F%fbunch,1) - 1
+    rhs = 100 + jd1 + 5 + offset
+    F%fbunch(jd1+lb1) = cmplx(rhs, 100+rhs)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_complex] VariableArray1D<Complex>
 if (ix_patt < 3) then
-  if (allocated(F%w_out)) deallocate (F%w_out)
-  else
-  if (.not. allocated(F%w_out)) allocate (F%w_out(-1:1))
-  do jd1 = 1, size(F%w_out,1); lb1 = lbound(F%w_out,1) - 1
-  rhs = 100 + jd1 + 7 + offset
-  F%w_out(jd1+lb1) = cmplx(rhs, 100+rhs)
+  if (allocated(F%w_out)) then
+     deallocate (F%w_out)
+  endif
+else
+  if (.not. allocated(F%w_out)) then
+    allocate (F%w_out(-1:1))
+  endif
+  do jd1 = 1, size(F%w_out,1)
+    lb1 = lbound(F%w_out,1) - 1
+    rhs = 100 + jd1 + 7 + offset
+    F%w_out(jd1+lb1) = cmplx(rhs, 100+rhs)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_real] Real
@@ -1817,6 +2019,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_sr_mode_test_pattern (f_wake_sr_mode, -1)
+call set_wake_sr_mode_test_pattern (f2_wake_sr_mode, -1)
+
 end subroutine test1_f_wake_sr_mode
 
 !---------------------------------------------------------------------------------
@@ -1860,6 +2066,11 @@ endif
 
 call set_wake_sr_mode_test_pattern (f2_wake_sr_mode, 3)
 call wake_sr_mode_to_c (c_loc(f2_wake_sr_mode), c_wake_sr_mode)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_sr_mode_test_pattern (f_wake_sr_mode, -1)
+call set_wake_sr_mode_test_pattern (f2_wake_sr_mode, -1)
+
 end subroutine test2_f_wake_sr_mode
 
 !---------------------------------------------------------------------------------
@@ -1950,6 +2161,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_sr_test_pattern (f_wake_sr, -1)
+call set_wake_sr_test_pattern (f2_wake_sr, -1)
+
 end subroutine test1_f_wake_sr
 
 !---------------------------------------------------------------------------------
@@ -1993,6 +2208,11 @@ endif
 
 call set_wake_sr_test_pattern (f2_wake_sr, 3)
 call wake_sr_to_c (c_loc(f2_wake_sr), c_wake_sr)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_sr_test_pattern (f_wake_sr, -1)
+call set_wake_sr_test_pattern (f2_wake_sr, -1)
+
 end subroutine test2_f_wake_sr
 
 !---------------------------------------------------------------------------------
@@ -2017,20 +2237,38 @@ enddo
 call set_wake_sr_z_long_test_pattern (F%z_long, ix_patt)
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wake_sr_mode>
 if (ix_patt < 3) then
-  if (allocated(F%long)) deallocate (F%long)
-  else
-  if (.not. allocated(F%long)) allocate (F%long(-1:1))
-  do jd1 = 1, size(F%long,1); lb1 = lbound(F%long,1) - 1
-  call set_wake_sr_mode_test_pattern (F%long(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%long)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%long,1), ubound(F%long,1)
+      call set_wake_sr_mode_test_pattern (F%long(jd1), -1)
+    enddo
+    deallocate (F%long)
+  endif
+else
+  if (.not. allocated(F%long)) then
+    allocate (F%long(-1:1))
+  endif
+  do jd1 = 1, size(F%long,1)
+    lb1 = lbound(F%long,1) - 1
+    call set_wake_sr_mode_test_pattern (F%long(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wake_sr_mode>
 if (ix_patt < 3) then
-  if (allocated(F%trans)) deallocate (F%trans)
-  else
-  if (.not. allocated(F%trans)) allocate (F%trans(-1:1))
-  do jd1 = 1, size(F%trans,1); lb1 = lbound(F%trans,1) - 1
-  call set_wake_sr_mode_test_pattern (F%trans(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%trans)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%trans,1), ubound(F%trans,1)
+      call set_wake_sr_mode_test_pattern (F%trans(jd1), -1)
+    enddo
+    deallocate (F%trans)
+  endif
+else
+  if (.not. allocated(F%trans)) then
+    allocate (F%trans(-1:1))
+  endif
+  do jd1 = 1, size(F%trans,1)
+    lb1 = lbound(F%trans,1) - 1
+    call set_wake_sr_mode_test_pattern (F%trans(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_real] Real
@@ -2099,6 +2337,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_lr_mode_test_pattern (f_wake_lr_mode, -1)
+call set_wake_lr_mode_test_pattern (f2_wake_lr_mode, -1)
+
 end subroutine test1_f_wake_lr_mode
 
 !---------------------------------------------------------------------------------
@@ -2142,6 +2384,11 @@ endif
 
 call set_wake_lr_mode_test_pattern (f2_wake_lr_mode, 3)
 call wake_lr_mode_to_c (c_loc(f2_wake_lr_mode), c_wake_lr_mode)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_lr_mode_test_pattern (f_wake_lr_mode, -1)
+call set_wake_lr_mode_test_pattern (f2_wake_lr_mode, -1)
+
 end subroutine test2_f_wake_lr_mode
 
 !---------------------------------------------------------------------------------
@@ -2238,6 +2485,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_lr_test_pattern (f_wake_lr, -1)
+call set_wake_lr_test_pattern (f2_wake_lr, -1)
+
 end subroutine test1_f_wake_lr
 
 !---------------------------------------------------------------------------------
@@ -2281,6 +2532,11 @@ endif
 
 call set_wake_lr_test_pattern (f2_wake_lr, 3)
 call wake_lr_to_c (c_loc(f2_wake_lr), c_wake_lr)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_lr_test_pattern (f_wake_lr, -1)
+call set_wake_lr_test_pattern (f2_wake_lr, -1)
+
 end subroutine test2_f_wake_lr
 
 !---------------------------------------------------------------------------------
@@ -2303,11 +2559,20 @@ do jd1 = 1, len(F%file)
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wake_lr_mode>
 if (ix_patt < 3) then
-  if (allocated(F%mode)) deallocate (F%mode)
-  else
-  if (.not. allocated(F%mode)) allocate (F%mode(-1:1))
-  do jd1 = 1, size(F%mode,1); lb1 = lbound(F%mode,1) - 1
-  call set_wake_lr_mode_test_pattern (F%mode(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%mode)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%mode,1), ubound(F%mode,1)
+      call set_wake_lr_mode_test_pattern (F%mode(jd1), -1)
+    enddo
+    deallocate (F%mode)
+  endif
+else
+  if (.not. allocated(F%mode)) then
+    allocate (F%mode(-1:1))
+  endif
+  do jd1 = 1, size(F%mode,1)
+    lb1 = lbound(F%mode,1) - 1
+    call set_wake_lr_mode_test_pattern (F%mode(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_real] Real
@@ -2374,6 +2639,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_loc_test_pattern (f_lat_ele_loc, -1)
+call set_lat_ele_loc_test_pattern (f2_lat_ele_loc, -1)
+
 end subroutine test1_f_lat_ele_loc
 
 !---------------------------------------------------------------------------------
@@ -2417,6 +2686,11 @@ endif
 
 call set_lat_ele_loc_test_pattern (f2_lat_ele_loc, 3)
 call lat_ele_loc_to_c (c_loc(f2_lat_ele_loc), c_lat_ele_loc)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_loc_test_pattern (f_lat_ele_loc, -1)
+call set_lat_ele_loc_test_pattern (f2_lat_ele_loc, -1)
+
 end subroutine test2_f_lat_ele_loc
 
 !---------------------------------------------------------------------------------
@@ -2491,6 +2765,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_test_pattern (f_wake, -1)
+call set_wake_test_pattern (f2_wake, -1)
+
 end subroutine test1_f_wake
 
 !---------------------------------------------------------------------------------
@@ -2534,6 +2812,11 @@ endif
 
 call set_wake_test_pattern (f2_wake, 3)
 call wake_to_c (c_loc(f2_wake), c_wake)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wake_test_pattern (f_wake, -1)
+call set_wake_test_pattern (f2_wake, -1)
+
 end subroutine test2_f_wake
 
 !---------------------------------------------------------------------------------
@@ -2608,6 +2891,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_taylor_term_test_pattern (f_taylor_term, -1)
+call set_taylor_term_test_pattern (f2_taylor_term, -1)
+
 end subroutine test1_f_taylor_term
 
 !---------------------------------------------------------------------------------
@@ -2651,6 +2938,11 @@ endif
 
 call set_taylor_term_test_pattern (f2_taylor_term, 3)
 call taylor_term_to_c (c_loc(f2_taylor_term), c_taylor_term)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_taylor_term_test_pattern (f_taylor_term, -1)
+call set_taylor_term_test_pattern (f2_taylor_term, -1)
+
 end subroutine test2_f_taylor_term
 
 !---------------------------------------------------------------------------------
@@ -2671,8 +2963,8 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%coef = rhs
 !! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 6>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%expn(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%expn(jd1+lb1) = rhs
 enddo
 
 end subroutine set_taylor_term_test_pattern
@@ -2728,6 +3020,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_taylor_test_pattern (f_taylor, -1)
+call set_taylor_test_pattern (f2_taylor, -1)
+
 end subroutine test1_f_taylor
 
 !---------------------------------------------------------------------------------
@@ -2771,6 +3067,11 @@ endif
 
 call set_taylor_test_pattern (f2_taylor, 3)
 call taylor_to_c (c_loc(f2_taylor), c_taylor)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_taylor_test_pattern (f_taylor, -1)
+call set_taylor_test_pattern (f2_taylor, -1)
+
 end subroutine test2_f_taylor
 
 !---------------------------------------------------------------------------------
@@ -2791,11 +3092,20 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%ref = rhs
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_taylor_term>
 if (ix_patt < 3) then
-  if (associated(F%term)) deallocate (F%term)
-  else
-  if (.not. associated(F%term)) allocate (F%term(-1:1))
-  do jd1 = 1, size(F%term,1); lb1 = lbound(F%term,1) - 1
-  call set_taylor_term_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
+  if (associated(F%term)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%term,1), ubound(F%term,1)
+      call set_taylor_term_test_pattern (F%term(jd1), -1)
+    enddo
+    deallocate (F%term)
+  endif
+else
+  if (.not. associated(F%term)) then
+    allocate (F%term(-1:1))
+  endif
+  do jd1 = 1, size(F%term,1)
+    lb1 = lbound(F%term,1) - 1
+    call set_taylor_term_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -2852,6 +3162,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_em_taylor_term_test_pattern (f_em_taylor_term, -1)
+call set_em_taylor_term_test_pattern (f2_em_taylor_term, -1)
+
 end subroutine test1_f_em_taylor_term
 
 !---------------------------------------------------------------------------------
@@ -2895,6 +3209,11 @@ endif
 
 call set_em_taylor_term_test_pattern (f2_em_taylor_term, 3)
 call em_taylor_term_to_c (c_loc(f2_em_taylor_term), c_em_taylor_term)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_em_taylor_term_test_pattern (f_em_taylor_term, -1)
+call set_em_taylor_term_test_pattern (f2_em_taylor_term, -1)
+
 end subroutine test2_f_em_taylor_term
 
 !---------------------------------------------------------------------------------
@@ -2915,8 +3234,8 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%coef = rhs
 !! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 2>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%expn(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%expn(jd1+lb1) = rhs
 enddo
 
 end subroutine set_em_taylor_term_test_pattern
@@ -2972,6 +3291,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_em_taylor_test_pattern (f_em_taylor, -1)
+call set_em_taylor_test_pattern (f2_em_taylor, -1)
+
 end subroutine test1_f_em_taylor
 
 !---------------------------------------------------------------------------------
@@ -3015,6 +3338,11 @@ endif
 
 call set_em_taylor_test_pattern (f2_em_taylor, 3)
 call em_taylor_to_c (c_loc(f2_em_taylor), c_em_taylor)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_em_taylor_test_pattern (f_em_taylor, -1)
+call set_em_taylor_test_pattern (f2_em_taylor, -1)
+
 end subroutine test2_f_em_taylor
 
 !---------------------------------------------------------------------------------
@@ -3035,11 +3363,20 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%ref = rhs
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_em_taylor_term>
 if (ix_patt < 3) then
-  if (allocated(F%term)) deallocate (F%term)
-  else
-  if (.not. allocated(F%term)) allocate (F%term(-1:1))
-  do jd1 = 1, size(F%term,1); lb1 = lbound(F%term,1) - 1
-  call set_em_taylor_term_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%term)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%term,1), ubound(F%term,1)
+      call set_em_taylor_term_test_pattern (F%term(jd1), -1)
+    enddo
+    deallocate (F%term)
+  endif
+else
+  if (.not. allocated(F%term)) then
+    allocate (F%term(-1:1))
+  endif
+  do jd1 = 1, size(F%term,1)
+    lb1 = lbound(F%term,1) - 1
+    call set_em_taylor_term_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -3096,6 +3433,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cartesian_map_term1_test_pattern (f_cartesian_map_term1, -1)
+call set_cartesian_map_term1_test_pattern (f2_cartesian_map_term1, -1)
+
 end subroutine test1_f_cartesian_map_term1
 
 !---------------------------------------------------------------------------------
@@ -3139,6 +3480,11 @@ endif
 
 call set_cartesian_map_term1_test_pattern (f2_cartesian_map_term1, 3)
 call cartesian_map_term1_to_c (c_loc(f2_cartesian_map_term1), c_cartesian_map_term1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cartesian_map_term1_test_pattern (f_cartesian_map_term1, -1)
+call set_cartesian_map_term1_test_pattern (f2_cartesian_map_term1, -1)
+
 end subroutine test2_f_cartesian_map_term1
 
 !---------------------------------------------------------------------------------
@@ -3227,6 +3573,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cartesian_map_term_test_pattern (f_cartesian_map_term, -1)
+call set_cartesian_map_term_test_pattern (f2_cartesian_map_term, -1)
+
 end subroutine test1_f_cartesian_map_term
 
 !---------------------------------------------------------------------------------
@@ -3270,6 +3620,11 @@ endif
 
 call set_cartesian_map_term_test_pattern (f2_cartesian_map_term, 3)
 call cartesian_map_term_to_c (c_loc(f2_cartesian_map_term), c_cartesian_map_term)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cartesian_map_term_test_pattern (f_cartesian_map_term, -1)
+call set_cartesian_map_term_test_pattern (f2_cartesian_map_term, -1)
+
 end subroutine test2_f_cartesian_map_term
 
 !---------------------------------------------------------------------------------
@@ -3294,11 +3649,20 @@ enddo
 rhs = 2 + offset; F%n_link = rhs
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_cartesian_map_term1>
 if (ix_patt < 3) then
-  if (allocated(F%term)) deallocate (F%term)
-  else
-  if (.not. allocated(F%term)) allocate (F%term(-1:1))
-  do jd1 = 1, size(F%term,1); lb1 = lbound(F%term,1) - 1
-  call set_cartesian_map_term1_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%term)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%term,1), ubound(F%term,1)
+      call set_cartesian_map_term1_test_pattern (F%term(jd1), -1)
+    enddo
+    deallocate (F%term)
+  endif
+else
+  if (.not. allocated(F%term)) then
+    allocate (F%term(-1:1))
+  endif
+  do jd1 = 1, size(F%term,1)
+    lb1 = lbound(F%term,1) - 1
+    call set_cartesian_map_term1_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -3355,6 +3719,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cartesian_map_test_pattern (f_cartesian_map, -1)
+call set_cartesian_map_test_pattern (f2_cartesian_map, -1)
+
 end subroutine test1_f_cartesian_map
 
 !---------------------------------------------------------------------------------
@@ -3398,6 +3766,11 @@ endif
 
 call set_cartesian_map_test_pattern (f2_cartesian_map, 3)
 call cartesian_map_to_c (c_loc(f2_cartesian_map), c_cartesian_map)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cartesian_map_test_pattern (f_cartesian_map, -1)
+call set_cartesian_map_test_pattern (f2_cartesian_map, -1)
+
 end subroutine test2_f_cartesian_map
 
 !---------------------------------------------------------------------------------
@@ -3418,8 +3791,8 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%field_scale = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 3 + offset; F%master_parameter = rhs
@@ -3429,8 +3802,11 @@ rhs = 4 + offset; F%ele_anchor_pt = rhs
 rhs = 5 + offset; F%field_type = rhs
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_cartesian_map_term>
 if (ix_patt < 3) then
-  if (associated(F%ptr)) deallocate (F%ptr)
-  else
+  if (associated(F%ptr)) then
+    call set_cartesian_map_term_test_pattern (F%ptr, -1)
+    deallocate (F%ptr)
+  endif
+else
   if (.not. associated(F%ptr)) allocate (F%ptr)
   rhs = 6 + offset
   call set_cartesian_map_term_test_pattern (F%ptr, ix_patt)
@@ -3489,6 +3865,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cylindrical_map_term1_test_pattern (f_cylindrical_map_term1, -1)
+call set_cylindrical_map_term1_test_pattern (f2_cylindrical_map_term1, -1)
+
 end subroutine test1_f_cylindrical_map_term1
 
 !---------------------------------------------------------------------------------
@@ -3532,6 +3912,11 @@ endif
 
 call set_cylindrical_map_term1_test_pattern (f2_cylindrical_map_term1, 3)
 call cylindrical_map_term1_to_c (c_loc(f2_cylindrical_map_term1), c_cylindrical_map_term1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cylindrical_map_term1_test_pattern (f_cylindrical_map_term1, -1)
+call set_cylindrical_map_term1_test_pattern (f2_cylindrical_map_term1, -1)
+
 end subroutine test2_f_cylindrical_map_term1
 
 !---------------------------------------------------------------------------------
@@ -3606,6 +3991,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cylindrical_map_term_test_pattern (f_cylindrical_map_term, -1)
+call set_cylindrical_map_term_test_pattern (f2_cylindrical_map_term, -1)
+
 end subroutine test1_f_cylindrical_map_term
 
 !---------------------------------------------------------------------------------
@@ -3649,6 +4038,11 @@ endif
 
 call set_cylindrical_map_term_test_pattern (f2_cylindrical_map_term, 3)
 call cylindrical_map_term_to_c (c_loc(f2_cylindrical_map_term), c_cylindrical_map_term)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cylindrical_map_term_test_pattern (f_cylindrical_map_term, -1)
+call set_cylindrical_map_term_test_pattern (f2_cylindrical_map_term, -1)
+
 end subroutine test2_f_cylindrical_map_term
 
 !---------------------------------------------------------------------------------
@@ -3673,11 +4067,20 @@ enddo
 rhs = 2 + offset; F%n_link = rhs
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_cylindrical_map_term1>
 if (ix_patt < 3) then
-  if (allocated(F%term)) deallocate (F%term)
-  else
-  if (.not. allocated(F%term)) allocate (F%term(-1:1))
-  do jd1 = 1, size(F%term,1); lb1 = lbound(F%term,1) - 1
-  call set_cylindrical_map_term1_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%term)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%term,1), ubound(F%term,1)
+      call set_cylindrical_map_term1_test_pattern (F%term(jd1), -1)
+    enddo
+    deallocate (F%term)
+  endif
+else
+  if (.not. allocated(F%term)) then
+    allocate (F%term(-1:1))
+  endif
+  do jd1 = 1, size(F%term,1)
+    lb1 = lbound(F%term,1) - 1
+    call set_cylindrical_map_term1_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -3734,6 +4137,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cylindrical_map_test_pattern (f_cylindrical_map, -1)
+call set_cylindrical_map_test_pattern (f2_cylindrical_map, -1)
+
 end subroutine test1_f_cylindrical_map
 
 !---------------------------------------------------------------------------------
@@ -3777,6 +4184,11 @@ endif
 
 call set_cylindrical_map_test_pattern (f2_cylindrical_map, 3)
 call cylindrical_map_to_c (c_loc(f2_cylindrical_map), c_cylindrical_map)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_cylindrical_map_test_pattern (f_cylindrical_map, -1)
+call set_cylindrical_map_test_pattern (f2_cylindrical_map, -1)
+
 end subroutine test2_f_cylindrical_map
 
 !---------------------------------------------------------------------------------
@@ -3811,13 +4223,16 @@ rhs = 7 + offset; F%ele_anchor_pt = rhs
 rhs = 8 + offset; F%dz = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 9 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 9 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_cylindrical_map_term>
 if (ix_patt < 3) then
-  if (associated(F%ptr)) deallocate (F%ptr)
-  else
+  if (associated(F%ptr)) then
+    call set_cylindrical_map_term_test_pattern (F%ptr, -1)
+    deallocate (F%ptr)
+  endif
+else
   if (.not. associated(F%ptr)) allocate (F%ptr)
   rhs = 10 + offset
   call set_cylindrical_map_term_test_pattern (F%ptr, ix_patt)
@@ -3876,6 +4291,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_field_pt1_test_pattern (f_grid_field_pt1, -1)
+call set_grid_field_pt1_test_pattern (f2_grid_field_pt1, -1)
+
 end subroutine test1_f_grid_field_pt1
 
 !---------------------------------------------------------------------------------
@@ -3919,6 +4338,11 @@ endif
 
 call set_grid_field_pt1_test_pattern (f2_grid_field_pt1, 3)
 call grid_field_pt1_to_c (c_loc(f2_grid_field_pt1), c_grid_field_pt1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_field_pt1_test_pattern (f_grid_field_pt1, -1)
+call set_grid_field_pt1_test_pattern (f2_grid_field_pt1, -1)
+
 end subroutine test2_f_grid_field_pt1
 
 !---------------------------------------------------------------------------------
@@ -3937,13 +4361,13 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_complex] FixedArray1D<Complex, 3>
 do jd1 = 1, size(F%E,1); lb1 = lbound(F%E,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%E(jd1+lb1) = cmplx(rhs, 100+rhs)
+  rhs = 100 + jd1 + 1 + offset
+  F%E(jd1+lb1) = cmplx(rhs, 100+rhs)
 enddo
 !! f_side.test_pat[1D_NOT_complex] FixedArray1D<Complex, 3>
 do jd1 = 1, size(F%B,1); lb1 = lbound(F%B,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%B(jd1+lb1) = cmplx(rhs, 100+rhs)
+  rhs = 100 + jd1 + 2 + offset
+  F%B(jd1+lb1) = cmplx(rhs, 100+rhs)
 enddo
 
 end subroutine set_grid_field_pt1_test_pattern
@@ -3999,6 +4423,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_field_pt_test_pattern (f_grid_field_pt, -1)
+call set_grid_field_pt_test_pattern (f2_grid_field_pt, -1)
+
 end subroutine test1_f_grid_field_pt
 
 !---------------------------------------------------------------------------------
@@ -4042,6 +4470,11 @@ endif
 
 call set_grid_field_pt_test_pattern (f2_grid_field_pt, 3)
 call grid_field_pt_to_c (c_loc(f2_grid_field_pt), c_grid_field_pt)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_field_pt_test_pattern (f_grid_field_pt, -1)
+call set_grid_field_pt_test_pattern (f2_grid_field_pt, -1)
+
 end subroutine test2_f_grid_field_pt
 
 !---------------------------------------------------------------------------------
@@ -4118,6 +4551,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_field_test_pattern (f_grid_field, -1)
+call set_grid_field_test_pattern (f2_grid_field, -1)
+
 end subroutine test1_f_grid_field
 
 !---------------------------------------------------------------------------------
@@ -4161,6 +4598,11 @@ endif
 
 call set_grid_field_test_pattern (f2_grid_field, 3)
 call grid_field_to_c (c_loc(f2_grid_field), c_grid_field)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_field_test_pattern (f_grid_field, -1)
+call set_grid_field_test_pattern (f2_grid_field, -1)
+
 end subroutine test2_f_grid_field
 
 !---------------------------------------------------------------------------------
@@ -4195,20 +4637,23 @@ rhs = 7 + offset; F%ele_anchor_pt = rhs
 rhs = 8 + offset; F%interpolation_order = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
-rhs = 100 + jd1 + 9 + offset
-F%dr(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 9 + offset
+  F%dr(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 10 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 10 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 11 + offset; F%curved_ref_frame = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_grid_field_pt>
 if (ix_patt < 3) then
-  if (associated(F%ptr)) deallocate (F%ptr)
-  else
+  if (associated(F%ptr)) then
+    call set_grid_field_pt_test_pattern (F%ptr, -1)
+    deallocate (F%ptr)
+  endif
+else
   if (.not. associated(F%ptr)) allocate (F%ptr)
   rhs = 12 + offset
   call set_grid_field_pt_test_pattern (F%ptr, ix_patt)
@@ -4267,6 +4712,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_floor_position_test_pattern (f_floor_position, -1)
+call set_floor_position_test_pattern (f2_floor_position, -1)
+
 end subroutine test1_f_floor_position
 
 !---------------------------------------------------------------------------------
@@ -4310,6 +4759,11 @@ endif
 
 call set_floor_position_test_pattern (f2_floor_position, 3)
 call floor_position_to_c (c_loc(f2_floor_position), c_floor_position)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_floor_position_test_pattern (f_floor_position, -1)
+call set_floor_position_test_pattern (f2_floor_position, -1)
+
 end subroutine test2_f_floor_position
 
 !---------------------------------------------------------------------------------
@@ -4328,15 +4782,16 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%r(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%r(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 3, 3>
 do jd1 = 1, size(F%w,1); lb1 = lbound(F%w,1) - 1
-do jd2 = 1, size(F%w,2); lb2 = lbound(F%w,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 2 + offset
-F%w(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%w,2); lb2 = lbound(F%w,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 2 + offset
+    F%w(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 3 + offset; F%theta = rhs
 !! f_side.test_pat[0D_NOT_real] Real
@@ -4397,6 +4852,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_high_energy_space_charge_test_pattern (f_high_energy_space_charge, -1)
+call set_high_energy_space_charge_test_pattern (f2_high_energy_space_charge, -1)
+
 end subroutine test1_f_high_energy_space_charge
 
 !---------------------------------------------------------------------------------
@@ -4440,6 +4899,11 @@ endif
 
 call set_high_energy_space_charge_test_pattern (f2_high_energy_space_charge, 3)
 call high_energy_space_charge_to_c (c_loc(f2_high_energy_space_charge), c_high_energy_space_charge)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_high_energy_space_charge_test_pattern (f_high_energy_space_charge, -1)
+call set_high_energy_space_charge_test_pattern (f2_high_energy_space_charge, -1)
+
 end subroutine test2_f_high_energy_space_charge
 
 !---------------------------------------------------------------------------------
@@ -4526,6 +4990,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_xy_disp_test_pattern (f_xy_disp, -1)
+call set_xy_disp_test_pattern (f2_xy_disp, -1)
+
 end subroutine test1_f_xy_disp
 
 !---------------------------------------------------------------------------------
@@ -4569,6 +5037,11 @@ endif
 
 call set_xy_disp_test_pattern (f2_xy_disp, 3)
 call xy_disp_to_c (c_loc(f2_xy_disp), c_xy_disp)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_xy_disp_test_pattern (f_xy_disp, -1)
+call set_xy_disp_test_pattern (f2_xy_disp, -1)
+
 end subroutine test2_f_xy_disp
 
 !---------------------------------------------------------------------------------
@@ -4647,6 +5120,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_twiss_test_pattern (f_twiss, -1)
+call set_twiss_test_pattern (f2_twiss, -1)
+
 end subroutine test1_f_twiss
 
 !---------------------------------------------------------------------------------
@@ -4690,6 +5167,11 @@ endif
 
 call set_twiss_test_pattern (f2_twiss, 3)
 call twiss_to_c (c_loc(f2_twiss), c_twiss)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_twiss_test_pattern (f_twiss, -1)
+call set_twiss_test_pattern (f2_twiss, -1)
+
 end subroutine test2_f_twiss
 
 !---------------------------------------------------------------------------------
@@ -4782,6 +5264,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_mode3_test_pattern (f_mode3, -1)
+call set_mode3_test_pattern (f2_mode3, -1)
+
 end subroutine test1_f_mode3
 
 !---------------------------------------------------------------------------------
@@ -4825,6 +5311,11 @@ endif
 
 call set_mode3_test_pattern (f2_mode3, 3)
 call mode3_to_c (c_loc(f2_mode3), c_mode3)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_mode3_test_pattern (f_mode3, -1)
+call set_mode3_test_pattern (f2_mode3, -1)
+
 end subroutine test2_f_mode3
 
 !---------------------------------------------------------------------------------
@@ -4843,10 +5334,11 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%v,1); lb1 = lbound(F%v,1) - 1
-do jd2 = 1, size(F%v,2); lb2 = lbound(F%v,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 1 + offset
-F%v(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%v,2); lb2 = lbound(F%v,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 1 + offset
+    F%v(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[0D_NOT_type] CPP_twiss
 call set_twiss_test_pattern (F%a, ix_patt)
 !! f_side.test_pat[0D_NOT_type] CPP_twiss
@@ -4911,6 +5403,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bookkeeping_state_test_pattern (f_bookkeeping_state, -1)
+call set_bookkeeping_state_test_pattern (f2_bookkeeping_state, -1)
+
 end subroutine test1_f_bookkeeping_state
 
 !---------------------------------------------------------------------------------
@@ -4954,6 +5450,11 @@ endif
 
 call set_bookkeeping_state_test_pattern (f2_bookkeeping_state, 3)
 call bookkeeping_state_to_c (c_loc(f2_bookkeeping_state), c_bookkeeping_state)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bookkeeping_state_test_pattern (f_bookkeeping_state, -1)
+call set_bookkeeping_state_test_pattern (f2_bookkeeping_state, -1)
+
 end subroutine test2_f_bookkeeping_state
 
 !---------------------------------------------------------------------------------
@@ -5042,6 +5543,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_map_test_pattern (f_rad_map, -1)
+call set_rad_map_test_pattern (f2_rad_map, -1)
+
 end subroutine test1_f_rad_map
 
 !---------------------------------------------------------------------------------
@@ -5085,6 +5590,11 @@ endif
 
 call set_rad_map_test_pattern (f2_rad_map, 3)
 call rad_map_to_c (c_loc(f2_rad_map), c_rad_map)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_map_test_pattern (f_rad_map, -1)
+call set_rad_map_test_pattern (f2_rad_map, -1)
+
 end subroutine test2_f_rad_map
 
 !---------------------------------------------------------------------------------
@@ -5103,32 +5613,35 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%ref_orb,1); lb1 = lbound(F%ref_orb,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%ref_orb(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%ref_orb(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%damp_dmat,1); lb1 = lbound(F%damp_dmat,1) - 1
-do jd2 = 1, size(F%damp_dmat,2); lb2 = lbound(F%damp_dmat,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 2 + offset
-F%damp_dmat(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%damp_dmat,2); lb2 = lbound(F%damp_dmat,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 2 + offset
+    F%damp_dmat(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%xfer_damp_vec,1); lb1 = lbound(F%xfer_damp_vec,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%xfer_damp_vec(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%xfer_damp_vec(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%xfer_damp_mat,1); lb1 = lbound(F%xfer_damp_mat,1) - 1
-do jd2 = 1, size(F%xfer_damp_mat,2); lb2 = lbound(F%xfer_damp_mat,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 4 + offset
-F%xfer_damp_mat(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%xfer_damp_mat,2); lb2 = lbound(F%xfer_damp_mat,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 4 + offset
+    F%xfer_damp_mat(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%stoc_mat,1); lb1 = lbound(F%stoc_mat,1) - 1
-do jd2 = 1, size(F%stoc_mat,2); lb2 = lbound(F%stoc_mat,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 5 + offset
-F%stoc_mat(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%stoc_mat,2); lb2 = lbound(F%stoc_mat,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 5 + offset
+    F%stoc_mat(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 
 end subroutine set_rad_map_test_pattern
 !---------------------------------------------------------------------------------
@@ -5183,6 +5696,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_map_ele_test_pattern (f_rad_map_ele, -1)
+call set_rad_map_ele_test_pattern (f2_rad_map_ele, -1)
+
 end subroutine test1_f_rad_map_ele
 
 !---------------------------------------------------------------------------------
@@ -5226,6 +5743,11 @@ endif
 
 call set_rad_map_ele_test_pattern (f2_rad_map_ele, 3)
 call rad_map_ele_to_c (c_loc(f2_rad_map_ele), c_rad_map_ele)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_map_ele_test_pattern (f_rad_map_ele, -1)
+call set_rad_map_ele_test_pattern (f2_rad_map_ele, -1)
+
 end subroutine test2_f_rad_map_ele
 
 !---------------------------------------------------------------------------------
@@ -5302,6 +5824,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_gen_grad1_test_pattern (f_gen_grad1, -1)
+call set_gen_grad1_test_pattern (f2_gen_grad1, -1)
+
 end subroutine test1_f_gen_grad1
 
 !---------------------------------------------------------------------------------
@@ -5345,6 +5871,11 @@ endif
 
 call set_gen_grad1_test_pattern (f2_gen_grad1, 3)
 call gen_grad1_to_c (c_loc(f2_gen_grad1), c_gen_grad1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_gen_grad1_test_pattern (f_gen_grad1, -1)
+call set_gen_grad1_test_pattern (f2_gen_grad1, -1)
+
 end subroutine test2_f_gen_grad1
 
 !---------------------------------------------------------------------------------
@@ -5432,6 +5963,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_gen_grad_map_test_pattern (f_gen_grad_map, -1)
+call set_gen_grad_map_test_pattern (f2_gen_grad_map, -1)
+
 end subroutine test1_f_gen_grad_map
 
 !---------------------------------------------------------------------------------
@@ -5475,6 +6010,11 @@ endif
 
 call set_gen_grad_map_test_pattern (f2_gen_grad_map, 3)
 call gen_grad_map_to_c (c_loc(f2_gen_grad_map), c_gen_grad_map)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_gen_grad_map_test_pattern (f_gen_grad_map, -1)
+call set_gen_grad_map_test_pattern (f2_gen_grad_map, -1)
+
 end subroutine test2_f_gen_grad_map
 
 !---------------------------------------------------------------------------------
@@ -5497,11 +6037,20 @@ do jd1 = 1, len(F%file)
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_gen_grad1>
 if (ix_patt < 3) then
-  if (allocated(F%gg)) deallocate (F%gg)
-  else
-  if (.not. allocated(F%gg)) allocate (F%gg(-1:1))
-  do jd1 = 1, size(F%gg,1); lb1 = lbound(F%gg,1) - 1
-  call set_gen_grad1_test_pattern (F%gg(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%gg)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%gg,1), ubound(F%gg,1)
+      call set_gen_grad1_test_pattern (F%gg(jd1), -1)
+    enddo
+    deallocate (F%gg)
+  endif
+else
+  if (.not. allocated(F%gg)) then
+    allocate (F%gg(-1:1))
+  endif
+  do jd1 = 1, size(F%gg,1)
+    lb1 = lbound(F%gg,1) - 1
+    call set_gen_grad1_test_pattern (F%gg(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
@@ -5516,8 +6065,8 @@ rhs = 7 + offset; F%iz1 = rhs
 rhs = 8 + offset; F%dz = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 9 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 9 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 10 + offset; F%field_scale = rhs
@@ -5579,6 +6128,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_segmented_pt_test_pattern (f_surface_segmented_pt, -1)
+call set_surface_segmented_pt_test_pattern (f2_surface_segmented_pt, -1)
+
 end subroutine test1_f_surface_segmented_pt
 
 !---------------------------------------------------------------------------------
@@ -5622,6 +6175,11 @@ endif
 
 call set_surface_segmented_pt_test_pattern (f2_surface_segmented_pt, 3)
 call surface_segmented_pt_to_c (c_loc(f2_surface_segmented_pt), c_surface_segmented_pt)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_segmented_pt_test_pattern (f_surface_segmented_pt, -1)
+call set_surface_segmented_pt_test_pattern (f2_surface_segmented_pt, -1)
+
 end subroutine test2_f_surface_segmented_pt
 
 !---------------------------------------------------------------------------------
@@ -5702,6 +6260,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_segmented_test_pattern (f_surface_segmented, -1)
+call set_surface_segmented_test_pattern (f2_surface_segmented, -1)
+
 end subroutine test1_f_surface_segmented
 
 !---------------------------------------------------------------------------------
@@ -5745,6 +6307,11 @@ endif
 
 call set_surface_segmented_test_pattern (f2_surface_segmented, 3)
 call surface_segmented_to_c (c_loc(f2_surface_segmented), c_surface_segmented)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_segmented_test_pattern (f_surface_segmented, -1)
+call set_surface_segmented_test_pattern (f2_surface_segmented, -1)
+
 end subroutine test2_f_surface_segmented
 
 !---------------------------------------------------------------------------------
@@ -5765,23 +6332,23 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%dr(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%dr(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_ALLOC_type] VariableArray2D<CPP_surface_segmented_pt>
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
-  else
+else
   if (.not. allocated(F%pt)) allocate (F%pt(-1:1, 2))
   do jd1 = 1, size(F%pt,1); lb1 = lbound(F%pt,1) - 1
-  do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
-  call set_surface_segmented_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
-  enddo
+    do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
+      call set_surface_segmented_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
+    enddo
   enddo
 endif
 
@@ -5838,6 +6405,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_h_misalign_pt_test_pattern (f_surface_h_misalign_pt, -1)
+call set_surface_h_misalign_pt_test_pattern (f2_surface_h_misalign_pt, -1)
+
 end subroutine test1_f_surface_h_misalign_pt
 
 !---------------------------------------------------------------------------------
@@ -5881,6 +6452,11 @@ endif
 
 call set_surface_h_misalign_pt_test_pattern (f2_surface_h_misalign_pt, 3)
 call surface_h_misalign_pt_to_c (c_loc(f2_surface_h_misalign_pt), c_surface_h_misalign_pt)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_h_misalign_pt_test_pattern (f_surface_h_misalign_pt, -1)
+call set_surface_h_misalign_pt_test_pattern (f2_surface_h_misalign_pt, -1)
+
 end subroutine test2_f_surface_h_misalign_pt
 
 !---------------------------------------------------------------------------------
@@ -5963,6 +6539,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_h_misalign_test_pattern (f_surface_h_misalign, -1)
+call set_surface_h_misalign_test_pattern (f2_surface_h_misalign, -1)
+
 end subroutine test1_f_surface_h_misalign
 
 !---------------------------------------------------------------------------------
@@ -6006,6 +6586,11 @@ endif
 
 call set_surface_h_misalign_test_pattern (f2_surface_h_misalign, 3)
 call surface_h_misalign_to_c (c_loc(f2_surface_h_misalign), c_surface_h_misalign)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_h_misalign_test_pattern (f_surface_h_misalign, -1)
+call set_surface_h_misalign_test_pattern (f2_surface_h_misalign, -1)
+
 end subroutine test2_f_surface_h_misalign
 
 !---------------------------------------------------------------------------------
@@ -6026,23 +6611,23 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%dr(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%dr(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_ALLOC_type] VariableArray2D<CPP_surface_h_misalign_pt>
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
-  else
+else
   if (.not. allocated(F%pt)) allocate (F%pt(-1:1, 2))
   do jd1 = 1, size(F%pt,1); lb1 = lbound(F%pt,1) - 1
-  do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
-  call set_surface_h_misalign_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
-  enddo
+    do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
+      call set_surface_h_misalign_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
+    enddo
   enddo
 endif
 
@@ -6099,6 +6684,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_displacement_pt_test_pattern (f_surface_displacement_pt, -1)
+call set_surface_displacement_pt_test_pattern (f2_surface_displacement_pt, -1)
+
 end subroutine test1_f_surface_displacement_pt
 
 !---------------------------------------------------------------------------------
@@ -6142,6 +6731,11 @@ endif
 
 call set_surface_displacement_pt_test_pattern (f2_surface_displacement_pt, 3)
 call surface_displacement_pt_to_c (c_loc(f2_surface_displacement_pt), c_surface_displacement_pt)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_displacement_pt_test_pattern (f_surface_displacement_pt, -1)
+call set_surface_displacement_pt_test_pattern (f2_surface_displacement_pt, -1)
+
 end subroutine test2_f_surface_displacement_pt
 
 !---------------------------------------------------------------------------------
@@ -6224,6 +6818,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_displacement_test_pattern (f_surface_displacement, -1)
+call set_surface_displacement_test_pattern (f2_surface_displacement, -1)
+
 end subroutine test1_f_surface_displacement
 
 !---------------------------------------------------------------------------------
@@ -6267,6 +6865,11 @@ endif
 
 call set_surface_displacement_test_pattern (f2_surface_displacement, 3)
 call surface_displacement_to_c (c_loc(f2_surface_displacement), c_surface_displacement)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_displacement_test_pattern (f_surface_displacement, -1)
+call set_surface_displacement_test_pattern (f2_surface_displacement, -1)
+
 end subroutine test2_f_surface_displacement
 
 !---------------------------------------------------------------------------------
@@ -6287,23 +6890,23 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%active = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%dr(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%dr(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_ALLOC_type] VariableArray2D<CPP_surface_displacement_pt>
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
-  else
+else
   if (.not. allocated(F%pt)) allocate (F%pt(-1:1, 2))
   do jd1 = 1, size(F%pt,1); lb1 = lbound(F%pt,1) - 1
-  do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
-  call set_surface_displacement_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
-  enddo
+    do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
+      call set_surface_displacement_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
+    enddo
   enddo
 endif
 
@@ -6360,6 +6963,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_target_point_test_pattern (f_target_point, -1)
+call set_target_point_test_pattern (f2_target_point, -1)
+
 end subroutine test1_f_target_point
 
 !---------------------------------------------------------------------------------
@@ -6403,6 +7010,11 @@ endif
 
 call set_target_point_test_pattern (f2_target_point, 3)
 call target_point_to_c (c_loc(f2_target_point), c_target_point)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_target_point_test_pattern (f_target_point, -1)
+call set_target_point_test_pattern (f2_target_point, -1)
+
 end subroutine test2_f_target_point
 
 !---------------------------------------------------------------------------------
@@ -6421,8 +7033,8 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%r(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%r(jd1+lb1) = rhs
 enddo
 
 end subroutine set_target_point_test_pattern
@@ -6478,6 +7090,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_curvature_test_pattern (f_surface_curvature, -1)
+call set_surface_curvature_test_pattern (f2_surface_curvature, -1)
+
 end subroutine test1_f_surface_curvature
 
 !---------------------------------------------------------------------------------
@@ -6521,6 +7137,11 @@ endif
 
 call set_surface_curvature_test_pattern (f2_surface_curvature, 3)
 call surface_curvature_to_c (c_loc(f2_surface_curvature), c_surface_curvature)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_surface_curvature_test_pattern (f_surface_curvature, -1)
+call set_surface_curvature_test_pattern (f2_surface_curvature, -1)
+
 end subroutine test2_f_surface_curvature
 
 !---------------------------------------------------------------------------------
@@ -6539,16 +7160,17 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 7, 7>
 do jd1 = 1, size(F%xy,1); lb1 = lbound(F%xy,1) - 1
-do jd2 = 1, size(F%xy,2); lb2 = lbound(F%xy,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 1 + offset
-F%xy(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%xy,2); lb2 = lbound(F%xy,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 1 + offset
+    F%xy(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 2 + offset; F%spherical = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%elliptical,1); lb1 = lbound(F%elliptical,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%elliptical(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%elliptical(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 4 + offset; F%has_curvature = (modulo(rhs, 2) == 0)
@@ -6606,6 +7228,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_target_test_pattern (f_photon_target, -1)
+call set_photon_target_test_pattern (f2_photon_target, -1)
+
 end subroutine test1_f_photon_target
 
 !---------------------------------------------------------------------------------
@@ -6649,6 +7275,11 @@ endif
 
 call set_photon_target_test_pattern (f2_photon_target, 3)
 call photon_target_to_c (c_loc(f2_photon_target), c_photon_target)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_target_test_pattern (f_photon_target, -1)
+call set_photon_target_test_pattern (f2_photon_target, -1)
+
 end subroutine test2_f_photon_target
 
 !---------------------------------------------------------------------------------
@@ -6672,10 +7303,18 @@ rhs = 2 + offset; F%n_corner = rhs
 !! f_side.test_pat[0D_NOT_type] CPP_lat_ele_loc
 call set_lat_ele_loc_test_pattern (F%ele_loc, ix_patt)
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_target_point, 8>
-do jd1 = 1, size(F%corner,1); lb1 = lbound(F%corner,1) - 1
-rhs = 100 + jd1 + 4 + offset
-call set_target_point_test_pattern (F%corner(jd1+lb1), ix_patt+jd1)
-enddo
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%corner,1), ubound(F%corner,1)
+    call set_target_point_test_pattern (F%corner(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%corner,1)
+    lb1 = lbound(F%corner,1) - 1
+    rhs = 100 + jd1 + 4 + offset
+    call set_target_point_test_pattern (F%corner(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
 !! f_side.test_pat[0D_NOT_type] CPP_target_point
 call set_target_point_test_pattern (F%center, ix_patt)
 
@@ -6732,6 +7371,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_material_test_pattern (f_photon_material, -1)
+call set_photon_material_test_pattern (f2_photon_material, -1)
+
 end subroutine test1_f_photon_material
 
 !---------------------------------------------------------------------------------
@@ -6775,6 +7418,11 @@ endif
 
 call set_photon_material_test_pattern (f2_photon_material, 3)
 call photon_material_to_c (c_loc(f2_photon_material), c_photon_material)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_material_test_pattern (f_photon_material, -1)
+call set_photon_material_test_pattern (f2_photon_material, -1)
+
 end subroutine test2_f_photon_material
 
 !---------------------------------------------------------------------------------
@@ -6805,13 +7453,13 @@ rhs = 5 + offset; F%f_hbar = cmplx(rhs, 100+rhs)
 rhs = 6 + offset; F%f_hkl = cmplx(rhs, 100+rhs)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%h_norm,1); lb1 = lbound(F%h_norm,1) - 1
-rhs = 100 + jd1 + 7 + offset
-F%h_norm(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 7 + offset
+  F%h_norm(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%l_ref,1); lb1 = lbound(F%l_ref,1) - 1
-rhs = 100 + jd1 + 8 + offset
-F%l_ref(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 8 + offset
+  F%l_ref(jd1+lb1) = rhs
 enddo
 
 end subroutine set_photon_material_test_pattern
@@ -6867,6 +7515,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_pixel_pt_test_pattern (f_pixel_pt, -1)
+call set_pixel_pt_test_pattern (f2_pixel_pt, -1)
+
 end subroutine test1_f_pixel_pt
 
 !---------------------------------------------------------------------------------
@@ -6910,6 +7562,11 @@ endif
 
 call set_pixel_pt_test_pattern (f2_pixel_pt, 3)
 call pixel_pt_to_c (c_loc(f2_pixel_pt), c_pixel_pt)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_pixel_pt_test_pattern (f_pixel_pt, -1)
+call set_pixel_pt_test_pattern (f2_pixel_pt, -1)
+
 end subroutine test2_f_pixel_pt
 
 !---------------------------------------------------------------------------------
@@ -6940,23 +7597,23 @@ rhs = 5 + offset; F%intensity_y = rhs
 rhs = 6 + offset; F%intensity = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%orbit,1); lb1 = lbound(F%orbit,1) - 1
-rhs = 100 + jd1 + 7 + offset
-F%orbit(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 7 + offset
+  F%orbit(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%orbit_rms,1); lb1 = lbound(F%orbit_rms,1) - 1
-rhs = 100 + jd1 + 8 + offset
-F%orbit_rms(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 8 + offset
+  F%orbit_rms(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%init_orbit,1); lb1 = lbound(F%init_orbit,1) - 1
-rhs = 100 + jd1 + 9 + offset
-F%init_orbit(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 9 + offset
+  F%init_orbit(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%init_orbit_rms,1); lb1 = lbound(F%init_orbit_rms,1) - 1
-rhs = 100 + jd1 + 10 + offset
-F%init_orbit_rms(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 10 + offset
+  F%init_orbit_rms(jd1+lb1) = rhs
 enddo
 
 end subroutine set_pixel_pt_test_pattern
@@ -7012,6 +7669,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_pixel_detec_test_pattern (f_pixel_detec, -1)
+call set_pixel_detec_test_pattern (f2_pixel_detec, -1)
+
 end subroutine test1_f_pixel_detec
 
 !---------------------------------------------------------------------------------
@@ -7055,6 +7716,11 @@ endif
 
 call set_pixel_detec_test_pattern (f2_pixel_detec, 3)
 call pixel_detec_to_c (c_loc(f2_pixel_detec), c_pixel_detec)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_pixel_detec_test_pattern (f_pixel_detec, -1)
+call set_pixel_detec_test_pattern (f2_pixel_detec, -1)
+
 end subroutine test2_f_pixel_detec
 
 !---------------------------------------------------------------------------------
@@ -7073,13 +7739,13 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%dr,1); lb1 = lbound(F%dr,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%dr(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%dr(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_integer8] Int8
 rhs = 3 + offset; F%n_track_tot = rhs
@@ -7090,12 +7756,12 @@ rhs = 5 + offset; F%n_hit_pixel = rhs
 !! f_side.test_pat[2D_ALLOC_type] VariableArray2D<CPP_pixel_pt>
 if (ix_patt < 3) then
   if (allocated(F%pt)) deallocate (F%pt)
-  else
+else
   if (.not. allocated(F%pt)) allocate (F%pt(-1:1, 2))
   do jd1 = 1, size(F%pt,1); lb1 = lbound(F%pt,1) - 1
-  do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
-  call set_pixel_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
-  enddo
+    do jd2 = 1, size(F%pt,2); lb2 = lbound(F%pt,2) - 1
+      call set_pixel_pt_test_pattern (F%pt(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
+    enddo
   enddo
 endif
 
@@ -7152,6 +7818,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_element_test_pattern (f_photon_element, -1)
+call set_photon_element_test_pattern (f2_photon_element, -1)
+
 end subroutine test1_f_photon_element
 
 !---------------------------------------------------------------------------------
@@ -7195,6 +7865,11 @@ endif
 
 call set_photon_element_test_pattern (f2_photon_element, 3)
 call photon_element_to_c (c_loc(f2_photon_element), c_photon_element)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_photon_element_test_pattern (f_photon_element, -1)
+call set_photon_element_test_pattern (f2_photon_element, -1)
+
 end subroutine test2_f_photon_element
 
 !---------------------------------------------------------------------------------
@@ -7233,21 +7908,35 @@ call set_photon_reflect_table_test_pattern (F%reflectivity_table_sigma, ix_patt)
 call set_photon_reflect_table_test_pattern (F%reflectivity_table_pi, ix_patt)
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_spline>
 if (ix_patt < 3) then
-  if (allocated(F%init_energy_prob)) deallocate (F%init_energy_prob)
-  else
-  if (.not. allocated(F%init_energy_prob)) allocate (F%init_energy_prob(-1:1))
-  do jd1 = 1, size(F%init_energy_prob,1); lb1 = lbound(F%init_energy_prob,1) - 1
-  call set_spline_test_pattern (F%init_energy_prob(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%init_energy_prob)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%init_energy_prob,1), ubound(F%init_energy_prob,1)
+      call set_spline_test_pattern (F%init_energy_prob(jd1), -1)
+    enddo
+    deallocate (F%init_energy_prob)
+  endif
+else
+  if (.not. allocated(F%init_energy_prob)) then
+    allocate (F%init_energy_prob(-1:1))
+  endif
+  do jd1 = 1, size(F%init_energy_prob,1)
+    lb1 = lbound(F%init_energy_prob,1) - 1
+    call set_spline_test_pattern (F%init_energy_prob(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%integrated_init_energy_prob)) deallocate (F%integrated_init_energy_prob)
-  else
-  if (.not. allocated(F%integrated_init_energy_prob)) allocate (F%integrated_init_energy_prob(-1:1))
-  do jd1 = 1, size(F%integrated_init_energy_prob,1); lb1 = lbound(F%integrated_init_energy_prob,1) - 1
-  rhs = 100 + jd1 + 13 + offset
-  F%integrated_init_energy_prob(jd1+lb1) = rhs
+  if (allocated(F%integrated_init_energy_prob)) then
+     deallocate (F%integrated_init_energy_prob)
+  endif
+else
+  if (.not. allocated(F%integrated_init_energy_prob)) then
+    allocate (F%integrated_init_energy_prob(-1:1))
+  endif
+  do jd1 = 1, size(F%integrated_init_energy_prob,1)
+    lb1 = lbound(F%integrated_init_energy_prob,1) - 1
+    rhs = 100 + jd1 + 13 + offset
+    F%integrated_init_energy_prob(jd1+lb1) = rhs
   enddo
 endif
 
@@ -7304,6 +7993,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wall3d_vertex_test_pattern (f_wall3d_vertex, -1)
+call set_wall3d_vertex_test_pattern (f2_wall3d_vertex, -1)
+
 end subroutine test1_f_wall3d_vertex
 
 !---------------------------------------------------------------------------------
@@ -7347,6 +8040,11 @@ endif
 
 call set_wall3d_vertex_test_pattern (f2_wall3d_vertex, 3)
 call wall3d_vertex_to_c (c_loc(f2_wall3d_vertex), c_wall3d_vertex)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wall3d_vertex_test_pattern (f_wall3d_vertex, -1)
+call set_wall3d_vertex_test_pattern (f2_wall3d_vertex, -1)
+
 end subroutine test2_f_wall3d_vertex
 
 !---------------------------------------------------------------------------------
@@ -7435,6 +8133,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wall3d_section_test_pattern (f_wall3d_section, -1)
+call set_wall3d_section_test_pattern (f2_wall3d_section, -1)
+
 end subroutine test1_f_wall3d_section
 
 !---------------------------------------------------------------------------------
@@ -7478,6 +8180,11 @@ endif
 
 call set_wall3d_section_test_pattern (f2_wall3d_section, 3)
 call wall3d_section_to_c (c_loc(f2_wall3d_section), c_wall3d_section)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wall3d_section_test_pattern (f_wall3d_section, -1)
+call set_wall3d_section_test_pattern (f2_wall3d_section, -1)
+
 end subroutine test2_f_wall3d_section
 
 !---------------------------------------------------------------------------------
@@ -7504,17 +8211,29 @@ do jd1 = 1, len(F%material)
 enddo
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wall3d_vertex>
 if (ix_patt < 3) then
-  if (allocated(F%v)) deallocate (F%v)
-  else
-  if (.not. allocated(F%v)) allocate (F%v(-1:1))
-  do jd1 = 1, size(F%v,1); lb1 = lbound(F%v,1) - 1
-  call set_wall3d_vertex_test_pattern (F%v(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%v)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%v,1), ubound(F%v,1)
+      call set_wall3d_vertex_test_pattern (F%v(jd1), -1)
+    enddo
+    deallocate (F%v)
+  endif
+else
+  if (.not. allocated(F%v)) then
+    allocate (F%v(-1:1))
+  endif
+  do jd1 = 1, size(F%v,1)
+    lb1 = lbound(F%v,1) - 1
+    call set_wall3d_vertex_test_pattern (F%v(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_photon_reflect_surface>
 if (ix_patt < 3) then
-  if (associated(F%surface)) deallocate (F%surface)
-  else
+  if (associated(F%surface)) then
+    call set_photon_reflect_surface_test_pattern (F%surface, -1)
+    deallocate (F%surface)
+  endif
+else
   if (.not. associated(F%surface)) allocate (F%surface)
   rhs = 5 + offset
   call set_photon_reflect_surface_test_pattern (F%surface, ix_patt)
@@ -7537,8 +8256,8 @@ rhs = 13 + offset; F%thickness = rhs
 rhs = 14 + offset; F%s = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%r0,1); lb1 = lbound(F%r0,1) - 1
-rhs = 100 + jd1 + 15 + offset
-F%r0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 15 + offset
+  F%r0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 16 + offset; F%dx0_ds = rhs
@@ -7546,25 +8265,25 @@ rhs = 16 + offset; F%dx0_ds = rhs
 rhs = 17 + offset; F%dy0_ds = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%x0_coef,1); lb1 = lbound(F%x0_coef,1) - 1
-rhs = 100 + jd1 + 18 + offset
-F%x0_coef(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 18 + offset
+  F%x0_coef(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%y0_coef,1); lb1 = lbound(F%y0_coef,1) - 1
-rhs = 100 + jd1 + 19 + offset
-F%y0_coef(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 19 + offset
+  F%y0_coef(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 20 + offset; F%dr_ds = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%p1_coef,1); lb1 = lbound(F%p1_coef,1) - 1
-rhs = 100 + jd1 + 21 + offset
-F%p1_coef(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 21 + offset
+  F%p1_coef(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%p2_coef,1); lb1 = lbound(F%p2_coef,1) - 1
-rhs = 100 + jd1 + 22 + offset
-F%p2_coef(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 22 + offset
+  F%p2_coef(jd1+lb1) = rhs
 enddo
 
 end subroutine set_wall3d_section_test_pattern
@@ -7620,6 +8339,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wall3d_test_pattern (f_wall3d, -1)
+call set_wall3d_test_pattern (f2_wall3d, -1)
+
 end subroutine test1_f_wall3d
 
 !---------------------------------------------------------------------------------
@@ -7663,6 +8386,11 @@ endif
 
 call set_wall3d_test_pattern (f2_wall3d, 3)
 call wall3d_to_c (c_loc(f2_wall3d), c_wall3d)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_wall3d_test_pattern (f_wall3d, -1)
+call set_wall3d_test_pattern (f2_wall3d, -1)
+
 end subroutine test2_f_wall3d
 
 !---------------------------------------------------------------------------------
@@ -7705,11 +8433,20 @@ rhs = 8 + offset; F%superimpose = (modulo(rhs, 2) == 0)
 rhs = 9 + offset; F%ele_anchor_pt = rhs
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_wall3d_section>
 if (ix_patt < 3) then
-  if (allocated(F%section)) deallocate (F%section)
-  else
-  if (.not. allocated(F%section)) allocate (F%section(-1:1))
-  do jd1 = 1, size(F%section,1); lb1 = lbound(F%section,1) - 1
-  call set_wall3d_section_test_pattern (F%section(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%section)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%section,1), ubound(F%section,1)
+      call set_wall3d_section_test_pattern (F%section(jd1), -1)
+    enddo
+    deallocate (F%section)
+  endif
+else
+  if (.not. allocated(F%section)) then
+    allocate (F%section(-1:1))
+  endif
+  do jd1 = 1, size(F%section,1)
+    lb1 = lbound(F%section,1) - 1
+    call set_wall3d_section_test_pattern (F%section(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -7766,6 +8503,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ramper_lord_test_pattern (f_ramper_lord, -1)
+call set_ramper_lord_test_pattern (f2_ramper_lord, -1)
+
 end subroutine test1_f_ramper_lord
 
 !---------------------------------------------------------------------------------
@@ -7809,6 +8550,11 @@ endif
 
 call set_ramper_lord_test_pattern (f2_ramper_lord, 3)
 call ramper_lord_to_c (c_loc(f2_ramper_lord), c_ramper_lord)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ramper_lord_test_pattern (f_ramper_lord, -1)
+call set_ramper_lord_test_pattern (f2_ramper_lord, -1)
+
 end subroutine test2_f_ramper_lord
 
 !---------------------------------------------------------------------------------
@@ -7832,7 +8578,7 @@ rhs = 2 + offset; F%ix_con = rhs
 !! f_side.test_pat[0D_PTR_real] std::optional<Real>
 if (ix_patt < 3) then
   if (associated(F%attrib_ptr)) deallocate (F%attrib_ptr)
-  else
+else
   if (.not. associated(F%attrib_ptr)) allocate (F%attrib_ptr)
   rhs = 3 + offset
   F%attrib_ptr = rhs
@@ -7891,6 +8637,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_control_test_pattern (f_control, -1)
+call set_control_test_pattern (f2_control, -1)
+
 end subroutine test1_f_control
 
 !---------------------------------------------------------------------------------
@@ -7934,6 +8684,11 @@ endif
 
 call set_control_test_pattern (f2_control, 3)
 call control_to_c (c_loc(f2_control), c_control)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_control_test_pattern (f_control, -1)
+call set_control_test_pattern (f2_control, -1)
+
 end subroutine test2_f_control
 
 !---------------------------------------------------------------------------------
@@ -7954,21 +8709,35 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%value = rhs
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%y_knot)) deallocate (F%y_knot)
-  else
-  if (.not. allocated(F%y_knot)) allocate (F%y_knot(-1:1))
-  do jd1 = 1, size(F%y_knot,1); lb1 = lbound(F%y_knot,1) - 1
-  rhs = 100 + jd1 + 2 + offset
-  F%y_knot(jd1+lb1) = rhs
+  if (allocated(F%y_knot)) then
+     deallocate (F%y_knot)
+  endif
+else
+  if (.not. allocated(F%y_knot)) then
+    allocate (F%y_knot(-1:1))
+  endif
+  do jd1 = 1, size(F%y_knot,1)
+    lb1 = lbound(F%y_knot,1) - 1
+    rhs = 100 + jd1 + 2 + offset
+    F%y_knot(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_expression_atom>
 if (ix_patt < 3) then
-  if (allocated(F%stack)) deallocate (F%stack)
-  else
-  if (.not. allocated(F%stack)) allocate (F%stack(-1:1))
-  do jd1 = 1, size(F%stack,1); lb1 = lbound(F%stack,1) - 1
-  call set_expression_atom_test_pattern (F%stack(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%stack)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%stack,1), ubound(F%stack,1)
+      call set_expression_atom_test_pattern (F%stack(jd1), -1)
+    enddo
+    deallocate (F%stack)
+  endif
+else
+  if (.not. allocated(F%stack)) then
+    allocate (F%stack(-1:1))
+  endif
+  do jd1 = 1, size(F%stack,1)
+    lb1 = lbound(F%stack,1) - 1
+    call set_expression_atom_test_pattern (F%stack(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_lat_ele_loc
@@ -8039,6 +8808,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_control_var1_test_pattern (f_control_var1, -1)
+call set_control_var1_test_pattern (f2_control_var1, -1)
+
 end subroutine test1_f_control_var1
 
 !---------------------------------------------------------------------------------
@@ -8082,6 +8855,11 @@ endif
 
 call set_control_var1_test_pattern (f2_control_var1, 3)
 call control_var1_to_c (c_loc(f2_control_var1), c_control_var1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_control_var1_test_pattern (f_control_var1, -1)
+call set_control_var1_test_pattern (f2_control_var1, -1)
+
 end subroutine test2_f_control_var1
 
 !---------------------------------------------------------------------------------
@@ -8160,6 +8938,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_control_ramp1_test_pattern (f_control_ramp1, -1)
+call set_control_ramp1_test_pattern (f2_control_ramp1, -1)
+
 end subroutine test1_f_control_ramp1
 
 !---------------------------------------------------------------------------------
@@ -8203,6 +8985,11 @@ endif
 
 call set_control_ramp1_test_pattern (f2_control_ramp1, 3)
 call control_ramp1_to_c (c_loc(f2_control_ramp1), c_control_ramp1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_control_ramp1_test_pattern (f_control_ramp1, -1)
+call set_control_ramp1_test_pattern (f2_control_ramp1, -1)
+
 end subroutine test2_f_control_ramp1
 
 !---------------------------------------------------------------------------------
@@ -8221,21 +9008,35 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%y_knot)) deallocate (F%y_knot)
-  else
-  if (.not. allocated(F%y_knot)) allocate (F%y_knot(-1:1))
-  do jd1 = 1, size(F%y_knot,1); lb1 = lbound(F%y_knot,1) - 1
-  rhs = 100 + jd1 + 1 + offset
-  F%y_knot(jd1+lb1) = rhs
+  if (allocated(F%y_knot)) then
+     deallocate (F%y_knot)
+  endif
+else
+  if (.not. allocated(F%y_knot)) then
+    allocate (F%y_knot(-1:1))
+  endif
+  do jd1 = 1, size(F%y_knot,1)
+    lb1 = lbound(F%y_knot,1) - 1
+    rhs = 100 + jd1 + 1 + offset
+    F%y_knot(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_expression_atom>
 if (ix_patt < 3) then
-  if (allocated(F%stack)) deallocate (F%stack)
-  else
-  if (.not. allocated(F%stack)) allocate (F%stack(-1:1))
-  do jd1 = 1, size(F%stack,1); lb1 = lbound(F%stack,1) - 1
-  call set_expression_atom_test_pattern (F%stack(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%stack)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%stack,1), ubound(F%stack,1)
+      call set_expression_atom_test_pattern (F%stack(jd1), -1)
+    enddo
+    deallocate (F%stack)
+  endif
+else
+  if (.not. allocated(F%stack)) then
+    allocate (F%stack(-1:1))
+  endif
+  do jd1 = 1, size(F%stack,1)
+    lb1 = lbound(F%stack,1) - 1
+    call set_expression_atom_test_pattern (F%stack(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_character] string
@@ -8302,6 +9103,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_controller_test_pattern (f_controller, -1)
+call set_controller_test_pattern (f2_controller, -1)
+
 end subroutine test1_f_controller
 
 !---------------------------------------------------------------------------------
@@ -8345,6 +9150,11 @@ endif
 
 call set_controller_test_pattern (f2_controller, 3)
 call controller_to_c (c_loc(f2_controller), c_controller)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_controller_test_pattern (f_controller, -1)
+call set_controller_test_pattern (f2_controller, -1)
+
 end subroutine test2_f_controller
 
 !---------------------------------------------------------------------------------
@@ -8363,39 +9173,71 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_control_var1>
 if (ix_patt < 3) then
-  if (allocated(F%var)) deallocate (F%var)
-  else
-  if (.not. allocated(F%var)) allocate (F%var(-1:1))
-  do jd1 = 1, size(F%var,1); lb1 = lbound(F%var,1) - 1
-  call set_control_var1_test_pattern (F%var(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%var)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%var,1), ubound(F%var,1)
+      call set_control_var1_test_pattern (F%var(jd1), -1)
+    enddo
+    deallocate (F%var)
+  endif
+else
+  if (.not. allocated(F%var)) then
+    allocate (F%var(-1:1))
+  endif
+  do jd1 = 1, size(F%var,1)
+    lb1 = lbound(F%var,1) - 1
+    call set_control_var1_test_pattern (F%var(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_control_ramp1>
 if (ix_patt < 3) then
-  if (allocated(F%ramp)) deallocate (F%ramp)
-  else
-  if (.not. allocated(F%ramp)) allocate (F%ramp(-1:1))
-  do jd1 = 1, size(F%ramp,1); lb1 = lbound(F%ramp,1) - 1
-  call set_control_ramp1_test_pattern (F%ramp(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%ramp)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ramp,1), ubound(F%ramp,1)
+      call set_control_ramp1_test_pattern (F%ramp(jd1), -1)
+    enddo
+    deallocate (F%ramp)
+  endif
+else
+  if (.not. allocated(F%ramp)) then
+    allocate (F%ramp(-1:1))
+  endif
+  do jd1 = 1, size(F%ramp,1)
+    lb1 = lbound(F%ramp,1) - 1
+    call set_control_ramp1_test_pattern (F%ramp(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_ramper_lord>
 if (ix_patt < 3) then
-  if (allocated(F%ramper_lord)) deallocate (F%ramper_lord)
-  else
-  if (.not. allocated(F%ramper_lord)) allocate (F%ramper_lord(-1:1))
-  do jd1 = 1, size(F%ramper_lord,1); lb1 = lbound(F%ramper_lord,1) - 1
-  call set_ramper_lord_test_pattern (F%ramper_lord(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%ramper_lord)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ramper_lord,1), ubound(F%ramper_lord,1)
+      call set_ramper_lord_test_pattern (F%ramper_lord(jd1), -1)
+    enddo
+    deallocate (F%ramper_lord)
+  endif
+else
+  if (.not. allocated(F%ramper_lord)) then
+    allocate (F%ramper_lord(-1:1))
+  endif
+  do jd1 = 1, size(F%ramper_lord,1)
+    lb1 = lbound(F%ramper_lord,1) - 1
+    call set_ramper_lord_test_pattern (F%ramper_lord(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%x_knot)) deallocate (F%x_knot)
-  else
-  if (.not. allocated(F%x_knot)) allocate (F%x_knot(-1:1))
-  do jd1 = 1, size(F%x_knot,1); lb1 = lbound(F%x_knot,1) - 1
-  rhs = 100 + jd1 + 7 + offset
-  F%x_knot(jd1+lb1) = rhs
+  if (allocated(F%x_knot)) then
+     deallocate (F%x_knot)
+  endif
+else
+  if (.not. allocated(F%x_knot)) then
+    allocate (F%x_knot(-1:1))
+  endif
+  do jd1 = 1, size(F%x_knot,1)
+    lb1 = lbound(F%x_knot,1) - 1
+    rhs = 100 + jd1 + 7 + offset
+    F%x_knot(jd1+lb1) = rhs
   enddo
 endif
 
@@ -8452,6 +9294,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ellipse_beam_init_test_pattern (f_ellipse_beam_init, -1)
+call set_ellipse_beam_init_test_pattern (f2_ellipse_beam_init, -1)
+
 end subroutine test1_f_ellipse_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8495,6 +9341,11 @@ endif
 
 call set_ellipse_beam_init_test_pattern (f2_ellipse_beam_init, 3)
 call ellipse_beam_init_to_c (c_loc(f2_ellipse_beam_init), c_ellipse_beam_init)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ellipse_beam_init_test_pattern (f_ellipse_beam_init, -1)
+call set_ellipse_beam_init_test_pattern (f2_ellipse_beam_init, -1)
+
 end subroutine test2_f_ellipse_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8571,6 +9422,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_kv_beam_init_test_pattern (f_kv_beam_init, -1)
+call set_kv_beam_init_test_pattern (f2_kv_beam_init, -1)
+
 end subroutine test1_f_kv_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8614,6 +9469,11 @@ endif
 
 call set_kv_beam_init_test_pattern (f2_kv_beam_init, 3)
 call kv_beam_init_to_c (c_loc(f2_kv_beam_init), c_kv_beam_init)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_kv_beam_init_test_pattern (f_kv_beam_init, -1)
+call set_kv_beam_init_test_pattern (f2_kv_beam_init, -1)
+
 end subroutine test2_f_kv_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8632,8 +9492,8 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 2>
 do jd1 = 1, size(F%part_per_phi,1); lb1 = lbound(F%part_per_phi,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%part_per_phi(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%part_per_phi(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 2 + offset; F%n_I2 = rhs
@@ -8693,6 +9553,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_beam_init_test_pattern (f_grid_beam_init, -1)
+call set_grid_beam_init_test_pattern (f2_grid_beam_init, -1)
+
 end subroutine test1_f_grid_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8736,6 +9600,11 @@ endif
 
 call set_grid_beam_init_test_pattern (f2_grid_beam_init, 3)
 call grid_beam_init_to_c (c_loc(f2_grid_beam_init), c_grid_beam_init)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_grid_beam_init_test_pattern (f_grid_beam_init, -1)
+call set_grid_beam_init_test_pattern (f2_grid_beam_init, -1)
+
 end subroutine test2_f_grid_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8818,6 +9687,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_beam_init_test_pattern (f_beam_init, -1)
+call set_beam_init_test_pattern (f2_beam_init, -1)
+
 end subroutine test1_f_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8861,6 +9734,11 @@ endif
 
 call set_beam_init_test_pattern (f2_beam_init, 3)
 call beam_init_to_c (c_loc(f2_beam_init), c_beam_init)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_beam_init_test_pattern (f_beam_init, -1)
+call set_beam_init_test_pattern (f2_beam_init, -1)
+
 end subroutine test2_f_beam_init
 
 !---------------------------------------------------------------------------------
@@ -8883,36 +9761,52 @@ do jd1 = 1, len(F%position_file)
 enddo
 !! f_side.test_pat[1D_NOT_character] FixedArray1D<string, 3>
 do jd1 = lbound(F%distribution_type, 1), ubound(F%distribution_type, 1)
-do jd = 1, len(F%distribution_type(jd1))
-F%distribution_type(jd1)(jd:jd) = char(ichar("a") + modulo(100+2+offset+10*jd+jd1, 26))
-enddo
+  do jd = 1, len(F%distribution_type(jd1))
+    F%distribution_type(jd1)(jd:jd) = char(ichar("a") + modulo(100+2+offset+10*jd+jd1, 26))
+  enddo
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%spin(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%spin(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_ellipse_beam_init, 3>
-do jd1 = 1, size(F%ellipse,1); lb1 = lbound(F%ellipse,1) - 1
-rhs = 100 + jd1 + 4 + offset
-call set_ellipse_beam_init_test_pattern (F%ellipse(jd1+lb1), ix_patt+jd1)
-enddo
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%ellipse,1), ubound(F%ellipse,1)
+    call set_ellipse_beam_init_test_pattern (F%ellipse(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%ellipse,1)
+    lb1 = lbound(F%ellipse,1) - 1
+    rhs = 100 + jd1 + 4 + offset
+    call set_ellipse_beam_init_test_pattern (F%ellipse(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
 !! f_side.test_pat[0D_NOT_type] CPP_kv_beam_init
 call set_kv_beam_init_test_pattern (F%KV, ix_patt)
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_grid_beam_init, 3>
-do jd1 = 1, size(F%grid,1); lb1 = lbound(F%grid,1) - 1
-rhs = 100 + jd1 + 6 + offset
-call set_grid_beam_init_test_pattern (F%grid(jd1+lb1), ix_patt+jd1)
-enddo
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%grid,1), ubound(F%grid,1)
+    call set_grid_beam_init_test_pattern (F%grid(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%grid,1)
+    lb1 = lbound(F%grid,1) - 1
+    rhs = 100 + jd1 + 6 + offset
+    call set_grid_beam_init_test_pattern (F%grid(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%center_jitter,1); lb1 = lbound(F%center_jitter,1) - 1
-rhs = 100 + jd1 + 7 + offset
-F%center_jitter(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 7 + offset
+  F%center_jitter(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 2>
 do jd1 = 1, size(F%emit_jitter,1); lb1 = lbound(F%emit_jitter,1) - 1
-rhs = 100 + jd1 + 8 + offset
-F%emit_jitter(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 8 + offset
+  F%emit_jitter(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 9 + offset; F%sig_z_jitter = rhs
@@ -8946,8 +9840,8 @@ rhs = 20 + offset; F%b_emit = rhs
 rhs = 21 + offset; F%dPz_dz = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%center,1); lb1 = lbound(F%center,1) - 1
-rhs = 100 + jd1 + 22 + offset
-F%center(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 22 + offset
+  F%center(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 23 + offset; F%t_offset = rhs
@@ -9033,6 +9927,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_param_test_pattern (f_lat_param, -1)
+call set_lat_param_test_pattern (f2_lat_param, -1)
+
 end subroutine test1_f_lat_param
 
 !---------------------------------------------------------------------------------
@@ -9076,6 +9974,11 @@ endif
 
 call set_lat_param_test_pattern (f2_lat_param, 3)
 call lat_param_to_c (c_loc(f2_lat_param), c_lat_param)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_param_test_pattern (f_lat_param, -1)
+call set_lat_param_test_pattern (f2_lat_param, -1)
+
 end subroutine test2_f_lat_param
 
 !---------------------------------------------------------------------------------
@@ -9100,16 +10003,18 @@ rhs = 2 + offset; F%total_length = rhs
 rhs = 3 + offset; F%unstable_factor = rhs
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%t1_with_RF,1); lb1 = lbound(F%t1_with_RF,1) - 1
-do jd2 = 1, size(F%t1_with_RF,2); lb2 = lbound(F%t1_with_RF,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 4 + offset
-F%t1_with_RF(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%t1_with_RF,2); lb2 = lbound(F%t1_with_RF,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 4 + offset
+    F%t1_with_RF(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%t1_no_RF,1); lb1 = lbound(F%t1_no_RF,1) - 1
-do jd2 = 1, size(F%t1_no_RF,2); lb2 = lbound(F%t1_no_RF,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 5 + offset
-F%t1_no_RF(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%t1_no_RF,2); lb2 = lbound(F%t1_no_RF,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 5 + offset
+    F%t1_no_RF(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 6 + offset; F%spin_tune = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
@@ -9188,6 +10093,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_mode_info_test_pattern (f_mode_info, -1)
+call set_mode_info_test_pattern (f2_mode_info, -1)
+
 end subroutine test1_f_mode_info
 
 !---------------------------------------------------------------------------------
@@ -9231,6 +10140,11 @@ endif
 
 call set_mode_info_test_pattern (f2_mode_info, 3)
 call mode_info_to_c (c_loc(f2_mode_info), c_mode_info)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_mode_info_test_pattern (f_mode_info, -1)
+call set_mode_info_test_pattern (f2_mode_info, -1)
+
 end subroutine test2_f_mode_info
 
 !---------------------------------------------------------------------------------
@@ -9313,6 +10227,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_pre_tracker_test_pattern (f_pre_tracker, -1)
+call set_pre_tracker_test_pattern (f2_pre_tracker, -1)
+
 end subroutine test1_f_pre_tracker
 
 !---------------------------------------------------------------------------------
@@ -9356,6 +10274,11 @@ endif
 
 call set_pre_tracker_test_pattern (f2_pre_tracker, 3)
 call pre_tracker_to_c (c_loc(f2_pre_tracker), c_pre_tracker)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_pre_tracker_test_pattern (f_pre_tracker, -1)
+call set_pre_tracker_test_pattern (f2_pre_tracker, -1)
+
 end subroutine test2_f_pre_tracker
 
 !---------------------------------------------------------------------------------
@@ -9436,6 +10359,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_anormal_mode_test_pattern (f_anormal_mode, -1)
+call set_anormal_mode_test_pattern (f2_anormal_mode, -1)
+
 end subroutine test1_f_anormal_mode
 
 !---------------------------------------------------------------------------------
@@ -9479,6 +10406,11 @@ endif
 
 call set_anormal_mode_test_pattern (f2_anormal_mode, 3)
 call anormal_mode_to_c (c_loc(f2_anormal_mode), c_anormal_mode)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_anormal_mode_test_pattern (f_anormal_mode, -1)
+call set_anormal_mode_test_pattern (f2_anormal_mode, -1)
+
 end subroutine test2_f_anormal_mode
 
 !---------------------------------------------------------------------------------
@@ -9501,8 +10433,8 @@ rhs = 1 + offset; F%emittance = rhs
 rhs = 2 + offset; F%emittance_no_vert = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%synch_int,1); lb1 = lbound(F%synch_int,1) - 1
-rhs = 100 + jd1 + 3 + offset
-F%synch_int(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 3 + offset
+  F%synch_int(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 4 + offset; F%j_damp = rhs
@@ -9566,6 +10498,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_linac_normal_mode_test_pattern (f_linac_normal_mode, -1)
+call set_linac_normal_mode_test_pattern (f2_linac_normal_mode, -1)
+
 end subroutine test1_f_linac_normal_mode
 
 !---------------------------------------------------------------------------------
@@ -9609,6 +10545,11 @@ endif
 
 call set_linac_normal_mode_test_pattern (f2_linac_normal_mode, 3)
 call linac_normal_mode_to_c (c_loc(f2_linac_normal_mode), c_linac_normal_mode)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_linac_normal_mode_test_pattern (f_linac_normal_mode, -1)
+call set_linac_normal_mode_test_pattern (f2_linac_normal_mode, -1)
+
 end subroutine test2_f_linac_normal_mode
 
 !---------------------------------------------------------------------------------
@@ -9693,6 +10634,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_normal_modes_test_pattern (f_normal_modes, -1)
+call set_normal_modes_test_pattern (f2_normal_modes, -1)
+
 end subroutine test1_f_normal_modes
 
 !---------------------------------------------------------------------------------
@@ -9736,6 +10681,11 @@ endif
 
 call set_normal_modes_test_pattern (f2_normal_modes, 3)
 call normal_modes_to_c (c_loc(f2_normal_modes), c_normal_modes)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_normal_modes_test_pattern (f_normal_modes, -1)
+call set_normal_modes_test_pattern (f2_normal_modes, -1)
+
 end subroutine test2_f_normal_modes
 
 !---------------------------------------------------------------------------------
@@ -9754,8 +10704,8 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 4>
 do jd1 = 1, size(F%synch_int,1); lb1 = lbound(F%synch_int,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%synch_int(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%synch_int(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 2 + offset; F%sigE_E = rhs
@@ -9835,6 +10785,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_em_field_test_pattern (f_em_field, -1)
+call set_em_field_test_pattern (f2_em_field, -1)
+
 end subroutine test1_f_em_field
 
 !---------------------------------------------------------------------------------
@@ -9878,6 +10832,11 @@ endif
 
 call set_em_field_test_pattern (f2_em_field, 3)
 call em_field_to_c (c_loc(f2_em_field), c_em_field)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_em_field_test_pattern (f_em_field, -1)
+call set_em_field_test_pattern (f2_em_field, -1)
+
 end subroutine test2_f_em_field
 
 !---------------------------------------------------------------------------------
@@ -9896,34 +10855,36 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%E,1); lb1 = lbound(F%E,1) - 1
-rhs = 100 + jd1 + 1 + offset
-F%E(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 1 + offset
+  F%E(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%B,1); lb1 = lbound(F%B,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%B(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%B(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 3, 3>
 do jd1 = 1, size(F%dE,1); lb1 = lbound(F%dE,1) - 1
-do jd2 = 1, size(F%dE,2); lb2 = lbound(F%dE,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 3 + offset
-F%dE(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%dE,2); lb2 = lbound(F%dE,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 3 + offset
+    F%dE(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 3, 3>
 do jd1 = 1, size(F%dB,1); lb1 = lbound(F%dB,1) - 1
-do jd2 = 1, size(F%dB,2); lb2 = lbound(F%dB,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 4 + offset
-F%dB(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%dB,2); lb2 = lbound(F%dB,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 4 + offset
+    F%dB(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 5 + offset; F%phi = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 6 + offset; F%phi_B = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%A,1); lb1 = lbound(F%A,1) - 1
-rhs = 100 + jd1 + 7 + offset
-F%A(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 7 + offset
+  F%A(jd1+lb1) = rhs
 enddo
 
 end subroutine set_em_field_test_pattern
@@ -9979,6 +10940,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_strong_beam_test_pattern (f_strong_beam, -1)
+call set_strong_beam_test_pattern (f2_strong_beam, -1)
+
 end subroutine test1_f_strong_beam
 
 !---------------------------------------------------------------------------------
@@ -10022,6 +10987,11 @@ endif
 
 call set_strong_beam_test_pattern (f2_strong_beam, 3)
 call strong_beam_to_c (c_loc(f2_strong_beam), c_strong_beam)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_strong_beam_test_pattern (f_strong_beam, -1)
+call set_strong_beam_test_pattern (f2_strong_beam, -1)
+
 end subroutine test2_f_strong_beam
 
 !---------------------------------------------------------------------------------
@@ -10106,6 +11076,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_track_point_test_pattern (f_track_point, -1)
+call set_track_point_test_pattern (f2_track_point, -1)
+
 end subroutine test1_f_track_point
 
 !---------------------------------------------------------------------------------
@@ -10149,6 +11123,11 @@ endif
 
 call set_track_point_test_pattern (f2_track_point, 3)
 call track_point_to_c (c_loc(f2_track_point), c_track_point)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_track_point_test_pattern (f_track_point, -1)
+call set_track_point_test_pattern (f2_track_point, -1)
+
 end subroutine test2_f_track_point
 
 !---------------------------------------------------------------------------------
@@ -10175,15 +11154,16 @@ call set_em_field_test_pattern (F%field, ix_patt)
 call set_strong_beam_test_pattern (F%strong_beam, ix_patt)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
-rhs = 100 + jd1 + 5 + offset
-F%vec0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 5 + offset
+  F%vec0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
-do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 6 + offset
-F%mat6(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 6 + offset
+    F%mat6(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 
 end subroutine set_track_point_test_pattern
 !---------------------------------------------------------------------------------
@@ -10238,6 +11218,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_track_test_pattern (f_track, -1)
+call set_track_test_pattern (f2_track, -1)
+
 end subroutine test1_f_track
 
 !---------------------------------------------------------------------------------
@@ -10281,6 +11265,11 @@ endif
 
 call set_track_test_pattern (f2_track, 3)
 call track_to_c (c_loc(f2_track), c_track)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_track_test_pattern (f_track, -1)
+call set_track_test_pattern (f2_track, -1)
+
 end subroutine test2_f_track
 
 !---------------------------------------------------------------------------------
@@ -10299,11 +11288,20 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_track_point>
 if (ix_patt < 3) then
-  if (allocated(F%pt)) deallocate (F%pt)
-  else
-  if (.not. allocated(F%pt)) allocate (F%pt(-1:1))
-  do jd1 = 1, size(F%pt,1); lb1 = lbound(F%pt,1) - 1
-  call set_track_point_test_pattern (F%pt(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%pt)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%pt,1), ubound(F%pt,1)
+      call set_track_point_test_pattern (F%pt(jd1), -1)
+    enddo
+    deallocate (F%pt)
+  endif
+else
+  if (.not. allocated(F%pt)) then
+    allocate (F%pt(-1:1))
+  endif
+  do jd1 = 1, size(F%pt,1)
+    lb1 = lbound(F%pt,1) - 1
+    call set_track_point_test_pattern (F%pt(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_real] Real
@@ -10368,6 +11366,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_space_charge_common_test_pattern (f_space_charge_common, -1)
+call set_space_charge_common_test_pattern (f2_space_charge_common, -1)
+
 end subroutine test1_f_space_charge_common
 
 !---------------------------------------------------------------------------------
@@ -10411,6 +11413,11 @@ endif
 
 call set_space_charge_common_test_pattern (f2_space_charge_common, 3)
 call space_charge_common_to_c (c_loc(f2_space_charge_common), c_space_charge_common)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_space_charge_common_test_pattern (f_space_charge_common, -1)
+call set_space_charge_common_test_pattern (f2_space_charge_common, -1)
+
 end subroutine test2_f_space_charge_common
 
 !---------------------------------------------------------------------------------
@@ -10445,13 +11452,13 @@ rhs = 7 + offset; F%lsc_sigma_cutoff = rhs
 rhs = 8 + offset; F%particle_sigma_cutoff = rhs
 !! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 3>
 do jd1 = 1, size(F%space_charge_mesh_size,1); lb1 = lbound(F%space_charge_mesh_size,1) - 1
-rhs = 100 + jd1 + 9 + offset
-F%space_charge_mesh_size(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 9 + offset
+  F%space_charge_mesh_size(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 3>
 do jd1 = 1, size(F%csr3d_mesh_size,1); lb1 = lbound(F%csr3d_mesh_size,1) - 1
-rhs = 100 + jd1 + 10 + offset
-F%csr3d_mesh_size(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 10 + offset
+  F%csr3d_mesh_size(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 11 + offset; F%n_bin = rhs
@@ -10523,6 +11530,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bmad_common_test_pattern (f_bmad_common, -1)
+call set_bmad_common_test_pattern (f2_bmad_common, -1)
+
 end subroutine test1_f_bmad_common
 
 !---------------------------------------------------------------------------------
@@ -10566,6 +11577,11 @@ endif
 
 call set_bmad_common_test_pattern (f2_bmad_common, 3)
 call bmad_common_to_c (c_loc(f2_bmad_common), c_bmad_common)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bmad_common_test_pattern (f_bmad_common, -1)
+call set_bmad_common_test_pattern (f2_bmad_common, -1)
+
 end subroutine test2_f_bmad_common
 
 !---------------------------------------------------------------------------------
@@ -10586,8 +11602,8 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%max_aperture_limit = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%d_orb,1); lb1 = lbound(F%d_orb,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%d_orb(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%d_orb(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 3 + offset; F%default_ds_step = rhs
@@ -10719,6 +11735,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_int1_test_pattern (f_rad_int1, -1)
+call set_rad_int1_test_pattern (f2_rad_int1, -1)
+
 end subroutine test1_f_rad_int1
 
 !---------------------------------------------------------------------------------
@@ -10762,6 +11782,11 @@ endif
 
 call set_rad_int1_test_pattern (f2_rad_int1, 3)
 call rad_int1_to_c (c_loc(f2_rad_int1), c_rad_int1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_int1_test_pattern (f_rad_int1, -1)
+call set_rad_int1_test_pattern (f2_rad_int1, -1)
+
 end subroutine test2_f_rad_int1
 
 !---------------------------------------------------------------------------------
@@ -10868,6 +11893,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_int_branch_test_pattern (f_rad_int_branch, -1)
+call set_rad_int_branch_test_pattern (f2_rad_int_branch, -1)
+
 end subroutine test1_f_rad_int_branch
 
 !---------------------------------------------------------------------------------
@@ -10911,6 +11940,11 @@ endif
 
 call set_rad_int_branch_test_pattern (f2_rad_int_branch, 3)
 call rad_int_branch_to_c (c_loc(f2_rad_int_branch), c_rad_int_branch)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_int_branch_test_pattern (f_rad_int_branch, -1)
+call set_rad_int_branch_test_pattern (f2_rad_int_branch, -1)
+
 end subroutine test2_f_rad_int_branch
 
 !---------------------------------------------------------------------------------
@@ -10929,11 +11963,20 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_rad_int1>
 if (ix_patt < 3) then
-  if (allocated(F%ele)) deallocate (F%ele)
-  else
-  if (.not. allocated(F%ele)) allocate (F%ele(-1:1))
-  do jd1 = 1, size(F%ele,1); lb1 = lbound(F%ele,1) - 1
-  call set_rad_int1_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ele,1), ubound(F%ele,1)
+      call set_rad_int1_test_pattern (F%ele(jd1), -1)
+    enddo
+    deallocate (F%ele)
+  endif
+else
+  if (.not. allocated(F%ele)) then
+    allocate (F%ele(-1:1))
+  endif
+  do jd1 = 1, size(F%ele,1)
+    lb1 = lbound(F%ele,1) - 1
+    call set_rad_int1_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -10990,6 +12033,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_int_all_ele_test_pattern (f_rad_int_all_ele, -1)
+call set_rad_int_all_ele_test_pattern (f2_rad_int_all_ele, -1)
+
 end subroutine test1_f_rad_int_all_ele
 
 !---------------------------------------------------------------------------------
@@ -11033,6 +12080,11 @@ endif
 
 call set_rad_int_all_ele_test_pattern (f2_rad_int_all_ele, 3)
 call rad_int_all_ele_to_c (c_loc(f2_rad_int_all_ele), c_rad_int_all_ele)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rad_int_all_ele_test_pattern (f_rad_int_all_ele, -1)
+call set_rad_int_all_ele_test_pattern (f2_rad_int_all_ele, -1)
+
 end subroutine test2_f_rad_int_all_ele
 
 !---------------------------------------------------------------------------------
@@ -11051,11 +12103,20 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_rad_int_branch>
 if (ix_patt < 3) then
-  if (allocated(F%branch)) deallocate (F%branch)
-  else
-  if (.not. allocated(F%branch)) allocate (F%branch(-1:1))
-  do jd1 = 1, size(F%branch,1); lb1 = lbound(F%branch,1) - 1
-  call set_rad_int_branch_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%branch)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%branch,1), ubound(F%branch,1)
+      call set_rad_int_branch_test_pattern (F%branch(jd1), -1)
+    enddo
+    deallocate (F%branch)
+  endif
+else
+  if (.not. allocated(F%branch)) then
+    allocate (F%branch(-1:1))
+  endif
+  do jd1 = 1, size(F%branch,1)
+    lb1 = lbound(F%branch,1) - 1
+    call set_rad_int_branch_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -11112,6 +12173,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ele_test_pattern (f_ele, -1)
+call set_ele_test_pattern (f2_ele, -1)
+
 end subroutine test1_f_ele
 
 !---------------------------------------------------------------------------------
@@ -11155,6 +12220,11 @@ endif
 
 call set_ele_test_pattern (f2_ele, 3)
 call ele_to_c (c_loc(f2_ele), c_ele)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ele_test_pattern (f_ele, -1)
+call set_ele_test_pattern (f2_ele, -1)
+
 end subroutine test2_f_ele
 
 !---------------------------------------------------------------------------------
@@ -11208,8 +12278,11 @@ call set_xy_disp_test_pattern (F%x, ix_patt)
 call set_xy_disp_test_pattern (F%y, ix_patt)
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_ac_kicker>
 if (ix_patt < 3) then
-  if (associated(F%ac_kick)) deallocate (F%ac_kick)
-  else
+  if (associated(F%ac_kick)) then
+    call set_ac_kicker_test_pattern (F%ac_kick, -1)
+    deallocate (F%ac_kick)
+  endif
+else
   if (.not. associated(F%ac_kick)) allocate (F%ac_kick)
   rhs = 12 + offset
   call set_ac_kicker_test_pattern (F%ac_kick, ix_patt)
@@ -11218,8 +12291,11 @@ endif
 call set_bookkeeping_state_test_pattern (F%bookkeeping_state, ix_patt)
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_controller>
 if (ix_patt < 3) then
-  if (associated(F%control)) deallocate (F%control)
-  else
+  if (associated(F%control)) then
+    call set_controller_test_pattern (F%control, -1)
+    deallocate (F%control)
+  endif
+else
   if (.not. associated(F%control)) allocate (F%control)
   rhs = 15 + offset
   call set_controller_test_pattern (F%control, ix_patt)
@@ -11228,102 +12304,178 @@ endif
 call set_floor_position_test_pattern (F%floor, ix_patt)
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
 if (ix_patt < 3) then
-  if (associated(F%high_energy_space_charge)) deallocate (F%high_energy_space_charge)
-  else
+  if (associated(F%high_energy_space_charge)) then
+    call set_high_energy_space_charge_test_pattern (F%high_energy_space_charge, -1)
+    deallocate (F%high_energy_space_charge)
+  endif
+else
   if (.not. associated(F%high_energy_space_charge)) allocate (F%high_energy_space_charge)
   rhs = 18 + offset
   call set_high_energy_space_charge_test_pattern (F%high_energy_space_charge, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode3>
 if (ix_patt < 3) then
-  if (associated(F%mode3)) deallocate (F%mode3)
-  else
+  if (associated(F%mode3)) then
+    call set_mode3_test_pattern (F%mode3, -1)
+    deallocate (F%mode3)
+  endif
+else
   if (.not. associated(F%mode3)) allocate (F%mode3)
   rhs = 20 + offset
   call set_mode3_test_pattern (F%mode3, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_photon_element>
 if (ix_patt < 3) then
-  if (associated(F%photon)) deallocate (F%photon)
-  else
+  if (associated(F%photon)) then
+    call set_photon_element_test_pattern (F%photon, -1)
+    deallocate (F%photon)
+  endif
+else
   if (.not. associated(F%photon)) allocate (F%photon)
   rhs = 22 + offset
   call set_photon_element_test_pattern (F%photon, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_rad_map_ele>
 if (ix_patt < 3) then
-  if (associated(F%rad_map)) deallocate (F%rad_map)
-  else
+  if (associated(F%rad_map)) then
+    call set_rad_map_ele_test_pattern (F%rad_map, -1)
+    deallocate (F%rad_map)
+  endif
+else
   if (.not. associated(F%rad_map)) allocate (F%rad_map)
   rhs = 24 + offset
   call set_rad_map_ele_test_pattern (F%rad_map, ix_patt)
 endif
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
-do jd1 = 1, size(F%taylor,1); lb1 = lbound(F%taylor,1) - 1
-rhs = 100 + jd1 + 26 + offset
-call set_taylor_test_pattern (F%taylor(jd1+lb1), ix_patt+jd1)
-enddo
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%taylor,1), ubound(F%taylor,1)
+    call set_taylor_test_pattern (F%taylor(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%taylor,1)
+    lb1 = lbound(F%taylor,1) - 1
+    rhs = 100 + jd1 + 26 + offset
+    call set_taylor_test_pattern (F%taylor(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%spin_taylor_ref_orb_in,1); lb1 = lbound(F%spin_taylor_ref_orb_in,1) - 1
-rhs = 100 + jd1 + 27 + offset
-F%spin_taylor_ref_orb_in(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 27 + offset
+  F%spin_taylor_ref_orb_in(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 4>
-do jd1 = 1, size(F%spin_taylor,1); lb1 = lbound(F%spin_taylor,1) - 1
-rhs = 100 + jd1 + 28 + offset
-call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
-enddo
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%spin_taylor,1), ubound(F%spin_taylor,1)
+    call set_taylor_test_pattern (F%spin_taylor(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%spin_taylor,1)
+    lb1 = lbound(F%spin_taylor,1) - 1
+    rhs = 100 + jd1 + 28 + offset
+    call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_wake>
 if (ix_patt < 3) then
-  if (associated(F%wake)) deallocate (F%wake)
-  else
+  if (associated(F%wake)) then
+    call set_wake_test_pattern (F%wake, -1)
+    deallocate (F%wake)
+  endif
+else
   if (.not. associated(F%wake)) allocate (F%wake)
   rhs = 29 + offset
   call set_wake_test_pattern (F%wake, ix_patt)
 endif
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_wall3d>
 if (ix_patt < 3) then
-  if (associated(F%wall3d)) deallocate (F%wall3d)
-  else
-  if (.not. associated(F%wall3d)) allocate (F%wall3d(-1:1))
-  do jd1 = 1, size(F%wall3d,1); lb1 = lbound(F%wall3d,1) - 1
-  call set_wall3d_test_pattern (F%wall3d(jd1+lb1), ix_patt+jd1)
+  if (associated(F%wall3d)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%wall3d,1), ubound(F%wall3d,1)
+      call set_wall3d_test_pattern (F%wall3d(jd1), -1)
+    enddo
+    deallocate (F%wall3d)
+  endif
+else
+  if (.not. associated(F%wall3d)) then
+    allocate (F%wall3d(-1:1))
+  endif
+  do jd1 = 1, size(F%wall3d,1)
+    lb1 = lbound(F%wall3d,1) - 1
+    call set_wall3d_test_pattern (F%wall3d(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_cartesian_map>
 if (ix_patt < 3) then
-  if (associated(F%cartesian_map)) deallocate (F%cartesian_map)
-  else
-  if (.not. associated(F%cartesian_map)) allocate (F%cartesian_map(-1:1))
-  do jd1 = 1, size(F%cartesian_map,1); lb1 = lbound(F%cartesian_map,1) - 1
-  call set_cartesian_map_test_pattern (F%cartesian_map(jd1+lb1), ix_patt+jd1)
+  if (associated(F%cartesian_map)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%cartesian_map,1), ubound(F%cartesian_map,1)
+      call set_cartesian_map_test_pattern (F%cartesian_map(jd1), -1)
+    enddo
+    deallocate (F%cartesian_map)
+  endif
+else
+  if (.not. associated(F%cartesian_map)) then
+    allocate (F%cartesian_map(-1:1))
+  endif
+  do jd1 = 1, size(F%cartesian_map,1)
+    lb1 = lbound(F%cartesian_map,1) - 1
+    call set_cartesian_map_test_pattern (F%cartesian_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_cylindrical_map>
 if (ix_patt < 3) then
-  if (associated(F%cylindrical_map)) deallocate (F%cylindrical_map)
-  else
-  if (.not. associated(F%cylindrical_map)) allocate (F%cylindrical_map(-1:1))
-  do jd1 = 1, size(F%cylindrical_map,1); lb1 = lbound(F%cylindrical_map,1) - 1
-  call set_cylindrical_map_test_pattern (F%cylindrical_map(jd1+lb1), ix_patt+jd1)
+  if (associated(F%cylindrical_map)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%cylindrical_map,1), ubound(F%cylindrical_map,1)
+      call set_cylindrical_map_test_pattern (F%cylindrical_map(jd1), -1)
+    enddo
+    deallocate (F%cylindrical_map)
+  endif
+else
+  if (.not. associated(F%cylindrical_map)) then
+    allocate (F%cylindrical_map(-1:1))
+  endif
+  do jd1 = 1, size(F%cylindrical_map,1)
+    lb1 = lbound(F%cylindrical_map,1) - 1
+    call set_cylindrical_map_test_pattern (F%cylindrical_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_gen_grad_map>
 if (ix_patt < 3) then
-  if (associated(F%gen_grad_map)) deallocate (F%gen_grad_map)
-  else
-  if (.not. associated(F%gen_grad_map)) allocate (F%gen_grad_map(-1:1))
-  do jd1 = 1, size(F%gen_grad_map,1); lb1 = lbound(F%gen_grad_map,1) - 1
-  call set_gen_grad_map_test_pattern (F%gen_grad_map(jd1+lb1), ix_patt+jd1)
+  if (associated(F%gen_grad_map)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%gen_grad_map,1), ubound(F%gen_grad_map,1)
+      call set_gen_grad_map_test_pattern (F%gen_grad_map(jd1), -1)
+    enddo
+    deallocate (F%gen_grad_map)
+  endif
+else
+  if (.not. associated(F%gen_grad_map)) then
+    allocate (F%gen_grad_map(-1:1))
+  endif
+  do jd1 = 1, size(F%gen_grad_map,1)
+    lb1 = lbound(F%gen_grad_map,1) - 1
+    call set_gen_grad_map_test_pattern (F%gen_grad_map(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_grid_field>
 if (ix_patt < 3) then
-  if (associated(F%grid_field)) deallocate (F%grid_field)
-  else
-  if (.not. associated(F%grid_field)) allocate (F%grid_field(-1:1))
-  do jd1 = 1, size(F%grid_field,1); lb1 = lbound(F%grid_field,1) - 1
-  call set_grid_field_test_pattern (F%grid_field(jd1+lb1), ix_patt+jd1)
+  if (associated(F%grid_field)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%grid_field,1), ubound(F%grid_field,1)
+      call set_grid_field_test_pattern (F%grid_field(jd1), -1)
+    enddo
+    deallocate (F%grid_field)
+  endif
+else
+  if (.not. associated(F%grid_field)) then
+    allocate (F%grid_field(-1:1))
+  endif
+  do jd1 = 1, size(F%grid_field,1)
+    lb1 = lbound(F%grid_field,1) - 1
+    call set_grid_field_test_pattern (F%grid_field(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_coord
@@ -11336,37 +12488,40 @@ call set_coord_test_pattern (F%time_ref_orb_in, ix_patt)
 call set_coord_test_pattern (F%time_ref_orb_out, ix_patt)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%value,1); lb1 = lbound(F%value,1) - 1
-rhs = 100 + jd1 + 45 + offset
-F%value(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 45 + offset
+  F%value(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%old_value,1); lb1 = lbound(F%old_value,1) - 1
-rhs = 100 + jd1 + 46 + offset
-F%old_value(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 46 + offset
+  F%old_value(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 4, 7>
 do jd1 = 1, size(F%spin_q,1); lb1 = lbound(F%spin_q,1) - 1
-do jd2 = 1, size(F%spin_q,2); lb2 = lbound(F%spin_q,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 47 + offset
-F%spin_q(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%spin_q,2); lb2 = lbound(F%spin_q,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 47 + offset
+    F%spin_q(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
-rhs = 100 + jd1 + 48 + offset
-F%vec0(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 48 + offset
+  F%vec0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
-do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 49 + offset
-F%mat6(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 49 + offset
+    F%mat6(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 2, 2>
 do jd1 = 1, size(F%c_mat,1); lb1 = lbound(F%c_mat,1) - 1
-do jd2 = 1, size(F%c_mat,2); lb2 = lbound(F%c_mat,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 50 + offset
-F%c_mat(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%c_mat,2); lb2 = lbound(F%c_mat,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 50 + offset
+    F%c_mat(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 51 + offset; F%gamma_c = rhs
 !! f_side.test_pat[0D_NOT_real] Real
@@ -11377,52 +12532,77 @@ rhs = 53 + offset; F%s = rhs
 rhs = 54 + offset; F%ref_time = rhs
 !! f_side.test_pat[1D_PTR_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (associated(F%a_pole)) deallocate (F%a_pole)
-  else
-  if (.not. associated(F%a_pole)) allocate (F%a_pole(-1:1))
-  do jd1 = 1, size(F%a_pole,1); lb1 = lbound(F%a_pole,1) - 1
-  rhs = 100 + jd1 + 55 + offset
-  F%a_pole(jd1+lb1) = rhs
+  if (associated(F%a_pole)) then
+     deallocate (F%a_pole)
+  endif
+else
+  if (.not. associated(F%a_pole)) then
+    allocate (F%a_pole(-1:1))
+  endif
+  do jd1 = 1, size(F%a_pole,1)
+    lb1 = lbound(F%a_pole,1) - 1
+    rhs = 100 + jd1 + 55 + offset
+    F%a_pole(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_PTR_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (associated(F%b_pole)) deallocate (F%b_pole)
-  else
-  if (.not. associated(F%b_pole)) allocate (F%b_pole(-1:1))
-  do jd1 = 1, size(F%b_pole,1); lb1 = lbound(F%b_pole,1) - 1
-  rhs = 100 + jd1 + 57 + offset
-  F%b_pole(jd1+lb1) = rhs
+  if (associated(F%b_pole)) then
+     deallocate (F%b_pole)
+  endif
+else
+  if (.not. associated(F%b_pole)) then
+    allocate (F%b_pole(-1:1))
+  endif
+  do jd1 = 1, size(F%b_pole,1)
+    lb1 = lbound(F%b_pole,1) - 1
+    rhs = 100 + jd1 + 57 + offset
+    F%b_pole(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_PTR_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (associated(F%a_pole_elec)) deallocate (F%a_pole_elec)
-  else
-  if (.not. associated(F%a_pole_elec)) allocate (F%a_pole_elec(-1:1))
-  do jd1 = 1, size(F%a_pole_elec,1); lb1 = lbound(F%a_pole_elec,1) - 1
-  rhs = 100 + jd1 + 59 + offset
-  F%a_pole_elec(jd1+lb1) = rhs
+  if (associated(F%a_pole_elec)) then
+     deallocate (F%a_pole_elec)
+  endif
+else
+  if (.not. associated(F%a_pole_elec)) then
+    allocate (F%a_pole_elec(-1:1))
+  endif
+  do jd1 = 1, size(F%a_pole_elec,1)
+    lb1 = lbound(F%a_pole_elec,1) - 1
+    rhs = 100 + jd1 + 59 + offset
+    F%a_pole_elec(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_PTR_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (associated(F%b_pole_elec)) deallocate (F%b_pole_elec)
-  else
-  if (.not. associated(F%b_pole_elec)) allocate (F%b_pole_elec(-1:1))
-  do jd1 = 1, size(F%b_pole_elec,1); lb1 = lbound(F%b_pole_elec,1) - 1
-  rhs = 100 + jd1 + 61 + offset
-  F%b_pole_elec(jd1+lb1) = rhs
+  if (associated(F%b_pole_elec)) then
+     deallocate (F%b_pole_elec)
+  endif
+else
+  if (.not. associated(F%b_pole_elec)) then
+    allocate (F%b_pole_elec(-1:1))
+  endif
+  do jd1 = 1, size(F%b_pole_elec,1)
+    lb1 = lbound(F%b_pole_elec,1) - 1
+    rhs = 100 + jd1 + 61 + offset
+    F%b_pole_elec(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[1D_PTR_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (associated(F%custom)) deallocate (F%custom)
-  else
-  if (.not. associated(F%custom)) allocate (F%custom(-1:1))
-  do jd1 = 1, size(F%custom,1); lb1 = lbound(F%custom,1) - 1
-  rhs = 100 + jd1 + 63 + offset
-  F%custom(jd1+lb1) = rhs
+  if (associated(F%custom)) then
+     deallocate (F%custom)
+  endif
+else
+  if (.not. associated(F%custom)) then
+    allocate (F%custom(-1:1))
+  endif
+  do jd1 = 1, size(F%custom,1)
+    lb1 = lbound(F%custom,1) - 1
+    rhs = 100 + jd1 + 63 + offset
+    F%custom(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[3D_PTR_real] VariableArray3D<Real>
@@ -11569,6 +12749,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_complex_taylor_term_test_pattern (f_complex_taylor_term, -1)
+call set_complex_taylor_term_test_pattern (f2_complex_taylor_term, -1)
+
 end subroutine test1_f_complex_taylor_term
 
 !---------------------------------------------------------------------------------
@@ -11612,6 +12796,11 @@ endif
 
 call set_complex_taylor_term_test_pattern (f2_complex_taylor_term, 3)
 call complex_taylor_term_to_c (c_loc(f2_complex_taylor_term), c_complex_taylor_term)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_complex_taylor_term_test_pattern (f_complex_taylor_term, -1)
+call set_complex_taylor_term_test_pattern (f2_complex_taylor_term, -1)
+
 end subroutine test2_f_complex_taylor_term
 
 !---------------------------------------------------------------------------------
@@ -11632,8 +12821,8 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%coef = cmplx(rhs, 100+rhs)
 !! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 6>
 do jd1 = 1, size(F%expn,1); lb1 = lbound(F%expn,1) - 1
-rhs = 100 + jd1 + 2 + offset
-F%expn(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 2 + offset
+  F%expn(jd1+lb1) = rhs
 enddo
 
 end subroutine set_complex_taylor_term_test_pattern
@@ -11689,6 +12878,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_complex_taylor_test_pattern (f_complex_taylor, -1)
+call set_complex_taylor_test_pattern (f2_complex_taylor, -1)
+
 end subroutine test1_f_complex_taylor
 
 !---------------------------------------------------------------------------------
@@ -11732,6 +12925,11 @@ endif
 
 call set_complex_taylor_test_pattern (f2_complex_taylor, 3)
 call complex_taylor_to_c (c_loc(f2_complex_taylor), c_complex_taylor)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_complex_taylor_test_pattern (f_complex_taylor, -1)
+call set_complex_taylor_test_pattern (f2_complex_taylor, -1)
+
 end subroutine test2_f_complex_taylor
 
 !---------------------------------------------------------------------------------
@@ -11752,11 +12950,20 @@ offset = 100 * ix_patt
 rhs = 1 + offset; F%ref = cmplx(rhs, 100+rhs)
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_complex_taylor_term>
 if (ix_patt < 3) then
-  if (associated(F%term)) deallocate (F%term)
-  else
-  if (.not. associated(F%term)) allocate (F%term(-1:1))
-  do jd1 = 1, size(F%term,1); lb1 = lbound(F%term,1) - 1
-  call set_complex_taylor_term_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
+  if (associated(F%term)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%term,1), ubound(F%term,1)
+      call set_complex_taylor_term_test_pattern (F%term(jd1), -1)
+    enddo
+    deallocate (F%term)
+  endif
+else
+  if (.not. associated(F%term)) then
+    allocate (F%term(-1:1))
+  endif
+  do jd1 = 1, size(F%term,1)
+    lb1 = lbound(F%term,1) - 1
+    call set_complex_taylor_term_test_pattern (F%term(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -11813,6 +13020,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_branch_test_pattern (f_branch, -1)
+call set_branch_test_pattern (f2_branch, -1)
+
 end subroutine test1_f_branch
 
 !---------------------------------------------------------------------------------
@@ -11856,6 +13067,11 @@ endif
 
 call set_branch_test_pattern (f2_branch, 3)
 call branch_to_c (c_loc(f2_branch), c_branch)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_branch_test_pattern (f_branch, -1)
+call set_branch_test_pattern (f2_branch, -1)
+
 end subroutine test2_f_branch
 
 !---------------------------------------------------------------------------------
@@ -11896,22 +13112,40 @@ call set_mode_info_test_pattern (F%b, ix_patt)
 call set_mode_info_test_pattern (F%z, ix_patt)
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_ele>
 if (ix_patt < 3) then
-  if (associated(F%ele)) deallocate (F%ele)
-  else
-  if (.not. associated(F%ele)) allocate (F%ele(-1:1))
-  do jd1 = 1, size(F%ele,1); lb1 = lbound(F%ele,1) - 1
-  call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
+  if (associated(F%ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ele,1), ubound(F%ele,1)
+      call set_ele_test_pattern (F%ele(jd1), -1)
+    enddo
+    deallocate (F%ele)
+  endif
+else
+  if (.not. associated(F%ele)) then
+    allocate (F%ele(-1:1))
+  endif
+  do jd1 = 1, size(F%ele,1)
+    lb1 = lbound(F%ele,1) - 1
+    call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_lat_param
 call set_lat_param_test_pattern (F%param, ix_patt)
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_wall3d>
 if (ix_patt < 3) then
-  if (associated(F%wall3d)) deallocate (F%wall3d)
-  else
-  if (.not. associated(F%wall3d)) allocate (F%wall3d(-1:1))
-  do jd1 = 1, size(F%wall3d,1); lb1 = lbound(F%wall3d,1) - 1
-  call set_wall3d_test_pattern (F%wall3d(jd1+lb1), ix_patt+jd1)
+  if (associated(F%wall3d)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%wall3d,1), ubound(F%wall3d,1)
+      call set_wall3d_test_pattern (F%wall3d(jd1), -1)
+    enddo
+    deallocate (F%wall3d)
+  endif
+else
+  if (.not. associated(F%wall3d)) then
+    allocate (F%wall3d(-1:1))
+  endif
+  do jd1 = 1, size(F%wall3d,1)
+    lb1 = lbound(F%wall3d,1) - 1
+    call set_wall3d_test_pattern (F%wall3d(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -11968,6 +13202,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_test_pattern (f_lat, -1)
+call set_lat_test_pattern (f2_lat, -1)
+
 end subroutine test1_f_lat
 
 !---------------------------------------------------------------------------------
@@ -12011,6 +13249,11 @@ endif
 
 call set_lat_test_pattern (f2_lat, 3)
 call lat_to_c (c_loc(f2_lat), c_lat)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_test_pattern (f_lat, -1)
+call set_lat_test_pattern (f2_lat, -1)
+
 end subroutine test2_f_lat
 
 !---------------------------------------------------------------------------------
@@ -12059,41 +13302,62 @@ if (ix_patt < 3) then
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_expression_atom>
 if (ix_patt < 3) then
-  if (allocated(F%constant)) deallocate (F%constant)
-  else
-  if (.not. allocated(F%constant)) allocate (F%constant(-1:1))
-  do jd1 = 1, size(F%constant,1); lb1 = lbound(F%constant,1) - 1
-  call set_expression_atom_test_pattern (F%constant(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%constant)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%constant,1), ubound(F%constant,1)
+      call set_expression_atom_test_pattern (F%constant(jd1), -1)
+    enddo
+    deallocate (F%constant)
+  endif
+else
+  if (.not. allocated(F%constant)) then
+    allocate (F%constant(-1:1))
+  endif
+  do jd1 = 1, size(F%constant,1)
+    lb1 = lbound(F%constant,1) - 1
+    call set_expression_atom_test_pattern (F%constant(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode_info>
 if (ix_patt < 3) then
-  if (associated(F%a)) deallocate (F%a)
-  else
+  if (associated(F%a)) then
+    call set_mode_info_test_pattern (F%a, -1)
+    deallocate (F%a)
+  endif
+else
   if (.not. associated(F%a)) allocate (F%a)
   rhs = 10 + offset
   call set_mode_info_test_pattern (F%a, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode_info>
 if (ix_patt < 3) then
-  if (associated(F%b)) deallocate (F%b)
-  else
+  if (associated(F%b)) then
+    call set_mode_info_test_pattern (F%b, -1)
+    deallocate (F%b)
+  endif
+else
   if (.not. associated(F%b)) allocate (F%b)
   rhs = 12 + offset
   call set_mode_info_test_pattern (F%b, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode_info>
 if (ix_patt < 3) then
-  if (associated(F%z)) deallocate (F%z)
-  else
+  if (associated(F%z)) then
+    call set_mode_info_test_pattern (F%z, -1)
+    deallocate (F%z)
+  endif
+else
   if (.not. associated(F%z)) allocate (F%z)
   rhs = 14 + offset
   call set_mode_info_test_pattern (F%z, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_lat_param>
 if (ix_patt < 3) then
-  if (associated(F%param)) deallocate (F%param)
-  else
+  if (associated(F%param)) then
+    call set_lat_param_test_pattern (F%param, -1)
+    deallocate (F%param)
+  endif
+else
   if (.not. associated(F%param)) allocate (F%param)
   rhs = 16 + offset
   call set_lat_param_test_pattern (F%param, ix_patt)
@@ -12104,29 +13368,56 @@ call set_bookkeeping_state_test_pattern (F%lord_state, ix_patt)
 call set_ele_test_pattern (F%ele_init, ix_patt)
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_ele>
 if (ix_patt < 3) then
-  if (associated(F%ele)) deallocate (F%ele)
-  else
-  if (.not. associated(F%ele)) allocate (F%ele(-1:1))
-  do jd1 = 1, size(F%ele,1); lb1 = lbound(F%ele,1) - 1
-  call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
+  if (associated(F%ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ele,1), ubound(F%ele,1)
+      call set_ele_test_pattern (F%ele(jd1), -1)
+    enddo
+    deallocate (F%ele)
+  endif
+else
+  if (.not. associated(F%ele)) then
+    allocate (F%ele(-1:1))
+  endif
+  do jd1 = 1, size(F%ele,1)
+    lb1 = lbound(F%ele,1) - 1
+    call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_branch>
 if (ix_patt < 3) then
-  if (allocated(F%branch)) deallocate (F%branch)
-  else
-  if (.not. allocated(F%branch)) allocate (F%branch(-1:1))
-  do jd1 = 1, size(F%branch,1); lb1 = lbound(F%branch,1) - 1
-  call set_branch_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%branch)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%branch,1), ubound(F%branch,1)
+      call set_branch_test_pattern (F%branch(jd1), -1)
+    enddo
+    deallocate (F%branch)
+  endif
+else
+  if (.not. allocated(F%branch)) then
+    allocate (F%branch(-1:1))
+  endif
+  do jd1 = 1, size(F%branch,1)
+    lb1 = lbound(F%branch,1) - 1
+    call set_branch_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_control>
 if (ix_patt < 3) then
-  if (allocated(F%control)) deallocate (F%control)
-  else
-  if (.not. allocated(F%control)) allocate (F%control(-1:1))
-  do jd1 = 1, size(F%control,1); lb1 = lbound(F%control,1) - 1
-  call set_control_test_pattern (F%control(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%control)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%control,1), ubound(F%control,1)
+      call set_control_test_pattern (F%control(jd1), -1)
+    enddo
+    deallocate (F%control)
+  endif
+else
+  if (.not. allocated(F%control)) then
+    allocate (F%control(-1:1))
+  endif
+  do jd1 = 1, size(F%control,1)
+    lb1 = lbound(F%control,1) - 1
+    call set_control_test_pattern (F%control(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_coord
@@ -12137,12 +13428,17 @@ call set_beam_init_test_pattern (F%beam_init, ix_patt)
 call set_pre_tracker_test_pattern (F%pre_tracker, ix_patt)
 !! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
 if (ix_patt < 3) then
-  if (allocated(F%custom)) deallocate (F%custom)
-  else
-  if (.not. allocated(F%custom)) allocate (F%custom(-1:1))
-  do jd1 = 1, size(F%custom,1); lb1 = lbound(F%custom,1) - 1
-  rhs = 100 + jd1 + 29 + offset
-  F%custom(jd1+lb1) = rhs
+  if (allocated(F%custom)) then
+     deallocate (F%custom)
+  endif
+else
+  if (.not. allocated(F%custom)) then
+    allocate (F%custom(-1:1))
+  endif
+  do jd1 = 1, size(F%custom,1)
+    lb1 = lbound(F%custom,1) - 1
+    rhs = 100 + jd1 + 29 + offset
+    F%custom(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
@@ -12150,7 +13446,7 @@ rhs = 31 + offset; F%version = rhs
 !! f_side.test_pat[0D_PTR_integer] std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_track)) deallocate (F%n_ele_track)
-  else
+else
   if (.not. associated(F%n_ele_track)) allocate (F%n_ele_track)
   rhs = 32 + offset
   F%n_ele_track = rhs
@@ -12158,7 +13454,7 @@ endif
 !! f_side.test_pat[0D_PTR_integer] std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_max)) deallocate (F%n_ele_max)
-  else
+else
   if (.not. associated(F%n_ele_max)) allocate (F%n_ele_max)
   rhs = 34 + offset
   F%n_ele_max = rhs
@@ -12171,12 +13467,17 @@ rhs = 37 + offset; F%n_ic_max = rhs
 rhs = 38 + offset; F%input_taylor_order = rhs
 !! f_side.test_pat[1D_ALLOC_integer] VariableArray1D<Int>
 if (ix_patt < 3) then
-  if (allocated(F%ic)) deallocate (F%ic)
-  else
-  if (.not. allocated(F%ic)) allocate (F%ic(-1:1))
-  do jd1 = 1, size(F%ic,1); lb1 = lbound(F%ic,1) - 1
-  rhs = 100 + jd1 + 39 + offset
-  F%ic(jd1+lb1) = rhs
+  if (allocated(F%ic)) then
+     deallocate (F%ic)
+  endif
+else
+  if (.not. allocated(F%ic)) then
+    allocate (F%ic(-1:1))
+  endif
+  do jd1 = 1, size(F%ic,1)
+    lb1 = lbound(F%ic,1) - 1
+    rhs = 100 + jd1 + 39 + offset
+    F%ic(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
@@ -12239,6 +13540,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bunch_test_pattern (f_bunch, -1)
+call set_bunch_test_pattern (f2_bunch, -1)
+
 end subroutine test1_f_bunch
 
 !---------------------------------------------------------------------------------
@@ -12282,6 +13587,11 @@ endif
 
 call set_bunch_test_pattern (f2_bunch, 3)
 call bunch_to_c (c_loc(f2_bunch), c_bunch)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bunch_test_pattern (f_bunch, -1)
+call set_bunch_test_pattern (f2_bunch, -1)
+
 end subroutine test2_f_bunch
 
 !---------------------------------------------------------------------------------
@@ -12300,21 +13610,35 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_coord>
 if (ix_patt < 3) then
-  if (allocated(F%particle)) deallocate (F%particle)
-  else
-  if (.not. allocated(F%particle)) allocate (F%particle(-1:1))
-  do jd1 = 1, size(F%particle,1); lb1 = lbound(F%particle,1) - 1
-  call set_coord_test_pattern (F%particle(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%particle)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%particle,1), ubound(F%particle,1)
+      call set_coord_test_pattern (F%particle(jd1), -1)
+    enddo
+    deallocate (F%particle)
+  endif
+else
+  if (.not. allocated(F%particle)) then
+    allocate (F%particle(-1:1))
+  endif
+  do jd1 = 1, size(F%particle,1)
+    lb1 = lbound(F%particle,1) - 1
+    call set_coord_test_pattern (F%particle(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_ALLOC_integer] VariableArray1D<Int>
 if (ix_patt < 3) then
-  if (allocated(F%ix_z)) deallocate (F%ix_z)
-  else
-  if (.not. allocated(F%ix_z)) allocate (F%ix_z(-1:1))
-  do jd1 = 1, size(F%ix_z,1); lb1 = lbound(F%ix_z,1) - 1
-  rhs = 100 + jd1 + 3 + offset
-  F%ix_z(jd1+lb1) = rhs
+  if (allocated(F%ix_z)) then
+     deallocate (F%ix_z)
+  endif
+else
+  if (.not. allocated(F%ix_z)) then
+    allocate (F%ix_z(-1:1))
+  endif
+  do jd1 = 1, size(F%ix_z,1)
+    lb1 = lbound(F%ix_z,1) - 1
+    rhs = 100 + jd1 + 3 + offset
+    F%ix_z(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[0D_NOT_real] Real
@@ -12395,6 +13719,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bunch_params_test_pattern (f_bunch_params, -1)
+call set_bunch_params_test_pattern (f2_bunch_params, -1)
+
 end subroutine test1_f_bunch_params
 
 !---------------------------------------------------------------------------------
@@ -12438,6 +13766,11 @@ endif
 
 call set_bunch_params_test_pattern (f2_bunch_params, 3)
 call bunch_params_to_c (c_loc(f2_bunch_params), c_bunch_params)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bunch_params_test_pattern (f_bunch_params, -1)
+call set_bunch_params_test_pattern (f2_bunch_params, -1)
+
 end subroutine test2_f_bunch_params
 
 !---------------------------------------------------------------------------------
@@ -12470,19 +13803,20 @@ call set_twiss_test_pattern (F%b, ix_patt)
 call set_twiss_test_pattern (F%c, ix_patt)
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%sigma,1); lb1 = lbound(F%sigma,1) - 1
-do jd2 = 1, size(F%sigma,2); lb2 = lbound(F%sigma,2) - 1
-rhs = 100 + jd1 + 10*jd2 + 8 + offset
-F%sigma(jd1+lb1,jd2+lb2) = rhs
-enddo; enddo
+  do jd2 = 1, size(F%sigma,2); lb2 = lbound(F%sigma,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 8 + offset
+    F%sigma(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 7>
 do jd1 = 1, size(F%rel_max,1); lb1 = lbound(F%rel_max,1) - 1
-rhs = 100 + jd1 + 9 + offset
-F%rel_max(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 9 + offset
+  F%rel_max(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 7>
 do jd1 = 1, size(F%rel_min,1); lb1 = lbound(F%rel_min,1) - 1
-rhs = 100 + jd1 + 10 + offset
-F%rel_min(jd1+lb1) = rhs
+  rhs = 100 + jd1 + 10 + offset
+  F%rel_min(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 11 + offset; F%s = rhs
@@ -12564,6 +13898,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_beam_test_pattern (f_beam, -1)
+call set_beam_test_pattern (f2_beam, -1)
+
 end subroutine test1_f_beam
 
 !---------------------------------------------------------------------------------
@@ -12607,6 +13945,11 @@ endif
 
 call set_beam_test_pattern (f2_beam, 3)
 call beam_to_c (c_loc(f2_beam), c_beam)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_beam_test_pattern (f_beam, -1)
+call set_beam_test_pattern (f2_beam, -1)
+
 end subroutine test2_f_beam
 
 !---------------------------------------------------------------------------------
@@ -12625,11 +13968,20 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_bunch>
 if (ix_patt < 3) then
-  if (allocated(F%bunch)) deallocate (F%bunch)
-  else
-  if (.not. allocated(F%bunch)) allocate (F%bunch(-1:1))
-  do jd1 = 1, size(F%bunch,1); lb1 = lbound(F%bunch,1) - 1
-  call set_bunch_test_pattern (F%bunch(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%bunch)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%bunch,1), ubound(F%bunch,1)
+      call set_bunch_test_pattern (F%bunch(jd1), -1)
+    enddo
+    deallocate (F%bunch)
+  endif
+else
+  if (.not. allocated(F%bunch)) then
+    allocate (F%bunch(-1:1))
+  endif
+  do jd1 = 1, size(F%bunch,1)
+    lb1 = lbound(F%bunch,1) - 1
+    call set_bunch_test_pattern (F%bunch(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 
@@ -12686,6 +14038,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_aperture_point_test_pattern (f_aperture_point, -1)
+call set_aperture_point_test_pattern (f2_aperture_point, -1)
+
 end subroutine test1_f_aperture_point
 
 !---------------------------------------------------------------------------------
@@ -12729,6 +14085,11 @@ endif
 
 call set_aperture_point_test_pattern (f2_aperture_point, 3)
 call aperture_point_to_c (c_loc(f2_aperture_point), c_aperture_point)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_aperture_point_test_pattern (f_aperture_point, -1)
+call set_aperture_point_test_pattern (f2_aperture_point, -1)
+
 end subroutine test2_f_aperture_point
 
 !---------------------------------------------------------------------------------
@@ -12809,6 +14170,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_aperture_param_test_pattern (f_aperture_param, -1)
+call set_aperture_param_test_pattern (f2_aperture_param, -1)
+
 end subroutine test1_f_aperture_param
 
 !---------------------------------------------------------------------------------
@@ -12852,6 +14217,11 @@ endif
 
 call set_aperture_param_test_pattern (f2_aperture_param, 3)
 call aperture_param_to_c (c_loc(f2_aperture_param), c_aperture_param)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_aperture_param_test_pattern (f_aperture_param, -1)
+call set_aperture_param_test_pattern (f2_aperture_param, -1)
+
 end subroutine test2_f_aperture_param
 
 !---------------------------------------------------------------------------------
@@ -12942,6 +14312,10 @@ else
 
 endif
 
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_aperture_scan_test_pattern (f_aperture_scan, -1)
+call set_aperture_scan_test_pattern (f2_aperture_scan, -1)
+
 end subroutine test1_f_aperture_scan
 
 !---------------------------------------------------------------------------------
@@ -12985,6 +14359,11 @@ endif
 
 call set_aperture_scan_test_pattern (f2_aperture_scan, 3)
 call aperture_scan_to_c (c_loc(f2_aperture_scan), c_aperture_scan)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_aperture_scan_test_pattern (f_aperture_scan, -1)
+call set_aperture_scan_test_pattern (f2_aperture_scan, -1)
+
 end subroutine test2_f_aperture_scan
 
 !---------------------------------------------------------------------------------
@@ -13003,11 +14382,20 @@ offset = 100 * ix_patt
 
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_aperture_point>
 if (ix_patt < 3) then
-  if (allocated(F%point)) deallocate (F%point)
-  else
-  if (.not. allocated(F%point)) allocate (F%point(-1:1))
-  do jd1 = 1, size(F%point,1); lb1 = lbound(F%point,1) - 1
-  call set_aperture_point_test_pattern (F%point(jd1+lb1), ix_patt+jd1)
+  if (allocated(F%point)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%point,1), ubound(F%point,1)
+      call set_aperture_point_test_pattern (F%point(jd1), -1)
+    enddo
+    deallocate (F%point)
+  endif
+else
+  if (.not. allocated(F%point)) then
+    allocate (F%point(-1:1))
+  endif
+  do jd1 = 1, size(F%point,1)
+    lb1 = lbound(F%point,1) - 1
+    call set_aperture_point_test_pattern (F%point(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_coord

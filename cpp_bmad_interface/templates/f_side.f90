@@ -374,10 +374,11 @@ subroutine to_c (Fp, C) bind(C)
   !!!! begin:to_c_trans
   n1_NAME = 0
   if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME); lb1 = lbound(F%NAME, 1) - 1
+    n1_NAME = size(F%NAME)
+    lb1 = lbound(F%NAME, 1) - 1
     allocate (z_NAME(n1_NAME))
     do jd1 = 1, n1_NAME
-    z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))
+      z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))
     enddo
   endif
   !!!! end:to_c_trans
@@ -479,7 +480,7 @@ subroutine to_c (Fp, C) bind(C)
   if (associated_or_allocated(F%NAME)) then
     n1_NAME = size(F%NAME, 1)
     n2_NAME = size(F%NAME, 2)
-    else
+  else
     n1_NAME = 0; n2_NAME = 0
   endif
   !!!! end:to_c_trans
@@ -509,7 +510,7 @@ subroutine to_c (Fp, C) bind(C)
     do jd1 = 1, n1_NAME; do jd2 = 1, n2_NAME
     z_NAME(n2_NAME*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1, jd2+lb2))
     enddo;  enddo
-    else
+  else
     n1_NAME = 0; n2_NAME = 0
   endif
   !!!! end:to_c_trans
@@ -613,7 +614,7 @@ subroutine to_c (Fp, C) bind(C)
     n1_NAME = size(F%NAME, 1)
     n2_NAME = size(F%NAME, 2)
     n3_NAME = size(F%NAME, 3)
-    else
+  else
     n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
   endif
   !!!! end:to_c_trans
@@ -644,7 +645,7 @@ subroutine to_c (Fp, C) bind(C)
     do jd1 = 1, n1_NAME; do jd2 = 1, n2_NAME; do jd3 = 1, n3_NAME
     z_NAME(n3_NAME*n2_NAME*(jd1-1) + n3_NAME*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1, jd2+lb2, jd3+lb3))
     enddo;  enddo; enddo
-    else
+  else
     n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
   endif
   !!!! end:to_c_trans
@@ -777,7 +778,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     call c_f_pointer (z_NAME, f_NAME)
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     F%NAME = f_NAME
@@ -799,7 +800,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     call c_f_pointer (z_NAME, f_NAME)
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     F%NAME = f_NAME
@@ -821,7 +822,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     call c_f_pointer (z_NAME, f_NAME)
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     F%NAME = f_NAME
@@ -843,7 +844,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     call c_f_pointer (z_NAME, f_NAME)
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     F%NAME = f_logic(f_NAME)
@@ -863,11 +864,10 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! end:to_f2_var
   call c_f_pointer (Fp, F)
   !!!! begin:to_f2_trans
-  if (n_NAME == 0) then
-    if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
+  if (n_NAME > 0) then
     call c_f_pointer (z_NAME, f_NAME)
-    if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
+    allocate(F%NAME)
     F%NAME = f_NAME
   endif
   !!!! end:to_f2_trans
@@ -887,7 +887,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     call c_f_pointer (z_NAME, f_NAME)
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     F%NAME = f_NAME
@@ -909,7 +909,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME)
     call KIND_to_f (z_NAME, c_loc(F%NAME))
   endif
@@ -994,7 +994,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n1_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) then
       if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME])) deallocate(F%NAME)
       if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
@@ -1028,7 +1028,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME))
     F%NAME = f_NAME(1:n1_NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1054,7 +1054,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME))
     F%NAME = f_NAME(1:n1_NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1080,7 +1080,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME))
     F%NAME = f_NAME(1:n1_NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1106,7 +1106,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME))
     call vec2fvec (f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1132,7 +1132,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME))
     F%NAME = f_NAME(1:n1_NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1158,7 +1158,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME))
     F%NAME = f_NAME(1:n1_NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1174,15 +1174,17 @@ subroutine to_f2 (C, z_NAME) bind(c)
   call c_f_pointer (Fp, F)
   !!!! begin:to_f2_trans
   if (n1_NAME == 0) then
-    if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+    if (associated_or_allocated(F%NAME)) then
+      deallocate(F%NAME)
+    endif
+  else
     if (associated_or_allocated(F%NAME)) then
       if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME])) deallocate(F%NAME)
       if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
     endif
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(LBOUND:n1_NAME+LBOUND-1))
     do jd1 = 1, n1_NAME
-    call KIND_to_f (z_NAME(jd1), c_loc(F%NAME(jd1+LBOUND-1)))
+      call KIND_to_f (z_NAME(jd1), c_loc(F%NAME(jd1+LBOUND-1)))
     enddo
   endif
   !!!! end:to_f2_trans
@@ -1246,7 +1248,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME))
     call vec2mat(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1272,7 +1274,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME))
     call vec2mat(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1298,7 +1300,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME))
     call vec2mat(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1324,7 +1326,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME))
     call vec2mat(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1350,7 +1352,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME))
     call vec2mat(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1376,7 +1378,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME))
     call vec2mat(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1393,7 +1395,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n1_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) then
       if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME, n2_NAME])) deallocate(F%NAME)
       if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
@@ -1467,7 +1469,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME*n3_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME, n3_NAME))
     call vec2tensor(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1493,7 +1495,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME*n3_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME, n3_NAME))
     call vec2tensor(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1519,7 +1521,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME*n3_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME, n3_NAME))
     call vec2tensor(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1545,7 +1547,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME*n3_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME, n3_NAME))
     call vec2tensor(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1571,7 +1573,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME*n3_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME, n3_NAME))
     call vec2tensor(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1597,7 +1599,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
     call c_f_pointer (z_NAME, f_NAME, [n1_NAME*n2_NAME*n3_NAME])
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(n1_NAME, n2_NAME, n3_NAME))
     call vec2tensor(f_NAME, F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
   endif
   !!!! end:to_f2_trans
@@ -1614,7 +1616,7 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! begin:to_f2_trans
   if (n1_NAME == 0) then
     if (associated_or_allocated(F%NAME)) deallocate(F%NAME)
-    else
+  else
     if (associated_or_allocated(F%NAME)) then
       if (n1_NAME == 0 .or. any(shape(F%NAME) /= [n1_NAME, n2_NAME, n3_NAME])) deallocate(F%NAME)
       if (any(lbound(F%NAME) /= LBOUND)) deallocate(F%NAME)
@@ -1810,8 +1812,8 @@ rhs
 rhs
 !!!! begin:test_pat
 do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-rhs = 100 + jd1 + ARGIDX + offset
-F%NAME(jd1+lb1) = TEST_VALUE
+  rhs = 100 + jd1 + ARGIDX + offset
+  F%NAME(jd1+lb1) = TEST_VALUE
 enddo
 !!!! end:test_pat
 
@@ -1821,10 +1823,18 @@ enddo
 TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
-do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-rhs = 100 + jd1 + ARGIDX + offset
-call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)
-enddo
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%NAME,1), ubound(F%NAME,1)
+    call set_KIND_test_pattern (F%NAME(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%NAME,1)
+    lb1 = lbound(F%NAME,1) - 1
+    rhs = 100 + jd1 + ARGIDX + offset
+    call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
 !!!! end:test_pat
 
 !!!! section:test_pat
@@ -1845,10 +1855,11 @@ rhs
 rhs
 !!!! begin:test_pat
 do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset
-F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE
-enddo; enddo
+  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset
+    F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE
+  enddo
+enddo
 !!!! end:test_pat
 
 !!!! section:test_pat
@@ -1858,10 +1869,15 @@ TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset
-call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)
-enddo; enddo
+  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset
+    if (ix_patt < 0) then
+      call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), -1)
+    else
+      call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+10*jd2)
+    endif
+  enddo
+enddo
 !!!! end:test_pat
 
 !!!! section:test_pat
@@ -1882,11 +1898,13 @@ rhs
 rhs
 !!!! begin:test_pat
 do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
-rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset
-F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE
-enddo; enddo; enddo
+  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+    do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
+      rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset
+      F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE
+    enddo
+   enddo
+ enddo
 !!!! end:test_pat
 
 !!!! section:test_pat
@@ -1896,11 +1914,17 @@ TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
-rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset
-call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)
-enddo; enddo; enddo
+  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+    do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
+      rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset
+      if (ix_patt < 0) then
+        call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), -1)
+      else
+        call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)
+      endif
+    enddo
+  enddo
+enddo
 !!!! end:test_pat
 
 !!!! section:test_pat
@@ -1910,9 +1934,9 @@ TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 do jd1 = lbound(F%NAME, 1), ubound(F%NAME, 1)
-do jd = 1, len(F%NAME(jd1))
-F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
-enddo
+  do jd = 1, len(F%NAME(jd1))
+    F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
+  enddo
 enddo
 !!!! end:test_pat
 
@@ -1924,11 +1948,20 @@ TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
-  if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
-  if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(-1:1))
-  do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)
+  if (associated_or_allocated(F%NAME)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%NAME,1), ubound(F%NAME,1)
+      call set_KIND_test_pattern (F%NAME(jd1), -1)
+    enddo
+    deallocate (F%NAME)
+  endif
+else
+  if (.not. associated_or_allocated(F%NAME)) then
+    allocate (F%NAME(-1:1))
+  endif
+  do jd1 = 1, size(F%NAME,1)
+    lb1 = lbound(F%NAME,1) - 1
+    call set_KIND_test_pattern (F%NAME(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !!!! end:test_pat
@@ -1972,12 +2005,17 @@ rhs
 
 !!!! begin:test_pat
 if (ix_patt < 3) then
-  if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
-  if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(-1:1))
-  do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  rhs = 100 + jd1 + ARGIDX + offset
-  F%NAME(jd1+lb1) = TEST_VALUE
+  if (associated_or_allocated(F%NAME)) then
+     deallocate (F%NAME)
+  endif
+else
+  if (.not. associated_or_allocated(F%NAME)) then
+    allocate (F%NAME(-1:1))
+  endif
+  do jd1 = 1, size(F%NAME,1)
+    lb1 = lbound(F%NAME,1) - 1
+    rhs = 100 + jd1 + ARGIDX + offset
+    F%NAME(jd1+lb1) = TEST_VALUE
   enddo
 endif
 !!!! end:test_pat
@@ -1991,12 +2029,12 @@ TEST_VALUE
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(-1:1, 2))
   do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
-  enddo
+    do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+      call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2), ix_patt+jd1+2*jd2)
+    enddo
   enddo
 endif
 !!!! end:test_pat
@@ -2060,14 +2098,14 @@ TEST_VALUE
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(-1:1, 2, 1))
   do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-  do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
-  call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+2*jd2+3*jd3)
-  enddo
-  enddo
+    do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+      do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
+        call set_KIND_test_pattern (F%NAME(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+2*jd2+3*jd3)
+      enddo
+    enddo
   enddo
 endif
 !!!! end:test_pat
@@ -2219,7 +2257,7 @@ rhs
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
   rhs = ARGIDX + offset
   F%NAME = rhs
@@ -2234,8 +2272,11 @@ TEST_VALUE
 !!!! end:test_value
 !!!! begin:test_pat
 if (ix_patt < 3) then
-  if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+  if (associated_or_allocated(F%NAME)) then
+    call set_KIND_test_pattern (F%NAME, -1)
+    deallocate (F%NAME)
+  endif
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
   rhs = ARGIDX + offset
   call set_KIND_test_pattern (F%NAME, ix_patt)

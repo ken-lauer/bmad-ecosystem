@@ -989,10 +989,9 @@ call c_f_pointer (Fp, F)
         )
 
         for arg in struct.arg:
-            if arg.f_side.to_c_trans == "":
-                continue
-            f_face.write(f"!! f_side.to_c_trans[{arg.full_type}]\n")
-            print(arg.f_side.to_c_trans, file=f_face)
+            if arg.f_side.to_c_trans:
+              f_face.write(f"!! f_side.to_c_trans[{arg.full_type}]\n")
+              print(arg.f_side.to_c_trans, file=f_face)
 
         f_face.write("\n" + "!! f_side.to_c2_call\n")
 
@@ -1273,6 +1272,10 @@ def write_tests_mod(f_test, struct_definitions: list[Structure]):
     
                 endif
 
+                ! clean up test pattern data - < 3 deallocates arrays and such
+                call set_{struct.short_name}_test_pattern (f_{struct.short_name}, -1)
+                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, -1)
+
                 end subroutine test1_f_{struct.short_name}
 
                 !---------------------------------------------------------------------------------
@@ -1316,6 +1319,11 @@ def write_tests_mod(f_test, struct_definitions: list[Structure]):
 
                 call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 3)
                 call {struct.short_name}_to_c (c_loc(f2_{struct.short_name}), c_{struct.short_name})
+
+                ! clean up test pattern data - < 3 deallocates arrays and such
+                call set_{struct.short_name}_test_pattern (f_{struct.short_name}, -1)
+                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, -1)
+
                 end subroutine test2_f_{struct.short_name}
 
                 !---------------------------------------------------------------------------------
