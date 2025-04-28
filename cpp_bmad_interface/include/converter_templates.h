@@ -1,16 +1,78 @@
 #ifndef CONVERTER_TEMPLATES
 #define CONVERTER_TEMPLATES
 
-#include "bmad_std_typedef.h"
 #include <complex>
+#include <cstddef>
+#include <iomanip> //setprecision
 #include <string>
 #include <vector>
 
+#include "bmad_std_typedef.h"
+
 //---------------------------------------------------------------------------
 
+using std::complex;
 using std::size_t;
+using std::string;
 using std::vector;
 
+template <typename T, size_t DIM1>
+void operator<<(Bmad::FixedArray1D<T, DIM1> &arr, const T *ptr);
+
+template <class T, size_t DIM1, std::size_t DIM2>
+void operator<<(Bmad::FixedArray2D<T, DIM1, DIM2> &arr, const T *ptr);
+
+template <class T, size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+void operator<<(Bmad::FixedArray3D<T, DIM1, DIM2, DIM3> &arr, const T *ptr);
+
+template <typename T>
+void operator<<(Bmad::VariableArray1D<T> &arr, const T *ptr);
+
+template <class T> void operator<<(Bmad::VariableArray2D<T> &mat, const T *ptr);
+
+template <class T>
+void operator<<(Bmad::VariableArray3D<T> &tensor, const T *ptr);
+
+template <class T> void operator<<(vector<T> &arr1, const vector<T> &arr2);
+
+template <class T>
+void operator<<(vector<vector<T>> &mat1, const vector<vector<T>> &mat2);
+
+template <class T>
+void matrix_to_vec(const Bmad::VariableArray2D<T> &mat, T *vec);
+
+template <class T>
+void tensor_to_vec(const Bmad::VariableArray3D<T> &tensor, T *vec);
+template <class T, size_t DIM1, std::size_t DIM2>
+void matrix_to_vec(const Bmad::FixedArray2D<T, DIM1, DIM2> &mat, T *vec);
+
+template <class T, size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+void tensor_to_vec(const Bmad::FixedArray3D<T, DIM1, DIM2, DIM3> &tensor,
+                   T *vec);
+
+template <typename T, size_t DIM1>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::FixedArray1D<T, DIM1> &obj);
+
+template <typename T, size_t DIM1, std::size_t DIM2>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::FixedArray2D<T, DIM1, DIM2> &obj);
+
+template <typename T, size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+std::ostream &operator<<(std::ostream &os,
+                         const Bmad::FixedArray3D<T, DIM1, DIM2, DIM3> &obj);
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Bmad::VariableArray1D<T> &obj);
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Bmad::VariableArray2D<T> &obj);
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const Bmad::VariableArray3D<T> &obj);
+
+// TODO: move out implementation to .cpp file
+//
 template <typename T, size_t DIM1>
 void operator<<(Bmad::FixedArray1D<T, DIM1> &arr, const T *ptr) {
   for (size_t i = 0; i < DIM1; i++) {
@@ -230,4 +292,229 @@ std::ostream &operator<<(std::ostream &os,
   os << "]";
   return os;
 }
+
+namespace Bmad {
+/**
+ * JSON output helper for FixedArray1D
+ */
+template <typename T, size_t DIM1>
+std::string to_json(const Bmad::FixedArray1D<T, DIM1> &obj) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < DIM1; ++i) {
+    if constexpr (std::is_arithmetic_v<T>) {
+      oss << obj[i];
+    } else {
+      oss << obj[i].to_json();
+    }
+    if (i < DIM1 - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
+}
+
+/**
+ * JSON output helper for FixedArray2D
+ */
+template <typename T, size_t DIM1, std::size_t DIM2>
+std::string to_json(const Bmad::FixedArray2D<T, DIM1, DIM2> &obj) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < DIM1; ++i) {
+    oss << "[";
+    for (size_t j = 0; j < DIM2; ++j) {
+      if constexpr (std::is_arithmetic_v<T>) {
+        oss << obj[i][j];
+      } else {
+        oss << obj[i][j].to_json(); // Recursively handle non-primitive types
+      }
+      if (j < DIM2 - 1) {
+        oss << ", ";
+      }
+    }
+    oss << "]";
+    if (i < DIM1 - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
+}
+
+/**
+ * JSON output helper for FixedArray3D
+ */
+
+template <typename T, size_t DIM1, std::size_t DIM2, std::size_t DIM3>
+std::string to_json(const Bmad::FixedArray3D<T, DIM1, DIM2, DIM3> &obj) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < DIM1; ++i) {
+    oss << "[";
+    for (size_t j = 0; j < DIM2; ++j) {
+      oss << "[";
+      for (size_t k = 0; k < DIM3; ++k) {
+        if constexpr (std::is_arithmetic_v<T>) {
+          oss << obj[i][j][k];
+        } else {
+          oss << obj[i][j][k].to_json();
+        }
+        if (k < DIM3 - 1) {
+          oss << ", ";
+        }
+      }
+      oss << "]";
+      if (j < DIM2 - 1) {
+        oss << ", ";
+      }
+    }
+    oss << "]";
+    if (i < DIM1 - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
+}
+
+/**
+ * JSON output helper for VariableArray1D
+ */
+template <typename T> std::string to_json(const Bmad::VariableArray1D<T> &obj) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < obj.size(); ++i) {
+    if constexpr (std::is_arithmetic_v<T>) {
+      oss << obj[i];
+    } else {
+      oss << obj[i].to_json();
+    }
+    if (i < obj.size() - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
+}
+
+/**
+ * JSON output helper for VariableArray2D
+ */
+template <typename T> std::string to_json(const Bmad::VariableArray2D<T> &obj) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < obj.size(); ++i) {
+    oss << to_json(obj[i]); // Use the VariableArray1D to_json helper
+    if (i < obj.size() - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
+}
+
+/**
+ * JSON output helper for VariableArray3D
+ */
+template <typename T> std::string to_json(const Bmad::VariableArray3D<T> &obj) {
+  std::ostringstream oss;
+  oss << "[";
+  for (size_t i = 0; i < obj.size(); ++i) {
+    oss << to_json(obj[i]); // Use the VariableArray2D to_json helper
+    if (i < obj.size() - 1) {
+      oss << ", ";
+    }
+  }
+  oss << "]";
+  return oss.str();
+}
+
+template <typename T> std::string to_json(const T &obj) {
+  // Default implementation - should be specialized
+  static_assert(sizeof(T) == 0,
+                "No to_json specialization available for this type");
+  return "";
+}
+
+// Double specialization
+template <> std::string to_json<double>(const double &obj) {
+  if (std::isnan(obj)) {
+    return "null";
+  } else if (std::isinf(obj)) {
+    return obj > 0 ? "\"Infinity\"" : "\"-Infinity\"";
+  } else {
+    std::ostringstream ss;
+    ss << std::setprecision(std::numeric_limits<double>::digits10) << obj;
+    return ss.str();
+  }
+}
+
+// Complex specialization
+template <>
+std::string to_json<std::complex<double>>(const std::complex<double> &obj) {
+  std::ostringstream ss;
+  ss << "{\"real\":" << to_json(obj.real())
+     << ",\"imag\":" << to_json(obj.imag()) << "}";
+  return ss.str();
+}
+
+// Integer specialization
+template <> std::string to_json<int>(const int &obj) {
+  return std::to_string(obj);
+}
+
+// Boolean specialization
+template <> std::string to_json<bool>(const bool &obj) {
+  return obj ? "true" : "false";
+}
+
+// String specialization
+template <> std::string to_json<std::string>(const std::string &obj) {
+  std::ostringstream json;
+  json << '"';
+
+  for (char c : obj) {
+    switch (c) {
+    case '\"':
+      json << "\\\"";
+      break;
+    case '\\':
+      json << "\\\\";
+      break;
+    case '/':
+      json << "\\/";
+      break;
+    case '\b':
+      json << "\\b";
+      break;
+    case '\f':
+      json << "\\f";
+      break;
+    case '\n':
+      json << "\\n";
+      break;
+    case '\r':
+      json << "\\r";
+      break;
+    case '\t':
+      json << "\\t";
+      break;
+    default:
+      // Handle control characters (ASCII < 32)
+      if (static_cast<unsigned char>(c) < 32) {
+        json << "\\u" << std::hex << std::setw(4) << std::setfill('0')
+             << static_cast<int>(c) << std::dec;
+      } else {
+        json << c;
+      }
+      break;
+    }
+  }
+
+  json << '"';
+  return json.str();
+}
+} // namespace Bmad
 #endif

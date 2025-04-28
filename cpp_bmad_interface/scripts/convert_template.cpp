@@ -13,3 +13,5 @@
 #include <sstream>
 
 using namespace Bmad;
+
+using std::ostream;

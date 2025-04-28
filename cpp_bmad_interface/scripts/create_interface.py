@@ -53,7 +53,9 @@ assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}
 # Settings
 
 N_CHAR_MAX = 95
-DEBUG = False  # Change to True to enable printout
+DEBUG = False  # Change to True to enable more verbose printout
+DEBUG_EQUALITY = False
+DEBUG_INSTANTIATION = False
 
 # Constants
 
@@ -1370,23 +1372,43 @@ end module
 """)
 
 
-def get_class_repr(struct: Structure) -> str:
+def get_class_repr_lines_inner(struct: Structure) -> list[str]:
     lines = []
 
+    # Start with opening the JSON object
+    lines.append('os << "{";')
+
+    # Track if we need to add commas between members
+    members_processed = []
+
     for arg in struct.arg:
-        if not arg.is_component:
+        # member = arg.member
+        if not arg.is_component or arg.member is None:
             continue
 
-        if arg.pointer_type == "PTR" and not arg.array:
-            lines.append(
-                rf'os << "\n  {arg.c_name}="; if (obj.{arg.c_name}) os << *obj.{arg.c_name} << ", "; else os << "nullptr, ";'
-            )
-        else:
-            lines.append(rf'os << "\n  {arg.c_name}=" << obj.{arg.c_name} << ", ";')
+        members_processed.append(arg.c_name)
+        # type_info = member.type_info
 
-    if lines:
-        lines[-1] = lines[-1].replace('os << ", ";', "")
-        lines[-1] = lines[-1].replace(' << ", "', "")
+        # Add comma if not the first member
+        if len(members_processed) > 1:
+            lines.append('os << ",";')
+
+        # Output the member name as a JSON key with a newline for readability
+        lines.append(rf'os << "\n  \"{arg.c_name}\": ";')
+
+        if arg.type == "type":
+            lines.append("os << obj;")
+        else:
+            lines.append(f"os << Bmad::to_json(obj.{arg.c_name});")
+
+    # Close the JSON object
+    lines.append('os << "\\n}";')
+
+    return lines
+
+
+def get_class_repr(struct: Structure) -> str:
+    lines = get_class_repr_lines_inner(struct)
 
     return string.Template("""
   friend ostream& operator<<(ostream& os, const ${cpp_class}& obj) {
@@ -1396,7 +1418,7 @@ def get_class_repr(struct: Structure) -> str:
     return os;
   }
 
-  std::string repr() const {
+  std::string to_json() const {
     std::ostringstream os;
     os << this;
     return os.str();
@@ -1422,8 +1444,10 @@ def get_class_lines(struct: Structure) -> list[str]:
         )
 
     constructor_body = struct.c_constructor_body
-    if DEBUG:
+    destructor_body = ""
+    if DEBUG_INSTANTIATION:
         constructor_body = f'{constructor_body}\nstd::cout << "{struct.cpp_class}(): " << this << std::endl;'
+        destructor_body = f'{destructor_body}\nstd::cout << "~{struct.cpp_class}(): " << this << std::endl;'
 
     repr_lines = get_class_repr(struct).splitlines()
     template = string.Template(
@@ -1442,6 +1466,7 @@ def get_class_lines(struct: Structure) -> list[str]:
           }
 
         virtual ~${cpp_class}() {
+            ${destructor_body}
         }
         std::shared_ptr<${cpp_class}> getptr() { return shared_from_this(); }
         ${repr_methods}
@@ -1460,6 +1485,7 @@ def get_class_lines(struct: Structure) -> list[str]:
         c_extra_methods=struct.c_extra_methods,
         c_constructor_arg_list=struct.c_constructor_arg_list,
         constructor_body=constructor_body,
+        destructor_body=destructor_body,
         repr_methods="\n".join(repr_lines),
     ).splitlines()
 
@@ -1614,7 +1640,7 @@ def write_cpp_equality(file, header: str, struct_definitions: list[Structure]):
             if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
             print(arg.c_side.equality_test, file=file)
-            if DEBUG:
+            if DEBUG_EQUALITY:
                 file.write(
                     f'  if (!is_eq) {{ std::cout << "not equal: {struct.cpp_class}.{arg.c_name}" << "\\n"; }}\n'
                 )
