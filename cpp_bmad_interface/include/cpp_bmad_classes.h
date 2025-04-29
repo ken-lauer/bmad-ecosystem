@@ -8,6 +8,7 @@
 //-
 
 #ifndef CPP_BMAD_CLASSES
+#define CPP_BMAD_CLASSES
 
 #include <iostream>
 #include <memory>
@@ -16,11 +17,22 @@
 #include "bmad_enums.h"
 #include "bmad_std_typedef.h"
 #include "converter_templates.h"
+#include "json.hpp"
 
 using namespace Bmad;
 using std::ostream;
 using std::shared_ptr, std::make_shared;
 using std::size_t;
+using json = nlohmann::json;
+
+namespace std {
+template <typename T> void to_json(json &, const complex<T> &);
+template <typename T> void from_json(const json &, complex<T> &);
+} // namespace std
+
+namespace Bmad {
+
+//--------------------------------------------------------------------
 
 //--------------------------------------------------------------------
 // CPP_spline
@@ -39,37 +51,14 @@ public:
 
   virtual ~CPP_spline() {}
   std::shared_ptr<CPP_spline> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_spline &obj) {
-    os << "CPP_spline{";
-    os << "{";
-    os << "\n  \"x0\": ";
-    os << Bmad::to_json(obj.x0);
-    os << ",";
-    os << "\n  \"y0\": ";
-    os << Bmad::to_json(obj.y0);
-    os << ",";
-    os << "\n  \"x1\": ";
-    os << Bmad::to_json(obj.x1);
-    os << ",";
-    os << "\n  \"coef\": ";
-    os << Bmad::to_json(obj.coef);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_spline &obj);
 };
 
 extern "C" void spline_to_c(const Opaque_spline_class *, CPP_spline &);
 extern "C" void spline_to_f(const CPP_spline &, Opaque_spline_class *);
 
 bool operator==(const CPP_spline &, const CPP_spline &);
+void to_json(json &, const CPP_spline &);
 
 //--------------------------------------------------------------------
 // CPP_spin_polar
@@ -88,31 +77,7 @@ public:
 
   virtual ~CPP_spin_polar() {}
   std::shared_ptr<CPP_spin_polar> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_spin_polar &obj) {
-    os << "CPP_spin_polar{";
-    os << "{";
-    os << "\n  \"polarization\": ";
-    os << Bmad::to_json(obj.polarization);
-    os << ",";
-    os << "\n  \"theta\": ";
-    os << Bmad::to_json(obj.theta);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"xi\": ";
-    os << Bmad::to_json(obj.xi);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_spin_polar &obj);
 };
 
 extern "C" void spin_polar_to_c(const Opaque_spin_polar_class *,
@@ -121,6 +86,7 @@ extern "C" void spin_polar_to_f(const CPP_spin_polar &,
                                 Opaque_spin_polar_class *);
 
 bool operator==(const CPP_spin_polar &, const CPP_spin_polar &);
+void to_json(json &, const CPP_spin_polar &);
 
 //--------------------------------------------------------------------
 // CPP_ac_kicker_time
@@ -139,28 +105,7 @@ public:
 
   virtual ~CPP_ac_kicker_time() {}
   std::shared_ptr<CPP_ac_kicker_time> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_ac_kicker_time &obj) {
-    os << "CPP_ac_kicker_time{";
-    os << "{";
-    os << "\n  \"amp\": ";
-    os << Bmad::to_json(obj.amp);
-    os << ",";
-    os << "\n  \"time\": ";
-    os << Bmad::to_json(obj.time);
-    os << ",";
-    os << "\n  \"spline\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_ac_kicker_time &obj);
 };
 
 extern "C" void ac_kicker_time_to_c(const Opaque_ac_kicker_time_class *,
@@ -169,6 +114,7 @@ extern "C" void ac_kicker_time_to_f(const CPP_ac_kicker_time &,
                                     Opaque_ac_kicker_time_class *);
 
 bool operator==(const CPP_ac_kicker_time &, const CPP_ac_kicker_time &);
+void to_json(json &, const CPP_ac_kicker_time &);
 
 //--------------------------------------------------------------------
 // CPP_ac_kicker_freq
@@ -188,31 +134,7 @@ public:
 
   virtual ~CPP_ac_kicker_freq() {}
   std::shared_ptr<CPP_ac_kicker_freq> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_ac_kicker_freq &obj) {
-    os << "CPP_ac_kicker_freq{";
-    os << "{";
-    os << "\n  \"f\": ";
-    os << Bmad::to_json(obj.f);
-    os << ",";
-    os << "\n  \"amp\": ";
-    os << Bmad::to_json(obj.amp);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"rf_clock_harmonic\": ";
-    os << Bmad::to_json(obj.rf_clock_harmonic);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_ac_kicker_freq &obj);
 };
 
 extern "C" void ac_kicker_freq_to_c(const Opaque_ac_kicker_freq_class *,
@@ -221,6 +143,7 @@ extern "C" void ac_kicker_freq_to_f(const CPP_ac_kicker_freq &,
                                     Opaque_ac_kicker_freq_class *);
 
 bool operator==(const CPP_ac_kicker_freq &, const CPP_ac_kicker_freq &);
+void to_json(json &, const CPP_ac_kicker_freq &);
 
 //--------------------------------------------------------------------
 // CPP_ac_kicker
@@ -237,31 +160,14 @@ public:
 
   virtual ~CPP_ac_kicker() {}
   std::shared_ptr<CPP_ac_kicker> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_ac_kicker &obj) {
-    os << "CPP_ac_kicker{";
-    os << "{";
-    os << "\n  \"amp_vs_time\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"frequency\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_ac_kicker &obj);
 };
 
 extern "C" void ac_kicker_to_c(const Opaque_ac_kicker_class *, CPP_ac_kicker &);
 extern "C" void ac_kicker_to_f(const CPP_ac_kicker &, Opaque_ac_kicker_class *);
 
 bool operator==(const CPP_ac_kicker &, const CPP_ac_kicker &);
+void to_json(json &, const CPP_ac_kicker &);
 
 //--------------------------------------------------------------------
 // CPP_interval1_coef
@@ -280,28 +186,7 @@ public:
 
   virtual ~CPP_interval1_coef() {}
   std::shared_ptr<CPP_interval1_coef> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_interval1_coef &obj) {
-    os << "CPP_interval1_coef{";
-    os << "{";
-    os << "\n  \"c0\": ";
-    os << Bmad::to_json(obj.c0);
-    os << ",";
-    os << "\n  \"c1\": ";
-    os << Bmad::to_json(obj.c1);
-    os << ",";
-    os << "\n  \"n_exp\": ";
-    os << Bmad::to_json(obj.n_exp);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_interval1_coef &obj);
 };
 
 extern "C" void interval1_coef_to_c(const Opaque_interval1_coef_class *,
@@ -310,6 +195,7 @@ extern "C" void interval1_coef_to_f(const CPP_interval1_coef &,
                                     Opaque_interval1_coef_class *);
 
 bool operator==(const CPP_interval1_coef &, const CPP_interval1_coef &);
+void to_json(json &, const CPP_interval1_coef &);
 
 //--------------------------------------------------------------------
 // CPP_photon_reflect_table
@@ -334,40 +220,7 @@ public:
   std::shared_ptr<CPP_photon_reflect_table> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_photon_reflect_table &obj) {
-    os << "CPP_photon_reflect_table{";
-    os << "{";
-    os << "\n  \"angle\": ";
-    os << Bmad::to_json(obj.angle);
-    os << ",";
-    os << "\n  \"energy\": ";
-    os << Bmad::to_json(obj.energy);
-    os << ",";
-    os << "\n  \"int1\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"p_reflect\": ";
-    os << Bmad::to_json(obj.p_reflect);
-    os << ",";
-    os << "\n  \"max_energy\": ";
-    os << Bmad::to_json(obj.max_energy);
-    os << ",";
-    os << "\n  \"p_reflect_scratch\": ";
-    os << Bmad::to_json(obj.p_reflect_scratch);
-    os << ",";
-    os << "\n  \"bragg_angle\": ";
-    os << Bmad::to_json(obj.bragg_angle);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_photon_reflect_table &obj);
 };
 
 extern "C" void
@@ -378,6 +231,7 @@ extern "C" void photon_reflect_table_to_f(const CPP_photon_reflect_table &,
 
 bool operator==(const CPP_photon_reflect_table &,
                 const CPP_photon_reflect_table &);
+void to_json(json &, const CPP_photon_reflect_table &);
 
 //--------------------------------------------------------------------
 // CPP_photon_reflect_surface
@@ -402,41 +256,8 @@ public:
   std::shared_ptr<CPP_photon_reflect_surface> getptr() {
     return shared_from_this();
   }
-
   friend ostream &operator<<(ostream &os,
-                             const CPP_photon_reflect_surface &obj) {
-    os << "CPP_photon_reflect_surface{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"description\": ";
-    os << Bmad::to_json(obj.description);
-    os << ",";
-    os << "\n  \"reflectivity_file\": ";
-    os << Bmad::to_json(obj.reflectivity_file);
-    os << ",";
-    os << "\n  \"table\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"surface_roughness_rms\": ";
-    os << Bmad::to_json(obj.surface_roughness_rms);
-    os << ",";
-    os << "\n  \"roughness_correlation_len\": ";
-    os << Bmad::to_json(obj.roughness_correlation_len);
-    os << ",";
-    os << "\n  \"ix_surface\": ";
-    os << Bmad::to_json(obj.ix_surface);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+                             const CPP_photon_reflect_surface &obj);
 };
 
 extern "C" void
@@ -448,6 +269,7 @@ photon_reflect_surface_to_f(const CPP_photon_reflect_surface &,
 
 bool operator==(const CPP_photon_reflect_surface &,
                 const CPP_photon_reflect_surface &);
+void to_json(json &, const CPP_photon_reflect_surface &);
 
 //--------------------------------------------------------------------
 // CPP_coord
@@ -483,88 +305,14 @@ public:
 
   virtual ~CPP_coord() {}
   std::shared_ptr<CPP_coord> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_coord &obj) {
-    os << "CPP_coord{";
-    os << "{";
-    os << "\n  \"vec\": ";
-    os << Bmad::to_json(obj.vec);
-    os << ",";
-    os << "\n  \"s\": ";
-    os << Bmad::to_json(obj.s);
-    os << ",";
-    os << "\n  \"t\": ";
-    os << Bmad::to_json(obj.t);
-    os << ",";
-    os << "\n  \"spin\": ";
-    os << Bmad::to_json(obj.spin);
-    os << ",";
-    os << "\n  \"field\": ";
-    os << Bmad::to_json(obj.field);
-    os << ",";
-    os << "\n  \"phase\": ";
-    os << Bmad::to_json(obj.phase);
-    os << ",";
-    os << "\n  \"charge\": ";
-    os << Bmad::to_json(obj.charge);
-    os << ",";
-    os << "\n  \"dt_ref\": ";
-    os << Bmad::to_json(obj.dt_ref);
-    os << ",";
-    os << "\n  \"r\": ";
-    os << Bmad::to_json(obj.r);
-    os << ",";
-    os << "\n  \"p0c\": ";
-    os << Bmad::to_json(obj.p0c);
-    os << ",";
-    os << "\n  \"E_potential\": ";
-    os << Bmad::to_json(obj.E_potential);
-    os << ",";
-    os << "\n  \"beta\": ";
-    os << Bmad::to_json(obj.beta);
-    os << ",";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"ix_branch\": ";
-    os << Bmad::to_json(obj.ix_branch);
-    os << ",";
-    os << "\n  \"ix_turn\": ";
-    os << Bmad::to_json(obj.ix_turn);
-    os << ",";
-    os << "\n  \"ix_user\": ";
-    os << Bmad::to_json(obj.ix_user);
-    os << ",";
-    os << "\n  \"state\": ";
-    os << Bmad::to_json(obj.state);
-    os << ",";
-    os << "\n  \"direction\": ";
-    os << Bmad::to_json(obj.direction);
-    os << ",";
-    os << "\n  \"time_dir\": ";
-    os << Bmad::to_json(obj.time_dir);
-    os << ",";
-    os << "\n  \"species\": ";
-    os << Bmad::to_json(obj.species);
-    os << ",";
-    os << "\n  \"location\": ";
-    os << Bmad::to_json(obj.location);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_coord &obj);
 };
 
 extern "C" void coord_to_c(const Opaque_coord_class *, CPP_coord &);
 extern "C" void coord_to_f(const CPP_coord &, Opaque_coord_class *);
 
 bool operator==(const CPP_coord &, const CPP_coord &);
+void to_json(json &, const CPP_coord &);
 
 //--------------------------------------------------------------------
 // CPP_coord_array
@@ -580,22 +328,7 @@ public:
 
   virtual ~CPP_coord_array() {}
   std::shared_ptr<CPP_coord_array> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_coord_array &obj) {
-    os << "CPP_coord_array{";
-    os << "{";
-    os << "\n  \"orbit\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_coord_array &obj);
 };
 
 extern "C" void coord_array_to_c(const Opaque_coord_array_class *,
@@ -604,6 +337,7 @@ extern "C" void coord_array_to_f(const CPP_coord_array &,
                                  Opaque_coord_array_class *);
 
 bool operator==(const CPP_coord_array &, const CPP_coord_array &);
+void to_json(json &, const CPP_coord_array &);
 
 //--------------------------------------------------------------------
 // CPP_bpm_phase_coupling
@@ -631,49 +365,7 @@ public:
   std::shared_ptr<CPP_bpm_phase_coupling> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_bpm_phase_coupling &obj) {
-    os << "CPP_bpm_phase_coupling{";
-    os << "{";
-    os << "\n  \"K_22a\": ";
-    os << Bmad::to_json(obj.K_22a);
-    os << ",";
-    os << "\n  \"K_12a\": ";
-    os << Bmad::to_json(obj.K_12a);
-    os << ",";
-    os << "\n  \"K_11b\": ";
-    os << Bmad::to_json(obj.K_11b);
-    os << ",";
-    os << "\n  \"K_12b\": ";
-    os << Bmad::to_json(obj.K_12b);
-    os << ",";
-    os << "\n  \"Cbar22_a\": ";
-    os << Bmad::to_json(obj.Cbar22_a);
-    os << ",";
-    os << "\n  \"Cbar12_a\": ";
-    os << Bmad::to_json(obj.Cbar12_a);
-    os << ",";
-    os << "\n  \"Cbar11_b\": ";
-    os << Bmad::to_json(obj.Cbar11_b);
-    os << ",";
-    os << "\n  \"Cbar12_b\": ";
-    os << Bmad::to_json(obj.Cbar12_b);
-    os << ",";
-    os << "\n  \"phi_a\": ";
-    os << Bmad::to_json(obj.phi_a);
-    os << ",";
-    os << "\n  \"phi_b\": ";
-    os << Bmad::to_json(obj.phi_b);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_bpm_phase_coupling &obj);
 };
 
 extern "C" void bpm_phase_coupling_to_c(const Opaque_bpm_phase_coupling_class *,
@@ -682,6 +374,7 @@ extern "C" void bpm_phase_coupling_to_f(const CPP_bpm_phase_coupling &,
                                         Opaque_bpm_phase_coupling_class *);
 
 bool operator==(const CPP_bpm_phase_coupling &, const CPP_bpm_phase_coupling &);
+void to_json(json &, const CPP_bpm_phase_coupling &);
 
 //--------------------------------------------------------------------
 // CPP_expression_atom
@@ -700,28 +393,7 @@ public:
 
   virtual ~CPP_expression_atom() {}
   std::shared_ptr<CPP_expression_atom> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_expression_atom &obj) {
-    os << "CPP_expression_atom{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"type\": ";
-    os << Bmad::to_json(obj.type);
-    os << ",";
-    os << "\n  \"value\": ";
-    os << Bmad::to_json(obj.value);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_expression_atom &obj);
 };
 
 extern "C" void expression_atom_to_c(const Opaque_expression_atom_class *,
@@ -730,6 +402,7 @@ extern "C" void expression_atom_to_f(const CPP_expression_atom &,
                                      Opaque_expression_atom_class *);
 
 bool operator==(const CPP_expression_atom &, const CPP_expression_atom &);
+void to_json(json &, const CPP_expression_atom &);
 
 //--------------------------------------------------------------------
 // CPP_wake_sr_z_long
@@ -754,46 +427,7 @@ public:
 
   virtual ~CPP_wake_sr_z_long() {}
   std::shared_ptr<CPP_wake_sr_z_long> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wake_sr_z_long &obj) {
-    os << "CPP_wake_sr_z_long{";
-    os << "{";
-    os << "\n  \"w\": ";
-    os << Bmad::to_json(obj.w);
-    os << ",";
-    os << "\n  \"fw\": ";
-    os << Bmad::to_json(obj.fw);
-    os << ",";
-    os << "\n  \"fbunch\": ";
-    os << Bmad::to_json(obj.fbunch);
-    os << ",";
-    os << "\n  \"w_out\": ";
-    os << Bmad::to_json(obj.w_out);
-    os << ",";
-    os << "\n  \"dz\": ";
-    os << Bmad::to_json(obj.dz);
-    os << ",";
-    os << "\n  \"z0\": ";
-    os << Bmad::to_json(obj.z0);
-    os << ",";
-    os << "\n  \"smoothing_sigma\": ";
-    os << Bmad::to_json(obj.smoothing_sigma);
-    os << ",";
-    os << "\n  \"position_dependence\": ";
-    os << Bmad::to_json(obj.position_dependence);
-    os << ",";
-    os << "\n  \"time_based\": ";
-    os << Bmad::to_json(obj.time_based);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wake_sr_z_long &obj);
 };
 
 extern "C" void wake_sr_z_long_to_c(const Opaque_wake_sr_z_long_class *,
@@ -802,6 +436,7 @@ extern "C" void wake_sr_z_long_to_f(const CPP_wake_sr_z_long &,
                                     Opaque_wake_sr_z_long_class *);
 
 bool operator==(const CPP_wake_sr_z_long &, const CPP_wake_sr_z_long &);
+void to_json(json &, const CPP_wake_sr_z_long &);
 
 //--------------------------------------------------------------------
 // CPP_wake_sr_mode
@@ -826,49 +461,7 @@ public:
 
   virtual ~CPP_wake_sr_mode() {}
   std::shared_ptr<CPP_wake_sr_mode> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wake_sr_mode &obj) {
-    os << "CPP_wake_sr_mode{";
-    os << "{";
-    os << "\n  \"amp\": ";
-    os << Bmad::to_json(obj.amp);
-    os << ",";
-    os << "\n  \"damp\": ";
-    os << Bmad::to_json(obj.damp);
-    os << ",";
-    os << "\n  \"k\": ";
-    os << Bmad::to_json(obj.k);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"b_sin\": ";
-    os << Bmad::to_json(obj.b_sin);
-    os << ",";
-    os << "\n  \"b_cos\": ";
-    os << Bmad::to_json(obj.b_cos);
-    os << ",";
-    os << "\n  \"a_sin\": ";
-    os << Bmad::to_json(obj.a_sin);
-    os << ",";
-    os << "\n  \"a_cos\": ";
-    os << Bmad::to_json(obj.a_cos);
-    os << ",";
-    os << "\n  \"polarization\": ";
-    os << Bmad::to_json(obj.polarization);
-    os << ",";
-    os << "\n  \"position_dependence\": ";
-    os << Bmad::to_json(obj.position_dependence);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wake_sr_mode &obj);
 };
 
 extern "C" void wake_sr_mode_to_c(const Opaque_wake_sr_mode_class *,
@@ -877,6 +470,7 @@ extern "C" void wake_sr_mode_to_f(const CPP_wake_sr_mode &,
                                   Opaque_wake_sr_mode_class *);
 
 bool operator==(const CPP_wake_sr_mode &, const CPP_wake_sr_mode &);
+void to_json(json &, const CPP_wake_sr_mode &);
 
 //--------------------------------------------------------------------
 // CPP_wake_sr
@@ -901,55 +495,14 @@ public:
 
   virtual ~CPP_wake_sr() {}
   std::shared_ptr<CPP_wake_sr> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wake_sr &obj) {
-    os << "CPP_wake_sr{";
-    os << "{";
-    os << "\n  \"file\": ";
-    os << Bmad::to_json(obj.file);
-    os << ",";
-    os << "\n  \"z_long\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"long_wake\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"trans_wake\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"z_ref_long\": ";
-    os << Bmad::to_json(obj.z_ref_long);
-    os << ",";
-    os << "\n  \"z_ref_trans\": ";
-    os << Bmad::to_json(obj.z_ref_trans);
-    os << ",";
-    os << "\n  \"z_max\": ";
-    os << Bmad::to_json(obj.z_max);
-    os << ",";
-    os << "\n  \"amp_scale\": ";
-    os << Bmad::to_json(obj.amp_scale);
-    os << ",";
-    os << "\n  \"z_scale\": ";
-    os << Bmad::to_json(obj.z_scale);
-    os << ",";
-    os << "\n  \"scale_with_length\": ";
-    os << Bmad::to_json(obj.scale_with_length);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wake_sr &obj);
 };
 
 extern "C" void wake_sr_to_c(const Opaque_wake_sr_class *, CPP_wake_sr &);
 extern "C" void wake_sr_to_f(const CPP_wake_sr &, Opaque_wake_sr_class *);
 
 bool operator==(const CPP_wake_sr &, const CPP_wake_sr &);
+void to_json(json &, const CPP_wake_sr &);
 
 //--------------------------------------------------------------------
 // CPP_wake_lr_mode
@@ -977,58 +530,7 @@ public:
 
   virtual ~CPP_wake_lr_mode() {}
   std::shared_ptr<CPP_wake_lr_mode> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wake_lr_mode &obj) {
-    os << "CPP_wake_lr_mode{";
-    os << "{";
-    os << "\n  \"freq\": ";
-    os << Bmad::to_json(obj.freq);
-    os << ",";
-    os << "\n  \"freq_in\": ";
-    os << Bmad::to_json(obj.freq_in);
-    os << ",";
-    os << "\n  \"R_over_Q\": ";
-    os << Bmad::to_json(obj.R_over_Q);
-    os << ",";
-    os << "\n  \"Q\": ";
-    os << Bmad::to_json(obj.Q);
-    os << ",";
-    os << "\n  \"damp\": ";
-    os << Bmad::to_json(obj.damp);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"angle\": ";
-    os << Bmad::to_json(obj.angle);
-    os << ",";
-    os << "\n  \"b_sin\": ";
-    os << Bmad::to_json(obj.b_sin);
-    os << ",";
-    os << "\n  \"b_cos\": ";
-    os << Bmad::to_json(obj.b_cos);
-    os << ",";
-    os << "\n  \"a_sin\": ";
-    os << Bmad::to_json(obj.a_sin);
-    os << ",";
-    os << "\n  \"a_cos\": ";
-    os << Bmad::to_json(obj.a_cos);
-    os << ",";
-    os << "\n  \"m\": ";
-    os << Bmad::to_json(obj.m);
-    os << ",";
-    os << "\n  \"polarized\": ";
-    os << Bmad::to_json(obj.polarized);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wake_lr_mode &obj);
 };
 
 extern "C" void wake_lr_mode_to_c(const Opaque_wake_lr_mode_class *,
@@ -1037,6 +539,7 @@ extern "C" void wake_lr_mode_to_f(const CPP_wake_lr_mode &,
                                   Opaque_wake_lr_mode_class *);
 
 bool operator==(const CPP_wake_lr_mode &, const CPP_wake_lr_mode &);
+void to_json(json &, const CPP_wake_lr_mode &);
 
 //--------------------------------------------------------------------
 // CPP_wake_lr
@@ -1058,46 +561,14 @@ public:
 
   virtual ~CPP_wake_lr() {}
   std::shared_ptr<CPP_wake_lr> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wake_lr &obj) {
-    os << "CPP_wake_lr{";
-    os << "{";
-    os << "\n  \"file\": ";
-    os << Bmad::to_json(obj.file);
-    os << ",";
-    os << "\n  \"mode\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"t_ref\": ";
-    os << Bmad::to_json(obj.t_ref);
-    os << ",";
-    os << "\n  \"freq_spread\": ";
-    os << Bmad::to_json(obj.freq_spread);
-    os << ",";
-    os << "\n  \"amp_scale\": ";
-    os << Bmad::to_json(obj.amp_scale);
-    os << ",";
-    os << "\n  \"time_scale\": ";
-    os << Bmad::to_json(obj.time_scale);
-    os << ",";
-    os << "\n  \"self_wake_on\": ";
-    os << Bmad::to_json(obj.self_wake_on);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wake_lr &obj);
 };
 
 extern "C" void wake_lr_to_c(const Opaque_wake_lr_class *, CPP_wake_lr &);
 extern "C" void wake_lr_to_f(const CPP_wake_lr &, Opaque_wake_lr_class *);
 
 bool operator==(const CPP_wake_lr &, const CPP_wake_lr &);
+void to_json(json &, const CPP_wake_lr &);
 
 //--------------------------------------------------------------------
 // CPP_lat_ele_loc
@@ -1114,25 +585,7 @@ public:
 
   virtual ~CPP_lat_ele_loc() {}
   std::shared_ptr<CPP_lat_ele_loc> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_lat_ele_loc &obj) {
-    os << "CPP_lat_ele_loc{";
-    os << "{";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"ix_branch\": ";
-    os << Bmad::to_json(obj.ix_branch);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_lat_ele_loc &obj);
 };
 
 extern "C" void lat_ele_loc_to_c(const Opaque_lat_ele_loc_class *,
@@ -1141,6 +594,7 @@ extern "C" void lat_ele_loc_to_f(const CPP_lat_ele_loc &,
                                  Opaque_lat_ele_loc_class *);
 
 bool operator==(const CPP_lat_ele_loc &, const CPP_lat_ele_loc &);
+void to_json(json &, const CPP_lat_ele_loc &);
 
 //--------------------------------------------------------------------
 // CPP_wake
@@ -1157,31 +611,14 @@ public:
 
   virtual ~CPP_wake() {}
   std::shared_ptr<CPP_wake> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wake &obj) {
-    os << "CPP_wake{";
-    os << "{";
-    os << "\n  \"sr\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"lr\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wake &obj);
 };
 
 extern "C" void wake_to_c(const Opaque_wake_class *, CPP_wake &);
 extern "C" void wake_to_f(const CPP_wake &, Opaque_wake_class *);
 
 bool operator==(const CPP_wake &, const CPP_wake &);
+void to_json(json &, const CPP_wake &);
 
 //--------------------------------------------------------------------
 // CPP_taylor_term
@@ -1198,25 +635,7 @@ public:
 
   virtual ~CPP_taylor_term() {}
   std::shared_ptr<CPP_taylor_term> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_taylor_term &obj) {
-    os << "CPP_taylor_term{";
-    os << "{";
-    os << "\n  \"coef\": ";
-    os << Bmad::to_json(obj.coef);
-    os << ",";
-    os << "\n  \"expn\": ";
-    os << Bmad::to_json(obj.expn);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_taylor_term &obj);
 };
 
 extern "C" void taylor_term_to_c(const Opaque_taylor_term_class *,
@@ -1225,6 +644,7 @@ extern "C" void taylor_term_to_f(const CPP_taylor_term &,
                                  Opaque_taylor_term_class *);
 
 bool operator==(const CPP_taylor_term &, const CPP_taylor_term &);
+void to_json(json &, const CPP_taylor_term &);
 
 //--------------------------------------------------------------------
 // CPP_taylor
@@ -1241,31 +661,14 @@ public:
 
   virtual ~CPP_taylor() {}
   std::shared_ptr<CPP_taylor> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_taylor &obj) {
-    os << "CPP_taylor{";
-    os << "{";
-    os << "\n  \"ref\": ";
-    os << Bmad::to_json(obj.ref);
-    os << ",";
-    os << "\n  \"term\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_taylor &obj);
 };
 
 extern "C" void taylor_to_c(const Opaque_taylor_class *, CPP_taylor &);
 extern "C" void taylor_to_f(const CPP_taylor &, Opaque_taylor_class *);
 
 bool operator==(const CPP_taylor &, const CPP_taylor &);
+void to_json(json &, const CPP_taylor &);
 
 //--------------------------------------------------------------------
 // CPP_em_taylor_term
@@ -1283,25 +686,7 @@ public:
 
   virtual ~CPP_em_taylor_term() {}
   std::shared_ptr<CPP_em_taylor_term> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_em_taylor_term &obj) {
-    os << "CPP_em_taylor_term{";
-    os << "{";
-    os << "\n  \"coef\": ";
-    os << Bmad::to_json(obj.coef);
-    os << ",";
-    os << "\n  \"expn\": ";
-    os << Bmad::to_json(obj.expn);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_em_taylor_term &obj);
 };
 
 extern "C" void em_taylor_term_to_c(const Opaque_em_taylor_term_class *,
@@ -1310,6 +695,7 @@ extern "C" void em_taylor_term_to_f(const CPP_em_taylor_term &,
                                     Opaque_em_taylor_term_class *);
 
 bool operator==(const CPP_em_taylor_term &, const CPP_em_taylor_term &);
+void to_json(json &, const CPP_em_taylor_term &);
 
 //--------------------------------------------------------------------
 // CPP_em_taylor
@@ -1326,31 +712,14 @@ public:
 
   virtual ~CPP_em_taylor() {}
   std::shared_ptr<CPP_em_taylor> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_em_taylor &obj) {
-    os << "CPP_em_taylor{";
-    os << "{";
-    os << "\n  \"ref\": ";
-    os << Bmad::to_json(obj.ref);
-    os << ",";
-    os << "\n  \"term\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_em_taylor &obj);
 };
 
 extern "C" void em_taylor_to_c(const Opaque_em_taylor_class *, CPP_em_taylor &);
 extern "C" void em_taylor_to_f(const CPP_em_taylor &, Opaque_em_taylor_class *);
 
 bool operator==(const CPP_em_taylor &, const CPP_em_taylor &);
+void to_json(json &, const CPP_em_taylor &);
 
 //--------------------------------------------------------------------
 // CPP_cartesian_map_term1
@@ -1377,46 +746,7 @@ public:
   std::shared_ptr<CPP_cartesian_map_term1> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_cartesian_map_term1 &obj) {
-    os << "CPP_cartesian_map_term1{";
-    os << "{";
-    os << "\n  \"coef\": ";
-    os << Bmad::to_json(obj.coef);
-    os << ",";
-    os << "\n  \"kx\": ";
-    os << Bmad::to_json(obj.kx);
-    os << ",";
-    os << "\n  \"ky\": ";
-    os << Bmad::to_json(obj.ky);
-    os << ",";
-    os << "\n  \"kz\": ";
-    os << Bmad::to_json(obj.kz);
-    os << ",";
-    os << "\n  \"x0\": ";
-    os << Bmad::to_json(obj.x0);
-    os << ",";
-    os << "\n  \"y0\": ";
-    os << Bmad::to_json(obj.y0);
-    os << ",";
-    os << "\n  \"phi_z\": ";
-    os << Bmad::to_json(obj.phi_z);
-    os << ",";
-    os << "\n  \"family\": ";
-    os << Bmad::to_json(obj.family);
-    os << ",";
-    os << "\n  \"form\": ";
-    os << Bmad::to_json(obj.form);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_cartesian_map_term1 &obj);
 };
 
 extern "C" void
@@ -1427,6 +757,7 @@ extern "C" void cartesian_map_term1_to_f(const CPP_cartesian_map_term1 &,
 
 bool operator==(const CPP_cartesian_map_term1 &,
                 const CPP_cartesian_map_term1 &);
+void to_json(json &, const CPP_cartesian_map_term1 &);
 
 //--------------------------------------------------------------------
 // CPP_cartesian_map_term
@@ -1447,28 +778,7 @@ public:
   std::shared_ptr<CPP_cartesian_map_term> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_cartesian_map_term &obj) {
-    os << "CPP_cartesian_map_term{";
-    os << "{";
-    os << "\n  \"file\": ";
-    os << Bmad::to_json(obj.file);
-    os << ",";
-    os << "\n  \"n_link\": ";
-    os << Bmad::to_json(obj.n_link);
-    os << ",";
-    os << "\n  \"term\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_cartesian_map_term &obj);
 };
 
 extern "C" void cartesian_map_term_to_c(const Opaque_cartesian_map_term_class *,
@@ -1477,6 +787,7 @@ extern "C" void cartesian_map_term_to_f(const CPP_cartesian_map_term &,
                                         Opaque_cartesian_map_term_class *);
 
 bool operator==(const CPP_cartesian_map_term &, const CPP_cartesian_map_term &);
+void to_json(json &, const CPP_cartesian_map_term &);
 
 //--------------------------------------------------------------------
 // CPP_cartesian_map
@@ -1498,37 +809,7 @@ public:
 
   virtual ~CPP_cartesian_map() {}
   std::shared_ptr<CPP_cartesian_map> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_cartesian_map &obj) {
-    os << "CPP_cartesian_map{";
-    os << "{";
-    os << "\n  \"field_scale\": ";
-    os << Bmad::to_json(obj.field_scale);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"master_parameter\": ";
-    os << Bmad::to_json(obj.master_parameter);
-    os << ",";
-    os << "\n  \"ele_anchor_pt\": ";
-    os << Bmad::to_json(obj.ele_anchor_pt);
-    os << ",";
-    os << "\n  \"field_type\": ";
-    os << Bmad::to_json(obj.field_type);
-    os << ",";
-    os << "\n  \"ptr\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_cartesian_map &obj);
 };
 
 extern "C" void cartesian_map_to_c(const Opaque_cartesian_map_class *,
@@ -1537,6 +818,7 @@ extern "C" void cartesian_map_to_f(const CPP_cartesian_map &,
                                    Opaque_cartesian_map_class *);
 
 bool operator==(const CPP_cartesian_map &, const CPP_cartesian_map &);
+void to_json(json &, const CPP_cartesian_map &);
 
 //--------------------------------------------------------------------
 // CPP_cylindrical_map_term1
@@ -1556,26 +838,7 @@ public:
   std::shared_ptr<CPP_cylindrical_map_term1> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os,
-                             const CPP_cylindrical_map_term1 &obj) {
-    os << "CPP_cylindrical_map_term1{";
-    os << "{";
-    os << "\n  \"e_coef\": ";
-    os << Bmad::to_json(obj.e_coef);
-    os << ",";
-    os << "\n  \"b_coef\": ";
-    os << Bmad::to_json(obj.b_coef);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_cylindrical_map_term1 &obj);
 };
 
 extern "C" void
@@ -1587,6 +850,7 @@ cylindrical_map_term1_to_f(const CPP_cylindrical_map_term1 &,
 
 bool operator==(const CPP_cylindrical_map_term1 &,
                 const CPP_cylindrical_map_term1 &);
+void to_json(json &, const CPP_cylindrical_map_term1 &);
 
 //--------------------------------------------------------------------
 // CPP_cylindrical_map_term
@@ -1607,28 +871,7 @@ public:
   std::shared_ptr<CPP_cylindrical_map_term> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_cylindrical_map_term &obj) {
-    os << "CPP_cylindrical_map_term{";
-    os << "{";
-    os << "\n  \"file\": ";
-    os << Bmad::to_json(obj.file);
-    os << ",";
-    os << "\n  \"n_link\": ";
-    os << Bmad::to_json(obj.n_link);
-    os << ",";
-    os << "\n  \"term\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_cylindrical_map_term &obj);
 };
 
 extern "C" void
@@ -1639,6 +882,7 @@ extern "C" void cylindrical_map_term_to_f(const CPP_cylindrical_map_term &,
 
 bool operator==(const CPP_cylindrical_map_term &,
                 const CPP_cylindrical_map_term &);
+void to_json(json &, const CPP_cylindrical_map_term &);
 
 //--------------------------------------------------------------------
 // CPP_cylindrical_map
@@ -1664,49 +908,7 @@ public:
 
   virtual ~CPP_cylindrical_map() {}
   std::shared_ptr<CPP_cylindrical_map> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_cylindrical_map &obj) {
-    os << "CPP_cylindrical_map{";
-    os << "{";
-    os << "\n  \"m\": ";
-    os << Bmad::to_json(obj.m);
-    os << ",";
-    os << "\n  \"harmonic\": ";
-    os << Bmad::to_json(obj.harmonic);
-    os << ",";
-    os << "\n  \"phi0_fieldmap\": ";
-    os << Bmad::to_json(obj.phi0_fieldmap);
-    os << ",";
-    os << "\n  \"theta0_azimuth\": ";
-    os << Bmad::to_json(obj.theta0_azimuth);
-    os << ",";
-    os << "\n  \"field_scale\": ";
-    os << Bmad::to_json(obj.field_scale);
-    os << ",";
-    os << "\n  \"master_parameter\": ";
-    os << Bmad::to_json(obj.master_parameter);
-    os << ",";
-    os << "\n  \"ele_anchor_pt\": ";
-    os << Bmad::to_json(obj.ele_anchor_pt);
-    os << ",";
-    os << "\n  \"dz\": ";
-    os << Bmad::to_json(obj.dz);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"ptr\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_cylindrical_map &obj);
 };
 
 extern "C" void cylindrical_map_to_c(const Opaque_cylindrical_map_class *,
@@ -1715,6 +917,7 @@ extern "C" void cylindrical_map_to_f(const CPP_cylindrical_map &,
                                      Opaque_cylindrical_map_class *);
 
 bool operator==(const CPP_cylindrical_map &, const CPP_cylindrical_map &);
+void to_json(json &, const CPP_cylindrical_map &);
 
 //--------------------------------------------------------------------
 // CPP_grid_field_pt1
@@ -1732,25 +935,7 @@ public:
 
   virtual ~CPP_grid_field_pt1() {}
   std::shared_ptr<CPP_grid_field_pt1> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_grid_field_pt1 &obj) {
-    os << "CPP_grid_field_pt1{";
-    os << "{";
-    os << "\n  \"E\": ";
-    os << Bmad::to_json(obj.E);
-    os << ",";
-    os << "\n  \"B\": ";
-    os << Bmad::to_json(obj.B);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_grid_field_pt1 &obj);
 };
 
 extern "C" void grid_field_pt1_to_c(const Opaque_grid_field_pt1_class *,
@@ -1759,6 +944,7 @@ extern "C" void grid_field_pt1_to_f(const CPP_grid_field_pt1 &,
                                     Opaque_grid_field_pt1_class *);
 
 bool operator==(const CPP_grid_field_pt1 &, const CPP_grid_field_pt1 &);
+void to_json(json &, const CPP_grid_field_pt1 &);
 
 //--------------------------------------------------------------------
 // CPP_grid_field_pt
@@ -1776,25 +962,7 @@ public:
 
   virtual ~CPP_grid_field_pt() {}
   std::shared_ptr<CPP_grid_field_pt> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_grid_field_pt &obj) {
-    os << "CPP_grid_field_pt{";
-    os << "{";
-    os << "\n  \"file\": ";
-    os << Bmad::to_json(obj.file);
-    os << ",";
-    os << "\n  \"n_link\": ";
-    os << Bmad::to_json(obj.n_link);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_grid_field_pt &obj);
 };
 
 extern "C" void grid_field_pt_to_c(const Opaque_grid_field_pt_class *,
@@ -1803,6 +971,7 @@ extern "C" void grid_field_pt_to_f(const CPP_grid_field_pt &,
                                    Opaque_grid_field_pt_class *);
 
 bool operator==(const CPP_grid_field_pt &, const CPP_grid_field_pt &);
+void to_json(json &, const CPP_grid_field_pt &);
 
 //--------------------------------------------------------------------
 // CPP_grid_field
@@ -1829,55 +998,7 @@ public:
 
   virtual ~CPP_grid_field() {}
   std::shared_ptr<CPP_grid_field> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_grid_field &obj) {
-    os << "CPP_grid_field{";
-    os << "{";
-    os << "\n  \"geometry\": ";
-    os << Bmad::to_json(obj.geometry);
-    os << ",";
-    os << "\n  \"harmonic\": ";
-    os << Bmad::to_json(obj.harmonic);
-    os << ",";
-    os << "\n  \"phi0_fieldmap\": ";
-    os << Bmad::to_json(obj.phi0_fieldmap);
-    os << ",";
-    os << "\n  \"field_scale\": ";
-    os << Bmad::to_json(obj.field_scale);
-    os << ",";
-    os << "\n  \"field_type\": ";
-    os << Bmad::to_json(obj.field_type);
-    os << ",";
-    os << "\n  \"master_parameter\": ";
-    os << Bmad::to_json(obj.master_parameter);
-    os << ",";
-    os << "\n  \"ele_anchor_pt\": ";
-    os << Bmad::to_json(obj.ele_anchor_pt);
-    os << ",";
-    os << "\n  \"interpolation_order\": ";
-    os << Bmad::to_json(obj.interpolation_order);
-    os << ",";
-    os << "\n  \"dr\": ";
-    os << Bmad::to_json(obj.dr);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"curved_ref_frame\": ";
-    os << Bmad::to_json(obj.curved_ref_frame);
-    os << ",";
-    os << "\n  \"ptr\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_grid_field &obj);
 };
 
 extern "C" void grid_field_to_c(const Opaque_grid_field_class *,
@@ -1886,6 +1007,7 @@ extern "C" void grid_field_to_f(const CPP_grid_field &,
                                 Opaque_grid_field_class *);
 
 bool operator==(const CPP_grid_field &, const CPP_grid_field &);
+void to_json(json &, const CPP_grid_field &);
 
 //--------------------------------------------------------------------
 // CPP_floor_position
@@ -1906,34 +1028,7 @@ public:
 
   virtual ~CPP_floor_position() {}
   std::shared_ptr<CPP_floor_position> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_floor_position &obj) {
-    os << "CPP_floor_position{";
-    os << "{";
-    os << "\n  \"r\": ";
-    os << Bmad::to_json(obj.r);
-    os << ",";
-    os << "\n  \"w\": ";
-    os << Bmad::to_json(obj.w);
-    os << ",";
-    os << "\n  \"theta\": ";
-    os << Bmad::to_json(obj.theta);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"psi\": ";
-    os << Bmad::to_json(obj.psi);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_floor_position &obj);
 };
 
 extern "C" void floor_position_to_c(const Opaque_floor_position_class *,
@@ -1942,6 +1037,7 @@ extern "C" void floor_position_to_f(const CPP_floor_position &,
                                     Opaque_floor_position_class *);
 
 bool operator==(const CPP_floor_position &, const CPP_floor_position &);
+void to_json(json &, const CPP_floor_position &);
 
 //--------------------------------------------------------------------
 // CPP_high_energy_space_charge
@@ -1967,44 +1063,8 @@ public:
   std::shared_ptr<CPP_high_energy_space_charge> getptr() {
     return shared_from_this();
   }
-
   friend ostream &operator<<(ostream &os,
-                             const CPP_high_energy_space_charge &obj) {
-    os << "CPP_high_energy_space_charge{";
-    os << "{";
-    os << "\n  \"closed_orb\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"kick_const\": ";
-    os << Bmad::to_json(obj.kick_const);
-    os << ",";
-    os << "\n  \"sig_x\": ";
-    os << Bmad::to_json(obj.sig_x);
-    os << ",";
-    os << "\n  \"sig_y\": ";
-    os << Bmad::to_json(obj.sig_y);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"sin_phi\": ";
-    os << Bmad::to_json(obj.sin_phi);
-    os << ",";
-    os << "\n  \"cos_phi\": ";
-    os << Bmad::to_json(obj.cos_phi);
-    os << ",";
-    os << "\n  \"sig_z\": ";
-    os << Bmad::to_json(obj.sig_z);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+                             const CPP_high_energy_space_charge &obj);
 };
 
 extern "C" void
@@ -2016,6 +1076,7 @@ high_energy_space_charge_to_f(const CPP_high_energy_space_charge &,
 
 bool operator==(const CPP_high_energy_space_charge &,
                 const CPP_high_energy_space_charge &);
+void to_json(json &, const CPP_high_energy_space_charge &);
 
 //--------------------------------------------------------------------
 // CPP_xy_disp
@@ -2034,37 +1095,14 @@ public:
 
   virtual ~CPP_xy_disp() {}
   std::shared_ptr<CPP_xy_disp> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_xy_disp &obj) {
-    os << "CPP_xy_disp{";
-    os << "{";
-    os << "\n  \"eta\": ";
-    os << Bmad::to_json(obj.eta);
-    os << ",";
-    os << "\n  \"etap\": ";
-    os << Bmad::to_json(obj.etap);
-    os << ",";
-    os << "\n  \"deta_ds\": ";
-    os << Bmad::to_json(obj.deta_ds);
-    os << ",";
-    os << "\n  \"sigma\": ";
-    os << Bmad::to_json(obj.sigma);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_xy_disp &obj);
 };
 
 extern "C" void xy_disp_to_c(const Opaque_xy_disp_class *, CPP_xy_disp &);
 extern "C" void xy_disp_to_f(const CPP_xy_disp &, Opaque_xy_disp_class *);
 
 bool operator==(const CPP_xy_disp &, const CPP_xy_disp &);
+void to_json(json &, const CPP_xy_disp &);
 
 //--------------------------------------------------------------------
 // CPP_twiss
@@ -2090,58 +1128,14 @@ public:
 
   virtual ~CPP_twiss() {}
   std::shared_ptr<CPP_twiss> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_twiss &obj) {
-    os << "CPP_twiss{";
-    os << "{";
-    os << "\n  \"beta\": ";
-    os << Bmad::to_json(obj.beta);
-    os << ",";
-    os << "\n  \"alpha\": ";
-    os << Bmad::to_json(obj.alpha);
-    os << ",";
-    os << "\n  \"gamma\": ";
-    os << Bmad::to_json(obj.gamma);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"eta\": ";
-    os << Bmad::to_json(obj.eta);
-    os << ",";
-    os << "\n  \"etap\": ";
-    os << Bmad::to_json(obj.etap);
-    os << ",";
-    os << "\n  \"deta_ds\": ";
-    os << Bmad::to_json(obj.deta_ds);
-    os << ",";
-    os << "\n  \"sigma\": ";
-    os << Bmad::to_json(obj.sigma);
-    os << ",";
-    os << "\n  \"sigma_p\": ";
-    os << Bmad::to_json(obj.sigma_p);
-    os << ",";
-    os << "\n  \"emit\": ";
-    os << Bmad::to_json(obj.emit);
-    os << ",";
-    os << "\n  \"norm_emit\": ";
-    os << Bmad::to_json(obj.norm_emit);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_twiss &obj);
 };
 
 extern "C" void twiss_to_c(const Opaque_twiss_class *, CPP_twiss &);
 extern "C" void twiss_to_f(const CPP_twiss &, Opaque_twiss_class *);
 
 bool operator==(const CPP_twiss &, const CPP_twiss &);
+void to_json(json &, const CPP_twiss &);
 
 //--------------------------------------------------------------------
 // CPP_mode3
@@ -2162,43 +1156,14 @@ public:
 
   virtual ~CPP_mode3() {}
   std::shared_ptr<CPP_mode3> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_mode3 &obj) {
-    os << "CPP_mode3{";
-    os << "{";
-    os << "\n  \"v\": ";
-    os << Bmad::to_json(obj.v);
-    os << ",";
-    os << "\n  \"a\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"b\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"c\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"x\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"y\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_mode3 &obj);
 };
 
 extern "C" void mode3_to_c(const Opaque_mode3_class *, CPP_mode3 &);
 extern "C" void mode3_to_f(const CPP_mode3 &, Opaque_mode3_class *);
 
 bool operator==(const CPP_mode3 &, const CPP_mode3 &);
+void to_json(json &, const CPP_mode3 &);
 
 //--------------------------------------------------------------------
 // CPP_bookkeeping_state
@@ -2223,46 +1188,7 @@ public:
 
   virtual ~CPP_bookkeeping_state() {}
   std::shared_ptr<CPP_bookkeeping_state> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_bookkeeping_state &obj) {
-    os << "CPP_bookkeeping_state{";
-    os << "{";
-    os << "\n  \"attributes\": ";
-    os << Bmad::to_json(obj.attributes);
-    os << ",";
-    os << "\n  \"control\": ";
-    os << Bmad::to_json(obj.control);
-    os << ",";
-    os << "\n  \"floor_position\": ";
-    os << Bmad::to_json(obj.floor_position);
-    os << ",";
-    os << "\n  \"s_position\": ";
-    os << Bmad::to_json(obj.s_position);
-    os << ",";
-    os << "\n  \"ref_energy\": ";
-    os << Bmad::to_json(obj.ref_energy);
-    os << ",";
-    os << "\n  \"mat6\": ";
-    os << Bmad::to_json(obj.mat6);
-    os << ",";
-    os << "\n  \"rad_int\": ";
-    os << Bmad::to_json(obj.rad_int);
-    os << ",";
-    os << "\n  \"ptc\": ";
-    os << Bmad::to_json(obj.ptc);
-    os << ",";
-    os << "\n  \"has_misalign\": ";
-    os << Bmad::to_json(obj.has_misalign);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_bookkeeping_state &obj);
 };
 
 extern "C" void bookkeeping_state_to_c(const Opaque_bookkeeping_state_class *,
@@ -2271,6 +1197,7 @@ extern "C" void bookkeeping_state_to_f(const CPP_bookkeeping_state &,
                                        Opaque_bookkeeping_state_class *);
 
 bool operator==(const CPP_bookkeeping_state &, const CPP_bookkeeping_state &);
+void to_json(json &, const CPP_bookkeeping_state &);
 
 //--------------------------------------------------------------------
 // CPP_rad_map
@@ -2290,40 +1217,14 @@ public:
 
   virtual ~CPP_rad_map() {}
   std::shared_ptr<CPP_rad_map> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_rad_map &obj) {
-    os << "CPP_rad_map{";
-    os << "{";
-    os << "\n  \"ref_orb\": ";
-    os << Bmad::to_json(obj.ref_orb);
-    os << ",";
-    os << "\n  \"damp_dmat\": ";
-    os << Bmad::to_json(obj.damp_dmat);
-    os << ",";
-    os << "\n  \"xfer_damp_vec\": ";
-    os << Bmad::to_json(obj.xfer_damp_vec);
-    os << ",";
-    os << "\n  \"xfer_damp_mat\": ";
-    os << Bmad::to_json(obj.xfer_damp_mat);
-    os << ",";
-    os << "\n  \"stoc_mat\": ";
-    os << Bmad::to_json(obj.stoc_mat);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_rad_map &obj);
 };
 
 extern "C" void rad_map_to_c(const Opaque_rad_map_class *, CPP_rad_map &);
 extern "C" void rad_map_to_f(const CPP_rad_map &, Opaque_rad_map_class *);
 
 bool operator==(const CPP_rad_map &, const CPP_rad_map &);
+void to_json(json &, const CPP_rad_map &);
 
 //--------------------------------------------------------------------
 // CPP_rad_map_ele
@@ -2341,28 +1242,7 @@ public:
 
   virtual ~CPP_rad_map_ele() {}
   std::shared_ptr<CPP_rad_map_ele> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_rad_map_ele &obj) {
-    os << "CPP_rad_map_ele{";
-    os << "{";
-    os << "\n  \"rm0\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"rm1\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"stale\": ";
-    os << Bmad::to_json(obj.stale);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_rad_map_ele &obj);
 };
 
 extern "C" void rad_map_ele_to_c(const Opaque_rad_map_ele_class *,
@@ -2371,6 +1251,7 @@ extern "C" void rad_map_ele_to_f(const CPP_rad_map_ele &,
                                  Opaque_rad_map_ele_class *);
 
 bool operator==(const CPP_rad_map_ele &, const CPP_rad_map_ele &);
+void to_json(json &, const CPP_rad_map_ele &);
 
 //--------------------------------------------------------------------
 // CPP_gen_grad1
@@ -2389,37 +1270,14 @@ public:
 
   virtual ~CPP_gen_grad1() {}
   std::shared_ptr<CPP_gen_grad1> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_gen_grad1 &obj) {
-    os << "CPP_gen_grad1{";
-    os << "{";
-    os << "\n  \"m\": ";
-    os << Bmad::to_json(obj.m);
-    os << ",";
-    os << "\n  \"sincos\": ";
-    os << Bmad::to_json(obj.sincos);
-    os << ",";
-    os << "\n  \"n_deriv_max\": ";
-    os << Bmad::to_json(obj.n_deriv_max);
-    os << ",";
-    os << "\n  \"deriv\": ";
-    os << Bmad::to_json(obj.deriv);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_gen_grad1 &obj);
 };
 
 extern "C" void gen_grad1_to_c(const Opaque_gen_grad1_class *, CPP_gen_grad1 &);
 extern "C" void gen_grad1_to_f(const CPP_gen_grad1 &, Opaque_gen_grad1_class *);
 
 bool operator==(const CPP_gen_grad1 &, const CPP_gen_grad1 &);
+void to_json(json &, const CPP_gen_grad1 &);
 
 //--------------------------------------------------------------------
 // CPP_gen_grad_map
@@ -2445,52 +1303,7 @@ public:
 
   virtual ~CPP_gen_grad_map() {}
   std::shared_ptr<CPP_gen_grad_map> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_gen_grad_map &obj) {
-    os << "CPP_gen_grad_map{";
-    os << "{";
-    os << "\n  \"file\": ";
-    os << Bmad::to_json(obj.file);
-    os << ",";
-    os << "\n  \"gg\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ele_anchor_pt\": ";
-    os << Bmad::to_json(obj.ele_anchor_pt);
-    os << ",";
-    os << "\n  \"field_type\": ";
-    os << Bmad::to_json(obj.field_type);
-    os << ",";
-    os << "\n  \"iz0\": ";
-    os << Bmad::to_json(obj.iz0);
-    os << ",";
-    os << "\n  \"iz1\": ";
-    os << Bmad::to_json(obj.iz1);
-    os << ",";
-    os << "\n  \"dz\": ";
-    os << Bmad::to_json(obj.dz);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"field_scale\": ";
-    os << Bmad::to_json(obj.field_scale);
-    os << ",";
-    os << "\n  \"master_parameter\": ";
-    os << Bmad::to_json(obj.master_parameter);
-    os << ",";
-    os << "\n  \"curved_ref_frame\": ";
-    os << Bmad::to_json(obj.curved_ref_frame);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_gen_grad_map &obj);
 };
 
 extern "C" void gen_grad_map_to_c(const Opaque_gen_grad_map_class *,
@@ -2499,6 +1312,7 @@ extern "C" void gen_grad_map_to_f(const CPP_gen_grad_map &,
                                   Opaque_gen_grad_map_class *);
 
 bool operator==(const CPP_gen_grad_map &, const CPP_gen_grad_map &);
+void to_json(json &, const CPP_gen_grad_map &);
 
 //--------------------------------------------------------------------
 // CPP_surface_segmented_pt
@@ -2521,34 +1335,7 @@ public:
   std::shared_ptr<CPP_surface_segmented_pt> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_surface_segmented_pt &obj) {
-    os << "CPP_surface_segmented_pt{";
-    os << "{";
-    os << "\n  \"x0\": ";
-    os << Bmad::to_json(obj.x0);
-    os << ",";
-    os << "\n  \"y0\": ";
-    os << Bmad::to_json(obj.y0);
-    os << ",";
-    os << "\n  \"z0\": ";
-    os << Bmad::to_json(obj.z0);
-    os << ",";
-    os << "\n  \"dz_dx\": ";
-    os << Bmad::to_json(obj.dz_dx);
-    os << ",";
-    os << "\n  \"dz_dy\": ";
-    os << Bmad::to_json(obj.dz_dy);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_surface_segmented_pt &obj);
 };
 
 extern "C" void
@@ -2559,6 +1346,7 @@ extern "C" void surface_segmented_pt_to_f(const CPP_surface_segmented_pt &,
 
 bool operator==(const CPP_surface_segmented_pt &,
                 const CPP_surface_segmented_pt &);
+void to_json(json &, const CPP_surface_segmented_pt &);
 
 //--------------------------------------------------------------------
 // CPP_surface_segmented
@@ -2578,31 +1366,7 @@ public:
 
   virtual ~CPP_surface_segmented() {}
   std::shared_ptr<CPP_surface_segmented> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_surface_segmented &obj) {
-    os << "CPP_surface_segmented{";
-    os << "{";
-    os << "\n  \"active\": ";
-    os << Bmad::to_json(obj.active);
-    os << ",";
-    os << "\n  \"dr\": ";
-    os << Bmad::to_json(obj.dr);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"pt\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_surface_segmented &obj);
 };
 
 extern "C" void surface_segmented_to_c(const Opaque_surface_segmented_class *,
@@ -2611,6 +1375,7 @@ extern "C" void surface_segmented_to_f(const CPP_surface_segmented &,
                                        Opaque_surface_segmented_class *);
 
 bool operator==(const CPP_surface_segmented &, const CPP_surface_segmented &);
+void to_json(json &, const CPP_surface_segmented &);
 
 //--------------------------------------------------------------------
 // CPP_surface_h_misalign_pt
@@ -2634,38 +1399,7 @@ public:
   std::shared_ptr<CPP_surface_h_misalign_pt> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os,
-                             const CPP_surface_h_misalign_pt &obj) {
-    os << "CPP_surface_h_misalign_pt{";
-    os << "{";
-    os << "\n  \"x0\": ";
-    os << Bmad::to_json(obj.x0);
-    os << ",";
-    os << "\n  \"y0\": ";
-    os << Bmad::to_json(obj.y0);
-    os << ",";
-    os << "\n  \"rot_y\": ";
-    os << Bmad::to_json(obj.rot_y);
-    os << ",";
-    os << "\n  \"rot_t\": ";
-    os << Bmad::to_json(obj.rot_t);
-    os << ",";
-    os << "\n  \"rot_y_rms\": ";
-    os << Bmad::to_json(obj.rot_y_rms);
-    os << ",";
-    os << "\n  \"rot_t_rms\": ";
-    os << Bmad::to_json(obj.rot_t_rms);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_surface_h_misalign_pt &obj);
 };
 
 extern "C" void
@@ -2677,6 +1411,7 @@ surface_h_misalign_pt_to_f(const CPP_surface_h_misalign_pt &,
 
 bool operator==(const CPP_surface_h_misalign_pt &,
                 const CPP_surface_h_misalign_pt &);
+void to_json(json &, const CPP_surface_h_misalign_pt &);
 
 //--------------------------------------------------------------------
 // CPP_surface_h_misalign
@@ -2698,31 +1433,7 @@ public:
   std::shared_ptr<CPP_surface_h_misalign> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_surface_h_misalign &obj) {
-    os << "CPP_surface_h_misalign{";
-    os << "{";
-    os << "\n  \"active\": ";
-    os << Bmad::to_json(obj.active);
-    os << ",";
-    os << "\n  \"dr\": ";
-    os << Bmad::to_json(obj.dr);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"pt\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_surface_h_misalign &obj);
 };
 
 extern "C" void surface_h_misalign_to_c(const Opaque_surface_h_misalign_class *,
@@ -2731,6 +1442,7 @@ extern "C" void surface_h_misalign_to_f(const CPP_surface_h_misalign &,
                                         Opaque_surface_h_misalign_class *);
 
 bool operator==(const CPP_surface_h_misalign &, const CPP_surface_h_misalign &);
+void to_json(json &, const CPP_surface_h_misalign &);
 
 //--------------------------------------------------------------------
 // CPP_surface_displacement_pt
@@ -2754,38 +1466,8 @@ public:
   std::shared_ptr<CPP_surface_displacement_pt> getptr() {
     return shared_from_this();
   }
-
   friend ostream &operator<<(ostream &os,
-                             const CPP_surface_displacement_pt &obj) {
-    os << "CPP_surface_displacement_pt{";
-    os << "{";
-    os << "\n  \"x0\": ";
-    os << Bmad::to_json(obj.x0);
-    os << ",";
-    os << "\n  \"y0\": ";
-    os << Bmad::to_json(obj.y0);
-    os << ",";
-    os << "\n  \"z0\": ";
-    os << Bmad::to_json(obj.z0);
-    os << ",";
-    os << "\n  \"dz_dx\": ";
-    os << Bmad::to_json(obj.dz_dx);
-    os << ",";
-    os << "\n  \"dz_dy\": ";
-    os << Bmad::to_json(obj.dz_dy);
-    os << ",";
-    os << "\n  \"d2z_dxdy\": ";
-    os << Bmad::to_json(obj.d2z_dxdy);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+                             const CPP_surface_displacement_pt &obj);
 };
 
 extern "C" void
@@ -2797,6 +1479,7 @@ surface_displacement_pt_to_f(const CPP_surface_displacement_pt &,
 
 bool operator==(const CPP_surface_displacement_pt &,
                 const CPP_surface_displacement_pt &);
+void to_json(json &, const CPP_surface_displacement_pt &);
 
 //--------------------------------------------------------------------
 // CPP_surface_displacement
@@ -2818,31 +1501,7 @@ public:
   std::shared_ptr<CPP_surface_displacement> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_surface_displacement &obj) {
-    os << "CPP_surface_displacement{";
-    os << "{";
-    os << "\n  \"active\": ";
-    os << Bmad::to_json(obj.active);
-    os << ",";
-    os << "\n  \"dr\": ";
-    os << Bmad::to_json(obj.dr);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"pt\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_surface_displacement &obj);
 };
 
 extern "C" void
@@ -2853,6 +1512,7 @@ extern "C" void surface_displacement_to_f(const CPP_surface_displacement &,
 
 bool operator==(const CPP_surface_displacement &,
                 const CPP_surface_displacement &);
+void to_json(json &, const CPP_surface_displacement &);
 
 //--------------------------------------------------------------------
 // CPP_target_point
@@ -2868,22 +1528,7 @@ public:
 
   virtual ~CPP_target_point() {}
   std::shared_ptr<CPP_target_point> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_target_point &obj) {
-    os << "CPP_target_point{";
-    os << "{";
-    os << "\n  \"r\": ";
-    os << Bmad::to_json(obj.r);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_target_point &obj);
 };
 
 extern "C" void target_point_to_c(const Opaque_target_point_class *,
@@ -2892,6 +1537,7 @@ extern "C" void target_point_to_f(const CPP_target_point &,
                                   Opaque_target_point_class *);
 
 bool operator==(const CPP_target_point &, const CPP_target_point &);
+void to_json(json &, const CPP_target_point &);
 
 //--------------------------------------------------------------------
 // CPP_surface_curvature
@@ -2911,31 +1557,7 @@ public:
 
   virtual ~CPP_surface_curvature() {}
   std::shared_ptr<CPP_surface_curvature> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_surface_curvature &obj) {
-    os << "CPP_surface_curvature{";
-    os << "{";
-    os << "\n  \"xy\": ";
-    os << Bmad::to_json(obj.xy);
-    os << ",";
-    os << "\n  \"spherical\": ";
-    os << Bmad::to_json(obj.spherical);
-    os << ",";
-    os << "\n  \"elliptical\": ";
-    os << Bmad::to_json(obj.elliptical);
-    os << ",";
-    os << "\n  \"has_curvature\": ";
-    os << Bmad::to_json(obj.has_curvature);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_surface_curvature &obj);
 };
 
 extern "C" void surface_curvature_to_c(const Opaque_surface_curvature_class *,
@@ -2944,6 +1566,7 @@ extern "C" void surface_curvature_to_f(const CPP_surface_curvature &,
                                        Opaque_surface_curvature_class *);
 
 bool operator==(const CPP_surface_curvature &, const CPP_surface_curvature &);
+void to_json(json &, const CPP_surface_curvature &);
 
 //--------------------------------------------------------------------
 // CPP_photon_target
@@ -2964,34 +1587,7 @@ public:
 
   virtual ~CPP_photon_target() {}
   std::shared_ptr<CPP_photon_target> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_photon_target &obj) {
-    os << "CPP_photon_target{";
-    os << "{";
-    os << "\n  \"type\": ";
-    os << Bmad::to_json(obj.type);
-    os << ",";
-    os << "\n  \"n_corner\": ";
-    os << Bmad::to_json(obj.n_corner);
-    os << ",";
-    os << "\n  \"ele_loc\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"corner\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"center\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_photon_target &obj);
 };
 
 extern "C" void photon_target_to_c(const Opaque_photon_target_class *,
@@ -3000,6 +1596,7 @@ extern "C" void photon_target_to_f(const CPP_photon_target &,
                                    Opaque_photon_target_class *);
 
 bool operator==(const CPP_photon_target &, const CPP_photon_target &);
+void to_json(json &, const CPP_photon_target &);
 
 //--------------------------------------------------------------------
 // CPP_photon_material
@@ -3023,43 +1620,7 @@ public:
 
   virtual ~CPP_photon_material() {}
   std::shared_ptr<CPP_photon_material> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_photon_material &obj) {
-    os << "CPP_photon_material{";
-    os << "{";
-    os << "\n  \"f0_m1\": ";
-    os << Bmad::to_json(obj.f0_m1);
-    os << ",";
-    os << "\n  \"f0_m2\": ";
-    os << Bmad::to_json(obj.f0_m2);
-    os << ",";
-    os << "\n  \"f_0\": ";
-    os << Bmad::to_json(obj.f_0);
-    os << ",";
-    os << "\n  \"f_h\": ";
-    os << Bmad::to_json(obj.f_h);
-    os << ",";
-    os << "\n  \"f_hbar\": ";
-    os << Bmad::to_json(obj.f_hbar);
-    os << ",";
-    os << "\n  \"f_hkl\": ";
-    os << Bmad::to_json(obj.f_hkl);
-    os << ",";
-    os << "\n  \"h_norm\": ";
-    os << Bmad::to_json(obj.h_norm);
-    os << ",";
-    os << "\n  \"l_ref\": ";
-    os << Bmad::to_json(obj.l_ref);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_photon_material &obj);
 };
 
 extern "C" void photon_material_to_c(const Opaque_photon_material_class *,
@@ -3068,6 +1629,7 @@ extern "C" void photon_material_to_f(const CPP_photon_material &,
                                      Opaque_photon_material_class *);
 
 bool operator==(const CPP_photon_material &, const CPP_photon_material &);
+void to_json(json &, const CPP_photon_material &);
 
 //--------------------------------------------------------------------
 // CPP_pixel_pt
@@ -3092,55 +1654,14 @@ public:
 
   virtual ~CPP_pixel_pt() {}
   std::shared_ptr<CPP_pixel_pt> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_pixel_pt &obj) {
-    os << "CPP_pixel_pt{";
-    os << "{";
-    os << "\n  \"n_photon\": ";
-    os << Bmad::to_json(obj.n_photon);
-    os << ",";
-    os << "\n  \"E_x\": ";
-    os << Bmad::to_json(obj.E_x);
-    os << ",";
-    os << "\n  \"E_y\": ";
-    os << Bmad::to_json(obj.E_y);
-    os << ",";
-    os << "\n  \"intensity_x\": ";
-    os << Bmad::to_json(obj.intensity_x);
-    os << ",";
-    os << "\n  \"intensity_y\": ";
-    os << Bmad::to_json(obj.intensity_y);
-    os << ",";
-    os << "\n  \"intensity\": ";
-    os << Bmad::to_json(obj.intensity);
-    os << ",";
-    os << "\n  \"orbit\": ";
-    os << Bmad::to_json(obj.orbit);
-    os << ",";
-    os << "\n  \"orbit_rms\": ";
-    os << Bmad::to_json(obj.orbit_rms);
-    os << ",";
-    os << "\n  \"init_orbit\": ";
-    os << Bmad::to_json(obj.init_orbit);
-    os << ",";
-    os << "\n  \"init_orbit_rms\": ";
-    os << Bmad::to_json(obj.init_orbit_rms);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_pixel_pt &obj);
 };
 
 extern "C" void pixel_pt_to_c(const Opaque_pixel_pt_class *, CPP_pixel_pt &);
 extern "C" void pixel_pt_to_f(const CPP_pixel_pt &, Opaque_pixel_pt_class *);
 
 bool operator==(const CPP_pixel_pt &, const CPP_pixel_pt &);
+void to_json(json &, const CPP_pixel_pt &);
 
 //--------------------------------------------------------------------
 // CPP_pixel_detec
@@ -3161,37 +1682,7 @@ public:
 
   virtual ~CPP_pixel_detec() {}
   std::shared_ptr<CPP_pixel_detec> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_pixel_detec &obj) {
-    os << "CPP_pixel_detec{";
-    os << "{";
-    os << "\n  \"dr\": ";
-    os << Bmad::to_json(obj.dr);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"n_track_tot\": ";
-    os << Bmad::to_json(obj.n_track_tot);
-    os << ",";
-    os << "\n  \"n_hit_detec\": ";
-    os << Bmad::to_json(obj.n_hit_detec);
-    os << ",";
-    os << "\n  \"n_hit_pixel\": ";
-    os << Bmad::to_json(obj.n_hit_pixel);
-    os << ",";
-    os << "\n  \"pt\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_pixel_detec &obj);
 };
 
 extern "C" void pixel_detec_to_c(const Opaque_pixel_detec_class *,
@@ -3200,6 +1691,7 @@ extern "C" void pixel_detec_to_f(const CPP_pixel_detec &,
                                  Opaque_pixel_detec_class *);
 
 bool operator==(const CPP_pixel_detec &, const CPP_pixel_detec &);
+void to_json(json &, const CPP_pixel_detec &);
 
 //--------------------------------------------------------------------
 // CPP_photon_element
@@ -3227,55 +1719,7 @@ public:
 
   virtual ~CPP_photon_element() {}
   std::shared_ptr<CPP_photon_element> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_photon_element &obj) {
-    os << "CPP_photon_element{";
-    os << "{";
-    os << "\n  \"curvature\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"target\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"material\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"segmented\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"h_misalign\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"displacement\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"pixel\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"reflectivity_table_type\": ";
-    os << Bmad::to_json(obj.reflectivity_table_type);
-    os << ",";
-    os << "\n  \"reflectivity_table_sigma\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"reflectivity_table_pi\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"init_energy_prob\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"integrated_init_energy_prob\": ";
-    os << Bmad::to_json(obj.integrated_init_energy_prob);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_photon_element &obj);
 };
 
 extern "C" void photon_element_to_c(const Opaque_photon_element_class *,
@@ -3284,6 +1728,7 @@ extern "C" void photon_element_to_f(const CPP_photon_element &,
                                     Opaque_photon_element_class *);
 
 bool operator==(const CPP_photon_element &, const CPP_photon_element &);
+void to_json(json &, const CPP_photon_element &);
 
 //--------------------------------------------------------------------
 // CPP_wall3d_vertex
@@ -3308,46 +1753,7 @@ public:
 
   virtual ~CPP_wall3d_vertex() {}
   std::shared_ptr<CPP_wall3d_vertex> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wall3d_vertex &obj) {
-    os << "CPP_wall3d_vertex{";
-    os << "{";
-    os << "\n  \"x\": ";
-    os << Bmad::to_json(obj.x);
-    os << ",";
-    os << "\n  \"y\": ";
-    os << Bmad::to_json(obj.y);
-    os << ",";
-    os << "\n  \"radius_x\": ";
-    os << Bmad::to_json(obj.radius_x);
-    os << ",";
-    os << "\n  \"radius_y\": ";
-    os << Bmad::to_json(obj.radius_y);
-    os << ",";
-    os << "\n  \"tilt\": ";
-    os << Bmad::to_json(obj.tilt);
-    os << ",";
-    os << "\n  \"angle\": ";
-    os << Bmad::to_json(obj.angle);
-    os << ",";
-    os << "\n  \"x0\": ";
-    os << Bmad::to_json(obj.x0);
-    os << ",";
-    os << "\n  \"y0\": ";
-    os << Bmad::to_json(obj.y0);
-    os << ",";
-    os << "\n  \"type\": ";
-    os << Bmad::to_json(obj.type);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wall3d_vertex &obj);
 };
 
 extern "C" void wall3d_vertex_to_c(const Opaque_wall3d_vertex_class *,
@@ -3356,6 +1762,7 @@ extern "C" void wall3d_vertex_to_f(const CPP_wall3d_vertex &,
                                    Opaque_wall3d_vertex_class *);
 
 bool operator==(const CPP_wall3d_vertex &, const CPP_wall3d_vertex &);
+void to_json(json &, const CPP_wall3d_vertex &);
 
 //--------------------------------------------------------------------
 // CPP_wall3d_section
@@ -3391,79 +1798,7 @@ public:
 
   virtual ~CPP_wall3d_section() {}
   std::shared_ptr<CPP_wall3d_section> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wall3d_section &obj) {
-    os << "CPP_wall3d_section{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"material\": ";
-    os << Bmad::to_json(obj.material);
-    os << ",";
-    os << "\n  \"v\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"surface\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"type\": ";
-    os << Bmad::to_json(obj.type);
-    os << ",";
-    os << "\n  \"n_vertex_input\": ";
-    os << Bmad::to_json(obj.n_vertex_input);
-    os << ",";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"ix_branch\": ";
-    os << Bmad::to_json(obj.ix_branch);
-    os << ",";
-    os << "\n  \"vertices_state\": ";
-    os << Bmad::to_json(obj.vertices_state);
-    os << ",";
-    os << "\n  \"patch_in_region\": ";
-    os << Bmad::to_json(obj.patch_in_region);
-    os << ",";
-    os << "\n  \"thickness\": ";
-    os << Bmad::to_json(obj.thickness);
-    os << ",";
-    os << "\n  \"s\": ";
-    os << Bmad::to_json(obj.s);
-    os << ",";
-    os << "\n  \"r0\": ";
-    os << Bmad::to_json(obj.r0);
-    os << ",";
-    os << "\n  \"dx0_ds\": ";
-    os << Bmad::to_json(obj.dx0_ds);
-    os << ",";
-    os << "\n  \"dy0_ds\": ";
-    os << Bmad::to_json(obj.dy0_ds);
-    os << ",";
-    os << "\n  \"x0_coef\": ";
-    os << Bmad::to_json(obj.x0_coef);
-    os << ",";
-    os << "\n  \"y0_coef\": ";
-    os << Bmad::to_json(obj.y0_coef);
-    os << ",";
-    os << "\n  \"dr_ds\": ";
-    os << Bmad::to_json(obj.dr_ds);
-    os << ",";
-    os << "\n  \"p1_coef\": ";
-    os << Bmad::to_json(obj.p1_coef);
-    os << ",";
-    os << "\n  \"p2_coef\": ";
-    os << Bmad::to_json(obj.p2_coef);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wall3d_section &obj);
 };
 
 extern "C" void wall3d_section_to_c(const Opaque_wall3d_section_class *,
@@ -3472,6 +1807,7 @@ extern "C" void wall3d_section_to_f(const CPP_wall3d_section &,
                                     Opaque_wall3d_section_class *);
 
 bool operator==(const CPP_wall3d_section &, const CPP_wall3d_section &);
+void to_json(json &, const CPP_wall3d_section &);
 
 //--------------------------------------------------------------------
 // CPP_wall3d
@@ -3496,55 +1832,14 @@ public:
 
   virtual ~CPP_wall3d() {}
   std::shared_ptr<CPP_wall3d> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_wall3d &obj) {
-    os << "CPP_wall3d{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"type\": ";
-    os << Bmad::to_json(obj.type);
-    os << ",";
-    os << "\n  \"ix_wall3d\": ";
-    os << Bmad::to_json(obj.ix_wall3d);
-    os << ",";
-    os << "\n  \"n_link\": ";
-    os << Bmad::to_json(obj.n_link);
-    os << ",";
-    os << "\n  \"thickness\": ";
-    os << Bmad::to_json(obj.thickness);
-    os << ",";
-    os << "\n  \"clear_material\": ";
-    os << Bmad::to_json(obj.clear_material);
-    os << ",";
-    os << "\n  \"opaque_material\": ";
-    os << Bmad::to_json(obj.opaque_material);
-    os << ",";
-    os << "\n  \"superimpose\": ";
-    os << Bmad::to_json(obj.superimpose);
-    os << ",";
-    os << "\n  \"ele_anchor_pt\": ";
-    os << Bmad::to_json(obj.ele_anchor_pt);
-    os << ",";
-    os << "\n  \"section\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_wall3d &obj);
 };
 
 extern "C" void wall3d_to_c(const Opaque_wall3d_class *, CPP_wall3d &);
 extern "C" void wall3d_to_f(const CPP_wall3d &, Opaque_wall3d_class *);
 
 bool operator==(const CPP_wall3d &, const CPP_wall3d &);
+void to_json(json &, const CPP_wall3d &);
 
 //--------------------------------------------------------------------
 // CPP_ramper_lord
@@ -3562,28 +1857,7 @@ public:
 
   virtual ~CPP_ramper_lord() {}
   std::shared_ptr<CPP_ramper_lord> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_ramper_lord &obj) {
-    os << "CPP_ramper_lord{";
-    os << "{";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"ix_con\": ";
-    os << Bmad::to_json(obj.ix_con);
-    os << ",";
-    os << "\n  \"attrib_ptr\": ";
-    os << Bmad::to_json(obj.attrib_ptr);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_ramper_lord &obj);
 };
 
 extern "C" void ramper_lord_to_c(const Opaque_ramper_lord_class *,
@@ -3592,6 +1866,7 @@ extern "C" void ramper_lord_to_f(const CPP_ramper_lord &,
                                  Opaque_ramper_lord_class *);
 
 bool operator==(const CPP_ramper_lord &, const CPP_ramper_lord &);
+void to_json(json &, const CPP_ramper_lord &);
 
 //--------------------------------------------------------------------
 // CPP_control
@@ -3614,49 +1889,14 @@ public:
 
   virtual ~CPP_control() {}
   std::shared_ptr<CPP_control> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_control &obj) {
-    os << "CPP_control{";
-    os << "{";
-    os << "\n  \"value\": ";
-    os << Bmad::to_json(obj.value);
-    os << ",";
-    os << "\n  \"y_knot\": ";
-    os << Bmad::to_json(obj.y_knot);
-    os << ",";
-    os << "\n  \"stack\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"slave\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"lord\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"slave_name\": ";
-    os << Bmad::to_json(obj.slave_name);
-    os << ",";
-    os << "\n  \"attribute\": ";
-    os << Bmad::to_json(obj.attribute);
-    os << ",";
-    os << "\n  \"ix_attrib\": ";
-    os << Bmad::to_json(obj.ix_attrib);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_control &obj);
 };
 
 extern "C" void control_to_c(const Opaque_control_class *, CPP_control &);
 extern "C" void control_to_f(const CPP_control &, Opaque_control_class *);
 
 bool operator==(const CPP_control &, const CPP_control &);
+void to_json(json &, const CPP_control &);
 
 //--------------------------------------------------------------------
 // CPP_control_var1
@@ -3674,28 +1914,7 @@ public:
 
   virtual ~CPP_control_var1() {}
   std::shared_ptr<CPP_control_var1> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_control_var1 &obj) {
-    os << "CPP_control_var1{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"value\": ";
-    os << Bmad::to_json(obj.value);
-    os << ",";
-    os << "\n  \"old_value\": ";
-    os << Bmad::to_json(obj.old_value);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_control_var1 &obj);
 };
 
 extern "C" void control_var1_to_c(const Opaque_control_var1_class *,
@@ -3704,6 +1923,7 @@ extern "C" void control_var1_to_f(const CPP_control_var1 &,
                                   Opaque_control_var1_class *);
 
 bool operator==(const CPP_control_var1 &, const CPP_control_var1 &);
+void to_json(json &, const CPP_control_var1 &);
 
 //--------------------------------------------------------------------
 // CPP_control_ramp1
@@ -3724,34 +1944,7 @@ public:
 
   virtual ~CPP_control_ramp1() {}
   std::shared_ptr<CPP_control_ramp1> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_control_ramp1 &obj) {
-    os << "CPP_control_ramp1{";
-    os << "{";
-    os << "\n  \"y_knot\": ";
-    os << Bmad::to_json(obj.y_knot);
-    os << ",";
-    os << "\n  \"stack\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"attribute\": ";
-    os << Bmad::to_json(obj.attribute);
-    os << ",";
-    os << "\n  \"slave_name\": ";
-    os << Bmad::to_json(obj.slave_name);
-    os << ",";
-    os << "\n  \"is_controller\": ";
-    os << Bmad::to_json(obj.is_controller);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_control_ramp1 &obj);
 };
 
 extern "C" void control_ramp1_to_c(const Opaque_control_ramp1_class *,
@@ -3760,6 +1953,7 @@ extern "C" void control_ramp1_to_f(const CPP_control_ramp1 &,
                                    Opaque_control_ramp1_class *);
 
 bool operator==(const CPP_control_ramp1 &, const CPP_control_ramp1 &);
+void to_json(json &, const CPP_control_ramp1 &);
 
 //--------------------------------------------------------------------
 // CPP_controller
@@ -3778,31 +1972,7 @@ public:
 
   virtual ~CPP_controller() {}
   std::shared_ptr<CPP_controller> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_controller &obj) {
-    os << "CPP_controller{";
-    os << "{";
-    os << "\n  \"var\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ramp\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ramper_lord\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"x_knot\": ";
-    os << Bmad::to_json(obj.x_knot);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_controller &obj);
 };
 
 extern "C" void controller_to_c(const Opaque_controller_class *,
@@ -3811,6 +1981,7 @@ extern "C" void controller_to_f(const CPP_controller &,
                                 Opaque_controller_class *);
 
 bool operator==(const CPP_controller &, const CPP_controller &);
+void to_json(json &, const CPP_controller &);
 
 //--------------------------------------------------------------------
 // CPP_ellipse_beam_init
@@ -3829,28 +2000,7 @@ public:
 
   virtual ~CPP_ellipse_beam_init() {}
   std::shared_ptr<CPP_ellipse_beam_init> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_ellipse_beam_init &obj) {
-    os << "CPP_ellipse_beam_init{";
-    os << "{";
-    os << "\n  \"part_per_ellipse\": ";
-    os << Bmad::to_json(obj.part_per_ellipse);
-    os << ",";
-    os << "\n  \"n_ellipse\": ";
-    os << Bmad::to_json(obj.n_ellipse);
-    os << ",";
-    os << "\n  \"sigma_cutoff\": ";
-    os << Bmad::to_json(obj.sigma_cutoff);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_ellipse_beam_init &obj);
 };
 
 extern "C" void ellipse_beam_init_to_c(const Opaque_ellipse_beam_init_class *,
@@ -3859,6 +2009,7 @@ extern "C" void ellipse_beam_init_to_f(const CPP_ellipse_beam_init &,
                                        Opaque_ellipse_beam_init_class *);
 
 bool operator==(const CPP_ellipse_beam_init &, const CPP_ellipse_beam_init &);
+void to_json(json &, const CPP_ellipse_beam_init &);
 
 //--------------------------------------------------------------------
 // CPP_kv_beam_init
@@ -3876,28 +2027,7 @@ public:
 
   virtual ~CPP_kv_beam_init() {}
   std::shared_ptr<CPP_kv_beam_init> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_kv_beam_init &obj) {
-    os << "CPP_kv_beam_init{";
-    os << "{";
-    os << "\n  \"part_per_phi\": ";
-    os << Bmad::to_json(obj.part_per_phi);
-    os << ",";
-    os << "\n  \"n_I2\": ";
-    os << Bmad::to_json(obj.n_I2);
-    os << ",";
-    os << "\n  \"A\": ";
-    os << Bmad::to_json(obj.A);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_kv_beam_init &obj);
 };
 
 extern "C" void kv_beam_init_to_c(const Opaque_kv_beam_init_class *,
@@ -3906,6 +2036,7 @@ extern "C" void kv_beam_init_to_f(const CPP_kv_beam_init &,
                                   Opaque_kv_beam_init_class *);
 
 bool operator==(const CPP_kv_beam_init &, const CPP_kv_beam_init &);
+void to_json(json &, const CPP_kv_beam_init &);
 
 //--------------------------------------------------------------------
 // CPP_grid_beam_init
@@ -3927,37 +2058,7 @@ public:
 
   virtual ~CPP_grid_beam_init() {}
   std::shared_ptr<CPP_grid_beam_init> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_grid_beam_init &obj) {
-    os << "CPP_grid_beam_init{";
-    os << "{";
-    os << "\n  \"n_x\": ";
-    os << Bmad::to_json(obj.n_x);
-    os << ",";
-    os << "\n  \"n_px\": ";
-    os << Bmad::to_json(obj.n_px);
-    os << ",";
-    os << "\n  \"x_min\": ";
-    os << Bmad::to_json(obj.x_min);
-    os << ",";
-    os << "\n  \"x_max\": ";
-    os << Bmad::to_json(obj.x_max);
-    os << ",";
-    os << "\n  \"px_min\": ";
-    os << Bmad::to_json(obj.px_min);
-    os << ",";
-    os << "\n  \"px_max\": ";
-    os << Bmad::to_json(obj.px_max);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_grid_beam_init &obj);
 };
 
 extern "C" void grid_beam_init_to_c(const Opaque_grid_beam_init_class *,
@@ -3966,6 +2067,7 @@ extern "C" void grid_beam_init_to_f(const CPP_grid_beam_init &,
                                     Opaque_grid_beam_init_class *);
 
 bool operator==(const CPP_grid_beam_init &, const CPP_grid_beam_init &);
+void to_json(json &, const CPP_grid_beam_init &);
 
 //--------------------------------------------------------------------
 // CPP_beam_init
@@ -4015,130 +2117,14 @@ public:
 
   virtual ~CPP_beam_init() {}
   std::shared_ptr<CPP_beam_init> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_beam_init &obj) {
-    os << "CPP_beam_init{";
-    os << "{";
-    os << "\n  \"position_file\": ";
-    os << Bmad::to_json(obj.position_file);
-    os << ",";
-    os << "\n  \"distribution_type\": ";
-    os << Bmad::to_json(obj.distribution_type);
-    os << ",";
-    os << "\n  \"spin\": ";
-    os << Bmad::to_json(obj.spin);
-    os << ",";
-    os << "\n  \"ellipse\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"KV\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"grid\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"center_jitter\": ";
-    os << Bmad::to_json(obj.center_jitter);
-    os << ",";
-    os << "\n  \"emit_jitter\": ";
-    os << Bmad::to_json(obj.emit_jitter);
-    os << ",";
-    os << "\n  \"sig_z_jitter\": ";
-    os << Bmad::to_json(obj.sig_z_jitter);
-    os << ",";
-    os << "\n  \"sig_pz_jitter\": ";
-    os << Bmad::to_json(obj.sig_pz_jitter);
-    os << ",";
-    os << "\n  \"n_particle\": ";
-    os << Bmad::to_json(obj.n_particle);
-    os << ",";
-    os << "\n  \"renorm_center\": ";
-    os << Bmad::to_json(obj.renorm_center);
-    os << ",";
-    os << "\n  \"renorm_sigma\": ";
-    os << Bmad::to_json(obj.renorm_sigma);
-    os << ",";
-    os << "\n  \"random_engine\": ";
-    os << Bmad::to_json(obj.random_engine);
-    os << ",";
-    os << "\n  \"random_gauss_converter\": ";
-    os << Bmad::to_json(obj.random_gauss_converter);
-    os << ",";
-    os << "\n  \"random_sigma_cutoff\": ";
-    os << Bmad::to_json(obj.random_sigma_cutoff);
-    os << ",";
-    os << "\n  \"a_norm_emit\": ";
-    os << Bmad::to_json(obj.a_norm_emit);
-    os << ",";
-    os << "\n  \"b_norm_emit\": ";
-    os << Bmad::to_json(obj.b_norm_emit);
-    os << ",";
-    os << "\n  \"a_emit\": ";
-    os << Bmad::to_json(obj.a_emit);
-    os << ",";
-    os << "\n  \"b_emit\": ";
-    os << Bmad::to_json(obj.b_emit);
-    os << ",";
-    os << "\n  \"dPz_dz\": ";
-    os << Bmad::to_json(obj.dPz_dz);
-    os << ",";
-    os << "\n  \"center\": ";
-    os << Bmad::to_json(obj.center);
-    os << ",";
-    os << "\n  \"t_offset\": ";
-    os << Bmad::to_json(obj.t_offset);
-    os << ",";
-    os << "\n  \"dt_bunch\": ";
-    os << Bmad::to_json(obj.dt_bunch);
-    os << ",";
-    os << "\n  \"sig_z\": ";
-    os << Bmad::to_json(obj.sig_z);
-    os << ",";
-    os << "\n  \"sig_pz\": ";
-    os << Bmad::to_json(obj.sig_pz);
-    os << ",";
-    os << "\n  \"bunch_charge\": ";
-    os << Bmad::to_json(obj.bunch_charge);
-    os << ",";
-    os << "\n  \"n_bunch\": ";
-    os << Bmad::to_json(obj.n_bunch);
-    os << ",";
-    os << "\n  \"ix_turn\": ";
-    os << Bmad::to_json(obj.ix_turn);
-    os << ",";
-    os << "\n  \"species\": ";
-    os << Bmad::to_json(obj.species);
-    os << ",";
-    os << "\n  \"full_6D_coupling_calc\": ";
-    os << Bmad::to_json(obj.full_6D_coupling_calc);
-    os << ",";
-    os << "\n  \"use_particle_start\": ";
-    os << Bmad::to_json(obj.use_particle_start);
-    os << ",";
-    os << "\n  \"use_t_coords\": ";
-    os << Bmad::to_json(obj.use_t_coords);
-    os << ",";
-    os << "\n  \"use_z_as_t\": ";
-    os << Bmad::to_json(obj.use_z_as_t);
-    os << ",";
-    os << "\n  \"file_name\": ";
-    os << Bmad::to_json(obj.file_name);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_beam_init &obj);
 };
 
 extern "C" void beam_init_to_c(const Opaque_beam_init_class *, CPP_beam_init &);
 extern "C" void beam_init_to_f(const CPP_beam_init &, Opaque_beam_init_class *);
 
 bool operator==(const CPP_beam_init &, const CPP_beam_init &);
+void to_json(json &, const CPP_beam_init &);
 
 //--------------------------------------------------------------------
 // CPP_lat_param
@@ -4170,76 +2156,14 @@ public:
 
   virtual ~CPP_lat_param() {}
   std::shared_ptr<CPP_lat_param> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_lat_param &obj) {
-    os << "CPP_lat_param{";
-    os << "{";
-    os << "\n  \"n_part\": ";
-    os << Bmad::to_json(obj.n_part);
-    os << ",";
-    os << "\n  \"total_length\": ";
-    os << Bmad::to_json(obj.total_length);
-    os << ",";
-    os << "\n  \"unstable_factor\": ";
-    os << Bmad::to_json(obj.unstable_factor);
-    os << ",";
-    os << "\n  \"t1_with_RF\": ";
-    os << Bmad::to_json(obj.t1_with_RF);
-    os << ",";
-    os << "\n  \"t1_no_RF\": ";
-    os << Bmad::to_json(obj.t1_no_RF);
-    os << ",";
-    os << "\n  \"spin_tune\": ";
-    os << Bmad::to_json(obj.spin_tune);
-    os << ",";
-    os << "\n  \"particle\": ";
-    os << Bmad::to_json(obj.particle);
-    os << ",";
-    os << "\n  \"default_tracking_species\": ";
-    os << Bmad::to_json(obj.default_tracking_species);
-    os << ",";
-    os << "\n  \"geometry\": ";
-    os << Bmad::to_json(obj.geometry);
-    os << ",";
-    os << "\n  \"ixx\": ";
-    os << Bmad::to_json(obj.ixx);
-    os << ",";
-    os << "\n  \"stable\": ";
-    os << Bmad::to_json(obj.stable);
-    os << ",";
-    os << "\n  \"live_branch\": ";
-    os << Bmad::to_json(obj.live_branch);
-    os << ",";
-    os << "\n  \"g1_integral\": ";
-    os << Bmad::to_json(obj.g1_integral);
-    os << ",";
-    os << "\n  \"g2_integral\": ";
-    os << Bmad::to_json(obj.g2_integral);
-    os << ",";
-    os << "\n  \"g3_integral\": ";
-    os << Bmad::to_json(obj.g3_integral);
-    os << ",";
-    os << "\n  \"bookkeeping_state\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"beam_init\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_lat_param &obj);
 };
 
 extern "C" void lat_param_to_c(const Opaque_lat_param_class *, CPP_lat_param &);
 extern "C" void lat_param_to_f(const CPP_lat_param &, Opaque_lat_param_class *);
 
 bool operator==(const CPP_lat_param &, const CPP_lat_param &);
+void to_json(json &, const CPP_lat_param &);
 
 //--------------------------------------------------------------------
 // CPP_mode_info
@@ -4260,43 +2184,14 @@ public:
 
   virtual ~CPP_mode_info() {}
   std::shared_ptr<CPP_mode_info> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_mode_info &obj) {
-    os << "CPP_mode_info{";
-    os << "{";
-    os << "\n  \"stable\": ";
-    os << Bmad::to_json(obj.stable);
-    os << ",";
-    os << "\n  \"tune\": ";
-    os << Bmad::to_json(obj.tune);
-    os << ",";
-    os << "\n  \"emit\": ";
-    os << Bmad::to_json(obj.emit);
-    os << ",";
-    os << "\n  \"chrom\": ";
-    os << Bmad::to_json(obj.chrom);
-    os << ",";
-    os << "\n  \"sigma\": ";
-    os << Bmad::to_json(obj.sigma);
-    os << ",";
-    os << "\n  \"sigmap\": ";
-    os << Bmad::to_json(obj.sigmap);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_mode_info &obj);
 };
 
 extern "C" void mode_info_to_c(const Opaque_mode_info_class *, CPP_mode_info &);
 extern "C" void mode_info_to_f(const CPP_mode_info &, Opaque_mode_info_class *);
 
 bool operator==(const CPP_mode_info &, const CPP_mode_info &);
+void to_json(json &, const CPP_mode_info &);
 
 //--------------------------------------------------------------------
 // CPP_pre_tracker
@@ -4315,31 +2210,7 @@ public:
 
   virtual ~CPP_pre_tracker() {}
   std::shared_ptr<CPP_pre_tracker> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_pre_tracker &obj) {
-    os << "CPP_pre_tracker{";
-    os << "{";
-    os << "\n  \"who\": ";
-    os << Bmad::to_json(obj.who);
-    os << ",";
-    os << "\n  \"ix_ele_start\": ";
-    os << Bmad::to_json(obj.ix_ele_start);
-    os << ",";
-    os << "\n  \"ix_ele_end\": ";
-    os << Bmad::to_json(obj.ix_ele_end);
-    os << ",";
-    os << "\n  \"input_file\": ";
-    os << Bmad::to_json(obj.input_file);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_pre_tracker &obj);
 };
 
 extern "C" void pre_tracker_to_c(const Opaque_pre_tracker_class *,
@@ -4348,6 +2219,7 @@ extern "C" void pre_tracker_to_f(const CPP_pre_tracker &,
                                  Opaque_pre_tracker_class *);
 
 bool operator==(const CPP_pre_tracker &, const CPP_pre_tracker &);
+void to_json(json &, const CPP_pre_tracker &);
 
 //--------------------------------------------------------------------
 // CPP_anormal_mode
@@ -4369,40 +2241,7 @@ public:
 
   virtual ~CPP_anormal_mode() {}
   std::shared_ptr<CPP_anormal_mode> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_anormal_mode &obj) {
-    os << "CPP_anormal_mode{";
-    os << "{";
-    os << "\n  \"emittance\": ";
-    os << Bmad::to_json(obj.emittance);
-    os << ",";
-    os << "\n  \"emittance_no_vert\": ";
-    os << Bmad::to_json(obj.emittance_no_vert);
-    os << ",";
-    os << "\n  \"synch_int\": ";
-    os << Bmad::to_json(obj.synch_int);
-    os << ",";
-    os << "\n  \"j_damp\": ";
-    os << Bmad::to_json(obj.j_damp);
-    os << ",";
-    os << "\n  \"alpha_damp\": ";
-    os << Bmad::to_json(obj.alpha_damp);
-    os << ",";
-    os << "\n  \"chrom\": ";
-    os << Bmad::to_json(obj.chrom);
-    os << ",";
-    os << "\n  \"tune\": ";
-    os << Bmad::to_json(obj.tune);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_anormal_mode &obj);
 };
 
 extern "C" void anormal_mode_to_c(const Opaque_anormal_mode_class *,
@@ -4411,6 +2250,7 @@ extern "C" void anormal_mode_to_f(const CPP_anormal_mode &,
                                   Opaque_anormal_mode_class *);
 
 bool operator==(const CPP_anormal_mode &, const CPP_anormal_mode &);
+void to_json(json &, const CPP_anormal_mode &);
 
 //--------------------------------------------------------------------
 // CPP_linac_normal_mode
@@ -4433,40 +2273,7 @@ public:
 
   virtual ~CPP_linac_normal_mode() {}
   std::shared_ptr<CPP_linac_normal_mode> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_linac_normal_mode &obj) {
-    os << "CPP_linac_normal_mode{";
-    os << "{";
-    os << "\n  \"i2_E4\": ";
-    os << Bmad::to_json(obj.i2_E4);
-    os << ",";
-    os << "\n  \"i3_E7\": ";
-    os << Bmad::to_json(obj.i3_E7);
-    os << ",";
-    os << "\n  \"i5a_E6\": ";
-    os << Bmad::to_json(obj.i5a_E6);
-    os << ",";
-    os << "\n  \"i5b_E6\": ";
-    os << Bmad::to_json(obj.i5b_E6);
-    os << ",";
-    os << "\n  \"sig_E1\": ";
-    os << Bmad::to_json(obj.sig_E1);
-    os << ",";
-    os << "\n  \"a_emittance_end\": ";
-    os << Bmad::to_json(obj.a_emittance_end);
-    os << ",";
-    os << "\n  \"b_emittance_end\": ";
-    os << Bmad::to_json(obj.b_emittance_end);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_linac_normal_mode &obj);
 };
 
 extern "C" void linac_normal_mode_to_c(const Opaque_linac_normal_mode_class *,
@@ -4475,6 +2282,7 @@ extern "C" void linac_normal_mode_to_f(const CPP_linac_normal_mode &,
                                        Opaque_linac_normal_mode_class *);
 
 bool operator==(const CPP_linac_normal_mode &, const CPP_linac_normal_mode &);
+void to_json(json &, const CPP_linac_normal_mode &);
 
 //--------------------------------------------------------------------
 // CPP_normal_modes
@@ -4502,58 +2310,7 @@ public:
 
   virtual ~CPP_normal_modes() {}
   std::shared_ptr<CPP_normal_modes> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_normal_modes &obj) {
-    os << "CPP_normal_modes{";
-    os << "{";
-    os << "\n  \"synch_int\": ";
-    os << Bmad::to_json(obj.synch_int);
-    os << ",";
-    os << "\n  \"sigE_E\": ";
-    os << Bmad::to_json(obj.sigE_E);
-    os << ",";
-    os << "\n  \"sig_z\": ";
-    os << Bmad::to_json(obj.sig_z);
-    os << ",";
-    os << "\n  \"e_loss\": ";
-    os << Bmad::to_json(obj.e_loss);
-    os << ",";
-    os << "\n  \"rf_voltage\": ";
-    os << Bmad::to_json(obj.rf_voltage);
-    os << ",";
-    os << "\n  \"pz_aperture\": ";
-    os << Bmad::to_json(obj.pz_aperture);
-    os << ",";
-    os << "\n  \"pz_average\": ";
-    os << Bmad::to_json(obj.pz_average);
-    os << ",";
-    os << "\n  \"momentum_compaction\": ";
-    os << Bmad::to_json(obj.momentum_compaction);
-    os << ",";
-    os << "\n  \"dpz_damp\": ";
-    os << Bmad::to_json(obj.dpz_damp);
-    os << ",";
-    os << "\n  \"a\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"b\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"z\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"lin\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_normal_modes &obj);
 };
 
 extern "C" void normal_modes_to_c(const Opaque_normal_modes_class *,
@@ -4562,6 +2319,7 @@ extern "C" void normal_modes_to_f(const CPP_normal_modes &,
                                   Opaque_normal_modes_class *);
 
 bool operator==(const CPP_normal_modes &, const CPP_normal_modes &);
+void to_json(json &, const CPP_normal_modes &);
 
 //--------------------------------------------------------------------
 // CPP_em_field
@@ -4583,46 +2341,14 @@ public:
 
   virtual ~CPP_em_field() {}
   std::shared_ptr<CPP_em_field> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_em_field &obj) {
-    os << "CPP_em_field{";
-    os << "{";
-    os << "\n  \"E\": ";
-    os << Bmad::to_json(obj.E);
-    os << ",";
-    os << "\n  \"B\": ";
-    os << Bmad::to_json(obj.B);
-    os << ",";
-    os << "\n  \"dE\": ";
-    os << Bmad::to_json(obj.dE);
-    os << ",";
-    os << "\n  \"dB\": ";
-    os << Bmad::to_json(obj.dB);
-    os << ",";
-    os << "\n  \"phi\": ";
-    os << Bmad::to_json(obj.phi);
-    os << ",";
-    os << "\n  \"phi_B\": ";
-    os << Bmad::to_json(obj.phi_B);
-    os << ",";
-    os << "\n  \"A\": ";
-    os << Bmad::to_json(obj.A);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_em_field &obj);
 };
 
 extern "C" void em_field_to_c(const Opaque_em_field_class *, CPP_em_field &);
 extern "C" void em_field_to_f(const CPP_em_field &, Opaque_em_field_class *);
 
 bool operator==(const CPP_em_field &, const CPP_em_field &);
+void to_json(json &, const CPP_em_field &);
 
 //--------------------------------------------------------------------
 // CPP_strong_beam
@@ -4644,40 +2370,7 @@ public:
 
   virtual ~CPP_strong_beam() {}
   std::shared_ptr<CPP_strong_beam> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_strong_beam &obj) {
-    os << "CPP_strong_beam{";
-    os << "{";
-    os << "\n  \"ix_slice\": ";
-    os << Bmad::to_json(obj.ix_slice);
-    os << ",";
-    os << "\n  \"x_center\": ";
-    os << Bmad::to_json(obj.x_center);
-    os << ",";
-    os << "\n  \"y_center\": ";
-    os << Bmad::to_json(obj.y_center);
-    os << ",";
-    os << "\n  \"x_sigma\": ";
-    os << Bmad::to_json(obj.x_sigma);
-    os << ",";
-    os << "\n  \"y_sigma\": ";
-    os << Bmad::to_json(obj.y_sigma);
-    os << ",";
-    os << "\n  \"dx\": ";
-    os << Bmad::to_json(obj.dx);
-    os << ",";
-    os << "\n  \"dy\": ";
-    os << Bmad::to_json(obj.dy);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_strong_beam &obj);
 };
 
 extern "C" void strong_beam_to_c(const Opaque_strong_beam_class *,
@@ -4686,6 +2379,7 @@ extern "C" void strong_beam_to_f(const CPP_strong_beam &,
                                  Opaque_strong_beam_class *);
 
 bool operator==(const CPP_strong_beam &, const CPP_strong_beam &);
+void to_json(json &, const CPP_strong_beam &);
 
 //--------------------------------------------------------------------
 // CPP_track_point
@@ -4706,37 +2400,7 @@ public:
 
   virtual ~CPP_track_point() {}
   std::shared_ptr<CPP_track_point> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_track_point &obj) {
-    os << "CPP_track_point{";
-    os << "{";
-    os << "\n  \"s_body\": ";
-    os << Bmad::to_json(obj.s_body);
-    os << ",";
-    os << "\n  \"orb\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"field\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"strong_beam\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"vec0\": ";
-    os << Bmad::to_json(obj.vec0);
-    os << ",";
-    os << "\n  \"mat6\": ";
-    os << Bmad::to_json(obj.mat6);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_track_point &obj);
 };
 
 extern "C" void track_point_to_c(const Opaque_track_point_class *,
@@ -4745,6 +2409,7 @@ extern "C" void track_point_to_f(const CPP_track_point &,
                                  Opaque_track_point_class *);
 
 bool operator==(const CPP_track_point &, const CPP_track_point &);
+void to_json(json &, const CPP_track_point &);
 
 //--------------------------------------------------------------------
 // CPP_track
@@ -4764,40 +2429,14 @@ public:
 
   virtual ~CPP_track() {}
   std::shared_ptr<CPP_track> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_track &obj) {
-    os << "CPP_track{";
-    os << "{";
-    os << "\n  \"pt\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ds_save\": ";
-    os << Bmad::to_json(obj.ds_save);
-    os << ",";
-    os << "\n  \"n_pt\": ";
-    os << Bmad::to_json(obj.n_pt);
-    os << ",";
-    os << "\n  \"n_bad\": ";
-    os << Bmad::to_json(obj.n_bad);
-    os << ",";
-    os << "\n  \"n_ok\": ";
-    os << Bmad::to_json(obj.n_ok);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_track &obj);
 };
 
 extern "C" void track_to_c(const Opaque_track_class *, CPP_track &);
 extern "C" void track_to_f(const CPP_track &, Opaque_track_class *);
 
 bool operator==(const CPP_track &, const CPP_track &);
+void to_json(json &, const CPP_track &);
 
 //--------------------------------------------------------------------
 // CPP_space_charge_common
@@ -4832,70 +2471,7 @@ public:
   std::shared_ptr<CPP_space_charge_common> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_space_charge_common &obj) {
-    os << "CPP_space_charge_common{";
-    os << "{";
-    os << "\n  \"ds_track_step\": ";
-    os << Bmad::to_json(obj.ds_track_step);
-    os << ",";
-    os << "\n  \"dt_track_step\": ";
-    os << Bmad::to_json(obj.dt_track_step);
-    os << ",";
-    os << "\n  \"cathode_strength_cutoff\": ";
-    os << Bmad::to_json(obj.cathode_strength_cutoff);
-    os << ",";
-    os << "\n  \"rel_tol_tracking\": ";
-    os << Bmad::to_json(obj.rel_tol_tracking);
-    os << ",";
-    os << "\n  \"abs_tol_tracking\": ";
-    os << Bmad::to_json(obj.abs_tol_tracking);
-    os << ",";
-    os << "\n  \"beam_chamber_height\": ";
-    os << Bmad::to_json(obj.beam_chamber_height);
-    os << ",";
-    os << "\n  \"lsc_sigma_cutoff\": ";
-    os << Bmad::to_json(obj.lsc_sigma_cutoff);
-    os << ",";
-    os << "\n  \"particle_sigma_cutoff\": ";
-    os << Bmad::to_json(obj.particle_sigma_cutoff);
-    os << ",";
-    os << "\n  \"space_charge_mesh_size\": ";
-    os << Bmad::to_json(obj.space_charge_mesh_size);
-    os << ",";
-    os << "\n  \"csr3d_mesh_size\": ";
-    os << Bmad::to_json(obj.csr3d_mesh_size);
-    os << ",";
-    os << "\n  \"n_bin\": ";
-    os << Bmad::to_json(obj.n_bin);
-    os << ",";
-    os << "\n  \"particle_bin_span\": ";
-    os << Bmad::to_json(obj.particle_bin_span);
-    os << ",";
-    os << "\n  \"n_shield_images\": ";
-    os << Bmad::to_json(obj.n_shield_images);
-    os << ",";
-    os << "\n  \"sc_min_in_bin\": ";
-    os << Bmad::to_json(obj.sc_min_in_bin);
-    os << ",";
-    os << "\n  \"lsc_kick_transverse_dependence\": ";
-    os << Bmad::to_json(obj.lsc_kick_transverse_dependence);
-    os << ",";
-    os << "\n  \"debug\": ";
-    os << Bmad::to_json(obj.debug);
-    os << ",";
-    os << "\n  \"diagnostic_output_file\": ";
-    os << Bmad::to_json(obj.diagnostic_output_file);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_space_charge_common &obj);
 };
 
 extern "C" void
@@ -4906,6 +2482,7 @@ extern "C" void space_charge_common_to_f(const CPP_space_charge_common &,
 
 bool operator==(const CPP_space_charge_common &,
                 const CPP_space_charge_common &);
+void to_json(json &, const CPP_space_charge_common &);
 
 //--------------------------------------------------------------------
 // CPP_bmad_common
@@ -4960,139 +2537,7 @@ public:
 
   virtual ~CPP_bmad_common() {}
   std::shared_ptr<CPP_bmad_common> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_bmad_common &obj) {
-    os << "CPP_bmad_common{";
-    os << "{";
-    os << "\n  \"max_aperture_limit\": ";
-    os << Bmad::to_json(obj.max_aperture_limit);
-    os << ",";
-    os << "\n  \"d_orb\": ";
-    os << Bmad::to_json(obj.d_orb);
-    os << ",";
-    os << "\n  \"default_ds_step\": ";
-    os << Bmad::to_json(obj.default_ds_step);
-    os << ",";
-    os << "\n  \"significant_length\": ";
-    os << Bmad::to_json(obj.significant_length);
-    os << ",";
-    os << "\n  \"rel_tol_tracking\": ";
-    os << Bmad::to_json(obj.rel_tol_tracking);
-    os << ",";
-    os << "\n  \"abs_tol_tracking\": ";
-    os << Bmad::to_json(obj.abs_tol_tracking);
-    os << ",";
-    os << "\n  \"rel_tol_adaptive_tracking\": ";
-    os << Bmad::to_json(obj.rel_tol_adaptive_tracking);
-    os << ",";
-    os << "\n  \"abs_tol_adaptive_tracking\": ";
-    os << Bmad::to_json(obj.abs_tol_adaptive_tracking);
-    os << ",";
-    os << "\n  \"init_ds_adaptive_tracking\": ";
-    os << Bmad::to_json(obj.init_ds_adaptive_tracking);
-    os << ",";
-    os << "\n  \"min_ds_adaptive_tracking\": ";
-    os << Bmad::to_json(obj.min_ds_adaptive_tracking);
-    os << ",";
-    os << "\n  \"fatal_ds_adaptive_tracking\": ";
-    os << Bmad::to_json(obj.fatal_ds_adaptive_tracking);
-    os << ",";
-    os << "\n  \"autoscale_amp_abs_tol\": ";
-    os << Bmad::to_json(obj.autoscale_amp_abs_tol);
-    os << ",";
-    os << "\n  \"autoscale_amp_rel_tol\": ";
-    os << Bmad::to_json(obj.autoscale_amp_rel_tol);
-    os << ",";
-    os << "\n  \"autoscale_phase_tol\": ";
-    os << Bmad::to_json(obj.autoscale_phase_tol);
-    os << ",";
-    os << "\n  \"electric_dipole_moment\": ";
-    os << Bmad::to_json(obj.electric_dipole_moment);
-    os << ",";
-    os << "\n  \"synch_rad_scale\": ";
-    os << Bmad::to_json(obj.synch_rad_scale);
-    os << ",";
-    os << "\n  \"sad_eps_scale\": ";
-    os << Bmad::to_json(obj.sad_eps_scale);
-    os << ",";
-    os << "\n  \"sad_amp_max\": ";
-    os << Bmad::to_json(obj.sad_amp_max);
-    os << ",";
-    os << "\n  \"sad_n_div_max\": ";
-    os << Bmad::to_json(obj.sad_n_div_max);
-    os << ",";
-    os << "\n  \"taylor_order\": ";
-    os << Bmad::to_json(obj.taylor_order);
-    os << ",";
-    os << "\n  \"runge_kutta_order\": ";
-    os << Bmad::to_json(obj.runge_kutta_order);
-    os << ",";
-    os << "\n  \"default_integ_order\": ";
-    os << Bmad::to_json(obj.default_integ_order);
-    os << ",";
-    os << "\n  \"max_num_runge_kutta_step\": ";
-    os << Bmad::to_json(obj.max_num_runge_kutta_step);
-    os << ",";
-    os << "\n  \"rf_phase_below_transition_ref\": ";
-    os << Bmad::to_json(obj.rf_phase_below_transition_ref);
-    os << ",";
-    os << "\n  \"sr_wakes_on\": ";
-    os << Bmad::to_json(obj.sr_wakes_on);
-    os << ",";
-    os << "\n  \"lr_wakes_on\": ";
-    os << Bmad::to_json(obj.lr_wakes_on);
-    os << ",";
-    os << "\n  \"auto_bookkeeper\": ";
-    os << Bmad::to_json(obj.auto_bookkeeper);
-    os << ",";
-    os << "\n  \"high_energy_space_charge_on\": ";
-    os << Bmad::to_json(obj.high_energy_space_charge_on);
-    os << ",";
-    os << "\n  \"csr_and_space_charge_on\": ";
-    os << Bmad::to_json(obj.csr_and_space_charge_on);
-    os << ",";
-    os << "\n  \"spin_tracking_on\": ";
-    os << Bmad::to_json(obj.spin_tracking_on);
-    os << ",";
-    os << "\n  \"spin_sokolov_ternov_flipping_on\": ";
-    os << Bmad::to_json(obj.spin_sokolov_ternov_flipping_on);
-    os << ",";
-    os << "\n  \"radiation_damping_on\": ";
-    os << Bmad::to_json(obj.radiation_damping_on);
-    os << ",";
-    os << "\n  \"radiation_zero_average\": ";
-    os << Bmad::to_json(obj.radiation_zero_average);
-    os << ",";
-    os << "\n  \"radiation_fluctuations_on\": ";
-    os << Bmad::to_json(obj.radiation_fluctuations_on);
-    os << ",";
-    os << "\n  \"conserve_taylor_maps\": ";
-    os << Bmad::to_json(obj.conserve_taylor_maps);
-    os << ",";
-    os << "\n  \"absolute_time_tracking\": ";
-    os << Bmad::to_json(obj.absolute_time_tracking);
-    os << ",";
-    os << "\n  \"absolute_time_ref_shift\": ";
-    os << Bmad::to_json(obj.absolute_time_ref_shift);
-    os << ",";
-    os << "\n  \"convert_to_kinetic_momentum\": ";
-    os << Bmad::to_json(obj.convert_to_kinetic_momentum);
-    os << ",";
-    os << "\n  \"aperture_limit_on\": ";
-    os << Bmad::to_json(obj.aperture_limit_on);
-    os << ",";
-    os << "\n  \"debug\": ";
-    os << Bmad::to_json(obj.debug);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_bmad_common &obj);
 };
 
 extern "C" void bmad_common_to_c(const Opaque_bmad_common_class *,
@@ -5101,6 +2546,7 @@ extern "C" void bmad_common_to_f(const CPP_bmad_common &,
                                  Opaque_bmad_common_class *);
 
 bool operator==(const CPP_bmad_common &, const CPP_bmad_common &);
+void to_json(json &, const CPP_bmad_common &);
 
 //--------------------------------------------------------------------
 // CPP_rad_int1
@@ -5133,79 +2579,14 @@ public:
 
   virtual ~CPP_rad_int1() {}
   std::shared_ptr<CPP_rad_int1> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_rad_int1 &obj) {
-    os << "CPP_rad_int1{";
-    os << "{";
-    os << "\n  \"i0\": ";
-    os << Bmad::to_json(obj.i0);
-    os << ",";
-    os << "\n  \"i1\": ";
-    os << Bmad::to_json(obj.i1);
-    os << ",";
-    os << "\n  \"i2\": ";
-    os << Bmad::to_json(obj.i2);
-    os << ",";
-    os << "\n  \"i3\": ";
-    os << Bmad::to_json(obj.i3);
-    os << ",";
-    os << "\n  \"i4a\": ";
-    os << Bmad::to_json(obj.i4a);
-    os << ",";
-    os << "\n  \"i4b\": ";
-    os << Bmad::to_json(obj.i4b);
-    os << ",";
-    os << "\n  \"i4z\": ";
-    os << Bmad::to_json(obj.i4z);
-    os << ",";
-    os << "\n  \"i5a\": ";
-    os << Bmad::to_json(obj.i5a);
-    os << ",";
-    os << "\n  \"i5b\": ";
-    os << Bmad::to_json(obj.i5b);
-    os << ",";
-    os << "\n  \"i6b\": ";
-    os << Bmad::to_json(obj.i6b);
-    os << ",";
-    os << "\n  \"lin_i2_E4\": ";
-    os << Bmad::to_json(obj.lin_i2_E4);
-    os << ",";
-    os << "\n  \"lin_i3_E7\": ";
-    os << Bmad::to_json(obj.lin_i3_E7);
-    os << ",";
-    os << "\n  \"lin_i5a_E6\": ";
-    os << Bmad::to_json(obj.lin_i5a_E6);
-    os << ",";
-    os << "\n  \"lin_i5b_E6\": ";
-    os << Bmad::to_json(obj.lin_i5b_E6);
-    os << ",";
-    os << "\n  \"lin_norm_emit_a\": ";
-    os << Bmad::to_json(obj.lin_norm_emit_a);
-    os << ",";
-    os << "\n  \"lin_norm_emit_b\": ";
-    os << Bmad::to_json(obj.lin_norm_emit_b);
-    os << ",";
-    os << "\n  \"lin_sig_E\": ";
-    os << Bmad::to_json(obj.lin_sig_E);
-    os << ",";
-    os << "\n  \"n_steps\": ";
-    os << Bmad::to_json(obj.n_steps);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_rad_int1 &obj);
 };
 
 extern "C" void rad_int1_to_c(const Opaque_rad_int1_class *, CPP_rad_int1 &);
 extern "C" void rad_int1_to_f(const CPP_rad_int1 &, Opaque_rad_int1_class *);
 
 bool operator==(const CPP_rad_int1 &, const CPP_rad_int1 &);
+void to_json(json &, const CPP_rad_int1 &);
 
 //--------------------------------------------------------------------
 // CPP_rad_int_branch
@@ -5222,22 +2603,7 @@ public:
 
   virtual ~CPP_rad_int_branch() {}
   std::shared_ptr<CPP_rad_int_branch> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_rad_int_branch &obj) {
-    os << "CPP_rad_int_branch{";
-    os << "{";
-    os << "\n  \"ele\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_rad_int_branch &obj);
 };
 
 extern "C" void rad_int_branch_to_c(const Opaque_rad_int_branch_class *,
@@ -5246,6 +2612,7 @@ extern "C" void rad_int_branch_to_f(const CPP_rad_int_branch &,
                                     Opaque_rad_int_branch_class *);
 
 bool operator==(const CPP_rad_int_branch &, const CPP_rad_int_branch &);
+void to_json(json &, const CPP_rad_int_branch &);
 
 //--------------------------------------------------------------------
 // CPP_rad_int_all_ele
@@ -5262,22 +2629,7 @@ public:
 
   virtual ~CPP_rad_int_all_ele() {}
   std::shared_ptr<CPP_rad_int_all_ele> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_rad_int_all_ele &obj) {
-    os << "CPP_rad_int_all_ele{";
-    os << "{";
-    os << "\n  \"branch\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_rad_int_all_ele &obj);
 };
 
 extern "C" void rad_int_all_ele_to_c(const Opaque_rad_int_all_ele_class *,
@@ -5286,6 +2638,7 @@ extern "C" void rad_int_all_ele_to_f(const CPP_rad_int_all_ele &,
                                      Opaque_rad_int_all_ele_class *);
 
 bool operator==(const CPP_rad_int_all_ele &, const CPP_rad_int_all_ele &);
+void to_json(json &, const CPP_rad_int_all_ele &);
 
 //--------------------------------------------------------------------
 // CPP_ele
@@ -5410,283 +2763,14 @@ public:
 
   virtual ~CPP_ele() {}
   std::shared_ptr<CPP_ele> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_ele &obj) {
-    os << "CPP_ele{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"type\": ";
-    os << Bmad::to_json(obj.type);
-    os << ",";
-    os << "\n  \"alias\": ";
-    os << Bmad::to_json(obj.alias);
-    os << ",";
-    os << "\n  \"component_name\": ";
-    os << Bmad::to_json(obj.component_name);
-    os << ",";
-    os << "\n  \"descrip\": ";
-    os << Bmad::to_json(obj.descrip);
-    os << ",";
-    os << "\n  \"a\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"b\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"z\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"x\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"y\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ac_kick\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"bookkeeping_state\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"control\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"floor\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"high_energy_space_charge\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"mode3\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"photon\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"rad_map\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"taylor\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"spin_taylor_ref_orb_in\": ";
-    os << Bmad::to_json(obj.spin_taylor_ref_orb_in);
-    os << ",";
-    os << "\n  \"spin_taylor\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"wake\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"wall3d\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"cartesian_map\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"cylindrical_map\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"gen_grad_map\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"grid_field\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"map_ref_orb_in\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"map_ref_orb_out\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"time_ref_orb_in\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"time_ref_orb_out\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"value\": ";
-    os << Bmad::to_json(obj.value);
-    os << ",";
-    os << "\n  \"old_value\": ";
-    os << Bmad::to_json(obj.old_value);
-    os << ",";
-    os << "\n  \"spin_q\": ";
-    os << Bmad::to_json(obj.spin_q);
-    os << ",";
-    os << "\n  \"vec0\": ";
-    os << Bmad::to_json(obj.vec0);
-    os << ",";
-    os << "\n  \"mat6\": ";
-    os << Bmad::to_json(obj.mat6);
-    os << ",";
-    os << "\n  \"c_mat\": ";
-    os << Bmad::to_json(obj.c_mat);
-    os << ",";
-    os << "\n  \"gamma_c\": ";
-    os << Bmad::to_json(obj.gamma_c);
-    os << ",";
-    os << "\n  \"s_start\": ";
-    os << Bmad::to_json(obj.s_start);
-    os << ",";
-    os << "\n  \"s\": ";
-    os << Bmad::to_json(obj.s);
-    os << ",";
-    os << "\n  \"ref_time\": ";
-    os << Bmad::to_json(obj.ref_time);
-    os << ",";
-    os << "\n  \"a_pole\": ";
-    os << Bmad::to_json(obj.a_pole);
-    os << ",";
-    os << "\n  \"b_pole\": ";
-    os << Bmad::to_json(obj.b_pole);
-    os << ",";
-    os << "\n  \"a_pole_elec\": ";
-    os << Bmad::to_json(obj.a_pole_elec);
-    os << ",";
-    os << "\n  \"b_pole_elec\": ";
-    os << Bmad::to_json(obj.b_pole_elec);
-    os << ",";
-    os << "\n  \"custom\": ";
-    os << Bmad::to_json(obj.custom);
-    os << ",";
-    os << "\n  \"r\": ";
-    os << Bmad::to_json(obj.r);
-    os << ",";
-    os << "\n  \"key\": ";
-    os << Bmad::to_json(obj.key);
-    os << ",";
-    os << "\n  \"sub_key\": ";
-    os << Bmad::to_json(obj.sub_key);
-    os << ",";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"ix_branch\": ";
-    os << Bmad::to_json(obj.ix_branch);
-    os << ",";
-    os << "\n  \"lord_status\": ";
-    os << Bmad::to_json(obj.lord_status);
-    os << ",";
-    os << "\n  \"n_slave\": ";
-    os << Bmad::to_json(obj.n_slave);
-    os << ",";
-    os << "\n  \"n_slave_field\": ";
-    os << Bmad::to_json(obj.n_slave_field);
-    os << ",";
-    os << "\n  \"ix1_slave\": ";
-    os << Bmad::to_json(obj.ix1_slave);
-    os << ",";
-    os << "\n  \"slave_status\": ";
-    os << Bmad::to_json(obj.slave_status);
-    os << ",";
-    os << "\n  \"n_lord\": ";
-    os << Bmad::to_json(obj.n_lord);
-    os << ",";
-    os << "\n  \"n_lord_field\": ";
-    os << Bmad::to_json(obj.n_lord_field);
-    os << ",";
-    os << "\n  \"n_lord_ramper\": ";
-    os << Bmad::to_json(obj.n_lord_ramper);
-    os << ",";
-    os << "\n  \"ic1_lord\": ";
-    os << Bmad::to_json(obj.ic1_lord);
-    os << ",";
-    os << "\n  \"ix_pointer\": ";
-    os << Bmad::to_json(obj.ix_pointer);
-    os << ",";
-    os << "\n  \"ixx\": ";
-    os << Bmad::to_json(obj.ixx);
-    os << ",";
-    os << "\n  \"iyy\": ";
-    os << Bmad::to_json(obj.iyy);
-    os << ",";
-    os << "\n  \"izz\": ";
-    os << Bmad::to_json(obj.izz);
-    os << ",";
-    os << "\n  \"mat6_calc_method\": ";
-    os << Bmad::to_json(obj.mat6_calc_method);
-    os << ",";
-    os << "\n  \"tracking_method\": ";
-    os << Bmad::to_json(obj.tracking_method);
-    os << ",";
-    os << "\n  \"spin_tracking_method\": ";
-    os << Bmad::to_json(obj.spin_tracking_method);
-    os << ",";
-    os << "\n  \"csr_method\": ";
-    os << Bmad::to_json(obj.csr_method);
-    os << ",";
-    os << "\n  \"space_charge_method\": ";
-    os << Bmad::to_json(obj.space_charge_method);
-    os << ",";
-    os << "\n  \"ptc_integration_type\": ";
-    os << Bmad::to_json(obj.ptc_integration_type);
-    os << ",";
-    os << "\n  \"field_calc\": ";
-    os << Bmad::to_json(obj.field_calc);
-    os << ",";
-    os << "\n  \"aperture_at\": ";
-    os << Bmad::to_json(obj.aperture_at);
-    os << ",";
-    os << "\n  \"aperture_type\": ";
-    os << Bmad::to_json(obj.aperture_type);
-    os << ",";
-    os << "\n  \"ref_species\": ";
-    os << Bmad::to_json(obj.ref_species);
-    os << ",";
-    os << "\n  \"orientation\": ";
-    os << Bmad::to_json(obj.orientation);
-    os << ",";
-    os << "\n  \"symplectify\": ";
-    os << Bmad::to_json(obj.symplectify);
-    os << ",";
-    os << "\n  \"mode_flip\": ";
-    os << Bmad::to_json(obj.mode_flip);
-    os << ",";
-    os << "\n  \"multipoles_on\": ";
-    os << Bmad::to_json(obj.multipoles_on);
-    os << ",";
-    os << "\n  \"scale_multipoles\": ";
-    os << Bmad::to_json(obj.scale_multipoles);
-    os << ",";
-    os << "\n  \"taylor_map_includes_offsets\": ";
-    os << Bmad::to_json(obj.taylor_map_includes_offsets);
-    os << ",";
-    os << "\n  \"field_master\": ";
-    os << Bmad::to_json(obj.field_master);
-    os << ",";
-    os << "\n  \"is_on\": ";
-    os << Bmad::to_json(obj.is_on);
-    os << ",";
-    os << "\n  \"logic\": ";
-    os << Bmad::to_json(obj.logic);
-    os << ",";
-    os << "\n  \"bmad_logic\": ";
-    os << Bmad::to_json(obj.bmad_logic);
-    os << ",";
-    os << "\n  \"select\": ";
-    os << Bmad::to_json(obj.select);
-    os << ",";
-    os << "\n  \"offset_moves_aperture\": ";
-    os << Bmad::to_json(obj.offset_moves_aperture);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_ele &obj);
 };
 
 extern "C" void ele_to_c(const Opaque_ele_class *, CPP_ele &);
 extern "C" void ele_to_f(const CPP_ele &, Opaque_ele_class *);
 
 bool operator==(const CPP_ele &, const CPP_ele &);
+void to_json(json &, const CPP_ele &);
 
 //--------------------------------------------------------------------
 // CPP_complex_taylor_term
@@ -5706,25 +2790,7 @@ public:
   std::shared_ptr<CPP_complex_taylor_term> getptr() {
     return shared_from_this();
   }
-
-  friend ostream &operator<<(ostream &os, const CPP_complex_taylor_term &obj) {
-    os << "CPP_complex_taylor_term{";
-    os << "{";
-    os << "\n  \"coef\": ";
-    os << Bmad::to_json(obj.coef);
-    os << ",";
-    os << "\n  \"expn\": ";
-    os << Bmad::to_json(obj.expn);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_complex_taylor_term &obj);
 };
 
 extern "C" void
@@ -5735,6 +2801,7 @@ extern "C" void complex_taylor_term_to_f(const CPP_complex_taylor_term &,
 
 bool operator==(const CPP_complex_taylor_term &,
                 const CPP_complex_taylor_term &);
+void to_json(json &, const CPP_complex_taylor_term &);
 
 //--------------------------------------------------------------------
 // CPP_complex_taylor
@@ -5752,25 +2819,7 @@ public:
 
   virtual ~CPP_complex_taylor() {}
   std::shared_ptr<CPP_complex_taylor> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_complex_taylor &obj) {
-    os << "CPP_complex_taylor{";
-    os << "{";
-    os << "\n  \"ref\": ";
-    os << Bmad::to_json(obj.ref);
-    os << ",";
-    os << "\n  \"term\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_complex_taylor &obj);
 };
 
 extern "C" void complex_taylor_to_c(const Opaque_complex_taylor_class *,
@@ -5779,6 +2828,7 @@ extern "C" void complex_taylor_to_f(const CPP_complex_taylor &,
                                     Opaque_complex_taylor_class *);
 
 bool operator==(const CPP_complex_taylor &, const CPP_complex_taylor &);
+void to_json(json &, const CPP_complex_taylor &);
 
 //--------------------------------------------------------------------
 // CPP_branch
@@ -5806,64 +2856,14 @@ public:
 
   virtual ~CPP_branch() {}
   std::shared_ptr<CPP_branch> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_branch &obj) {
-    os << "CPP_branch{";
-    os << "{";
-    os << "\n  \"name\": ";
-    os << Bmad::to_json(obj.name);
-    os << ",";
-    os << "\n  \"ix_branch\": ";
-    os << Bmad::to_json(obj.ix_branch);
-    os << ",";
-    os << "\n  \"ix_from_branch\": ";
-    os << Bmad::to_json(obj.ix_from_branch);
-    os << ",";
-    os << "\n  \"ix_from_ele\": ";
-    os << Bmad::to_json(obj.ix_from_ele);
-    os << ",";
-    os << "\n  \"ix_to_ele\": ";
-    os << Bmad::to_json(obj.ix_to_ele);
-    os << ",";
-    os << "\n  \"n_ele_track\": ";
-    os << Bmad::to_json(obj.n_ele_track);
-    os << ",";
-    os << "\n  \"n_ele_max\": ";
-    os << Bmad::to_json(obj.n_ele_max);
-    os << ",";
-    os << "\n  \"a\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"b\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"z\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ele\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"param\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"wall3d\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_branch &obj);
 };
 
 extern "C" void branch_to_c(const Opaque_branch_class *, CPP_branch &);
 extern "C" void branch_to_f(const CPP_branch &, Opaque_branch_class *);
 
 bool operator==(const CPP_branch &, const CPP_branch &);
+void to_json(json &, const CPP_branch &);
 
 //--------------------------------------------------------------------
 // CPP_lat
@@ -5908,115 +2908,14 @@ public:
 
   virtual ~CPP_lat() {}
   std::shared_ptr<CPP_lat> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_lat &obj) {
-    os << "CPP_lat{";
-    os << "{";
-    os << "\n  \"use_name\": ";
-    os << Bmad::to_json(obj.use_name);
-    os << ",";
-    os << "\n  \"lattice\": ";
-    os << Bmad::to_json(obj.lattice);
-    os << ",";
-    os << "\n  \"machine\": ";
-    os << Bmad::to_json(obj.machine);
-    os << ",";
-    os << "\n  \"input_file_name\": ";
-    os << Bmad::to_json(obj.input_file_name);
-    os << ",";
-    os << "\n  \"title\": ";
-    os << Bmad::to_json(obj.title);
-    os << ",";
-    os << "\n  \"print_str\": ";
-    os << Bmad::to_json(obj.print_str);
-    os << ",";
-    os << "\n  \"constant\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"a\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"b\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"z\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"param\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"lord_state\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ele_init\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ele\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"branch\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"control\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"particle_start\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"beam_init\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"pre_tracker\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"custom\": ";
-    os << Bmad::to_json(obj.custom);
-    os << ",";
-    os << "\n  \"version\": ";
-    os << Bmad::to_json(obj.version);
-    os << ",";
-    os << "\n  \"n_ele_track\": ";
-    os << Bmad::to_json(obj.n_ele_track);
-    os << ",";
-    os << "\n  \"n_ele_max\": ";
-    os << Bmad::to_json(obj.n_ele_max);
-    os << ",";
-    os << "\n  \"n_control_max\": ";
-    os << Bmad::to_json(obj.n_control_max);
-    os << ",";
-    os << "\n  \"n_ic_max\": ";
-    os << Bmad::to_json(obj.n_ic_max);
-    os << ",";
-    os << "\n  \"input_taylor_order\": ";
-    os << Bmad::to_json(obj.input_taylor_order);
-    os << ",";
-    os << "\n  \"ic\": ";
-    os << Bmad::to_json(obj.ic);
-    os << ",";
-    os << "\n  \"photon_type\": ";
-    os << Bmad::to_json(obj.photon_type);
-    os << ",";
-    os << "\n  \"creation_hash\": ";
-    os << Bmad::to_json(obj.creation_hash);
-    os << ",";
-    os << "\n  \"ramper_slave_bookkeeping\": ";
-    os << Bmad::to_json(obj.ramper_slave_bookkeeping);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_lat &obj);
 };
 
 extern "C" void lat_to_c(const Opaque_lat_class *, CPP_lat &);
 extern "C" void lat_to_f(const CPP_lat &, Opaque_lat_class *);
 
 bool operator==(const CPP_lat &, const CPP_lat &);
+void to_json(json &, const CPP_lat &);
 
 //--------------------------------------------------------------------
 // CPP_bunch
@@ -6045,67 +2944,14 @@ public:
 
   virtual ~CPP_bunch() {}
   std::shared_ptr<CPP_bunch> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_bunch &obj) {
-    os << "CPP_bunch{";
-    os << "{";
-    os << "\n  \"particle\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ix_z\": ";
-    os << Bmad::to_json(obj.ix_z);
-    os << ",";
-    os << "\n  \"charge_tot\": ";
-    os << Bmad::to_json(obj.charge_tot);
-    os << ",";
-    os << "\n  \"charge_live\": ";
-    os << Bmad::to_json(obj.charge_live);
-    os << ",";
-    os << "\n  \"z_center\": ";
-    os << Bmad::to_json(obj.z_center);
-    os << ",";
-    os << "\n  \"t_center\": ";
-    os << Bmad::to_json(obj.t_center);
-    os << ",";
-    os << "\n  \"t0\": ";
-    os << Bmad::to_json(obj.t0);
-    os << ",";
-    os << "\n  \"drift_between_t_and_s\": ";
-    os << Bmad::to_json(obj.drift_between_t_and_s);
-    os << ",";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"ix_bunch\": ";
-    os << Bmad::to_json(obj.ix_bunch);
-    os << ",";
-    os << "\n  \"ix_turn\": ";
-    os << Bmad::to_json(obj.ix_turn);
-    os << ",";
-    os << "\n  \"n_live\": ";
-    os << Bmad::to_json(obj.n_live);
-    os << ",";
-    os << "\n  \"n_good\": ";
-    os << Bmad::to_json(obj.n_good);
-    os << ",";
-    os << "\n  \"n_bad\": ";
-    os << Bmad::to_json(obj.n_bad);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_bunch &obj);
 };
 
 extern "C" void bunch_to_c(const Opaque_bunch_class *, CPP_bunch &);
 extern "C" void bunch_to_f(const CPP_bunch &, Opaque_bunch_class *);
 
 bool operator==(const CPP_bunch &, const CPP_bunch &);
+void to_json(json &, const CPP_bunch &);
 
 //--------------------------------------------------------------------
 // CPP_bunch_params
@@ -6143,88 +2989,7 @@ public:
 
   virtual ~CPP_bunch_params() {}
   std::shared_ptr<CPP_bunch_params> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_bunch_params &obj) {
-    os << "CPP_bunch_params{";
-    os << "{";
-    os << "\n  \"centroid\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"x\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"y\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"z\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"a\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"b\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"c\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"sigma\": ";
-    os << Bmad::to_json(obj.sigma);
-    os << ",";
-    os << "\n  \"rel_max\": ";
-    os << Bmad::to_json(obj.rel_max);
-    os << ",";
-    os << "\n  \"rel_min\": ";
-    os << Bmad::to_json(obj.rel_min);
-    os << ",";
-    os << "\n  \"s\": ";
-    os << Bmad::to_json(obj.s);
-    os << ",";
-    os << "\n  \"t\": ";
-    os << Bmad::to_json(obj.t);
-    os << ",";
-    os << "\n  \"sigma_t\": ";
-    os << Bmad::to_json(obj.sigma_t);
-    os << ",";
-    os << "\n  \"charge_live\": ";
-    os << Bmad::to_json(obj.charge_live);
-    os << ",";
-    os << "\n  \"charge_tot\": ";
-    os << Bmad::to_json(obj.charge_tot);
-    os << ",";
-    os << "\n  \"n_particle_tot\": ";
-    os << Bmad::to_json(obj.n_particle_tot);
-    os << ",";
-    os << "\n  \"n_particle_live\": ";
-    os << Bmad::to_json(obj.n_particle_live);
-    os << ",";
-    os << "\n  \"n_particle_lost_in_ele\": ";
-    os << Bmad::to_json(obj.n_particle_lost_in_ele);
-    os << ",";
-    os << "\n  \"n_good_steps\": ";
-    os << Bmad::to_json(obj.n_good_steps);
-    os << ",";
-    os << "\n  \"n_bad_steps\": ";
-    os << Bmad::to_json(obj.n_bad_steps);
-    os << ",";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"location\": ";
-    os << Bmad::to_json(obj.location);
-    os << ",";
-    os << "\n  \"twiss_valid\": ";
-    os << Bmad::to_json(obj.twiss_valid);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_bunch_params &obj);
 };
 
 extern "C" void bunch_params_to_c(const Opaque_bunch_params_class *,
@@ -6233,6 +2998,7 @@ extern "C" void bunch_params_to_f(const CPP_bunch_params &,
                                   Opaque_bunch_params_class *);
 
 bool operator==(const CPP_bunch_params &, const CPP_bunch_params &);
+void to_json(json &, const CPP_bunch_params &);
 
 //--------------------------------------------------------------------
 // CPP_beam
@@ -6248,28 +3014,14 @@ public:
 
   virtual ~CPP_beam() {}
   std::shared_ptr<CPP_beam> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_beam &obj) {
-    os << "CPP_beam{";
-    os << "{";
-    os << "\n  \"bunch\": ";
-    os << obj;
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_beam &obj);
 };
 
 extern "C" void beam_to_c(const Opaque_beam_class *, CPP_beam &);
 extern "C" void beam_to_f(const CPP_beam &, Opaque_beam_class *);
 
 bool operator==(const CPP_beam &, const CPP_beam &);
+void to_json(json &, const CPP_beam &);
 
 //--------------------------------------------------------------------
 // CPP_aperture_point
@@ -6290,34 +3042,7 @@ public:
 
   virtual ~CPP_aperture_point() {}
   std::shared_ptr<CPP_aperture_point> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_aperture_point &obj) {
-    os << "CPP_aperture_point{";
-    os << "{";
-    os << "\n  \"x\": ";
-    os << Bmad::to_json(obj.x);
-    os << ",";
-    os << "\n  \"y\": ";
-    os << Bmad::to_json(obj.y);
-    os << ",";
-    os << "\n  \"plane\": ";
-    os << Bmad::to_json(obj.plane);
-    os << ",";
-    os << "\n  \"ix_ele\": ";
-    os << Bmad::to_json(obj.ix_ele);
-    os << ",";
-    os << "\n  \"i_turn\": ";
-    os << Bmad::to_json(obj.i_turn);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_aperture_point &obj);
 };
 
 extern "C" void aperture_point_to_c(const Opaque_aperture_point_class *,
@@ -6326,6 +3051,7 @@ extern "C" void aperture_point_to_f(const CPP_aperture_point &,
                                     Opaque_aperture_point_class *);
 
 bool operator==(const CPP_aperture_point &, const CPP_aperture_point &);
+void to_json(json &, const CPP_aperture_point &);
 
 //--------------------------------------------------------------------
 // CPP_aperture_param
@@ -6350,46 +3076,7 @@ public:
 
   virtual ~CPP_aperture_param() {}
   std::shared_ptr<CPP_aperture_param> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_aperture_param &obj) {
-    os << "CPP_aperture_param{";
-    os << "{";
-    os << "\n  \"min_angle\": ";
-    os << Bmad::to_json(obj.min_angle);
-    os << ",";
-    os << "\n  \"max_angle\": ";
-    os << Bmad::to_json(obj.max_angle);
-    os << ",";
-    os << "\n  \"n_angle\": ";
-    os << Bmad::to_json(obj.n_angle);
-    os << ",";
-    os << "\n  \"n_turn\": ";
-    os << Bmad::to_json(obj.n_turn);
-    os << ",";
-    os << "\n  \"x_init\": ";
-    os << Bmad::to_json(obj.x_init);
-    os << ",";
-    os << "\n  \"y_init\": ";
-    os << Bmad::to_json(obj.y_init);
-    os << ",";
-    os << "\n  \"rel_accuracy\": ";
-    os << Bmad::to_json(obj.rel_accuracy);
-    os << ",";
-    os << "\n  \"abs_accuracy\": ";
-    os << Bmad::to_json(obj.abs_accuracy);
-    os << ",";
-    os << "\n  \"start_ele\": ";
-    os << Bmad::to_json(obj.start_ele);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_aperture_param &obj);
 };
 
 extern "C" void aperture_param_to_c(const Opaque_aperture_param_class *,
@@ -6398,6 +3085,7 @@ extern "C" void aperture_param_to_f(const CPP_aperture_param &,
                                     Opaque_aperture_param_class *);
 
 bool operator==(const CPP_aperture_param &, const CPP_aperture_param &);
+void to_json(json &, const CPP_aperture_param &);
 
 //--------------------------------------------------------------------
 // CPP_aperture_scan
@@ -6416,28 +3104,7 @@ public:
 
   virtual ~CPP_aperture_scan() {}
   std::shared_ptr<CPP_aperture_scan> getptr() { return shared_from_this(); }
-
-  friend ostream &operator<<(ostream &os, const CPP_aperture_scan &obj) {
-    os << "CPP_aperture_scan{";
-    os << "{";
-    os << "\n  \"point\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"ref_orb\": ";
-    os << obj;
-    os << ",";
-    os << "\n  \"pz_start\": ";
-    os << Bmad::to_json(obj.pz_start);
-    os << "\n}";
-    os << "}";
-    return os;
-  }
-
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
+  friend ostream &operator<<(ostream &os, const CPP_aperture_scan &obj);
 };
 
 extern "C" void aperture_scan_to_c(const Opaque_aperture_scan_class *,
@@ -6446,8 +3113,9 @@ extern "C" void aperture_scan_to_f(const CPP_aperture_scan &,
                                    Opaque_aperture_scan_class *);
 
 bool operator==(const CPP_aperture_scan &, const CPP_aperture_scan &);
-
+void to_json(json &, const CPP_aperture_scan &);
 //--------------------------------------------------------------------
 
-#define CPP_BMAD_CLASSES
+} // namespace Bmad
+
 #endif

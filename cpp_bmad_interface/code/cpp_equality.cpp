@@ -107,6 +107,7 @@ bool is_all_equal(const FixedArray3D<T, DIM1, DIM2, DIM3> &arr1,
   return true;
 }
 //---------------------------------------------------
+namespace Bmad {
 
 //--------------------------------------------------------------
 
@@ -1638,3 +1639,5 @@ bool operator==(const CPP_aperture_scan &x, const CPP_aperture_scan &y) {
   is_eq = is_eq && (x.pz_start == y.pz_start);
   return is_eq;
 };
+
+} // namespace Bmad

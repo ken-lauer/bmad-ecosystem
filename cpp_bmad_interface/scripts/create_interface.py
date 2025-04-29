@@ -819,23 +819,21 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
 # ******************************************************************************
 # Output portion
 #
-def write_parsed_structures(struct_definitions, fn):
+def write_parsed_structures(structs, fn):
     """
     Write parsed structure definitions to a file.
     """
     with open(fn, "wt") as f_out:
-        for struct in struct_definitions:
+        for struct in structs:
             f_out.write("******************************************\n")
             f_out.write(f"{struct.f_name}    {len(struct.arg)}\n")
             for arg in struct.arg:
                 f_out.write(f"    {arg.original_repr()}\n")
 
 
-def check_missing(struct_definitions: list[Structure]):
+def check_missing(structs: list[Structure]):
     # Report any structs not found
-    missing_structs = [
-        struct.f_name for struct in struct_definitions if struct.short_name == ""
-    ]
+    missing_structs = [struct.f_name for struct in structs if struct.short_name == ""]
     for name in missing_structs:
         print(f"NOT FOUND: {name}", file=sys.stderr)
 
@@ -844,12 +842,12 @@ def check_missing(struct_definitions: list[Structure]):
         sys.exit("COULD NOT FIND ALL THE STRUCTS! STOPPING HERE!")
 
     # Create set of defined struct names
-    defined_struct_names = {struct.f_name for struct in struct_definitions}
+    defined_struct_names = {struct.f_name for struct in structs}
     # Track all missing struct definitions
     missing_struct_definitions = []
 
     # Check that all referenced struct types have definitions
-    for parent_struct in struct_definitions:
+    for parent_struct in structs:
         for fld in parent_struct.arg:
             # Skip non-struct fields and externally defined structs
             if fld.type != STRUCT or fld.kind in params.structs_defined_externally:
@@ -868,7 +866,7 @@ def check_missing(struct_definitions: list[Structure]):
         sys.exit(1)
 
 
-def create_fortran_interface(f_face, struct_definitions: list[Structure], params):
+def create_fortran_interface(f_face, structs: list[Structure], params):
     # Create Fortran side of interface...
 
     # First the header
@@ -896,7 +894,7 @@ use, intrinsic :: iso_c_binding
     ##############
     # ZZZ_to_f interface
 
-    for struct in struct_definitions:
+    for struct in structs:
         f_face.write(
             f"""
 !--------------------------------------------------------------------------
@@ -915,7 +913,7 @@ end interface
     ##############
     # ZZZ_to_c definitions
 
-    for struct in struct_definitions:
+    for struct in structs:
         s_name = struct.short_name
 
         f_face.write(
@@ -1090,7 +1088,7 @@ end subroutine {s_name}_to_f2
     f_face.write("end module\n")
 
 
-def create_fortran_equality_check_code(f_equ, struct_definitions):
+def create_fortran_equality_check_code(f_equ, structs: list[Structure]):
     f_equ.write(
         textwrap.dedent(f"""\
         !+
@@ -1116,10 +1114,10 @@ def create_fortran_equality_check_code(f_equ, struct_definitions):
 interface operator (==)
 """)
 
-    for i in range(0, len(struct_definitions), 5):
+    for i in range(0, len(structs), 5):
         f_equ.write(
             "  module procedure "
-            + ", ".join(f"eq_{f.short_name}" for f in struct_definitions[i : i + 5])
+            + ", ".join(f"eq_{f.short_name}" for f in structs[i : i + 5])
             + "\n"
         )
 
@@ -1129,7 +1127,7 @@ end interface
 contains
 """)
 
-    for struct in struct_definitions:
+    for struct in structs:
         f_equ.write(
             textwrap.dedent(f"""
 
@@ -1164,7 +1162,7 @@ contains
     f_equ.write("end module\n")
 
 
-def write_tests_main(f_test, struct_definitions: list[Structure]):
+def write_tests_main(f_test, structs: list[Structure]):
     f_test.write(
         textwrap.dedent(
             """\
@@ -1181,7 +1179,7 @@ def write_tests_main(f_test, struct_definitions: list[Structure]):
         )
     )
 
-    for struct in struct_definitions:
+    for struct in structs:
         f_test.write(
             "call test1_f_"
             + struct.short_name
@@ -1206,7 +1204,7 @@ def write_tests_main(f_test, struct_definitions: list[Structure]):
     )
 
 
-def write_tests_mod(f_test, struct_definitions: list[Structure]):
+def write_tests_mod(f_test, structs: list[Structure]):
     f_test.write(
         textwrap.dedent(
             f"""\
@@ -1224,7 +1222,7 @@ def write_tests_mod(f_test, struct_definitions: list[Structure]):
 
     f_test.write("contains\n\n")
 
-    for struct in struct_definitions:
+    for struct in structs:
         f_test.write(
             textwrap.dedent(
                 f"""\
@@ -1372,60 +1370,84 @@ end module
 """)
 
 
-def get_class_repr_lines_inner(struct: Structure) -> list[str]:
-    lines = []
+def get_to_json_source(struct: Structure) -> list[str]:
+    args = [arg for arg in struct.arg if arg.is_component and arg.member is not None]
 
-    # Start with opening the JSON object
-    lines.append('os << "{";')
+    members = ", ".join("{" + f'"{arg.c_name}", obj.{arg.c_name}' + "}" for arg in args)
 
-    # Track if we need to add commas between members
-    members_processed = []
-
-    for arg in struct.arg:
-        # member = arg.member
-        if not arg.is_component or arg.member is None:
-            continue
-
-        members_processed.append(arg.c_name)
-        # type_info = member.type_info
-
-        # Add comma if not the first member
-        if len(members_processed) > 1:
-            lines.append('os << ",";')
-
-        # Output the member name as a JSON key with a newline for readability
-        lines.append(rf'os << "\n  \"{arg.c_name}\": ";')
-
-        if arg.type == "type":
-            lines.append("os << obj;")
-        else:
-            lines.append(f"os << Bmad::to_json(obj.{arg.c_name});")
-
-    # Close the JSON object
-    lines.append('os << "\\n}";')
-
-    return lines
+    return [
+        f"void to_json(json &j, const {struct.cpp_class} &obj) {{",
+        f"j = json {{ {members} }};",
+        "}",
+        f"""
+        ostream &operator<<(ostream &os, const {struct.cpp_class} &obj) {{
+          json j;
+          to_json(j, obj);
+          std::string str = nlohmann::to_string(j);
+          os << str;
+          return os;
+        }}
+        """,
+    ]
 
 
-def get_class_repr(struct: Structure) -> str:
-    lines = get_class_repr_lines_inner(struct)
+def write_cpp_json_source(file, structs: list[Structure]) -> None:
+    """Write C++ classes definitions for Bmad / C++ structure interface."""
+    header_template = string.Template(
+        textwrap.dedent(
+            """\
+            //+
+            // C++ JSON helpers for Bmad / C++ structure interface.
+            //
+            // This file is generated as part of the Bmad/C++ interface code generation.
+            // The code generation files can be found in cpp_bmad_interface.
+            //
+            // DO NOT EDIT THIS FILE DIRECTLY! 
+            //-
+            
+            #include <iostream>
+            #include <memory>
+            #include <optional>
+            
+            #include "cpp_bmad_classes.h"
+            #include "converter_templates.h"
+            #include "json.hpp"
+            ${include_headers}
+            
+            using namespace Bmad;
+            using std::ostream;
+            using std::size_t;
+            using json = nlohmann::json;
+           
+            namespace std {
+            template<typename T>
+            void to_json(json& j, const complex<T>& d) {
+                j = {d.real(), d.imag()};
+            }
+            void from_json(const json& j, Complex &d) {
+                d.real(j.at(0).get<double>());
+                d.imag(j.at(1).get<double>());
+            }
+            } // namespace: std
 
-    return string.Template("""
-  friend ostream& operator<<(ostream& os, const ${cpp_class}& obj) {
-    os << "${cpp_class}{";
-    ${lines}
-    os << "}";
-    return os;
-  }
+            namespace Bmad {
 
-  std::string to_json() const {
-    std::ostringstream os;
-    os << this;
-    return os.str();
-  }
-    """).substitute(
-        cpp_class=struct.cpp_class,
-        lines=indent("\n".join(lines), 4).lstrip(),
+            //--------------------------------------------------------------------
+            ${json_helpers}
+            //--------------------------------------------------------------------
+            } // namespace Bmad
+            """
+        )
+    )
+
+    include_headers = "\n".join(params.include_header_files)
+    json_helpers = "\n".join(
+        "\n".join(get_to_json_source(struct)) for struct in structs
+    )
+    file.write(
+        header_template.substitute(
+            include_headers=include_headers, json_helpers=json_helpers
+        )
     )
 
 
@@ -1449,7 +1471,6 @@ def get_class_lines(struct: Structure) -> list[str]:
         constructor_body = f'{constructor_body}\nstd::cout << "{struct.cpp_class}(): " << this << std::endl;'
         destructor_body = f'{destructor_body}\nstd::cout << "~{struct.cpp_class}(): " << this << std::endl;'
 
-    repr_lines = get_class_repr(struct).splitlines()
     template = string.Template(
         textwrap.dedent(r"""\
         //--------------------------------------------------------------------
@@ -1469,13 +1490,14 @@ def get_class_lines(struct: Structure) -> list[str]:
             ${destructor_body}
         }
         std::shared_ptr<${cpp_class}> getptr() { return shared_from_this(); }
-        ${repr_methods}
+        friend ostream& operator<<(ostream &os, const ${cpp_class} &obj);
         };
-        
+
         extern "C" void ${short_name}_to_c (const Opaque_${short_name}_class*, ${cpp_class}&);
         extern "C" void ${short_name}_to_f (const ${cpp_class}&, Opaque_${short_name}_class*);
         
         bool operator== (const ${cpp_class}&, const ${cpp_class}&);
+        void to_json(json &, const ${cpp_class} &);
         """)
     )
     return template.substitute(
@@ -1486,11 +1508,10 @@ def get_class_lines(struct: Structure) -> list[str]:
         c_constructor_arg_list=struct.c_constructor_arg_list,
         constructor_body=constructor_body,
         destructor_body=destructor_body,
-        repr_methods="\n".join(repr_lines),
     ).splitlines()
 
 
-def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
+def write_cpp_classes(file, structs: list[Structure]) -> None:
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     header_template = string.Template(
         textwrap.dedent(
@@ -1505,24 +1526,37 @@ def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
             //-
             
             #ifndef CPP_BMAD_CLASSES
+            #define CPP_BMAD_CLASSES
             
             #include <iostream>
             #include <memory>
             #include <optional>
             
             #include "converter_templates.h"
+            #include "json.hpp"
             ${include_headers}
             
             using namespace Bmad;
             using std::shared_ptr, std::make_shared;
             using std::ostream;
             using std::size_t;
-            
-            ${class_definitions}
-            
+            using json = nlohmann::json;
+
+            namespace std {
+            template<typename T>
+            void to_json(json&, const complex<T>&);
+            template<typename T>
+            void from_json(const json&, complex<T> &);
+            } // namespace: std
+
+            namespace Bmad {
+
             //--------------------------------------------------------------------
-            
-            #define CPP_BMAD_CLASSES
+            ${class_definitions}
+            //--------------------------------------------------------------------
+
+            }
+
             #endif
             """
         )
@@ -1530,7 +1564,7 @@ def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
 
     include_headers = "\n".join(params.include_header_files)
     class_definitions = "\n".join(
-        "\n".join(get_class_lines(struct)) for struct in struct_definitions
+        "\n".join(get_class_lines(struct)) for struct in structs
     )
     file.write(
         header_template.substitute(
@@ -1539,11 +1573,11 @@ def write_cpp_classes(file, struct_definitions: list[Structure]) -> None:
     )
 
 
-def write_cpp_convert(file, header: str, struct_definitions: list[Structure]):
+def write_cpp_convert(file, header: str, structs: list[Structure]):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     file.write(header)
 
-    for struct in struct_definitions:
+    for struct in structs:
         # ZZZ_to_f2
         file.write(f"""
 //--------------------------------------------------------------------
@@ -1622,10 +1656,11 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("}\n")
 
 
-def write_cpp_equality(file, header: str, struct_definitions: list[Structure]):
+def write_cpp_equality(file, header: str, structs: list[Structure]):
     file.write(header)
 
-    for struct in struct_definitions:
+    print("namespace Bmad {", file=file)
+    for struct in structs:
         file.write(
             "\n//--------------------------------------------------------------\n\n"
         )
@@ -1647,9 +1682,10 @@ def write_cpp_equality(file, header: str, struct_definitions: list[Structure]):
 
         file.write("  return is_eq;\n")
         file.write("};\n\n")
+    print("} // namespace Bmad", file=file)
 
 
-def write_cpp_test(file, struct_definitions: list[Structure]):
+def write_cpp_test(file, structs: list[Structure]):
     file.write("""
 //+
 // C++ classes definitions for Bmad / C++ structure interface.
@@ -1673,7 +1709,7 @@ using namespace Bmad;
         head = struct.replace("_struct", "")
         file.write(f"void set_CPP_{head}_test_pattern (CPP_{head}& C, int ix_patt);\n")
 
-    for struct in struct_definitions:
+    for struct in structs:
         file.write(f"""
 //--------------------------------------------------------------
 //--------------------------------------------------------------
@@ -1888,14 +1924,14 @@ def generate():
     write_output(structs)
 
 
-def write_output(struct_definitions: list[Structure]) -> None:
+def write_output(structs: list[Structure]) -> None:
     if DEBUG:
-        write_parsed_structures(struct_definitions, "f_structs.parsed")
+        write_parsed_structures(structs, "f_structs.parsed")
 
     write_if_differs(
         create_fortran_interface,
         pathlib.Path(params.code_dir) / "bmad_cpp_convert_mod.f90",
-        struct_definitions,
+        structs,
         params,
     )
     write_if_differs(
@@ -1903,23 +1939,28 @@ def write_output(struct_definitions: list[Structure]) -> None:
         CPP_INTERFACE_ROOT
         / params.equality_mod_dir
         / (params.equality_mod_file + ".f90"),
-        struct_definitions,
+        structs,
     )
 
     write_if_differs(
         write_tests_main,
         CPP_INTERFACE_ROOT / params.test_dir / "main.f90",
-        struct_definitions,
+        structs,
     )
     write_if_differs(
         write_tests_mod,
         CPP_INTERFACE_ROOT / params.test_dir / "bmad_cpp_test_mod.f90",
-        struct_definitions,
+        structs,
     )
     write_if_differs(
         write_cpp_classes,
         CPP_INTERFACE_ROOT / "include" / "cpp_bmad_classes.h",
-        struct_definitions,
+        structs,
+    )
+    write_if_differs(
+        write_cpp_json_source,
+        CPP_INTERFACE_ROOT / "code" / "cpp_classes_json.cpp",
+        structs,
     )
     convert_header = (SCRIPTS_PATH / "convert_template.cpp").read_text()
 
@@ -1927,7 +1968,7 @@ def write_output(struct_definitions: list[Structure]) -> None:
         write_cpp_convert,
         CPP_INTERFACE_ROOT / params.code_dir / "cpp_bmad_convert.cpp",
         convert_header,
-        struct_definitions,
+        structs,
     )
 
     equality_header = (SCRIPTS_PATH / "equality_template.cpp").read_text()
@@ -1935,12 +1976,12 @@ def write_output(struct_definitions: list[Structure]) -> None:
         write_cpp_equality,
         CPP_INTERFACE_ROOT / params.code_dir / "cpp_equality.cpp",
         equality_header,
-        struct_definitions,
+        structs,
     )
     write_if_differs(
         write_cpp_test,
         CPP_INTERFACE_ROOT / params.test_dir / "cpp_bmad_test.cpp",
-        struct_definitions,
+        structs,
     )
 
 
