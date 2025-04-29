@@ -6,7 +6,7 @@
 ! Typically this routine should not be directly called. 
 ! Instead, use track1 which calls this routine.
 !
-! Input :
+! Input:
 !   start_orb        -- Coord_struct: Starting coords.
 !   ele              -- Ele_struct: Element to track through.
 !   param            -- lat_param_struct: Beam parameters.

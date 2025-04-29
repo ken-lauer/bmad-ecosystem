@@ -1,5 +1,5 @@
 !+
-! Function spin_omega (field, orbit, sign_z_vel, phase_space_coords), result (omega)
+! Function spin_omega (field, orbit, sign_z_vel, phase_space_coords) result (omega)
 !
 ! Return the modified T-BMT spin omega vector:
 !   dOmega/d|s|   With phase space coords.

@@ -1,5 +1,5 @@
 !+
-! Subroutine track1_gun_space_charge (bunch, ele, err, track_to_same_s, bunch_track)
+! Subroutine track1_bunch_space_charge (bunch, ele, err, track_to_same_s, bunch_track)
 !
 ! Subroutine to track a bunch of particles in the presence of space charge.
 ! This routine uses time based tracking and so is usable at low energy near a cathode.

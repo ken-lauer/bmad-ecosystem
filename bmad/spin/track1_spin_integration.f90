@@ -6,7 +6,7 @@
 ! Note: spin tracking through a patch element is handled in track_a_patch since
 ! this is needed by runge_kutta tracking.
 !
-! Input :
+! Input:
 !   start_orb  -- Coord_struct: Starting coords.
 !   ele        -- Ele_struct: Element to track through.
 !   param      -- lat_param_struct: Beam parameters.

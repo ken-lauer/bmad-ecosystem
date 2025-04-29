@@ -8,6 +8,8 @@
 !   attrib_name -- character(*): Name of the attribute. Must be upper case.
 !   attrib_ptr  -- all_pointer_struct, optional: Pointer to the attribute.
 !                     The presence of this argument saves a small amount of time.
+! Output:
+!   err_flag   -- logical: Set True if attribute not found. False otherwise.
 !-
 
 subroutine attribute_set_bookkeeping (ele, attrib_name, err_flag, attrib_ptr)

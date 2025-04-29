@@ -3,7 +3,7 @@
 !
 ! Particle spin tracking through a single element with a spin map.
 !
-! Input :
+! Input:
 !   start_orb  -- Coord_struct: Starting coords.
 !   ele        -- Ele_struct: Element to track through.
 !   param            -- lat_param_struct: Beam parameters.

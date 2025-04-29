@@ -1045,11 +1045,12 @@ subroutine ele_order_calc (lat, order)
   type (lat_ele_order_struct) order
 end subroutine
 
-subroutine ele_rad_int_cache_calc (ele)
-  import
-  implicit none
-  type (ele_struct) ele
-end subroutine
+! TODO no longer exists?
+! subroutine ele_rad_int_cache_calc (ele)
+!   import
+!   implicit none
+!   type (ele_struct) ele
+! end subroutine
 
 subroutine ele_to_fibre (ele, ptc_fibre, use_offsets, err_flag, integ_order, steps, for_layout, ref_in)
   import
@@ -1572,13 +1573,14 @@ subroutine make_mat6_bmad_photon (ele, param, start_orb, end_orb, err)
   logical, optional :: err
 end subroutine
 
-subroutine make_mat6_runge_kutta (ele, param, start_orb, end_orb)
-  import
-  implicit none
-  type (ele_struct), target :: ele
-  type (coord_struct) :: start_orb, end_orb
-  type (lat_param_struct) param
-end subroutine
+! TODO: missing?
+! subroutine make_mat6_runge_kutta (ele, param, start_orb, end_orb)
+!   import
+!   implicit none
+!   type (ele_struct), target :: ele
+!   type (coord_struct) :: start_orb, end_orb
+!   type (lat_param_struct) param
+! end subroutine
 
 subroutine make_mat6_symp_lie_ptc (ele, start_orb, end_orb)
   import
@@ -1954,15 +1956,16 @@ function patch_length (patch, ref_coords) result (length)
   integer, optional :: ref_coords
 end function
 
-subroutine phase_space_fit (x, xp, twiss, tune, emit, x_0, xp_0, chi, tol)
-  import
-  implicit none
-  type (twiss_struct) twiss
-  real(rp), optional :: tol
-  real(rp) x(:), xp(:)
-  real(rp) tune, emit
-  real(rp) x_0, xp_0, chi
-end subroutine
+! TODO missing?
+! subroutine phase_space_fit (x, xp, twiss, tune, emit, x_0, xp_0, chi, tol)
+!   import
+!   implicit none
+!   type (twiss_struct) twiss
+!   real(rp), optional :: tol
+!   real(rp) x(:), xp(:)
+!   real(rp) tune, emit
+!   real(rp) x_0, xp_0, chi
+! end subroutine
 
 function physical_ele_end (track_end, orbit, ele_orientation, return_stream_end) result (physical_end)
   import
@@ -2212,11 +2215,11 @@ subroutine remove_lord_slave_link (lord, slave)
   type (ele_struct), target :: lord, slave
 end subroutine
 
-subroutine read_digested_bmad_file (in_file_name, lat, version, err_flag, parser_calling, lat_files)
+subroutine read_digested_bmad_file (in_file_name, lat, inc_version, err_flag, parser_calling, lat_files)
   import
   implicit none
   type (lat_struct), target, intent(inout) :: lat
-  integer version
+  integer inc_version
   character(*) in_file_name
   logical, optional :: err_flag, parser_calling
   character(*), optional, allocatable :: lat_files(:)
@@ -2512,14 +2515,15 @@ subroutine set_z_tune (branch, z_tune, ok, print_err)
   logical, optional :: ok, print_err
 end subroutine
 
-subroutine set_on (key, lat, on_switch, orb)
-  import
-  implicit none
-  type (lat_struct) lat
-  type (coord_struct), optional :: orb(0:)
-  integer key
-  logical on_switch
-end subroutine
+! TODO this no longer exists?
+! subroutine set_on (key, lat, on_switch, orb)
+!   import
+!   implicit none
+!   type (lat_struct) lat
+!   type (coord_struct), optional :: orb(0:)
+!   integer key
+!   logical on_switch
+! end subroutine
 
 subroutine set_ele_defaults (ele, do_allocate)
   import
@@ -2569,12 +2573,12 @@ subroutine slice_lattice (lat, ele_list, error, do_bookkeeping)
   logical, optional :: do_bookkeeping
 end subroutine
 
-subroutine sol_quad_mat6_calc (ks, k1, tilt, s_len, ele, orbit, mat6, make_matrix)
+subroutine sol_quad_mat6_calc (ks, k1, tilt, length, ele, orbit, mat6, make_matrix)
   import
   implicit none
   type (ele_struct) ele
   type (coord_struct) orbit
-  real(rp) ks, k1, tilt, s_len
+  real(rp) ks, k1, tilt, length
   real(rp), optional :: mat6(6,6)
   logical, optional :: make_matrix
 end subroutine
@@ -3169,10 +3173,10 @@ subroutine tracking_rad_map_setup (ele, tollerance, ref_edge, rad_map, err_flag)
   logical err_flag
 end subroutine
 
-subroutine transfer_ac_kick (ac_kick_in, ac_kick_out)
+subroutine transfer_ac_kick (ac_in, ac_out)
   import
   implicit none
-  type (ac_kicker_struct), pointer :: ac_kick_in, ac_kick_out
+  type (ac_kicker_struct), pointer :: ac_in, ac_out
 end subroutine transfer_ac_kick
 
 subroutine transfer_branch (branch1, branch2)
