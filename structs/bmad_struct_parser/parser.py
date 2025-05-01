@@ -123,10 +123,10 @@ class StructureMember(pydantic.BaseModel):
 
 
 class Structure(pydantic.BaseModel):
-    filename: pathlib.Path
-    line: int
-    name: str
-    module: str
+    filename: pathlib.Path = pathlib.Path()
+    line: int = 0
+    name: str = ""
+    module: str = ""
     private: bool = False
     lines: list[str] = pydantic.Field(default_factory=list, exclude=True)
     comment: str = ""

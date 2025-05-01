@@ -5,14 +5,11 @@ from ..parser import (
     FileLine,
     ParsedDeclaration,
     Structure,
-    StructureInfo,
     StructureMember,
     TypeInformation,
     find_structs,
     get_default,
     get_names_from_line,
-    get_python_member_name,
-    get_python_type,
     get_type_from_line,
     parse_declaration,
     parse_type_declaration,
@@ -53,12 +50,15 @@ def test_get_default(
         # Simple basic types
         ("INTEGER :: x", TypeInformation(type="INTEGER")),
         ("REAL :: y", TypeInformation(type="REAL")),
+        ("CHARACTER(8) :: c", TypeInformation(type="CHARACTER", kind="8")),
+        ("CHARACTER c", TypeInformation(type="CHARACTER")),
+        ("CHARACTER(8) c", TypeInformation(type="CHARACTER", kind="8")),
         ("CHARACTER :: c", TypeInformation(type="CHARACTER")),
         ("LOGICAL :: flag", TypeInformation(type="LOGICAL")),
         # Types with sizes/kinds
-        ("INTEGER(KIND=4) :: i", TypeInformation(type="INTEGER", size="KIND=4")),
-        ("REAL(8) :: x", TypeInformation(type="REAL", size="8")),
-        ("CHARACTER(LEN=80) :: str", TypeInformation(type="CHARACTER", size="LEN=80")),
+        ("INTEGER(KIND=4) :: i", TypeInformation(type="INTEGER", kind="KIND=4")),
+        ("REAL(8) :: x", TypeInformation(type="REAL", kind="8")),
+        ("CHARACTER(LEN=80) :: str", TypeInformation(type="CHARACTER", kind="LEN=80")),
         # Dimension attribute
         (
             "INTEGER, DIMENSION(10) :: arr",
@@ -70,7 +70,7 @@ def test_get_default(
         ),
         (
             "CHARACTER(LEN=20), DIMENSION(:) :: dynamic_array",
-            TypeInformation(type="CHARACTER", size="LEN=20", dimension=":"),
+            TypeInformation(type="CHARACTER", kind="LEN=20", dimension=":"),
         ),
         # Allocatable attribute
         (
@@ -162,7 +162,7 @@ def test_get_default(
             "REAL(KIND=8), DIMENSION(100), ALLOCATABLE, INTENT(INOUT), TARGET :: complex_var",
             TypeInformation(
                 type="REAL",
-                size="KIND=8",
+                kind="KIND=8",
                 dimension="100",
                 allocatable=True,
                 intent="INOUT",
@@ -172,7 +172,7 @@ def test_get_default(
         (
             "CHARACTER(LEN=:), ALLOCATABLE, PRIVATE :: dynamic_string",
             TypeInformation(
-                type="CHARACTER", size="LEN=:", allocatable=True, private=True
+                type="CHARACTER", kind="LEN=:", allocatable=True, private=True
             ),
         ),
         (
@@ -210,11 +210,11 @@ def test_get_default(
         # User-defined types
         (
             "TYPE(MyCustomType) :: custom_var",
-            TypeInformation(type="MyCustomType"),
+            TypeInformation(type="TYPE", kind="MyCustomType"),
         ),
         (
             "TYPE(MyCustomType), POINTER :: custom_ptr",
-            TypeInformation(type="MyCustomType", pointer=True),
+            TypeInformation(type="TYPE", kind="MyCustomType", pointer=True),
         ),
         # Non-standard attributes that would be collected but not specifically parsed
         (
@@ -250,8 +250,8 @@ def test_type_parsing(line: str, expected_type: TypeInformation) -> None:
         ),
         (
             "type (qp_axis_struct) x, y, x2, y2",
+            "type",
             "qp_axis_struct",
-            None,
         ),
         (
             "character*20 magnet",
@@ -349,23 +349,6 @@ def test_parse_declaration(
 
 
 @pytest.mark.parametrize(
-    ("name", "expected_python_name"),
-    [
-        ("str", "str_"),
-        ("float", "float_"),
-        ("int", "int_"),
-        ("is", "is_"),
-        ("lambda", "lambda_"),
-        ("0", "bmad_0"),
-        ("model_abc", "bmad_model_abc"),
-    ],
-)
-def test_get_python_member_name(name: str, expected_python_name: str) -> None:
-    python_name = get_python_member_name(name)
-    assert python_name == expected_python_name
-
-
-@pytest.mark.parametrize(
     ("line", "expected_decl"),
     [
         ("type name", [ParsedDeclaration(name="name", dimension=None, default=None)]),
@@ -393,23 +376,6 @@ def test_parse_type_decl(line: str, expected_decl: list[ParsedDeclaration]) -> N
 
 
 @pytest.mark.parametrize(
-    ("type", "expected_python_type"),
-    [
-        ("logical", "bool"),
-        ("LOGICAL", "bool"),
-        ("real", "float"),
-        ("integer", "int"),
-        ("character", "str"),
-        ("complex", "Complex"),
-        ("logical, allocatable", "bool"),
-    ],
-)
-def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
-    python_type = get_python_type(TypeInformation(type=type))
-    assert python_type == expected_python_type
-
-
-@pytest.mark.parametrize(
     ("lines", "expected_info"),
     [
         pytest.param(
@@ -417,7 +383,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
             type tao_curve_orbit_struct
                 real(rp) :: x = 0       ! Transverse offset
             """,
-            StructureInfo(
+            Structure(
                 members={
                     "x": StructureMember(
                         line=2,
@@ -432,6 +398,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                 },
             ),
@@ -443,7 +410,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                 real(rp) :: x = 0, y = 0       ! Transverse offset
                 real(rp) :: t = 0              ! Time
             """,
-            StructureInfo(
+            Structure(
                 members={
                     "x": StructureMember(
                         line=2,
@@ -458,6 +425,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                     "y": StructureMember(
                         line=2,
@@ -472,6 +440,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                     "t": StructureMember(
                         line=3,
@@ -486,6 +455,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                 },
             ),
@@ -500,7 +470,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                 real(rp) :: min = 0, max = 0             ! Min and max values for mapping z-axis to color.
                 logical :: autoscale = .true.            ! Set %min, %max automatically to the limits of %data_type
             """,
-            StructureInfo(
+            Structure(
                 members={
                     "data_type": StructureMember(
                         line=2,
@@ -515,6 +485,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="'default'",
                         default="default",
                         default_factory="",
+                        type_info=TypeInformation(type="character"),
                     ),
                     "is_on": StructureMember(
                         line=3,
@@ -529,6 +500,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default=".false.",
                         default=False,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                     "min": StructureMember(
                         line=4,
@@ -543,6 +515,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                     "max": StructureMember(
                         line=4,
@@ -557,6 +530,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                     "autoscale": StructureMember(
                         line=5,
@@ -571,6 +545,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default=".true.",
                         default=True,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                 },
             ),
@@ -585,7 +560,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                 real(rp) :: spin_eigen_vec(6,3) = 0           ! (j,:) is j^th vector
                 logical :: valid = .false.
             """,
-            StructureInfo(
+            Structure(
                 members={
                     "dn_dpz": StructureMember(
                         line=2,
@@ -598,6 +573,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default=None,
                         default=None,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                     "orb_eigen_val": StructureMember(
                         line=3,
@@ -610,6 +586,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                     "orb_eigen_vec": StructureMember(
                         line=4,
@@ -623,6 +600,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                     "spin_eigen_vec": StructureMember(
                         line=5,
@@ -636,6 +614,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                     "valid": StructureMember(
                         line=6,
@@ -648,6 +627,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default=".false.",
                         default=False,
                         default_factory="",
+                        type_info=TypeInformation(type="logical"),
                     ),
                 },
             ),
@@ -662,7 +642,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                 real(rp) :: orb_eigen_vec1(6,7) = 0   ! this has a
                                                       ! multiline comment too
             """,
-            StructureInfo(
+            Structure(
                 members={
                     "orb_eigen_vec": StructureMember(
                         line=3,
@@ -676,6 +656,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                     "orb_eigen_vec1": StructureMember(
                         line=5,
@@ -689,6 +670,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
                         fortran_default="0",
                         default=0,
                         default_factory="",
+                        type_info=TypeInformation(type="real"),
                     ),
                 },
             ),
@@ -696,7 +678,7 @@ def test_get_python_type_basic(type: str, expected_python_type: str) -> None:
         ),
     ],
 )
-def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
+def test_parse_structure(lines: str, expected_info: Structure) -> None:
     struct = Structure(
         lines=[line.strip() for line in lines.strip().splitlines()],
         filename=pathlib.Path("."),
@@ -705,7 +687,7 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
         module="",
     )
     struct.parse()
-    assert struct.info.members == expected_info.members
+    assert struct.members == expected_info.members
 
 
 @pytest.mark.parametrize(
@@ -725,11 +707,9 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
                     line=2,
                     name="struct_name",
                     module="",
-                    info=StructureInfo(
-                        class_name="StructName",
-                        comment="",
-                        members={},
-                    ),
+                    class_name="StructName",
+                    comment="",
+                    members={},
                 ),
                 "struct_name2": Structure(
                     filename=pathlib.Path("."),
@@ -737,11 +717,9 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
                     lines=["type struct_name2"],
                     line=4,
                     name="struct_name2",
-                    info=StructureInfo(
-                        class_name="StructName2",
-                        comment="",
-                        members={},
-                    ),
+                    class_name="StructName2",
+                    comment="",
+                    members={},
                 ),
             },
             id="structs-1",
@@ -764,25 +742,26 @@ def test_parse_structure(lines: str, expected_info: StructureInfo) -> None:
                     ],
                     line=2,
                     name="struct_name",
-                    info=StructureInfo(
-                        class_name="StructName",
-                        comment="",
-                        members={
-                            "orb_eigen_vec": StructureMember(
-                                line=3,
-                                definition="real(rp) :: orb_eigen_vec(6,6) = 0",
-                                name="orb_eigen_vec",
-                                python_name="orb_eigen_vec",
-                                type="real",
-                                python_type="float",
-                                dimension="6,6",
-                                comment="this has a multiline comment",
-                                fortran_default="0",
-                                default=0,
-                                default_factory="",
+                    class_name="StructName",
+                    comment="",
+                    members={
+                        "orb_eigen_vec": StructureMember(
+                            line=3,
+                            definition="real(rp) :: orb_eigen_vec(6,6) = 0",
+                            name="orb_eigen_vec",
+                            python_name="orb_eigen_vec",
+                            type="real",
+                            python_type="float",
+                            dimension="6,6",
+                            comment="this has a multiline comment",
+                            fortran_default="0",
+                            default=0,
+                            default_factory="",
+                            type_info=TypeInformation(
+                                type="real", kind="rp", dimension="6,6"
                             ),
-                        },
-                    ),
+                        ),
+                    },
                 )
             },
             id="structs-2",
@@ -794,7 +773,7 @@ def test_find_structs(lines: str, expected_info: dict[str, Structure]) -> None:
         FileLine(line=line, lineno=lineno, filename=pathlib.Path())
         for lineno, line in enumerate(lines.splitlines(), 1)
     ]
-    res = find_structs(file_lines, filename=pathlib.Path("."), by_class_name={})
-    for struct in res.values():
+    res = find_structs(file_lines, filename=pathlib.Path("."))
+    for struct in res:
         struct.parse()
     assert res == expected_info
