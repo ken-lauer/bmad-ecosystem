@@ -5,9 +5,9 @@
 !
 ! Input:
 !   lat           -- lat_struct: Lattice
+!   julia_file    -- character(*): Bmad-Julia lattice file name.
 !
 ! Output:
-!   julia_file    -- character(*), optional: Bmad-Julia lattice file name.
 !   err_flag      -- logical, optional: Error flag
 !-
 

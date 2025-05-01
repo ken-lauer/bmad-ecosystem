@@ -690,13 +690,13 @@ subroutine chrom_calc (lat, delta_e, chrom_x, chrom_y, err_flag, &
   integer, optional :: ix_branch
 end subroutine
 
-subroutine chrom_tune (lat, delta_e, chrom_x, chrom_y, err_tol, err_flag)
+subroutine chrom_tune (lat, delta_e, target_x, target_y, err_tol, err_flag)
   import
   implicit none
   type (lat_struct) lat
   real(rp) delta_e
-  real(rp) chrom_x
-  real(rp) chrom_y
+  real(rp) target_x
+  real(rp) target_y
   real(rp) err_tol
   logical err_flag
 end subroutine
