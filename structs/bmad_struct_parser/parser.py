@@ -465,6 +465,60 @@ class TypeInformation(pydantic.BaseModel, frozen=True):
 
     attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
 
+    def to_fortran_declaration(self) -> str:
+        """Recreates the Fortran type declaration string."""
+        declaration_parts = [self.type]
+
+        if self.kind is not None:
+            declaration_parts[0] += f"({self.kind})"
+
+        attributes = []
+        if self.allocatable:
+            attributes.append("allocatable")
+        if self.asynchronous:
+            attributes.append("asynchronous")
+        if self.contiguous:
+            attributes.append("contiguous")
+        if self.external:
+            attributes.append("external")
+        if self.intrinsic:
+            attributes.append("intrinsic")
+        if self.optional:
+            attributes.append("optional")
+        if self.parameter:
+            attributes.append("parameter")
+        if self.pointer:
+            attributes.append("pointer")
+        if self.private:
+            attributes.append("private")
+        if self.protected:
+            attributes.append("protected")
+        if self.public:
+            attributes.append("public")
+        if self.save:
+            attributes.append("save")
+        if self.static:
+            attributes.append("static")
+        if self.target:
+            attributes.append("target")
+        if self.value:
+            attributes.append("value")
+        if self.volatile:
+            attributes.append("volatile")
+
+        if self.bind is not None:
+            attributes.append(f"bind({self.bind})")
+        if self.dimension is not None:
+            attributes.append(f"dimension({self.dimension})")
+        if self.intent is not None:
+            attributes.append(f"intent({self.intent})")
+
+        attributes.extend(self.attributes)
+
+        if attributes:
+            return f"{declaration_parts[0]}, {', '.join(attributes)}"
+        return declaration_parts[0]
+
     @property
     def size(self):
         # TODO: redo this; 'kind' is more appropriate here

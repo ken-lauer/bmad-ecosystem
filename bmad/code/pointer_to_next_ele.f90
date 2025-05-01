@@ -27,6 +27,7 @@
 !   follow_fork    -- logical, optional: If True then fork at any fork element.
 !                       Default is False.
 !
+! Output:
 !   next_ele -- ele_struct, pointer: Element after this_ele (if offset = 1).
 !                Nullified if there is an error. EG bad this_ele.
 !-
