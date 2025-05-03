@@ -97,10 +97,110 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
         return expanded_path
 
 
+class TypeInformation(pydantic.BaseModel, frozen=True):
+    """
+    A structured representation of a Fortran type declaration with all its attributes.
+
+    Examples:
+    - INTEGER, DIMENSION(10) :: array
+    - REAL(KIND=8), INTENT(IN), OPTIONAL :: param
+    - CHARACTER(LEN=100), ALLOCATABLE :: dynamic_string
+    """
+
+    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER', 'TYPE')
+
+    allocatable: bool = False  # Whether the variable is allocatable
+    asynchronous: bool = False  # Whether the variable can be used in async operations
+    bind: str | None = None  # Bind(C) specification
+    contiguous: bool = False  # Whether array data is contiguous
+    dimension: str | None = None  # Dimension specification
+    external: bool = False  # Whether the entity is external
+    intent: str | None = None  # Intent specification ('IN', 'OUT', 'INOUT')
+    intrinsic: bool = False  # Whether the type is intrinsic
+    optional: bool = False  # Whether the variable is optional in a procedure
+    parameter: bool = False  # Whether the variable is a parameter (constant)
+    pointer: bool = False  # Whether the variable is a pointer
+    private: bool = False  # Whether the variable has PUBLIC access
+    protected: bool = False  # Whether the variable is protected
+    public: bool = False  # Whether the variable has PUBLIC access
+    save: bool = False  # Whether the variable has SAVE attribute
+    kind: str | None = None  # Size or kind specification
+    static: bool = False  # Whether the variable has STATIC attribute
+    target: bool = False  # Whether the variable can be target of a pointer
+    value: bool = False  # Whether the parameter is passed by value
+    volatile: bool = False  # Whether the variable has VOLATILE attribute
+
+    attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
+
+    def replace(self, **kwargs):
+        data = self.model_dump()
+        data.update(**kwargs)
+        return type(self)(**data)
+
+    def to_fortran_declaration(self) -> str:
+        """Recreates the Fortran type declaration string."""
+        declaration_parts = [self.type]
+
+        if self.kind is not None:
+            declaration_parts[0] += f"({self.kind})"
+
+        attributes = []
+        if self.allocatable:
+            attributes.append("allocatable")
+        if self.asynchronous:
+            attributes.append("asynchronous")
+        if self.contiguous:
+            attributes.append("contiguous")
+        if self.external:
+            attributes.append("external")
+        if self.intrinsic:
+            attributes.append("intrinsic")
+        if self.optional:
+            attributes.append("optional")
+        if self.parameter:
+            attributes.append("parameter")
+        if self.pointer:
+            attributes.append("pointer")
+        if self.private:
+            attributes.append("private")
+        if self.protected:
+            attributes.append("protected")
+        if self.public:
+            attributes.append("public")
+        if self.save:
+            attributes.append("save")
+        if self.static:
+            attributes.append("static")
+        if self.target:
+            attributes.append("target")
+        if self.value:
+            attributes.append("value")
+        if self.volatile:
+            attributes.append("volatile")
+
+        if self.bind is not None:
+            attributes.append(f"bind({self.bind})")
+        if self.dimension is not None:
+            attributes.append(f"dimension({self.dimension})")
+        if self.intent is not None:
+            attributes.append(f"intent({self.intent})")
+
+        attributes.extend(self.attributes)
+
+        if attributes:
+            return f"{declaration_parts[0]}, {', '.join(attributes)}"
+        return declaration_parts[0]
+
+    @property
+    def size(self):
+        # TODO: redo this; 'kind' is more appropriate here
+        return self.kind  # back-compat
+
+
 class StructureMember(pydantic.BaseModel):
-    line: int
-    definition: str
-    type_info: TypeInformation
+    line: int = 0
+    definition: str = ""
+    type_info: TypeInformation = TypeInformation(type="")
     name: str = ""
     type: str = ""
     size: str | None = None
@@ -428,101 +528,6 @@ def _split_variables(line: str) -> list[str]:
     if processed:
         variables.append(processed.strip())
     return variables
-
-
-class TypeInformation(pydantic.BaseModel, frozen=True):
-    """
-    A structured representation of a Fortran type declaration with all its attributes.
-
-    Examples:
-    - INTEGER, DIMENSION(10) :: array
-    - REAL(KIND=8), INTENT(IN), OPTIONAL :: param
-    - CHARACTER(LEN=100), ALLOCATABLE :: dynamic_string
-    """
-
-    type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER', 'TYPE')
-
-    allocatable: bool = False  # Whether the variable is allocatable
-    asynchronous: bool = False  # Whether the variable can be used in async operations
-    bind: str | None = None  # Bind(C) specification
-    contiguous: bool = False  # Whether array data is contiguous
-    dimension: str | None = None  # Dimension specification
-    external: bool = False  # Whether the entity is external
-    intent: str | None = None  # Intent specification ('IN', 'OUT', 'INOUT')
-    intrinsic: bool = False  # Whether the type is intrinsic
-    optional: bool = False  # Whether the variable is optional in a procedure
-    parameter: bool = False  # Whether the variable is a parameter (constant)
-    pointer: bool = False  # Whether the variable is a pointer
-    private: bool = False  # Whether the variable has PUBLIC access
-    protected: bool = False  # Whether the variable is protected
-    public: bool = False  # Whether the variable has PUBLIC access
-    save: bool = False  # Whether the variable has SAVE attribute
-    kind: str | None = None  # Size or kind specification
-    static: bool = False  # Whether the variable has STATIC attribute
-    target: bool = False  # Whether the variable can be target of a pointer
-    value: bool = False  # Whether the parameter is passed by value
-    volatile: bool = False  # Whether the variable has VOLATILE attribute
-
-    attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
-
-    def to_fortran_declaration(self) -> str:
-        """Recreates the Fortran type declaration string."""
-        declaration_parts = [self.type]
-
-        if self.kind is not None:
-            declaration_parts[0] += f"({self.kind})"
-
-        attributes = []
-        if self.allocatable:
-            attributes.append("allocatable")
-        if self.asynchronous:
-            attributes.append("asynchronous")
-        if self.contiguous:
-            attributes.append("contiguous")
-        if self.external:
-            attributes.append("external")
-        if self.intrinsic:
-            attributes.append("intrinsic")
-        if self.optional:
-            attributes.append("optional")
-        if self.parameter:
-            attributes.append("parameter")
-        if self.pointer:
-            attributes.append("pointer")
-        if self.private:
-            attributes.append("private")
-        if self.protected:
-            attributes.append("protected")
-        if self.public:
-            attributes.append("public")
-        if self.save:
-            attributes.append("save")
-        if self.static:
-            attributes.append("static")
-        if self.target:
-            attributes.append("target")
-        if self.value:
-            attributes.append("value")
-        if self.volatile:
-            attributes.append("volatile")
-
-        if self.bind is not None:
-            attributes.append(f"bind({self.bind})")
-        if self.dimension is not None:
-            attributes.append(f"dimension({self.dimension})")
-        if self.intent is not None:
-            attributes.append(f"intent({self.intent})")
-
-        attributes.extend(self.attributes)
-
-        if attributes:
-            return f"{declaration_parts[0]}, {', '.join(attributes)}"
-        return declaration_parts[0]
-
-    @property
-    def size(self):
-        # TODO: redo this; 'kind' is more appropriate here
-        return self.kind  # back-compat
 
 
 class FileLine(NamedTuple):

@@ -358,6 +358,37 @@ class Argument:
     f_side: FortranSideTransform = field(default_factory=FortranSideTransform)
     c_side: CSideTransform = field(default_factory=CSideTransform)
 
+    @classmethod
+    def from_fstruct(cls, fstruct: ParsedStructure, member: StructureMember):
+        if member.size and member.type.lower() == "integer":
+            type_ = INT8
+        else:
+            type_ = member.type
+
+        if member.type_info.pointer:
+            pointer_type = PTR
+        elif member.type_info.allocatable:
+            pointer_type = ALLOC
+        else:
+            pointer_type = NOT
+
+        return cls(
+            is_component=True,
+            f_name=member.name,
+            c_name=params.c_side_name_translation.get(
+                f"{fstruct.name}%{member.name}", member.name
+            ),
+            type=type_,
+            kind=member.kind or "",
+            pointer_type=pointer_type,
+            array=member.dimension.replace(" ", "").split(",")
+            if member.dimension
+            else [],
+            init_value=str(member.default) if member.default else None,
+            comment=member.comment,
+            member=member,
+        )
+
     @property
     def full_type(self):
         return FullType(self.type, len(self.array), self.pointer_type)
@@ -387,10 +418,26 @@ class Argument:
                 # NOTE: special case: this is an element attributes array, and we intend
                 # to keep the array indices the same from C++/Fortran.
                 return "num_ele_attrib$", "Bmad::NUM_ELE_ATTRIB+1"
-        else:
-            f_dim1 = str(1 + int(self.ubound[0]) - int(self.lbound[0]))
-            c_dim1 = f_dim1
+
+        if not self.ubound[0].isnumeric():
+            # NOTE: special case: n_pole_maxx->Bmad::N_POLE_MAXX
+            return self.ubound[0], "Bmad::" + self.ubound[0].upper().rstrip("$")
+
+        f_dim1 = str(1 + int(self.ubound[0]) - int(self.lbound[0]))
+        c_dim1 = f_dim1
         return f_dim1, c_dim1
+
+    @property
+    def f_dims(self):
+        if not self.array:
+            return ()
+        if len(self.array) == 1:
+            return (self.f_dim1,)
+        if len(self.array) == 2:
+            return (self.f_dim1, self.dim2)
+        if len(self.array) == 3:
+            return (self.f_dim1, self.dim2, self.dim3)
+        raise NotImplementedError(len(self.array))
 
     @property
     def c_dims(self):
@@ -681,37 +728,6 @@ class TemplateImporter:
 
 ##################################################################################
 ##################################################################################
-def argument_from_fstruct(
-    fstruct: ParsedStructure, member: StructureMember
-) -> Argument:
-    if member.size and member.type.lower() == "integer":
-        type_ = INT8
-    else:
-        type_ = member.type
-
-    if member.type_info.pointer:
-        pointer_type = PTR
-    elif member.type_info.allocatable:
-        pointer_type = ALLOC
-    else:
-        pointer_type = NOT
-
-    return Argument(
-        is_component=True,
-        f_name=member.name,
-        c_name=params.c_side_name_translation.get(
-            f"{fstruct.name}%{member.name}", member.name
-        ),
-        type=type_,
-        kind=member.kind or "",
-        pointer_type=pointer_type,
-        array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
-        init_value=str(member.default) if member.default else None,
-        comment=member.comment,
-        member=member,
-    )
-
-
 def match_structure_definition(
     parsed_structures: list[ParsedStructure],
     struct: Structure,
@@ -726,7 +742,7 @@ def match_structure_definition(
     struct.short_name = fstruct.name.removesuffix("_struct")
     struct.cpp_class = "CPP_" + struct.short_name
     struct.arg = [
-        argument_from_fstruct(fstruct, member) for member in fstruct.members.values()
+        Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()
     ]
 
 
