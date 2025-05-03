@@ -182,7 +182,7 @@ end interface
 !
 ! Input:
 !   orb_in       -- coord_struct: Input orbit.
-!   vec(6)       -- real(rp), optional: Coordinate vector. If not present then taken to be zero.
+!   vec(6)       -- real(rp): Coordinate vector.
 !   ele          -- ele_struct, optional: Particle is initialized to start at element_end of this ele.
 !   element_end  -- integer, optional: upstream_end$, downstream_end$, inside$, or start_end$.
 !                     Must be present if ele argument is present.
@@ -191,7 +191,7 @@ end interface
 !                     setting of element_end will not matter.
 !   particle     -- integer, optional: Particle type (electron$, etc.). 
 !                     If particle = not_set$ and orb_in is present, use orb_in%species instead.
-!   dirction     -- integer, optional: +1 -> moving downstream +s direciton, -1 -> moving upstream.
+!   direction    -- integer, optional: +1 -> moving downstream +s direciton, -1 -> moving upstream.
 !                     0 -> Ignore. Default is to not change orb%direction except for photons which get set
 !                     according to orb%vec(6).
 !   E_photon     -- real(rp), optional: Photon energy if particle is a photon. Ignored otherwise.
