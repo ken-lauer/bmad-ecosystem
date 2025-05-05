@@ -358,6 +358,10 @@ class Argument:
     f_side: FortranSideTransform = field(default_factory=FortranSideTransform)
     c_side: CSideTransform = field(default_factory=CSideTransform)
 
+    @property
+    def is_pointer(self) -> bool:
+        return self.pointer_type == {"PTR", "ALLOC"}
+
     @classmethod
     def from_fstruct(cls, fstruct: ParsedStructure, member: StructureMember):
         if member.size and member.type.lower() == "integer":

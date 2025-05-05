@@ -11262,11 +11262,11 @@ call c_f_pointer (Fp, F)
   else
     if (allocated(F%branch)) then
       if (n1_branch == 0 .or. any(shape(F%branch) /= [n1_branch])) deallocate(F%branch)
-      if (any(lbound(F%branch) /= 1)) deallocate(F%branch)
+      if (any(lbound(F%branch) /= 0)) deallocate(F%branch)
     endif
-    if (.not. allocated(F%branch)) allocate(F%branch(1:n1_branch+1-1))
+    if (.not. allocated(F%branch)) allocate(F%branch(0:n1_branch+0-1))
     do jd1 = 1, n1_branch
-      call branch_to_f (z_branch(jd1), c_loc(F%branch(jd1+1-1)))
+      call branch_to_f (z_branch(jd1), c_loc(F%branch(jd1+0-1)))
     enddo
   endif
 !! f_side.to_f2_trans[1D_ALLOC_type]

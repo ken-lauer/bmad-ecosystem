@@ -197,6 +197,8 @@ code_dir = "code"
 
 
 def f_side_lbound(id_name):
+    if id_name == "lat%branch":
+        return "0"
     if id_name == "branch%ele":
         return "0"
     return "1"
