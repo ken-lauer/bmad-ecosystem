@@ -10,7 +10,7 @@
 !
 ! Output:
 !   global      -- floor_position_struct: Global floor position corresponding to (x, y, s)
-!               --    %w    -- W matrix to transform vectors: v_global = w_mat * v_local
+!                  %w    -- W matrix to transform vectors: v_global = w_mat * v_local
 !   err_flag    -- logical: Set True if global floor position cannot be computed.
 !-
 

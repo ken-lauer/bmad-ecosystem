@@ -12,6 +12,7 @@
 !
 ! Ouput:
 !   is_set        -- logical: Note: will be set True for non-bend elements.
+!-
 
 function bend_length_has_been_set(ele) result (is_set)
 
