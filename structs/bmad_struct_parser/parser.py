@@ -5,6 +5,7 @@ import ast
 import json
 import logging
 import os
+import re
 import pathlib
 from typing import NamedTuple
 from collections.abc import Sequence
@@ -370,12 +371,12 @@ def get_type_from_line(line: str) -> TypeInformation:
 
     type_name = parts[0]
     if "(" in type_name:
-        size = get_in_parenthesis(type_name)
+        kind = get_in_parenthesis(type_name)
         type_name = type_name.split("(")[0].strip()
     elif "*" in type_name:
-        type_name, size = type_name.split("*", 1)
+        type_name, kind = type_name.split("*", 1)
     else:
-        size = None
+        kind = None
 
     dimension = None
     allocatable = False
@@ -469,7 +470,7 @@ def get_type_from_line(line: str) -> TypeInformation:
 
     return TypeInformation(
         type=type_name,
-        kind=size,
+        kind=kind,
         dimension=dimension,
         allocatable=allocatable,
         pointer=pointer,
@@ -595,6 +596,44 @@ def _split_variable(line: str, type_info: TypeInformation) -> ParsedDeclaration:
     )
 
 
+def remove_type_from_declaration(line: str) -> str:
+    """Skip just the type name in a declaration like 'real (rp) foo'."""
+    if "::" in line:
+        return line[line.index("::") + 2 :]
+
+    line = line.strip()
+
+    # Pattern for declarations like "type(kind) variables" or "type variables"
+    # Look for a type name followed by optional kind specification
+    pattern = re.compile(
+        r"""
+        ^               # Start of string
+        ([a-zA-Z_]+)    # Type name (one or more letters)
+        \s*             # Optional whitespace after type
+        (?:             # Non-capturing group for optional kind specification
+            (?:         # Non-capturing group for two alternatives
+                \(      # First alternative: Opening parenthesis for kind
+                ([^)]*)  # Kind specification (anything except closing parenthesis)
+                \)      # Closing parenthesis for kind
+                |       # OR
+                \*      # Second alternative: Star for kind
+                (\d+)   # One or more digits for the kind number
+            )
+        )?              # The kind specification is optional
+        \s*             # Optional whitespace after kind specification
+    """,
+        re.VERBOSE,
+    )
+
+    match = re.match(pattern, line)
+    if match:
+        var_start = match.end()
+        # Return everything after type(kind)
+        return line[var_start:]
+
+    return line
+
+
 def parse_type_declaration(
     line: str, type_info: TypeInformation | None = None
 ) -> list[ParsedDeclaration]:
@@ -660,12 +699,10 @@ def parse_declaration(
     if line.lower().startswith("type ") or line.lower().startswith("type("):
         return parse_type_declaration(line)
 
-    if "::" in line:
-        line = line[line.index("::") + 2 :]
-    else:
-        line = " ".join(line.split()[1:])
-
-    return [_split_variable(variable, type_info) for variable in _split_variables(line)]
+    variables = remove_type_from_declaration(line)
+    return [
+        _split_variable(variable, type_info) for variable in _split_variables(variables)
+    ]
 
 
 def find_structs(

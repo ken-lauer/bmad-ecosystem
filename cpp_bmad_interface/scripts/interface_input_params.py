@@ -1,4 +1,5 @@
 # List of files containing definitions of the structures to setup interfaces for.
+from __future__ import annotations
 
 struct_def_files = [
     "../sim_utils/math/spline_mod.f90",

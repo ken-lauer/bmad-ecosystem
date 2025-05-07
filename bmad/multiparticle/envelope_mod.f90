@@ -27,6 +27,9 @@ contains
 !---------------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------------
 !+
+!
+! Subroutine make_Ykick_mat(ele,Yone)
+!
 ! This subroutine is used to generate apply artificial vertical
 ! excitation to the beam envelope.
 !

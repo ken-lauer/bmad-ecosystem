@@ -28,14 +28,14 @@ import subprocess
 import sys
 import tempfile
 import textwrap
+from collections.abc import Callable
 from dataclasses import dataclass, field, fields
-from typing import Callable, Literal, NamedTuple
+from typing import Literal, NamedTuple
 
 import bmad_struct_parser
+import interface_input_params as params
 from bmad_struct_parser import Structure as ParsedStructure
 from bmad_struct_parser.parser import StructureMember
-
-import interface_input_params as params
 
 SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
 CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
@@ -229,11 +229,8 @@ class CSideTransform:
                 setattr(self, fld.name, [v.replace(old, new) for v in value])
 
     def __str__(self):
-        return "{},  {},  {},  {}".format(
-            self.c_class,
-            self.to_f2_arg,
-            self.to_f2_call,
-            self.to_c2_arg,
+        return (
+            f"{self.c_class},  {self.to_f2_arg},  {self.to_f2_call},  {self.to_c2_arg}"
         )
 
 
@@ -508,11 +505,7 @@ class Argument:
         # On Fortran side "complex abc(2) = 0" is allowed but on C++ side want "0.0" for init value.
         # Therefore, ignore "0" as an init value.
 
-        if not self.init_value:
-            pass
-        elif self.init_value == "0":
-            pass
-        elif self.init_value[0] == ">":  # Pointer: '=> null()'
+        if not self.init_value or self.init_value == "0" or self.init_value[0] == ">":
             pass
         elif "_rp" in self.init_value:
             self.init_value = self.init_value.replace("_rp", "")
@@ -595,16 +588,7 @@ class Argument:
         self._handle_init_values()
 
     def original_repr(self) -> str:
-        return '["{}({})", "{}", "{}", {}, {} {} "{}"]'.format(
-            self.type,
-            self.kind,
-            self.pointer_type,
-            self.f_name,
-            self.array,
-            self.lbound,
-            self.ubound,
-            self.init_value,
-        )
+        return f'["{self.type}({self.kind})", "{self.pointer_type}", "{self.f_name}", {self.array}, {self.lbound} {self.ubound} "{self.init_value}"]'
 
 
 @dataclass
@@ -843,7 +827,7 @@ def write_parsed_structures(structs, fn):
     """
     Write parsed structure definitions to a file.
     """
-    with open(fn, "wt") as f_out:
+    with open(fn, "w") as f_out:
         for struct in structs:
             f_out.write("******************************************\n")
             f_out.write(f"{struct.f_name}    {len(struct.arg)}\n")
