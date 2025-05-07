@@ -1,0 +1,79 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=60", "setuptools_scm[toml]>=8.0"]
+
+[project]
+authors = [
+  { name = "David Sagan", email = "david.sagan@cornell.edu" },
+  { name = "Ken Lauer", email = "kenneth.lauer+bmad@gmail.com" },
+]
+name = "bmad_struct_parser"
+description = "Bmad Source Code Structure Parsing and JSON Code Generation"
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+dynamic = ["version"]
+
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+
+[tool.setuptools.package-data]
+'bmad_struct_parser' = ['*.yaml', '*.tpl']
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bmad_struct_parser*"]
+namespaces = false
+
+[project.urls]
+Homepage = "https://github.com/bmad-sim/bmad-ecosystem/"
+
+[tool.ruff]
+line-length = 110
+
+[tool.ruff.lint]
+extend-select = [
+  "B",   # flake8-bugbear
+  "I",   # isort
+  "ARG", # flake8-unused-arguments
+  "C4",  # flake8-comprehensions
+  "EM",  # flake8-errmsg
+  "ICN", # flake8-import-conventions
+  "G",   # flake8-logging-format
+  "PGH", # pygrep-hooks
+  "PIE", # flake8-pie
+  "PL",  # pylint
+  "PT",  # flake8-pytest-style
+  "PTH", # flake8-use-pathlib
+  "RET", # flake8-return
+  "RUF", # Ruff-specific
+  "SIM", # flake8-simplify
+  "T20", # flake8-print
+  "UP",  # pyupgrade
+  "YTT", # flake8-2020
+  "EXE", # flake8-executable
+  "NPY", # NumPy specific rules
+  "PD",  # pandas-vet
+]
+ignore = [
+  "PLR09",   # Too many X
+  "PLR2004", # Magic comparison
+  "EM101",   # must assign to string literal
+  "EM102",   # f-strings outside of exception
+  "EM102",   # f-strings outside of exception
+  "G004",    # f-strings in logging statements
+  "SIM108",  # ternary required
+  "PLW2901", # reassigning loop variable
+]
+isort.required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.per-file-ignores]
+# "tests/**" = ["T20"]
+#
+[tool.setuptools_scm]
+version_file = "bmad_struct_parser/_version.py"
+root = ".."

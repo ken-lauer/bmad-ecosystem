@@ -1,3 +1,5 @@
-from .parser import load_structures, load_all_structures, Structure
+from __future__ import annotations
 
-__all__ = ["load_structures", "load_all_structures", "Structure"]
+from .parser import Structure, load_all_structures, load_structures
+
+__all__ = ["Structure", "load_all_structures", "load_structures"]
