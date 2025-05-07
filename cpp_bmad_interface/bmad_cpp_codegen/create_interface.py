@@ -33,17 +33,23 @@ from dataclasses import dataclass, field, fields
 from typing import Literal, NamedTuple
 
 import bmad_struct_parser
-import interface_input_params as params
 from bmad_struct_parser import Structure as ParsedStructure
 from bmad_struct_parser.parser import StructureMember
 
-SCRIPTS_PATH = pathlib.Path(__file__).resolve().parent
-CPP_INTERFACE_ROOT = SCRIPTS_PATH.parent
-ACC_ROOT_DIR = CPP_INTERFACE_ROOT.parent
-STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
-TEMPLATES_PATH = SCRIPTS_PATH.parent / "templates"
+from . import interface_input_params as params
 
-DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "config.yaml"
+CODEGEN_ROOT = pathlib.Path(__file__).resolve().absolute().parent
+
+if "ACC_ROOT_DIR" in os.environ:
+    ACC_ROOT_DIR = pathlib.Path(os.environ["ACC_ROOT_DIR"]).resolve().absolute()
+else:
+    ACC_ROOT_DIR = CODEGEN_ROOT.parents[2]
+
+CPP_INTERFACE_ROOT = ACC_ROOT_DIR / "cpp_bmad_interface"
+STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
+TEMPLATES_PATH = CODEGEN_ROOT / "templates"
+
+DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "bmad_struct_parser" / "config.yaml"
 CLANG_FORMAT_PATH = os.environ.get("CLANG_FORMAT_PATH", shutil.which("clang-format"))
 
 assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}"
@@ -67,9 +73,7 @@ LOGIC = "logical"
 CHAR = "character"
 STRUCT = "type"
 SIZE = "size"
-ArgumentType = Literal[
-    "real", "complex", "integer", "integer8", "logical", "character", "type", "size"
-]
+ArgumentType = Literal["real", "complex", "integer", "integer8", "logical", "character", "type", "size"]
 
 NOT = "NOT"
 PTR = "PTR"
@@ -95,9 +99,7 @@ class FullType(NamedTuple):
         try:
             dim = int(dim.lower().rstrip("d"))
         except TypeError:
-            raise ValueError(
-                f"Dimension of type from template is not integer: {type=} {dim=}"
-            ) from None
+            raise ValueError(f"Dimension of type from template is not integer: {type=} {dim=}") from None
 
         if type_name not in (
             "real",
@@ -145,9 +147,7 @@ def wrap_line(line, indent, cont_char):
     str
         A string with the wrapped line
     """
-    lines = textwrap.wrap(
-        line, width=N_CHAR_MAX, initial_indent=indent, subsequent_indent=indent + "    "
-    )
+    lines = textwrap.wrap(line, width=N_CHAR_MAX, initial_indent=indent, subsequent_indent=indent + "    ")
 
     result = []
     for i, wrapped_line in enumerate(lines):
@@ -229,9 +229,7 @@ class CSideTransform:
                 setattr(self, fld.name, [v.replace(old, new) for v in value])
 
     def __str__(self):
-        return (
-            f"{self.c_class},  {self.to_f2_arg},  {self.to_f2_call},  {self.to_c2_arg}"
-        )
+        return f"{self.c_class},  {self.to_f2_arg},  {self.to_f2_call},  {self.to_c2_arg}"
 
 
 @dataclass
@@ -376,15 +374,11 @@ class Argument:
         return cls(
             is_component=True,
             f_name=member.name,
-            c_name=params.c_side_name_translation.get(
-                f"{fstruct.name}%{member.name}", member.name
-            ),
+            c_name=params.c_side_name_translation.get(f"{fstruct.name}%{member.name}", member.name),
             type=type_,
             kind=member.kind or "",
             pointer_type=pointer_type,
-            array=member.dimension.replace(" ", "").split(",")
-            if member.dimension
-            else [],
+            array=member.dimension.replace(" ", "").split(",") if member.dimension else [],
             init_value=str(member.default) if member.default else None,
             comment=member.comment,
             member=member,
@@ -519,20 +513,13 @@ class Argument:
             self.c_side.construct_value = "Bmad::pi"
         elif "$" in self.init_value:
             self.c_side.construct_value = "Bmad::" + self.init_value[:-1].upper()
-        elif ("d" in self.init_value or "D" in self.init_value) and is_number(
-            self.init_value
-        ):
-            self.c_side.construct_value = self.init_value.replace("d", "e").replace(
-                "D", "e"
-            )
+        elif ("d" in self.init_value or "D" in self.init_value) and is_number(self.init_value):
+            self.c_side.construct_value = self.init_value.replace("d", "e").replace("D", "e")
         else:
             self.c_side.construct_value = self.init_value
 
         # If there is an array of values, just use first one.
-        if (
-            len(self.c_side.construct_value) > 0
-            and self.c_side.construct_value[0] == "["
-        ):
+        if len(self.c_side.construct_value) > 0 and self.c_side.construct_value[0] == "[":
             self.c_side.construct_value = self.c_side.construct_value[1:].split(",")[0]
 
         # Replace class_initializer value and CPP_KIND placeholders
@@ -554,9 +541,7 @@ class Argument:
         """
         print_debug("self: " + str(self))
         self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
-        self.f_side.to_c_var = [
-            var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var
-        ]
+        self.f_side.to_c_var = [var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var]
 
         self._handle_lbound(struct)
         if self.type == "type":
@@ -570,9 +555,7 @@ class Argument:
                 self.c_side.replace_all("DIM1", self.c_dim1)
 
             if len(self.array) >= 2:
-                self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
-                    "DIM2", f"{self.f_dim1}*{self.dim2}"
-                )
+                self.f_side.to_c2_call = self.f_side.to_c2_call.replace("DIM2", f"{self.f_dim1}*{self.dim2}")
                 self.f_side.replace_all("DIM2", str(self.dim2))
                 self.c_side.replace_all("DIM2", str(self.dim2))
 
@@ -604,7 +587,7 @@ class Structure:
     c_extra_methods: str = ""  # Additional custom methods
 
     def __str__(self) -> str:
-        return "[name: %s, #arg: %i]" % (self.short_name, len(self.arg))
+        return f"[name: {self.short_name}, #arg: {len(self.arg)}]"
 
 
 @dataclasses.dataclass
@@ -620,9 +603,7 @@ class TemplateImporter:
         return TemplateImporter(
             # These must be on their own line:
             section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
-            special_case=re.compile(
-                rf"^\s*{prefix}\s*case:(.*):(.*)$\n^(.*)$", flags=re.MULTILINE
-            ),
+            special_case=re.compile(rf"^\s*{prefix}\s*case:(.*):(.*)$\n^(.*)$", flags=re.MULTILINE),
             type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
             # This may appear anywhere in a line
             begin=re.compile(rf"^.*{prefix}\s*begin:(.*).*\s*$", flags=re.MULTILINE),
@@ -651,9 +632,7 @@ class TemplateImporter:
             tag_contents = section[begin.span()[1] :].lstrip("\n\r")
             end = self.end.search(tag_contents)
             if end is None:
-                raise RuntimeError(
-                    f"begin:{tag} without end:{tag}. Context:\n{tag_contents}"
-                )
+                raise RuntimeError(f"begin:{tag} without end:{tag}. Context:\n{tag_contents}")
             if end.group(1).lower() != tag:
                 end_tag = end.group(1)
                 raise RuntimeError(
@@ -664,9 +643,7 @@ class TemplateImporter:
         return by_tag
 
     def get_types(self, contents: str) -> list[FullType]:
-        return [
-            FullType.from_template(type_str) for type_str in self.type.findall(contents)
-        ]
+        return [FullType.from_template(type_str) for type_str in self.type.findall(contents)]
 
     @classmethod
     def from_file(cls, transform_cls, template_contents: str):
@@ -682,16 +659,12 @@ class TemplateImporter:
 
         def set_tag(full_type: FullType, tag: str, value: str) -> None:
             if tag not in valid_fields and not hasattr(transform_cls, tag):
-                raise ValueError(
-                    f"Unexpected special case tag: {tag!r} found in section:\n{section}"
-                )
+                raise ValueError(f"Unexpected special case tag: {tag!r} found in section:\n{section}")
             if full_type not in transforms:
                 transforms[full_type] = transform_cls()
 
             if "!!!! " in value or "//// " in value:
-                raise ValueError(
-                    f"Special characters found in value: {value=}. Section:\n{section}"
-                )
+                raise ValueError(f"Special characters found in value: {value=}. Section:\n{section}")
             setattr(transforms[full_type], tag, value)
 
         valid_fields = {fld.name for fld in fields(transform_cls)}
@@ -729,9 +702,7 @@ def match_structure_definition(
     struct.f_name = fstruct.name
     struct.short_name = fstruct.name.removesuffix("_struct")
     struct.cpp_class = "CPP_" + struct.short_name
-    struct.arg = [
-        Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()
-    ]
+    struct.arg = [Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()]
 
 
 def set_translations(struct: Structure, c_overrides, f_overrides) -> None:
@@ -801,9 +772,7 @@ def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
         # Handle array pointers
         if len(arg.array) >= 1 and "n1_" in arg.c_side.to_f_setup:
             # Create and insert size parameters for all dimensions
-            for dim in range(
-                1, min(len(arg.array) + 1, 4)
-            ):  # Support up to 3 dimensions
+            for dim in range(1, min(len(arg.array) + 1, 4)):  # Support up to 3 dimensions
                 full_type = FullType(SIZE, dim, NOT)
                 size_arg = Argument(
                     is_component=False,
@@ -827,7 +796,7 @@ def write_parsed_structures(structs, fn):
     """
     Write parsed structure definitions to a file.
     """
-    with open(fn, "w") as f_out:
+    with pathlib.Path(fn).open("w") as f_out:
         for struct in structs:
             f_out.write("******************************************\n")
             f_out.write(f"{struct.f_name}    {len(struct.arg)}\n")
@@ -959,18 +928,14 @@ interface
 
         f_face.write("  !! f_side.to_c2_f2_sub_arg\n")
         f_face.write(wrap_line(line, "  ", " &"))
-        f_face.write(
-            "    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex\n"
-        )
+        f_face.write("    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex\n")
         f_face.write("    !! f_side.to_c2_type :: f_side.to_c2_name\n")
         f_face.write("    type(c_ptr), value :: C\n")
         for arg_type, args in list(to_c2_call_def.items()):
             if not arg_type:
                 raise RuntimeError("No argument type?")
             for i in range(1 + (len(args) - 1) // 7):
-                f_face.write(
-                    f"    {arg_type} :: {', '.join(args[i * 7 : i * 7 + 7])}\n"
-                )
+                f_face.write(f"    {arg_type} :: {', '.join(args[i * 7 : i * 7 + 7])}\n")
 
         f_face.write(
             f"""\
@@ -1120,9 +1085,7 @@ interface operator (==)
 
     for i in range(0, len(structs), 5):
         f_equ.write(
-            "  module procedure "
-            + ", ".join(f"eq_{f.short_name}" for f in structs[i : i + 5])
-            + "\n"
+            "  module procedure " + ", ".join(f"eq_{f.short_name}" for f in structs[i : i + 5]) + "\n"
         )
 
     f_equ.write("""\
@@ -1184,11 +1147,7 @@ def write_tests_main(f_test, structs: list[Structure]):
     )
 
     for struct in structs:
-        f_test.write(
-            "call test1_f_"
-            + struct.short_name
-            + "(ok); if (.not. ok) all_ok = .false.\n"
-        )
+        f_test.write("call test1_f_" + struct.short_name + "(ok); if (.not. ok) all_ok = .false.\n")
 
     f_test.write(
         textwrap.dedent(
@@ -1445,14 +1404,8 @@ def write_cpp_json_source(file, structs: list[Structure]) -> None:
     )
 
     include_headers = "\n".join(params.include_header_files)
-    json_helpers = "\n".join(
-        "\n".join(get_to_json_source(struct)) for struct in structs
-    )
-    file.write(
-        header_template.substitute(
-            include_headers=include_headers, json_helpers=json_helpers
-        )
-    )
+    json_helpers = "\n".join("\n".join(get_to_json_source(struct)) for struct in structs)
+    file.write(header_template.substitute(include_headers=include_headers, json_helpers=json_helpers))
 
 
 def get_class_lines(struct: Structure) -> list[str]:
@@ -1461,13 +1414,9 @@ def get_class_lines(struct: Structure) -> list[str]:
         if not arg.is_component:
             continue
         class_initializer = (
-            "{" + arg.c_side.class_initializer.strip() + "}"
-            if arg.c_side.class_initializer.strip()
-            else ""
+            "{" + arg.c_side.class_initializer.strip() + "}" if arg.c_side.class_initializer.strip() else ""
         )
-        member_vars.append(
-            f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};"
-        )
+        member_vars.append(f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};")
 
     constructor_body = struct.c_constructor_body
     destructor_body = ""
@@ -1567,13 +1516,9 @@ def write_cpp_classes(file, structs: list[Structure]) -> None:
     )
 
     include_headers = "\n".join(params.include_header_files)
-    class_definitions = "\n".join(
-        "\n".join(get_class_lines(struct)) for struct in structs
-    )
+    class_definitions = "\n".join("\n".join(get_class_lines(struct)) for struct in structs)
     file.write(
-        header_template.substitute(
-            include_headers=include_headers, class_definitions=class_definitions
-        )
+        header_template.substitute(include_headers=include_headers, class_definitions=class_definitions)
     )
 
 
@@ -1610,9 +1555,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         for arg in struct.arg:
             if arg.c_side.to_f_setup == "":
                 continue
-            file.write(
-                f"  // c_side.to_f_setup[{arg.full_type}] {arg.c_side.c_class}\n"
-            )
+            file.write(f"  // c_side.to_f_setup[{arg.full_type}] {arg.c_side.c_class}\n")
             print(arg.c_side.to_f_setup, file=file)
 
         file.write("\n")
@@ -1620,9 +1563,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         if DEBUG:
             for arg in struct.arg:
-                file.write(
-                    f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.full_type}\n"
-                )
+                file.write(f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.full_type}\n")
 
         line = f"{struct.short_name}_to_f2 (F"
         for arg in struct.arg:
@@ -1665,12 +1606,8 @@ def write_cpp_equality(file, header: str, structs: list[Structure]):
 
     print("namespace Bmad {", file=file)
     for struct in structs:
-        file.write(
-            "\n//--------------------------------------------------------------\n\n"
-        )
-        file.write(
-            f"bool operator== (const {struct.cpp_class}& x, const {struct.cpp_class}& y) {{\n"
-        )
+        file.write("\n//--------------------------------------------------------------\n\n")
+        file.write(f"bool operator== (const {struct.cpp_class}& x, const {struct.cpp_class}& y) {{\n")
         file.write("  bool is_eq = true;\n")
 
         for arg in struct.arg:
@@ -1740,9 +1677,7 @@ void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
 
 //--------------------------------------------------------------
 
-extern "C" void test_c_{struct.short_name} (Opaque_{
-            struct.short_name
-        }_class* F, bool& c_ok) {{
+extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F, bool& c_ok) {{
 
   {struct.cpp_class} C, C2;
 
@@ -1843,48 +1778,51 @@ def write_if_differs(
         temp_file.flush()
         temp_file.seek(0)
 
-        content = temp_file.read()
+        contents = temp_file.read()
 
-    if CLANG_FORMAT_PATH and target_path.suffix in (".h", ".cpp"):
+    if CLANG_FORMAT_PATH and target_path.suffix in (".h", ".hpp", ".cpp"):
         try:
             formatted_content = subprocess.run(
                 [CLANG_FORMAT_PATH],
-                input=content.encode(),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
+                input=contents.encode(),
+                capture_output=True,
                 check=True,
             )
-            content = formatted_content.stdout.decode()
         except subprocess.SubprocessError:
             print_debug(f"Clang-format failed for {target_path}")
+        else:
+            contents = formatted_content.stdout.decode()
 
     if not target_path.exists():
         target_path.parent.mkdir(parents=True, exist_ok=True)
         print(
-            f"* Writing to {target_path} (new file) {len(content)} bytes",
+            f"* Writing to {target_path} (new file) {len(contents)} bytes",
             file=sys.stderr,
         )
-        target_path.write_text(content)
+        target_path.write_text(contents)
         return True
 
     target_content = target_path.read_text()
 
-    if content != target_content:
+    if contents != target_content:
         print(
-            f"* Writing to {target_path} (new contents) {len(target_content)} -> {len(content)} bytes",
+            f"* Writing to {target_path} (new contents) {len(target_content)} -> {len(contents)} bytes",
             file=sys.stderr,
         )
-        target_path.write_text(content)
+        target_path.write_text(contents)
         return True
 
     print(f"* Not writing {target_path} (contents same)", file=sys.stderr)
     return False
 
 
+def get_parsed_files() -> list[Structure]:
+    """Return a list of serialized (already-parsed) structures."""
+    return bmad_struct_parser.load_all_structures(*[ACC_ROOT_DIR / fn for fn in params.struct_def_yaml_files])
+
+
 def get_structure_definitions() -> list[Structure]:
-    parsed_structures = bmad_struct_parser.load_all_structures(
-        *[CPP_INTERFACE_ROOT / fn for fn in params.struct_def_yaml_files]
-    )
+    parsed_structures = get_parsed_files()
 
     structs: list[Structure] = []
 
@@ -1904,7 +1842,7 @@ def get_structure_definitions() -> list[Structure]:
 
 def generate():
     # TODO refactor globals
-    global params
+    global params  # noqa: PLW0603
 
     include_dir = CPP_INTERFACE_ROOT / "include"
     include_dir.mkdir(exist_ok=True)
@@ -1915,9 +1853,6 @@ def generate():
         print(f"Custom input file: {master_input_file}", file=sys.stderr)
 
     structs = get_structure_definitions()
-    if not (CPP_INTERFACE_ROOT / params.test_dir).exists():
-        sys.exit("DIRECTORY DOES NOT EXIST: " + params.test_dir)
-
     n_found = sum(1 for struct in structs if struct.short_name)
 
     # Print diagnostics
@@ -1934,26 +1869,24 @@ def write_output(structs: list[Structure]) -> None:
 
     write_if_differs(
         create_fortran_interface,
-        pathlib.Path(params.code_dir) / "bmad_cpp_convert_mod.f90",
+        ACC_ROOT_DIR / params.code_dir / "bmad_cpp_convert_mod.f90",
         structs,
         params,
     )
     write_if_differs(
         create_fortran_equality_check_code,
-        CPP_INTERFACE_ROOT
-        / params.equality_mod_dir
-        / (params.equality_mod_file + ".f90"),
+        (ACC_ROOT_DIR / params.equality_mod_dir / params.equality_mod_file).with_suffix(".f90"),
         structs,
     )
 
     write_if_differs(
         write_tests_main,
-        CPP_INTERFACE_ROOT / params.test_dir / "main.f90",
+        ACC_ROOT_DIR / params.test_dir / "main.f90",
         structs,
     )
     write_if_differs(
         write_tests_mod,
-        CPP_INTERFACE_ROOT / params.test_dir / "bmad_cpp_test_mod.f90",
+        ACC_ROOT_DIR / params.test_dir / "bmad_cpp_test_mod.f90",
         structs,
     )
     write_if_differs(
@@ -1966,25 +1899,25 @@ def write_output(structs: list[Structure]) -> None:
         CPP_INTERFACE_ROOT / "code" / "cpp_classes_json.cpp",
         structs,
     )
-    convert_header = (SCRIPTS_PATH / "convert_template.cpp").read_text()
+    convert_header = (CODEGEN_ROOT / "convert_template.cpp").read_text()
 
     write_if_differs(
         write_cpp_convert,
-        CPP_INTERFACE_ROOT / params.code_dir / "cpp_bmad_convert.cpp",
+        ACC_ROOT_DIR / params.code_dir / "cpp_bmad_convert.cpp",
         convert_header,
         structs,
     )
 
-    equality_header = (SCRIPTS_PATH / "equality_template.cpp").read_text()
+    equality_header = (CODEGEN_ROOT / "equality_template.cpp").read_text()
     write_if_differs(
         write_cpp_equality,
-        CPP_INTERFACE_ROOT / params.code_dir / "cpp_equality.cpp",
+        ACC_ROOT_DIR / params.code_dir / "cpp_equality.cpp",
         equality_header,
         structs,
     )
     write_if_differs(
         write_cpp_test,
-        CPP_INTERFACE_ROOT / params.test_dir / "cpp_bmad_test.cpp",
+        ACC_ROOT_DIR / params.test_dir / "cpp_bmad_test.cpp",
         structs,
     )
 

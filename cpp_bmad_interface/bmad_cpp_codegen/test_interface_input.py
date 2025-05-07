@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 debug = True
 
 # List of files containing definitions of the structures to setup interfaces for.

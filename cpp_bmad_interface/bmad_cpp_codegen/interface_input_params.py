@@ -1,22 +1,30 @@
-# List of files containing definitions of the structures to setup interfaces for.
+"""
+Configuration file for C++ code generation.
+"""
+
 from __future__ import annotations
 
+# Paths are relative to ACC_ROOT_DIR.
+equality_mod_dir = "bmad/modules"
+equality_mod_file = "equality_mod"
+test_dir = "cpp_bmad_interface/interface_test"
+code_dir = "cpp_bmad_interface/code"
+
 struct_def_files = [
-    "../sim_utils/math/spline_mod.f90",
-    "../bmad/modules/bmad_struct.f90",
-    "../bmad/modules/taylor_mod.f90",
-    "../bmad/space_charge/csr_and_space_charge_mod.f90",
-    "../bmad/modules/complex_taylor_mod.f90",
+    "sim_utils/math/spline_mod.f90",
+    "bmad/modules/bmad_struct.f90",
+    "bmad/modules/taylor_mod.f90",
+    "bmad/space_charge/csr_and_space_charge_mod.f90",
+    "bmad/modules/complex_taylor_mod.f90",
 ]
 
+# Paths are relative to ACC_ROOT_DIR.
 struct_def_yaml_files = [
-    "../structs/yaml/bmad_structs.yaml",
-    "../structs/yaml/forest_structs.yaml",
-    "../structs/yaml/sim_utils_structs.yaml",
-    "../structs/yaml/tao_structs.yaml",
+    "structs/yaml/bmad_structs.yaml",
+    "structs/yaml/forest_structs.yaml",
+    "structs/yaml/sim_utils_structs.yaml",
+    "structs/yaml/tao_structs.yaml",
 ]
-
-routine_interface_files = ["../bmad/modules/bmad_routine_interface.f90"]
 
 # List of use statements needed in various Fortran modules.
 
@@ -187,12 +195,6 @@ include_header_files = [
     '#include "bmad_std_typedef.h"',
 ]
 
-# Directory where the output is put
-
-equality_mod_dir = "../bmad/modules"
-equality_mod_file = "equality_mod"
-test_dir = "interface_test"
-code_dir = "code"
 
 # Lower bounds for allocatable and pointer arrays on the fortran side
 
