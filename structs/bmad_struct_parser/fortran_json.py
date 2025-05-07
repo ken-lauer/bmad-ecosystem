@@ -15,17 +15,6 @@ from .parser import (
     load_structures,
 )
 
-# filename_skips = {
-#     "a_def_element_fibre_layout",
-# }
-
-skips = {
-    # "cylindrical_map_term1_struct",
-    # "fibre",
-    # "layout",
-    # "c_normal_form",
-}
-
 logger = logging.getLogger(__name__)
 
 
@@ -45,8 +34,11 @@ class JsonDumpCode(pydantic.BaseModel):
 class FortranSource(pydantic.BaseModel):
     module: str
     imports: list[str] = []
-    header: str = """
-    """
+    header: str = textwrap.dedent("""\
+        use json_module
+        use json_string_utilities, only: integer_to_string
+        use json_kinds, only: CK
+    """)
 
     footer: str = """
     """
@@ -55,23 +47,23 @@ class FortranSource(pydantic.BaseModel):
         "complex_to_json": """\
 subroutine complex_to_json (input, json_root, depth)
 
-    use json_module
-    use json_kinds, only: CK
-    use precision_def, only: rp
+  use json_module
+  use json_kinds, only: CK
+  use precision_def, only: dp
 
-    implicit none
+  implicit none
 
-    type(json_core) :: json
-    type (complex(rp)), intent(in) :: input
-    type (json_value), pointer :: json_val
-    type (json_value), pointer, intent(inout) :: json_root
-    integer, optional, value :: depth
+  type(json_core) :: json
+  type (complex(dp)), intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
 
-    call json%create_array(json_root, '')
-    call json%create_real(json_val, real(input), '')
-    call json%add(json_root, json_val)
-    call json%create_real(json_val, aimag(input), '')
-    call json%add(json_root, json_val)
+  call json%create_array(json_root, '')
+  call json%create_real(json_val, real(input), '')
+  call json%add(json_root, json_val)
+  call json%create_real(json_val, aimag(input), '')
+  call json%add(json_root, json_val)
 
 end subroutine complex_to_json
 """
@@ -79,11 +71,16 @@ end subroutine complex_to_json
 
     def __str__(self):
         subroutines = "\n".join(sub for sub in self.subroutines.values())
+        if self.module == "forest_json":
+            subroutines = subroutines.replace(
+                "use precision_def, only: dp",
+                "use precision_constants, only: dp",
+            )
         source_lines = "\n".join(
             (
                 f"module {self.module}",
-                "contains",
                 self.header,
+                "contains",
                 subroutines,
                 self.footer,
                 f"end module {self.module}",
@@ -447,8 +444,6 @@ class Converter(pydantic.BaseModel):
         subroutine_name = to_subroutine_name(struct.name)
 
         lines = [f"subroutine {subroutine_name} (input, json_root, depth)"]
-        # if struct.name.lower() in skips or struct.filename.stem in filename_skips:
-        #     raise ValueError(f"skipped subroutine: {subroutine_name}")
 
         dump_code = self.get_struct_dump_code(
             "input",
@@ -468,10 +463,6 @@ class Converter(pydantic.BaseModel):
         lines += textwrap.dedent(
             f"""\
             use {struct.module}, only: {struct.name}
-
-            use json_module
-            use json_string_utilities, only: integer_to_string
-            use json_kinds, only: CK
             {imports}
 
             implicit none
@@ -560,9 +551,6 @@ def convert_all(
             continue
 
         logger.debug(f"Generating: {name}")
-        # if name.lower() in skips or by_name[name].filename.stem in filename_skips:
-        #     conv.generated.add(name)
-        #     continue
         subroutine = conv.get_struct_dump_subroutine(source, struct)
         fortran.subroutines[subroutine.name] = subroutine.code
         conv.generated.add(name)

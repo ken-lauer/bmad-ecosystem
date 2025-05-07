@@ -1,26 +1,26 @@
 module sim_utils_json
+use json_module
+use json_string_utilities, only: integer_to_string
+use json_kinds, only: CK
 contains
 subroutine complex_to_json (input, json_root, depth)
-    use json_module
-    use json_kinds, only: CK
-    use precision_def, only: rp
-    implicit none
-    type(json_core) :: json
-    type (complex(rp)), intent(in) :: input
-    type (json_value), pointer :: json_val
-    type (json_value), pointer, intent(inout) :: json_root
-    integer, optional, value :: depth
-    call json%create_array(json_root, '')
-    call json%create_real(json_val, real(input), '')
-    call json%add(json_root, json_val)
-    call json%create_real(json_val, aimag(input), '')
-    call json%add(json_root, json_val)
+  use json_module
+  use json_kinds, only: CK
+  use precision_def, only: dp
+  implicit none
+  type(json_core) :: json
+  type (complex(dp)), intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  call json%create_array(json_root, '')
+  call json%create_real(json_val, real(input), '')
+  call json%add(json_root, json_val)
+  call json%create_real(json_val, aimag(input), '')
+  call json%add(json_root, json_val)
 end subroutine complex_to_json
 subroutine c_dummy_struct_to_json (input, json_root, depth)
   use fortran_cpp_utils, only: c_dummy_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_dummy_struct), pointer, intent(in) :: input
@@ -43,9 +43,6 @@ subroutine c_dummy_struct_to_json (input, json_root, depth)
 end subroutine c_dummy_struct_to_json
 subroutine pg_interface_struct_to_json (input, json_root, depth)
   use pgplot_interface, only: pg_interface_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pg_interface_struct), pointer, intent(in) :: input
@@ -72,9 +69,6 @@ subroutine pg_interface_struct_to_json (input, json_root, depth)
 end subroutine pg_interface_struct_to_json
 subroutine qp_axis_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_axis_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_axis_struct), pointer, intent(in) :: input
@@ -120,9 +114,6 @@ subroutine qp_axis_struct_to_json (input, json_root, depth)
 end subroutine qp_axis_struct_to_json
 subroutine qp_plot_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_plot_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_plot_struct), pointer, intent(in) :: input
@@ -174,9 +165,6 @@ subroutine qp_plot_struct_to_json (input, json_root, depth)
 end subroutine qp_plot_struct_to_json
 subroutine qp_point_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_point_struct), pointer, intent(in) :: input
@@ -201,9 +189,6 @@ subroutine qp_point_struct_to_json (input, json_root, depth)
 end subroutine qp_point_struct_to_json
 subroutine qp_rect_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_rect_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_rect_struct), pointer, intent(in) :: input
@@ -230,9 +215,6 @@ subroutine qp_rect_struct_to_json (input, json_root, depth)
 end subroutine qp_rect_struct_to_json
 subroutine qp_text_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_text_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_text_struct), pointer, intent(in) :: input
@@ -257,9 +239,6 @@ subroutine qp_text_struct_to_json (input, json_root, depth)
 end subroutine qp_text_struct_to_json
 subroutine qp_line_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_line_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_line_struct), pointer, intent(in) :: input
@@ -284,9 +263,6 @@ subroutine qp_line_struct_to_json (input, json_root, depth)
 end subroutine qp_line_struct_to_json
 subroutine qp_symbol_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_symbol_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_symbol_struct), pointer, intent(in) :: input
@@ -313,9 +289,6 @@ subroutine qp_symbol_struct_to_json (input, json_root, depth)
 end subroutine qp_symbol_struct_to_json
 subroutine qp_arrow_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_arrow_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_arrow_struct), pointer, intent(in) :: input
@@ -342,9 +315,6 @@ subroutine qp_arrow_struct_to_json (input, json_root, depth)
 end subroutine qp_arrow_struct_to_json
 subroutine qp_legend_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_legend_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_legend_struct), pointer, intent(in) :: input
@@ -372,9 +342,6 @@ subroutine qp_legend_struct_to_json (input, json_root, depth)
 end subroutine qp_legend_struct_to_json
 subroutine qp_state_struct_to_json (input, json_root, depth)
   use quick_plot_struct, only: qp_state_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (qp_state_struct), pointer, intent(in) :: input
@@ -485,9 +452,6 @@ subroutine qp_state_struct_to_json (input, json_root, depth)
 end subroutine qp_state_struct_to_json
 subroutine temp_struct_to_json (input, json_root, depth)
   use object_model_mod, only: temp_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (temp_struct), pointer, intent(in) :: input
@@ -510,9 +474,6 @@ subroutine temp_struct_to_json (input, json_root, depth)
 end subroutine temp_struct_to_json
 subroutine object_struct_to_json (input, json_root, depth)
   use object_model_mod, only: object_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (object_struct), pointer, intent(in) :: input
@@ -551,9 +512,6 @@ subroutine object_struct_to_json (input, json_root, depth)
 end subroutine object_struct_to_json
 subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
   use output_mod, only: out_io_output_direct_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (out_io_output_direct_struct), pointer, intent(in) :: input
@@ -591,9 +549,6 @@ subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
 end subroutine out_io_output_direct_struct_to_json
 subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
   use output_mod, only: out_io_mod_com_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (out_io_mod_com_struct), pointer, intent(in) :: input
@@ -637,9 +592,6 @@ subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
 end subroutine out_io_mod_com_struct_to_json
 subroutine wls_struct_to_json (input, json_root, depth)
   use windowls_mod, only: wls_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wls_struct), pointer, intent(in) :: input
@@ -705,9 +657,6 @@ subroutine wls_struct_to_json (input, json_root, depth)
 end subroutine wls_struct_to_json
 subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
   use super_recipes_mod, only: super_mrqmin_storage_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (super_mrqmin_storage_struct), pointer, intent(in) :: input
@@ -860,9 +809,6 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
 end subroutine super_mrqmin_storage_struct_to_json
 subroutine random_state_struct_to_json (input, json_root, depth)
   use random_mod, only: random_state_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (random_state_struct), pointer, intent(in) :: input
@@ -910,9 +856,6 @@ subroutine random_state_struct_to_json (input, json_root, depth)
 end subroutine random_state_struct_to_json
 subroutine field1_at_2D_pt_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: field1_at_2D_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (field1_at_2D_pt_struct), pointer, intent(in) :: input
@@ -938,9 +881,6 @@ subroutine field1_at_2D_pt_struct_to_json (input, json_root, depth)
 end subroutine field1_at_2D_pt_struct_to_json
 subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: field_at_2D_box_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (field_at_2D_box_struct), pointer, intent(in) :: input
@@ -983,9 +923,6 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
 end subroutine field_at_2D_box_struct_to_json
 subroutine bicubic_coef_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: bicubic_coef_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bicubic_coef_struct), pointer, intent(in) :: input
@@ -1028,9 +965,6 @@ subroutine bicubic_coef_struct_to_json (input, json_root, depth)
 end subroutine bicubic_coef_struct_to_json
 subroutine cmplx_field1_at_2D_pt_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: cmplx_field1_at_2D_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cmplx_field1_at_2D_pt_struct), pointer, intent(in) :: input
@@ -1064,9 +998,6 @@ subroutine cmplx_field1_at_2D_pt_struct_to_json (input, json_root, depth)
 end subroutine cmplx_field1_at_2D_pt_struct_to_json
 subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: cmplx_field_at_2D_box_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cmplx_field_at_2D_box_struct), pointer, intent(in) :: input
@@ -1109,9 +1040,6 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
 end subroutine cmplx_field_at_2D_box_struct_to_json
 subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: bicubic_cmplx_coef_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bicubic_cmplx_coef_struct), pointer, intent(in) :: input
@@ -1154,9 +1082,6 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
 end subroutine bicubic_cmplx_coef_struct_to_json
 subroutine field1_at_3D_pt_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: field1_at_3D_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (field1_at_3D_pt_struct), pointer, intent(in) :: input
@@ -1186,9 +1111,6 @@ subroutine field1_at_3D_pt_struct_to_json (input, json_root, depth)
 end subroutine field1_at_3D_pt_struct_to_json
 subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: field_at_3D_box_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (field_at_3D_box_struct), pointer, intent(in) :: input
@@ -1236,9 +1158,6 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
 end subroutine field_at_3D_box_struct_to_json
 subroutine tricubic_coef_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: tricubic_coef_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tricubic_coef_struct), pointer, intent(in) :: input
@@ -1286,9 +1205,6 @@ subroutine tricubic_coef_struct_to_json (input, json_root, depth)
 end subroutine tricubic_coef_struct_to_json
 subroutine cmplx_field1_at_3D_pt_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: cmplx_field1_at_3D_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cmplx_field1_at_3D_pt_struct), pointer, intent(in) :: input
@@ -1334,9 +1250,6 @@ subroutine cmplx_field1_at_3D_pt_struct_to_json (input, json_root, depth)
 end subroutine cmplx_field1_at_3D_pt_struct_to_json
 subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: cmplx_field_at_3D_box_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cmplx_field_at_3D_box_struct), pointer, intent(in) :: input
@@ -1384,9 +1297,6 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
 end subroutine cmplx_field_at_3D_box_struct_to_json
 subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
   use cubic_interpolation_mod, only: tricubic_cmplx_coef_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tricubic_cmplx_coef_struct), pointer, intent(in) :: input
@@ -1434,9 +1344,6 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
 end subroutine tricubic_cmplx_coef_struct_to_json
 subroutine bin_struct_to_json (input, json_root, depth)
   use bin_mod, only: bin_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bin_struct), pointer, intent(in) :: input
@@ -1472,9 +1379,6 @@ subroutine bin_struct_to_json (input, json_root, depth)
 end subroutine bin_struct_to_json
 subroutine general_bin_struct_to_json (input, json_root, depth)
   use bin_mod, only: general_bin_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (general_bin_struct), pointer, intent(in) :: input
@@ -1539,9 +1443,6 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
 end subroutine general_bin_struct_to_json
 subroutine spline_struct_to_json (input, json_root, depth)
   use spline_mod, only: spline_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spline_struct), pointer, intent(in) :: input
@@ -1574,9 +1475,6 @@ subroutine spline_struct_to_json (input, json_root, depth)
 end subroutine spline_struct_to_json
 subroutine opti_de_param_struct_to_json (input, json_root, depth)
   use opti_de_mod, only: opti_de_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (opti_de_param_struct), pointer, intent(in) :: input
@@ -1605,9 +1503,6 @@ subroutine opti_de_param_struct_to_json (input, json_root, depth)
 end subroutine opti_de_param_struct_to_json
 subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
   use geodesic_lm, only: geodesic_lm_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (geodesic_lm_param_struct), pointer, intent(in) :: input
@@ -1659,9 +1554,6 @@ subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
 end subroutine geodesic_lm_param_struct_to_json
 subroutine atom_struct_to_json (input, json_root, depth)
   use particle_species_mod, only: atom_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (atom_struct), pointer, intent(in) :: input
@@ -1694,9 +1586,6 @@ subroutine atom_struct_to_json (input, json_root, depth)
 end subroutine atom_struct_to_json
 subroutine var_length_string_struct_to_json (input, json_root, depth)
   use sim_utils_struct, only: var_length_string_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (var_length_string_struct), pointer, intent(in) :: input
@@ -1721,9 +1610,6 @@ subroutine var_length_string_struct_to_json (input, json_root, depth)
 end subroutine var_length_string_struct_to_json
 subroutine str_index_struct_to_json (input, json_root, depth)
   use sim_utils_struct, only: str_index_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (str_index_struct), pointer, intent(in) :: input
@@ -1767,9 +1653,6 @@ subroutine str_index_struct_to_json (input, json_root, depth)
 end subroutine str_index_struct_to_json
 subroutine nametable_struct_to_json (input, json_root, depth)
   use sim_utils_struct, only: nametable_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (nametable_struct), pointer, intent(in) :: input
@@ -1813,9 +1696,6 @@ subroutine nametable_struct_to_json (input, json_root, depth)
 end subroutine nametable_struct_to_json
 subroutine all_pointer_struct_to_json (input, json_root, depth)
   use sim_utils_struct, only: all_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (all_pointer_struct), pointer, intent(in) :: input
@@ -1866,9 +1746,6 @@ subroutine all_pointer_struct_to_json (input, json_root, depth)
 end subroutine all_pointer_struct_to_json
 subroutine molecular_component_struct_to_json (input, json_root, depth)
   use sim_utils_struct, only: molecular_component_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (molecular_component_struct), pointer, intent(in) :: input
@@ -1892,9 +1769,6 @@ subroutine molecular_component_struct_to_json (input, json_root, depth)
 end subroutine molecular_component_struct_to_json
 subroutine global_common_struct_to_json (input, json_root, depth)
   use precision_def, only: global_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (global_common_struct), pointer, intent(in) :: input
@@ -1919,9 +1793,6 @@ subroutine global_common_struct_to_json (input, json_root, depth)
 end subroutine global_common_struct_to_json
 subroutine named_number_struct_to_json (input, json_root, depth)
   use precision_def, only: named_number_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (named_number_struct), pointer, intent(in) :: input

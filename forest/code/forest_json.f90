@@ -1,26 +1,26 @@
 module forest_json
+use json_module
+use json_string_utilities, only: integer_to_string
+use json_kinds, only: CK
 contains
 subroutine complex_to_json (input, json_root, depth)
-    use json_module
-    use json_kinds, only: CK
-    use precision_def, only: rp
-    implicit none
-    type(json_core) :: json
-    type (complex(rp)), intent(in) :: input
-    type (json_value), pointer :: json_val
-    type (json_value), pointer, intent(inout) :: json_root
-    integer, optional, value :: depth
-    call json%create_array(json_root, '')
-    call json%create_real(json_val, real(input), '')
-    call json%add(json_root, json_val)
-    call json%create_real(json_val, aimag(input), '')
-    call json%add(json_root, json_val)
+  use json_module
+  use json_kinds, only: CK
+  use precision_constants, only: dp
+  implicit none
+  type(json_core) :: json
+  type (complex(dp)), intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  call json%create_array(json_root, '')
+  call json%create_real(json_val, real(input), '')
+  call json%add(json_root, json_val)
+  call json%create_real(json_val, aimag(input), '')
+  call json%add(json_root, json_val)
 end subroutine complex_to_json
 subroutine R_XY_to_json (input, json_root, depth)
   use s_euclidean, only: R_XY
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (R_XY), pointer, intent(in) :: input
@@ -50,9 +50,6 @@ subroutine R_XY_to_json (input, json_root, depth)
 end subroutine R_XY_to_json
 subroutine R_Z_to_json (input, json_root, depth)
   use s_euclidean, only: R_Z
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (R_Z), pointer, intent(in) :: input
@@ -75,9 +72,6 @@ subroutine R_Z_to_json (input, json_root, depth)
 end subroutine R_Z_to_json
 subroutine T_XYZ_to_json (input, json_root, depth)
   use s_euclidean, only: T_XYZ
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (T_XYZ), pointer, intent(in) :: input
@@ -111,9 +105,6 @@ subroutine T_XYZ_to_json (input, json_root, depth)
 end subroutine T_XYZ_to_json
 subroutine E_GENERAL_to_json (input, json_root, depth)
   use s_euclidean, only: E_GENERAL
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (E_GENERAL), pointer, intent(in) :: input
@@ -145,9 +136,6 @@ subroutine E_GENERAL_to_json (input, json_root, depth)
 end subroutine E_GENERAL_to_json
 subroutine B_CYL_to_json (input, json_root, depth)
   use s_status, only: B_CYL
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (B_CYL), pointer, intent(in) :: input
@@ -286,9 +274,6 @@ subroutine B_CYL_to_json (input, json_root, depth)
 end subroutine B_CYL_to_json
 subroutine bunch_to_json (input, json_root, depth)
   use duan_zhe_map, only: bunch
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bunch), pointer, intent(in) :: input
@@ -334,9 +319,6 @@ subroutine bunch_to_json (input, json_root, depth)
 end subroutine bunch_to_json
 subroutine INTERNAL_STATE_to_json (input, json_root, depth)
   use definition, only: INTERNAL_STATE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (INTERNAL_STATE), pointer, intent(in) :: input
@@ -372,9 +354,6 @@ subroutine INTERNAL_STATE_to_json (input, json_root, depth)
 end subroutine INTERNAL_STATE_to_json
 subroutine tree_element_to_json (input, json_root, depth)
   use definition, only: tree_element
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tree_element), pointer, intent(in) :: input
@@ -513,9 +492,6 @@ subroutine tree_element_to_json (input, json_root, depth)
 end subroutine tree_element_to_json
 subroutine spinor_to_json (input, json_root, depth)
   use definition, only: spinor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spinor), pointer, intent(in) :: input
@@ -545,9 +521,6 @@ subroutine spinor_to_json (input, json_root, depth)
 end subroutine spinor_to_json
 subroutine quaternion_to_json (input, json_root, depth)
   use definition, only: quaternion
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (quaternion), pointer, intent(in) :: input
@@ -577,9 +550,6 @@ subroutine quaternion_to_json (input, json_root, depth)
 end subroutine quaternion_to_json
 subroutine probe_to_json (input, json_root, depth)
   use definition, only: probe
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (probe), pointer, intent(in) :: input
@@ -637,9 +607,6 @@ subroutine probe_to_json (input, json_root, depth)
 end subroutine probe_to_json
 subroutine fibre_monitor_data_to_json (input, json_root, depth)
   use s_fitting_new, only: fibre_monitor_data
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (fibre_monitor_data), pointer, intent(in) :: input
@@ -774,9 +741,6 @@ subroutine fibre_monitor_data_to_json (input, json_root, depth)
 end subroutine fibre_monitor_data_to_json
 subroutine three_d_info_to_json (input, json_root, depth)
   use ptc_multiparticle, only: three_d_info
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (three_d_info), pointer, intent(in) :: input
@@ -904,9 +868,6 @@ subroutine three_d_info_to_json (input, json_root, depth)
 end subroutine three_d_info_to_json
 subroutine EL_LIST_to_json (input, json_root, depth)
   use mad_like, only: EL_LIST
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (EL_LIST), pointer, intent(in) :: input
@@ -1085,9 +1046,6 @@ subroutine EL_LIST_to_json (input, json_root, depth)
 end subroutine EL_LIST_to_json
 subroutine CONTROL_to_json (input, json_root, depth)
   use precision_constants, only: CONTROL
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CONTROL), pointer, intent(in) :: input
@@ -1315,9 +1273,6 @@ subroutine CONTROL_to_json (input, json_root, depth)
 end subroutine CONTROL_to_json
 subroutine file__to_json (input, json_root, depth)
   use file_handler, only: file_
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (file_), pointer, intent(in) :: input
@@ -1340,9 +1295,6 @@ subroutine file__to_json (input, json_root, depth)
 end subroutine file__to_json
 subroutine file_K_to_json (input, json_root, depth)
   use file_handler, only: file_K
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (file_K), pointer, intent(in) :: input
@@ -1365,9 +1317,6 @@ subroutine file_K_to_json (input, json_root, depth)
 end subroutine file_K_to_json
 subroutine my_1D_taylor_to_json (input, json_root, depth)
   use my_own_1d_tpsa, only: my_1D_taylor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (my_1D_taylor), pointer, intent(in) :: input
@@ -1397,9 +1346,6 @@ subroutine my_1D_taylor_to_json (input, json_root, depth)
 end subroutine my_1D_taylor_to_json
 subroutine my_linear_taylor_to_json (input, json_root, depth)
   use my_own_linear_tpsa, only: my_linear_taylor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (my_linear_taylor), pointer, intent(in) :: input
@@ -1429,9 +1375,6 @@ subroutine my_linear_taylor_to_json (input, json_root, depth)
 end subroutine my_linear_taylor_to_json
 subroutine sub_taylor_to_json (input, json_root, depth)
   use definition, only: sub_taylor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (sub_taylor), pointer, intent(in) :: input
@@ -1463,9 +1406,6 @@ subroutine sub_taylor_to_json (input, json_root, depth)
 end subroutine sub_taylor_to_json
 subroutine taylor_to_json (input, json_root, depth)
   use definition, only: taylor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (taylor), pointer, intent(in) :: input
@@ -1488,9 +1428,6 @@ subroutine taylor_to_json (input, json_root, depth)
 end subroutine taylor_to_json
 subroutine UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
   use definition, only: UNIVERSAL_TAYLOR
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (UNIVERSAL_TAYLOR), pointer, intent(in) :: input
@@ -1539,9 +1476,6 @@ subroutine UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
 end subroutine UNIVERSAL_TAYLOR_to_json
 subroutine c_UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
   use definition, only: c_UNIVERSAL_TAYLOR
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_UNIVERSAL_TAYLOR), pointer, intent(in) :: input
@@ -1591,9 +1525,6 @@ subroutine c_UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
 end subroutine c_UNIVERSAL_TAYLOR_to_json
 subroutine complextaylor_to_json (input, json_root, depth)
   use definition, only: complextaylor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (complextaylor), pointer, intent(in) :: input
@@ -1621,9 +1552,6 @@ subroutine complextaylor_to_json (input, json_root, depth)
 end subroutine complextaylor_to_json
 subroutine REAL_8_to_json (input, json_root, depth)
   use definition, only: REAL_8
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (REAL_8), pointer, intent(in) :: input
@@ -1653,9 +1581,6 @@ subroutine REAL_8_to_json (input, json_root, depth)
 end subroutine REAL_8_to_json
 subroutine complex_quaternion_to_json (input, json_root, depth)
   use definition, only: complex_quaternion
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (complex_quaternion), pointer, intent(in) :: input
@@ -1685,9 +1610,6 @@ subroutine complex_quaternion_to_json (input, json_root, depth)
 end subroutine complex_quaternion_to_json
 subroutine quaternion_8_to_json (input, json_root, depth)
   use definition, only: quaternion_8
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (quaternion_8), pointer, intent(in) :: input
@@ -1717,9 +1639,6 @@ subroutine quaternion_8_to_json (input, json_root, depth)
 end subroutine quaternion_8_to_json
 subroutine complex_8_to_json (input, json_root, depth)
   use definition, only: complex_8
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (complex_8), pointer, intent(in) :: input
@@ -1754,9 +1673,6 @@ subroutine complex_8_to_json (input, json_root, depth)
 end subroutine complex_8_to_json
 subroutine spinor_8_to_json (input, json_root, depth)
   use definition, only: spinor_8
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spinor_8), pointer, intent(in) :: input
@@ -1786,9 +1702,6 @@ subroutine spinor_8_to_json (input, json_root, depth)
 end subroutine spinor_8_to_json
 subroutine dascratch_to_json (input, json_root, depth)
   use definition, only: dascratch
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (dascratch), pointer, intent(in) :: input
@@ -1817,9 +1730,6 @@ subroutine dascratch_to_json (input, json_root, depth)
 end subroutine dascratch_to_json
 subroutine dalevel_to_json (input, json_root, depth)
   use definition, only: dalevel
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (dalevel), pointer, intent(in) :: input
@@ -1872,9 +1782,6 @@ subroutine dalevel_to_json (input, json_root, depth)
 end subroutine dalevel_to_json
 subroutine DAMAP_to_json (input, json_root, depth)
   use definition, only: DAMAP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (DAMAP), pointer, intent(in) :: input
@@ -1904,9 +1811,6 @@ subroutine DAMAP_to_json (input, json_root, depth)
 end subroutine DAMAP_to_json
 subroutine GMAP_to_json (input, json_root, depth)
   use definition, only: GMAP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (GMAP), pointer, intent(in) :: input
@@ -1937,9 +1841,6 @@ subroutine GMAP_to_json (input, json_root, depth)
 end subroutine GMAP_to_json
 subroutine vecfield_to_json (input, json_root, depth)
   use definition, only: vecfield
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (vecfield), pointer, intent(in) :: input
@@ -1970,9 +1871,6 @@ subroutine vecfield_to_json (input, json_root, depth)
 end subroutine vecfield_to_json
 subroutine pbfield_to_json (input, json_root, depth)
   use definition, only: pbfield
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pbfield), pointer, intent(in) :: input
@@ -1999,9 +1897,6 @@ subroutine pbfield_to_json (input, json_root, depth)
 end subroutine pbfield_to_json
 subroutine tree_to_json (input, json_root, depth)
   use definition, only: tree
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tree), pointer, intent(in) :: input
@@ -2031,9 +1926,6 @@ subroutine tree_to_json (input, json_root, depth)
 end subroutine tree_to_json
 subroutine DRAGTFINN_to_json (input, json_root, depth)
   use definition, only: DRAGTFINN
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (DRAGTFINN), pointer, intent(in) :: input
@@ -2072,9 +1964,6 @@ subroutine DRAGTFINN_to_json (input, json_root, depth)
 end subroutine DRAGTFINN_to_json
 subroutine reversedragtfinn_to_json (input, json_root, depth)
   use definition, only: reversedragtfinn
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (reversedragtfinn), pointer, intent(in) :: input
@@ -2113,9 +2002,6 @@ subroutine reversedragtfinn_to_json (input, json_root, depth)
 end subroutine reversedragtfinn_to_json
 subroutine ONELIEEXPONENT_to_json (input, json_root, depth)
   use definition, only: ONELIEEXPONENT
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ONELIEEXPONENT), pointer, intent(in) :: input
@@ -2144,9 +2030,6 @@ subroutine ONELIEEXPONENT_to_json (input, json_root, depth)
 end subroutine ONELIEEXPONENT_to_json
 subroutine normalform_to_json (input, json_root, depth)
   use definition, only: normalform
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (normalform), pointer, intent(in) :: input
@@ -2224,9 +2107,6 @@ subroutine normalform_to_json (input, json_root, depth)
 end subroutine normalform_to_json
 subroutine genfield_to_json (input, json_root, depth)
   use definition, only: genfield
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (genfield), pointer, intent(in) :: input
@@ -2289,9 +2169,6 @@ subroutine genfield_to_json (input, json_root, depth)
 end subroutine genfield_to_json
 subroutine pbresonance_to_json (input, json_root, depth)
   use definition, only: pbresonance
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pbresonance), pointer, intent(in) :: input
@@ -2320,9 +2197,6 @@ subroutine pbresonance_to_json (input, json_root, depth)
 end subroutine pbresonance_to_json
 subroutine vecresonance_to_json (input, json_root, depth)
   use definition, only: vecresonance
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (vecresonance), pointer, intent(in) :: input
@@ -2351,9 +2225,6 @@ subroutine vecresonance_to_json (input, json_root, depth)
 end subroutine vecresonance_to_json
 subroutine taylorresonance_to_json (input, json_root, depth)
   use definition, only: taylorresonance
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (taylorresonance), pointer, intent(in) :: input
@@ -2381,9 +2252,6 @@ subroutine taylorresonance_to_json (input, json_root, depth)
 end subroutine taylorresonance_to_json
 subroutine AFFINE_FRAME_to_json (input, json_root, depth)
   use definition, only: AFFINE_FRAME
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (AFFINE_FRAME), pointer, intent(in) :: input
@@ -2475,9 +2343,6 @@ subroutine AFFINE_FRAME_to_json (input, json_root, depth)
 end subroutine AFFINE_FRAME_to_json
 subroutine MAGNET_FRAME_to_json (input, json_root, depth)
   use definition, only: MAGNET_FRAME
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MAGNET_FRAME), pointer, intent(in) :: input
@@ -2574,9 +2439,6 @@ subroutine MAGNET_FRAME_to_json (input, json_root, depth)
 end subroutine MAGNET_FRAME_to_json
 subroutine PATCH_to_json (input, json_root, depth)
   use definition, only: PATCH
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (PATCH), pointer, intent(in) :: input
@@ -2652,9 +2514,6 @@ subroutine PATCH_to_json (input, json_root, depth)
 end subroutine PATCH_to_json
 subroutine CHART_to_json (input, json_root, depth)
   use definition, only: CHART
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CHART), pointer, intent(in) :: input
@@ -2713,9 +2572,6 @@ subroutine CHART_to_json (input, json_root, depth)
 end subroutine CHART_to_json
 subroutine POL_sagan_to_json (input, json_root, depth)
   use definition, only: POL_sagan
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (POL_sagan), pointer, intent(in) :: input
@@ -2753,9 +2609,6 @@ subroutine POL_sagan_to_json (input, json_root, depth)
 end subroutine POL_sagan_to_json
 subroutine POL_BLOCK_sagan_to_json (input, json_root, depth)
   use definition, only: POL_BLOCK_sagan
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (POL_BLOCK_sagan), pointer, intent(in) :: input
@@ -2796,9 +2649,6 @@ subroutine POL_BLOCK_sagan_to_json (input, json_root, depth)
 end subroutine POL_BLOCK_sagan_to_json
 subroutine undu_R_to_json (input, json_root, depth)
   use definition, only: undu_R
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (undu_R), pointer, intent(in) :: input
@@ -2979,9 +2829,6 @@ subroutine undu_R_to_json (input, json_root, depth)
 end subroutine undu_R_to_json
 subroutine undu_p_to_json (input, json_root, depth)
   use definition, only: undu_p
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (undu_p), pointer, intent(in) :: input
@@ -3164,9 +3011,6 @@ subroutine undu_p_to_json (input, json_root, depth)
 end subroutine undu_p_to_json
 subroutine SAGAN_to_json (input, json_root, depth)
   use definition, only: SAGAN
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SAGAN), pointer, intent(in) :: input
@@ -3233,9 +3077,6 @@ subroutine SAGAN_to_json (input, json_root, depth)
 end subroutine SAGAN_to_json
 subroutine SAGANP_to_json (input, json_root, depth)
   use definition, only: SAGANP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SAGANP), pointer, intent(in) :: input
@@ -3304,9 +3145,6 @@ subroutine SAGANP_to_json (input, json_root, depth)
 end subroutine SAGANP_to_json
 subroutine c_linear_map_to_json (input, json_root, depth)
   use definition, only: c_linear_map
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_linear_map), pointer, intent(in) :: input
@@ -3354,9 +3192,6 @@ subroutine c_linear_map_to_json (input, json_root, depth)
 end subroutine c_linear_map_to_json
 subroutine c_lattice_function_to_json (input, json_root, depth)
   use definition, only: c_lattice_function
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_lattice_function), pointer, intent(in) :: input
@@ -3524,9 +3359,6 @@ subroutine c_lattice_function_to_json (input, json_root, depth)
 end subroutine c_lattice_function_to_json
 subroutine girder_to_json (input, json_root, depth)
   use definition, only: girder
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (girder), pointer, intent(in) :: input
@@ -3591,9 +3423,6 @@ subroutine girder_to_json (input, json_root, depth)
 end subroutine girder_to_json
 subroutine girder_info_to_json (input, json_root, depth)
   use definition, only: girder_info
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (girder_info), pointer, intent(in) :: input
@@ -3660,9 +3489,6 @@ subroutine girder_info_to_json (input, json_root, depth)
 end subroutine girder_info_to_json
 subroutine girder_list_to_json (input, json_root, depth)
   use definition, only: girder_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (girder_list), pointer, intent(in) :: input
@@ -3716,9 +3542,6 @@ subroutine girder_list_to_json (input, json_root, depth)
 end subroutine girder_list_to_json
 subroutine MUL_BLOCK_to_json (input, json_root, depth)
   use definition, only: MUL_BLOCK
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MUL_BLOCK), pointer, intent(in) :: input
@@ -3759,9 +3582,6 @@ subroutine MUL_BLOCK_to_json (input, json_root, depth)
 end subroutine MUL_BLOCK_to_json
 subroutine work_to_json (input, json_root, depth)
   use definition, only: work
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (work), pointer, intent(in) :: input
@@ -3793,9 +3613,6 @@ subroutine work_to_json (input, json_root, depth)
 end subroutine work_to_json
 subroutine POL_BLOCK_to_json (input, json_root, depth)
   use definition, only: POL_BLOCK
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (POL_BLOCK), pointer, intent(in) :: input
@@ -3883,9 +3700,6 @@ subroutine POL_BLOCK_to_json (input, json_root, depth)
 end subroutine POL_BLOCK_to_json
 subroutine POL_BLOCK_INICOND_to_json (input, json_root, depth)
   use definition, only: POL_BLOCK_INICOND
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (POL_BLOCK_INICOND), pointer, intent(in) :: input
@@ -3931,9 +3745,6 @@ subroutine POL_BLOCK_INICOND_to_json (input, json_root, depth)
 end subroutine POL_BLOCK_INICOND_to_json
 subroutine MADX_APERTURE_to_json (input, json_root, depth)
   use definition, only: MADX_APERTURE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MADX_APERTURE), pointer, intent(in) :: input
@@ -4006,9 +3817,6 @@ subroutine MADX_APERTURE_to_json (input, json_root, depth)
 end subroutine MADX_APERTURE_to_json
 subroutine S_APERTURE_to_json (input, json_root, depth)
   use definition, only: S_APERTURE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (S_APERTURE), pointer, intent(in) :: input
@@ -4033,9 +3841,6 @@ subroutine S_APERTURE_to_json (input, json_root, depth)
 end subroutine S_APERTURE_to_json
 subroutine MAGNET_CHART_to_json (input, json_root, depth)
   use definition, only: MAGNET_CHART
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MAGNET_CHART), pointer, intent(in) :: input
@@ -4150,9 +3955,6 @@ subroutine MAGNET_CHART_to_json (input, json_root, depth)
 end subroutine MAGNET_CHART_to_json
 subroutine tilting_to_json (input, json_root, depth)
   use definition, only: tilting
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tilting), pointer, intent(in) :: input
@@ -4183,9 +3985,6 @@ subroutine tilting_to_json (input, json_root, depth)
 end subroutine tilting_to_json
 subroutine time_energy_to_json (input, json_root, depth)
   use definition, only: time_energy
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (time_energy), pointer, intent(in) :: input
@@ -4236,9 +4035,6 @@ subroutine time_energy_to_json (input, json_root, depth)
 end subroutine time_energy_to_json
 subroutine ramping_to_json (input, json_root, depth)
   use definition, only: ramping
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ramping), pointer, intent(in) :: input
@@ -4282,9 +4078,6 @@ subroutine ramping_to_json (input, json_root, depth)
 end subroutine ramping_to_json
 subroutine ELEMENT_to_json (input, json_root, depth)
   use definition, only: ELEMENT
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ELEMENT), pointer, intent(in) :: input
@@ -4637,9 +4430,6 @@ subroutine ELEMENT_to_json (input, json_root, depth)
 end subroutine ELEMENT_to_json
 subroutine ELEMENTP_to_json (input, json_root, depth)
   use definition, only: ELEMENTP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ELEMENTP), pointer, intent(in) :: input
@@ -4998,9 +4788,6 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
 end subroutine ELEMENTP_to_json
 subroutine fibre_appearance_to_json (input, json_root, depth)
   use definition, only: fibre_appearance
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (fibre_appearance), pointer, intent(in) :: input
@@ -5028,9 +4815,6 @@ subroutine fibre_appearance_to_json (input, json_root, depth)
 end subroutine fibre_appearance_to_json
 subroutine info_to_json (input, json_root, depth)
   use definition, only: info
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (info), pointer, intent(in) :: input
@@ -5106,9 +4890,6 @@ subroutine info_to_json (input, json_root, depth)
 end subroutine info_to_json
 subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
   use definition, only: INTEGRATION_NODE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (INTEGRATION_NODE), pointer, intent(in) :: input
@@ -5246,9 +5027,6 @@ subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
 end subroutine INTEGRATION_NODE_to_json
 subroutine FIBRE_to_json (input, json_root, depth)
   use definition, only: FIBRE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (FIBRE), pointer, intent(in) :: input
@@ -5346,9 +5124,6 @@ subroutine FIBRE_to_json (input, json_root, depth)
 end subroutine FIBRE_to_json
 subroutine LAYOUT_to_json (input, json_root, depth)
   use definition, only: LAYOUT
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (LAYOUT), pointer, intent(in) :: input
@@ -5441,9 +5216,6 @@ subroutine LAYOUT_to_json (input, json_root, depth)
 end subroutine LAYOUT_to_json
 subroutine layout_array_to_json (input, json_root, depth)
   use definition, only: layout_array
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (layout_array), pointer, intent(in) :: input
@@ -5471,9 +5243,6 @@ subroutine layout_array_to_json (input, json_root, depth)
 end subroutine layout_array_to_json
 subroutine girder_siamese_to_json (input, json_root, depth)
   use definition, only: girder_siamese
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (girder_siamese), pointer, intent(in) :: input
@@ -5500,9 +5269,6 @@ subroutine girder_siamese_to_json (input, json_root, depth)
 end subroutine girder_siamese_to_json
 subroutine MAD_UNIVERSE_to_json (input, json_root, depth)
   use definition, only: MAD_UNIVERSE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MAD_UNIVERSE), pointer, intent(in) :: input
@@ -5551,9 +5317,6 @@ subroutine MAD_UNIVERSE_to_json (input, json_root, depth)
 end subroutine MAD_UNIVERSE_to_json
 subroutine BEAM_LOCATION_to_json (input, json_root, depth)
   use definition, only: BEAM_LOCATION
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (BEAM_LOCATION), pointer, intent(in) :: input
@@ -5580,9 +5343,6 @@ subroutine BEAM_LOCATION_to_json (input, json_root, depth)
 end subroutine BEAM_LOCATION_to_json
 subroutine NODE_LAYOUT_to_json (input, json_root, depth)
   use definition, only: NODE_LAYOUT
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (NODE_LAYOUT), pointer, intent(in) :: input
@@ -5654,9 +5414,6 @@ subroutine NODE_LAYOUT_to_json (input, json_root, depth)
 end subroutine NODE_LAYOUT_to_json
 subroutine ORBIT_NODE_to_json (input, json_root, depth)
   use definition, only: ORBIT_NODE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ORBIT_NODE), pointer, intent(in) :: input
@@ -5705,9 +5462,6 @@ subroutine ORBIT_NODE_to_json (input, json_root, depth)
 end subroutine ORBIT_NODE_to_json
 subroutine ORBIT_LATTICE_to_json (input, json_root, depth)
   use definition, only: ORBIT_LATTICE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ORBIT_LATTICE), pointer, intent(in) :: input
@@ -5824,9 +5578,6 @@ subroutine ORBIT_LATTICE_to_json (input, json_root, depth)
 end subroutine ORBIT_LATTICE_to_json
 subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
   use definition, only: BEAM_BEAM_NODE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (BEAM_BEAM_NODE), pointer, intent(in) :: input
@@ -5955,9 +5706,6 @@ subroutine BEAM_BEAM_NODE_to_json (input, json_root, depth)
 end subroutine BEAM_BEAM_NODE_to_json
 subroutine EXTRA_WORK_to_json (input, json_root, depth)
   use definition, only: EXTRA_WORK
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (EXTRA_WORK), pointer, intent(in) :: input
@@ -6007,9 +5755,6 @@ subroutine EXTRA_WORK_to_json (input, json_root, depth)
 end subroutine EXTRA_WORK_to_json
 subroutine E_BEAM_to_json (input, json_root, depth)
   use definition, only: E_BEAM
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (E_BEAM), pointer, intent(in) :: input
@@ -6042,9 +5787,6 @@ subroutine E_BEAM_to_json (input, json_root, depth)
 end subroutine E_BEAM_to_json
 subroutine temps_energie_to_json (input, json_root, depth)
   use definition, only: temps_energie
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (temps_energie), pointer, intent(in) :: input
@@ -6095,9 +5837,6 @@ subroutine temps_energie_to_json (input, json_root, depth)
 end subroutine temps_energie_to_json
 subroutine acceleration_to_json (input, json_root, depth)
   use definition, only: acceleration
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (acceleration), pointer, intent(in) :: input
@@ -6184,9 +5923,6 @@ subroutine acceleration_to_json (input, json_root, depth)
 end subroutine acceleration_to_json
 subroutine DRIFT1_to_json (input, json_root, depth)
   use definition, only: DRIFT1
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (DRIFT1), pointer, intent(in) :: input
@@ -6212,9 +5948,6 @@ subroutine DRIFT1_to_json (input, json_root, depth)
 end subroutine DRIFT1_to_json
 subroutine DRIFT1P_to_json (input, json_root, depth)
   use definition, only: DRIFT1P
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (DRIFT1P), pointer, intent(in) :: input
@@ -6242,9 +5975,6 @@ subroutine DRIFT1P_to_json (input, json_root, depth)
 end subroutine DRIFT1P_to_json
 subroutine SUPERDRIFT_to_json (input, json_root, depth)
   use definition, only: SUPERDRIFT
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SUPERDRIFT), pointer, intent(in) :: input
@@ -6292,9 +6022,6 @@ subroutine SUPERDRIFT_to_json (input, json_root, depth)
 end subroutine SUPERDRIFT_to_json
 subroutine SUPERDRIFTP_to_json (input, json_root, depth)
   use definition, only: SUPERDRIFTP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SUPERDRIFTP), pointer, intent(in) :: input
@@ -6344,9 +6071,6 @@ subroutine SUPERDRIFTP_to_json (input, json_root, depth)
 end subroutine SUPERDRIFTP_to_json
 subroutine DKD2_to_json (input, json_root, depth)
   use definition, only: DKD2
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (DKD2), pointer, intent(in) :: input
@@ -6415,9 +6139,6 @@ subroutine DKD2_to_json (input, json_root, depth)
 end subroutine DKD2_to_json
 subroutine DKD2P_to_json (input, json_root, depth)
   use definition, only: DKD2P
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (DKD2P), pointer, intent(in) :: input
@@ -6496,9 +6217,6 @@ subroutine DKD2P_to_json (input, json_root, depth)
 end subroutine DKD2P_to_json
 subroutine KICKT3_to_json (input, json_root, depth)
   use definition, only: KICKT3
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (KICKT3), pointer, intent(in) :: input
@@ -6556,9 +6274,6 @@ subroutine KICKT3_to_json (input, json_root, depth)
 end subroutine KICKT3_to_json
 subroutine KICKT3P_to_json (input, json_root, depth)
   use definition, only: KICKT3P
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (KICKT3P), pointer, intent(in) :: input
@@ -6630,9 +6345,6 @@ subroutine KICKT3P_to_json (input, json_root, depth)
 end subroutine KICKT3P_to_json
 subroutine ABELL_to_json (input, json_root, depth)
   use definition, only: ABELL
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ABELL), pointer, intent(in) :: input
@@ -6768,9 +6480,6 @@ subroutine ABELL_to_json (input, json_root, depth)
 end subroutine ABELL_to_json
 subroutine ABELLP_to_json (input, json_root, depth)
   use definition, only: ABELLP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ABELLP), pointer, intent(in) :: input
@@ -6910,9 +6619,6 @@ subroutine ABELLP_to_json (input, json_root, depth)
 end subroutine ABELLP_to_json
 subroutine CAV4_to_json (input, json_root, depth)
   use definition, only: CAV4
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CAV4), pointer, intent(in) :: input
@@ -7047,9 +6753,6 @@ subroutine CAV4_to_json (input, json_root, depth)
 end subroutine CAV4_to_json
 subroutine CAV4P_to_json (input, json_root, depth)
   use definition, only: CAV4P
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CAV4P), pointer, intent(in) :: input
@@ -7200,9 +6903,6 @@ subroutine CAV4P_to_json (input, json_root, depth)
 end subroutine CAV4P_to_json
 subroutine CAV_TRAV_to_json (input, json_root, depth)
   use definition, only: CAV_TRAV
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CAV_TRAV), pointer, intent(in) :: input
@@ -7284,9 +6984,6 @@ subroutine CAV_TRAV_to_json (input, json_root, depth)
 end subroutine CAV_TRAV_to_json
 subroutine CAV_TRAVP_to_json (input, json_root, depth)
   use definition, only: CAV_TRAVP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CAV_TRAVP), pointer, intent(in) :: input
@@ -7382,9 +7079,6 @@ subroutine CAV_TRAVP_to_json (input, json_root, depth)
 end subroutine CAV_TRAVP_to_json
 subroutine SOL5_to_json (input, json_root, depth)
   use definition, only: SOL5
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SOL5), pointer, intent(in) :: input
@@ -7457,9 +7151,6 @@ subroutine SOL5_to_json (input, json_root, depth)
 end subroutine SOL5_to_json
 subroutine SOL5P_to_json (input, json_root, depth)
   use definition, only: SOL5P
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SOL5P), pointer, intent(in) :: input
@@ -7544,9 +7235,6 @@ subroutine SOL5P_to_json (input, json_root, depth)
 end subroutine SOL5P_to_json
 subroutine KTK_to_json (input, json_root, depth)
   use definition, only: KTK
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (KTK), pointer, intent(in) :: input
@@ -7662,9 +7350,6 @@ subroutine KTK_to_json (input, json_root, depth)
 end subroutine KTK_to_json
 subroutine KTKP_to_json (input, json_root, depth)
   use definition, only: KTKP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (KTKP), pointer, intent(in) :: input
@@ -7790,9 +7475,6 @@ subroutine KTKP_to_json (input, json_root, depth)
 end subroutine KTKP_to_json
 subroutine TKTF_to_json (input, json_root, depth)
   use definition, only: TKTF
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (TKTF), pointer, intent(in) :: input
@@ -7971,9 +7653,6 @@ subroutine TKTF_to_json (input, json_root, depth)
 end subroutine TKTF_to_json
 subroutine TKTFP_to_json (input, json_root, depth)
   use definition, only: TKTFP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (TKTFP), pointer, intent(in) :: input
@@ -8162,9 +7841,6 @@ subroutine TKTFP_to_json (input, json_root, depth)
 end subroutine TKTFP_to_json
 subroutine NSMI_to_json (input, json_root, depth)
   use definition, only: NSMI
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (NSMI), pointer, intent(in) :: input
@@ -8197,9 +7873,6 @@ subroutine NSMI_to_json (input, json_root, depth)
 end subroutine NSMI_to_json
 subroutine NSMIP_to_json (input, json_root, depth)
   use definition, only: NSMIP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (NSMIP), pointer, intent(in) :: input
@@ -8232,9 +7905,6 @@ subroutine NSMIP_to_json (input, json_root, depth)
 end subroutine NSMIP_to_json
 subroutine SSMI_to_json (input, json_root, depth)
   use definition, only: SSMI
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SSMI), pointer, intent(in) :: input
@@ -8267,9 +7937,6 @@ subroutine SSMI_to_json (input, json_root, depth)
 end subroutine SSMI_to_json
 subroutine SSMIP_to_json (input, json_root, depth)
   use definition, only: SSMIP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (SSMIP), pointer, intent(in) :: input
@@ -8302,9 +7969,6 @@ subroutine SSMIP_to_json (input, json_root, depth)
 end subroutine SSMIP_to_json
 subroutine TEAPOT_to_json (input, json_root, depth)
   use definition, only: TEAPOT
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (TEAPOT), pointer, intent(in) :: input
@@ -8462,9 +8126,6 @@ subroutine TEAPOT_to_json (input, json_root, depth)
 end subroutine TEAPOT_to_json
 subroutine TEAPOTP_to_json (input, json_root, depth)
   use definition, only: TEAPOTP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (TEAPOTP), pointer, intent(in) :: input
@@ -8634,9 +8295,6 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
 end subroutine TEAPOTP_to_json
 subroutine MON_to_json (input, json_root, depth)
   use definition, only: MON
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MON), pointer, intent(in) :: input
@@ -8668,9 +8326,6 @@ subroutine MON_to_json (input, json_root, depth)
 end subroutine MON_to_json
 subroutine MONP_to_json (input, json_root, depth)
   use definition, only: MONP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MONP), pointer, intent(in) :: input
@@ -8704,9 +8359,6 @@ subroutine MONP_to_json (input, json_root, depth)
 end subroutine MONP_to_json
 subroutine RCOL_to_json (input, json_root, depth)
   use definition, only: RCOL
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (RCOL), pointer, intent(in) :: input
@@ -8732,9 +8384,6 @@ subroutine RCOL_to_json (input, json_root, depth)
 end subroutine RCOL_to_json
 subroutine RCOLP_to_json (input, json_root, depth)
   use definition, only: RCOLP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (RCOLP), pointer, intent(in) :: input
@@ -8762,9 +8411,6 @@ subroutine RCOLP_to_json (input, json_root, depth)
 end subroutine RCOLP_to_json
 subroutine ECOL_to_json (input, json_root, depth)
   use definition, only: ECOL
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ECOL), pointer, intent(in) :: input
@@ -8790,9 +8436,6 @@ subroutine ECOL_to_json (input, json_root, depth)
 end subroutine ECOL_to_json
 subroutine ECOLP_to_json (input, json_root, depth)
   use definition, only: ECOLP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ECOLP), pointer, intent(in) :: input
@@ -8820,9 +8463,6 @@ subroutine ECOLP_to_json (input, json_root, depth)
 end subroutine ECOLP_to_json
 subroutine ESEPTUM_to_json (input, json_root, depth)
   use definition, only: ESEPTUM
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ESEPTUM), pointer, intent(in) :: input
@@ -8854,9 +8494,6 @@ subroutine ESEPTUM_to_json (input, json_root, depth)
 end subroutine ESEPTUM_to_json
 subroutine ESEPTUMP_to_json (input, json_root, depth)
   use definition, only: ESEPTUMP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ESEPTUMP), pointer, intent(in) :: input
@@ -8894,9 +8531,6 @@ subroutine ESEPTUMP_to_json (input, json_root, depth)
 end subroutine ESEPTUMP_to_json
 subroutine STREX_to_json (input, json_root, depth)
   use definition, only: STREX
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (STREX), pointer, intent(in) :: input
@@ -8968,9 +8602,6 @@ subroutine STREX_to_json (input, json_root, depth)
 end subroutine STREX_to_json
 subroutine STREXP_to_json (input, json_root, depth)
   use definition, only: STREXP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (STREXP), pointer, intent(in) :: input
@@ -9052,9 +8683,6 @@ subroutine STREXP_to_json (input, json_root, depth)
 end subroutine STREXP_to_json
 subroutine ENGE_to_json (input, json_root, depth)
   use definition, only: ENGE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ENGE), pointer, intent(in) :: input
@@ -9121,9 +8749,6 @@ subroutine ENGE_to_json (input, json_root, depth)
 end subroutine ENGE_to_json
 subroutine ENGEP_to_json (input, json_root, depth)
   use definition, only: ENGEP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ENGEP), pointer, intent(in) :: input
@@ -9192,9 +8817,6 @@ subroutine ENGEP_to_json (input, json_root, depth)
 end subroutine ENGEP_to_json
 subroutine PANCAKE_to_json (input, json_root, depth)
   use definition, only: PANCAKE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (PANCAKE), pointer, intent(in) :: input
@@ -9251,9 +8873,6 @@ subroutine PANCAKE_to_json (input, json_root, depth)
 end subroutine PANCAKE_to_json
 subroutine PANCAKEP_to_json (input, json_root, depth)
   use definition, only: PANCAKEP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (PANCAKEP), pointer, intent(in) :: input
@@ -9314,9 +8933,6 @@ subroutine PANCAKEP_to_json (input, json_root, depth)
 end subroutine PANCAKEP_to_json
 subroutine HELICAL_DIPOLE_to_json (input, json_root, depth)
   use definition, only: HELICAL_DIPOLE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (HELICAL_DIPOLE), pointer, intent(in) :: input
@@ -9381,9 +8997,6 @@ subroutine HELICAL_DIPOLE_to_json (input, json_root, depth)
 end subroutine HELICAL_DIPOLE_to_json
 subroutine HELICAL_DIPOLEP_to_json (input, json_root, depth)
   use definition, only: HELICAL_DIPOLEP
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (HELICAL_DIPOLEP), pointer, intent(in) :: input
@@ -9454,9 +9067,6 @@ subroutine HELICAL_DIPOLEP_to_json (input, json_root, depth)
 end subroutine HELICAL_DIPOLEP_to_json
 subroutine rf_phasor_to_json (input, json_root, depth)
   use definition, only: rf_phasor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rf_phasor), pointer, intent(in) :: input
@@ -9488,9 +9098,6 @@ subroutine rf_phasor_to_json (input, json_root, depth)
 end subroutine rf_phasor_to_json
 subroutine rf_phasor_8_to_json (input, json_root, depth)
   use definition, only: rf_phasor_8
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rf_phasor_8), pointer, intent(in) :: input
@@ -9524,9 +9131,6 @@ subroutine rf_phasor_8_to_json (input, json_root, depth)
 end subroutine rf_phasor_8_to_json
 subroutine probe_8_to_json (input, json_root, depth)
   use definition, only: probe_8
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (probe_8), pointer, intent(in) :: input
@@ -9605,9 +9209,6 @@ subroutine probe_8_to_json (input, json_root, depth)
 end subroutine probe_8_to_json
 subroutine TEMPORAL_PROBE_to_json (input, json_root, depth)
   use definition, only: TEMPORAL_PROBE
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (TEMPORAL_PROBE), pointer, intent(in) :: input
@@ -9664,9 +9265,6 @@ subroutine TEMPORAL_PROBE_to_json (input, json_root, depth)
 end subroutine TEMPORAL_PROBE_to_json
 subroutine TEMPORAL_BEAM_to_json (input, json_root, depth)
   use definition, only: TEMPORAL_BEAM
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (TEMPORAL_BEAM), pointer, intent(in) :: input
@@ -9730,9 +9328,6 @@ subroutine TEMPORAL_BEAM_to_json (input, json_root, depth)
 end subroutine TEMPORAL_BEAM_to_json
 subroutine C_taylor_to_json (input, json_root, depth)
   use definition, only: C_taylor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (C_taylor), pointer, intent(in) :: input
@@ -9755,9 +9350,6 @@ subroutine C_taylor_to_json (input, json_root, depth)
 end subroutine C_taylor_to_json
 subroutine c_dascratch_to_json (input, json_root, depth)
   use definition, only: c_dascratch
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_dascratch), pointer, intent(in) :: input
@@ -9786,9 +9378,6 @@ subroutine c_dascratch_to_json (input, json_root, depth)
 end subroutine c_dascratch_to_json
 subroutine c_dalevel_to_json (input, json_root, depth)
   use definition, only: c_dalevel
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_dalevel), pointer, intent(in) :: input
@@ -9841,9 +9430,6 @@ subroutine c_dalevel_to_json (input, json_root, depth)
 end subroutine c_dalevel_to_json
 subroutine c_spinmatrix_to_json (input, json_root, depth)
   use definition, only: c_spinmatrix
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_spinmatrix), pointer, intent(in) :: input
@@ -9878,9 +9464,6 @@ subroutine c_spinmatrix_to_json (input, json_root, depth)
 end subroutine c_spinmatrix_to_json
 subroutine c_spinor_to_json (input, json_root, depth)
   use definition, only: c_spinor
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_spinor), pointer, intent(in) :: input
@@ -9910,9 +9493,6 @@ subroutine c_spinor_to_json (input, json_root, depth)
 end subroutine c_spinor_to_json
 subroutine c_yu_w_to_json (input, json_root, depth)
   use definition, only: c_yu_w
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_yu_w), pointer, intent(in) :: input
@@ -9950,9 +9530,6 @@ subroutine c_yu_w_to_json (input, json_root, depth)
 end subroutine c_yu_w_to_json
 subroutine c_quaternion_to_json (input, json_root, depth)
   use definition, only: c_quaternion
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_quaternion), pointer, intent(in) :: input
@@ -9982,9 +9559,6 @@ subroutine c_quaternion_to_json (input, json_root, depth)
 end subroutine c_quaternion_to_json
 subroutine c_damap_to_json (input, json_root, depth)
   use definition, only: c_damap
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_damap), pointer, intent(in) :: input
@@ -10072,9 +9646,6 @@ subroutine c_damap_to_json (input, json_root, depth)
 end subroutine c_damap_to_json
 subroutine c_vector_field_to_json (input, json_root, depth)
   use definition, only: c_vector_field
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_vector_field), pointer, intent(in) :: input
@@ -10113,9 +9684,6 @@ subroutine c_vector_field_to_json (input, json_root, depth)
 end subroutine c_vector_field_to_json
 subroutine c_vector_field_fourier_to_json (input, json_root, depth)
   use definition, only: c_vector_field_fourier
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_vector_field_fourier), pointer, intent(in) :: input
@@ -10148,9 +9716,6 @@ subroutine c_vector_field_fourier_to_json (input, json_root, depth)
 end subroutine c_vector_field_fourier_to_json
 subroutine c_factored_lie_to_json (input, json_root, depth)
   use definition, only: c_factored_lie
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_factored_lie), pointer, intent(in) :: input
@@ -10184,9 +9749,6 @@ subroutine c_factored_lie_to_json (input, json_root, depth)
 end subroutine c_factored_lie_to_json
 subroutine c_normal_form_to_json (input, json_root, depth)
   use definition, only: c_normal_form
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_normal_form), pointer, intent(in) :: input
@@ -10327,9 +9889,6 @@ subroutine c_normal_form_to_json (input, json_root, depth)
 end subroutine c_normal_form_to_json
 subroutine c_ray_to_json (input, json_root, depth)
   use definition, only: c_ray
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (c_ray), pointer, intent(in) :: input
@@ -10387,9 +9946,6 @@ subroutine c_ray_to_json (input, json_root, depth)
 end subroutine c_ray_to_json
 subroutine fibre_array_to_json (input, json_root, depth)
   use definition, only: fibre_array
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (fibre_array), pointer, intent(in) :: input
@@ -10439,9 +9995,6 @@ subroutine fibre_array_to_json (input, json_root, depth)
 end subroutine fibre_array_to_json
 subroutine node_array_to_json (input, json_root, depth)
   use definition, only: node_array
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (node_array), pointer, intent(in) :: input
@@ -10500,9 +10053,6 @@ subroutine node_array_to_json (input, json_root, depth)
 end subroutine node_array_to_json
 subroutine keywords_to_json (input, json_root, depth)
   use madx_keywords, only: keywords
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (keywords), pointer, intent(in) :: input
@@ -10537,9 +10087,6 @@ subroutine keywords_to_json (input, json_root, depth)
 end subroutine keywords_to_json
 subroutine MADX_SURVEY_to_json (input, json_root, depth)
   use madx_keywords, only: MADX_SURVEY
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MADX_SURVEY), pointer, intent(in) :: input
@@ -10570,9 +10117,6 @@ subroutine MADX_SURVEY_to_json (input, json_root, depth)
 end subroutine MADX_SURVEY_to_json
 subroutine fibrelist_to_json (input, json_root, depth)
   use madx_keywords, only: fibrelist
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (fibrelist), pointer, intent(in) :: input
@@ -10605,9 +10149,6 @@ subroutine fibrelist_to_json (input, json_root, depth)
 end subroutine fibrelist_to_json
 subroutine patchlist_to_json (input, json_root, depth)
   use madx_keywords, only: patchlist
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (patchlist), pointer, intent(in) :: input
@@ -10673,9 +10214,6 @@ subroutine patchlist_to_json (input, json_root, depth)
 end subroutine patchlist_to_json
 subroutine CHARTlist_to_json (input, json_root, depth)
   use madx_keywords, only: CHARTlist
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (CHARTlist), pointer, intent(in) :: input
@@ -10729,9 +10267,6 @@ subroutine CHARTlist_to_json (input, json_root, depth)
 end subroutine CHARTlist_to_json
 subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
   use madx_keywords, only: MAGNET_CHARTLIST
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (MAGNET_CHARTLIST), pointer, intent(in) :: input
@@ -10793,9 +10328,6 @@ subroutine MAGNET_CHARTLIST_to_json (input, json_root, depth)
 end subroutine MAGNET_CHARTLIST_to_json
 subroutine ele_list_to_json (input, json_root, depth)
   use madx_keywords, only: ele_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ele_list), pointer, intent(in) :: input
@@ -10888,9 +10420,6 @@ subroutine ele_list_to_json (input, json_root, depth)
 end subroutine ele_list_to_json
 subroutine cav_list_to_json (input, json_root, depth)
   use madx_keywords, only: cav_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cav_list), pointer, intent(in) :: input
@@ -10937,9 +10466,6 @@ subroutine cav_list_to_json (input, json_root, depth)
 end subroutine cav_list_to_json
 subroutine hel_list_to_json (input, json_root, depth)
   use madx_keywords, only: hel_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (hel_list), pointer, intent(in) :: input
@@ -10970,9 +10496,6 @@ subroutine hel_list_to_json (input, json_root, depth)
 end subroutine hel_list_to_json
 subroutine thin3_list_to_json (input, json_root, depth)
   use madx_keywords, only: thin3_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (thin3_list), pointer, intent(in) :: input
@@ -11010,9 +10533,6 @@ subroutine thin3_list_to_json (input, json_root, depth)
 end subroutine thin3_list_to_json
 subroutine sol5_list_to_json (input, json_root, depth)
   use madx_keywords, only: sol5_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (sol5_list), pointer, intent(in) :: input
@@ -11042,9 +10562,6 @@ subroutine sol5_list_to_json (input, json_root, depth)
 end subroutine sol5_list_to_json
 subroutine tp10_list_to_json (input, json_root, depth)
   use madx_keywords, only: tp10_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tp10_list), pointer, intent(in) :: input
@@ -11083,9 +10600,6 @@ subroutine tp10_list_to_json (input, json_root, depth)
 end subroutine tp10_list_to_json
 subroutine ab_list_to_json (input, json_root, depth)
   use madx_keywords, only: ab_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ab_list), pointer, intent(in) :: input
@@ -11157,9 +10671,6 @@ subroutine ab_list_to_json (input, json_root, depth)
 end subroutine ab_list_to_json
 subroutine k16_list_to_json (input, json_root, depth)
   use madx_keywords, only: k16_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (k16_list), pointer, intent(in) :: input
@@ -11183,9 +10694,6 @@ subroutine k16_list_to_json (input, json_root, depth)
 end subroutine k16_list_to_json
 subroutine ap_list_to_json (input, json_root, depth)
   use madx_keywords, only: ap_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ap_list), pointer, intent(in) :: input
@@ -11221,9 +10729,6 @@ subroutine ap_list_to_json (input, json_root, depth)
 end subroutine ap_list_to_json
 subroutine tcav_list_to_json (input, json_root, depth)
   use madx_keywords, only: tcav_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tcav_list), pointer, intent(in) :: input
@@ -11255,9 +10760,6 @@ subroutine tcav_list_to_json (input, json_root, depth)
 end subroutine tcav_list_to_json
 subroutine siam_list_to_json (input, json_root, depth)
   use madx_keywords, only: siam_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (siam_list), pointer, intent(in) :: input
@@ -11295,9 +10797,6 @@ subroutine siam_list_to_json (input, json_root, depth)
 end subroutine siam_list_to_json
 subroutine track_list_to_json (input, json_root, depth)
   use madx_keywords, only: track_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (track_list), pointer, intent(in) :: input
@@ -11329,9 +10828,6 @@ subroutine track_list_to_json (input, json_root, depth)
 end subroutine track_list_to_json
 subroutine wig_list_to_json (input, json_root, depth)
   use madx_keywords, only: wig_list
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wig_list), pointer, intent(in) :: input
@@ -11454,9 +10950,6 @@ subroutine wig_list_to_json (input, json_root, depth)
 end subroutine wig_list_to_json
 subroutine hermite_to_json (input, json_root, depth)
   use pointer_lattice, only: hermite
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (hermite), pointer, intent(in) :: input

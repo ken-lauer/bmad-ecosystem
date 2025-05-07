@@ -1,26 +1,26 @@
 module tao_json
+use json_module
+use json_string_utilities, only: integer_to_string
+use json_kinds, only: CK
 contains
 subroutine complex_to_json (input, json_root, depth)
-    use json_module
-    use json_kinds, only: CK
-    use precision_def, only: rp
-    implicit none
-    type(json_core) :: json
-    type (complex(rp)), intent(in) :: input
-    type (json_value), pointer :: json_val
-    type (json_value), pointer, intent(inout) :: json_root
-    integer, optional, value :: depth
-    call json%create_array(json_root, '')
-    call json%create_real(json_val, real(input), '')
-    call json%add(json_root, json_val)
-    call json%create_real(json_val, aimag(input), '')
-    call json%add(json_root, json_val)
+  use json_module
+  use json_kinds, only: CK
+  use precision_def, only: dp
+  implicit none
+  type(json_core) :: json
+  type (complex(dp)), intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  call json%create_array(json_root, '')
+  call json%create_real(json_val, real(input), '')
+  call json%add(json_root, json_val)
+  call json%create_real(json_val, aimag(input), '')
+  call json%add(json_root, json_val)
 end subroutine complex_to_json
 subroutine tao_cmd_history_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_cmd_history_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_cmd_history_struct), pointer, intent(in) :: input
@@ -46,9 +46,6 @@ subroutine tao_cmd_history_struct_to_json (input, json_root, depth)
 end subroutine tao_cmd_history_struct_to_json
 subroutine tao_real_pointer_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_real_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_real_pointer_struct), pointer, intent(in) :: input
@@ -79,9 +76,6 @@ subroutine tao_real_pointer_struct_to_json (input, json_root, depth)
 end subroutine tao_real_pointer_struct_to_json
 subroutine tao_logical_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_logical_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_logical_array_struct), pointer, intent(in) :: input
@@ -106,9 +100,6 @@ subroutine tao_logical_array_struct_to_json (input, json_root, depth)
 end subroutine tao_logical_array_struct_to_json
 subroutine tao_integer_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_integer_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_integer_array_struct), pointer, intent(in) :: input
@@ -133,9 +124,6 @@ subroutine tao_integer_array_struct_to_json (input, json_root, depth)
 end subroutine tao_integer_array_struct_to_json
 subroutine tao_string_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_string_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_string_array_struct), pointer, intent(in) :: input
@@ -160,9 +148,6 @@ subroutine tao_string_array_struct_to_json (input, json_root, depth)
 end subroutine tao_string_array_struct_to_json
 subroutine tao_expression_info_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_expression_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: ele_struct_to_json
   implicit none
   type(json_core) :: json
@@ -192,9 +177,6 @@ subroutine tao_expression_info_struct_to_json (input, json_root, depth)
 end subroutine tao_expression_info_struct_to_json
 subroutine tao_eval_stack1_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_eval_stack1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_eval_stack1_struct), pointer, intent(in) :: input
@@ -249,9 +231,6 @@ subroutine tao_eval_stack1_struct_to_json (input, json_root, depth)
 end subroutine tao_eval_stack1_struct_to_json
 subroutine tao_ele_pointer_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_ele_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: ele_pointer_struct_to_json
   implicit none
   type(json_core) :: json
@@ -285,9 +264,6 @@ subroutine tao_ele_pointer_struct_to_json (input, json_root, depth)
 end subroutine tao_ele_pointer_struct_to_json
 subroutine tao_ele_shape_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_ele_shape_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_ele_shape_struct), pointer, intent(in) :: input
@@ -330,9 +306,6 @@ subroutine tao_ele_shape_struct_to_json (input, json_root, depth)
 end subroutine tao_ele_shape_struct_to_json
 subroutine tao_drawing_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_drawing_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_drawing_struct), pointer, intent(in) :: input
@@ -364,9 +337,6 @@ subroutine tao_drawing_struct_to_json (input, json_root, depth)
 end subroutine tao_drawing_struct_to_json
 subroutine tao_shape_pattern_point_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_shape_pattern_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_shape_pattern_point_struct), pointer, intent(in) :: input
@@ -391,9 +361,6 @@ subroutine tao_shape_pattern_point_struct_to_json (input, json_root, depth)
 end subroutine tao_shape_pattern_point_struct_to_json
 subroutine tao_shape_pattern_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_shape_pattern_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_line_struct_to_json
   implicit none
   type(json_core) :: json
@@ -430,9 +397,6 @@ subroutine tao_shape_pattern_struct_to_json (input, json_root, depth)
 end subroutine tao_shape_pattern_struct_to_json
 subroutine tao_title_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_title_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_title_struct), pointer, intent(in) :: input
@@ -460,9 +424,6 @@ subroutine tao_title_struct_to_json (input, json_root, depth)
 end subroutine tao_title_struct_to_json
 subroutine tao_data_var_component_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_data_var_component_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_data_var_component_struct), pointer, intent(in) :: input
@@ -486,9 +447,6 @@ subroutine tao_data_var_component_struct_to_json (input, json_root, depth)
 end subroutine tao_data_var_component_struct_to_json
 subroutine tao_histogram_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_histogram_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_histogram_struct), pointer, intent(in) :: input
@@ -517,9 +475,6 @@ subroutine tao_histogram_struct_to_json (input, json_root, depth)
 end subroutine tao_histogram_struct_to_json
 subroutine tao_curve_orbit_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_curve_orbit_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_curve_orbit_struct), pointer, intent(in) :: input
@@ -544,9 +499,6 @@ subroutine tao_curve_orbit_struct_to_json (input, json_root, depth)
 end subroutine tao_curve_orbit_struct_to_json
 subroutine tao_curve_color_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_curve_color_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_curve_color_struct), pointer, intent(in) :: input
@@ -573,9 +525,6 @@ subroutine tao_curve_color_struct_to_json (input, json_root, depth)
 end subroutine tao_curve_color_struct_to_json
 subroutine tao_curve_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_curve_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_line_struct_to_json, qp_symbol_struct_to_json
   implicit none
   type(json_core) :: json
@@ -739,9 +688,6 @@ subroutine tao_curve_struct_to_json (input, json_root, depth)
 end subroutine tao_curve_struct_to_json
 subroutine tao_floor_plan_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_floor_plan_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_floor_plan_struct), pointer, intent(in) :: input
@@ -775,9 +721,6 @@ subroutine tao_floor_plan_struct_to_json (input, json_root, depth)
 end subroutine tao_floor_plan_struct_to_json
 subroutine tao_graph_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_graph_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_axis_struct_to_json, qp_legend_struct_to_json, qp_point_struct_to_json, qp_rect_struct_to_json
   implicit none
   type(json_core) :: json
@@ -884,9 +827,6 @@ subroutine tao_graph_struct_to_json (input, json_root, depth)
 end subroutine tao_graph_struct_to_json
 subroutine tao_plot_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_plot_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_plot_struct), pointer, intent(in) :: input
@@ -932,9 +872,6 @@ subroutine tao_plot_struct_to_json (input, json_root, depth)
 end subroutine tao_plot_struct_to_json
 subroutine tao_plot_region_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_plot_region_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_plot_region_struct), pointer, intent(in) :: input
@@ -971,9 +908,6 @@ subroutine tao_plot_region_struct_to_json (input, json_root, depth)
 end subroutine tao_plot_region_struct_to_json
 subroutine tao_plot_page_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_plot_page_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_rect_struct_to_json
   implicit none
   type(json_core) :: json
@@ -1065,9 +999,6 @@ subroutine tao_plot_page_struct_to_json (input, json_root, depth)
 end subroutine tao_plot_page_struct_to_json
 subroutine tao_region_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_region_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_region_array_struct), pointer, intent(in) :: input
@@ -1094,9 +1025,6 @@ subroutine tao_region_array_struct_to_json (input, json_root, depth)
 end subroutine tao_region_array_struct_to_json
 subroutine tao_plot_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_plot_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_plot_array_struct), pointer, intent(in) :: input
@@ -1119,9 +1047,6 @@ subroutine tao_plot_array_struct_to_json (input, json_root, depth)
 end subroutine tao_plot_array_struct_to_json
 subroutine tao_graph_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_graph_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_graph_array_struct), pointer, intent(in) :: input
@@ -1144,9 +1069,6 @@ subroutine tao_graph_array_struct_to_json (input, json_root, depth)
 end subroutine tao_graph_array_struct_to_json
 subroutine tao_curve_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_curve_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_curve_array_struct), pointer, intent(in) :: input
@@ -1173,9 +1095,6 @@ subroutine tao_curve_array_struct_to_json (input, json_root, depth)
 end subroutine tao_curve_array_struct_to_json
 subroutine tao_spin_map_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_spin_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: spin_axis_struct_to_json, spin_orbit_map1_struct_to_json
   implicit none
   type(json_core) :: json
@@ -1228,9 +1147,6 @@ subroutine tao_spin_map_struct_to_json (input, json_root, depth)
 end subroutine tao_spin_map_struct_to_json
 subroutine tao_data_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_data_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_data_struct), pointer, intent(in) :: input
@@ -1312,9 +1228,6 @@ subroutine tao_data_struct_to_json (input, json_root, depth)
 end subroutine tao_data_struct_to_json
 subroutine tao_d1_data_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_d1_data_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_d1_data_struct), pointer, intent(in) :: input
@@ -1348,9 +1261,6 @@ subroutine tao_d1_data_struct_to_json (input, json_root, depth)
 end subroutine tao_d1_data_struct_to_json
 subroutine tao_d2_data_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_d2_data_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_d2_data_struct), pointer, intent(in) :: input
@@ -1400,9 +1310,6 @@ subroutine tao_d2_data_struct_to_json (input, json_root, depth)
 end subroutine tao_d2_data_struct_to_json
 subroutine tao_data_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_data_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_data_array_struct), pointer, intent(in) :: input
@@ -1429,9 +1336,6 @@ subroutine tao_data_array_struct_to_json (input, json_root, depth)
 end subroutine tao_data_array_struct_to_json
 subroutine tao_d1_data_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_d1_data_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_d1_data_array_struct), pointer, intent(in) :: input
@@ -1458,9 +1362,6 @@ subroutine tao_d1_data_array_struct_to_json (input, json_root, depth)
 end subroutine tao_d1_data_array_struct_to_json
 subroutine tao_d2_data_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_d2_data_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_d2_data_array_struct), pointer, intent(in) :: input
@@ -1487,9 +1388,6 @@ subroutine tao_d2_data_array_struct_to_json (input, json_root, depth)
 end subroutine tao_d2_data_array_struct_to_json
 subroutine tao_var_slave_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_var_slave_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_var_slave_struct), pointer, intent(in) :: input
@@ -1520,9 +1418,6 @@ subroutine tao_var_slave_struct_to_json (input, json_root, depth)
 end subroutine tao_var_slave_struct_to_json
 subroutine tao_var_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_var_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_var_struct), pointer, intent(in) :: input
@@ -1595,9 +1490,6 @@ subroutine tao_var_struct_to_json (input, json_root, depth)
 end subroutine tao_var_struct_to_json
 subroutine tao_v1_var_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_v1_var_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_v1_var_struct), pointer, intent(in) :: input
@@ -1631,9 +1523,6 @@ subroutine tao_v1_var_struct_to_json (input, json_root, depth)
 end subroutine tao_v1_var_struct_to_json
 subroutine tao_var_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_var_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_var_array_struct), pointer, intent(in) :: input
@@ -1660,9 +1549,6 @@ subroutine tao_var_array_struct_to_json (input, json_root, depth)
 end subroutine tao_var_array_struct_to_json
 subroutine tao_v1_var_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_v1_var_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_v1_var_array_struct), pointer, intent(in) :: input
@@ -1689,9 +1575,6 @@ subroutine tao_v1_var_array_struct_to_json (input, json_root, depth)
 end subroutine tao_v1_var_array_struct_to_json
 subroutine tao_building_wall_orientation_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_building_wall_orientation_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_building_wall_orientation_struct), pointer, intent(in) :: input
@@ -1716,9 +1599,6 @@ subroutine tao_building_wall_orientation_struct_to_json (input, json_root, depth
 end subroutine tao_building_wall_orientation_struct_to_json
 subroutine tao_building_wall_point_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_building_wall_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_building_wall_point_struct), pointer, intent(in) :: input
@@ -1745,9 +1625,6 @@ subroutine tao_building_wall_point_struct_to_json (input, json_root, depth)
 end subroutine tao_building_wall_point_struct_to_json
 subroutine tao_building_wall_section_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_building_wall_section_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_building_wall_section_struct), pointer, intent(in) :: input
@@ -1781,9 +1658,6 @@ subroutine tao_building_wall_section_struct_to_json (input, json_root, depth)
 end subroutine tao_building_wall_section_struct_to_json
 subroutine tao_building_wall_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_building_wall_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_building_wall_struct), pointer, intent(in) :: input
@@ -1818,9 +1692,6 @@ subroutine tao_building_wall_struct_to_json (input, json_root, depth)
 end subroutine tao_building_wall_struct_to_json
 subroutine tao_global_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_global_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_global_struct), pointer, intent(in) :: input
@@ -1909,9 +1780,6 @@ subroutine tao_global_struct_to_json (input, json_root, depth)
 end subroutine tao_global_struct_to_json
 subroutine tao_alias_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_alias_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_alias_struct), pointer, intent(in) :: input
@@ -1935,9 +1803,6 @@ subroutine tao_alias_struct_to_json (input, json_root, depth)
 end subroutine tao_alias_struct_to_json
 subroutine tao_command_file_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_command_file_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_command_file_struct), pointer, intent(in) :: input
@@ -1976,9 +1841,6 @@ subroutine tao_command_file_struct_to_json (input, json_root, depth)
 end subroutine tao_command_file_struct_to_json
 subroutine do_loop_struct_to_json (input, json_root, depth)
   use tao_struct, only: do_loop_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (do_loop_struct), pointer, intent(in) :: input
@@ -2008,9 +1870,6 @@ subroutine do_loop_struct_to_json (input, json_root, depth)
 end subroutine do_loop_struct_to_json
 subroutine tao_common_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: named_number_struct_to_json
   implicit none
   type(json_core) :: json
@@ -2173,9 +2032,6 @@ subroutine tao_common_struct_to_json (input, json_root, depth)
 end subroutine tao_common_struct_to_json
 subroutine tao_init_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_init_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_init_struct), pointer, intent(in) :: input
@@ -2238,9 +2094,6 @@ subroutine tao_init_struct_to_json (input, json_root, depth)
 end subroutine tao_init_struct_to_json
 subroutine tao_beam_shake_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_beam_shake_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_beam_shake_struct), pointer, intent(in) :: input
@@ -2286,9 +2139,6 @@ subroutine tao_beam_shake_struct_to_json (input, json_root, depth)
 end subroutine tao_beam_shake_struct_to_json
 subroutine tao_scratch_space_struct_to_json (input, json_root, depth)
               use tao_struct, only: tao_scratch_space_struct
-              use json_module
-              use json_string_utilities, only: integer_to_string
-              use json_kinds, only: CK
               use bmad_json, only: ele_pointer_struct_to_json
   use sim_utils_json, only: all_pointer_struct_to_json
               implicit none
@@ -2532,9 +2382,6 @@ subroutine tao_scratch_space_struct_to_json (input, json_root, depth)
 end subroutine tao_scratch_space_struct_to_json
 subroutine tao_lat_mode_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_lat_mode_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_lat_mode_struct), pointer, intent(in) :: input
@@ -2558,9 +2405,6 @@ subroutine tao_lat_mode_struct_to_json (input, json_root, depth)
 end subroutine tao_lat_mode_struct_to_json
 subroutine tao_lat_sigma_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_lat_sigma_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_lat_sigma_struct), pointer, intent(in) :: input
@@ -2595,9 +2439,6 @@ subroutine tao_lat_sigma_struct_to_json (input, json_root, depth)
 end subroutine tao_lat_sigma_struct_to_json
 subroutine tao_spin_dn_dpz_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_spin_dn_dpz_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_spin_dn_dpz_struct), pointer, intent(in) :: input
@@ -2653,9 +2494,6 @@ subroutine tao_spin_dn_dpz_struct_to_json (input, json_root, depth)
 end subroutine tao_spin_dn_dpz_struct_to_json
 subroutine tao_spin_ele_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_spin_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_spin_ele_struct), pointer, intent(in) :: input
@@ -2715,9 +2553,6 @@ subroutine tao_spin_ele_struct_to_json (input, json_root, depth)
 end subroutine tao_spin_ele_struct_to_json
 subroutine tao_spin_polarization_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_spin_polarization_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: spin_orbit_map1_struct_to_json
   implicit none
   type(json_core) :: json
@@ -2795,9 +2630,6 @@ subroutine tao_spin_polarization_struct_to_json (input, json_root, depth)
 end subroutine tao_spin_polarization_struct_to_json
 subroutine tao_plot_cache_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_plot_cache_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: coord_struct_to_json, ele_struct_to_json
   implicit none
   type(json_core) :: json
@@ -2827,9 +2659,6 @@ subroutine tao_plot_cache_struct_to_json (input, json_root, depth)
 end subroutine tao_plot_cache_struct_to_json
 subroutine tao_lattice_branch_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_lattice_branch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: bmad_normal_form_struct_to_json, bunch_params_struct_to_json, bunch_track_struct_to_json, coord_struct_to_json, normal_modes_struct_to_json, ptc_normal_form_struct_to_json, summation_rdt_struct_to_json
   implicit none
   type(json_core) :: json
@@ -2972,9 +2801,6 @@ subroutine tao_lattice_branch_struct_to_json (input, json_root, depth)
 end subroutine tao_lattice_branch_struct_to_json
 subroutine tao_lattice_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_lattice_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: lat_struct_to_json, rad_int_all_ele_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3025,9 +2851,6 @@ subroutine tao_lattice_struct_to_json (input, json_root, depth)
 end subroutine tao_lattice_struct_to_json
 subroutine tao_model_element_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_model_element_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: beam_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3055,9 +2878,6 @@ subroutine tao_model_element_struct_to_json (input, json_root, depth)
 end subroutine tao_model_element_struct_to_json
 subroutine tao_beam_branch_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_beam_branch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: beam_init_struct_to_json, beam_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3095,9 +2915,6 @@ subroutine tao_beam_branch_struct_to_json (input, json_root, depth)
 end subroutine tao_beam_branch_struct_to_json
 subroutine tao_model_branch_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_model_branch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_model_branch_struct), pointer, intent(in) :: input
@@ -3132,9 +2949,6 @@ subroutine tao_model_branch_struct_to_json (input, json_root, depth)
 end subroutine tao_model_branch_struct_to_json
 subroutine tao_beam_uni_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_beam_uni_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_beam_uni_struct), pointer, intent(in) :: input
@@ -3161,9 +2975,6 @@ subroutine tao_beam_uni_struct_to_json (input, json_root, depth)
 end subroutine tao_beam_uni_struct_to_json
 subroutine tao_universe_calc_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_universe_calc_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_universe_calc_struct), pointer, intent(in) :: input
@@ -3198,9 +3009,6 @@ subroutine tao_universe_calc_struct_to_json (input, json_root, depth)
 end subroutine tao_universe_calc_struct_to_json
 subroutine tao_mpi_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_mpi_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_mpi_struct), pointer, intent(in) :: input
@@ -3227,9 +3035,6 @@ subroutine tao_mpi_struct_to_json (input, json_root, depth)
 end subroutine tao_mpi_struct_to_json
 subroutine tao_dynamic_aperture_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_dynamic_aperture_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: aperture_param_struct_to_json, aperture_scan_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3278,9 +3083,6 @@ subroutine tao_dynamic_aperture_struct_to_json (input, json_root, depth)
 end subroutine tao_dynamic_aperture_struct_to_json
 subroutine tao_wave_kick_pt_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_wave_kick_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: ele_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3314,9 +3116,6 @@ subroutine tao_wave_kick_pt_struct_to_json (input, json_root, depth)
 end subroutine tao_wave_kick_pt_struct_to_json
 subroutine tao_wave_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_wave_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_wave_struct), pointer, intent(in) :: input
@@ -3450,9 +3249,6 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
 end subroutine tao_wave_struct_to_json
 subroutine tao_ping_scale_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_ping_scale_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_ping_scale_struct), pointer, intent(in) :: input
@@ -3478,9 +3274,6 @@ subroutine tao_ping_scale_struct_to_json (input, json_root, depth)
 end subroutine tao_ping_scale_struct_to_json
 subroutine tao_universe_pointer_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_universe_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_universe_pointer_struct), pointer, intent(in) :: input
@@ -3503,9 +3296,6 @@ subroutine tao_universe_pointer_struct_to_json (input, json_root, depth)
 end subroutine tao_universe_pointer_struct_to_json
 subroutine tao_universe_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_universe_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: lat_ele_order_struct_to_json, lat_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3615,9 +3405,6 @@ subroutine tao_universe_struct_to_json (input, json_root, depth)
 end subroutine tao_universe_struct_to_json
 subroutine tao_super_universe_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_super_universe_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_super_universe_struct), pointer, intent(in) :: input
@@ -3711,9 +3498,6 @@ subroutine tao_super_universe_struct_to_json (input, json_root, depth)
 end subroutine tao_super_universe_struct_to_json
 subroutine tao_c_interface_common_struct_to_json (input, json_root, depth)
   use tao_c_interface_mod, only: tao_c_interface_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_c_interface_common_struct), pointer, intent(in) :: input
@@ -3765,9 +3549,6 @@ subroutine tao_c_interface_common_struct_to_json (input, json_root, depth)
 end subroutine tao_c_interface_common_struct_to_json
 subroutine tao_top10_struct_to_json (input, json_root, depth)
   use tao_top10_mod, only: tao_top10_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_top10_struct), pointer, intent(in) :: input
@@ -3793,9 +3574,6 @@ subroutine tao_top10_struct_to_json (input, json_root, depth)
 end subroutine tao_top10_struct_to_json
 subroutine tao_d2_data_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_d2_data_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_d2_data_input), pointer, intent(in) :: input
@@ -3818,9 +3596,6 @@ subroutine tao_d2_data_input_to_json (input, json_root, depth)
 end subroutine tao_d2_data_input_to_json
 subroutine tao_d1_data_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_d1_data_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_d1_data_input), pointer, intent(in) :: input
@@ -3843,9 +3618,6 @@ subroutine tao_d1_data_input_to_json (input, json_root, depth)
 end subroutine tao_d1_data_input_to_json
 subroutine tao_datum_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_datum_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use bmad_json, only: spin_axis_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3886,9 +3658,6 @@ subroutine tao_datum_input_to_json (input, json_root, depth)
 end subroutine tao_datum_input_to_json
 subroutine tao_v1_var_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_v1_var_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_v1_var_input), pointer, intent(in) :: input
@@ -3911,9 +3680,6 @@ subroutine tao_v1_var_input_to_json (input, json_root, depth)
 end subroutine tao_v1_var_input_to_json
 subroutine tao_var_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_var_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_var_input), pointer, intent(in) :: input
@@ -3947,9 +3713,6 @@ subroutine tao_var_input_to_json (input, json_root, depth)
 end subroutine tao_var_input_to_json
 subroutine tao_region_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_region_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_region_input), pointer, intent(in) :: input
@@ -3980,9 +3743,6 @@ subroutine tao_region_input_to_json (input, json_root, depth)
 end subroutine tao_region_input_to_json
 subroutine tao_place_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_place_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_place_input), pointer, intent(in) :: input
@@ -4006,9 +3766,6 @@ subroutine tao_place_input_to_json (input, json_root, depth)
 end subroutine tao_place_input_to_json
 subroutine tao_curve_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_curve_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_line_struct_to_json, qp_symbol_struct_to_json
   implicit none
   type(json_core) :: json
@@ -4072,9 +3829,6 @@ subroutine tao_curve_input_to_json (input, json_root, depth)
 end subroutine tao_curve_input_to_json
 subroutine tao_graph_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_graph_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_axis_struct_to_json, qp_legend_struct_to_json, qp_point_struct_to_json, qp_rect_struct_to_json
   implicit none
   type(json_core) :: json
@@ -4167,9 +3921,6 @@ subroutine tao_graph_input_to_json (input, json_root, depth)
 end subroutine tao_graph_input_to_json
 subroutine tao_plot_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_plot_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_axis_struct_to_json
   implicit none
   type(json_core) :: json
@@ -4204,9 +3955,6 @@ subroutine tao_plot_input_to_json (input, json_root, depth)
 end subroutine tao_plot_input_to_json
 subroutine tao_design_lat_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_design_lat_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_design_lat_input), pointer, intent(in) :: input
@@ -4245,9 +3993,6 @@ subroutine tao_design_lat_input_to_json (input, json_root, depth)
 end subroutine tao_design_lat_input_to_json
 subroutine tao_key_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_key_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_key_input), pointer, intent(in) :: input
@@ -4279,9 +4024,6 @@ subroutine tao_key_input_to_json (input, json_root, depth)
 end subroutine tao_key_input_to_json
 subroutine tao_plot_page_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_plot_page_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: qp_rect_struct_to_json
   implicit none
   type(json_core) :: json
@@ -4338,9 +4080,6 @@ subroutine tao_plot_page_input_to_json (input, json_root, depth)
 end subroutine tao_plot_page_input_to_json
 subroutine tao_ele_shape_input_to_json (input, json_root, depth)
   use tao_input_struct, only: tao_ele_shape_input
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (tao_ele_shape_input), pointer, intent(in) :: input

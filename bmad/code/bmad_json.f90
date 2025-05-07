@@ -1,26 +1,26 @@
 module bmad_json
+use json_module
+use json_string_utilities, only: integer_to_string
+use json_kinds, only: CK
 contains
 subroutine complex_to_json (input, json_root, depth)
-    use json_module
-    use json_kinds, only: CK
-    use precision_def, only: rp
-    implicit none
-    type(json_core) :: json
-    type (complex(rp)), intent(in) :: input
-    type (json_value), pointer :: json_val
-    type (json_value), pointer, intent(inout) :: json_root
-    integer, optional, value :: depth
-    call json%create_array(json_root, '')
-    call json%create_real(json_val, real(input), '')
-    call json%add(json_root, json_val)
-    call json%create_real(json_val, aimag(input), '')
-    call json%add(json_root, json_val)
+  use json_module
+  use json_kinds, only: CK
+  use precision_def, only: dp
+  implicit none
+  type(json_core) :: json
+  type (complex(dp)), intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  call json%create_array(json_root, '')
+  call json%create_real(json_val, real(input), '')
+  call json%add(json_root, json_val)
+  call json%create_real(json_val, aimag(input), '')
+  call json%add(json_root, json_val)
 end subroutine complex_to_json
 subroutine ibs_struct_to_json (input, json_root, depth)
   use ibs_rates_mod, only: ibs_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ibs_struct), pointer, intent(in) :: input
@@ -45,9 +45,6 @@ subroutine ibs_struct_to_json (input, json_root, depth)
 end subroutine ibs_struct_to_json
 subroutine momentum_aperture_struct_to_json (input, json_root, depth)
   use touschek_mod, only: momentum_aperture_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (momentum_aperture_struct), pointer, intent(in) :: input
@@ -72,9 +69,6 @@ subroutine momentum_aperture_struct_to_json (input, json_root, depth)
 end subroutine momentum_aperture_struct_to_json
 subroutine ibs_sim_param_struct_to_json (input, json_root, depth)
   use ibs_mod, only: ibs_sim_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ibs_sim_param_struct), pointer, intent(in) :: input
@@ -104,9 +98,6 @@ subroutine ibs_sim_param_struct_to_json (input, json_root, depth)
 end subroutine ibs_sim_param_struct_to_json
 subroutine ibs_lifetime_struct_to_json (input, json_root, depth)
   use ibs_mod, only: ibs_lifetime_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ibs_lifetime_struct), pointer, intent(in) :: input
@@ -131,9 +122,6 @@ subroutine ibs_lifetime_struct_to_json (input, json_root, depth)
 end subroutine ibs_lifetime_struct_to_json
 subroutine ibs_maxratio_struct_to_json (input, json_root, depth)
   use ibs_mod, only: ibs_maxratio_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ibs_maxratio_struct), pointer, intent(in) :: input
@@ -158,9 +146,6 @@ subroutine ibs_maxratio_struct_to_json (input, json_root, depth)
 end subroutine ibs_maxratio_struct_to_json
 subroutine astra_lattice_param_struct_to_json (input, json_root, depth)
   use astra_interface_mod, only: astra_lattice_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (astra_lattice_param_struct), pointer, intent(in) :: input
@@ -183,9 +168,6 @@ subroutine astra_lattice_param_struct_to_json (input, json_root, depth)
 end subroutine astra_lattice_param_struct_to_json
 subroutine gpt_lat_param_struct_to_json (input, json_root, depth)
   use gpt_interface_mod, only: gpt_lat_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (gpt_lat_param_struct), pointer, intent(in) :: input
@@ -212,9 +194,6 @@ subroutine gpt_lat_param_struct_to_json (input, json_root, depth)
 end subroutine gpt_lat_param_struct_to_json
 subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
   use ptc_map_with_radiation_mod, only: ptc_rad_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ptc_rad_map_struct), pointer, intent(in) :: input
@@ -302,9 +281,6 @@ subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
 end subroutine ptc_rad_map_struct_to_json
 subroutine pmd_unit_struct_to_json (input, json_root, depth)
   use hdf5_openpmd_mod, only: pmd_unit_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pmd_unit_struct), pointer, intent(in) :: input
@@ -336,9 +312,6 @@ subroutine pmd_unit_struct_to_json (input, json_root, depth)
 end subroutine pmd_unit_struct_to_json
 subroutine hdf5_info_struct_to_json (input, json_root, depth)
   use hdf5_interface, only: hdf5_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (hdf5_info_struct), pointer, intent(in) :: input
@@ -365,9 +338,6 @@ subroutine hdf5_info_struct_to_json (input, json_root, depth)
 end subroutine hdf5_info_struct_to_json
 subroutine multipass_region_ele_struct_to_json (input, json_root, depth)
   use write_lattice_file_mod, only: multipass_region_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_region_ele_struct), pointer, intent(in) :: input
@@ -392,9 +362,6 @@ subroutine multipass_region_ele_struct_to_json (input, json_root, depth)
 end subroutine multipass_region_ele_struct_to_json
 subroutine multipass_region_branch_struct_to_json (input, json_root, depth)
   use write_lattice_file_mod, only: multipass_region_branch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_region_branch_struct), pointer, intent(in) :: input
@@ -426,9 +393,6 @@ subroutine multipass_region_branch_struct_to_json (input, json_root, depth)
 end subroutine multipass_region_branch_struct_to_json
 subroutine multipass_region_lat_struct_to_json (input, json_root, depth)
   use write_lattice_file_mod, only: multipass_region_lat_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_region_lat_struct), pointer, intent(in) :: input
@@ -460,9 +424,6 @@ subroutine multipass_region_lat_struct_to_json (input, json_root, depth)
 end subroutine multipass_region_lat_struct_to_json
 subroutine diffuse_param_struct_to_json (input, json_root, depth)
   use photon_reflection_mod, only: diffuse_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -499,9 +460,6 @@ subroutine diffuse_param_struct_to_json (input, json_root, depth)
 end subroutine diffuse_param_struct_to_json
 subroutine cheb_diffuse_struct_to_json (input, json_root, depth)
   use photon_reflection_mod, only: cheb_diffuse_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cheb_diffuse_struct), pointer, intent(in) :: input
@@ -539,9 +497,6 @@ subroutine cheb_diffuse_struct_to_json (input, json_root, depth)
 end subroutine cheb_diffuse_struct_to_json
 subroutine diffuse_common_struct_to_json (input, json_root, depth)
   use photon_reflection_mod, only: diffuse_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (diffuse_common_struct), pointer, intent(in) :: input
@@ -565,9 +520,6 @@ subroutine diffuse_common_struct_to_json (input, json_root, depth)
 end subroutine diffuse_common_struct_to_json
 subroutine photon_init_x_angle_spline_struct_to_json (input, json_root, depth)
   use photon_init_spline_mod, only: photon_init_x_angle_spline_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -630,9 +582,6 @@ subroutine photon_init_x_angle_spline_struct_to_json (input, json_root, depth)
 end subroutine photon_init_x_angle_spline_struct_to_json
 subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
   use photon_init_spline_mod, only: photon_init_y_angle_spline_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -705,9 +654,6 @@ subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
 end subroutine photon_init_y_angle_spline_struct_to_json
 subroutine photon_init_splines_struct_to_json (input, json_root, depth)
   use photon_init_spline_mod, only: photon_init_splines_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -752,9 +698,6 @@ subroutine photon_init_splines_struct_to_json (input, json_root, depth)
 end subroutine photon_init_splines_struct_to_json
 subroutine crystal_param_struct_to_json (input, json_root, depth)
   use photon_utils_mod, only: crystal_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (crystal_param_struct), pointer, intent(in) :: input
@@ -796,9 +739,6 @@ subroutine crystal_param_struct_to_json (input, json_root, depth)
 end subroutine crystal_param_struct_to_json
 subroutine photon_init_spline_pt_struct_to_json (input, json_root, depth)
   use photon_init_mod, only: photon_init_spline_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_init_spline_pt_struct), pointer, intent(in) :: input
@@ -824,9 +764,6 @@ subroutine photon_init_spline_pt_struct_to_json (input, json_root, depth)
 end subroutine photon_init_spline_pt_struct_to_json
 subroutine photon_init_spline_struct_to_json (input, json_root, depth)
   use photon_init_mod, only: photon_init_spline_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_init_spline_struct), pointer, intent(in) :: input
@@ -862,9 +799,6 @@ subroutine photon_init_spline_struct_to_json (input, json_root, depth)
 end subroutine photon_init_spline_struct_to_json
 subroutine photon_coord_struct_to_json (input, json_root, depth)
   use capillary_mod, only: photon_coord_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_coord_struct), pointer, intent(in) :: input
@@ -891,9 +825,6 @@ subroutine photon_coord_struct_to_json (input, json_root, depth)
 end subroutine photon_coord_struct_to_json
 subroutine photon_track_struct_to_json (input, json_root, depth)
   use capillary_mod, only: photon_track_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_track_struct), pointer, intent(in) :: input
@@ -921,9 +852,6 @@ subroutine photon_track_struct_to_json (input, json_root, depth)
 end subroutine photon_track_struct_to_json
 subroutine csr_ele_info_struct_to_json (input, json_root, depth)
   use csr_and_space_charge_mod, only: csr_ele_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -975,9 +903,6 @@ subroutine csr_ele_info_struct_to_json (input, json_root, depth)
 end subroutine csr_ele_info_struct_to_json
 subroutine csr_bunch_slice_struct_to_json (input, json_root, depth)
   use csr_and_space_charge_mod, only: csr_bunch_slice_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (csr_bunch_slice_struct), pointer, intent(in) :: input
@@ -1038,9 +963,6 @@ subroutine csr_bunch_slice_struct_to_json (input, json_root, depth)
 end subroutine csr_bunch_slice_struct_to_json
 subroutine csr_kick1_struct_to_json (input, json_root, depth)
   use csr_and_space_charge_mod, only: csr_kick1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (csr_kick1_struct), pointer, intent(in) :: input
@@ -1084,9 +1006,6 @@ subroutine csr_kick1_struct_to_json (input, json_root, depth)
 end subroutine csr_kick1_struct_to_json
 subroutine csr_particle_position_struct_to_json (input, json_root, depth)
   use csr_and_space_charge_mod, only: csr_particle_position_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (csr_particle_position_struct), pointer, intent(in) :: input
@@ -1117,9 +1036,6 @@ subroutine csr_particle_position_struct_to_json (input, json_root, depth)
 end subroutine csr_particle_position_struct_to_json
 subroutine csr_struct_to_json (input, json_root, depth)
   use csr_and_space_charge_mod, only: csr_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (csr_struct), pointer, intent(in) :: input
@@ -1207,9 +1123,6 @@ subroutine csr_struct_to_json (input, json_root, depth)
 end subroutine csr_struct_to_json
 subroutine mesh3d_struct_to_json (input, json_root, depth)
   use open_spacecharge_mod, only: mesh3d_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (mesh3d_struct), pointer, intent(in) :: input
@@ -1371,9 +1284,6 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
 end subroutine mesh3d_struct_to_json
 subroutine seq_ele_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: seq_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (seq_ele_struct), pointer, intent(in) :: input
@@ -1415,9 +1325,6 @@ subroutine seq_ele_struct_to_json (input, json_root, depth)
 end subroutine seq_ele_struct_to_json
 subroutine base_line_ele_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: base_line_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (base_line_ele_struct), pointer, intent(in) :: input
@@ -1445,9 +1352,6 @@ subroutine base_line_ele_struct_to_json (input, json_root, depth)
 end subroutine base_line_ele_struct_to_json
 subroutine seq_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: seq_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (seq_struct), pointer, intent(in) :: input
@@ -1509,9 +1413,6 @@ subroutine seq_struct_to_json (input, json_root, depth)
 end subroutine seq_struct_to_json
 subroutine stack_file_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: stack_file_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (stack_file_struct), pointer, intent(in) :: input
@@ -1546,9 +1447,6 @@ subroutine stack_file_struct_to_json (input, json_root, depth)
 end subroutine stack_file_struct_to_json
 subroutine parser_controller_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: parser_controller_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (parser_controller_struct), pointer, intent(in) :: input
@@ -1593,9 +1491,6 @@ subroutine parser_controller_struct_to_json (input, json_root, depth)
 end subroutine parser_controller_struct_to_json
 subroutine parser_ele_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: parser_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (parser_ele_struct), pointer, intent(in) :: input
@@ -1673,9 +1568,6 @@ subroutine parser_ele_struct_to_json (input, json_root, depth)
 end subroutine parser_ele_struct_to_json
 subroutine parser_lat_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: parser_lat_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (parser_lat_struct), pointer, intent(in) :: input
@@ -1707,9 +1599,6 @@ subroutine parser_lat_struct_to_json (input, json_root, depth)
 end subroutine parser_lat_struct_to_json
 subroutine bp_const_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: bp_const_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bp_const_struct), pointer, intent(in) :: input
@@ -1734,9 +1623,6 @@ subroutine bp_const_struct_to_json (input, json_root, depth)
 end subroutine bp_const_struct_to_json
 subroutine bp_common_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: bp_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bp_common_struct), pointer, intent(in) :: input
@@ -1825,9 +1711,6 @@ subroutine bp_common_struct_to_json (input, json_root, depth)
 end subroutine bp_common_struct_to_json
 subroutine bp_common2_struct_to_json (input, json_root, depth)
   use bmad_parser_struct, only: bp_common2_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bp_common2_struct), pointer, intent(in) :: input
@@ -1859,9 +1742,6 @@ subroutine bp_common2_struct_to_json (input, json_root, depth)
 end subroutine bp_common2_struct_to_json
 subroutine summation_rdt_struct_to_json (input, json_root, depth)
   use srdt_mod, only: summation_rdt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (summation_rdt_struct), pointer, intent(in) :: input
@@ -1946,9 +1826,6 @@ subroutine summation_rdt_struct_to_json (input, json_root, depth)
 end subroutine summation_rdt_struct_to_json
 subroutine sliced_eles_struct_to_json (input, json_root, depth)
   use srdt_mod, only: sliced_eles_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (sliced_eles_struct), pointer, intent(in) :: input
@@ -1999,9 +1876,6 @@ subroutine sliced_eles_struct_to_json (input, json_root, depth)
 end subroutine sliced_eles_struct_to_json
 subroutine fringe_field_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: fringe_field_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (fringe_field_info_struct), pointer, intent(in) :: input
@@ -2045,9 +1919,6 @@ subroutine fringe_field_info_struct_to_json (input, json_root, depth)
 end subroutine fringe_field_info_struct_to_json
 subroutine expression_atom_struct_to_json (input, json_root, depth)
   use bmad_struct, only: expression_atom_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (expression_atom_struct), pointer, intent(in) :: input
@@ -2072,9 +1943,6 @@ subroutine expression_atom_struct_to_json (input, json_root, depth)
 end subroutine expression_atom_struct_to_json
 subroutine twiss_struct_to_json (input, json_root, depth)
   use bmad_struct, only: twiss_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (twiss_struct), pointer, intent(in) :: input
@@ -2107,9 +1975,6 @@ subroutine twiss_struct_to_json (input, json_root, depth)
 end subroutine twiss_struct_to_json
 subroutine interval1_coef_struct_to_json (input, json_root, depth)
   use bmad_struct, only: interval1_coef_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (interval1_coef_struct), pointer, intent(in) :: input
@@ -2134,9 +1999,6 @@ subroutine interval1_coef_struct_to_json (input, json_root, depth)
 end subroutine interval1_coef_struct_to_json
 subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
   use bmad_struct, only: photon_reflect_table_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_reflect_table_struct), pointer, intent(in) :: input
@@ -2224,9 +2086,6 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
 end subroutine photon_reflect_table_struct_to_json
 subroutine photon_reflect_surface_struct_to_json (input, json_root, depth)
   use bmad_struct, only: photon_reflect_surface_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_reflect_surface_struct), pointer, intent(in) :: input
@@ -2264,9 +2123,6 @@ subroutine photon_reflect_surface_struct_to_json (input, json_root, depth)
 end subroutine photon_reflect_surface_struct_to_json
 subroutine pauli_struct_to_json (input, json_root, depth)
   use bmad_struct, only: pauli_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pauli_struct), pointer, intent(in) :: input
@@ -2301,9 +2157,6 @@ subroutine pauli_struct_to_json (input, json_root, depth)
 end subroutine pauli_struct_to_json
 subroutine spin_eigen_struct_to_json (input, json_root, depth)
   use bmad_struct, only: spin_eigen_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spin_eigen_struct), pointer, intent(in) :: input
@@ -2336,9 +2189,6 @@ subroutine spin_eigen_struct_to_json (input, json_root, depth)
 end subroutine spin_eigen_struct_to_json
 subroutine spin_axis_struct_to_json (input, json_root, depth)
   use bmad_struct, only: spin_axis_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spin_axis_struct), pointer, intent(in) :: input
@@ -2384,9 +2234,6 @@ subroutine spin_axis_struct_to_json (input, json_root, depth)
 end subroutine spin_axis_struct_to_json
 subroutine spin_matching_struct_to_json (input, json_root, depth)
   use bmad_struct, only: spin_matching_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spin_matching_struct), pointer, intent(in) :: input
@@ -2494,9 +2341,6 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
 end subroutine spin_matching_struct_to_json
 subroutine spin_polar_struct_to_json (input, json_root, depth)
   use bmad_struct, only: spin_polar_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spin_polar_struct), pointer, intent(in) :: input
@@ -2522,9 +2366,6 @@ subroutine spin_polar_struct_to_json (input, json_root, depth)
 end subroutine spin_polar_struct_to_json
 subroutine spin_orbit_map1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: spin_orbit_map1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (spin_orbit_map1_struct), pointer, intent(in) :: input
@@ -2580,9 +2421,6 @@ subroutine spin_orbit_map1_struct_to_json (input, json_root, depth)
 end subroutine spin_orbit_map1_struct_to_json
 subroutine linear_isf1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: linear_isf1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (linear_isf1_struct), pointer, intent(in) :: input
@@ -2626,9 +2464,6 @@ subroutine linear_isf1_struct_to_json (input, json_root, depth)
 end subroutine linear_isf1_struct_to_json
 subroutine linear_ele_isf_struct_to_json (input, json_root, depth)
   use bmad_struct, only: linear_ele_isf_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (linear_ele_isf_struct), pointer, intent(in) :: input
@@ -2660,9 +2495,6 @@ subroutine linear_ele_isf_struct_to_json (input, json_root, depth)
 end subroutine linear_ele_isf_struct_to_json
 subroutine wall3d_vertex_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wall3d_vertex_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wall3d_vertex_struct), pointer, intent(in) :: input
@@ -2693,9 +2525,6 @@ subroutine wall3d_vertex_struct_to_json (input, json_root, depth)
 end subroutine wall3d_vertex_struct_to_json
 subroutine wall3d_section_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wall3d_section_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wall3d_section_struct), pointer, intent(in) :: input
@@ -2785,9 +2614,6 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
 end subroutine wall3d_section_struct_to_json
 subroutine wall3d_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wall3d_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wall3d_struct), pointer, intent(in) :: input
@@ -2828,9 +2654,6 @@ subroutine wall3d_struct_to_json (input, json_root, depth)
 end subroutine wall3d_struct_to_json
 subroutine taylor_term_struct_to_json (input, json_root, depth)
   use bmad_struct, only: taylor_term_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (taylor_term_struct), pointer, intent(in) :: input
@@ -2861,9 +2684,6 @@ subroutine taylor_term_struct_to_json (input, json_root, depth)
 end subroutine taylor_term_struct_to_json
 subroutine complex_taylor_term_struct_to_json (input, json_root, depth)
   use bmad_struct, only: complex_taylor_term_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (complex_taylor_term_struct), pointer, intent(in) :: input
@@ -2896,9 +2716,6 @@ subroutine complex_taylor_term_struct_to_json (input, json_root, depth)
 end subroutine complex_taylor_term_struct_to_json
 subroutine taylor_struct_to_json (input, json_root, depth)
   use bmad_struct, only: taylor_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (taylor_struct), pointer, intent(in) :: input
@@ -2931,9 +2748,6 @@ subroutine taylor_struct_to_json (input, json_root, depth)
 end subroutine taylor_struct_to_json
 subroutine complex_taylor_struct_to_json (input, json_root, depth)
   use bmad_struct, only: complex_taylor_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (complex_taylor_struct), pointer, intent(in) :: input
@@ -2968,9 +2782,6 @@ subroutine complex_taylor_struct_to_json (input, json_root, depth)
 end subroutine complex_taylor_struct_to_json
 subroutine coord_struct_to_json (input, json_root, depth)
   use bmad_struct, only: coord_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (coord_struct), pointer, intent(in) :: input
@@ -3041,9 +2852,6 @@ subroutine coord_struct_to_json (input, json_root, depth)
 end subroutine coord_struct_to_json
 subroutine coord_array_struct_to_json (input, json_root, depth)
   use bmad_struct, only: coord_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (coord_array_struct), pointer, intent(in) :: input
@@ -3075,9 +2883,6 @@ subroutine coord_array_struct_to_json (input, json_root, depth)
 end subroutine coord_array_struct_to_json
 subroutine bpm_phase_coupling_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bpm_phase_coupling_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bpm_phase_coupling_struct), pointer, intent(in) :: input
@@ -3109,9 +2914,6 @@ subroutine bpm_phase_coupling_struct_to_json (input, json_root, depth)
 end subroutine bpm_phase_coupling_struct_to_json
 subroutine wake_sr_z_long_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_sr_z_long_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wake_sr_z_long_struct), pointer, intent(in) :: input
@@ -3178,9 +2980,6 @@ subroutine wake_sr_z_long_struct_to_json (input, json_root, depth)
 end subroutine wake_sr_z_long_struct_to_json
 subroutine wake_sr_mode_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_sr_mode_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wake_sr_mode_struct), pointer, intent(in) :: input
@@ -3212,9 +3011,6 @@ subroutine wake_sr_mode_struct_to_json (input, json_root, depth)
 end subroutine wake_sr_mode_struct_to_json
 subroutine wake_sr_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_sr_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wake_sr_struct), pointer, intent(in) :: input
@@ -3266,9 +3062,6 @@ subroutine wake_sr_struct_to_json (input, json_root, depth)
 end subroutine wake_sr_struct_to_json
 subroutine wake_lr_mode_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_lr_mode_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wake_lr_mode_struct), pointer, intent(in) :: input
@@ -3303,9 +3096,6 @@ subroutine wake_lr_mode_struct_to_json (input, json_root, depth)
 end subroutine wake_lr_mode_struct_to_json
 subroutine wake_lr_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_lr_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wake_lr_struct), pointer, intent(in) :: input
@@ -3343,9 +3133,6 @@ subroutine wake_lr_struct_to_json (input, json_root, depth)
 end subroutine wake_lr_struct_to_json
 subroutine wake_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wake_struct), pointer, intent(in) :: input
@@ -3373,9 +3160,6 @@ subroutine wake_struct_to_json (input, json_root, depth)
 end subroutine wake_struct_to_json
 subroutine ac_kicker_time_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ac_kicker_time_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3403,9 +3187,6 @@ subroutine ac_kicker_time_struct_to_json (input, json_root, depth)
 end subroutine ac_kicker_time_struct_to_json
 subroutine ac_kicker_freq_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ac_kicker_freq_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ac_kicker_freq_struct), pointer, intent(in) :: input
@@ -3431,9 +3212,6 @@ subroutine ac_kicker_freq_struct_to_json (input, json_root, depth)
 end subroutine ac_kicker_freq_struct_to_json
 subroutine ac_kicker_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ac_kicker_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ac_kicker_struct), pointer, intent(in) :: input
@@ -3475,9 +3253,6 @@ subroutine ac_kicker_struct_to_json (input, json_root, depth)
 end subroutine ac_kicker_struct_to_json
 subroutine cartesian_map_term1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: cartesian_map_term1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cartesian_map_term1_struct), pointer, intent(in) :: input
@@ -3508,9 +3283,6 @@ subroutine cartesian_map_term1_struct_to_json (input, json_root, depth)
 end subroutine cartesian_map_term1_struct_to_json
 subroutine cartesian_map_term_struct_to_json (input, json_root, depth)
   use bmad_struct, only: cartesian_map_term_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cartesian_map_term_struct), pointer, intent(in) :: input
@@ -3544,9 +3316,6 @@ subroutine cartesian_map_term_struct_to_json (input, json_root, depth)
 end subroutine cartesian_map_term_struct_to_json
 subroutine cartesian_map_struct_to_json (input, json_root, depth)
   use bmad_struct, only: cartesian_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cartesian_map_struct), pointer, intent(in) :: input
@@ -3585,9 +3354,6 @@ subroutine cartesian_map_struct_to_json (input, json_root, depth)
 end subroutine cartesian_map_struct_to_json
 subroutine cylindrical_map_term1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: cylindrical_map_term1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cylindrical_map_term1_struct), pointer, intent(in) :: input
@@ -3615,9 +3381,6 @@ subroutine cylindrical_map_term1_struct_to_json (input, json_root, depth)
 end subroutine cylindrical_map_term1_struct_to_json
 subroutine cylindrical_map_term_struct_to_json (input, json_root, depth)
   use bmad_struct, only: cylindrical_map_term_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cylindrical_map_term_struct), pointer, intent(in) :: input
@@ -3651,9 +3414,6 @@ subroutine cylindrical_map_term_struct_to_json (input, json_root, depth)
 end subroutine cylindrical_map_term_struct_to_json
 subroutine cylindrical_map_struct_to_json (input, json_root, depth)
   use bmad_struct, only: cylindrical_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (cylindrical_map_struct), pointer, intent(in) :: input
@@ -3696,9 +3456,6 @@ subroutine cylindrical_map_struct_to_json (input, json_root, depth)
 end subroutine cylindrical_map_struct_to_json
 subroutine gen_grad1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: gen_grad1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (gen_grad1_struct), pointer, intent(in) :: input
@@ -3738,9 +3495,6 @@ subroutine gen_grad1_struct_to_json (input, json_root, depth)
 end subroutine gen_grad1_struct_to_json
 subroutine gen_grad_map_struct_to_json (input, json_root, depth)
   use bmad_struct, only: gen_grad_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (gen_grad_map_struct), pointer, intent(in) :: input
@@ -3789,9 +3543,6 @@ subroutine gen_grad_map_struct_to_json (input, json_root, depth)
 end subroutine gen_grad_map_struct_to_json
 subroutine grid_field_pt1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: grid_field_pt1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (grid_field_pt1_struct), pointer, intent(in) :: input
@@ -3829,9 +3580,6 @@ subroutine grid_field_pt1_struct_to_json (input, json_root, depth)
 end subroutine grid_field_pt1_struct_to_json
 subroutine grid_field_pt_struct_to_json (input, json_root, depth)
   use bmad_struct, only: grid_field_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (grid_field_pt_struct), pointer, intent(in) :: input
@@ -3875,9 +3623,6 @@ subroutine grid_field_pt_struct_to_json (input, json_root, depth)
 end subroutine grid_field_pt_struct_to_json
 subroutine grid_field_struct_to_json (input, json_root, depth)
   use bmad_struct, only: grid_field_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: bicubic_cmplx_coef_struct_to_json, tricubic_cmplx_coef_struct_to_json
   implicit none
   type(json_core) :: json
@@ -3966,9 +3711,6 @@ subroutine grid_field_struct_to_json (input, json_root, depth)
 end subroutine grid_field_struct_to_json
 subroutine em_taylor_term_struct_to_json (input, json_root, depth)
   use bmad_struct, only: em_taylor_term_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (em_taylor_term_struct), pointer, intent(in) :: input
@@ -3999,9 +3741,6 @@ subroutine em_taylor_term_struct_to_json (input, json_root, depth)
 end subroutine em_taylor_term_struct_to_json
 subroutine em_taylor_struct_to_json (input, json_root, depth)
   use bmad_struct, only: em_taylor_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (em_taylor_struct), pointer, intent(in) :: input
@@ -4034,9 +3773,6 @@ subroutine em_taylor_struct_to_json (input, json_root, depth)
 end subroutine em_taylor_struct_to_json
 subroutine floor_position_struct_to_json (input, json_root, depth)
   use bmad_struct, only: floor_position_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (floor_position_struct), pointer, intent(in) :: input
@@ -4082,9 +3818,6 @@ subroutine floor_position_struct_to_json (input, json_root, depth)
 end subroutine floor_position_struct_to_json
 subroutine high_energy_space_charge_struct_to_json (input, json_root, depth)
   use bmad_struct, only: high_energy_space_charge_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (high_energy_space_charge_struct), pointer, intent(in) :: input
@@ -4116,9 +3849,6 @@ subroutine high_energy_space_charge_struct_to_json (input, json_root, depth)
 end subroutine high_energy_space_charge_struct_to_json
 subroutine xy_disp_struct_to_json (input, json_root, depth)
   use bmad_struct, only: xy_disp_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (xy_disp_struct), pointer, intent(in) :: input
@@ -4144,9 +3874,6 @@ subroutine xy_disp_struct_to_json (input, json_root, depth)
 end subroutine xy_disp_struct_to_json
 subroutine lat_ele_loc_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_ele_loc_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_ele_loc_struct), pointer, intent(in) :: input
@@ -4170,9 +3897,6 @@ subroutine lat_ele_loc_struct_to_json (input, json_root, depth)
 end subroutine lat_ele_loc_struct_to_json
 subroutine lat_ele_order1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_ele_order1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_ele_order1_struct), pointer, intent(in) :: input
@@ -4196,9 +3920,6 @@ subroutine lat_ele_order1_struct_to_json (input, json_root, depth)
 end subroutine lat_ele_order1_struct_to_json
 subroutine lat_ele_order_array_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_ele_order_array_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_ele_order_array_struct), pointer, intent(in) :: input
@@ -4230,9 +3951,6 @@ subroutine lat_ele_order_array_struct_to_json (input, json_root, depth)
 end subroutine lat_ele_order_array_struct_to_json
 subroutine lat_ele_order_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_ele_order_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_ele_order_struct), pointer, intent(in) :: input
@@ -4264,9 +3982,6 @@ subroutine lat_ele_order_struct_to_json (input, json_root, depth)
 end subroutine lat_ele_order_struct_to_json
 subroutine ele_pointer_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ele_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ele_pointer_struct), pointer, intent(in) :: input
@@ -4297,9 +4012,6 @@ subroutine ele_pointer_struct_to_json (input, json_root, depth)
 end subroutine ele_pointer_struct_to_json
 subroutine branch_pointer_struct_to_json (input, json_root, depth)
   use bmad_struct, only: branch_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (branch_pointer_struct), pointer, intent(in) :: input
@@ -4326,9 +4038,6 @@ subroutine branch_pointer_struct_to_json (input, json_root, depth)
 end subroutine branch_pointer_struct_to_json
 subroutine lat_pointer_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_pointer_struct), pointer, intent(in) :: input
@@ -4355,9 +4064,6 @@ subroutine lat_pointer_struct_to_json (input, json_root, depth)
 end subroutine lat_pointer_struct_to_json
 subroutine mode3_struct_to_json (input, json_root, depth)
   use bmad_struct, only: mode3_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (mode3_struct), pointer, intent(in) :: input
@@ -4407,9 +4113,6 @@ subroutine mode3_struct_to_json (input, json_root, depth)
 end subroutine mode3_struct_to_json
 subroutine bookkeeping_state_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bookkeeping_state_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bookkeeping_state_struct), pointer, intent(in) :: input
@@ -4440,9 +4143,6 @@ subroutine bookkeeping_state_struct_to_json (input, json_root, depth)
 end subroutine bookkeeping_state_struct_to_json
 subroutine multipole_cache_struct_to_json (input, json_root, depth)
   use bmad_struct, only: multipole_cache_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipole_cache_struct), pointer, intent(in) :: input
@@ -4550,9 +4250,6 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
 end subroutine multipole_cache_struct_to_json
 subroutine rad_map_struct_to_json (input, json_root, depth)
   use bmad_struct, only: rad_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_map_struct), pointer, intent(in) :: input
@@ -4629,9 +4326,6 @@ subroutine rad_map_struct_to_json (input, json_root, depth)
 end subroutine rad_map_struct_to_json
 subroutine rad_map_ele_struct_to_json (input, json_root, depth)
   use bmad_struct, only: rad_map_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_map_ele_struct), pointer, intent(in) :: input
@@ -4660,9 +4354,6 @@ subroutine rad_map_ele_struct_to_json (input, json_root, depth)
 end subroutine rad_map_ele_struct_to_json
 subroutine surface_segmented_pt_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_segmented_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_segmented_pt_struct), pointer, intent(in) :: input
@@ -4689,9 +4380,6 @@ subroutine surface_segmented_pt_struct_to_json (input, json_root, depth)
 end subroutine surface_segmented_pt_struct_to_json
 subroutine surface_segmented_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_segmented_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_segmented_struct), pointer, intent(in) :: input
@@ -4745,9 +4433,6 @@ subroutine surface_segmented_struct_to_json (input, json_root, depth)
 end subroutine surface_segmented_struct_to_json
 subroutine surface_h_misalign_pt_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_h_misalign_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_h_misalign_pt_struct), pointer, intent(in) :: input
@@ -4775,9 +4460,6 @@ subroutine surface_h_misalign_pt_struct_to_json (input, json_root, depth)
 end subroutine surface_h_misalign_pt_struct_to_json
 subroutine surface_h_misalign_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_h_misalign_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_h_misalign_struct), pointer, intent(in) :: input
@@ -4831,9 +4513,6 @@ subroutine surface_h_misalign_struct_to_json (input, json_root, depth)
 end subroutine surface_h_misalign_struct_to_json
 subroutine surface_displacement_pt_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_displacement_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_displacement_pt_struct), pointer, intent(in) :: input
@@ -4861,9 +4540,6 @@ subroutine surface_displacement_pt_struct_to_json (input, json_root, depth)
 end subroutine surface_displacement_pt_struct_to_json
 subroutine surface_displacement_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_displacement_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_displacement_struct), pointer, intent(in) :: input
@@ -4917,9 +4593,6 @@ subroutine surface_displacement_struct_to_json (input, json_root, depth)
 end subroutine surface_displacement_struct_to_json
 subroutine pixel_pt_struct_to_json (input, json_root, depth)
   use bmad_struct, only: pixel_pt_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pixel_pt_struct), pointer, intent(in) :: input
@@ -4983,9 +4656,6 @@ subroutine pixel_pt_struct_to_json (input, json_root, depth)
 end subroutine pixel_pt_struct_to_json
 subroutine pixel_detec_struct_to_json (input, json_root, depth)
   use bmad_struct, only: pixel_detec_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pixel_detec_struct), pointer, intent(in) :: input
@@ -5041,9 +4711,6 @@ subroutine pixel_detec_struct_to_json (input, json_root, depth)
 end subroutine pixel_detec_struct_to_json
 subroutine surface_curvature_struct_to_json (input, json_root, depth)
   use bmad_struct, only: surface_curvature_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (surface_curvature_struct), pointer, intent(in) :: input
@@ -5088,9 +4755,6 @@ subroutine surface_curvature_struct_to_json (input, json_root, depth)
 end subroutine surface_curvature_struct_to_json
 subroutine target_point_struct_to_json (input, json_root, depth)
   use bmad_struct, only: target_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (target_point_struct), pointer, intent(in) :: input
@@ -5120,9 +4784,6 @@ subroutine target_point_struct_to_json (input, json_root, depth)
 end subroutine target_point_struct_to_json
 subroutine photon_target_struct_to_json (input, json_root, depth)
   use bmad_struct, only: photon_target_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_target_struct), pointer, intent(in) :: input
@@ -5160,9 +4821,6 @@ subroutine photon_target_struct_to_json (input, json_root, depth)
 end subroutine photon_target_struct_to_json
 subroutine photon_material_struct_to_json (input, json_root, depth)
   use bmad_struct, only: photon_material_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (photon_material_struct), pointer, intent(in) :: input
@@ -5218,9 +4876,6 @@ subroutine photon_material_struct_to_json (input, json_root, depth)
 end subroutine photon_material_struct_to_json
 subroutine photon_element_struct_to_json (input, json_root, depth)
   use bmad_struct, only: photon_element_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: spline_struct_to_json
   implicit none
   type(json_core) :: json
@@ -5291,9 +4946,6 @@ subroutine photon_element_struct_to_json (input, json_root, depth)
 end subroutine photon_element_struct_to_json
 subroutine bunch_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bunch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bunch_struct), pointer, intent(in) :: input
@@ -5347,9 +4999,6 @@ subroutine bunch_struct_to_json (input, json_root, depth)
 end subroutine bunch_struct_to_json
 subroutine beam_struct_to_json (input, json_root, depth)
   use bmad_struct, only: beam_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (beam_struct), pointer, intent(in) :: input
@@ -5381,9 +5030,6 @@ subroutine beam_struct_to_json (input, json_root, depth)
 end subroutine beam_struct_to_json
 subroutine ellipse_beam_init_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ellipse_beam_init_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ellipse_beam_init_struct), pointer, intent(in) :: input
@@ -5408,9 +5054,6 @@ subroutine ellipse_beam_init_struct_to_json (input, json_root, depth)
 end subroutine ellipse_beam_init_struct_to_json
 subroutine kv_beam_init_struct_to_json (input, json_root, depth)
   use bmad_struct, only: kv_beam_init_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (kv_beam_init_struct), pointer, intent(in) :: input
@@ -5442,9 +5085,6 @@ subroutine kv_beam_init_struct_to_json (input, json_root, depth)
 end subroutine kv_beam_init_struct_to_json
 subroutine grid_beam_init_struct_to_json (input, json_root, depth)
   use bmad_struct, only: grid_beam_init_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (grid_beam_init_struct), pointer, intent(in) :: input
@@ -5472,9 +5112,6 @@ subroutine grid_beam_init_struct_to_json (input, json_root, depth)
 end subroutine grid_beam_init_struct_to_json
 subroutine beam_init_struct_to_json (input, json_root, depth)
   use bmad_struct, only: beam_init_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (beam_init_struct), pointer, intent(in) :: input
@@ -5582,9 +5219,6 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
 end subroutine beam_init_struct_to_json
 subroutine bunch_params_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bunch_params_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bunch_params_struct), pointer, intent(in) :: input
@@ -5669,9 +5303,6 @@ subroutine bunch_params_struct_to_json (input, json_root, depth)
 end subroutine bunch_params_struct_to_json
 subroutine bunch_track_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bunch_track_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bunch_track_struct), pointer, intent(in) :: input
@@ -5705,9 +5336,6 @@ subroutine bunch_track_struct_to_json (input, json_root, depth)
 end subroutine bunch_track_struct_to_json
 subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_prob_pc_r_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_prob_pc_r_struct), pointer, intent(in) :: input
@@ -5832,9 +5460,6 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
 end subroutine converter_prob_pc_r_struct_to_json
 subroutine converter_dir_1D_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_dir_1D_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_dir_1D_struct), pointer, intent(in) :: input
@@ -5865,9 +5490,6 @@ subroutine converter_dir_1D_struct_to_json (input, json_root, depth)
 end subroutine converter_dir_1D_struct_to_json
 subroutine converter_dir_2D_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_dir_2D_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_dir_2D_struct), pointer, intent(in) :: input
@@ -5898,9 +5520,6 @@ subroutine converter_dir_2D_struct_to_json (input, json_root, depth)
 end subroutine converter_dir_2D_struct_to_json
 subroutine converter_dir_coef_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_dir_coef_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_dir_coef_struct), pointer, intent(in) :: input
@@ -5939,9 +5558,6 @@ subroutine converter_dir_coef_struct_to_json (input, json_root, depth)
 end subroutine converter_dir_coef_struct_to_json
 subroutine converter_direction_out_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_direction_out_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_direction_out_struct), pointer, intent(in) :: input
@@ -5984,9 +5600,6 @@ subroutine converter_direction_out_struct_to_json (input, json_root, depth)
 end subroutine converter_direction_out_struct_to_json
 subroutine converter_sub_distribution_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_sub_distribution_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_sub_distribution_struct), pointer, intent(in) :: input
@@ -6023,9 +5636,6 @@ subroutine converter_sub_distribution_struct_to_json (input, json_root, depth)
 end subroutine converter_sub_distribution_struct_to_json
 subroutine material_struct_to_json (input, json_root, depth)
   use bmad_struct, only: material_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (material_struct), pointer, intent(in) :: input
@@ -6055,9 +5665,6 @@ subroutine material_struct_to_json (input, json_root, depth)
 end subroutine material_struct_to_json
 subroutine foil_struct_to_json (input, json_root, depth)
   use bmad_struct, only: foil_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (foil_struct), pointer, intent(in) :: input
@@ -6089,9 +5696,6 @@ subroutine foil_struct_to_json (input, json_root, depth)
 end subroutine foil_struct_to_json
 subroutine converter_distribution_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_distribution_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_distribution_struct), pointer, intent(in) :: input
@@ -6124,9 +5728,6 @@ subroutine converter_distribution_struct_to_json (input, json_root, depth)
 end subroutine converter_distribution_struct_to_json
 subroutine converter_struct_to_json (input, json_root, depth)
   use bmad_struct, only: converter_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (converter_struct), pointer, intent(in) :: input
@@ -6160,9 +5761,6 @@ subroutine converter_struct_to_json (input, json_root, depth)
 end subroutine converter_struct_to_json
 subroutine control_struct_to_json (input, json_root, depth)
   use bmad_struct, only: control_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (control_struct), pointer, intent(in) :: input
@@ -6214,9 +5812,6 @@ subroutine control_struct_to_json (input, json_root, depth)
 end subroutine control_struct_to_json
 subroutine control_var1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: control_var1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (control_var1_struct), pointer, intent(in) :: input
@@ -6241,9 +5836,6 @@ subroutine control_var1_struct_to_json (input, json_root, depth)
 end subroutine control_var1_struct_to_json
 subroutine control_ramp1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: control_ramp1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (control_ramp1_struct), pointer, intent(in) :: input
@@ -6288,9 +5880,6 @@ subroutine control_ramp1_struct_to_json (input, json_root, depth)
 end subroutine control_ramp1_struct_to_json
 subroutine ramper_lord_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ramper_lord_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ramper_lord_struct), pointer, intent(in) :: input
@@ -6317,9 +5906,6 @@ subroutine ramper_lord_struct_to_json (input, json_root, depth)
 end subroutine ramper_lord_struct_to_json
 subroutine controller_struct_to_json (input, json_root, depth)
   use bmad_struct, only: controller_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (controller_struct), pointer, intent(in) :: input
@@ -6381,9 +5967,6 @@ subroutine controller_struct_to_json (input, json_root, depth)
 end subroutine controller_struct_to_json
 subroutine ele_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use forest_json, only: fibre_to_json
   implicit none
   type(json_core) :: json
@@ -6741,9 +6324,6 @@ subroutine ele_struct_to_json (input, json_root, depth)
 end subroutine ele_struct_to_json
 subroutine lat_param_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_param_struct), pointer, intent(in) :: input
@@ -6810,9 +6390,6 @@ subroutine lat_param_struct_to_json (input, json_root, depth)
 end subroutine lat_param_struct_to_json
 subroutine ptc_layout_pointer_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ptc_layout_pointer_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use forest_json, only: layout_to_json
   implicit none
   type(json_core) :: json
@@ -6840,9 +6417,6 @@ subroutine ptc_layout_pointer_struct_to_json (input, json_root, depth)
 end subroutine ptc_layout_pointer_struct_to_json
 subroutine ptc_branch1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ptc_branch1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use forest_json, only: layout_to_json
   implicit none
   type(json_core) :: json
@@ -6880,9 +6454,6 @@ subroutine ptc_branch1_struct_to_json (input, json_root, depth)
 end subroutine ptc_branch1_struct_to_json
 subroutine mode_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: mode_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (mode_info_struct), pointer, intent(in) :: input
@@ -6910,9 +6481,6 @@ subroutine mode_info_struct_to_json (input, json_root, depth)
 end subroutine mode_info_struct_to_json
 subroutine resonance_h_struct_to_json (input, json_root, depth)
   use bmad_struct, only: resonance_h_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (resonance_h_struct), pointer, intent(in) :: input
@@ -6938,9 +6506,6 @@ subroutine resonance_h_struct_to_json (input, json_root, depth)
 end subroutine resonance_h_struct_to_json
 subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bmad_normal_form_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bmad_normal_form_struct), pointer, intent(in) :: input
@@ -7025,9 +6590,6 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
 end subroutine bmad_normal_form_struct_to_json
 subroutine ptc_normal_form_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ptc_normal_form_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use forest_json, only: c_normal_form_to_json, c_quaternion_to_json, c_taylor_to_json, internal_state_to_json, probe_8_to_json
   implicit none
   type(json_core) :: json
@@ -7090,9 +6652,6 @@ subroutine ptc_normal_form_struct_to_json (input, json_root, depth)
 end subroutine ptc_normal_form_struct_to_json
 subroutine branch_struct_to_json (input, json_root, depth)
   use bmad_struct, only: branch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (branch_struct), pointer, intent(in) :: input
@@ -7155,9 +6714,6 @@ subroutine branch_struct_to_json (input, json_root, depth)
 end subroutine branch_struct_to_json
 subroutine pre_tracker_struct_to_json (input, json_root, depth)
   use bmad_struct, only: pre_tracker_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pre_tracker_struct), pointer, intent(in) :: input
@@ -7183,9 +6739,6 @@ subroutine pre_tracker_struct_to_json (input, json_root, depth)
 end subroutine pre_tracker_struct_to_json
 subroutine lat_struct_to_json (input, json_root, depth)
   use bmad_struct, only: lat_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (lat_struct), pointer, intent(in) :: input
@@ -7331,9 +6884,6 @@ subroutine lat_struct_to_json (input, json_root, depth)
 end subroutine lat_struct_to_json
 subroutine anormal_mode_struct_to_json (input, json_root, depth)
   use bmad_struct, only: anormal_mode_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (anormal_mode_struct), pointer, intent(in) :: input
@@ -7369,9 +6919,6 @@ subroutine anormal_mode_struct_to_json (input, json_root, depth)
 end subroutine anormal_mode_struct_to_json
 subroutine linac_normal_mode_struct_to_json (input, json_root, depth)
   use bmad_struct, only: linac_normal_mode_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (linac_normal_mode_struct), pointer, intent(in) :: input
@@ -7400,9 +6947,6 @@ subroutine linac_normal_mode_struct_to_json (input, json_root, depth)
 end subroutine linac_normal_mode_struct_to_json
 subroutine normal_modes_struct_to_json (input, json_root, depth)
   use bmad_struct, only: normal_modes_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (normal_modes_struct), pointer, intent(in) :: input
@@ -7452,9 +6996,6 @@ subroutine normal_modes_struct_to_json (input, json_root, depth)
 end subroutine normal_modes_struct_to_json
 subroutine em_field_struct_to_json (input, json_root, depth)
   use bmad_struct, only: em_field_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (em_field_struct), pointer, intent(in) :: input
@@ -7528,9 +7069,6 @@ subroutine em_field_struct_to_json (input, json_root, depth)
 end subroutine em_field_struct_to_json
 subroutine strong_beam_struct_to_json (input, json_root, depth)
   use bmad_struct, only: strong_beam_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (strong_beam_struct), pointer, intent(in) :: input
@@ -7559,9 +7097,6 @@ subroutine strong_beam_struct_to_json (input, json_root, depth)
 end subroutine strong_beam_struct_to_json
 subroutine track_point_struct_to_json (input, json_root, depth)
   use bmad_struct, only: track_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (track_point_struct), pointer, intent(in) :: input
@@ -7614,9 +7149,6 @@ subroutine track_point_struct_to_json (input, json_root, depth)
 end subroutine track_point_struct_to_json
 subroutine track_struct_to_json (input, json_root, depth)
   use bmad_struct, only: track_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (track_struct), pointer, intent(in) :: input
@@ -7652,9 +7184,6 @@ subroutine track_struct_to_json (input, json_root, depth)
 end subroutine track_struct_to_json
 subroutine multipass_lord_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: multipass_lord_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_lord_info_struct), pointer, intent(in) :: input
@@ -7708,9 +7237,6 @@ subroutine multipass_lord_info_struct_to_json (input, json_root, depth)
 end subroutine multipass_lord_info_struct_to_json
 subroutine multipass_ele_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: multipass_ele_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_ele_info_struct), pointer, intent(in) :: input
@@ -7754,9 +7280,6 @@ subroutine multipass_ele_info_struct_to_json (input, json_root, depth)
 end subroutine multipass_ele_info_struct_to_json
 subroutine multipass_branch_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: multipass_branch_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_branch_info_struct), pointer, intent(in) :: input
@@ -7788,9 +7311,6 @@ subroutine multipass_branch_info_struct_to_json (input, json_root, depth)
 end subroutine multipass_branch_info_struct_to_json
 subroutine multipass_all_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: multipass_all_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (multipass_all_info_struct), pointer, intent(in) :: input
@@ -7832,9 +7352,6 @@ subroutine multipass_all_info_struct_to_json (input, json_root, depth)
 end subroutine multipass_all_info_struct_to_json
 subroutine aperture_point_struct_to_json (input, json_root, depth)
   use bmad_struct, only: aperture_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (aperture_point_struct), pointer, intent(in) :: input
@@ -7861,9 +7378,6 @@ subroutine aperture_point_struct_to_json (input, json_root, depth)
 end subroutine aperture_point_struct_to_json
 subroutine aperture_param_struct_to_json (input, json_root, depth)
   use bmad_struct, only: aperture_param_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (aperture_param_struct), pointer, intent(in) :: input
@@ -7894,9 +7408,6 @@ subroutine aperture_param_struct_to_json (input, json_root, depth)
 end subroutine aperture_param_struct_to_json
 subroutine aperture_scan_struct_to_json (input, json_root, depth)
   use bmad_struct, only: aperture_scan_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (aperture_scan_struct), pointer, intent(in) :: input
@@ -7932,9 +7443,6 @@ subroutine aperture_scan_struct_to_json (input, json_root, depth)
 end subroutine aperture_scan_struct_to_json
 subroutine space_charge_common_struct_to_json (input, json_root, depth)
   use bmad_struct, only: space_charge_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (space_charge_common_struct), pointer, intent(in) :: input
@@ -7987,9 +7495,6 @@ subroutine space_charge_common_struct_to_json (input, json_root, depth)
 end subroutine space_charge_common_struct_to_json
 subroutine time_runge_kutta_common_struct_to_json (input, json_root, depth)
   use bmad_struct, only: time_runge_kutta_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (time_runge_kutta_common_struct), pointer, intent(in) :: input
@@ -8013,9 +7518,6 @@ subroutine time_runge_kutta_common_struct_to_json (input, json_root, depth)
 end subroutine time_runge_kutta_common_struct_to_json
 subroutine extra_parsing_info_struct_to_json (input, json_root, depth)
   use bmad_struct, only: extra_parsing_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use sim_utils_json, only: random_state_struct_to_json
   implicit none
   type(json_core) :: json
@@ -8108,9 +7610,6 @@ subroutine extra_parsing_info_struct_to_json (input, json_root, depth)
 end subroutine extra_parsing_info_struct_to_json
 subroutine bmad_common_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bmad_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bmad_common_struct), pointer, intent(in) :: input
@@ -8179,9 +7678,6 @@ subroutine bmad_common_struct_to_json (input, json_root, depth)
 end subroutine bmad_common_struct_to_json
 subroutine bmad_private_struct_to_json (input, json_root, depth)
   use bmad_struct, only: bmad_private_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (bmad_private_struct), pointer, intent(in) :: input
@@ -8205,9 +7701,6 @@ subroutine bmad_private_struct_to_json (input, json_root, depth)
 end subroutine bmad_private_struct_to_json
 subroutine ptc_common_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ptc_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ptc_common_struct), pointer, intent(in) :: input
@@ -8249,9 +7742,6 @@ subroutine ptc_common_struct_to_json (input, json_root, depth)
 end subroutine ptc_common_struct_to_json
 subroutine ptc_private_struct_to_json (input, json_root, depth)
   use bmad_struct, only: ptc_private_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   use forest_json, only: internal_state_to_json
   implicit none
   type(json_core) :: json
@@ -8282,9 +7772,6 @@ subroutine ptc_private_struct_to_json (input, json_root, depth)
 end subroutine ptc_private_struct_to_json
 subroutine rad_int1_struct_to_json (input, json_root, depth)
   use bmad_struct, only: rad_int1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int1_struct), pointer, intent(in) :: input
@@ -8324,9 +7811,6 @@ subroutine rad_int1_struct_to_json (input, json_root, depth)
 end subroutine rad_int1_struct_to_json
 subroutine rad_int_branch_struct_to_json (input, json_root, depth)
   use bmad_struct, only: rad_int_branch_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int_branch_struct), pointer, intent(in) :: input
@@ -8358,9 +7842,6 @@ subroutine rad_int_branch_struct_to_json (input, json_root, depth)
 end subroutine rad_int_branch_struct_to_json
 subroutine rad_int_all_ele_struct_to_json (input, json_root, depth)
   use bmad_struct, only: rad_int_all_ele_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int_all_ele_struct), pointer, intent(in) :: input
@@ -8392,9 +7873,6 @@ subroutine rad_int_all_ele_struct_to_json (input, json_root, depth)
 end subroutine rad_int_all_ele_struct_to_json
 subroutine pmd_header_struct_to_json (input, json_root, depth)
   use bmad_struct, only: pmd_header_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (pmd_header_struct), pointer, intent(in) :: input
@@ -8449,9 +7927,6 @@ subroutine pmd_header_struct_to_json (input, json_root, depth)
 end subroutine pmd_header_struct_to_json
 subroutine runge_kutta_common_struct_to_json (input, json_root, depth)
   use runge_kutta_mod, only: runge_kutta_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (runge_kutta_common_struct), pointer, intent(in) :: input
@@ -8475,9 +7950,6 @@ subroutine runge_kutta_common_struct_to_json (input, json_root, depth)
 end subroutine runge_kutta_common_struct_to_json
 subroutine rad_int_track_point_struct_to_json (input, json_root, depth)
   use rad_int_common, only: rad_int_track_point_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int_track_point_struct), pointer, intent(in) :: input
@@ -8533,9 +8005,6 @@ subroutine rad_int_track_point_struct_to_json (input, json_root, depth)
 end subroutine rad_int_track_point_struct_to_json
 subroutine rad_int_cache1_struct_to_json (input, json_root, depth)
   use rad_int_common, only: rad_int_cache1_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int_cache1_struct), pointer, intent(in) :: input
@@ -8569,9 +8038,6 @@ subroutine rad_int_cache1_struct_to_json (input, json_root, depth)
 end subroutine rad_int_cache1_struct_to_json
 subroutine rad_int_cache_struct_to_json (input, json_root, depth)
   use rad_int_common, only: rad_int_cache_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int_cache_struct), pointer, intent(in) :: input
@@ -8604,9 +8070,6 @@ subroutine rad_int_cache_struct_to_json (input, json_root, depth)
 end subroutine rad_int_cache_struct_to_json
 subroutine rad_int_info_struct_to_json (input, json_root, depth)
   use rad_int_common, only: rad_int_info_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (rad_int_info_struct), pointer, intent(in) :: input
@@ -8681,9 +8144,6 @@ subroutine rad_int_info_struct_to_json (input, json_root, depth)
 end subroutine rad_int_info_struct_to_json
 subroutine wiggler_modeling_common_struct_to_json (input, json_root, depth)
   use element_modeling_mod, only: wiggler_modeling_common_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (wiggler_modeling_common_struct), pointer, intent(in) :: input
@@ -8726,9 +8186,6 @@ subroutine wiggler_modeling_common_struct_to_json (input, json_root, depth)
 end subroutine wiggler_modeling_common_struct_to_json
 subroutine mad_energy_struct_to_json (input, json_root, depth)
   use mad_mod, only: mad_energy_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (mad_energy_struct), pointer, intent(in) :: input
@@ -8756,9 +8213,6 @@ subroutine mad_energy_struct_to_json (input, json_root, depth)
 end subroutine mad_energy_struct_to_json
 subroutine mad_map_struct_to_json (input, json_root, depth)
   use mad_mod, only: mad_map_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (mad_map_struct), pointer, intent(in) :: input
@@ -8819,9 +8273,6 @@ subroutine mad_map_struct_to_json (input, json_root, depth)
 end subroutine mad_map_struct_to_json
 subroutine ele_attribute_struct_to_json (input, json_root, depth)
   use attribute_mod, only: ele_attribute_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (ele_attribute_struct), pointer, intent(in) :: input
@@ -8849,9 +8300,6 @@ subroutine ele_attribute_struct_to_json (input, json_root, depth)
 end subroutine ele_attribute_struct_to_json
 subroutine crystal_struct_to_json (input, json_root, depth)
   use xraylib, only: crystal_struct
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (crystal_struct), pointer, intent(in) :: input
@@ -8874,9 +8322,6 @@ subroutine crystal_struct_to_json (input, json_root, depth)
 end subroutine crystal_struct_to_json
 subroutine compounddatanist_to_json (input, json_root, depth)
   use xraylib, only: compounddatanist
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (compounddatanist), pointer, intent(in) :: input
@@ -8916,9 +8361,6 @@ subroutine compounddatanist_to_json (input, json_root, depth)
 end subroutine compounddatanist_to_json
 subroutine xrlComplex_C_to_json (input, json_root, depth)
   use xraylib, only: xrlComplex_C
-  use json_module
-  use json_string_utilities, only: integer_to_string
-  use json_kinds, only: CK
   implicit none
   type(json_core) :: json
   type (xrlComplex_C), pointer, intent(in) :: input
