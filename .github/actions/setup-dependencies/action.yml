@@ -19,8 +19,10 @@ runs:
     - name: Checkout external packages
       uses: actions/checkout@v4
       with:
-        repository: "bmad-sim/bmad-external-packages"
-        ref: ${{ inputs.external-packages-version }}
+        # repository: "bmad-sim/bmad-external-packages"  # PR/TODO: This must be uncommented prior to merging!
+        # ref: ${{ inputs.external-packages-version }}
+        repository: "ken-lauer/bmad-external-packages"
+        ref: "add-json-fortran"
         path: "external_packages"
         fetch-depth: 1
 
