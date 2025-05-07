@@ -8,6 +8,7 @@ import textwrap
 import pydantic
 
 from .parser import (
+    MODULE_PATH,
     ParserConfig,
     SourceConfig,
     Structure,
@@ -132,9 +133,7 @@ class ListBuilder(pydantic.BaseModel):
         assert member.dimension
         num_dimensions = member.dimension.count(",") + 1
 
-        iter_vars = ", ".join(
-            f"{self.iter_var}{dim}" for dim in range(1, num_dimensions + 1)
-        )
+        iter_vars = ", ".join(f"{self.iter_var}{dim}" for dim in range(1, num_dimensions + 1))
 
         if member.type.lower() in {"integer", "real", "logical"}:
             create = {
@@ -142,7 +141,9 @@ class ListBuilder(pydantic.BaseModel):
                 "real": "create_real",
                 "logical": "create_logical",
             }[member.type.lower()]
-            iteration = f"call json%{create}({self.json_value_var}, {self.struct_var}%{member.name}({iter_vars}), '')"
+            iteration = (
+                f"call json%{create}({self.json_value_var}, {self.struct_var}%{member.name}({iter_vars}), '')"
+            )
         elif member.type.lower() in {"character"}:
             iteration = f"call json%create_string({self.json_value_var}, trim({self.struct_var}%{member.name}({iter_vars})), '')"
         elif member.type.lower() in {"complex"}:
@@ -153,9 +154,7 @@ class ListBuilder(pydantic.BaseModel):
             conv_subroutine = to_subroutine_name(member.kind)
             iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth + 1)"
         else:
-            raise NotImplementedError(
-                f"Member type: {member.type=} {member.kind=} {member=}"
-            )
+            raise NotImplementedError(f"Member type: {member.type=} {member.kind=} {member=}")
 
         def iter_dimension(dim: int, loop: str, key: str = ""):
             before = (
@@ -163,10 +162,7 @@ class ListBuilder(pydantic.BaseModel):
                 f"do {self.iter_var}{dim} = lbound({self.struct_var}%{member.name}, {dim}), ubound({self.struct_var}%{member.name}, {dim})"
             )
             if dim == 1:
-                inner = (
-                    f"{loop}\n"
-                    f"call json%add({self.json_list_var}{dim}, {self.json_value_var})"
-                )
+                inner = f"{loop}\ncall json%add({self.json_list_var}{dim}, {self.json_value_var})"
             else:
                 inner = loop
 
@@ -204,8 +200,7 @@ class ListBuilder(pydantic.BaseModel):
             )
 
         assert "do i1" in res
-        res = f"!{member}\n{res}"
-        return res
+        return f"!{member}\n{res}"
 
 
 class Converter(pydantic.BaseModel):
@@ -224,9 +219,7 @@ class Converter(pydantic.BaseModel):
         struct_var: str,
         member: StructureMember,
         parent_json_var: str,
-        member_json_var: str = "json_obj",
-        # print_: bool = False,
-        # destroy: bool = False,
+        member_json_var: str = "json_obj",  # noqa: ARG002
     ) -> JsonDumpMember:
         assert member.dimension
 
@@ -284,8 +277,6 @@ class Converter(pydantic.BaseModel):
         parent_json_var: str,
         member_json_var: str = "json_obj",
         source: SourceConfig | None = None,
-        # print_: bool = False,
-        # destroy: bool = False,
     ) -> JsonDumpMember:
         imports = {}
         if source is not None:
@@ -326,8 +317,7 @@ class Converter(pydantic.BaseModel):
                 "p",
                 "u",
             }
-            or member.type.lower()
-            in {"tao_super_universe_struct", "tao_universe_struct"}
+            or member.type.lower() in {"tao_super_universe_struct", "tao_universe_struct"}
         ):
             return JsonDumpMember(
                 var=member_json_var,
@@ -336,11 +326,15 @@ class Converter(pydantic.BaseModel):
             )
 
         if member.type.lower() in {"integer"}:
-            code = f"call json%add({parent_json_var}, '{member.name.lower()}', int({struct_var}%{member.name}))"
+            code = (
+                f"call json%add({parent_json_var}, '{member.name.lower()}', int({struct_var}%{member.name}))"
+            )
         elif member.type.lower() in {"real", "logical"}:
             code = f"call json%add({parent_json_var}, '{member.name.lower()}', {struct_var}%{member.name})"
         elif member.type.lower() in {"character"}:
-            code = f"call json%add({parent_json_var}, '{member.name.lower()}', trim({struct_var}%{member.name}))"
+            code = (
+                f"call json%add({parent_json_var}, '{member.name.lower()}', trim({struct_var}%{member.name}))"
+            )
         elif member.type.lower() in {"complex"}:
             json_list_var = "json_list"
             list_var = f"{json_list_var}1"
@@ -363,9 +357,7 @@ class Converter(pydantic.BaseModel):
                 )
             )
         else:
-            raise NotImplementedError(
-                f"Member type: {member.type=} {member.kind=} {member=}"
-            )
+            raise NotImplementedError(f"Member type: {member.type=} {member.kind=} {member=}")
 
         defn_words = _split_defn_words(member.definition.lower())
         if "pointer" in defn_words:
@@ -384,9 +376,7 @@ class Converter(pydantic.BaseModel):
                     "endif",
                 )
             )
-        return JsonDumpMember(
-            var=member_json_var, member=member, code=code, imports=imports
-        )
+        return JsonDumpMember(var=member_json_var, member=member, code=code, imports=imports)
 
     def get_struct_dump_code(
         self,
@@ -394,8 +384,8 @@ class Converter(pydantic.BaseModel):
         struct: Structure,
         root_variable: str = "json_root",
         key: str = "",
-        print_: bool = True,
-        destroy: bool = True,
+        print_: bool = False,
+        destroy: bool = False,
         source: SourceConfig | None = None,
     ) -> JsonDumpCode:
         if not key:
@@ -437,9 +427,7 @@ class Converter(pydantic.BaseModel):
         self,
         source: SourceConfig,
         struct: Structure,
-        root_variable: str = "json_root",
-        print_: bool = True,
-        destroy: bool = True,
+        root_variable: str = "json_root",  # noqa: ARG002
     ) -> JsonDumpCode:
         subroutine_name = to_subroutine_name(struct.name)
 
@@ -450,14 +438,11 @@ class Converter(pydantic.BaseModel):
             struct,
             root_variable="json_root",
             key="",  # TODO: "name"?
-            print_=False,
-            destroy=False,
             source=source,
         )
 
         imports = "\n".join(
-            f"use {fn}, only: {', '.join(sorted(set(imports)))}"
-            for fn, imports in dump_code.imports.items()
+            f"use {fn}, only: {', '.join(sorted(set(imports)))}" for fn, imports in dump_code.imports.items()
         )
 
         lines += textwrap.dedent(
@@ -490,9 +475,7 @@ class Converter(pydantic.BaseModel):
         ).splitlines()
 
         def should_indent(text: str) -> bool:
-            return not (
-                text.startswith("subroutine") or text.startswith("end subroutine")
-            )
+            return not text.startswith(("subroutine", "end subroutine"))
 
         lines.extend(dump_code.code.splitlines())
         lines.append("")
@@ -500,9 +483,7 @@ class Converter(pydantic.BaseModel):
         lines.append("")
         return JsonDumpCode(
             name=subroutine_name,
-            code=textwrap.indent(
-                "\n".join(lines), prefix="  ", predicate=should_indent
-            ),
+            code=textwrap.indent("\n".join(lines), prefix="  ", predicate=should_indent),
             imports=dump_code.imports,
         )
 
@@ -567,7 +548,7 @@ def dump_usage_tree(structs: list[Structure]):
 def main():
     argp = argparse.ArgumentParser()
     argp.add_argument("-d", "--working-directory", default=".")
-    argp.add_argument("--config", nargs="?", default="config.yaml")
+    argp.add_argument("--config", nargs="?", default=str(MODULE_PATH / "config.yaml"))
     argp.add_argument("-l", "--log-level", nargs="?", default="INFO")
     args = argp.parse_args()
 
@@ -580,23 +561,16 @@ def main():
     conf = ParserConfig.from_file(args.config)
 
     working_dir = pathlib.Path(args.working_directory)
-    by_source = {
-        source: load_structures(working_dir / source.yaml_filename)
-        for source in conf.sources
-    }
+    by_source = {source: load_structures(working_dir / source.yaml_filename) for source in conf.sources}
     for source, structs in by_source.items():
         logger.info(f"Working on {source.source_dir}")
         structs = load_structures(working_dir / source.yaml_filename)
-        # usage_tree = dump_usage_tree(structs)
         convert_all(
             source,
             structs,
-            importable={
-                source: st for source, st in by_source.items() if st is not structs
-            },
+            importable={source: st for source, st in by_source.items() if st is not structs},
         )
 
 
 if __name__ == "__main__":
-    # convert("lat_struct")
     main()

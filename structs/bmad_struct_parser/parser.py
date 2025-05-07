@@ -5,32 +5,22 @@ import ast
 import json
 import logging
 import os
-import re
 import pathlib
-from typing import NamedTuple
+import re
 from collections.abc import Sequence
+from typing import NamedTuple
 
 import pydantic
+
 import yaml
+
+from .util import path_with_respect_to_env
 
 logger = logging.getLogger(__name__)
 
-size_ignore = {}
-# size_ignore = {"rp", "dp", "hsize_t"}
-
-DefaultType = (
-    bool
-    | int
-    | str
-    | float
-    | complex
-    | Sequence[float]
-    | Sequence[int]
-    | Sequence[str]
-    | None
-)
+DefaultType = bool | int | str | float | complex | Sequence[float] | Sequence[int] | Sequence[str] | None
 AnyPath = pathlib.Path | str
-MODULE_PATH = pathlib.Path(__file__).resolve().parent
+MODULE_PATH = pathlib.Path(__file__).resolve().absolute().parent
 GENERATED_PATH = MODULE_PATH / "generated"
 MODEL_TEMPLATE = MODULE_PATH / "dataclass.tpl"
 
@@ -39,8 +29,8 @@ class ParserConfig(pydantic.BaseModel):
     sources: list[SourceConfig]
 
     @classmethod
-    def from_file(cls, filename: pathlib.Path) -> ParserConfig:
-        with open(filename) as fp:
+    def from_file(cls, filename: pathlib.Path | str) -> ParserConfig:
+        with pathlib.Path(filename).open() as fp:
             contents = yaml.safe_load(fp)
         return cls.model_validate(contents)
 
@@ -64,9 +54,7 @@ class SourceConfig(pydantic.BaseModel, frozen=True):
 
     @pydantic.field_validator("include_dirs")
     @classmethod
-    def validate_include_dirs(
-        cls, values: list[pathlib.Path | str]
-    ) -> tuple[pathlib.Path, ...]:
+    def validate_include_dirs(cls, values: list[pathlib.Path | str]) -> tuple[pathlib.Path, ...]:
         expanded_paths = [pathlib.Path(os.path.expandvars(str(v))) for v in values]
         for path in expanded_paths:
             if not path.is_dir():
@@ -214,8 +202,6 @@ class StructureMember(pydantic.BaseModel):
     def _validate_size(cls, size: str | None):
         if not size:
             return None
-        if size in size_ignore:  #  or not size.isnumeric():
-            return None
         return size
 
     @property
@@ -245,7 +231,7 @@ class Structure(pydantic.BaseModel):
             if "!" in line:
                 line, comment = (part.strip() for part in line.split("!", 1))
             else:
-                line, comment = line, ""
+                comment = ""
 
             if not line or line.lower() in skips:
                 if last_member and comment:
@@ -268,48 +254,7 @@ class Structure(pydantic.BaseModel):
                 last_member = self.members[decl.name]
 
 
-def path_with_respect_to_env(path: pathlib.Path, env_var_name: str) -> pathlib.Path:
-    """
-    Convert an absolute path to a path relative to an environment variable.
-
-    If the path starts with the value of the environment variable, it will be
-    replaced with the variable name prefixed with a dollar sign.
-
-    Parameters
-    ----------
-    path : pathlib.Path
-        The absolute path to convert.
-    env_var_name : str
-        The name of the environment variable to use as a base path.
-
-    Returns
-    -------
-    pathlib.Path
-        If the path starts with the environment variable's value, returns the path
-        with the prefix replaced with $ENV_VAR_NAME. Otherwise, returns the original path.
-
-    Examples
-    --------
-    >>> os.environ['HOME'] = '/home/user'
-    >>> path = pathlib.Path('/home/user/documents/file.txt')
-    >>> path_with_respect_to_env(path, 'HOME')
-    PosixPath('$HOME/documents/file.txt')
-    """
-    try:
-        env_var = os.environ[env_var_name]
-    except KeyError:
-        return path
-
-    env_path = pathlib.Path(env_var)
-    if path.parts[: len(env_path.parts)] != env_path.parts:
-        return path
-
-    return pathlib.Path(f"${env_var_name}", *path.parts[len(env_path.parts) :])
-
-
-def get_default(
-    python_type: str, size: str | None, fortran_default: str | None
-) -> tuple[DefaultType, str]:
+def get_default(python_type: str, size: str | None, fortran_default: str | None) -> tuple[DefaultType, str]:
     if fortran_default:
         if fortran_default.lower() == ".false.":
             return False, ""
@@ -346,7 +291,7 @@ def get_default(
             "type": None,
             "bool": False,
             "Complex": 0.0,
-        }.get(python_type, None)
+        }.get(python_type)
         return default, ""
     return "", "list"
 
@@ -634,9 +579,7 @@ def remove_type_from_declaration(line: str) -> str:
     return line
 
 
-def parse_type_declaration(
-    line: str, type_info: TypeInformation | None = None
-) -> list[ParsedDeclaration]:
+def parse_type_declaration(line: str, type_info: TypeInformation | None = None) -> list[ParsedDeclaration]:
     """
     Parse a Fortran TYPE declaration line into a list of ParsedDeclaration objects.
 
@@ -663,17 +606,13 @@ def parse_type_declaration(
         line = line[line.index("::") + 2 :]
     else:
         if ")" not in line:
-            return [
-                ParsedDeclaration(name=line.split()[1], dimension=None, default=None)
-            ]
+            return [ParsedDeclaration(name=line.split()[1], dimension=None, default=None)]
         line = line.split(")", 1)[1].strip()
 
     return [_split_variable(variable, type_info) for variable in _split_variables(line)]
 
 
-def parse_declaration(
-    line: str, type_info: TypeInformation | None = None
-) -> list[ParsedDeclaration]:
+def parse_declaration(line: str, type_info: TypeInformation | None = None) -> list[ParsedDeclaration]:
     """
     Parse a Fortran declaration line into a list of ParsedDeclaration objects.
 
@@ -700,9 +639,7 @@ def parse_declaration(
         return parse_type_declaration(line)
 
     variables = remove_type_from_declaration(line)
-    return [
-        _split_variable(variable, type_info) for variable in _split_variables(variables)
-    ]
+    return [_split_variable(variable, type_info) for variable in _split_variables(variables)]
 
 
 def find_structs(
@@ -725,9 +662,8 @@ def find_structs(
         elif lower_split[0] == "module":
             if len(lower_split) == 2:
                 module = lower_split[1]
-            else:
-                if lower_split[1] not in {"procedure"}:
-                    logger.debug(f"Skipping module line: {lower_split}")
+            elif lower_split[1] not in {"procedure"}:
+                logger.debug(f"Skipping module line: {lower_split}")
         elif lower_split[0] == "private":
             names = " ".join(lower_split[1:]).replace(",", " ").split()
             private_structs[file_line] = names
@@ -742,9 +678,7 @@ def find_structs(
             if squashed.startswith("typeis"):  # select type(x) / type is (y)
                 continue
             if struct is not None:
-                raise RuntimeError(
-                    f"{filename}:{file_line.lineno}: In struct: {struct.name} {line}"
-                )
+                raise RuntimeError(f"{filename}:{file_line.lineno}: In struct: {struct.name} {line}")
 
             # TYPE structname
             # END TYPE
@@ -780,18 +714,14 @@ def find_structs(
             in_routine = ""
         elif lower_split[:2] == ["end", "type"] or lower_split[0] == "endtype":
             if struct is None:
-                raise RuntimeError(
-                    f"{filename}:{file_line.lineno}: Not in struct? {line}"
-                )
+                raise RuntimeError(f"{filename}:{file_line.lineno}: Not in struct? {line}")
             logger.debug(f"Saw structure: {struct.name}")  # %s", struct)
             struct = None
         elif struct is not None:
             struct.lines.append(line.strip())
 
     if struct is not None:
-        raise RuntimeError(
-            f"Parse failure: {filename}: TYPE {struct.name} has no matching END TYPE?"
-        )
+        raise RuntimeError(f"Parse failure: {filename}: TYPE {struct.name} has no matching END TYPE?")
 
     for file_line, private_names in private_structs.items():
         for private_name in private_names:
@@ -810,9 +740,7 @@ def find_structs(
     return structs
 
 
-def fill_includes(
-    source_config: SourceConfig, filename: pathlib.Path, contents: str
-) -> list[FileLine]:
+def fill_includes(source_config: SourceConfig, filename: pathlib.Path, contents: str) -> list[FileLine]:
     result = []
     for lineno, line in enumerate(contents.splitlines(), 1):
         parts = line.strip().split()
@@ -820,19 +748,13 @@ def fill_includes(
         if parts and parts[0].lower() == "include":
             include_fn = ast.literal_eval(parts[1])
 
-            if include_fn in source_config.skip_includes or pathlib.Path(
-                include_fn
-            ).suffix.lower() in {".h"}:
+            if include_fn in source_config.skip_includes or pathlib.Path(include_fn).suffix.lower() in {".h"}:
                 result.append(file_line)
             else:
                 for candidate_path in [filename.parent, *source_config.include_dirs]:
                     include_path = candidate_path / include_fn
                     if include_path.exists():
-                        result.extend(
-                            fill_includes(
-                                source_config, include_path, include_path.read_text()
-                            )
-                        )
+                        result.extend(fill_includes(source_config, include_path, include_path.read_text()))
                         break
                 else:
                     raise FileNotFoundError(include_fn)
@@ -843,7 +765,7 @@ def fill_includes(
 
 
 def find_structs_in_file(
-    parser_config: ParserConfig,
+    parser_config: ParserConfig,  # noqa: ARG001
     source_config: SourceConfig,
     filename: pathlib.Path,
 ) -> list[Structure]:
@@ -865,9 +787,7 @@ def convert(
     filenames = list(source_config.source_dir.glob("**/*.f90", case_sensitive=False))
     for source_fn in filenames:
         try:
-            structs.extend(
-                find_structs_in_file(parser_config, source_config, source_fn)
-            )
+            structs.extend(find_structs_in_file(parser_config, source_config, source_fn))
         except Exception as ex:
             failed[source_fn] = ex
 
@@ -875,15 +795,13 @@ def convert(
         found = False
         for struct in list(structs):
             if struct.name.lower() == to_skip.lower():
-                logger.debug(
-                    f"User config skipped struct: {to_skip} (found in {struct.filename})"
-                )
+                logger.debug(f"User config skipped struct: {to_skip} (found in {struct.filename})")
                 structs.remove(struct)
                 found = True
         if not found:
             logger.warning(f"Unknown user-specified struct skip: {to_skip}")
 
-    unique_files = set(struct.filename for struct in structs)
+    unique_files = {struct.filename for struct in structs}
     logger.info(f"{source_config.source_dir.name!r} parsing complete:")
     logger.info(f"Path: {source_config.source_dir}")
     logger.info("Total structures: %d", len(structs))
@@ -900,14 +818,14 @@ def convert(
     dumped = json.loads(dumped_json)
 
     yaml_path.with_suffix(".json").write_bytes(dumped_json)
-    with open(yaml_path, "w") as fp:
+    with yaml_path.open("w") as fp:
         yaml.safe_dump(dumped, fp, sort_keys=False)
 
     return structs
 
 
 def load_structures(fn: pathlib.Path | str) -> list[Structure]:
-    with open(fn) as fp:
+    with pathlib.Path(fn).open() as fp:
         loaded = yaml.safe_load(fp)
     info_adapter = pydantic.TypeAdapter("list[Structure]")
     return info_adapter.validate_python(loaded)
@@ -930,14 +848,12 @@ def convert_and_write(
         return output_fn
 
     for source_config in parser_config.sources:
-        convert(
-            parser_config, source_config, get_output_path(source_config.yaml_filename)
-        )
+        convert(parser_config, source_config, get_output_path(source_config.yaml_filename))
 
 
 def main():
     argp = argparse.ArgumentParser()
-    argp.add_argument("--config", nargs="?")
+    argp.add_argument("--config", default=str(MODULE_PATH / "config.yaml"))
     argp.add_argument("--output", default=".", nargs="?")
     argp.add_argument("-l", "--log-level", nargs="?", default="INFO")
     args = argp.parse_args()
