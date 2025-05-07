@@ -1730,7 +1730,10 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 
 def get_parsed_files() -> list[Structure]:
     """Return a list of serialized (already-parsed) structures."""
-    return bmad_struct_parser.load_all_structures(*[ACC_ROOT_DIR / fn for fn in params.struct_def_yaml_files])
+    structures = []
+    for fn in params.struct_def_yaml_files:
+        structures.extend(bmad_struct_parser.load_structures_by_filename(ACC_ROOT_DIR / fn))
+    return structures
 
 
 def get_structure_definitions() -> list[Structure]:

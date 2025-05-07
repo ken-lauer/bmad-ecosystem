@@ -23,6 +23,7 @@ AnyPath = pathlib.Path | str
 MODULE_PATH = pathlib.Path(__file__).resolve().absolute().parent
 GENERATED_PATH = MODULE_PATH / "generated"
 MODEL_TEMPLATE = MODULE_PATH / "dataclass.tpl"
+DEFAULT_CONFIG_FILE = MODULE_PATH / "config.yaml"
 
 
 class ParserConfig(pydantic.BaseModel):
@@ -824,17 +825,22 @@ def convert(
     return structs
 
 
-def load_structures(fn: pathlib.Path | str) -> list[Structure]:
+def load_structures_by_filename(fn: pathlib.Path | str) -> list[Structure]:
     with pathlib.Path(fn).open() as fp:
         loaded = yaml.safe_load(fp)
     info_adapter = pydantic.TypeAdapter("list[Structure]")
     return info_adapter.validate_python(loaded)
 
 
-def load_all_structures(*yaml_paths: pathlib.Path | str) -> list[Structure]:
+def load_configured_structures(
+    config_file: pathlib.Path = DEFAULT_CONFIG_FILE, yaml_subpath: str = "structs"
+) -> list[Structure]:
+    from .util import ACC_ROOT_DIR
+
     all_structs = []
-    for yaml_path in yaml_paths:
-        all_structs.extend(load_structures(yaml_path))
+    conf = ParserConfig.from_file(config_file)
+    for source in conf.sources:
+        all_structs.extend(load_structures_by_filename(ACC_ROOT_DIR / yaml_subpath / source.yaml_filename))
     return all_structs
 
 
@@ -853,7 +859,7 @@ def convert_and_write(
 
 def main():
     argp = argparse.ArgumentParser()
-    argp.add_argument("--config", default=str(MODULE_PATH / "config.yaml"))
+    argp.add_argument("--config", default=str(DEFAULT_CONFIG_FILE))
     argp.add_argument("--output", default=".", nargs="?")
     argp.add_argument("-l", "--log-level", nargs="?", default="INFO")
     args = argp.parse_args()

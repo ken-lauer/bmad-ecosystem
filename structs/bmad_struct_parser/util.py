@@ -3,6 +3,13 @@ from __future__ import annotations
 import os
 import pathlib
 
+STRUCTS_ROOT = pathlib.Path(__file__).resolve().absolute().parent
+
+if "ACC_ROOT_DIR" in os.environ:
+    ACC_ROOT_DIR = pathlib.Path(os.environ["ACC_ROOT_DIR"]).resolve().absolute()
+else:
+    ACC_ROOT_DIR = STRUCTS_ROOT.parents[2]
+
 
 def path_with_respect_to_env(path: pathlib.Path, env_var_name: str) -> pathlib.Path:
     """
