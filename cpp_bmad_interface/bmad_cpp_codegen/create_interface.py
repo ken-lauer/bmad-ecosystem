@@ -19,16 +19,12 @@ from __future__ import annotations
 
 import copy
 import dataclasses
-import os
+import logging
 import pathlib
 import re
-import shutil
 import string
-import subprocess
 import sys
-import tempfile
 import textwrap
-from collections.abc import Callable
 from dataclasses import dataclass, field, fields
 from typing import Literal, NamedTuple
 
@@ -37,23 +33,16 @@ from bmad_struct_parser import Structure as ParsedStructure
 from bmad_struct_parser.parser import StructureMember
 
 from . import interface_input_params as params
+from .enums import ENUM_FILENAME, write_enums
+from .paths import (
+    ACC_ROOT_DIR,
+    CODEGEN_ROOT,
+    CPP_INTERFACE_ROOT,
+    TEMPLATES_PATH,
+)
+from .util import write_if_differs
 
-CODEGEN_ROOT = pathlib.Path(__file__).resolve().absolute().parent
-
-if "ACC_ROOT_DIR" in os.environ:
-    ACC_ROOT_DIR = pathlib.Path(os.environ["ACC_ROOT_DIR"]).resolve().absolute()
-else:
-    ACC_ROOT_DIR = CODEGEN_ROOT.parents[2]
-
-CPP_INTERFACE_ROOT = ACC_ROOT_DIR / "cpp_bmad_interface"
-STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
-TEMPLATES_PATH = CODEGEN_ROOT / "templates"
-
-DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "bmad_struct_parser" / "config.yaml"
-CLANG_FORMAT_PATH = os.environ.get("CLANG_FORMAT_PATH", shutil.which("clang-format"))
-
-assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}"
-
+logger = logging.getLogger(__name__)
 ##################################################################################
 ##################################################################################
 # Settings
@@ -161,7 +150,7 @@ def wrap_line(line, indent, cont_char):
 
 def print_debug(line):
     if DEBUG:
-        print(line, file=sys.stderr)
+        logger.warning(line)
 
 
 def indent(string: str, numspace: int) -> str:
@@ -407,7 +396,7 @@ class Argument:
             f_dim1 = self.ubound[0]
             c_dim1 = "Bmad::" + self.ubound[0][0:-1].upper()
             if self.lbound[0] != "1":
-                print('lbound not "1" with parameter upper bound!', file=sys.stderr)
+                logger.error('lbound not "1" with parameter upper bound!')
                 sys.exit("STOPPING HERE")
             if self.ubound[0].lower() == "num_ele_attrib$":
                 # NOTE: special case: this is an element attributes array, and we intend
@@ -719,9 +708,8 @@ def set_translations(struct: Structure, c_overrides, f_overrides) -> None:
     for arg in struct.arg:
         # Skip arguments without translation definitions
         if arg.full_type not in f_transforms:
-            print(
+            logger.error(
                 f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} [{arg.full_type}]",
-                file=sys.stderr,
             )
             continue
 
@@ -808,7 +796,7 @@ def check_missing(structs: list[Structure]):
     # Report any structs not found
     missing_structs = [struct.f_name for struct in structs if struct.short_name == ""]
     for name in missing_structs:
-        print(f"NOT FOUND: {name}", file=sys.stderr)
+        logger.error(f"NOT FOUND: {name}")
 
     # Exit if any structs are missing
     if missing_structs:
@@ -835,7 +823,7 @@ def check_missing(structs: list[Structure]):
     # Exit with error if any struct definitions are missing
     if missing_struct_definitions:
         for error_message in missing_struct_definitions:
-            print(error_message, file=sys.stderr)
+            logger.error(error_message)
         sys.exit(1)
 
 
@@ -1740,82 +1728,6 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 """)
 
 
-def write_if_differs(
-    write_func: Callable,
-    target_path: pathlib.Path | str,
-    *args,
-    **kwargs,
-) -> bool:
-    """
-    Execute a write function to a temporary file first, and only write to the target file
-    if the contents differ from the existing file or if the target file doesn't exist.
-
-    Parameters
-    ----------
-    write_func : Callable
-        Function that performs the writing operation; should accept a file object as its first argument
-    target_path : pathlib.Path
-        Path to the target file that may be written to
-    *args : Any
-        Additional positional arguments to pass to write_func
-    **kwargs : Any
-        Additional keyword arguments to pass to write_func
-
-    Returns
-    -------
-    bool
-        True if the target file was updated, False if no update was needed
-
-    Notes
-    -----
-    This function assumes text contents and does not handle encoding specifications.
-    """
-    target_path = pathlib.Path(target_path)
-
-    with tempfile.NamedTemporaryFile(mode="w+", delete=False) as temp_file:
-        write_func(temp_file, *args, **kwargs)
-
-        temp_file.flush()
-        temp_file.seek(0)
-
-        contents = temp_file.read()
-
-    if CLANG_FORMAT_PATH and target_path.suffix in (".h", ".hpp", ".cpp"):
-        try:
-            formatted_content = subprocess.run(
-                [CLANG_FORMAT_PATH],
-                input=contents.encode(),
-                capture_output=True,
-                check=True,
-            )
-        except subprocess.SubprocessError:
-            print_debug(f"Clang-format failed for {target_path}")
-        else:
-            contents = formatted_content.stdout.decode()
-
-    if not target_path.exists():
-        target_path.parent.mkdir(parents=True, exist_ok=True)
-        print(
-            f"* Writing to {target_path} (new file) {len(contents)} bytes",
-            file=sys.stderr,
-        )
-        target_path.write_text(contents)
-        return True
-
-    target_content = target_path.read_text()
-
-    if contents != target_content:
-        print(
-            f"* Writing to {target_path} (new contents) {len(target_content)} -> {len(contents)} bytes",
-            file=sys.stderr,
-        )
-        target_path.write_text(contents)
-        return True
-
-    print(f"* Not writing {target_path} (contents same)", file=sys.stderr)
-    return False
-
-
 def get_parsed_files() -> list[Structure]:
     """Return a list of serialized (already-parsed) structures."""
     return bmad_struct_parser.load_all_structures(*[ACC_ROOT_DIR / fn for fn in params.struct_def_yaml_files])
@@ -1844,23 +1756,27 @@ def generate():
     # TODO refactor globals
     global params  # noqa: PLW0603
 
+    logging.basicConfig(level="INFO")
+    logger.setLevel("DEBUG")
+
     include_dir = CPP_INTERFACE_ROOT / "include"
     include_dir.mkdir(exist_ok=True)
 
     if len(sys.argv) > 1:
         master_input_file = sys.argv[1]
         params = __import__(sys.argv[1])
-        print(f"Custom input file: {master_input_file}", file=sys.stderr)
+        logging.error(f"Custom input file: {master_input_file}")
 
     structs = get_structure_definitions()
     n_found = sum(1 for struct in structs if struct.short_name)
 
     # Print diagnostics
-    print(f"Number of structs in input list: {len(structs)}", file=sys.stderr)
-    print(f"Number of structs found:         {n_found}", file=sys.stderr)
+    logging.info(f"Number of structs in input list: {len(structs)}")
+    logging.info(f"Number of structs found:         {n_found}")
 
     check_missing(structs)
     write_output(structs)
+    write_if_differs(write_enums, ENUM_FILENAME)
 
 
 def write_output(structs: list[Structure]) -> None:

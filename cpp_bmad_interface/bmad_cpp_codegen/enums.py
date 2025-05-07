@@ -8,16 +8,18 @@
 #
 from __future__ import annotations
 
-import logging
 import pathlib
 import re
 
-from .create_interface import ACC_ROOT_DIR
+from .paths import ACC_ROOT_DIR
+from .util import write_if_differs
 
 INCLUDE_DIR = ACC_ROOT_DIR / "cpp_bmad_interface" / "include"
+INCLUDE_DIR.mkdir(parents=True, exist_ok=True)
+ENUM_FILENAME = INCLUDE_DIR / "bmad_enums.h"
 
 
-def generate_enums(file: pathlib.Path):
+def generate_enums(file: pathlib.Path) -> list[str]:
     re_int = re.compile("INTEGER, *PARAMETER *:: *")
     re_real = re.compile(r"REAL\(RP\), *PARAMETER *:: *")
     re_d_exp = re.compile(r"\dD[+-]?\d")
@@ -25,8 +27,9 @@ def generate_enums(file: pathlib.Path):
 
     params_here = False
 
-    f_in = pathlib.Path(file)
-    for line in f_in.open().readlines():
+    output = []
+
+    for line in file.read_text().splitlines():
         line = line.partition("!")[0].rstrip()  # Strip off comment
         line = line.upper()
         if "[" in line:
@@ -66,15 +69,16 @@ def generate_enums(file: pathlib.Path):
             params_here = False
             line = "  " + line + ";\n"
 
-        f_out.write(line)
+        output.append(line)
+    return output
 
 
 # ---------------------------------------
 
-INCLUDE_DIR.mkdir(parents=True, exist_ok=True)
 
-with (INCLUDE_DIR / "bmad_enums.h").open("w") as f_out:
-    f_out.write("""
+def get_enum_code():
+    result = [
+        """
 //+
 // C++ constants equivalent to Bmad parameters.
 //
@@ -99,16 +103,17 @@ with (INCLUDE_DIR / "bmad_enums.h").open("w") as f_out:
 #endif
 
 namespace Bmad {
-""")
+"""
+    ]
 
-    generate_enums(ACC_ROOT_DIR / "bmad/modules/bmad_struct.f90")
-    generate_enums(ACC_ROOT_DIR / "sim_utils/io/output_mod.f90")
-    generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/physical_constants.f90")
-    generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/particle_species_mod.f90")
-    generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/sim_utils_struct.f90")
-    generate_enums(ACC_ROOT_DIR / "sim_utils/plot/quick_plot_struct.f90")
+    result.extend(generate_enums(ACC_ROOT_DIR / "bmad/modules/bmad_struct.f90"))
+    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/io/output_mod.f90"))
+    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/physical_constants.f90"))
+    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/particle_species_mod.f90"))
+    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/sim_utils_struct.f90"))
+    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/plot/quick_plot_struct.f90"))
 
-    f_out.write("""
+    result.append("""
 }
 
 #ifdef TRUE_DEF
@@ -124,5 +129,12 @@ namespace Bmad {
 #define BMAD_ENUMS
 #endif
 """)
+    return "\n".join(result)
 
-logging.info("Created: include/bmad_enums.h")
+
+def write_enums(file):
+    file.write(get_enum_code())
+
+
+if __name__ == "__main__":
+    write_if_differs(write_enums, ENUM_FILENAME)
