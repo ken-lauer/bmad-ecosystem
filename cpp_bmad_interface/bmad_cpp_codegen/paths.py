@@ -15,7 +15,4 @@ CPP_INTERFACE_ROOT = ACC_ROOT_DIR / "cpp_bmad_interface"
 STRUCT_PARSER_ROOT = ACC_ROOT_DIR / "structs"
 TEMPLATES_PATH = CODEGEN_ROOT / "templates"
 
-DEFAULT_CONFIG = STRUCT_PARSER_ROOT / "bmad_struct_parser" / "config.yaml"
 CLANG_FORMAT_PATH = os.environ.get("CLANG_FORMAT_PATH", shutil.which("clang-format"))
-
-assert DEFAULT_CONFIG.exists(), f"Default config doesn't exist: {DEFAULT_CONFIG}"

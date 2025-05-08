@@ -457,7 +457,7 @@ class Argument:
             and f"{struct_name}%{self.f_name}" not in params.component_no_translate_list
         )
 
-    def _handle_lbound(self, struct: Structure) -> None:
+    def _handle_lbound(self, struct: CodegenStructure) -> None:
         """Handle the lower bound replacement."""
         id_name = struct.short_name + "%" + self.f_name
         lbound = params.f_side_lbound(id_name)
@@ -514,7 +514,7 @@ class Argument:
             "VALUE", self.c_side.construct_value
         ).replace("CPP_KIND", self.c_side.c_class)
 
-    def fix_struct_arg_placeholders(self, struct: Structure) -> None:
+    def fix_struct_arg_placeholders(self, struct: CodegenStructure) -> None:
         """
         Substitute placeholder names in argument patterns with actual values.
 
@@ -562,7 +562,7 @@ class Argument:
 
 
 @dataclass
-class Structure:
+class CodegenStructure:
     f_name: str = ""  # Struct name on Fortran side
     short_name: str = ""  # Struct name without trailing '_struct'. Note: C++ name is 'CPP_<short_name>'
     cpp_class: str = ""  # C++ name.
@@ -678,7 +678,7 @@ class TemplateImporter:
 ##################################################################################
 def match_structure_definition(
     parsed_structures: list[ParsedStructure],
-    struct: Structure,
+    struct: CodegenStructure,
 ):
     for fstruct in parsed_structures:
         if struct.f_name == fstruct.name:
@@ -692,14 +692,16 @@ def match_structure_definition(
     struct.arg = [Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()]
 
 
-def set_translations(struct: Structure, c_overrides: dict[str, str], f_overrides: dict[str, str]) -> None:
+def set_translations(
+    struct: CodegenStructure, c_overrides: dict[str, str], f_overrides: dict[str, str]
+) -> None:
     # Throw out any sub-structures that are not to be translated
     struct.arg = [arg for arg in struct.arg if arg.should_translate(struct.f_name)]
 
     for key, value in c_overrides.items():
         override_arg, attr = key.split(".", 1)
         if override_arg == f"{struct.f_name}%":
-            assert attr in [fld.name for fld in fields(Structure)], key
+            assert attr in [fld.name for fld in fields(CodegenStructure)], key
             setattr(struct, attr, value.rstrip("; \n"))
 
     # Add translation info to each argument
@@ -728,7 +730,7 @@ def set_translations(struct: Structure, c_overrides: dict[str, str], f_overrides
                 setattr(arg.f_side, attr, value)
 
 
-def add_array_bound_info_for_pointer_structures(struct: Structure) -> None:
+def add_array_bound_info_for_pointer_structures(struct: CodegenStructure) -> None:
     idx_argument = 0
     while idx_argument < len(struct.arg):
         arg = struct.arg[idx_argument]
@@ -790,7 +792,7 @@ def write_parsed_structures(structs, fn):
                 f_out.write(f"    {arg.original_repr()}\n")
 
 
-def check_missing(structs: list[Structure]):
+def check_missing(structs: list[CodegenStructure]):
     # Report any structs not found
     missing_structs = [struct.f_name for struct in structs if struct.short_name == ""]
     for name in missing_structs:
@@ -825,7 +827,7 @@ def check_missing(structs: list[Structure]):
         sys.exit(1)
 
 
-def create_fortran_interface(f_face, structs: list[Structure], params):
+def create_fortran_interface(f_face, structs: list[CodegenStructure], params):
     # Create Fortran side of interface...
 
     # First the header
@@ -1043,7 +1045,7 @@ end subroutine {s_name}_to_f2
     f_face.write("end module\n")
 
 
-def create_fortran_equality_check_code(f_equ, structs: list[Structure]):
+def create_fortran_equality_check_code(f_equ, structs: list[CodegenStructure]):
     f_equ.write(
         textwrap.dedent(f"""\
         !+
@@ -1115,7 +1117,7 @@ contains
     f_equ.write("end module\n")
 
 
-def write_tests_main(f_test, structs: list[Structure]):
+def write_tests_main(f_test, structs: list[CodegenStructure]):
     f_test.write(
         textwrap.dedent(
             """\
@@ -1153,7 +1155,7 @@ def write_tests_main(f_test, structs: list[Structure]):
     )
 
 
-def write_tests_mod(f_test, structs: list[Structure]):
+def write_tests_mod(f_test, structs: list[CodegenStructure]):
     f_test.write(
         textwrap.dedent(
             f"""\
@@ -1319,7 +1321,7 @@ end module
 """)
 
 
-def get_to_json_source(struct: Structure) -> list[str]:
+def get_to_json_source(struct: CodegenStructure) -> list[str]:
     args = [arg for arg in struct.arg if arg.is_component and arg.member is not None]
 
     members = ", ".join("{" + f'"{arg.c_name}", obj.{arg.c_name}' + "}" for arg in args)
@@ -1340,7 +1342,7 @@ def get_to_json_source(struct: Structure) -> list[str]:
     ]
 
 
-def write_cpp_json_source(file, structs: list[Structure]) -> None:
+def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     header_template = string.Template(
         textwrap.dedent(
@@ -1394,7 +1396,7 @@ def write_cpp_json_source(file, structs: list[Structure]) -> None:
     file.write(header_template.substitute(include_headers=include_headers, json_helpers=json_helpers))
 
 
-def get_class_lines(struct: Structure) -> list[str]:
+def get_class_lines(struct: CodegenStructure) -> list[str]:
     member_vars = []
     for arg in struct.arg:
         if not arg.is_component:
@@ -1450,7 +1452,7 @@ def get_class_lines(struct: Structure) -> list[str]:
     ).splitlines()
 
 
-def write_cpp_classes(file, structs: list[Structure]) -> None:
+def write_cpp_classes(file, structs: list[CodegenStructure]) -> None:
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     header_template = string.Template(
         textwrap.dedent(
@@ -1508,7 +1510,7 @@ def write_cpp_classes(file, structs: list[Structure]) -> None:
     )
 
 
-def write_cpp_convert(file, header: str, structs: list[Structure]):
+def write_cpp_convert(file, header: str, structs: list[CodegenStructure]):
     """Write C++ classes definitions for Bmad / C++ structure interface."""
     file.write(header)
 
@@ -1587,7 +1589,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("}\n")
 
 
-def write_cpp_equality(file, header: str, structs: list[Structure]):
+def write_cpp_equality(file, header: str, structs: list[CodegenStructure]):
     file.write(header)
 
     print("namespace Bmad {", file=file)
@@ -1612,7 +1614,7 @@ def write_cpp_equality(file, header: str, structs: list[Structure]):
     print("} // namespace Bmad", file=file)
 
 
-def write_cpp_test(file, structs: list[Structure]):
+def write_cpp_test(file, structs: list[CodegenStructure]):
     file.write("""
 //+
 // C++ classes definitions for Bmad / C++ structure interface.
@@ -1726,21 +1728,21 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
 """)
 
 
-def get_parsed_files() -> list[Structure]:
+def get_parsed_files() -> list[CodegenStructure]:
     """Return a list of serialized (already-parsed) structures."""
     structures = []
-    for fn in params.struct_def_yaml_files:
+    for fn in params.struct_def_json_files:
         structures.extend(bmad_struct_parser.load_structures_by_filename(ACC_ROOT_DIR / fn))
     return structures
 
 
-def get_structure_definitions() -> list[Structure]:
+def get_structure_definitions() -> list[CodegenStructure]:
     parsed_structures = get_parsed_files()
 
-    structs: list[Structure] = []
+    structs: list[CodegenStructure] = []
 
     for name in params.struct_list:
-        struct = Structure(name)
+        struct = CodegenStructure(name)
         match_structure_definition(parsed_structures, struct)
         set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
 
@@ -1780,7 +1782,7 @@ def generate():
     write_if_differs(write_enums, ENUM_FILENAME)
 
 
-def write_output(structs: list[Structure]) -> None:
+def write_output(structs: list[CodegenStructure]) -> None:
     if DEBUG:
         write_parsed_structures(structs, "f_structs.parsed")
 

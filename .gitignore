@@ -120,3 +120,7 @@ production
 debug
 linux_lib
 
+# If users try to install the code inspection/generation Python packages with
+# pip, these directories may be created:
+structs/build
+cpp_bmad_interface/build

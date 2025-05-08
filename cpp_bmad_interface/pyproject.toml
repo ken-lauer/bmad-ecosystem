@@ -10,7 +10,8 @@ authors = [
 name = "bmad_cpp_codegen"
 description = "Bmad C++ Interface Code Generation"
 readme = { file = "README.md", content-type = "text/markdown" }
-requires-python = ">=3.10"
+# 3.11+ for tomllib in standard library
+requires-python = ">=3.11"
 dynamic = ["version"]
 
 classifiers = [

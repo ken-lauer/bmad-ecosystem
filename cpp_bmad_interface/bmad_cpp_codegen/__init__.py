@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from .create_interface import (
     Argument,
+    CodegenStructure,
     CSideTransform,
     FortranSideTransform,
-    Structure,
     StructureMember,
     c_overrides,
     c_transforms,
@@ -17,14 +17,13 @@ from .create_interface import (
 __all__ = [
     "Argument",
     "CSideTransform",
+    "CodegenStructure",
     "FortranSideTransform",
-    "Structure",
     "StructureMember",
     "c_overrides",
     "c_transforms",
     "f_overrides",
     "f_transforms",
     "get_structure_definitions",
-    "load_configured_structures",
     "load_transforms",
 ]

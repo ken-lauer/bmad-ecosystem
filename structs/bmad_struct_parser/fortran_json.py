@@ -1,14 +1,13 @@
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import logging
 import pathlib
 import textwrap
 
-import pydantic
-
 from .parser import (
-    MODULE_PATH,
+    DEFAULT_CONFIG_FILE,
     ParserConfig,
     SourceConfig,
     Structure,
@@ -19,33 +18,23 @@ from .parser import (
 logger = logging.getLogger(__name__)
 
 
-class JsonDumpMember(pydantic.BaseModel):
+@dataclasses.dataclass
+class JsonDumpMember:
     var: str
     member: StructureMember
     code: str
-    imports: dict[str, list[str]] = {}
+    imports: dict[str, list[str]] = dataclasses.field(default_factory=dict)
 
 
-class JsonDumpCode(pydantic.BaseModel):
+@dataclasses.dataclass
+class JsonDumpCode:
     name: str
     code: str
-    imports: dict[str, list[str]]
+    imports: dict[str, list[str]] = dataclasses.field(default_factory=dict)
 
 
-class FortranSource(pydantic.BaseModel):
-    module: str
-    imports: list[str] = []
-    header: str = textwrap.dedent("""\
-        use json_module
-        use json_string_utilities, only: integer_to_string
-        use json_kinds, only: CK
-    """)
-
-    footer: str = """
-    """
-
-    subroutines: dict[str, str] = {
-        "complex_to_json": """\
+default_subroutines = {
+    "complex_to_json": """\
 subroutine complex_to_json (input, json_root, depth)
 
   use json_module
@@ -68,7 +57,24 @@ subroutine complex_to_json (input, json_root, depth)
 
 end subroutine complex_to_json
 """
-    }
+}
+
+default_header = """\
+use json_module
+use json_string_utilities, only: integer_to_string
+use json_kinds, only: CK
+"""
+
+
+@dataclasses.dataclass
+class FortranSource:
+    module: str
+    imports: list[str] = dataclasses.field(default_factory=list)
+    header: str = default_header
+    footer: str = """
+    """
+
+    subroutines: dict[str, str] = dataclasses.field(default_factory=lambda: dict(default_subroutines))
 
     def __str__(self):
         subroutines = "\n".join(sub for sub in self.subroutines.values())
@@ -119,7 +125,8 @@ def to_subroutine_name(struct: Structure | str):
     return f"{name}_to_json"
 
 
-class ListBuilder(pydantic.BaseModel):
+@dataclasses.dataclass()
+class ListBuilder:
     struct_var: str
     member: StructureMember
     iter_var: str
@@ -200,15 +207,16 @@ class ListBuilder(pydantic.BaseModel):
             )
 
         assert "do i1" in res
-        return f"!{member}\n{res}"
+        return f"!{member.definition!r}\n{res}"
 
 
-class Converter(pydantic.BaseModel):
+@dataclasses.dataclass()
+class Converter:
     structs: list[Structure]
-    importable: dict[SourceConfig, list[Structure]] = {}
-    generated: set[str] = set()
-    seen: set[str] = set()
-    imports: dict[SourceConfig, list[str]] = {}
+    importable: dict[SourceConfig, list[Structure]] = dataclasses.field(default_factory=dict)
+    generated: set[str] = dataclasses.field(default_factory=set)
+    seen: set[str] = dataclasses.field(default_factory=set)
+    imports: dict[SourceConfig, list[str]] = dataclasses.field(default_factory=dict)
 
     @property
     def by_bmad_name(self) -> dict[str, Structure]:
@@ -552,7 +560,7 @@ def dump_usage_tree(structs: list[Structure]):
 def main():
     argp = argparse.ArgumentParser()
     argp.add_argument("-d", "--working-directory", default=".")
-    argp.add_argument("--config", nargs="?", default=str(MODULE_PATH / "config.yaml"))
+    argp.add_argument("--config", nargs="?", default=str(DEFAULT_CONFIG_FILE))
     argp.add_argument("-l", "--log-level", nargs="?", default="INFO")
     args = argp.parse_args()
 
@@ -566,7 +574,7 @@ def main():
 
     working_dir = pathlib.Path(args.working_directory)
     by_source = {
-        source: load_structures_by_filename(working_dir / source.yaml_filename) for source in conf.sources
+        source: load_structures_by_filename(working_dir / source.json_filename) for source in conf.sources
     }
     for source, structs in by_source.items():
         logger.info(f"Working on {source.source_dir}")

@@ -2,92 +2,27 @@ from __future__ import annotations
 
 import argparse
 import ast
+import dataclasses
 import json
 import logging
-import os
 import pathlib
 import re
 from collections.abc import Sequence
-from typing import NamedTuple
+from typing import Any, NamedTuple
 
-import pydantic
-
-import yaml
-
-from .util import path_with_respect_to_env
+from .config import DEFAULT_CONFIG_FILE, ParserConfig, SourceConfig
+from .util import STRUCTS_ROOT, path_with_respect_to_env
 
 logger = logging.getLogger(__name__)
 
 DefaultType = bool | int | str | float | complex | Sequence[float] | Sequence[int] | Sequence[str] | None
 AnyPath = pathlib.Path | str
-MODULE_PATH = pathlib.Path(__file__).resolve().absolute().parent
-GENERATED_PATH = MODULE_PATH / "generated"
-MODEL_TEMPLATE = MODULE_PATH / "dataclass.tpl"
-DEFAULT_CONFIG_FILE = MODULE_PATH / "config.yaml"
+GENERATED_PATH = STRUCTS_ROOT / "generated"
+MODEL_TEMPLATE = STRUCTS_ROOT / "dataclass.tpl"
 
 
-class ParserConfig(pydantic.BaseModel):
-    sources: list[SourceConfig]
-
-    @classmethod
-    def from_file(cls, filename: pathlib.Path | str) -> ParserConfig:
-        with pathlib.Path(filename).open() as fp:
-            contents = yaml.safe_load(fp)
-        return cls.model_validate(contents)
-
-
-class JsonConfig(pydantic.BaseModel, frozen=True):
-    skip_members: tuple[str, ...] = ()
-    skip_files: tuple[str, ...] = ()
-
-
-class SourceConfig(pydantic.BaseModel, frozen=True):
-    source_dir: pathlib.Path
-    fortran_filename: pathlib.Path
-    yaml_filename: str
-    python_filename: str
-    python_import_name: str
-    function_prefix: str
-    skip_includes: tuple[str, ...] = ()
-    json_config: JsonConfig = JsonConfig()
-    skip_structs: tuple[str, ...] = ()
-    include_dirs: tuple[pathlib.Path, ...] = ()
-
-    @pydantic.field_validator("include_dirs")
-    @classmethod
-    def validate_include_dirs(cls, values: list[pathlib.Path | str]) -> tuple[pathlib.Path, ...]:
-        expanded_paths = [pathlib.Path(os.path.expandvars(str(v))) for v in values]
-        for path in expanded_paths:
-            if not path.is_dir():
-                raise ValueError(f"Path is not a directory: {path}")
-
-        return tuple(expanded_paths)
-
-    @pydantic.field_validator("fortran_filename")
-    @classmethod
-    def validate_fortran_filename(cls, v: pathlib.Path | str) -> pathlib.Path:
-        # Expand environment variables in the path
-        expanded_path = pathlib.Path(os.path.expandvars(str(v)))
-
-        if expanded_path.is_dir():
-            raise ValueError(f"Path is a directory: {expanded_path}")
-
-        expanded_path.parent.mkdir(exist_ok=True, parents=True)
-        return expanded_path
-
-    @pydantic.field_validator("source_dir")
-    @classmethod
-    def validate_source_path(cls, v: pathlib.Path | str) -> pathlib.Path:
-        # Expand environment variables in the path
-        expanded_path = pathlib.Path(os.path.expandvars(str(v)))
-
-        if not expanded_path.exists():
-            raise ValueError(f"Path does not exist: {expanded_path}")
-
-        return expanded_path
-
-
-class TypeInformation(pydantic.BaseModel, frozen=True):
+@dataclasses.dataclass(frozen=True)
+class TypeInformation:
     """
     A structured representation of a Fortran type declaration with all its attributes.
 
@@ -122,6 +57,22 @@ class TypeInformation(pydantic.BaseModel, frozen=True):
 
     attributes: tuple[str, ...] = ()  # Any other unrecognized attributes
 
+    @classmethod
+    def from_data(cls, data: dict[str, Any]) -> TypeInformation:
+        """Create a TypeInformation instance from a dictionary."""
+        data["attributes"] = tuple(data["attributes"])
+        return cls(**data)
+
+    def to_json(self) -> dict[str, Any]:
+        """Convert TypeInformation to a JSON-serializable dictionary."""
+        result = dataclasses.asdict(self)
+        keep_bools = {"bind", "dimension", "intent", "kind", "type"}
+        for key, value in list(result.items()):
+            if value is None or (key not in keep_bools and not value):
+                # Remove 'None' always and defaults otherwise
+                result.pop(key)
+        return result
+
     def replace(self, **kwargs):
         data = self.model_dump()
         data.update(**kwargs)
@@ -135,39 +86,26 @@ class TypeInformation(pydantic.BaseModel, frozen=True):
             declaration_parts[0] += f"({self.kind})"
 
         attributes = []
-        if self.allocatable:
-            attributes.append("allocatable")
-        if self.asynchronous:
-            attributes.append("asynchronous")
-        if self.contiguous:
-            attributes.append("contiguous")
-        if self.external:
-            attributes.append("external")
-        if self.intrinsic:
-            attributes.append("intrinsic")
-        if self.optional:
-            attributes.append("optional")
-        if self.parameter:
-            attributes.append("parameter")
-        if self.pointer:
-            attributes.append("pointer")
-        if self.private:
-            attributes.append("private")
-        if self.protected:
-            attributes.append("protected")
-        if self.public:
-            attributes.append("public")
-        if self.save:
-            attributes.append("save")
-        if self.static:
-            attributes.append("static")
-        if self.target:
-            attributes.append("target")
-        if self.value:
-            attributes.append("value")
-        if self.volatile:
-            attributes.append("volatile")
-
+        for attr_name in [
+            "allocatable",
+            "asynchronous",
+            "contiguous",
+            "external",
+            "intrinsic",
+            "optional",
+            "parameter",
+            "pointer",
+            "private",
+            "protected",
+            "public",
+            "save",
+            "static",
+            "target",
+            "value",
+            "volatile",
+        ]:
+            if getattr(self, attr_name):
+                attributes.append(attr_name)
         if self.bind is not None:
             attributes.append(f"bind({self.bind})")
         if self.dimension is not None:
@@ -187,10 +125,11 @@ class TypeInformation(pydantic.BaseModel, frozen=True):
         return self.kind  # back-compat
 
 
-class StructureMember(pydantic.BaseModel):
+@dataclasses.dataclass
+class StructureMember:
     line: int = 0
     definition: str = ""
-    type_info: TypeInformation = TypeInformation(type="")
+    type_info: TypeInformation = dataclasses.field(default_factory=lambda: TypeInformation(type=""))
     name: str = ""
     type: str = ""
     size: str | None = None
@@ -198,27 +137,80 @@ class StructureMember(pydantic.BaseModel):
     comment: str = ""
     default: bool | int | str | float | None = ""
 
-    @pydantic.field_validator("size")
-    @classmethod
-    def _validate_size(cls, size: str | None):
-        if not size:
-            return None
-        return size
+    def __post_init__(self):
+        if not self.size:
+            self.size = None
 
     @property
     def kind(self) -> str | None:
         return self.size
 
+    @classmethod
+    def from_data(cls, data: dict[str, Any]) -> StructureMember:
+        """Create a StructureMember instance from a dictionary."""
+        data["type_info"] = TypeInformation(**data["type_info"])
+        return cls(**data)
 
-class Structure(pydantic.BaseModel):
+    def to_json(self) -> dict[str, Any]:
+        """Convert StructureMember to a JSON-serializable dictionary."""
+        data = {
+            "line": self.line,
+            "definition": self.definition,
+            "type_info": self.type_info.to_json(),
+            "name": self.name,
+            "type": self.type,
+            "size": self.size,
+            "dimension": self.dimension,
+            "comment": self.comment,
+            "default": self.default,
+        }
+        for key, value in list(data.items()):
+            default = getattr(type(self), key, None)
+            if default is value:
+                data.pop(key)
+        return data
+
+
+@dataclasses.dataclass()
+class Structure:
     filename: pathlib.Path = pathlib.Path()
     line: int = 0
     name: str = ""
     module: str = ""
     private: bool = False
-    lines: list[str] = pydantic.Field(default_factory=list, exclude=True)
+    lines: list[str] = dataclasses.field(default_factory=list)
     comment: str = ""
-    members: dict[str, StructureMember] = pydantic.Field(default_factory=dict)
+    members: dict[str, StructureMember] = dataclasses.field(default_factory=dict)
+
+    @classmethod
+    def from_data(cls, data: dict[str, Any]) -> Structure:
+        """Create a Structure instance from a dictionary."""
+        data = dict(data)
+        data["filename"] = pathlib.Path(data.get("filename", ""))
+        data["members"] = {
+            name: StructureMember.from_data(member) for name, member in data.get("members", {}).items()
+        }
+        return cls(**data)
+
+    def to_json(self) -> dict[str, Any]:
+        """Convert Structure to a JSON-serializable dictionary."""
+        data = {
+            "filename": str(self.filename),
+            "line": self.line,
+            "name": self.name,
+            "module": self.module,
+            "private": self.private,
+            "comment": self.comment,
+            "members": {
+                name: member.to_json() if hasattr(member, "to_json") else member
+                for name, member in self.members.items()
+            },
+        }
+        for key, value in list(data.items()):
+            default = getattr(type(self), key, None)
+            if default is value:
+                data.pop(key)
+        return data
 
     def parse(self) -> None:
         skips = {
@@ -781,7 +773,7 @@ def find_structs_in_file(
 def convert(
     parser_config: ParserConfig,
     source_config: SourceConfig,
-    yaml_path: pathlib.Path,
+    output_json_path: pathlib.Path,
 ) -> list[Structure]:
     structs: list[Structure] = []
     failed = {}
@@ -814,33 +806,47 @@ def convert(
     for struct in structs:
         struct.parse()
 
-    info_adapter = pydantic.TypeAdapter("list[Structure]")
-    dumped_json = info_adapter.dump_json(structs, exclude_defaults=True)
-    dumped = json.loads(dumped_json)
+    dumped_json = json.dumps([struct.to_json() for struct in structs], indent=2)
+    json_filename = pathlib.Path(output_json_path).with_suffix(".json")
 
-    yaml_path.with_suffix(".json").write_bytes(dumped_json)
-    with yaml_path.open("w") as fp:
-        yaml.safe_dump(dumped, fp, sort_keys=False)
+    if json_filename.exists():
+        existing_contents = json_filename.read_text()
+        if existing_contents != dumped_json:
+            json_filename.write_text(dumped_json)
+            logger.info(
+                "Overwriting JSON file: %s (%d -> %d bytes)",
+                json_filename,
+                len(existing_contents),
+                len(dumped_json),
+            )
+        else:
+            logger.info("JSON file unchanged, not writing: %s", json_filename)
+    else:
+        logger.info(
+            "Writing new JSON file: %s (%d bytes)",
+            json_filename,
+            len(dumped_json),
+        )
+        json_filename.write_text(dumped_json)
 
     return structs
 
 
 def load_structures_by_filename(fn: pathlib.Path | str) -> list[Structure]:
     with pathlib.Path(fn).open() as fp:
-        loaded = yaml.safe_load(fp)
-    info_adapter = pydantic.TypeAdapter("list[Structure]")
-    return info_adapter.validate_python(loaded)
+        loaded = json.load(fp)
+    return [Structure.from_data(data) for data in loaded]
 
 
 def load_configured_structures(
-    config_file: pathlib.Path = DEFAULT_CONFIG_FILE, yaml_subpath: str = "structs"
+    config_file: pathlib.Path = DEFAULT_CONFIG_FILE, output_subpath: str = "structs"
 ) -> list[Structure]:
     from .util import ACC_ROOT_DIR
 
     all_structs = []
     conf = ParserConfig.from_file(config_file)
     for source in conf.sources:
-        all_structs.extend(load_structures_by_filename(ACC_ROOT_DIR / yaml_subpath / source.yaml_filename))
+        all_structs.extend(load_structures_by_filename(ACC_ROOT_DIR / output_subpath / source.json_filename))
     return all_structs
 
 
@@ -854,7 +860,7 @@ def convert_and_write(
         return output_fn
 
     for source_config in parser_config.sources:
-        convert(parser_config, source_config, get_output_path(source_config.yaml_filename))
+        convert(parser_config, source_config, get_output_path(source_config.json_filename))
 
 
 def main():

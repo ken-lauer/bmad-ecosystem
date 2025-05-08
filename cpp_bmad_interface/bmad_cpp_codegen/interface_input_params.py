@@ -19,11 +19,11 @@ struct_def_files = [
 ]
 
 # Paths are relative to ACC_ROOT_DIR.
-struct_def_yaml_files = [
-    "structs/yaml/bmad_structs.yaml",
-    "structs/yaml/forest_structs.yaml",
-    "structs/yaml/sim_utils_structs.yaml",
-    "structs/yaml/tao_structs.yaml",
+struct_def_json_files = [
+    "structs/json/bmad_structs.json",
+    "structs/json/forest_structs.json",
+    "structs/json/sim_utils_structs.json",
+    "structs/json/tao_structs.json",
 ]
 
 # List of use statements needed in various Fortran modules.

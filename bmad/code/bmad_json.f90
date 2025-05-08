@@ -65,7 +65,7 @@ subroutine ac_kicker_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%amp_vs_time)) then
-    !line=686 definition='type (ac_kicker_time_struct), allocatable :: amp_vs_time(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ac_kicker_time_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_vs_time' type='type' size='ac_kicker_time_struct' dimension=':' comment='' default=None
+    !'type (ac_kicker_time_struct), allocatable :: amp_vs_time(:)'
     call json%create_array(json_list1, 'amp_vs_time')
     do i1 = lbound(input%amp_vs_time, 1), ubound(input%amp_vs_time, 1)
       call ac_kicker_time_struct_to_json(input%amp_vs_time(i1), json_val, depth + 1)
@@ -75,7 +75,7 @@ subroutine ac_kicker_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%frequency)) then
-    !line=687 definition='type (ac_kicker_freq_struct), allocatable :: frequency(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ac_kicker_freq_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='frequency' type='type' size='ac_kicker_freq_struct' dimension=':' comment='' default=None
+    !'type (ac_kicker_freq_struct), allocatable :: frequency(:)'
     call json%create_array(json_list1, 'frequency')
     do i1 = lbound(input%frequency, 1), ubound(input%frequency, 1)
       call ac_kicker_freq_struct_to_json(input%frequency(i1), json_val, depth + 1)
@@ -134,7 +134,7 @@ subroutine anormal_mode_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'emittance', input%emittance)
   call json%add(json_root, 'emittance_no_vert', input%emittance_no_vert)
-  !line=1924 definition='real(rp) :: synch_int(4:6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='synch_int' type='real' size='rp' dimension='4:6' comment='Synchrotron integrals' default='0'
+  !'real(rp) :: synch_int(4:6) = 0'
   call json%create_array(json_list1, 'synch_int')
   do i1 = lbound(input%synch_int, 1), ubound(input%synch_int, 1)
     call json%create_real(json_val, input%synch_int(i1), '')
@@ -224,7 +224,7 @@ subroutine aperture_scan_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%point)) then
-    !line=2085 definition='type (aperture_point_struct), allocatable :: point(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='aperture_point_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='point' type='type' size='aperture_point_struct' dimension=':' comment='Set of aperture points at different angles.' default=None
+    !'type (aperture_point_struct), allocatable :: point(:)'
     call json%create_array(json_list1, 'point')
     do i1 = lbound(input%point, 1), ubound(input%point, 1)
       call aperture_point_struct_to_json(input%point(i1), json_val, depth + 1)
@@ -308,7 +308,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'position_file', trim(input%position_file))
-  !line=1137 definition="character(16) :: distribution_type(3) = 'RAN_GAUSS'" type_info=TypeInformation(type='character', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='16', static=False, target=False, value=False, volatile=False, attributes=()) name='distribution_type' type='character' size='16' dimension='3' comment='distribution type (in x-px, y-py, and z-pz planes)' default="'RAN_GAUSS'"
+  !"character(16) :: distribution_type(3) = 'RAN_GAUSS'"
   call json%create_array(json_list1, 'distribution_type')
   do i1 = lbound(input%distribution_type, 1), ubound(input%distribution_type, 1)
     call json%create_string(json_val, trim(input%distribution_type(i1)), '')
@@ -316,7 +316,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1138 definition='real(rp) :: spin(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin' type='real' size='rp' dimension='3' comment='Spin (x, y, z)' default='0'
+  !'real(rp) :: spin(3) = 0'
   call json%create_array(json_list1, 'spin')
   do i1 = lbound(input%spin, 1), ubound(input%spin, 1)
     call json%create_real(json_val, input%spin(i1), '')
@@ -324,7 +324,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1139 definition='type (ellipse_beam_init_struct) :: ellipse(3) = ellipse_beam_init_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ellipse_beam_init_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ellipse' type='type' size='ellipse_beam_init_struct' dimension='3' comment='Ellipse beam distribution' default='ellipse_beam_init_struct()'
+  !'type (ellipse_beam_init_struct) :: ellipse(3) = ellipse_beam_init_struct()'
   call json%create_array(json_list1, 'ellipse')
   do i1 = lbound(input%ellipse, 1), ubound(input%ellipse, 1)
     call ellipse_beam_init_struct_to_json(input%ellipse(i1), json_val, depth + 1)
@@ -335,7 +335,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   call kv_beam_init_struct_to_json(input%KV, json_val, depth + 1)
   call json%rename(json_val, 'KV')
   call json%add(json_root, json_val)
-  !line=1141 definition='type (grid_beam_init_struct) :: grid(3) = grid_beam_init_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='grid_beam_init_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='grid' type='type' size='grid_beam_init_struct' dimension='3' comment='Grid beam distribution' default='grid_beam_init_struct()'
+  !'type (grid_beam_init_struct) :: grid(3) = grid_beam_init_struct()'
   call json%create_array(json_list1, 'grid')
   do i1 = lbound(input%grid, 1), ubound(input%grid, 1)
     call grid_beam_init_struct_to_json(input%grid(i1), json_val, depth + 1)
@@ -343,7 +343,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1142 definition='real(rp) :: center_jitter(6) = 0.0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='center_jitter' type='real' size='rp' dimension='6' comment='Bunch center rms jitter' default='0.0'
+  !'real(rp) :: center_jitter(6) = 0.0'
   call json%create_array(json_list1, 'center_jitter')
   do i1 = lbound(input%center_jitter, 1), ubound(input%center_jitter, 1)
     call json%create_real(json_val, input%center_jitter(i1), '')
@@ -351,7 +351,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1143 definition='real(rp) :: emit_jitter(2)   = 0.0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='emit_jitter' type='real' size='rp' dimension='2' comment='a and b bunch emittance rms jitter normalized to emittance' default='0.0'
+  !'real(rp) :: emit_jitter(2)   = 0.0'
   call json%create_array(json_list1, 'emit_jitter')
   do i1 = lbound(input%emit_jitter, 1), ubound(input%emit_jitter, 1)
     call json%create_real(json_val, input%emit_jitter(i1), '')
@@ -372,7 +372,7 @@ subroutine beam_init_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'a_emit', input%a_emit)
   call json%add(json_root, 'b_emit', input%b_emit)
   call json%add(json_root, 'dpz_dz', input%dPz_dz)
-  !line=1157 definition='real(rp) :: center(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='center' type='real' size='rp' dimension='6' comment='Bench phase space center offset relative to reference.' default='0'
+  !'real(rp) :: center(6) = 0'
   call json%create_array(json_list1, 'center')
   do i1 = lbound(input%center, 1), ubound(input%center, 1)
     call json%create_real(json_val, input%center(i1), '')
@@ -415,7 +415,7 @@ subroutine beam_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%bunch)) then
-    !line=1111 definition='type (bunch_struct), allocatable :: bunch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='bunch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='bunch' type='type' size='bunch_struct' dimension=':' comment='' default=None
+    !'type (bunch_struct), allocatable :: bunch(:)'
     call json%create_array(json_list1, 'bunch')
     do i1 = lbound(input%bunch, 1), ubound(input%bunch, 1)
       call bunch_struct_to_json(input%bunch(i1), json_val, depth + 1)
@@ -446,7 +446,7 @@ subroutine bmad_common_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'max_aperture_limit', input%max_aperture_limit)
-  !line=2223 definition='real(rp) :: d_orb(6)           = 1d-5' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='d_orb' type='real' size='rp' dimension='6' comment='Orbit deltas for the mat6 via tracking calc.' default='1d-5'
+  !'real(rp) :: d_orb(6)           = 1d-5'
   call json%create_array(json_list1, 'd_orb')
   do i1 = lbound(input%d_orb, 1), ubound(input%d_orb, 1)
     call json%create_real(json_val, input%d_orb(i1), '')
@@ -518,7 +518,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
     call json%rename(json_val, 'ele_origin')
     call json%add(json_root, json_val)
   endif
-  !line=1533 definition='type (taylor_struct) :: M(6) = taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='M' type='type' size='taylor_struct' dimension='6' comment='One-turn taylor map: M = A o N o A_inv, N = exp(:h:)' default='taylor_struct()'
+  !'type (taylor_struct) :: M(6) = taylor_struct()'
   call json%create_array(json_list1, 'm')
   do i1 = lbound(input%M, 1), ubound(input%M, 1)
     call taylor_struct_to_json(input%M(i1), json_val, depth + 1)
@@ -526,7 +526,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1534 definition='type (taylor_struct) :: A(6) = taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='type' size='taylor_struct' dimension='6' comment='Map from Floquet -> Lab coordinates' default='taylor_struct()'
+  !'type (taylor_struct) :: A(6) = taylor_struct()'
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%A, 1), ubound(input%A, 1)
     call taylor_struct_to_json(input%A(i1), json_val, depth + 1)
@@ -534,7 +534,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1535 definition='type (taylor_struct) :: A_inv(6) = taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='A_inv' type='type' size='taylor_struct' dimension='6' comment='Map from Lab -> Floquet coordinates' default='taylor_struct()'
+  !'type (taylor_struct) :: A_inv(6) = taylor_struct()'
   call json%create_array(json_list1, 'a_inv')
   do i1 = lbound(input%A_inv, 1), ubound(input%A_inv, 1)
     call taylor_struct_to_json(input%A_inv(i1), json_val, depth + 1)
@@ -542,7 +542,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1536 definition='type (taylor_struct) :: dhdj(6) = taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='dhdj' type='type' size='taylor_struct' dimension='6' comment='Nonlinear tune function operating on Floquet coordinates' default='taylor_struct()'
+  !'type (taylor_struct) :: dhdj(6) = taylor_struct()'
   call json%create_array(json_list1, 'dhdj')
   do i1 = lbound(input%dhdj, 1), ubound(input%dhdj, 1)
     call taylor_struct_to_json(input%dhdj(i1), json_val, depth + 1)
@@ -550,7 +550,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1537 definition='type (complex_taylor_struct) :: F(6) = complex_taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='complex_taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='F' type='type' size='complex_taylor_struct' dimension='6' comment='Vector field factorization in phasor basis:' default='complex_taylor_struct()'
+  !'type (complex_taylor_struct) :: F(6) = complex_taylor_struct()'
   call json%create_array(json_list1, 'f')
   do i1 = lbound(input%F, 1), ubound(input%F, 1)
     call complex_taylor_struct_to_json(input%F(i1), json_val, depth + 1)
@@ -558,7 +558,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1538 definition='type (complex_taylor_struct) :: L(6) = complex_taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='complex_taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='L' type='type' size='complex_taylor_struct' dimension='6' comment='L component' default='complex_taylor_struct()'
+  !'type (complex_taylor_struct) :: L(6) = complex_taylor_struct()'
   call json%create_array(json_list1, 'l')
   do i1 = lbound(input%L, 1), ubound(input%L, 1)
     call complex_taylor_struct_to_json(input%L(i1), json_val, depth + 1)
@@ -567,7 +567,7 @@ subroutine bmad_normal_form_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   if (allocated(input%h)) then
-    !line=1539 definition='type (resonance_h_struct), allocatable :: h(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='resonance_h_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='h' type='type' size='resonance_h_struct' dimension=':' comment='' default=None
+    !'type (resonance_h_struct), allocatable :: h(:)'
     call json%create_array(json_list1, 'h')
     do i1 = lbound(input%h, 1), ubound(input%h, 1)
       call resonance_h_struct_to_json(input%h(i1), json_val, depth + 1)
@@ -651,7 +651,7 @@ subroutine bp_common2_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%const)) then
-    !line=177 definition='type (bp_const_struct), allocatable :: const(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='bp_const_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='const' type='type' size='bp_const_struct' dimension=':' comment='Constant name' default=None
+    !'type (bp_const_struct), allocatable :: const(:)'
     call json%create_array(json_list1, 'const')
     do i1 = lbound(input%const, 1), ubound(input%const, 1)
       call bp_const_struct_to_json(input%const(i1), json_val, depth + 1)
@@ -681,7 +681,7 @@ subroutine bp_common_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=128 definition='type (stack_file_struct) :: file(0:f_maxx) = stack_file_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='stack_file_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='file' type='type' size='stack_file_struct' dimension='0:f_maxx' comment='' default='stack_file_struct()'
+  !'type (stack_file_struct) :: file(0:f_maxx) = stack_file_struct()'
   call json%create_array(json_list1, 'file')
   do i1 = lbound(input%file, 1), ubound(input%file, 1)
     call stack_file_struct_to_json(input%file(i1), json_val, depth + 1)
@@ -709,7 +709,7 @@ subroutine bp_common_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'ios_next_chunk', int(input%ios_next_chunk))
   call json%add(json_root, 'ios_this_chunk', int(input%ios_this_chunk))
   if (allocated(input%lat_file_names)) then
-    !line=137 definition='character(400), allocatable :: lat_file_names(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='400', static=False, target=False, value=False, volatile=False, attributes=()) name='lat_file_names' type='character' size='400' dimension=':' comment='List of all files used to create lat' default=None
+    !'character(400), allocatable :: lat_file_names(:)'
     call json%create_array(json_list1, 'lat_file_names')
     do i1 = lbound(input%lat_file_names, 1), ubound(input%lat_file_names, 1)
       call json%create_string(json_val, trim(input%lat_file_names(i1)), '')
@@ -868,7 +868,7 @@ subroutine branch_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'z')
   call json%add(json_root, json_val)
   if (associated(input%ele)) then
-    !line=1567 definition='type (ele_struct), pointer :: ele(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='ele_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='ele_struct' dimension=':' comment='' default='null()'
+    !'type (ele_struct), pointer :: ele(:) => null()'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call ele_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -881,7 +881,7 @@ subroutine branch_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'param')
   call json%add(json_root, json_val)
   if (associated(input%wall3d)) then
-    !line=1569 definition='type (wall3d_struct), pointer :: wall3d(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='wall3d_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='wall3d' type='type' size='wall3d_struct' dimension=':' comment='' default='null()'
+    !'type (wall3d_struct), pointer :: wall3d(:) => null()'
     call json%create_array(json_list1, 'wall3d')
     do i1 = lbound(input%wall3d, 1), ubound(input%wall3d, 1)
       call wall3d_struct_to_json(input%wall3d(i1), json_val, depth + 1)
@@ -933,7 +933,7 @@ subroutine bunch_params_struct_to_json (input, json_root, depth)
   call twiss_struct_to_json(input%c, json_val, depth + 1)
   call json%rename(json_val, 'c')
   call json%add(json_root, json_val)
-  !line=1191 definition='real(rp) :: sigma(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='sigma' type='real' size='rp' dimension='6,6' comment='beam size matrix' default='0'
+  !'real(rp) :: sigma(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%sigma, 2), ubound(input%sigma, 2)
     call json%create_array(json_list1, 'sigma')
@@ -946,7 +946,7 @@ subroutine bunch_params_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=1192 definition='real(rp) :: rel_max(7) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='rel_max' type='real' size='rp' dimension='7' comment='Max orbit relative to centroid. 7 -> time.' default='0'
+  !'real(rp) :: rel_max(7) = 0'
   call json%create_array(json_list1, 'rel_max')
   do i1 = lbound(input%rel_max, 1), ubound(input%rel_max, 1)
     call json%create_real(json_val, input%rel_max(i1), '')
@@ -954,7 +954,7 @@ subroutine bunch_params_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1193 definition='real(rp) :: rel_min(7) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='rel_min' type='real' size='rp' dimension='7' comment='Min orbit relative to_centroid. 7 -> time.' default='0'
+  !'real(rp) :: rel_min(7) = 0'
   call json%create_array(json_list1, 'rel_min')
   do i1 = lbound(input%rel_min, 1), ubound(input%rel_min, 1)
     call json%create_real(json_val, input%rel_min(i1), '')
@@ -997,7 +997,7 @@ subroutine bunch_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%particle)) then
-    !line=1091 definition='type (coord_struct), allocatable :: particle(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='coord_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='particle' type='type' size='coord_struct' dimension=':' comment='' default=None
+    !'type (coord_struct), allocatable :: particle(:)'
     call json%create_array(json_list1, 'particle')
     do i1 = lbound(input%particle, 1), ubound(input%particle, 1)
       call coord_struct_to_json(input%particle(i1), json_val, depth + 1)
@@ -1007,7 +1007,7 @@ subroutine bunch_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%ix_z)) then
-    !line=1092 definition='integer, allocatable :: ix_z(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ix_z' type='integer' size=None dimension=':' comment='bunch%ix_z(1) is index of head particle, etc.' default=None
+    !'integer, allocatable :: ix_z(:)'
     call json%create_array(json_list1, 'ix_z')
     do i1 = lbound(input%ix_z, 1), ubound(input%ix_z, 1)
       call json%create_integer(json_val, input%ix_z(i1), '')
@@ -1050,7 +1050,7 @@ subroutine bunch_track_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%pt)) then
-    !line=1214 definition='type (bunch_params_struct), allocatable :: pt(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='bunch_params_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='bunch_params_struct' dimension=':' comment='Array indexed from 0' default=None
+    !'type (bunch_params_struct), allocatable :: pt(:)'
     call json%create_array(json_list1, 'pt')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
       call bunch_params_struct_to_json(input%pt(i1), json_val, depth + 1)
@@ -1083,7 +1083,7 @@ subroutine cartesian_map_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'field_scale', input%field_scale)
-  !line=715 definition='real(rp) :: r0(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='3' comment='Field origin offset.' default='0'
+  !'real(rp) :: r0(3) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -1153,7 +1153,7 @@ subroutine cartesian_map_term_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'file', trim(input%file))
   call json%add(json_root, 'n_link', int(input%n_link))
   if (allocated(input%term)) then
-    !line=710 definition='type (cartesian_map_term1_struct), allocatable :: term(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='cartesian_map_term1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='term' type='type' size='cartesian_map_term1_struct' dimension=':' comment='' default=None
+    !'type (cartesian_map_term1_struct), allocatable :: term(:)'
     call json%create_array(json_list1, 'term')
     do i1 = lbound(input%term, 1), ubound(input%term, 1)
       call cartesian_map_term1_struct_to_json(input%term(i1), json_val, depth + 1)
@@ -1183,7 +1183,7 @@ subroutine cheb_diffuse_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=21 definition='real(rp) cch_int(n_cheb_term$), cch(n_cheb_term$)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='cch_int' type='real' size='rp' dimension='n_cheb_term$' comment='' default=None
+  !'real(rp) cch_int(n_cheb_term$), cch(n_cheb_term$)'
   call json%create_array(json_list1, 'cch_int')
   do i1 = lbound(input%cch_int, 1), ubound(input%cch_int, 1)
     call json%create_real(json_val, input%cch_int(i1), '')
@@ -1191,7 +1191,7 @@ subroutine cheb_diffuse_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=21 definition='real(rp) cch_int(n_cheb_term$), cch(n_cheb_term$)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='cch' type='real' size='rp' dimension='n_cheb_term$' comment='' default=None
+  !'real(rp) cch_int(n_cheb_term$), cch(n_cheb_term$)'
   call json%create_array(json_list1, 'cch')
   do i1 = lbound(input%cch, 1), ubound(input%cch, 1)
     call json%create_real(json_val, input%cch(i1), '')
@@ -1224,7 +1224,7 @@ subroutine complex_taylor_struct_to_json (input, json_root, depth)
   call json%rename(json_list1, 'ref')
   call json%add(json_root, json_list1)
   if (associated(input%term)) then
-    !line=489 definition='type (complex_taylor_term_struct), pointer :: term(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='complex_taylor_term_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='term' type='type' size='complex_taylor_term_struct' dimension=':' comment='' default='null()'
+    !'type (complex_taylor_term_struct), pointer :: term(:) => null()'
     call json%create_array(json_list1, 'term')
     do i1 = lbound(input%term, 1), ubound(input%term, 1)
       call complex_taylor_term_struct_to_json(input%term(i1), json_val, depth + 1)
@@ -1257,7 +1257,7 @@ subroutine complex_taylor_term_struct_to_json (input, json_root, depth)
   call complex_to_json(input%coef, json_list1, depth+1)
   call json%rename(json_list1, 'coef')
   call json%add(json_root, json_list1)
-  !line=471 definition='integer :: expn(6)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='expn' type='integer' size=None dimension='6' comment='' default=None
+  !'integer :: expn(6)'
   call json%create_array(json_list1, 'expn')
   do i1 = lbound(input%expn, 1), ubound(input%expn, 1)
     call json%create_integer(json_val, input%expn(i1), '')
@@ -1287,7 +1287,7 @@ subroutine compounddatanist_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'nelements', int(input%nElements))
-  !line=24 definition='integer nElements, elements(1)' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='elements' type='integer' size=None dimension='1' comment='' default=None
+  !'integer nElements, elements(1)'
   call json%create_array(json_list1, 'elements')
   do i1 = lbound(input%elements, 1), ubound(input%elements, 1)
     call json%create_integer(json_val, input%elements(i1), '')
@@ -1295,7 +1295,7 @@ subroutine compounddatanist_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=25 definition='real massFractions(1), density' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='massFractions' type='real' size=None dimension='1' comment='' default=None
+  !'real massFractions(1), density'
   call json%create_array(json_list1, 'massfractions')
   do i1 = lbound(input%massFractions, 1), ubound(input%massFractions, 1)
     call json%create_real(json_val, input%massFractions(i1), '')
@@ -1326,7 +1326,7 @@ subroutine control_ramp1_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%y_knot)) then
-    !line=1327 definition='real(rp), allocatable :: y_knot(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='y_knot' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: y_knot(:)'
     call json%create_array(json_list1, 'y_knot')
     do i1 = lbound(input%y_knot, 1), ubound(input%y_knot, 1)
       call json%create_real(json_val, input%y_knot(i1), '')
@@ -1336,7 +1336,7 @@ subroutine control_ramp1_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%stack)) then
-    !line=1328 definition='type (expression_atom_struct), allocatable :: stack(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='expression_atom_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='stack' type='type' size='expression_atom_struct' dimension=':' comment='Evaluation stack' default=None
+    !'type (expression_atom_struct), allocatable :: stack(:)'
     call json%create_array(json_list1, 'stack')
     do i1 = lbound(input%stack, 1), ubound(input%stack, 1)
       call expression_atom_struct_to_json(input%stack(i1), json_val, depth + 1)
@@ -1371,7 +1371,7 @@ subroutine control_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'value', input%value)
   if (allocated(input%y_knot)) then
-    !line=1310 definition='real(rp), allocatable :: y_knot(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='y_knot' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: y_knot(:)'
     call json%create_array(json_list1, 'y_knot')
     do i1 = lbound(input%y_knot, 1), ubound(input%y_knot, 1)
       call json%create_real(json_val, input%y_knot(i1), '')
@@ -1381,7 +1381,7 @@ subroutine control_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%stack)) then
-    !line=1311 definition='type (expression_atom_struct), allocatable :: stack(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='expression_atom_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='stack' type='type' size='expression_atom_struct' dimension=':' comment='Evaluation stack' default=None
+    !'type (expression_atom_struct), allocatable :: stack(:)'
     call json%create_array(json_list1, 'stack')
     do i1 = lbound(input%stack, 1), ubound(input%stack, 1)
       call expression_atom_struct_to_json(input%stack(i1), json_val, depth + 1)
@@ -1445,7 +1445,7 @@ subroutine controller_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%var)) then
-    !line=1344 definition='type (control_var1_struct), allocatable :: var(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='control_var1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='var' type='type' size='control_var1_struct' dimension=':' comment='' default=None
+    !'type (control_var1_struct), allocatable :: var(:)'
     call json%create_array(json_list1, 'var')
     do i1 = lbound(input%var, 1), ubound(input%var, 1)
       call control_var1_struct_to_json(input%var(i1), json_val, depth + 1)
@@ -1455,7 +1455,7 @@ subroutine controller_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%ramp)) then
-    !line=1345 definition='type (control_ramp1_struct), allocatable :: ramp(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='control_ramp1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ramp' type='type' size='control_ramp1_struct' dimension=':' comment='For ramper lord elements' default=None
+    !'type (control_ramp1_struct), allocatable :: ramp(:)'
     call json%create_array(json_list1, 'ramp')
     do i1 = lbound(input%ramp, 1), ubound(input%ramp, 1)
       call control_ramp1_struct_to_json(input%ramp(i1), json_val, depth + 1)
@@ -1465,7 +1465,7 @@ subroutine controller_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%ramper_lord)) then
-    !line=1346 definition='type (ramper_lord_struct), allocatable :: ramper_lord(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ramper_lord_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ramper_lord' type='type' size='ramper_lord_struct' dimension=':' comment='Ramper lord info for this slave' default=None
+    !'type (ramper_lord_struct), allocatable :: ramper_lord(:)'
     call json%create_array(json_list1, 'ramper_lord')
     do i1 = lbound(input%ramper_lord, 1), ubound(input%ramper_lord, 1)
       call ramper_lord_struct_to_json(input%ramper_lord(i1), json_val, depth + 1)
@@ -1475,7 +1475,7 @@ subroutine controller_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%x_knot)) then
-    !line=1347 definition='real(rp), allocatable :: x_knot(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='x_knot' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: x_knot(:)'
     call json%create_array(json_list1, 'x_knot')
     do i1 = lbound(input%x_knot, 1), ubound(input%x_knot, 1)
       call json%create_real(json_val, input%x_knot(i1), '')
@@ -1506,7 +1506,7 @@ subroutine converter_dir_1D_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'pc_out', input%pc_out)
-  !line=1243 definition='real(rp) :: poly(0:4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='poly' type='real' size='rp' dimension='0:4' comment='param(r) = Sum: poly(i) * r^i' default='0'
+  !'real(rp) :: poly(0:4) = 0'
   call json%create_array(json_list1, 'poly')
   do i1 = lbound(input%poly, 1), ubound(input%poly, 1)
     call json%create_real(json_val, input%poly(i1), '')
@@ -1536,7 +1536,7 @@ subroutine converter_dir_2D_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'k', input%k)
-  !line=1248 definition='real(rp) :: poly(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='poly' type='real' size='rp' dimension='0:3' comment='' default='0'
+  !'real(rp) :: poly(0:3) = 0'
   call json%create_array(json_list1, 'poly')
   do i1 = lbound(input%poly, 1), ubound(input%poly, 1)
     call json%create_real(json_val, input%poly(i1), '')
@@ -1566,7 +1566,7 @@ subroutine converter_dir_coef_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%fit_1d_r)) then
-    !line=1252 definition='type (converter_dir_1D_struct), allocatable :: fit_1d_r(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='converter_dir_1D_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='fit_1d_r' type='type' size='converter_dir_1D_struct' dimension=':' comment='' default=None
+    !'type (converter_dir_1D_struct), allocatable :: fit_1d_r(:)'
     call json%create_array(json_list1, 'fit_1d_r')
     do i1 = lbound(input%fit_1d_r, 1), ubound(input%fit_1d_r, 1)
       call converter_dir_1D_struct_to_json(input%fit_1d_r(i1), json_val, depth + 1)
@@ -1647,7 +1647,7 @@ subroutine converter_distribution_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'thickness', input%thickness)
   if (allocated(input%sub_dist)) then
-    !line=1292 definition='type (converter_sub_distribution_struct), allocatable :: sub_dist(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='converter_sub_distribution_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='sub_dist' type='type' size='converter_sub_distribution_struct' dimension=':' comment='Distribution at various pc_in values.' default=None
+    !'type (converter_sub_distribution_struct), allocatable :: sub_dist(:)'
     call json%create_array(json_list1, 'sub_dist')
     do i1 = lbound(input%sub_dist, 1), ubound(input%sub_dist, 1)
       call converter_sub_distribution_struct_to_json(input%sub_dist(i1), json_val, depth + 1)
@@ -1678,7 +1678,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%pc_out)) then
-    !line=1225 definition='real(rp), allocatable :: pc_out(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='pc_out' type='real' size='rp' dimension=':' comment='Grid pc_out values.' default=None
+    !'real(rp), allocatable :: pc_out(:)'
     call json%create_array(json_list1, 'pc_out')
     do i1 = lbound(input%pc_out, 1), ubound(input%pc_out, 1)
       call json%create_real(json_val, input%pc_out(i1), '')
@@ -1688,7 +1688,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%r)) then
-    !line=1226 definition='real(rp), allocatable :: r(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='rp' dimension=':' comment='Grid r_out values.' default=None
+    !'real(rp), allocatable :: r(:)'
     call json%create_array(json_list1, 'r')
     do i1 = lbound(input%r, 1), ubound(input%r, 1)
       call json%create_real(json_val, input%r(i1), '')
@@ -1698,7 +1698,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%prob)) then
-    !line=1227 definition='real(rp), allocatable :: prob(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='prob' type='real' size='rp' dimension=':,:' comment='Probability grid.' default=None
+    !'real(rp), allocatable :: prob(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%prob, 2), ubound(input%prob, 2)
       call json%create_array(json_list1, 'prob')
@@ -1713,7 +1713,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%spin_z)) then
-    !line=1228 definition='real(rp), allocatable :: spin_z(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin_z' type='real' size='rp' dimension=':,:' comment='Z polarization grid.' default=None
+    !'real(rp), allocatable :: spin_z(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%spin_z, 2), ubound(input%spin_z, 2)
       call json%create_array(json_list1, 'spin_z')
@@ -1731,7 +1731,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'pc_out_max', input%pc_out_max)
   call json%add(json_root, 'integrated_prob', input%integrated_prob)
   if (allocated(input%p_norm)) then
-    !line=1231 definition='real(rp), allocatable :: p_norm(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='p_norm' type='real' size='rp' dimension=':,:' comment='Normalized probability taking into account.' default=None
+    !'real(rp), allocatable :: p_norm(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%p_norm, 2), ubound(input%p_norm, 2)
       call json%create_array(json_list1, 'p_norm')
@@ -1746,7 +1746,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%integ_pc_out)) then
-    !line=1232 definition='real(rp), allocatable :: integ_pc_out(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='integ_pc_out' type='real' size='rp' dimension=':' comment='Normalized probability integrated from min pc_out up.' default=None
+    !'real(rp), allocatable :: integ_pc_out(:)'
     call json%create_array(json_list1, 'integ_pc_out')
     do i1 = lbound(input%integ_pc_out, 1), ubound(input%integ_pc_out, 1)
       call json%create_real(json_val, input%integ_pc_out(i1), '')
@@ -1756,7 +1756,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%integ_r)) then
-    !line=1233 definition='real(rp), allocatable :: integ_r(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='integ_r' type='real' size='rp' dimension=':,:' comment='' default=None
+    !'real(rp), allocatable :: integ_r(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%integ_r, 2), ubound(input%integ_r, 2)
       call json%create_array(json_list1, 'integ_r')
@@ -1771,7 +1771,7 @@ subroutine converter_prob_pc_r_struct_to_json (input, json_root, depth)
     nullify(json_list2)
   endif
   if (allocated(input%integ_r_ave)) then
-    !line=1234 definition='real(rp), allocatable :: integ_r_ave(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='integ_r_ave' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: integ_r_ave(:)'
     call json%create_array(json_list1, 'integ_r_ave')
     do i1 = lbound(input%integ_r_ave, 1), ubound(input%integ_r_ave, 1)
       call json%create_real(json_val, input%integ_r_ave(i1), '')
@@ -1804,7 +1804,7 @@ subroutine converter_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'species_out', int(input%species_out))
   call json%add(json_root, 'material_type', trim(input%material_type))
   if (allocated(input%dist)) then
-    !line=1301 definition='type (converter_distribution_struct), allocatable :: dist(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='converter_distribution_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='dist' type='type' size='converter_distribution_struct' dimension=':' comment='Distribution at various thicknesses' default=None
+    !'type (converter_distribution_struct), allocatable :: dist(:)'
     call json%create_array(json_list1, 'dist')
     do i1 = lbound(input%dist, 1), ubound(input%dist, 1)
       call converter_distribution_struct_to_json(input%dist(i1), json_val, depth + 1)
@@ -1835,7 +1835,7 @@ subroutine converter_sub_distribution_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'pc_in', input%pc_in)
-  !line=1269 definition='real(rp) :: spin_in(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin_in' type='real' size='rp' dimension='3' comment='' default=None
+  !'real(rp) :: spin_in(3)'
   call json%create_array(json_list1, 'spin_in')
   do i1 = lbound(input%spin_in, 1), ubound(input%spin_in, 1)
     call json%create_real(json_val, input%spin_in(i1), '')
@@ -1871,7 +1871,7 @@ subroutine coord_array_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%orbit)) then
-    !line=562 definition='type (coord_struct), allocatable :: orbit(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='coord_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='orbit' type='type' size='coord_struct' dimension=':' comment='' default=None
+    !'type (coord_struct), allocatable :: orbit(:)'
     call json%create_array(json_list1, 'orbit')
     do i1 = lbound(input%orbit, 1), ubound(input%orbit, 1)
       call coord_struct_to_json(input%orbit(i1), json_val, depth + 1)
@@ -1901,7 +1901,7 @@ subroutine coord_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=530 definition='real(rp) :: vec(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec' type='real' size='rp' dimension='6' comment='(x, px, y, py, z, pz). Generally phase space for charged particles. See Bmad manual.' default='0'
+  !'real(rp) :: vec(6) = 0'
   call json%create_array(json_list1, 'vec')
   do i1 = lbound(input%vec, 1), ubound(input%vec, 1)
     call json%create_real(json_val, input%vec(i1), '')
@@ -1911,7 +1911,7 @@ subroutine coord_struct_to_json (input, json_root, depth)
   nullify(json_list1)
   call json%add(json_root, 's', input%s)
   call json%add(json_root, 't', input%t)
-  !line=533 definition='real(rp) :: spin(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin' type='real' size='rp' dimension='3' comment='Spin.' default='0'
+  !'real(rp) :: spin(3) = 0'
   call json%create_array(json_list1, 'spin')
   do i1 = lbound(input%spin, 1), ubound(input%spin, 1)
     call json%create_real(json_val, input%spin(i1), '')
@@ -1919,7 +1919,7 @@ subroutine coord_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=534 definition='real(rp) :: field(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='field' type='real' size='rp' dimension='2' comment='Photon E-field intensity (x,y).' default='0'
+  !'real(rp) :: field(2) = 0'
   call json%create_array(json_list1, 'field')
   do i1 = lbound(input%field, 1), ubound(input%field, 1)
     call json%create_real(json_val, input%field(i1), '')
@@ -1927,7 +1927,7 @@ subroutine coord_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=535 definition='real(rp) :: phase(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='phase' type='real' size='rp' dimension='2' comment='Photon E-field phase (x,y). phase(1) is also used with' default='0'
+  !'real(rp) :: phase(2) = 0'
   call json%create_array(json_list1, 'phase')
   do i1 = lbound(input%phase, 1), ubound(input%phase, 1)
     call json%create_real(json_val, input%phase(i1), '')
@@ -1975,7 +1975,7 @@ subroutine crystal_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'dtheta_sin_2theta', input%dtheta_sin_2theta)
   call json%add(json_root, 'b_eff', input%b_eff)
   call json%add(json_root, 'wavelength', input%wavelength)
-  !line=11 definition='real(rp) old_vvec(3), new_vvec(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='old_vvec' type='real' size='rp' dimension='3' comment='' default=None
+  !'real(rp) old_vvec(3), new_vvec(3)'
   call json%create_array(json_list1, 'old_vvec')
   do i1 = lbound(input%old_vvec, 1), ubound(input%old_vvec, 1)
     call json%create_real(json_val, input%old_vvec(i1), '')
@@ -1983,7 +1983,7 @@ subroutine crystal_param_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=11 definition='real(rp) old_vvec(3), new_vvec(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='new_vvec' type='real' size='rp' dimension='3' comment='' default=None
+  !'real(rp) old_vvec(3), new_vvec(3)'
   call json%create_array(json_list1, 'new_vvec')
   do i1 = lbound(input%new_vvec, 1), ubound(input%new_vvec, 1)
     call json%create_real(json_val, input%new_vvec(i1), '')
@@ -2045,7 +2045,7 @@ subroutine csr_bunch_slice_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'dcharge_density_dz', input%dcharge_density_dz)
   call json%add(json_root, 'edge_dcharge_density_dz', input%edge_dcharge_density_dz)
   call json%add(json_root, 'kick_csr', input%kick_csr)
-  !line=45 definition='real(rp) :: coef_lsc_plus(0:2,0:2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_lsc_plus' type='real' size='rp' dimension='0:2,0:2' comment='LSC Kick coefs.' default='0'
+  !'real(rp) :: coef_lsc_plus(0:2,0:2) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%coef_lsc_plus, 2), ubound(input%coef_lsc_plus, 2)
     call json%create_array(json_list1, 'coef_lsc_plus')
@@ -2058,7 +2058,7 @@ subroutine csr_bunch_slice_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=46 definition='real(rp) :: coef_lsc_minus(0:2,0:2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_lsc_minus' type='real' size='rp' dimension='0:2,0:2' comment='LSC Kick coefs.' default='0'
+  !'real(rp) :: coef_lsc_minus(0:2,0:2) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%coef_lsc_minus, 2), ubound(input%coef_lsc_minus, 2)
     call json%create_array(json_list1, 'coef_lsc_minus')
@@ -2148,7 +2148,7 @@ subroutine csr_kick1_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'i_csr', input%I_csr)
   call json%add(json_root, 'i_int_csr', input%I_int_csr)
   call json%add(json_root, 'image_kick_csr', input%image_kick_csr)
-  !line=61 definition='real(rp) L_vec(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='L_vec' type='real' size='rp' dimension='3' comment='L vector in global coordinates.' default=None
+  !'real(rp) L_vec(3)'
   call json%create_array(json_list1, 'l_vec')
   do i1 = lbound(input%L_vec, 1), ubound(input%L_vec, 1)
     call json%create_real(json_val, input%L_vec(i1), '')
@@ -2188,7 +2188,7 @@ subroutine csr_particle_position_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=74 definition='real(rp) :: r(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='rp' dimension='3' comment='particle position' default=None
+  !'real(rp) :: r(3)'
   call json%create_array(json_list1, 'r')
   do i1 = lbound(input%r, 1), ubound(input%r, 1)
     call json%create_real(json_val, input%r(i1), '')
@@ -2237,7 +2237,7 @@ subroutine csr_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'species', int(input%species))
   call json%add(json_root, 'ix_ele_kick', int(input%ix_ele_kick))
   if (allocated(input%slice)) then
-    !line=93 definition='type (csr_bunch_slice_struct), allocatable :: slice(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='csr_bunch_slice_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='slice' type='type' size='csr_bunch_slice_struct' dimension=':' comment='slice(i) refers to the i^th bunch slice.' default=None
+    !'type (csr_bunch_slice_struct), allocatable :: slice(:)'
     call json%create_array(json_list1, 'slice')
     do i1 = lbound(input%slice, 1), ubound(input%slice, 1)
       call csr_bunch_slice_struct_to_json(input%slice(i1), json_val, depth + 1)
@@ -2247,7 +2247,7 @@ subroutine csr_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%kick1)) then
-    !line=94 definition='type (csr_kick1_struct), allocatable :: kick1(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='csr_kick1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='kick1' type='type' size='csr_kick1_struct' dimension=':' comment='kick1(i) referes to the kick between two slices i bins apart.' default=None
+    !'type (csr_kick1_struct), allocatable :: kick1(:)'
     call json%create_array(json_list1, 'kick1')
     do i1 = lbound(input%kick1, 1), ubound(input%kick1, 1)
       call csr_kick1_struct_to_json(input%kick1(i1), json_val, depth + 1)
@@ -2257,7 +2257,7 @@ subroutine csr_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%eleinfo)) then
-    !line=95 definition='type (csr_ele_info_struct), allocatable :: eleinfo(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='csr_ele_info_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='eleinfo' type='type' size='csr_ele_info_struct' dimension=':' comment='Element-by-element information.' default=None
+    !'type (csr_ele_info_struct), allocatable :: eleinfo(:)'
     call json%create_array(json_list1, 'eleinfo')
     do i1 = lbound(input%eleinfo, 1), ubound(input%eleinfo, 1)
       call csr_ele_info_struct_to_json(input%eleinfo(i1), json_val, depth + 1)
@@ -2275,7 +2275,7 @@ subroutine csr_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'mesh3d')
   call json%add(json_root, json_val)
   if (allocated(input%position)) then
-    !line=98 definition='type (csr_particle_position_struct), allocatable :: position(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='csr_particle_position_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='position' type='type' size='csr_particle_position_struct' dimension=':' comment='' default=None
+    !'type (csr_particle_position_struct), allocatable :: position(:)'
     call json%create_array(json_list1, 'position')
     do i1 = lbound(input%position, 1), ubound(input%position, 1)
       call csr_particle_position_struct_to_json(input%position(i1), json_val, depth + 1)
@@ -2313,7 +2313,7 @@ subroutine cylindrical_map_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'master_parameter', int(input%master_parameter))
   call json%add(json_root, 'ele_anchor_pt', int(input%ele_anchor_pt))
   call json%add(json_root, 'dz', input%dz)
-  !line=744 definition='real(rp) :: r0(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='3' comment='Field origin offset.' default='0'
+  !'real(rp) :: r0(3) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -2377,7 +2377,7 @@ subroutine cylindrical_map_term_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'file', trim(input%file))
   call json%add(json_root, 'n_link', int(input%n_link))
   if (allocated(input%term)) then
-    !line=732 definition='type (cylindrical_map_term1_struct), allocatable :: term(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='cylindrical_map_term1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='term' type='type' size='cylindrical_map_term1_struct' dimension=':' comment='' default=None
+    !'type (cylindrical_map_term1_struct), allocatable :: term(:)'
     call json%create_array(json_list1, 'term')
     do i1 = lbound(input%term, 1), ubound(input%term, 1)
       call cylindrical_map_term1_struct_to_json(input%term(i1), json_val, depth + 1)
@@ -2436,7 +2436,7 @@ subroutine diffuse_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'lambda', input%lambda)
   call json%add(json_root, 'c_norm', input%c_norm)
   call json%add(json_root, 'chx_norm', input%chx_norm)
-  !line=16 definition='type (spline_struct) prob_spline(0:50)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='prob_spline' type='type' size='spline_struct' dimension='0:50' comment='' default=None
+  !'type (spline_struct) prob_spline(0:50)'
   call json%create_array(json_list1, 'prob_spline')
   do i1 = lbound(input%prob_spline, 1), ubound(input%prob_spline, 1)
     call spline_struct_to_json(input%prob_spline(i1), json_val, depth + 1)
@@ -2592,7 +2592,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     call json%rename(json_val, 'rad_map')
     call json%add(json_root, json_val)
   endif
-  !line=1393 definition='type (taylor_struct) :: taylor(6) = taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='taylor' type='type' size='taylor_struct' dimension='6' comment='Phase space Taylor map.' default='taylor_struct()'
+  !'type (taylor_struct) :: taylor(6) = taylor_struct()'
   call json%create_array(json_list1, 'taylor')
   do i1 = lbound(input%taylor, 1), ubound(input%taylor, 1)
     call taylor_struct_to_json(input%taylor(i1), json_val, depth + 1)
@@ -2600,7 +2600,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1394 definition='real(rp) :: spin_taylor_ref_orb_in(6) = real_garbage$' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin_taylor_ref_orb_in' type='real' size='rp' dimension='6' comment='' default='real_garbage$'
+  !'real(rp) :: spin_taylor_ref_orb_in(6) = real_garbage$'
   call json%create_array(json_list1, 'spin_taylor_ref_orb_in')
   do i1 = lbound(input%spin_taylor_ref_orb_in, 1), ubound(input%spin_taylor_ref_orb_in, 1)
     call json%create_real(json_val, input%spin_taylor_ref_orb_in(i1), '')
@@ -2608,7 +2608,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1395 definition='type (taylor_struct) :: spin_taylor(0:3) = taylor_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='taylor_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='spin_taylor' type='type' size='taylor_struct' dimension='0:3' comment='Quaternion Spin Taylor map.' default='taylor_struct()'
+  !'type (taylor_struct) :: spin_taylor(0:3) = taylor_struct()'
   call json%create_array(json_list1, 'spin_taylor')
   do i1 = lbound(input%spin_taylor, 1), ubound(input%spin_taylor, 1)
     call taylor_struct_to_json(input%spin_taylor(i1), json_val, depth + 1)
@@ -2622,7 +2622,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%wall3d)) then
-    !line=1397 definition='type (wall3d_struct), pointer :: wall3d(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='wall3d_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='wall3d' type='type' size='wall3d_struct' dimension=':' comment='Chamber or capillary wall' default='null()'
+    !'type (wall3d_struct), pointer :: wall3d(:) => null()'
     call json%create_array(json_list1, 'wall3d')
     do i1 = lbound(input%wall3d, 1), ubound(input%wall3d, 1)
       call wall3d_struct_to_json(input%wall3d(i1), json_val, depth + 1)
@@ -2632,7 +2632,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%cartesian_map)) then
-    !line=1398 definition='type (cartesian_map_struct), pointer :: cartesian_map(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='cartesian_map_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='cartesian_map' type='type' size='cartesian_map_struct' dimension=':' comment='Used to define E/M fields' default='null()'
+    !'type (cartesian_map_struct), pointer :: cartesian_map(:) => null()'
     call json%create_array(json_list1, 'cartesian_map')
     do i1 = lbound(input%cartesian_map, 1), ubound(input%cartesian_map, 1)
       call cartesian_map_struct_to_json(input%cartesian_map(i1), json_val, depth + 1)
@@ -2642,7 +2642,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%cylindrical_map)) then
-    !line=1399 definition='type (cylindrical_map_struct), pointer :: cylindrical_map(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='cylindrical_map_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='cylindrical_map' type='type' size='cylindrical_map_struct' dimension=':' comment='Used to define E/M fields' default='null()'
+    !'type (cylindrical_map_struct), pointer :: cylindrical_map(:) => null()'
     call json%create_array(json_list1, 'cylindrical_map')
     do i1 = lbound(input%cylindrical_map, 1), ubound(input%cylindrical_map, 1)
       call cylindrical_map_struct_to_json(input%cylindrical_map(i1), json_val, depth + 1)
@@ -2652,7 +2652,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%gen_grad_map)) then
-    !line=1400 definition='type (gen_grad_map_struct), pointer :: gen_grad_map(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='gen_grad_map_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='gen_grad_map' type='type' size='gen_grad_map_struct' dimension=':' comment='Used to define E/M fields.' default='null()'
+    !'type (gen_grad_map_struct), pointer :: gen_grad_map(:) => null()'
     call json%create_array(json_list1, 'gen_grad_map')
     do i1 = lbound(input%gen_grad_map, 1), ubound(input%gen_grad_map, 1)
       call gen_grad_map_struct_to_json(input%gen_grad_map(i1), json_val, depth + 1)
@@ -2662,7 +2662,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%grid_field)) then
-    !line=1401 definition='type (grid_field_struct), pointer :: grid_field(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='grid_field_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='grid_field' type='type' size='grid_field_struct' dimension=':' comment='Used to define E/M fields.' default='null()'
+    !'type (grid_field_struct), pointer :: grid_field(:) => null()'
     call json%create_array(json_list1, 'grid_field')
     do i1 = lbound(input%grid_field, 1), ubound(input%grid_field, 1)
       call grid_field_struct_to_json(input%grid_field(i1), json_val, depth + 1)
@@ -2683,7 +2683,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   call coord_struct_to_json(input%time_ref_orb_out, json_val, depth + 1)
   call json%rename(json_val, 'time_ref_orb_out')
   call json%add(json_root, json_val)
-  !line=1406 definition='real(rp) :: value(num_ele_attrib$) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='value' type='real' size='rp' dimension='num_ele_attrib$' comment='attribute values.' default='0'
+  !'real(rp) :: value(num_ele_attrib$) = 0'
   call json%create_array(json_list1, 'value')
   do i1 = lbound(input%value, 1), ubound(input%value, 1)
     call json%create_real(json_val, input%value(i1), '')
@@ -2691,7 +2691,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1407 definition='real(rp) :: old_value(num_ele_attrib$) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='old_value' type='real' size='rp' dimension='num_ele_attrib$' comment='Used to see if %value(:) array has changed.' default='0'
+  !'real(rp) :: old_value(num_ele_attrib$) = 0'
   call json%create_array(json_list1, 'old_value')
   do i1 = lbound(input%old_value, 1), ubound(input%old_value, 1)
     call json%create_real(json_val, input%old_value(i1), '')
@@ -2699,7 +2699,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1408 definition='real(rp) :: spin_q(0:3,0:6) = real_garbage$' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin_q' type='real' size='rp' dimension='0:3,0:6' comment='0th and 1st order Spin transport quaternion.' default='real_garbage$'
+  !'real(rp) :: spin_q(0:3,0:6) = real_garbage$'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%spin_q, 2), ubound(input%spin_q, 2)
     call json%create_array(json_list1, 'spin_q')
@@ -2712,7 +2712,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=1409 definition='real(rp) :: vec0(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec0' type='real' size='rp' dimension='6' comment='0th order transport vector.' default='0'
+  !'real(rp) :: vec0(6) = 0'
   call json%create_array(json_list1, 'vec0')
   do i1 = lbound(input%vec0, 1), ubound(input%vec0, 1)
     call json%create_real(json_val, input%vec0(i1), '')
@@ -2720,7 +2720,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1410 definition='real(rp) :: mat6(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='mat6' type='real' size='rp' dimension='6,6' comment='1st order transport matrix.' default='0'
+  !'real(rp) :: mat6(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%mat6, 2), ubound(input%mat6, 2)
     call json%create_array(json_list1, 'mat6')
@@ -2733,7 +2733,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=1411 definition='real(rp) :: c_mat(2,2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='c_mat' type='real' size='rp' dimension='2,2' comment='2x2 C coupling matrix' default='0'
+  !'real(rp) :: c_mat(2,2) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%c_mat, 2), ubound(input%c_mat, 2)
     call json%create_array(json_list1, 'c_mat')
@@ -2751,7 +2751,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
   call json%add(json_root, 's', input%s)
   call json%add(json_root, 'ref_time', input%ref_time)
   if (associated(input%a_pole)) then
-    !line=1416 definition='real(rp), pointer :: a_pole(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_pole' type='real' size='rp' dimension=':' comment='knl for multipole elements.' default='null()'
+    !'real(rp), pointer :: a_pole(:) => null()'
     call json%create_array(json_list1, 'a_pole')
     do i1 = lbound(input%a_pole, 1), ubound(input%a_pole, 1)
       call json%create_real(json_val, input%a_pole(i1), '')
@@ -2761,7 +2761,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%b_pole)) then
-    !line=1417 definition='real(rp), pointer :: b_pole(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_pole' type='real' size='rp' dimension=':' comment='tilt for multipole elements.' default='null()'
+    !'real(rp), pointer :: b_pole(:) => null()'
     call json%create_array(json_list1, 'b_pole')
     do i1 = lbound(input%b_pole, 1), ubound(input%b_pole, 1)
       call json%create_real(json_val, input%b_pole(i1), '')
@@ -2771,7 +2771,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%a_pole_elec)) then
-    !line=1418 definition='real(rp), pointer :: a_pole_elec(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_pole_elec' type='real' size='rp' dimension=':' comment='Electrostatic multipoles. ksnl for multipole elements.' default='null()'
+    !'real(rp), pointer :: a_pole_elec(:) => null()'
     call json%create_array(json_list1, 'a_pole_elec')
     do i1 = lbound(input%a_pole_elec, 1), ubound(input%a_pole_elec, 1)
       call json%create_real(json_val, input%a_pole_elec(i1), '')
@@ -2781,7 +2781,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%b_pole_elec)) then
-    !line=1419 definition='real(rp), pointer :: b_pole_elec(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_pole_elec' type='real' size='rp' dimension=':' comment='Electrostatic multipoles.' default='null()'
+    !'real(rp), pointer :: b_pole_elec(:) => null()'
     call json%create_array(json_list1, 'b_pole_elec')
     do i1 = lbound(input%b_pole_elec, 1), ubound(input%b_pole_elec, 1)
       call json%create_real(json_val, input%b_pole_elec(i1), '')
@@ -2791,7 +2791,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%custom)) then
-    !line=1420 definition='real(rp), pointer :: custom(:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='custom' type='real' size='rp' dimension=':' comment='Custom attributes.' default='null()'
+    !'real(rp), pointer :: custom(:) => null()'
     call json%create_array(json_list1, 'custom')
     do i1 = lbound(input%custom, 1), ubound(input%custom, 1)
       call json%create_real(json_val, input%custom(i1), '')
@@ -2801,7 +2801,7 @@ subroutine ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (associated(input%r)) then
-    !line=1421 definition='real(rp), pointer :: r(:,:,:) => null()' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='rp' dimension=':,:,:' comment='For general use. Not used by Bmad.' default='null()'
+    !'real(rp), pointer :: r(:,:,:) => null()'
     call json%create_array(json_list3, 'dim-3')
     do i3 = lbound(input%r, 3), ubound(input%r, 3)
       call json%create_array(json_list2, 'dim-2')
@@ -2904,7 +2904,7 @@ subroutine em_field_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1973 definition='real(rp) :: E(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' type='real' size='rp' dimension='3' comment='electric field.' default='0'
+  !'real(rp) :: E(3) = 0'
   call json%create_array(json_list1, 'e')
   do i1 = lbound(input%E, 1), ubound(input%E, 1)
     call json%create_real(json_val, input%E(i1), '')
@@ -2912,7 +2912,7 @@ subroutine em_field_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1974 definition='real(rp) :: B(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='real' size='rp' dimension='3' comment='magnetic field.' default='0'
+  !'real(rp) :: B(3) = 0'
   call json%create_array(json_list1, 'b')
   do i1 = lbound(input%B, 1), ubound(input%B, 1)
     call json%create_real(json_val, input%B(i1), '')
@@ -2920,7 +2920,7 @@ subroutine em_field_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1975 definition='real(rp) :: dE(3,3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dE' type='real' size='rp' dimension='3,3' comment='electric field gradient.' default='0'
+  !'real(rp) :: dE(3,3) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%dE, 2), ubound(input%dE, 2)
     call json%create_array(json_list1, 'de')
@@ -2933,7 +2933,7 @@ subroutine em_field_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=1976 definition='real(rp) :: dB(3,3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dB' type='real' size='rp' dimension='3,3' comment='magnetic field gradient.' default='0'
+  !'real(rp) :: dB(3,3) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%dB, 2), ubound(input%dB, 2)
     call json%create_array(json_list1, 'db')
@@ -2948,7 +2948,7 @@ subroutine em_field_struct_to_json (input, json_root, depth)
   nullify(json_list2)
   call json%add(json_root, 'phi', input%phi)
   call json%add(json_root, 'phi_b', input%phi_B)
-  !line=1979 definition='real(rp) :: A(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='A' type='real' size='rp' dimension='3' comment='Magnetic vector potential.' default='0'
+  !'real(rp) :: A(3) = 0'
   call json%create_array(json_list1, 'a')
   do i1 = lbound(input%A, 1), ubound(input%A, 1)
     call json%create_real(json_val, input%A(i1), '')
@@ -2979,7 +2979,7 @@ subroutine em_taylor_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'ref', input%ref)
   if (allocated(input%term)) then
-    !line=813 definition='type (em_taylor_term_struct), allocatable :: term(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='em_taylor_term_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='term' type='type' size='em_taylor_term_struct' dimension=':' comment='' default=None
+    !'type (em_taylor_term_struct), allocatable :: term(:)'
     call json%create_array(json_list1, 'term')
     do i1 = lbound(input%term, 1), ubound(input%term, 1)
       call em_taylor_term_struct_to_json(input%term(i1), json_val, depth + 1)
@@ -3010,7 +3010,7 @@ subroutine em_taylor_term_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'coef', input%coef)
-  !line=808 definition='integer :: expn(2) = 0' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='expn' type='integer' size=None dimension='2' comment='' default='0'
+  !'integer :: expn(2) = 0'
   call json%create_array(json_list1, 'expn')
   do i1 = lbound(input%expn, 1), ubound(input%expn, 1)
     call json%create_integer(json_val, input%expn(i1), '')
@@ -3155,7 +3155,7 @@ subroutine floor_position_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=828 definition='real(rp) :: r(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='rp' dimension='3' comment='(x, y, z) offset from origin' default='0'
+  !'real(rp) :: r(3) = 0'
   call json%create_array(json_list1, 'r')
   do i1 = lbound(input%r, 1), ubound(input%r, 1)
     call json%create_real(json_val, input%r(i1), '')
@@ -3163,7 +3163,7 @@ subroutine floor_position_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=829 definition='real(rp) :: w(3,3) =  mat3_unit$' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='w' type='real' size='rp' dimension='3,3' comment='W matrix. Columns are unit vectors of the frame axes.' default='mat3_unit$'
+  !'real(rp) :: w(3,3) =  mat3_unit$'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%w, 2), ubound(input%w, 2)
     call json%create_array(json_list1, 'w')
@@ -3201,7 +3201,7 @@ subroutine foil_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%material)) then
-    !line=1285 definition='type (material_struct), allocatable :: material(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='material_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='material' type='type' size='material_struct' dimension=':' comment='' default=None
+    !'type (material_struct), allocatable :: material(:)'
     call json%create_array(json_list1, 'material')
     do i1 = lbound(input%material, 1), ubound(input%material, 1)
       call material_struct_to_json(input%material(i1), json_val, depth + 1)
@@ -3243,7 +3243,7 @@ subroutine fringe_field_info_struct_to_json (input, json_root, depth)
     call json%add(json_root, 'hard_location', int(input%hard_location))
   endif
   if (allocated(input%location)) then
-    !line=41 definition='integer, allocatable :: location(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='location' type='integer' size=None dimension=':' comment='Particle location in an element. entrance_end$, inside$, or exit_end$' default=None
+    !'integer, allocatable :: location(:)'
     call json%create_array(json_list1, 'location')
     do i1 = lbound(input%location, 1), ubound(input%location, 1)
       call json%create_integer(json_val, input%location(i1), '')
@@ -3278,7 +3278,7 @@ subroutine gen_grad1_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'sincos', int(input%sincos))
   call json%add(json_root, 'n_deriv_max', int(input%n_deriv_max))
   if (allocated(input%deriv)) then
-    !line=754 definition='real(rp), allocatable :: deriv(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='deriv' type='real' size='rp' dimension=':,:' comment='Range: (iz0:iz1, 0:2*n_deriv_max+1)' default=None
+    !'real(rp), allocatable :: deriv(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%deriv, 2), ubound(input%deriv, 2)
       call json%create_array(json_list1, 'deriv')
@@ -3315,7 +3315,7 @@ subroutine gen_grad_map_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'file', trim(input%file))
   if (allocated(input%gg)) then
-    !line=760 definition='type (gen_grad1_struct), allocatable :: gg(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='gen_grad1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='gg' type='type' size='gen_grad1_struct' dimension=':' comment='' default=None
+    !'type (gen_grad1_struct), allocatable :: gg(:)'
     call json%create_array(json_list1, 'gg')
     do i1 = lbound(input%gg, 1), ubound(input%gg, 1)
       call gen_grad1_struct_to_json(input%gg(i1), json_val, depth + 1)
@@ -3329,7 +3329,7 @@ subroutine gen_grad_map_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'iz0', int(input%iz0))
   call json%add(json_root, 'iz1', int(input%iz1))
   call json%add(json_root, 'dz', input%dz)
-  !line=766 definition='real(rp) :: r0(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='3' comment='field origin relative to ele_anchor_pt.' default='0'
+  !'real(rp) :: r0(3) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -3414,7 +3414,7 @@ subroutine grid_field_pt1_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=775 definition='complex(rp) :: E(3) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='E' type='complex' size='rp' dimension='3' comment='' default='0'
+  !'complex(rp) :: E(3) = 0'
   call json%create_array(json_list1, 'e')
   do i1 = lbound(input%E, 1), ubound(input%E, 1)
     call complex_to_json(input%E(i1), json_val, depth + 1)
@@ -3422,7 +3422,7 @@ subroutine grid_field_pt1_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=776 definition='complex(rp) :: B(3) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='B' type='complex' size='rp' dimension='3' comment='' default='0'
+  !'complex(rp) :: B(3) = 0'
   call json%create_array(json_list1, 'b')
   do i1 = lbound(input%B, 1), ubound(input%B, 1)
     call complex_to_json(input%B(i1), json_val, depth + 1)
@@ -3454,7 +3454,7 @@ subroutine grid_field_pt_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'file', trim(input%file))
   call json%add(json_root, 'n_link', int(input%n_link))
   if (allocated(input%pt)) then
-    !line=782 definition='type (grid_field_pt1_struct), allocatable :: pt(:,:,:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='grid_field_pt1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='grid_field_pt1_struct' dimension=':,:,:' comment='' default=None
+    !'type (grid_field_pt1_struct), allocatable :: pt(:,:,:)'
     call json%create_array(json_list3, 'dim-3')
     do i3 = lbound(input%pt, 3), ubound(input%pt, 3)
       call json%create_array(json_list2, 'dim-2')
@@ -3503,7 +3503,7 @@ subroutine grid_field_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'master_parameter', int(input%master_parameter))
   call json%add(json_root, 'ele_anchor_pt', int(input%ele_anchor_pt))
   call json%add(json_root, 'interpolation_order', int(input%interpolation_order))
-  !line=794 definition='real(rp) :: dr(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dr' type='real' size='rp' dimension='3' comment='Grid spacing.' default='0'
+  !'real(rp) :: dr(3) = 0'
   call json%create_array(json_list1, 'dr')
   do i1 = lbound(input%dr, 1), ubound(input%dr, 1)
     call json%create_real(json_val, input%dr(i1), '')
@@ -3511,7 +3511,7 @@ subroutine grid_field_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=795 definition='real(rp) :: r0(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='3' comment='Field origin relative to ele_anchor_pt.' default='0'
+  !'real(rp) :: r0(3) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -3525,7 +3525,7 @@ subroutine grid_field_struct_to_json (input, json_root, depth)
     call json%rename(json_val, 'ptr')
     call json%add(json_root, json_val)
   endif
-  !line=798 definition='type (bicubic_cmplx_coef_struct) bi_coef(4, 2, 3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='bicubic_cmplx_coef_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='bi_coef' type='type' size='bicubic_cmplx_coef_struct' dimension='4, 2, 3' comment='Save computed coefs for faster tracking' default=None
+  !'type (bicubic_cmplx_coef_struct) bi_coef(4, 2, 3)'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%bi_coef, 3), ubound(input%bi_coef, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3543,7 +3543,7 @@ subroutine grid_field_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list3)
   nullify(json_list3)
-  !line=799 definition='type (tricubic_cmplx_coef_struct) tri_coef(4, 2, 3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tricubic_cmplx_coef_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='tri_coef' type='type' size='tricubic_cmplx_coef_struct' dimension='4, 2, 3' comment='Save computed coefs for faster tracking' default=None
+  !'type (tricubic_cmplx_coef_struct) tri_coef(4, 2, 3)'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%tri_coef, 3), ubound(input%tri_coef, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -3764,7 +3764,7 @@ subroutine kv_beam_init_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1121 definition='integer :: part_per_phi(2) = 0' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='part_per_phi' type='integer' size=None dimension='2' comment='number of particles per angle variable.' default='0'
+  !'integer :: part_per_phi(2) = 0'
   call json%create_array(json_list1, 'part_per_phi')
   do i1 = lbound(input%part_per_phi, 1), ubound(input%part_per_phi, 1)
     call json%create_integer(json_val, input%part_per_phi(i1), '')
@@ -3842,7 +3842,7 @@ subroutine lat_ele_order_array_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%ele)) then
-    !line=866 definition='type (lat_ele_order1_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lat_ele_order1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='lat_ele_order1_struct' dimension=':' comment='' default=None
+    !'type (lat_ele_order1_struct), allocatable :: ele(:)'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call lat_ele_order1_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -3873,7 +3873,7 @@ subroutine lat_ele_order_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%branch)) then
-    !line=885 definition='type (lat_ele_order_array_struct), allocatable :: branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='lat_ele_order_array_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' type='type' size='lat_ele_order_array_struct' dimension=':' comment='' default=None
+    !'type (lat_ele_order_array_struct), allocatable :: branch(:)'
     call json%create_array(json_list1, 'branch')
     do i1 = lbound(input%branch, 1), ubound(input%branch, 1)
       call lat_ele_order_array_struct_to_json(input%branch(i1), json_val, depth + 1)
@@ -3906,7 +3906,7 @@ subroutine lat_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_part', input%n_part)
   call json%add(json_root, 'total_length', input%total_length)
   call json%add(json_root, 'unstable_factor', input%unstable_factor)
-  !line=1478 definition='real(rp) :: t1_with_RF(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='t1_with_RF' type='real' size='rp' dimension='6,6' comment='Full 1-turn matrix with RF on.' default='0'
+  !'real(rp) :: t1_with_RF(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%t1_with_RF, 2), ubound(input%t1_with_RF, 2)
     call json%create_array(json_list1, 't1_with_rf')
@@ -3919,7 +3919,7 @@ subroutine lat_param_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=1479 definition='real(rp) :: t1_no_RF(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='t1_no_RF' type='real' size='rp' dimension='6,6' comment='Full 1-turn matrix with RF off.' default='0'
+  !'real(rp) :: t1_no_RF(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%t1_no_RF, 2), ubound(input%t1_no_RF, 2)
     call json%create_array(json_list1, 't1_no_rf')
@@ -4001,7 +4001,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'input_file_name', trim(input%input_file_name))
   call json%add(json_root, 'title', trim(input%title))
   if (allocated(input%print_str)) then
-    !line=1598 definition='character(100), allocatable :: print_str(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='100', static=False, target=False, value=False, volatile=False, attributes=()) name='print_str' type='character' size='100' dimension=':' comment='Saved print statements.' default=None
+    !'character(100), allocatable :: print_str(:)'
     call json%create_array(json_list1, 'print_str')
     do i1 = lbound(input%print_str, 1), ubound(input%print_str, 1)
       call json%create_string(json_val, trim(input%print_str(i1)), '')
@@ -4011,7 +4011,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%constant)) then
-    !line=1599 definition='type (expression_atom_struct), allocatable :: constant(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='expression_atom_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='constant' type='type' size='expression_atom_struct' dimension=':' comment='Constants defined in the lattice' default=None
+    !'type (expression_atom_struct), allocatable :: constant(:)'
     call json%create_array(json_list1, 'constant')
     do i1 = lbound(input%constant, 1), ubound(input%constant, 1)
       call expression_atom_struct_to_json(input%constant(i1), json_val, depth + 1)
@@ -4047,7 +4047,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'ele_init')
   call json%add(json_root, json_val)
   if (associated(input%ele)) then
-    !line=1604 definition='type (ele_struct), pointer ::  ele(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='ele_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='ele_struct' dimension=':' comment='Array of elements [=> branch(0)].' default='null()'
+    !'type (ele_struct), pointer ::  ele(:) => null()'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call ele_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -4057,7 +4057,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%branch)) then
-    !line=1605 definition='type (branch_struct), allocatable :: branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' type='type' size='branch_struct' dimension=':' comment='Branch(0:) array' default=None
+    !'type (branch_struct), allocatable :: branch(:)'
     call json%create_array(json_list1, 'branch')
     do i1 = lbound(input%branch, 1), ubound(input%branch, 1)
       call branch_struct_to_json(input%branch(i1), json_val, depth + 1)
@@ -4067,7 +4067,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%control)) then
-    !line=1606 definition='type (control_struct), allocatable :: control(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='control_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='control' type='type' size='control_struct' dimension=':' comment='Control list' default=None
+    !'type (control_struct), allocatable :: control(:)'
     call json%create_array(json_list1, 'control')
     do i1 = lbound(input%control, 1), ubound(input%control, 1)
       call control_struct_to_json(input%control(i1), json_val, depth + 1)
@@ -4087,7 +4087,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_val)
   ! config skip_members: lat_struct%nametable (type, For quick searching by element name.)
   if (allocated(input%custom)) then
-    !line=1611 definition='real(rp), allocatable :: custom(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='custom' type='real' size='rp' dimension=':' comment='Custom attributes.' default=None
+    !'real(rp), allocatable :: custom(:)'
     call json%create_array(json_list1, 'custom')
     do i1 = lbound(input%custom, 1), ubound(input%custom, 1)
       call json%create_real(json_val, input%custom(i1), '')
@@ -4107,7 +4107,7 @@ subroutine lat_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_ic_max', int(input%n_ic_max))
   call json%add(json_root, 'input_taylor_order', int(input%input_taylor_order))
   if (allocated(input%ic)) then
-    !line=1618 definition='integer, allocatable :: ic(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ic' type='integer' size=None dimension=':' comment='Index to %control(:) from slaves.' default=None
+    !'integer, allocatable :: ic(:)'
     call json%create_array(json_list1, 'ic')
     do i1 = lbound(input%ic, 1), ubound(input%ic, 1)
       call json%create_integer(json_val, input%ic(i1), '')
@@ -4169,7 +4169,7 @@ subroutine linear_ele_isf_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%node)) then
-    !line=323 definition='type (linear_isf1_struct), allocatable :: node(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='linear_isf1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='node' type='type' size='linear_isf1_struct' dimension=':' comment='Array per PTC integration node.' default=None
+    !'type (linear_isf1_struct), allocatable :: node(:)'
     call json%create_array(json_list1, 'node')
     do i1 = lbound(input%node, 1), ubound(input%node, 1)
       call linear_isf1_struct_to_json(input%node(i1), json_val, depth + 1)
@@ -4199,7 +4199,7 @@ subroutine linear_isf1_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=314 definition='real(rp) :: orb0(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='orb0' type='real' size='rp' dimension='6' comment='Closed orbit.' default='0'
+  !'real(rp) :: orb0(6) = 0'
   call json%create_array(json_list1, 'orb0')
   do i1 = lbound(input%orb0, 1), ubound(input%orb0, 1)
     call json%create_real(json_val, input%orb0(i1), '')
@@ -4207,7 +4207,7 @@ subroutine linear_isf1_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=315 definition='real(rp) :: isf(0:3, 0:6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='isf' type='real' size='rp' dimension='0:3, 0:6' comment='Linear ISF map at a given point.' default='0'
+  !'real(rp) :: isf(0:3, 0:6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%isf, 2), ubound(input%isf, 2)
     call json%create_array(json_list1, 'isf')
@@ -4269,7 +4269,7 @@ subroutine mad_map_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=24 definition='real(rp) k(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='k' type='real' size='rp' dimension='6' comment='0th order map.' default=None
+  !'real(rp) k(6)'
   call json%create_array(json_list1, 'k')
   do i1 = lbound(input%k, 1), ubound(input%k, 1)
     call json%create_real(json_val, input%k(i1), '')
@@ -4277,7 +4277,7 @@ subroutine mad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=25 definition='real(rp) r(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='rp' dimension='6,6' comment='1st order map.' default=None
+  !'real(rp) r(6,6)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%r, 2), ubound(input%r, 2)
     call json%create_array(json_list1, 'r')
@@ -4290,7 +4290,7 @@ subroutine mad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=26 definition='real(rp) t(6,6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='t' type='real' size='rp' dimension='6,6,6' comment='2nd order map.' default=None
+  !'real(rp) t(6,6,6)'
   call json%create_array(json_list3, 'dim-3')
   do i3 = lbound(input%t, 3), ubound(input%t, 3)
     call json%create_array(json_list2, 'dim-2')
@@ -4358,7 +4358,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=15 definition='integer :: nlo(3) = [ 1,  1,  1]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='nlo' type='integer' size=None dimension='3' comment='Lowest  grid index in x, y, z (m) of rho and the quantity being computed (phi or E)' default='[ 1,  1,  1]'
+  !'integer :: nlo(3) = [ 1,  1,  1]'
   call json%create_array(json_list1, 'nlo')
   do i1 = lbound(input%nlo, 1), ubound(input%nlo, 1)
     call json%create_integer(json_val, input%nlo(i1), '')
@@ -4366,7 +4366,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=16 definition='integer :: nhi(3) = [64, 64, 64]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='nhi' type='integer' size=None dimension='3' comment='Highest grid index in x, y, z (m) of rho and the quantity being computed (phi or E)' default='[64, 64, 64]'
+  !'integer :: nhi(3) = [64, 64, 64]'
   call json%create_array(json_list1, 'nhi')
   do i1 = lbound(input%nhi, 1), ubound(input%nhi, 1)
     call json%create_integer(json_val, input%nhi(i1), '')
@@ -4374,7 +4374,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=17 definition='integer :: npad(3) = [ 1,  1,  1]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='npad' type='integer' size=None dimension='3' comment='Array padding for cyclic convolution' default='[ 1,  1,  1]'
+  !'integer :: npad(3) = [ 1,  1,  1]'
   call json%create_array(json_list1, 'npad')
   do i1 = lbound(input%npad, 1), ubound(input%npad, 1)
     call json%create_integer(json_val, input%npad(i1), '')
@@ -4382,7 +4382,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=18 definition='real(dp) :: min(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='min' type='real' size='dp' dimension='3' comment='Minimim in each dimension' default=None
+  !'real(dp) :: min(3)'
   call json%create_array(json_list1, 'min')
   do i1 = lbound(input%min, 1), ubound(input%min, 1)
     call json%create_real(json_val, input%min(i1), '')
@@ -4390,7 +4390,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=19 definition='real(dp) :: max(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='max' type='real' size='dp' dimension='3' comment='Maximum in each dimension' default=None
+  !'real(dp) :: max(3)'
   call json%create_array(json_list1, 'max')
   do i1 = lbound(input%max, 1), ubound(input%max, 1)
     call json%create_real(json_val, input%max(i1), '')
@@ -4398,7 +4398,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=20 definition='real(dp) :: delta(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='delta' type='real' size='dp' dimension='3' comment='Grid spacing' default=None
+  !'real(dp) :: delta(3)'
   call json%create_array(json_list1, 'delta')
   do i1 = lbound(input%delta, 1), ubound(input%delta, 1)
     call json%create_real(json_val, input%delta(i1), '')
@@ -4409,7 +4409,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'gamma', input%gamma)
   call json%add(json_root, 'charge', input%charge)
   if (allocated(input%rho)) then
-    !line=23 definition='real(dp), allocatable, dimension(:,:,:) :: rho' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=':,:,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='rho' type='real' size='dp' dimension=':,:,:' comment='Charge density grid' default=None
+    !'real(dp), allocatable, dimension(:,:,:) :: rho'
     call json%create_array(json_list3, 'dim-3')
     do i3 = lbound(input%rho, 3), ubound(input%rho, 3)
       call json%create_array(json_list2, 'dim-2')
@@ -4429,7 +4429,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
     nullify(json_list3)
   endif
   if (allocated(input%phi)) then
-    !line=24 definition='real(dp), allocatable, dimension(:,:,:) :: phi' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=':,:,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='phi' type='real' size='dp' dimension=':,:,:' comment='electric potential grid' default=None
+    !'real(dp), allocatable, dimension(:,:,:) :: phi'
     call json%create_array(json_list3, 'dim-3')
     do i3 = lbound(input%phi, 3), ubound(input%phi, 3)
       call json%create_array(json_list2, 'dim-2')
@@ -4449,7 +4449,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
     nullify(json_list3)
   endif
   if (allocated(input%efield)) then
-    !line=25 definition='real(dp), allocatable, dimension(:,:,:,:) :: efield' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=':,:,:,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='efield' type='real' size='dp' dimension=':,:,:,:' comment='electric field grid' default=None
+    !'real(dp), allocatable, dimension(:,:,:,:) :: efield'
     call json%create_array(json_list4, 'dim-4')
     do i4 = lbound(input%efield, 4), ubound(input%efield, 4)
       call json%create_array(json_list3, 'dim-3')
@@ -4474,7 +4474,7 @@ subroutine mesh3d_struct_to_json (input, json_root, depth)
     nullify(json_list4)
   endif
   if (allocated(input%bfield)) then
-    !line=26 definition='real(dp), allocatable, dimension(:,:,:,:) :: bfield' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=':,:,:,:', external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='dp', static=False, target=False, value=False, volatile=False, attributes=()) name='bfield' type='real' size='dp' dimension=':,:,:,:' comment='magnetic field grid' default=None
+    !'real(dp), allocatable, dimension(:,:,:,:) :: bfield'
     call json%create_array(json_list4, 'dim-4')
     do i4 = lbound(input%bfield, 4), ubound(input%bfield, 4)
       call json%create_array(json_list3, 'dim-3')
@@ -4519,7 +4519,7 @@ subroutine mode3_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=916 definition='real(rp) v(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='v' type='real' size='rp' dimension='6,6' comment='' default=None
+  !'real(rp) v(6,6)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%v, 2), ubound(input%v, 2)
     call json%create_array(json_list1, 'v')
@@ -4620,7 +4620,7 @@ subroutine multipass_all_info_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%lord)) then
-    !line=2053 definition='type (multipass_lord_info_struct), allocatable :: lord(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='multipass_lord_info_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='lord' type='type' size='multipass_lord_info_struct' dimension=':' comment='Array of lords' default=None
+    !'type (multipass_lord_info_struct), allocatable :: lord(:)'
     call json%create_array(json_list1, 'lord')
     do i1 = lbound(input%lord, 1), ubound(input%lord, 1)
       call multipass_lord_info_struct_to_json(input%lord(i1), json_val, depth + 1)
@@ -4630,7 +4630,7 @@ subroutine multipass_all_info_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%branch)) then
-    !line=2054 definition='type (multipass_branch_info_struct), allocatable :: branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='multipass_branch_info_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' type='type' size='multipass_branch_info_struct' dimension=':' comment='' default=None
+    !'type (multipass_branch_info_struct), allocatable :: branch(:)'
     call json%create_array(json_list1, 'branch')
     do i1 = lbound(input%branch, 1), ubound(input%branch, 1)
       call multipass_branch_info_struct_to_json(input%branch(i1), json_val, depth + 1)
@@ -4661,7 +4661,7 @@ subroutine multipass_branch_info_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%ele)) then
-    !line=2046 definition='type (multipass_ele_info_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='multipass_ele_info_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='multipass_ele_info_struct' dimension=':' comment='' default=None
+    !'type (multipass_ele_info_struct), allocatable :: ele(:)'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call multipass_ele_info_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -4694,7 +4694,7 @@ subroutine multipass_ele_info_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'multipass', input%multipass)
   call json%add(json_root, 'ix_pass', int(input%ix_pass))
   if (allocated(input%ix_lord)) then
-    !line=2041 definition='integer, allocatable :: ix_lord(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ix_lord' type='integer' size=None dimension=':' comment='Pointers to lord(:) array' default=None
+    !'integer, allocatable :: ix_lord(:)'
     call json%create_array(json_list1, 'ix_lord')
     do i1 = lbound(input%ix_lord, 1), ubound(input%ix_lord, 1)
       call json%create_integer(json_val, input%ix_lord(i1), '')
@@ -4704,7 +4704,7 @@ subroutine multipass_ele_info_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%ix_super)) then
-    !line=2042 definition='integer, allocatable :: ix_super(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ix_super' type='integer' size=None dimension=':' comment='Indexes to slave(ix_pass, super_slave%ix_ele) matrix' default=None
+    !'integer, allocatable :: ix_super(:)'
     call json%create_array(json_list1, 'ix_super')
     do i1 = lbound(input%ix_super, 1), ubound(input%ix_super, 1)
       call json%create_integer(json_val, input%ix_super(i1), '')
@@ -4742,7 +4742,7 @@ subroutine multipass_lord_info_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_pass', int(input%n_pass))
   call json%add(json_root, 'n_super_slave', int(input%n_super_slave))
   if (allocated(input%super_lord)) then
-    !line=2031 definition='type (ele_pointer_struct), allocatable :: super_lord(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ele_pointer_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='super_lord' type='type' size='ele_pointer_struct' dimension=':' comment='Super_lord list if they exist.' default=None
+    !'type (ele_pointer_struct), allocatable :: super_lord(:)'
     call json%create_array(json_list1, 'super_lord')
     do i1 = lbound(input%super_lord, 1), ubound(input%super_lord, 1)
       call ele_pointer_struct_to_json(input%super_lord(i1), json_val, depth + 1)
@@ -4752,7 +4752,7 @@ subroutine multipass_lord_info_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%slave)) then
-    !line=2032 definition='type (ele_pointer_struct), allocatable :: slave(:,:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ele_pointer_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='slave' type='type' size='ele_pointer_struct' dimension=':,:' comment='Slaves list in tracking part.' default=None
+    !'type (ele_pointer_struct), allocatable :: slave(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%slave, 2), ubound(input%slave, 2)
       call json%create_array(json_list1, 'slave')
@@ -4788,7 +4788,7 @@ subroutine multipass_region_branch_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%ele)) then
-    !line=13 definition='type (multipass_region_ele_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='multipass_region_ele_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='multipass_region_ele_struct' dimension=':' comment='' default=None
+    !'type (multipass_region_ele_struct), allocatable :: ele(:)'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call multipass_region_ele_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -4843,7 +4843,7 @@ subroutine multipass_region_lat_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%branch)) then
-    !line=17 definition='type (multipass_region_branch_struct), allocatable :: branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='multipass_region_branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' type='type' size='multipass_region_branch_struct' dimension=':' comment='' default=None
+    !'type (multipass_region_branch_struct), allocatable :: branch(:)'
     call json%create_array(json_list1, 'branch')
     do i1 = lbound(input%branch, 1), ubound(input%branch, 1)
       call multipass_region_branch_struct_to_json(input%branch(i1), json_val, depth + 1)
@@ -4874,7 +4874,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%a_pole_mag)) then
-    !line=947 definition='real(rp), allocatable :: a_pole_mag(:), b_pole_mag(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_pole_mag' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_pole_mag(:), b_pole_mag(:)'
     call json%create_array(json_list1, 'a_pole_mag')
     do i1 = lbound(input%a_pole_mag, 1), ubound(input%a_pole_mag, 1)
       call json%create_real(json_val, input%a_pole_mag(i1), '')
@@ -4884,7 +4884,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%b_pole_mag)) then
-    !line=947 definition='real(rp), allocatable :: a_pole_mag(:), b_pole_mag(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_pole_mag' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_pole_mag(:), b_pole_mag(:)'
     call json%create_array(json_list1, 'b_pole_mag')
     do i1 = lbound(input%b_pole_mag, 1), ubound(input%b_pole_mag, 1)
       call json%create_real(json_val, input%b_pole_mag(i1), '')
@@ -4894,7 +4894,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%a_kick_mag)) then
-    !line=948 definition='real(rp), allocatable :: a_kick_mag(:), b_kick_mag(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_kick_mag' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_kick_mag(:), b_kick_mag(:)'
     call json%create_array(json_list1, 'a_kick_mag')
     do i1 = lbound(input%a_kick_mag, 1), ubound(input%a_kick_mag, 1)
       call json%create_real(json_val, input%a_kick_mag(i1), '')
@@ -4904,7 +4904,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%b_kick_mag)) then
-    !line=948 definition='real(rp), allocatable :: a_kick_mag(:), b_kick_mag(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_kick_mag' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_kick_mag(:), b_kick_mag(:)'
     call json%create_array(json_list1, 'b_kick_mag')
     do i1 = lbound(input%b_kick_mag, 1), ubound(input%b_kick_mag, 1)
       call json%create_real(json_val, input%b_kick_mag(i1), '')
@@ -4917,7 +4917,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'ix_kick_mag_max', int(input%ix_kick_mag_max))
   call json%add(json_root, 'mag_valid', input%mag_valid)
   if (allocated(input%a_pole_elec)) then
-    !line=951 definition='real(rp), allocatable :: a_pole_elec(:), b_pole_elec(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_pole_elec' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_pole_elec(:), b_pole_elec(:)'
     call json%create_array(json_list1, 'a_pole_elec')
     do i1 = lbound(input%a_pole_elec, 1), ubound(input%a_pole_elec, 1)
       call json%create_real(json_val, input%a_pole_elec(i1), '')
@@ -4927,7 +4927,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%b_pole_elec)) then
-    !line=951 definition='real(rp), allocatable :: a_pole_elec(:), b_pole_elec(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_pole_elec' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_pole_elec(:), b_pole_elec(:)'
     call json%create_array(json_list1, 'b_pole_elec')
     do i1 = lbound(input%b_pole_elec, 1), ubound(input%b_pole_elec, 1)
       call json%create_real(json_val, input%b_pole_elec(i1), '')
@@ -4937,7 +4937,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%a_kick_elec)) then
-    !line=952 definition='real(rp), allocatable :: a_kick_elec(:), b_kick_elec(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='a_kick_elec' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_kick_elec(:), b_kick_elec(:)'
     call json%create_array(json_list1, 'a_kick_elec')
     do i1 = lbound(input%a_kick_elec, 1), ubound(input%a_kick_elec, 1)
       call json%create_real(json_val, input%a_kick_elec(i1), '')
@@ -4947,7 +4947,7 @@ subroutine multipole_cache_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%b_kick_elec)) then
-    !line=952 definition='real(rp), allocatable :: a_kick_elec(:), b_kick_elec(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='b_kick_elec' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: a_kick_elec(:), b_kick_elec(:)'
     call json%create_array(json_list1, 'b_kick_elec')
     do i1 = lbound(input%b_kick_elec, 1), ubound(input%b_kick_elec, 1)
       call json%create_real(json_val, input%b_kick_elec(i1), '')
@@ -4980,7 +4980,7 @@ subroutine normal_modes_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1942 definition='real(rp) :: synch_int(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='synch_int' type='real' size='rp' dimension='0:3' comment='Synchrotron integrals I0, I1, I2, and I3' default='0'
+  !'real(rp) :: synch_int(0:3) = 0'
   call json%create_array(json_list1, 'synch_int')
   do i1 = lbound(input%synch_int, 1), ubound(input%synch_int, 1)
     call json%create_real(json_val, input%synch_int(i1), '')
@@ -5032,7 +5032,7 @@ subroutine parser_controller_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'name', trim(input%name))
   call json%add(json_root, 'attrib_name', trim(input%attrib_name))
   if (allocated(input%stack)) then
-    !line=81 definition='type (expression_atom_struct), allocatable :: stack(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='expression_atom_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='stack' type='type' size='expression_atom_struct' dimension=':' comment='Arithmetic expression stack' default=None
+    !'type (expression_atom_struct), allocatable :: stack(:)'
     call json%create_array(json_list1, 'stack')
     do i1 = lbound(input%stack, 1), ubound(input%stack, 1)
       call expression_atom_struct_to_json(input%stack(i1), json_val, depth + 1)
@@ -5042,7 +5042,7 @@ subroutine parser_controller_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%y_knot)) then
-    !line=82 definition='real(rp), allocatable :: y_knot(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='y_knot' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: y_knot(:)'
     call json%create_array(json_list1, 'y_knot')
     do i1 = lbound(input%y_knot, 1), ubound(input%y_knot, 1)
       call json%create_real(json_val, input%y_knot(i1), '')
@@ -5074,7 +5074,7 @@ subroutine parser_ele_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%control)) then
-    !line=87 definition='type (parser_controller_struct), allocatable :: control(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='parser_controller_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='control' type='type' size='parser_controller_struct' dimension=':' comment='' default=None
+    !'type (parser_controller_struct), allocatable :: control(:)'
     call json%create_array(json_list1, 'control')
     do i1 = lbound(input%control, 1), ubound(input%control, 1)
       call parser_controller_struct_to_json(input%control(i1), json_val, depth + 1)
@@ -5084,7 +5084,7 @@ subroutine parser_ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%field_overlaps)) then
-    !line=88 definition='character(40), allocatable :: field_overlaps(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='field_overlaps' type='character' size='40' dimension=':' comment='' default=None
+    !'character(40), allocatable :: field_overlaps(:)'
     call json%create_array(json_list1, 'field_overlaps')
     do i1 = lbound(input%field_overlaps, 1), ubound(input%field_overlaps, 1)
       call json%create_string(json_val, trim(input%field_overlaps(i1)), '')
@@ -5097,7 +5097,7 @@ subroutine parser_ele_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'ix_super_ref_multipass', int(input%ix_super_ref_multipass))
   call json%add(json_root, 'ele_name', trim(input%ele_name))
   if (allocated(input%names1)) then
-    !line=92 definition='character(40), allocatable :: names1(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='names1' type='character' size='40' dimension=':' comment='Currently just used by feedback element.' default=None
+    !'character(40), allocatable :: names1(:)'
     call json%create_array(json_list1, 'names1')
     do i1 = lbound(input%names1, 1), ubound(input%names1, 1)
       call json%create_string(json_val, trim(input%names1(i1)), '')
@@ -5107,7 +5107,7 @@ subroutine parser_ele_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%names2)) then
-    !line=93 definition='character(40), allocatable :: names2(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='names2' type='character' size='40' dimension=':' comment='Currently just used by feedback element.' default=None
+    !'character(40), allocatable :: names2(:)'
     call json%create_array(json_list1, 'names2')
     do i1 = lbound(input%names2, 1), ubound(input%names2, 1)
       call json%create_string(json_val, trim(input%names2(i1)), '')
@@ -5151,7 +5151,7 @@ subroutine parser_lat_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%ele)) then
-    !line=109 definition='type (parser_ele_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='parser_ele_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='parser_ele_struct' dimension=':' comment='' default=None
+    !'type (parser_ele_struct), allocatable :: ele(:)'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call parser_ele_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -5181,7 +5181,7 @@ subroutine pauli_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=260 definition='complex(rp) sigma(2,2)' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='sigma' type='complex' size='rp' dimension='2,2' comment='' default=None
+  !'complex(rp) sigma(2,2)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%sigma, 2), ubound(input%sigma, 2)
     call json%create_array(json_list1, 'sigma')
@@ -5271,7 +5271,7 @@ subroutine photon_element_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'reflectivity_table_pi')
   call json%add(json_root, json_val)
   if (allocated(input%init_energy_prob)) then
-    !line=1083 definition='type (spline_struct), allocatable :: init_energy_prob(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='init_energy_prob' type='type' size='spline_struct' dimension=':' comment='Initial energy probability density' default=None
+    !'type (spline_struct), allocatable :: init_energy_prob(:)'
     call json%create_array(json_list1, 'init_energy_prob')
     do i1 = lbound(input%init_energy_prob, 1), ubound(input%init_energy_prob, 1)
       call spline_struct_to_json(input%init_energy_prob(i1), json_val, depth + 1)
@@ -5281,7 +5281,7 @@ subroutine photon_element_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%integrated_init_energy_prob)) then
-    !line=1084 definition='real(rp), allocatable :: integrated_init_energy_prob(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='integrated_init_energy_prob' type='real' size='rp' dimension=':' comment='' default=None
+    !'real(rp), allocatable :: integrated_init_energy_prob(:)'
     call json%create_array(json_list1, 'integrated_init_energy_prob')
     do i1 = lbound(input%integrated_init_energy_prob, 1), ubound(input%integrated_init_energy_prob, 1)
       call json%create_real(json_val, input%integrated_init_energy_prob(i1), '')
@@ -5340,7 +5340,7 @@ subroutine photon_init_spline_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'x_max', input%x_max)
   call json%add(json_root, 'del_x', input%del_x)
   if (allocated(input%pt)) then
-    !line=30 definition='type (photon_init_spline_pt_struct), allocatable :: pt(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='photon_init_spline_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='photon_init_spline_pt_struct' dimension=':' comment='' default=None
+    !'type (photon_init_spline_pt_struct), allocatable :: pt(:)'
     call json%create_array(json_list1, 'pt')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
       call photon_init_spline_pt_struct_to_json(input%pt(i1), json_val, depth + 1)
@@ -5375,7 +5375,7 @@ subroutine photon_init_splines_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'source_type', trim(input%source_type))
   call json%add(json_root, 'spline_space_dimensions', int(input%spline_space_dimensions))
   if (allocated(input%energy_prob)) then
-    !line=27 definition='type (spline_struct), allocatable :: energy_prob(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='energy_prob' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: energy_prob(:)'
     call json%create_array(json_list1, 'energy_prob')
     do i1 = lbound(input%energy_prob, 1), ubound(input%energy_prob, 1)
       call spline_struct_to_json(input%energy_prob(i1), json_val, depth + 1)
@@ -5385,7 +5385,7 @@ subroutine photon_init_splines_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%y_angle)) then
-    !line=28 definition='type (photon_init_y_angle_spline_struct), allocatable :: y_angle(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='photon_init_y_angle_spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='y_angle' type='type' size='photon_init_y_angle_spline_struct' dimension=':' comment='' default=None
+    !'type (photon_init_y_angle_spline_struct), allocatable :: y_angle(:)'
     call json%create_array(json_list1, 'y_angle')
     do i1 = lbound(input%y_angle, 1), ubound(input%y_angle, 1)
       call photon_init_y_angle_spline_struct_to_json(input%y_angle(i1), json_val, depth + 1)
@@ -5417,7 +5417,7 @@ subroutine photon_init_x_angle_spline_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%prob)) then
-    !line=16 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='prob' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'prob')
     do i1 = lbound(input%prob, 1), ubound(input%prob, 1)
       call spline_struct_to_json(input%prob(i1), json_val, depth + 1)
@@ -5427,7 +5427,7 @@ subroutine photon_init_x_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pl)) then
-    !line=16 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pl' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'pl')
     do i1 = lbound(input%pl, 1), ubound(input%pl, 1)
       call spline_struct_to_json(input%pl(i1), json_val, depth + 1)
@@ -5437,7 +5437,7 @@ subroutine photon_init_x_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pc)) then
-    !line=16 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pc' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'pc')
     do i1 = lbound(input%pc, 1), ubound(input%pc, 1)
       call spline_struct_to_json(input%pc(i1), json_val, depth + 1)
@@ -5447,7 +5447,7 @@ subroutine photon_init_x_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pl45)) then
-    !line=16 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pl45' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'pl45')
     do i1 = lbound(input%pl45, 1), ubound(input%pl45, 1)
       call spline_struct_to_json(input%pl45(i1), json_val, depth + 1)
@@ -5479,7 +5479,7 @@ subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%prob)) then
-    !line=20 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='prob' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'prob')
     do i1 = lbound(input%prob, 1), ubound(input%prob, 1)
       call spline_struct_to_json(input%prob(i1), json_val, depth + 1)
@@ -5489,7 +5489,7 @@ subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pl)) then
-    !line=20 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pl' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'pl')
     do i1 = lbound(input%pl, 1), ubound(input%pl, 1)
       call spline_struct_to_json(input%pl(i1), json_val, depth + 1)
@@ -5499,7 +5499,7 @@ subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pc)) then
-    !line=20 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pc' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'pc')
     do i1 = lbound(input%pc, 1), ubound(input%pc, 1)
       call spline_struct_to_json(input%pc(i1), json_val, depth + 1)
@@ -5509,7 +5509,7 @@ subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pl45)) then
-    !line=20 definition='type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pl45' type='type' size='spline_struct' dimension=':' comment='' default=None
+    !'type (spline_struct), allocatable :: prob(:), pl(:), pc(:), pl45(:)'
     call json%create_array(json_list1, 'pl45')
     do i1 = lbound(input%pl45, 1), ubound(input%pl45, 1)
       call spline_struct_to_json(input%pl45(i1), json_val, depth + 1)
@@ -5519,7 +5519,7 @@ subroutine photon_init_y_angle_spline_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%x_angle)) then
-    !line=21 definition='type (photon_init_x_angle_spline_struct), allocatable :: x_angle(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='photon_init_x_angle_spline_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='x_angle' type='type' size='photon_init_x_angle_spline_struct' dimension=':' comment='' default=None
+    !'type (photon_init_x_angle_spline_struct), allocatable :: x_angle(:)'
     call json%create_array(json_list1, 'x_angle')
     do i1 = lbound(input%x_angle, 1), ubound(input%x_angle, 1)
       call photon_init_x_angle_spline_struct_to_json(input%x_angle(i1), json_val, depth + 1)
@@ -5567,7 +5567,7 @@ subroutine photon_material_struct_to_json (input, json_root, depth)
   call complex_to_json(input%f_hkl, json_list1, depth+1)
   call json%rename(json_list1, 'f_hkl')
   call json%add(json_root, json_list1)
-  !line=1063 definition='real(rp) :: h_norm(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='h_norm' type='real' size='rp' dimension='3' comment='Normalized H vector for crystals.' default='0'
+  !'real(rp) :: h_norm(3) = 0'
   call json%create_array(json_list1, 'h_norm')
   do i1 = lbound(input%h_norm, 1), ubound(input%h_norm, 1)
     call json%create_real(json_val, input%h_norm(i1), '')
@@ -5575,7 +5575,7 @@ subroutine photon_material_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1064 definition='real(rp) :: l_ref(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='l_ref' type='real' size='rp' dimension='3' comment='Crystal reference orbit displacement vector in element coords.' default='0'
+  !'real(rp) :: l_ref(3) = 0'
   call json%create_array(json_list1, 'l_ref')
   do i1 = lbound(input%l_ref, 1), ubound(input%l_ref, 1)
     call json%create_real(json_val, input%l_ref(i1), '')
@@ -5608,7 +5608,7 @@ subroutine photon_reflect_surface_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'description', trim(input%description))
   call json%add(json_root, 'reflectivity_file', trim(input%reflectivity_file))
   if (allocated(input%table)) then
-    !line=222 definition='type (photon_reflect_table_struct), allocatable :: table(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='photon_reflect_table_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='table' type='type' size='photon_reflect_table_struct' dimension=':' comment='' default=None
+    !'type (photon_reflect_table_struct), allocatable :: table(:)'
     call json%create_array(json_list1, 'table')
     do i1 = lbound(input%table, 1), ubound(input%table, 1)
       call photon_reflect_table_struct_to_json(input%table(i1), json_val, depth + 1)
@@ -5642,7 +5642,7 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%angle)) then
-    !line=205 definition='real(rp), allocatable :: angle(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='angle' type='real' size='rp' dimension=':' comment='Vector of angle values for %p_reflect' default=None
+    !'real(rp), allocatable :: angle(:)'
     call json%create_array(json_list1, 'angle')
     do i1 = lbound(input%angle, 1), ubound(input%angle, 1)
       call json%create_real(json_val, input%angle(i1), '')
@@ -5652,7 +5652,7 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%energy)) then
-    !line=206 definition='real(rp), allocatable :: energy(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='energy' type='real' size='rp' dimension=':' comment='Vector of energy values for %p_reflect' default=None
+    !'real(rp), allocatable :: energy(:)'
     call json%create_array(json_list1, 'energy')
     do i1 = lbound(input%energy, 1), ubound(input%energy, 1)
       call json%create_real(json_val, input%energy(i1), '')
@@ -5662,7 +5662,7 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%int1)) then
-    !line=207 definition='type (interval1_coef_struct), allocatable :: int1(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='interval1_coef_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='int1' type='type' size='interval1_coef_struct' dimension=':' comment='' default=None
+    !'type (interval1_coef_struct), allocatable :: int1(:)'
     call json%create_array(json_list1, 'int1')
     do i1 = lbound(input%int1, 1), ubound(input%int1, 1)
       call interval1_coef_struct_to_json(input%int1(i1), json_val, depth + 1)
@@ -5672,7 +5672,7 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%p_reflect)) then
-    !line=208 definition='real(rp), allocatable :: p_reflect(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='p_reflect' type='real' size='rp' dimension=':,:' comment='(angle, ev) probability. Log used for smooth surface reflection' default=None
+    !'real(rp), allocatable :: p_reflect(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%p_reflect, 2), ubound(input%p_reflect, 2)
       call json%create_array(json_list1, 'p_reflect')
@@ -5688,7 +5688,7 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
   endif
   call json%add(json_root, 'max_energy', input%max_energy)
   if (allocated(input%p_reflect_scratch)) then
-    !line=210 definition='real(rp), allocatable :: p_reflect_scratch(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='p_reflect_scratch' type='real' size='rp' dimension=':' comment='Scratch space' default=None
+    !'real(rp), allocatable :: p_reflect_scratch(:)'
     call json%create_array(json_list1, 'p_reflect_scratch')
     do i1 = lbound(input%p_reflect_scratch, 1), ubound(input%p_reflect_scratch, 1)
       call json%create_real(json_val, input%p_reflect_scratch(i1), '')
@@ -5698,7 +5698,7 @@ subroutine photon_reflect_table_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%bragg_angle)) then
-    !line=211 definition='real(rp), allocatable :: bragg_angle(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='bragg_angle' type='real' size='rp' dimension=':' comment='Bragg angle at energy values.' default=None
+    !'real(rp), allocatable :: bragg_angle(:)'
     call json%create_array(json_list1, 'bragg_angle')
     do i1 = lbound(input%bragg_angle, 1), ubound(input%bragg_angle, 1)
       call json%create_real(json_val, input%bragg_angle(i1), '')
@@ -5733,7 +5733,7 @@ subroutine photon_target_struct_to_json (input, json_root, depth)
   call lat_ele_loc_struct_to_json(input%ele_loc, json_val, depth + 1)
   call json%rename(json_val, 'ele_loc')
   call json%add(json_root, json_val)
-  !line=1053 definition='type (target_point_struct) :: corner(8) = target_point_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='target_point_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='corner' type='type' size='target_point_struct' dimension='8' comment='' default='target_point_struct()'
+  !'type (target_point_struct) :: corner(8) = target_point_struct()'
   call json%create_array(json_list1, 'corner')
   do i1 = lbound(input%corner, 1), ubound(input%corner, 1)
     call target_point_struct_to_json(input%corner(i1), json_val, depth + 1)
@@ -5792,7 +5792,7 @@ subroutine pixel_detec_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1027 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dr' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'dr')
   do i1 = lbound(input%dr, 1), ubound(input%dr, 1)
     call json%create_real(json_val, input%dr(i1), '')
@@ -5800,7 +5800,7 @@ subroutine pixel_detec_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1027 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -5812,7 +5812,7 @@ subroutine pixel_detec_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_hit_detec', int(input%n_hit_detec))
   call json%add(json_root, 'n_hit_pixel', int(input%n_hit_pixel))
   if (allocated(input%pt)) then
-    !line=1031 definition='type (pixel_pt_struct), allocatable :: pt(:,:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='pixel_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='pixel_pt_struct' dimension=':,:' comment='Grid of pixels' default=None
+    !'type (pixel_pt_struct), allocatable :: pt(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
       call json%create_array(json_list1, 'pt')
@@ -5857,7 +5857,7 @@ subroutine pixel_pt_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'intensity_x', input%intensity_x)
   call json%add(json_root, 'intensity_y', input%intensity_y)
   call json%add(json_root, 'intensity', input%intensity)
-  !line=1020 definition='real(rp) :: orbit(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='orbit' type='real' size='rp' dimension='6' comment='x, Vx/c, y, Vy/c, dummy, E - E_ref.' default='0'
+  !'real(rp) :: orbit(6) = 0'
   call json%create_array(json_list1, 'orbit')
   do i1 = lbound(input%orbit, 1), ubound(input%orbit, 1)
     call json%create_real(json_val, input%orbit(i1), '')
@@ -5865,7 +5865,7 @@ subroutine pixel_pt_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1021 definition='real(rp) :: orbit_rms(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='orbit_rms' type='real' size='rp' dimension='6' comment='RMS statistics.' default='0'
+  !'real(rp) :: orbit_rms(6) = 0'
   call json%create_array(json_list1, 'orbit_rms')
   do i1 = lbound(input%orbit_rms, 1), ubound(input%orbit_rms, 1)
     call json%create_real(json_val, input%orbit_rms(i1), '')
@@ -5873,7 +5873,7 @@ subroutine pixel_pt_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1022 definition='real(rp) :: init_orbit(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='init_orbit' type='real' size='rp' dimension='6' comment='Initial orbit at start of lattice statistics.' default='0'
+  !'real(rp) :: init_orbit(6) = 0'
   call json%create_array(json_list1, 'init_orbit')
   do i1 = lbound(input%init_orbit, 1), ubound(input%init_orbit, 1)
     call json%create_real(json_val, input%init_orbit(i1), '')
@@ -5881,7 +5881,7 @@ subroutine pixel_pt_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1023 definition='real(rp) :: init_orbit_rms(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='init_orbit_rms' type='real' size='rp' dimension='6' comment='Initial orbit at start of lattice RMS statistics.' default='0'
+  !'real(rp) :: init_orbit_rms(6) = 0'
   call json%create_array(json_list1, 'init_orbit_rms')
   do i1 = lbound(input%init_orbit_rms, 1), ubound(input%init_orbit_rms, 1)
     call json%create_real(json_val, input%init_orbit_rms(i1), '')
@@ -5966,7 +5966,7 @@ subroutine pmd_unit_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'unitsymbol', trim(input%unitSymbol))
   call json%add(json_root, 'unitsi', input%unitSI)
-  !line=12 definition='real(rp) :: unitDimension(7) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='unitDimension' type='real' size='rp' dimension='7' comment='SI Base Exponents' default='0'
+  !'real(rp) :: unitDimension(7) = 0'
   call json%create_array(json_list1, 'unitdimension')
   do i1 = lbound(input%unitDimension, 1), ubound(input%unitDimension, 1)
     call json%create_real(json_val, input%unitDimension(i1), '')
@@ -6022,7 +6022,7 @@ subroutine ptc_branch1_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%m_u_layout)) then
-    !line=1504 definition='type (ptc_layout_pointer_struct), allocatable :: m_u_layout(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='ptc_layout_pointer_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='m_u_layout' type='type' size='ptc_layout_pointer_struct' dimension=':' comment='' default=None
+    !'type (ptc_layout_pointer_struct), allocatable :: m_u_layout(:)'
     call json%create_array(json_list1, 'm_u_layout')
     do i1 = lbound(input%m_u_layout, 1), ubound(input%m_u_layout, 1)
       call ptc_layout_pointer_struct_to_json(input%m_u_layout(i1), json_val, depth + 1)
@@ -6134,7 +6134,7 @@ subroutine ptc_normal_form_struct_to_json (input, json_root, depth)
   call probe_8_to_json(input%one_turn_map, json_val, depth + 1)
   call json%rename(json_val, 'one_turn_map')
   call json%add(json_root, json_val)
-  !line=1545 definition='real(rp) orb0(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='orb0' type='real' size='rp' dimension='6' comment='Closed orbit at element.' default=None
+  !'real(rp) orb0(6)'
   call json%create_array(json_list1, 'orb0')
   do i1 = lbound(input%orb0, 1), ubound(input%orb0, 1)
     call json%create_real(json_val, input%orb0(i1), '')
@@ -6145,7 +6145,7 @@ subroutine ptc_normal_form_struct_to_json (input, json_root, depth)
   call c_normal_form_to_json(input%normal_form, json_val, depth + 1)
   call json%rename(json_val, 'normal_form')
   call json%add(json_root, json_val)
-  !line=1547 definition='type (c_taylor) phase(3)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='c_taylor', static=False, target=False, value=False, volatile=False, attributes=()) name='phase' type='type' size='c_taylor' dimension='3' comment='Phase/chromaticity maps' default=None
+  !'type (c_taylor) phase(3)'
   call json%create_array(json_list1, 'phase')
   do i1 = lbound(input%phase, 1), ubound(input%phase, 1)
     call c_taylor_to_json(input%phase(i1), json_val, depth + 1)
@@ -6228,7 +6228,7 @@ subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'ix_branch', int(input%ix_branch))
   call json%add(json_root, 'ix_ele_start', int(input%ix_ele_start))
   call json%add(json_root, 'ix_ele_end', int(input%ix_ele_end))
-  !line=21 definition='real(rp) nodamp_mat(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='nodamp_mat' type='real' size='rp' dimension='6,6' comment='Nondamped orbital matrix. M_orbit = M_damp * M_nodamp' default=None
+  !'real(rp) nodamp_mat(6,6)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%nodamp_mat, 2), ubound(input%nodamp_mat, 2)
     call json%create_array(json_list1, 'nodamp_mat')
@@ -6241,7 +6241,7 @@ subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=22 definition='real(rp) damp_mat(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='damp_mat' type='real' size='rp' dimension='6,6' comment='Damping "correction" to orbital matrix.' default=None
+  !'real(rp) damp_mat(6,6)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%damp_mat, 2), ubound(input%damp_mat, 2)
     call json%create_array(json_list1, 'damp_mat')
@@ -6254,7 +6254,7 @@ subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=23 definition='real(rp) stoc_mat(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='stoc_mat' type='real' size='rp' dimension='6,6' comment='Stochatic matrix for the orbit.' default=None
+  !'real(rp) stoc_mat(6,6)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%stoc_mat, 2), ubound(input%stoc_mat, 2)
     call json%create_array(json_list1, 'stoc_mat')
@@ -6267,7 +6267,7 @@ subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=24 definition='real(rp) ref0(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='ref0' type='real' size='rp' dimension='6' comment='Reference orbit at start.' default=None
+  !'real(rp) ref0(6)'
   call json%create_array(json_list1, 'ref0')
   do i1 = lbound(input%ref0, 1), ubound(input%ref0, 1)
     call json%create_real(json_val, input%ref0(i1), '')
@@ -6275,7 +6275,7 @@ subroutine ptc_rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=25 definition='real(rp) ref1(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='ref1' type='real' size='rp' dimension='6' comment='Reference orbit at end.' default=None
+  !'real(rp) ref1(6)'
   call json%create_array(json_list1, 'ref1')
   do i1 = lbound(input%ref1, 1), ubound(input%ref1, 1)
     call json%create_real(json_val, input%ref1(i1), '')
@@ -6344,7 +6344,7 @@ subroutine rad_int_all_ele_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%branch)) then
-    !line=2352 definition='type (rad_int_branch_struct), allocatable :: branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rad_int_branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='branch' type='type' size='rad_int_branch_struct' dimension=':' comment='Array is indexed from 0' default=None
+    !'type (rad_int_branch_struct), allocatable :: branch(:)'
     call json%create_array(json_list1, 'branch')
     do i1 = lbound(input%branch, 1), ubound(input%branch, 1)
       call rad_int_branch_struct_to_json(input%branch(i1), json_val, depth + 1)
@@ -6375,7 +6375,7 @@ subroutine rad_int_branch_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%ele)) then
-    !line=2348 definition='type (rad_int1_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rad_int1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='rad_int1_struct' dimension=':' comment='Array is indexed from 0' default=None
+    !'type (rad_int1_struct), allocatable :: ele(:)'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call rad_int1_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -6406,7 +6406,7 @@ subroutine rad_int_cache1_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%pt)) then
-    !line=29 definition='type (rad_int_track_point_struct), allocatable :: pt(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rad_int_track_point_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='rad_int_track_point_struct' dimension=':' comment='pt(0:n_pt)' default=None
+    !'type (rad_int_track_point_struct), allocatable :: pt(:)'
     call json%create_array(json_list1, 'pt')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
       call rad_int_track_point_struct_to_json(input%pt(i1), json_val, depth + 1)
@@ -6439,7 +6439,7 @@ subroutine rad_int_cache_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%c_ele)) then
-    !line=35 definition='type (rad_int_cache1_struct), allocatable :: c_ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rad_int_cache1_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='c_ele' type='type' size='rad_int_cache1_struct' dimension=':' comment='' default=None
+    !'type (rad_int_cache1_struct), allocatable :: c_ele(:)'
     call json%create_array(json_list1, 'c_ele')
     do i1 = lbound(input%c_ele, 1), ubound(input%c_ele, 1)
       call rad_int_cache1_struct_to_json(input%c_ele(i1), json_val, depth + 1)
@@ -6481,7 +6481,7 @@ subroutine rad_int_info_struct_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   if (associated(input%orbit)) then
-    !line=46 definition='type (coord_struct), pointer :: orbit(:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='coord_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='orbit' type='type' size='coord_struct' dimension=':' comment='' default=None
+    !'type (coord_struct), pointer :: orbit(:)'
     call json%create_array(json_list1, 'orbit')
     do i1 = lbound(input%orbit, 1), ubound(input%orbit, 1)
       call coord_struct_to_json(input%orbit(i1), json_val, depth + 1)
@@ -6501,7 +6501,7 @@ subroutine rad_int_info_struct_to_json (input, json_root, depth)
     call json%rename(json_val, 'cache_ele')
     call json%add(json_root, json_val)
   endif
-  !line=49 definition='real(rp) eta_a(4), eta_b(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='eta_a' type='real' size='rp' dimension='4' comment='' default=None
+  !'real(rp) eta_a(4), eta_b(4)'
   call json%create_array(json_list1, 'eta_a')
   do i1 = lbound(input%eta_a, 1), ubound(input%eta_a, 1)
     call json%create_real(json_val, input%eta_a(i1), '')
@@ -6509,7 +6509,7 @@ subroutine rad_int_info_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=49 definition='real(rp) eta_a(4), eta_b(4)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='eta_b' type='real' size='rp' dimension='4' comment='' default=None
+  !'real(rp) eta_a(4), eta_b(4)'
   call json%create_array(json_list1, 'eta_b')
   do i1 = lbound(input%eta_b, 1), ubound(input%eta_b, 1)
     call json%create_real(json_val, input%eta_b(i1), '')
@@ -6545,7 +6545,7 @@ subroutine rad_int_track_point_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 's_body', input%s_body)
-  !line=17 definition='real(rp) :: mat6(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='mat6' type='real' size='rp' dimension='6,6' comment='' default='0'
+  !'real(rp) :: mat6(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%mat6, 2), ubound(input%mat6, 2)
     call json%create_array(json_list1, 'mat6')
@@ -6558,7 +6558,7 @@ subroutine rad_int_track_point_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=18 definition='real(rp) :: vec0(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec0' type='real' size='rp' dimension='6' comment='' default='0'
+  !'real(rp) :: vec0(6) = 0'
   call json%create_array(json_list1, 'vec0')
   do i1 = lbound(input%vec0, 1), ubound(input%vec0, 1)
     call json%create_real(json_val, input%vec0(i1), '')
@@ -6627,7 +6627,7 @@ subroutine rad_map_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=962 definition='real(rp) :: ref_orb(6) = -1' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='ref_orb' type='real' size='rp' dimension='6' comment='Reference point around which damp_mat is calculated.' default='-1'
+  !'real(rp) :: ref_orb(6) = -1'
   call json%create_array(json_list1, 'ref_orb')
   do i1 = lbound(input%ref_orb, 1), ubound(input%ref_orb, 1)
     call json%create_real(json_val, input%ref_orb(i1), '')
@@ -6635,7 +6635,7 @@ subroutine rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=963 definition='real(rp) :: damp_dmat(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='damp_dmat' type='real' size='rp' dimension='6,6' comment='damp_correction = xfer_mat_with_damping - xfer_mat_without_damping.' default='0'
+  !'real(rp) :: damp_dmat(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%damp_dmat, 2), ubound(input%damp_dmat, 2)
     call json%create_array(json_list1, 'damp_dmat')
@@ -6648,7 +6648,7 @@ subroutine rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=964 definition='real(rp) :: xfer_damp_vec(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='xfer_damp_vec' type='real' size='rp' dimension='6' comment='Transfer map with damping 0th order vector.' default='0'
+  !'real(rp) :: xfer_damp_vec(6) = 0'
   call json%create_array(json_list1, 'xfer_damp_vec')
   do i1 = lbound(input%xfer_damp_vec, 1), ubound(input%xfer_damp_vec, 1)
     call json%create_real(json_val, input%xfer_damp_vec(i1), '')
@@ -6656,7 +6656,7 @@ subroutine rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=965 definition='real(rp) :: xfer_damp_mat(6,6) = mat6_unit$' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='xfer_damp_mat' type='real' size='rp' dimension='6,6' comment='1st order matrix: xfer_no_damp_mat + xfer_damp_correction.' default='mat6_unit$'
+  !'real(rp) :: xfer_damp_mat(6,6) = mat6_unit$'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%xfer_damp_mat, 2), ubound(input%xfer_damp_mat, 2)
     call json%create_array(json_list1, 'xfer_damp_mat')
@@ -6669,7 +6669,7 @@ subroutine rad_map_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=966 definition='real(rp) :: stoc_mat(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='stoc_mat' type='real' size='rp' dimension='6,6' comment='Stochastic variance or "kick" (Cholesky decomposed) matrix.' default='0'
+  !'real(rp) :: stoc_mat(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%stoc_mat, 2), ubound(input%stoc_mat, 2)
     call json%create_array(json_list1, 'stoc_mat')
@@ -6779,7 +6779,7 @@ subroutine seq_ele_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'name', trim(input%name))
   if (allocated(input%actual_arg)) then
-    !line=16 definition='character(40), allocatable :: actual_arg(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='actual_arg' type='character' size='40' dimension=':' comment='' default=None
+    !'character(40), allocatable :: actual_arg(:)'
     call json%create_array(json_list1, 'actual_arg')
     do i1 = lbound(input%actual_arg, 1), ubound(input%actual_arg, 1)
       call json%create_string(json_val, trim(input%actual_arg(i1)), '')
@@ -6820,7 +6820,7 @@ subroutine seq_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'name', trim(input%name))
   if (allocated(input%ele)) then
-    !line=40 definition='type (seq_ele_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='seq_ele_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='seq_ele_struct' dimension=':' comment='Elements in the sequence' default=None
+    !'type (seq_ele_struct), allocatable :: ele(:)'
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call seq_ele_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -6830,7 +6830,7 @@ subroutine seq_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%dummy_arg)) then
-    !line=41 definition='character(40), allocatable :: dummy_arg(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='dummy_arg' type='character' size='40' dimension=':' comment='' default=None
+    !'character(40), allocatable :: dummy_arg(:)'
     call json%create_array(json_list1, 'dummy_arg')
     do i1 = lbound(input%dummy_arg, 1), ubound(input%dummy_arg, 1)
       call json%create_string(json_val, trim(input%dummy_arg(i1)), '')
@@ -6840,7 +6840,7 @@ subroutine seq_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%corresponding_actual_arg)) then
-    !line=42 definition='character(40), allocatable :: corresponding_actual_arg(:)' type_info=TypeInformation(type='character', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='40', static=False, target=False, value=False, volatile=False, attributes=()) name='corresponding_actual_arg' type='character' size='40' dimension=':' comment='' default=None
+    !'character(40), allocatable :: corresponding_actual_arg(:)'
     call json%create_array(json_list1, 'corresponding_actual_arg')
     do i1 = lbound(input%corresponding_actual_arg, 1), ubound(input%corresponding_actual_arg, 1)
       call json%create_string(json_val, trim(input%corresponding_actual_arg(i1)), '')
@@ -6937,7 +6937,7 @@ subroutine space_charge_common_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'beam_chamber_height', input%beam_chamber_height)
   call json%add(json_root, 'lsc_sigma_cutoff', input%lsc_sigma_cutoff)
   call json%add(json_root, 'particle_sigma_cutoff', input%particle_sigma_cutoff)
-  !line=2102 definition='integer :: space_charge_mesh_size(3) = [32, 32, 64]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='space_charge_mesh_size' type='integer' size=None dimension='3' comment='Gird size for fft_3d space charge calc.' default='[32, 32, 64]'
+  !'integer :: space_charge_mesh_size(3) = [32, 32, 64]'
   call json%create_array(json_list1, 'space_charge_mesh_size')
   do i1 = lbound(input%space_charge_mesh_size, 1), ubound(input%space_charge_mesh_size, 1)
     call json%create_integer(json_val, input%space_charge_mesh_size(i1), '')
@@ -6945,7 +6945,7 @@ subroutine space_charge_common_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=2103 definition='integer :: csr3d_mesh_size(3) = [32, 32, 64]' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='csr3d_mesh_size' type='integer' size=None dimension='3' comment='Gird size for CSR.' default='[32, 32, 64]'
+  !'integer :: csr3d_mesh_size(3) = [32, 32, 64]'
   call json%create_array(json_list1, 'csr3d_mesh_size')
   do i1 = lbound(input%csr3d_mesh_size, 1), ubound(input%csr3d_mesh_size, 1)
     call json%create_integer(json_val, input%csr3d_mesh_size(i1), '')
@@ -6981,7 +6981,7 @@ subroutine spin_axis_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=275 definition='real(rp) :: l(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='l' type='real' size='rp' dimension='3' comment='Transverse axis.' default='0'
+  !'real(rp) :: l(3) = 0'
   call json%create_array(json_list1, 'l')
   do i1 = lbound(input%l, 1), ubound(input%l, 1)
     call json%create_real(json_val, input%l(i1), '')
@@ -6989,7 +6989,7 @@ subroutine spin_axis_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=276 definition='real(rp) :: n0(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='n0' type='real' size='rp' dimension='3' comment='Invariant spin axis on closed orbit.' default='0'
+  !'real(rp) :: n0(3) = 0'
   call json%create_array(json_list1, 'n0')
   do i1 = lbound(input%n0, 1), ubound(input%n0, 1)
     call json%create_real(json_val, input%n0(i1), '')
@@ -6997,7 +6997,7 @@ subroutine spin_axis_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=277 definition='real(rp) :: m(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='m' type='real' size='rp' dimension='3' comment='Transverse axis.' default='0'
+  !'real(rp) :: m(3) = 0'
   call json%create_array(json_list1, 'm')
   do i1 = lbound(input%m, 1), ubound(input%m, 1)
     call json%create_real(json_val, input%m(i1), '')
@@ -7026,7 +7026,7 @@ subroutine spin_eigen_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=270 definition='complex(rp) :: vec(8) = 0' type_info=TypeInformation(type='complex', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec' type='complex' size='rp' dimension='8' comment='' default='0'
+  !'complex(rp) :: vec(8) = 0'
   call json%create_array(json_list1, 'vec')
   do i1 = lbound(input%vec, 1), ubound(input%vec, 1)
     call complex_to_json(input%vec(i1), json_val, depth + 1)
@@ -7061,7 +7061,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   call spin_axis_struct_to_json(input%axis, json_val, depth + 1)
   call json%rename(json_val, 'axis')
   call json%add(json_root, json_val)
-  !line=282 definition='type (spin_eigen_struct) :: eigen(8) = spin_eigen_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='spin_eigen_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='eigen' type='type' size='spin_eigen_struct' dimension='8' comment='' default='spin_eigen_struct()'
+  !'type (spin_eigen_struct) :: eigen(8) = spin_eigen_struct()'
   call json%create_array(json_list1, 'eigen')
   do i1 = lbound(input%eigen, 1), ubound(input%eigen, 1)
     call spin_eigen_struct_to_json(input%eigen(i1), json_val, depth + 1)
@@ -7069,7 +7069,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=283 definition='real(rp) :: dn_dpz(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dn_dpz' type='real' size='rp' dimension='3' comment='Invariant spin derivative' default='0'
+  !'real(rp) :: dn_dpz(3) = 0'
   call json%create_array(json_list1, 'dn_dpz')
   do i1 = lbound(input%dn_dpz, 1), ubound(input%dn_dpz, 1)
     call json%create_real(json_val, input%dn_dpz(i1), '')
@@ -7077,7 +7077,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=284 definition='real(rp) :: alpha(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='alpha' type='real' size='rp' dimension='6' comment='Alpha vector' default='0'
+  !'real(rp) :: alpha(6) = 0'
   call json%create_array(json_list1, 'alpha')
   do i1 = lbound(input%alpha, 1), ubound(input%alpha, 1)
     call json%create_real(json_val, input%alpha(i1), '')
@@ -7085,7 +7085,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=285 definition='real(rp) :: beta(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='beta' type='real' size='rp' dimension='6' comment='Beta vector' default='0'
+  !'real(rp) :: beta(6) = 0'
   call json%create_array(json_list1, 'beta')
   do i1 = lbound(input%beta, 1), ubound(input%beta, 1)
     call json%create_real(json_val, input%beta(i1), '')
@@ -7093,7 +7093,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=286 definition='real(rp) :: orb0(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='orb0' type='real' size='rp' dimension='6' comment='Closed orbit' default='0'
+  !'real(rp) :: orb0(6) = 0'
   call json%create_array(json_list1, 'orb0')
   do i1 = lbound(input%orb0, 1), ubound(input%orb0, 1)
     call json%create_real(json_val, input%orb0(i1), '')
@@ -7101,7 +7101,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=287 definition='real(rp) :: M_1turn(8,8) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='M_1turn' type='real' size='rp' dimension='8,8' comment='1-turn matrix' default='0'
+  !'real(rp) :: M_1turn(8,8) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%M_1turn, 2), ubound(input%M_1turn, 2)
     call json%create_array(json_list1, 'm_1turn')
@@ -7114,7 +7114,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=288 definition='real(rp) :: M_ele(8,8) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='M_ele' type='real' size='rp' dimension='8,8' comment='Transfer matrix through element.' default='0'
+  !'real(rp) :: M_ele(8,8) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%M_ele, 2), ubound(input%M_ele, 2)
     call json%create_array(json_list1, 'm_ele')
@@ -7127,7 +7127,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=289 definition='real(rp) :: sq_ele(0:3) = 0, sq_1turn(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='sq_ele' type='real' size='rp' dimension='0:3' comment='' default='0'
+  !'real(rp) :: sq_ele(0:3) = 0, sq_1turn(0:3) = 0'
   call json%create_array(json_list1, 'sq_ele')
   do i1 = lbound(input%sq_ele, 1), ubound(input%sq_ele, 1)
     call json%create_real(json_val, input%sq_ele(i1), '')
@@ -7135,7 +7135,7 @@ subroutine spin_matching_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=289 definition='real(rp) :: sq_ele(0:3) = 0, sq_1turn(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='sq_1turn' type='real' size='rp' dimension='0:3' comment='' default='0'
+  !'real(rp) :: sq_ele(0:3) = 0, sq_1turn(0:3) = 0'
   call json%create_array(json_list1, 'sq_1turn')
   do i1 = lbound(input%sq_1turn, 1), ubound(input%sq_1turn, 1)
     call json%create_real(json_val, input%sq_1turn(i1), '')
@@ -7165,7 +7165,7 @@ subroutine spin_orbit_map1_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=306 definition='real(rp) :: orb_mat(6,6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='orb_mat' type='real' size='rp' dimension='6,6' comment='Orbital matrix' default='0'
+  !'real(rp) :: orb_mat(6,6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%orb_mat, 2), ubound(input%orb_mat, 2)
     call json%create_array(json_list1, 'orb_mat')
@@ -7178,7 +7178,7 @@ subroutine spin_orbit_map1_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list2)
   nullify(json_list2)
-  !line=307 definition='real(rp) :: vec0(6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec0' type='real' size='rp' dimension='6' comment='Orbital 0th order map: r_out = mat6 * r_in + vec0' default='0'
+  !'real(rp) :: vec0(6) = 0'
   call json%create_array(json_list1, 'vec0')
   do i1 = lbound(input%vec0, 1), ubound(input%vec0, 1)
     call json%create_real(json_val, input%vec0(i1), '')
@@ -7186,7 +7186,7 @@ subroutine spin_orbit_map1_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=308 definition='real(rp) :: spin_q(0:3,0:6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='spin_q' type='real' size='rp' dimension='0:3,0:6' comment='0th and 1st order quaternion spin map' default='0'
+  !'real(rp) :: spin_q(0:3,0:6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%spin_q, 2), ubound(input%spin_q, 2)
     call json%create_array(json_list1, 'spin_q')
@@ -7391,7 +7391,7 @@ subroutine surface_curvature_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1037 definition='real(rp) :: xy(0:6,0:6) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='xy' type='real' size='rp' dimension='0:6,0:6' comment='' default='0'
+  !'real(rp) :: xy(0:6,0:6) = 0'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%xy, 2), ubound(input%xy, 2)
     call json%create_array(json_list1, 'xy')
@@ -7405,7 +7405,7 @@ subroutine surface_curvature_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list2)
   nullify(json_list2)
   call json%add(json_root, 'spherical', input%spherical)
-  !line=1039 definition='real(rp) :: elliptical(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='elliptical' type='real' size='rp' dimension='3' comment='Total curvature = elliptical + spherical' default='0'
+  !'real(rp) :: elliptical(3) = 0'
   call json%create_array(json_list1, 'elliptical')
   do i1 = lbound(input%elliptical, 1), ubound(input%elliptical, 1)
     call json%create_real(json_val, input%elliptical(i1), '')
@@ -7463,7 +7463,7 @@ subroutine surface_displacement_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'active', input%active)
-  !line=1010 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dr' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'dr')
   do i1 = lbound(input%dr, 1), ubound(input%dr, 1)
     call json%create_real(json_val, input%dr(i1), '')
@@ -7471,7 +7471,7 @@ subroutine surface_displacement_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1010 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -7480,7 +7480,7 @@ subroutine surface_displacement_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   if (allocated(input%pt)) then
-    !line=1011 definition='type (surface_displacement_pt_struct), allocatable :: pt(:,:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='surface_displacement_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='surface_displacement_pt_struct' dimension=':,:' comment='' default=None
+    !'type (surface_displacement_pt_struct), allocatable :: pt(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
       call json%create_array(json_list1, 'pt')
@@ -7543,7 +7543,7 @@ subroutine surface_h_misalign_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'active', input%active)
-  !line=997 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dr' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'dr')
   do i1 = lbound(input%dr, 1), ubound(input%dr, 1)
     call json%create_real(json_val, input%dr(i1), '')
@@ -7551,7 +7551,7 @@ subroutine surface_h_misalign_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=997 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -7560,7 +7560,7 @@ subroutine surface_h_misalign_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   if (allocated(input%pt)) then
-    !line=998 definition='type (surface_h_misalign_pt_struct), allocatable :: pt(:,:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='surface_h_misalign_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='surface_h_misalign_pt_struct' dimension=':,:' comment='' default=None
+    !'type (surface_h_misalign_pt_struct), allocatable :: pt(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
       call json%create_array(json_list1, 'pt')
@@ -7622,7 +7622,7 @@ subroutine surface_segmented_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'active', input%active)
-  !line=984 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dr' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'dr')
   do i1 = lbound(input%dr, 1), ubound(input%dr, 1)
     call json%create_real(json_val, input%dr(i1), '')
@@ -7630,7 +7630,7 @@ subroutine surface_segmented_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=984 definition='real(rp) :: dr(2) = 0, r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='2' comment='' default='0'
+  !'real(rp) :: dr(2) = 0, r0(2) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -7639,7 +7639,7 @@ subroutine surface_segmented_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   if (allocated(input%pt)) then
-    !line=985 definition='type (surface_segmented_pt_struct), allocatable :: pt(:,:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='surface_segmented_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='surface_segmented_pt_struct' dimension=':,:' comment='' default=None
+    !'type (surface_segmented_pt_struct), allocatable :: pt(:,:)'
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
       call json%create_array(json_list1, 'pt')
@@ -7674,7 +7674,7 @@ subroutine target_point_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  !line=1046 definition='real(rp) :: r(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r' type='real' size='rp' dimension='3' comment='(x, y, z)' default='0'
+  !'real(rp) :: r(3) = 0'
   call json%create_array(json_list1, 'r')
   do i1 = lbound(input%r, 1), ubound(input%r, 1)
     call json%create_real(json_val, input%r(i1), '')
@@ -7705,7 +7705,7 @@ subroutine taylor_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'ref', input%ref)
   if (associated(input%term)) then
-    !line=480 definition='type (taylor_term_struct), pointer :: term(:) => null()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='taylor_term_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='term' type='type' size='taylor_term_struct' dimension=':' comment='' default='null()'
+    !'type (taylor_term_struct), pointer :: term(:) => null()'
     call json%create_array(json_list1, 'term')
     do i1 = lbound(input%term, 1), ubound(input%term, 1)
       call taylor_term_struct_to_json(input%term(i1), json_val, depth + 1)
@@ -7736,7 +7736,7 @@ subroutine taylor_term_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'coef', input%coef)
-  !line=466 definition='integer :: expn(6) = 0' type_info=TypeInformation(type='integer', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='expn' type='integer' size=None dimension='6' comment='' default='0'
+  !'integer :: expn(6) = 0'
   call json%create_array(json_list1, 'expn')
   do i1 = lbound(input%expn, 1), ubound(input%expn, 1)
     call json%create_integer(json_val, input%expn(i1), '')
@@ -7798,7 +7798,7 @@ subroutine track_point_struct_to_json (input, json_root, depth)
   call strong_beam_struct_to_json(input%strong_beam, json_val, depth + 1)
   call json%rename(json_val, 'strong_beam')
   call json%add(json_root, json_val)
-  !line=2002 definition='real(rp) vec0(6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='vec0' type='real' size='rp' dimension='6' comment='0th order part of xfer map from the beginning.' default=None
+  !'real(rp) vec0(6)'
   call json%create_array(json_list1, 'vec0')
   do i1 = lbound(input%vec0, 1), ubound(input%vec0, 1)
     call json%create_real(json_val, input%vec0(i1), '')
@@ -7806,7 +7806,7 @@ subroutine track_point_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=2003 definition='real(rp) mat6(6,6)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='mat6' type='real' size='rp' dimension='6,6' comment='1st order part of xfer map (transfer matrix).' default=None
+  !'real(rp) mat6(6,6)'
   call json%create_array(json_list2, 'dim-2')
   do i2 = lbound(input%mat6, 2), ubound(input%mat6, 2)
     call json%create_array(json_list1, 'mat6')
@@ -7841,7 +7841,7 @@ subroutine track_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%pt)) then
-    !line=2009 definition='type (track_point_struct), allocatable :: pt(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='track_point_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='pt' type='type' size='track_point_struct' dimension=':' comment='Array of track points indexed from 0.' default=None
+    !'type (track_point_struct), allocatable :: pt(:)'
     call json%create_array(json_list1, 'pt')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
       call track_point_struct_to_json(input%pt(i1), json_val, depth + 1)
@@ -7945,7 +7945,7 @@ subroutine wake_lr_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'file', trim(input%file))
   if (allocated(input%mode)) then
-    !line=654 definition='type (wake_lr_mode_struct), allocatable :: mode(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='wake_lr_mode_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='mode' type='type' size='wake_lr_mode_struct' dimension=':' comment='' default=None
+    !'type (wake_lr_mode_struct), allocatable :: mode(:)'
     call json%create_array(json_list1, 'mode')
     do i1 = lbound(input%mode, 1), ubound(input%mode, 1)
       call wake_lr_mode_struct_to_json(input%mode(i1), json_val, depth + 1)
@@ -8016,7 +8016,7 @@ subroutine wake_sr_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'z_long')
   call json%add(json_root, json_val)
   if (allocated(input%long)) then
-    !line=623 definition='type (wake_sr_mode_struct), allocatable :: long(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='wake_sr_mode_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='long' type='type' size='wake_sr_mode_struct' dimension=':' comment='' default=None
+    !'type (wake_sr_mode_struct), allocatable :: long(:)'
     call json%create_array(json_list1, 'long')
     do i1 = lbound(input%long, 1), ubound(input%long, 1)
       call wake_sr_mode_struct_to_json(input%long(i1), json_val, depth + 1)
@@ -8026,7 +8026,7 @@ subroutine wake_sr_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%trans)) then
-    !line=624 definition='type (wake_sr_mode_struct), allocatable :: trans(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='wake_sr_mode_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='trans' type='type' size='wake_sr_mode_struct' dimension=':' comment='' default=None
+    !'type (wake_sr_mode_struct), allocatable :: trans(:)'
     call json%create_array(json_list1, 'trans')
     do i1 = lbound(input%trans, 1), ubound(input%trans, 1)
       call wake_sr_mode_struct_to_json(input%trans(i1), json_val, depth + 1)
@@ -8063,7 +8063,7 @@ subroutine wake_sr_z_long_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%w)) then
-    !line=595 definition='real(rp), allocatable :: w(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='w' type='real' size='rp' dimension=':' comment='Input single particle Wake. Indexed from 1.' default=None
+    !'real(rp), allocatable :: w(:)'
     call json%create_array(json_list1, 'w')
     do i1 = lbound(input%w, 1), ubound(input%w, 1)
       call json%create_real(json_val, input%w(i1), '')
@@ -8073,7 +8073,7 @@ subroutine wake_sr_z_long_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%fw)) then
-    !line=596 definition='complex(rp), allocatable :: fw(:)' type_info=TypeInformation(type='complex', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='fw' type='complex' size='rp' dimension=':' comment='Fourier transform of w.' default=None
+    !'complex(rp), allocatable :: fw(:)'
     call json%create_array(json_list1, 'fw')
     do i1 = lbound(input%fw, 1), ubound(input%fw, 1)
       call complex_to_json(input%fw(i1), json_val, depth + 1)
@@ -8083,7 +8083,7 @@ subroutine wake_sr_z_long_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%fbunch)) then
-    !line=597 definition='complex(rp), allocatable :: fbunch(:), w_out(:)' type_info=TypeInformation(type='complex', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='fbunch' type='complex' size='rp' dimension=':' comment='Scratch space.' default=None
+    !'complex(rp), allocatable :: fbunch(:), w_out(:)'
     call json%create_array(json_list1, 'fbunch')
     do i1 = lbound(input%fbunch, 1), ubound(input%fbunch, 1)
       call complex_to_json(input%fbunch(i1), json_val, depth + 1)
@@ -8093,7 +8093,7 @@ subroutine wake_sr_z_long_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%w_out)) then
-    !line=597 definition='complex(rp), allocatable :: fbunch(:), w_out(:)' type_info=TypeInformation(type='complex', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='w_out' type='complex' size='rp' dimension=':' comment='Scratch space.' default=None
+    !'complex(rp), allocatable :: fbunch(:), w_out(:)'
     call json%create_array(json_list1, 'w_out')
     do i1 = lbound(input%w_out, 1), ubound(input%w_out, 1)
       call complex_to_json(input%w_out(i1), json_val, depth + 1)
@@ -8158,7 +8158,7 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'name', trim(input%name))
   call json%add(json_root, 'material', trim(input%material))
   if (allocated(input%v)) then
-    !line=420 definition='type (wall3d_vertex_struct), allocatable :: v(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='wall3d_vertex_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='v' type='type' size='wall3d_vertex_struct' dimension=':' comment='Array of vertices. Always stored relative.' default=None
+    !'type (wall3d_vertex_struct), allocatable :: v(:)'
     call json%create_array(json_list1, 'v')
     do i1 = lbound(input%v, 1), ubound(input%v, 1)
       call wall3d_vertex_struct_to_json(input%v(i1), json_val, depth + 1)
@@ -8180,7 +8180,7 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'patch_in_region', input%patch_in_region)
   call json%add(json_root, 'thickness', input%thickness)
   call json%add(json_root, 's', input%s)
-  !line=430 definition='real(rp) :: r0(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='r0' type='real' size='rp' dimension='2' comment='Center of section' default='0'
+  !'real(rp) :: r0(2) = 0'
   call json%create_array(json_list1, 'r0')
   do i1 = lbound(input%r0, 1), ubound(input%r0, 1)
     call json%create_real(json_val, input%r0(i1), '')
@@ -8190,7 +8190,7 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
   nullify(json_list1)
   call json%add(json_root, 'dx0_ds', input%dx0_ds)
   call json%add(json_root, 'dy0_ds', input%dy0_ds)
-  !line=433 definition='real(rp) :: x0_coef(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='x0_coef' type='real' size='rp' dimension='0:3' comment='Spline coefs for x-center' default='0'
+  !'real(rp) :: x0_coef(0:3) = 0'
   call json%create_array(json_list1, 'x0_coef')
   do i1 = lbound(input%x0_coef, 1), ubound(input%x0_coef, 1)
     call json%create_real(json_val, input%x0_coef(i1), '')
@@ -8198,7 +8198,7 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=434 definition='real(rp) :: y0_coef(0:3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='y0_coef' type='real' size='rp' dimension='0:3' comment='Spline coefs for y-center' default='0'
+  !'real(rp) :: y0_coef(0:3) = 0'
   call json%create_array(json_list1, 'y0_coef')
   do i1 = lbound(input%y0_coef, 1), ubound(input%y0_coef, 1)
     call json%create_real(json_val, input%y0_coef(i1), '')
@@ -8207,7 +8207,7 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 'dr_ds', input%dr_ds)
-  !line=436 definition='real(rp) :: p1_coef(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='p1_coef' type='real' size='rp' dimension='3' comment='Spline coefs for p0 function' default='0'
+  !'real(rp) :: p1_coef(3) = 0'
   call json%create_array(json_list1, 'p1_coef')
   do i1 = lbound(input%p1_coef, 1), ubound(input%p1_coef, 1)
     call json%create_real(json_val, input%p1_coef(i1), '')
@@ -8215,7 +8215,7 @@ subroutine wall3d_section_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=437 definition='real(rp) :: p2_coef(3) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='p2_coef' type='real' size='rp' dimension='3' comment='Spline coefs for p1 function' default='0'
+  !'real(rp) :: p2_coef(3) = 0'
   call json%create_array(json_list1, 'p2_coef')
   do i1 = lbound(input%p2_coef, 1), ubound(input%p2_coef, 1)
     call json%create_real(json_val, input%p2_coef(i1), '')
@@ -8254,7 +8254,7 @@ subroutine wall3d_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'superimpose', input%superimpose)
   call json%add(json_root, 'ele_anchor_pt', int(input%ele_anchor_pt))
   if (allocated(input%section)) then
-    !line=459 definition='type (wall3d_section_struct), allocatable :: section(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='wall3d_section_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='section' type='type' size='wall3d_section_struct' dimension=':' comment='Indexed from 1.' default=None
+    !'type (wall3d_section_struct), allocatable :: section(:)'
     call json%create_array(json_list1, 'section')
     do i1 = lbound(input%section, 1), ubound(input%section, 1)
       call wall3d_section_struct_to_json(input%section(i1), json_val, depth + 1)
@@ -8324,7 +8324,7 @@ subroutine wiggler_modeling_common_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'len_step', input%len_step)
   call json%add(json_root, 'integration_ds', input%integration_ds)
   call json%add(json_root, 'drift_len_min', input%drift_len_min)
-  !line=29 definition='real(rp) :: len_drifts(3)' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='len_drifts' type='real' size='rp' dimension='3' comment='' default=None
+  !'real(rp) :: len_drifts(3)'
   call json%create_array(json_list1, 'len_drifts')
   do i1 = lbound(input%len_drifts, 1), ubound(input%len_drifts, 1)
     call json%create_real(json_val, input%len_drifts(i1), '')
