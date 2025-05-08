@@ -189,9 +189,10 @@ subroutine tao_data_check (err)
   logical err
 end subroutine
 
-function tao_data_sanity_check (datum, print_err, default_data_type) result (is_valid)
+function tao_data_sanity_check (datum, print_err, default_data_type, uni) result (is_valid)
   import
   type (tao_data_struct) datum
+  type (tao_universe_struct), optional, target :: uni
   logical print_err, is_valid
   character(*) default_data_type
 end function
@@ -236,7 +237,8 @@ subroutine tao_ele_shape_info (ix_uni, ele, ele_shapes, e_shape, label_name, y1,
   character(*) label_name
 end subroutine
 
-recursive subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid_value, why_invalid)
+recursive subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid_value, &
+                                                            why_invalid, called_from_lat_calc)
   import
   implicit none
   type (tao_data_struct) datum
@@ -244,6 +246,7 @@ recursive subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid
   type (tao_lattice_struct), target :: tao_lat
   real(rp) datum_value
   logical valid_value
+  logical, optional :: called_from_lat_calc
   character(*), optional :: why_invalid
 end subroutine
 
@@ -1003,7 +1006,16 @@ function tao_hook_curve_s_pt_def (s_default, ix_now, x1, x2, n_pts, tao_lat, cur
   real(rp) s_default, x1, x2, s_pt
   integer ix_now, n_pts
 end function
- 
+
+function tao_hook_data_sanity_check_def (found, datum, print_err, default_data_type, uni) result (is_valid)
+  import
+  implicit none
+  type (tao_data_struct) datum
+  type (tao_universe_struct), optional, target :: uni
+  logical found, print_err, is_valid
+  character(*) default_data_type
+end function
+
 subroutine tao_hook_draw_floor_plan_def (plot, graph)
   import
   implicit none
@@ -1141,6 +1153,7 @@ end interface  ! abstract
 procedure(tao_hook_branch_calc_def), pointer :: tao_hook_branch_calc_ptr => null()
 procedure(tao_hook_command_def), pointer :: tao_hook_command_ptr => null()
 procedure(tao_hook_curve_s_pt_def), pointer :: tao_hook_curve_s_pt_ptr => null()
+procedure(tao_hook_data_sanity_check_def), pointer :: tao_hook_data_sanity_check_ptr => null()
 procedure(tao_hook_draw_floor_plan_def), pointer :: tao_hook_draw_floor_plan_ptr => null()
 procedure(tao_hook_draw_graph_def), pointer :: tao_hook_draw_graph_ptr => null()
 procedure(tao_hook_evaluate_a_datum_def), pointer :: tao_hook_evaluate_a_datum_ptr => null()

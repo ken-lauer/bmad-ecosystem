@@ -3,9 +3,8 @@
 !
 ! Subroutine to initialize the tao structures.
 !
-! Input:
-!
 ! Output:
+!   err_flag  -- logical: Set Treu if there is an error. False otherwise.
 !-
 
 subroutine tao_init (err_flag)
@@ -34,7 +33,7 @@ type (tao_lattice_struct), pointer :: tao_lat
 type (branch_struct), pointer :: branch
 type (tao_lattice_branch_struct), pointer :: tao_branch
 
-real(rp) value, sigma(6,6)
+real(rp) value, sigma(6,6), merit
 real(rp), pointer :: ptr_attrib
 
 character(100) line, line2
@@ -320,11 +319,14 @@ do i = lbound(s%u, 1), ubound(s%u, 1)
       call radiation_integrals (tao_lat%lat, tao_branch%orbit, &
                                   tao_branch%modes_ri, tao_branch%ix_rad_int_cache, ib, tao_lat%rad_int_by_ele_ri)
 
-      if (branch%param%geometry == closed$ .and. tao_branch%track_state == moving_forward$) then
-        call chrom_calc (tao_lat%lat, s%global%delta_e_chrom, tao_branch%a%chrom, tao_branch%b%chrom, err, &
-              tao_branch%orbit(0)%vec(6), tao_lat%low_E_lat, tao_lat%high_E_lat, tao_branch%low_E_orb, tao_branch%high_E_orb, ib)
+      if (tao_branch%track_state == moving_forward$) then
         call emit_6d(branch%ele(0), .false., tao_branch%modes_6d, sigma, tao_branch%orbit, tao_lat%rad_int_by_ele_6d)
         call emit_6d(branch%ele(0), .true., tao_branch%modes_6d, sigma, tao_branch%orbit, tao_lat%rad_int_by_ele_6d)
+        call chrom_calc (tao_lat%lat, s%global%delta_e_chrom, tao_branch%a%chrom, tao_branch%b%chrom, err, tao_branch%orbit(0)%vec(6), &
+                              tao_lat%low_E_lat, tao_lat%high_E_lat, tao_branch%low_E_orb, tao_branch%high_E_orb, ib, tao_branch%orbit(0))
+      endif
+
+      if (branch%param%geometry == closed$ .and. tao_branch%track_state == moving_forward$) then
         tao_branch%modes_6d%momentum_compaction = momentum_compaction(branch)
         if (tao_branch%modes_6d%a%j_damp < 0 .or. tao_branch%modes_6d%b%j_damp < 0 .or. &
                                                    (tao_branch%modes_6d%z%j_damp < 0 .and. rf_is_on(branch))) then
@@ -445,6 +447,8 @@ err_flag = .false.
 
 if (iu_log > 0) write (iu_log, '(a)') '*Init: And done.'
 if (iu_log > 0) close (iu_log)
+
+merit = tao_merit()  ! To calc initial merit contributions to the merit function.
 
 !------------------------------------------------------------------------------
 contains

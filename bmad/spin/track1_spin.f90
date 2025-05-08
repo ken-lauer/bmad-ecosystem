@@ -24,7 +24,7 @@
 
 subroutine track1_spin (start_orb, ele, param, end_orb, make_quaternion)
 
-use equal_mod, dummy => track1_spin
+use bmad_routine_interface, dummy => track1_spin
   
 implicit none
 
@@ -79,7 +79,7 @@ case (transverse_kick$)
   end_orb%spin = quat_rotate(quat, start_orb%spin)
 
 
-case (spin_integration$)
+case (spin_integration$, magnus$)
   call track1_spin_integration (start_orb, ele, param, end_orb)
 
 case (custom$)

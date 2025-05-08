@@ -19,7 +19,7 @@ private next_in_branch
 ! IF YOU CHANGE THE LAT_STRUCT OR ANY ASSOCIATED STRUCTURES YOU MUST INCREASE THE VERSION NUMBER !!!
 ! THIS IS USED BY BMAD_PARSER TO MAKE SURE DIGESTED FILES ARE OK.
 
-integer, parameter :: bmad_inc_version$ = 328
+integer, parameter :: bmad_inc_version$ = 331
 
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -63,7 +63,7 @@ end type
 
 integer, parameter :: bmad_standard$ = 1, symp_lie_ptc$ = 2, runge_kutta$ = 3 
 integer, parameter :: linear$ = 4, tracking$ = 5, time_runge_kutta$ = 6
-integer, parameter :: fixed_step_runge_kutta$ = 9, symp_lie_bmad$ = 10
+integer, parameter :: fixed_step_runge_kutta$ = 9, symp_lie_bmad$ = 10, magnus$ = 11
 integer, parameter :: Auto$ = 12, sprint$ = 12, fixed_step_time_runge_kutta$ = 13, mad$ = 14
 integer, parameter :: transverse_kick$ = 3, spin_integration$ = 99
 
@@ -76,7 +76,7 @@ character(28), parameter :: tracking_method_name(0:14) = [character(28) :: &
 character(16), parameter :: spin_tracking_method_name(0:12) = [ &
       'GARBAGE!        ', 'Off             ', 'Symp_Lie_PTC    ', 'Transverse_Kick ', &
       'GARBAGE!        ', 'Tracking        ', 'GARBAGE!        ', 'Custom          ', &
-      'GARBAGE!        ', 'GARBAGE!        ', 'GARBAGE!        ', 'GARBAGE!        ', &
+      'GARBAGE!        ', 'GARBAGE!        ', 'GARBAGE!        ', 'Magnus          ', &
       'Sprint          ']
 
 character(24), parameter :: mat6_calc_method_name(0:14) = [character(24):: 'GARBAGE!', &
@@ -177,10 +177,10 @@ character(24) :: matrix_status_name(9) = [character(24) :: 'OK', 'IN_STOP_BAND',
                        'UNSTABLE', 'UNSTABLE A-MODE', 'UNSTABLE B-MODE', 'XFER_MAT_CALC_FAILURE', &
                        'TWISS_PROPAGATE_FAILURE', 'NO_CLOSED_ORBIT']
 
-
 type twiss_struct
   real(rp) :: beta = 0, alpha = 0, gamma = 0, phi = 0, eta = 0, etap = 0, deta_ds = 0
   real(rp) :: sigma = 0, sigma_p = 0, emit = 0, norm_emit = 0
+  real(rp) :: dbeta_dpz = 0, dalpha_dpz = 0
 end type
 
 ! Misc parameters
@@ -1761,7 +1761,7 @@ integer, parameter :: eta_y_out$ = 26, mode$ = 26, velocity_distribution$ = 26, 
                       eps_step_scale$ = 26, E_tot_strong$ = 26, dthickness_dx$ = 26, bend_tilt$ = 26
 integer, parameter :: etap_x_out$ = 27, phi0_autoscale$ = 27, dx_origin$ = 27, energy_distribution$ = 27, &
                       x_quad$ = 27, ds_photon_slice$ = 27, mosaic_angle_rms_out_plane$ = 27, &
-                      py_aperture_center$ = 27, x_dispersion_err$ = 27, l_rectangle$ = 27
+                      py_aperture_center$ = 27, x_dispersion_err$ = 27, l_rectangle$ = 27, pc_strong$ = 27
 integer, parameter :: etap_y_out$ = 28, dy_origin$ = 28, y_quad$ = 28, e_field_x$ = 28, &
                       y_dispersion_err$ = 28, z_aperture_width2$ = 28, user_sets_length$ = 28, &
                       rf_clock_harmonic$ = 28, b_field_tot$ = 28, atomic_weight$ = 28
@@ -1861,11 +1861,11 @@ integer, parameter :: ran_seed$ = 109, origin_ele$ = 109, beta_b$ = 109
 
 ! 
 
-integer, parameter :: to_line$ = 110, field_overlaps$ = 110 
-integer, parameter :: field_master$ = 111, to_element$ = 111
+integer, parameter :: to_line$ = 110, field_overlaps$ = 110, dbeta_dpz_a$ = 110
+integer, parameter :: field_master$ = 111, to_element$ = 111, dbeta_dpz_b$ = 111
 integer, parameter :: descrip$ = 112
-integer, parameter :: scale_multipoles$ = 113
-integer, parameter :: sr_wake$ = 114
+integer, parameter :: scale_multipoles$ = 113, dalpha_dpz_a$ = 113
+integer, parameter :: sr_wake$ = 114, dalpha_dpz_b$ = 114
 integer, parameter :: ref_orbit$ = 115, lr_wake$ = 115
 integer, parameter :: phi_b$ = 116, crystal_type$ = 116, material_type$ = 116
 integer, parameter :: type$ = 117

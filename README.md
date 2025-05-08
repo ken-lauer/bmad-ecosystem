@@ -74,17 +74,18 @@ dependencies.
 First, create a build environment:
 
 ```
-conda create -n bmad-build -f .github/bmad-build-env.yaml
+conda env create -n bmad-build -f .github/bmad-build-env.yaml
 conda activate bmad-build
 ```
 
 This is the same environment used in GitHub Actions continuous integration.
 
-Next:
+Next, in `util/dist_prefs`:
 
-1. Set `ACC_CONDA_BUILD` to `Y` in `util/dist_prefs`.
-2. Set `ACC_CONDA_PATH` to `$CONDA_PREFIX` in `util/dist_prefs`.
-3. Ensure that `ACC_USE_MACPORTS` is set to `N`.
+1. Set `ACC_CONDA_BUILD` to `Y`
+2. Set `ACC_CONDA_PATH` to `$CONDA_PREFIX`
+3. Set `ACC_PLOT_PACKAGE` to `pgplot` (or `none` if desirable)
+4. For PyTao usage, ensure `ACC_ENABLE_SHARED` is set to `Y` (if applicable)
 
 Then:
 

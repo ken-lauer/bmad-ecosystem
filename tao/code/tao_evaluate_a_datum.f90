@@ -1,5 +1,5 @@
 !+
-! Subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid_value, why_invalid)
+! Subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid_value, why_invalid, called_from_lat_calc)
 !
 ! Subroutine to put the proper data in the specified datum
 !
@@ -7,6 +7,8 @@
 !   datum          -- Tao_data_struct: What type of datum
 !   u              -- Tao_universe_struct: Which universe to use.
 !   tao_lat        -- Tao_lattice_struct: Lattice to use.
+!   called_from_lat_calc -- logical, optional: Default is False. If true, prevents infinite loop of this
+!                             routine calling tao_lattice_calc
 !
 ! Output:
 !   datum          -- Tao_data_struct: 
@@ -16,7 +18,7 @@
 !   why_invalid   -- Character(*), optional: Tells why datum value is invalid.
 !-
 
-recursive subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid_value, why_invalid)
+recursive subroutine tao_evaluate_a_datum (datum, u, tao_lat, datum_value, valid_value, why_invalid, called_from_lat_calc)
 
 use tao_data_and_eval_mod, dummy => tao_evaluate_a_datum
 use pointer_lattice, only: operator(.sub.)
@@ -82,6 +84,7 @@ character(40) head_data_type, sub_data_type, data_source, name, dflt_dat_index
 character(100) data_type, str
 character(:), allocatable :: e_str
 
+logical, optional :: called_from_lat_calc
 logical found, valid_value, err, err1, err2, taylor_is_complex, use_real_part, term_found, ok
 logical particle_lost, exterminate, printit, twiss_at_ele
 logical, allocatable :: good(:)
@@ -743,27 +746,20 @@ case ('chrom.')
   
   if (data_source == 'beam') goto 9000  ! Set error message and return
 
-  if (branch%param%geometry == open$) then
-    select case (data_type)
-    case ('chrom.dtune.a', 'chrom.a', 'chrom.dtune.b', 'chrom.b')
-      call tao_set_invalid (datum, 'Cannot calc ' // trim(data_type) // ' with an open geometry.', why_invalid)
-      return
-    end select
+  ! Can happen with a command like "show lat -attribute chrom.a" that the chromaticity has not been computed.
+  ! So try to compute it if needed.
+  if (.not. tao_lat%chrom_calc_ok) then
+    ok = .false.
+    if (.not. logic_option(.false., called_from_lat_calc)) then ! Try calling tao_lattice_calc.
+      s%com%force_chrom_calc = .true.
+      s%u%calc%lattice = .true.
+      call tao_lattice_calc(ok)
+    endif
   endif
 
-  if (.not. tao_lat%chrom_calc_ok) then
-    ! Can happen with a command like "show lat -attribute chrom.a" that the chromaticity has not been computed.
-    ! So try to compute it.
-    s%com%force_chrom_calc = .true.
-    s%u%calc%lattice = .true.
-    call tao_lattice_calc(ok)
-    if (.not. ok .or. .not. tao_lat%chrom_calc_ok) then
-      call tao_set_invalid (datum, 'Chrom calc failed.', why_invalid)
-      return
-    endif
-  elseif (.not. allocated(tao_lat%low_E_lat%branch)) then
+  if (.not. allocated(tao_lat%low_E_lat%branch) .or. .not. tao_lat%chrom_calc_ok) then
     if (branch%param%unstable_factor == 0) then
-      call tao_set_invalid (datum, 'Chrom bookkeeping problem. Please contact DCS.', why_invalid)
+      call tao_set_invalid (datum, 'Chrom calculation problem.', why_invalid)
     else
       call tao_set_invalid (datum, 'Unstable lattice.', why_invalid)
     endif
@@ -787,8 +783,7 @@ case ('chrom.')
   case ('chrom.dbeta.a')
     if (data_source == 'lat') then
       do i = ix_start, ix_ele
-        dpz = tao_branch%high_E_orb(i)%vec(6) - tao_branch%low_E_orb(i)%vec(6)
-        value_vec(i) = (tao_lat%high_E_lat%branch(ix_branch)%ele(i)%a%beta - tao_lat%low_E_lat%branch(ix_branch)%ele(i)%a%beta) / (tao_lat%lat%ele(i)%a%beta * dpz)
+        value_vec(i) = tao_lat%lat%ele(i)%a%dbeta_dpz / tao_lat%lat%ele(i)%a%beta
       end do
       call tao_load_this_datum (value_vec, ele_ref, ele_start, ele, datum_value, valid_value, datum, branch, why_invalid)
     endif
@@ -796,8 +791,7 @@ case ('chrom.')
   case ('chrom.dbeta.b')
     if (data_source == 'lat') then
       do i = ix_start, ix_ele
-        dpz = tao_branch%high_E_orb(i)%vec(6) - tao_branch%low_E_orb(i)%vec(6)
-        value_vec(i) = (tao_lat%high_E_lat%branch(ix_branch)%ele(i)%b%beta - tao_lat%low_E_lat%branch(ix_branch)%ele(i)%b%beta) / (tao_lat%lat%ele(i)%b%beta * dpz)
+        value_vec(i) = tao_lat%lat%ele(i)%b%dbeta_dpz / tao_lat%lat%ele(i)%b%beta
       end do
       call tao_load_this_datum (value_vec, ele_ref, ele_start, ele, datum_value, valid_value, datum, branch, why_invalid)
     endif
@@ -860,19 +854,12 @@ case ('chrom.')
     if (data_source == 'lat') then
       do i = ix_start, ix_ele
         if (data_type == 'chrom.w.a') then
-          z2 => tao_lat%high_E_lat%branch(ix_branch)%ele(i)%a
-          z1 => tao_lat%low_E_lat%branch(ix_branch)%ele(i)%a
           z0 => branch%ele(i)%a
         else
-          z2 => tao_lat%high_E_lat%branch(ix_branch)%ele(i)%b
-          z1 => tao_lat%low_E_lat%branch(ix_branch)%ele(i)%b
           z0 => branch%ele(i)%b
         endif
-        dpz = tao_branch%high_E_orb(i)%vec(6) - tao_branch%low_E_orb(i)%vec(6)
-        dalpha = (z2%alpha - z1%alpha) / dpz
-        dbeta  = (z2%beta - z1%beta) / dpz
-        aa = dalpha - z0%alpha * dbeta / z0%beta
-        bb = dbeta / z0%beta
+        bb = z0%dbeta_dpz / z0%beta
+        aa = z0%dalpha_dpz - z0%alpha * bb
         value_vec(i) = sqrt(aa**2 + bb**2)
       end do
       call tao_load_this_datum (value_vec, ele_ref, ele_start, ele, datum_value, valid_value, datum, branch, why_invalid)
@@ -2299,6 +2286,19 @@ case ('rad_int.')
   endif
 
   if (data_source == 'beam') goto 9000  ! Set error message and return
+
+  if (.not. tao_lat%rad_int_calc_ok .or. .not. tao_lat%emit_6d_calc_ok) then
+    if (.not. logic_option(.false., called_from_lat_calc)) then ! Try calling tao_lattice_calc.
+      s%com%force_rad_int_calc = .true.
+      u%calc%lattice = .true.
+      call tao_lattice_calc(ok)
+    endif
+
+    if (.not. tao_lat%rad_int_calc_ok .or. .not. tao_lat%emit_6d_calc_ok) then
+      call tao_set_invalid (datum, 'Radiation integral calc failed.', why_invalid)
+      return
+    endif
+  endif
 
   branch_ri => tao_lat%rad_int_by_ele_ri%branch(ix_branch)
   branch_6d => tao_lat%rad_int_by_ele_6d%branch(ix_branch)

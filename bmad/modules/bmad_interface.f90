@@ -1,11 +1,9 @@
 module bmad_interface
 
-use equal_mod
 use attribute_mod
 use element_at_s_mod
 use equality_mod
 use multipole_mod
-use changed_attribute_bookkeeper
 use taylor_mod
 
 implicit none

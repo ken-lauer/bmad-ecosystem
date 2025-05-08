@@ -32,7 +32,7 @@
 
 subroutine bmad_parser (lat_file, lat, make_mats6, digested_read_ok, use_line, err_flag, parse_lat)
 
-use bmad_parser_mod, dummy1 => bmad_parser
+use parser_set_attribute_mod, dummy1 => bmad_parser
 use wall3d_mod, dummy3 => bmad_parser
 use photon_target_mod, dummy4 => bmad_parser
 use ptc_interface_mod, only: set_ptc_com_pointers
@@ -1420,16 +1420,19 @@ end subroutine new_element_init
 
 subroutine set_this_twiss_struct (t_in, t_out)
 type (twiss_struct) t_in, t_out
-call set_this_real_val(t_in%beta,      t_out%beta)
-call set_this_real_val(t_in%alpha,     t_out%alpha)
-call set_this_real_val(t_in%gamma,     t_out%gamma)
-call set_this_real_val(t_in%phi,       t_out%phi)
-call set_this_real_val(t_in%eta,       t_out%eta)
-call set_this_real_val(t_in%etap,      t_out%etap)
-call set_this_real_val(t_in%sigma,     t_out%sigma)
-call set_this_real_val(t_in%sigma_p,   t_out%sigma_p)
-call set_this_real_val(t_in%emit,      t_out%emit)
-call set_this_real_val(t_in%norm_emit, t_out%norm_emit)
+call set_this_real_val(t_in%beta,       t_out%beta)
+call set_this_real_val(t_in%alpha,      t_out%alpha)
+call set_this_real_val(t_in%gamma,      t_out%gamma)
+call set_this_real_val(t_in%phi,        t_out%phi)
+call set_this_real_val(t_in%eta,        t_out%eta)
+call set_this_real_val(t_in%etap,       t_out%etap)
+call set_this_real_val(t_in%deta_ds,    t_out%deta_ds)
+call set_this_real_val(t_in%sigma,      t_out%sigma)
+call set_this_real_val(t_in%sigma_p,    t_out%sigma_p)
+call set_this_real_val(t_in%emit,       t_out%emit)
+call set_this_real_val(t_in%norm_emit,  t_out%norm_emit)
+call set_this_real_val(t_in%dbeta_dpz,  t_out%dbeta_dpz)
+call set_this_real_val(t_in%dalpha_dpz, t_out%dalpha_dpz)
 end subroutine set_this_twiss_struct
 
 !---------------------------------------------------------------------
@@ -1439,6 +1442,7 @@ subroutine set_this_xy_disp_struct (t_in, t_out)
 type (xy_disp_struct) t_in, t_out
 call set_this_real_val(t_in%eta,       t_out%eta)
 call set_this_real_val(t_in%etap,      t_out%etap)
+call set_this_real_val(t_in%deta_ds,   t_out%deta_ds)
 call set_this_real_val(t_in%sigma,     t_out%sigma)
 end subroutine set_this_xy_disp_struct
 
