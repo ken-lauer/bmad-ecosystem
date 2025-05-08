@@ -806,7 +806,10 @@ def convert(
     for struct in structs:
         struct.parse()
 
-    dumped_json = json.dumps([struct.to_json() for struct in structs], indent=2)
+    def struct_sort(struct: Structure):
+        return (*struct.filename.parent.parts, struct.name)
+
+    dumped_json = json.dumps([struct.to_json() for struct in sorted(structs, key=struct_sort)], indent=2)
     json_filename = pathlib.Path(output_json_path).with_suffix(".json")
 
     if json_filename.exists():
