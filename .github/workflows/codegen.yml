@@ -15,10 +15,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/conda-setup
+      - name: Setup miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: ${{ matrix.python-version }}
+          miniforge-version: latest
+          use-mamba: true
+          activate-environment: bmad-build
+          channels: conda-forge
           environment-file: .github/bmad-build-env.yaml
+          python-version: 3.12
+          conda-remove-defaults: true
 
       - name: Install clang-format
         shell: bash -l {0}
