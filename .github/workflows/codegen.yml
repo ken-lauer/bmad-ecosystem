@@ -18,7 +18,7 @@ jobs:
       - uses: ./.github/actions/conda-setup
         with:
           python-version: ${{ matrix.python-version }}
-          environment-file: pytao/dev-environment.yml
+          environment-file: .github/bmad-build-env.yaml
 
       - name: Install clang-format
         shell: bash -l {0}
