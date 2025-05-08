@@ -13,7 +13,7 @@ from .parser import (
     SourceConfig,
     Structure,
     StructureMember,
-    load_structures,
+    load_structures_by_filename,
 )
 
 logger = logging.getLogger(__name__)
@@ -561,10 +561,11 @@ def main():
     conf = ParserConfig.from_file(args.config)
 
     working_dir = pathlib.Path(args.working_directory)
-    by_source = {source: load_structures(working_dir / source.yaml_filename) for source in conf.sources}
+    by_source = {
+        source: load_structures_by_filename(working_dir / source.yaml_filename) for source in conf.sources
+    }
     for source, structs in by_source.items():
         logger.info(f"Working on {source.source_dir}")
-        structs = load_structures(working_dir / source.yaml_filename)
         convert_all(
             source,
             structs,

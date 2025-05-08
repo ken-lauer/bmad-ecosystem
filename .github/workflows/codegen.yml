@@ -1,0 +1,43 @@
+name: Code generation check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Code generation check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/conda-setup
+        with:
+          python-version: ${{ matrix.python-version }}
+          environment-file: pytao/dev-environment.yml
+
+      - name: Install clang-format
+        shell: bash -l {0}
+        run: conda install -y clang-format
+
+      - name: Setup ACC_ROOT_DIR
+        shell: bash -l {0}
+        run: echo "ACC_ROOT_DIR=$GITHUB_WORKSPACE" >> $GITHUB_ENV
+
+      - name: Regenerate structures and JSON code
+        shell: bash -eo pipefail -l {0}
+        working-directory: ./structs
+        run: bash regenerate.sh
+
+      - name: Regenerate C++ interface
+        shell: bash -eo pipefail -l {0}
+        working-directory: ./cpp_bmad_interface
+        run: bash regenerate.sh
+
+      - name: Check the source code for differences
+        shell: bash -eo pipefail -l {0}
+        run: git diff --exit-code --ignore-all-space
