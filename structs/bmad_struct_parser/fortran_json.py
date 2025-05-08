@@ -526,7 +526,11 @@ def convert_all(
     conv = Converter(structs=structs, importable=importable)
     fortran = FortranSource(module=source.fortran_filename.stem)
 
-    for name, struct in conv.by_bmad_name.items():
+    def sort_key(item: tuple[str, Structure]):
+        name, _struct = item
+        return name
+
+    for name, struct in sorted(conv.by_bmad_name.items(), key=sort_key):
         if struct.filename.name in source.json_config.skip_files:
             logger.debug(f"Skipping {name} from file {struct.filename}")
             continue
