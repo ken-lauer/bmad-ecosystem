@@ -44,6 +44,10 @@ jobs:
         working-directory: ./cpp_bmad_interface
         run: bash regenerate.sh
 
-      - name: Check the source code for differences
+      - name: Summarize any differences
+        shell: bash -l {0}
+        run: git diff --stat
+
+      - name: Error if the source code differs
         shell: bash -eo pipefail -l {0}
         run: git diff --exit-code --ignore-all-space
