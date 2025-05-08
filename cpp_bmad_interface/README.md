@@ -1,9 +1,12 @@
 ## cpp_bmad_interface
 
-There are two parts to cpp_bmad_interface:
+There are important aspects of the C++ Bmad Interface (`cpp_bmad_interface`):
 
-1. Scripts to create the appropriate code files.
-2. The standard Cmake files to create the cpp_bmad_interface
+1. Structure information from `../structs` used as a reference when generating
+   C++ code.
+2. A Python package `bmad_cpp_codegen` (and command-line program) used to
+   generate all source code for this interface.
+3. CMake files to compile the interface.
 
 Normally you should not have to create any code files since:
 
@@ -18,45 +21,34 @@ If you want to generate new code files, please talk to David Sagan first.
 
 ## Code Generation Overview
 
-There are two scipts to generate files:
-
-- `scripts/bmad_enums_to_c.py`
-- `scripts/create_interface.py`
-- `scripts/bmad_enums_to_c.py:`
-  Run from the cpp_bmad_directory:
+Run from the `cpp_bmad_interface` directory:
 
 ```bash
-python3  ./scripts/bmad_enums_to_c.py
+python3 -m bmad_cpp_codegen
 ```
 
-This script searches a set of Bmad files and generates corresponding constants for use with C++ code.
-The constants file is: include/bmad_enums.h
-For example, the proton$ parameter on the Fortran side is translated to PROTON on the C++ side.
+This script generates:
+A) The `include/cpp_bmad_classe`s.h file defining the C++ classes
+B) .f90 and .cpp translation code files in the code directory.
+C) .f90 and .cpp test files in the interface_test directory.
+D) equality_mod.f90 which is placed in the `bmad/modules` directory.
 
-- `scripts/create_interface.py`:
-  Run from the cpp_bmad_directory:
+This file is placed in bmad since it is used by some bmad routines.
 
-  ```
-  python3 ./scripts/create_interface.py
-  ```
+### Constants / enums
 
-  If the Bmad structures are modified then the file
-  scripts/interface_input_params.py must be appropriately updatted. See this
-  file for more instructions.
+`bmad_cpp_codegen/enums.py` searches a set of Bmad files and generates
+corresponding constants for use with C++ code.
 
-  This script generates:
-  A) The include/cpp_bmad_classes.h file defining the C++ classes
-  B) .f90 and .cpp translation code files in the code directory.
-  C) .f90 and .cpp test files in the interface_test directory.
-  D) equality_mod.f90 which is placed in the bmad/modules directory.
-  This file is placed in bmad since it is used by some bmad routines.
+This file is created: `include/bmad_enums.h`
 
-- After generating new code for cpp_bmad_interface, generate new code for the cpp_tao_interface.
+For example, the `proton$` parameter on the Fortran side is translated to
+`PROTON` on the C++ side.
 
 ## Compiling and Linking
 
-The standard "mk" and "mkd" scripts will create both the cpp_bmad_interface
-library and the test program cpp_bmad_interface_test.
+The standard "mk" and "mkd" scripts will create both the `cpp_bmad_interfac`e
+library and the test program `cpp_bmad_interface_test`.
 
 ---
 
@@ -64,7 +56,9 @@ library and the test program cpp_bmad_interface_test.
 
 1. Go to the bmad directory and recompile
 2. Return to the cpp_bmad_interface directory and run the test program:
-   ../production/bin/cpp_bmad_interface_test
+   `../production/bin/cpp_bmad_interface_test`
+   or
+   `../debug/bin/cpp_bmad_interface_test`
 
 ### Test meaning
 
@@ -89,3 +83,6 @@ In short:
 - **Test [2]**: Verifies Fortran can correctly read data created in C++ (C→F conversion)
 - **Test [3]**: Verifies C++ can correctly read data modified in Fortran (F→C conversion)
 - **Test [4]**: Verifies Fortran can correctly read data modified in C++ (C→F conversion)
+
+If any of these tests fail, a JSON representation of the structure/class
+instance will be generated for comparison.
