@@ -624,7 +624,9 @@ void to_json(json& j, const CPP_twiss& obj) {
       {"sigma", obj.sigma},
       {"sigma_p", obj.sigma_p},
       {"emit", obj.emit},
-      {"norm_emit", obj.norm_emit}};
+      {"norm_emit", obj.norm_emit},
+      {"dbeta_dpz", obj.dbeta_dpz},
+      {"dalpha_dpz", obj.dalpha_dpz}};
 }
 
 ostream& operator<<(ostream& os, const CPP_twiss& obj) {

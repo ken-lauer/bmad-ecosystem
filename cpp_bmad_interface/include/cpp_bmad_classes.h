@@ -1228,6 +1228,8 @@ class CPP_twiss : public std::enable_shared_from_this<CPP_twiss> {
   Real sigma_p{0.0};
   Real emit{0.0};
   Real norm_emit{0.0};
+  Real dbeta_dpz{0.0};
+  Real dalpha_dpz{0.0};
 
   CPP_twiss() {}
 

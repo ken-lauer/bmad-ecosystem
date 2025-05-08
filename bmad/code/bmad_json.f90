@@ -7886,6 +7886,8 @@ subroutine twiss_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'sigma_p', input%sigma_p)
   call json%add(json_root, 'emit', input%emit)
   call json%add(json_root, 'norm_emit', input%norm_emit)
+  call json%add(json_root, 'dbeta_dpz', input%dbeta_dpz)
+  call json%add(json_root, 'dalpha_dpz', input%dalpha_dpz)
 end subroutine twiss_struct_to_json
 subroutine wake_lr_mode_struct_to_json (input, json_root, depth)
   use bmad_struct, only: wake_lr_mode_struct

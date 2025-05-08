@@ -1150,6 +1150,10 @@ is_eq = is_eq .and. (f1%sigma_p == f2%sigma_p)
 is_eq = is_eq .and. (f1%emit == f2%emit)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%norm_emit == f2%norm_emit)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%dbeta_dpz == f2%dbeta_dpz)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%dalpha_dpz == f2%dalpha_dpz)
 
 end function eq_twiss
 

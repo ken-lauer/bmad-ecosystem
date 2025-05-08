@@ -24,7 +24,7 @@
 
 namespace Bmad {
 
-const int BMAD_INC_VERSION = 328;
+const int BMAD_INC_VERSION = 331;
 
 const int NONE = 1;
 
@@ -42,7 +42,7 @@ const int BMAD_STANDARD = 1, SYMP_LIE_PTC = 2, RUNGE_KUTTA = 3;
 
 const int LINEAR = 4, TRACKING = 5, TIME_RUNGE_KUTTA = 6;
 
-const int FIXED_STEP_RUNGE_KUTTA = 9, SYMP_LIE_BMAD = 10;
+const int FIXED_STEP_RUNGE_KUTTA = 9, SYMP_LIE_BMAD = 10, MAGNUS = 11;
 
 const int AUTO = 12, SPRINT = 12, FIXED_STEP_TIME_RUNGE_KUTTA = 13, MAD = 14;
 
@@ -402,7 +402,8 @@ const int ETAP_X_OUT = 27, PHI0_AUTOSCALE = 27, DX_ORIGIN = 27,
 
           X_QUAD = 27, DS_PHOTON_SLICE = 27, MOSAIC_ANGLE_RMS_OUT_PLANE = 27,
 
-          PY_APERTURE_CENTER = 27, X_DISPERSION_ERR = 27, L_RECTANGLE = 27;
+          PY_APERTURE_CENTER = 27, X_DISPERSION_ERR = 27, L_RECTANGLE = 27,
+          PC_STRONG = 27;
 
 const int ETAP_Y_OUT = 28, DY_ORIGIN = 28, Y_QUAD = 28, E_FIELD_X = 28,
 
@@ -601,15 +602,15 @@ const int APERTURE_AT = 108, BETA_A = 108;
 
 const int RAN_SEED = 109, ORIGIN_ELE = 109, BETA_B = 109;
 
-const int TO_LINE = 110, FIELD_OVERLAPS = 110;
+const int TO_LINE = 110, FIELD_OVERLAPS = 110, DBETA_DPZ_A = 110;
 
-const int FIELD_MASTER = 111, TO_ELEMENT = 111;
+const int FIELD_MASTER = 111, TO_ELEMENT = 111, DBETA_DPZ_B = 111;
 
 const int DESCRIP = 112;
 
-const int SCALE_MULTIPOLES = 113;
+const int SCALE_MULTIPOLES = 113, DALPHA_DPZ_A = 113;
 
-const int SR_WAKE = 114;
+const int SR_WAKE = 114, DALPHA_DPZ_B = 114;
 
 const int REF_ORBIT = 115, LR_WAKE = 115;
 

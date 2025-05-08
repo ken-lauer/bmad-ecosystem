@@ -599,6 +599,8 @@ bool operator==(const CPP_twiss& x, const CPP_twiss& y) {
   is_eq = is_eq && (x.sigma_p == y.sigma_p);
   is_eq = is_eq && (x.emit == y.emit);
   is_eq = is_eq && (x.norm_emit == y.norm_emit);
+  is_eq = is_eq && (x.dbeta_dpz == y.dbeta_dpz);
+  is_eq = is_eq && (x.dalpha_dpz == y.dalpha_dpz);
   return is_eq;
 };
 

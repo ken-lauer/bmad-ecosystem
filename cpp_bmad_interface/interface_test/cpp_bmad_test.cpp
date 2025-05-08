@@ -3521,6 +3521,12 @@ void set_CPP_twiss_test_pattern(CPP_twiss& C, int ix_patt) {
   // c_side.test_pat[0D_NOT_real]
   rhs = 11 + offset;
   C.norm_emit = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 12 + offset;
+  C.dbeta_dpz = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 13 + offset;
+  C.dalpha_dpz = rhs;
 }
 
 //--------------------------------------------------------------

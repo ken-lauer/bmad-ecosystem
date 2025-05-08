@@ -1316,7 +1316,7 @@ subroutine tao_dynamic_aperture_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'param')
   call json%add(json_root, json_val)
   if (allocated(input%scan)) then
-    !line=1050 definition='type (aperture_scan_struct), allocatable :: scan(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='aperture_scan_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='scan' type='type' size='aperture_scan_struct' dimension=':' comment='One scan for each pz.' default=None
+    !line=1052 definition='type (aperture_scan_struct), allocatable :: scan(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='aperture_scan_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='scan' type='type' size='aperture_scan_struct' dimension=':' comment='One scan for each pz.' default=None
     call json%create_array(json_list1, 'scan')
     do i1 = lbound(input%scan, 1), ubound(input%scan, 1)
       call aperture_scan_struct_to_json(input%scan(i1), json_val, depth + 1)
@@ -1326,7 +1326,7 @@ subroutine tao_dynamic_aperture_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%pz)) then
-    !line=1051 definition='real(rp), allocatable :: pz(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='pz' type='real' size='rp' dimension=':' comment='' default=None
+    !line=1053 definition='real(rp), allocatable :: pz(:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='pz' type='real' size='rp' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'pz')
     do i1 = lbound(input%pz, 1), ubound(input%pz, 1)
       call json%create_real(json_val, input%pz(i1), '')
@@ -2243,7 +2243,6 @@ subroutine tao_lattice_struct_to_json (input, json_root, depth)
   call lat_struct_to_json(input%low_E_lat, json_val, depth + 1)
   call json%rename(json_val, 'low_E_lat')
   call json%add(json_root, json_val)
-  call json%add(json_root, 'chrom_calc_ok', input%chrom_calc_ok)
   ! parent pointer skip: u (type, Parent universe)
   call rad_int_all_ele_struct_to_json(input%rad_int_by_ele_ri, json_val, depth + 1)
   call json%rename(json_val, 'rad_int_by_ele_ri')
@@ -2252,7 +2251,7 @@ subroutine tao_lattice_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'rad_int_by_ele_6d')
   call json%add(json_root, json_val)
   if (allocated(input%tao_branch)) then
-    !line=965 definition='type (tao_lattice_branch_struct), allocatable :: tao_branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_lattice_branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='tao_branch' type='type' size='tao_lattice_branch_struct' dimension=':' comment='' default=None
+    !line=964 definition='type (tao_lattice_branch_struct), allocatable :: tao_branch(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_lattice_branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='tao_branch' type='type' size='tao_lattice_branch_struct' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'tao_branch')
     do i1 = lbound(input%tao_branch, 1), ubound(input%tao_branch, 1)
       call tao_lattice_branch_struct_to_json(input%tao_branch(i1), json_val, depth + 1)
@@ -2261,6 +2260,9 @@ subroutine tao_lattice_struct_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
+  call json%add(json_root, 'chrom_calc_ok', input%chrom_calc_ok)
+  call json%add(json_root, 'rad_int_calc_ok', input%rad_int_calc_ok)
+  call json%add(json_root, 'emit_6d_calc_ok', input%emit_6d_calc_ok)
 end subroutine tao_lattice_struct_to_json
 subroutine tao_logical_array_struct_to_json (input, json_root, depth)
   use tao_struct, only: tao_logical_array_struct
@@ -2307,7 +2309,7 @@ subroutine tao_model_branch_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   if (allocated(input%ele)) then
-    !line=1001 definition='type (tao_model_element_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_model_element_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='tao_model_element_struct' dimension=':' comment='Per element information' default=None
+    !line=1003 definition='type (tao_model_element_struct), allocatable :: ele(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_model_element_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='ele' type='type' size='tao_model_element_struct' dimension=':' comment='Per element information' default=None
     call json%create_array(json_list1, 'ele')
     do i1 = lbound(input%ele, 1), ubound(input%ele, 1)
       call tao_model_element_struct_to_json(input%ele(i1), json_val, depth + 1)
@@ -3423,7 +3425,7 @@ subroutine tao_super_universe_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'plot_page')
   call json%add(json_root, json_val)
   if (allocated(input%v1_var)) then
-    !line=1136 definition='type (tao_v1_var_struct), allocatable :: v1_var(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_v1_var_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='v1_var' type='type' size='tao_v1_var_struct' dimension=':' comment='The variable types' default=None
+    !line=1138 definition='type (tao_v1_var_struct), allocatable :: v1_var(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_v1_var_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='v1_var' type='type' size='tao_v1_var_struct' dimension=':' comment='The variable types' default=None
     call json%create_array(json_list1, 'v1_var')
     do i1 = lbound(input%v1_var, 1), ubound(input%v1_var, 1)
       call tao_v1_var_struct_to_json(input%v1_var(i1), json_val, depth + 1)
@@ -3433,7 +3435,7 @@ subroutine tao_super_universe_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%var)) then
-    !line=1137 definition='type (tao_var_struct), allocatable :: var(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_var_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='var' type='type' size='tao_var_struct' dimension=':' comment='array of all variables.' default=None
+    !line=1139 definition='type (tao_var_struct), allocatable :: var(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_var_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='var' type='type' size='tao_var_struct' dimension=':' comment='array of all variables.' default=None
     call json%create_array(json_list1, 'var')
     do i1 = lbound(input%var, 1), ubound(input%var, 1)
       call tao_var_struct_to_json(input%var(i1), json_val, depth + 1)
@@ -3443,7 +3445,7 @@ subroutine tao_super_universe_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%u)) then
-    !line=1138 definition='type (tao_universe_struct), allocatable :: u(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_universe_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='u' type='type' size='tao_universe_struct' dimension=':' comment='array of universes.' default=None
+    !line=1140 definition='type (tao_universe_struct), allocatable :: u(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_universe_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='u' type='type' size='tao_universe_struct' dimension=':' comment='array of universes.' default=None
     call json%create_array(json_list1, 'u')
     do i1 = lbound(input%u, 1), ubound(input%u, 1)
       call tao_universe_struct_to_json(input%u(i1), json_val, depth + 1)
@@ -3456,7 +3458,7 @@ subroutine tao_super_universe_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'mpi')
   call json%add(json_root, json_val)
   if (allocated(input%key)) then
-    !line=1140 definition='integer, allocatable :: key(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='key' type='integer' size=None dimension=':' comment='' default=None
+    !line=1142 definition='integer, allocatable :: key(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='key' type='integer' size=None dimension=':' comment='' default=None
     call json%create_array(json_list1, 'key')
     do i1 = lbound(input%key, 1), ubound(input%key, 1)
       call json%create_integer(json_val, input%key(i1), '')
@@ -3473,7 +3475,7 @@ subroutine tao_super_universe_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_val)
   call json%add(json_root, 'n_var_used', int(input%n_var_used))
   call json%add(json_root, 'n_v1_var_used', int(input%n_v1_var_used))
-  !line=1145 definition='type (tao_cmd_history_struct) :: history(1000) = tao_cmd_history_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_cmd_history_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='history' type='type' size='tao_cmd_history_struct' dimension='1000' comment='command history' default='tao_cmd_history_struct()'
+  !line=1147 definition='type (tao_cmd_history_struct) :: history(1000) = tao_cmd_history_struct()' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_cmd_history_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='history' type='type' size='tao_cmd_history_struct' dimension='1000' comment='command history' default='tao_cmd_history_struct()'
   call json%create_array(json_list1, 'history')
   do i1 = lbound(input%history, 1), ubound(input%history, 1)
     call tao_cmd_history_struct_to_json(input%history(i1), json_val, depth + 1)
@@ -3634,7 +3636,7 @@ subroutine tao_universe_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'dynamic_aperture')
   call json%add(json_root, json_val)
   if (associated(input%model_branch)) then
-    !line=1110 definition='type (tao_model_branch_struct), pointer :: model_branch(:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tao_model_branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='model_branch' type='type' size='tao_model_branch_struct' dimension=':' comment='model specific information' default=None
+    !line=1112 definition='type (tao_model_branch_struct), pointer :: model_branch(:)' type_info=TypeInformation(type='type', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=True, private=False, protected=False, public=False, save=False, kind='tao_model_branch_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='model_branch' type='type' size='tao_model_branch_struct' dimension=':' comment='model specific information' default=None
     call json%create_array(json_list1, 'model_branch')
     do i1 = lbound(input%model_branch, 1), ubound(input%model_branch, 1)
       call tao_model_branch_struct_to_json(input%model_branch(i1), json_val, depth + 1)
@@ -3644,7 +3646,7 @@ subroutine tao_universe_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%d2_data)) then
-    !line=1111 definition='type (tao_d2_data_struct), allocatable :: d2_data(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_d2_data_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='d2_data' type='type' size='tao_d2_data_struct' dimension=':' comment='The data types' default=None
+    !line=1113 definition='type (tao_d2_data_struct), allocatable :: d2_data(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_d2_data_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='d2_data' type='type' size='tao_d2_data_struct' dimension=':' comment='The data types' default=None
     call json%create_array(json_list1, 'd2_data')
     do i1 = lbound(input%d2_data, 1), ubound(input%d2_data, 1)
       call tao_d2_data_struct_to_json(input%d2_data(i1), json_val, depth + 1)
@@ -3654,7 +3656,7 @@ subroutine tao_universe_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
   if (allocated(input%data)) then
-    !line=1112 definition='type (tao_data_struct), allocatable :: data(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_data_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='data' type='type' size='tao_data_struct' dimension=':' comment='Array of all data.' default=None
+    !line=1114 definition='type (tao_data_struct), allocatable :: data(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_data_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='data' type='type' size='tao_data_struct' dimension=':' comment='Array of all data.' default=None
     call json%create_array(json_list1, 'data')
     do i1 = lbound(input%data, 1), ubound(input%data, 1)
       call tao_data_struct_to_json(input%data(i1), json_val, depth + 1)
@@ -3679,7 +3681,7 @@ subroutine tao_universe_struct_to_json (input, json_root, depth)
   call json%rename(json_val, 'spin_map')
   call json%add(json_root, json_val)
   if (allocated(input%dModel_dVar)) then
-    !line=1118 definition='real(rp), allocatable :: dModel_dVar(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dModel_dVar' type='real' size='rp' dimension=':,:' comment='Derivative matrix.' default=None
+    !line=1120 definition='real(rp), allocatable :: dModel_dVar(:,:)' type_info=TypeInformation(type='real', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='dModel_dVar' type='real' size='rp' dimension=':,:' comment='Derivative matrix.' default=None
     call json%create_array(json_list2, 'dim-2')
     do i2 = lbound(input%dModel_dVar, 2), ubound(input%dModel_dVar, 2)
       call json%create_array(json_list1, 'dmodel_dvar')
@@ -4013,7 +4015,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'chi_a', input%chi_a)
   call json%add(json_root, 'chi_c', input%chi_c)
   call json%add(json_root, 'chi_ba', input%chi_ba)
-  !line=1073 definition='real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_a' type='real' size='rp' dimension='2' comment='' default='0'
+  !line=1075 definition='real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_a' type='real' size='rp' dimension='2' comment='' default='0'
   call json%create_array(json_list1, 'amp_a')
   do i1 = lbound(input%amp_a, 1), ubound(input%amp_a, 1)
     call json%create_real(json_val, input%amp_a(i1), '')
@@ -4021,7 +4023,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1073 definition='real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_b' type='real' size='rp' dimension='2' comment='' default='0'
+  !line=1075 definition='real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_b' type='real' size='rp' dimension='2' comment='' default='0'
   call json%create_array(json_list1, 'amp_b')
   do i1 = lbound(input%amp_b, 1), ubound(input%amp_b, 1)
     call json%create_real(json_val, input%amp_b(i1), '')
@@ -4029,7 +4031,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1073 definition='real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_ba' type='real' size='rp' dimension='2' comment='' default='0'
+  !line=1075 definition='real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='amp_ba' type='real' size='rp' dimension='2' comment='' default='0'
   call json%create_array(json_list1, 'amp_ba')
   do i1 = lbound(input%amp_ba, 1), ubound(input%amp_ba, 1)
     call json%create_real(json_val, input%amp_ba(i1), '')
@@ -4037,7 +4039,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1074 definition='real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_a' type='real' size='rp' dimension='4' comment='' default='0'
+  !line=1076 definition='real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_a' type='real' size='rp' dimension='4' comment='' default='0'
   call json%create_array(json_list1, 'coef_a')
   do i1 = lbound(input%coef_a, 1), ubound(input%coef_a, 1)
     call json%create_real(json_val, input%coef_a(i1), '')
@@ -4045,7 +4047,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1074 definition='real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_b' type='real' size='rp' dimension='4' comment='' default='0'
+  !line=1076 definition='real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_b' type='real' size='rp' dimension='4' comment='' default='0'
   call json%create_array(json_list1, 'coef_b')
   do i1 = lbound(input%coef_b, 1), ubound(input%coef_b, 1)
     call json%create_real(json_val, input%coef_b(i1), '')
@@ -4053,7 +4055,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   enddo
   call json%add(json_root, json_list1)
   nullify(json_list1)
-  !line=1074 definition='real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_ba' type='real' size='rp' dimension='4' comment='' default='0'
+  !line=1076 definition='real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0' type_info=TypeInformation(type='real', allocatable=False, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='rp', static=False, target=False, value=False, volatile=False, attributes=()) name='coef_ba' type='real' size='rp' dimension='4' comment='' default='0'
   call json%create_array(json_list1, 'coef_ba')
   do i1 = lbound(input%coef_ba, 1), ubound(input%coef_ba, 1)
     call json%create_real(json_val, input%coef_ba(i1), '')
@@ -4074,7 +4076,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_b', int(input%n_b))
   call json%add(json_root, 'i_curve_wrap_pt', int(input%i_curve_wrap_pt))
   if (allocated(input%ix_data)) then
-    !line=1079 definition='integer, allocatable :: ix_data(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ix_data' type='integer' size=None dimension=':' comment='Translates from plot point to datum index' default=None
+    !line=1081 definition='integer, allocatable :: ix_data(:)' type_info=TypeInformation(type='integer', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind=None, static=False, target=False, value=False, volatile=False, attributes=()) name='ix_data' type='integer' size=None dimension=':' comment='Translates from plot point to datum index' default=None
     call json%create_array(json_list1, 'ix_data')
     do i1 = lbound(input%ix_data, 1), ubound(input%ix_data, 1)
       call json%create_integer(json_val, input%ix_data(i1), '')
@@ -4085,7 +4087,7 @@ subroutine tao_wave_struct_to_json (input, json_root, depth)
   endif
   call json%add(json_root, 'n_kick', int(input%n_kick))
   if (allocated(input%kick)) then
-    !line=1081 definition='type (tao_wave_kick_pt_struct), allocatable :: kick(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_wave_kick_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='kick' type='type' size='tao_wave_kick_pt_struct' dimension=':' comment='' default=None
+    !line=1083 definition='type (tao_wave_kick_pt_struct), allocatable :: kick(:)' type_info=TypeInformation(type='type', allocatable=True, asynchronous=False, bind=None, contiguous=False, dimension=None, external=False, intent=None, intrinsic=False, optional=False, parameter=False, pointer=False, private=False, protected=False, public=False, save=False, kind='tao_wave_kick_pt_struct', static=False, target=False, value=False, volatile=False, attributes=()) name='kick' type='type' size='tao_wave_kick_pt_struct' dimension=':' comment='' default=None
     call json%create_array(json_list1, 'kick')
     do i1 = lbound(input%kick, 1), ubound(input%kick, 1)
       call tao_wave_kick_pt_struct_to_json(input%kick(i1), json_val, depth + 1)

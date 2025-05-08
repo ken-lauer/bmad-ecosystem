@@ -5307,7 +5307,7 @@
       name: force_chrom_calc
       type: logical
       dimension: ''
-      comment: Used by a routine to force calculation
+      comment: Used by a routine to force a single chromaticity calculation.
       default: .false.
     force_rad_int_calc:
       line: 780
@@ -5317,7 +5317,7 @@
       name: force_rad_int_calc
       type: logical
       dimension: ''
-      comment: Used by a routine to force calculation
+      comment: Used by a routine to force a single radiation integrals calculation
       default: .false.
     rad_int_ri_calc_on:
       line: 781
@@ -7037,17 +7037,8 @@
       dimension: ''
       comment: For chrom calc.
       default: null
-    chrom_calc_ok:
-      line: 961
-      definition: 'logical :: chrom_calc_ok = .false.'
-      type_info:
-        type: logical
-      name: chrom_calc_ok
-      type: logical
-      dimension: ''
-      default: .false.
     u:
-      line: 962
+      line: 961
       definition: 'type (tao_universe_struct), pointer :: u => null()'
       type_info:
         type: type
@@ -7060,7 +7051,7 @@
       comment: Parent universe
       default: null()
     rad_int_by_ele_ri:
-      line: 963
+      line: 962
       definition: type (rad_int_all_ele_struct) rad_int_by_ele_ri
       type_info:
         type: type
@@ -7071,7 +7062,7 @@
       dimension: ''
       default: null
     rad_int_by_ele_6d:
-      line: 964
+      line: 963
       definition: type (rad_int_all_ele_struct) rad_int_by_ele_6d
       type_info:
         type: type
@@ -7082,7 +7073,7 @@
       dimension: ''
       default: null
     tao_branch:
-      line: 965
+      line: 964
       definition: 'type (tao_lattice_branch_struct), allocatable :: tao_branch(:)'
       type_info:
         type: type
@@ -7093,13 +7084,40 @@
       size: tao_lattice_branch_struct
       dimension: ':'
       default: null
+    chrom_calc_ok:
+      line: 965
+      definition: 'logical :: chrom_calc_ok = .false.'
+      type_info:
+        type: logical
+      name: chrom_calc_ok
+      type: logical
+      dimension: ''
+      default: .false.
+    rad_int_calc_ok:
+      line: 966
+      definition: 'logical :: rad_int_calc_ok = .false.'
+      type_info:
+        type: logical
+      name: rad_int_calc_ok
+      type: logical
+      dimension: ''
+      default: .false.
+    emit_6d_calc_ok:
+      line: 967
+      definition: 'logical :: emit_6d_calc_ok = .false.'
+      type_info:
+        type: logical
+      name: emit_6d_calc_ok
+      type: logical
+      dimension: ''
+      default: .false.
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 975
+  line: 977
   name: tao_model_element_struct
   module: tao_struct
   members:
     beam:
-      line: 976
+      line: 978
       definition: type (beam_struct) beam
       type_info:
         type: type
@@ -7111,7 +7129,7 @@
       comment: Beam distribution at element.
       default: null
     save_beam_internally:
-      line: 977
+      line: 979
       definition: logical save_beam_internally
       type_info:
         type: logical
@@ -7121,7 +7139,7 @@
       comment: Save beam here? Beam also saved at fork elements and at track ends.
       default: null
     save_beam_to_file:
-      line: 978
+      line: 980
       definition: logical save_beam_to_file
       type_info:
         type: logical
@@ -7132,12 +7150,12 @@
         ends.
       default: null
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 985
+  line: 987
   name: tao_beam_branch_struct
   module: tao_struct
   members:
     beam_at_start:
-      line: 986
+      line: 988
       definition: type (beam_struct) beam_at_start
       type_info:
         type: type
@@ -7149,7 +7167,7 @@
       comment: Initial beam
       default: null
     beam_init:
-      line: 987
+      line: 989
       definition: 'type (beam_init_struct) :: beam_init'
       type_info:
         type: type
@@ -7161,7 +7179,7 @@
       comment: User set beam distrubution at track start.
       default: null
     beam_init_used:
-      line: 988
+      line: 990
       definition: 'type (beam_init_struct) :: beam_init_used'
       type_info:
         type: type
@@ -7173,7 +7191,7 @@
       comment: beam distribution with emit values set.
       default: null
     init_starting_distribution:
-      line: 989
+      line: 991
       definition: 'logical :: init_starting_distribution = .true.'
       type_info:
         type: logical
@@ -7183,7 +7201,7 @@
       comment: Init beam
       default: .true.
     track_start:
-      line: 990
+      line: 992
       definition: 'character(40) :: track_start = '''''
       type_info:
         type: character
@@ -7195,7 +7213,7 @@
       comment: Tracking start element.
       default: ''''''
     track_end:
-      line: 991
+      line: 993
       definition: 'character(40) :: track_end = '''''
       type_info:
         type: character
@@ -7206,7 +7224,7 @@
       dimension: ''
       default: ''''''
     ix_branch:
-      line: 992
+      line: 994
       definition: 'integer :: ix_branch = 0'
       type_info:
         type: integer
@@ -7216,7 +7234,7 @@
       comment: Branch tracked.
       default: '0'
     ix_track_start:
-      line: 993
+      line: 995
       definition: 'integer :: ix_track_start = not_set$'
       type_info:
         type: integer
@@ -7226,7 +7244,7 @@
       comment: Element track start index.
       default: not_set$
     ix_track_end:
-      line: 994
+      line: 996
       definition: 'integer :: ix_track_end = not_set$'
       type_info:
         type: integer
@@ -7236,12 +7254,12 @@
       comment: Element track end index
       default: not_set$
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1000
+  line: 1002
   name: tao_model_branch_struct
   module: tao_struct
   members:
     ele:
-      line: 1001
+      line: 1003
       definition: 'type (tao_model_element_struct), allocatable :: ele(:)'
       type_info:
         type: type
@@ -7254,7 +7272,7 @@
       comment: Per element information
       default: null
     beam:
-      line: 1002
+      line: 1004
       definition: type (tao_beam_branch_struct) beam
       type_info:
         type: type
@@ -7265,12 +7283,12 @@
       dimension: ''
       default: null
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1007
+  line: 1009
   name: tao_beam_uni_struct
   module: tao_struct
   members:
     saved_at:
-      line: 1008
+      line: 1010
       definition: 'character(200) :: saved_at = '''''
       type_info:
         type: character
@@ -7281,7 +7299,7 @@
       dimension: ''
       default: ''''''
     dump_file:
-      line: 1009
+      line: 1011
       definition: 'character(400) :: dump_file = '''''
       type_info:
         type: character
@@ -7292,7 +7310,7 @@
       dimension: ''
       default: ''''''
     dump_at:
-      line: 1010
+      line: 1012
       definition: 'character(200) :: dump_at = '''''
       type_info:
         type: character
@@ -7303,7 +7321,7 @@
       dimension: ''
       default: ''''''
     track_beam_in_universe:
-      line: 1011
+      line: 1013
       definition: 'logical :: track_beam_in_universe = .false.'
       type_info:
         type: logical
@@ -7313,7 +7331,7 @@
       comment: Beam tracking enabled in this universe?
       default: .false.
     always_reinit:
-      line: 1012
+      line: 1014
       definition: 'logical :: always_reinit = .false.'
       type_info:
         type: logical
@@ -7322,12 +7340,12 @@
       dimension: ''
       default: .false.
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1018
+  line: 1020
   name: tao_universe_calc_struct
   module: tao_struct
   members:
     srdt_for_data:
-      line: 1019
+      line: 1021
       definition: 'integer :: srdt_for_data = 0'
       type_info:
         type: integer
@@ -7337,7 +7355,7 @@
       comment: 0 = false, 1 = 1st order, 2 = 1st & 2nd order
       default: '0'
     rad_int_for_data:
-      line: 1020
+      line: 1022
       definition: 'logical :: rad_int_for_data = .false.'
       type_info:
         type: logical
@@ -7347,7 +7365,7 @@
       comment: Do the radiation integrals need to be computed for
       default: .false.
     rad_int_for_plotting:
-      line: 1021
+      line: 1023
       definition: 'logical :: rad_int_for_plotting = .false.'
       type_info:
         type: logical
@@ -7357,7 +7375,7 @@
       comment: data or plotting?
       default: .false.
     chrom_for_data:
-      line: 1022
+      line: 1024
       definition: 'logical :: chrom_for_data = .false.'
       type_info:
         type: logical
@@ -7367,7 +7385,7 @@
       comment: Does the chromaticity need to be computed for
       default: .false.
     chrom_for_plotting:
-      line: 1023
+      line: 1025
       definition: 'logical :: chrom_for_plotting = .false.'
       type_info:
         type: logical
@@ -7377,7 +7395,7 @@
       comment: data or plotting?
       default: .false.
     lat_sigma_for_data:
-      line: 1024
+      line: 1026
       definition: 'logical :: lat_sigma_for_data = .false.'
       type_info:
         type: logical
@@ -7387,7 +7405,7 @@
       comment: Do the beam sigmas need to be computed for
       default: .false.
     lat_sigma_for_plotting:
-      line: 1025
+      line: 1027
       definition: 'logical :: lat_sigma_for_plotting = .false.'
       type_info:
         type: logical
@@ -7397,7 +7415,7 @@
       comment: data or plotting?
       default: .false.
     dynamic_aperture:
-      line: 1026
+      line: 1028
       definition: 'logical :: dynamic_aperture = .false.'
       type_info:
         type: logical
@@ -7407,7 +7425,7 @@
       comment: Do the dynamic_aperture calc?
       default: .false.
     one_turn_map:
-      line: 1027
+      line: 1029
       definition: 'logical :: one_turn_map = .false.'
       type_info:
         type: logical
@@ -7417,7 +7435,7 @@
       comment: Compute the one turn map?
       default: .false.
     lattice:
-      line: 1028
+      line: 1030
       definition: 'logical :: lattice = .true.'
       type_info:
         type: logical
@@ -7427,7 +7445,7 @@
       comment: Used to indicate which lattices need tracking done.
       default: .true.
     twiss:
-      line: 1029
+      line: 1031
       definition: 'logical :: twiss = .true.'
       type_info:
         type: logical
@@ -7437,7 +7455,7 @@
       comment: calc linear transfer matrix?
       default: .true.
     track:
-      line: 1030
+      line: 1032
       definition: 'logical :: track = .true.'
       type_info:
         type: logical
@@ -7447,7 +7465,7 @@
       comment: tracking needs to be done?
       default: .true.
     spin_matrices:
-      line: 1031
+      line: 1033
       definition: 'logical :: spin_matrices = .false.'
       type_info:
         type: logical
@@ -7457,12 +7475,12 @@
       comment: Calculate G and D spin matrices?
       default: .false.
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1037
+  line: 1039
   name: tao_mpi_struct
   module: tao_struct
   members:
     'on':
-      line: 1038
+      line: 1040
       definition: 'logical :: on = .false.'
       type_info:
         type: logical
@@ -7472,7 +7490,7 @@
       comment: Is MPI on?
       default: .false.
     master:
-      line: 1039
+      line: 1041
       definition: 'logical :: master = .true.'
       type_info:
         type: logical
@@ -7482,7 +7500,7 @@
       comment: Is this the master task? If yes, rank == 0
       default: .true.
     rank:
-      line: 1040
+      line: 1042
       definition: 'integer :: rank = 0'
       type_info:
         type: integer
@@ -7492,7 +7510,7 @@
       comment: Rank of task (rank is 0, 1, 2, ... n_tasks-1 )
       default: '0'
     max_rank:
-      line: 1041
+      line: 1043
       definition: 'integer :: max_rank = 0'
       type_info:
         type: integer
@@ -7502,7 +7520,7 @@
       comment: Maximum rank, should be n_tasks-1
       default: '0'
     host_name:
-      line: 1042
+      line: 1044
       definition: 'character(200) :: host_name = '''''
       type_info:
         type: character
@@ -7514,12 +7532,12 @@
       comment: Name of the host machine
       default: ''''''
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1048
+  line: 1050
   name: tao_dynamic_aperture_struct
   module: tao_struct
   members:
     param:
-      line: 1049
+      line: 1051
       definition: type (aperture_param_struct) param
       type_info:
         type: type
@@ -7530,7 +7548,7 @@
       dimension: ''
       default: null
     scan:
-      line: 1050
+      line: 1052
       definition: 'type (aperture_scan_struct), allocatable :: scan(:)'
       type_info:
         type: type
@@ -7543,7 +7561,7 @@
       comment: One scan for each pz.
       default: null
     pz:
-      line: 1051
+      line: 1053
       definition: 'real(rp), allocatable :: pz(:)'
       type_info:
         type: real
@@ -7555,7 +7573,7 @@
       dimension: ':'
       default: null
     ellipse_scale:
-      line: 1052
+      line: 1054
       definition: 'real(rp) :: ellipse_scale = 1'
       type_info:
         type: real
@@ -7566,7 +7584,7 @@
       dimension: ''
       default: '1'
     a_emit:
-      line: 1053
+      line: 1055
       definition: 'real(rp) :: a_emit = -1, b_emit = -1'
       type_info:
         type: real
@@ -7577,7 +7595,7 @@
       dimension: ''
       default: '-1'
     b_emit:
-      line: 1053
+      line: 1055
       definition: 'real(rp) :: a_emit = -1, b_emit = -1'
       type_info:
         type: real
@@ -7588,12 +7606,12 @@
       dimension: ''
       default: '-1'
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1059
+  line: 1061
   name: tao_wave_kick_pt_struct
   module: tao_struct
   members:
     phi_s:
-      line: 1060
+      line: 1062
       definition: 'real(rp) :: phi_s, phi_r, phi, amp'
       type_info:
         type: real
@@ -7604,7 +7622,7 @@
       dimension: ''
       default: null
     phi_r:
-      line: 1060
+      line: 1062
       definition: 'real(rp) :: phi_s, phi_r, phi, amp'
       type_info:
         type: real
@@ -7615,7 +7633,7 @@
       dimension: ''
       default: null
     phi:
-      line: 1060
+      line: 1062
       definition: 'real(rp) :: phi_s, phi_r, phi, amp'
       type_info:
         type: real
@@ -7626,7 +7644,7 @@
       dimension: ''
       default: null
     amp:
-      line: 1060
+      line: 1062
       definition: 'real(rp) :: phi_s, phi_r, phi, amp'
       type_info:
         type: real
@@ -7637,7 +7655,7 @@
       dimension: ''
       default: null
     s:
-      line: 1061
+      line: 1063
       definition: 'real(rp) :: s'
       type_info:
         type: real
@@ -7649,7 +7667,7 @@
       comment: s-position of kick
       default: null
     ix_dat_before_kick:
-      line: 1062
+      line: 1064
       definition: 'integer :: ix_dat_before_kick'
       type_info:
         type: integer
@@ -7659,7 +7677,7 @@
       comment: Index of datum in data array just before the kick.
       default: null
     ele:
-      line: 1063
+      line: 1065
       definition: 'type (ele_struct), pointer :: ele'
       type_info:
         type: type
@@ -7672,12 +7690,12 @@
       comment: lattice element at position of kick.
       default: null
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1066
+  line: 1068
   name: tao_wave_struct
   module: tao_struct
   members:
     data_type:
-      line: 1067
+      line: 1069
       definition: 'character(40) :: data_type = '''''
       type_info:
         type: character
@@ -7688,7 +7706,7 @@
       dimension: ''
       default: ''''''
     rms_rel_a:
-      line: 1068
+      line: 1070
       definition: 'real(rp) :: rms_rel_a = 0, rms_rel_b = 0, rms_rel_as = 0'
       type_info:
         type: real
@@ -7699,7 +7717,7 @@
       dimension: ''
       default: '0'
     rms_rel_b:
-      line: 1068
+      line: 1070
       definition: 'real(rp) :: rms_rel_a = 0, rms_rel_b = 0, rms_rel_as = 0'
       type_info:
         type: real
@@ -7710,7 +7728,7 @@
       dimension: ''
       default: '0'
     rms_rel_as:
-      line: 1068
+      line: 1070
       definition: 'real(rp) :: rms_rel_a = 0, rms_rel_b = 0, rms_rel_as = 0'
       type_info:
         type: real
@@ -7721,7 +7739,7 @@
       dimension: ''
       default: '0'
     rms_rel_bs:
-      line: 1069
+      line: 1071
       definition: 'real(rp) :: rms_rel_bs = 0, rms_rel_ar = 0, rms_rel_br = 0'
       type_info:
         type: real
@@ -7732,7 +7750,7 @@
       dimension: ''
       default: '0'
     rms_rel_ar:
-      line: 1069
+      line: 1071
       definition: 'real(rp) :: rms_rel_bs = 0, rms_rel_ar = 0, rms_rel_br = 0'
       type_info:
         type: real
@@ -7743,7 +7761,7 @@
       dimension: ''
       default: '0'
     rms_rel_br:
-      line: 1069
+      line: 1071
       definition: 'real(rp) :: rms_rel_bs = 0, rms_rel_ar = 0, rms_rel_br = 0'
       type_info:
         type: real
@@ -7754,7 +7772,7 @@
       dimension: ''
       default: '0'
     rms_rel_k:
-      line: 1070
+      line: 1072
       definition: 'real(rp) :: rms_rel_k = 0, rms_rel_ks = 0, rms_rel_kr = 0'
       type_info:
         type: real
@@ -7765,7 +7783,7 @@
       dimension: ''
       default: '0'
     rms_rel_ks:
-      line: 1070
+      line: 1072
       definition: 'real(rp) :: rms_rel_k = 0, rms_rel_ks = 0, rms_rel_kr = 0'
       type_info:
         type: real
@@ -7776,7 +7794,7 @@
       dimension: ''
       default: '0'
     rms_rel_kr:
-      line: 1070
+      line: 1072
       definition: 'real(rp) :: rms_rel_k = 0, rms_rel_ks = 0, rms_rel_kr = 0'
       type_info:
         type: real
@@ -7787,7 +7805,7 @@
       dimension: ''
       default: '0'
     rms_phi:
-      line: 1071
+      line: 1073
       definition: 'real(rp) :: rms_phi = 0, rms_phi_s = 0, rms_phi_r = 0'
       type_info:
         type: real
@@ -7798,7 +7816,7 @@
       dimension: ''
       default: '0'
     rms_phi_s:
-      line: 1071
+      line: 1073
       definition: 'real(rp) :: rms_phi = 0, rms_phi_s = 0, rms_phi_r = 0'
       type_info:
         type: real
@@ -7809,7 +7827,7 @@
       dimension: ''
       default: '0'
     rms_phi_r:
-      line: 1071
+      line: 1073
       definition: 'real(rp) :: rms_phi = 0, rms_phi_s = 0, rms_phi_r = 0'
       type_info:
         type: real
@@ -7820,7 +7838,7 @@
       dimension: ''
       default: '0'
     amp_ba_s:
-      line: 1072
+      line: 1074
       definition: 'real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba
         = 0'
       type_info:
@@ -7832,7 +7850,7 @@
       dimension: ''
       default: '0'
     amp_ba_r:
-      line: 1072
+      line: 1074
       definition: 'real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba
         = 0'
       type_info:
@@ -7844,7 +7862,7 @@
       dimension: ''
       default: '0'
     chi_a:
-      line: 1072
+      line: 1074
       definition: 'real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba
         = 0'
       type_info:
@@ -7856,7 +7874,7 @@
       dimension: ''
       default: '0'
     chi_c:
-      line: 1072
+      line: 1074
       definition: 'real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba
         = 0'
       type_info:
@@ -7868,7 +7886,7 @@
       dimension: ''
       default: '0'
     chi_ba:
-      line: 1072
+      line: 1074
       definition: 'real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba
         = 0'
       type_info:
@@ -7880,7 +7898,7 @@
       dimension: ''
       default: '0'
     amp_a:
-      line: 1073
+      line: 1075
       definition: 'real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0'
       type_info:
         type: real
@@ -7891,7 +7909,7 @@
       dimension: '2'
       default: '0'
     amp_b:
-      line: 1073
+      line: 1075
       definition: 'real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0'
       type_info:
         type: real
@@ -7902,7 +7920,7 @@
       dimension: '2'
       default: '0'
     amp_ba:
-      line: 1073
+      line: 1075
       definition: 'real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0'
       type_info:
         type: real
@@ -7913,7 +7931,7 @@
       dimension: '2'
       default: '0'
     coef_a:
-      line: 1074
+      line: 1076
       definition: 'real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0'
       type_info:
         type: real
@@ -7924,7 +7942,7 @@
       dimension: '4'
       default: '0'
     coef_b:
-      line: 1074
+      line: 1076
       definition: 'real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0'
       type_info:
         type: real
@@ -7935,7 +7953,7 @@
       dimension: '4'
       default: '0'
     coef_ba:
-      line: 1074
+      line: 1076
       definition: 'real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0'
       type_info:
         type: real
@@ -7946,7 +7964,7 @@
       dimension: '4'
       default: '0'
     n_func:
-      line: 1075
+      line: 1077
       definition: 'integer :: n_func = 0'
       type_info:
         type: integer
@@ -7956,7 +7974,7 @@
       comment: Number of functions used in the fit.
       default: '0'
     ix_a1:
-      line: 1076
+      line: 1078
       definition: 'integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1'
       type_info:
         type: integer
@@ -7965,7 +7983,7 @@
       dimension: ''
       default: '-1'
     ix_a2:
-      line: 1076
+      line: 1078
       definition: 'integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1'
       type_info:
         type: integer
@@ -7974,7 +7992,7 @@
       dimension: ''
       default: '-1'
     ix_b1:
-      line: 1076
+      line: 1078
       definition: 'integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1'
       type_info:
         type: integer
@@ -7983,7 +8001,7 @@
       dimension: ''
       default: '-1'
     ix_b2:
-      line: 1076
+      line: 1078
       definition: 'integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1'
       type_info:
         type: integer
@@ -7992,7 +8010,7 @@
       dimension: ''
       default: '-1'
     i_a1:
-      line: 1077
+      line: 1079
       definition: 'integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b
         = 0'
       type_info:
@@ -8002,7 +8020,7 @@
       dimension: ''
       default: '0'
     i_a2:
-      line: 1077
+      line: 1079
       definition: 'integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b
         = 0'
       type_info:
@@ -8012,7 +8030,7 @@
       dimension: ''
       default: '0'
     i_b1:
-      line: 1077
+      line: 1079
       definition: 'integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b
         = 0'
       type_info:
@@ -8022,7 +8040,7 @@
       dimension: ''
       default: '0'
     i_b2:
-      line: 1077
+      line: 1079
       definition: 'integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b
         = 0'
       type_info:
@@ -8032,7 +8050,7 @@
       dimension: ''
       default: '0'
     n_a:
-      line: 1077
+      line: 1079
       definition: 'integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b
         = 0'
       type_info:
@@ -8042,7 +8060,7 @@
       dimension: ''
       default: '0'
     n_b:
-      line: 1077
+      line: 1079
       definition: 'integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b
         = 0'
       type_info:
@@ -8052,7 +8070,7 @@
       dimension: ''
       default: '0'
     i_curve_wrap_pt:
-      line: 1078
+      line: 1080
       definition: 'integer :: i_curve_wrap_pt = 0'
       type_info:
         type: integer
@@ -8062,7 +8080,7 @@
       comment: Index of last point before wrap in curve array.
       default: '0'
     ix_data:
-      line: 1079
+      line: 1081
       definition: 'integer, allocatable :: ix_data(:)'
       type_info:
         type: integer
@@ -8073,7 +8091,7 @@
       comment: Translates from plot point to datum index
       default: null
     n_kick:
-      line: 1080
+      line: 1082
       definition: 'integer :: n_kick = 0'
       type_info:
         type: integer
@@ -8082,7 +8100,7 @@
       dimension: ''
       default: '0'
     kick:
-      line: 1081
+      line: 1083
       definition: 'type (tao_wave_kick_pt_struct), allocatable :: kick(:)'
       type_info:
         type: type
@@ -8094,7 +8112,7 @@
       dimension: ':'
       default: null
     base_graph:
-      line: 1082
+      line: 1084
       definition: 'type (tao_graph_struct) :: base_graph'
       type_info:
         type: type
@@ -8106,7 +8124,7 @@
       comment: Graph before curves extended to 1.5 periods.
       default: null
     region:
-      line: 1083
+      line: 1085
       definition: 'type (tao_plot_region_struct), pointer :: region => null()'
       type_info:
         type: type
@@ -8119,7 +8137,7 @@
       comment: Where the wave plot is
       default: null()
     d1_dat:
-      line: 1084
+      line: 1086
       definition: 'type (tao_d1_data_struct), pointer :: d1_dat => null()'
       type_info:
         type: type
@@ -8132,12 +8150,12 @@
       comment: D1 data for analysis
       default: null()
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1090
+  line: 1092
   name: tao_ping_scale_struct
   module: tao_struct
   members:
     a_mode_meas:
-      line: 1091
+      line: 1093
       definition: 'real(rp) :: a_mode_meas = 1'
       type_info:
         type: real
@@ -8148,7 +8166,7 @@
       dimension: ''
       default: '1'
     a_mode_ref:
-      line: 1092
+      line: 1094
       definition: 'real(rp) :: a_mode_ref = 1'
       type_info:
         type: real
@@ -8159,7 +8177,7 @@
       dimension: ''
       default: '1'
     b_mode_meas:
-      line: 1093
+      line: 1095
       definition: 'real(rp) :: b_mode_meas = 1'
       type_info:
         type: real
@@ -8170,7 +8188,7 @@
       dimension: ''
       default: '1'
     b_mode_ref:
-      line: 1094
+      line: 1096
       definition: 'real(rp) :: b_mode_ref = 1'
       type_info:
         type: real
@@ -8181,12 +8199,12 @@
       dimension: ''
       default: '1'
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1099
+  line: 1101
   name: tao_universe_pointer_struct
   module: tao_struct
   members:
     u:
-      line: 1100
+      line: 1102
       definition: 'type (tao_universe_struct), pointer :: u'
       type_info:
         type: type
@@ -8198,12 +8216,12 @@
       dimension: ''
       default: null
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1106
+  line: 1108
   name: tao_universe_struct
   module: tao_struct
   members:
     model:
-      line: 1107
+      line: 1109
       definition: 'type (tao_lattice_struct), pointer :: model, design, base'
       type_info:
         type: type
@@ -8215,7 +8233,7 @@
       dimension: ''
       default: null
     design:
-      line: 1107
+      line: 1109
       definition: 'type (tao_lattice_struct), pointer :: model, design, base'
       type_info:
         type: type
@@ -8227,7 +8245,7 @@
       dimension: ''
       default: null
     base:
-      line: 1107
+      line: 1109
       definition: 'type (tao_lattice_struct), pointer :: model, design, base'
       type_info:
         type: type
@@ -8239,7 +8257,7 @@
       dimension: ''
       default: null
     beam:
-      line: 1108
+      line: 1110
       definition: type (tao_beam_uni_struct) beam
       type_info:
         type: type
@@ -8250,7 +8268,7 @@
       dimension: ''
       default: null
     dynamic_aperture:
-      line: 1109
+      line: 1111
       definition: 'type (tao_dynamic_aperture_struct) :: dynamic_aperture'
       type_info:
         type: type
@@ -8261,7 +8279,7 @@
       dimension: ''
       default: null
     model_branch:
-      line: 1110
+      line: 1112
       definition: 'type (tao_model_branch_struct), pointer :: model_branch(:)'
       type_info:
         type: type
@@ -8274,7 +8292,7 @@
       comment: model specific information
       default: null
     d2_data:
-      line: 1111
+      line: 1113
       definition: 'type (tao_d2_data_struct), allocatable :: d2_data(:)'
       type_info:
         type: type
@@ -8287,7 +8305,7 @@
       comment: The data types
       default: null
     data:
-      line: 1112
+      line: 1114
       definition: 'type (tao_data_struct), allocatable :: data(:)'
       type_info:
         type: type
@@ -8300,7 +8318,7 @@
       comment: Array of all data.
       default: null
     ping_scale:
-      line: 1113
+      line: 1115
       definition: type (tao_ping_scale_struct) ping_scale
       type_info:
         type: type
@@ -8311,7 +8329,7 @@
       dimension: ''
       default: null
     scratch_lat:
-      line: 1114
+      line: 1116
       definition: type (lat_struct) scratch_lat
       type_info:
         type: type
@@ -8323,7 +8341,7 @@
       comment: Scratch area.
       default: null
     calc:
-      line: 1115
+      line: 1117
       definition: type (tao_universe_calc_struct) calc
       type_info:
         type: type
@@ -8335,7 +8353,7 @@
       comment: What needs to be calculated?
       default: null
     ele_order:
-      line: 1116
+      line: 1118
       definition: type (lat_ele_order_struct) ele_order
       type_info:
         type: type
@@ -8347,7 +8365,7 @@
       comment: Order of elements with same name.
       default: null
     spin_map:
-      line: 1117
+      line: 1119
       definition: 'type (tao_spin_map_struct) :: spin_map'
       type_info:
         type: type
@@ -8358,7 +8376,7 @@
       dimension: ''
       default: null
     dModel_dVar:
-      line: 1118
+      line: 1120
       definition: 'real(rp), allocatable :: dModel_dVar(:,:)'
       type_info:
         type: real
@@ -8371,7 +8389,7 @@
       comment: Derivative matrix.
       default: null
     ix_uni:
-      line: 1119
+      line: 1121
       definition: 'integer :: ix_uni = -1'
       type_info:
         type: integer
@@ -8381,7 +8399,7 @@
       comment: Universe index.
       default: '-1'
     n_d2_data_used:
-      line: 1120
+      line: 1122
       definition: 'integer :: n_d2_data_used = -1'
       type_info:
         type: integer
@@ -8391,7 +8409,7 @@
       comment: Number of used %d2_data(:) components.
       default: '-1'
     n_data_used:
-      line: 1121
+      line: 1123
       definition: 'integer :: n_data_used = -1'
       type_info:
         type: integer
@@ -8401,7 +8419,7 @@
       comment: Number of used %data(:) components.
       default: '-1'
     is_on:
-      line: 1122
+      line: 1124
       definition: 'logical :: is_on = .true.'
       type_info:
         type: logical
@@ -8411,7 +8429,7 @@
       comment: universe turned on
       default: .true.
     design_same_as_previous:
-      line: 1123
+      line: 1125
       definition: 'logical :: design_same_as_previous = .false.'
       type_info:
         type: logical
@@ -8421,7 +8439,7 @@
       comment: Design lat same as the previous uni?
       default: .false.
     picked_uni:
-      line: 1124
+      line: 1126
       definition: 'logical :: picked_uni = .false.'
       type_info:
         type: logical
@@ -8431,12 +8449,12 @@
       comment: Scratch logical.
       default: .false.
 - filename: $ACC_ROOT_DIR/tao/code/tao_struct.f90
-  line: 1131
+  line: 1133
   name: tao_super_universe_struct
   module: tao_struct
   members:
     global:
-      line: 1132
+      line: 1134
       definition: 'type (tao_global_struct) :: global = tao_global_struct()'
       type_info:
         type: type
@@ -8448,7 +8466,7 @@
       comment: User accessible global variables.
       default: tao_global_struct()
     init:
-      line: 1133
+      line: 1135
       definition: 'type (tao_init_struct) :: init = tao_init_struct()'
       type_info:
         type: type
@@ -8460,7 +8478,7 @@
       comment: Initialization parameters
       default: tao_init_struct()
     com:
-      line: 1134
+      line: 1136
       definition: 'type (tao_common_struct) :: com'
       type_info:
         type: type
@@ -8472,7 +8490,7 @@
       comment: Non-initialization common parameters
       default: null
     plot_page:
-      line: 1135
+      line: 1137
       definition: 'type (tao_plot_page_struct) :: plot_page'
       type_info:
         type: type
@@ -8484,7 +8502,7 @@
       comment: Defines the plot window.
       default: null
     v1_var:
-      line: 1136
+      line: 1138
       definition: 'type (tao_v1_var_struct), allocatable :: v1_var(:)'
       type_info:
         type: type
@@ -8497,7 +8515,7 @@
       comment: The variable types
       default: null
     var:
-      line: 1137
+      line: 1139
       definition: 'type (tao_var_struct), allocatable :: var(:)'
       type_info:
         type: type
@@ -8510,7 +8528,7 @@
       comment: array of all variables.
       default: null
     u:
-      line: 1138
+      line: 1140
       definition: 'type (tao_universe_struct), allocatable :: u(:)'
       type_info:
         type: type
@@ -8523,7 +8541,7 @@
       comment: array of universes.
       default: null
     mpi:
-      line: 1139
+      line: 1141
       definition: 'type (tao_mpi_struct) :: mpi = tao_mpi_struct()'
       type_info:
         type: type
@@ -8534,7 +8552,7 @@
       dimension: ''
       default: tao_mpi_struct()
     key:
-      line: 1140
+      line: 1142
       definition: 'integer, allocatable :: key(:)'
       type_info:
         type: integer
@@ -8544,7 +8562,7 @@
       dimension: ':'
       default: null
     building_wall:
-      line: 1141
+      line: 1143
       definition: 'type (tao_building_wall_struct) :: building_wall'
       type_info:
         type: type
@@ -8555,7 +8573,7 @@
       dimension: ''
       default: null
     wave:
-      line: 1142
+      line: 1144
       definition: 'type (tao_wave_struct) :: wave'
       type_info:
         type: type
@@ -8566,7 +8584,7 @@
       dimension: ''
       default: null
     n_var_used:
-      line: 1143
+      line: 1145
       definition: 'integer :: n_var_used = 0'
       type_info:
         type: integer
@@ -8575,7 +8593,7 @@
       dimension: ''
       default: '0'
     n_v1_var_used:
-      line: 1144
+      line: 1146
       definition: 'integer :: n_v1_var_used = 0'
       type_info:
         type: integer
@@ -8584,7 +8602,7 @@
       dimension: ''
       default: '0'
     history:
-      line: 1145
+      line: 1147
       definition: 'type (tao_cmd_history_struct) :: history(1000) = tao_cmd_history_struct()'
       type_info:
         type: type
@@ -8596,7 +8614,7 @@
       comment: command history
       default: tao_cmd_history_struct()
     initialized:
-      line: 1146
+      line: 1148
       definition: 'logical :: initialized = .false.'
       type_info:
         type: logical

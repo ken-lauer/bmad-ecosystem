@@ -2121,6 +2121,8 @@ extern "C" void twiss_to_f2(
     c_Real&,
     c_Real&,
     c_Real&,
+    c_Real&,
+    c_Real&,
     c_Real&);
 
 extern "C" void twiss_to_f(const CPP_twiss& C, Opaque_twiss_class* F) {
@@ -2137,7 +2139,9 @@ extern "C" void twiss_to_f(const CPP_twiss& C, Opaque_twiss_class* F) {
       C.sigma,
       C.sigma_p,
       C.emit,
-      C.norm_emit);
+      C.norm_emit,
+      C.dbeta_dpz,
+      C.dalpha_dpz);
 }
 
 // c_side.to_c2_arg
@@ -2153,7 +2157,9 @@ extern "C" void twiss_to_c2(
     c_Real& z_sigma,
     c_Real& z_sigma_p,
     c_Real& z_emit,
-    c_Real& z_norm_emit) {
+    c_Real& z_norm_emit,
+    c_Real& z_dbeta_dpz,
+    c_Real& z_dalpha_dpz) {
   // c_side.to_c2_set[0D_NOT_real] Real
   C.beta = z_beta;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -2176,6 +2182,10 @@ extern "C" void twiss_to_c2(
   C.emit = z_emit;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.norm_emit = z_norm_emit;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.dbeta_dpz = z_dbeta_dpz;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.dalpha_dpz = z_dalpha_dpz;
 }
 
 //--------------------------------------------------------------------

@@ -4623,12 +4623,12 @@ implicit none
 interface
   !! f_side.to_c2_f2_sub_arg
   subroutine twiss_to_c2 (C, z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds, &
-      z_sigma, z_sigma_p, z_emit, z_norm_emit) bind(c)
+      z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     real(c_double) :: z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds
-    real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit
+    real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz
 end subroutine
 end interface
 
@@ -4645,7 +4645,7 @@ call c_f_pointer (Fp, F)
 
 !! f_side.to_c2_call
 call twiss_to_c2 (C, F%beta, F%alpha, F%gamma, F%phi, F%eta, F%etap, F%deta_ds, F%sigma, &
-    F%sigma_p, F%emit, F%norm_emit)
+    F%sigma_p, F%emit, F%norm_emit, F%dbeta_dpz, F%dalpha_dpz)
 
 end subroutine twiss_to_c
 
@@ -4666,7 +4666,7 @@ end subroutine twiss_to_c
 
 !! f_side.to_c2_f2_sub_arg
 subroutine twiss_to_f2 (Fp, z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds, z_sigma, &
-    z_sigma_p, z_emit, z_norm_emit) bind(c)
+    z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz) bind(c)
 
 
 implicit none
@@ -4676,7 +4676,7 @@ type(twiss_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 real(c_double) :: z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds
-real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit
+real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz
 
 call c_f_pointer (Fp, F)
 
@@ -4702,6 +4702,10 @@ call c_f_pointer (Fp, F)
   F%emit = z_emit
 !! f_side.to_f2_trans[0D_NOT_real]
   F%norm_emit = z_norm_emit
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%dbeta_dpz = z_dbeta_dpz
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%dalpha_dpz = z_dalpha_dpz
 
 end subroutine twiss_to_f2
 

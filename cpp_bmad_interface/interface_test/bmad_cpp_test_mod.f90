@@ -5210,6 +5210,10 @@ rhs = 9 + offset; F%sigma_p = rhs
 rhs = 10 + offset; F%emit = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 11 + offset; F%norm_emit = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 12 + offset; F%dbeta_dpz = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 13 + offset; F%dalpha_dpz = rhs
 
 end subroutine set_twiss_test_pattern
 !---------------------------------------------------------------------------------
