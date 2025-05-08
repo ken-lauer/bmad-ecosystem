@@ -10,8 +10,7 @@
 
 #ifndef BMAD_ENUMS
 
-// The TRUE/FALSE stuff is to get around a problem with TRUE and FALSE being
-// defined using #define
+// The TRUE/FALSE stuff is to get around a problem with TRUE and FALSE being defined using #define
 
 #ifdef TRUE
 #undef TRUE

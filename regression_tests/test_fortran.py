@@ -362,4 +362,10 @@ def test_fortran(bmad_bin: pathlib.Path, test_name: str) -> None:
     if num_local_failures:
         raise ValueError("One or more local failures were found")
 
-    print(f"{test_name} 'output.now' and 'output.correct' match.")
+
+def test_cpp_bmad_interface(bmad_bin: pathlib.Path) -> None:
+    """
+    Check the C++-Bmad interface structure conversion.
+    """
+    if os.system(str(bmad_bin / "cpp_bmad_interface_test")):
+        raise RuntimeError("C++ bmad interface test reported failures")
