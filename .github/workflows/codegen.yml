@@ -48,6 +48,11 @@ jobs:
         shell: bash -l {0}
         run: git diff --stat
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: structs-json
+          path: ./structs/json
+
       - name: Error if the source code differs
         shell: bash -eo pipefail -l {0}
         run: git diff --exit-code --ignore-all-space
