@@ -1,6 +1,9 @@
 
 // vi: syntax=cpp
 //
+// See README.md for details about this file. **It is not intended to be
+// compilable code!**
+
 #include "include/bmad_std_typedef.h"
 #include <cstddef>
 

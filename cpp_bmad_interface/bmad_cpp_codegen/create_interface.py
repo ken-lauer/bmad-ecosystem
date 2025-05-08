@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """
+Script to create:
 
-Note: Run this script in the cpp_bmad_interface directory.
-
-Script to read in Fortran structures and create:
-  Corresponding C++ class
-  Translator between Fortran structure and C++ class
-  Routines to check for equality between instances of a given fortran structure.
-  Routines to check for equality between instances of a given C++ class
-  Program to check the Fortran / C++ translator
+* C++ classes for Fortran structures
+* Translator between Fortran structure and C++ class
+* Routines to check for equality between instances of a given Fortran structure.
+* Routines to check for equality between instances of a given C++ class
+* Program to check the Fortran / C++ translator
 
 Note: The corresponding C++ class component for a pointer or allocatable Fortran
 scalar struct component is an array whose length is zero if the Fortran component
@@ -694,7 +692,7 @@ def match_structure_definition(
     struct.arg = [Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()]
 
 
-def set_translations(struct: Structure, c_overrides, f_overrides) -> None:
+def set_translations(struct: Structure, c_overrides: dict[str, str], f_overrides: dict[str, str]) -> None:
     # Throw out any sub-structures that are not to be translated
     struct.arg = [arg for arg in struct.arg if arg.should_translate(struct.f_name)]
 
