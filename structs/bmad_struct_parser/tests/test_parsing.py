@@ -13,7 +13,6 @@ from ..parser import (
     find_structs,
     get_names_from_line,
     parse_declaration,
-    parse_type_declaration,
 )
 
 
@@ -275,38 +274,68 @@ def test_get_names_from_line(
     [
         (
             "logical :: good = .true.                    ! Expression is valid.",
-            [ParsedDeclaration(name="good", dimension="", default=".true.")],
+            [
+                ParsedDeclaration(
+                    name="good",
+                    dimension=None,
+                    default=".true.",
+                    type=TypeInformation(type="logical", kind=None),
+                )
+            ],
         ),
         (
             "real(rp) :: x = 0, y = 1       ! Transverse offset",
             [
-                ParsedDeclaration(name="x", dimension="", default="0"),
-                ParsedDeclaration(name="y", dimension="", default="1"),
+                ParsedDeclaration(
+                    name="x", dimension=None, default="0", type=TypeInformation(type="real", kind="rp")
+                ),
+                ParsedDeclaration(
+                    name="y", dimension=None, default="1", type=TypeInformation(type="real", kind="rp")
+                ),
             ],
         ),
         (
             "real(rp) :: x , y ! , z = 0",
             [
-                ParsedDeclaration(name="x", dimension="", default=None),
-                ParsedDeclaration(name="y", dimension="", default=None),
+                ParsedDeclaration(
+                    name="x", dimension=None, default=None, type=TypeInformation(type="real", kind="rp")
+                ),
+                ParsedDeclaration(
+                    name="y", dimension=None, default=None, type=TypeInformation(type="real", kind="rp")
+                ),
             ],
         ),
         (
             "character(16) abc",
             [
-                ParsedDeclaration(name="abc", dimension="", default=None),
+                ParsedDeclaration(
+                    name="abc",
+                    dimension=None,
+                    default=None,
+                    type=TypeInformation(type="character", kind="16"),
+                ),
             ],
         ),
         (
             "integer :: i_chan = -1",
             [
-                ParsedDeclaration(name="i_chan", dimension="", default="-1"),
+                ParsedDeclaration(
+                    name="i_chan",
+                    dimension=None,
+                    default="-1",
+                    type=TypeInformation(type="integer", kind=None),
+                ),
             ],
         ),
         (
             "complex(DP), POINTER,dimension(:)::C => null() ! Coefficients C(N)",
             [
-                ParsedDeclaration(name="C", dimension=":", default="null()"),
+                ParsedDeclaration(
+                    name="C",
+                    dimension=":",
+                    default="null()",
+                    type=TypeInformation(type="complex", kind="DP", pointer=True, dimension=":"),
+                ),
             ],
         ),
     ],
@@ -322,28 +351,73 @@ def test_parse_declaration(
 @pytest.mark.parametrize(
     ("line", "expected_decl"),
     [
-        ("type name", [ParsedDeclaration(name="name", dimension=None, default=None)]),
+        (
+            "type name",
+            [
+                ParsedDeclaration(
+                    name="name", type=TypeInformation(type="type", kind=None), dimension=None, default=None
+                )
+            ],
+        ),
         (
             "type (spin_orbit_map1_struct), allocatable :: q_ele(:)",
-            [ParsedDeclaration(name="q_ele", dimension=":", default=None)],
+            [
+                ParsedDeclaration(
+                    name="q_ele",
+                    type=TypeInformation(
+                        type="type", kind="spin_orbit_map1_struct", allocatable=True, dimension=":"
+                    ),
+                    dimension=":",
+                    default=None,
+                )
+            ],
         ),
         (
             "type (spin_orbit_map1_struct), allocatable :: q_ele(0:)",
-            [ParsedDeclaration(name="q_ele", dimension="0:", default=None)],
+            [
+                ParsedDeclaration(
+                    name="q_ele",
+                    type=TypeInformation(
+                        type="type", kind="spin_orbit_map1_struct", allocatable=True, dimension="0:"
+                    ),
+                    dimension="0:",
+                    default=None,
+                )
+            ],
         ),
         (
             "type (qp_axis_struct) x, y, x2, y2",
             [
-                ParsedDeclaration(name="x", dimension="", default=None),
-                ParsedDeclaration(name="y", dimension="", default=None),
-                ParsedDeclaration(name="x2", dimension="", default=None),
-                ParsedDeclaration(name="y2", dimension="", default=None),
+                ParsedDeclaration(
+                    name="x",
+                    type=TypeInformation(type="type", kind="qp_axis_struct"),
+                    dimension=None,
+                    default=None,
+                ),
+                ParsedDeclaration(
+                    name="y",
+                    type=TypeInformation(type="type", kind="qp_axis_struct"),
+                    dimension=None,
+                    default=None,
+                ),
+                ParsedDeclaration(
+                    name="x2",
+                    type=TypeInformation(type="type", kind="qp_axis_struct"),
+                    dimension=None,
+                    default=None,
+                ),
+                ParsedDeclaration(
+                    name="y2",
+                    type=TypeInformation(type="type", kind="qp_axis_struct"),
+                    dimension=None,
+                    default=None,
+                ),
             ],
         ),
     ],
 )
 def test_parse_type_decl(line: str, expected_decl: list[ParsedDeclaration]) -> None:
-    assert parse_type_declaration(line) == expected_decl
+    assert parse_declaration(line) == expected_decl
 
 
 @pytest.mark.parametrize(

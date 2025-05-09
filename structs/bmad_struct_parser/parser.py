@@ -15,6 +15,10 @@ from .util import FileLine, path_with_respect_to_env, remove_comment, write_file
 logger = logging.getLogger(__name__)
 
 
+class DebugMe(Exception):
+    pass
+
+
 @dataclasses.dataclass(frozen=True)
 class TypeInformation:
     """
@@ -158,14 +162,7 @@ class TypeInformation:
 
     @classmethod
     def from_line(cls, line: str) -> TypeInformation:
-        if "::" in line:
-            line = line[: line.index("::")].strip()
-        else:
-            # "type (foo) a, b, c" -> "type (foo) a"
-            line = _split_variables(line)[0]
-            # "type (foo) a" -> "type (foo)"
-            line = line.rsplit(" ", 1)[0].strip()
-
+        line, _variables = split_type_and_variables(line)
         parts = _split_variables(line)
 
         type_name = parts[0]
@@ -421,12 +418,9 @@ class Structure:
 
             type_info = TypeInformation.from_line(line)
             for decl in parse_declaration(line, type_info):
-                member_type_info = type_info
-                if decl.dimension:
-                    member_type_info = member_type_info.replace(dimension=decl.dimension)
                 self.members[decl.name] = last_member = StructureMember(
                     name=decl.name,
-                    type_info=member_type_info,
+                    type_info=decl.type,
                     line=lineno,
                     definition=line,
                     comment=comment,
@@ -504,59 +498,75 @@ def _split_variables(line: str) -> list[str]:
 
 
 class ParsedDeclaration(NamedTuple):
+    """A variable declaration, combining its name, type, dimension, and default."""
+
     name: str
+    type: TypeInformation
     dimension: str | None
     default: str | None
 
+    @staticmethod
+    def from_line(line: str, type_info: TypeInformation) -> ParsedDeclaration:
+        """
+        Parse a single variable declaration into a ParsedDeclaration object.
 
-def _split_variable(line: str, type_info: TypeInformation) -> ParsedDeclaration:
-    """
-    Parse a single variable declaration into a ParsedDeclaration object.
+        Parameters
+        ----------
+        line : str
+            The string containing the variable declaration.
 
-    Parameters
-    ----------
-    line : str
-        The string containing the variable declaration.
+        Returns
+        -------
+        ParsedDeclaration
+            An object containing the variable name, dimension, and default value if any.
 
-    Returns
-    -------
-    ParsedDeclaration
-        An object containing the variable name, dimension, and default value if any.
+        Raises
+        ------
+        ValueError
+            If the line starts with an unexpected parenthesis.
+        """
+        if line.startswith("("):
+            raise ValueError(f"{line} starts with ( unexpectedly...")
 
-    Raises
-    ------
-    ValueError
-        If the line starts with an unexpected parenthesis.
-    """
-    if line.startswith("("):
-        raise ValueError(f"{line} starts with ( unexpectedly...")
+        in_paren = 0
+        processed = ""
+        default = None
+        for idx, ch in enumerate(line):
+            if ch == "(":
+                in_paren += 1
+            elif ch == ")":
+                in_paren -= 1
 
-    in_paren = 0
-    processed = ""
-    default = None
-    for idx, ch in enumerate(line):
-        if ch == "(":
-            in_paren += 1
-        elif ch == ")":
-            in_paren -= 1
+            if not in_paren and ch == "=":
+                default = line[idx + 1 :].strip()
+                default = default.lstrip("> ")
+                break
+            processed += ch
 
-        if not in_paren and ch == "=":
-            default = line[idx + 1 :].strip()
-            default = default.lstrip("> ")
-            break
-        processed += ch
+        if "(" in processed:
+            name, dimension = processed.split("(", 1)
+            dimension = dimension[: dimension.rindex(")")]
+        else:
+            name, dimension = processed, ""
 
-    if "(" in processed:
-        name, dimension = processed.split("(", 1)
-        dimension = dimension[: dimension.rindex(")")]
-    else:
-        name, dimension = processed, ""
+        actual_dim = dimension = type_info.dimension or dimension.strip() or None
+        return ParsedDeclaration(
+            name=name.strip(),
+            type=type_info.replace(dimension=actual_dim),
+            dimension=actual_dim,
+            default=default.strip() if default else None,
+        )
 
-    return ParsedDeclaration(
-        name=name.strip(),
-        dimension=type_info.dimension or dimension.strip(),
-        default=default.strip() if default else None,
-    )
+
+def split_type_and_variables(line: str) -> tuple[str, str]:
+    """Split the type name and variables in a declaration like 'real (rp) foo'."""
+    if "::" in line:
+        type_, variables = line.split("::")
+        return type_.strip(), variables.strip()
+
+    variables = remove_type_from_declaration(line)
+    type_ = line[: -len(variables)]
+    return type_.strip(), variables
 
 
 def remove_type_from_declaration(line: str) -> str:
@@ -597,39 +607,6 @@ def remove_type_from_declaration(line: str) -> str:
     return line
 
 
-def parse_type_declaration(line: str, type_info: TypeInformation | None = None) -> list[ParsedDeclaration]:
-    """
-    Parse a Fortran TYPE declaration line into a list of ParsedDeclaration objects.
-
-    Parameters
-    ----------
-    line : str
-        A string containing a Fortran TYPE declaration.
-
-    Returns
-    -------
-    list[ParsedDeclaration]
-        A list of ParsedDeclaration objects representing the variables declared in the line.
-
-    Notes
-    -----
-    This function handles both simple TYPE declarations and more complex ones
-    with variable specifications.
-    """
-    assert line.lower().startswith("type ") or line.lower().startswith("type(")
-    if type_info is None:
-        type_info = TypeInformation.from_line(line)
-
-    if "::" in line:
-        line = line[line.index("::") + 2 :]
-    else:
-        if ")" not in line:
-            return [ParsedDeclaration(name=line.split()[1], dimension=None, default=None)]
-        line = line.split(")", 1)[1].strip()
-
-    return [_split_variable(variable, type_info) for variable in _split_variables(line)]
-
-
 def parse_declaration(line: str, type_info: TypeInformation | None = None) -> list[ParsedDeclaration]:
     """
     Parse a Fortran declaration line into a list of ParsedDeclaration objects.
@@ -653,11 +630,8 @@ def parse_declaration(line: str, type_info: TypeInformation | None = None) -> li
         type_info = TypeInformation.from_line(line)
 
     line = remove_comment(line)
-    if line.lower().startswith("type ") or line.lower().startswith("type("):
-        return parse_type_declaration(line)
-
     variables = remove_type_from_declaration(line)
-    return [_split_variable(variable, type_info) for variable in _split_variables(variables)]
+    return [ParsedDeclaration.from_line(variable, type_info) for variable in _split_variables(variables)]
 
 
 def find_structs(
@@ -901,6 +875,8 @@ def convert(
     for source_fn in filenames:
         try:
             structs.extend(find_structs_in_file(parser_config, source_config, source_fn))
+        except DebugMe:
+            raise
         except Exception as ex:
             failed[source_fn] = ex
 
