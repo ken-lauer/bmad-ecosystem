@@ -346,7 +346,7 @@ class Argument:
 
     @classmethod
     def from_fstruct(cls, fstruct: ParsedStructure, member: StructureMember):
-        if member.size and member.type.lower() == "integer":
+        if member.kind and member.type.lower() == "integer":
             type_ = INT8
         else:
             type_ = member.type

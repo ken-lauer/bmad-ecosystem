@@ -7,29 +7,65 @@ import json
 import logging
 import pathlib
 import re
-from collections.abc import Sequence
 from typing import Any, NamedTuple
 
 from .config import DEFAULT_CONFIG_FILE, ParserConfig, SourceConfig
-from .util import STRUCTS_ROOT, FileLine, path_with_respect_to_env, write_file_if_changed
+from .util import FileLine, path_with_respect_to_env, write_file_if_changed
 
 logger = logging.getLogger(__name__)
-
-DefaultType = bool | int | str | float | complex | Sequence[float] | Sequence[int] | Sequence[str] | None
-AnyPath = pathlib.Path | str
-GENERATED_PATH = STRUCTS_ROOT / "generated"
-MODEL_TEMPLATE = STRUCTS_ROOT / "dataclass.tpl"
 
 
 @dataclasses.dataclass(frozen=True)
 class TypeInformation:
     """
-    A structured representation of a Fortran type declaration with all its attributes.
+    Represents a Fortran type declaration with attributes.
 
-    Examples:
-    - INTEGER, DIMENSION(10) :: array
-    - REAL(KIND=8), INTENT(IN), OPTIONAL :: param
-    - CHARACTER(LEN=100), ALLOCATABLE :: dynamic_string
+    Attributes
+    ----------
+    type : str
+        Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER', 'TYPE').
+    allocatable : bool, optional
+        Whether the variable is allocatable. Default is False.
+    asynchronous : bool, optional
+        Whether the variable can be used in asynchronous operations. Default is False.
+    bind : str or None, optional
+        Bind(C) specification. Default is None.
+    contiguous : bool, optional
+        Whether the array data is contiguous. Default is False.
+    dimension : str or None, optional
+        Dimension specification. Default is None.
+    external : bool, optional
+        Whether the entity is external. Default is False.
+    intent : str or None, optional
+        Intent specification ('IN', 'OUT', 'INOUT'). Default is None.
+    intrinsic : bool, optional
+        Whether the type is intrinsic. Default is False.
+    optional : bool, optional
+        Whether the variable is optional in a procedure. Default is False.
+    parameter : bool, optional
+        Whether the variable is a parameter (constant). Default is False.
+    pointer : bool, optional
+        Whether the variable is a pointer. Default is False.
+    private : bool, optional
+        Whether the variable has PRIVATE access. Default is False.
+    protected : bool, optional
+        Whether the variable is protected. Default is False.
+    public : bool, optional
+        Whether the variable has PUBLIC access. Default is False.
+    save : bool, optional
+        Whether the variable has the SAVE attribute. Default is False.
+    kind : str or None, optional
+        Size or kind specification. Default is None.
+    static : bool, optional
+        Whether the variable has the STATIC attribute. Default is False.
+    target : bool, optional
+        Whether the variable can be the target of a pointer. Default is False.
+    value : bool, optional
+        Whether the parameter is passed by value. Default is False.
+    volatile : bool, optional
+        Whether the variable has the VOLATILE attribute. Default is False.
+    attributes : tuple of str, optional
+        Any other unrecognized attributes. Default is an empty tuple.
     """
 
     type: str  # Base type name (e.g., 'INTEGER', 'REAL', 'CHARACTER', 'TYPE')
@@ -123,6 +159,25 @@ class TypeInformation:
 
 @dataclasses.dataclass
 class StructureMember:
+    """
+    Represents a member of a structure in the parser.
+
+    Attributes
+    ----------
+    line : int, optional
+        The line number in the source file where the member is defined. Defaults to 0.
+    definition : str, optional
+        The full definition string of the member. Defaults to an empty string.
+    type_info : TypeInformation, optional
+        An object containing type-related information about the member. Defaults to an instance with an empty type.
+    name : str, optional
+        The name of the structure member. Defaults to an empty string.
+    comment : str, optional
+        Any comment associated with the member. Defaults to an empty string.
+    default : bool | int | str | float | None, optional
+        The default value of the member. Can be of type bool, int, str, float, or None. Defaults to an empty string.
+    """
+
     line: int = 0
     definition: str = ""
     type_info: TypeInformation = dataclasses.field(default_factory=lambda: TypeInformation(type=""))
@@ -132,20 +187,18 @@ class StructureMember:
 
     @property
     def kind(self) -> str | None:
+        """Returns the kind of the type."""
         return self.type_info.kind
 
     @property
     def type(self) -> str:
+        """Returns the type of the member."""
         return self.type_info.type
 
     @property
     def dimension(self) -> str | None:
+        """Returns the dimension of the member, if applicable."""
         return self.type_info.dimension
-
-    @property
-    def size(self) -> str | None:
-        # back-compat
-        return self.kind
 
     @classmethod
     def from_data(cls, data: dict[str, Any]) -> StructureMember:
@@ -697,7 +750,7 @@ def fill_includes(source_config: SourceConfig, filename: pathlib.Path) -> list[F
                 for candidate_path in [filename.parent, *source_config.include_dirs]:
                     include_path = candidate_path / include_fn
                     if include_path.exists():
-                        result.extend(fill_includes(source_config, include_path, include_path.read_text()))
+                        result.extend(fill_includes(source_config, include_path))
                         break
                 else:
                     raise FileNotFoundError(include_fn)
