@@ -3,8 +3,9 @@ from __future__ import annotations
 import logging
 import os
 import pathlib
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from pathlib import Path
+from typing import NamedTuple
 
 logger = logging.getLogger(__name__)
 STRUCTS_ROOT = pathlib.Path(__file__).resolve().absolute().parent
@@ -13,6 +14,84 @@ if "ACC_ROOT_DIR" in os.environ:
     ACC_ROOT_DIR = pathlib.Path(os.environ["ACC_ROOT_DIR"]).resolve().absolute()
 else:
     ACC_ROOT_DIR = STRUCTS_ROOT.parents[2]
+
+
+def split_comment(line: str, comment_char: str = "!", escape_char: str = "\\") -> tuple[str, str]:
+    in_single_quote = False
+    in_double_quote = False
+    escape_next = False
+
+    for i, char in enumerate(line):
+        if escape_next:
+            escape_next = False
+            continue
+
+        if char == escape_char:
+            escape_next = True
+            continue
+
+        if char == "'" and not in_double_quote:
+            in_single_quote = not in_single_quote
+        elif char == '"' and not in_single_quote:
+            in_double_quote = not in_double_quote
+        elif char == comment_char and not in_single_quote and not in_double_quote:
+            # Found comment char outside of quotes
+            return (line[:i].strip(), line[i + 1 :].strip())
+
+    return line, ""
+
+
+def join_ampersand_lines(lines: Sequence[FileLine]) -> list[FileLine]:
+    res: list[FileLine] = []
+    continuation = False
+    # TODO: & could be in string, comment, etc.
+    for line in lines:
+        code = line.line.strip()
+        pre_comment, _comment = split_comment(code)
+        if pre_comment.strip().endswith("&"):
+            pre_ampersand = pre_comment.split("&")[0]
+        else:
+            pre_ampersand = code
+
+        if continuation:
+            res[-1] = res[-1]._replace(line=res[-1].line + pre_ampersand)
+        else:
+            res.append(
+                FileLine(
+                    lineno=line.lineno,
+                    line=pre_ampersand,
+                    filename=line.filename,
+                )
+            )
+
+        continuation = pre_comment.strip().endswith("&")
+
+    return res
+
+
+class FileLine(NamedTuple):
+    filename: pathlib.Path
+    lineno: int
+    line: str
+
+    def strip(self) -> FileLine:
+        return self._replace(line=self.line.strip())
+
+    @classmethod
+    def from_file(
+        cls, path: pathlib.Path, join_ampersands: bool = True, encoding: str = "latin-1"
+    ) -> list[FileLine]:
+        lines = [
+            FileLine(lineno=lineno, line=line, filename=path)
+            for lineno, line in enumerate(path.read_text(encoding=encoding).splitlines(), start=1)
+        ]
+        return join_ampersand_lines(lines) if join_ampersands else lines
+
+    def split_comment(self, comment_char: str = "!") -> tuple[str, str]:
+        return split_comment(self.line, comment_char=comment_char)
+
+    def __str__(self):
+        return f"{self.filename}:{self.lineno}"
 
 
 def path_with_respect_to_env(path: pathlib.Path, env_var_name: str) -> pathlib.Path:

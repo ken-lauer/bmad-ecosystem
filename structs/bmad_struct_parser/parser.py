@@ -11,7 +11,7 @@ from collections.abc import Sequence
 from typing import Any, NamedTuple
 
 from .config import DEFAULT_CONFIG_FILE, ParserConfig, SourceConfig
-from .util import STRUCTS_ROOT, path_with_respect_to_env, write_file_if_changed
+from .util import STRUCTS_ROOT, FileLine, path_with_respect_to_env, write_file_if_changed
 
 logger = logging.getLogger(__name__)
 
@@ -73,10 +73,11 @@ class TypeInformation:
                 result.pop(key)
         return result
 
-    def replace(self, **kwargs):
-        data = self.model_dump()
+    def replace(self, **kwargs) -> TypeInformation:
+        """Replace one or more bits of type information."""
+        data = dataclasses.asdict(self)
         data.update(**kwargs)
-        return type(self)(**data)
+        return type(self).from_data(data)
 
     def to_fortran_declaration(self) -> str:
         """Recreates the Fortran type declaration string."""
@@ -119,11 +120,6 @@ class TypeInformation:
             return f"{declaration_parts[0]}, {', '.join(attributes)}"
         return declaration_parts[0]
 
-    @property
-    def size(self):
-        # TODO: redo this; 'kind' is more appropriate here
-        return self.kind  # back-compat
-
 
 @dataclasses.dataclass
 class StructureMember:
@@ -131,19 +127,25 @@ class StructureMember:
     definition: str = ""
     type_info: TypeInformation = dataclasses.field(default_factory=lambda: TypeInformation(type=""))
     name: str = ""
-    type: str = ""
-    size: str | None = None
-    dimension: str | None = None
     comment: str = ""
     default: bool | int | str | float | None = ""
 
-    def __post_init__(self):
-        if not self.size:
-            self.size = None
-
     @property
     def kind(self) -> str | None:
-        return self.size
+        return self.type_info.kind
+
+    @property
+    def type(self) -> str:
+        return self.type_info.type
+
+    @property
+    def dimension(self) -> str | None:
+        return self.type_info.dimension
+
+    @property
+    def size(self) -> str | None:
+        # back-compat
+        return self.kind
 
     @classmethod
     def from_data(cls, data: dict[str, Any]) -> StructureMember:
@@ -156,18 +158,15 @@ class StructureMember:
         data = {
             "line": self.line,
             "definition": self.definition,
-            "type_info": self.type_info.to_json(),
             "name": self.name,
-            "type": self.type,
-            "size": self.size,
-            "dimension": self.dimension,
             "comment": self.comment,
             "default": self.default,
         }
         for key, value in list(data.items()):
             default = getattr(type(self), key, None)
-            if default is value:
+            if default is value or value in {""}:
                 data.pop(key)
+        data["type_info"] = self.type_info.to_json()
         return data
 
 
@@ -233,60 +232,17 @@ class Structure:
 
             type_info = get_type_from_line(line)
             for decl in parse_declaration(line, type_info):
-                self.members[decl.name] = StructureMember(
+                member_type_info = type_info
+                if decl.dimension:
+                    member_type_info = member_type_info.replace(dimension=decl.dimension)
+                self.members[decl.name] = last_member = StructureMember(
                     name=decl.name,
-                    type=type_info.type,
-                    type_info=type_info,
+                    type_info=member_type_info,
                     line=lineno,
                     definition=line,
                     comment=comment,
-                    size=type_info.size,
-                    dimension=decl.dimension,
                     default=decl.default,
                 )
-                last_member = self.members[decl.name]
-
-
-def get_default(python_type: str, size: str | None, fortran_default: str | None) -> tuple[DefaultType, str]:
-    if fortran_default:
-        if fortran_default.lower() == ".false.":
-            return False, ""
-        if fortran_default.lower() == ".true.":
-            return True, ""
-        if fortran_default.lower() == "real_garbage$":
-            return 0.0, ""
-        if fortran_default.lower() == "int_garbage$":
-            return 0, ""
-        if fortran_default.endswith("$"):  # some constant?
-            ...
-        else:
-            if python_type == "float":
-                # 10d3 -> 10e3
-                fortran_default = fortran_default.lower().replace("d", "e")
-                fortran_default = fortran_default.removesuffix("_rp")
-            try:
-                default = ast.literal_eval(fortran_default)
-                if isinstance(default, list):
-                    return tuple(default), ""
-                return default, ""
-            except (SyntaxError, ValueError):
-                pass
-
-    try:
-        int(size or "abc")
-    except ValueError:
-        size = None
-    if not size:
-        default = {
-            "str": "",
-            "int": 0,
-            "float": 0.0,
-            "type": None,
-            "bool": False,
-            "Complex": 0.0,
-        }.get(python_type)
-        return default, ""
-    return "", "list"
 
 
 def get_in_parenthesis(value: str) -> str:
@@ -469,15 +425,6 @@ def _split_variables(line: str) -> list[str]:
     return variables
 
 
-class FileLine(NamedTuple):
-    filename: pathlib.Path
-    lineno: int
-    line: str
-
-    def __str__(self):
-        return f"{self.filename}:{self.lineno}"
-
-
 class ParsedDeclaration(NamedTuple):
     name: str
     dimension: str | None
@@ -649,7 +596,9 @@ def find_structs(
         line = file_line.line
         lower_split = remove_comment(line).lower().strip().split()
         if not lower_split:
-            ...
+            if struct is not None and line.strip():
+                # Ensure comments still make their way through
+                struct.lines.append(line.strip())
         elif lower_split[0] in {"subroutine", "function"}:
             in_routine = lower_split[1]
         elif lower_split[0] == "module":
@@ -733,11 +682,12 @@ def find_structs(
     return structs
 
 
-def fill_includes(source_config: SourceConfig, filename: pathlib.Path, contents: str) -> list[FileLine]:
+def fill_includes(source_config: SourceConfig, filename: pathlib.Path) -> list[FileLine]:
     result = []
-    for lineno, line in enumerate(contents.splitlines(), 1):
-        parts = line.strip().split()
-        file_line = FileLine(filename=filename, lineno=lineno, line=line)
+
+    lines = FileLine.from_file(filename)
+    for file_line in lines:
+        parts = file_line.line.strip().split()
         if parts and parts[0].lower() == "include":
             include_fn = ast.literal_eval(parts[1])
 
@@ -762,8 +712,7 @@ def find_structs_in_file(
     source_config: SourceConfig,
     filename: pathlib.Path,
 ) -> list[Structure]:
-    contents = filename.read_text(encoding="latin-1")
-    file_lines = fill_includes(source_config, filename, contents)
+    file_lines = fill_includes(source_config, filename)
     return find_structs(
         file_lines=file_lines,
         filename=filename,

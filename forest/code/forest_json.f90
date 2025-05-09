@@ -4008,7 +4008,7 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
   if (associated(input%MIS)) then
     call json%add(json_root, 'mis', input%MIS)
   endif
-  ! parent pointer skip: P (TYPE, )
+  ! parent pointer skip: P (TYPE, TYPES OF POLYMORPHIC MAGNETS)
   if (associated(input%D0)) then
     call DRIFT1P_to_json(input%D0, json_val, depth + 1)
     call json%rename(json_val, 'D0')
@@ -4463,7 +4463,7 @@ subroutine FIBRE_to_json (input, json_root, depth)
     call json%add(json_root, json_val)
   endif
   ! config skip_members: FIBRE%PREVIOUS (TYPE, )
-  ! config skip_members: FIBRE%NEXT (TYPE, )
+  ! config skip_members: FIBRE%NEXT (TYPE, POINTING TO PARENT LAYOUT AND PARENT FIBRE DATA)
   if (associated(input%PARENT_LAYOUT)) then
     call LAYOUT_to_json(input%PARENT_LAYOUT, json_val, depth + 1)
     call json%rename(json_val, 'PARENT_LAYOUT')

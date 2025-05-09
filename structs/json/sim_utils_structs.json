@@ -8,84 +8,70 @@
       "name": {
         "line": 65,
         "definition": "character(:), allocatable :: name",
+        "name": "name",
+        "default": null,
         "type_info": {
           "type": "character",
           "allocatable": true,
           "kind": ":"
-        },
-        "name": "name",
-        "type": "character",
-        "size": ":",
-        "dimension": "",
-        "default": null
+        }
       },
       "parent": {
         "line": 66,
         "definition": "type (object_struct), pointer :: parent => null()",
+        "name": "parent",
+        "default": "null()",
         "type_info": {
           "type": "type",
           "pointer": true,
           "kind": "object_struct"
-        },
-        "name": "parent",
-        "type": "type",
-        "size": "object_struct",
-        "dimension": "",
-        "default": "null()"
+        }
       },
       "token": {
         "line": 67,
         "definition": "type (var_length_string_struct), allocatable :: token(:)",
+        "name": "token",
+        "comment": "Array of tokens",
+        "default": null,
         "type_info": {
           "type": "type",
           "allocatable": true,
+          "dimension": ":",
           "kind": "var_length_string_struct"
-        },
-        "name": "token",
-        "type": "type",
-        "size": "var_length_string_struct",
-        "dimension": ":",
-        "comment": "Array of tokens",
-        "default": null
+        }
       },
       "child": {
         "line": 68,
         "definition": "type (object_struct), pointer :: child(:) => null()",
+        "name": "child",
+        "comment": "Array of subobjects",
+        "default": "null()",
         "type_info": {
           "type": "type",
+          "dimension": ":",
           "pointer": true,
           "kind": "object_struct"
-        },
-        "name": "child",
-        "type": "type",
-        "size": "object_struct",
-        "dimension": ":",
-        "comment": "Array of subobjects",
-        "default": "null()"
+        }
       },
       "n_child": {
         "line": 69,
         "definition": "integer :: n_child = 0",
+        "name": "n_child",
+        "comment": "Number of subobjects.",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_child",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Number of subobjects.",
-        "default": "0"
+        }
       },
       "n_token": {
         "line": 70,
         "definition": "integer :: n_token = 0",
+        "name": "n_token",
+        "comment": "Number of tokens.",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_token",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Number of tokens.",
-        "default": "0"
+        }
       }
     }
   },
@@ -98,15 +84,12 @@
       "str": {
         "line": 61,
         "definition": "character(40) :: str = ''",
+        "name": "str",
+        "default": "''",
         "type_info": {
           "type": "character",
           "kind": "40"
-        },
-        "name": "str",
-        "type": "character",
-        "size": "40",
-        "dimension": "",
-        "default": "''"
+        }
       }
     }
   },
@@ -119,389 +102,314 @@
       "mode": {
         "line": 6,
         "definition": "integer :: mode = 0",
+        "name": "mode",
+        "comment": "LM damping matrix. 0->id, 1->dynamic jacob-based",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "mode",
-        "type": "integer",
-        "dimension": "",
-        "comment": "LM damping matrix. 0->id, 1->dynamic jacob-based",
-        "default": "0"
+        }
       },
       "maxiter": {
         "line": 7,
         "definition": "integer :: maxiter = 500",
+        "name": "maxiter",
+        "comment": "max # of routine iterations",
+        "default": "500",
         "type_info": {
           "type": "integer"
-        },
-        "name": "maxiter",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max # of routine iterations",
-        "default": "500"
+        }
       },
       "maxfev": {
         "line": 8,
         "definition": "integer :: maxfev = 0",
+        "name": "maxfev",
+        "comment": "max # of func evals (0-> no limit)",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "maxfev",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max # of func evals (0-> no limit)",
-        "default": "0"
+        }
       },
       "maxjev": {
         "line": 9,
         "definition": "integer :: maxjev = 0",
+        "name": "maxjev",
+        "comment": "max number of jac evals (0->no limit)",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "maxjev",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max number of jac evals (0->no limit)",
-        "default": "0"
+        }
       },
       "maxaev": {
         "line": 10,
         "definition": "integer :: maxaev = 0",
+        "name": "maxaev",
+        "comment": "max number of dir second derivs (0->no limit)",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "maxaev",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max number of dir second derivs (0->no limit)",
-        "default": "0"
+        }
       },
       "print_level": {
         "line": 11,
         "definition": "integer :: print_level = 3",
+        "name": "print_level",
+        "comment": "how many details to be printed (0-5)",
+        "default": "3",
         "type_info": {
           "type": "integer"
-        },
-        "name": "print_level",
-        "type": "integer",
-        "dimension": "",
-        "comment": "how many details to be printed (0-5)",
-        "default": "3"
+        }
       },
       "print_unit": {
         "line": 12,
         "definition": "integer :: print_unit = 6",
+        "name": "print_unit",
+        "comment": "unit number details written to",
+        "default": "6",
         "type_info": {
           "type": "integer"
-        },
-        "name": "print_unit",
-        "type": "integer",
-        "dimension": "",
-        "comment": "unit number details written to",
-        "default": "6"
+        }
       },
       "imethod": {
         "line": 13,
         "definition": "integer :: imethod = 10",
+        "name": "imethod",
+        "comment": "method choice for updating LM parameter",
+        "default": "10",
         "type_info": {
           "type": "integer"
-        },
-        "name": "imethod",
-        "type": "integer",
-        "dimension": "",
-        "comment": "method choice for updating LM parameter",
-        "default": "10"
+        }
       },
       "iaccel": {
         "line": 14,
         "definition": "integer :: iaccel = 1",
+        "name": "iaccel",
+        "comment": "use geodesic acceleration or not",
+        "default": "1",
         "type_info": {
           "type": "integer"
-        },
-        "name": "iaccel",
-        "type": "integer",
-        "dimension": "",
-        "comment": "use geodesic acceleration or not",
-        "default": "1"
+        }
       },
       "ibold": {
         "line": 15,
         "definition": "integer :: ibold = 0",
+        "name": "ibold",
+        "comment": "'boldness' in accepting uphill (0-4) with 0->downhill",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "ibold",
-        "type": "integer",
-        "dimension": "",
-        "comment": "'boldness' in accepting uphill (0-4) with 0->downhill",
-        "default": "0"
+        }
       },
       "ibroyden": {
         "line": 16,
         "definition": "integer :: ibroyden = 0",
+        "name": "ibroyden",
+        "comment": "number of iterations using approximate jacobian !!!real(rp) :: eps = 1.5E-6      ! function evaluation precision",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "ibroyden",
-        "type": "integer",
-        "dimension": "",
-        "comment": "number of iterations using approximate jacobian",
-        "default": "0"
+        }
       },
       "h1": {
-        "line": 17,
+        "line": 18,
         "definition": "real(rp) :: h1=1.D-6,h2=1.D-1",
+        "name": "h1",
+        "comment": "controls step sizes for finite diff derivatives",
+        "default": "1.D-6",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "h1",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "controls step sizes for finite diff derivatives",
-        "default": "1.D-6"
+        }
       },
       "h2": {
-        "line": 17,
+        "line": 18,
         "definition": "real(rp) :: h1=1.D-6,h2=1.D-1",
+        "name": "h2",
+        "comment": "controls step sizes for finite diff derivatives h1 for jacobian, h2 for dir second deriv ! Stopping criterion",
+        "default": "1.D-1",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "h2",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "controls step sizes for finite diff derivatives",
-        "default": "1.D-1"
+        }
       },
       "maxlam": {
-        "line": 18,
+        "line": 21,
         "definition": "real(rp) :: maxlam = 1E7",
+        "name": "maxlam",
+        "comment": "maximum limit on damping term lambda (if <0 no limit)",
+        "default": "1E7",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "maxlam",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "maximum limit on damping term lambda (if <0 no limit)",
-        "default": "1E7"
+        }
       },
       "minlam": {
-        "line": 19,
+        "line": 22,
         "definition": "real(rp) :: minlam = -1.0",
+        "name": "minlam",
+        "comment": "minimum limit on damping term lambda (if <0 no limit)",
+        "default": "-1.0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "minlam",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "minimum limit on damping term lambda (if <0 no limit)",
-        "default": "-1.0"
+        }
       },
       "artol": {
-        "line": 20,
+        "line": 23,
         "definition": "real(rp) :: artol = 1.E-3",
+        "name": "artol",
+        "comment": "cos of angle between residual and tangent plane",
+        "default": "1.E-3",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "artol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "cos of angle between residual and tangent plane",
-        "default": "1.E-3"
+        }
       },
       "Cgoal": {
-        "line": 21,
+        "line": 24,
         "definition": "real(rp) :: Cgoal  = 1.E-23",
+        "name": "Cgoal",
+        "comment": "Cost lower limit (ends when falls below)",
+        "default": "1.E-23",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "Cgoal",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Cost lower limit (ends when falls below)",
-        "default": "1.E-23"
+        }
       },
       "gtol": {
-        "line": 22,
+        "line": 25,
         "definition": "real(rp) :: gtol  = 1.5E-8",
+        "name": "gtol",
+        "comment": "gradient lower limit",
+        "default": "1.5E-8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "gtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "gradient lower limit",
-        "default": "1.5E-8"
+        }
       },
       "xtol": {
-        "line": 23,
+        "line": 26,
         "definition": "real(rp) :: xtol = 1.E-10",
+        "name": "xtol",
+        "comment": "step size lower limit (ll)",
+        "default": "1.E-10",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "xtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "step size lower limit (ll)",
-        "default": "1.E-10"
+        }
       },
       "xrtol": {
-        "line": 24,
+        "line": 27,
         "definition": "real(rp) :: xrtol = 1.5E-8",
+        "name": "xrtol",
+        "comment": "relative parameter change ll",
+        "default": "1.5E-8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "xrtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "relative parameter change ll",
-        "default": "1.5E-8"
+        }
       },
       "ftol": {
-        "line": 25,
+        "line": 28,
         "definition": "real(rp) :: ftol = 1.5E-8",
+        "name": "ftol",
+        "comment": "consecutive cost difference ll",
+        "default": "1.5E-8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "ftol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "consecutive cost difference ll",
-        "default": "1.5E-8"
+        }
       },
       "frtol": {
-        "line": 26,
+        "line": 29,
         "definition": "real(rp) :: frtol = 1.5E-8",
+        "name": "frtol",
+        "comment": "relative consecutive cost diff ll",
+        "default": "1.5E-8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "frtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "relative consecutive cost diff ll",
-        "default": "1.5E-8"
+        }
       },
       "initialfactor": {
-        "line": 27,
+        "line": 30,
         "definition": "real(rp) :: initialfactor = 1.",
+        "name": "initialfactor",
+        "comment": "initial LM param or step size",
+        "default": "1.",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "initialfactor",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "initial LM param or step size",
-        "default": "1."
+        }
       },
       "factoraccept": {
-        "line": 28,
+        "line": 31,
         "definition": "real(rp) :: factoraccept  = 5.",
+        "name": "factoraccept",
+        "comment": "(if imethod=0 or 10) adjusts initialfactor",
+        "default": "5.",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "factoraccept",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "(if imethod=0 or 10) adjusts initialfactor",
-        "default": "5."
+        }
       },
       "factorreject": {
-        "line": 29,
+        "line": 32,
         "definition": "real(rp) :: factorreject  = 2.",
+        "name": "factorreject",
+        "comment": "adjusts initialfactor for rejected step",
+        "default": "2.",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "factorreject",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "adjusts initialfactor for rejected step",
-        "default": "2."
+        }
       },
       "avmax": {
-        "line": 30,
+        "line": 33,
         "definition": "real(rp) :: avmax = 0.8",
+        "name": "avmax",
+        "comment": "limits geo accel w.r.t. velocity",
+        "default": "0.8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "avmax",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "limits geo accel w.r.t. velocity",
-        "default": "0.8"
+        }
       },
       "analytic_jac": {
-        "line": 31,
+        "line": 34,
         "definition": "logical :: analytic_jac = .true.",
+        "name": "analytic_jac",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "analytic_jac",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "analytic_avv": {
-        "line": 32,
+        "line": 35,
         "definition": "logical :: analytic_avv = .false.",
+        "name": "analytic_avv",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "analytic_avv",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       },
       "center_diff": {
-        "line": 33,
+        "line": 36,
         "definition": "logical :: center_diff = .true.",
+        "name": "center_diff",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "center_diff",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "geo_hit_limit": {
-        "line": 34,
+        "line": 37,
         "definition": "logical :: geo_hit_limit= .false.",
+        "name": "geo_hit_limit",
+        "comment": "flag for when limits are hit",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "geo_hit_limit",
-        "type": "logical",
-        "dimension": "",
-        "comment": "flag for when limits are hit",
-        "default": ".false."
+        }
       }
     }
   },
@@ -514,66 +422,56 @@
       "r": {
         "line": 46,
         "definition": "real(rp), pointer :: r => null()",
+        "name": "r",
+        "default": "null()",
         "type_info": {
           "type": "real",
           "pointer": true,
           "kind": "rp"
-        },
-        "name": "r",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "null()"
+        }
       },
       "i": {
         "line": 47,
         "definition": "integer, pointer :: i => null()",
+        "name": "i",
+        "default": "null()",
         "type_info": {
           "type": "integer",
           "pointer": true
-        },
-        "name": "i",
-        "type": "integer",
-        "dimension": "",
-        "default": "null()"
+        }
       },
       "l": {
         "line": 48,
         "definition": "logical, pointer :: l => null()",
+        "name": "l",
+        "default": "null()",
         "type_info": {
           "type": "logical",
           "pointer": true
-        },
-        "name": "l",
-        "type": "logical",
-        "dimension": "",
-        "default": "null()"
+        }
       },
       "r1": {
         "line": 49,
         "definition": "real(rp), pointer :: r1(:) => null()",
+        "name": "r1",
+        "default": "null()",
         "type_info": {
           "type": "real",
+          "dimension": ":",
           "pointer": true,
           "kind": "rp"
-        },
-        "name": "r1",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": "null()"
+        }
       },
       "i1": {
         "line": 50,
         "definition": "integer, pointer :: i1(:) => null()",
+        "name": "i1",
+        "default": "null()",
         "type_info": {
           "type": "integer",
+          "dimension": ":",
           "pointer": true
-        },
-        "name": "i1",
-        "type": "integer",
-        "dimension": ":",
-        "default": "null()"
+        }
       }
     }
   },
@@ -586,54 +484,45 @@
       "z": {
         "line": 125,
         "definition": "integer :: z",
+        "name": "z",
+        "comment": "Number of protons",
+        "default": null,
         "type_info": {
           "type": "integer"
-        },
-        "name": "z",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Number of protons",
-        "default": null
+        }
       },
       "name": {
         "line": 126,
         "definition": "character(2) :: name",
+        "name": "name",
+        "comment": "Element name",
+        "default": null,
         "type_info": {
           "type": "character",
           "kind": "2"
-        },
-        "name": "name",
-        "type": "character",
-        "size": "2",
-        "dimension": "",
-        "comment": "Element name",
-        "default": null
+        }
       },
       "i_offset": {
         "line": 127,
         "definition": "integer :: i_offset",
+        "name": "i_offset",
+        "comment": "isotope number offset",
+        "default": null,
         "type_info": {
           "type": "integer"
-        },
-        "name": "i_offset",
-        "type": "integer",
-        "dimension": "",
-        "comment": "isotope number offset",
-        "default": null
+        }
       },
       "mass": {
         "line": 128,
         "definition": "real(rp) :: mass(0:46) = no_iso",
+        "name": "mass",
+        "comment": "isotope masses in units of the unified atomic mass unit. mass(0) is the standard atomic weight mass(n) is the mass of isotope n + i_offset",
+        "default": "no_iso",
         "type_info": {
           "type": "real",
+          "dimension": "0:46",
           "kind": "rp"
-        },
-        "name": "mass",
-        "type": "real",
-        "size": "rp",
-        "dimension": "0:46",
-        "comment": "isotope masses in units of the unified atomic mass unit.",
-        "default": "no_iso"
+        }
       }
     }
   },
@@ -646,38 +535,32 @@
       "mp_threading_is_safe": {
         "line": 9,
         "definition": "logical :: mp_threading_is_safe = .true.",
+        "name": "mp_threading_is_safe",
+        "comment": "Can threading be used with MP? EG ramping is not thread safe.",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "mp_threading_is_safe",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Can threading be used with MP? EG ramping is not thread safe.",
-        "default": ".true."
+        }
       },
       "exit_on_error": {
         "line": 10,
         "definition": "logical :: exit_on_error  = .true.",
+        "name": "exit_on_error",
+        "comment": "Exit program on error?",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "exit_on_error",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Exit program on error?",
-        "default": ".true."
+        }
       },
       "debug": {
         "line": 11,
         "definition": "integer :: debug = 0",
+        "name": "debug",
+        "comment": "Used for debugging purpeses",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "debug",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Used for debugging purpeses",
-        "default": "0"
+        }
       }
     }
   },
@@ -690,26 +573,21 @@
       "atom": {
         "line": 78,
         "definition": "character(2) :: atom = ''",
+        "name": "atom",
+        "default": "''",
         "type_info": {
           "type": "character",
           "kind": "2"
-        },
-        "name": "atom",
-        "type": "character",
-        "size": "2",
-        "dimension": "",
-        "default": "''"
+        }
       },
       "number": {
         "line": 79,
         "definition": "integer :: number = 0",
+        "name": "number",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "number",
-        "type": "integer",
-        "dimension": "",
-        "default": "0"
+        }
       }
     }
   },
@@ -722,28 +600,22 @@
       "name": {
         "line": 17,
         "definition": "character(40) :: name = ''",
+        "name": "name",
+        "default": "''",
         "type_info": {
           "type": "character",
           "kind": "40"
-        },
-        "name": "name",
-        "type": "character",
-        "size": "40",
-        "dimension": "",
-        "default": "''"
+        }
       },
       "value": {
         "line": 18,
         "definition": "real(rp) :: value = 0",
+        "name": "value",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "value",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       }
     }
   },
@@ -756,54 +628,47 @@
       "name": {
         "line": 35,
         "definition": "character(40), allocatable :: name(:)",
+        "name": "name",
+        "comment": "Array of names.",
+        "default": null,
         "type_info": {
           "type": "character",
           "allocatable": true,
+          "dimension": ":",
           "kind": "40"
-        },
-        "name": "name",
-        "type": "character",
-        "size": "40",
-        "dimension": ":",
-        "comment": "Array of names.",
-        "default": null
+        }
       },
       "index": {
         "line": 36,
         "definition": "integer, allocatable :: index(:)",
+        "name": "index",
+        "comment": "Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.",
+        "default": null,
         "type_info": {
           "type": "integer",
-          "allocatable": true
-        },
-        "name": "index",
-        "type": "integer",
-        "dimension": ":",
-        "comment": "Sorted index for names(:) array.",
-        "default": null
+          "allocatable": true,
+          "dimension": ":"
+        }
       },
       "n_min": {
-        "line": 37,
+        "line": 38,
         "definition": "integer :: n_min = 1",
+        "name": "n_min",
+        "comment": "Set to 0 for use in a lattice.",
+        "default": "1",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_min",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Set to 0 for use in a lattice.",
-        "default": "1"
+        }
       },
       "n_max": {
-        "line": 38,
+        "line": 39,
         "definition": "integer :: n_max = 0",
+        "name": "n_max",
+        "comment": "Use only names(n_min:n_max) part of array.",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_max",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Use only names(n_min:n_max) part of array.",
-        "default": "0"
+        }
       }
     }
   },
@@ -816,53 +681,46 @@
       "name": {
         "line": 19,
         "definition": "type (var_length_string_struct), allocatable :: name(:)",
+        "name": "name",
+        "comment": "Array of names.",
+        "default": null,
         "type_info": {
           "type": "type",
           "allocatable": true,
+          "dimension": ":",
           "kind": "var_length_string_struct"
-        },
-        "name": "name",
-        "type": "type",
-        "size": "var_length_string_struct",
-        "dimension": ":",
-        "comment": "Array of names.",
-        "default": null
+        }
       },
       "index": {
         "line": 20,
         "definition": "integer, allocatable :: index(:)",
+        "name": "index",
+        "comment": "Sorted index for names(:) array. names(an_index(i)) is in alphabetical order.",
+        "default": null,
         "type_info": {
           "type": "integer",
-          "allocatable": true
-        },
-        "name": "index",
-        "type": "integer",
-        "dimension": ":",
-        "comment": "Sorted index for names(:) array.",
-        "default": null
+          "allocatable": true,
+          "dimension": ":"
+        }
       },
       "n_min": {
-        "line": 21,
+        "line": 22,
         "definition": "integer :: n_min = 1",
+        "name": "n_min",
+        "default": "1",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_min",
-        "type": "integer",
-        "dimension": "",
-        "default": "1"
+        }
       },
       "n_max": {
-        "line": 22,
+        "line": 23,
         "definition": "integer :: n_max = 0",
+        "name": "n_max",
+        "comment": "Use only names(n_min:n_max) part of array.",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_max",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Use only names(n_min:n_max) part of array.",
-        "default": "0"
+        }
       }
     }
   },
@@ -875,16 +733,13 @@
       "str": {
         "line": 15,
         "definition": "character(:), allocatable :: str",
+        "name": "str",
+        "default": null,
         "type_info": {
           "type": "character",
           "allocatable": true,
           "kind": ":"
-        },
-        "name": "str",
-        "type": "character",
-        "size": ":",
-        "dimension": "",
-        "default": null
+        }
       }
     }
   },
@@ -897,74 +752,62 @@
       "indent_num": {
         "line": 34,
         "definition": "integer :: indent_num(-1:10) = [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "indent_num",
-        "type": "integer",
-        "dimension": "-1:10",
-        "default": "[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]"
+        "default": "[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]",
+        "type_info": {
+          "type": "integer",
+          "dimension": "-1:10"
+        }
       },
       "print_on": {
         "line": 35,
         "definition": "logical :: print_on = .true.",
+        "name": "print_on",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "print_on",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "capture_lines_null_terminated": {
         "line": 36,
         "definition": "logical :: capture_lines_null_terminated = .true.",
+        "name": "capture_lines_null_terminated",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "capture_lines_null_terminated",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "n_buffer_lines": {
         "line": 37,
         "definition": "integer :: n_buffer_lines = 0",
+        "name": "n_buffer_lines",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "n_buffer_lines",
-        "type": "integer",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "buffer": {
         "line": 38,
         "definition": "character(300), allocatable :: buffer(:)",
+        "name": "buffer",
+        "default": null,
         "type_info": {
           "type": "character",
           "allocatable": true,
+          "dimension": ":",
           "kind": "300"
-        },
-        "name": "buffer",
-        "type": "character",
-        "size": "300",
-        "dimension": ":",
-        "default": null
+        }
       },
       "capture_state": {
         "line": 39,
         "definition": "character(16) :: capture_state = 'OFF'",
+        "name": "capture_state",
+        "comment": "See out_io_print_and_capture_setup",
+        "default": "'OFF'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "capture_state",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "See out_io_print_and_capture_setup",
-        "default": "'OFF'"
+        }
       }
     }
   },
@@ -977,24 +820,22 @@
       "print_and_capture": {
         "line": 29,
         "definition": "logical :: print_and_capture(-1:10) = .true.",
-        "type_info": {
-          "type": "logical"
-        },
         "name": "print_and_capture",
-        "type": "logical",
-        "dimension": "-1:10",
-        "default": ".true."
+        "default": ".true.",
+        "type_info": {
+          "type": "logical",
+          "dimension": "-1:10"
+        }
       },
       "file_unit": {
         "line": 30,
         "definition": "integer :: file_unit(-1:10) = -1",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "file_unit",
-        "type": "integer",
-        "dimension": "-1:10",
-        "default": "-1"
+        "default": "-1",
+        "type_info": {
+          "type": "integer",
+          "dimension": "-1:10"
+        }
       }
     }
   },
@@ -1007,28 +848,25 @@
       "coef": {
         "line": 71,
         "definition": "complex(rp) :: coef(0:3,0:3) = 0",
+        "name": "coef",
+        "comment": "Coefs",
+        "default": "0",
         "type_info": {
           "type": "complex",
+          "dimension": "0:3,0:3",
           "kind": "rp"
-        },
-        "name": "coef",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "0:3,0:3",
-        "comment": "Coefs",
-        "default": "0"
+        }
       },
       "i_box": {
         "line": 72,
         "definition": "integer :: i_box(2) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "2",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "2"
+        }
       }
     }
   },
@@ -1041,28 +879,25 @@
       "coef": {
         "line": 44,
         "definition": "real(rp) :: coef(0:3,0:3) = 0",
+        "name": "coef",
+        "comment": "Coefs",
+        "default": "0",
         "type_info": {
           "type": "real",
+          "dimension": "0:3,0:3",
           "kind": "rp"
-        },
-        "name": "coef",
-        "type": "real",
-        "size": "rp",
-        "dimension": "0:3,0:3",
-        "comment": "Coefs",
-        "default": "0"
+        }
       },
       "i_box": {
         "line": 45,
         "definition": "integer :: i_box(2) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "2",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "2"
+        }
       }
     }
   },
@@ -1075,70 +910,57 @@
       "count": {
         "line": 10,
         "definition": "real(rp), allocatable :: count(:)",
+        "name": "count",
+        "comment": "Counts (or weight) in each bin",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "count",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "comment": "Counts (or weight) in each bin",
-        "default": null
+        }
       },
       "min": {
         "line": 11,
         "definition": "real(rp) :: min",
+        "name": "min",
+        "comment": "Bounds for the bins",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "min",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Bounds for the bins",
-        "default": null
+        }
       },
       "max": {
         "line": 12,
         "definition": "real(rp) :: max",
+        "name": "max",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "max",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": null
+        }
       },
       "delta": {
         "line": 13,
         "definition": "real(rp) :: delta",
+        "name": "delta",
+        "comment": "Size of a bin",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "delta",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Size of a bin",
-        "default": null
+        }
       },
       "n": {
         "line": 14,
         "definition": "integer  :: n",
+        "name": "n",
+        "comment": "Number of bins",
+        "default": null,
         "type_info": {
           "type": "integer"
-        },
-        "name": "n",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Number of bins",
-        "default": null
+        }
       }
     }
   },
@@ -1151,58 +973,46 @@
       "f": {
         "line": 56,
         "definition": "complex(rp) f",
+        "name": "f",
+        "comment": "Field",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "f",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Field",
-        "default": null
+        }
       },
       "df_dx": {
         "line": 57,
         "definition": "complex(rp) df_dx, df_dy",
+        "name": "df_dx",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "df_dx",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "df_dy": {
         "line": 57,
         "definition": "complex(rp) df_dx, df_dy",
+        "name": "df_dy",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "df_dy",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "d2f_dxdy": {
         "line": 58,
         "definition": "complex(rp) d2f_dxdy",
+        "name": "d2f_dxdy",
+        "comment": "Normalized field 2nd derivative",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "d2f_dxdy",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivative",
-        "default": null
+        }
       }
     }
   },
@@ -1215,114 +1025,90 @@
       "f": {
         "line": 111,
         "definition": "complex(rp) f",
+        "name": "f",
+        "comment": "Field",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "f",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Field",
-        "default": null
+        }
       },
       "df_dx": {
         "line": 112,
         "definition": "complex(rp) df_dx, df_dy, df_dz",
+        "name": "df_dx",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "df_dx",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "df_dy": {
         "line": 112,
         "definition": "complex(rp) df_dx, df_dy, df_dz",
+        "name": "df_dy",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "df_dy",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "df_dz": {
         "line": 112,
         "definition": "complex(rp) df_dx, df_dy, df_dz",
+        "name": "df_dz",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "df_dz",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "d2f_dxdy": {
         "line": 113,
         "definition": "complex(rp) d2f_dxdy, d2f_dxdz, d2f_dydz",
+        "name": "d2f_dxdy",
+        "comment": "Normalized field 2nd derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "d2f_dxdy",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivatives",
-        "default": null
+        }
       },
       "d2f_dxdz": {
         "line": 113,
         "definition": "complex(rp) d2f_dxdy, d2f_dxdz, d2f_dydz",
+        "name": "d2f_dxdz",
+        "comment": "Normalized field 2nd derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "d2f_dxdz",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivatives",
-        "default": null
+        }
       },
       "d2f_dydz": {
         "line": 113,
         "definition": "complex(rp) d2f_dxdy, d2f_dxdz, d2f_dydz",
+        "name": "d2f_dydz",
+        "comment": "Normalized field 2nd derivatives",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "d2f_dydz",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivatives",
-        "default": null
+        }
       },
       "d3f_dxdydz": {
         "line": 114,
         "definition": "complex(rp) d3f_dxdydz",
+        "name": "d3f_dxdydz",
+        "comment": "Normalized field 3rd derivative",
+        "default": null,
         "type_info": {
           "type": "complex",
           "kind": "rp"
-        },
-        "name": "d3f_dxdydz",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 3rd derivative",
-        "default": null
+        }
       }
     }
   },
@@ -1335,27 +1121,24 @@
       "pt": {
         "line": 64,
         "definition": "type (cmplx_field1_at_2D_pt_struct) pt(0:1, 0:1)",
+        "name": "pt",
+        "default": null,
         "type_info": {
           "type": "type",
+          "dimension": "0:1, 0:1",
           "kind": "cmplx_field1_at_2D_pt_struct"
-        },
-        "name": "pt",
-        "type": "type",
-        "size": "cmplx_field1_at_2D_pt_struct",
-        "dimension": "0:1, 0:1",
-        "default": null
+        }
       },
       "i_box": {
         "line": 65,
         "definition": "integer :: i_box(2) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "2",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "2"
+        }
       }
     }
   },
@@ -1368,27 +1151,24 @@
       "pt": {
         "line": 120,
         "definition": "type (cmplx_field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)",
+        "name": "pt",
+        "default": null,
         "type_info": {
           "type": "type",
+          "dimension": "0:1, 0:1, 0:1",
           "kind": "cmplx_field1_at_3D_pt_struct"
-        },
-        "name": "pt",
-        "type": "type",
-        "size": "cmplx_field1_at_3D_pt_struct",
-        "dimension": "0:1, 0:1, 0:1",
-        "default": null
+        }
       },
       "i_box": {
         "line": 121,
         "definition": "integer :: i_box(3) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "3",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "3"
+        }
       }
     }
   },
@@ -1401,58 +1181,46 @@
       "f": {
         "line": 29,
         "definition": "real(rp) f",
+        "name": "f",
+        "comment": "Field",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "f",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Field",
-        "default": null
+        }
       },
       "df_dx": {
         "line": 30,
         "definition": "real(rp) df_dx, df_dy",
+        "name": "df_dx",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "df_dx",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "df_dy": {
         "line": 30,
         "definition": "real(rp) df_dx, df_dy",
+        "name": "df_dy",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "df_dy",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "d2f_dxdy": {
         "line": 31,
         "definition": "real(rp) d2f_dxdy",
+        "name": "d2f_dxdy",
+        "comment": "Normalized field 2nd derivative",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "d2f_dxdy",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivative",
-        "default": null
+        }
       }
     }
   },
@@ -1465,114 +1233,90 @@
       "f": {
         "line": 83,
         "definition": "real(rp) f",
+        "name": "f",
+        "comment": "Field",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "f",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Field",
-        "default": null
+        }
       },
       "df_dx": {
         "line": 84,
         "definition": "real(rp) df_dx, df_dy, df_dz",
+        "name": "df_dx",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "df_dx",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "df_dy": {
         "line": 84,
         "definition": "real(rp) df_dx, df_dy, df_dz",
+        "name": "df_dy",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "df_dy",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "df_dz": {
         "line": 84,
         "definition": "real(rp) df_dx, df_dy, df_dz",
+        "name": "df_dz",
+        "comment": "Normalized field 1st derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "df_dz",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 1st derivatives",
-        "default": null
+        }
       },
       "d2f_dxdy": {
         "line": 85,
         "definition": "real(rp) d2f_dxdy, d2f_dxdz, d2f_dydz",
+        "name": "d2f_dxdy",
+        "comment": "Normalized field 2nd derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "d2f_dxdy",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivatives",
-        "default": null
+        }
       },
       "d2f_dxdz": {
         "line": 85,
         "definition": "real(rp) d2f_dxdy, d2f_dxdz, d2f_dydz",
+        "name": "d2f_dxdz",
+        "comment": "Normalized field 2nd derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "d2f_dxdz",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivatives",
-        "default": null
+        }
       },
       "d2f_dydz": {
         "line": 85,
         "definition": "real(rp) d2f_dxdy, d2f_dxdz, d2f_dydz",
+        "name": "d2f_dydz",
+        "comment": "Normalized field 2nd derivatives",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "d2f_dydz",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 2nd derivatives",
-        "default": null
+        }
       },
       "d3f_dxdydz": {
         "line": 86,
         "definition": "real(rp) d3f_dxdydz",
+        "name": "d3f_dxdydz",
+        "comment": "Normalized field 3rd derivative",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "d3f_dxdydz",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Normalized field 3rd derivative",
-        "default": null
+        }
       }
     }
   },
@@ -1585,27 +1329,24 @@
       "pt": {
         "line": 37,
         "definition": "type (field1_at_2D_pt_struct) pt(0:1, 0:1)",
+        "name": "pt",
+        "default": null,
         "type_info": {
           "type": "type",
+          "dimension": "0:1, 0:1",
           "kind": "field1_at_2D_pt_struct"
-        },
-        "name": "pt",
-        "type": "type",
-        "size": "field1_at_2D_pt_struct",
-        "dimension": "0:1, 0:1",
-        "default": null
+        }
       },
       "i_box": {
         "line": 38,
         "definition": "integer :: i_box(2) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "2",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "2"
+        }
       }
     }
   },
@@ -1618,27 +1359,24 @@
       "pt": {
         "line": 92,
         "definition": "type (field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)",
+        "name": "pt",
+        "default": null,
         "type_info": {
           "type": "type",
+          "dimension": "0:1, 0:1, 0:1",
           "kind": "field1_at_3D_pt_struct"
-        },
-        "name": "pt",
-        "type": "type",
-        "size": "field1_at_3D_pt_struct",
-        "dimension": "0:1, 0:1, 0:1",
-        "default": null
+        }
       },
       "i_box": {
         "line": 93,
         "definition": "integer :: i_box(3) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "3",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "3"
+        }
       }
     }
   },
@@ -1651,82 +1389,71 @@
       "count": {
         "line": 18,
         "definition": "real(rp), allocatable :: count(:)",
+        "name": "count",
+        "comment": "Counts (or weight) in each bin",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "count",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "comment": "Counts (or weight) in each bin",
-        "default": null
+        }
       },
       "min": {
         "line": 19,
         "definition": "real(rp) :: min(3)",
+        "name": "min",
+        "comment": "Bounds for the bins",
+        "default": null,
         "type_info": {
           "type": "real",
+          "dimension": "3",
           "kind": "rp"
-        },
-        "name": "min",
-        "type": "real",
-        "size": "rp",
-        "dimension": "3",
-        "comment": "Bounds for the bins",
-        "default": null
+        }
       },
       "max": {
         "line": 20,
         "definition": "real(rp) :: max(3)",
+        "name": "max",
+        "default": null,
         "type_info": {
           "type": "real",
+          "dimension": "3",
           "kind": "rp"
-        },
-        "name": "max",
-        "type": "real",
-        "size": "rp",
-        "dimension": "3",
-        "default": null
+        }
       },
       "delta": {
         "line": 21,
         "definition": "real(rp) :: delta(3)",
+        "name": "delta",
+        "comment": "Size of a bin",
+        "default": null,
         "type_info": {
           "type": "real",
+          "dimension": "3",
           "kind": "rp"
-        },
-        "name": "delta",
-        "type": "real",
-        "size": "rp",
-        "dimension": "3",
-        "comment": "Size of a bin",
-        "default": null
+        }
       },
       "dim": {
         "line": 22,
         "definition": "integer  :: dim = 3",
+        "name": "dim",
+        "comment": "Number of dimensions",
+        "default": "3",
         "type_info": {
           "type": "integer"
-        },
-        "name": "dim",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Number of dimensions",
-        "default": "3"
+        }
       },
       "n": {
         "line": 23,
         "definition": "integer  :: n(3) = 1",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "n",
-        "type": "integer",
-        "dimension": "3",
         "comment": "number of bins in each dimension",
-        "default": "1"
+        "default": "1",
+        "type_info": {
+          "type": "integer",
+          "dimension": "3"
+        }
       }
     }
   },
@@ -1739,151 +1466,122 @@
       "ix": {
         "line": 29,
         "definition": "integer(kr4b) :: ix = -1, iy = -1",
+        "name": "ix",
+        "default": "-1",
         "type_info": {
           "type": "integer",
           "kind": "kr4b"
-        },
-        "name": "ix",
-        "type": "integer",
-        "size": "kr4b",
-        "dimension": "",
-        "default": "-1"
+        }
       },
       "iy": {
         "line": 29,
         "definition": "integer(kr4b) :: ix = -1, iy = -1",
+        "name": "iy",
+        "default": "-1",
         "type_info": {
           "type": "integer",
           "kind": "kr4b"
-        },
-        "name": "iy",
-        "type": "integer",
-        "size": "kr4b",
-        "dimension": "",
-        "default": "-1"
+        }
       },
       "number_stored": {
         "line": 30,
         "definition": "logical :: number_stored = .false.",
+        "name": "number_stored",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "number_stored",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       },
       "h_saved": {
         "line": 31,
         "definition": "real(rp) :: h_saved = 0",
+        "name": "h_saved",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "h_saved",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "engine": {
         "line": 32,
         "definition": "integer :: engine = pseudo_random$",
+        "name": "engine",
+        "comment": "Params",
+        "default": "pseudo_random$",
         "type_info": {
           "type": "integer"
-        },
-        "name": "engine",
-        "type": "integer",
-        "dimension": "",
-        "default": "pseudo_random$"
+        }
       },
       "seed": {
-        "line": 33,
+        "line": 34,
         "definition": "integer :: seed = 0",
+        "name": "seed",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "seed",
-        "type": "integer",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "am": {
-        "line": 34,
+        "line": 35,
         "definition": "real(sp) :: am = 0",
+        "name": "am",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "sp"
-        },
-        "name": "am",
-        "type": "real",
-        "size": "sp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "gauss_converter": {
-        "line": 35,
+        "line": 36,
         "definition": "integer :: gauss_converter = exact_gaussian$",
+        "name": "gauss_converter",
+        "default": "exact_gaussian$",
         "type_info": {
           "type": "integer"
-        },
-        "name": "gauss_converter",
-        "type": "integer",
-        "dimension": "",
-        "default": "exact_gaussian$"
+        }
       },
       "gauss_sigma_cut": {
-        "line": 36,
+        "line": 37,
         "definition": "real(rp) :: gauss_sigma_cut = -1",
+        "name": "gauss_sigma_cut",
+        "comment": "Only used if positive.",
+        "default": "-1",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "gauss_sigma_cut",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Only used if positive.",
-        "default": "-1"
+        }
       },
       "in_sobseq": {
-        "line": 37,
+        "line": 38,
         "definition": "integer(i4_b) :: in_sobseq = 0",
+        "name": "in_sobseq",
+        "default": "0",
         "type_info": {
           "type": "integer",
           "kind": "i4_b"
-        },
-        "name": "in_sobseq",
-        "type": "integer",
-        "size": "i4_b",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "ix_sobseq": {
-        "line": 38,
+        "line": 39,
         "definition": "integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0",
+        "name": "ix_sobseq",
+        "default": "0",
         "type_info": {
           "type": "integer",
+          "dimension": "sobseq_maxdim",
           "kind": "i4_b"
-        },
-        "name": "ix_sobseq",
-        "type": "integer",
-        "size": "i4_b",
-        "dimension": "sobseq_maxdim",
-        "default": "0"
+        }
       },
       "x_sobseq": {
-        "line": 39,
+        "line": 40,
         "definition": "real(rp) :: x_sobseq(sobseq_maxdim) = 0",
+        "name": "x_sobseq",
+        "default": "0",
         "type_info": {
           "type": "real",
+          "dimension": "sobseq_maxdim",
           "kind": "rp"
-        },
-        "name": "x_sobseq",
-        "type": "real",
-        "size": "rp",
-        "dimension": "sobseq_maxdim",
-        "default": "0"
+        }
       }
     }
   },
@@ -1896,58 +1594,47 @@
       "x0": {
         "line": 19,
         "definition": "real(rp) :: x0 = 0, y0 = 0",
+        "name": "x0",
+        "comment": "Point at start of spline",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "x0",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Point at start of spline",
-        "default": "0"
+        }
       },
       "y0": {
         "line": 19,
         "definition": "real(rp) :: x0 = 0, y0 = 0",
+        "name": "y0",
+        "comment": "Point at start of spline",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "y0",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Point at start of spline",
-        "default": "0"
+        }
       },
       "x1": {
         "line": 20,
         "definition": "real(rp) :: x1 = 0",
+        "name": "x1",
+        "comment": "Point at end of spline",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "x1",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Point at end of spline",
-        "default": "0"
+        }
       },
       "coef": {
         "line": 21,
         "definition": "real(rp) :: coef(0:3) = 0",
+        "name": "coef",
+        "comment": "coefficients for cubic spline",
+        "default": "0",
         "type_info": {
           "type": "real",
+          "dimension": "0:3",
           "kind": "rp"
-        },
-        "name": "coef",
-        "type": "real",
-        "size": "rp",
-        "dimension": "0:3",
-        "comment": "coefficients for cubic spline",
-        "default": "0"
+        }
       }
     }
   },
@@ -1958,171 +1645,148 @@
     "module": "super_recipes_mod",
     "members": {
       "covar": {
-        "line": 14,
+        "line": 15,
         "definition": "real(rp), allocatable :: covar(:, :)",
+        "name": "covar",
+        "comment": "Covariance matrix. See mrqmin in NR for more details.",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":, :",
           "kind": "rp"
-        },
-        "name": "covar",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":, :",
-        "comment": "Covariance matrix. See mrqmin in NR for more details.",
-        "default": null
+        }
       },
       "alpha": {
-        "line": 15,
+        "line": 16,
         "definition": "real(rp), allocatable :: alpha(:, :)",
+        "name": "alpha",
+        "comment": "Curvature matrix. See mrqmin in NR for more details.",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":, :",
           "kind": "rp"
-        },
-        "name": "alpha",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":, :",
-        "comment": "Curvature matrix. See mrqmin in NR for more details.",
-        "default": null
+        }
       },
       "atry": {
-        "line": 16,
+        "line": 17,
         "definition": "real(rp), allocatable :: atry(:), beta(:)",
+        "name": "atry",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "atry",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
+        }
       },
       "beta": {
-        "line": 16,
+        "line": 17,
         "definition": "real(rp), allocatable :: atry(:), beta(:)",
+        "name": "beta",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "beta",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
+        }
       },
       "da": {
-        "line": 17,
+        "line": 18,
         "definition": "real(rp), allocatable :: da(:,:)",
+        "name": "da",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":,:",
           "kind": "rp"
-        },
-        "name": "da",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":,:",
-        "default": null
+        }
       },
       "ochisq": {
-        "line": 18,
+        "line": 19,
         "definition": "real(rp) :: ochisq",
+        "name": "ochisq",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "ochisq",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": null
+        }
       },
       "mask": {
-        "line": 19,
+        "line": 20,
         "definition": "logical, allocatable :: mask(:)",
+        "name": "mask",
+        "comment": "Used by super_mrqcof",
+        "default": null,
         "type_info": {
           "type": "logical",
-          "allocatable": true
-        },
-        "name": "mask",
-        "type": "logical",
-        "dimension": ":",
-        "default": null
+          "allocatable": true,
+          "dimension": ":"
+        }
       },
       "dyda": {
-        "line": 20,
+        "line": 22,
         "definition": "real(rp), allocatable :: dyda(:, :)",
+        "name": "dyda",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":, :",
           "kind": "rp"
-        },
-        "name": "dyda",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":, :",
-        "default": null
+        }
       },
       "old_dy": {
-        "line": 21,
+        "line": 23,
         "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "name": "old_dy",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "old_dy",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
+        }
       },
       "dy": {
-        "line": 21,
+        "line": 23,
         "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "name": "dy",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "dy",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
+        }
       },
       "wt": {
-        "line": 21,
+        "line": 23,
         "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "name": "wt",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "wt",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
+        }
       },
       "ymod": {
-        "line": 21,
+        "line": 23,
         "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "name": "ymod",
+        "default": null,
         "type_info": {
           "type": "real",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "ymod",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
+        }
       }
     }
   },
@@ -2135,28 +1799,25 @@
       "coef": {
         "line": 127,
         "definition": "complex(rp) :: coef(0:3,0:3,0:3) = 0",
+        "name": "coef",
+        "comment": "Coefs",
+        "default": "0",
         "type_info": {
           "type": "complex",
+          "dimension": "0:3,0:3,0:3",
           "kind": "rp"
-        },
-        "name": "coef",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "0:3,0:3,0:3",
-        "comment": "Coefs",
-        "default": "0"
+        }
       },
       "i_box": {
         "line": 128,
         "definition": "integer :: i_box(3) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "3",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "3"
+        }
       }
     }
   },
@@ -2169,28 +1830,25 @@
       "coef": {
         "line": 99,
         "definition": "real(rp) :: coef(0:3,0:3,0:3) = 0",
+        "name": "coef",
+        "comment": "Coefs",
+        "default": "0",
         "type_info": {
           "type": "real",
+          "dimension": "0:3,0:3,0:3",
           "kind": "rp"
-        },
-        "name": "coef",
-        "type": "real",
-        "size": "rp",
-        "dimension": "0:3,0:3,0:3",
-        "comment": "Coefs",
-        "default": "0"
+        }
       },
       "i_box": {
         "line": 100,
         "definition": "integer :: i_box(3) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
         "name": "i_box",
-        "type": "integer",
-        "dimension": "3",
         "comment": "index at lower box corner.",
-        "default": "int_garbage$"
+        "default": "int_garbage$",
+        "type_info": {
+          "type": "integer",
+          "dimension": "3"
+        }
       }
     }
   },
@@ -2203,94 +1861,79 @@
       "R1": {
         "line": 40,
         "definition": "REAL(rp), ALLOCATABLE :: R1(:,:)",
+        "name": "R1",
+        "default": null,
         "type_info": {
           "type": "REAL",
           "allocatable": true,
+          "dimension": ":,:",
           "kind": "rp"
-        },
-        "name": "R1",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": ":,:",
-        "default": null
+        }
       },
       "Q1": {
         "line": 41,
         "definition": "REAL(rp), ALLOCATABLE :: Q1(:,:)",
+        "name": "Q1",
+        "default": null,
         "type_info": {
           "type": "REAL",
           "allocatable": true,
+          "dimension": ":,:",
           "kind": "rp"
-        },
-        "name": "Q1",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": ":,:",
-        "default": null
+        }
       },
       "N": {
         "line": 42,
         "definition": "INTEGER :: N",
+        "name": "N",
+        "comment": "number of data points to fit to",
+        "default": null,
         "type_info": {
           "type": "INTEGER"
-        },
-        "name": "N",
-        "type": "INTEGER",
-        "dimension": "",
-        "comment": "number of data points to fit to",
-        "default": null
+        }
       },
       "order": {
         "line": 43,
         "definition": "INTEGER :: order",
+        "name": "order",
+        "comment": "order of fit polynomial",
+        "default": null,
         "type_info": {
           "type": "INTEGER"
-        },
-        "name": "order",
-        "type": "INTEGER",
-        "dimension": "",
-        "comment": "order of fit polynomial",
-        "default": null
+        }
       },
       "der": {
         "line": 44,
         "definition": "INTEGER :: der",
+        "name": "der",
+        "comment": "order of derivative to be returned by fixedWindowLS",
+        "default": null,
         "type_info": {
           "type": "INTEGER"
-        },
-        "name": "der",
-        "type": "INTEGER",
-        "dimension": "",
-        "comment": "order of derivative to be returned by fixedWindowLS",
-        "default": null
+        }
       },
       "xend": {
         "line": 45,
         "definition": "REAL(rp) :: xend",
+        "name": "xend",
+        "default": null,
         "type_info": {
           "type": "REAL",
           "kind": "rp"
-        },
-        "name": "xend",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": "",
-        "default": null
+        }
       },
       "y": {
         "line": 46,
         "definition": "REAL(rp), ALLOCATABLE :: y(:)",
+        "name": "y",
+        "comment": "holds data",
+        "default": null,
         "type_info": {
           "type": "REAL",
           "allocatable": true,
+          "dimension": ":",
           "kind": "rp"
-        },
-        "name": "y",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": ":",
-        "comment": "holds data",
-        "default": null
+        }
       }
     }
   },
@@ -2303,15 +1946,12 @@
       "dummy": {
         "line": 7,
         "definition": "real(rp) dummy",
+        "name": "dummy",
+        "default": null,
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "dummy",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": null
+        }
       }
     }
   },
@@ -2324,90 +1964,73 @@
       "CR": {
         "line": 6,
         "definition": "real(rp) :: CR = 0.8",
+        "name": "CR",
+        "comment": "Crossover probability",
+        "default": "0.8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "CR",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Crossover probability",
-        "default": "0.8"
+        }
       },
       "F": {
         "line": 7,
         "definition": "real(rp) :: F  = 0.8",
+        "name": "F",
+        "comment": "Mixing number",
+        "default": "0.8",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "F",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Mixing number",
-        "default": "0.8"
+        }
       },
       "l_best": {
         "line": 8,
         "definition": "real(rp) :: l_best = 0.0",
+        "name": "l_best",
+        "comment": "Percentage of best vector.",
+        "default": "0.0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "l_best",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Percentage of best vector.",
-        "default": "0.0"
+        }
       },
       "use_2nd_diff": {
         "line": 9,
         "definition": "logical :: use_2nd_diff   = .false.",
+        "name": "use_2nd_diff",
+        "comment": "use F * (x_4 - x_5) term",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "use_2nd_diff",
-        "type": "logical",
-        "dimension": "",
-        "comment": "use F * (x_4 - x_5) term",
-        "default": ".false."
+        }
       },
       "binomial_cross": {
         "line": 10,
         "definition": "logical :: binomial_cross = .false.",
+        "name": "binomial_cross",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "binomial_cross",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       },
       "randomize_F": {
         "line": 11,
         "definition": "logical :: randomize_F    = .false.",
+        "name": "randomize_F",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "randomize_F",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       },
       "minimize_merit": {
         "line": 12,
         "definition": "logical :: minimize_merit = .true.",
+        "name": "minimize_merit",
+        "comment": "Alternative is to maximize.",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "minimize_merit",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Alternative is to maximize.",
-        "default": ".true."
+        }
       }
     }
   },
@@ -2420,62 +2043,50 @@
       "page_type": {
         "line": 38,
         "definition": "character(16) page_type",
+        "name": "page_type",
+        "default": null,
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "page_type",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": null
+        }
       },
       "plot_file": {
         "line": 39,
         "definition": "character(100) plot_file",
+        "name": "plot_file",
+        "default": null,
         "type_info": {
           "type": "character",
           "kind": "100"
-        },
-        "name": "plot_file",
-        "type": "character",
-        "size": "100",
-        "dimension": "",
-        "default": null
+        }
       },
       "i_chan": {
         "line": 40,
         "definition": "integer :: i_chan = -1",
+        "name": "i_chan",
+        "default": "-1",
         "type_info": {
           "type": "integer"
-        },
-        "name": "i_chan",
-        "type": "integer",
-        "dimension": "",
-        "default": "-1"
+        }
       },
       "qp_to_pg_text_height_factor": {
         "line": 41,
         "definition": "real qp_to_pg_text_height_factor",
+        "name": "qp_to_pg_text_height_factor",
+        "default": null,
         "type_info": {
           "type": "real"
-        },
-        "name": "qp_to_pg_text_height_factor",
-        "type": "real",
-        "dimension": "",
-        "default": null
+        }
       },
       "page_scale": {
         "line": 42,
         "definition": "real page_scale",
+        "name": "page_scale",
+        "comment": "scaling for entire page",
+        "default": null,
         "type_info": {
           "type": "real"
-        },
-        "name": "page_scale",
-        "type": "real",
-        "dimension": "",
-        "comment": "scaling for entire page",
-        "default": null
+        }
       }
     }
   },
@@ -2488,70 +2099,55 @@
       "head_angle": {
         "line": 130,
         "definition": "real(rp) :: head_angle = 30",
+        "name": "head_angle",
+        "comment": "Acute angle of the arrow point in degrees.",
+        "default": "30",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "head_angle",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Acute angle of the arrow point in degrees.",
-        "default": "30"
+        }
       },
       "head_barb": {
         "line": 131,
         "definition": "real(rp) :: head_barb  = 0.4",
+        "name": "head_barb",
+        "comment": "Fraction of triangular arrow head that is cut away from the back.",
+        "default": "0.4",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "head_barb",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Fraction of triangular arrow head that is cut away from the back.",
-        "default": "0.4"
+        }
       },
       "head_size": {
         "line": 132,
         "definition": "real(rp) :: head_size  = 1.0",
+        "name": "head_size",
+        "default": "1.0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "head_size",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "1.0"
+        }
       },
       "head_type": {
         "line": 133,
         "definition": "character(16) :: head_type   = 'filled_arrow_head'",
+        "name": "head_type",
+        "comment": "Or 'outline_arrow_head'",
+        "default": "'filled_arrow_head'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "head_type",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "Or 'outline_arrow_head'",
-        "default": "'filled_arrow_head'"
+        }
       },
       "color": {
         "line": 134,
         "definition": "character(16) :: color       = 'black'",
+        "name": "color",
+        "default": "'black'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "color",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'black'"
+        }
       }
     }
   },
@@ -2564,317 +2160,254 @@
       "label": {
         "line": 58,
         "definition": "character(80) :: label = ' '",
+        "name": "label",
+        "default": "' '",
         "type_info": {
           "type": "character",
           "kind": "80"
-        },
-        "name": "label",
-        "type": "character",
-        "size": "80",
-        "dimension": "",
-        "default": "' '"
+        }
       },
       "min": {
         "line": 59,
         "definition": "real(rp) :: min = 0, max = 10",
+        "name": "min",
+        "comment": "Axis min/max in data units.",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "min",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Axis min/max in data units.",
-        "default": "0"
+        }
       },
       "max": {
         "line": 59,
         "definition": "real(rp) :: min = 0, max = 10",
+        "name": "max",
+        "comment": "Axis min/max in data units.",
+        "default": "10",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "max",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Axis min/max in data units.",
-        "default": "10"
+        }
       },
       "tick_min": {
         "line": 60,
         "definition": "real(rp) :: tick_min = 0",
+        "name": "tick_min",
+        "comment": "Min tick location along axis in data units.",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "tick_min",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Min tick location along axis in data units.",
-        "default": "0"
+        }
       },
       "tick_max": {
         "line": 61,
         "definition": "real(rp) :: tick_max = 10",
+        "name": "tick_max",
+        "comment": "Max tick location along axis in data units.",
+        "default": "10",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "tick_max",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Max tick location along axis in data units.",
-        "default": "10"
+        }
       },
       "eval_min": {
         "line": 62,
         "definition": "real(rp) :: eval_min = 0, eval_max = 0",
+        "name": "eval_min",
+        "comment": "For general use. Not set by quick_plot.",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "eval_min",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "For general use. Not set by quick_plot.",
-        "default": "0"
+        }
       },
       "eval_max": {
         "line": 62,
         "definition": "real(rp) :: eval_min = 0, eval_max = 0",
+        "name": "eval_max",
+        "comment": "For general use. Not set by quick_plot.",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "eval_max",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "For general use. Not set by quick_plot.",
-        "default": "0"
+        }
       },
       "dtick": {
         "line": 63,
         "definition": "real(rp) :: dtick = 2",
+        "name": "dtick",
+        "comment": "Distance between ticks. In data units. Ticks will be drawn between %min and %max.",
+        "default": "2",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "dtick",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Distance between ticks. In data units. Ticks will be drawn between %min and %max.",
-        "default": "2"
+        }
       },
       "number_offset": {
         "line": 64,
         "definition": "real(rp) :: number_offset = 0.05",
+        "name": "number_offset",
+        "comment": "Offset from axis line in inches.",
+        "default": "0.05",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "number_offset",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Offset from axis line in inches.",
-        "default": "0.05"
+        }
       },
       "label_offset": {
         "line": 65,
         "definition": "real(rp) :: label_offset = 0.05",
+        "name": "label_offset",
+        "comment": "Offset from numbers in inches.",
+        "default": "0.05",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "label_offset",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Offset from numbers in inches.",
-        "default": "0.05"
+        }
       },
       "major_tick_len": {
         "line": 66,
         "definition": "real(rp) :: major_tick_len = 0.10",
+        "name": "major_tick_len",
+        "comment": "In inches.",
+        "default": "0.10",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "major_tick_len",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "In inches.",
-        "default": "0.10"
+        }
       },
       "minor_tick_len": {
         "line": 67,
         "definition": "real(rp) :: minor_tick_len = 0.06",
+        "name": "minor_tick_len",
+        "comment": "In inches.",
+        "default": "0.06",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "minor_tick_len",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "In inches.",
-        "default": "0.06"
+        }
       },
       "label_color": {
         "line": 68,
         "definition": "character(16) :: label_color = 'black'",
+        "name": "label_color",
+        "comment": "Color of the label.",
+        "default": "'black'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "label_color",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "Color of the label.",
-        "default": "'black'"
+        }
       },
       "major_div": {
         "line": 69,
         "definition": "integer :: major_div = 5",
+        "name": "major_div",
+        "comment": "Actual numbrer of major divisions",
+        "default": "5",
         "type_info": {
           "type": "integer"
-        },
-        "name": "major_div",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Actual numbrer of major divisions",
-        "default": "5"
+        }
       },
       "major_div_nominal": {
         "line": 70,
         "definition": "integer :: major_div_nominal = 5",
+        "name": "major_div_nominal",
+        "comment": "Nominal value.",
+        "default": "5",
         "type_info": {
           "type": "integer"
-        },
-        "name": "major_div_nominal",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Nominal value.",
-        "default": "5"
+        }
       },
       "minor_div": {
         "line": 71,
         "definition": "integer :: minor_div = 0",
+        "name": "minor_div",
+        "comment": "0 = auto choose.",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "minor_div",
-        "type": "integer",
-        "dimension": "",
-        "comment": "0 = auto choose.",
-        "default": "0"
+        }
       },
       "minor_div_max": {
         "line": 72,
         "definition": "integer :: minor_div_max = 5",
+        "name": "minor_div_max",
+        "comment": "Max number for auto choose.",
+        "default": "5",
         "type_info": {
           "type": "integer"
-        },
-        "name": "minor_div_max",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Max number for auto choose.",
-        "default": "5"
+        }
       },
       "places": {
         "line": 73,
         "definition": "integer :: places = 0",
+        "name": "places",
+        "comment": "Number of places after the decimal point to print.",
+        "default": "0",
         "type_info": {
           "type": "integer"
-        },
-        "name": "places",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Number of places after the decimal point to print.",
-        "default": "0"
+        }
       },
       "type": {
         "line": 74,
         "definition": "character(16) :: type = 'LINEAR'",
+        "name": "type",
+        "comment": "Or 'LOG', or 'CUSTOM'",
+        "default": "'LINEAR'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "type",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "Or 'LOG', or 'CUSTOM'",
-        "default": "'LINEAR'"
+        }
       },
       "bounds": {
         "line": 75,
         "definition": "character(16) :: bounds = 'GENERAL'",
+        "name": "bounds",
+        "comment": "Or 'ZERO_AT_END' or 'ZERO_SYMMETRIC'",
+        "default": "'GENERAL'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "bounds",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "Or 'ZERO_AT_END' or 'ZERO_SYMMETRIC'",
-        "default": "'GENERAL'"
+        }
       },
       "tick_side": {
         "line": 76,
         "definition": "integer :: tick_side = +1",
+        "name": "tick_side",
+        "comment": "+1 = Draw on the side inside the graph, 0 = both (longer tick), -1 = outside.",
+        "default": "+1",
         "type_info": {
           "type": "integer"
-        },
-        "name": "tick_side",
-        "type": "integer",
-        "dimension": "",
-        "comment": "+1 = Draw on the side inside the graph, 0 = both (longer tick), -1 = outside.",
-        "default": "+1"
+        }
       },
       "number_side": {
         "line": 77,
         "definition": "integer :: number_side = -1",
+        "name": "number_side",
+        "comment": "+1 = Draw to the side inside the graph, -1 = outside.",
+        "default": "-1",
         "type_info": {
           "type": "integer"
-        },
-        "name": "number_side",
-        "type": "integer",
-        "dimension": "",
-        "comment": "+1 = Draw to the side inside the graph, -1 = outside.",
-        "default": "-1"
+        }
       },
       "draw_label": {
         "line": 78,
         "definition": "logical :: draw_label = .true.",
+        "name": "draw_label",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_label",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "draw_numbers": {
         "line": 79,
         "definition": "logical :: draw_numbers  = .true.",
+        "name": "draw_numbers",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_numbers",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       }
     }
   },
@@ -2887,80 +2420,65 @@
       "row_spacing": {
         "line": 138,
         "definition": "real(rp) :: row_spacing = 1.0",
+        "name": "row_spacing",
+        "comment": "Spacing between rows.",
+        "default": "1.0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "row_spacing",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Spacing between rows.",
-        "default": "1.0"
+        }
       },
       "line_length": {
         "line": 139,
         "definition": "real(rp) :: line_length = 72",
+        "name": "line_length",
+        "comment": "Length of the line in points.",
+        "default": "72",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "line_length",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Length of the line in points.",
-        "default": "72"
+        }
       },
       "text_offset": {
         "line": 140,
         "definition": "real(rp) :: text_offset = 10",
+        "name": "text_offset",
+        "comment": "Horizontal offset in points between the line and the text.",
+        "default": "10",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "text_offset",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Horizontal offset in points between the line and the text.",
-        "default": "10"
+        }
       },
       "draw_line": {
         "line": 141,
         "definition": "logical :: draw_line = .true.",
+        "name": "draw_line",
+        "comment": "Draw lines?",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_line",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Draw lines?",
-        "default": ".true."
+        }
       },
       "draw_symbol": {
         "line": 142,
         "definition": "logical :: draw_symbol = .true.",
+        "name": "draw_symbol",
+        "comment": "Draw symbols?",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_symbol",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Draw symbols?",
-        "default": ".true."
+        }
       },
       "draw_text": {
         "line": 143,
         "definition": "logical :: draw_text = .true.",
+        "name": "draw_text",
+        "comment": "Draw text?",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_text",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Draw text?",
-        "default": ".true."
+        }
       }
     }
   },
@@ -2973,39 +2491,31 @@
       "width": {
         "line": 116,
         "definition": "integer :: width         = 3",
+        "name": "width",
+        "default": "3",
         "type_info": {
           "type": "integer"
-        },
-        "name": "width",
-        "type": "integer",
-        "dimension": "",
-        "default": "3"
+        }
       },
       "color": {
         "line": 117,
         "definition": "character(16) :: color   = 'black'",
+        "name": "color",
+        "default": "'black'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "color",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'black'"
+        }
       },
       "pattern": {
         "line": 118,
         "definition": "character(16) :: pattern = 'solid'",
+        "name": "pattern",
+        "default": "'solid'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "pattern",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'solid'"
+        }
       }
     }
   },
@@ -3018,178 +2528,143 @@
       "title": {
         "line": 86,
         "definition": "character(80) :: title = ' '",
+        "name": "title",
+        "default": "' '",
         "type_info": {
           "type": "character",
           "kind": "80"
-        },
-        "name": "title",
-        "type": "character",
-        "size": "80",
-        "dimension": "",
-        "default": "' '"
+        }
       },
       "x": {
         "line": 87,
         "definition": "type (qp_axis_struct) x, y, x2, y2",
+        "name": "x",
+        "default": null,
         "type_info": {
           "type": "type",
           "kind": "qp_axis_struct"
-        },
-        "name": "x",
-        "type": "type",
-        "size": "qp_axis_struct",
-        "dimension": "",
-        "default": null
+        }
       },
       "y": {
         "line": 87,
         "definition": "type (qp_axis_struct) x, y, x2, y2",
+        "name": "y",
+        "default": null,
         "type_info": {
           "type": "type",
           "kind": "qp_axis_struct"
-        },
-        "name": "y",
-        "type": "type",
-        "size": "qp_axis_struct",
-        "dimension": "",
-        "default": null
+        }
       },
       "x2": {
         "line": 87,
         "definition": "type (qp_axis_struct) x, y, x2, y2",
+        "name": "x2",
+        "default": null,
         "type_info": {
           "type": "type",
           "kind": "qp_axis_struct"
-        },
-        "name": "x2",
-        "type": "type",
-        "size": "qp_axis_struct",
-        "dimension": "",
-        "default": null
+        }
       },
       "y2": {
         "line": 87,
         "definition": "type (qp_axis_struct) x, y, x2, y2",
+        "name": "y2",
+        "default": null,
         "type_info": {
           "type": "type",
           "kind": "qp_axis_struct"
-        },
-        "name": "y2",
-        "type": "type",
-        "size": "qp_axis_struct",
-        "dimension": "",
-        "default": null
+        }
       },
       "xx": {
         "line": 88,
         "definition": "type (qp_axis_struct), pointer :: xx",
+        "name": "xx",
+        "comment": "Pointer to x or x2 active axes currently used for plotting.",
+        "default": null,
         "type_info": {
           "type": "type",
           "pointer": true,
           "kind": "qp_axis_struct"
-        },
-        "name": "xx",
-        "type": "type",
-        "size": "qp_axis_struct",
-        "dimension": "",
-        "comment": "Pointer to x or x2 active axes currently used for plotting.",
-        "default": null
+        }
       },
       "yy": {
         "line": 89,
         "definition": "type (qp_axis_struct), pointer :: yy",
+        "name": "yy",
+        "comment": "Pointer to y or y2 active axes currently used for plotting.",
+        "default": null,
         "type_info": {
           "type": "type",
           "pointer": true,
           "kind": "qp_axis_struct"
-        },
-        "name": "yy",
-        "type": "type",
-        "size": "qp_axis_struct",
-        "dimension": "",
-        "comment": "Pointer to y or y2 active axes currently used for plotting.",
-        "default": null
+        }
       },
       "draw_box": {
         "line": 90,
         "definition": "logical :: draw_box    = .true.",
+        "name": "draw_box",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_box",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "draw_title": {
         "line": 91,
         "definition": "logical :: draw_title  = .true.",
+        "name": "draw_title",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_title",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "draw_grid": {
         "line": 92,
         "definition": "logical :: draw_grid   = .true.",
+        "name": "draw_grid",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "draw_grid",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       },
       "x2_mirrors_x": {
         "line": 93,
         "definition": "logical :: x2_mirrors_x = .true.",
+        "name": "x2_mirrors_x",
+        "comment": "x2 axis same as x?",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "x2_mirrors_x",
-        "type": "logical",
-        "dimension": "",
-        "comment": "x2 axis same as x?",
-        "default": ".true."
+        }
       },
       "y2_mirrors_y": {
         "line": 94,
         "definition": "logical :: y2_mirrors_y = .true.",
+        "name": "y2_mirrors_y",
+        "comment": "y2 axis same as y?",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "y2_mirrors_y",
-        "type": "logical",
-        "dimension": "",
-        "comment": "y2 axis same as y?",
-        "default": ".true."
+        }
       },
       "x_is_active_axis": {
         "line": 95,
         "definition": "logical :: x_is_active_axis",
+        "name": "x_is_active_axis",
+        "comment": "True => x is the active axis. False => x2 is active.",
+        "default": null,
         "type_info": {
           "type": "logical"
-        },
-        "name": "x_is_active_axis",
-        "type": "logical",
-        "dimension": "",
-        "comment": "True => x is the active axis. False => x2 is active.",
-        "default": null
+        }
       },
       "y_is_active_axis": {
         "line": 96,
         "definition": "logical :: y_is_active_axis",
+        "name": "y_is_active_axis",
+        "comment": "True => y is the active axis. False => y2 is active.",
+        "default": null,
         "type_info": {
           "type": "logical"
-        },
-        "name": "y_is_active_axis",
-        "type": "logical",
-        "dimension": "",
-        "comment": "True => y is the active axis. False => y2 is active.",
-        "default": null
+        }
       }
     }
   },
@@ -3202,41 +2677,32 @@
       "x": {
         "line": 100,
         "definition": "real(rp) :: x = 0, y = 0",
+        "name": "x",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "x",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "y": {
         "line": 100,
         "definition": "real(rp) :: x = 0, y = 0",
+        "name": "y",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "y",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "units": {
         "line": 101,
         "definition": "character(16) :: units = ' '",
+        "name": "units",
+        "default": "' '",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "units",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "' '"
+        }
       }
     }
   },
@@ -3249,67 +2715,52 @@
       "x1": {
         "line": 105,
         "definition": "real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0",
+        "name": "x1",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "x1",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "x2": {
         "line": 105,
         "definition": "real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0",
+        "name": "x2",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "x2",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "y1": {
         "line": 105,
         "definition": "real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0",
+        "name": "y1",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "y1",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "y2": {
         "line": 105,
         "definition": "real(rp) :: x1 = 0, x2 = 0, y1 = 0, y2 = 0",
+        "name": "y2",
+        "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "y2",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
+        }
       },
       "units": {
         "line": 106,
         "definition": "character(16) :: units = ' '",
+        "name": "units",
+        "default": "' '",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "units",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "' '"
+        }
       }
     }
   },
@@ -3322,446 +2773,350 @@
       "plot": {
         "line": 147,
         "definition": "type (qp_plot_struct) plot",
+        "name": "plot",
+        "default": null,
         "type_info": {
           "type": "type",
           "kind": "qp_plot_struct"
-        },
-        "name": "plot",
-        "type": "type",
-        "size": "qp_plot_struct",
-        "dimension": "",
-        "default": null
+        }
       },
       "page": {
         "line": 148,
         "definition": "type (qp_rect_struct) :: page   = qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')",
+        "name": "page",
+        "default": "qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')",
         "type_info": {
           "type": "type",
           "kind": "qp_rect_struct"
-        },
-        "name": "page",
-        "type": "type",
-        "size": "qp_rect_struct",
-        "dimension": "",
-        "default": "qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')"
+        }
       },
       "box": {
         "line": 149,
         "definition": "type (qp_rect_struct) :: box    = qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')",
+        "name": "box",
+        "default": "qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')",
         "type_info": {
           "type": "type",
           "kind": "qp_rect_struct"
-        },
-        "name": "box",
-        "type": "type",
-        "size": "qp_rect_struct",
-        "dimension": "",
-        "default": "qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')"
+        }
       },
       "graph": {
         "line": 150,
         "definition": "type (qp_rect_struct) :: graph  = qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')",
+        "name": "graph",
+        "default": "qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')",
         "type_info": {
           "type": "type",
           "kind": "qp_rect_struct"
-        },
-        "name": "graph",
-        "type": "type",
-        "size": "qp_rect_struct",
-        "dimension": "",
-        "default": "qp_rect_struct (1.0, 2.0, 1.0, 2.0, ' ')"
+        }
       },
       "margin": {
         "line": 151,
         "definition": "type (qp_rect_struct) :: margin = qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')",
+        "name": "margin",
+        "default": "qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')",
         "type_info": {
           "type": "type",
           "kind": "qp_rect_struct"
-        },
-        "name": "margin",
-        "type": "type",
-        "size": "qp_rect_struct",
-        "dimension": "",
-        "default": "qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')"
+        }
       },
       "border": {
         "line": 152,
         "definition": "type (qp_rect_struct) :: border = qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')",
+        "name": "border",
+        "default": "qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')",
         "type_info": {
           "type": "type",
           "kind": "qp_rect_struct"
-        },
-        "name": "border",
-        "type": "type",
-        "size": "qp_rect_struct",
-        "dimension": "",
-        "default": "qp_rect_struct (0.0, 0.0, 0.0, 0.0, ' ')"
+        }
       },
       "main_title": {
         "line": 153,
         "definition": "type (qp_text_struct) :: main_title = qp_text_struct(18.0, 'black', .false.)",
+        "name": "main_title",
+        "default": "qp_text_struct(18.0, 'black', .false.)",
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "main_title",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "default": "qp_text_struct(18.0, 'black', .false.)"
+        }
       },
       "graph_title": {
         "line": 154,
         "definition": "type (qp_text_struct) :: graph_title= qp_text_struct(20.0, 'black', .false.)",
+        "name": "graph_title",
+        "default": "qp_text_struct(20.0, 'black', .false.)",
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "graph_title",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "default": "qp_text_struct(20.0, 'black', .false.)"
+        }
       },
       "legend": {
         "line": 155,
         "definition": "type (qp_text_struct) :: legend     = qp_text_struct(13.0, 'black', .false.)",
+        "name": "legend",
+        "default": "qp_text_struct(13.0, 'black', .false.)",
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "legend",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "default": "qp_text_struct(13.0, 'black', .false.)"
+        }
       },
       "text": {
         "line": 156,
         "definition": "type (qp_text_struct) :: text       = qp_text_struct(18.0, 'black', .false.)",
+        "name": "text",
+        "default": "qp_text_struct(18.0, 'black', .false.)",
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "text",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "default": "qp_text_struct(18.0, 'black', .false.)"
+        }
       },
       "axis_number": {
         "line": 157,
         "definition": "type (qp_text_struct) :: axis_number= qp_text_struct(12.0, 'black', .false.)",
+        "name": "axis_number",
+        "default": "qp_text_struct(12.0, 'black', .false.)",
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "axis_number",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "default": "qp_text_struct(12.0, 'black', .false.)"
+        }
       },
       "axis_label": {
         "line": 158,
         "definition": "type (qp_text_struct) :: axis_label = qp_text_struct(15.0, 'black', .false.)",
+        "name": "axis_label",
+        "default": "qp_text_struct(15.0, 'black', .false.)",
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "axis_label",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "default": "qp_text_struct(15.0, 'black', .false.)"
+        }
       },
       "this_text": {
         "line": 159,
         "definition": "type (qp_text_struct) :: this_text",
+        "name": "this_text",
+        "comment": "current settings.",
+        "default": null,
         "type_info": {
           "type": "type",
           "kind": "qp_text_struct"
-        },
-        "name": "this_text",
-        "type": "type",
-        "size": "qp_text_struct",
-        "dimension": "",
-        "comment": "current settings.",
-        "default": null
+        }
       },
       "symbol": {
         "line": 160,
         "definition": "type (qp_symbol_struct) :: symbol = qp_symbol_struct()",
+        "name": "symbol",
+        "default": "qp_symbol_struct()",
         "type_info": {
           "type": "type",
           "kind": "qp_symbol_struct"
-        },
-        "name": "symbol",
-        "type": "type",
-        "size": "qp_symbol_struct",
-        "dimension": "",
-        "default": "qp_symbol_struct()"
+        }
       },
       "arrow": {
         "line": 161,
         "definition": "type (qp_arrow_struct) :: arrow = qp_arrow_struct()",
+        "name": "arrow",
+        "default": "qp_arrow_struct()",
         "type_info": {
           "type": "type",
           "kind": "qp_arrow_struct"
-        },
-        "name": "arrow",
-        "type": "type",
-        "size": "qp_arrow_struct",
-        "dimension": "",
-        "default": "qp_arrow_struct()"
+        }
       },
       "std_line": {
         "line": 162,
         "definition": "type (qp_line_struct) :: std_line  = qp_line_struct()",
+        "name": "std_line",
+        "default": "qp_line_struct()",
         "type_info": {
           "type": "type",
           "kind": "qp_line_struct"
-        },
-        "name": "std_line",
-        "type": "type",
-        "size": "qp_line_struct",
-        "dimension": "",
-        "default": "qp_line_struct()"
+        }
       },
       "plot_line": {
         "line": 163,
         "definition": "type (qp_line_struct) :: plot_line = qp_line_struct()",
+        "name": "plot_line",
+        "default": "qp_line_struct()",
         "type_info": {
           "type": "type",
           "kind": "qp_line_struct"
-        },
-        "name": "plot_line",
-        "type": "type",
-        "size": "qp_line_struct",
-        "dimension": "",
-        "default": "qp_line_struct()"
+        }
       },
       "axis_line": {
         "line": 164,
         "definition": "type (qp_line_struct) :: axis_line = qp_line_struct()",
+        "name": "axis_line",
+        "default": "qp_line_struct()",
         "type_info": {
           "type": "type",
           "kind": "qp_line_struct"
-        },
-        "name": "axis_line",
-        "type": "type",
-        "size": "qp_line_struct",
-        "dimension": "",
-        "default": "qp_line_struct()"
+        }
       },
       "legend_line": {
         "line": 165,
         "definition": "type (qp_line_struct) :: legend_line = qp_line_struct()",
+        "name": "legend_line",
+        "default": "qp_line_struct()",
         "type_info": {
           "type": "type",
           "kind": "qp_line_struct"
-        },
-        "name": "legend_line",
-        "type": "type",
-        "size": "qp_line_struct",
-        "dimension": "",
-        "default": "qp_line_struct()"
+        }
       },
       "grid_line": {
         "line": 166,
         "definition": "type (qp_line_struct) :: grid_line = qp_line_struct(1, 'light_grey', 'solid')",
+        "name": "grid_line",
+        "default": "qp_line_struct(1, 'light_grey', 'solid')",
         "type_info": {
           "type": "type",
           "kind": "qp_line_struct"
-        },
-        "name": "grid_line",
-        "type": "type",
-        "size": "qp_line_struct",
-        "dimension": "",
-        "default": "qp_line_struct(1, 'light_grey', 'solid')"
+        }
       },
       "text_scale": {
         "line": 167,
         "definition": "real(rp) :: text_scale = 1",
+        "name": "text_scale",
+        "default": "1",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "text_scale",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "1"
+        }
       },
       "text_spacing_factor": {
         "line": 168,
         "definition": "real(rp) :: text_spacing_factor = 0.6",
+        "name": "text_spacing_factor",
+        "default": "0.6",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "text_spacing_factor",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0.6"
+        }
       },
       "dflt_axis_slop_factor": {
         "line": 169,
         "definition": "real(rp) :: dflt_axis_slop_factor = 1d-3",
+        "name": "dflt_axis_slop_factor",
+        "default": "1d-3",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "dflt_axis_slop_factor",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "1d-3"
+        }
       },
       "text_background": {
         "line": 170,
         "definition": "character(16) :: text_background = 'not_set'",
+        "name": "text_background",
+        "default": "'not_set'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "text_background",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'not_set'"
+        }
       },
       "max_axis_zero_digits": {
         "line": 171,
         "definition": "integer :: max_axis_zero_digits = 3",
+        "name": "max_axis_zero_digits",
+        "default": "3",
         "type_info": {
           "type": "integer"
-        },
-        "name": "max_axis_zero_digits",
-        "type": "integer",
-        "dimension": "",
-        "default": "3"
+        }
       },
       "dflt_units": {
         "line": 172,
         "definition": "integer :: dflt_units = dflt_draw$",
+        "name": "dflt_units",
+        "default": "dflt_draw$",
         "type_info": {
           "type": "integer"
-        },
-        "name": "dflt_units",
-        "type": "integer",
-        "dimension": "",
-        "default": "dflt_draw$"
+        }
       },
       "max_digits": {
         "line": 173,
         "definition": "integer :: max_digits = 8",
+        "name": "max_digits",
+        "default": "8",
         "type_info": {
           "type": "integer"
-        },
-        "name": "max_digits",
-        "type": "integer",
-        "dimension": "",
-        "default": "8"
+        }
       },
       "plot_file": {
         "line": 174,
         "definition": "character(200) plot_file",
+        "name": "plot_file",
+        "default": null,
         "type_info": {
           "type": "character",
           "kind": "200"
-        },
-        "name": "plot_file",
-        "type": "character",
-        "size": "200",
-        "dimension": "",
-        "default": null
+        }
       },
       "page_type": {
         "line": 175,
         "definition": "character(16) page_type",
+        "name": "page_type",
+        "comment": "'PS', 'X', etc.",
+        "default": null,
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "page_type",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "'PS', 'X', etc.",
-        "default": null
+        }
       },
       "dflt_draw_units": {
         "line": 176,
         "definition": "character(8) :: dflt_draw_units(3) = ['DATA ', 'GRAPH', 'LB   ' ]",
+        "name": "dflt_draw_units",
+        "default": "['DATA ', 'GRAPH', 'LB   ' ]",
         "type_info": {
           "type": "character",
+          "dimension": "3",
           "kind": "8"
-        },
-        "name": "dflt_draw_units",
-        "type": "character",
-        "size": "8",
-        "dimension": "3",
-        "default": "['DATA ', 'GRAPH', 'LB   ' ]"
+        }
       },
       "dflt_set_units": {
         "line": 177,
         "definition": "character(8) :: dflt_set_units(3)  = ['INCH ', 'PAGE ', 'LB   ' ]",
+        "name": "dflt_set_units",
+        "default": "['INCH ', 'PAGE ', 'LB   ' ]",
         "type_info": {
           "type": "character",
+          "dimension": "3",
           "kind": "8"
-        },
-        "name": "dflt_set_units",
-        "type": "character",
-        "size": "8",
-        "dimension": "3",
-        "default": "['INCH ', 'PAGE ', 'LB   ' ]"
+        }
       },
       "subgraph_on": {
         "line": 178,
         "definition": "logical :: subgraph_on = .false.",
+        "name": "subgraph_on",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "subgraph_on",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       },
       "clip": {
         "line": 179,
         "definition": "logical :: clip = .false.",
+        "name": "clip",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "clip",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       },
       "buffer": {
         "line": 180,
         "definition": "logical :: buffer = .false.",
+        "name": "buffer",
+        "comment": "to be used by qp_save_state only",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "buffer",
-        "type": "logical",
-        "dimension": "",
-        "comment": "to be used by qp_save_state only",
-        "default": ".false."
+        }
       },
       "uniform_symbol_size": {
         "line": 181,
         "definition": "logical :: uniform_symbol_size = .true.",
+        "name": "uniform_symbol_size",
+        "default": ".true.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "uniform_symbol_size",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
+        }
       }
     }
   },
@@ -3774,66 +3129,52 @@
       "type": {
         "line": 122,
         "definition": "character(16) :: type         = 'circle_dot'",
+        "name": "type",
+        "default": "'circle_dot'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "type",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'circle_dot'"
+        }
       },
       "height": {
         "line": 123,
         "definition": "real(rp) :: height            = 10d0",
+        "name": "height",
+        "comment": "in points (same as text height)",
+        "default": "10d0",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "height",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "in points (same as text height)",
-        "default": "10d0"
+        }
       },
       "color": {
         "line": 124,
         "definition": "character(16) :: color        = 'black'",
+        "name": "color",
+        "default": "'black'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "color",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'black'"
+        }
       },
       "fill_pattern": {
         "line": 125,
         "definition": "character(16) :: fill_pattern = 'solid_fill'",
+        "name": "fill_pattern",
+        "default": "'solid_fill'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "fill_pattern",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'solid_fill'"
+        }
       },
       "line_width": {
         "line": 126,
         "definition": "integer :: line_width         = 3",
+        "name": "line_width",
+        "default": "3",
         "type_info": {
           "type": "integer"
-        },
-        "name": "line_width",
-        "type": "integer",
-        "dimension": "",
-        "default": "3"
+        }
       }
     }
   },
@@ -3846,40 +3187,32 @@
       "height": {
         "line": 110,
         "definition": "real(rp) :: height         = 12",
+        "name": "height",
+        "comment": "in points",
+        "default": "12",
         "type_info": {
           "type": "real",
           "kind": "rp"
-        },
-        "name": "height",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "in points",
-        "default": "12"
+        }
       },
       "color": {
         "line": 111,
         "definition": "character(16) :: color     = 'black'",
+        "name": "color",
+        "default": "'black'",
         "type_info": {
           "type": "character",
           "kind": "16"
-        },
-        "name": "color",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "default": "'black'"
+        }
       },
       "uniform_spacing": {
         "line": 112,
         "definition": "logical :: uniform_spacing = .false.",
+        "name": "uniform_spacing",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
-        },
-        "name": "uniform_spacing",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
+        }
       }
     }
   }
