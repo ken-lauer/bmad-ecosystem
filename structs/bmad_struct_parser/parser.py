@@ -777,7 +777,7 @@ def convert(
 ) -> list[Structure]:
     structs: list[Structure] = []
     failed = {}
-    filenames = list(source_config.source_dir.glob("**/*.f90", case_sensitive=False))
+    filenames = sorted(source_config.source_dir.glob("**/*.f90", case_sensitive=False))
     for source_fn in filenames:
         try:
             structs.extend(find_structs_in_file(parser_config, source_config, source_fn))
