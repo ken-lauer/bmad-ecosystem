@@ -12,7 +12,6 @@ from ..parser import (
     TypeInformation,
     find_structs,
     get_names_from_line,
-    get_type_from_line,
     parse_declaration,
     parse_type_declaration,
 )
@@ -197,7 +196,7 @@ from ..parser import (
 )
 def test_type_parsing(line: str, expected_type: TypeInformation) -> None:
     """Test parsing of Fortran type declarations with various attributes."""
-    parsed_type = get_type_from_line(line)
+    parsed_type = TypeInformation.from_line(line)
 
     assert parsed_type == expected_type
 
@@ -237,7 +236,7 @@ def test_get_type_from_line(
     expected_type: str,
     expected_kind: str | None,
 ) -> None:
-    type_info = get_type_from_line(line)
+    type_info = TypeInformation.from_line(line)
     assert type_info.type == expected_type
     assert type_info.kind == expected_kind
 

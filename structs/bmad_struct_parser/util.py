@@ -16,6 +16,12 @@ else:
     ACC_ROOT_DIR = STRUCTS_ROOT.parents[2]
 
 
+def remove_comment(line: str) -> str:
+    """Remove any comments from the line."""
+    without_comment, _comment = split_comment(line)
+    return without_comment
+
+
 def split_comment(line: str, comment_char: str = "!", escape_char: str = "\\") -> tuple[str, str]:
     """
     Splits a line into code and comment parts based on the specified comment character,

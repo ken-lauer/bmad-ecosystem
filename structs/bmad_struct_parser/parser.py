@@ -10,7 +10,7 @@ import re
 from typing import Any, NamedTuple
 
 from .config import DEFAULT_CONFIG_FILE, ParserConfig, SourceConfig
-from .util import FileLine, path_with_respect_to_env, write_file_if_changed
+from .util import FileLine, path_with_respect_to_env, remove_comment, write_file_if_changed
 
 logger = logging.getLogger(__name__)
 
@@ -156,6 +156,142 @@ class TypeInformation:
             return f"{declaration_parts[0]}, {', '.join(attributes)}"
         return declaration_parts[0]
 
+    @classmethod
+    def from_line(cls, line: str) -> TypeInformation:
+        if "::" in line:
+            line = line[: line.index("::")].strip()
+        else:
+            # "type (foo) a, b, c" -> "type (foo) a"
+            line = _split_variables(line)[0]
+            # "type (foo) a" -> "type (foo)"
+            line = line.rsplit(" ", 1)[0].strip()
+
+        parts = _split_variables(line)
+
+        type_name = parts[0]
+        if "(" in type_name:
+            kind = get_in_parenthesis(type_name)
+            type_name = type_name.split("(")[0].strip()
+        elif "*" in type_name:
+            type_name, kind = type_name.split("*", 1)
+        else:
+            kind = None
+
+        dimension = None
+        allocatable = False
+        pointer = False
+        intent = None
+        bind = None
+        optional = False
+        private = False
+        public = False
+        parameter = False
+        external = False
+        target = False
+        value = False
+        contiguous = False
+        protected = False
+        asynchronous = False
+        save = False  # Already initialized from outside this code block
+        static = False  # Already initialized from outside
+        intrinsic = False  # Already initialized from outside
+        volatile = False  # Already initialized from outside
+        attributes = []
+
+        for part in parts[1:]:
+            part_lower = part.lower()
+
+            if part_lower == "pointer":
+                # Example: REAL, POINTER :: x
+                pointer = True
+            elif part_lower == "allocatable":
+                # Example: REAL, ALLOCATABLE :: array(:)
+                allocatable = True
+            elif part_lower.startswith("dimension"):
+                # Example: REAL, DIMENSION(10) :: array
+                # Example: REAL, DIMENSION(:,:) :: matrix
+                dimension = get_in_parenthesis(part)
+
+            elif part_lower.startswith("intent"):
+                # Example: SUBROUTINE sub(x) REAL, INTENT(IN) :: x
+                # Other intents: INTENT(OUT), INTENT(INOUT)
+                intent = get_in_parenthesis(part)
+
+            elif part_lower.startswith("bind"):
+                # Example: INTEGER, BIND(C) :: counter
+                # Example: INTEGER, BIND(C, name="c_counter") :: counter
+                bind = get_in_parenthesis(part)
+            elif part_lower == "optional":
+                # Example: SUBROUTINE sub(x) REAL, OPTIONAL :: x
+                optional = True
+            elif part_lower == "private":
+                # Example: REAL, PRIVATE :: internal_var
+                private = True
+            elif part_lower == "public":
+                # Example: REAL, PUBLIC :: api_var
+                public = True
+            elif part_lower == "parameter":
+                # Example: REAL, PARAMETER :: PI = 3.14159
+                parameter = True
+            elif part_lower == "external":
+                # Example: REAL, EXTERNAL :: func
+                external = True
+            elif part_lower == "target":
+                # Example: REAL, TARGET :: x
+                target = True
+            elif part_lower == "value":
+                # Example: SUBROUTINE sub(x) REAL, VALUE :: x
+                value = True
+            elif part_lower == "contiguous":
+                # Example: REAL, POINTER, CONTIGUOUS :: array(:)
+                contiguous = True
+            elif part_lower == "protected":
+                # Example: REAL, PROTECTED :: config_var
+                protected = True
+            elif part_lower == "asynchronous":
+                # Example: REAL, ASYNCHRONOUS :: async_buffer
+                asynchronous = True
+            elif part_lower == "save":
+                # Example: REAL, SAVE :: persistent_var
+                save = True
+            elif part_lower == "volatile":
+                # Example: INTEGER, VOLATILE :: status_flag
+                volatile = True
+            elif part_lower == "static":
+                # Example: INTEGER, STATIC :: counter
+                static = True
+            elif part_lower == "intrinsic":
+                # Example: REAL, INTRINSIC :: sin
+                intrinsic = True
+            else:
+                logger.warning(f"TODO: handle type information for: {part!r} of {line!r}")
+                attributes.append(part)
+
+        return cls(
+            type=type_name,
+            kind=kind,
+            dimension=dimension,
+            allocatable=allocatable,
+            pointer=pointer,
+            intent=intent,
+            bind=bind,
+            save=save,
+            static=static,
+            intrinsic=intrinsic,
+            volatile=volatile,
+            optional=optional,
+            private=private,
+            public=public,
+            parameter=parameter,
+            external=external,
+            target=target,
+            value=value,
+            contiguous=contiguous,
+            protected=protected,
+            asynchronous=asynchronous,
+            attributes=tuple(attributes),
+        )
+
 
 @dataclasses.dataclass
 class StructureMember:
@@ -283,7 +419,7 @@ class Structure:
                     last_member.comment = f"{last_member.comment} {comment}".strip()
                 continue
 
-            type_info = get_type_from_line(line)
+            type_info = TypeInformation.from_line(line)
             for decl in parse_declaration(line, type_info):
                 member_type_info = type_info
                 if decl.dimension:
@@ -299,153 +435,28 @@ class Structure:
 
 
 def get_in_parenthesis(value: str) -> str:
-    assert "(" in value
-    assert ")" in value
-    after = value.split("(")[1]
-    return after.split(")")[0].strip()
+    """
+    Extracts and returns the substring enclosed in the first pair of
+    parentheses in the input string.
 
+    Parameters
+    ----------
+    value : str
 
-def get_type_from_line(line: str) -> TypeInformation:
-    if "::" in line:
-        line = line[: line.index("::")].strip()
-    else:
-        # "type (foo) a, b, c" -> "type (foo) a"
-        line = _split_variables(line)[0]
-        # "type (foo) a" -> "type (foo)"
-        line = line.rsplit(" ", 1)[0].strip()
+    Returns
+    -------
+    str
+        The substring enclosed within the first pair of parentheses, with
+        leading and trailing whitespace removed.
 
-    parts = _split_variables(line)
-
-    type_name = parts[0]
-    if "(" in type_name:
-        kind = get_in_parenthesis(type_name)
-        type_name = type_name.split("(")[0].strip()
-    elif "*" in type_name:
-        type_name, kind = type_name.split("*", 1)
-    else:
-        kind = None
-
-    dimension = None
-    allocatable = False
-    pointer = False
-    intent = None
-    bind = None
-    optional = False
-    private = False
-    public = False
-    parameter = False
-    external = False
-    target = False
-    value = False
-    contiguous = False
-    protected = False
-    asynchronous = False
-    save = False  # Already initialized from outside this code block
-    static = False  # Already initialized from outside
-    intrinsic = False  # Already initialized from outside
-    volatile = False  # Already initialized from outside
-    attributes = []
-
-    for part in parts[1:]:
-        part_lower = part.lower()
-
-        if part_lower == "pointer":
-            # Example: REAL, POINTER :: x
-            pointer = True
-        elif part_lower == "allocatable":
-            # Example: REAL, ALLOCATABLE :: array(:)
-            allocatable = True
-        elif part_lower.startswith("dimension"):
-            # Example: REAL, DIMENSION(10) :: array
-            # Example: REAL, DIMENSION(:,:) :: matrix
-            dimension = get_in_parenthesis(part)
-
-        elif part_lower.startswith("intent"):
-            # Example: SUBROUTINE sub(x) REAL, INTENT(IN) :: x
-            # Other intents: INTENT(OUT), INTENT(INOUT)
-            intent = get_in_parenthesis(part)
-
-        elif part_lower.startswith("bind"):
-            # Example: INTEGER, BIND(C) :: counter
-            # Example: INTEGER, BIND(C, name="c_counter") :: counter
-            bind = get_in_parenthesis(part)
-        elif part_lower == "optional":
-            # Example: SUBROUTINE sub(x) REAL, OPTIONAL :: x
-            optional = True
-        elif part_lower == "private":
-            # Example: REAL, PRIVATE :: internal_var
-            private = True
-        elif part_lower == "public":
-            # Example: REAL, PUBLIC :: api_var
-            public = True
-        elif part_lower == "parameter":
-            # Example: REAL, PARAMETER :: PI = 3.14159
-            parameter = True
-        elif part_lower == "external":
-            # Example: REAL, EXTERNAL :: func
-            external = True
-        elif part_lower == "target":
-            # Example: REAL, TARGET :: x
-            target = True
-        elif part_lower == "value":
-            # Example: SUBROUTINE sub(x) REAL, VALUE :: x
-            value = True
-        elif part_lower == "contiguous":
-            # Example: REAL, POINTER, CONTIGUOUS :: array(:)
-            contiguous = True
-        elif part_lower == "protected":
-            # Example: REAL, PROTECTED :: config_var
-            protected = True
-        elif part_lower == "asynchronous":
-            # Example: REAL, ASYNCHRONOUS :: async_buffer
-            asynchronous = True
-        elif part_lower == "save":
-            # Example: REAL, SAVE :: persistent_var
-            save = True
-        elif part_lower == "volatile":
-            # Example: INTEGER, VOLATILE :: status_flag
-            volatile = True
-        elif part_lower == "static":
-            # Example: INTEGER, STATIC :: counter
-            static = True
-        elif part_lower == "intrinsic":
-            # Example: REAL, INTRINSIC :: sin
-            intrinsic = True
-        else:
-            logger.warning(f"TODO: handle type information for: {part!r} of {line!r}")
-            attributes.append(part)
-
-    return TypeInformation(
-        type=type_name,
-        kind=kind,
-        dimension=dimension,
-        allocatable=allocatable,
-        pointer=pointer,
-        intent=intent,
-        bind=bind,
-        save=save,
-        static=static,
-        intrinsic=intrinsic,
-        volatile=volatile,
-        optional=optional,
-        private=private,
-        public=public,
-        parameter=parameter,
-        external=external,
-        target=target,
-        value=value,
-        contiguous=contiguous,
-        protected=protected,
-        asynchronous=asynchronous,
-        attributes=tuple(attributes),
-    )
-
-
-def remove_comment(line: str) -> str:
-    # TODO: this is naive and assumes no strings with exclamation points, etc
-    if "!" in line:
-        return line[: line.index("!")].rstrip()
-    return line
+    Raises
+    ------
+    ValueError
+        If the input string does not contain a valid pair of parentheses.
+    """
+    if "(" not in value or ")" not in value:
+        raise ValueError(f"No parentheses in {value!r}")
+    return value.split("(", 1)[1].split(")", 1)[0].strip()
 
 
 def get_names_from_line(line: str) -> list[str]:
@@ -453,6 +464,20 @@ def get_names_from_line(line: str) -> list[str]:
 
 
 def _split_variables(line: str) -> list[str]:
+    """
+    Splits a string of variables into a list, taking into account parentheses
+    and square brackets to avoid splitting within them.
+
+    Parameters
+    ----------
+    line : str
+        A string containing variables separated by commas.
+
+    Returns
+    -------
+    list of str
+        A list of variables as strings, stripped of any surrounding whitespace.
+    """
     variables = []
     in_paren = 0
     in_brackets = 0
@@ -593,7 +618,7 @@ def parse_type_declaration(line: str, type_info: TypeInformation | None = None) 
     """
     assert line.lower().startswith("type ") or line.lower().startswith("type(")
     if type_info is None:
-        type_info = get_type_from_line(line)
+        type_info = TypeInformation.from_line(line)
 
     if "::" in line:
         line = line[line.index("::") + 2 :]
@@ -625,7 +650,7 @@ def parse_declaration(line: str, type_info: TypeInformation | None = None) -> li
     It removes comments from the line before parsing.
     """
     if type_info is None:
-        type_info = get_type_from_line(line)
+        type_info = TypeInformation.from_line(line)
 
     line = remove_comment(line)
     if line.lower().startswith("type ") or line.lower().startswith("type("):
@@ -640,6 +665,36 @@ def find_structs(
     filename: pathlib.Path,
     include_private: bool = False,
 ) -> list[Structure]:
+    """
+    Parses a list of lines from a source file and identifies all structure
+    definitions within it.
+
+    Parameters
+    ----------
+    file_lines : list[FileLine]
+        A list of `FileLine` objects containing the lines of the file to parse.
+    filename : pathlib.Path
+        The path of the file being processed.
+    include_private : bool, optional
+        If True, includes structures marked as private. Defaults to False.
+
+    Returns
+    -------
+    list[Structure]
+        A list of `Structure` objects representing the structures found in the file.
+
+    Raises
+    ------
+    RuntimeError
+        If the parsing process encounters mismatched `TYPE` and `END TYPE` blocks or
+        other structural inconsistencies within the source file.
+
+    Notes
+    -----
+    This function processes the source file to identify `TYPE` structures within
+    module or routine scopes. Structures marked private are excluded unless
+    `include_private` is set to True.
+    """
     structs: list[Structure] = []
     struct = None
     in_routine = ""
@@ -736,6 +791,29 @@ def find_structs(
 
 
 def fill_includes(source_config: SourceConfig, filename: pathlib.Path) -> list[FileLine]:
+    """
+    Processes a file to handle "include" directives, recursively resolving and including
+    referenced files.
+
+    Parameters
+    ----------
+    source_config : SourceConfig
+        Configuration object containing include paths and a list of files to skip.
+    filename : pathlib.Path
+        The path to the file to be processed.
+
+    Returns
+    -------
+    list[FileLine]
+        A list of FileLine objects, representing the lines of the file with all
+        "include" directives resolved.
+
+    Raises
+    ------
+    FileNotFoundError
+        If an "include" directive references a file that cannot be found in the
+        specified include paths.
+    """
     result = []
 
     lines = FileLine.from_file(filename)
@@ -765,6 +843,23 @@ def find_structs_in_file(
     source_config: SourceConfig,
     filename: pathlib.Path,
 ) -> list[Structure]:
+    """
+    Extracts and returns a list of structures found in a given file.
+
+    Parameters
+    ----------
+    parser_config : ParserConfig
+        Configuration for the parser. Currently unused.
+    source_config : SourceConfig
+        Configuration for the source, including include paths and other settings.
+    filename : pathlib.Path
+        The path to the file to be analyzed.
+
+    Returns
+    -------
+    list[Structure]
+        A list of structures found in the file.
+    """
     file_lines = fill_includes(source_config, filename)
     return find_structs(
         file_lines=file_lines,
@@ -777,6 +872,29 @@ def convert(
     source_config: SourceConfig,
     output_json_path: pathlib.Path,
 ) -> list[Structure]:
+    """
+    Converts source configuration files into parsed structures and writes the result to a JSON file.
+
+    Parameters
+    ----------
+    parser_config : ParserConfig
+        Configuration object for the parser.
+    source_config : SourceConfig
+        Configuration object for the source files to be processed.
+    output_json_path : pathlib.Path
+        Path to save the generated JSON file.
+
+    Returns
+    -------
+    list[Structure]
+        A list of parsed `Structure` objects.
+
+    Notes
+    -----
+    - Source files are identified based on the glob pattern `**/*.f90` in the source directory.
+    - User-specified structs to skip are removed from the final list.
+    - JSON output is only written if changes are detected.
+    """
     structs: list[Structure] = []
     failed = {}
     filenames = sorted(source_config.source_dir.glob("**/*.f90", case_sensitive=False))
@@ -819,6 +937,19 @@ def convert(
 
 
 def load_structures_by_filename(fn: pathlib.Path | str) -> list[Structure]:
+    """
+    Loads a list of `Structure` objects from a JSON file.
+
+    Parameters
+    ----------
+    fn : pathlib.Path or str
+        Path to the JSON file containing serialized `Structure` objects.
+
+    Returns
+    -------
+    list[Structure]
+        A list of `Structure` objects loaded from the JSON file.
+    """
     with pathlib.Path(fn).open() as fp:
         loaded = json.load(fp)
     return [Structure.from_data(data) for data in loaded]
@@ -827,6 +958,21 @@ def load_structures_by_filename(fn: pathlib.Path | str) -> list[Structure]:
 def load_configured_structures(
     config_file: pathlib.Path = DEFAULT_CONFIG_FILE, output_subpath: str = "structs"
 ) -> list[Structure]:
+    """
+    Loads all `Structure` objects from multiple sources defined in a configuration file.
+
+    Parameters
+    ----------
+    config_file : pathlib.Path, optional
+        Path to the parser configuration file. Defaults to `DEFAULT_CONFIG_FILE`.
+    output_subpath : str, optional
+        Subdirectory path where the JSON files for each source are stored. Defaults to "structs".
+
+    Returns
+    -------
+    list[Structure]
+        A combined list of `Structure` objects from all sources.
+    """
     from .util import ACC_ROOT_DIR
 
     all_structs = []
@@ -840,6 +986,17 @@ def convert_and_write(
     parser_config: ParserConfig,
     output_path: pathlib.Path,
 ):
+    """
+    Converts source files for all configurations and writes the resulting JSON files to the specified output path.
+
+    Parameters
+    ----------
+    parser_config : ParserConfig
+        Configuration object for the parser containing all source configurations.
+    output_path : pathlib.Path
+        Directory where the JSON output files will be saved.
+    """
+
     def get_output_path(fn: str) -> pathlib.Path:
         output_fn = pathlib.Path(output_path) / fn
         output_fn.parent.mkdir(exist_ok=True, parents=True)
@@ -850,6 +1007,10 @@ def convert_and_write(
 
 
 def main():
+    """
+    Entry point for the script. Parses command-line arguments and converts source files
+    to JSON structures based on the provided configuration.
+    """
     argp = argparse.ArgumentParser()
     argp.add_argument("--config", default=str(DEFAULT_CONFIG_FILE))
     argp.add_argument("--output", default=".", nargs="?")
