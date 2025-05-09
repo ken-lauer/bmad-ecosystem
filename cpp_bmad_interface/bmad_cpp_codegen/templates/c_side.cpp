@@ -370,11 +370,37 @@ void to_f__variant_16(const CppClass& C, OpaqueClass* F) {
 void to_f__variant_17(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   const CPP_KIND* z_NAME[DIM1 * DIM2];
-  for (size_t i{0}; i < C.NAME.size(); i++)
-    for (size_t j{0}; j < C.NAME[0].size(); j++) {
+  for (size_t i{0}; i < DIM1; i++)
+    for (size_t j{0}; j < DIM2; j++) {
       auto m = DIM2 * i + j;
-      z_NAME[m] = C.NAME[i][j].get();
+      z_NAME[m] = &C.NAME[i][j];
     }
+  //// end:to_f_setup
+
+  to_f2(
+      F, /*
+  //// begin:to_f2_arg
+  const CPP_KIND**
+  //// end:to_f2_arg
+  */
+      //// begin:to_f2_call
+      z_NAME
+      //// end:to_f2_call
+  );
+}
+//// section:to_f
+//// type:3D_NOT_type
+void to_f__variant_17a(const CppClass& C, OpaqueClass* F) {
+  //// begin:to_f_setup
+  const CPP_KIND* z_NAME[DIM1 * DIM2 * DIM3];
+  for (size_t i{0}; i < DIM1; i++) {
+    for (size_t j{0}; j < DIM2; j++) {
+      for (size_t k{0}; k < DIM3; k++) {
+        auto m = DIM3 * DIM2 * i + DIM3 * j + k;
+        z_NAME[m] = &C.NAME[i][j][k];
+      }
+    }
+  }
   //// end:to_f_setup
 
   to_f2(
@@ -490,7 +516,6 @@ void to_f__variant_26(const CppClass& C, OpaqueClass* F) {
 }
 
 //// section:to_f
-//// type:3D_NOT_type
 //// type:3D_ALLOC_complex
 //// type:3D_PTR_complex
 //// type:3D_ALLOC_integer
@@ -977,7 +1002,7 @@ void to_c2__variant_18(
     for (size_t j{0}; j < C.NAME[0].size(); j++)
       for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
         auto m = DIM3 * DIM2 * i + DIM3 * j + k;
-        KIND_to_c(z_NAME[m], *C.NAME[i][j][k]);
+        KIND_to_c(z_NAME[m], C.NAME[i][j][k]);
       }
   //// end:to_c2_set
 }
@@ -1278,7 +1303,7 @@ void TEST_PAT(STRUCT_CPP_CLASS& C) {
       for (size_t k{0}; k < C.NAME[0][0].size(); k++) {
         int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + ARGIDX + offset;
         set_CPP_KIND_test_pattern(
-            *C.NAME[i][j][k], ix_patt + i + 1 + 10 * (j + 1) + 100 * (k + 1));
+            C.NAME[i][j][k], ix_patt + i + 1 + 10 * (j + 1) + 100 * (k + 1));
       }
   //// end:test_pat
 
@@ -1817,13 +1842,13 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// section:c_class
     //// type:2D_NOT_type
     //// begin:c_class
-    SharedVector2D<CPP_KIND>
+    FixedArray2D<CPP_KIND, DIM1, DIM2>
     //// end:c_class
 
     //// section:c_class
     //// type:3D_NOT_type
     //// begin:c_class
-    SharedVector3D<CPP_KIND>
+    FixedArray3D<CPP_KIND, DIM1, DIM2, DIM3>
     //// end:c_class
 
     //// section:c_class

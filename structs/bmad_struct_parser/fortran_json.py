@@ -258,6 +258,8 @@ class Converter:
             struct = self.by_bmad_name[type.lower()]
         except KeyError:
             struct_source_config, struct = self._find_importable_structure(type.lower())
+            # The structure is defined in `struct.module`
+            # The struct_to_json routine is defined in our auto-generated code:
             to_json_module = struct_source_config.fortran_filename.stem
             return struct, {to_json_module: [to_subroutine_name(type)]}
         return struct, {}

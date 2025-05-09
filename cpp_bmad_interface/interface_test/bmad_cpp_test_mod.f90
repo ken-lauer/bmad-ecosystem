@@ -4243,6 +4243,276 @@ end subroutine set_cylindrical_map_test_pattern
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 
+subroutine test1_f_bicubic_cmplx_coef (ok)
+
+implicit none
+
+type(bicubic_cmplx_coef_struct), target :: f_bicubic_cmplx_coef, f2_bicubic_cmplx_coef
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_bicubic_cmplx_coef (c_bicubic_cmplx_coef, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_bicubic_cmplx_coef
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_bicubic_cmplx_coef_test_pattern (f2_bicubic_cmplx_coef, 1)
+
+call test_c_bicubic_cmplx_coef(c_loc(f2_bicubic_cmplx_coef), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_bicubic_cmplx_coef_test_pattern (f_bicubic_cmplx_coef, 4)
+if (f_bicubic_cmplx_coef == f2_bicubic_cmplx_coef) then
+  print *, '[4] bicubic_cmplx_coef: C side convert C->F: Good'
+else
+  print *, '[4] bicubic_cmplx_coef: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call bicubic_cmplx_coef_struct_to_json(f_bicubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_bicubic_cmplx_coef_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bicubic_cmplx_coef_struct_to_json(f2_bicubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_bicubic_cmplx_coef_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bicubic_cmplx_coef_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bicubic_cmplx_coef_test_pattern (f_bicubic_cmplx_coef, -1)
+call set_bicubic_cmplx_coef_test_pattern (f2_bicubic_cmplx_coef, -1)
+
+end subroutine test1_f_bicubic_cmplx_coef
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_bicubic_cmplx_coef (c_bicubic_cmplx_coef, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_bicubic_cmplx_coef
+type(bicubic_cmplx_coef_struct), target :: f_bicubic_cmplx_coef, f2_bicubic_cmplx_coef
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call bicubic_cmplx_coef_to_f (c_bicubic_cmplx_coef, c_loc(f_bicubic_cmplx_coef))
+
+call set_bicubic_cmplx_coef_test_pattern (f2_bicubic_cmplx_coef, 2)
+if (f_bicubic_cmplx_coef == f2_bicubic_cmplx_coef) then
+  print *, '[2] bicubic_cmplx_coef: F side convert C->F: Good'
+else
+  print *, '[2] bicubic_cmplx_coef: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bicubic_cmplx_coef_struct_to_json(f_bicubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_bicubic_cmplx_coef_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bicubic_cmplx_coef_struct_to_json(f2_bicubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_bicubic_cmplx_coef_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bicubic_cmplx_coef_pattern_2_*.json)'
+
+endif
+
+call set_bicubic_cmplx_coef_test_pattern (f2_bicubic_cmplx_coef, 3)
+call bicubic_cmplx_coef_to_c (c_loc(f2_bicubic_cmplx_coef), c_bicubic_cmplx_coef)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bicubic_cmplx_coef_test_pattern (f_bicubic_cmplx_coef, -1)
+call set_bicubic_cmplx_coef_test_pattern (f2_bicubic_cmplx_coef, -1)
+
+end subroutine test2_f_bicubic_cmplx_coef
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_bicubic_cmplx_coef_test_pattern (F, ix_patt)
+
+implicit none
+
+type(bicubic_cmplx_coef_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[2D_NOT_complex] FixedArray2D<Complex, 4, 4>
+do jd1 = 1, size(F%coef,1); lb1 = lbound(F%coef,1) - 1
+  do jd2 = 1, size(F%coef,2); lb2 = lbound(F%coef,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 1 + offset
+    F%coef(jd1+lb1,jd2+lb2) = cmplx(rhs, 100+rhs)
+  enddo
+enddo
+!! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 2>
+do jd1 = 1, size(F%i_box,1); lb1 = lbound(F%i_box,1) - 1
+  rhs = 100 + jd1 + 2 + offset
+  F%i_box(jd1+lb1) = rhs
+enddo
+
+end subroutine set_bicubic_cmplx_coef_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tricubic_cmplx_coef (ok)
+
+implicit none
+
+type(tricubic_cmplx_coef_struct), target :: f_tricubic_cmplx_coef, f2_tricubic_cmplx_coef
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tricubic_cmplx_coef (c_tricubic_cmplx_coef, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tricubic_cmplx_coef
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tricubic_cmplx_coef_test_pattern (f2_tricubic_cmplx_coef, 1)
+
+call test_c_tricubic_cmplx_coef(c_loc(f2_tricubic_cmplx_coef), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tricubic_cmplx_coef_test_pattern (f_tricubic_cmplx_coef, 4)
+if (f_tricubic_cmplx_coef == f2_tricubic_cmplx_coef) then
+  print *, '[4] tricubic_cmplx_coef: C side convert C->F: Good'
+else
+  print *, '[4] tricubic_cmplx_coef: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tricubic_cmplx_coef_struct_to_json(f_tricubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_tricubic_cmplx_coef_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tricubic_cmplx_coef_struct_to_json(f2_tricubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_tricubic_cmplx_coef_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tricubic_cmplx_coef_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tricubic_cmplx_coef_test_pattern (f_tricubic_cmplx_coef, -1)
+call set_tricubic_cmplx_coef_test_pattern (f2_tricubic_cmplx_coef, -1)
+
+end subroutine test1_f_tricubic_cmplx_coef
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tricubic_cmplx_coef (c_tricubic_cmplx_coef, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tricubic_cmplx_coef
+type(tricubic_cmplx_coef_struct), target :: f_tricubic_cmplx_coef, f2_tricubic_cmplx_coef
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tricubic_cmplx_coef_to_f (c_tricubic_cmplx_coef, c_loc(f_tricubic_cmplx_coef))
+
+call set_tricubic_cmplx_coef_test_pattern (f2_tricubic_cmplx_coef, 2)
+if (f_tricubic_cmplx_coef == f2_tricubic_cmplx_coef) then
+  print *, '[2] tricubic_cmplx_coef: F side convert C->F: Good'
+else
+  print *, '[2] tricubic_cmplx_coef: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tricubic_cmplx_coef_struct_to_json(f_tricubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_tricubic_cmplx_coef_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tricubic_cmplx_coef_struct_to_json(f2_tricubic_cmplx_coef, json_root)
+  call json%print(json_root, 'test_f_tricubic_cmplx_coef_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tricubic_cmplx_coef_pattern_2_*.json)'
+
+endif
+
+call set_tricubic_cmplx_coef_test_pattern (f2_tricubic_cmplx_coef, 3)
+call tricubic_cmplx_coef_to_c (c_loc(f2_tricubic_cmplx_coef), c_tricubic_cmplx_coef)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tricubic_cmplx_coef_test_pattern (f_tricubic_cmplx_coef, -1)
+call set_tricubic_cmplx_coef_test_pattern (f2_tricubic_cmplx_coef, -1)
+
+end subroutine test2_f_tricubic_cmplx_coef
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tricubic_cmplx_coef_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tricubic_cmplx_coef_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[3D_NOT_complex] FixedArray3D<Complex, 4, 4, 4>
+do jd1 = 1, size(F%coef,1); lb1 = lbound(F%coef,1) - 1
+  do jd2 = 1, size(F%coef,2); lb2 = lbound(F%coef,2) - 1
+    do jd3 = 1, size(F%coef,3); lb3 = lbound(F%coef,3) - 1
+      rhs = 100 + jd1 + 10*jd2 + 100*jd3 + 1 + offset
+      F%coef(jd1+lb1,jd2+lb2,jd3+lb3) = cmplx(rhs, 100+rhs)
+    enddo
+   enddo
+ enddo
+!! f_side.test_pat[1D_NOT_integer] FixedArray1D<Int, 3>
+do jd1 = 1, size(F%i_box,1); lb1 = lbound(F%i_box,1) - 1
+  rhs = 100 + jd1 + 2 + offset
+  F%i_box(jd1+lb1) = rhs
+enddo
+
+end subroutine set_tricubic_cmplx_coef_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
 subroutine test1_f_grid_field_pt1 (ok)
 
 implicit none
@@ -4658,6 +4928,32 @@ else
   rhs = 12 + offset
   call set_grid_field_pt_test_pattern (F%ptr, ix_patt)
 endif
+!! f_side.test_pat[3D_NOT_type] FixedArray3D<CPP_bicubic_cmplx_coef, 4, 2, 3>
+do jd1 = 1, size(F%bi_coef,1); lb1 = lbound(F%bi_coef,1) - 1
+  do jd2 = 1, size(F%bi_coef,2); lb2 = lbound(F%bi_coef,2) - 1
+    do jd3 = 1, size(F%bi_coef,3); lb3 = lbound(F%bi_coef,3) - 1
+      rhs = 100 + jd1 + 10*jd2 + 100*jd3 + 14 + offset
+      if (ix_patt < 0) then
+        call set_bicubic_cmplx_coef_test_pattern (F%bi_coef(jd1+lb1,jd2+lb2,jd3+lb3), -1)
+      else
+        call set_bicubic_cmplx_coef_test_pattern (F%bi_coef(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)
+      endif
+    enddo
+  enddo
+enddo
+!! f_side.test_pat[3D_NOT_type] FixedArray3D<CPP_tricubic_cmplx_coef, 4, 2, 3>
+do jd1 = 1, size(F%tri_coef,1); lb1 = lbound(F%tri_coef,1) - 1
+  do jd2 = 1, size(F%tri_coef,2); lb2 = lbound(F%tri_coef,2) - 1
+    do jd3 = 1, size(F%tri_coef,3); lb3 = lbound(F%tri_coef,3) - 1
+      rhs = 100 + jd1 + 10*jd2 + 100*jd3 + 15 + offset
+      if (ix_patt < 0) then
+        call set_tricubic_cmplx_coef_test_pattern (F%tri_coef(jd1+lb1,jd2+lb2,jd3+lb3), -1)
+      else
+        call set_tricubic_cmplx_coef_test_pattern (F%tri_coef(jd1+lb1,jd2+lb2,jd3+lb3), ix_patt+jd1+10*jd2+100*jd3)
+      endif
+    enddo
+  enddo
+enddo
 
 end subroutine set_grid_field_test_pattern
 !---------------------------------------------------------------------------------

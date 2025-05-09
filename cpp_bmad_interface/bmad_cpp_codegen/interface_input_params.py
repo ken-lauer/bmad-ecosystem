@@ -73,6 +73,8 @@ struct_list = [
     "cylindrical_map_term1_struct",
     "cylindrical_map_term_struct",
     "cylindrical_map_struct",
+    "bicubic_cmplx_coef_struct",
+    "tricubic_cmplx_coef_struct",
     "grid_field_pt1_struct",
     "grid_field_pt_struct",
     "grid_field_struct",
@@ -145,22 +147,24 @@ struct_list = [
 #   <struct>%<component_name>
 
 component_no_translate_list = {
+    # NOTE: 'ptc' may be required for taylor map info (polymorphic tracking)
     "fibre",
-    "ptc_branch1_info_struct",
     "layout",
-    "exact_bend_multipole_struct",
+    "ptc_branch1_info_struct",
     "branch_struct%ptc",
-    "ele_struct%lord",
+    # end PTC
+    "exact_bend_multipole_struct",
     "ele_struct%branch",
-    "ele_struct%converter",
+    "ele_struct%converter",  # Should be simple data? Check this
     "ele_struct%multipole_cache",
     "ele_struct%foil",
     "lat_struct%nametable",
     "branch_struct%lat",
     "normal_form_struct",
-    "grid_field_struct%bi_coef",
-    "grid_field_struct%tri_coef",
-    "grid_field_pt_struct%pt",  # NOTE: this can be massive for large lattices
+    # TODO: check to see if this is used in tracking; may need workaround:
+    "ele_struct%lord",
+    # TODO: we need some sort workaround for grid field data:
+    "grid_field_pt_struct%pt",
 }
 
 # List of structure components links:

@@ -1795,6 +1795,78 @@ extern "C" void cylindrical_map_to_c2(
 
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
+// CPP_bicubic_cmplx_coef
+
+extern "C" void bicubic_cmplx_coef_to_c(
+    const Opaque_bicubic_cmplx_coef_class*,
+    CPP_bicubic_cmplx_coef&);
+
+// c_side.to_f2_arg
+extern "C" void bicubic_cmplx_coef_to_f2(
+    Opaque_bicubic_cmplx_coef_class*,
+    c_ComplexArr,
+    c_IntArr);
+
+extern "C" void bicubic_cmplx_coef_to_f(
+    const CPP_bicubic_cmplx_coef& C,
+    Opaque_bicubic_cmplx_coef_class* F) {
+  // c_side.to_f_setup[2D_NOT_complex] FixedArray2D<Complex, 4, 4>
+  Complex z_coef[4 * 4];
+  matrix_to_vec(C.coef, z_coef);
+
+  // c_side.to_f2_call
+  bicubic_cmplx_coef_to_f2(F, z_coef, &C.i_box[0]);
+}
+
+// c_side.to_c2_arg
+extern "C" void bicubic_cmplx_coef_to_c2(
+    CPP_bicubic_cmplx_coef& C,
+    c_ComplexArr z_coef,
+    c_IntArr z_i_box) {
+  // c_side.to_c2_set[2D_NOT_complex] FixedArray2D<Complex, 4, 4>
+  C.coef << z_coef;
+  // c_side.to_c2_set[1D_NOT_integer] FixedArray1D<Int, 2>
+  C.i_box << z_i_box;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tricubic_cmplx_coef
+
+extern "C" void tricubic_cmplx_coef_to_c(
+    const Opaque_tricubic_cmplx_coef_class*,
+    CPP_tricubic_cmplx_coef&);
+
+// c_side.to_f2_arg
+extern "C" void tricubic_cmplx_coef_to_f2(
+    Opaque_tricubic_cmplx_coef_class*,
+    c_ComplexArr,
+    c_IntArr);
+
+extern "C" void tricubic_cmplx_coef_to_f(
+    const CPP_tricubic_cmplx_coef& C,
+    Opaque_tricubic_cmplx_coef_class* F) {
+  // c_side.to_f_setup[3D_NOT_complex] FixedArray3D<Complex, 4, 4, 4>
+  Complex z_coef[4 * 4 * 4];
+  tensor_to_vec(C.coef, z_coef);
+
+  // c_side.to_f2_call
+  tricubic_cmplx_coef_to_f2(F, z_coef, &C.i_box[0]);
+}
+
+// c_side.to_c2_arg
+extern "C" void tricubic_cmplx_coef_to_c2(
+    CPP_tricubic_cmplx_coef& C,
+    c_ComplexArr z_coef,
+    c_IntArr z_i_box) {
+  // c_side.to_c2_set[3D_NOT_complex] FixedArray3D<Complex, 4, 4, 4>
+  C.coef << z_coef;
+  // c_side.to_c2_set[1D_NOT_integer] FixedArray1D<Int, 3>
+  C.i_box << z_i_box;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
 // CPP_grid_field_pt1
 
 extern "C" void grid_field_pt1_to_c(
@@ -1880,13 +1952,35 @@ extern "C" void grid_field_to_f2(
     c_RealArr,
     c_Bool&,
     const CPP_grid_field_pt*,
-    c_Int);
+    c_Int,
+    const CPP_bicubic_cmplx_coef**,
+    const CPP_tricubic_cmplx_coef**);
 
 extern "C" void grid_field_to_f(
     const CPP_grid_field& C,
     Opaque_grid_field_class* F) {
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_grid_field_pt>
   auto n_ptr = C.ptr ? 1 : 0;
+  // c_side.to_f_setup[3D_NOT_type] FixedArray3D<CPP_bicubic_cmplx_coef, 4, 2, 3>
+  const CPP_bicubic_cmplx_coef* z_bi_coef[4 * 2 * 3];
+  for (size_t i{0}; i < 4; i++) {
+    for (size_t j{0}; j < 2; j++) {
+      for (size_t k{0}; k < 3; k++) {
+        auto m = 3 * 2 * i + 3 * j + k;
+        z_bi_coef[m] = &C.bi_coef[i][j][k];
+      }
+    }
+  }
+  // c_side.to_f_setup[3D_NOT_type] FixedArray3D<CPP_tricubic_cmplx_coef, 4, 2, 3>
+  const CPP_tricubic_cmplx_coef* z_tri_coef[4 * 2 * 3];
+  for (size_t i{0}; i < 4; i++) {
+    for (size_t j{0}; j < 2; j++) {
+      for (size_t k{0}; k < 3; k++) {
+        auto m = 3 * 2 * i + 3 * j + k;
+        z_tri_coef[m] = &C.tri_coef[i][j][k];
+      }
+    }
+  }
 
   // c_side.to_f2_call
   grid_field_to_f2(
@@ -1903,7 +1997,9 @@ extern "C" void grid_field_to_f(
       &C.r0[0],
       C.curved_ref_frame,
       (C.ptr ? &C.ptr.value() : nullptr),
-      n_ptr);
+      n_ptr,
+      z_bi_coef,
+      z_tri_coef);
 }
 
 // c_side.to_c2_arg
@@ -1921,7 +2017,9 @@ extern "C" void grid_field_to_c2(
     c_RealArr z_r0,
     c_Bool& z_curved_ref_frame,
     Opaque_grid_field_pt_class* z_ptr,
-    c_Int n_ptr) {
+    c_Int n_ptr,
+    const Opaque_bicubic_cmplx_coef_class** z_bi_coef,
+    const Opaque_tricubic_cmplx_coef_class** z_tri_coef) {
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.geometry = z_geometry;
   // c_side.to_c2_set[0D_NOT_integer] Int
@@ -1951,6 +2049,20 @@ extern "C" void grid_field_to_c2(
     C.ptr.emplace();
     grid_field_pt_to_c(z_ptr, C.ptr.value());
   }
+  // c_side.to_c2_set[3D_NOT_type] FixedArray3D<CPP_bicubic_cmplx_coef, 4, 2, 3>
+  for (size_t i{0}; i < C.bi_coef.size(); i++)
+    for (size_t j{0}; j < C.bi_coef[0].size(); j++)
+      for (size_t k{0}; k < C.bi_coef[0][0].size(); k++) {
+        auto m = 3 * 2 * i + 3 * j + k;
+        bicubic_cmplx_coef_to_c(z_bi_coef[m], C.bi_coef[i][j][k]);
+      }
+  // c_side.to_c2_set[3D_NOT_type] FixedArray3D<CPP_tricubic_cmplx_coef, 4, 2, 3>
+  for (size_t i{0}; i < C.tri_coef.size(); i++)
+    for (size_t j{0}; j < C.tri_coef[0].size(); j++)
+      for (size_t k{0}; k < C.tri_coef[0][0].size(); k++) {
+        auto m = 3 * 2 * i + 3 * j + k;
+        tricubic_cmplx_coef_to_c(z_tri_coef[m], C.tri_coef[i][j][k]);
+      }
 }
 
 //--------------------------------------------------------------------

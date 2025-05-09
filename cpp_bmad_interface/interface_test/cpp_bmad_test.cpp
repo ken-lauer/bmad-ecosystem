@@ -2902,6 +2902,187 @@ extern "C" void test_c_cylindrical_map(
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 
+extern "C" void test2_f_bicubic_cmplx_coef(CPP_bicubic_cmplx_coef&, bool&);
+
+void set_CPP_bicubic_cmplx_coef_test_pattern(
+    CPP_bicubic_cmplx_coef& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[2D_NOT_complex]
+  for (size_t i{0}; i < C.coef.size(); i++)
+    for (size_t j{0}; j < C.coef[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 1 + offset;
+      C.coef[i][j] = Complex(rhs, 100 + rhs);
+    }
+  // c_side.test_pat[1D_NOT_integer]
+  for (size_t i{0}; i < C.i_box.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.i_box[i] = rhs;
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_bicubic_cmplx_coef(
+    Opaque_bicubic_cmplx_coef_class* F,
+    bool& c_ok) {
+  CPP_bicubic_cmplx_coef C, C2;
+
+  c_ok = true;
+
+  bicubic_cmplx_coef_to_c(F, C);
+  set_CPP_bicubic_cmplx_coef_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] bicubic_cmplx_coef: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] bicubic_cmplx_coef: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("bicubic_cmplx_coef.pat1.c.actual.txt");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("bicubic_cmplx_coef.pat1.c2.expected.txt");
+      c2_file << C2;
+    }
+
+    cout << "     C written to bicubic_cmplx_coef.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to bicubic_cmplx_coef.pat1.c2.expected.txt"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_bicubic_cmplx_coef_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_bicubic_cmplx_coef(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_bicubic_cmplx_coef_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] bicubic_cmplx_coef: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] bicubic_cmplx_coef: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("bicubic_cmplx_coef.pat3.c.expected.txt");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("bicubic_cmplx_coef.pat3.c2.actual.txt");
+      c2_file << C2;
+    }
+
+    throw std::runtime_error("foo");
+
+    cout << "     C written to bicubic_cmplx_coef.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to bicubic_cmplx_coef.pat3.c2.actual.txt" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_bicubic_cmplx_coef_test_pattern(C2, 4);
+  bicubic_cmplx_coef_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tricubic_cmplx_coef(CPP_tricubic_cmplx_coef&, bool&);
+
+void set_CPP_tricubic_cmplx_coef_test_pattern(
+    CPP_tricubic_cmplx_coef& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[3D_NOT_complex]
+  for (size_t i{0}; i < C.coef.size(); i++)
+    for (size_t j{0}; j < C.coef[0].size(); j++)
+      for (size_t k{0}; k < C.coef[0][0].size(); k++) {
+        int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + 1 + offset;
+        C.coef[i][j][k] = Complex(rhs, 100 + rhs);
+      }
+  // c_side.test_pat[1D_NOT_integer]
+  for (size_t i{0}; i < C.i_box.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.i_box[i] = rhs;
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tricubic_cmplx_coef(
+    Opaque_tricubic_cmplx_coef_class* F,
+    bool& c_ok) {
+  CPP_tricubic_cmplx_coef C, C2;
+
+  c_ok = true;
+
+  tricubic_cmplx_coef_to_c(F, C);
+  set_CPP_tricubic_cmplx_coef_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tricubic_cmplx_coef: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tricubic_cmplx_coef: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tricubic_cmplx_coef.pat1.c.actual.txt");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tricubic_cmplx_coef.pat1.c2.expected.txt");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tricubic_cmplx_coef.pat1.c.actual.txt" << endl;
+    cout << "     C2 written to tricubic_cmplx_coef.pat1.c2.expected.txt"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tricubic_cmplx_coef_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tricubic_cmplx_coef(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tricubic_cmplx_coef_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tricubic_cmplx_coef: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tricubic_cmplx_coef: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tricubic_cmplx_coef.pat3.c.expected.txt");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tricubic_cmplx_coef.pat3.c2.actual.txt");
+      c2_file << C2;
+    }
+
+    throw std::runtime_error("foo");
+
+    cout << "     C written to tricubic_cmplx_coef.pat3.c.expected.txt" << endl;
+    cout << "     C2 written to tricubic_cmplx_coef.pat3.c2.actual.txt" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tricubic_cmplx_coef_test_pattern(C2, 4);
+  tricubic_cmplx_coef_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
 extern "C" void test2_f_grid_field_pt1(CPP_grid_field_pt1&, bool&);
 
 void set_CPP_grid_field_pt1_test_pattern(CPP_grid_field_pt1& C, int ix_patt) {
@@ -3123,6 +3304,23 @@ void set_CPP_grid_field_test_pattern(CPP_grid_field& C, int ix_patt) {
     C.ptr.emplace();
     set_CPP_grid_field_pt_test_pattern(C.ptr.value(), ix_patt);
   }
+  // c_side.test_pat[3D_NOT_type]
+  for (size_t i{0}; i < C.bi_coef.size(); i++)
+    for (size_t j{0}; j < C.bi_coef[0].size(); j++)
+      for (size_t k{0}; k < C.bi_coef[0][0].size(); k++) {
+        int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + 14 + offset;
+        set_CPP_bicubic_cmplx_coef_test_pattern(
+            C.bi_coef[i][j][k], ix_patt + i + 1 + 10 * (j + 1) + 100 * (k + 1));
+      }
+  // c_side.test_pat[3D_NOT_type]
+  for (size_t i{0}; i < C.tri_coef.size(); i++)
+    for (size_t j{0}; j < C.tri_coef[0].size(); j++)
+      for (size_t k{0}; k < C.tri_coef[0][0].size(); k++) {
+        int rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + 15 + offset;
+        set_CPP_tricubic_cmplx_coef_test_pattern(
+            C.tri_coef[i][j][k],
+            ix_patt + i + 1 + 10 * (j + 1) + 100 * (k + 1));
+      }
 }
 
 //--------------------------------------------------------------

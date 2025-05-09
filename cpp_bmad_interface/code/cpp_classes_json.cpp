@@ -511,6 +511,30 @@ ostream& operator<<(ostream& os, const CPP_cylindrical_map& obj) {
   return os;
 }
 
+void to_json(json& j, const CPP_bicubic_cmplx_coef& obj) {
+  j = json{{"coef", obj.coef}, {"i_box", obj.i_box}};
+}
+
+ostream& operator<<(ostream& os, const CPP_bicubic_cmplx_coef& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tricubic_cmplx_coef& obj) {
+  j = json{{"coef", obj.coef}, {"i_box", obj.i_box}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tricubic_cmplx_coef& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
 void to_json(json& j, const CPP_grid_field_pt1& obj) {
   j = json{{"E", obj.E}, {"B", obj.B}};
 }
@@ -548,7 +572,9 @@ void to_json(json& j, const CPP_grid_field& obj) {
       {"dr", obj.dr},
       {"r0", obj.r0},
       {"curved_ref_frame", obj.curved_ref_frame},
-      {"ptr", obj.ptr}};
+      {"ptr", obj.ptr},
+      {"bi_coef", obj.bi_coef},
+      {"tri_coef", obj.tri_coef}};
 }
 
 ostream& operator<<(ostream& os, const CPP_grid_field& obj) {

@@ -505,6 +505,28 @@ bool operator==(const CPP_cylindrical_map& x, const CPP_cylindrical_map& y) {
 
 //--------------------------------------------------------------
 
+bool operator==(
+    const CPP_bicubic_cmplx_coef& x,
+    const CPP_bicubic_cmplx_coef& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.coef, y.coef);
+  is_eq = is_eq && is_all_equal(x.i_box, y.i_box);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_tricubic_cmplx_coef& x,
+    const CPP_tricubic_cmplx_coef& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.coef, y.coef);
+  is_eq = is_eq && is_all_equal(x.i_box, y.i_box);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
 bool operator==(const CPP_grid_field_pt1& x, const CPP_grid_field_pt1& y) {
   bool is_eq = true;
   is_eq = is_eq && is_all_equal(x.E, y.E);
@@ -541,6 +563,8 @@ bool operator==(const CPP_grid_field& x, const CPP_grid_field& y) {
     return false;
   if (x.ptr)
     is_eq = (*x.ptr == *y.ptr);
+  is_eq = is_eq && is_all_equal(x.bi_coef, y.bi_coef);
+  is_eq = is_eq && is_all_equal(x.tri_coef, y.tri_coef);
   return is_eq;
 };
 

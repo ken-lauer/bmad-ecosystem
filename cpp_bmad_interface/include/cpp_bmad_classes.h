@@ -1005,6 +1005,68 @@ bool operator==(const CPP_cylindrical_map&, const CPP_cylindrical_map&);
 void to_json(json&, const CPP_cylindrical_map&);
 
 //--------------------------------------------------------------------
+// CPP_bicubic_cmplx_coef
+
+class Opaque_bicubic_cmplx_coef_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_bicubic_cmplx_coef
+    : public std::enable_shared_from_this<CPP_bicubic_cmplx_coef> {
+ public:
+  FixedArray2D<Complex, 4, 4> coef;
+  FixedArray1D<Int, 2> i_box{Bmad::INT_GARBAGE};
+
+  CPP_bicubic_cmplx_coef() {}
+
+  virtual ~CPP_bicubic_cmplx_coef() {}
+  std::shared_ptr<CPP_bicubic_cmplx_coef> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_bicubic_cmplx_coef& obj);
+};
+
+extern "C" void bicubic_cmplx_coef_to_c(
+    const Opaque_bicubic_cmplx_coef_class*,
+    CPP_bicubic_cmplx_coef&);
+extern "C" void bicubic_cmplx_coef_to_f(
+    const CPP_bicubic_cmplx_coef&,
+    Opaque_bicubic_cmplx_coef_class*);
+
+bool operator==(const CPP_bicubic_cmplx_coef&, const CPP_bicubic_cmplx_coef&);
+void to_json(json&, const CPP_bicubic_cmplx_coef&);
+
+//--------------------------------------------------------------------
+// CPP_tricubic_cmplx_coef
+
+class Opaque_tricubic_cmplx_coef_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tricubic_cmplx_coef
+    : public std::enable_shared_from_this<CPP_tricubic_cmplx_coef> {
+ public:
+  FixedArray3D<Complex, 4, 4, 4> coef;
+  FixedArray1D<Int, 3> i_box{Bmad::INT_GARBAGE};
+
+  CPP_tricubic_cmplx_coef() {}
+
+  virtual ~CPP_tricubic_cmplx_coef() {}
+  std::shared_ptr<CPP_tricubic_cmplx_coef> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tricubic_cmplx_coef& obj);
+};
+
+extern "C" void tricubic_cmplx_coef_to_c(
+    const Opaque_tricubic_cmplx_coef_class*,
+    CPP_tricubic_cmplx_coef&);
+extern "C" void tricubic_cmplx_coef_to_f(
+    const CPP_tricubic_cmplx_coef&,
+    Opaque_tricubic_cmplx_coef_class*);
+
+bool operator==(const CPP_tricubic_cmplx_coef&, const CPP_tricubic_cmplx_coef&);
+void to_json(json&, const CPP_tricubic_cmplx_coef&);
+
+//--------------------------------------------------------------------
 // CPP_grid_field_pt1
 
 class Opaque_grid_field_pt1_class {
@@ -1086,6 +1148,8 @@ class CPP_grid_field : public std::enable_shared_from_this<CPP_grid_field> {
   FixedArray1D<Real, 3> r0{0.0};
   Bool curved_ref_frame{false};
   std::optional<CPP_grid_field_pt> ptr;
+  FixedArray3D<CPP_bicubic_cmplx_coef, 4, 2, 3> bi_coef;
+  FixedArray3D<CPP_tricubic_cmplx_coef, 4, 2, 3> tri_coef;
 
   CPP_grid_field() {}
 

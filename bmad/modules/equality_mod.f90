@@ -19,20 +19,20 @@ interface operator (==)
   module procedure eq_bpm_phase_coupling, eq_expression_atom, eq_wake_sr_z_long, eq_wake_sr_mode, eq_wake_sr
   module procedure eq_wake_lr_mode, eq_wake_lr, eq_lat_ele_loc, eq_wake, eq_taylor_term
   module procedure eq_taylor, eq_em_taylor_term, eq_em_taylor, eq_cartesian_map_term1, eq_cartesian_map_term
-  module procedure eq_cartesian_map, eq_cylindrical_map_term1, eq_cylindrical_map_term, eq_cylindrical_map, eq_grid_field_pt1
-  module procedure eq_grid_field_pt, eq_grid_field, eq_floor_position, eq_high_energy_space_charge, eq_xy_disp
-  module procedure eq_twiss, eq_mode3, eq_bookkeeping_state, eq_rad_map, eq_rad_map_ele
-  module procedure eq_gen_grad1, eq_gen_grad_map, eq_surface_segmented_pt, eq_surface_segmented, eq_surface_h_misalign_pt
-  module procedure eq_surface_h_misalign, eq_surface_displacement_pt, eq_surface_displacement, eq_target_point, eq_surface_curvature
-  module procedure eq_photon_target, eq_photon_material, eq_pixel_pt, eq_pixel_detec, eq_photon_element
-  module procedure eq_wall3d_vertex, eq_wall3d_section, eq_wall3d, eq_ramper_lord, eq_control
-  module procedure eq_control_var1, eq_control_ramp1, eq_controller, eq_ellipse_beam_init, eq_kv_beam_init
-  module procedure eq_grid_beam_init, eq_beam_init, eq_lat_param, eq_mode_info, eq_pre_tracker
-  module procedure eq_anormal_mode, eq_linac_normal_mode, eq_normal_modes, eq_em_field, eq_strong_beam
-  module procedure eq_track_point, eq_track, eq_space_charge_common, eq_bmad_common, eq_rad_int1
-  module procedure eq_rad_int_branch, eq_rad_int_all_ele, eq_ele, eq_complex_taylor_term, eq_complex_taylor
-  module procedure eq_branch, eq_lat, eq_bunch, eq_bunch_params, eq_beam
-  module procedure eq_aperture_point, eq_aperture_param, eq_aperture_scan
+  module procedure eq_cartesian_map, eq_cylindrical_map_term1, eq_cylindrical_map_term, eq_cylindrical_map, eq_bicubic_cmplx_coef
+  module procedure eq_tricubic_cmplx_coef, eq_grid_field_pt1, eq_grid_field_pt, eq_grid_field, eq_floor_position
+  module procedure eq_high_energy_space_charge, eq_xy_disp, eq_twiss, eq_mode3, eq_bookkeeping_state
+  module procedure eq_rad_map, eq_rad_map_ele, eq_gen_grad1, eq_gen_grad_map, eq_surface_segmented_pt
+  module procedure eq_surface_segmented, eq_surface_h_misalign_pt, eq_surface_h_misalign, eq_surface_displacement_pt, eq_surface_displacement
+  module procedure eq_target_point, eq_surface_curvature, eq_photon_target, eq_photon_material, eq_pixel_pt
+  module procedure eq_pixel_detec, eq_photon_element, eq_wall3d_vertex, eq_wall3d_section, eq_wall3d
+  module procedure eq_ramper_lord, eq_control, eq_control_var1, eq_control_ramp1, eq_controller
+  module procedure eq_ellipse_beam_init, eq_kv_beam_init, eq_grid_beam_init, eq_beam_init, eq_lat_param
+  module procedure eq_mode_info, eq_pre_tracker, eq_anormal_mode, eq_linac_normal_mode, eq_normal_modes
+  module procedure eq_em_field, eq_strong_beam, eq_track_point, eq_track, eq_space_charge_common
+  module procedure eq_bmad_common, eq_rad_int1, eq_rad_int_branch, eq_rad_int_all_ele, eq_ele
+  module procedure eq_complex_taylor_term, eq_complex_taylor, eq_branch, eq_lat, eq_bunch
+  module procedure eq_bunch_params, eq_beam, eq_aperture_point, eq_aperture_param, eq_aperture_scan
 end interface
 
 contains
@@ -948,6 +948,48 @@ end function eq_cylindrical_map
 !--------------------------------------------------------------------------------
 !--------------------------------------------------------------------------------
 
+elemental function eq_bicubic_cmplx_coef (f1, f2) result (is_eq)
+
+implicit none
+
+type(bicubic_cmplx_coef_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[2D_NOT_complex]
+is_eq = is_eq .and. all(f1%coef == f2%coef)
+!! f_side.equality_test[1D_NOT_integer]
+is_eq = is_eq .and. all(f1%i_box == f2%i_box)
+
+end function eq_bicubic_cmplx_coef
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tricubic_cmplx_coef (f1, f2) result (is_eq)
+
+implicit none
+
+type(tricubic_cmplx_coef_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[3D_NOT_complex]
+is_eq = is_eq .and. all(f1%coef == f2%coef)
+!! f_side.equality_test[1D_NOT_integer]
+is_eq = is_eq .and. all(f1%i_box == f2%i_box)
+
+end function eq_tricubic_cmplx_coef
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
 elemental function eq_grid_field_pt1 (f1, f2) result (is_eq)
 
 implicit none
@@ -1026,6 +1068,10 @@ is_eq = is_eq .and. (f1%curved_ref_frame .eqv. f2%curved_ref_frame)
 is_eq = is_eq .and. (associated(f1%ptr) .eqv. associated(f2%ptr))
 if (.not. is_eq) return
 if (associated(f1%ptr)) is_eq = (f1%ptr == f2%ptr)
+!! f_side.equality_test[3D_NOT_type]
+is_eq = is_eq .and. all(f1%bi_coef == f2%bi_coef)
+!! f_side.equality_test[3D_NOT_type]
+is_eq = is_eq .and. all(f1%tri_coef == f2%tri_coef)
 
 end function eq_grid_field
 

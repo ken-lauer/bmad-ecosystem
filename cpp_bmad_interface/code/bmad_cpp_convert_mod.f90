@@ -278,6 +278,24 @@ end interface
 !--------------------------------------------------------------------------
 
 interface 
+  subroutine bicubic_cmplx_coef_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tricubic_cmplx_coef_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+!--------------------------------------------------------------------------
+
+interface 
   subroutine grid_field_pt1_to_f (C, Fp) bind(c)
     import c_ptr
     type(c_ptr), value :: C, Fp
@@ -4046,6 +4064,172 @@ end subroutine cylindrical_map_to_f2
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
+! Subroutine bicubic_cmplx_coef_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad bicubic_cmplx_coef_struct to a C++ CPP_bicubic_cmplx_coef structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad bicubic_cmplx_coef_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_bicubic_cmplx_coef struct.
+!-
+
+subroutine bicubic_cmplx_coef_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine bicubic_cmplx_coef_to_c2 (C, z_coef, z_i_box) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    complex(c_double_complex) :: z_coef(*)
+    integer(c_int) :: z_i_box(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(bicubic_cmplx_coef_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call bicubic_cmplx_coef_to_c2 (C, mat2vec(F%coef, 4*4), fvec2vec(F%i_box, 2))
+
+end subroutine bicubic_cmplx_coef_to_c
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine bicubic_cmplx_coef_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_bicubic_cmplx_coef structure to a Bmad bicubic_cmplx_coef_struct structure.
+! This routine is called by bicubic_cmplx_coef_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the bicubic_cmplx_coef_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad bicubic_cmplx_coef_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine bicubic_cmplx_coef_to_f2 (Fp, z_coef, z_i_box) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(bicubic_cmplx_coef_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+complex(c_double_complex) :: z_coef(*)
+integer(c_int) :: z_i_box(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[2D_NOT_complex]
+  call vec2mat(z_coef, F%coef)
+!! f_side.to_f2_trans[1D_NOT_integer]
+  F%i_box = z_i_box(1:2)
+
+end subroutine bicubic_cmplx_coef_to_f2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tricubic_cmplx_coef_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tricubic_cmplx_coef_struct to a C++ CPP_tricubic_cmplx_coef structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tricubic_cmplx_coef_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tricubic_cmplx_coef struct.
+!-
+
+subroutine tricubic_cmplx_coef_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tricubic_cmplx_coef_to_c2 (C, z_coef, z_i_box) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    complex(c_double_complex) :: z_coef(*)
+    integer(c_int) :: z_i_box(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tricubic_cmplx_coef_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tricubic_cmplx_coef_to_c2 (C, tensor2vec(F%coef, 4*4*4), fvec2vec(F%i_box, 3))
+
+end subroutine tricubic_cmplx_coef_to_c
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tricubic_cmplx_coef_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tricubic_cmplx_coef structure to a Bmad tricubic_cmplx_coef_struct structure.
+! This routine is called by tricubic_cmplx_coef_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tricubic_cmplx_coef_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tricubic_cmplx_coef_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tricubic_cmplx_coef_to_f2 (Fp, z_coef, z_i_box) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tricubic_cmplx_coef_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+complex(c_double_complex) :: z_coef(*)
+integer(c_int) :: z_i_box(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[3D_NOT_complex]
+  call vec2tensor(z_coef, F%coef)
+!! f_side.to_f2_trans[1D_NOT_integer]
+  F%i_box = z_i_box(1:3)
+
+end subroutine tricubic_cmplx_coef_to_f2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
 ! Subroutine grid_field_pt1_to_c (Fp, C) bind(c)
 !
 ! Routine to convert a Bmad grid_field_pt1_struct to a C++ CPP_grid_field_pt1 structure
@@ -4229,7 +4413,7 @@ interface
   !! f_side.to_c2_f2_sub_arg
   subroutine grid_field_to_c2 (C, z_geometry, z_harmonic, z_phi0_fieldmap, z_field_scale, &
       z_field_type, z_master_parameter, z_ele_anchor_pt, z_interpolation_order, z_dr, z_r0, &
-      z_curved_ref_frame, z_ptr, n_ptr) bind(c)
+      z_curved_ref_frame, z_ptr, n_ptr, z_bi_coef, z_tri_coef) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
@@ -4238,6 +4422,7 @@ interface
     logical(c_bool) :: z_curved_ref_frame
     type(c_ptr), value :: z_ptr
     integer(c_int), value :: n_ptr
+    type(c_ptr) :: z_bi_coef(*), z_tri_coef(*)
 end subroutine
 end interface
 
@@ -4247,6 +4432,8 @@ type(grid_field_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
   integer(c_int) :: n_ptr
+  type(c_ptr) :: z_bi_coef(4*2*3)
+  type(c_ptr) :: z_tri_coef(4*2*3)
 
 !
 
@@ -4255,11 +4442,23 @@ call c_f_pointer (Fp, F)
 !! f_side.to_c_trans[0D_PTR_type]
   n_ptr = 0
   if (associated(F%ptr)) n_ptr = 1
+!! f_side.to_c_trans[3D_NOT_type]
+  do jd1 = 1, size(F%bi_coef,1); lb1 = lbound(F%bi_coef,1) - 1
+  do jd2 = 1, size(F%bi_coef,2); lb2 = lbound(F%bi_coef,2) - 1
+  do jd3 = 1, size(F%bi_coef,3); lb3 = lbound(F%bi_coef,3) - 1
+  z_bi_coef(3*2*(jd1-1) + 3*(jd2-1) + jd3) = c_loc(F%bi_coef(jd1+lb1,jd2+lb2,jd3+lb3))
+  enddo; enddo; enddo
+!! f_side.to_c_trans[3D_NOT_type]
+  do jd1 = 1, size(F%tri_coef,1); lb1 = lbound(F%tri_coef,1) - 1
+  do jd2 = 1, size(F%tri_coef,2); lb2 = lbound(F%tri_coef,2) - 1
+  do jd3 = 1, size(F%tri_coef,3); lb3 = lbound(F%tri_coef,3) - 1
+  z_tri_coef(3*2*(jd1-1) + 3*(jd2-1) + jd3) = c_loc(F%tri_coef(jd1+lb1,jd2+lb2,jd3+lb3))
+  enddo; enddo; enddo
 
 !! f_side.to_c2_call
 call grid_field_to_c2 (C, F%geometry, F%harmonic, F%phi0_fieldmap, F%field_scale, F%field_type, &
     F%master_parameter, F%ele_anchor_pt, F%interpolation_order, fvec2vec(F%dr, 3), &
-    fvec2vec(F%r0, 3), c_logic(F%curved_ref_frame), c_loc(F%ptr), n_ptr)
+    fvec2vec(F%r0, 3), c_logic(F%curved_ref_frame), c_loc(F%ptr), n_ptr, z_bi_coef, z_tri_coef)
 
 end subroutine grid_field_to_c
 
@@ -4281,7 +4480,7 @@ end subroutine grid_field_to_c
 !! f_side.to_c2_f2_sub_arg
 subroutine grid_field_to_f2 (Fp, z_geometry, z_harmonic, z_phi0_fieldmap, z_field_scale, &
     z_field_type, z_master_parameter, z_ele_anchor_pt, z_interpolation_order, z_dr, z_r0, &
-    z_curved_ref_frame, z_ptr, n_ptr) bind(c)
+    z_curved_ref_frame, z_ptr, n_ptr, z_bi_coef, z_tri_coef) bind(c)
 
 
 implicit none
@@ -4296,6 +4495,7 @@ logical(c_bool) :: z_curved_ref_frame
 type(c_ptr), value :: z_ptr
 type(grid_field_pt_struct), pointer :: f_ptr
 integer(c_int), value :: n_ptr
+type(c_ptr) :: z_bi_coef(*), z_tri_coef(*)
 
 call c_f_pointer (Fp, F)
 
@@ -4328,6 +4528,18 @@ call c_f_pointer (Fp, F)
     if (.not. associated(F%ptr)) allocate(F%ptr)
     call grid_field_pt_to_f (z_ptr, c_loc(F%ptr))
   endif
+!! f_side.to_f2_trans[3D_NOT_type]
+  do jd1 = 1, size(F%bi_coef,1); lb1 = lbound(F%bi_coef,1) - 1
+  do jd2 = 1, size(F%bi_coef,2); lb2 = lbound(F%bi_coef,2) - 1
+  do jd3 = 1, size(F%bi_coef,3); lb3 = lbound(F%bi_coef,3) - 1
+  call bicubic_cmplx_coef_to_f(z_bi_coef(3*2*(jd1-1) + 3*(jd2-1) + jd3), c_loc(F%bi_coef(jd1+lb1,jd2+lb2,jd3+lb3)))
+  enddo; enddo; enddo
+!! f_side.to_f2_trans[3D_NOT_type]
+  do jd1 = 1, size(F%tri_coef,1); lb1 = lbound(F%tri_coef,1) - 1
+  do jd2 = 1, size(F%tri_coef,2); lb2 = lbound(F%tri_coef,2) - 1
+  do jd3 = 1, size(F%tri_coef,3); lb3 = lbound(F%tri_coef,3) - 1
+  call tricubic_cmplx_coef_to_f(z_tri_coef(3*2*(jd1-1) + 3*(jd2-1) + jd3), c_loc(F%tri_coef(jd1+lb1,jd2+lb2,jd3+lb3)))
+  enddo; enddo; enddo
 
 end subroutine grid_field_to_f2
 
