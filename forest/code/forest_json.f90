@@ -1658,9 +1658,15 @@ subroutine c_UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call json%add(json_root, 'n', int(input%N))
-  call json%add(json_root, 'nv', int(input%NV))
-  call json%add(json_root, 'nd2', int(input%nd2))
+  if (associated(input%N)) then
+    call json%add(json_root, 'n', int(input%N))
+  endif
+  if (associated(input%NV)) then
+    call json%add(json_root, 'nv', int(input%NV))
+  endif
+  if (associated(input%nd2)) then
+    call json%add(json_root, 'nd2', int(input%nd2))
+  endif
   if (associated(input%C)) then
     !'complex(DP), POINTER,dimension(:)::C => null()'
     call json%create_array(json_list1, 'c')
@@ -1905,8 +1911,12 @@ subroutine CAV4_to_json (input, json_root, depth)
     call json%rename(json_val, 'ACC')
     call json%add(json_root, json_val)
   endif
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
   if (associated(input%AN0)) then
     !'real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()'
     call json%create_array(json_list1, 'an0')
@@ -2051,12 +2061,16 @@ subroutine CAV4P_to_json (input, json_root, depth)
     call json%rename(json_val, 'ACC')
     call json%add(json_root, json_val)
   endif
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%AN0)) then
     !'TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()'
     call json%create_array(json_list1, 'an0')
@@ -2325,38 +2339,46 @@ subroutine CHART_to_json (input, json_root, depth)
     call json%rename(json_val, 'f')
     call json%add(json_root, json_val)
   endif
-  !'real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()'
-  call json%create_array(json_list1, 'd_in')
-  do i1 = lbound(input%D_IN, 1), ubound(input%D_IN, 1)
-    call json%create_real(json_val, input%D_IN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()'
-  call json%create_array(json_list1, 'ang_in')
-  do i1 = lbound(input%ANG_IN, 1), ubound(input%ANG_IN, 1)
-    call json%create_real(json_val, input%ANG_IN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()'
-  call json%create_array(json_list1, 'd_out')
-  do i1 = lbound(input%D_OUT, 1), ubound(input%D_OUT, 1)
-    call json%create_real(json_val, input%D_OUT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()'
-  call json%create_array(json_list1, 'ang_out')
-  do i1 = lbound(input%ANG_OUT, 1), ubound(input%ANG_OUT, 1)
-    call json%create_real(json_val, input%ANG_OUT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
+  if (associated(input%D_IN)) then
+    !'real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()'
+    call json%create_array(json_list1, 'd_in')
+    do i1 = lbound(input%D_IN, 1), ubound(input%D_IN, 1)
+      call json%create_real(json_val, input%D_IN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%ANG_IN)) then
+    !'real(dp),dimension(:),  POINTER::   D_IN => null() ,ANG_IN => null()'
+    call json%create_array(json_list1, 'ang_in')
+    do i1 = lbound(input%ANG_IN, 1), ubound(input%ANG_IN, 1)
+      call json%create_real(json_val, input%ANG_IN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D_OUT)) then
+    !'real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()'
+    call json%create_array(json_list1, 'd_out')
+    do i1 = lbound(input%D_OUT, 1), ubound(input%D_OUT, 1)
+      call json%create_real(json_val, input%D_OUT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%ANG_OUT)) then
+    !'real(dp),dimension(:),  POINTER::   D_OUT => null() ,ANG_OUT => null()'
+    call json%create_array(json_list1, 'ang_out')
+    do i1 = lbound(input%ANG_OUT, 1), ubound(input%ANG_OUT, 1)
+      call json%create_real(json_val, input%ANG_OUT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
 end subroutine CHART_to_json
 subroutine CHARTlist_to_json (input, json_root, depth)
   use madx_keywords, only: CHARTlist
@@ -2629,8 +2651,12 @@ subroutine CONTROL_to_json (input, json_root, depth)
   if (associated(input%MADTHIN_SKEW)) then
     call json%add(json_root, 'madthin_skew', int(input%MADTHIN_SKEW))
   endif
-  call json%add(json_root, 'nstd', int(input%NSTD))
-  call json%add(json_root, 'metd', int(input%METD))
+  if (associated(input%NSTD)) then
+    call json%add(json_root, 'nstd', int(input%NSTD))
+  endif
+  if (associated(input%METD)) then
+    call json%add(json_root, 'metd', int(input%METD))
+  endif
   if (associated(input%MADLENGTH)) then
     call json%add(json_root, 'madlength', input%MADLENGTH)
   endif
@@ -2652,7 +2678,9 @@ subroutine CONTROL_to_json (input, json_root, depth)
   if (associated(input%sixtrack_compatible)) then
     call json%add(json_root, 'sixtrack_compatible', input%sixtrack_compatible)
   endif
-  call json%add(json_root, 'cavity_totalpath', int(input%CAVITY_TOTALPATH))
+  if (associated(input%CAVITY_TOTALPATH)) then
+    call json%add(json_root, 'cavity_totalpath', int(input%CAVITY_TOTALPATH))
+  endif
   if (associated(input%HIGHEST_FRINGE)) then
     call json%add(json_root, 'highest_fringe', int(input%HIGHEST_FRINGE))
   endif
@@ -2690,7 +2718,9 @@ subroutine CONTROL_to_json (input, json_root, depth)
   if (associated(input%MAD8_WEDGE)) then
     call json%add(json_root, 'mad8_wedge', input%MAD8_WEDGE)
   endif
-  call json%add(json_root, 'electron', input%electron)
+  if (associated(input%electron)) then
+    call json%add(json_root, 'electron', input%electron)
+  endif
   if (associated(input%massfactor)) then
     call json%add(json_root, 'massfactor', input%massfactor)
   endif
@@ -2881,26 +2911,38 @@ subroutine DKD2_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
@@ -2951,34 +2993,46 @@ subroutine DKD2P_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
@@ -3515,42 +3569,58 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   if (associated(input%L)) then
     call json%add(json_root, 'l', input%L)
   endif
-  !'real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()'
-  call json%create_array(json_list1, 'an')
-  do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
-    call json%create_real(json_val, input%AN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()'
-  call json%create_array(json_list1, 'bn')
-  do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
-    call json%create_real(json_val, input%BN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
+  if (associated(input%AN)) then
+    !'real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()'
+    call json%create_array(json_list1, 'an')
+    do i1 = lbound(input%AN, 1), ubound(input%AN, 1)
+      call json%create_real(json_val, input%AN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%BN)) then
+    !'real(dp),   DIMENSION(:), POINTER:: AN => null(),BN => null()'
+    call json%create_array(json_list1, 'bn')
+    do i1 = lbound(input%BN, 1), ubound(input%BN, 1)
+      call json%create_real(json_val, input%BN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
   if (associated(input%VOLT)) then
     call json%add(json_root, 'volt', input%VOLT)
   endif
@@ -3578,42 +3648,58 @@ subroutine ELEMENT_to_json (input, json_root, depth)
   if (associated(input%D_AC)) then
     call json%add(json_root, 'd_ac', input%D_AC)
   endif
-  !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
-  call json%create_array(json_list1, 'd_an')
-  do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
-    call json%create_real(json_val, input%D_AN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
-  call json%create_array(json_list1, 'd_bn')
-  do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
-    call json%create_real(json_val, input%D_BN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
-  call json%create_array(json_list1, 'd0_an')
-  do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
-    call json%create_real(json_val, input%D0_AN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
-  call json%create_array(json_list1, 'd0_bn')
-  do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
-    call json%create_real(json_val, input%D0_BN(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'd_volt', input%D_Volt)
-  call json%add(json_root, 'd0_volt', input%D0_Volt)
-  call json%add(json_root, 'd_phas', input%D_phas)
-  call json%add(json_root, 'd0_phas', input%D0_phas)
+  if (associated(input%D_AN)) then
+    !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
+    call json%create_array(json_list1, 'd_an')
+    do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
+      call json%create_real(json_val, input%D_AN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D_BN)) then
+    !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
+    call json%create_array(json_list1, 'd_bn')
+    do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
+      call json%create_real(json_val, input%D_BN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D0_AN)) then
+    !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
+    call json%create_array(json_list1, 'd0_an')
+    do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
+      call json%create_real(json_val, input%D0_AN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D0_BN)) then
+    !'real(dp),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null();'
+    call json%create_array(json_list1, 'd0_bn')
+    do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
+      call json%create_real(json_val, input%D0_BN(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D_Volt)) then
+    call json%add(json_root, 'd_volt', input%D_Volt)
+  endif
+  if (associated(input%D0_Volt)) then
+    call json%add(json_root, 'd0_volt', input%D0_Volt)
+  endif
+  if (associated(input%D_phas)) then
+    call json%add(json_root, 'd_phas', input%D_phas)
+  endif
+  if (associated(input%D0_phas)) then
+    call json%add(json_root, 'd0_phas', input%D0_phas)
+  endif
   if (associated(input%THIN)) then
     call json%add(json_root, 'thin', input%THIN)
   endif
@@ -3876,34 +3962,46 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(),HGAP  => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%VOLT)) then
     call REAL_8_to_json(input%VOLT, json_val, depth + 1)
     call json%rename(json_val, 'VOLT')
@@ -3942,38 +4040,46 @@ subroutine ELEMENTP_to_json (input, json_root, depth)
     call json%rename(json_val, 'D_AC')
     call json%add(json_root, json_val)
   endif
-  !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
-  call json%create_array(json_list1, 'd_an')
-  do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
-    call REAL_8_to_json(input%D_AN(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
-  call json%create_array(json_list1, 'd_bn')
-  do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
-    call REAL_8_to_json(input%D_BN(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
-  call json%create_array(json_list1, 'd0_an')
-  do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
-    call REAL_8_to_json(input%D0_AN(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
-  call json%create_array(json_list1, 'd0_bn')
-  do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
-    call REAL_8_to_json(input%D0_BN(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
+  if (associated(input%D_AN)) then
+    !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
+    call json%create_array(json_list1, 'd_an')
+    do i1 = lbound(input%D_AN, 1), ubound(input%D_AN, 1)
+      call REAL_8_to_json(input%D_AN(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D_BN)) then
+    !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
+    call json%create_array(json_list1, 'd_bn')
+    do i1 = lbound(input%D_BN, 1), ubound(input%D_BN, 1)
+      call REAL_8_to_json(input%D_BN(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D0_AN)) then
+    !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
+    call json%create_array(json_list1, 'd0_an')
+    do i1 = lbound(input%D0_AN, 1), ubound(input%D0_AN, 1)
+      call REAL_8_to_json(input%D0_AN(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%D0_BN)) then
+    !'TYPE(REAL_8),   DIMENSION(:), POINTER:: D_AN => null(),D_BN => null(),D0_AN => null(),D0_BN => null()'
+    call json%create_array(json_list1, 'd0_bn')
+    do i1 = lbound(input%D0_BN, 1), ubound(input%D0_BN, 1)
+      call REAL_8_to_json(input%D0_BN(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
   if (associated(input%D_Volt)) then
     call REAL_8_to_json(input%D_Volt, json_val, depth + 1)
     call json%rename(json_val, 'D_Volt')
@@ -4899,27 +5005,31 @@ subroutine girder_to_json (input, json_root, depth)
   if (associated(input%discarded)) then
     call json%add(json_root, 'discarded', int(input%discarded))
   endif
-  !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
-  call json%create_array(json_list1, 'a')
-  do i1 = lbound(input%a, 1), ubound(input%a, 1)
-    call json%create_real(json_val, input%a(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
-  call json%create_array(json_list2, 'dim-2')
-  do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
-    call json%create_array(json_list1, 'ent')
-    do i1 = lbound(input%ent, 1), ubound(input%ent, 1)
-      call json%create_real(json_val, input%ent(i1, i2), '')
+  if (associated(input%a)) then
+    !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
+    call json%create_array(json_list1, 'a')
+    do i1 = lbound(input%a, 1), ubound(input%a, 1)
+      call json%create_real(json_val, input%a(i1), '')
       call json%add(json_list1, json_val)
     enddo
-    call json%add(json_list2, json_list1)
+    call json%add(json_root, json_list1)
     nullify(json_list1)
-  enddo
-  call json%add(json_root, json_list2)
-  nullify(json_list2)
+  endif
+  if (associated(input%ent)) then
+    !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
+    call json%create_array(json_list2, 'dim-2')
+    do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
+      call json%create_array(json_list1, 'ent')
+      do i1 = lbound(input%ent, 1), ubound(input%ent, 1)
+        call json%create_real(json_val, input%ent(i1, i2), '')
+        call json%add(json_list1, json_val)
+      enddo
+      call json%add(json_list2, json_list1)
+      nullify(json_list1)
+    enddo
+    call json%add(json_root, json_list2)
+    nullify(json_list2)
+  endif
   if (associated(input%info)) then
     call girder_info_to_json(input%info, json_val, depth + 1)
     call json%rename(json_val, 'info')
@@ -4966,27 +5076,31 @@ subroutine girder_info_to_json (input, json_root, depth)
     call json%rename(json_val, 'mag')
     call json%add(json_root, json_val)
   endif
-  !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
-  call json%create_array(json_list1, 'a')
-  do i1 = lbound(input%a, 1), ubound(input%a, 1)
-    call json%create_real(json_val, input%a(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
-  call json%create_array(json_list2, 'dim-2')
-  do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
-    call json%create_array(json_list1, 'ent')
-    do i1 = lbound(input%ent, 1), ubound(input%ent, 1)
-      call json%create_real(json_val, input%ent(i1, i2), '')
+  if (associated(input%a)) then
+    !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
+    call json%create_array(json_list1, 'a')
+    do i1 = lbound(input%a, 1), ubound(input%a, 1)
+      call json%create_real(json_val, input%a(i1), '')
       call json%add(json_list1, json_val)
     enddo
-    call json%add(json_list2, json_list1)
+    call json%add(json_root, json_list1)
     nullify(json_list1)
-  enddo
-  call json%add(json_root, json_list2)
-  nullify(json_list2)
+  endif
+  if (associated(input%ent)) then
+    !'real(dp), pointer:: a(:) => null(),ent(:,:) => null()'
+    call json%create_array(json_list2, 'dim-2')
+    do i2 = lbound(input%ent, 2), ubound(input%ent, 2)
+      call json%create_array(json_list1, 'ent')
+      do i1 = lbound(input%ent, 1), ubound(input%ent, 1)
+        call json%create_real(json_val, input%ent(i1, i2), '')
+        call json%add(json_list1, json_val)
+      enddo
+      call json%add(json_list2, json_list1)
+      nullify(json_list1)
+    enddo
+    call json%add(json_root, json_list2)
+    nullify(json_list2)
+  endif
   if (associated(input%parent_girder)) then
     call girder_to_json(input%parent_girder, json_val, depth + 1)
     call json%rename(json_val, 'parent_girder')
@@ -5519,27 +5633,31 @@ subroutine info_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'real(dp), pointer:: pos(:)  => null()'
-  call json%create_array(json_list1, 'pos')
-  do i1 = lbound(input%pos, 1), ubound(input%pos, 1)
-    call json%create_real(json_val, input%pos(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), pointer:: m(:,:)  => null()'
-  call json%create_array(json_list2, 'dim-2')
-  do i2 = lbound(input%m, 2), ubound(input%m, 2)
-    call json%create_array(json_list1, 'm')
-    do i1 = lbound(input%m, 1), ubound(input%m, 1)
-      call json%create_real(json_val, input%m(i1, i2), '')
+  if (associated(input%pos)) then
+    !'real(dp), pointer:: pos(:)  => null()'
+    call json%create_array(json_list1, 'pos')
+    do i1 = lbound(input%pos, 1), ubound(input%pos, 1)
+      call json%create_real(json_val, input%pos(i1), '')
       call json%add(json_list1, json_val)
     enddo
-    call json%add(json_list2, json_list1)
+    call json%add(json_root, json_list1)
     nullify(json_list1)
-  enddo
-  call json%add(json_root, json_list2)
-  nullify(json_list2)
+  endif
+  if (associated(input%m)) then
+    !'real(dp), pointer:: m(:,:)  => null()'
+    call json%create_array(json_list2, 'dim-2')
+    do i2 = lbound(input%m, 2), ubound(input%m, 2)
+      call json%create_array(json_list1, 'm')
+      do i1 = lbound(input%m, 1), ubound(input%m, 1)
+        call json%create_real(json_val, input%m(i1, i2), '')
+        call json%add(json_list1, json_val)
+      enddo
+      call json%add(json_list2, json_list1)
+      nullify(json_list1)
+    enddo
+    call json%add(json_root, json_list2)
+    nullify(json_list2)
+  endif
 end subroutine info_to_json
 subroutine INTEGRATION_NODE_to_json (input, json_root, depth)
   use definition, only: INTEGRATION_NODE
@@ -5811,21 +5929,45 @@ subroutine KICKT3_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  call json%add(json_root, 'thin_h_foc', input%thin_h_foc)
-  call json%add(json_root, 'thin_v_foc', input%thin_v_foc)
-  call json%add(json_root, 'thin_h_angle', input%thin_h_angle)
-  call json%add(json_root, 'thin_v_angle', input%thin_v_angle)
-  call json%add(json_root, 'hf', input%hf)
-  call json%add(json_root, 'vf', input%vf)
-  call json%add(json_root, 'patch', input%patch)
+  if (associated(input%thin_h_foc)) then
+    call json%add(json_root, 'thin_h_foc', input%thin_h_foc)
+  endif
+  if (associated(input%thin_v_foc)) then
+    call json%add(json_root, 'thin_v_foc', input%thin_v_foc)
+  endif
+  if (associated(input%thin_h_angle)) then
+    call json%add(json_root, 'thin_h_angle', input%thin_h_angle)
+  endif
+  if (associated(input%thin_v_angle)) then
+    call json%add(json_root, 'thin_v_angle', input%thin_v_angle)
+  endif
+  if (associated(input%hf)) then
+    call json%add(json_root, 'hf', input%hf)
+  endif
+  if (associated(input%vf)) then
+    call json%add(json_root, 'vf', input%vf)
+  endif
+  if (associated(input%patch)) then
+    call json%add(json_root, 'patch', input%patch)
+  endif
   if (associated(input%B_SOL)) then
     call json%add(json_root, 'b_sol', input%B_SOL)
   endif
-  call json%add(json_root, 'ls', input%ls)
-  call json%add(json_root, 'dx', input%dx)
-  call json%add(json_root, 'dy', input%dy)
-  call json%add(json_root, 'pitch_x', input%pitch_x)
-  call json%add(json_root, 'pitch_y', input%pitch_y)
+  if (associated(input%ls)) then
+    call json%add(json_root, 'ls', input%ls)
+  endif
+  if (associated(input%dx)) then
+    call json%add(json_root, 'dx', input%dx)
+  endif
+  if (associated(input%dy)) then
+    call json%add(json_root, 'dy', input%dy)
+  endif
+  if (associated(input%pitch_x)) then
+    call json%add(json_root, 'pitch_x', input%pitch_x)
+  endif
+  if (associated(input%pitch_y)) then
+    call json%add(json_root, 'pitch_y', input%pitch_y)
+  endif
 end subroutine KICKT3_to_json
 subroutine KICKT3P_to_json (input, json_root, depth)
   use definition, only: KICKT3P
@@ -5868,35 +6010,59 @@ subroutine KICKT3P_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  call REAL_8_to_json(input%thin_h_foc, json_val, depth + 1)
-  call json%rename(json_val, 'thin_h_foc')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%thin_v_foc, json_val, depth + 1)
-  call json%rename(json_val, 'thin_v_foc')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%thin_h_angle, json_val, depth + 1)
-  call json%rename(json_val, 'thin_h_angle')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%thin_v_angle, json_val, depth + 1)
-  call json%rename(json_val, 'thin_v_angle')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%hf, json_val, depth + 1)
-  call json%rename(json_val, 'hf')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%vf, json_val, depth + 1)
-  call json%rename(json_val, 'vf')
-  call json%add(json_root, json_val)
-  call json%add(json_root, 'patch', input%patch)
+  if (associated(input%thin_h_foc)) then
+    call REAL_8_to_json(input%thin_h_foc, json_val, depth + 1)
+    call json%rename(json_val, 'thin_h_foc')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%thin_v_foc)) then
+    call REAL_8_to_json(input%thin_v_foc, json_val, depth + 1)
+    call json%rename(json_val, 'thin_v_foc')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%thin_h_angle)) then
+    call REAL_8_to_json(input%thin_h_angle, json_val, depth + 1)
+    call json%rename(json_val, 'thin_h_angle')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%thin_v_angle)) then
+    call REAL_8_to_json(input%thin_v_angle, json_val, depth + 1)
+    call json%rename(json_val, 'thin_v_angle')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%hf)) then
+    call REAL_8_to_json(input%hf, json_val, depth + 1)
+    call json%rename(json_val, 'hf')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%vf)) then
+    call REAL_8_to_json(input%vf, json_val, depth + 1)
+    call json%rename(json_val, 'vf')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%patch)) then
+    call json%add(json_root, 'patch', input%patch)
+  endif
   if (associated(input%B_SOL)) then
     call REAL_8_to_json(input%B_SOL, json_val, depth + 1)
     call json%rename(json_val, 'B_SOL')
     call json%add(json_root, json_val)
   endif
-  call json%add(json_root, 'ls', input%ls)
-  call json%add(json_root, 'dx', input%dx)
-  call json%add(json_root, 'dy', input%dy)
-  call json%add(json_root, 'pitch_x', input%pitch_x)
-  call json%add(json_root, 'pitch_y', input%pitch_y)
+  if (associated(input%ls)) then
+    call json%add(json_root, 'ls', input%ls)
+  endif
+  if (associated(input%dx)) then
+    call json%add(json_root, 'dx', input%dx)
+  endif
+  if (associated(input%dy)) then
+    call json%add(json_root, 'dy', input%dy)
+  endif
+  if (associated(input%pitch_x)) then
+    call json%add(json_root, 'pitch_x', input%pitch_x)
+  endif
+  if (associated(input%pitch_y)) then
+    call json%add(json_root, 'pitch_y', input%pitch_y)
+  endif
 end subroutine KICKT3P_to_json
 subroutine KTK_to_json (input, json_root, depth)
   use definition, only: KTK
@@ -5992,26 +6158,38 @@ subroutine KTK_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
 end subroutine KTK_to_json
 subroutine KTKP_to_json (input, json_root, depth)
   use definition, only: KTKP
@@ -6109,34 +6287,46 @@ subroutine KTKP_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
 end subroutine KTKP_to_json
 subroutine LAYOUT_to_json (input, json_root, depth)
   use definition, only: LAYOUT
@@ -6427,20 +6617,26 @@ subroutine MAGNET_CHART_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call magnet_frame_to_json(input%f, json_val, depth + 1)
-  call json%rename(json_val, 'f')
-  call json%add(json_root, json_val)
-  call MADX_APERTURE_to_json(input%APERTURE, json_val, depth + 1)
-  call json%rename(json_val, 'APERTURE')
-  call json%add(json_root, json_val)
-  !'type(S_APERTURE), pointer:: A(:)  => null()'
-  call json%create_array(json_list1, 'a')
-  do i1 = lbound(input%A, 1), ubound(input%A, 1)
-    call S_APERTURE_to_json(input%A(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
+  if (associated(input%f)) then
+    call magnet_frame_to_json(input%f, json_val, depth + 1)
+    call json%rename(json_val, 'f')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%APERTURE)) then
+    call MADX_APERTURE_to_json(input%APERTURE, json_val, depth + 1)
+    call json%rename(json_val, 'APERTURE')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%A)) then
+    !'type(S_APERTURE), pointer:: A(:)  => null()'
+    call json%create_array(json_list1, 'a')
+    do i1 = lbound(input%A, 1), ubound(input%A, 1)
+      call S_APERTURE_to_json(input%A(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
   if (associated(input%charge)) then
     call json%add(json_root, 'charge', input%charge)
   endif
@@ -7438,7 +7634,9 @@ subroutine PATCH_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call json%add(json_root, 'patch', int(input%PATCH))
+  if (associated(input%PATCH)) then
+    call json%add(json_root, 'patch', int(input%PATCH))
+  endif
   if (associated(input%A_X1)) then
     call json%add(json_root, 'a_x1', int(input%A_X1))
   endif
@@ -7451,47 +7649,73 @@ subroutine PATCH_to_json (input, json_root, depth)
   if (associated(input%B_X2)) then
     call json%add(json_root, 'b_x2', int(input%B_X2))
   endif
-  !'REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()'
-  call json%create_array(json_list1, 'a_d')
-  do i1 = lbound(input%A_D, 1), ubound(input%A_D, 1)
-    call json%create_real(json_val, input%A_D(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()'
-  call json%create_array(json_list1, 'b_d')
-  do i1 = lbound(input%B_D, 1), ubound(input%B_D, 1)
-    call json%create_real(json_val, input%B_D(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()'
-  call json%create_array(json_list1, 'a_ang')
-  do i1 = lbound(input%A_ANG, 1), ubound(input%A_ANG, 1)
-    call json%create_real(json_val, input%A_ANG(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()'
-  call json%create_array(json_list1, 'b_ang')
-  do i1 = lbound(input%B_ANG, 1), ubound(input%B_ANG, 1)
-    call json%create_real(json_val, input%B_ANG(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'energy', int(input%ENERGY))
-  call json%add(json_root, 'time', int(input%TIME))
-  call json%add(json_root, 'a_t', input%A_T)
-  call json%add(json_root, 'b_t', input%B_T)
-  call json%add(json_root, 'a_l', input%A_L)
-  call json%add(json_root, 'b_l', input%B_L)
-  call json%add(json_root, 'p0b', input%p0b)
-  call json%add(json_root, 'b0b', input%b0b)
-  call json%add(json_root, 'track', input%track)
+  if (associated(input%A_D)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()'
+    call json%create_array(json_list1, 'a_d')
+    do i1 = lbound(input%A_D, 1), ubound(input%A_D, 1)
+      call json%create_real(json_val, input%A_D(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%B_D)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: A_D => null() ,B_D => null()'
+    call json%create_array(json_list1, 'b_d')
+    do i1 = lbound(input%B_D, 1), ubound(input%B_D, 1)
+      call json%create_real(json_val, input%B_D(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%A_ANG)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()'
+    call json%create_array(json_list1, 'a_ang')
+    do i1 = lbound(input%A_ANG, 1), ubound(input%A_ANG, 1)
+      call json%create_real(json_val, input%A_ANG(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%B_ANG)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: A_ANG => null() ,B_ANG => null()'
+    call json%create_array(json_list1, 'b_ang')
+    do i1 = lbound(input%B_ANG, 1), ubound(input%B_ANG, 1)
+      call json%create_real(json_val, input%B_ANG(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%ENERGY)) then
+    call json%add(json_root, 'energy', int(input%ENERGY))
+  endif
+  if (associated(input%TIME)) then
+    call json%add(json_root, 'time', int(input%TIME))
+  endif
+  if (associated(input%A_T)) then
+    call json%add(json_root, 'a_t', input%A_T)
+  endif
+  if (associated(input%B_T)) then
+    call json%add(json_root, 'b_t', input%B_T)
+  endif
+  if (associated(input%A_L)) then
+    call json%add(json_root, 'a_l', input%A_L)
+  endif
+  if (associated(input%B_L)) then
+    call json%add(json_root, 'b_l', input%B_L)
+  endif
+  if (associated(input%p0b)) then
+    call json%add(json_root, 'p0b', input%p0b)
+  endif
+  if (associated(input%b0b)) then
+    call json%add(json_root, 'b0b', input%b0b)
+  endif
+  if (associated(input%track)) then
+    call json%add(json_root, 'track', input%track)
+  endif
 end subroutine PATCH_to_json
 subroutine patchlist_to_json (input, json_root, depth)
   use madx_keywords, only: patchlist
@@ -8311,9 +8535,11 @@ subroutine S_APERTURE_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call MADX_APERTURE_to_json(input%APERTURE, json_val, depth + 1)
-  call json%rename(json_val, 'APERTURE')
-  call json%add(json_root, json_val)
+  if (associated(input%APERTURE)) then
+    call MADX_APERTURE_to_json(input%APERTURE, json_val, depth + 1)
+    call json%rename(json_val, 'APERTURE')
+    call json%add(json_root, json_val)
+  endif
 end subroutine S_APERTURE_to_json
 subroutine SAGAN_to_json (input, json_root, depth)
   use definition, only: SAGAN
@@ -8533,30 +8759,50 @@ subroutine SOL5_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
-  call json%add(json_root, 'dx', input%dx)
-  call json%add(json_root, 'dy', input%dy)
-  call json%add(json_root, 'pitch_x', input%pitch_x)
-  call json%add(json_root, 'pitch_y', input%pitch_y)
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
+  if (associated(input%dx)) then
+    call json%add(json_root, 'dx', input%dx)
+  endif
+  if (associated(input%dy)) then
+    call json%add(json_root, 'dy', input%dy)
+  endif
+  if (associated(input%pitch_x)) then
+    call json%add(json_root, 'pitch_x', input%pitch_x)
+  endif
+  if (associated(input%pitch_y)) then
+    call json%add(json_root, 'pitch_y', input%pitch_y)
+  endif
 end subroutine SOL5_to_json
 subroutine sol5_list_to_json (input, json_root, depth)
   use madx_keywords, only: sol5_list
@@ -8638,38 +8884,58 @@ subroutine SOL5P_to_json (input, json_root, depth)
     call json%rename(json_val, 'B_SOL')
     call json%add(json_root, json_val)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
-  call json%add(json_root, 'dx', input%dx)
-  call json%add(json_root, 'dy', input%dy)
-  call json%add(json_root, 'pitch_x', input%pitch_x)
-  call json%add(json_root, 'pitch_y', input%pitch_y)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%dx)) then
+    call json%add(json_root, 'dx', input%dx)
+  endif
+  if (associated(input%dy)) then
+    call json%add(json_root, 'dy', input%dy)
+  endif
+  if (associated(input%pitch_x)) then
+    call json%add(json_root, 'pitch_x', input%pitch_x)
+  endif
+  if (associated(input%pitch_y)) then
+    call json%add(json_root, 'pitch_y', input%pitch_y)
+  endif
 end subroutine SOL5P_to_json
 subroutine spinor_to_json (input, json_root, depth)
   use definition, only: spinor
@@ -8840,26 +9106,38 @@ subroutine STREX_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
@@ -8913,34 +9191,46 @@ subroutine STREXP_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
@@ -9000,22 +9290,26 @@ subroutine SUPERDRIFT_to_json (input, json_root, depth)
   if (associated(input%L)) then
     call json%add(json_root, 'l', input%L)
   endif
-  !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
-  call json%create_array(json_list1, 'd')
-  do i1 = lbound(input%D, 1), ubound(input%D, 1)
-    call json%create_real(json_val, input%D(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
-  call json%create_array(json_list1, 'ang')
-  do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
-    call json%create_real(json_val, input%ang(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
+  if (associated(input%D)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
+    call json%create_array(json_list1, 'd')
+    do i1 = lbound(input%D, 1), ubound(input%D, 1)
+      call json%create_real(json_val, input%D(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%ang)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
+    call json%create_array(json_list1, 'ang')
+    do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
+      call json%create_real(json_val, input%ang(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
   if (associated(input%A_X1)) then
     call json%add(json_root, 'a_x1', int(input%A_X1))
   endif
@@ -9049,22 +9343,26 @@ subroutine SUPERDRIFTP_to_json (input, json_root, depth)
     call json%rename(json_val, 'L')
     call json%add(json_root, json_val)
   endif
-  !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
-  call json%create_array(json_list1, 'd')
-  do i1 = lbound(input%D, 1), ubound(input%D, 1)
-    call json%create_real(json_val, input%D(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
-  call json%create_array(json_list1, 'ang')
-  do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
-    call json%create_real(json_val, input%ang(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
+  if (associated(input%D)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
+    call json%create_array(json_list1, 'd')
+    do i1 = lbound(input%D, 1), ubound(input%D, 1)
+      call json%create_real(json_val, input%D(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%ang)) then
+    !'REAL(DP),DIMENSION(:), POINTER:: D => null(),ang => null()'
+    call json%create_array(json_list1, 'ang')
+    do i1 = lbound(input%ang, 1), ubound(input%ang, 1)
+      call json%create_real(json_val, input%ang(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
   if (associated(input%A_X1)) then
     call json%add(json_root, 'a_x1', int(input%A_X1))
   endif
@@ -9255,29 +9553,41 @@ subroutine TEAPOT_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
   if (associated(input%AE)) then
     !'real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()'
     call json%create_array(json_list1, 'ae')
@@ -9416,37 +9726,49 @@ subroutine TEAPOTP_to_json (input, json_root, depth)
   if (associated(input%DRIFTKICK)) then
     call json%add(json_root, 'driftkick', input%DRIFTKICK)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%AE)) then
     !'TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()'
     call json%create_array(json_list1, 'ae')
@@ -10078,26 +10400,38 @@ subroutine TKTF_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call json%create_real(json_val, input%FINT(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call json%create_real(json_val, input%HGAP(i1), '')
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call json%add(json_root, 'h1', input%H1)
-  call json%add(json_root, 'h2', input%H2)
-  call json%add(json_root, 'va', input%VA)
-  call json%add(json_root, 'vs', input%VS)
+  if (associated(input%FINT)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call json%create_real(json_val, input%FINT(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call json%create_real(json_val, input%HGAP(i1), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call json%add(json_root, 'h1', input%H1)
+  endif
+  if (associated(input%H2)) then
+    call json%add(json_root, 'h2', input%H2)
+  endif
+  if (associated(input%VA)) then
+    call json%add(json_root, 'va', input%VA)
+  endif
+  if (associated(input%VS)) then
+    call json%add(json_root, 'vs', input%VS)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
@@ -10258,34 +10592,46 @@ subroutine TKTFP_to_json (input, json_root, depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'fint')
-  do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
-    call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
-  call json%create_array(json_list1, 'hgap')
-  do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
-    call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
-    call json%add(json_list1, json_val)
-  enddo
-  call json%add(json_root, json_list1)
-  nullify(json_list1)
-  call REAL_8_to_json(input%H1, json_val, depth + 1)
-  call json%rename(json_val, 'H1')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%H2, json_val, depth + 1)
-  call json%rename(json_val, 'H2')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VA, json_val, depth + 1)
-  call json%rename(json_val, 'VA')
-  call json%add(json_root, json_val)
-  call REAL_8_to_json(input%VS, json_val, depth + 1)
-  call json%rename(json_val, 'VS')
-  call json%add(json_root, json_val)
+  if (associated(input%FINT)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'fint')
+    do i1 = lbound(input%FINT, 1), ubound(input%FINT, 1)
+      call REAL_8_to_json(input%FINT(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%HGAP)) then
+    !'TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()'
+    call json%create_array(json_list1, 'hgap')
+    do i1 = lbound(input%HGAP, 1), ubound(input%HGAP, 1)
+      call REAL_8_to_json(input%HGAP(i1), json_val, depth + 1)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  if (associated(input%H1)) then
+    call REAL_8_to_json(input%H1, json_val, depth + 1)
+    call json%rename(json_val, 'H1')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%H2)) then
+    call REAL_8_to_json(input%H2, json_val, depth + 1)
+    call json%rename(json_val, 'H2')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VA)) then
+    call REAL_8_to_json(input%VA, json_val, depth + 1)
+    call json%rename(json_val, 'VA')
+    call json%add(json_root, json_val)
+  endif
+  if (associated(input%VS)) then
+    call REAL_8_to_json(input%VS, json_val, depth + 1)
+    call json%rename(json_val, 'VS')
+    call json%add(json_root, json_val)
+  endif
   if (associated(input%f)) then
     call json%add(json_root, 'f', int(input%f))
   endif
@@ -10908,8 +11254,12 @@ subroutine UNIVERSAL_TAYLOR_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call json%add(json_root, 'n', int(input%N))
-  call json%add(json_root, 'nv', int(input%NV))
+  if (associated(input%N)) then
+    call json%add(json_root, 'n', int(input%N))
+  endif
+  if (associated(input%NV)) then
+    call json%add(json_root, 'nv', int(input%NV))
+  endif
   if (associated(input%C)) then
     !'REAL(DP), POINTER,dimension(:)::C'
     call json%create_array(json_list1, 'c')

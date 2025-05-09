@@ -97,19 +97,6 @@ class FortranSource:
         return "\n".join(line for line in source_lines.splitlines() if line.strip())
 
 
-def _split_defn_words(defn: str) -> list[str]:
-    separators = "(), \t[]"
-    words = []
-    last = []
-    for ch in defn:
-        if ch in separators:
-            words.append("".join(last))
-            last = []
-        else:
-            last.append(ch)
-    return words
-
-
 def get_structures_by_name(struct_file: list[Structure]) -> dict[str, Structure]:
     by_name: dict[str, Structure] = {}
     for struct in struct_file:
@@ -242,8 +229,7 @@ class Converter:
             key=member.name.lower(),
         )
         code = builder.create_loop()
-        defn_words = _split_defn_words(member.definition.lower())
-        if "pointer" in defn_words:
+        if member.type_info.pointer:
             code = "\n".join(
                 (
                     f"if (associated({struct_var}%{member.name})) then",
@@ -251,7 +237,7 @@ class Converter:
                     "endif",
                 )
             )
-        if "allocatable" in defn_words:
+        elif member.type_info.allocatable:
             code = "\n".join(
                 (
                     f"if (allocated({struct_var}%{member.name})) then",
@@ -368,8 +354,7 @@ class Converter:
         else:
             raise NotImplementedError(f"Member type: {member.type=} {member.kind=} {member=}")
 
-        defn_words = _split_defn_words(member.definition.lower())
-        if "pointer" in defn_words:
+        if member.type_info.pointer:
             code = "\n".join(
                 (
                     f"if (associated({struct_var}%{member.name})) then",
@@ -377,7 +362,7 @@ class Converter:
                     "endif",
                 )
             )
-        if "allocatable" in defn_words:
+        elif member.type_info.allocatable:
             code = "\n".join(
                 (
                     f"if (allocated({struct_var}%{member.name})) then",
@@ -497,36 +482,6 @@ class Converter:
         )
 
 
-def get_used_structures(
-    struct: Structure,
-    structures: dict[str, Structure],
-    seen: set[str] | None = None,
-) -> set[str]:
-    if seen is None:
-        seen = set()
-    elif struct.name.lower() in seen:
-        return seen
-
-    seen.add(struct.name.lower())
-    for member in struct.members.values():
-        type_name = member.type.lower()
-        if type_name in structures and type_name not in seen:
-            seen.add(type_name)
-            seen = seen | get_used_structures(
-                structures[type_name],
-                structures,
-                seen=seen,
-            )
-    return seen
-
-
-def make_struct_tree(structures: dict[str, Structure]) -> dict[str, set[str]]:
-    res: dict[str, set[str]] = {}
-    for name, struct in structures.items():
-        res[name] = get_used_structures(struct, structures)
-    return res
-
-
 def convert_all(
     source: SourceConfig,
     structs: list[Structure],
@@ -556,11 +511,6 @@ def convert_all(
         description="JSON Fortran code",
     )
     logger.info("Total structures: %d", len(conv.seen))
-
-
-def dump_usage_tree(structs: list[Structure]):
-    conv = Converter(structs=structs)
-    return make_struct_tree(conv.by_bmad_name)
 
 
 def main():
