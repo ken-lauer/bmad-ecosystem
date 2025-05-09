@@ -36,10 +36,7 @@ class JsonDumpCode:
 
 default_subroutines = {
     "complex_to_json": """\
-subroutine complex_to_json (input, json_root, depth)
-
-  use json_module
-  use json_kinds, only: CK
+subroutine complex_to_json (input, json_root, depth, max_depth)
   use precision_def, only: dp
 
   implicit none
@@ -49,6 +46,7 @@ subroutine complex_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
 
   call json%create_array(json_root, '')
   call json%create_real(json_val, real(input), '')
@@ -143,11 +141,11 @@ class ListBuilder:
             iteration = f"call json%create_string({self.json_value_var}, trim({self.struct_var}%{member.name}({iter_vars})), '')"
         elif member.type.lower() in {"complex"}:
             conv_subroutine = to_subroutine_name(member.type)
-            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth + 1)"
+            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth=depth + 1, max_depth=max_depth)"
         elif member.type.lower() == "type":
             assert member.kind is not None
             conv_subroutine = to_subroutine_name(member.kind)
-            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth + 1)"
+            iteration = f"call {conv_subroutine}({self.struct_var}%{member.name}({iter_vars}), {self.json_value_var}, depth=depth + 1, max_depth=max_depth)"
         else:
             raise NotImplementedError(f"Member type: {member.type=} {member.kind=} {member=}")
 
@@ -335,7 +333,7 @@ class Converter:
             list_var = f"{json_list_var}1"
             code = "\n".join(
                 (
-                    f"call complex_to_json({struct_var}%{member.name}, {list_var}, depth+1)",
+                    f"call complex_to_json({struct_var}%{member.name}, {list_var}, depth=depth + 1, max_depth=max_depth)",
                     f"call json%rename({list_var}, '{member.name.lower()}')",
                     f"call json%add({parent_json_var}, {list_var})",
                 )
@@ -346,7 +344,7 @@ class Converter:
             conv_subroutine = to_subroutine_name(member.kind)
             code = "\n".join(
                 (
-                    f"call {conv_subroutine}({struct_var}%{member.name}, json_val, depth + 1)",
+                    f"call {conv_subroutine}({struct_var}%{member.name}, json_val, depth=depth + 1, max_depth=max_depth)",
                     f"call json%rename(json_val, '{member.name}')",
                     f"call json%add({parent_json_var}, json_val)",
                 )
@@ -425,7 +423,7 @@ class Converter:
     ) -> JsonDumpCode:
         subroutine_name = to_subroutine_name(struct.name)
 
-        lines = [f"subroutine {subroutine_name} (input, json_root, depth)"]
+        lines = [f"subroutine {subroutine_name} (input, json_root, depth, max_depth)"]
 
         dump_code = self.get_struct_dump_code(
             "input",
@@ -451,13 +449,14 @@ class Converter:
             type (json_value), pointer :: json_val
             type (json_value), pointer, intent(inout) :: json_root
             integer, optional, value :: depth
+            integer, optional, value :: max_depth
 
             integer i1, i2, i3, i4, i5, i6
             type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
 
             if (.not. present(depth)) depth = 0
-            if (depth > 10) then
-              call json%create_string(json_root, 'too deep', '')
+            if (present(max_depth) .and. depth >= max_depth) then
+              call json%create_null(json_root, '')
               return
             endif
 

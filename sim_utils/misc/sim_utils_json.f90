@@ -3,9 +3,7 @@ use json_module
 use json_string_utilities, only: integer_to_string
 use json_kinds, only: CK
 contains
-subroutine complex_to_json (input, json_root, depth)
-  use json_module
-  use json_kinds, only: CK
+subroutine complex_to_json (input, json_root, depth, max_depth)
   use precision_def, only: dp
   implicit none
   type(json_core) :: json
@@ -13,13 +11,14 @@ subroutine complex_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   call json%create_array(json_root, '')
   call json%create_real(json_val, real(input), '')
   call json%add(json_root, json_val)
   call json%create_real(json_val, aimag(input), '')
   call json%add(json_root, json_val)
 end subroutine complex_to_json
-subroutine all_pointer_struct_to_json (input, json_root, depth)
+subroutine all_pointer_struct_to_json (input, json_root, depth, max_depth)
   use sim_utils_struct, only: all_pointer_struct
   implicit none
   type(json_core) :: json
@@ -27,11 +26,12 @@ subroutine all_pointer_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -69,7 +69,7 @@ subroutine all_pointer_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
 end subroutine all_pointer_struct_to_json
-subroutine atom_struct_to_json (input, json_root, depth)
+subroutine atom_struct_to_json (input, json_root, depth, max_depth)
   use particle_species_mod, only: atom_struct
   implicit none
   type(json_core) :: json
@@ -77,11 +77,12 @@ subroutine atom_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -101,7 +102,7 @@ subroutine atom_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine atom_struct_to_json
-subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
+subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: bicubic_cmplx_coef_struct
   implicit none
   type(json_core) :: json
@@ -109,11 +110,12 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -126,7 +128,7 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
   do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
     call json%create_array(json_list1, 'coef')
     do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
-      call complex_to_json(input%coef(i1, i2), json_val, depth + 1)
+      call complex_to_json(input%coef(i1, i2), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_list2, json_list1)
@@ -143,7 +145,7 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine bicubic_cmplx_coef_struct_to_json
-subroutine bicubic_coef_struct_to_json (input, json_root, depth)
+subroutine bicubic_coef_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: bicubic_coef_struct
   implicit none
   type(json_core) :: json
@@ -151,11 +153,12 @@ subroutine bicubic_coef_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -185,7 +188,7 @@ subroutine bicubic_coef_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine bicubic_coef_struct_to_json
-subroutine bin_struct_to_json (input, json_root, depth)
+subroutine bin_struct_to_json (input, json_root, depth, max_depth)
   use bin_mod, only: bin_struct
   implicit none
   type(json_core) :: json
@@ -193,11 +196,12 @@ subroutine bin_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -220,7 +224,7 @@ subroutine bin_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'delta', input%delta)
   call json%add(json_root, 'n', int(input%n))
 end subroutine bin_struct_to_json
-subroutine c_dummy_struct_to_json (input, json_root, depth)
+subroutine c_dummy_struct_to_json (input, json_root, depth, max_depth)
   use fortran_cpp_utils, only: c_dummy_struct
   implicit none
   type(json_core) :: json
@@ -228,11 +232,12 @@ subroutine c_dummy_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -242,7 +247,7 @@ subroutine c_dummy_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'dummy', input%dummy)
 end subroutine c_dummy_struct_to_json
-subroutine cmplx_field1_at_2D_pt_struct_to_json (input, json_root, depth)
+subroutine cmplx_field1_at_2D_pt_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: cmplx_field1_at_2D_pt_struct
   implicit none
   type(json_core) :: json
@@ -250,11 +255,12 @@ subroutine cmplx_field1_at_2D_pt_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -262,20 +268,20 @@ subroutine cmplx_field1_at_2D_pt_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call complex_to_json(input%f, json_list1, depth+1)
+  call complex_to_json(input%f, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'f')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%df_dx, json_list1, depth+1)
+  call complex_to_json(input%df_dx, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'df_dx')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%df_dy, json_list1, depth+1)
+  call complex_to_json(input%df_dy, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'df_dy')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%d2f_dxdy, json_list1, depth+1)
+  call complex_to_json(input%d2f_dxdy, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'd2f_dxdy')
   call json%add(json_root, json_list1)
 end subroutine cmplx_field1_at_2D_pt_struct_to_json
-subroutine cmplx_field1_at_3D_pt_struct_to_json (input, json_root, depth)
+subroutine cmplx_field1_at_3D_pt_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: cmplx_field1_at_3D_pt_struct
   implicit none
   type(json_core) :: json
@@ -283,11 +289,12 @@ subroutine cmplx_field1_at_3D_pt_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -295,32 +302,32 @@ subroutine cmplx_field1_at_3D_pt_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call complex_to_json(input%f, json_list1, depth+1)
+  call complex_to_json(input%f, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'f')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%df_dx, json_list1, depth+1)
+  call complex_to_json(input%df_dx, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'df_dx')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%df_dy, json_list1, depth+1)
+  call complex_to_json(input%df_dy, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'df_dy')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%df_dz, json_list1, depth+1)
+  call complex_to_json(input%df_dz, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'df_dz')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%d2f_dxdy, json_list1, depth+1)
+  call complex_to_json(input%d2f_dxdy, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'd2f_dxdy')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%d2f_dxdz, json_list1, depth+1)
+  call complex_to_json(input%d2f_dxdz, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'd2f_dxdz')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%d2f_dydz, json_list1, depth+1)
+  call complex_to_json(input%d2f_dydz, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'd2f_dydz')
   call json%add(json_root, json_list1)
-  call complex_to_json(input%d3f_dxdydz, json_list1, depth+1)
+  call complex_to_json(input%d3f_dxdydz, json_list1, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_list1, 'd3f_dxdydz')
   call json%add(json_root, json_list1)
 end subroutine cmplx_field1_at_3D_pt_struct_to_json
-subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
+subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: cmplx_field_at_2D_box_struct
   implicit none
   type(json_core) :: json
@@ -328,11 +335,12 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -345,7 +353,7 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
   do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
     call json%create_array(json_list1, 'pt')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
-      call cmplx_field1_at_2D_pt_struct_to_json(input%pt(i1, i2), json_val, depth + 1)
+      call cmplx_field1_at_2D_pt_struct_to_json(input%pt(i1, i2), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_list2, json_list1)
@@ -362,7 +370,7 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine cmplx_field_at_2D_box_struct_to_json
-subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
+subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: cmplx_field_at_3D_box_struct
   implicit none
   type(json_core) :: json
@@ -370,11 +378,12 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -389,7 +398,7 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
       call json%create_array(json_list1, 'pt')
       do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
-        call cmplx_field1_at_3D_pt_struct_to_json(input%pt(i1, i2, i3), json_val, depth + 1)
+        call cmplx_field1_at_3D_pt_struct_to_json(input%pt(i1, i2, i3), json_val, depth=depth + 1, max_depth=max_depth)
         call json%add(json_list1, json_val)
       enddo
       call json%add(json_list2, json_list1)
@@ -409,7 +418,7 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine cmplx_field_at_3D_box_struct_to_json
-subroutine field1_at_2D_pt_struct_to_json (input, json_root, depth)
+subroutine field1_at_2D_pt_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: field1_at_2D_pt_struct
   implicit none
   type(json_core) :: json
@@ -417,11 +426,12 @@ subroutine field1_at_2D_pt_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -434,7 +444,7 @@ subroutine field1_at_2D_pt_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'df_dy', input%df_dy)
   call json%add(json_root, 'd2f_dxdy', input%d2f_dxdy)
 end subroutine field1_at_2D_pt_struct_to_json
-subroutine field1_at_3D_pt_struct_to_json (input, json_root, depth)
+subroutine field1_at_3D_pt_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: field1_at_3D_pt_struct
   implicit none
   type(json_core) :: json
@@ -442,11 +452,12 @@ subroutine field1_at_3D_pt_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -463,7 +474,7 @@ subroutine field1_at_3D_pt_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'd2f_dydz', input%d2f_dydz)
   call json%add(json_root, 'd3f_dxdydz', input%d3f_dxdydz)
 end subroutine field1_at_3D_pt_struct_to_json
-subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
+subroutine field_at_2D_box_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: field_at_2D_box_struct
   implicit none
   type(json_core) :: json
@@ -471,11 +482,12 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -488,7 +500,7 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
   do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
     call json%create_array(json_list1, 'pt')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
-      call field1_at_2D_pt_struct_to_json(input%pt(i1, i2), json_val, depth + 1)
+      call field1_at_2D_pt_struct_to_json(input%pt(i1, i2), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_list2, json_list1)
@@ -505,7 +517,7 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine field_at_2D_box_struct_to_json
-subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
+subroutine field_at_3D_box_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: field_at_3D_box_struct
   implicit none
   type(json_core) :: json
@@ -513,11 +525,12 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -532,7 +545,7 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
       call json%create_array(json_list1, 'pt')
       do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
-        call field1_at_3D_pt_struct_to_json(input%pt(i1, i2, i3), json_val, depth + 1)
+        call field1_at_3D_pt_struct_to_json(input%pt(i1, i2, i3), json_val, depth=depth + 1, max_depth=max_depth)
         call json%add(json_list1, json_val)
       enddo
       call json%add(json_list2, json_list1)
@@ -552,7 +565,7 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine field_at_3D_box_struct_to_json
-subroutine general_bin_struct_to_json (input, json_root, depth)
+subroutine general_bin_struct_to_json (input, json_root, depth, max_depth)
   use bin_mod, only: general_bin_struct
   implicit none
   type(json_core) :: json
@@ -560,11 +573,12 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -616,7 +630,7 @@ subroutine general_bin_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine general_bin_struct_to_json
-subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
+subroutine geodesic_lm_param_struct_to_json (input, json_root, depth, max_depth)
   use geodesic_lm, only: geodesic_lm_param_struct
   implicit none
   type(json_core) :: json
@@ -624,11 +638,12 @@ subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -667,7 +682,7 @@ subroutine geodesic_lm_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'center_diff', input%center_diff)
   call json%add(json_root, 'geo_hit_limit', input%geo_hit_limit)
 end subroutine geodesic_lm_param_struct_to_json
-subroutine global_common_struct_to_json (input, json_root, depth)
+subroutine global_common_struct_to_json (input, json_root, depth, max_depth)
   use precision_def, only: global_common_struct
   implicit none
   type(json_core) :: json
@@ -675,11 +690,12 @@ subroutine global_common_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -691,7 +707,7 @@ subroutine global_common_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'exit_on_error', input%exit_on_error)
   call json%add(json_root, 'debug', int(input%debug))
 end subroutine global_common_struct_to_json
-subroutine molecular_component_struct_to_json (input, json_root, depth)
+subroutine molecular_component_struct_to_json (input, json_root, depth, max_depth)
   use sim_utils_struct, only: molecular_component_struct
   implicit none
   type(json_core) :: json
@@ -699,11 +715,12 @@ subroutine molecular_component_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -714,7 +731,7 @@ subroutine molecular_component_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'atom', trim(input%atom))
   call json%add(json_root, 'number', int(input%number))
 end subroutine molecular_component_struct_to_json
-subroutine named_number_struct_to_json (input, json_root, depth)
+subroutine named_number_struct_to_json (input, json_root, depth, max_depth)
   use precision_def, only: named_number_struct
   implicit none
   type(json_core) :: json
@@ -722,11 +739,12 @@ subroutine named_number_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -737,7 +755,7 @@ subroutine named_number_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'name', trim(input%name))
   call json%add(json_root, 'value', input%value)
 end subroutine named_number_struct_to_json
-subroutine nametable_struct_to_json (input, json_root, depth)
+subroutine nametable_struct_to_json (input, json_root, depth, max_depth)
   use sim_utils_struct, only: nametable_struct
   implicit none
   type(json_core) :: json
@@ -745,11 +763,12 @@ subroutine nametable_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -780,7 +799,7 @@ subroutine nametable_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_min', int(input%n_min))
   call json%add(json_root, 'n_max', int(input%n_max))
 end subroutine nametable_struct_to_json
-subroutine object_struct_to_json (input, json_root, depth)
+subroutine object_struct_to_json (input, json_root, depth, max_depth)
   use object_model_mod, only: object_struct
   implicit none
   type(json_core) :: json
@@ -788,11 +807,12 @@ subroutine object_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -808,7 +828,7 @@ subroutine object_struct_to_json (input, json_root, depth)
     !'type (var_length_string_struct), allocatable :: token(:)'
     call json%create_array(json_list1, 'token')
     do i1 = lbound(input%token, 1), ubound(input%token, 1)
-      call var_length_string_struct_to_json(input%token(i1), json_val, depth + 1)
+      call var_length_string_struct_to_json(input%token(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
@@ -818,7 +838,7 @@ subroutine object_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_child', int(input%n_child))
   call json%add(json_root, 'n_token', int(input%n_token))
 end subroutine object_struct_to_json
-subroutine opti_de_param_struct_to_json (input, json_root, depth)
+subroutine opti_de_param_struct_to_json (input, json_root, depth, max_depth)
   use opti_de_mod, only: opti_de_param_struct
   implicit none
   type(json_core) :: json
@@ -826,11 +846,12 @@ subroutine opti_de_param_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -846,7 +867,7 @@ subroutine opti_de_param_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'randomize_f', input%randomize_F)
   call json%add(json_root, 'minimize_merit', input%minimize_merit)
 end subroutine opti_de_param_struct_to_json
-subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
+subroutine out_io_mod_com_struct_to_json (input, json_root, depth, max_depth)
   use output_mod, only: out_io_mod_com_struct
   implicit none
   type(json_core) :: json
@@ -854,11 +875,12 @@ subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -889,7 +911,7 @@ subroutine out_io_mod_com_struct_to_json (input, json_root, depth)
   endif
   call json%add(json_root, 'capture_state', trim(input%capture_state))
 end subroutine out_io_mod_com_struct_to_json
-subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
+subroutine out_io_output_direct_struct_to_json (input, json_root, depth, max_depth)
   use output_mod, only: out_io_output_direct_struct
   implicit none
   type(json_core) :: json
@@ -897,11 +919,12 @@ subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -926,7 +949,7 @@ subroutine out_io_output_direct_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine out_io_output_direct_struct_to_json
-subroutine pg_interface_struct_to_json (input, json_root, depth)
+subroutine pg_interface_struct_to_json (input, json_root, depth, max_depth)
   use pgplot_interface, only: pg_interface_struct
   implicit none
   type(json_core) :: json
@@ -934,11 +957,12 @@ subroutine pg_interface_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -952,7 +976,7 @@ subroutine pg_interface_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'qp_to_pg_text_height_factor', input%qp_to_pg_text_height_factor)
   call json%add(json_root, 'page_scale', input%page_scale)
 end subroutine pg_interface_struct_to_json
-subroutine qp_arrow_struct_to_json (input, json_root, depth)
+subroutine qp_arrow_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_arrow_struct
   implicit none
   type(json_core) :: json
@@ -960,11 +984,12 @@ subroutine qp_arrow_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -978,7 +1003,7 @@ subroutine qp_arrow_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'head_type', trim(input%head_type))
   call json%add(json_root, 'color', trim(input%color))
 end subroutine qp_arrow_struct_to_json
-subroutine qp_axis_struct_to_json (input, json_root, depth)
+subroutine qp_axis_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_axis_struct
   implicit none
   type(json_core) :: json
@@ -986,11 +1011,12 @@ subroutine qp_axis_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1023,7 +1049,7 @@ subroutine qp_axis_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'draw_label', input%draw_label)
   call json%add(json_root, 'draw_numbers', input%draw_numbers)
 end subroutine qp_axis_struct_to_json
-subroutine qp_legend_struct_to_json (input, json_root, depth)
+subroutine qp_legend_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_legend_struct
   implicit none
   type(json_core) :: json
@@ -1031,11 +1057,12 @@ subroutine qp_legend_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1050,7 +1077,7 @@ subroutine qp_legend_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'draw_symbol', input%draw_symbol)
   call json%add(json_root, 'draw_text', input%draw_text)
 end subroutine qp_legend_struct_to_json
-subroutine qp_line_struct_to_json (input, json_root, depth)
+subroutine qp_line_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_line_struct
   implicit none
   type(json_core) :: json
@@ -1058,11 +1085,12 @@ subroutine qp_line_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1074,7 +1102,7 @@ subroutine qp_line_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'color', trim(input%color))
   call json%add(json_root, 'pattern', trim(input%pattern))
 end subroutine qp_line_struct_to_json
-subroutine qp_plot_struct_to_json (input, json_root, depth)
+subroutine qp_plot_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_plot_struct
   implicit none
   type(json_core) :: json
@@ -1082,11 +1110,12 @@ subroutine qp_plot_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1095,25 +1124,25 @@ subroutine qp_plot_struct_to_json (input, json_root, depth)
   endif
   call json%create_object(json_root, '')
   call json%add(json_root, 'title', trim(input%title))
-  call qp_axis_struct_to_json(input%x, json_val, depth + 1)
+  call qp_axis_struct_to_json(input%x, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'x')
   call json%add(json_root, json_val)
-  call qp_axis_struct_to_json(input%y, json_val, depth + 1)
+  call qp_axis_struct_to_json(input%y, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'y')
   call json%add(json_root, json_val)
-  call qp_axis_struct_to_json(input%x2, json_val, depth + 1)
+  call qp_axis_struct_to_json(input%x2, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'x2')
   call json%add(json_root, json_val)
-  call qp_axis_struct_to_json(input%y2, json_val, depth + 1)
+  call qp_axis_struct_to_json(input%y2, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'y2')
   call json%add(json_root, json_val)
   if (associated(input%xx)) then
-    call qp_axis_struct_to_json(input%xx, json_val, depth + 1)
+    call qp_axis_struct_to_json(input%xx, json_val, depth=depth + 1, max_depth=max_depth)
     call json%rename(json_val, 'xx')
     call json%add(json_root, json_val)
   endif
   if (associated(input%yy)) then
-    call qp_axis_struct_to_json(input%yy, json_val, depth + 1)
+    call qp_axis_struct_to_json(input%yy, json_val, depth=depth + 1, max_depth=max_depth)
     call json%rename(json_val, 'yy')
     call json%add(json_root, json_val)
   endif
@@ -1125,7 +1154,7 @@ subroutine qp_plot_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'x_is_active_axis', input%x_is_active_axis)
   call json%add(json_root, 'y_is_active_axis', input%y_is_active_axis)
 end subroutine qp_plot_struct_to_json
-subroutine qp_point_struct_to_json (input, json_root, depth)
+subroutine qp_point_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_point_struct
   implicit none
   type(json_core) :: json
@@ -1133,11 +1162,12 @@ subroutine qp_point_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1149,7 +1179,7 @@ subroutine qp_point_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'y', input%y)
   call json%add(json_root, 'units', trim(input%units))
 end subroutine qp_point_struct_to_json
-subroutine qp_rect_struct_to_json (input, json_root, depth)
+subroutine qp_rect_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_rect_struct
   implicit none
   type(json_core) :: json
@@ -1157,11 +1187,12 @@ subroutine qp_rect_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1175,7 +1206,7 @@ subroutine qp_rect_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'y2', input%y2)
   call json%add(json_root, 'units', trim(input%units))
 end subroutine qp_rect_struct_to_json
-subroutine qp_state_struct_to_json (input, json_root, depth)
+subroutine qp_state_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_state_struct
   implicit none
   type(json_core) :: json
@@ -1183,11 +1214,12 @@ subroutine qp_state_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1195,64 +1227,64 @@ subroutine qp_state_struct_to_json (input, json_root, depth)
     return
   endif
   call json%create_object(json_root, '')
-  call qp_plot_struct_to_json(input%plot, json_val, depth + 1)
+  call qp_plot_struct_to_json(input%plot, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'plot')
   call json%add(json_root, json_val)
-  call qp_rect_struct_to_json(input%page, json_val, depth + 1)
+  call qp_rect_struct_to_json(input%page, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'page')
   call json%add(json_root, json_val)
-  call qp_rect_struct_to_json(input%box, json_val, depth + 1)
+  call qp_rect_struct_to_json(input%box, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'box')
   call json%add(json_root, json_val)
-  call qp_rect_struct_to_json(input%graph, json_val, depth + 1)
+  call qp_rect_struct_to_json(input%graph, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'graph')
   call json%add(json_root, json_val)
-  call qp_rect_struct_to_json(input%margin, json_val, depth + 1)
+  call qp_rect_struct_to_json(input%margin, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'margin')
   call json%add(json_root, json_val)
-  call qp_rect_struct_to_json(input%border, json_val, depth + 1)
+  call qp_rect_struct_to_json(input%border, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'border')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%main_title, json_val, depth + 1)
+  call qp_text_struct_to_json(input%main_title, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'main_title')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%graph_title, json_val, depth + 1)
+  call qp_text_struct_to_json(input%graph_title, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'graph_title')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%legend, json_val, depth + 1)
+  call qp_text_struct_to_json(input%legend, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'legend')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%text, json_val, depth + 1)
+  call qp_text_struct_to_json(input%text, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'text')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%axis_number, json_val, depth + 1)
+  call qp_text_struct_to_json(input%axis_number, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'axis_number')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%axis_label, json_val, depth + 1)
+  call qp_text_struct_to_json(input%axis_label, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'axis_label')
   call json%add(json_root, json_val)
-  call qp_text_struct_to_json(input%this_text, json_val, depth + 1)
+  call qp_text_struct_to_json(input%this_text, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'this_text')
   call json%add(json_root, json_val)
-  call qp_symbol_struct_to_json(input%symbol, json_val, depth + 1)
+  call qp_symbol_struct_to_json(input%symbol, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'symbol')
   call json%add(json_root, json_val)
-  call qp_arrow_struct_to_json(input%arrow, json_val, depth + 1)
+  call qp_arrow_struct_to_json(input%arrow, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'arrow')
   call json%add(json_root, json_val)
-  call qp_line_struct_to_json(input%std_line, json_val, depth + 1)
+  call qp_line_struct_to_json(input%std_line, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'std_line')
   call json%add(json_root, json_val)
-  call qp_line_struct_to_json(input%plot_line, json_val, depth + 1)
+  call qp_line_struct_to_json(input%plot_line, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'plot_line')
   call json%add(json_root, json_val)
-  call qp_line_struct_to_json(input%axis_line, json_val, depth + 1)
+  call qp_line_struct_to_json(input%axis_line, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'axis_line')
   call json%add(json_root, json_val)
-  call qp_line_struct_to_json(input%legend_line, json_val, depth + 1)
+  call qp_line_struct_to_json(input%legend_line, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'legend_line')
   call json%add(json_root, json_val)
-  call qp_line_struct_to_json(input%grid_line, json_val, depth + 1)
+  call qp_line_struct_to_json(input%grid_line, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'grid_line')
   call json%add(json_root, json_val)
   call json%add(json_root, 'text_scale', input%text_scale)
@@ -1285,7 +1317,7 @@ subroutine qp_state_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'buffer', input%buffer)
   call json%add(json_root, 'uniform_symbol_size', input%uniform_symbol_size)
 end subroutine qp_state_struct_to_json
-subroutine qp_symbol_struct_to_json (input, json_root, depth)
+subroutine qp_symbol_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_symbol_struct
   implicit none
   type(json_core) :: json
@@ -1293,11 +1325,12 @@ subroutine qp_symbol_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1311,7 +1344,7 @@ subroutine qp_symbol_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'fill_pattern', trim(input%fill_pattern))
   call json%add(json_root, 'line_width', int(input%line_width))
 end subroutine qp_symbol_struct_to_json
-subroutine qp_text_struct_to_json (input, json_root, depth)
+subroutine qp_text_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_text_struct
   implicit none
   type(json_core) :: json
@@ -1319,11 +1352,12 @@ subroutine qp_text_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1335,7 +1369,7 @@ subroutine qp_text_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'color', trim(input%color))
   call json%add(json_root, 'uniform_spacing', input%uniform_spacing)
 end subroutine qp_text_struct_to_json
-subroutine random_state_struct_to_json (input, json_root, depth)
+subroutine random_state_struct_to_json (input, json_root, depth, max_depth)
   use random_mod, only: random_state_struct
   implicit none
   type(json_core) :: json
@@ -1343,11 +1377,12 @@ subroutine random_state_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1382,7 +1417,7 @@ subroutine random_state_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine random_state_struct_to_json
-subroutine spline_struct_to_json (input, json_root, depth)
+subroutine spline_struct_to_json (input, json_root, depth, max_depth)
   use spline_mod, only: spline_struct
   implicit none
   type(json_core) :: json
@@ -1390,11 +1425,12 @@ subroutine spline_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1414,7 +1450,7 @@ subroutine spline_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine spline_struct_to_json
-subroutine str_index_struct_to_json (input, json_root, depth)
+subroutine str_index_struct_to_json (input, json_root, depth, max_depth)
   use sim_utils_struct, only: str_index_struct
   implicit none
   type(json_core) :: json
@@ -1422,11 +1458,12 @@ subroutine str_index_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1438,7 +1475,7 @@ subroutine str_index_struct_to_json (input, json_root, depth)
     !'type (var_length_string_struct), allocatable :: name(:)'
     call json%create_array(json_list1, 'name')
     do i1 = lbound(input%name, 1), ubound(input%name, 1)
-      call var_length_string_struct_to_json(input%name(i1), json_val, depth + 1)
+      call var_length_string_struct_to_json(input%name(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)
@@ -1457,7 +1494,7 @@ subroutine str_index_struct_to_json (input, json_root, depth)
   call json%add(json_root, 'n_min', int(input%n_min))
   call json%add(json_root, 'n_max', int(input%n_max))
 end subroutine str_index_struct_to_json
-subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
+subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth, max_depth)
   use super_recipes_mod, only: super_mrqmin_storage_struct
   implicit none
   type(json_core) :: json
@@ -1465,11 +1502,12 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1609,7 +1647,7 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth)
     nullify(json_list1)
   endif
 end subroutine super_mrqmin_storage_struct_to_json
-subroutine temp_struct_to_json (input, json_root, depth)
+subroutine temp_struct_to_json (input, json_root, depth, max_depth)
   use object_model_mod, only: temp_struct
   implicit none
   type(json_core) :: json
@@ -1617,11 +1655,12 @@ subroutine temp_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1631,7 +1670,7 @@ subroutine temp_struct_to_json (input, json_root, depth)
   call json%create_object(json_root, '')
   call json%add(json_root, 'str', trim(input%str))
 end subroutine temp_struct_to_json
-subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
+subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: tricubic_cmplx_coef_struct
   implicit none
   type(json_core) :: json
@@ -1639,11 +1678,12 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1658,7 +1698,7 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
     do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
       call json%create_array(json_list1, 'coef')
       do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
-        call complex_to_json(input%coef(i1, i2, i3), json_val, depth + 1)
+        call complex_to_json(input%coef(i1, i2, i3), json_val, depth=depth + 1, max_depth=max_depth)
         call json%add(json_list1, json_val)
       enddo
       call json%add(json_list2, json_list1)
@@ -1678,7 +1718,7 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine tricubic_cmplx_coef_struct_to_json
-subroutine tricubic_coef_struct_to_json (input, json_root, depth)
+subroutine tricubic_coef_struct_to_json (input, json_root, depth, max_depth)
   use cubic_interpolation_mod, only: tricubic_coef_struct
   implicit none
   type(json_core) :: json
@@ -1686,11 +1726,12 @@ subroutine tricubic_coef_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1725,7 +1766,7 @@ subroutine tricubic_coef_struct_to_json (input, json_root, depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine tricubic_coef_struct_to_json
-subroutine var_length_string_struct_to_json (input, json_root, depth)
+subroutine var_length_string_struct_to_json (input, json_root, depth, max_depth)
   use sim_utils_struct, only: var_length_string_struct
   implicit none
   type(json_core) :: json
@@ -1733,11 +1774,12 @@ subroutine var_length_string_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
@@ -1749,7 +1791,7 @@ subroutine var_length_string_struct_to_json (input, json_root, depth)
     call json%add(json_root, 'str', trim(input%str))
   endif
 end subroutine var_length_string_struct_to_json
-subroutine wls_struct_to_json (input, json_root, depth)
+subroutine wls_struct_to_json (input, json_root, depth, max_depth)
   use windowls_mod, only: wls_struct
   implicit none
   type(json_core) :: json
@@ -1757,11 +1799,12 @@ subroutine wls_struct_to_json (input, json_root, depth)
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
+  integer, optional, value :: max_depth
   integer i1, i2, i3, i4, i5, i6
   type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
   if (.not. present(depth)) depth = 0
-  if (depth > 10) then
-    call json%create_string(json_root, 'too deep', '')
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
     return
   endif
   if (.not. associated(input)) then
