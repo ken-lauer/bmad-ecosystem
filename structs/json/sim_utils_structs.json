@@ -1,5 +1,511 @@
 [
   {
+    "filename": "$ACC_ROOT_DIR/sim_utils/file/object_model_mod.f90",
+    "line": 64,
+    "name": "object_struct",
+    "module": "object_model_mod",
+    "members": {
+      "name": {
+        "line": 65,
+        "definition": "character(:), allocatable :: name",
+        "type_info": {
+          "type": "character",
+          "allocatable": true,
+          "kind": ":"
+        },
+        "name": "name",
+        "type": "character",
+        "size": ":",
+        "dimension": "",
+        "default": null
+      },
+      "parent": {
+        "line": 66,
+        "definition": "type (object_struct), pointer :: parent => null()",
+        "type_info": {
+          "type": "type",
+          "pointer": true,
+          "kind": "object_struct"
+        },
+        "name": "parent",
+        "type": "type",
+        "size": "object_struct",
+        "dimension": "",
+        "default": "null()"
+      },
+      "token": {
+        "line": 67,
+        "definition": "type (var_length_string_struct), allocatable :: token(:)",
+        "type_info": {
+          "type": "type",
+          "allocatable": true,
+          "kind": "var_length_string_struct"
+        },
+        "name": "token",
+        "type": "type",
+        "size": "var_length_string_struct",
+        "dimension": ":",
+        "comment": "Array of tokens",
+        "default": null
+      },
+      "child": {
+        "line": 68,
+        "definition": "type (object_struct), pointer :: child(:) => null()",
+        "type_info": {
+          "type": "type",
+          "pointer": true,
+          "kind": "object_struct"
+        },
+        "name": "child",
+        "type": "type",
+        "size": "object_struct",
+        "dimension": ":",
+        "comment": "Array of subobjects",
+        "default": "null()"
+      },
+      "n_child": {
+        "line": 69,
+        "definition": "integer :: n_child = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_child",
+        "type": "integer",
+        "dimension": "",
+        "comment": "Number of subobjects.",
+        "default": "0"
+      },
+      "n_token": {
+        "line": 70,
+        "definition": "integer :: n_token = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_token",
+        "type": "integer",
+        "dimension": "",
+        "comment": "Number of tokens.",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/file/object_model_mod.f90",
+    "line": 60,
+    "name": "temp_struct",
+    "module": "object_model_mod",
+    "members": {
+      "str": {
+        "line": 61,
+        "definition": "character(40) :: str = ''",
+        "type_info": {
+          "type": "character",
+          "kind": "40"
+        },
+        "name": "str",
+        "type": "character",
+        "size": "40",
+        "dimension": "",
+        "default": "''"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/geodesic_lm/geodesic_lm.f90",
+    "line": 5,
+    "name": "geodesic_lm_param_struct",
+    "module": "geodesic_lm",
+    "members": {
+      "mode": {
+        "line": 6,
+        "definition": "integer :: mode = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "mode",
+        "type": "integer",
+        "dimension": "",
+        "comment": "LM damping matrix. 0->id, 1->dynamic jacob-based",
+        "default": "0"
+      },
+      "maxiter": {
+        "line": 7,
+        "definition": "integer :: maxiter = 500",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "maxiter",
+        "type": "integer",
+        "dimension": "",
+        "comment": "max # of routine iterations",
+        "default": "500"
+      },
+      "maxfev": {
+        "line": 8,
+        "definition": "integer :: maxfev = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "maxfev",
+        "type": "integer",
+        "dimension": "",
+        "comment": "max # of func evals (0-> no limit)",
+        "default": "0"
+      },
+      "maxjev": {
+        "line": 9,
+        "definition": "integer :: maxjev = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "maxjev",
+        "type": "integer",
+        "dimension": "",
+        "comment": "max number of jac evals (0->no limit)",
+        "default": "0"
+      },
+      "maxaev": {
+        "line": 10,
+        "definition": "integer :: maxaev = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "maxaev",
+        "type": "integer",
+        "dimension": "",
+        "comment": "max number of dir second derivs (0->no limit)",
+        "default": "0"
+      },
+      "print_level": {
+        "line": 11,
+        "definition": "integer :: print_level = 3",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "print_level",
+        "type": "integer",
+        "dimension": "",
+        "comment": "how many details to be printed (0-5)",
+        "default": "3"
+      },
+      "print_unit": {
+        "line": 12,
+        "definition": "integer :: print_unit = 6",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "print_unit",
+        "type": "integer",
+        "dimension": "",
+        "comment": "unit number details written to",
+        "default": "6"
+      },
+      "imethod": {
+        "line": 13,
+        "definition": "integer :: imethod = 10",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "imethod",
+        "type": "integer",
+        "dimension": "",
+        "comment": "method choice for updating LM parameter",
+        "default": "10"
+      },
+      "iaccel": {
+        "line": 14,
+        "definition": "integer :: iaccel = 1",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "iaccel",
+        "type": "integer",
+        "dimension": "",
+        "comment": "use geodesic acceleration or not",
+        "default": "1"
+      },
+      "ibold": {
+        "line": 15,
+        "definition": "integer :: ibold = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "ibold",
+        "type": "integer",
+        "dimension": "",
+        "comment": "'boldness' in accepting uphill (0-4) with 0->downhill",
+        "default": "0"
+      },
+      "ibroyden": {
+        "line": 16,
+        "definition": "integer :: ibroyden = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "ibroyden",
+        "type": "integer",
+        "dimension": "",
+        "comment": "number of iterations using approximate jacobian",
+        "default": "0"
+      },
+      "h1": {
+        "line": 17,
+        "definition": "real(rp) :: h1=1.D-6,h2=1.D-1",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "h1",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "controls step sizes for finite diff derivatives",
+        "default": "1.D-6"
+      },
+      "h2": {
+        "line": 17,
+        "definition": "real(rp) :: h1=1.D-6,h2=1.D-1",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "h2",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "controls step sizes for finite diff derivatives",
+        "default": "1.D-1"
+      },
+      "maxlam": {
+        "line": 18,
+        "definition": "real(rp) :: maxlam = 1E7",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "maxlam",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "maximum limit on damping term lambda (if <0 no limit)",
+        "default": "1E7"
+      },
+      "minlam": {
+        "line": 19,
+        "definition": "real(rp) :: minlam = -1.0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "minlam",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "minimum limit on damping term lambda (if <0 no limit)",
+        "default": "-1.0"
+      },
+      "artol": {
+        "line": 20,
+        "definition": "real(rp) :: artol = 1.E-3",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "artol",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "cos of angle between residual and tangent plane",
+        "default": "1.E-3"
+      },
+      "Cgoal": {
+        "line": 21,
+        "definition": "real(rp) :: Cgoal  = 1.E-23",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "Cgoal",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "Cost lower limit (ends when falls below)",
+        "default": "1.E-23"
+      },
+      "gtol": {
+        "line": 22,
+        "definition": "real(rp) :: gtol  = 1.5E-8",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "gtol",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "gradient lower limit",
+        "default": "1.5E-8"
+      },
+      "xtol": {
+        "line": 23,
+        "definition": "real(rp) :: xtol = 1.E-10",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "xtol",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "step size lower limit (ll)",
+        "default": "1.E-10"
+      },
+      "xrtol": {
+        "line": 24,
+        "definition": "real(rp) :: xrtol = 1.5E-8",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "xrtol",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "relative parameter change ll",
+        "default": "1.5E-8"
+      },
+      "ftol": {
+        "line": 25,
+        "definition": "real(rp) :: ftol = 1.5E-8",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "ftol",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "consecutive cost difference ll",
+        "default": "1.5E-8"
+      },
+      "frtol": {
+        "line": 26,
+        "definition": "real(rp) :: frtol = 1.5E-8",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "frtol",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "relative consecutive cost diff ll",
+        "default": "1.5E-8"
+      },
+      "initialfactor": {
+        "line": 27,
+        "definition": "real(rp) :: initialfactor = 1.",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "initialfactor",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "initial LM param or step size",
+        "default": "1."
+      },
+      "factoraccept": {
+        "line": 28,
+        "definition": "real(rp) :: factoraccept  = 5.",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "factoraccept",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "(if imethod=0 or 10) adjusts initialfactor",
+        "default": "5."
+      },
+      "factorreject": {
+        "line": 29,
+        "definition": "real(rp) :: factorreject  = 2.",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "factorreject",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "adjusts initialfactor for rejected step",
+        "default": "2."
+      },
+      "avmax": {
+        "line": 30,
+        "definition": "real(rp) :: avmax = 0.8",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "avmax",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "limits geo accel w.r.t. velocity",
+        "default": "0.8"
+      },
+      "analytic_jac": {
+        "line": 31,
+        "definition": "logical :: analytic_jac = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "analytic_jac",
+        "type": "logical",
+        "dimension": "",
+        "default": ".true."
+      },
+      "analytic_avv": {
+        "line": 32,
+        "definition": "logical :: analytic_avv = .false.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "analytic_avv",
+        "type": "logical",
+        "dimension": "",
+        "default": ".false."
+      },
+      "center_diff": {
+        "line": 33,
+        "definition": "logical :: center_diff = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "center_diff",
+        "type": "logical",
+        "dimension": "",
+        "default": ".true."
+      },
+      "geo_hit_limit": {
+        "line": 34,
+        "definition": "logical :: geo_hit_limit= .false.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "geo_hit_limit",
+        "type": "logical",
+        "dimension": "",
+        "comment": "flag for when limits are hit",
+        "default": ".false."
+      }
+    }
+  },
+  {
     "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
     "line": 45,
     "name": "all_pointer_struct",
@@ -128,6 +634,367 @@
         "dimension": "0:46",
         "comment": "isotope masses in units of the unified atomic mass unit.",
         "default": "no_iso"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/precision_def.f90",
+    "line": 8,
+    "name": "global_common_struct",
+    "module": "precision_def",
+    "members": {
+      "mp_threading_is_safe": {
+        "line": 9,
+        "definition": "logical :: mp_threading_is_safe = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "mp_threading_is_safe",
+        "type": "logical",
+        "dimension": "",
+        "comment": "Can threading be used with MP? EG ramping is not thread safe.",
+        "default": ".true."
+      },
+      "exit_on_error": {
+        "line": 10,
+        "definition": "logical :: exit_on_error  = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "exit_on_error",
+        "type": "logical",
+        "dimension": "",
+        "comment": "Exit program on error?",
+        "default": ".true."
+      },
+      "debug": {
+        "line": 11,
+        "definition": "integer :: debug = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "debug",
+        "type": "integer",
+        "dimension": "",
+        "comment": "Used for debugging purpeses",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
+    "line": 77,
+    "name": "molecular_component_struct",
+    "module": "sim_utils_struct",
+    "members": {
+      "atom": {
+        "line": 78,
+        "definition": "character(2) :: atom = ''",
+        "type_info": {
+          "type": "character",
+          "kind": "2"
+        },
+        "name": "atom",
+        "type": "character",
+        "size": "2",
+        "dimension": "",
+        "default": "''"
+      },
+      "number": {
+        "line": 79,
+        "definition": "integer :: number = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "number",
+        "type": "integer",
+        "dimension": "",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/precision_def.f90",
+    "line": 16,
+    "name": "named_number_struct",
+    "module": "precision_def",
+    "members": {
+      "name": {
+        "line": 17,
+        "definition": "character(40) :: name = ''",
+        "type_info": {
+          "type": "character",
+          "kind": "40"
+        },
+        "name": "name",
+        "type": "character",
+        "size": "40",
+        "dimension": "",
+        "default": "''"
+      },
+      "value": {
+        "line": 18,
+        "definition": "real(rp) :: value = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "value",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
+    "line": 34,
+    "name": "nametable_struct",
+    "module": "sim_utils_struct",
+    "members": {
+      "name": {
+        "line": 35,
+        "definition": "character(40), allocatable :: name(:)",
+        "type_info": {
+          "type": "character",
+          "allocatable": true,
+          "kind": "40"
+        },
+        "name": "name",
+        "type": "character",
+        "size": "40",
+        "dimension": ":",
+        "comment": "Array of names.",
+        "default": null
+      },
+      "index": {
+        "line": 36,
+        "definition": "integer, allocatable :: index(:)",
+        "type_info": {
+          "type": "integer",
+          "allocatable": true
+        },
+        "name": "index",
+        "type": "integer",
+        "dimension": ":",
+        "comment": "Sorted index for names(:) array.",
+        "default": null
+      },
+      "n_min": {
+        "line": 37,
+        "definition": "integer :: n_min = 1",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_min",
+        "type": "integer",
+        "dimension": "",
+        "comment": "Set to 0 for use in a lattice.",
+        "default": "1"
+      },
+      "n_max": {
+        "line": 38,
+        "definition": "integer :: n_max = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_max",
+        "type": "integer",
+        "dimension": "",
+        "comment": "Use only names(n_min:n_max) part of array.",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
+    "line": 18,
+    "name": "str_index_struct",
+    "module": "sim_utils_struct",
+    "members": {
+      "name": {
+        "line": 19,
+        "definition": "type (var_length_string_struct), allocatable :: name(:)",
+        "type_info": {
+          "type": "type",
+          "allocatable": true,
+          "kind": "var_length_string_struct"
+        },
+        "name": "name",
+        "type": "type",
+        "size": "var_length_string_struct",
+        "dimension": ":",
+        "comment": "Array of names.",
+        "default": null
+      },
+      "index": {
+        "line": 20,
+        "definition": "integer, allocatable :: index(:)",
+        "type_info": {
+          "type": "integer",
+          "allocatable": true
+        },
+        "name": "index",
+        "type": "integer",
+        "dimension": ":",
+        "comment": "Sorted index for names(:) array.",
+        "default": null
+      },
+      "n_min": {
+        "line": 21,
+        "definition": "integer :: n_min = 1",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_min",
+        "type": "integer",
+        "dimension": "",
+        "default": "1"
+      },
+      "n_max": {
+        "line": 22,
+        "definition": "integer :: n_max = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_max",
+        "type": "integer",
+        "dimension": "",
+        "comment": "Use only names(n_min:n_max) part of array.",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
+    "line": 14,
+    "name": "var_length_string_struct",
+    "module": "sim_utils_struct",
+    "members": {
+      "str": {
+        "line": 15,
+        "definition": "character(:), allocatable :: str",
+        "type_info": {
+          "type": "character",
+          "allocatable": true,
+          "kind": ":"
+        },
+        "name": "str",
+        "type": "character",
+        "size": ":",
+        "dimension": "",
+        "default": null
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/io/output_mod.f90",
+    "line": 33,
+    "name": "out_io_mod_com_struct",
+    "module": "output_mod",
+    "members": {
+      "indent_num": {
+        "line": 34,
+        "definition": "integer :: indent_num(-1:10) = [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "indent_num",
+        "type": "integer",
+        "dimension": "-1:10",
+        "default": "[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]"
+      },
+      "print_on": {
+        "line": 35,
+        "definition": "logical :: print_on = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "print_on",
+        "type": "logical",
+        "dimension": "",
+        "default": ".true."
+      },
+      "capture_lines_null_terminated": {
+        "line": 36,
+        "definition": "logical :: capture_lines_null_terminated = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "capture_lines_null_terminated",
+        "type": "logical",
+        "dimension": "",
+        "default": ".true."
+      },
+      "n_buffer_lines": {
+        "line": 37,
+        "definition": "integer :: n_buffer_lines = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "n_buffer_lines",
+        "type": "integer",
+        "dimension": "",
+        "default": "0"
+      },
+      "buffer": {
+        "line": 38,
+        "definition": "character(300), allocatable :: buffer(:)",
+        "type_info": {
+          "type": "character",
+          "allocatable": true,
+          "kind": "300"
+        },
+        "name": "buffer",
+        "type": "character",
+        "size": "300",
+        "dimension": ":",
+        "default": null
+      },
+      "capture_state": {
+        "line": 39,
+        "definition": "character(16) :: capture_state = 'OFF'",
+        "type_info": {
+          "type": "character",
+          "kind": "16"
+        },
+        "name": "capture_state",
+        "type": "character",
+        "size": "16",
+        "dimension": "",
+        "comment": "See out_io_print_and_capture_setup",
+        "default": "'OFF'"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/io/output_mod.f90",
+    "line": 28,
+    "name": "out_io_output_direct_struct",
+    "module": "output_mod",
+    "members": {
+      "print_and_capture": {
+        "line": 29,
+        "definition": "logical :: print_and_capture(-1:10) = .true.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "print_and_capture",
+        "type": "logical",
+        "dimension": "-1:10",
+        "default": ".true."
+      },
+      "file_unit": {
+        "line": 30,
+        "definition": "integer :: file_unit(-1:10) = -1",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "file_unit",
+        "type": "integer",
+        "dimension": "-1:10",
+        "default": "-1"
       }
     }
   },
@@ -271,27 +1138,6 @@
         "type": "integer",
         "dimension": "",
         "comment": "Number of bins",
-        "default": null
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/misc/fortran_cpp_utils.f90",
-    "line": 6,
-    "name": "c_dummy_struct",
-    "module": "fortran_cpp_utils",
-    "members": {
-      "dummy": {
-        "line": 7,
-        "definition": "real(rp) dummy",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "dummy",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
         "default": null
       }
     }
@@ -885,657 +1731,587 @@
     }
   },
   {
-    "filename": "$ACC_ROOT_DIR/sim_utils/geodesic_lm/geodesic_lm.f90",
-    "line": 5,
-    "name": "geodesic_lm_param_struct",
-    "module": "geodesic_lm",
+    "filename": "$ACC_ROOT_DIR/sim_utils/math/random_mod.f90",
+    "line": 28,
+    "name": "random_state_struct",
+    "module": "random_mod",
     "members": {
-      "mode": {
-        "line": 6,
-        "definition": "integer :: mode = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "mode",
-        "type": "integer",
-        "dimension": "",
-        "comment": "LM damping matrix. 0->id, 1->dynamic jacob-based",
-        "default": "0"
-      },
-      "maxiter": {
-        "line": 7,
-        "definition": "integer :: maxiter = 500",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "maxiter",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max # of routine iterations",
-        "default": "500"
-      },
-      "maxfev": {
-        "line": 8,
-        "definition": "integer :: maxfev = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "maxfev",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max # of func evals (0-> no limit)",
-        "default": "0"
-      },
-      "maxjev": {
-        "line": 9,
-        "definition": "integer :: maxjev = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "maxjev",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max number of jac evals (0->no limit)",
-        "default": "0"
-      },
-      "maxaev": {
-        "line": 10,
-        "definition": "integer :: maxaev = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "maxaev",
-        "type": "integer",
-        "dimension": "",
-        "comment": "max number of dir second derivs (0->no limit)",
-        "default": "0"
-      },
-      "print_level": {
-        "line": 11,
-        "definition": "integer :: print_level = 3",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "print_level",
-        "type": "integer",
-        "dimension": "",
-        "comment": "how many details to be printed (0-5)",
-        "default": "3"
-      },
-      "print_unit": {
-        "line": 12,
-        "definition": "integer :: print_unit = 6",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "print_unit",
-        "type": "integer",
-        "dimension": "",
-        "comment": "unit number details written to",
-        "default": "6"
-      },
-      "imethod": {
-        "line": 13,
-        "definition": "integer :: imethod = 10",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "imethod",
-        "type": "integer",
-        "dimension": "",
-        "comment": "method choice for updating LM parameter",
-        "default": "10"
-      },
-      "iaccel": {
-        "line": 14,
-        "definition": "integer :: iaccel = 1",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "iaccel",
-        "type": "integer",
-        "dimension": "",
-        "comment": "use geodesic acceleration or not",
-        "default": "1"
-      },
-      "ibold": {
-        "line": 15,
-        "definition": "integer :: ibold = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "ibold",
-        "type": "integer",
-        "dimension": "",
-        "comment": "'boldness' in accepting uphill (0-4) with 0->downhill",
-        "default": "0"
-      },
-      "ibroyden": {
-        "line": 16,
-        "definition": "integer :: ibroyden = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "ibroyden",
-        "type": "integer",
-        "dimension": "",
-        "comment": "number of iterations using approximate jacobian",
-        "default": "0"
-      },
-      "h1": {
-        "line": 17,
-        "definition": "real(rp) :: h1=1.D-6,h2=1.D-1",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "h1",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "controls step sizes for finite diff derivatives",
-        "default": "1.D-6"
-      },
-      "h2": {
-        "line": 17,
-        "definition": "real(rp) :: h1=1.D-6,h2=1.D-1",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "h2",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "controls step sizes for finite diff derivatives",
-        "default": "1.D-1"
-      },
-      "maxlam": {
-        "line": 18,
-        "definition": "real(rp) :: maxlam = 1E7",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "maxlam",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "maximum limit on damping term lambda (if <0 no limit)",
-        "default": "1E7"
-      },
-      "minlam": {
-        "line": 19,
-        "definition": "real(rp) :: minlam = -1.0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "minlam",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "minimum limit on damping term lambda (if <0 no limit)",
-        "default": "-1.0"
-      },
-      "artol": {
-        "line": 20,
-        "definition": "real(rp) :: artol = 1.E-3",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "artol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "cos of angle between residual and tangent plane",
-        "default": "1.E-3"
-      },
-      "Cgoal": {
-        "line": 21,
-        "definition": "real(rp) :: Cgoal  = 1.E-23",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "Cgoal",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Cost lower limit (ends when falls below)",
-        "default": "1.E-23"
-      },
-      "gtol": {
-        "line": 22,
-        "definition": "real(rp) :: gtol  = 1.5E-8",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "gtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "gradient lower limit",
-        "default": "1.5E-8"
-      },
-      "xtol": {
-        "line": 23,
-        "definition": "real(rp) :: xtol = 1.E-10",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "xtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "step size lower limit (ll)",
-        "default": "1.E-10"
-      },
-      "xrtol": {
-        "line": 24,
-        "definition": "real(rp) :: xrtol = 1.5E-8",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "xrtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "relative parameter change ll",
-        "default": "1.5E-8"
-      },
-      "ftol": {
-        "line": 25,
-        "definition": "real(rp) :: ftol = 1.5E-8",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "ftol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "consecutive cost difference ll",
-        "default": "1.5E-8"
-      },
-      "frtol": {
-        "line": 26,
-        "definition": "real(rp) :: frtol = 1.5E-8",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "frtol",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "relative consecutive cost diff ll",
-        "default": "1.5E-8"
-      },
-      "initialfactor": {
-        "line": 27,
-        "definition": "real(rp) :: initialfactor = 1.",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "initialfactor",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "initial LM param or step size",
-        "default": "1."
-      },
-      "factoraccept": {
-        "line": 28,
-        "definition": "real(rp) :: factoraccept  = 5.",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "factoraccept",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "(if imethod=0 or 10) adjusts initialfactor",
-        "default": "5."
-      },
-      "factorreject": {
+      "ix": {
         "line": 29,
-        "definition": "real(rp) :: factorreject  = 2.",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "factorreject",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "adjusts initialfactor for rejected step",
-        "default": "2."
-      },
-      "avmax": {
-        "line": 30,
-        "definition": "real(rp) :: avmax = 0.8",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "avmax",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "limits geo accel w.r.t. velocity",
-        "default": "0.8"
-      },
-      "analytic_jac": {
-        "line": 31,
-        "definition": "logical :: analytic_jac = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "analytic_jac",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
-      },
-      "analytic_avv": {
-        "line": 32,
-        "definition": "logical :: analytic_avv = .false.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "analytic_avv",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
-      },
-      "center_diff": {
-        "line": 33,
-        "definition": "logical :: center_diff = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "center_diff",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
-      },
-      "geo_hit_limit": {
-        "line": 34,
-        "definition": "logical :: geo_hit_limit= .false.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "geo_hit_limit",
-        "type": "logical",
-        "dimension": "",
-        "comment": "flag for when limits are hit",
-        "default": ".false."
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/precision_def.f90",
-    "line": 8,
-    "name": "global_common_struct",
-    "module": "precision_def",
-    "members": {
-      "mp_threading_is_safe": {
-        "line": 9,
-        "definition": "logical :: mp_threading_is_safe = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "mp_threading_is_safe",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Can threading be used with MP? EG ramping is not thread safe.",
-        "default": ".true."
-      },
-      "exit_on_error": {
-        "line": 10,
-        "definition": "logical :: exit_on_error  = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "exit_on_error",
-        "type": "logical",
-        "dimension": "",
-        "comment": "Exit program on error?",
-        "default": ".true."
-      },
-      "debug": {
-        "line": 11,
-        "definition": "integer :: debug = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "debug",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Used for debugging purpeses",
-        "default": "0"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
-    "line": 77,
-    "name": "molecular_component_struct",
-    "module": "sim_utils_struct",
-    "members": {
-      "atom": {
-        "line": 78,
-        "definition": "character(2) :: atom = ''",
-        "type_info": {
-          "type": "character",
-          "kind": "2"
-        },
-        "name": "atom",
-        "type": "character",
-        "size": "2",
-        "dimension": "",
-        "default": "''"
-      },
-      "number": {
-        "line": 79,
-        "definition": "integer :: number = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "number",
-        "type": "integer",
-        "dimension": "",
-        "default": "0"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/precision_def.f90",
-    "line": 16,
-    "name": "named_number_struct",
-    "module": "precision_def",
-    "members": {
-      "name": {
-        "line": 17,
-        "definition": "character(40) :: name = ''",
-        "type_info": {
-          "type": "character",
-          "kind": "40"
-        },
-        "name": "name",
-        "type": "character",
-        "size": "40",
-        "dimension": "",
-        "default": "''"
-      },
-      "value": {
-        "line": 18,
-        "definition": "real(rp) :: value = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "value",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
-    "line": 34,
-    "name": "nametable_struct",
-    "module": "sim_utils_struct",
-    "members": {
-      "name": {
-        "line": 35,
-        "definition": "character(40), allocatable :: name(:)",
-        "type_info": {
-          "type": "character",
-          "allocatable": true,
-          "kind": "40"
-        },
-        "name": "name",
-        "type": "character",
-        "size": "40",
-        "dimension": ":",
-        "comment": "Array of names.",
-        "default": null
-      },
-      "index": {
-        "line": 36,
-        "definition": "integer, allocatable :: index(:)",
+        "definition": "integer(kr4b) :: ix = -1, iy = -1",
         "type_info": {
           "type": "integer",
-          "allocatable": true
+          "kind": "kr4b"
         },
-        "name": "index",
+        "name": "ix",
         "type": "integer",
-        "dimension": ":",
-        "comment": "Sorted index for names(:) array.",
-        "default": null
+        "size": "kr4b",
+        "dimension": "",
+        "default": "-1"
       },
-      "n_min": {
+      "iy": {
+        "line": 29,
+        "definition": "integer(kr4b) :: ix = -1, iy = -1",
+        "type_info": {
+          "type": "integer",
+          "kind": "kr4b"
+        },
+        "name": "iy",
+        "type": "integer",
+        "size": "kr4b",
+        "dimension": "",
+        "default": "-1"
+      },
+      "number_stored": {
+        "line": 30,
+        "definition": "logical :: number_stored = .false.",
+        "type_info": {
+          "type": "logical"
+        },
+        "name": "number_stored",
+        "type": "logical",
+        "dimension": "",
+        "default": ".false."
+      },
+      "h_saved": {
+        "line": 31,
+        "definition": "real(rp) :: h_saved = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "h_saved",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "default": "0"
+      },
+      "engine": {
+        "line": 32,
+        "definition": "integer :: engine = pseudo_random$",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "engine",
+        "type": "integer",
+        "dimension": "",
+        "default": "pseudo_random$"
+      },
+      "seed": {
+        "line": 33,
+        "definition": "integer :: seed = 0",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "seed",
+        "type": "integer",
+        "dimension": "",
+        "default": "0"
+      },
+      "am": {
+        "line": 34,
+        "definition": "real(sp) :: am = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "sp"
+        },
+        "name": "am",
+        "type": "real",
+        "size": "sp",
+        "dimension": "",
+        "default": "0"
+      },
+      "gauss_converter": {
+        "line": 35,
+        "definition": "integer :: gauss_converter = exact_gaussian$",
+        "type_info": {
+          "type": "integer"
+        },
+        "name": "gauss_converter",
+        "type": "integer",
+        "dimension": "",
+        "default": "exact_gaussian$"
+      },
+      "gauss_sigma_cut": {
+        "line": 36,
+        "definition": "real(rp) :: gauss_sigma_cut = -1",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "gauss_sigma_cut",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "Only used if positive.",
+        "default": "-1"
+      },
+      "in_sobseq": {
         "line": 37,
-        "definition": "integer :: n_min = 1",
+        "definition": "integer(i4_b) :: in_sobseq = 0",
         "type_info": {
-          "type": "integer"
+          "type": "integer",
+          "kind": "i4_b"
         },
-        "name": "n_min",
+        "name": "in_sobseq",
         "type": "integer",
+        "size": "i4_b",
         "dimension": "",
-        "comment": "Set to 0 for use in a lattice.",
-        "default": "1"
+        "default": "0"
       },
-      "n_max": {
+      "ix_sobseq": {
         "line": 38,
-        "definition": "integer :: n_max = 0",
+        "definition": "integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0",
         "type_info": {
-          "type": "integer"
+          "type": "integer",
+          "kind": "i4_b"
         },
-        "name": "n_max",
+        "name": "ix_sobseq",
         "type": "integer",
-        "dimension": "",
-        "comment": "Use only names(n_min:n_max) part of array.",
+        "size": "i4_b",
+        "dimension": "sobseq_maxdim",
+        "default": "0"
+      },
+      "x_sobseq": {
+        "line": 39,
+        "definition": "real(rp) :: x_sobseq(sobseq_maxdim) = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "x_sobseq",
+        "type": "real",
+        "size": "rp",
+        "dimension": "sobseq_maxdim",
         "default": "0"
       }
     }
   },
   {
-    "filename": "$ACC_ROOT_DIR/sim_utils/file/object_model_mod.f90",
-    "line": 64,
-    "name": "object_struct",
-    "module": "object_model_mod",
+    "filename": "$ACC_ROOT_DIR/sim_utils/math/spline_mod.f90",
+    "line": 18,
+    "name": "spline_struct",
+    "module": "spline_mod",
     "members": {
-      "name": {
-        "line": 65,
-        "definition": "character(:), allocatable :: name",
+      "x0": {
+        "line": 19,
+        "definition": "real(rp) :: x0 = 0, y0 = 0",
         "type_info": {
-          "type": "character",
-          "allocatable": true,
-          "kind": ":"
+          "type": "real",
+          "kind": "rp"
         },
-        "name": "name",
-        "type": "character",
-        "size": ":",
+        "name": "x0",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "Point at start of spline",
+        "default": "0"
+      },
+      "y0": {
+        "line": 19,
+        "definition": "real(rp) :: x0 = 0, y0 = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "y0",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "Point at start of spline",
+        "default": "0"
+      },
+      "x1": {
+        "line": 20,
+        "definition": "real(rp) :: x1 = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "x1",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "comment": "Point at end of spline",
+        "default": "0"
+      },
+      "coef": {
+        "line": 21,
+        "definition": "real(rp) :: coef(0:3) = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "coef",
+        "type": "real",
+        "size": "rp",
+        "dimension": "0:3",
+        "comment": "coefficients for cubic spline",
+        "default": "0"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/math/super_recipes_mod.f90",
+    "line": 13,
+    "name": "super_mrqmin_storage_struct",
+    "module": "super_recipes_mod",
+    "members": {
+      "covar": {
+        "line": 14,
+        "definition": "real(rp), allocatable :: covar(:, :)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "covar",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":, :",
+        "comment": "Covariance matrix. See mrqmin in NR for more details.",
+        "default": null
+      },
+      "alpha": {
+        "line": 15,
+        "definition": "real(rp), allocatable :: alpha(:, :)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "alpha",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":, :",
+        "comment": "Curvature matrix. See mrqmin in NR for more details.",
+        "default": null
+      },
+      "atry": {
+        "line": 16,
+        "definition": "real(rp), allocatable :: atry(:), beta(:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "atry",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":",
+        "default": null
+      },
+      "beta": {
+        "line": 16,
+        "definition": "real(rp), allocatable :: atry(:), beta(:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "beta",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":",
+        "default": null
+      },
+      "da": {
+        "line": 17,
+        "definition": "real(rp), allocatable :: da(:,:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "da",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":,:",
+        "default": null
+      },
+      "ochisq": {
+        "line": 18,
+        "definition": "real(rp) :: ochisq",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "ochisq",
+        "type": "real",
+        "size": "rp",
         "dimension": "",
         "default": null
       },
-      "parent": {
-        "line": 66,
-        "definition": "type (object_struct), pointer :: parent => null()",
+      "mask": {
+        "line": 19,
+        "definition": "logical, allocatable :: mask(:)",
         "type_info": {
-          "type": "type",
-          "pointer": true,
-          "kind": "object_struct"
+          "type": "logical",
+          "allocatable": true
         },
-        "name": "parent",
-        "type": "type",
-        "size": "object_struct",
-        "dimension": "",
-        "default": "null()"
-      },
-      "token": {
-        "line": 67,
-        "definition": "type (var_length_string_struct), allocatable :: token(:)",
-        "type_info": {
-          "type": "type",
-          "allocatable": true,
-          "kind": "var_length_string_struct"
-        },
-        "name": "token",
-        "type": "type",
-        "size": "var_length_string_struct",
+        "name": "mask",
+        "type": "logical",
         "dimension": ":",
-        "comment": "Array of tokens",
         "default": null
       },
-      "child": {
-        "line": 68,
-        "definition": "type (object_struct), pointer :: child(:) => null()",
+      "dyda": {
+        "line": 20,
+        "definition": "real(rp), allocatable :: dyda(:, :)",
         "type_info": {
-          "type": "type",
-          "pointer": true,
-          "kind": "object_struct"
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
         },
-        "name": "child",
-        "type": "type",
-        "size": "object_struct",
+        "name": "dyda",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":, :",
+        "default": null
+      },
+      "old_dy": {
+        "line": 21,
+        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "old_dy",
+        "type": "real",
+        "size": "rp",
         "dimension": ":",
-        "comment": "Array of subobjects",
-        "default": "null()"
+        "default": null
       },
-      "n_child": {
-        "line": 69,
-        "definition": "integer :: n_child = 0",
+      "dy": {
+        "line": 21,
+        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "dy",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":",
+        "default": null
+      },
+      "wt": {
+        "line": 21,
+        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "wt",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":",
+        "default": null
+      },
+      "ymod": {
+        "line": 21,
+        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
+        "type_info": {
+          "type": "real",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "ymod",
+        "type": "real",
+        "size": "rp",
+        "dimension": ":",
+        "default": null
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/math/cubic_interpolation_mod.f90",
+    "line": 126,
+    "name": "tricubic_cmplx_coef_struct",
+    "module": "cubic_interpolation_mod",
+    "members": {
+      "coef": {
+        "line": 127,
+        "definition": "complex(rp) :: coef(0:3,0:3,0:3) = 0",
+        "type_info": {
+          "type": "complex",
+          "kind": "rp"
+        },
+        "name": "coef",
+        "type": "complex",
+        "size": "rp",
+        "dimension": "0:3,0:3,0:3",
+        "comment": "Coefs",
+        "default": "0"
+      },
+      "i_box": {
+        "line": 128,
+        "definition": "integer :: i_box(3) = int_garbage$",
         "type_info": {
           "type": "integer"
         },
-        "name": "n_child",
+        "name": "i_box",
         "type": "integer",
-        "dimension": "",
-        "comment": "Number of subobjects.",
+        "dimension": "3",
+        "comment": "index at lower box corner.",
+        "default": "int_garbage$"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/math/cubic_interpolation_mod.f90",
+    "line": 98,
+    "name": "tricubic_coef_struct",
+    "module": "cubic_interpolation_mod",
+    "members": {
+      "coef": {
+        "line": 99,
+        "definition": "real(rp) :: coef(0:3,0:3,0:3) = 0",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "coef",
+        "type": "real",
+        "size": "rp",
+        "dimension": "0:3,0:3,0:3",
+        "comment": "Coefs",
         "default": "0"
       },
-      "n_token": {
-        "line": 70,
-        "definition": "integer :: n_token = 0",
+      "i_box": {
+        "line": 100,
+        "definition": "integer :: i_box(3) = int_garbage$",
         "type_info": {
           "type": "integer"
         },
-        "name": "n_token",
+        "name": "i_box",
         "type": "integer",
+        "dimension": "3",
+        "comment": "index at lower box corner.",
+        "default": "int_garbage$"
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/math/windowLS.f90",
+    "line": 39,
+    "name": "wls_struct",
+    "module": "windowls_mod",
+    "members": {
+      "R1": {
+        "line": 40,
+        "definition": "REAL(rp), ALLOCATABLE :: R1(:,:)",
+        "type_info": {
+          "type": "REAL",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "R1",
+        "type": "REAL",
+        "size": "rp",
+        "dimension": ":,:",
+        "default": null
+      },
+      "Q1": {
+        "line": 41,
+        "definition": "REAL(rp), ALLOCATABLE :: Q1(:,:)",
+        "type_info": {
+          "type": "REAL",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "Q1",
+        "type": "REAL",
+        "size": "rp",
+        "dimension": ":,:",
+        "default": null
+      },
+      "N": {
+        "line": 42,
+        "definition": "INTEGER :: N",
+        "type_info": {
+          "type": "INTEGER"
+        },
+        "name": "N",
+        "type": "INTEGER",
         "dimension": "",
-        "comment": "Number of tokens.",
-        "default": "0"
+        "comment": "number of data points to fit to",
+        "default": null
+      },
+      "order": {
+        "line": 43,
+        "definition": "INTEGER :: order",
+        "type_info": {
+          "type": "INTEGER"
+        },
+        "name": "order",
+        "type": "INTEGER",
+        "dimension": "",
+        "comment": "order of fit polynomial",
+        "default": null
+      },
+      "der": {
+        "line": 44,
+        "definition": "INTEGER :: der",
+        "type_info": {
+          "type": "INTEGER"
+        },
+        "name": "der",
+        "type": "INTEGER",
+        "dimension": "",
+        "comment": "order of derivative to be returned by fixedWindowLS",
+        "default": null
+      },
+      "xend": {
+        "line": 45,
+        "definition": "REAL(rp) :: xend",
+        "type_info": {
+          "type": "REAL",
+          "kind": "rp"
+        },
+        "name": "xend",
+        "type": "REAL",
+        "size": "rp",
+        "dimension": "",
+        "default": null
+      },
+      "y": {
+        "line": 46,
+        "definition": "REAL(rp), ALLOCATABLE :: y(:)",
+        "type_info": {
+          "type": "REAL",
+          "allocatable": true,
+          "kind": "rp"
+        },
+        "name": "y",
+        "type": "REAL",
+        "size": "rp",
+        "dimension": ":",
+        "comment": "holds data",
+        "default": null
+      }
+    }
+  },
+  {
+    "filename": "$ACC_ROOT_DIR/sim_utils/misc/fortran_cpp_utils.f90",
+    "line": 6,
+    "name": "c_dummy_struct",
+    "module": "fortran_cpp_utils",
+    "members": {
+      "dummy": {
+        "line": 7,
+        "definition": "real(rp) dummy",
+        "type_info": {
+          "type": "real",
+          "kind": "rp"
+        },
+        "name": "dummy",
+        "type": "real",
+        "size": "rp",
+        "dimension": "",
+        "default": null
       }
     }
   },
@@ -1632,116 +2408,6 @@
         "dimension": "",
         "comment": "Alternative is to maximize.",
         "default": ".true."
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/io/output_mod.f90",
-    "line": 33,
-    "name": "out_io_mod_com_struct",
-    "module": "output_mod",
-    "members": {
-      "indent_num": {
-        "line": 34,
-        "definition": "integer :: indent_num(-1:10) = [0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "indent_num",
-        "type": "integer",
-        "dimension": "-1:10",
-        "default": "[0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]"
-      },
-      "print_on": {
-        "line": 35,
-        "definition": "logical :: print_on = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "print_on",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
-      },
-      "capture_lines_null_terminated": {
-        "line": 36,
-        "definition": "logical :: capture_lines_null_terminated = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "capture_lines_null_terminated",
-        "type": "logical",
-        "dimension": "",
-        "default": ".true."
-      },
-      "n_buffer_lines": {
-        "line": 37,
-        "definition": "integer :: n_buffer_lines = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "n_buffer_lines",
-        "type": "integer",
-        "dimension": "",
-        "default": "0"
-      },
-      "buffer": {
-        "line": 38,
-        "definition": "character(300), allocatable :: buffer(:)",
-        "type_info": {
-          "type": "character",
-          "allocatable": true,
-          "kind": "300"
-        },
-        "name": "buffer",
-        "type": "character",
-        "size": "300",
-        "dimension": ":",
-        "default": null
-      },
-      "capture_state": {
-        "line": 39,
-        "definition": "character(16) :: capture_state = 'OFF'",
-        "type_info": {
-          "type": "character",
-          "kind": "16"
-        },
-        "name": "capture_state",
-        "type": "character",
-        "size": "16",
-        "dimension": "",
-        "comment": "See out_io_print_and_capture_setup",
-        "default": "'OFF'"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/io/output_mod.f90",
-    "line": 28,
-    "name": "out_io_output_direct_struct",
-    "module": "output_mod",
-    "members": {
-      "print_and_capture": {
-        "line": 29,
-        "definition": "logical :: print_and_capture(-1:10) = .true.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "print_and_capture",
-        "type": "logical",
-        "dimension": "-1:10",
-        "default": ".true."
-      },
-      "file_unit": {
-        "line": 30,
-        "definition": "integer :: file_unit(-1:10) = -1",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "file_unit",
-        "type": "integer",
-        "dimension": "-1:10",
-        "default": "-1"
       }
     }
   },
@@ -3214,672 +3880,6 @@
         "type": "logical",
         "dimension": "",
         "default": ".false."
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/math/random_mod.f90",
-    "line": 28,
-    "name": "random_state_struct",
-    "module": "random_mod",
-    "members": {
-      "ix": {
-        "line": 29,
-        "definition": "integer(kr4b) :: ix = -1, iy = -1",
-        "type_info": {
-          "type": "integer",
-          "kind": "kr4b"
-        },
-        "name": "ix",
-        "type": "integer",
-        "size": "kr4b",
-        "dimension": "",
-        "default": "-1"
-      },
-      "iy": {
-        "line": 29,
-        "definition": "integer(kr4b) :: ix = -1, iy = -1",
-        "type_info": {
-          "type": "integer",
-          "kind": "kr4b"
-        },
-        "name": "iy",
-        "type": "integer",
-        "size": "kr4b",
-        "dimension": "",
-        "default": "-1"
-      },
-      "number_stored": {
-        "line": 30,
-        "definition": "logical :: number_stored = .false.",
-        "type_info": {
-          "type": "logical"
-        },
-        "name": "number_stored",
-        "type": "logical",
-        "dimension": "",
-        "default": ".false."
-      },
-      "h_saved": {
-        "line": 31,
-        "definition": "real(rp) :: h_saved = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "h_saved",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": "0"
-      },
-      "engine": {
-        "line": 32,
-        "definition": "integer :: engine = pseudo_random$",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "engine",
-        "type": "integer",
-        "dimension": "",
-        "default": "pseudo_random$"
-      },
-      "seed": {
-        "line": 33,
-        "definition": "integer :: seed = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "seed",
-        "type": "integer",
-        "dimension": "",
-        "default": "0"
-      },
-      "am": {
-        "line": 34,
-        "definition": "real(sp) :: am = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "sp"
-        },
-        "name": "am",
-        "type": "real",
-        "size": "sp",
-        "dimension": "",
-        "default": "0"
-      },
-      "gauss_converter": {
-        "line": 35,
-        "definition": "integer :: gauss_converter = exact_gaussian$",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "gauss_converter",
-        "type": "integer",
-        "dimension": "",
-        "default": "exact_gaussian$"
-      },
-      "gauss_sigma_cut": {
-        "line": 36,
-        "definition": "real(rp) :: gauss_sigma_cut = -1",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "gauss_sigma_cut",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Only used if positive.",
-        "default": "-1"
-      },
-      "in_sobseq": {
-        "line": 37,
-        "definition": "integer(i4_b) :: in_sobseq = 0",
-        "type_info": {
-          "type": "integer",
-          "kind": "i4_b"
-        },
-        "name": "in_sobseq",
-        "type": "integer",
-        "size": "i4_b",
-        "dimension": "",
-        "default": "0"
-      },
-      "ix_sobseq": {
-        "line": 38,
-        "definition": "integer(i4_b) :: ix_sobseq(sobseq_maxdim) = 0",
-        "type_info": {
-          "type": "integer",
-          "kind": "i4_b"
-        },
-        "name": "ix_sobseq",
-        "type": "integer",
-        "size": "i4_b",
-        "dimension": "sobseq_maxdim",
-        "default": "0"
-      },
-      "x_sobseq": {
-        "line": 39,
-        "definition": "real(rp) :: x_sobseq(sobseq_maxdim) = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "x_sobseq",
-        "type": "real",
-        "size": "rp",
-        "dimension": "sobseq_maxdim",
-        "default": "0"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/math/spline_mod.f90",
-    "line": 18,
-    "name": "spline_struct",
-    "module": "spline_mod",
-    "members": {
-      "x0": {
-        "line": 19,
-        "definition": "real(rp) :: x0 = 0, y0 = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "x0",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Point at start of spline",
-        "default": "0"
-      },
-      "y0": {
-        "line": 19,
-        "definition": "real(rp) :: x0 = 0, y0 = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "y0",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Point at start of spline",
-        "default": "0"
-      },
-      "x1": {
-        "line": 20,
-        "definition": "real(rp) :: x1 = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "x1",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "comment": "Point at end of spline",
-        "default": "0"
-      },
-      "coef": {
-        "line": 21,
-        "definition": "real(rp) :: coef(0:3) = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "coef",
-        "type": "real",
-        "size": "rp",
-        "dimension": "0:3",
-        "comment": "coefficients for cubic spline",
-        "default": "0"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
-    "line": 18,
-    "name": "str_index_struct",
-    "module": "sim_utils_struct",
-    "members": {
-      "name": {
-        "line": 19,
-        "definition": "type (var_length_string_struct), allocatable :: name(:)",
-        "type_info": {
-          "type": "type",
-          "allocatable": true,
-          "kind": "var_length_string_struct"
-        },
-        "name": "name",
-        "type": "type",
-        "size": "var_length_string_struct",
-        "dimension": ":",
-        "comment": "Array of names.",
-        "default": null
-      },
-      "index": {
-        "line": 20,
-        "definition": "integer, allocatable :: index(:)",
-        "type_info": {
-          "type": "integer",
-          "allocatable": true
-        },
-        "name": "index",
-        "type": "integer",
-        "dimension": ":",
-        "comment": "Sorted index for names(:) array.",
-        "default": null
-      },
-      "n_min": {
-        "line": 21,
-        "definition": "integer :: n_min = 1",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "n_min",
-        "type": "integer",
-        "dimension": "",
-        "default": "1"
-      },
-      "n_max": {
-        "line": 22,
-        "definition": "integer :: n_max = 0",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "n_max",
-        "type": "integer",
-        "dimension": "",
-        "comment": "Use only names(n_min:n_max) part of array.",
-        "default": "0"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/math/super_recipes_mod.f90",
-    "line": 13,
-    "name": "super_mrqmin_storage_struct",
-    "module": "super_recipes_mod",
-    "members": {
-      "covar": {
-        "line": 14,
-        "definition": "real(rp), allocatable :: covar(:, :)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "covar",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":, :",
-        "comment": "Covariance matrix. See mrqmin in NR for more details.",
-        "default": null
-      },
-      "alpha": {
-        "line": 15,
-        "definition": "real(rp), allocatable :: alpha(:, :)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "alpha",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":, :",
-        "comment": "Curvature matrix. See mrqmin in NR for more details.",
-        "default": null
-      },
-      "atry": {
-        "line": 16,
-        "definition": "real(rp), allocatable :: atry(:), beta(:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "atry",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
-      },
-      "beta": {
-        "line": 16,
-        "definition": "real(rp), allocatable :: atry(:), beta(:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "beta",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
-      },
-      "da": {
-        "line": 17,
-        "definition": "real(rp), allocatable :: da(:,:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "da",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":,:",
-        "default": null
-      },
-      "ochisq": {
-        "line": 18,
-        "definition": "real(rp) :: ochisq",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "ochisq",
-        "type": "real",
-        "size": "rp",
-        "dimension": "",
-        "default": null
-      },
-      "mask": {
-        "line": 19,
-        "definition": "logical, allocatable :: mask(:)",
-        "type_info": {
-          "type": "logical",
-          "allocatable": true
-        },
-        "name": "mask",
-        "type": "logical",
-        "dimension": ":",
-        "default": null
-      },
-      "dyda": {
-        "line": 20,
-        "definition": "real(rp), allocatable :: dyda(:, :)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "dyda",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":, :",
-        "default": null
-      },
-      "old_dy": {
-        "line": 21,
-        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "old_dy",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
-      },
-      "dy": {
-        "line": 21,
-        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "dy",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
-      },
-      "wt": {
-        "line": 21,
-        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "wt",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
-      },
-      "ymod": {
-        "line": 21,
-        "definition": "real(rp), allocatable :: old_dy(:), dy(:), wt(:), ymod(:)",
-        "type_info": {
-          "type": "real",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "ymod",
-        "type": "real",
-        "size": "rp",
-        "dimension": ":",
-        "default": null
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/file/object_model_mod.f90",
-    "line": 60,
-    "name": "temp_struct",
-    "module": "object_model_mod",
-    "members": {
-      "str": {
-        "line": 61,
-        "definition": "character(40) :: str = ''",
-        "type_info": {
-          "type": "character",
-          "kind": "40"
-        },
-        "name": "str",
-        "type": "character",
-        "size": "40",
-        "dimension": "",
-        "default": "''"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/math/cubic_interpolation_mod.f90",
-    "line": 126,
-    "name": "tricubic_cmplx_coef_struct",
-    "module": "cubic_interpolation_mod",
-    "members": {
-      "coef": {
-        "line": 127,
-        "definition": "complex(rp) :: coef(0:3,0:3,0:3) = 0",
-        "type_info": {
-          "type": "complex",
-          "kind": "rp"
-        },
-        "name": "coef",
-        "type": "complex",
-        "size": "rp",
-        "dimension": "0:3,0:3,0:3",
-        "comment": "Coefs",
-        "default": "0"
-      },
-      "i_box": {
-        "line": 128,
-        "definition": "integer :: i_box(3) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "i_box",
-        "type": "integer",
-        "dimension": "3",
-        "comment": "index at lower box corner.",
-        "default": "int_garbage$"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/math/cubic_interpolation_mod.f90",
-    "line": 98,
-    "name": "tricubic_coef_struct",
-    "module": "cubic_interpolation_mod",
-    "members": {
-      "coef": {
-        "line": 99,
-        "definition": "real(rp) :: coef(0:3,0:3,0:3) = 0",
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        },
-        "name": "coef",
-        "type": "real",
-        "size": "rp",
-        "dimension": "0:3,0:3,0:3",
-        "comment": "Coefs",
-        "default": "0"
-      },
-      "i_box": {
-        "line": 100,
-        "definition": "integer :: i_box(3) = int_garbage$",
-        "type_info": {
-          "type": "integer"
-        },
-        "name": "i_box",
-        "type": "integer",
-        "dimension": "3",
-        "comment": "index at lower box corner.",
-        "default": "int_garbage$"
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
-    "line": 14,
-    "name": "var_length_string_struct",
-    "module": "sim_utils_struct",
-    "members": {
-      "str": {
-        "line": 15,
-        "definition": "character(:), allocatable :: str",
-        "type_info": {
-          "type": "character",
-          "allocatable": true,
-          "kind": ":"
-        },
-        "name": "str",
-        "type": "character",
-        "size": ":",
-        "dimension": "",
-        "default": null
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/sim_utils/math/windowLS.f90",
-    "line": 39,
-    "name": "wls_struct",
-    "module": "windowls_mod",
-    "members": {
-      "R1": {
-        "line": 40,
-        "definition": "REAL(rp), ALLOCATABLE :: R1(:,:)",
-        "type_info": {
-          "type": "REAL",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "R1",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": ":,:",
-        "default": null
-      },
-      "Q1": {
-        "line": 41,
-        "definition": "REAL(rp), ALLOCATABLE :: Q1(:,:)",
-        "type_info": {
-          "type": "REAL",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "Q1",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": ":,:",
-        "default": null
-      },
-      "N": {
-        "line": 42,
-        "definition": "INTEGER :: N",
-        "type_info": {
-          "type": "INTEGER"
-        },
-        "name": "N",
-        "type": "INTEGER",
-        "dimension": "",
-        "comment": "number of data points to fit to",
-        "default": null
-      },
-      "order": {
-        "line": 43,
-        "definition": "INTEGER :: order",
-        "type_info": {
-          "type": "INTEGER"
-        },
-        "name": "order",
-        "type": "INTEGER",
-        "dimension": "",
-        "comment": "order of fit polynomial",
-        "default": null
-      },
-      "der": {
-        "line": 44,
-        "definition": "INTEGER :: der",
-        "type_info": {
-          "type": "INTEGER"
-        },
-        "name": "der",
-        "type": "INTEGER",
-        "dimension": "",
-        "comment": "order of derivative to be returned by fixedWindowLS",
-        "default": null
-      },
-      "xend": {
-        "line": 45,
-        "definition": "REAL(rp) :: xend",
-        "type_info": {
-          "type": "REAL",
-          "kind": "rp"
-        },
-        "name": "xend",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": "",
-        "default": null
-      },
-      "y": {
-        "line": 46,
-        "definition": "REAL(rp), ALLOCATABLE :: y(:)",
-        "type_info": {
-          "type": "REAL",
-          "allocatable": true,
-          "kind": "rp"
-        },
-        "name": "y",
-        "type": "REAL",
-        "size": "rp",
-        "dimension": ":",
-        "comment": "holds data",
-        "default": null
       }
     }
   }
