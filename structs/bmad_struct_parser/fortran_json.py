@@ -14,6 +14,7 @@ from .parser import (
     StructureMember,
     load_structures_by_filename,
 )
+from .util import write_file_if_changed
 
 logger = logging.getLogger(__name__)
 
@@ -548,7 +549,12 @@ def convert_all(
         fortran.subroutines[subroutine.name] = subroutine.code
         conv.generated.add(name)
 
-    source.fortran_filename.write_text(str(fortran))
+    write_file_if_changed(
+        source.fortran_filename,
+        str(fortran),
+        logger=logger,
+        description="JSON Fortran code",
+    )
     logger.info("Total structures: %d", len(conv.seen))
 
 

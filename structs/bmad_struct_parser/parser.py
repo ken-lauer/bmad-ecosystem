@@ -11,7 +11,7 @@ from collections.abc import Sequence
 from typing import Any, NamedTuple
 
 from .config import DEFAULT_CONFIG_FILE, ParserConfig, SourceConfig
-from .util import STRUCTS_ROOT, path_with_respect_to_env
+from .util import STRUCTS_ROOT, path_with_respect_to_env, write_file_if_changed
 
 logger = logging.getLogger(__name__)
 
@@ -812,26 +812,7 @@ def convert(
     sorted_structs = [struct.to_json() for struct in sorted(structs, key=struct_sort)]
     dumped_json = json.dumps(sorted_structs, indent=2)
     json_filename = pathlib.Path(output_json_path).with_suffix(".json")
-    if json_filename.exists():
-        existing_contents = json_filename.read_text()
-        if existing_contents != dumped_json:
-            json_filename.write_text(dumped_json)
-            logger.info(
-                "Overwriting JSON file: %s (%d -> %d bytes)",
-                json_filename,
-                len(existing_contents),
-                len(dumped_json),
-            )
-        else:
-            logger.info("JSON file unchanged, not writing: %s", json_filename)
-    else:
-        logger.info(
-            "Writing new JSON file: %s (%d bytes)",
-            json_filename,
-            len(dumped_json),
-        )
-        json_filename.write_text(dumped_json)
-
+    write_file_if_changed(json_filename, dumped_json, description="JSON file", logger=logger)
     return structs
 
 
