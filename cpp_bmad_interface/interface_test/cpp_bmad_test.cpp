@@ -8902,8 +8902,11 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   rhs = 79 + offset;
   C.slave_status = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 80 + offset;
-  C.n_lord = rhs;
+  if (ix_patt < 3) {
+    C.n_lord = 0;
+  } else {
+    C.n_lord = 1;
+  }
   // c_side.test_pat[0D_NOT_integer]
   rhs = 81 + offset;
   C.n_lord_field = rhs;

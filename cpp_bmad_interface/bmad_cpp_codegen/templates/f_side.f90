@@ -2346,4 +2346,12 @@ else
   call set_KIND_test_pattern (F%NAME, 0) ! avoid infinite recursion
 endif
   !!!! end:ele_struct%lord.test_pat
+  
+  !!!! begin:ele_struct%n_lord.test_pat
+if (ix_patt < 3) then
+  F%NAME = 0
+else
+  F%NAME = 1
+endif
+  !!!! end:ele_struct%n_lord.test_pat
 end subroutine

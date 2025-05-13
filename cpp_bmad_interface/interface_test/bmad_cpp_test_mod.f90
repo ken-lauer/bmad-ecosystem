@@ -12964,7 +12964,11 @@ rhs = 78 + offset; F%ix1_slave = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 79 + offset; F%slave_status = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 80 + offset; F%n_lord = rhs
+if (ix_patt < 3) then
+  F%n_lord = 0
+else
+  F%n_lord = 1
+endif
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 81 + offset; F%n_lord_field = rhs
 !! f_side.test_pat[0D_NOT_integer] Int

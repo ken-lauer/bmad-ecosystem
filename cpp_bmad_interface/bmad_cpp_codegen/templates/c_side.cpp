@@ -2431,7 +2431,8 @@ void ele_struct_fixes() {
   //// end:ele_struct%lord.to_f2_call
 
   //// begin:ele_struct%lord.to_c2_set
-  if (n_lord == 0) {
+  // NOTE: The parameter z_n_lord is set before n_lord
+  if (z_n_lord == 0 || !z_lord) {
     C.lord.reset();
   } else {
     std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
@@ -2449,6 +2450,14 @@ void ele_struct_fixes() {
     C.NAME = std::move(lord);
   }
   //// end:ele_struct%lord.test_pat
+
+  //// begin:ele_struct%n_lord.test_pat
+  if (ix_patt < 3) {
+    C.NAME = 0;
+  } else {
+    C.NAME = 1;
+  }
+  //// end:ele_struct%n_lord.test_pat
 
   //// begin:ele_struct%lord.equality_test
   is_eq = is_eq && (x.NAME.has_value() == y.NAME.has_value());

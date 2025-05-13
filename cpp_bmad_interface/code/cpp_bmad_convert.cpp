@@ -6226,7 +6226,8 @@ extern "C" void ele_to_c2(
     controller_to_c(z_control, C.control.value());
   }
   // c_side.to_c2_set[0D_PTR_type]   std::optional<std::shared_ptr<CPP_ele>>
-  if (n_lord == 0) {
+  // NOTE: The parameter z_n_lord is set before n_lord
+  if (z_n_lord == 0 || !z_lord) {
     C.lord.reset();
   } else {
     std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
