@@ -218,6 +218,59 @@ void tensor_to_vec(
   }
 }
 
+template <class T>
+void vec_to_matrix(
+    const T* vec,
+    const size_t n1,
+    const size_t n2,
+    Bmad::VariableArray2D<T>& mat) {
+  mat.resize(n1);
+  for (size_t i = 0; i < n1; i++) {
+    mat[i].resize(n2);
+    for (size_t j = 0; j < n2; j++) {
+      mat[i][j] = vec[i * n2 + j];
+    }
+  }
+}
+template <class T>
+void vec_to_tensor(
+    const T* vec,
+    const size_t n1,
+    const size_t n2,
+    const size_t n3,
+    Bmad::VariableArray3D<T>& tensor) {
+  tensor.resize(n1);
+  for (size_t i = 0; i < n1; i++) {
+    tensor[i].resize(n2);
+    for (size_t j = 0; j < n2; j++) {
+      tensor[i][j].resize(n3);
+      for (size_t k = 0; k < n3; k++) {
+        tensor[i][j][k] = vec[i * n2 * n3 + j * n3 + k];
+      }
+    }
+  }
+}
+template <class T, size_t DIM1, size_t DIM2>
+void vec_to_matrix(const T* vec, Bmad::FixedArray2D<T, DIM1, DIM2>& mat) {
+  for (size_t i = 0; i < DIM1; i++) {
+    for (size_t j = 0; j < DIM2; j++) {
+      mat[i][j] = vec[i * DIM2 + j];
+    }
+  }
+}
+template <class T, size_t DIM1, size_t DIM2, size_t DIM3>
+void vec_to_tensor(
+    const T* vec,
+    Bmad::FixedArray3D<T, DIM1, DIM2, DIM3>& tensor) {
+  for (size_t i = 0; i < DIM1; i++) {
+    for (size_t j = 0; j < DIM2; j++) {
+      for (size_t k = 0; k < DIM3; k++) {
+        tensor[i][j][k] = vec[i * DIM2 * DIM3 + j * DIM3 + k];
+      }
+    }
+  }
+}
+
 template <typename T, size_t DIM1>
 std::ostream& operator<<(
     std::ostream& os,
