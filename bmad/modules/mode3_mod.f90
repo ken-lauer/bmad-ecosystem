@@ -442,7 +442,7 @@ end subroutine action_to_xyz
 ! Output:
 !   eval(6)      -- complex(rp):  complex eigenvalues.
 !   evec(6,6)    -- complex(rp):  complex eigenvectors arranged down columns.
-!   err_flag     -- logical, optional: set to true if an error has occured.
+!   err_flag     -- logical: set to true if an error has occured.
 !   tunes(3)     -- real(rp):  Mode tunes, in radians.
 !-
 
@@ -704,7 +704,7 @@ end subroutine order_evecs_by_plane_dominance
 ! Output:
 !   eval(6)      -- complex(rp):  Ordered eigenvalues.
 !   evec(6,6)    -- complex(rp):  Ordered eigenvectors.
-!   err_flag     -- logical, optional:  Set to true if an error occured.
+!   err_flag     -- logical:  Set to true if an error occured.
 !-
 
 subroutine order_evecs_by_tune (evec, eval, mat_tunes, abz_tunes, err_flag)
