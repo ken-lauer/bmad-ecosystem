@@ -1402,9 +1402,9 @@ subroutine to_f2 (C, z_NAME) bind(c)
     endif
     if (.not. associated_or_allocated(F%NAME)) allocate(F%NAME(LBOUND:n1_NAME+LBOUND-1, LBOUND:n2_NAME+LBOUND-1))
     do jd1 = 1, n1_NAME
-    do jd2 = 1, n2_NAME
-    call KIND_to_f (z_NAME(n2_NAME*(jd1-1) + jd2), c_loc(F%NAME(jd1+LBOUND-1,jd2+LBOUND-1)))
-    enddo
+      do jd2 = 1, n2_NAME
+        call KIND_to_f (z_NAME(n2_NAME*(jd1-1) + jd2), c_loc(F%NAME(jd1+LBOUND-1,jd2+LBOUND-1)))
+      enddo
     enddo
   endif
   !!!! end:to_f2_trans
@@ -2079,13 +2079,14 @@ rhs
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(-1:1, 2))
   do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-  rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset
-  F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE
-  enddo; enddo
+    do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+      rhs = 100 + jd1 + 10*jd2 + ARGIDX + offset
+      F%NAME(jd1+lb1,jd2+lb2) = TEST_VALUE
+    enddo
+  enddo
 endif
 !!!! end:test_pat
 
@@ -2150,14 +2151,16 @@ rhs
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(-1:1, 2, 1))
   do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-  do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
-  rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset
-  F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE
-  enddo; enddo; enddo
+    do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
+      do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
+        rhs = 100 + jd1 + 10*jd2 + 100*jd3 + ARGIDX + offset
+        F%NAME(jd1+lb1,jd2+lb2,jd3+lb3) = TEST_VALUE
+      enddo
+    enddo
+  enddo
 endif
 !!!! end:test_pat
 
@@ -2170,12 +2173,13 @@ TEST_VALUE
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME(3))
   do jd1 = 1, 3
-  do jd = 1, len(F%NAME)
-  F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
-  enddo; enddo
+    do jd = 1, len(F%NAME)
+      F%NAME(jd1)(jd:jd) = char(ichar("a") + modulo(100+ARGIDX+offset+10*jd+jd1, 26))
+    enddo
+  enddo
 endif
 !!!! end:test_pat
 
@@ -2205,10 +2209,10 @@ endif
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
   rhs = ARGIDX + offset
-  F%NAME =
+  F%NAME = TEST_VALUE
 endif
 !!!! end:test_pat
 
@@ -2221,7 +2225,7 @@ endif
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
   rhs = ARGIDX + offset
   F%NAME = (modulo(rhs, 2) == 0)
@@ -2237,7 +2241,7 @@ cmplx(rhs, 100+rhs)
 !!!! begin:test_pat
 if (ix_patt < 3) then
   if (associated_or_allocated(F%NAME)) deallocate (F%NAME)
-  else
+else
   if (.not. associated_or_allocated(F%NAME)) allocate (F%NAME)
   rhs = ARGIDX + offset
   F%NAME = cmplx(rhs, 100+rhs)
@@ -2329,4 +2333,17 @@ subroutine ele_struct_fixes ()
   ! custom fix (ele_struct_fixes)
   F%NAME = z_NAME(2 : num_ele_attrib$ + 1)
   !!!! end:ele_struct%old_value.to_f2_trans
+  
+  !!!! begin:ele_struct%lord.test_pat
+if (ix_patt < 3) then
+  if (associated(F%NAME)) then
+    call set_KIND_test_pattern (F%NAME, -1)
+    deallocate (F%NAME)
+  endif
+else
+  if (.not. associated(F%NAME)) allocate (F%NAME)
+  rhs = ARGIDX + offset
+  call set_KIND_test_pattern (F%NAME, 0) ! avoid infinite recursion
+endif
+  !!!! end:ele_struct%lord.test_pat
 end subroutine

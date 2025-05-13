@@ -1025,6 +1025,12 @@ is_eq = .true.
 is_eq = is_eq .and. (f1%file == f2%file)
 !! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_link == f2%n_link)
+!! f_side.equality_test[3D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
+if (.not. is_eq) return
+if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
+if (.not. is_eq) return
+if (allocated(f1%pt)) is_eq = all(f1%pt == f2%pt)
 
 end function eq_grid_field_pt
 
@@ -2833,7 +2839,7 @@ end function eq_rad_int_all_ele
 !--------------------------------------------------------------------------------
 !--------------------------------------------------------------------------------
 
-elemental function eq_ele (f1, f2) result (is_eq)
+recursive elemental function eq_ele (f1, f2) result (is_eq)
 
 implicit none
 
@@ -2875,6 +2881,10 @@ is_eq = is_eq .and. (f1%bookkeeping_state == f2%bookkeeping_state)
 is_eq = is_eq .and. (associated(f1%control) .eqv. associated(f2%control))
 if (.not. is_eq) return
 if (associated(f1%control)) is_eq = (f1%control == f2%control)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%lord) .eqv. associated(f2%lord))
+if (.not. is_eq) return
+if (associated(f1%lord)) is_eq = (f1%lord == f2%lord)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%floor == f2%floor)
 !! f_side.equality_test[0D_PTR_type]

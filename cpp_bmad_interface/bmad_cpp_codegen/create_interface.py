@@ -573,6 +573,16 @@ class CodegenStructure:
     c_constructor_body: str = ""  # Body of the C++ class_initializer
     c_extra_methods: str = ""  # Additional custom methods
 
+    @property
+    def recursive(self) -> bool:
+        return any(
+            arg.is_component
+            and arg.type == "type"
+            and arg.member is not None
+            and arg.member.type_info.kind.lower() == self.f_name.lower()
+            for arg in self.arg
+        )
+
     def __str__(self) -> str:
         return f"[name: {self.short_name}, #arg: {len(self.arg)}]"
 
@@ -1083,8 +1093,7 @@ contains
 """)
 
     for struct in structs:
-        f_equ.write(
-            textwrap.dedent(f"""
+        equ_defn = textwrap.dedent(f"""
 
             !--------------------------------------------------------------------------------
             !--------------------------------------------------------------------------------
@@ -1100,7 +1109,11 @@ contains
 
             is_eq = .true.
             """)
-        )
+
+        if struct.recursive:
+            equ_defn = equ_defn.replace("elemental function", "recursive elemental function")
+
+        f_equ.write(equ_defn)
 
         for arg in struct.arg:
             if not arg.is_component:
@@ -1174,9 +1187,8 @@ def write_tests_mod(f_test, structs: list[CodegenStructure]):
     f_test.write("contains\n\n")
 
     for struct in structs:
-        f_test.write(
-            textwrap.dedent(
-                f"""\
+        code = textwrap.dedent(
+            f"""\
                 !---------------------------------------------------------------------------------
                 !---------------------------------------------------------------------------------
                 !---------------------------------------------------------------------------------
@@ -1298,8 +1310,11 @@ def write_tests_mod(f_test, structs: list[CodegenStructure]):
                 offset = 100 * ix_patt
 
                 """
-            )
         )
+        if struct.recursive:
+            code = code.replace("subroutine set_", "recursive subroutine set_")
+
+        f_test.write(code)
 
         for i, arg in enumerate(struct.arg, 1):
             if not arg.is_component:
@@ -1324,11 +1339,23 @@ end module
 def get_to_json_source(struct: CodegenStructure) -> list[str]:
     args = [arg for arg in struct.arg if arg.is_component and arg.member is not None]
 
-    members = ", ".join("{" + f'"{arg.c_name}", obj.{arg.c_name}' + "}" for arg in args)
+    name_to_value = {arg.c_name: f"obj.{arg.c_name}" for arg in args}
+    if struct.cpp_class == "CPP_ele":
+        name_to_value.pop("lord")
+        fixup_lines = [
+            "if (obj.lord.has_value()) {",
+            '    j["lord"] = json{*obj.lord.value()};',
+            "}",
+        ]
+    else:
+        fixup_lines = []
+
+    members = ", ".join("{" + f'"{name}", {value}' + "}" for name, value in name_to_value.items())
 
     return [
         f"void to_json(json &j, const {struct.cpp_class} &obj) {{",
         f"j = json {{ {members} }};",
+        *fixup_lines,
         "}",
         f"""
         ostream &operator<<(ostream &os, const {struct.cpp_class} &obj) {{
@@ -1382,7 +1409,6 @@ def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
             } // namespace: std
 
             namespace Bmad {
-
             //--------------------------------------------------------------------
             ${json_helpers}
             //--------------------------------------------------------------------
@@ -1681,17 +1707,17 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
     cout << " [1] {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {{
-        std::ofstream c_file("{struct.short_name}.pat1.c.actual.txt");
+        std::ofstream c_file("{struct.short_name}.pat1.c.actual.json");
         c_file << C;
     }}
     
     {{
-        std::ofstream c2_file("{struct.short_name}.pat1.c2.expected.txt");
+        std::ofstream c2_file("{struct.short_name}.pat1.c2.expected.json");
         c2_file << C2;
     }}
     
-    cout << "     C written to {struct.short_name}.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to {struct.short_name}.pat1.c2.expected.txt" << endl;
+    cout << "     C written to {struct.short_name}.pat1.c.actual.json" << endl;
+    cout << "     C2 written to {struct.short_name}.pat1.c2.expected.json" << endl;
     c_ok = false;
   }}
 
@@ -1706,19 +1732,17 @@ extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F,
   }} else {{
     cout << " [3] {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
     {{
-        std::ofstream c_file("{struct.short_name}.pat3.c.expected.txt");
+        std::ofstream c_file("{struct.short_name}.pat3.c.expected.json");
         c_file << C;
     }}
     
     {{
-        std::ofstream c2_file("{struct.short_name}.pat3.c2.actual.txt");
+        std::ofstream c2_file("{struct.short_name}.pat3.c2.actual.json");
         c2_file << C2;
     }}
    
-    throw std::runtime_error("foo");
-
-    cout << "     C written to {struct.short_name}.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to {struct.short_name}.pat3.c2.actual.txt" << endl;
+    cout << "     C written to {struct.short_name}.pat3.c.expected.json" << endl;
+    cout << "     C2 written to {struct.short_name}.pat3.c2.actual.json" << endl;
     c_ok = false;
   }}
 

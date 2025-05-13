@@ -189,7 +189,7 @@ class ListBuilder:
             res = iter_dimension(
                 dimension,
                 loop=res,
-                key=repr(self.key) if dimension == 1 else repr(f"dim-{dimension}"),
+                key=repr(self.key) if dimension == num_dimensions else "''",  # repr(f"dim-{dimension}"),
             )
 
         assert "do i1" in res

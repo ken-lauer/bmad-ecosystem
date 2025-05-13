@@ -34,7 +34,6 @@ void from_json(const json& j, Complex& d) {
 } // namespace std
 
 namespace Bmad {
-
 //--------------------------------------------------------------------
 void to_json(json& j, const CPP_spline& obj) {
   j = json{{"x0", obj.x0}, {"y0", obj.y0}, {"x1", obj.x1}, {"coef", obj.coef}};
@@ -548,7 +547,7 @@ ostream& operator<<(ostream& os, const CPP_grid_field_pt1& obj) {
 }
 
 void to_json(json& j, const CPP_grid_field_pt& obj) {
-  j = json{{"file", obj.file}, {"n_link", obj.n_link}};
+  j = json{{"file", obj.file}, {"n_link", obj.n_link}, {"pt", obj.pt}};
 }
 
 ostream& operator<<(ostream& os, const CPP_grid_field_pt& obj) {
@@ -1662,6 +1661,9 @@ void to_json(json& j, const CPP_ele& obj) {
       {"bmad_logic", obj.bmad_logic},
       {"select", obj.select},
       {"offset_moves_aperture", obj.offset_moves_aperture}};
+  if (obj.lord.has_value()) {
+    j["lord"] = json{*obj.lord.value()};
+  }
 }
 
 ostream& operator<<(ostream& os, const CPP_ele& obj) {

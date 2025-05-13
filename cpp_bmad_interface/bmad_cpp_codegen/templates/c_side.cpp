@@ -490,6 +490,46 @@ void to_f__variant_23(const CppClass& C, OpaqueClass* F) {
     delete[] z_NAME;
   //// end:to_f_cleanup
 }
+//// section:to_f
+//// type:3D_ALLOC_type
+//// type:3D_PTR_type
+void to_f__variant_23a(const CppClass& C, OpaqueClass* F) {
+  //// begin:to_f_setup
+  size_t n1_NAME{C.NAME.size()};
+  size_t n2_NAME{size_t{0}};
+  size_t n3_NAME{size_t{0}};
+  const CPP_KIND** z_NAME{nullptr};
+  if (n1_NAME > 0) {
+    n2_NAME = C.NAME[0].size();
+    n3_NAME = C.NAME[0][0].size();
+    z_NAME = new const CPP_KIND*[n1_NAME * n2_NAME * n3_NAME];
+    for (size_t i{0}; i < n1_NAME; i++) {
+      for (size_t j{0}; j < n2_NAME; j++) {
+        for (size_t k{0}; k < n3_NAME; k++) {
+          auto m = n3_NAME * n2_NAME * i + n3_NAME * j + k;
+          z_NAME[m] = &C.NAME[i][j][k];
+        }
+      }
+    }
+  }
+  //// end:to_f_setup
+
+  to_f2(
+      F, /*
+  //// begin:to_f2_arg
+  const CPP_KIND**
+  //// end:to_f2_arg
+  */
+      //// begin:to_f2_call
+      z_NAME
+      //// end:to_f2_call
+  );
+
+  //// begin:to_f_cleanup
+  if (z_NAME)
+    delete[] z_NAME;
+  //// end:to_f_cleanup
+}
 
 //// section:to_f
 //// type:3D_NOT_integer8
@@ -526,8 +566,6 @@ void to_f__variant_26(const CppClass& C, OpaqueClass* F) {
 //// type:3D_PTR_real
 //// type:3D_ALLOC_logical
 //// type:3D_PTR_logical
-//// type:3D_ALLOC_type
-//// type:3D_PTR_type
 void to_f__variant_34(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   size_t n1_NAME{C.NAME.size()};
@@ -537,7 +575,7 @@ void to_f__variant_34(const CppClass& C, OpaqueClass* F) {
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
-    z_NAME = new CTYPE[C.NAME.size() * C.NAME[0].size() * C.NAME[0][0].size()];
+    z_NAME = new CTYPE[n1_NAME * n2_NAME * n3_NAME];
     tensor_to_vec(C.NAME, z_NAME);
   }
   //// end:to_f_setup
@@ -2383,4 +2421,42 @@ void ele_struct_fixes() {
     C.NAME[i] = rhs;
   }
   //// end:ele_struct%old_value.test_pat
+
+  //// begin:ele_struct%lord.c_class
+  std::optional<std::shared_ptr<CPP_ele>>;
+  //// end:ele_struct%lord.c_class
+
+  //// begin:ele_struct%lord.to_f2_call
+  (C.lord.has_value() ? C.lord->get() : nullptr);
+  //// end:ele_struct%lord.to_f2_call
+
+  //// begin:ele_struct%lord.to_c2_set
+  if (n_lord == 0) {
+    C.lord.reset();
+  } else {
+    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
+    C.lord = std::move(lord);
+    ele_to_c(z_lord, *C.lord->get());
+  }
+  //// end:ele_struct%lord.to_c2_set
+
+  //// begin:ele_struct%lord.test_pat
+  if (ix_patt < 3) {
+    C.NAME.reset();
+  } else {
+    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
+    set_CPP_KIND_test_pattern(*lord, 0); // no infinite recursion, please
+    C.NAME = std::move(lord);
+  }
+  //// end:ele_struct%lord.test_pat
+
+  //// begin:ele_struct%lord.equality_test
+  is_eq = is_eq && (x.NAME.has_value() == y.NAME.has_value());
+  if (!is_eq) {
+    return false;
+  }
+  if (x.NAME) {
+    is_eq = (*x.NAME->get() == *y.NAME->get());
+  }
+  //// end:ele_struct%lord.equality_test
 }

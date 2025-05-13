@@ -124,9 +124,9 @@ subroutine bicubic_cmplx_coef_struct_to_json (input, json_root, depth, max_depth
   endif
   call json%create_object(json_root, '')
   !'complex(rp) :: coef(0:3,0:3) = 0'
-  call json%create_array(json_list2, 'dim-2')
+  call json%create_array(json_list2, 'coef')
   do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
-    call json%create_array(json_list1, 'coef')
+    call json%create_array(json_list1, '')
     do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
       call complex_to_json(input%coef(i1, i2), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -167,9 +167,9 @@ subroutine bicubic_coef_struct_to_json (input, json_root, depth, max_depth)
   endif
   call json%create_object(json_root, '')
   !'real(rp) :: coef(0:3,0:3) = 0'
-  call json%create_array(json_list2, 'dim-2')
+  call json%create_array(json_list2, 'coef')
   do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
-    call json%create_array(json_list1, 'coef')
+    call json%create_array(json_list1, '')
     do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
       call json%create_real(json_val, input%coef(i1, i2), '')
       call json%add(json_list1, json_val)
@@ -349,9 +349,9 @@ subroutine cmplx_field_at_2D_box_struct_to_json (input, json_root, depth, max_de
   endif
   call json%create_object(json_root, '')
   !'type (cmplx_field1_at_2D_pt_struct) pt(0:1, 0:1)'
-  call json%create_array(json_list2, 'dim-2')
+  call json%create_array(json_list2, 'pt')
   do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
-    call json%create_array(json_list1, 'pt')
+    call json%create_array(json_list1, '')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
       call cmplx_field1_at_2D_pt_struct_to_json(input%pt(i1, i2), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -392,11 +392,11 @@ subroutine cmplx_field_at_3D_box_struct_to_json (input, json_root, depth, max_de
   endif
   call json%create_object(json_root, '')
   !'type (cmplx_field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)'
-  call json%create_array(json_list3, 'dim-3')
+  call json%create_array(json_list3, 'pt')
   do i3 = lbound(input%pt, 3), ubound(input%pt, 3)
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, '')
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
-      call json%create_array(json_list1, 'pt')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
         call cmplx_field1_at_3D_pt_struct_to_json(input%pt(i1, i2, i3), json_val, depth=depth + 1, max_depth=max_depth)
         call json%add(json_list1, json_val)
@@ -496,9 +496,9 @@ subroutine field_at_2D_box_struct_to_json (input, json_root, depth, max_depth)
   endif
   call json%create_object(json_root, '')
   !'type (field1_at_2D_pt_struct) pt(0:1, 0:1)'
-  call json%create_array(json_list2, 'dim-2')
+  call json%create_array(json_list2, 'pt')
   do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
-    call json%create_array(json_list1, 'pt')
+    call json%create_array(json_list1, '')
     do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
       call field1_at_2D_pt_struct_to_json(input%pt(i1, i2), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
@@ -539,11 +539,11 @@ subroutine field_at_3D_box_struct_to_json (input, json_root, depth, max_depth)
   endif
   call json%create_object(json_root, '')
   !'type (field1_at_3D_pt_struct) pt(0:1, 0:1, 0:1)'
-  call json%create_array(json_list3, 'dim-3')
+  call json%create_array(json_list3, 'pt')
   do i3 = lbound(input%pt, 3), ubound(input%pt, 3)
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, '')
     do i2 = lbound(input%pt, 2), ubound(input%pt, 2)
-      call json%create_array(json_list1, 'pt')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%pt, 1), ubound(input%pt, 1)
         call field1_at_3D_pt_struct_to_json(input%pt(i1, i2, i3), json_val, depth=depth + 1, max_depth=max_depth)
         call json%add(json_list1, json_val)
@@ -1517,9 +1517,9 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth, max_dep
   call json%create_object(json_root, '')
   if (allocated(input%covar)) then
     !'real(rp), allocatable :: covar(:, :)'
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, 'covar')
     do i2 = lbound(input%covar, 2), ubound(input%covar, 2)
-      call json%create_array(json_list1, 'covar')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%covar, 1), ubound(input%covar, 1)
         call json%create_real(json_val, input%covar(i1, i2), '')
         call json%add(json_list1, json_val)
@@ -1532,9 +1532,9 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth, max_dep
   endif
   if (allocated(input%alpha)) then
     !'real(rp), allocatable :: alpha(:, :)'
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, 'alpha')
     do i2 = lbound(input%alpha, 2), ubound(input%alpha, 2)
-      call json%create_array(json_list1, 'alpha')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%alpha, 1), ubound(input%alpha, 1)
         call json%create_real(json_val, input%alpha(i1, i2), '')
         call json%add(json_list1, json_val)
@@ -1567,9 +1567,9 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth, max_dep
   endif
   if (allocated(input%da)) then
     !'real(rp), allocatable :: da(:,:)'
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, 'da')
     do i2 = lbound(input%da, 2), ubound(input%da, 2)
-      call json%create_array(json_list1, 'da')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%da, 1), ubound(input%da, 1)
         call json%create_real(json_val, input%da(i1, i2), '')
         call json%add(json_list1, json_val)
@@ -1593,9 +1593,9 @@ subroutine super_mrqmin_storage_struct_to_json (input, json_root, depth, max_dep
   endif
   if (allocated(input%dyda)) then
     !'real(rp), allocatable :: dyda(:, :)'
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, 'dyda')
     do i2 = lbound(input%dyda, 2), ubound(input%dyda, 2)
-      call json%create_array(json_list1, 'dyda')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%dyda, 1), ubound(input%dyda, 1)
         call json%create_real(json_val, input%dyda(i1, i2), '')
         call json%add(json_list1, json_val)
@@ -1692,11 +1692,11 @@ subroutine tricubic_cmplx_coef_struct_to_json (input, json_root, depth, max_dept
   endif
   call json%create_object(json_root, '')
   !'complex(rp) :: coef(0:3,0:3,0:3) = 0'
-  call json%create_array(json_list3, 'dim-3')
+  call json%create_array(json_list3, 'coef')
   do i3 = lbound(input%coef, 3), ubound(input%coef, 3)
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, '')
     do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
-      call json%create_array(json_list1, 'coef')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
         call complex_to_json(input%coef(i1, i2, i3), json_val, depth=depth + 1, max_depth=max_depth)
         call json%add(json_list1, json_val)
@@ -1740,11 +1740,11 @@ subroutine tricubic_coef_struct_to_json (input, json_root, depth, max_depth)
   endif
   call json%create_object(json_root, '')
   !'real(rp) :: coef(0:3,0:3,0:3) = 0'
-  call json%create_array(json_list3, 'dim-3')
+  call json%create_array(json_list3, 'coef')
   do i3 = lbound(input%coef, 3), ubound(input%coef, 3)
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, '')
     do i2 = lbound(input%coef, 2), ubound(input%coef, 2)
-      call json%create_array(json_list1, 'coef')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%coef, 1), ubound(input%coef, 1)
         call json%create_real(json_val, input%coef(i1, i2, i3), '')
         call json%add(json_list1, json_val)
@@ -1814,9 +1814,9 @@ subroutine wls_struct_to_json (input, json_root, depth, max_depth)
   call json%create_object(json_root, '')
   if (allocated(input%R1)) then
     !'REAL(rp), ALLOCATABLE :: R1(:,:)'
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, 'r1')
     do i2 = lbound(input%R1, 2), ubound(input%R1, 2)
-      call json%create_array(json_list1, 'r1')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%R1, 1), ubound(input%R1, 1)
         call json%create_real(json_val, input%R1(i1, i2), '')
         call json%add(json_list1, json_val)
@@ -1829,9 +1829,9 @@ subroutine wls_struct_to_json (input, json_root, depth, max_depth)
   endif
   if (allocated(input%Q1)) then
     !'REAL(rp), ALLOCATABLE :: Q1(:,:)'
-    call json%create_array(json_list2, 'dim-2')
+    call json%create_array(json_list2, 'q1')
     do i2 = lbound(input%Q1, 2), ubound(input%Q1, 2)
-      call json%create_array(json_list1, 'q1')
+      call json%create_array(json_list1, '')
       do i1 = lbound(input%Q1, 1), ubound(input%Q1, 1)
         call json%create_real(json_val, input%Q1(i1, i2), '')
         call json%add(json_list1, json_val)

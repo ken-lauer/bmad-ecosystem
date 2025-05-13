@@ -540,6 +540,7 @@ bool operator==(const CPP_grid_field_pt& x, const CPP_grid_field_pt& y) {
   bool is_eq = true;
   is_eq = is_eq && (x.file == y.file);
   is_eq = is_eq && (x.n_link == y.n_link);
+  is_eq = is_eq && is_all_equal(x.pt, y.pt);
   return is_eq;
 };
 
@@ -1396,6 +1397,13 @@ bool operator==(const CPP_ele& x, const CPP_ele& y) {
     return false;
   if (x.control)
     is_eq = (*x.control == *y.control);
+  is_eq = is_eq && (x.lord.has_value() == y.lord.has_value());
+  if (!is_eq) {
+    return false;
+  }
+  if (x.lord) {
+    is_eq = (*x.lord->get() == *y.lord->get());
+  }
   is_eq = is_eq && (x.floor == y.floor);
   is_eq = is_eq &&
       (x.high_energy_space_charge.has_value() ==

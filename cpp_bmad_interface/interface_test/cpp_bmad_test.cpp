@@ -58,17 +58,17 @@ extern "C" void test_c_spline(Opaque_spline_class* F, bool& c_ok) {
     cout << " [1] spline: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("spline.pat1.c.actual.txt");
+      std::ofstream c_file("spline.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("spline.pat1.c2.expected.txt");
+      std::ofstream c2_file("spline.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to spline.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to spline.pat1.c2.expected.txt" << endl;
+    cout << "     C written to spline.pat1.c.actual.json" << endl;
+    cout << "     C2 written to spline.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -84,19 +84,17 @@ extern "C" void test_c_spline(Opaque_spline_class* F, bool& c_ok) {
   } else {
     cout << " [3] spline: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("spline.pat3.c.expected.txt");
+      std::ofstream c_file("spline.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("spline.pat3.c2.actual.txt");
+      std::ofstream c2_file("spline.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to spline.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to spline.pat3.c2.actual.txt" << endl;
+    cout << "     C written to spline.pat3.c.expected.json" << endl;
+    cout << "     C2 written to spline.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -144,17 +142,17 @@ extern "C" void test_c_spin_polar(Opaque_spin_polar_class* F, bool& c_ok) {
     cout << " [1] spin_polar: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("spin_polar.pat1.c.actual.txt");
+      std::ofstream c_file("spin_polar.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("spin_polar.pat1.c2.expected.txt");
+      std::ofstream c2_file("spin_polar.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to spin_polar.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to spin_polar.pat1.c2.expected.txt" << endl;
+    cout << "     C written to spin_polar.pat1.c.actual.json" << endl;
+    cout << "     C2 written to spin_polar.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -170,19 +168,17 @@ extern "C" void test_c_spin_polar(Opaque_spin_polar_class* F, bool& c_ok) {
   } else {
     cout << " [3] spin_polar: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("spin_polar.pat3.c.expected.txt");
+      std::ofstream c_file("spin_polar.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("spin_polar.pat3.c2.actual.txt");
+      std::ofstream c2_file("spin_polar.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to spin_polar.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to spin_polar.pat3.c2.actual.txt" << endl;
+    cout << "     C written to spin_polar.pat3.c.expected.json" << endl;
+    cout << "     C2 written to spin_polar.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -228,17 +224,17 @@ extern "C" void test_c_ac_kicker_time(
     cout << " [1] ac_kicker_time: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("ac_kicker_time.pat1.c.actual.txt");
+      std::ofstream c_file("ac_kicker_time.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ac_kicker_time.pat1.c2.expected.txt");
+      std::ofstream c2_file("ac_kicker_time.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to ac_kicker_time.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to ac_kicker_time.pat1.c2.expected.txt" << endl;
+    cout << "     C written to ac_kicker_time.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ac_kicker_time.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -254,19 +250,17 @@ extern "C" void test_c_ac_kicker_time(
   } else {
     cout << " [3] ac_kicker_time: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("ac_kicker_time.pat3.c.expected.txt");
+      std::ofstream c_file("ac_kicker_time.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ac_kicker_time.pat3.c2.actual.txt");
+      std::ofstream c2_file("ac_kicker_time.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to ac_kicker_time.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to ac_kicker_time.pat3.c2.actual.txt" << endl;
+    cout << "     C written to ac_kicker_time.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ac_kicker_time.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -316,17 +310,17 @@ extern "C" void test_c_ac_kicker_freq(
     cout << " [1] ac_kicker_freq: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("ac_kicker_freq.pat1.c.actual.txt");
+      std::ofstream c_file("ac_kicker_freq.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ac_kicker_freq.pat1.c2.expected.txt");
+      std::ofstream c2_file("ac_kicker_freq.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to ac_kicker_freq.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to ac_kicker_freq.pat1.c2.expected.txt" << endl;
+    cout << "     C written to ac_kicker_freq.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ac_kicker_freq.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -342,19 +336,17 @@ extern "C" void test_c_ac_kicker_freq(
   } else {
     cout << " [3] ac_kicker_freq: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("ac_kicker_freq.pat3.c.expected.txt");
+      std::ofstream c_file("ac_kicker_freq.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ac_kicker_freq.pat3.c2.actual.txt");
+      std::ofstream c2_file("ac_kicker_freq.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to ac_kicker_freq.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to ac_kicker_freq.pat3.c2.actual.txt" << endl;
+    cout << "     C written to ac_kicker_freq.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ac_kicker_freq.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -408,17 +400,17 @@ extern "C" void test_c_ac_kicker(Opaque_ac_kicker_class* F, bool& c_ok) {
     cout << " [1] ac_kicker: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("ac_kicker.pat1.c.actual.txt");
+      std::ofstream c_file("ac_kicker.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ac_kicker.pat1.c2.expected.txt");
+      std::ofstream c2_file("ac_kicker.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to ac_kicker.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to ac_kicker.pat1.c2.expected.txt" << endl;
+    cout << "     C written to ac_kicker.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ac_kicker.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -434,19 +426,17 @@ extern "C" void test_c_ac_kicker(Opaque_ac_kicker_class* F, bool& c_ok) {
   } else {
     cout << " [3] ac_kicker: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("ac_kicker.pat3.c.expected.txt");
+      std::ofstream c_file("ac_kicker.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ac_kicker.pat3.c2.actual.txt");
+      std::ofstream c2_file("ac_kicker.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to ac_kicker.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to ac_kicker.pat3.c2.actual.txt" << endl;
+    cout << "     C written to ac_kicker.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ac_kicker.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -493,17 +483,17 @@ extern "C" void test_c_interval1_coef(
     cout << " [1] interval1_coef: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("interval1_coef.pat1.c.actual.txt");
+      std::ofstream c_file("interval1_coef.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("interval1_coef.pat1.c2.expected.txt");
+      std::ofstream c2_file("interval1_coef.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to interval1_coef.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to interval1_coef.pat1.c2.expected.txt" << endl;
+    cout << "     C written to interval1_coef.pat1.c.actual.json" << endl;
+    cout << "     C2 written to interval1_coef.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -519,19 +509,17 @@ extern "C" void test_c_interval1_coef(
   } else {
     cout << " [3] interval1_coef: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("interval1_coef.pat3.c.expected.txt");
+      std::ofstream c_file("interval1_coef.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("interval1_coef.pat3.c2.actual.txt");
+      std::ofstream c2_file("interval1_coef.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to interval1_coef.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to interval1_coef.pat3.c2.actual.txt" << endl;
+    cout << "     C written to interval1_coef.pat3.c.expected.json" << endl;
+    cout << "     C2 written to interval1_coef.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -636,17 +624,17 @@ extern "C" void test_c_photon_reflect_table(
     cout << " [1] photon_reflect_table: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("photon_reflect_table.pat1.c.actual.txt");
+      std::ofstream c_file("photon_reflect_table.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_reflect_table.pat1.c2.expected.txt");
+      std::ofstream c2_file("photon_reflect_table.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to photon_reflect_table.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to photon_reflect_table.pat1.c2.expected.txt"
+    cout << "     C written to photon_reflect_table.pat1.c.actual.json" << endl;
+    cout << "     C2 written to photon_reflect_table.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -663,20 +651,18 @@ extern "C" void test_c_photon_reflect_table(
   } else {
     cout << " [3] photon_reflect_table: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("photon_reflect_table.pat3.c.expected.txt");
+      std::ofstream c_file("photon_reflect_table.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_reflect_table.pat3.c2.actual.txt");
+      std::ofstream c2_file("photon_reflect_table.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to photon_reflect_table.pat3.c.expected.txt"
+    cout << "     C written to photon_reflect_table.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to photon_reflect_table.pat3.c2.actual.txt"
+    cout << "     C2 written to photon_reflect_table.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -755,18 +741,18 @@ extern "C" void test_c_photon_reflect_surface(
     cout << " [1] photon_reflect_surface: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("photon_reflect_surface.pat1.c.actual.txt");
+      std::ofstream c_file("photon_reflect_surface.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_reflect_surface.pat1.c2.expected.txt");
+      std::ofstream c2_file("photon_reflect_surface.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to photon_reflect_surface.pat1.c.actual.txt"
+    cout << "     C written to photon_reflect_surface.pat1.c.actual.json"
          << endl;
-    cout << "     C2 written to photon_reflect_surface.pat1.c2.expected.txt"
+    cout << "     C2 written to photon_reflect_surface.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -783,20 +769,18 @@ extern "C" void test_c_photon_reflect_surface(
   } else {
     cout << " [3] photon_reflect_surface: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("photon_reflect_surface.pat3.c.expected.txt");
+      std::ofstream c_file("photon_reflect_surface.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_reflect_surface.pat3.c2.actual.txt");
+      std::ofstream c2_file("photon_reflect_surface.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to photon_reflect_surface.pat3.c.expected.txt"
+    cout << "     C written to photon_reflect_surface.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to photon_reflect_surface.pat3.c2.actual.txt"
+    cout << "     C2 written to photon_reflect_surface.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -904,17 +888,17 @@ extern "C" void test_c_coord(Opaque_coord_class* F, bool& c_ok) {
     cout << " [1] coord: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("coord.pat1.c.actual.txt");
+      std::ofstream c_file("coord.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("coord.pat1.c2.expected.txt");
+      std::ofstream c2_file("coord.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to coord.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to coord.pat1.c2.expected.txt" << endl;
+    cout << "     C written to coord.pat1.c.actual.json" << endl;
+    cout << "     C2 written to coord.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -930,19 +914,17 @@ extern "C" void test_c_coord(Opaque_coord_class* F, bool& c_ok) {
   } else {
     cout << " [3] coord: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("coord.pat3.c.expected.txt");
+      std::ofstream c_file("coord.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("coord.pat3.c2.actual.txt");
+      std::ofstream c2_file("coord.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to coord.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to coord.pat3.c2.actual.txt" << endl;
+    cout << "     C written to coord.pat3.c.expected.json" << endl;
+    cout << "     C2 written to coord.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -987,17 +969,17 @@ extern "C" void test_c_coord_array(Opaque_coord_array_class* F, bool& c_ok) {
     cout << " [1] coord_array: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("coord_array.pat1.c.actual.txt");
+      std::ofstream c_file("coord_array.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("coord_array.pat1.c2.expected.txt");
+      std::ofstream c2_file("coord_array.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to coord_array.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to coord_array.pat1.c2.expected.txt" << endl;
+    cout << "     C written to coord_array.pat1.c.actual.json" << endl;
+    cout << "     C2 written to coord_array.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1013,19 +995,17 @@ extern "C" void test_c_coord_array(Opaque_coord_array_class* F, bool& c_ok) {
   } else {
     cout << " [3] coord_array: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("coord_array.pat3.c.expected.txt");
+      std::ofstream c_file("coord_array.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("coord_array.pat3.c2.actual.txt");
+      std::ofstream c2_file("coord_array.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to coord_array.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to coord_array.pat3.c2.actual.txt" << endl;
+    cout << "     C written to coord_array.pat3.c.expected.json" << endl;
+    cout << "     C2 written to coord_array.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1095,17 +1075,17 @@ extern "C" void test_c_bpm_phase_coupling(
     cout << " [1] bpm_phase_coupling: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("bpm_phase_coupling.pat1.c.actual.txt");
+      std::ofstream c_file("bpm_phase_coupling.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bpm_phase_coupling.pat1.c2.expected.txt");
+      std::ofstream c2_file("bpm_phase_coupling.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to bpm_phase_coupling.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to bpm_phase_coupling.pat1.c2.expected.txt"
+    cout << "     C written to bpm_phase_coupling.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bpm_phase_coupling.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -1122,19 +1102,17 @@ extern "C" void test_c_bpm_phase_coupling(
   } else {
     cout << " [3] bpm_phase_coupling: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("bpm_phase_coupling.pat3.c.expected.txt");
+      std::ofstream c_file("bpm_phase_coupling.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bpm_phase_coupling.pat3.c2.actual.txt");
+      std::ofstream c2_file("bpm_phase_coupling.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to bpm_phase_coupling.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to bpm_phase_coupling.pat3.c2.actual.txt" << endl;
+    cout << "     C written to bpm_phase_coupling.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bpm_phase_coupling.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1184,17 +1162,17 @@ extern "C" void test_c_expression_atom(
     cout << " [1] expression_atom: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("expression_atom.pat1.c.actual.txt");
+      std::ofstream c_file("expression_atom.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("expression_atom.pat1.c2.expected.txt");
+      std::ofstream c2_file("expression_atom.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to expression_atom.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to expression_atom.pat1.c2.expected.txt" << endl;
+    cout << "     C written to expression_atom.pat1.c.actual.json" << endl;
+    cout << "     C2 written to expression_atom.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1210,19 +1188,17 @@ extern "C" void test_c_expression_atom(
   } else {
     cout << " [3] expression_atom: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("expression_atom.pat3.c.expected.txt");
+      std::ofstream c_file("expression_atom.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("expression_atom.pat3.c2.actual.txt");
+      std::ofstream c2_file("expression_atom.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to expression_atom.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to expression_atom.pat3.c2.actual.txt" << endl;
+    cout << "     C written to expression_atom.pat3.c.expected.json" << endl;
+    cout << "     C2 written to expression_atom.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1315,17 +1291,17 @@ extern "C" void test_c_wake_sr_z_long(
     cout << " [1] wake_sr_z_long: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wake_sr_z_long.pat1.c.actual.txt");
+      std::ofstream c_file("wake_sr_z_long.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_sr_z_long.pat1.c2.expected.txt");
+      std::ofstream c2_file("wake_sr_z_long.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wake_sr_z_long.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wake_sr_z_long.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wake_sr_z_long.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wake_sr_z_long.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1341,19 +1317,17 @@ extern "C" void test_c_wake_sr_z_long(
   } else {
     cout << " [3] wake_sr_z_long: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wake_sr_z_long.pat3.c.expected.txt");
+      std::ofstream c_file("wake_sr_z_long.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_sr_z_long.pat3.c2.actual.txt");
+      std::ofstream c2_file("wake_sr_z_long.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wake_sr_z_long.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wake_sr_z_long.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wake_sr_z_long.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wake_sr_z_long.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1419,17 +1393,17 @@ extern "C" void test_c_wake_sr_mode(Opaque_wake_sr_mode_class* F, bool& c_ok) {
     cout << " [1] wake_sr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wake_sr_mode.pat1.c.actual.txt");
+      std::ofstream c_file("wake_sr_mode.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_sr_mode.pat1.c2.expected.txt");
+      std::ofstream c2_file("wake_sr_mode.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wake_sr_mode.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wake_sr_mode.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wake_sr_mode.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wake_sr_mode.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1445,19 +1419,17 @@ extern "C" void test_c_wake_sr_mode(Opaque_wake_sr_mode_class* F, bool& c_ok) {
   } else {
     cout << " [3] wake_sr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wake_sr_mode.pat3.c.expected.txt");
+      std::ofstream c_file("wake_sr_mode.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_sr_mode.pat3.c2.actual.txt");
+      std::ofstream c2_file("wake_sr_mode.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wake_sr_mode.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wake_sr_mode.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wake_sr_mode.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wake_sr_mode.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1537,17 +1509,17 @@ extern "C" void test_c_wake_sr(Opaque_wake_sr_class* F, bool& c_ok) {
     cout << " [1] wake_sr: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wake_sr.pat1.c.actual.txt");
+      std::ofstream c_file("wake_sr.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_sr.pat1.c2.expected.txt");
+      std::ofstream c2_file("wake_sr.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wake_sr.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wake_sr.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wake_sr.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wake_sr.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1563,19 +1535,17 @@ extern "C" void test_c_wake_sr(Opaque_wake_sr_class* F, bool& c_ok) {
   } else {
     cout << " [3] wake_sr: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wake_sr.pat3.c.expected.txt");
+      std::ofstream c_file("wake_sr.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_sr.pat3.c2.actual.txt");
+      std::ofstream c2_file("wake_sr.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wake_sr.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wake_sr.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wake_sr.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wake_sr.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1650,17 +1620,17 @@ extern "C" void test_c_wake_lr_mode(Opaque_wake_lr_mode_class* F, bool& c_ok) {
     cout << " [1] wake_lr_mode: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wake_lr_mode.pat1.c.actual.txt");
+      std::ofstream c_file("wake_lr_mode.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_lr_mode.pat1.c2.expected.txt");
+      std::ofstream c2_file("wake_lr_mode.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wake_lr_mode.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wake_lr_mode.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wake_lr_mode.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wake_lr_mode.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1676,19 +1646,17 @@ extern "C" void test_c_wake_lr_mode(Opaque_wake_lr_mode_class* F, bool& c_ok) {
   } else {
     cout << " [3] wake_lr_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wake_lr_mode.pat3.c.expected.txt");
+      std::ofstream c_file("wake_lr_mode.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_lr_mode.pat3.c2.actual.txt");
+      std::ofstream c2_file("wake_lr_mode.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wake_lr_mode.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wake_lr_mode.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wake_lr_mode.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wake_lr_mode.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1754,17 +1722,17 @@ extern "C" void test_c_wake_lr(Opaque_wake_lr_class* F, bool& c_ok) {
     cout << " [1] wake_lr: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wake_lr.pat1.c.actual.txt");
+      std::ofstream c_file("wake_lr.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_lr.pat1.c2.expected.txt");
+      std::ofstream c2_file("wake_lr.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wake_lr.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wake_lr.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wake_lr.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wake_lr.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1780,19 +1748,17 @@ extern "C" void test_c_wake_lr(Opaque_wake_lr_class* F, bool& c_ok) {
   } else {
     cout << " [3] wake_lr: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wake_lr.pat3.c.expected.txt");
+      std::ofstream c_file("wake_lr.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake_lr.pat3.c2.actual.txt");
+      std::ofstream c2_file("wake_lr.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wake_lr.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wake_lr.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wake_lr.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wake_lr.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1834,17 +1800,17 @@ extern "C" void test_c_lat_ele_loc(Opaque_lat_ele_loc_class* F, bool& c_ok) {
     cout << " [1] lat_ele_loc: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("lat_ele_loc.pat1.c.actual.txt");
+      std::ofstream c_file("lat_ele_loc.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("lat_ele_loc.pat1.c2.expected.txt");
+      std::ofstream c2_file("lat_ele_loc.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to lat_ele_loc.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to lat_ele_loc.pat1.c2.expected.txt" << endl;
+    cout << "     C written to lat_ele_loc.pat1.c.actual.json" << endl;
+    cout << "     C2 written to lat_ele_loc.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1860,19 +1826,17 @@ extern "C" void test_c_lat_ele_loc(Opaque_lat_ele_loc_class* F, bool& c_ok) {
   } else {
     cout << " [3] lat_ele_loc: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("lat_ele_loc.pat3.c.expected.txt");
+      std::ofstream c_file("lat_ele_loc.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("lat_ele_loc.pat3.c2.actual.txt");
+      std::ofstream c2_file("lat_ele_loc.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to lat_ele_loc.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to lat_ele_loc.pat3.c2.actual.txt" << endl;
+    cout << "     C written to lat_ele_loc.pat3.c.expected.json" << endl;
+    cout << "     C2 written to lat_ele_loc.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1912,17 +1876,17 @@ extern "C" void test_c_wake(Opaque_wake_class* F, bool& c_ok) {
     cout << " [1] wake: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wake.pat1.c.actual.txt");
+      std::ofstream c_file("wake.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake.pat1.c2.expected.txt");
+      std::ofstream c2_file("wake.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wake.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wake.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wake.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wake.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -1938,19 +1902,17 @@ extern "C" void test_c_wake(Opaque_wake_class* F, bool& c_ok) {
   } else {
     cout << " [3] wake: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wake.pat3.c.expected.txt");
+      std::ofstream c_file("wake.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wake.pat3.c2.actual.txt");
+      std::ofstream c2_file("wake.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wake.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wake.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wake.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wake.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -1994,17 +1956,17 @@ extern "C" void test_c_taylor_term(Opaque_taylor_term_class* F, bool& c_ok) {
     cout << " [1] taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("taylor_term.pat1.c.actual.txt");
+      std::ofstream c_file("taylor_term.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("taylor_term.pat1.c2.expected.txt");
+      std::ofstream c2_file("taylor_term.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to taylor_term.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to taylor_term.pat1.c2.expected.txt" << endl;
+    cout << "     C written to taylor_term.pat1.c.actual.json" << endl;
+    cout << "     C2 written to taylor_term.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -2020,19 +1982,17 @@ extern "C" void test_c_taylor_term(Opaque_taylor_term_class* F, bool& c_ok) {
   } else {
     cout << " [3] taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("taylor_term.pat3.c.expected.txt");
+      std::ofstream c_file("taylor_term.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("taylor_term.pat3.c2.actual.txt");
+      std::ofstream c2_file("taylor_term.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to taylor_term.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to taylor_term.pat3.c2.actual.txt" << endl;
+    cout << "     C written to taylor_term.pat3.c.expected.json" << endl;
+    cout << "     C2 written to taylor_term.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2080,17 +2040,17 @@ extern "C" void test_c_taylor(Opaque_taylor_class* F, bool& c_ok) {
     cout << " [1] taylor: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("taylor.pat1.c.actual.txt");
+      std::ofstream c_file("taylor.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("taylor.pat1.c2.expected.txt");
+      std::ofstream c2_file("taylor.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to taylor.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to taylor.pat1.c2.expected.txt" << endl;
+    cout << "     C written to taylor.pat1.c.actual.json" << endl;
+    cout << "     C2 written to taylor.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -2106,19 +2066,17 @@ extern "C" void test_c_taylor(Opaque_taylor_class* F, bool& c_ok) {
   } else {
     cout << " [3] taylor: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("taylor.pat3.c.expected.txt");
+      std::ofstream c_file("taylor.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("taylor.pat3.c2.actual.txt");
+      std::ofstream c2_file("taylor.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to taylor.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to taylor.pat3.c2.actual.txt" << endl;
+    cout << "     C written to taylor.pat3.c.expected.json" << endl;
+    cout << "     C2 written to taylor.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2164,17 +2122,17 @@ extern "C" void test_c_em_taylor_term(
     cout << " [1] em_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("em_taylor_term.pat1.c.actual.txt");
+      std::ofstream c_file("em_taylor_term.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("em_taylor_term.pat1.c2.expected.txt");
+      std::ofstream c2_file("em_taylor_term.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to em_taylor_term.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to em_taylor_term.pat1.c2.expected.txt" << endl;
+    cout << "     C written to em_taylor_term.pat1.c.actual.json" << endl;
+    cout << "     C2 written to em_taylor_term.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -2190,19 +2148,17 @@ extern "C" void test_c_em_taylor_term(
   } else {
     cout << " [3] em_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("em_taylor_term.pat3.c.expected.txt");
+      std::ofstream c_file("em_taylor_term.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("em_taylor_term.pat3.c2.actual.txt");
+      std::ofstream c2_file("em_taylor_term.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to em_taylor_term.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to em_taylor_term.pat3.c2.actual.txt" << endl;
+    cout << "     C written to em_taylor_term.pat3.c.expected.json" << endl;
+    cout << "     C2 written to em_taylor_term.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2250,17 +2206,17 @@ extern "C" void test_c_em_taylor(Opaque_em_taylor_class* F, bool& c_ok) {
     cout << " [1] em_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("em_taylor.pat1.c.actual.txt");
+      std::ofstream c_file("em_taylor.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("em_taylor.pat1.c2.expected.txt");
+      std::ofstream c2_file("em_taylor.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to em_taylor.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to em_taylor.pat1.c2.expected.txt" << endl;
+    cout << "     C written to em_taylor.pat1.c.actual.json" << endl;
+    cout << "     C2 written to em_taylor.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -2276,19 +2232,17 @@ extern "C" void test_c_em_taylor(Opaque_em_taylor_class* F, bool& c_ok) {
   } else {
     cout << " [3] em_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("em_taylor.pat3.c.expected.txt");
+      std::ofstream c_file("em_taylor.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("em_taylor.pat3.c2.actual.txt");
+      std::ofstream c2_file("em_taylor.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to em_taylor.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to em_taylor.pat3.c2.actual.txt" << endl;
+    cout << "     C written to em_taylor.pat3.c.expected.json" << endl;
+    cout << "     C2 written to em_taylor.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2355,17 +2309,17 @@ extern "C" void test_c_cartesian_map_term1(
     cout << " [1] cartesian_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("cartesian_map_term1.pat1.c.actual.txt");
+      std::ofstream c_file("cartesian_map_term1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cartesian_map_term1.pat1.c2.expected.txt");
+      std::ofstream c2_file("cartesian_map_term1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to cartesian_map_term1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to cartesian_map_term1.pat1.c2.expected.txt"
+    cout << "     C written to cartesian_map_term1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to cartesian_map_term1.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -2382,19 +2336,19 @@ extern "C" void test_c_cartesian_map_term1(
   } else {
     cout << " [3] cartesian_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("cartesian_map_term1.pat3.c.expected.txt");
+      std::ofstream c_file("cartesian_map_term1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cartesian_map_term1.pat3.c2.actual.txt");
+      std::ofstream c2_file("cartesian_map_term1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to cartesian_map_term1.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to cartesian_map_term1.pat3.c2.actual.txt" << endl;
+    cout << "     C written to cartesian_map_term1.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to cartesian_map_term1.pat3.c2.actual.json"
+         << endl;
     c_ok = false;
   }
 
@@ -2452,17 +2406,17 @@ extern "C" void test_c_cartesian_map_term(
     cout << " [1] cartesian_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("cartesian_map_term.pat1.c.actual.txt");
+      std::ofstream c_file("cartesian_map_term.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cartesian_map_term.pat1.c2.expected.txt");
+      std::ofstream c2_file("cartesian_map_term.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to cartesian_map_term.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to cartesian_map_term.pat1.c2.expected.txt"
+    cout << "     C written to cartesian_map_term.pat1.c.actual.json" << endl;
+    cout << "     C2 written to cartesian_map_term.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -2479,19 +2433,17 @@ extern "C" void test_c_cartesian_map_term(
   } else {
     cout << " [3] cartesian_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("cartesian_map_term.pat3.c.expected.txt");
+      std::ofstream c_file("cartesian_map_term.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cartesian_map_term.pat3.c2.actual.txt");
+      std::ofstream c2_file("cartesian_map_term.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to cartesian_map_term.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to cartesian_map_term.pat3.c2.actual.txt" << endl;
+    cout << "     C written to cartesian_map_term.pat3.c.expected.json" << endl;
+    cout << "     C2 written to cartesian_map_term.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2553,17 +2505,17 @@ extern "C" void test_c_cartesian_map(
     cout << " [1] cartesian_map: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("cartesian_map.pat1.c.actual.txt");
+      std::ofstream c_file("cartesian_map.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cartesian_map.pat1.c2.expected.txt");
+      std::ofstream c2_file("cartesian_map.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to cartesian_map.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to cartesian_map.pat1.c2.expected.txt" << endl;
+    cout << "     C written to cartesian_map.pat1.c.actual.json" << endl;
+    cout << "     C2 written to cartesian_map.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -2579,19 +2531,17 @@ extern "C" void test_c_cartesian_map(
   } else {
     cout << " [3] cartesian_map: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("cartesian_map.pat3.c.expected.txt");
+      std::ofstream c_file("cartesian_map.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cartesian_map.pat3.c2.actual.txt");
+      std::ofstream c2_file("cartesian_map.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to cartesian_map.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to cartesian_map.pat3.c2.actual.txt" << endl;
+    cout << "     C written to cartesian_map.pat3.c.expected.json" << endl;
+    cout << "     C2 written to cartesian_map.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2639,17 +2589,18 @@ extern "C" void test_c_cylindrical_map_term1(
     cout << " [1] cylindrical_map_term1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("cylindrical_map_term1.pat1.c.actual.txt");
+      std::ofstream c_file("cylindrical_map_term1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cylindrical_map_term1.pat1.c2.expected.txt");
+      std::ofstream c2_file("cylindrical_map_term1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to cylindrical_map_term1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to cylindrical_map_term1.pat1.c2.expected.txt"
+    cout << "     C written to cylindrical_map_term1.pat1.c.actual.json"
+         << endl;
+    cout << "     C2 written to cylindrical_map_term1.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -2666,20 +2617,18 @@ extern "C" void test_c_cylindrical_map_term1(
   } else {
     cout << " [3] cylindrical_map_term1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("cylindrical_map_term1.pat3.c.expected.txt");
+      std::ofstream c_file("cylindrical_map_term1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cylindrical_map_term1.pat3.c2.actual.txt");
+      std::ofstream c2_file("cylindrical_map_term1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to cylindrical_map_term1.pat3.c.expected.txt"
+    cout << "     C written to cylindrical_map_term1.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to cylindrical_map_term1.pat3.c2.actual.txt"
+    cout << "     C2 written to cylindrical_map_term1.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -2738,17 +2687,17 @@ extern "C" void test_c_cylindrical_map_term(
     cout << " [1] cylindrical_map_term: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("cylindrical_map_term.pat1.c.actual.txt");
+      std::ofstream c_file("cylindrical_map_term.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cylindrical_map_term.pat1.c2.expected.txt");
+      std::ofstream c2_file("cylindrical_map_term.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to cylindrical_map_term.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to cylindrical_map_term.pat1.c2.expected.txt"
+    cout << "     C written to cylindrical_map_term.pat1.c.actual.json" << endl;
+    cout << "     C2 written to cylindrical_map_term.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -2765,20 +2714,18 @@ extern "C" void test_c_cylindrical_map_term(
   } else {
     cout << " [3] cylindrical_map_term: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("cylindrical_map_term.pat3.c.expected.txt");
+      std::ofstream c_file("cylindrical_map_term.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cylindrical_map_term.pat3.c2.actual.txt");
+      std::ofstream c2_file("cylindrical_map_term.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to cylindrical_map_term.pat3.c.expected.txt"
+    cout << "     C written to cylindrical_map_term.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to cylindrical_map_term.pat3.c2.actual.txt"
+    cout << "     C2 written to cylindrical_map_term.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -2853,17 +2800,17 @@ extern "C" void test_c_cylindrical_map(
     cout << " [1] cylindrical_map: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("cylindrical_map.pat1.c.actual.txt");
+      std::ofstream c_file("cylindrical_map.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cylindrical_map.pat1.c2.expected.txt");
+      std::ofstream c2_file("cylindrical_map.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to cylindrical_map.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to cylindrical_map.pat1.c2.expected.txt" << endl;
+    cout << "     C written to cylindrical_map.pat1.c.actual.json" << endl;
+    cout << "     C2 written to cylindrical_map.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -2879,19 +2826,17 @@ extern "C" void test_c_cylindrical_map(
   } else {
     cout << " [3] cylindrical_map: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("cylindrical_map.pat3.c.expected.txt");
+      std::ofstream c_file("cylindrical_map.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("cylindrical_map.pat3.c2.actual.txt");
+      std::ofstream c2_file("cylindrical_map.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to cylindrical_map.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to cylindrical_map.pat3.c2.actual.txt" << endl;
+    cout << "     C written to cylindrical_map.pat3.c.expected.json" << endl;
+    cout << "     C2 written to cylindrical_map.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -2942,17 +2887,17 @@ extern "C" void test_c_bicubic_cmplx_coef(
     cout << " [1] bicubic_cmplx_coef: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("bicubic_cmplx_coef.pat1.c.actual.txt");
+      std::ofstream c_file("bicubic_cmplx_coef.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bicubic_cmplx_coef.pat1.c2.expected.txt");
+      std::ofstream c2_file("bicubic_cmplx_coef.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to bicubic_cmplx_coef.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to bicubic_cmplx_coef.pat1.c2.expected.txt"
+    cout << "     C written to bicubic_cmplx_coef.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bicubic_cmplx_coef.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -2969,19 +2914,17 @@ extern "C" void test_c_bicubic_cmplx_coef(
   } else {
     cout << " [3] bicubic_cmplx_coef: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("bicubic_cmplx_coef.pat3.c.expected.txt");
+      std::ofstream c_file("bicubic_cmplx_coef.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bicubic_cmplx_coef.pat3.c2.actual.txt");
+      std::ofstream c2_file("bicubic_cmplx_coef.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to bicubic_cmplx_coef.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to bicubic_cmplx_coef.pat3.c2.actual.txt" << endl;
+    cout << "     C written to bicubic_cmplx_coef.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bicubic_cmplx_coef.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3033,17 +2976,17 @@ extern "C" void test_c_tricubic_cmplx_coef(
     cout << " [1] tricubic_cmplx_coef: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("tricubic_cmplx_coef.pat1.c.actual.txt");
+      std::ofstream c_file("tricubic_cmplx_coef.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("tricubic_cmplx_coef.pat1.c2.expected.txt");
+      std::ofstream c2_file("tricubic_cmplx_coef.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to tricubic_cmplx_coef.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to tricubic_cmplx_coef.pat1.c2.expected.txt"
+    cout << "     C written to tricubic_cmplx_coef.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tricubic_cmplx_coef.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -3060,19 +3003,19 @@ extern "C" void test_c_tricubic_cmplx_coef(
   } else {
     cout << " [3] tricubic_cmplx_coef: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("tricubic_cmplx_coef.pat3.c.expected.txt");
+      std::ofstream c_file("tricubic_cmplx_coef.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("tricubic_cmplx_coef.pat3.c2.actual.txt");
+      std::ofstream c2_file("tricubic_cmplx_coef.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to tricubic_cmplx_coef.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to tricubic_cmplx_coef.pat3.c2.actual.txt" << endl;
+    cout << "     C written to tricubic_cmplx_coef.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to tricubic_cmplx_coef.pat3.c2.actual.json"
+         << endl;
     c_ok = false;
   }
 
@@ -3120,17 +3063,17 @@ extern "C" void test_c_grid_field_pt1(
     cout << " [1] grid_field_pt1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("grid_field_pt1.pat1.c.actual.txt");
+      std::ofstream c_file("grid_field_pt1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_field_pt1.pat1.c2.expected.txt");
+      std::ofstream c2_file("grid_field_pt1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to grid_field_pt1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to grid_field_pt1.pat1.c2.expected.txt" << endl;
+    cout << "     C written to grid_field_pt1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to grid_field_pt1.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3146,19 +3089,17 @@ extern "C" void test_c_grid_field_pt1(
   } else {
     cout << " [3] grid_field_pt1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("grid_field_pt1.pat3.c.expected.txt");
+      std::ofstream c_file("grid_field_pt1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_field_pt1.pat3.c2.actual.txt");
+      std::ofstream c2_file("grid_field_pt1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to grid_field_pt1.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to grid_field_pt1.pat3.c2.actual.txt" << endl;
+    cout << "     C written to grid_field_pt1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to grid_field_pt1.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3184,6 +3125,22 @@ void set_CPP_grid_field_pt_test_pattern(CPP_grid_field_pt& C, int ix_patt) {
   // c_side.test_pat[0D_NOT_integer]
   rhs = 2 + offset;
   C.n_link = rhs;
+  // c_side.test_pat[3D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.pt.resize(0);
+  } else {
+    C.pt.resize(3);
+    for (size_t i{0}; i < C.pt.size(); i++) {
+      C.pt[i].resize(2);
+      for (size_t j{0}; j < C.pt[0].size(); j++) {
+        C.pt[i][j].resize(1);
+        for (size_t k{0}; k < C.pt[0][0].size(); k++) {
+          set_CPP_grid_field_pt1_test_pattern(
+              C.pt[i][j][k], ix_patt + i + 2 * j + 3 * k + 6);
+        }
+      }
+    }
+  }
 }
 
 //--------------------------------------------------------------
@@ -3205,17 +3162,17 @@ extern "C" void test_c_grid_field_pt(
     cout << " [1] grid_field_pt: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("grid_field_pt.pat1.c.actual.txt");
+      std::ofstream c_file("grid_field_pt.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_field_pt.pat1.c2.expected.txt");
+      std::ofstream c2_file("grid_field_pt.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to grid_field_pt.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to grid_field_pt.pat1.c2.expected.txt" << endl;
+    cout << "     C written to grid_field_pt.pat1.c.actual.json" << endl;
+    cout << "     C2 written to grid_field_pt.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3231,19 +3188,17 @@ extern "C" void test_c_grid_field_pt(
   } else {
     cout << " [3] grid_field_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("grid_field_pt.pat3.c.expected.txt");
+      std::ofstream c_file("grid_field_pt.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_field_pt.pat3.c2.actual.txt");
+      std::ofstream c2_file("grid_field_pt.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to grid_field_pt.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to grid_field_pt.pat3.c2.actual.txt" << endl;
+    cout << "     C written to grid_field_pt.pat3.c.expected.json" << endl;
+    cout << "     C2 written to grid_field_pt.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3340,17 +3295,17 @@ extern "C" void test_c_grid_field(Opaque_grid_field_class* F, bool& c_ok) {
     cout << " [1] grid_field: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("grid_field.pat1.c.actual.txt");
+      std::ofstream c_file("grid_field.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_field.pat1.c2.expected.txt");
+      std::ofstream c2_file("grid_field.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to grid_field.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to grid_field.pat1.c2.expected.txt" << endl;
+    cout << "     C written to grid_field.pat1.c.actual.json" << endl;
+    cout << "     C2 written to grid_field.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3366,19 +3321,17 @@ extern "C" void test_c_grid_field(Opaque_grid_field_class* F, bool& c_ok) {
   } else {
     cout << " [3] grid_field: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("grid_field.pat3.c.expected.txt");
+      std::ofstream c_file("grid_field.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_field.pat3.c2.actual.txt");
+      std::ofstream c2_file("grid_field.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to grid_field.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to grid_field.pat3.c2.actual.txt" << endl;
+    cout << "     C written to grid_field.pat3.c.expected.json" << endl;
+    cout << "     C2 written to grid_field.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3436,17 +3389,17 @@ extern "C" void test_c_floor_position(
     cout << " [1] floor_position: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("floor_position.pat1.c.actual.txt");
+      std::ofstream c_file("floor_position.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("floor_position.pat1.c2.expected.txt");
+      std::ofstream c2_file("floor_position.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to floor_position.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to floor_position.pat1.c2.expected.txt" << endl;
+    cout << "     C written to floor_position.pat1.c.actual.json" << endl;
+    cout << "     C2 written to floor_position.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3462,19 +3415,17 @@ extern "C" void test_c_floor_position(
   } else {
     cout << " [3] floor_position: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("floor_position.pat3.c.expected.txt");
+      std::ofstream c_file("floor_position.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("floor_position.pat3.c2.actual.txt");
+      std::ofstream c2_file("floor_position.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to floor_position.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to floor_position.pat3.c2.actual.txt" << endl;
+    cout << "     C written to floor_position.pat3.c.expected.json" << endl;
+    cout << "     C2 written to floor_position.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3540,18 +3491,18 @@ extern "C" void test_c_high_energy_space_charge(
          << endl;
 
     {
-      std::ofstream c_file("high_energy_space_charge.pat1.c.actual.txt");
+      std::ofstream c_file("high_energy_space_charge.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("high_energy_space_charge.pat1.c2.expected.txt");
+      std::ofstream c2_file("high_energy_space_charge.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to high_energy_space_charge.pat1.c.actual.txt"
+    cout << "     C written to high_energy_space_charge.pat1.c.actual.json"
          << endl;
-    cout << "     C2 written to high_energy_space_charge.pat1.c2.expected.txt"
+    cout << "     C2 written to high_energy_space_charge.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -3569,20 +3520,18 @@ extern "C" void test_c_high_energy_space_charge(
     cout << " [3] high_energy_space_charge: F SIDE CONVERT F->C: FAILED!"
          << endl;
     {
-      std::ofstream c_file("high_energy_space_charge.pat3.c.expected.txt");
+      std::ofstream c_file("high_energy_space_charge.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("high_energy_space_charge.pat3.c2.actual.txt");
+      std::ofstream c2_file("high_energy_space_charge.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to high_energy_space_charge.pat3.c.expected.txt"
+    cout << "     C written to high_energy_space_charge.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to high_energy_space_charge.pat3.c2.actual.txt"
+    cout << "     C2 written to high_energy_space_charge.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -3631,17 +3580,17 @@ extern "C" void test_c_xy_disp(Opaque_xy_disp_class* F, bool& c_ok) {
     cout << " [1] xy_disp: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("xy_disp.pat1.c.actual.txt");
+      std::ofstream c_file("xy_disp.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("xy_disp.pat1.c2.expected.txt");
+      std::ofstream c2_file("xy_disp.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to xy_disp.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to xy_disp.pat1.c2.expected.txt" << endl;
+    cout << "     C written to xy_disp.pat1.c.actual.json" << endl;
+    cout << "     C2 written to xy_disp.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3657,19 +3606,17 @@ extern "C" void test_c_xy_disp(Opaque_xy_disp_class* F, bool& c_ok) {
   } else {
     cout << " [3] xy_disp: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("xy_disp.pat3.c.expected.txt");
+      std::ofstream c_file("xy_disp.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("xy_disp.pat3.c2.actual.txt");
+      std::ofstream c2_file("xy_disp.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to xy_disp.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to xy_disp.pat3.c2.actual.txt" << endl;
+    cout << "     C written to xy_disp.pat3.c.expected.json" << endl;
+    cout << "     C2 written to xy_disp.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3744,17 +3691,17 @@ extern "C" void test_c_twiss(Opaque_twiss_class* F, bool& c_ok) {
     cout << " [1] twiss: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("twiss.pat1.c.actual.txt");
+      std::ofstream c_file("twiss.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("twiss.pat1.c2.expected.txt");
+      std::ofstream c2_file("twiss.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to twiss.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to twiss.pat1.c2.expected.txt" << endl;
+    cout << "     C written to twiss.pat1.c.actual.json" << endl;
+    cout << "     C2 written to twiss.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3770,19 +3717,17 @@ extern "C" void test_c_twiss(Opaque_twiss_class* F, bool& c_ok) {
   } else {
     cout << " [3] twiss: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("twiss.pat3.c.expected.txt");
+      std::ofstream c_file("twiss.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("twiss.pat3.c2.actual.txt");
+      std::ofstream c2_file("twiss.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to twiss.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to twiss.pat3.c2.actual.txt" << endl;
+    cout << "     C written to twiss.pat3.c.expected.json" << endl;
+    cout << "     C2 written to twiss.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3834,17 +3779,17 @@ extern "C" void test_c_mode3(Opaque_mode3_class* F, bool& c_ok) {
     cout << " [1] mode3: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("mode3.pat1.c.actual.txt");
+      std::ofstream c_file("mode3.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("mode3.pat1.c2.expected.txt");
+      std::ofstream c2_file("mode3.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to mode3.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to mode3.pat1.c2.expected.txt" << endl;
+    cout << "     C written to mode3.pat1.c.actual.json" << endl;
+    cout << "     C2 written to mode3.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -3860,19 +3805,17 @@ extern "C" void test_c_mode3(Opaque_mode3_class* F, bool& c_ok) {
   } else {
     cout << " [3] mode3: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("mode3.pat3.c.expected.txt");
+      std::ofstream c_file("mode3.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("mode3.pat3.c2.actual.txt");
+      std::ofstream c2_file("mode3.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to mode3.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to mode3.pat3.c2.actual.txt" << endl;
+    cout << "     C written to mode3.pat3.c.expected.json" << endl;
+    cout << "     C2 written to mode3.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -3939,17 +3882,18 @@ extern "C" void test_c_bookkeeping_state(
     cout << " [1] bookkeeping_state: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("bookkeeping_state.pat1.c.actual.txt");
+      std::ofstream c_file("bookkeeping_state.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bookkeeping_state.pat1.c2.expected.txt");
+      std::ofstream c2_file("bookkeeping_state.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to bookkeeping_state.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to bookkeeping_state.pat1.c2.expected.txt" << endl;
+    cout << "     C written to bookkeeping_state.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bookkeeping_state.pat1.c2.expected.json"
+         << endl;
     c_ok = false;
   }
 
@@ -3965,19 +3909,17 @@ extern "C" void test_c_bookkeeping_state(
   } else {
     cout << " [3] bookkeeping_state: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("bookkeeping_state.pat3.c.expected.txt");
+      std::ofstream c_file("bookkeeping_state.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bookkeeping_state.pat3.c2.actual.txt");
+      std::ofstream c2_file("bookkeeping_state.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to bookkeeping_state.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to bookkeeping_state.pat3.c2.actual.txt" << endl;
+    cout << "     C written to bookkeeping_state.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bookkeeping_state.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4041,17 +3983,17 @@ extern "C" void test_c_rad_map(Opaque_rad_map_class* F, bool& c_ok) {
     cout << " [1] rad_map: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("rad_map.pat1.c.actual.txt");
+      std::ofstream c_file("rad_map.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_map.pat1.c2.expected.txt");
+      std::ofstream c2_file("rad_map.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to rad_map.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to rad_map.pat1.c2.expected.txt" << endl;
+    cout << "     C written to rad_map.pat1.c.actual.json" << endl;
+    cout << "     C2 written to rad_map.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -4067,19 +4009,17 @@ extern "C" void test_c_rad_map(Opaque_rad_map_class* F, bool& c_ok) {
   } else {
     cout << " [3] rad_map: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("rad_map.pat3.c.expected.txt");
+      std::ofstream c_file("rad_map.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_map.pat3.c2.actual.txt");
+      std::ofstream c2_file("rad_map.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to rad_map.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to rad_map.pat3.c2.actual.txt" << endl;
+    cout << "     C written to rad_map.pat3.c.expected.json" << endl;
+    cout << "     C2 written to rad_map.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4122,17 +4062,17 @@ extern "C" void test_c_rad_map_ele(Opaque_rad_map_ele_class* F, bool& c_ok) {
     cout << " [1] rad_map_ele: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("rad_map_ele.pat1.c.actual.txt");
+      std::ofstream c_file("rad_map_ele.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_map_ele.pat1.c2.expected.txt");
+      std::ofstream c2_file("rad_map_ele.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to rad_map_ele.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to rad_map_ele.pat1.c2.expected.txt" << endl;
+    cout << "     C written to rad_map_ele.pat1.c.actual.json" << endl;
+    cout << "     C2 written to rad_map_ele.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -4148,19 +4088,17 @@ extern "C" void test_c_rad_map_ele(Opaque_rad_map_ele_class* F, bool& c_ok) {
   } else {
     cout << " [3] rad_map_ele: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("rad_map_ele.pat3.c.expected.txt");
+      std::ofstream c_file("rad_map_ele.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_map_ele.pat3.c2.actual.txt");
+      std::ofstream c2_file("rad_map_ele.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to rad_map_ele.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to rad_map_ele.pat3.c2.actual.txt" << endl;
+    cout << "     C written to rad_map_ele.pat3.c.expected.json" << endl;
+    cout << "     C2 written to rad_map_ele.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4218,17 +4156,17 @@ extern "C" void test_c_gen_grad1(Opaque_gen_grad1_class* F, bool& c_ok) {
     cout << " [1] gen_grad1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("gen_grad1.pat1.c.actual.txt");
+      std::ofstream c_file("gen_grad1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("gen_grad1.pat1.c2.expected.txt");
+      std::ofstream c2_file("gen_grad1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to gen_grad1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to gen_grad1.pat1.c2.expected.txt" << endl;
+    cout << "     C written to gen_grad1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to gen_grad1.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -4244,19 +4182,17 @@ extern "C" void test_c_gen_grad1(Opaque_gen_grad1_class* F, bool& c_ok) {
   } else {
     cout << " [3] gen_grad1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("gen_grad1.pat3.c.expected.txt");
+      std::ofstream c_file("gen_grad1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("gen_grad1.pat3.c2.actual.txt");
+      std::ofstream c2_file("gen_grad1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to gen_grad1.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to gen_grad1.pat3.c2.actual.txt" << endl;
+    cout << "     C written to gen_grad1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to gen_grad1.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4336,17 +4272,17 @@ extern "C" void test_c_gen_grad_map(Opaque_gen_grad_map_class* F, bool& c_ok) {
     cout << " [1] gen_grad_map: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("gen_grad_map.pat1.c.actual.txt");
+      std::ofstream c_file("gen_grad_map.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("gen_grad_map.pat1.c2.expected.txt");
+      std::ofstream c2_file("gen_grad_map.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to gen_grad_map.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to gen_grad_map.pat1.c2.expected.txt" << endl;
+    cout << "     C written to gen_grad_map.pat1.c.actual.json" << endl;
+    cout << "     C2 written to gen_grad_map.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -4362,19 +4298,17 @@ extern "C" void test_c_gen_grad_map(Opaque_gen_grad_map_class* F, bool& c_ok) {
   } else {
     cout << " [3] gen_grad_map: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("gen_grad_map.pat3.c.expected.txt");
+      std::ofstream c_file("gen_grad_map.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("gen_grad_map.pat3.c2.actual.txt");
+      std::ofstream c2_file("gen_grad_map.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to gen_grad_map.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to gen_grad_map.pat3.c2.actual.txt" << endl;
+    cout << "     C written to gen_grad_map.pat3.c.expected.json" << endl;
+    cout << "     C2 written to gen_grad_map.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4429,17 +4363,17 @@ extern "C" void test_c_surface_segmented_pt(
     cout << " [1] surface_segmented_pt: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("surface_segmented_pt.pat1.c.actual.txt");
+      std::ofstream c_file("surface_segmented_pt.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_segmented_pt.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_segmented_pt.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_segmented_pt.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to surface_segmented_pt.pat1.c2.expected.txt"
+    cout << "     C written to surface_segmented_pt.pat1.c.actual.json" << endl;
+    cout << "     C2 written to surface_segmented_pt.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -4456,20 +4390,18 @@ extern "C" void test_c_surface_segmented_pt(
   } else {
     cout << " [3] surface_segmented_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("surface_segmented_pt.pat3.c.expected.txt");
+      std::ofstream c_file("surface_segmented_pt.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_segmented_pt.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_segmented_pt.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_segmented_pt.pat3.c.expected.txt"
+    cout << "     C written to surface_segmented_pt.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to surface_segmented_pt.pat3.c2.actual.txt"
+    cout << "     C2 written to surface_segmented_pt.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -4537,17 +4469,18 @@ extern "C" void test_c_surface_segmented(
     cout << " [1] surface_segmented: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("surface_segmented.pat1.c.actual.txt");
+      std::ofstream c_file("surface_segmented.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_segmented.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_segmented.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_segmented.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to surface_segmented.pat1.c2.expected.txt" << endl;
+    cout << "     C written to surface_segmented.pat1.c.actual.json" << endl;
+    cout << "     C2 written to surface_segmented.pat1.c2.expected.json"
+         << endl;
     c_ok = false;
   }
 
@@ -4563,19 +4496,17 @@ extern "C" void test_c_surface_segmented(
   } else {
     cout << " [3] surface_segmented: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("surface_segmented.pat3.c.expected.txt");
+      std::ofstream c_file("surface_segmented.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_segmented.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_segmented.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_segmented.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to surface_segmented.pat3.c2.actual.txt" << endl;
+    cout << "     C written to surface_segmented.pat3.c.expected.json" << endl;
+    cout << "     C2 written to surface_segmented.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4635,17 +4566,18 @@ extern "C" void test_c_surface_h_misalign_pt(
     cout << " [1] surface_h_misalign_pt: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("surface_h_misalign_pt.pat1.c.actual.txt");
+      std::ofstream c_file("surface_h_misalign_pt.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_h_misalign_pt.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_h_misalign_pt.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_h_misalign_pt.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to surface_h_misalign_pt.pat1.c2.expected.txt"
+    cout << "     C written to surface_h_misalign_pt.pat1.c.actual.json"
+         << endl;
+    cout << "     C2 written to surface_h_misalign_pt.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -4662,20 +4594,18 @@ extern "C" void test_c_surface_h_misalign_pt(
   } else {
     cout << " [3] surface_h_misalign_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("surface_h_misalign_pt.pat3.c.expected.txt");
+      std::ofstream c_file("surface_h_misalign_pt.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_h_misalign_pt.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_h_misalign_pt.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_h_misalign_pt.pat3.c.expected.txt"
+    cout << "     C written to surface_h_misalign_pt.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to surface_h_misalign_pt.pat3.c2.actual.txt"
+    cout << "     C2 written to surface_h_misalign_pt.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -4743,17 +4673,17 @@ extern "C" void test_c_surface_h_misalign(
     cout << " [1] surface_h_misalign: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("surface_h_misalign.pat1.c.actual.txt");
+      std::ofstream c_file("surface_h_misalign.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_h_misalign.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_h_misalign.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_h_misalign.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to surface_h_misalign.pat1.c2.expected.txt"
+    cout << "     C written to surface_h_misalign.pat1.c.actual.json" << endl;
+    cout << "     C2 written to surface_h_misalign.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -4770,19 +4700,17 @@ extern "C" void test_c_surface_h_misalign(
   } else {
     cout << " [3] surface_h_misalign: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("surface_h_misalign.pat3.c.expected.txt");
+      std::ofstream c_file("surface_h_misalign.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_h_misalign.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_h_misalign.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_h_misalign.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to surface_h_misalign.pat3.c2.actual.txt" << endl;
+    cout << "     C written to surface_h_misalign.pat3.c.expected.json" << endl;
+    cout << "     C2 written to surface_h_misalign.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -4843,18 +4771,18 @@ extern "C" void test_c_surface_displacement_pt(
          << endl;
 
     {
-      std::ofstream c_file("surface_displacement_pt.pat1.c.actual.txt");
+      std::ofstream c_file("surface_displacement_pt.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_displacement_pt.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_displacement_pt.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_displacement_pt.pat1.c.actual.txt"
+    cout << "     C written to surface_displacement_pt.pat1.c.actual.json"
          << endl;
-    cout << "     C2 written to surface_displacement_pt.pat1.c2.expected.txt"
+    cout << "     C2 written to surface_displacement_pt.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -4872,20 +4800,18 @@ extern "C" void test_c_surface_displacement_pt(
     cout << " [3] surface_displacement_pt: F SIDE CONVERT F->C: FAILED!"
          << endl;
     {
-      std::ofstream c_file("surface_displacement_pt.pat3.c.expected.txt");
+      std::ofstream c_file("surface_displacement_pt.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_displacement_pt.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_displacement_pt.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_displacement_pt.pat3.c.expected.txt"
+    cout << "     C written to surface_displacement_pt.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to surface_displacement_pt.pat3.c2.actual.txt"
+    cout << "     C2 written to surface_displacement_pt.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -4953,17 +4879,17 @@ extern "C" void test_c_surface_displacement(
     cout << " [1] surface_displacement: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("surface_displacement.pat1.c.actual.txt");
+      std::ofstream c_file("surface_displacement.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_displacement.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_displacement.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_displacement.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to surface_displacement.pat1.c2.expected.txt"
+    cout << "     C written to surface_displacement.pat1.c.actual.json" << endl;
+    cout << "     C2 written to surface_displacement.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -4980,20 +4906,18 @@ extern "C" void test_c_surface_displacement(
   } else {
     cout << " [3] surface_displacement: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("surface_displacement.pat3.c.expected.txt");
+      std::ofstream c_file("surface_displacement.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_displacement.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_displacement.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_displacement.pat3.c.expected.txt"
+    cout << "     C written to surface_displacement.pat3.c.expected.json"
          << endl;
-    cout << "     C2 written to surface_displacement.pat3.c2.actual.txt"
+    cout << "     C2 written to surface_displacement.pat3.c2.actual.json"
          << endl;
     c_ok = false;
   }
@@ -5035,17 +4959,17 @@ extern "C" void test_c_target_point(Opaque_target_point_class* F, bool& c_ok) {
     cout << " [1] target_point: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("target_point.pat1.c.actual.txt");
+      std::ofstream c_file("target_point.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("target_point.pat1.c2.expected.txt");
+      std::ofstream c2_file("target_point.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to target_point.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to target_point.pat1.c2.expected.txt" << endl;
+    cout << "     C written to target_point.pat1.c.actual.json" << endl;
+    cout << "     C2 written to target_point.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5061,19 +4985,17 @@ extern "C" void test_c_target_point(Opaque_target_point_class* F, bool& c_ok) {
   } else {
     cout << " [3] target_point: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("target_point.pat3.c.expected.txt");
+      std::ofstream c_file("target_point.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("target_point.pat3.c2.actual.txt");
+      std::ofstream c2_file("target_point.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to target_point.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to target_point.pat3.c2.actual.txt" << endl;
+    cout << "     C written to target_point.pat3.c.expected.json" << endl;
+    cout << "     C2 written to target_point.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5130,17 +5052,18 @@ extern "C" void test_c_surface_curvature(
     cout << " [1] surface_curvature: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("surface_curvature.pat1.c.actual.txt");
+      std::ofstream c_file("surface_curvature.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_curvature.pat1.c2.expected.txt");
+      std::ofstream c2_file("surface_curvature.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to surface_curvature.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to surface_curvature.pat1.c2.expected.txt" << endl;
+    cout << "     C written to surface_curvature.pat1.c.actual.json" << endl;
+    cout << "     C2 written to surface_curvature.pat1.c2.expected.json"
+         << endl;
     c_ok = false;
   }
 
@@ -5156,19 +5079,17 @@ extern "C" void test_c_surface_curvature(
   } else {
     cout << " [3] surface_curvature: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("surface_curvature.pat3.c.expected.txt");
+      std::ofstream c_file("surface_curvature.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("surface_curvature.pat3.c2.actual.txt");
+      std::ofstream c2_file("surface_curvature.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to surface_curvature.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to surface_curvature.pat3.c2.actual.txt" << endl;
+    cout << "     C written to surface_curvature.pat3.c.expected.json" << endl;
+    cout << "     C2 written to surface_curvature.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5221,17 +5142,17 @@ extern "C" void test_c_photon_target(
     cout << " [1] photon_target: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("photon_target.pat1.c.actual.txt");
+      std::ofstream c_file("photon_target.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_target.pat1.c2.expected.txt");
+      std::ofstream c2_file("photon_target.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to photon_target.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to photon_target.pat1.c2.expected.txt" << endl;
+    cout << "     C written to photon_target.pat1.c.actual.json" << endl;
+    cout << "     C2 written to photon_target.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5247,19 +5168,17 @@ extern "C" void test_c_photon_target(
   } else {
     cout << " [3] photon_target: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("photon_target.pat3.c.expected.txt");
+      std::ofstream c_file("photon_target.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_target.pat3.c2.actual.txt");
+      std::ofstream c2_file("photon_target.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to photon_target.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to photon_target.pat3.c2.actual.txt" << endl;
+    cout << "     C written to photon_target.pat3.c.expected.json" << endl;
+    cout << "     C2 written to photon_target.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5325,17 +5244,17 @@ extern "C" void test_c_photon_material(
     cout << " [1] photon_material: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("photon_material.pat1.c.actual.txt");
+      std::ofstream c_file("photon_material.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_material.pat1.c2.expected.txt");
+      std::ofstream c2_file("photon_material.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to photon_material.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to photon_material.pat1.c2.expected.txt" << endl;
+    cout << "     C written to photon_material.pat1.c.actual.json" << endl;
+    cout << "     C2 written to photon_material.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5351,19 +5270,17 @@ extern "C" void test_c_photon_material(
   } else {
     cout << " [3] photon_material: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("photon_material.pat3.c.expected.txt");
+      std::ofstream c_file("photon_material.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_material.pat3.c2.actual.txt");
+      std::ofstream c2_file("photon_material.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to photon_material.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to photon_material.pat3.c2.actual.txt" << endl;
+    cout << "     C written to photon_material.pat3.c.expected.json" << endl;
+    cout << "     C2 written to photon_material.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5437,17 +5354,17 @@ extern "C" void test_c_pixel_pt(Opaque_pixel_pt_class* F, bool& c_ok) {
     cout << " [1] pixel_pt: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("pixel_pt.pat1.c.actual.txt");
+      std::ofstream c_file("pixel_pt.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("pixel_pt.pat1.c2.expected.txt");
+      std::ofstream c2_file("pixel_pt.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to pixel_pt.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to pixel_pt.pat1.c2.expected.txt" << endl;
+    cout << "     C written to pixel_pt.pat1.c.actual.json" << endl;
+    cout << "     C2 written to pixel_pt.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5463,19 +5380,17 @@ extern "C" void test_c_pixel_pt(Opaque_pixel_pt_class* F, bool& c_ok) {
   } else {
     cout << " [3] pixel_pt: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("pixel_pt.pat3.c.expected.txt");
+      std::ofstream c_file("pixel_pt.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("pixel_pt.pat3.c2.actual.txt");
+      std::ofstream c2_file("pixel_pt.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to pixel_pt.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to pixel_pt.pat3.c2.actual.txt" << endl;
+    cout << "     C written to pixel_pt.pat3.c.expected.json" << endl;
+    cout << "     C2 written to pixel_pt.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5543,17 +5458,17 @@ extern "C" void test_c_pixel_detec(Opaque_pixel_detec_class* F, bool& c_ok) {
     cout << " [1] pixel_detec: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("pixel_detec.pat1.c.actual.txt");
+      std::ofstream c_file("pixel_detec.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("pixel_detec.pat1.c2.expected.txt");
+      std::ofstream c2_file("pixel_detec.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to pixel_detec.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to pixel_detec.pat1.c2.expected.txt" << endl;
+    cout << "     C written to pixel_detec.pat1.c.actual.json" << endl;
+    cout << "     C2 written to pixel_detec.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5569,19 +5484,17 @@ extern "C" void test_c_pixel_detec(Opaque_pixel_detec_class* F, bool& c_ok) {
   } else {
     cout << " [3] pixel_detec: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("pixel_detec.pat3.c.expected.txt");
+      std::ofstream c_file("pixel_detec.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("pixel_detec.pat3.c2.actual.txt");
+      std::ofstream c2_file("pixel_detec.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to pixel_detec.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to pixel_detec.pat3.c2.actual.txt" << endl;
+    cout << "     C written to pixel_detec.pat3.c.expected.json" << endl;
+    cout << "     C2 written to pixel_detec.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5660,17 +5573,17 @@ extern "C" void test_c_photon_element(
     cout << " [1] photon_element: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("photon_element.pat1.c.actual.txt");
+      std::ofstream c_file("photon_element.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_element.pat1.c2.expected.txt");
+      std::ofstream c2_file("photon_element.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to photon_element.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to photon_element.pat1.c2.expected.txt" << endl;
+    cout << "     C written to photon_element.pat1.c.actual.json" << endl;
+    cout << "     C2 written to photon_element.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5686,19 +5599,17 @@ extern "C" void test_c_photon_element(
   } else {
     cout << " [3] photon_element: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("photon_element.pat3.c.expected.txt");
+      std::ofstream c_file("photon_element.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("photon_element.pat3.c2.actual.txt");
+      std::ofstream c2_file("photon_element.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to photon_element.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to photon_element.pat3.c2.actual.txt" << endl;
+    cout << "     C written to photon_element.pat3.c.expected.json" << endl;
+    cout << "     C2 written to photon_element.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5763,17 +5674,17 @@ extern "C" void test_c_wall3d_vertex(
     cout << " [1] wall3d_vertex: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wall3d_vertex.pat1.c.actual.txt");
+      std::ofstream c_file("wall3d_vertex.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wall3d_vertex.pat1.c2.expected.txt");
+      std::ofstream c2_file("wall3d_vertex.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wall3d_vertex.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wall3d_vertex.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wall3d_vertex.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wall3d_vertex.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5789,19 +5700,17 @@ extern "C" void test_c_wall3d_vertex(
   } else {
     cout << " [3] wall3d_vertex: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wall3d_vertex.pat3.c.expected.txt");
+      std::ofstream c_file("wall3d_vertex.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wall3d_vertex.pat3.c2.actual.txt");
+      std::ofstream c2_file("wall3d_vertex.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wall3d_vertex.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wall3d_vertex.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wall3d_vertex.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wall3d_vertex.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -5925,17 +5834,17 @@ extern "C" void test_c_wall3d_section(
     cout << " [1] wall3d_section: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wall3d_section.pat1.c.actual.txt");
+      std::ofstream c_file("wall3d_section.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wall3d_section.pat1.c2.expected.txt");
+      std::ofstream c2_file("wall3d_section.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wall3d_section.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wall3d_section.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wall3d_section.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wall3d_section.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -5951,19 +5860,17 @@ extern "C" void test_c_wall3d_section(
   } else {
     cout << " [3] wall3d_section: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wall3d_section.pat3.c.expected.txt");
+      std::ofstream c_file("wall3d_section.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wall3d_section.pat3.c2.actual.txt");
+      std::ofstream c2_file("wall3d_section.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wall3d_section.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wall3d_section.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wall3d_section.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wall3d_section.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6044,17 +5951,17 @@ extern "C" void test_c_wall3d(Opaque_wall3d_class* F, bool& c_ok) {
     cout << " [1] wall3d: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("wall3d.pat1.c.actual.txt");
+      std::ofstream c_file("wall3d.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wall3d.pat1.c2.expected.txt");
+      std::ofstream c2_file("wall3d.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to wall3d.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to wall3d.pat1.c2.expected.txt" << endl;
+    cout << "     C written to wall3d.pat1.c.actual.json" << endl;
+    cout << "     C2 written to wall3d.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6070,19 +5977,17 @@ extern "C" void test_c_wall3d(Opaque_wall3d_class* F, bool& c_ok) {
   } else {
     cout << " [3] wall3d: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("wall3d.pat3.c.expected.txt");
+      std::ofstream c_file("wall3d.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("wall3d.pat3.c2.actual.txt");
+      std::ofstream c2_file("wall3d.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to wall3d.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to wall3d.pat3.c2.actual.txt" << endl;
+    cout << "     C written to wall3d.pat3.c.expected.json" << endl;
+    cout << "     C2 written to wall3d.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6131,17 +6036,17 @@ extern "C" void test_c_ramper_lord(Opaque_ramper_lord_class* F, bool& c_ok) {
     cout << " [1] ramper_lord: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("ramper_lord.pat1.c.actual.txt");
+      std::ofstream c_file("ramper_lord.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ramper_lord.pat1.c2.expected.txt");
+      std::ofstream c2_file("ramper_lord.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to ramper_lord.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to ramper_lord.pat1.c2.expected.txt" << endl;
+    cout << "     C written to ramper_lord.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ramper_lord.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6157,19 +6062,17 @@ extern "C" void test_c_ramper_lord(Opaque_ramper_lord_class* F, bool& c_ok) {
   } else {
     cout << " [3] ramper_lord: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("ramper_lord.pat3.c.expected.txt");
+      std::ofstream c_file("ramper_lord.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ramper_lord.pat3.c2.actual.txt");
+      std::ofstream c2_file("ramper_lord.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to ramper_lord.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to ramper_lord.pat3.c2.actual.txt" << endl;
+    cout << "     C written to ramper_lord.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ramper_lord.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6246,17 +6149,17 @@ extern "C" void test_c_control(Opaque_control_class* F, bool& c_ok) {
     cout << " [1] control: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("control.pat1.c.actual.txt");
+      std::ofstream c_file("control.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("control.pat1.c2.expected.txt");
+      std::ofstream c2_file("control.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to control.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to control.pat1.c2.expected.txt" << endl;
+    cout << "     C written to control.pat1.c.actual.json" << endl;
+    cout << "     C2 written to control.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6272,19 +6175,17 @@ extern "C" void test_c_control(Opaque_control_class* F, bool& c_ok) {
   } else {
     cout << " [3] control: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("control.pat3.c.expected.txt");
+      std::ofstream c_file("control.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("control.pat3.c2.actual.txt");
+      std::ofstream c2_file("control.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to control.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to control.pat3.c2.actual.txt" << endl;
+    cout << "     C written to control.pat3.c.expected.json" << endl;
+    cout << "     C2 written to control.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6332,17 +6233,17 @@ extern "C" void test_c_control_var1(Opaque_control_var1_class* F, bool& c_ok) {
     cout << " [1] control_var1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("control_var1.pat1.c.actual.txt");
+      std::ofstream c_file("control_var1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("control_var1.pat1.c2.expected.txt");
+      std::ofstream c2_file("control_var1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to control_var1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to control_var1.pat1.c2.expected.txt" << endl;
+    cout << "     C written to control_var1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to control_var1.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6358,19 +6259,17 @@ extern "C" void test_c_control_var1(Opaque_control_var1_class* F, bool& c_ok) {
   } else {
     cout << " [3] control_var1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("control_var1.pat3.c.expected.txt");
+      std::ofstream c_file("control_var1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("control_var1.pat3.c2.actual.txt");
+      std::ofstream c2_file("control_var1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to control_var1.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to control_var1.pat3.c2.actual.txt" << endl;
+    cout << "     C written to control_var1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to control_var1.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6442,17 +6341,17 @@ extern "C" void test_c_control_ramp1(
     cout << " [1] control_ramp1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("control_ramp1.pat1.c.actual.txt");
+      std::ofstream c_file("control_ramp1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("control_ramp1.pat1.c2.expected.txt");
+      std::ofstream c2_file("control_ramp1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to control_ramp1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to control_ramp1.pat1.c2.expected.txt" << endl;
+    cout << "     C written to control_ramp1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to control_ramp1.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6468,19 +6367,17 @@ extern "C" void test_c_control_ramp1(
   } else {
     cout << " [3] control_ramp1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("control_ramp1.pat3.c.expected.txt");
+      std::ofstream c_file("control_ramp1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("control_ramp1.pat3.c2.actual.txt");
+      std::ofstream c2_file("control_ramp1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to control_ramp1.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to control_ramp1.pat3.c2.actual.txt" << endl;
+    cout << "     C written to control_ramp1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to control_ramp1.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6553,17 +6450,17 @@ extern "C" void test_c_controller(Opaque_controller_class* F, bool& c_ok) {
     cout << " [1] controller: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("controller.pat1.c.actual.txt");
+      std::ofstream c_file("controller.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("controller.pat1.c2.expected.txt");
+      std::ofstream c2_file("controller.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to controller.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to controller.pat1.c2.expected.txt" << endl;
+    cout << "     C written to controller.pat1.c.actual.json" << endl;
+    cout << "     C2 written to controller.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6579,19 +6476,17 @@ extern "C" void test_c_controller(Opaque_controller_class* F, bool& c_ok) {
   } else {
     cout << " [3] controller: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("controller.pat3.c.expected.txt");
+      std::ofstream c_file("controller.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("controller.pat3.c2.actual.txt");
+      std::ofstream c2_file("controller.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to controller.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to controller.pat3.c2.actual.txt" << endl;
+    cout << "     C written to controller.pat3.c.expected.json" << endl;
+    cout << "     C2 written to controller.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6640,17 +6535,18 @@ extern "C" void test_c_ellipse_beam_init(
     cout << " [1] ellipse_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("ellipse_beam_init.pat1.c.actual.txt");
+      std::ofstream c_file("ellipse_beam_init.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ellipse_beam_init.pat1.c2.expected.txt");
+      std::ofstream c2_file("ellipse_beam_init.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to ellipse_beam_init.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to ellipse_beam_init.pat1.c2.expected.txt" << endl;
+    cout << "     C written to ellipse_beam_init.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ellipse_beam_init.pat1.c2.expected.json"
+         << endl;
     c_ok = false;
   }
 
@@ -6666,19 +6562,17 @@ extern "C" void test_c_ellipse_beam_init(
   } else {
     cout << " [3] ellipse_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("ellipse_beam_init.pat3.c.expected.txt");
+      std::ofstream c_file("ellipse_beam_init.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ellipse_beam_init.pat3.c2.actual.txt");
+      std::ofstream c2_file("ellipse_beam_init.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to ellipse_beam_init.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to ellipse_beam_init.pat3.c2.actual.txt" << endl;
+    cout << "     C written to ellipse_beam_init.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ellipse_beam_init.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6725,17 +6619,17 @@ extern "C" void test_c_kv_beam_init(Opaque_kv_beam_init_class* F, bool& c_ok) {
     cout << " [1] kv_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("kv_beam_init.pat1.c.actual.txt");
+      std::ofstream c_file("kv_beam_init.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("kv_beam_init.pat1.c2.expected.txt");
+      std::ofstream c2_file("kv_beam_init.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to kv_beam_init.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to kv_beam_init.pat1.c2.expected.txt" << endl;
+    cout << "     C written to kv_beam_init.pat1.c.actual.json" << endl;
+    cout << "     C2 written to kv_beam_init.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6751,19 +6645,17 @@ extern "C" void test_c_kv_beam_init(Opaque_kv_beam_init_class* F, bool& c_ok) {
   } else {
     cout << " [3] kv_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("kv_beam_init.pat3.c.expected.txt");
+      std::ofstream c_file("kv_beam_init.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("kv_beam_init.pat3.c2.actual.txt");
+      std::ofstream c2_file("kv_beam_init.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to kv_beam_init.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to kv_beam_init.pat3.c2.actual.txt" << endl;
+    cout << "     C written to kv_beam_init.pat3.c.expected.json" << endl;
+    cout << "     C2 written to kv_beam_init.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -6819,17 +6711,17 @@ extern "C" void test_c_grid_beam_init(
     cout << " [1] grid_beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("grid_beam_init.pat1.c.actual.txt");
+      std::ofstream c_file("grid_beam_init.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_beam_init.pat1.c2.expected.txt");
+      std::ofstream c2_file("grid_beam_init.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to grid_beam_init.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to grid_beam_init.pat1.c2.expected.txt" << endl;
+    cout << "     C written to grid_beam_init.pat1.c.actual.json" << endl;
+    cout << "     C2 written to grid_beam_init.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -6845,19 +6737,17 @@ extern "C" void test_c_grid_beam_init(
   } else {
     cout << " [3] grid_beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("grid_beam_init.pat3.c.expected.txt");
+      std::ofstream c_file("grid_beam_init.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("grid_beam_init.pat3.c2.actual.txt");
+      std::ofstream c2_file("grid_beam_init.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to grid_beam_init.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to grid_beam_init.pat3.c2.actual.txt" << endl;
+    cout << "     C written to grid_beam_init.pat3.c.expected.json" << endl;
+    cout << "     C2 written to grid_beam_init.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7029,17 +6919,17 @@ extern "C" void test_c_beam_init(Opaque_beam_init_class* F, bool& c_ok) {
     cout << " [1] beam_init: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("beam_init.pat1.c.actual.txt");
+      std::ofstream c_file("beam_init.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("beam_init.pat1.c2.expected.txt");
+      std::ofstream c2_file("beam_init.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to beam_init.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to beam_init.pat1.c2.expected.txt" << endl;
+    cout << "     C written to beam_init.pat1.c.actual.json" << endl;
+    cout << "     C2 written to beam_init.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7055,19 +6945,17 @@ extern "C" void test_c_beam_init(Opaque_beam_init_class* F, bool& c_ok) {
   } else {
     cout << " [3] beam_init: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("beam_init.pat3.c.expected.txt");
+      std::ofstream c_file("beam_init.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("beam_init.pat3.c2.actual.txt");
+      std::ofstream c2_file("beam_init.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to beam_init.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to beam_init.pat3.c2.actual.txt" << endl;
+    cout << "     C written to beam_init.pat3.c.expected.json" << endl;
+    cout << "     C2 written to beam_init.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7158,17 +7046,17 @@ extern "C" void test_c_lat_param(Opaque_lat_param_class* F, bool& c_ok) {
     cout << " [1] lat_param: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("lat_param.pat1.c.actual.txt");
+      std::ofstream c_file("lat_param.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("lat_param.pat1.c2.expected.txt");
+      std::ofstream c2_file("lat_param.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to lat_param.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to lat_param.pat1.c2.expected.txt" << endl;
+    cout << "     C written to lat_param.pat1.c.actual.json" << endl;
+    cout << "     C2 written to lat_param.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7184,19 +7072,17 @@ extern "C" void test_c_lat_param(Opaque_lat_param_class* F, bool& c_ok) {
   } else {
     cout << " [3] lat_param: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("lat_param.pat3.c.expected.txt");
+      std::ofstream c_file("lat_param.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("lat_param.pat3.c2.actual.txt");
+      std::ofstream c2_file("lat_param.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to lat_param.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to lat_param.pat3.c2.actual.txt" << endl;
+    cout << "     C written to lat_param.pat3.c.expected.json" << endl;
+    cout << "     C2 written to lat_param.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7250,17 +7136,17 @@ extern "C" void test_c_mode_info(Opaque_mode_info_class* F, bool& c_ok) {
     cout << " [1] mode_info: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("mode_info.pat1.c.actual.txt");
+      std::ofstream c_file("mode_info.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("mode_info.pat1.c2.expected.txt");
+      std::ofstream c2_file("mode_info.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to mode_info.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to mode_info.pat1.c2.expected.txt" << endl;
+    cout << "     C written to mode_info.pat1.c.actual.json" << endl;
+    cout << "     C2 written to mode_info.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7276,19 +7162,17 @@ extern "C" void test_c_mode_info(Opaque_mode_info_class* F, bool& c_ok) {
   } else {
     cout << " [3] mode_info: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("mode_info.pat3.c.expected.txt");
+      std::ofstream c_file("mode_info.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("mode_info.pat3.c2.actual.txt");
+      std::ofstream c2_file("mode_info.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to mode_info.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to mode_info.pat3.c2.actual.txt" << endl;
+    cout << "     C written to mode_info.pat3.c.expected.json" << endl;
+    cout << "     C2 written to mode_info.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7339,17 +7223,17 @@ extern "C" void test_c_pre_tracker(Opaque_pre_tracker_class* F, bool& c_ok) {
     cout << " [1] pre_tracker: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("pre_tracker.pat1.c.actual.txt");
+      std::ofstream c_file("pre_tracker.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("pre_tracker.pat1.c2.expected.txt");
+      std::ofstream c2_file("pre_tracker.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to pre_tracker.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to pre_tracker.pat1.c2.expected.txt" << endl;
+    cout << "     C written to pre_tracker.pat1.c.actual.json" << endl;
+    cout << "     C2 written to pre_tracker.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7365,19 +7249,17 @@ extern "C" void test_c_pre_tracker(Opaque_pre_tracker_class* F, bool& c_ok) {
   } else {
     cout << " [3] pre_tracker: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("pre_tracker.pat3.c.expected.txt");
+      std::ofstream c_file("pre_tracker.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("pre_tracker.pat3.c2.actual.txt");
+      std::ofstream c2_file("pre_tracker.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to pre_tracker.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to pre_tracker.pat3.c2.actual.txt" << endl;
+    cout << "     C written to pre_tracker.pat3.c.expected.json" << endl;
+    cout << "     C2 written to pre_tracker.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7436,17 +7318,17 @@ extern "C" void test_c_anormal_mode(Opaque_anormal_mode_class* F, bool& c_ok) {
     cout << " [1] anormal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("anormal_mode.pat1.c.actual.txt");
+      std::ofstream c_file("anormal_mode.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("anormal_mode.pat1.c2.expected.txt");
+      std::ofstream c2_file("anormal_mode.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to anormal_mode.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to anormal_mode.pat1.c2.expected.txt" << endl;
+    cout << "     C written to anormal_mode.pat1.c.actual.json" << endl;
+    cout << "     C2 written to anormal_mode.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7462,19 +7344,17 @@ extern "C" void test_c_anormal_mode(Opaque_anormal_mode_class* F, bool& c_ok) {
   } else {
     cout << " [3] anormal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("anormal_mode.pat3.c.expected.txt");
+      std::ofstream c_file("anormal_mode.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("anormal_mode.pat3.c2.actual.txt");
+      std::ofstream c2_file("anormal_mode.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to anormal_mode.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to anormal_mode.pat3.c2.actual.txt" << endl;
+    cout << "     C written to anormal_mode.pat3.c.expected.json" << endl;
+    cout << "     C2 written to anormal_mode.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7535,17 +7415,18 @@ extern "C" void test_c_linac_normal_mode(
     cout << " [1] linac_normal_mode: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("linac_normal_mode.pat1.c.actual.txt");
+      std::ofstream c_file("linac_normal_mode.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("linac_normal_mode.pat1.c2.expected.txt");
+      std::ofstream c2_file("linac_normal_mode.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to linac_normal_mode.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to linac_normal_mode.pat1.c2.expected.txt" << endl;
+    cout << "     C written to linac_normal_mode.pat1.c.actual.json" << endl;
+    cout << "     C2 written to linac_normal_mode.pat1.c2.expected.json"
+         << endl;
     c_ok = false;
   }
 
@@ -7561,19 +7442,17 @@ extern "C" void test_c_linac_normal_mode(
   } else {
     cout << " [3] linac_normal_mode: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("linac_normal_mode.pat3.c.expected.txt");
+      std::ofstream c_file("linac_normal_mode.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("linac_normal_mode.pat3.c2.actual.txt");
+      std::ofstream c2_file("linac_normal_mode.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to linac_normal_mode.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to linac_normal_mode.pat3.c2.actual.txt" << endl;
+    cout << "     C written to linac_normal_mode.pat3.c.expected.json" << endl;
+    cout << "     C2 written to linac_normal_mode.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7646,17 +7525,17 @@ extern "C" void test_c_normal_modes(Opaque_normal_modes_class* F, bool& c_ok) {
     cout << " [1] normal_modes: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("normal_modes.pat1.c.actual.txt");
+      std::ofstream c_file("normal_modes.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("normal_modes.pat1.c2.expected.txt");
+      std::ofstream c2_file("normal_modes.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to normal_modes.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to normal_modes.pat1.c2.expected.txt" << endl;
+    cout << "     C written to normal_modes.pat1.c.actual.json" << endl;
+    cout << "     C2 written to normal_modes.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7672,19 +7551,17 @@ extern "C" void test_c_normal_modes(Opaque_normal_modes_class* F, bool& c_ok) {
   } else {
     cout << " [3] normal_modes: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("normal_modes.pat3.c.expected.txt");
+      std::ofstream c_file("normal_modes.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("normal_modes.pat3.c2.actual.txt");
+      std::ofstream c2_file("normal_modes.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to normal_modes.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to normal_modes.pat3.c2.actual.txt" << endl;
+    cout << "     C written to normal_modes.pat3.c.expected.json" << endl;
+    cout << "     C2 written to normal_modes.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7753,17 +7630,17 @@ extern "C" void test_c_em_field(Opaque_em_field_class* F, bool& c_ok) {
     cout << " [1] em_field: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("em_field.pat1.c.actual.txt");
+      std::ofstream c_file("em_field.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("em_field.pat1.c2.expected.txt");
+      std::ofstream c2_file("em_field.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to em_field.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to em_field.pat1.c2.expected.txt" << endl;
+    cout << "     C written to em_field.pat1.c.actual.json" << endl;
+    cout << "     C2 written to em_field.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7779,19 +7656,17 @@ extern "C" void test_c_em_field(Opaque_em_field_class* F, bool& c_ok) {
   } else {
     cout << " [3] em_field: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("em_field.pat3.c.expected.txt");
+      std::ofstream c_file("em_field.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("em_field.pat3.c2.actual.txt");
+      std::ofstream c2_file("em_field.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to em_field.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to em_field.pat3.c2.actual.txt" << endl;
+    cout << "     C written to em_field.pat3.c.expected.json" << endl;
+    cout << "     C2 written to em_field.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7848,17 +7723,17 @@ extern "C" void test_c_strong_beam(Opaque_strong_beam_class* F, bool& c_ok) {
     cout << " [1] strong_beam: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("strong_beam.pat1.c.actual.txt");
+      std::ofstream c_file("strong_beam.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("strong_beam.pat1.c2.expected.txt");
+      std::ofstream c2_file("strong_beam.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to strong_beam.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to strong_beam.pat1.c2.expected.txt" << endl;
+    cout << "     C written to strong_beam.pat1.c.actual.json" << endl;
+    cout << "     C2 written to strong_beam.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7874,19 +7749,17 @@ extern "C" void test_c_strong_beam(Opaque_strong_beam_class* F, bool& c_ok) {
   } else {
     cout << " [3] strong_beam: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("strong_beam.pat3.c.expected.txt");
+      std::ofstream c_file("strong_beam.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("strong_beam.pat3.c2.actual.txt");
+      std::ofstream c2_file("strong_beam.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to strong_beam.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to strong_beam.pat3.c2.actual.txt" << endl;
+    cout << "     C written to strong_beam.pat3.c.expected.json" << endl;
+    cout << "     C2 written to strong_beam.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -7942,17 +7815,17 @@ extern "C" void test_c_track_point(Opaque_track_point_class* F, bool& c_ok) {
     cout << " [1] track_point: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("track_point.pat1.c.actual.txt");
+      std::ofstream c_file("track_point.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("track_point.pat1.c2.expected.txt");
+      std::ofstream c2_file("track_point.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to track_point.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to track_point.pat1.c2.expected.txt" << endl;
+    cout << "     C written to track_point.pat1.c.actual.json" << endl;
+    cout << "     C2 written to track_point.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -7968,19 +7841,17 @@ extern "C" void test_c_track_point(Opaque_track_point_class* F, bool& c_ok) {
   } else {
     cout << " [3] track_point: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("track_point.pat3.c.expected.txt");
+      std::ofstream c_file("track_point.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("track_point.pat3.c2.actual.txt");
+      std::ofstream c2_file("track_point.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to track_point.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to track_point.pat3.c2.actual.txt" << endl;
+    cout << "     C written to track_point.pat3.c.expected.json" << endl;
+    cout << "     C2 written to track_point.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -8037,17 +7908,17 @@ extern "C" void test_c_track(Opaque_track_class* F, bool& c_ok) {
     cout << " [1] track: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("track.pat1.c.actual.txt");
+      std::ofstream c_file("track.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("track.pat1.c2.expected.txt");
+      std::ofstream c2_file("track.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to track.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to track.pat1.c2.expected.txt" << endl;
+    cout << "     C written to track.pat1.c.actual.json" << endl;
+    cout << "     C2 written to track.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -8063,19 +7934,17 @@ extern "C" void test_c_track(Opaque_track_class* F, bool& c_ok) {
   } else {
     cout << " [3] track: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("track.pat3.c.expected.txt");
+      std::ofstream c_file("track.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("track.pat3.c2.actual.txt");
+      std::ofstream c2_file("track.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to track.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to track.pat3.c2.actual.txt" << endl;
+    cout << "     C written to track.pat3.c.expected.json" << endl;
+    cout << "     C2 written to track.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -8173,17 +8042,17 @@ extern "C" void test_c_space_charge_common(
     cout << " [1] space_charge_common: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("space_charge_common.pat1.c.actual.txt");
+      std::ofstream c_file("space_charge_common.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("space_charge_common.pat1.c2.expected.txt");
+      std::ofstream c2_file("space_charge_common.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to space_charge_common.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to space_charge_common.pat1.c2.expected.txt"
+    cout << "     C written to space_charge_common.pat1.c.actual.json" << endl;
+    cout << "     C2 written to space_charge_common.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -8200,19 +8069,19 @@ extern "C" void test_c_space_charge_common(
   } else {
     cout << " [3] space_charge_common: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("space_charge_common.pat3.c.expected.txt");
+      std::ofstream c_file("space_charge_common.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("space_charge_common.pat3.c2.actual.txt");
+      std::ofstream c2_file("space_charge_common.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to space_charge_common.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to space_charge_common.pat3.c2.actual.txt" << endl;
+    cout << "     C written to space_charge_common.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to space_charge_common.pat3.c2.actual.json"
+         << endl;
     c_ok = false;
   }
 
@@ -8370,17 +8239,17 @@ extern "C" void test_c_bmad_common(Opaque_bmad_common_class* F, bool& c_ok) {
     cout << " [1] bmad_common: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("bmad_common.pat1.c.actual.txt");
+      std::ofstream c_file("bmad_common.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bmad_common.pat1.c2.expected.txt");
+      std::ofstream c2_file("bmad_common.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to bmad_common.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to bmad_common.pat1.c2.expected.txt" << endl;
+    cout << "     C written to bmad_common.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bmad_common.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -8396,19 +8265,17 @@ extern "C" void test_c_bmad_common(Opaque_bmad_common_class* F, bool& c_ok) {
   } else {
     cout << " [3] bmad_common: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("bmad_common.pat3.c.expected.txt");
+      std::ofstream c_file("bmad_common.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bmad_common.pat3.c2.actual.txt");
+      std::ofstream c2_file("bmad_common.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to bmad_common.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to bmad_common.pat3.c2.actual.txt" << endl;
+    cout << "     C written to bmad_common.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bmad_common.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -8498,17 +8365,17 @@ extern "C" void test_c_rad_int1(Opaque_rad_int1_class* F, bool& c_ok) {
     cout << " [1] rad_int1: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("rad_int1.pat1.c.actual.txt");
+      std::ofstream c_file("rad_int1.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_int1.pat1.c2.expected.txt");
+      std::ofstream c2_file("rad_int1.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to rad_int1.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to rad_int1.pat1.c2.expected.txt" << endl;
+    cout << "     C written to rad_int1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to rad_int1.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -8524,19 +8391,17 @@ extern "C" void test_c_rad_int1(Opaque_rad_int1_class* F, bool& c_ok) {
   } else {
     cout << " [3] rad_int1: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("rad_int1.pat3.c.expected.txt");
+      std::ofstream c_file("rad_int1.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_int1.pat3.c2.actual.txt");
+      std::ofstream c2_file("rad_int1.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to rad_int1.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to rad_int1.pat3.c2.actual.txt" << endl;
+    cout << "     C written to rad_int1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to rad_int1.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -8583,17 +8448,17 @@ extern "C" void test_c_rad_int_branch(
     cout << " [1] rad_int_branch: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("rad_int_branch.pat1.c.actual.txt");
+      std::ofstream c_file("rad_int_branch.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_int_branch.pat1.c2.expected.txt");
+      std::ofstream c2_file("rad_int_branch.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to rad_int_branch.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to rad_int_branch.pat1.c2.expected.txt" << endl;
+    cout << "     C written to rad_int_branch.pat1.c.actual.json" << endl;
+    cout << "     C2 written to rad_int_branch.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -8609,19 +8474,17 @@ extern "C" void test_c_rad_int_branch(
   } else {
     cout << " [3] rad_int_branch: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("rad_int_branch.pat3.c.expected.txt");
+      std::ofstream c_file("rad_int_branch.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_int_branch.pat3.c2.actual.txt");
+      std::ofstream c2_file("rad_int_branch.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to rad_int_branch.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to rad_int_branch.pat3.c2.actual.txt" << endl;
+    cout << "     C written to rad_int_branch.pat3.c.expected.json" << endl;
+    cout << "     C2 written to rad_int_branch.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -8668,17 +8531,17 @@ extern "C" void test_c_rad_int_all_ele(
     cout << " [1] rad_int_all_ele: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("rad_int_all_ele.pat1.c.actual.txt");
+      std::ofstream c_file("rad_int_all_ele.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_int_all_ele.pat1.c2.expected.txt");
+      std::ofstream c2_file("rad_int_all_ele.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to rad_int_all_ele.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to rad_int_all_ele.pat1.c2.expected.txt" << endl;
+    cout << "     C written to rad_int_all_ele.pat1.c.actual.json" << endl;
+    cout << "     C2 written to rad_int_all_ele.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -8694,19 +8557,17 @@ extern "C" void test_c_rad_int_all_ele(
   } else {
     cout << " [3] rad_int_all_ele: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("rad_int_all_ele.pat3.c.expected.txt");
+      std::ofstream c_file("rad_int_all_ele.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("rad_int_all_ele.pat3.c2.actual.txt");
+      std::ofstream c2_file("rad_int_all_ele.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to rad_int_all_ele.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to rad_int_all_ele.pat3.c2.actual.txt" << endl;
+    cout << "     C written to rad_int_all_ele.pat3.c.expected.json" << endl;
+    cout << "     C2 written to rad_int_all_ele.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -8783,6 +8644,14 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
     C.control.emplace();
     set_CPP_controller_test_pattern(C.control.value(), ix_patt);
   }
+  // c_side.test_pat[0D_PTR_type]
+  if (ix_patt < 3) {
+    C.lord.reset();
+  } else {
+    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
+    set_CPP_ele_test_pattern(*lord, 0); // no infinite recursion, please
+    C.lord = std::move(lord);
+  }
   // c_side.test_pat[0D_NOT_type]
   set_CPP_floor_position_test_pattern(C.floor, ix_patt);
   // c_side.test_pat[0D_PTR_type]
@@ -8816,17 +8685,17 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   }
   // c_side.test_pat[1D_NOT_type]
   for (size_t i{0}; i < C.taylor.size(); i++) {
-    int rhs = 101 + i + 26 + offset;
+    int rhs = 101 + i + 28 + offset;
     set_CPP_taylor_test_pattern(C.taylor[i], ix_patt + i + 1);
   }
   // c_side.test_pat[1D_NOT_real]
   for (size_t i{0}; i < C.spin_taylor_ref_orb_in.size(); i++) {
-    int rhs = 101 + i + 27 + offset;
+    int rhs = 101 + i + 29 + offset;
     C.spin_taylor_ref_orb_in[i] = rhs;
   }
   // c_side.test_pat[1D_NOT_type]
   for (size_t i{0}; i < C.spin_taylor.size(); i++) {
-    int rhs = 101 + i + 28 + offset;
+    int rhs = 101 + i + 30 + offset;
     set_CPP_taylor_test_pattern(C.spin_taylor[i], ix_patt + i + 1);
   }
   // c_side.test_pat[0D_PTR_type]
@@ -8894,50 +8763,50 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   // (custom - off-by-one ele attribs)
   C.value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB + 1; i++) {
-    int rhs = 100 + i + 45 + offset;
+    int rhs = 100 + i + 47 + offset;
     C.value[i] = rhs;
   }
   // c_side.test_pat[1D_NOT_real]
   // (custom - off-by-one ele attribs)
   C.old_value[0] = 0;
   for (unsigned int i = 1; i < Bmad::NUM_ELE_ATTRIB + 1; i++) {
-    int rhs = 100 + i + 46 + offset;
+    int rhs = 100 + i + 48 + offset;
     C.old_value[i] = rhs;
   }
   // c_side.test_pat[2D_NOT_real]
   for (size_t i{0}; i < C.spin_q.size(); i++)
     for (size_t j{0}; j < C.spin_q[0].size(); j++) {
-      int rhs = 101 + i + 10 * (j + 1) + 47 + offset;
+      int rhs = 101 + i + 10 * (j + 1) + 49 + offset;
       C.spin_q[i][j] = rhs;
     }
   // c_side.test_pat[1D_NOT_real]
   for (size_t i{0}; i < C.vec0.size(); i++) {
-    int rhs = 101 + i + 48 + offset;
+    int rhs = 101 + i + 50 + offset;
     C.vec0[i] = rhs;
   }
   // c_side.test_pat[2D_NOT_real]
   for (size_t i{0}; i < C.mat6.size(); i++)
     for (size_t j{0}; j < C.mat6[0].size(); j++) {
-      int rhs = 101 + i + 10 * (j + 1) + 49 + offset;
+      int rhs = 101 + i + 10 * (j + 1) + 51 + offset;
       C.mat6[i][j] = rhs;
     }
   // c_side.test_pat[2D_NOT_real]
   for (size_t i{0}; i < C.c_mat.size(); i++)
     for (size_t j{0}; j < C.c_mat[0].size(); j++) {
-      int rhs = 101 + i + 10 * (j + 1) + 50 + offset;
+      int rhs = 101 + i + 10 * (j + 1) + 52 + offset;
       C.c_mat[i][j] = rhs;
     }
   // c_side.test_pat[0D_NOT_real]
-  rhs = 51 + offset;
+  rhs = 53 + offset;
   C.gamma_c = rhs;
   // c_side.test_pat[0D_NOT_real]
-  rhs = 52 + offset;
+  rhs = 54 + offset;
   C.s_start = rhs;
   // c_side.test_pat[0D_NOT_real]
-  rhs = 53 + offset;
+  rhs = 55 + offset;
   C.s = rhs;
   // c_side.test_pat[0D_NOT_real]
-  rhs = 54 + offset;
+  rhs = 56 + offset;
   C.ref_time = rhs;
   // c_side.test_pat[1D_PTR_real]
   if (ix_patt < 3) {
@@ -8945,7 +8814,7 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   } else {
     C.a_pole.resize(3);
     for (size_t i{0}; i < C.a_pole.size(); i++) {
-      int rhs = 101 + i + 55 + offset;
+      int rhs = 101 + i + 57 + offset;
       C.a_pole[i] = rhs;
     }
   }
@@ -8955,7 +8824,7 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   } else {
     C.b_pole.resize(3);
     for (size_t i{0}; i < C.b_pole.size(); i++) {
-      int rhs = 101 + i + 57 + offset;
+      int rhs = 101 + i + 59 + offset;
       C.b_pole[i] = rhs;
     }
   }
@@ -8965,7 +8834,7 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   } else {
     C.a_pole_elec.resize(3);
     for (size_t i{0}; i < C.a_pole_elec.size(); i++) {
-      int rhs = 101 + i + 59 + offset;
+      int rhs = 101 + i + 61 + offset;
       C.a_pole_elec[i] = rhs;
     }
   }
@@ -8975,7 +8844,7 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   } else {
     C.b_pole_elec.resize(3);
     for (size_t i{0}; i < C.b_pole_elec.size(); i++) {
-      int rhs = 101 + i + 61 + offset;
+      int rhs = 101 + i + 63 + offset;
       C.b_pole_elec[i] = rhs;
     }
   }
@@ -8985,7 +8854,7 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   } else {
     C.custom.resize(3);
     for (size_t i{0}; i < C.custom.size(); i++) {
-      int rhs = 101 + i + 63 + offset;
+      int rhs = 101 + i + 65 + offset;
       C.custom[i] = rhs;
     }
   }
@@ -8999,128 +8868,128 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
       for (size_t j{0}; j < C.r[0].size(); j++) {
         C.r[i][j].resize(1);
         for (size_t k{0}; k < C.r[0][0].size(); k++) {
-          auto rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + 65 + offset;
+          auto rhs = 101 + i + 10 * (j + 1) + 100 * (k + 1) + 67 + offset;
           C.r[i][j][k] = rhs;
         }
       }
     }
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 69 + offset;
+  rhs = 71 + offset;
   C.key = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 70 + offset;
+  rhs = 72 + offset;
   C.sub_key = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 71 + offset;
+  rhs = 73 + offset;
   C.ix_ele = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 72 + offset;
+  rhs = 74 + offset;
   C.ix_branch = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 73 + offset;
+  rhs = 75 + offset;
   C.lord_status = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 74 + offset;
+  rhs = 76 + offset;
   C.n_slave = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 75 + offset;
+  rhs = 77 + offset;
   C.n_slave_field = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 76 + offset;
+  rhs = 78 + offset;
   C.ix1_slave = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 77 + offset;
+  rhs = 79 + offset;
   C.slave_status = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 78 + offset;
+  rhs = 80 + offset;
   C.n_lord = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 79 + offset;
+  rhs = 81 + offset;
   C.n_lord_field = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 80 + offset;
+  rhs = 82 + offset;
   C.n_lord_ramper = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 81 + offset;
+  rhs = 83 + offset;
   C.ic1_lord = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 82 + offset;
+  rhs = 84 + offset;
   C.ix_pointer = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 83 + offset;
+  rhs = 85 + offset;
   C.ixx = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 84 + offset;
+  rhs = 86 + offset;
   C.iyy = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 85 + offset;
+  rhs = 87 + offset;
   C.izz = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 86 + offset;
+  rhs = 88 + offset;
   C.mat6_calc_method = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 87 + offset;
+  rhs = 89 + offset;
   C.tracking_method = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 88 + offset;
+  rhs = 90 + offset;
   C.spin_tracking_method = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 89 + offset;
+  rhs = 91 + offset;
   C.csr_method = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 90 + offset;
+  rhs = 92 + offset;
   C.space_charge_method = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 91 + offset;
+  rhs = 93 + offset;
   C.ptc_integration_type = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 92 + offset;
+  rhs = 94 + offset;
   C.field_calc = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 93 + offset;
+  rhs = 95 + offset;
   C.aperture_at = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 94 + offset;
+  rhs = 96 + offset;
   C.aperture_type = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 95 + offset;
+  rhs = 97 + offset;
   C.ref_species = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 96 + offset;
+  rhs = 98 + offset;
   C.orientation = rhs;
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 97 + offset;
+  rhs = 99 + offset;
   C.symplectify = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 98 + offset;
+  rhs = 100 + offset;
   C.mode_flip = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 99 + offset;
+  rhs = 101 + offset;
   C.multipoles_on = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 100 + offset;
+  rhs = 102 + offset;
   C.scale_multipoles = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 101 + offset;
+  rhs = 103 + offset;
   C.taylor_map_includes_offsets = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 102 + offset;
+  rhs = 104 + offset;
   C.field_master = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 103 + offset;
+  rhs = 105 + offset;
   C.is_on = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 104 + offset;
+  rhs = 106 + offset;
   C.logic = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 105 + offset;
+  rhs = 107 + offset;
   C.bmad_logic = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 106 + offset;
+  rhs = 108 + offset;
   C.select = (rhs % 2 == 0);
   // c_side.test_pat[0D_NOT_logical]
-  rhs = 107 + offset;
+  rhs = 109 + offset;
   C.offset_moves_aperture = (rhs % 2 == 0);
 }
 
@@ -9141,17 +9010,17 @@ extern "C" void test_c_ele(Opaque_ele_class* F, bool& c_ok) {
     cout << " [1] ele: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("ele.pat1.c.actual.txt");
+      std::ofstream c_file("ele.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ele.pat1.c2.expected.txt");
+      std::ofstream c2_file("ele.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to ele.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to ele.pat1.c2.expected.txt" << endl;
+    cout << "     C written to ele.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ele.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -9167,19 +9036,17 @@ extern "C" void test_c_ele(Opaque_ele_class* F, bool& c_ok) {
   } else {
     cout << " [3] ele: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("ele.pat3.c.expected.txt");
+      std::ofstream c_file("ele.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("ele.pat3.c2.actual.txt");
+      std::ofstream c2_file("ele.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to ele.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to ele.pat3.c2.actual.txt" << endl;
+    cout << "     C written to ele.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ele.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -9227,17 +9094,17 @@ extern "C" void test_c_complex_taylor_term(
     cout << " [1] complex_taylor_term: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("complex_taylor_term.pat1.c.actual.txt");
+      std::ofstream c_file("complex_taylor_term.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("complex_taylor_term.pat1.c2.expected.txt");
+      std::ofstream c2_file("complex_taylor_term.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to complex_taylor_term.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to complex_taylor_term.pat1.c2.expected.txt"
+    cout << "     C written to complex_taylor_term.pat1.c.actual.json" << endl;
+    cout << "     C2 written to complex_taylor_term.pat1.c2.expected.json"
          << endl;
     c_ok = false;
   }
@@ -9254,19 +9121,19 @@ extern "C" void test_c_complex_taylor_term(
   } else {
     cout << " [3] complex_taylor_term: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("complex_taylor_term.pat3.c.expected.txt");
+      std::ofstream c_file("complex_taylor_term.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("complex_taylor_term.pat3.c2.actual.txt");
+      std::ofstream c2_file("complex_taylor_term.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to complex_taylor_term.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to complex_taylor_term.pat3.c2.actual.txt" << endl;
+    cout << "     C written to complex_taylor_term.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to complex_taylor_term.pat3.c2.actual.json"
+         << endl;
     c_ok = false;
   }
 
@@ -9316,17 +9183,17 @@ extern "C" void test_c_complex_taylor(
     cout << " [1] complex_taylor: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("complex_taylor.pat1.c.actual.txt");
+      std::ofstream c_file("complex_taylor.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("complex_taylor.pat1.c2.expected.txt");
+      std::ofstream c2_file("complex_taylor.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to complex_taylor.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to complex_taylor.pat1.c2.expected.txt" << endl;
+    cout << "     C written to complex_taylor.pat1.c.actual.json" << endl;
+    cout << "     C2 written to complex_taylor.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -9342,19 +9209,17 @@ extern "C" void test_c_complex_taylor(
   } else {
     cout << " [3] complex_taylor: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("complex_taylor.pat3.c.expected.txt");
+      std::ofstream c_file("complex_taylor.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("complex_taylor.pat3.c2.actual.txt");
+      std::ofstream c2_file("complex_taylor.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to complex_taylor.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to complex_taylor.pat3.c2.actual.txt" << endl;
+    cout << "     C written to complex_taylor.pat3.c.expected.json" << endl;
+    cout << "     C2 written to complex_taylor.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -9440,17 +9305,17 @@ extern "C" void test_c_branch(Opaque_branch_class* F, bool& c_ok) {
     cout << " [1] branch: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("branch.pat1.c.actual.txt");
+      std::ofstream c_file("branch.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("branch.pat1.c2.expected.txt");
+      std::ofstream c2_file("branch.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to branch.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to branch.pat1.c2.expected.txt" << endl;
+    cout << "     C written to branch.pat1.c.actual.json" << endl;
+    cout << "     C2 written to branch.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -9466,19 +9331,17 @@ extern "C" void test_c_branch(Opaque_branch_class* F, bool& c_ok) {
   } else {
     cout << " [3] branch: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("branch.pat3.c.expected.txt");
+      std::ofstream c_file("branch.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("branch.pat3.c2.actual.txt");
+      std::ofstream c2_file("branch.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to branch.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to branch.pat3.c2.actual.txt" << endl;
+    cout << "     C written to branch.pat3.c.expected.json" << endl;
+    cout << "     C2 written to branch.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -9685,17 +9548,17 @@ extern "C" void test_c_lat(Opaque_lat_class* F, bool& c_ok) {
     cout << " [1] lat: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("lat.pat1.c.actual.txt");
+      std::ofstream c_file("lat.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("lat.pat1.c2.expected.txt");
+      std::ofstream c2_file("lat.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to lat.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to lat.pat1.c2.expected.txt" << endl;
+    cout << "     C written to lat.pat1.c.actual.json" << endl;
+    cout << "     C2 written to lat.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -9711,19 +9574,17 @@ extern "C" void test_c_lat(Opaque_lat_class* F, bool& c_ok) {
   } else {
     cout << " [3] lat: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("lat.pat3.c.expected.txt");
+      std::ofstream c_file("lat.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("lat.pat3.c2.actual.txt");
+      std::ofstream c2_file("lat.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to lat.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to lat.pat3.c2.actual.txt" << endl;
+    cout << "     C written to lat.pat3.c.expected.json" << endl;
+    cout << "     C2 written to lat.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -9814,17 +9675,17 @@ extern "C" void test_c_bunch(Opaque_bunch_class* F, bool& c_ok) {
     cout << " [1] bunch: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("bunch.pat1.c.actual.txt");
+      std::ofstream c_file("bunch.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bunch.pat1.c2.expected.txt");
+      std::ofstream c2_file("bunch.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to bunch.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to bunch.pat1.c2.expected.txt" << endl;
+    cout << "     C written to bunch.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bunch.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -9840,19 +9701,17 @@ extern "C" void test_c_bunch(Opaque_bunch_class* F, bool& c_ok) {
   } else {
     cout << " [3] bunch: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("bunch.pat3.c.expected.txt");
+      std::ofstream c_file("bunch.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bunch.pat3.c2.actual.txt");
+      std::ofstream c2_file("bunch.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to bunch.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to bunch.pat3.c2.actual.txt" << endl;
+    cout << "     C written to bunch.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bunch.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -9957,17 +9816,17 @@ extern "C" void test_c_bunch_params(Opaque_bunch_params_class* F, bool& c_ok) {
     cout << " [1] bunch_params: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("bunch_params.pat1.c.actual.txt");
+      std::ofstream c_file("bunch_params.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bunch_params.pat1.c2.expected.txt");
+      std::ofstream c2_file("bunch_params.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to bunch_params.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to bunch_params.pat1.c2.expected.txt" << endl;
+    cout << "     C written to bunch_params.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bunch_params.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -9983,19 +9842,17 @@ extern "C" void test_c_bunch_params(Opaque_bunch_params_class* F, bool& c_ok) {
   } else {
     cout << " [3] bunch_params: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("bunch_params.pat3.c.expected.txt");
+      std::ofstream c_file("bunch_params.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("bunch_params.pat3.c2.actual.txt");
+      std::ofstream c2_file("bunch_params.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to bunch_params.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to bunch_params.pat3.c2.actual.txt" << endl;
+    cout << "     C written to bunch_params.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bunch_params.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -10040,17 +9897,17 @@ extern "C" void test_c_beam(Opaque_beam_class* F, bool& c_ok) {
     cout << " [1] beam: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("beam.pat1.c.actual.txt");
+      std::ofstream c_file("beam.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("beam.pat1.c2.expected.txt");
+      std::ofstream c2_file("beam.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to beam.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to beam.pat1.c2.expected.txt" << endl;
+    cout << "     C written to beam.pat1.c.actual.json" << endl;
+    cout << "     C2 written to beam.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -10066,19 +9923,17 @@ extern "C" void test_c_beam(Opaque_beam_class* F, bool& c_ok) {
   } else {
     cout << " [3] beam: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("beam.pat3.c.expected.txt");
+      std::ofstream c_file("beam.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("beam.pat3.c2.actual.txt");
+      std::ofstream c2_file("beam.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to beam.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to beam.pat3.c2.actual.txt" << endl;
+    cout << "     C written to beam.pat3.c.expected.json" << endl;
+    cout << "     C2 written to beam.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -10131,17 +9986,17 @@ extern "C" void test_c_aperture_point(
     cout << " [1] aperture_point: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("aperture_point.pat1.c.actual.txt");
+      std::ofstream c_file("aperture_point.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("aperture_point.pat1.c2.expected.txt");
+      std::ofstream c2_file("aperture_point.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to aperture_point.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to aperture_point.pat1.c2.expected.txt" << endl;
+    cout << "     C written to aperture_point.pat1.c.actual.json" << endl;
+    cout << "     C2 written to aperture_point.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -10157,19 +10012,17 @@ extern "C" void test_c_aperture_point(
   } else {
     cout << " [3] aperture_point: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("aperture_point.pat3.c.expected.txt");
+      std::ofstream c_file("aperture_point.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("aperture_point.pat3.c2.actual.txt");
+      std::ofstream c2_file("aperture_point.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to aperture_point.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to aperture_point.pat3.c2.actual.txt" << endl;
+    cout << "     C written to aperture_point.pat3.c.expected.json" << endl;
+    cout << "     C2 written to aperture_point.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -10237,17 +10090,17 @@ extern "C" void test_c_aperture_param(
     cout << " [1] aperture_param: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("aperture_param.pat1.c.actual.txt");
+      std::ofstream c_file("aperture_param.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("aperture_param.pat1.c2.expected.txt");
+      std::ofstream c2_file("aperture_param.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to aperture_param.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to aperture_param.pat1.c2.expected.txt" << endl;
+    cout << "     C written to aperture_param.pat1.c.actual.json" << endl;
+    cout << "     C2 written to aperture_param.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -10263,19 +10116,17 @@ extern "C" void test_c_aperture_param(
   } else {
     cout << " [3] aperture_param: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("aperture_param.pat3.c.expected.txt");
+      std::ofstream c_file("aperture_param.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("aperture_param.pat3.c2.actual.txt");
+      std::ofstream c2_file("aperture_param.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to aperture_param.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to aperture_param.pat3.c2.actual.txt" << endl;
+    cout << "     C written to aperture_param.pat3.c.expected.json" << endl;
+    cout << "     C2 written to aperture_param.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 
@@ -10327,17 +10178,17 @@ extern "C" void test_c_aperture_scan(
     cout << " [1] aperture_scan: C SIDE CONVERT F->C: FAILED!" << endl;
 
     {
-      std::ofstream c_file("aperture_scan.pat1.c.actual.txt");
+      std::ofstream c_file("aperture_scan.pat1.c.actual.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("aperture_scan.pat1.c2.expected.txt");
+      std::ofstream c2_file("aperture_scan.pat1.c2.expected.json");
       c2_file << C2;
     }
 
-    cout << "     C written to aperture_scan.pat1.c.actual.txt" << endl;
-    cout << "     C2 written to aperture_scan.pat1.c2.expected.txt" << endl;
+    cout << "     C written to aperture_scan.pat1.c.actual.json" << endl;
+    cout << "     C2 written to aperture_scan.pat1.c2.expected.json" << endl;
     c_ok = false;
   }
 
@@ -10353,19 +10204,17 @@ extern "C" void test_c_aperture_scan(
   } else {
     cout << " [3] aperture_scan: F SIDE CONVERT F->C: FAILED!" << endl;
     {
-      std::ofstream c_file("aperture_scan.pat3.c.expected.txt");
+      std::ofstream c_file("aperture_scan.pat3.c.expected.json");
       c_file << C;
     }
 
     {
-      std::ofstream c2_file("aperture_scan.pat3.c2.actual.txt");
+      std::ofstream c2_file("aperture_scan.pat3.c2.actual.json");
       c2_file << C2;
     }
 
-    throw std::runtime_error("foo");
-
-    cout << "     C written to aperture_scan.pat3.c.expected.txt" << endl;
-    cout << "     C2 written to aperture_scan.pat3.c2.actual.txt" << endl;
+    cout << "     C written to aperture_scan.pat3.c.expected.json" << endl;
+    cout << "     C2 written to aperture_scan.pat3.c2.actual.json" << endl;
     c_ok = false;
   }
 

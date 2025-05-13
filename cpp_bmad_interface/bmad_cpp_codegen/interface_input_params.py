@@ -161,10 +161,10 @@ component_no_translate_list = {
     "lat_struct%nametable",
     "branch_struct%lat",
     "normal_form_struct",
-    # TODO: check to see if this is used in tracking; may need workaround:
-    "ele_struct%lord",
+    # TODO: this copies information unnecessarily; we need a reference type
+    # "ele_struct%lord",
     # TODO: we need some sort workaround for grid field data:
-    "grid_field_pt_struct%pt",
+    # "grid_field_pt_struct%pt",
 }
 
 # List of structure components links:

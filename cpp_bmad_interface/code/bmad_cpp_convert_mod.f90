@@ -4328,12 +4328,14 @@ implicit none
 
 interface
   !! f_side.to_c2_f2_sub_arg
-  subroutine grid_field_pt_to_c2 (C, z_file, z_n_link) bind(c)
+  subroutine grid_field_pt_to_c2 (C, z_file, z_n_link, z_pt, n1_pt, n2_pt, n3_pt) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     character(c_char) :: z_file(*)
     integer(c_int) :: z_n_link
+    type(c_ptr) :: z_pt(*)
+    integer(c_int), value :: n1_pt, n2_pt, n3_pt
 end subroutine
 end interface
 
@@ -4342,14 +4344,30 @@ type(c_ptr), value :: C
 type(grid_field_pt_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_c_var
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
+  integer(c_int) :: n2_pt
+  integer(c_int) :: n3_pt
 
 !
 
 call c_f_pointer (Fp, F)
 
+!! f_side.to_c_trans[3D_ALLOC_type]
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt, 1); lb1 = lbound(F%pt, 1) - 1
+    n2_pt = size(F%pt, 2); lb2 = lbound(F%pt, 2) - 1
+    n3_pt = size(F%pt, 3); lb3 = lbound(F%pt, 3) - 1
+    allocate (z_pt(n1_pt * n2_pt * n3_pt))
+    do jd1 = 1, n1_pt; do jd2 = 1, n2_pt; do jd3 = 1, n3_pt
+    z_pt(n3_pt*n2_pt*(jd1-1) + n3_pt*(jd2-1) + jd3) = c_loc(F%pt(jd1+lb1, jd2+lb2, jd3+lb3))
+    enddo;  enddo; enddo
+  else
+    n1_pt = 0; n2_pt = 0; n3_pt = 0
+  endif
 
 !! f_side.to_c2_call
-call grid_field_pt_to_c2 (C, trim(F%file) // c_null_char, F%n_link)
+call grid_field_pt_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_pt, n1_pt, n2_pt, n3_pt)
 
 end subroutine grid_field_pt_to_c
 
@@ -4369,7 +4387,7 @@ end subroutine grid_field_pt_to_c
 !-
 
 !! f_side.to_c2_f2_sub_arg
-subroutine grid_field_pt_to_f2 (Fp, z_file, z_n_link) bind(c)
+subroutine grid_field_pt_to_f2 (Fp, z_file, z_n_link, z_pt, n1_pt, n2_pt, n3_pt) bind(c)
 
 
 implicit none
@@ -4380,6 +4398,8 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 character(c_char) :: z_file(*)
 integer(c_int) :: z_n_link
+type(c_ptr) :: z_pt(*)
+integer(c_int), value :: n1_pt, n2_pt, n3_pt
 
 call c_f_pointer (Fp, F)
 
@@ -4387,6 +4407,19 @@ call c_f_pointer (Fp, F)
   call to_f_str(z_file, F%file)
 !! f_side.to_f2_trans[0D_NOT_integer]
   F%n_link = z_n_link
+!! f_side.to_f2_trans[3D_ALLOC_type]
+  if (n1_pt == 0) then
+    if (allocated(F%pt)) deallocate(F%pt)
+  else
+    if (allocated(F%pt)) then
+      if (n1_pt == 0 .or. any(shape(F%pt) /= [n1_pt, n2_pt, n3_pt])) deallocate(F%pt)
+      if (any(lbound(F%pt) /= 1)) deallocate(F%pt)
+    endif
+    if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1, 1:n2_pt+1-1, 1:n3_pt+1-1))
+    do jd1 = 1, n1_pt;  do jd2 = 1, n2_pt;  do jd3 = 1, n3_pt
+    call grid_field_pt1_to_f (z_pt(n3_pt*n2_pt*(jd1-1) + n3_pt*(jd2-1) + jd3), c_loc(F%pt(jd1+1-1,jd2+1-1,jd3+1-1)))
+    enddo;  enddo;  enddo
+  endif
 
 end subroutine grid_field_pt_to_f2
 
@@ -5738,9 +5771,9 @@ call c_f_pointer (Fp, F)
     endif
     if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1, 1:n2_pt+1-1))
     do jd1 = 1, n1_pt
-    do jd2 = 1, n2_pt
-    call surface_segmented_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
-    enddo
+      do jd2 = 1, n2_pt
+        call surface_segmented_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
+      enddo
     enddo
   endif
 
@@ -5948,9 +5981,9 @@ call c_f_pointer (Fp, F)
     endif
     if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1, 1:n2_pt+1-1))
     do jd1 = 1, n1_pt
-    do jd2 = 1, n2_pt
-    call surface_h_misalign_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
-    enddo
+      do jd2 = 1, n2_pt
+        call surface_h_misalign_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
+      enddo
     enddo
   endif
 
@@ -6158,9 +6191,9 @@ call c_f_pointer (Fp, F)
     endif
     if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1, 1:n2_pt+1-1))
     do jd1 = 1, n1_pt
-    do jd2 = 1, n2_pt
-    call surface_displacement_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
-    enddo
+      do jd2 = 1, n2_pt
+        call surface_displacement_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
+      enddo
     enddo
   endif
 
@@ -6753,9 +6786,9 @@ call c_f_pointer (Fp, F)
     endif
     if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1, 1:n2_pt+1-1))
     do jd1 = 1, n1_pt
-    do jd2 = 1, n2_pt
-    call pixel_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
-    enddo
+      do jd2 = 1, n2_pt
+        call pixel_pt_to_f (z_pt(n2_pt*(jd1-1) + jd2), c_loc(F%pt(jd1+1-1,jd2+1-1)))
+      enddo
     enddo
   endif
 
@@ -10171,8 +10204,8 @@ interface
   !! f_side.to_c2_f2_sub_arg
   subroutine ele_to_c2 (C, z_name, z_type, z_alias, z_component_name, z_descrip, n_descrip, &
       z_a, z_b, z_z, z_x, z_y, z_ac_kick, n_ac_kick, z_bookkeeping_state, z_control, n_control, &
-      z_floor, z_high_energy_space_charge, n_high_energy_space_charge, z_mode3, n_mode3, &
-      z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, z_spin_taylor_ref_orb_in, &
+      z_lord, n_lord, z_floor, z_high_energy_space_charge, n_high_energy_space_charge, z_mode3, &
+      n_mode3, z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, z_spin_taylor_ref_orb_in, &
       z_spin_taylor, z_wake, n_wake, z_wall3d, n1_wall3d, z_cartesian_map, n1_cartesian_map, &
       z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, z_grid_field, &
       n1_grid_field, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, &
@@ -10191,12 +10224,13 @@ interface
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     character(c_char) :: z_name(*), z_type(*), z_alias(*), z_component_name(*), z_descrip(*)
-    integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_high_energy_space_charge, n_mode3, n_photon, n_rad_map
-    integer(c_int), value :: n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map, n1_grid_field, n1_a_pole
-    integer(c_int), value :: n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r, n2_r, n3_r
+    integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_lord, n_high_energy_space_charge, n_mode3, n_photon
+    integer(c_int), value :: n_rad_map, n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map, n1_grid_field
+    integer(c_int), value :: n1_a_pole, n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r, n2_r
+    integer(c_int), value :: n3_r
     type(c_ptr), value :: z_a, z_b, z_z, z_x, z_y, z_ac_kick, z_bookkeeping_state
-    type(c_ptr), value :: z_control, z_floor, z_high_energy_space_charge, z_mode3, z_photon, z_rad_map, z_wake
-    type(c_ptr), value :: z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out
+    type(c_ptr), value :: z_control, z_lord, z_floor, z_high_energy_space_charge, z_mode3, z_photon, z_rad_map
+    type(c_ptr), value :: z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out
     type(c_ptr) :: z_taylor(*), z_spin_taylor(*), z_wall3d(*), z_cartesian_map(*), z_cylindrical_map(*), z_gen_grad_map(*), z_grid_field(*)
     real(c_double) :: z_spin_taylor_ref_orb_in(*), z_value(*), z_old_value(*), z_spin_q(*), z_vec0(*), z_mat6(*), z_c_mat(*)
     real(c_double) :: z_gamma_c, z_s_start, z_s, z_ref_time, z_a_pole(*), z_b_pole(*), z_a_pole_elec(*)
@@ -10219,6 +10253,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
   integer(c_int) :: n_descrip
   integer(c_int) :: n_ac_kick
   integer(c_int) :: n_control
+  integer(c_int) :: n_lord
   integer(c_int) :: n_high_energy_space_charge
   integer(c_int) :: n_mode3
   integer(c_int) :: n_photon
@@ -10261,6 +10296,9 @@ call c_f_pointer (Fp, F)
 !! f_side.to_c_trans[0D_PTR_type]
   n_control = 0
   if (associated(F%control)) n_control = 1
+!! f_side.to_c_trans[0D_PTR_type]
+  n_lord = 0
+  if (associated(F%lord)) n_lord = 1
 !! f_side.to_c_trans[0D_PTR_type]
   n_high_energy_space_charge = 0
   if (associated(F%high_energy_space_charge)) n_high_energy_space_charge = 1
@@ -10372,9 +10410,9 @@ call c_f_pointer (Fp, F)
 call ele_to_c2 (C, trim(F%name) // c_null_char, trim(F%type) // c_null_char, trim(F%alias) // &
     c_null_char, trim(F%component_name) // c_null_char, f_descrip, n_descrip, c_loc(F%a), &
     c_loc(F%b), c_loc(F%z), c_loc(F%x), c_loc(F%y), c_loc(F%ac_kick), n_ac_kick, &
-    c_loc(F%bookkeeping_state), c_loc(F%control), n_control, c_loc(F%floor), &
-    c_loc(F%high_energy_space_charge), n_high_energy_space_charge, c_loc(F%mode3), n_mode3, &
-    c_loc(F%photon), n_photon, c_loc(F%rad_map), n_rad_map, z_taylor, &
+    c_loc(F%bookkeeping_state), c_loc(F%control), n_control, c_loc(F%lord), n_lord, &
+    c_loc(F%floor), c_loc(F%high_energy_space_charge), n_high_energy_space_charge, &
+    c_loc(F%mode3), n_mode3, c_loc(F%photon), n_photon, c_loc(F%rad_map), n_rad_map, z_taylor, &
     fvec2vec(F%spin_taylor_ref_orb_in, 6), z_spin_taylor, c_loc(F%wake), n_wake, z_wall3d, &
     n1_wall3d, z_cartesian_map, n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, &
     z_gen_grad_map, n1_gen_grad_map, z_grid_field, n1_grid_field, c_loc(F%map_ref_orb_in), &
@@ -10415,8 +10453,8 @@ end subroutine ele_to_c
 !! f_side.to_c2_f2_sub_arg
 subroutine ele_to_f2 (Fp, z_name, z_type, z_alias, z_component_name, z_descrip, n_descrip, z_a, &
     z_b, z_z, z_x, z_y, z_ac_kick, n_ac_kick, z_bookkeeping_state, z_control, n_control, &
-    z_floor, z_high_energy_space_charge, n_high_energy_space_charge, z_mode3, n_mode3, &
-    z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, z_spin_taylor_ref_orb_in, &
+    z_lord, n_lord, z_floor, z_high_energy_space_charge, n_high_energy_space_charge, z_mode3, &
+    n_mode3, z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, z_spin_taylor_ref_orb_in, &
     z_spin_taylor, z_wake, n_wake, z_wall3d, n1_wall3d, z_cartesian_map, n1_cartesian_map, &
     z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, z_grid_field, &
     n1_grid_field, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out, &
@@ -10440,15 +10478,17 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 character(c_char) :: z_name(*), z_type(*), z_alias(*), z_component_name(*), z_descrip(*)
 integer(c_int), pointer :: f_descrip
-integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_high_energy_space_charge, n_mode3, n_photon, n_rad_map
-integer(c_int), value :: n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map, n1_grid_field, n1_a_pole
-integer(c_int), value :: n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r, n2_r, n3_r
+integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_lord, n_high_energy_space_charge, n_mode3, n_photon
+integer(c_int), value :: n_rad_map, n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map, n1_grid_field
+integer(c_int), value :: n1_a_pole, n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r, n2_r
+integer(c_int), value :: n3_r
 type(c_ptr), value :: z_a, z_b, z_z, z_x, z_y, z_ac_kick, z_bookkeeping_state
-type(c_ptr), value :: z_control, z_floor, z_high_energy_space_charge, z_mode3, z_photon, z_rad_map, z_wake
-type(c_ptr), value :: z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out, z_a_pole, z_b_pole, z_a_pole_elec
-type(c_ptr), value :: z_b_pole_elec, z_custom, z_r
+type(c_ptr), value :: z_control, z_lord, z_floor, z_high_energy_space_charge, z_mode3, z_photon, z_rad_map
+type(c_ptr), value :: z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out, z_a_pole, z_b_pole
+type(c_ptr), value :: z_a_pole_elec, z_b_pole_elec, z_custom, z_r
 type(ac_kicker_struct), pointer :: f_ac_kick
 type(controller_struct), pointer :: f_control
+type(ele_struct), pointer :: f_lord
 type(high_energy_space_charge_struct), pointer :: f_high_energy_space_charge
 type(mode3_struct), pointer :: f_mode3
 type(photon_element_struct), pointer :: f_photon
@@ -10507,6 +10547,13 @@ call c_f_pointer (Fp, F)
   else
     if (.not. associated(F%control)) allocate(F%control)
     call controller_to_f (z_control, c_loc(F%control))
+  endif
+!! f_side.to_f2_trans[0D_PTR_type]
+  if (n_lord == 0) then
+    if (associated(F%lord)) deallocate(F%lord)
+  else
+    if (.not. associated(F%lord)) allocate(F%lord)
+    call ele_to_f (z_lord, c_loc(F%lord))
   endif
 !! f_side.to_f2_trans[0D_NOT_type]
   call floor_position_to_f(z_floor, c_loc(F%floor))

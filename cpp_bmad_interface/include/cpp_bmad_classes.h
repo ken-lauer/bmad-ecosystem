@@ -1108,6 +1108,7 @@ class CPP_grid_field_pt
  public:
   string file{""};
   Int n_link{1};
+  VariableArray3D<CPP_grid_field_pt1> pt;
 
   CPP_grid_field_pt() {}
 
@@ -2979,6 +2980,7 @@ class CPP_ele : public std::enable_shared_from_this<CPP_ele> {
   std::optional<CPP_ac_kicker> ac_kick;
   CPP_bookkeeping_state bookkeeping_state;
   std::optional<CPP_controller> control;
+  std::optional<std::shared_ptr<CPP_ele>> lord;
   CPP_floor_position floor;
   std::optional<CPP_high_energy_space_charge> high_energy_space_charge;
   std::optional<CPP_mode3> mode3;

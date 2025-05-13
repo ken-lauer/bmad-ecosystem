@@ -1909,24 +1909,67 @@ extern "C" void grid_field_pt_to_c(
 extern "C" void grid_field_pt_to_f2(
     Opaque_grid_field_pt_class*,
     c_Char,
-    c_Int&);
+    c_Int&,
+    const CPP_grid_field_pt1**,
+    c_Int,
+    c_Int,
+    c_Int);
 
 extern "C" void grid_field_pt_to_f(
     const CPP_grid_field_pt& C,
     Opaque_grid_field_pt_class* F) {
+  // c_side.to_f_setup[3D_ALLOC_type] VariableArray3D<CPP_grid_field_pt1>
+  size_t n1_pt{C.pt.size()};
+  size_t n2_pt{size_t{0}};
+  size_t n3_pt{size_t{0}};
+  const CPP_grid_field_pt1** z_pt{nullptr};
+  if (n1_pt > 0) {
+    n2_pt = C.pt[0].size();
+    n3_pt = C.pt[0][0].size();
+    z_pt = new const CPP_grid_field_pt1*[n1_pt * n2_pt * n3_pt];
+    for (size_t i{0}; i < n1_pt; i++) {
+      for (size_t j{0}; j < n2_pt; j++) {
+        for (size_t k{0}; k < n3_pt; k++) {
+          auto m = n3_pt * n2_pt * i + n3_pt * j + k;
+          z_pt[m] = &C.pt[i][j][k];
+        }
+      }
+    }
+  }
+
   // c_side.to_f2_call
-  grid_field_pt_to_f2(F, C.file.c_str(), C.n_link);
+  grid_field_pt_to_f2(F, C.file.c_str(), C.n_link, z_pt, n1_pt, n2_pt, n3_pt);
+
+  // c_side.to_f_cleanup[3D_ALLOC_type]
+  if (z_pt)
+    delete[] z_pt;
 }
 
 // c_side.to_c2_arg
 extern "C" void grid_field_pt_to_c2(
     CPP_grid_field_pt& C,
     c_Char z_file,
-    c_Int& z_n_link) {
+    c_Int& z_n_link,
+    Opaque_grid_field_pt1_class** z_pt,
+    c_Int n1_pt,
+    c_Int n2_pt,
+    c_Int n3_pt) {
   // c_side.to_c2_set[0D_NOT_character] string
   C.file = std::string{z_file};
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.n_link = z_n_link;
+  // c_side.to_c2_set[3D_ALLOC_type] VariableArray3D<CPP_grid_field_pt1>
+  C.pt.resize(n1_pt);
+  for (size_t i{0}; i < n1_pt; i++) {
+    C.pt[i].resize(n2_pt);
+    for (size_t j{0}; j < n2_pt; j++) {
+      C.pt[i][j].resize(n3_pt);
+      for (size_t k{0}; k < n3_pt; k++) {
+        grid_field_pt1_to_c(
+            z_pt[n3_pt * n2_pt * i + n3_pt * j + k], C.pt[i][j][k]);
+      }
+    }
+  }
 }
 
 //--------------------------------------------------------------------
@@ -5677,6 +5720,8 @@ extern "C" void ele_to_f2(
     const CPP_bookkeeping_state&,
     const CPP_controller*,
     c_Int,
+    const CPP_ele*,
+    c_Int,
     const CPP_floor_position&,
     const CPP_high_energy_space_charge*,
     c_Int,
@@ -5781,6 +5826,8 @@ extern "C" void ele_to_f(const CPP_ele& C, Opaque_ele_class* F) {
   auto n_ac_kick = C.ac_kick ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_controller>
   auto n_control = C.control ? 1 : 0;
+  // c_side.to_f_setup[0D_PTR_type]   std::optional<std::shared_ptr<CPP_ele>>
+  auto n_lord = C.lord ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
   auto n_high_energy_space_charge = C.high_energy_space_charge ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_mode3>
@@ -5888,7 +5935,7 @@ extern "C" void ele_to_f(const CPP_ele& C, Opaque_ele_class* F) {
   if (n1_r > 0) {
     n2_r = C.r[0].size();
     n3_r = C.r[0][0].size();
-    z_r = new Real[C.r.size() * C.r[0].size() * C.r[0][0].size()];
+    z_r = new Real[n1_r * n2_r * n3_r];
     tensor_to_vec(C.r, z_r);
   }
 
@@ -5911,6 +5958,8 @@ extern "C" void ele_to_f(const CPP_ele& C, Opaque_ele_class* F) {
       C.bookkeeping_state,
       (C.control ? &C.control.value() : nullptr),
       n_control,
+      (C.lord.has_value() ? C.lord->get() : nullptr),
+      n_lord,
       C.floor,
       (C.high_energy_space_charge ? &C.high_energy_space_charge.value()
                                   : nullptr),
@@ -6043,6 +6092,8 @@ extern "C" void ele_to_c2(
     const Opaque_bookkeeping_state_class* z_bookkeeping_state,
     Opaque_controller_class* z_control,
     c_Int n_control,
+    Opaque_ele_class* z_lord,
+    c_Int n_lord,
     const Opaque_floor_position_class* z_floor,
     Opaque_high_energy_space_charge_class* z_high_energy_space_charge,
     c_Int n_high_energy_space_charge,
@@ -6173,6 +6224,14 @@ extern "C" void ele_to_c2(
   } else {
     C.control.emplace();
     controller_to_c(z_control, C.control.value());
+  }
+  // c_side.to_c2_set[0D_PTR_type]   std::optional<std::shared_ptr<CPP_ele>>
+  if (n_lord == 0) {
+    C.lord.reset();
+  } else {
+    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
+    C.lord = std::move(lord);
+    ele_to_c(z_lord, *C.lord->get());
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_floor_position
   floor_position_to_c(z_floor, C.floor);
