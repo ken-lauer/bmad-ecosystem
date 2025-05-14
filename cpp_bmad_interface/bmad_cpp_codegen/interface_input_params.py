@@ -24,19 +24,24 @@ struct_def_json_files = [
     "structs/json/forest_structs.json",
     "structs/json/sim_utils_structs.json",
     "structs/json/tao_structs.json",
+    "structs/json/cpp_bmad_helper_structs.json",
 ]
 
 # List of use statements needed in various Fortran modules.
 
 conversion_use_statements = [
     "use bmad_struct",
+    "use cpp_bmad_interface_helper_structs",
 ]
 equality_use_statements = [
     "use bmad_struct",
+    "use cpp_bmad_interface_helper_structs",
 ]
 test_use_statements = [
     "use bmad_json",
     "use sim_utils_json",
+    "use cpp_bmad_interface_helper_structs",
+    "use helper_struct_json",
 ]
 
 # List of structures to setup interfaces for.
@@ -128,6 +133,8 @@ struct_list = [
     "rad_int1_struct",
     "rad_int_branch_struct",
     "rad_int_all_ele_struct",
+    "ele_reference_struct",
+    "branch_reference_struct",
     "ele_struct",
     "complex_taylor_term_struct",
     "complex_taylor_struct",
@@ -154,7 +161,6 @@ component_no_translate_list = {
     "branch_struct%ptc",
     # end PTC
     "exact_bend_multipole_struct",
-    "ele_struct%branch",
     "ele_struct%converter",  # Should be simple data? Check this
     "ele_struct%multipole_cache",
     "ele_struct%foil",
@@ -163,6 +169,7 @@ component_no_translate_list = {
     "normal_form_struct",
     # TODO: this copies information unnecessarily; we need a reference type
     # "ele_struct%lord",
+    "ele_struct%branch",
     # TODO: we need some sort workaround for grid field data:
     # "grid_field_pt_struct%pt",
 }

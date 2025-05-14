@@ -1370,6 +1370,23 @@ bool operator==(const CPP_rad_int_all_ele& x, const CPP_rad_int_all_ele& y) {
 
 //--------------------------------------------------------------
 
+bool operator==(const CPP_ele_reference& x, const CPP_ele_reference& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ix_ele == y.ix_ele);
+  is_eq = is_eq && (x.ix_branch == y.ix_branch);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_branch_reference& x, const CPP_branch_reference& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ix_branch == y.ix_branch);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
 bool operator==(const CPP_ele& x, const CPP_ele& y) {
   bool is_eq = true;
   is_eq = is_eq && (x.name == y.name);
@@ -1398,12 +1415,10 @@ bool operator==(const CPP_ele& x, const CPP_ele& y) {
   if (x.control)
     is_eq = (*x.control == *y.control);
   is_eq = is_eq && (x.lord.has_value() == y.lord.has_value());
-  if (!is_eq) {
+  if (!is_eq)
     return false;
-  }
-  if (x.lord) {
-    is_eq = (*x.lord->get() == *y.lord->get());
-  }
+  if (x.lord)
+    is_eq = (*x.lord == *y.lord);
   is_eq = is_eq && (x.floor == y.floor);
   is_eq = is_eq &&
       (x.high_energy_space_charge.has_value() ==

@@ -29,8 +29,6 @@ class SourceConfig:
     source_dir: pathlib.Path
     fortran_filename: pathlib.Path
     json_filename: str
-    python_filename: str
-    python_import_name: str
     function_prefix: str
     skip_includes: tuple[str, ...] = dataclasses.field(default_factory=tuple)
     json_config: JsonConfig = dataclasses.field(default_factory=JsonConfig)
@@ -73,8 +71,6 @@ class SourceConfig:
             source_dir = cls._validate_source_path(data["source_dir"])
             fortran_filename = cls._validate_fortran_filename(data["fortran_filename"])
             json_filename = str(data["json_filename"])
-            python_filename = str(data["python_filename"])
-            python_import_name = str(data["python_import_name"])
             function_prefix = str(data["function_prefix"])
             skip_includes = tuple(data["skip_includes"])
             json_config = JsonConfig.from_data(data.pop("json_config", {}))
@@ -85,8 +81,6 @@ class SourceConfig:
 
         return cls(
             json_filename=json_filename,
-            python_filename=python_filename,
-            python_import_name=python_import_name,
             function_prefix=function_prefix,
             skip_includes=skip_includes,
             json_config=json_config,

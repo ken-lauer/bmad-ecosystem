@@ -11,6 +11,7 @@
 module bmad_cpp_convert_mod
 
 use bmad_struct
+use cpp_bmad_interface_helper_structs
 use fortran_cpp_utils
 use, intrinsic :: iso_c_binding
 
@@ -765,6 +766,24 @@ end interface
 
 interface 
   subroutine rad_int_all_ele_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine ele_reference_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine branch_reference_to_f (C, Fp) bind(c)
     import c_ptr
     type(c_ptr), value :: C, Fp
   end subroutine
@@ -10185,6 +10204,166 @@ end subroutine rad_int_all_ele_to_f2
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
+! Subroutine ele_reference_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad ele_reference_struct to a C++ CPP_ele_reference structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad ele_reference_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_ele_reference struct.
+!-
+
+subroutine ele_reference_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine ele_reference_to_c2 (C, z_ix_ele, z_ix_branch) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    integer(c_int) :: z_ix_ele, z_ix_branch
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(ele_reference_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call ele_reference_to_c2 (C, F%ix_ele, F%ix_branch)
+
+end subroutine ele_reference_to_c
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine ele_reference_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_ele_reference structure to a Bmad ele_reference_struct structure.
+! This routine is called by ele_reference_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the ele_reference_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad ele_reference_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine ele_reference_to_f2 (Fp, z_ix_ele, z_ix_branch) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(ele_reference_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+integer(c_int) :: z_ix_ele, z_ix_branch
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ele = z_ix_ele
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_branch = z_ix_branch
+
+end subroutine ele_reference_to_f2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine branch_reference_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad branch_reference_struct to a C++ CPP_branch_reference structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad branch_reference_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_branch_reference struct.
+!-
+
+subroutine branch_reference_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine branch_reference_to_c2 (C, z_ix_branch) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    integer(c_int) :: z_ix_branch
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(branch_reference_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call branch_reference_to_c2 (C, F%ix_branch)
+
+end subroutine branch_reference_to_c
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine branch_reference_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_branch_reference structure to a Bmad branch_reference_struct structure.
+! This routine is called by branch_reference_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the branch_reference_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad branch_reference_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine branch_reference_to_f2 (Fp, z_ix_branch) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(branch_reference_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+integer(c_int) :: z_ix_branch
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_branch = z_ix_branch
+
+end subroutine branch_reference_to_f2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
 ! Subroutine ele_to_c (Fp, C) bind(c)
 !
 ! Routine to convert a Bmad ele_struct to a C++ CPP_ele structure
@@ -10253,6 +10432,8 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
   integer(c_int) :: n_descrip
   integer(c_int) :: n_ac_kick
   integer(c_int) :: n_control
+  integer(c_int) :: lord
+  type(ele_reference_struct), target :: ref_lord
   integer(c_int) :: n_lord
   integer(c_int) :: n_high_energy_space_charge
   integer(c_int) :: n_mode3
@@ -10298,7 +10479,11 @@ call c_f_pointer (Fp, F)
   if (associated(F%control)) n_control = 1
 !! f_side.to_c_trans[0D_PTR_type]
   n_lord = 0
-  if (associated(F%lord)) n_lord = 1
+  if (associated(F%lord)) then 
+    n_lord = 1
+    ref_lord%ix_ele = F%lord%ix_ele
+    ref_lord%ix_branch = F%lord%ix_branch
+  endif
 !! f_side.to_c_trans[0D_PTR_type]
   n_high_energy_space_charge = 0
   if (associated(F%high_energy_space_charge)) n_high_energy_space_charge = 1
@@ -10410,7 +10595,7 @@ call c_f_pointer (Fp, F)
 call ele_to_c2 (C, trim(F%name) // c_null_char, trim(F%type) // c_null_char, trim(F%alias) // &
     c_null_char, trim(F%component_name) // c_null_char, f_descrip, n_descrip, c_loc(F%a), &
     c_loc(F%b), c_loc(F%z), c_loc(F%x), c_loc(F%y), c_loc(F%ac_kick), n_ac_kick, &
-    c_loc(F%bookkeeping_state), c_loc(F%control), n_control, c_loc(F%lord), n_lord, &
+    c_loc(F%bookkeeping_state), c_loc(F%control), n_control, c_loc(ref_lord), n_lord, &
     c_loc(F%floor), c_loc(F%high_energy_space_charge), n_high_energy_space_charge, &
     c_loc(F%mode3), n_mode3, c_loc(F%photon), n_photon, c_loc(F%rad_map), n_rad_map, z_taylor, &
     fvec2vec(F%spin_taylor_ref_orb_in, 6), z_spin_taylor, c_loc(F%wake), n_wake, z_wall3d, &
@@ -10488,7 +10673,7 @@ type(c_ptr), value :: z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_or
 type(c_ptr), value :: z_a_pole_elec, z_b_pole_elec, z_custom, z_r
 type(ac_kicker_struct), pointer :: f_ac_kick
 type(controller_struct), pointer :: f_control
-type(ele_struct), pointer :: f_lord
+type(ele_reference_struct), target :: lord_ref
 type(high_energy_space_charge_struct), pointer :: f_high_energy_space_charge
 type(mode3_struct), pointer :: f_mode3
 type(photon_element_struct), pointer :: f_photon
@@ -10552,8 +10737,12 @@ call c_f_pointer (Fp, F)
   if (n_lord == 0) then
     if (associated(F%lord)) deallocate(F%lord)
   else
-    if (.not. associated(F%lord)) allocate(F%lord)
-    call ele_to_f (z_lord, c_loc(F%lord))
+    if (associated(F%lord)) deallocate(F%lord)
+    allocate(F%lord)
+    call ele_reference_to_f (z_lord, c_loc(lord_ref))
+    F%lord%ix_ele = lord_ref%ix_ele
+    F%lord%ix_branch = lord_ref%ix_branch
+    F%lord%name = '<temporary reference>'
   endif
 !! f_side.to_f2_trans[0D_NOT_type]
   call floor_position_to_f(z_floor, c_loc(F%floor))

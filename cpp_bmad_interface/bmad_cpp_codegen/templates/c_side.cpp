@@ -2423,21 +2423,27 @@ void ele_struct_fixes() {
   //// end:ele_struct%old_value.test_pat
 
   //// begin:ele_struct%lord.c_class
-  std::optional<std::shared_ptr<CPP_ele>>;
+  std::optional<CPP_ele_reference>;
   //// end:ele_struct%lord.c_class
 
+  //// begin:ele_struct%lord.to_f2_arg
+  const CPP_ele_reference*;
+  //// end:ele_struct%lord.to_f2_arg
+
   //// begin:ele_struct%lord.to_f2_call
-  (C.lord.has_value() ? C.lord->get() : nullptr);
+  (C.lord.has_value() ? &C.lord.value() : nullptr);
   //// end:ele_struct%lord.to_f2_call
 
   //// begin:ele_struct%lord.to_c2_set
   // NOTE: The parameter z_n_lord is set before n_lord
-  if (z_n_lord == 0 || !z_lord) {
+  if (n_lord == 0) {
     C.lord.reset();
   } else {
-    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
-    C.lord = std::move(lord);
-    ele_to_c(z_lord, *C.lord->get());
+    C.lord.emplace();
+    ele_reference_to_c(
+        // TODO
+        (const Opaque_ele_reference_class*)z_lord,
+        C.lord.value());
   }
   //// end:ele_struct%lord.to_c2_set
 
@@ -2445,9 +2451,9 @@ void ele_struct_fixes() {
   if (ix_patt < 3) {
     C.NAME.reset();
   } else {
-    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
-    set_CPP_KIND_test_pattern(*lord, 0); // no infinite recursion, please
-    C.NAME = std::move(lord);
+    C.NAME.emplace();
+    C.NAME->ix_branch = ARGIDX + offset;
+    C.NAME->ix_ele = ARGIDX + offset;
   }
   //// end:ele_struct%lord.test_pat
 
@@ -2458,14 +2464,4 @@ void ele_struct_fixes() {
     C.NAME = 1;
   }
   //// end:ele_struct%n_lord.test_pat
-
-  //// begin:ele_struct%lord.equality_test
-  is_eq = is_eq && (x.NAME.has_value() == y.NAME.has_value());
-  if (!is_eq) {
-    return false;
-  }
-  if (x.NAME) {
-    is_eq = (*x.NAME->get() == *y.NAME->get());
-  }
-  //// end:ele_struct%lord.equality_test
 }

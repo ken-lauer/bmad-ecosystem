@@ -2,8 +2,6 @@
 source_dir = "${ACC_ROOT_DIR}/cpp_bmad_interface/code"
 fortran_filename = "${ACC_ROOT_DIR}/cpp_bmad_interface/code/test_structs_json.f90"
 yaml_filename = "yaml/test_structs.yaml"
-python_filename = "python/test_structs.py"
-python_import_name = "test_structs"
 function_prefix = "test_"
 
 [sources.json_config]

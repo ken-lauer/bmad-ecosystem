@@ -2341,9 +2341,13 @@ if (ix_patt < 3) then
     deallocate (F%NAME)
   endif
 else
-  if (.not. associated(F%NAME)) allocate (F%NAME)
+  if (associated(F%NAME)) deallocate (F%NAME)
+  allocate (F%NAME)
   rhs = ARGIDX + offset
-  call set_KIND_test_pattern (F%NAME, 0) ! avoid infinite recursion
+  F%lord%ix_ele = rhs;
+  F%lord%ix_branch = rhs;
+  ! call set_KIND_test_pattern (F%NAME, 0) ! avoid infinite recursion
+
 endif
   !!!! end:ele_struct%lord.test_pat
   
@@ -2355,3 +2359,57 @@ else
 endif
   !!!! end:ele_struct%n_lord.test_pat
 end subroutine
+
+
+!!!! section:ele_struct_reference_to_c
+subroutine ele_struct_reference_to_c (Fp, C) bind(C)
+  !!!! begin:ele_struct%lord.to_c_var
+  integer(c_int) :: NAME
+  type(ele_reference_struct), target :: ref_NAME
+  !!!! end:ele_struct%lord.to_c_var
+  !!!! begin:ele_struct%lord.to_c2_type_and_name
+  type(c_ptr), value :: z_NAME
+  !!!! end:ele_struct%lord.to_c2_type_and_name
+  call c_f_pointer (Fp, F)
+  !!!! begin:ele_struct%lord.to_c_trans
+  n_NAME = 0
+  if (associated(F%NAME)) then 
+    n_NAME = 1
+    ref_NAME%ix_ele = F%NAME%ix_ele
+    ref_NAME%ix_branch = F%NAME%ix_branch
+  endif
+  !!!! end:ele_struct%lord.to_c_trans
+  call to_c2 (C, 
+  !!!! begin:ele_struct%lord.to_c2_call
+  c_loc(ref_NAME)
+  !!!! end:ele_struct%lord.to_c2_call
+  )
+end subroutine
+
+!!!! section:ele_struct_reference_to_f
+subroutine ele_struct_lord_reference_to_f (Fp, C) bind(C)
+  !!!! begin:ele_struct%lord.to_f2_var
+  type(ele_reference_struct), target :: lord_ref
+  !!!! end:ele_struct%lord.to_f2_var
+  
+  !!!! begin:ele_struct%lord.to_f2_trans
+  if (n_lord == 0) then
+    if (associated(F%lord)) deallocate(F%lord)
+  else
+    if (associated(F%lord)) deallocate(F%lord)
+    allocate(F%lord)
+    call ele_reference_to_f (z_lord, c_loc(lord_ref))
+    F%lord%ix_ele = lord_ref%ix_ele
+    F%lord%ix_branch = lord_ref%ix_branch
+    F%lord%name = '<temporary reference>'
+  endif
+  !!!! end:ele_struct%lord.to_f2_trans
+
+  !!!! begin:ele_struct%lord.equality_test
+  is_eq = is_eq .and. (associated(f1%lord) .eqv. associated(f2%lord))
+  if (.not. is_eq) return
+  if (associated(f1%NAME)) is_eq = (f1%NAME%ix_ele == f2%NAME%ix_ele .and. f1%NAME%ix_branch == f2%NAME%ix_branch)
+  !!!! end:ele_struct%lord.equality_test
+
+end subroutine
+

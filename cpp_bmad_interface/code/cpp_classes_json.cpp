@@ -1573,6 +1573,30 @@ ostream& operator<<(ostream& os, const CPP_rad_int_all_ele& obj) {
   return os;
 }
 
+void to_json(json& j, const CPP_ele_reference& obj) {
+  j = json{{"ix_ele", obj.ix_ele}, {"ix_branch", obj.ix_branch}};
+}
+
+ostream& operator<<(ostream& os, const CPP_ele_reference& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_branch_reference& obj) {
+  j = json{{"ix_branch", obj.ix_branch}};
+}
+
+ostream& operator<<(ostream& os, const CPP_branch_reference& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
 void to_json(json& j, const CPP_ele& obj) {
   j = json{
       {"name", obj.name},
@@ -1588,6 +1612,7 @@ void to_json(json& j, const CPP_ele& obj) {
       {"ac_kick", obj.ac_kick},
       {"bookkeeping_state", obj.bookkeeping_state},
       {"control", obj.control},
+      {"lord", obj.lord},
       {"floor", obj.floor},
       {"high_energy_space_charge", obj.high_energy_space_charge},
       {"mode3", obj.mode3},
@@ -1661,9 +1686,6 @@ void to_json(json& j, const CPP_ele& obj) {
       {"bmad_logic", obj.bmad_logic},
       {"select", obj.select},
       {"offset_moves_aperture", obj.offset_moves_aperture}};
-  if (obj.lord.has_value()) {
-    j["lord"] = json{*obj.lord.value()};
-  }
 }
 
 ostream& operator<<(ostream& os, const CPP_ele& obj) {

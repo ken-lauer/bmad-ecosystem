@@ -2960,6 +2960,67 @@ bool operator==(const CPP_rad_int_all_ele&, const CPP_rad_int_all_ele&);
 void to_json(json&, const CPP_rad_int_all_ele&);
 
 //--------------------------------------------------------------------
+// CPP_ele_reference
+
+class Opaque_ele_reference_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_ele_reference
+    : public std::enable_shared_from_this<CPP_ele_reference> {
+ public:
+  Int ix_ele{-1};
+  Int ix_branch{0};
+
+  CPP_ele_reference() {}
+
+  virtual ~CPP_ele_reference() {}
+  std::shared_ptr<CPP_ele_reference> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_ele_reference& obj);
+};
+
+extern "C" void ele_reference_to_c(
+    const Opaque_ele_reference_class*,
+    CPP_ele_reference&);
+extern "C" void ele_reference_to_f(
+    const CPP_ele_reference&,
+    Opaque_ele_reference_class*);
+
+bool operator==(const CPP_ele_reference&, const CPP_ele_reference&);
+void to_json(json&, const CPP_ele_reference&);
+
+//--------------------------------------------------------------------
+// CPP_branch_reference
+
+class Opaque_branch_reference_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_branch_reference
+    : public std::enable_shared_from_this<CPP_branch_reference> {
+ public:
+  Int ix_branch{0};
+
+  CPP_branch_reference() {}
+
+  virtual ~CPP_branch_reference() {}
+  std::shared_ptr<CPP_branch_reference> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_branch_reference& obj);
+};
+
+extern "C" void branch_reference_to_c(
+    const Opaque_branch_reference_class*,
+    CPP_branch_reference&);
+extern "C" void branch_reference_to_f(
+    const CPP_branch_reference&,
+    Opaque_branch_reference_class*);
+
+bool operator==(const CPP_branch_reference&, const CPP_branch_reference&);
+void to_json(json&, const CPP_branch_reference&);
+
+//--------------------------------------------------------------------
 // CPP_ele
 
 class Opaque_ele_class {
@@ -2980,7 +3041,7 @@ class CPP_ele : public std::enable_shared_from_this<CPP_ele> {
   std::optional<CPP_ac_kicker> ac_kick;
   CPP_bookkeeping_state bookkeeping_state;
   std::optional<CPP_controller> control;
-  std::optional<std::shared_ptr<CPP_ele>> lord;
+  std::optional<CPP_ele_reference> lord;
   CPP_floor_position floor;
   std::optional<CPP_high_energy_space_charge> high_energy_space_charge;
   std::optional<CPP_mode3> mode3;

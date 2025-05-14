@@ -5697,6 +5697,64 @@ extern "C" void rad_int_all_ele_to_c2(
 
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
+// CPP_ele_reference
+
+extern "C" void ele_reference_to_c(
+    const Opaque_ele_reference_class*,
+    CPP_ele_reference&);
+
+// c_side.to_f2_arg
+extern "C" void ele_reference_to_f2(
+    Opaque_ele_reference_class*,
+    c_Int&,
+    c_Int&);
+
+extern "C" void ele_reference_to_f(
+    const CPP_ele_reference& C,
+    Opaque_ele_reference_class* F) {
+  // c_side.to_f2_call
+  ele_reference_to_f2(F, C.ix_ele, C.ix_branch);
+}
+
+// c_side.to_c2_arg
+extern "C" void ele_reference_to_c2(
+    CPP_ele_reference& C,
+    c_Int& z_ix_ele,
+    c_Int& z_ix_branch) {
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ele = z_ix_ele;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_branch = z_ix_branch;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_branch_reference
+
+extern "C" void branch_reference_to_c(
+    const Opaque_branch_reference_class*,
+    CPP_branch_reference&);
+
+// c_side.to_f2_arg
+extern "C" void branch_reference_to_f2(Opaque_branch_reference_class*, c_Int&);
+
+extern "C" void branch_reference_to_f(
+    const CPP_branch_reference& C,
+    Opaque_branch_reference_class* F) {
+  // c_side.to_f2_call
+  branch_reference_to_f2(F, C.ix_branch);
+}
+
+// c_side.to_c2_arg
+extern "C" void branch_reference_to_c2(
+    CPP_branch_reference& C,
+    c_Int& z_ix_branch) {
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_branch = z_ix_branch;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
 // CPP_ele
 
 extern "C" void ele_to_c(const Opaque_ele_class*, CPP_ele&);
@@ -5720,7 +5778,7 @@ extern "C" void ele_to_f2(
     const CPP_bookkeeping_state&,
     const CPP_controller*,
     c_Int,
-    const CPP_ele*,
+    const CPP_ele_reference*,
     c_Int,
     const CPP_floor_position&,
     const CPP_high_energy_space_charge*,
@@ -5826,7 +5884,7 @@ extern "C" void ele_to_f(const CPP_ele& C, Opaque_ele_class* F) {
   auto n_ac_kick = C.ac_kick ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_controller>
   auto n_control = C.control ? 1 : 0;
-  // c_side.to_f_setup[0D_PTR_type]   std::optional<std::shared_ptr<CPP_ele>>
+  // c_side.to_f_setup[0D_PTR_type]   std::optional<CPP_ele_reference>
   auto n_lord = C.lord ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
   auto n_high_energy_space_charge = C.high_energy_space_charge ? 1 : 0;
@@ -5958,7 +6016,7 @@ extern "C" void ele_to_f(const CPP_ele& C, Opaque_ele_class* F) {
       C.bookkeeping_state,
       (C.control ? &C.control.value() : nullptr),
       n_control,
-      (C.lord.has_value() ? C.lord->get() : nullptr),
+      (C.lord.has_value() ? &C.lord.value() : nullptr),
       n_lord,
       C.floor,
       (C.high_energy_space_charge ? &C.high_energy_space_charge.value()
@@ -6225,14 +6283,16 @@ extern "C" void ele_to_c2(
     C.control.emplace();
     controller_to_c(z_control, C.control.value());
   }
-  // c_side.to_c2_set[0D_PTR_type]   std::optional<std::shared_ptr<CPP_ele>>
+  // c_side.to_c2_set[0D_PTR_type]   std::optional<CPP_ele_reference>
   // NOTE: The parameter z_n_lord is set before n_lord
-  if (z_n_lord == 0 || !z_lord) {
+  if (n_lord == 0) {
     C.lord.reset();
   } else {
-    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
-    C.lord = std::move(lord);
-    ele_to_c(z_lord, *C.lord->get());
+    C.lord.emplace();
+    ele_reference_to_c(
+        // TODO
+        (const Opaque_ele_reference_class*)z_lord,
+        C.lord.value());
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_floor_position
   floor_position_to_c(z_floor, C.floor);

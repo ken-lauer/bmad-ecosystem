@@ -21,6 +21,7 @@ set(EXE_SPECS
 set(SHARED_DEPS
   bmad
   sim_utils
+  jsonfortran
 )
 
 # TODO: macos only

@@ -727,17 +727,25 @@ def set_translations(
         arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
         arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
 
-        for key, value in c_overrides.items():
-            override_arg, attr = key.split(".", 1)
-            if arg_full_name == override_arg:
-                assert attr in [fld.name for fld in fields(CSideTransform)], key
-                setattr(arg.c_side, attr, value.rstrip(" \n;"))
+        def apply_overrides(
+            overrides: dict[str, str],
+            side: CSideTransform | FortranSideTransform,
+            strip_chars: str | None = None,
+            arg_full_name: str = arg_full_name,
+        ) -> None:
+            for key, value in overrides.items():
+                override_arg, attr = key.split(".", 1)
+                if arg_full_name == override_arg:
+                    assert hasattr(side, attr), (attr, key)
+                    if isinstance(getattr(side, attr), list):
+                        setattr(side, attr, value.splitlines())
+                    else:
+                        if strip_chars:
+                            value = value.rstrip(strip_chars)
+                        setattr(side, attr, value)
 
-        for key, value in f_overrides.items():
-            override_arg, attr = key.split(".", 1)
-            if arg_full_name == override_arg:
-                assert attr in [fld.name for fld in fields(FortranSideTransform)], key
-                setattr(arg.f_side, attr, value)
+        apply_overrides(c_overrides, arg.c_side, strip_chars=" \n;")
+        apply_overrides(f_overrides, arg.f_side)
 
 
 def add_array_bound_info_for_pointer_structures(struct: CodegenStructure) -> None:
@@ -1340,15 +1348,15 @@ def get_to_json_source(struct: CodegenStructure) -> list[str]:
     args = [arg for arg in struct.arg if arg.is_component and arg.member is not None]
 
     name_to_value = {arg.c_name: f"obj.{arg.c_name}" for arg in args}
-    if struct.cpp_class == "CPP_ele":
-        name_to_value.pop("lord")
-        fixup_lines = [
-            "if (obj.lord.has_value()) {",
-            '    j["lord"] = json{*obj.lord.value()};',
-            "}",
-        ]
-    else:
-        fixup_lines = []
+    # if struct.cpp_class == "CPP_ele":
+    #     name_to_value.pop("lord")
+    #     fixup_lines = [
+    #         "if (obj.lord.has_value()) {",
+    #         '    j["lord"] = json{*obj.lord.value()};',
+    #         "}",
+    #     ]
+    # else:
+    fixup_lines = []
 
     members = ", ".join("{" + f'"{name}", {value}' + "}" for name, value in name_to_value.items())
 

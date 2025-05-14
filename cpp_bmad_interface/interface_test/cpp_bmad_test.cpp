@@ -8578,6 +8578,165 @@ extern "C" void test_c_rad_int_all_ele(
 //--------------------------------------------------------------
 //--------------------------------------------------------------
 
+extern "C" void test2_f_ele_reference(CPP_ele_reference&, bool&);
+
+void set_CPP_ele_reference_test_pattern(CPP_ele_reference& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 1 + offset;
+  C.ix_ele = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 2 + offset;
+  C.ix_branch = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_ele_reference(
+    Opaque_ele_reference_class* F,
+    bool& c_ok) {
+  CPP_ele_reference C, C2;
+
+  c_ok = true;
+
+  ele_reference_to_c(F, C);
+  set_CPP_ele_reference_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] ele_reference: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] ele_reference: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("ele_reference.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("ele_reference.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to ele_reference.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ele_reference.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_ele_reference_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_ele_reference(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_ele_reference_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] ele_reference: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] ele_reference: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("ele_reference.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("ele_reference.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to ele_reference.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ele_reference.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_ele_reference_test_pattern(C2, 4);
+  ele_reference_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_branch_reference(CPP_branch_reference&, bool&);
+
+void set_CPP_branch_reference_test_pattern(
+    CPP_branch_reference& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 1 + offset;
+  C.ix_branch = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_branch_reference(
+    Opaque_branch_reference_class* F,
+    bool& c_ok) {
+  CPP_branch_reference C, C2;
+
+  c_ok = true;
+
+  branch_reference_to_c(F, C);
+  set_CPP_branch_reference_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] branch_reference: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] branch_reference: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("branch_reference.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("branch_reference.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to branch_reference.pat1.c.actual.json" << endl;
+    cout << "     C2 written to branch_reference.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_branch_reference_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_branch_reference(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_branch_reference_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] branch_reference: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] branch_reference: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("branch_reference.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("branch_reference.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to branch_reference.pat3.c.expected.json" << endl;
+    cout << "     C2 written to branch_reference.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_branch_reference_test_pattern(C2, 4);
+  branch_reference_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
 extern "C" void test2_f_ele(CPP_ele&, bool&);
 
 void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
@@ -8648,9 +8807,9 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
   if (ix_patt < 3) {
     C.lord.reset();
   } else {
-    std::shared_ptr<CPP_ele> lord = std::make_shared<CPP_ele>();
-    set_CPP_ele_test_pattern(*lord, 0); // no infinite recursion, please
-    C.lord = std::move(lord);
+    C.lord.emplace();
+    C.lord->ix_branch = 17 + offset;
+    C.lord->ix_ele = 17 + offset;
   }
   // c_side.test_pat[0D_NOT_type]
   set_CPP_floor_position_test_pattern(C.floor, ix_patt);
