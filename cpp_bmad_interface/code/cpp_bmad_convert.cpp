@@ -6708,6 +6708,10 @@ extern "C" void branch_to_c2(
   for (size_t i{0}; i < n1_wall3d; i++) {
     wall3d_to_c(z_wall3d[i], C.wall3d[i]);
   }
+  // c_side.to_c2_post
+  for (auto ele_ : C.ele) {
+    ele_.branch = C;
+  }
 }
 
 //--------------------------------------------------------------------
@@ -7043,6 +7047,10 @@ extern "C" void lat_to_c2(
   C.creation_hash = z_creation_hash;
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ramper_slave_bookkeeping = z_ramper_slave_bookkeeping;
+  // c_side.to_c2_post
+  for (auto branch_ : C.branch) {
+    branch_.lat = C;
+  }
 }
 
 //--------------------------------------------------------------------

@@ -2464,24 +2464,34 @@ void ele_struct_fixes() {
     C.NAME = 1;
   }
   //// end:ele_struct%n_lord.test_pat
+
+  //// begin:ele_struct%branch.c_class
+  optional_ref<CPP_branch>;
+  //// end:ele_struct%branch.c_class
 }
 
+void branch_struct_fixes() {
+  //// section:branch_struct_fixes
+  //// begin:branch_struct%lat.c_class
+  optional_ref<CPP_lat>;
+  //// end:branch_struct%lat.c_class
+
+  //// begin:branch_struct%.to_c2_post
+  for (auto ele_ : C.ele) {
+    ele_.branch = C;
+  }
+  //// end:branch_struct%.to_c2_post
+}
 void lat_struct_fixes() {
   //// section:lat_struct_fixes
   //// begin:lat_struct%use_name.test_pat
   C.use_name = "TEST-LATTICE-FROM-TEST-SUITE";
   // magic string to opt-out of lattice finalization
   //// end:lat_struct%use_name.test_pat
+
+  //// begin:lat_struct%.to_c2_post
+  for (auto branch_ : C.branch) {
+    branch_.lat = C;
+  }
+  //// end:lat_struct%.to_c2_post
 }
-// void branch_struct_fixes() {
-//   //// section:branch_struct_fixes
-//   //// begin:ele_struct%lord.test_pat
-//   if (ix_patt < 3) {
-//     C.NAME.reset();
-//   } else {
-//     C.NAME.emplace();
-//     C.NAME->ix_branch = 0;
-//     C.NAME->ix_ele = 0;
-//   }
-//   //// end:ele_struct%lord.test_pat
-// }

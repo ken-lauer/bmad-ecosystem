@@ -165,9 +165,9 @@ component_no_translate_list = {
     "ele_struct%multipole_cache",
     "ele_struct%foil",
     "lat_struct%nametable",
-    "branch_struct%lat",
     "normal_form_struct",
     # TODO: this copies information unnecessarily; we need a reference type
+    # "branch_struct%lat",
     # "ele_struct%lord",
     # "ele_struct%branch",
     # TODO: we need some sort workaround for grid field data:
@@ -182,7 +182,6 @@ component_no_translate_list = {
 interface_ignore_list = {
     "ele_struct%branch",
     "branch_struct%lat",
-    "pixel_grid_struct",
 }
 
 # List of structure components that are structures and are defined externally.

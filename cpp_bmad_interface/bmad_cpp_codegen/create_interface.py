@@ -578,6 +578,10 @@ class CodegenStructure:
     to_f2_post: str = ""
 
     @property
+    def args_to_convert(self):
+        return [arg for arg in self.arg if f"{self.f_name}%{arg.f_name}" not in params.interface_ignore_list]
+
+    @property
     def recursive(self) -> bool:
         return any(
             arg.is_component
@@ -773,6 +777,8 @@ def add_array_bound_info_for_pointer_structures(struct: CodegenStructure) -> Non
         # Skip non-pointer types
         if arg.pointer_type == NOT:
             continue
+        if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
+            continue
 
         # Handle scalar pointers
         if len(arg.array) == 0:
@@ -938,13 +944,13 @@ interface
 
         to_c2_call_def = {}
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if arg.f_side.to_c2_type not in to_c2_call_def:
                 to_c2_call_def[arg.f_side.to_c2_type] = []
             to_c2_call_def[arg.f_side.to_c2_type].append(arg.f_side.to_c2_name)
 
         line = f"subroutine {s_name}_to_c2 (C"
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             line += f", {arg.f_side.to_c2_f2_sub_arg}"
         line += ") bind(c)\n"
 
@@ -972,7 +978,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
         )
 
         f_face.write("!! f_side.to_c_var\n")
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             for var in arg.f_side.to_c_var:
                 f_face.write(f"{var}\n")
 
@@ -985,7 +991,7 @@ call c_f_pointer (Fp, F)
 """
         )
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if arg.f_side.to_c_trans:
                 f_face.write(f"!! f_side.to_c_trans[{arg.full_type}]\n")
                 print(arg.f_side.to_c_trans, file=f_face)
@@ -993,7 +999,7 @@ call c_f_pointer (Fp, F)
         f_face.write("\n" + "!! f_side.to_c2_call\n")
 
         line = f"call {s_name}_to_c2 (C"
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             line += f", {arg.f_side.to_c2_call.strip()}"
         line += ")"
         f_face.write(wrap_line(line, "", " &"))
@@ -1022,7 +1028,7 @@ end subroutine {s_name}_to_c
 
         f_face.write("!! f_side.to_c2_f2_sub_arg\n")
         line = f"subroutine {struct.short_name}_to_f2 (Fp"
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             line += f", {arg.f_side.to_c2_f2_sub_arg}"
         line += ") bind(c)"
         f_face.write(wrap_line(line, "", " &"))
@@ -1038,7 +1044,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 
         # Collect arguments by type for cleaner output
         f2_arg_list = {}
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if arg.f_side.to_f2_type not in f2_arg_list:
                 f2_arg_list[arg.f_side.to_f2_type] = []
             f2_arg_list[arg.f_side.to_f2_type].append(arg.f_side.to_f2_name)
@@ -1061,7 +1067,7 @@ call c_f_pointer (Fp, F)
 
 """)
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if not arg.f_side.to_f2_trans:
                 continue
             f_face.write(f"!! f_side.to_f2_trans[{arg.full_type}]\n")
@@ -1143,10 +1149,8 @@ contains
 
         f_equ.write(equ_defn)
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if not arg.is_component:
-                continue
-            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
 
             f_equ.write(f"!! f_side.equality_test[{arg.full_type}]\n")
@@ -1344,10 +1348,8 @@ def write_tests_mod(f_test, structs: list[CodegenStructure]):
 
         f_test.write(code)
 
-        for i, arg in enumerate(struct.arg, 1):
+        for i, arg in enumerate(struct.args_to_convert, 1):
             if not arg.is_component:
-                continue
-            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
             f_test.write(f"!! f_side.test_pat[{arg.full_type}] {arg.c_side.c_class}\n")
 
@@ -1365,7 +1367,7 @@ end module
 
 
 def get_to_json_source(struct: CodegenStructure) -> list[str]:
-    args = [arg for arg in struct.arg if arg.is_component and arg.member is not None]
+    args = [arg for arg in struct.args_to_convert if arg.is_component and arg.member is not None]
 
     name_to_value = {arg.c_name: f"obj.{arg.c_name}" for arg in args}
     # if struct.cpp_class == "CPP_ele":
@@ -1398,7 +1400,7 @@ def get_to_json_source(struct: CodegenStructure) -> list[str]:
 
 
 def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
-    """Write C++ classes definitions for Bmad / C++ structure interface."""
+    """Write C++ JSON serialization code."""
     header_template = string.Template(
         textwrap.dedent(
             """\
@@ -1452,7 +1454,7 @@ def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
 
 def get_class_lines(struct: CodegenStructure) -> list[str]:
     member_vars = []
-    for arg in struct.arg:
+    for arg in struct.arg:  # not args_to_convert
         if not arg.is_component:
             continue
         class_initializer = (
@@ -1546,6 +1548,8 @@ def write_cpp_classes(file, structs: list[CodegenStructure]) -> None:
 
             namespace Bmad {
 
+            ${class_forward_decls}
+
             //--------------------------------------------------------------------
             ${class_definitions}
             //--------------------------------------------------------------------
@@ -1559,8 +1563,13 @@ def write_cpp_classes(file, structs: list[CodegenStructure]) -> None:
 
     include_headers = "\n".join(params.include_header_files)
     class_definitions = "\n".join("\n".join(get_class_lines(struct)) for struct in structs)
+    class_forward_decls = "\n".join(f"class {struct.cpp_class};" for struct in structs)
     file.write(
-        header_template.substitute(include_headers=include_headers, class_definitions=class_definitions)
+        header_template.substitute(
+            include_headers=include_headers,
+            class_definitions=class_definitions,
+            class_forward_decls=class_forward_decls,
+        )
     )
 
 
@@ -1582,7 +1591,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("// c_side.to_f2_arg\n")
 
         line = f'extern "C" void {struct.short_name}_to_f2 (Opaque_{struct.short_name}_class*'
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             line += f", {arg.c_side.to_f2_arg.strip()}"
         line += ");"
 
@@ -1594,7 +1603,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
             f'extern "C" void {struct.short_name}_to_f (const {struct.cpp_class}& C, Opaque_{struct.short_name}_class* F) {{\n'
         )
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if arg.c_side.to_f_setup == "":
                 continue
             file.write(f"  // c_side.to_f_setup[{arg.full_type}] {arg.c_side.c_class}\n")
@@ -1604,18 +1613,18 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("  // c_side.to_f2_call\n")
 
         if DEBUG:
-            for arg in struct.arg:
+            for arg in struct.args_to_convert:
                 file.write(f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.full_type}\n")
 
         line = f"{struct.short_name}_to_f2 (F"
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             line += f", {arg.c_side.to_f2_call.strip()}"
         line += ");"
         file.write(wrap_line(line, "  ", ""))
 
         file.write("\n")
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if arg.c_side.to_f_cleanup == "":
                 continue
             file.write(f"  // c_side.to_f_cleanup[{arg.full_type}]\n")
@@ -1628,13 +1637,13 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
         file.write("// c_side.to_c2_arg\n")
 
         line = f'extern "C" void {struct.short_name}_to_c2 ({struct.cpp_class}& C'
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             line += f", {arg.c_side.to_c2_arg.strip()}"
         line += ") {"
         file.write(wrap_line(line, "", ""))
 
         file.write("\n")
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if not arg.is_component:
                 continue
             file.write(f"  // c_side.to_c2_set[{arg.full_type}] {arg.c_side.c_class}\n")
@@ -1642,7 +1651,7 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
 
         if struct.to_c2_post:
             print("  // c_side.to_c2_post", file=file)
-            print(arg.c_side.to_c2_post, file=file)
+            print(struct.to_c2_post, file=file)
 
         file.write("}\n")
 
@@ -1656,10 +1665,8 @@ def write_cpp_equality(file, header: str, structs: list[CodegenStructure]):
         file.write(f"bool operator== (const {struct.cpp_class}& x, const {struct.cpp_class}& y) {{\n")
         file.write("  bool is_eq = true;\n")
 
-        for arg in struct.arg:
+        for arg in struct.args_to_convert:
             if not arg.is_component:
-                continue
-            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
             print(arg.c_side.equality_test, file=file)
             if DEBUG_EQUALITY:
@@ -1710,10 +1717,8 @@ void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
 
 """)
 
-        for i, arg in enumerate(struct.arg, 1):
+        for i, arg in enumerate(struct.args_to_convert, 1):
             if not arg.is_component:
-                continue
-            if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
                 continue
             file.write(f"  // c_side.test_pat[{arg.full_type}]\n")
             file.write(arg.c_side.test_pat.replace("ARGIDX", str(i)) + "\n")
