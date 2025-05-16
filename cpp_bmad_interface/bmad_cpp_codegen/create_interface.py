@@ -251,6 +251,7 @@ class FortranSideTransform:
     to_f2_name: str = ""
     to_f2_trans: str = "F%NAME = z_NAME"
     to_f2_var: list[str] = field(default_factory=list)
+    to_f2_post: list[str] = field(default_factory=list)
 
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
     test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
@@ -573,6 +574,9 @@ class CodegenStructure:
     c_constructor_body: str = ""  # Body of the C++ class_initializer
     c_extra_methods: str = ""  # Additional custom methods
 
+    to_c2_post: str = ""
+    to_f2_post: str = ""
+
     @property
     def recursive(self) -> bool:
         return any(
@@ -708,11 +712,23 @@ def set_translations(
     # Throw out any sub-structures that are not to be translated
     struct.arg = [arg for arg in struct.arg if arg.should_translate(struct.f_name)]
 
-    for key, value in c_overrides.items():
-        override_arg, attr = key.split(".", 1)
-        if override_arg == f"{struct.f_name}%":
-            assert attr in [fld.name for fld in fields(CodegenStructure)], key
-            setattr(struct, attr, value.rstrip("; \n"))
+    def apply_struct_overrides(
+        overrides: dict[str, str],
+        strip_chars: str | None = None,
+    ) -> None:
+        for key, value in overrides.items():
+            override_arg, attr = key.split(".", 1)
+            if override_arg == f"{struct.f_name}%":
+                assert hasattr(struct, attr), (attr, key)
+                if isinstance(getattr(struct, attr), list):
+                    setattr(struct, attr, value.splitlines())
+                else:
+                    if strip_chars:
+                        value = value.rstrip(strip_chars)
+                    setattr(struct, attr, value)
+
+    apply_struct_overrides(c_overrides, strip_chars=" \n;")
+    apply_struct_overrides(f_overrides)
 
     # Add translation info to each argument
     for arg in struct.arg:
@@ -727,7 +743,7 @@ def set_translations(
         arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
         arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
 
-        def apply_overrides(
+        def apply_arg_overrides(
             overrides: dict[str, str],
             side: CSideTransform | FortranSideTransform,
             strip_chars: str | None = None,
@@ -744,8 +760,8 @@ def set_translations(
                             value = value.rstrip(strip_chars)
                         setattr(side, attr, value)
 
-        apply_overrides(c_overrides, arg.c_side, strip_chars=" \n;")
-        apply_overrides(f_overrides, arg.f_side)
+        apply_arg_overrides(c_overrides, arg.c_side, strip_chars=" \n;")
+        apply_arg_overrides(f_overrides, arg.f_side)
 
 
 def add_array_bound_info_for_pointer_structures(struct: CodegenStructure) -> None:
@@ -1050,6 +1066,10 @@ call c_f_pointer (Fp, F)
                 continue
             f_face.write(f"!! f_side.to_f2_trans[{arg.full_type}]\n")
             f_face.write(f"{arg.f_side.to_f2_trans}\n")
+
+        if struct.to_f2_post:
+            f_face.write(f"  !! {struct.f_name}.to_f2_post\n")
+            print(struct.to_f2_post, file=f_face)
 
         f_face.write(
             f"""
@@ -1619,6 +1639,10 @@ extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class
                 continue
             file.write(f"  // c_side.to_c2_set[{arg.full_type}] {arg.c_side.c_class}\n")
             file.write(f"{arg.c_side.to_c2_set}\n")
+
+        if struct.to_c2_post:
+            print("  // c_side.to_c2_post", file=file)
+            print(arg.c_side.to_c2_post, file=file)
 
         file.write("}\n")
 

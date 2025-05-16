@@ -2452,8 +2452,8 @@ void ele_struct_fixes() {
     C.NAME.reset();
   } else {
     C.NAME.emplace();
-    C.NAME->ix_branch = ARGIDX + offset;
-    C.NAME->ix_ele = ARGIDX + offset;
+    C.NAME->ix_branch = 0;
+    C.NAME->ix_ele = 0;
   }
   //// end:ele_struct%lord.test_pat
 
@@ -2465,3 +2465,23 @@ void ele_struct_fixes() {
   }
   //// end:ele_struct%n_lord.test_pat
 }
+
+void lat_struct_fixes() {
+  //// section:lat_struct_fixes
+  //// begin:lat_struct%use_name.test_pat
+  C.use_name = "TEST-LATTICE-FROM-TEST-SUITE";
+  // magic string to opt-out of lattice finalization
+  //// end:lat_struct%use_name.test_pat
+}
+// void branch_struct_fixes() {
+//   //// section:branch_struct_fixes
+//   //// begin:ele_struct%lord.test_pat
+//   if (ix_patt < 3) {
+//     C.NAME.reset();
+//   } else {
+//     C.NAME.emplace();
+//     C.NAME->ix_branch = 0;
+//     C.NAME->ix_ele = 0;
+//   }
+//   //// end:ele_struct%lord.test_pat
+// }

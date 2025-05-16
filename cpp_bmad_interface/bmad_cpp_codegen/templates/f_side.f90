@@ -2322,6 +2322,16 @@ rhs = ARGIDX + offset; F%NAME = TEST_VALUE
 end subroutine
 
 
+subroutine lat_struct_test_suite_fixes ()
+  !!!! section:ele_struct_fixes
+  ! magic string
+  !!!! begin:lat_struct%use_name.test_value
+  'TEST-LATTICE-FROM-TEST-SUITE'
+  !!!! end:lat_struct%use_name.test_value
+
+end subroutine
+
+
 subroutine ele_struct_fixes ()
   !!!! section:ele_struct_fixes
   !!!! begin:ele_struct%value.to_f2_trans
@@ -2344,8 +2354,8 @@ else
   if (associated(F%NAME)) deallocate (F%NAME)
   allocate (F%NAME)
   rhs = ARGIDX + offset
-  F%lord%ix_ele = rhs;
-  F%lord%ix_branch = rhs;
+  F%lord%ix_ele = 0;
+  F%lord%ix_branch = 0;
   ! call set_KIND_test_pattern (F%NAME, 0) ! avoid infinite recursion
 
 endif
@@ -2358,6 +2368,7 @@ else
   F%NAME = 1
 endif
   !!!! end:ele_struct%n_lord.test_pat
+  !
 end subroutine
 
 
@@ -2413,3 +2424,16 @@ subroutine ele_struct_lord_reference_to_f (Fp, C) bind(C)
 
 end subroutine
 
+
+!!!! section:lat_struct_fixup
+subroutine lat_struct_fixup (Fp, C) bind(C)
+  !!!! begin:lat_struct%.to_f2_post
+  call lat_struct_to_f2_finalize(F)
+  !!!! end:lat_struct%.to_f2_post
+
+  !!!! section:ele_struct_fixes
+  !!!! begin:lat_struct%use_name.test_pat
+  ! magic string to opt-out of lattice finalization
+  F%use_name = 'TEST-LATTICE-FROM-TEST-SUITE'
+  !!!! end:lat_struct%use_name.test_pat
+end subroutine

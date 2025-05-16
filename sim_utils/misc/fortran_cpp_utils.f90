@@ -1412,6 +1412,62 @@ end subroutine bool_vec2tensor
 
 !-----------------------------------------------------------------------------
 
+subroutine lat_struct_to_f2_finalize_ele(lat, branch, ele)
+
+  use bmad_struct, only: lat_struct, branch_struct, ele_struct
+
+type (lat_struct), target :: lat
+type (branch_struct), pointer :: branch
+type (ele_struct), pointer :: ele
+
+  ! ele_struct%branch
+ 
+  ele%branch => branch
+
+  if (associated(ele%lord)) then
+    ! ele_struct%lord is just a reference
+    if (ele%ix_branch >= lbound(lat%branch, 1) .and. ele%ix_branch <= ubound(lat%branch, 1)) then
+      if (ele%ix_ele >= lbound(lat%branch(ele%ix_branch)%ele, 1) .and. ele%ix_ele <= ubound(lat%branch(ele%ix_branch)%ele, 1)) then
+        ele%lord => lat%branch(ele%ix_branch)%ele(ele%ix_ele)
+      endif
+    endif
+  endif
+
+end subroutine
+
+subroutine lat_struct_to_f2_finalize(lat)
+
+  use bmad_struct, only: lat_struct, branch_struct, ele_struct
+
+implicit none
+
+type (lat_struct), target :: lat
+type (branch_struct), pointer :: branch
+! type (lat_ele_loc_struct), pointer :: loc
+type (ele_struct), pointer :: ele
+
+integer ib, ie
+
+if (.not. allocated(lat%branch)) return
+
+if (lat%use_name == 'TEST-LATTICE-FROM-TEST-SUITE') then
+  return
+endif
+
+do ib = 0, ubound(lat%branch, 1)
+  branch => lat%branch(ib)
+  branch%lat => lat
+  if (associated(branch)) then
+    do ie = 0, min(branch%n_ele_max, ubound(branch%ele, 1))
+      ele => branch%ele(ie)
+      call lat_struct_to_f2_finalize_ele(lat, branch, ele)
+    enddo
+  endif
+enddo
+lat%ele => lat%branch(0)%ele
+
+end subroutine lat_struct_to_f2_finalize
+
 end module
 
 

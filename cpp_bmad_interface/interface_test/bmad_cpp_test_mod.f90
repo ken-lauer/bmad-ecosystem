@@ -12877,8 +12877,8 @@ else
   if (associated(F%lord)) deallocate (F%lord)
   allocate (F%lord)
   rhs = 17 + offset
-  F%lord%ix_ele = rhs;
-  F%lord%ix_branch = rhs;
+  F%lord%ix_ele = 0;
+  F%lord%ix_branch = 0;
   ! call set_ele_test_pattern (F%lord, 0) ! avoid infinite recursion
 
 endif
@@ -13859,9 +13859,8 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_character] string
-do jd1 = 1, len(F%use_name)
-  F%use_name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
-enddo
+  ! magic string to opt-out of lattice finalization
+  F%use_name = 'TEST-LATTICE-FROM-TEST-SUITE'
 !! f_side.test_pat[0D_NOT_character] string
 do jd1 = 1, len(F%lattice)
   F%lattice(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))

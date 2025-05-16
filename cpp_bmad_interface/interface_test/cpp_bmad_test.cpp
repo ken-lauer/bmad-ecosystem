@@ -8808,8 +8808,8 @@ void set_CPP_ele_test_pattern(CPP_ele& C, int ix_patt) {
     C.lord.reset();
   } else {
     C.lord.emplace();
-    C.lord->ix_branch = 17 + offset;
-    C.lord->ix_ele = 17 + offset;
+    C.lord->ix_branch = 0;
+    C.lord->ix_ele = 0;
   }
   // c_side.test_pat[0D_NOT_type]
   set_CPP_floor_position_test_pattern(C.floor, ix_patt);
@@ -9521,11 +9521,8 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-  C.use_name.resize(200);
-  for (size_t i{0}; i < C.use_name.size(); i++) {
-    int rhs = 101 + i + 1 + offset;
-    C.use_name[i] = 'a' + rhs % 26;
-  }
+  C.use_name = "TEST-LATTICE-FROM-TEST-SUITE";
+  // magic string to opt-out of lattice finalization
   // c_side.test_pat[0D_NOT_character]
   C.lattice.resize(40);
   for (size_t i{0}; i < C.lattice.size(); i++) {

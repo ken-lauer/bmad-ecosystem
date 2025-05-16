@@ -11796,6 +11796,8 @@ call c_f_pointer (Fp, F)
   F%creation_hash = z_creation_hash
 !! f_side.to_f2_trans[0D_NOT_integer]
   F%ramper_slave_bookkeeping = z_ramper_slave_bookkeeping
+  !! lat_struct.to_f2_post
+  call lat_struct_to_f2_finalize(F)
 
 end subroutine lat_to_f2
 

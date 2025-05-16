@@ -169,16 +169,15 @@ component_no_translate_list = {
     "normal_form_struct",
     # TODO: this copies information unnecessarily; we need a reference type
     # "ele_struct%lord",
-    "ele_struct%branch",
+    # "ele_struct%branch",
     # TODO: we need some sort workaround for grid field data:
     # "grid_field_pt_struct%pt",
 }
 
 # List of structure components links:
 # Structure components that are just links to other structures are handled differently.
-#   1) No call to delete in the C++ destructor.
-#   2) Ignore in Fortran and C++ equality tests (could go around in circles).
-#   3) Do not create a test pattern in interface test code.
+#   1) Ignore in Fortran and C++ equality tests (could go around in circles).
+#   2) Do not create a test pattern in interface test code.
 
 interface_ignore_list = {
     "ele_struct%branch",
