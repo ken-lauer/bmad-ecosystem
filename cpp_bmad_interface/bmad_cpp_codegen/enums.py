@@ -10,6 +10,9 @@ from __future__ import annotations
 
 import pathlib
 import re
+from dataclasses import dataclass
+
+from bmad_struct_parser.util import FileLine
 
 from .paths import ACC_ROOT_DIR
 from .util import write_if_differs
@@ -18,62 +21,98 @@ INCLUDE_DIR = ACC_ROOT_DIR / "cpp_bmad_interface" / "include"
 INCLUDE_DIR.mkdir(parents=True, exist_ok=True)
 ENUM_FILENAME = INCLUDE_DIR / "bmad_enums.h"
 
+re_int = re.compile("INTEGER, *PARAMETER *:: *")
+re_real = re.compile(r"REAL\(RP\), *PARAMETER *:: *")
+re_d_exp = re.compile(r"\dD[+-]?\d")
+re_equal = re.compile(r"\=.*\dD[+-]?\d")
 
-def generate_enums(file: pathlib.Path) -> list[str]:
-    re_int = re.compile("INTEGER, *PARAMETER *:: *")
-    re_real = re.compile(r"REAL\(RP\), *PARAMETER *:: *")
-    re_d_exp = re.compile(r"\dD[+-]?\d")
-    re_equal = re.compile(r"\=.*\dD[+-]?\d")
 
-    params_here = False
+@dataclass
+class EnumValue:
+    name: str
+    value: str
+    type: str
+    comment: str
 
-    output = []
 
-    for line in file.read_text().splitlines():
-        line = line.partition("!")[0].rstrip()  # Strip off comment
+def _clean_line(line: str) -> str:
+    # Strip datatype information
+    line = re_int.sub("", line)
+    line = re_real.sub("", line)
+
+    if "Z'" in line:
+        line = line.replace("Z'", "0x").replace("'", "")
+    if "z'" in line:
+        line = line.replace("z'", "0x").replace("'", "")
+
+    # Handle Fortran-style exponents, replace `D` with `E`
+    if re_equal.search(line):
+        sub = re_d_exp.search(line)
+        if sub:
+            d_exp_value = sub.group(0).replace("D", "E")  # Replace "3D6" with "3E6"
+            line = re_d_exp.sub(d_exp_value, line)
+    return line
+
+
+def parse_fortran_enums(fn: pathlib.Path) -> dict[str, EnumValue]:
+    """
+    Parse Fortran-like constants into a dictionary of {enum_name: enum_value}.
+    """
+    enum_dict = {}
+
+    for file_line in FileLine.from_file(fn):
+        line, comment = file_line.split_comment()
         line = line.upper()
-        if "[" in line:
-            continue  # Skip parameter arrays
 
-        if not re_int.match(line) and not re_real.match(line) and not params_here:
+        # Skip parameter arrays or irrelevant lines
+        if "[" in line:
             continue
 
-        line = re_int.sub("const int ", line)
-        line = re_real.sub("const double ", line)
-
-        if "(" in line:
-            continue  # Skip parameter arrays. EG: "real(rp), parameter :: abc(3) = 0"
-
-        line = line.replace("$", "")
-
-        if "Z'" in line:
-            line = line.replace("Z'", "0x")
-            line = line.replace("'", "")
-
-        if "z'" in line:
-            line = line.replace("z'", "0x")
-            line = line.replace("'", "")
-
-        if re_equal.search(line):
-            sub = re_d_exp.search(line).group(0).replace("D", "E")  # Replace "3D6" with "3E6"
-            line = re_d_exp.sub(sub, line)
-
-        if line[-3:] == "_RP":
-            line = line[:-3]
-
-        if "&" in line:
-            line = line.replace("&", "")
-            params_here = True
-            line = "  " + line + "\n"
+        if re_int.match(line):
+            type_ = "int"
+        elif re_real.match(line):
+            type_ = "double"
         else:
-            params_here = False
-            line = "  " + line + ";\n"
+            continue
 
-        output.append(line)
-    return output
+        line = _clean_line(line)
+        # Skip lines with arrays
+        if "(" in line:
+            continue
+
+        for idx, part in enumerate(line.split(",")):
+            part = part.strip()
+
+            name, value = part.split("=", 1)
+            name = name.strip().rstrip("$")
+            value = value.strip().replace("$", "").replace("_RP", "")
+            enum_dict[name] = EnumValue(
+                name=name,
+                value=value,
+                type=type_,
+                comment=comment if idx == 0 else "",
+            )
+
+    return enum_dict
 
 
-# ---------------------------------------
+def get_bmad_attributes(enums: dict[str, EnumValue]) -> list[EnumValue]:
+    # Length will always be the first attribute.
+    # We go from L and search until we exceed NUM_ELE_ATTRIB to find attributes.
+    first_attr = enums["L"]
+    num_attrs = int(enums["NUM_ELE_ATTRIB"].value)
+    attrs = list(enums.values())
+    attrs = attrs[attrs.index(first_attr) :]
+    result = []
+    for attr in attrs:
+        try:
+            if int(attr.value) > num_attrs:
+                break
+        except TypeError:
+            break
+        result.append(attr)
+
+    return result
 
 
 def get_enum_code():
@@ -106,12 +145,30 @@ namespace Bmad {
 """
     ]
 
-    result.extend(generate_enums(ACC_ROOT_DIR / "bmad/modules/bmad_struct.f90"))
-    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/io/output_mod.f90"))
-    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/physical_constants.f90"))
-    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/particle_species_mod.f90"))
-    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/interfaces/sim_utils_struct.f90"))
-    result.extend(generate_enums(ACC_ROOT_DIR / "sim_utils/plot/quick_plot_struct.f90"))
+    for fn in [
+        ACC_ROOT_DIR / "bmad/modules/bmad_struct.f90",
+        ACC_ROOT_DIR / "sim_utils/io/output_mod.f90",
+        ACC_ROOT_DIR / "sim_utils/interfaces/physical_constants.f90",
+        ACC_ROOT_DIR / "sim_utils/interfaces/particle_species_mod.f90",
+        ACC_ROOT_DIR / "sim_utils/interfaces/sim_utils_struct.f90",
+        ACC_ROOT_DIR / "sim_utils/plot/quick_plot_struct.f90",
+    ]:
+        enums = parse_fortran_enums(fn)
+        result.append("")
+        result.append(f"// Enums from {fn.name}")
+        for enum in enums.values():
+            if enum.comment:
+                result.append(f"// {enum.comment}")
+            result.append(f"const {enum.type} {enum.name} = {enum.value};")
+
+        if fn.name == "bmad_struct.f90":
+            attrs = get_bmad_attributes(enums)
+            result.append("enum class EleAttribute {")
+            for attr in attrs:
+                if attr.comment:
+                    result.append(f"// {attr.comment}")
+                result.append(f"  {attr.name} = {attr.value},")
+            result.append("}; // enum class EleAttribute")
 
     result.append("""
 }
@@ -133,6 +190,7 @@ namespace Bmad {
 
 
 def write_enums(file):
+    # Small wrapper to use 'write_if_differs'
     file.write(get_enum_code())
 
 
