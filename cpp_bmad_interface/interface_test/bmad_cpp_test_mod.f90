@@ -13954,24 +13954,6 @@ endif
 call set_bookkeeping_state_test_pattern (F%lord_state, ix_patt)
 !! f_side.test_pat[0D_NOT_type] CPP_ele
 call set_ele_test_pattern (F%ele_init, ix_patt)
-!! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_ele>
-if (ix_patt < 3) then
-  if (associated(F%ele)) then
-    ! ensure memory is freed for previously-set patterns >= 3
-    do jd1 = lbound(F%ele,1), ubound(F%ele,1)
-      call set_ele_test_pattern (F%ele(jd1), -1)
-    enddo
-    deallocate (F%ele)
-  endif
-else
-  if (.not. associated(F%ele)) then
-    allocate (F%ele(-1:1))
-  endif
-  do jd1 = 1, size(F%ele,1)
-    lb1 = lbound(F%ele,1) - 1
-    call set_ele_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
-  enddo
-endif
 !! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_branch>
 if (ix_patt < 3) then
   if (allocated(F%branch)) then
@@ -14025,18 +14007,18 @@ else
   endif
   do jd1 = 1, size(F%custom,1)
     lb1 = lbound(F%custom,1) - 1
-    rhs = 100 + jd1 + 29 + offset
+    rhs = 100 + jd1 + 27 + offset
     F%custom(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 31 + offset; F%version = rhs
+rhs = 29 + offset; F%version = rhs
 !! f_side.test_pat[0D_PTR_integer] std::optional<Int>
 if (ix_patt < 3) then
   if (associated(F%n_ele_track)) deallocate (F%n_ele_track)
 else
   if (.not. associated(F%n_ele_track)) allocate (F%n_ele_track)
-  rhs = 32 + offset
+  rhs = 30 + offset
   F%n_ele_track = rhs
 endif
 !! f_side.test_pat[0D_PTR_integer] std::optional<Int>
@@ -14044,15 +14026,15 @@ if (ix_patt < 3) then
   if (associated(F%n_ele_max)) deallocate (F%n_ele_max)
 else
   if (.not. associated(F%n_ele_max)) allocate (F%n_ele_max)
-  rhs = 34 + offset
+  rhs = 32 + offset
   F%n_ele_max = rhs
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 36 + offset; F%n_control_max = rhs
+rhs = 34 + offset; F%n_control_max = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 37 + offset; F%n_ic_max = rhs
+rhs = 35 + offset; F%n_ic_max = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 38 + offset; F%input_taylor_order = rhs
+rhs = 36 + offset; F%input_taylor_order = rhs
 !! f_side.test_pat[1D_ALLOC_integer] VariableArray1D<Int>
 if (ix_patt < 3) then
   if (allocated(F%ic)) then
@@ -14064,16 +14046,16 @@ else
   endif
   do jd1 = 1, size(F%ic,1)
     lb1 = lbound(F%ic,1) - 1
-    rhs = 100 + jd1 + 39 + offset
+    rhs = 100 + jd1 + 37 + offset
     F%ic(jd1+lb1) = rhs
   enddo
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 41 + offset; F%photon_type = rhs
+rhs = 39 + offset; F%photon_type = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 42 + offset; F%creation_hash = rhs
+rhs = 40 + offset; F%creation_hash = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 43 + offset; F%ramper_slave_bookkeeping = rhs
+rhs = 41 + offset; F%ramper_slave_bookkeeping = rhs
 
 end subroutine set_lat_test_pattern
 !---------------------------------------------------------------------------------

@@ -1418,18 +1418,19 @@ subroutine lat_struct_to_f2_finalize_ele(lat, branch, ele)
 
 type (lat_struct), target :: lat
 type (branch_struct), pointer :: branch
-type (ele_struct), pointer :: ele
+type (ele_struct), pointer :: ele, lord
 
   ! ele_struct%branch
  
   ele%branch => branch
+  if (.not. associated(ele%lord)) then
+    return
+  endif
 
-  if (associated(ele%lord)) then
-    ! ele_struct%lord is just a reference
-    if (ele%ix_branch >= lbound(lat%branch, 1) .and. ele%ix_branch <= ubound(lat%branch, 1)) then
-      if (ele%ix_ele >= lbound(lat%branch(ele%ix_branch)%ele, 1) .and. ele%ix_ele <= ubound(lat%branch(ele%ix_branch)%ele, 1)) then
-        ele%lord => lat%branch(ele%ix_branch)%ele(ele%ix_ele)
-      endif
+  ! ele_struct%lord is just a reference
+  if (ele%lord%ix_branch >= lbound(lat%branch, 1) .and. ele%lord%ix_branch <= ubound(lat%branch, 1)) then
+    if (ele%lord%ix_ele >= lbound(lat%branch(ele%lord%ix_branch)%ele, 1) .and. ele%lord%ix_ele <= ubound(lat%branch(ele%lord%ix_branch)%ele, 1)) then
+      ele%lord => lat%branch(ele%lord%ix_branch)%ele(ele%lord%ix_ele)
     endif
   endif
 

@@ -3375,7 +3375,6 @@ class CPP_lat : public std::enable_shared_from_this<CPP_lat> {
   std::optional<CPP_lat_param> param;
   CPP_bookkeeping_state lord_state;
   CPP_ele ele_init;
-  VariableArray1D<CPP_ele> ele;
   VariableArray1D<CPP_branch> branch;
   VariableArray1D<CPP_control> control;
   CPP_coord particle_start;

@@ -2375,7 +2375,6 @@ end subroutine
 !!!! section:ele_struct_reference_to_c
 subroutine ele_struct_reference_to_c (Fp, C) bind(C)
   !!!! begin:ele_struct%lord.to_c_var
-  integer(c_int) :: NAME
   type(ele_reference_struct), target :: ref_NAME
   !!!! end:ele_struct%lord.to_c_var
   !!!! begin:ele_struct%lord.to_c2_type_and_name
@@ -2383,16 +2382,16 @@ subroutine ele_struct_reference_to_c (Fp, C) bind(C)
   !!!! end:ele_struct%lord.to_c2_type_and_name
   call c_f_pointer (Fp, F)
   !!!! begin:ele_struct%lord.to_c_trans
-  n_NAME = 0
-  if (associated(F%NAME)) then 
-    n_NAME = 1
-    ref_NAME%ix_ele = F%NAME%ix_ele
-    ref_NAME%ix_branch = F%NAME%ix_branch
+  n_lord = 0
+  if (associated(F%lord) .and. F%n_lord > 0) then 
+    n_lord = 1
+    ref_lord%ix_ele = F%lord%ix_ele
+    ref_lord%ix_branch = F%lord%ix_branch
   endif
   !!!! end:ele_struct%lord.to_c_trans
   call to_c2 (C, 
   !!!! begin:ele_struct%lord.to_c2_call
-  c_loc(ref_NAME)
+  c_loc(ref_lord)
   !!!! end:ele_struct%lord.to_c2_call
   )
 end subroutine

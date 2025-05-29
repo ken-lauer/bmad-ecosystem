@@ -6284,8 +6284,8 @@ extern "C" void ele_to_c2(
     controller_to_c(z_control, C.control.value());
   }
   // c_side.to_c2_set[0D_PTR_type]   std::optional<CPP_ele_reference>
-  // NOTE: The parameter z_n_lord is set before n_lord
-  if (n_lord == 0) {
+  // NOTE: The parameter z_n_lord is set before C.n_lord
+  if (z_n_lord == 0) {
     C.lord.reset();
   } else {
     C.lord.emplace();
@@ -6709,7 +6709,7 @@ extern "C" void branch_to_c2(
     wall3d_to_c(z_wall3d[i], C.wall3d[i]);
   }
   // c_side.to_c2_post
-  for (auto ele_ : C.ele) {
+  for (auto& ele_ : C.ele) {
     ele_.branch = C;
   }
 }
@@ -6742,8 +6742,6 @@ extern "C" void lat_to_f2(
     c_Int,
     const CPP_bookkeeping_state&,
     const CPP_ele&,
-    const CPP_ele**,
-    c_Int,
     const CPP_branch**,
     c_Int,
     const CPP_control**,
@@ -6792,14 +6790,6 @@ extern "C" void lat_to_f(const CPP_lat& C, Opaque_lat_class* F) {
   auto n_z = C.z ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_lat_param>
   auto n_param = C.param ? 1 : 0;
-  // c_side.to_f_setup[1D_PTR_type] VariableArray1D<CPP_ele>
-  size_t n1_ele = C.ele.size();
-  const CPP_ele** z_ele = nullptr;
-  if (n1_ele != 0) {
-    z_ele = new const CPP_ele*[n1_ele];
-    for (size_t i{0}; i < n1_ele; i++)
-      z_ele[i] = &C.ele[i];
-  }
   // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_branch>
   size_t n1_branch = C.branch.size();
   const CPP_branch** z_branch = nullptr;
@@ -6855,8 +6845,6 @@ extern "C" void lat_to_f(const CPP_lat& C, Opaque_lat_class* F) {
       n_param,
       C.lord_state,
       C.ele_init,
-      z_ele,
-      n1_ele,
       z_branch,
       n1_branch,
       z_control,
@@ -6886,9 +6874,6 @@ extern "C" void lat_to_f(const CPP_lat& C, Opaque_lat_class* F) {
   // c_side.to_f_cleanup[1D_ALLOC_type]
   if (z_constant)
     delete[] z_constant;
-  // c_side.to_f_cleanup[1D_PTR_type]
-  if (z_ele)
-    delete[] z_ele;
   // c_side.to_f_cleanup[1D_ALLOC_type]
   if (z_branch)
     delete[] z_branch;
@@ -6919,8 +6904,6 @@ extern "C" void lat_to_c2(
     c_Int n_param,
     const Opaque_bookkeeping_state_class* z_lord_state,
     const Opaque_ele_class* z_ele_init,
-    Opaque_ele_class** z_ele,
-    c_Int n1_ele,
     Opaque_branch_class** z_branch,
     c_Int n1_branch,
     Opaque_control_class** z_control,
@@ -6994,11 +6977,6 @@ extern "C" void lat_to_c2(
   bookkeeping_state_to_c(z_lord_state, C.lord_state);
   // c_side.to_c2_set[0D_NOT_type] CPP_ele
   ele_to_c(z_ele_init, C.ele_init);
-  // c_side.to_c2_set[1D_PTR_type] VariableArray1D<CPP_ele>
-  C.ele.resize(n1_ele);
-  for (size_t i{0}; i < n1_ele; i++) {
-    ele_to_c(z_ele[i], C.ele[i]);
-  }
   // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_branch>
   C.branch.resize(n1_branch);
   for (size_t i{0}; i < n1_branch; i++) {
@@ -7048,7 +7026,7 @@ extern "C" void lat_to_c2(
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ramper_slave_bookkeeping = z_ramper_slave_bookkeeping;
   // c_side.to_c2_post
-  for (auto branch_ : C.branch) {
+  for (auto& branch_ : C.branch) {
     branch_.lat = C;
   }
 }

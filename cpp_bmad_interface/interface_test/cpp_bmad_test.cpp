@@ -9600,15 +9600,6 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
   set_CPP_bookkeeping_state_test_pattern(C.lord_state, ix_patt);
   // c_side.test_pat[0D_NOT_type]
   set_CPP_ele_test_pattern(C.ele_init, ix_patt);
-  // c_side.test_pat[1D_PTR_type]
-  if (ix_patt < 3) {
-    C.ele.resize(0);
-  } else {
-    C.ele.resize(3);
-    for (size_t i{0}; i < C.ele.size(); i++) {
-      set_CPP_ele_test_pattern(C.ele[i], ix_patt + i + 1);
-    }
-  }
   // c_side.test_pat[1D_ALLOC_type]
   if (ix_patt < 3) {
     C.branch.resize(0);
@@ -9639,35 +9630,35 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
   } else {
     C.custom.resize(3);
     for (size_t i{0}; i < C.custom.size(); i++) {
-      int rhs = 101 + i + 29 + offset;
+      int rhs = 101 + i + 27 + offset;
       C.custom[i] = rhs;
     }
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 31 + offset;
+  rhs = 29 + offset;
   C.version = rhs;
   // c_side.test_pat[0D_PTR_integer]
   if (ix_patt < 3) {
     C.n_ele_track.reset();
   } else {
-    rhs = 32 + offset;
+    rhs = 30 + offset;
     C.n_ele_track.emplace(rhs);
   }
   // c_side.test_pat[0D_PTR_integer]
   if (ix_patt < 3) {
     C.n_ele_max.reset();
   } else {
-    rhs = 34 + offset;
+    rhs = 32 + offset;
     C.n_ele_max.emplace(rhs);
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 36 + offset;
+  rhs = 34 + offset;
   C.n_control_max = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 37 + offset;
+  rhs = 35 + offset;
   C.n_ic_max = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 38 + offset;
+  rhs = 36 + offset;
   C.input_taylor_order = rhs;
   // c_side.test_pat[1D_ALLOC_integer]
   if (ix_patt < 3) {
@@ -9675,18 +9666,18 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
   } else {
     C.ic.resize(3);
     for (size_t i{0}; i < C.ic.size(); i++) {
-      int rhs = 101 + i + 39 + offset;
+      int rhs = 101 + i + 37 + offset;
       C.ic[i] = rhs;
     }
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 41 + offset;
+  rhs = 39 + offset;
   C.photon_type = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 42 + offset;
+  rhs = 40 + offset;
   C.creation_hash = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 43 + offset;
+  rhs = 41 + offset;
   C.ramper_slave_bookkeeping = rhs;
 }
 

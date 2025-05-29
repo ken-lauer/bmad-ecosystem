@@ -2435,8 +2435,8 @@ void ele_struct_fixes() {
   //// end:ele_struct%lord.to_f2_call
 
   //// begin:ele_struct%lord.to_c2_set
-  // NOTE: The parameter z_n_lord is set before n_lord
-  if (n_lord == 0) {
+  // NOTE: The parameter z_n_lord is set before C.n_lord
+  if (z_n_lord == 0) {
     C.lord.reset();
   } else {
     C.lord.emplace();
@@ -2477,7 +2477,7 @@ void branch_struct_fixes() {
   //// end:branch_struct%lat.c_class
 
   //// begin:branch_struct%.to_c2_post
-  for (auto ele_ : C.ele) {
+  for (auto& ele_ : C.ele) {
     ele_.branch = C;
   }
   //// end:branch_struct%.to_c2_post
@@ -2490,7 +2490,7 @@ void lat_struct_fixes() {
   //// end:lat_struct%use_name.test_pat
 
   //// begin:lat_struct%.to_c2_post
-  for (auto branch_ : C.branch) {
+  for (auto& branch_ : C.branch) {
     branch_.lat = C;
   }
   //// end:lat_struct%.to_c2_post

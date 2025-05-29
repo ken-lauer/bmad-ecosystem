@@ -166,6 +166,8 @@ component_no_translate_list = {
     "ele_struct%foil",
     "lat_struct%nametable",
     "normal_form_struct",
+    # This is merely a reference to lat_struct%branch(0). Avoid copying unnecessarily.
+    "lat_struct%ele",
     # TODO: this copies information unnecessarily; we need a reference type
     # "branch_struct%lat",
     # "ele_struct%lord",

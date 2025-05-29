@@ -3283,12 +3283,6 @@ if (associated(f1%param)) is_eq = (f1%param == f2%param)
 is_eq = is_eq .and. (f1%lord_state == f2%lord_state)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%ele_init == f2%ele_init)
-!! f_side.equality_test[1D_PTR_type]
-is_eq = is_eq .and. (associated(f1%ele) .eqv. associated(f2%ele))
-if (.not. is_eq) return
-if (associated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
-if (.not. is_eq) return
-if (associated(f1%ele)) is_eq = all(f1%ele == f2%ele)
 !! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%branch) .eqv. allocated(f2%branch))
 if (.not. is_eq) return

@@ -1760,7 +1760,6 @@ void to_json(json& j, const CPP_lat& obj) {
       {"param", obj.param},
       {"lord_state", obj.lord_state},
       {"ele_init", obj.ele_init},
-      {"ele", obj.ele},
       {"branch", obj.branch},
       {"control", obj.control},
       {"particle_start", obj.particle_start},
