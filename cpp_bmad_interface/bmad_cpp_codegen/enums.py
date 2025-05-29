@@ -21,6 +21,15 @@ INCLUDE_DIR = ACC_ROOT_DIR / "cpp_bmad_interface" / "include"
 INCLUDE_DIR.mkdir(parents=True, exist_ok=True)
 ENUM_FILENAME = INCLUDE_DIR / "bmad_enums.h"
 
+ENUM_FILENAMES = [
+    ACC_ROOT_DIR / "bmad/modules/bmad_struct.f90",
+    ACC_ROOT_DIR / "sim_utils/io/output_mod.f90",
+    ACC_ROOT_DIR / "sim_utils/interfaces/physical_constants.f90",
+    ACC_ROOT_DIR / "sim_utils/interfaces/particle_species_mod.f90",
+    ACC_ROOT_DIR / "sim_utils/interfaces/sim_utils_struct.f90",
+    ACC_ROOT_DIR / "sim_utils/plot/quick_plot_struct.f90",
+]
+
 re_int = re.compile("INTEGER, *PARAMETER *:: *")
 re_real = re.compile(r"REAL\(RP\), *PARAMETER *:: *")
 re_d_exp = re.compile(r"\dD[+-]?\d")
@@ -96,23 +105,48 @@ def parse_fortran_enums(fn: pathlib.Path) -> dict[str, EnumValue]:
     return enum_dict
 
 
-def get_bmad_attributes(enums: dict[str, EnumValue]) -> list[EnumValue]:
+def get_enums_in_range(enums: dict[str, EnumValue], start_key: str, num_key: str) -> list[EnumValue]:
     # Length will always be the first attribute.
     # We go from L and search until we exceed NUM_ELE_ATTRIB to find attributes.
-    first_attr = enums["L"]
-    num_attrs = int(enums["NUM_ELE_ATTRIB"].value)
+    first_attr = enums[start_key]
+    num_enums = int(enums[num_key].value)
     attrs = list(enums.values())
     attrs = attrs[attrs.index(first_attr) :]
     result = []
     for attr in attrs:
         try:
-            if int(attr.value) > num_attrs:
+            cur_value = int(attr.value)
+            if cur_value > num_enums:
                 break
         except TypeError:
             break
+
+        if result:
+            last_value = int(result[-1].value)
+            if last_value == num_enums and cur_value < num_enums:
+                # Wrapping around to 1 for the next set of enums
+                break
         result.append(attr)
 
     return result
+
+
+def get_ele_attributes(enums: dict[str, EnumValue]):
+    return get_enums_in_range(enums, start_key="L", num_key="NUM_ELE_ATTRIB")
+
+
+def get_ele_keys(enums: dict[str, EnumValue]):
+    return get_enums_in_range(enums, start_key="DRIFT", num_key="N_KEY")
+
+
+def get_class_code(clsname: str, enums: list[EnumValue]) -> str:
+    code = [f"enum class {clsname} : size_t {{"]
+    for attr in enums:
+        if attr.comment:
+            code.append(f"// {attr.comment}")
+        code.append(f"  {attr.name} = {attr.value},")
+    code.append(f"}}; // enum class {clsname}")
+    return "\n".join(code)
 
 
 def get_enum_code():
@@ -145,14 +179,7 @@ namespace Bmad {
 """
     ]
 
-    for fn in [
-        ACC_ROOT_DIR / "bmad/modules/bmad_struct.f90",
-        ACC_ROOT_DIR / "sim_utils/io/output_mod.f90",
-        ACC_ROOT_DIR / "sim_utils/interfaces/physical_constants.f90",
-        ACC_ROOT_DIR / "sim_utils/interfaces/particle_species_mod.f90",
-        ACC_ROOT_DIR / "sim_utils/interfaces/sim_utils_struct.f90",
-        ACC_ROOT_DIR / "sim_utils/plot/quick_plot_struct.f90",
-    ]:
+    for fn in ENUM_FILENAMES:
         enums = parse_fortran_enums(fn)
         result.append("")
         result.append(f"// Enums from {fn.name}")
@@ -162,13 +189,8 @@ namespace Bmad {
             result.append(f"const {enum.type} {enum.name} = {enum.value};")
 
         if fn.name == "bmad_struct.f90":
-            attrs = get_bmad_attributes(enums)
-            result.append("enum class EleAttribute {")
-            for attr in attrs:
-                if attr.comment:
-                    result.append(f"// {attr.comment}")
-                result.append(f"  {attr.name} = {attr.value},")
-            result.append("}; // enum class EleAttribute")
+            result.append(get_class_code("EleAttribute", get_ele_attributes(enums)))
+            result.append(get_class_code("EleKey", get_ele_keys(enums)))
 
     result.append("""
 }
