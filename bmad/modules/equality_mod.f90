@@ -32,9 +32,9 @@ interface operator (==)
   module procedure eq_mode_info, eq_pre_tracker, eq_anormal_mode, eq_linac_normal_mode, eq_normal_modes
   module procedure eq_em_field, eq_strong_beam, eq_track_point, eq_track, eq_space_charge_common
   module procedure eq_bmad_common, eq_rad_int1, eq_rad_int_branch, eq_rad_int_all_ele, eq_ele_reference
-  module procedure eq_branch_reference, eq_ele, eq_complex_taylor_term, eq_complex_taylor, eq_branch
-  module procedure eq_lat, eq_bunch, eq_bunch_params, eq_beam, eq_aperture_point
-  module procedure eq_aperture_param, eq_aperture_scan
+  module procedure eq_branch_reference, eq_rf_stair_step, eq_rf_ele, eq_ele, eq_complex_taylor_term
+  module procedure eq_complex_taylor, eq_branch, eq_lat, eq_bunch, eq_bunch_params
+  module procedure eq_beam, eq_aperture_point, eq_aperture_param, eq_aperture_scan
 end interface
 
 contains
@@ -1165,6 +1165,10 @@ is_eq = is_eq .and. (f1%etap == f2%etap)
 is_eq = is_eq .and. (f1%deta_ds == f2%deta_ds)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%sigma == f2%sigma)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%deta_dpz == f2%deta_dpz)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%detap_dpz == f2%detap_dpz)
 
 end function eq_xy_disp
 
@@ -1208,6 +1212,10 @@ is_eq = is_eq .and. (f1%norm_emit == f2%norm_emit)
 is_eq = is_eq .and. (f1%dbeta_dpz == f2%dbeta_dpz)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dalpha_dpz == f2%dalpha_dpz)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%deta_dpz == f2%deta_dpz)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%detap_dpz == f2%detap_dpz)
 
 end function eq_twiss
 
@@ -2545,6 +2553,8 @@ logical is_eq
 
 is_eq = .true.
 !! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%s_lab == f2%s_lab)
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s_body == f2%s_body)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%orb == f2%orb)
@@ -2732,6 +2742,8 @@ is_eq = is_eq .and. (f1%absolute_time_ref_shift .eqv. f2%absolute_time_ref_shift
 !! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%convert_to_kinetic_momentum .eqv. f2%convert_to_kinetic_momentum)
 !! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%normalize_twiss .eqv. f2%normalize_twiss)
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%aperture_limit_on .eqv. f2%aperture_limit_on)
 !! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%debug .eqv. f2%debug)
@@ -2881,6 +2893,64 @@ end function eq_branch_reference
 !--------------------------------------------------------------------------------
 !--------------------------------------------------------------------------------
 
+elemental function eq_rf_stair_step (f1, f2) result (is_eq)
+
+implicit none
+
+type(rf_stair_step_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%E_tot0 == f2%E_tot0)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%E_tot1 == f2%E_tot1)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%p0c == f2%p0c)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%p1c == f2%p1c)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%dE_amp == f2%dE_amp)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%scale == f2%scale)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%dtime == f2%dtime)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%s == f2%s)
+
+end function eq_rf_stair_step
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_rf_ele (f1, f2) result (is_eq)
+
+implicit none
+
+type(rf_ele_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%steps) .eqv. allocated(f2%steps))
+if (.not. is_eq) return
+if (allocated(f1%steps)) is_eq = all(shape(f1%steps) == shape(f2%steps))
+if (.not. is_eq) return
+if (allocated(f1%steps)) is_eq = all(f1%steps == f2%steps)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%ds_step == f2%ds_step)
+
+end function eq_rf_ele
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
 recursive elemental function eq_ele (f1, f2) result (is_eq)
 
 implicit none
@@ -2923,6 +2993,10 @@ is_eq = is_eq .and. (f1%bookkeeping_state == f2%bookkeeping_state)
 is_eq = is_eq .and. (associated(f1%control) .eqv. associated(f2%control))
 if (.not. is_eq) return
 if (associated(f1%control)) is_eq = (f1%control == f2%control)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%rf) .eqv. associated(f2%rf))
+if (.not. is_eq) return
+if (associated(f1%rf)) is_eq = (f1%rf == f2%rf)
 !! f_side.equality_test[0D_PTR_type]
   is_eq = is_eq .and. (associated(f1%lord) .eqv. associated(f2%lord))
   if (.not. is_eq) return

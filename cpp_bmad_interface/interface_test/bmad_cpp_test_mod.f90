@@ -5378,6 +5378,10 @@ rhs = 2 + offset; F%etap = rhs
 rhs = 3 + offset; F%deta_ds = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 4 + offset; F%sigma = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 5 + offset; F%deta_dpz = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 6 + offset; F%detap_dpz = rhs
 
 end subroutine set_xy_disp_test_pattern
 !---------------------------------------------------------------------------------
@@ -5526,6 +5530,10 @@ rhs = 11 + offset; F%norm_emit = rhs
 rhs = 12 + offset; F%dbeta_dpz = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 13 + offset; F%dalpha_dpz = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 14 + offset; F%deta_dpz = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 15 + offset; F%detap_dpz = rhs
 
 end subroutine set_twiss_test_pattern
 !---------------------------------------------------------------------------------
@@ -11462,7 +11470,9 @@ integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
 offset = 100 * ix_patt
 
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 1 + offset; F%s_body = rhs
+rhs = 1 + offset; F%s_lab = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 2 + offset; F%s_body = rhs
 !! f_side.test_pat[0D_NOT_type] CPP_coord
 call set_coord_test_pattern (F%orb, ix_patt)
 !! f_side.test_pat[0D_NOT_type] CPP_em_field
@@ -11471,13 +11481,13 @@ call set_em_field_test_pattern (F%field, ix_patt)
 call set_strong_beam_test_pattern (F%strong_beam, ix_patt)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
-  rhs = 100 + jd1 + 5 + offset
+  rhs = 100 + jd1 + 6 + offset
   F%vec0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
   do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
-    rhs = 100 + jd1 + 10*jd2 + 6 + offset
+    rhs = 100 + jd1 + 10*jd2 + 7 + offset
     F%mat6(jd1+lb1,jd2+lb2) = rhs
   enddo
 enddo
@@ -11995,9 +12005,11 @@ rhs = 37 + offset; F%absolute_time_ref_shift = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 38 + offset; F%convert_to_kinetic_momentum = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 39 + offset; F%aperture_limit_on = (modulo(rhs, 2) == 0)
+rhs = 39 + offset; F%normalize_twiss = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 40 + offset; F%debug = (modulo(rhs, 2) == 0)
+rhs = 40 + offset; F%aperture_limit_on = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 41 + offset; F%debug = (modulo(rhs, 2) == 0)
 
 end subroutine set_bmad_common_test_pattern
 !---------------------------------------------------------------------------------
@@ -12692,6 +12704,286 @@ end subroutine set_branch_reference_test_pattern
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 
+subroutine test1_f_rf_stair_step (ok)
+
+implicit none
+
+type(rf_stair_step_struct), target :: f_rf_stair_step, f2_rf_stair_step
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_rf_stair_step (c_rf_stair_step, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_rf_stair_step
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_rf_stair_step_test_pattern (f2_rf_stair_step, 1)
+
+call test_c_rf_stair_step(c_loc(f2_rf_stair_step), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_rf_stair_step_test_pattern (f_rf_stair_step, 4)
+if (f_rf_stair_step == f2_rf_stair_step) then
+  print *, '[4] rf_stair_step: C side convert C->F: Good'
+else
+  print *, '[4] rf_stair_step: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call rf_stair_step_struct_to_json(f_rf_stair_step, json_root)
+  call json%print(json_root, 'test_f_rf_stair_step_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rf_stair_step_struct_to_json(f2_rf_stair_step, json_root)
+  call json%print(json_root, 'test_f_rf_stair_step_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rf_stair_step_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rf_stair_step_test_pattern (f_rf_stair_step, -1)
+call set_rf_stair_step_test_pattern (f2_rf_stair_step, -1)
+
+end subroutine test1_f_rf_stair_step
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_rf_stair_step (c_rf_stair_step, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_rf_stair_step
+type(rf_stair_step_struct), target :: f_rf_stair_step, f2_rf_stair_step
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call rf_stair_step_to_f (c_rf_stair_step, c_loc(f_rf_stair_step))
+
+call set_rf_stair_step_test_pattern (f2_rf_stair_step, 2)
+if (f_rf_stair_step == f2_rf_stair_step) then
+  print *, '[2] rf_stair_step: F side convert C->F: Good'
+else
+  print *, '[2] rf_stair_step: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rf_stair_step_struct_to_json(f_rf_stair_step, json_root)
+  call json%print(json_root, 'test_f_rf_stair_step_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rf_stair_step_struct_to_json(f2_rf_stair_step, json_root)
+  call json%print(json_root, 'test_f_rf_stair_step_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rf_stair_step_pattern_2_*.json)'
+
+endif
+
+call set_rf_stair_step_test_pattern (f2_rf_stair_step, 3)
+call rf_stair_step_to_c (c_loc(f2_rf_stair_step), c_rf_stair_step)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rf_stair_step_test_pattern (f_rf_stair_step, -1)
+call set_rf_stair_step_test_pattern (f2_rf_stair_step, -1)
+
+end subroutine test2_f_rf_stair_step
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_rf_stair_step_test_pattern (F, ix_patt)
+
+implicit none
+
+type(rf_stair_step_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 1 + offset; F%E_tot0 = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 2 + offset; F%E_tot1 = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 3 + offset; F%p0c = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 4 + offset; F%p1c = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 5 + offset; F%dE_amp = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 6 + offset; F%scale = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 7 + offset; F%dtime = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 8 + offset; F%s = rhs
+
+end subroutine set_rf_stair_step_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_rf_ele (ok)
+
+implicit none
+
+type(rf_ele_struct), target :: f_rf_ele, f2_rf_ele
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_rf_ele (c_rf_ele, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_rf_ele
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_rf_ele_test_pattern (f2_rf_ele, 1)
+
+call test_c_rf_ele(c_loc(f2_rf_ele), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_rf_ele_test_pattern (f_rf_ele, 4)
+if (f_rf_ele == f2_rf_ele) then
+  print *, '[4] rf_ele: C side convert C->F: Good'
+else
+  print *, '[4] rf_ele: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call rf_ele_struct_to_json(f_rf_ele, json_root)
+  call json%print(json_root, 'test_f_rf_ele_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rf_ele_struct_to_json(f2_rf_ele, json_root)
+  call json%print(json_root, 'test_f_rf_ele_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rf_ele_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rf_ele_test_pattern (f_rf_ele, -1)
+call set_rf_ele_test_pattern (f2_rf_ele, -1)
+
+end subroutine test1_f_rf_ele
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_rf_ele (c_rf_ele, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_rf_ele
+type(rf_ele_struct), target :: f_rf_ele, f2_rf_ele
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call rf_ele_to_f (c_rf_ele, c_loc(f_rf_ele))
+
+call set_rf_ele_test_pattern (f2_rf_ele, 2)
+if (f_rf_ele == f2_rf_ele) then
+  print *, '[2] rf_ele: F side convert C->F: Good'
+else
+  print *, '[2] rf_ele: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call rf_ele_struct_to_json(f_rf_ele, json_root)
+  call json%print(json_root, 'test_f_rf_ele_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call rf_ele_struct_to_json(f2_rf_ele, json_root)
+  call json%print(json_root, 'test_f_rf_ele_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_rf_ele_pattern_2_*.json)'
+
+endif
+
+call set_rf_ele_test_pattern (f2_rf_ele, 3)
+call rf_ele_to_c (c_loc(f2_rf_ele), c_rf_ele)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_rf_ele_test_pattern (f_rf_ele, -1)
+call set_rf_ele_test_pattern (f2_rf_ele, -1)
+
+end subroutine test2_f_rf_ele
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_rf_ele_test_pattern (F, ix_patt)
+
+implicit none
+
+type(rf_ele_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_rf_stair_step>
+if (ix_patt < 3) then
+  if (allocated(F%steps)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%steps,1), ubound(F%steps,1)
+      call set_rf_stair_step_test_pattern (F%steps(jd1), -1)
+    enddo
+    deallocate (F%steps)
+  endif
+else
+  if (.not. allocated(F%steps)) then
+    allocate (F%steps(-1:1))
+  endif
+  do jd1 = 1, size(F%steps,1)
+    lb1 = lbound(F%steps,1) - 1
+    call set_rf_stair_step_test_pattern (F%steps(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 3 + offset; F%ds_step = rhs
+
+end subroutine set_rf_ele_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
 subroutine test1_f_ele (ok)
 
 implicit none
@@ -12867,6 +13159,17 @@ else
   rhs = 15 + offset
   call set_controller_test_pattern (F%control, ix_patt)
 endif
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_rf_ele>
+if (ix_patt < 3) then
+  if (associated(F%rf)) then
+    call set_rf_ele_test_pattern (F%rf, -1)
+    deallocate (F%rf)
+  endif
+else
+  if (.not. associated(F%rf)) allocate (F%rf)
+  rhs = 17 + offset
+  call set_rf_ele_test_pattern (F%rf, ix_patt)
+endif
 !! f_side.test_pat[0D_PTR_type]   std::optional<CPP_ele_reference>
 if (ix_patt < 3) then
   if (associated(F%lord)) then
@@ -12876,7 +13179,7 @@ if (ix_patt < 3) then
 else
   if (associated(F%lord)) deallocate (F%lord)
   allocate (F%lord)
-  rhs = 17 + offset
+  rhs = 19 + offset
   F%lord%ix_ele = 0;
   F%lord%ix_branch = 0;
   ! call set_ele_test_pattern (F%lord, 0) ! avoid infinite recursion
@@ -12892,7 +13195,7 @@ if (ix_patt < 3) then
   endif
 else
   if (.not. associated(F%high_energy_space_charge)) allocate (F%high_energy_space_charge)
-  rhs = 20 + offset
+  rhs = 22 + offset
   call set_high_energy_space_charge_test_pattern (F%high_energy_space_charge, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_mode3>
@@ -12903,7 +13206,7 @@ if (ix_patt < 3) then
   endif
 else
   if (.not. associated(F%mode3)) allocate (F%mode3)
-  rhs = 22 + offset
+  rhs = 24 + offset
   call set_mode3_test_pattern (F%mode3, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_photon_element>
@@ -12914,7 +13217,7 @@ if (ix_patt < 3) then
   endif
 else
   if (.not. associated(F%photon)) allocate (F%photon)
-  rhs = 24 + offset
+  rhs = 26 + offset
   call set_photon_element_test_pattern (F%photon, ix_patt)
 endif
 !! f_side.test_pat[0D_PTR_type] std::optional<CPP_rad_map_ele>
@@ -12925,7 +13228,7 @@ if (ix_patt < 3) then
   endif
 else
   if (.not. associated(F%rad_map)) allocate (F%rad_map)
-  rhs = 26 + offset
+  rhs = 28 + offset
   call set_rad_map_ele_test_pattern (F%rad_map, ix_patt)
 endif
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
@@ -12937,13 +13240,13 @@ if (ix_patt < 0) then
 else
   do jd1 = 1, size(F%taylor,1)
     lb1 = lbound(F%taylor,1) - 1
-    rhs = 100 + jd1 + 28 + offset
+    rhs = 100 + jd1 + 30 + offset
     call set_taylor_test_pattern (F%taylor(jd1+lb1), ix_patt+jd1)
   enddo
 endif
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%spin_taylor_ref_orb_in,1); lb1 = lbound(F%spin_taylor_ref_orb_in,1) - 1
-  rhs = 100 + jd1 + 29 + offset
+  rhs = 100 + jd1 + 31 + offset
   F%spin_taylor_ref_orb_in(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 4>
@@ -12955,7 +13258,7 @@ if (ix_patt < 0) then
 else
   do jd1 = 1, size(F%spin_taylor,1)
     lb1 = lbound(F%spin_taylor,1) - 1
-    rhs = 100 + jd1 + 30 + offset
+    rhs = 100 + jd1 + 32 + offset
     call set_taylor_test_pattern (F%spin_taylor(jd1+lb1), ix_patt+jd1)
   enddo
 endif
@@ -12967,7 +13270,7 @@ if (ix_patt < 3) then
   endif
 else
   if (.not. associated(F%wake)) allocate (F%wake)
-  rhs = 31 + offset
+  rhs = 33 + offset
   call set_wake_test_pattern (F%wake, ix_patt)
 endif
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_wall3d>
@@ -13070,48 +13373,48 @@ call set_coord_test_pattern (F%time_ref_orb_in, ix_patt)
 call set_coord_test_pattern (F%time_ref_orb_out, ix_patt)
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%value,1); lb1 = lbound(F%value,1) - 1
-  rhs = 100 + jd1 + 47 + offset
+  rhs = 100 + jd1 + 49 + offset
   F%value(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, Bmad::NUM_ELE_ATTRIB+1>
 do jd1 = 1, size(F%old_value,1); lb1 = lbound(F%old_value,1) - 1
-  rhs = 100 + jd1 + 48 + offset
+  rhs = 100 + jd1 + 50 + offset
   F%old_value(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 4, 7>
 do jd1 = 1, size(F%spin_q,1); lb1 = lbound(F%spin_q,1) - 1
   do jd2 = 1, size(F%spin_q,2); lb2 = lbound(F%spin_q,2) - 1
-    rhs = 100 + jd1 + 10*jd2 + 49 + offset
+    rhs = 100 + jd1 + 10*jd2 + 51 + offset
     F%spin_q(jd1+lb1,jd2+lb2) = rhs
   enddo
 enddo
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
 do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
-  rhs = 100 + jd1 + 50 + offset
+  rhs = 100 + jd1 + 52 + offset
   F%vec0(jd1+lb1) = rhs
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
 do jd1 = 1, size(F%mat6,1); lb1 = lbound(F%mat6,1) - 1
   do jd2 = 1, size(F%mat6,2); lb2 = lbound(F%mat6,2) - 1
-    rhs = 100 + jd1 + 10*jd2 + 51 + offset
+    rhs = 100 + jd1 + 10*jd2 + 53 + offset
     F%mat6(jd1+lb1,jd2+lb2) = rhs
   enddo
 enddo
 !! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 2, 2>
 do jd1 = 1, size(F%c_mat,1); lb1 = lbound(F%c_mat,1) - 1
   do jd2 = 1, size(F%c_mat,2); lb2 = lbound(F%c_mat,2) - 1
-    rhs = 100 + jd1 + 10*jd2 + 52 + offset
+    rhs = 100 + jd1 + 10*jd2 + 54 + offset
     F%c_mat(jd1+lb1,jd2+lb2) = rhs
   enddo
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 53 + offset; F%gamma_c = rhs
+rhs = 55 + offset; F%gamma_c = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 54 + offset; F%s_start = rhs
+rhs = 56 + offset; F%s_start = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 55 + offset; F%s = rhs
+rhs = 57 + offset; F%s = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 56 + offset; F%ref_time = rhs
+rhs = 58 + offset; F%ref_time = rhs
 !! f_side.test_pat[1D_PTR_real] VariableArray1D<Real>
 if (ix_patt < 3) then
   if (associated(F%a_pole)) then
@@ -13123,7 +13426,7 @@ else
   endif
   do jd1 = 1, size(F%a_pole,1)
     lb1 = lbound(F%a_pole,1) - 1
-    rhs = 100 + jd1 + 57 + offset
+    rhs = 100 + jd1 + 59 + offset
     F%a_pole(jd1+lb1) = rhs
   enddo
 endif
@@ -13138,7 +13441,7 @@ else
   endif
   do jd1 = 1, size(F%b_pole,1)
     lb1 = lbound(F%b_pole,1) - 1
-    rhs = 100 + jd1 + 59 + offset
+    rhs = 100 + jd1 + 61 + offset
     F%b_pole(jd1+lb1) = rhs
   enddo
 endif
@@ -13153,7 +13456,7 @@ else
   endif
   do jd1 = 1, size(F%a_pole_elec,1)
     lb1 = lbound(F%a_pole_elec,1) - 1
-    rhs = 100 + jd1 + 61 + offset
+    rhs = 100 + jd1 + 63 + offset
     F%a_pole_elec(jd1+lb1) = rhs
   enddo
 endif
@@ -13168,7 +13471,7 @@ else
   endif
   do jd1 = 1, size(F%b_pole_elec,1)
     lb1 = lbound(F%b_pole_elec,1) - 1
-    rhs = 100 + jd1 + 63 + offset
+    rhs = 100 + jd1 + 65 + offset
     F%b_pole_elec(jd1+lb1) = rhs
   enddo
 endif
@@ -13183,7 +13486,7 @@ else
   endif
   do jd1 = 1, size(F%custom,1)
     lb1 = lbound(F%custom,1) - 1
-    rhs = 100 + jd1 + 65 + offset
+    rhs = 100 + jd1 + 67 + offset
     F%custom(jd1+lb1) = rhs
   enddo
 endif
@@ -13195,30 +13498,30 @@ else
   do jd1 = 1, size(F%r,1); lb1 = lbound(F%r,1) - 1
     do jd2 = 1, size(F%r,2); lb2 = lbound(F%r,2) - 1
       do jd3 = 1, size(F%r,3); lb3 = lbound(F%r,3) - 1
-        rhs = 100 + jd1 + 10*jd2 + 100*jd3 + 67 + offset
+        rhs = 100 + jd1 + 10*jd2 + 100*jd3 + 69 + offset
         F%r(jd1+lb1,jd2+lb2,jd3+lb3) = rhs
       enddo
     enddo
   enddo
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 71 + offset; F%key = rhs
+rhs = 73 + offset; F%key = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 72 + offset; F%sub_key = rhs
+rhs = 74 + offset; F%sub_key = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 73 + offset; F%ix_ele = rhs
+rhs = 75 + offset; F%ix_ele = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 74 + offset; F%ix_branch = rhs
+rhs = 76 + offset; F%ix_branch = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 75 + offset; F%lord_status = rhs
+rhs = 77 + offset; F%lord_status = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 76 + offset; F%n_slave = rhs
+rhs = 78 + offset; F%n_slave = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 77 + offset; F%n_slave_field = rhs
+rhs = 79 + offset; F%n_slave_field = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 78 + offset; F%ix1_slave = rhs
+rhs = 80 + offset; F%ix1_slave = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 79 + offset; F%slave_status = rhs
+rhs = 81 + offset; F%slave_status = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
 if (ix_patt < 3) then
   F%n_lord = 0
@@ -13226,63 +13529,63 @@ else
   F%n_lord = 1
 endif
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 81 + offset; F%n_lord_field = rhs
+rhs = 83 + offset; F%n_lord_field = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 82 + offset; F%n_lord_ramper = rhs
+rhs = 84 + offset; F%n_lord_ramper = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 83 + offset; F%ic1_lord = rhs
+rhs = 85 + offset; F%ic1_lord = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 84 + offset; F%ix_pointer = rhs
+rhs = 86 + offset; F%ix_pointer = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 85 + offset; F%ixx = rhs
+rhs = 87 + offset; F%ixx = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 86 + offset; F%iyy = rhs
+rhs = 88 + offset; F%iyy = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 87 + offset; F%izz = rhs
+rhs = 89 + offset; F%izz = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 88 + offset; F%mat6_calc_method = rhs
+rhs = 90 + offset; F%mat6_calc_method = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 89 + offset; F%tracking_method = rhs
+rhs = 91 + offset; F%tracking_method = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 90 + offset; F%spin_tracking_method = rhs
+rhs = 92 + offset; F%spin_tracking_method = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 91 + offset; F%csr_method = rhs
+rhs = 93 + offset; F%csr_method = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 92 + offset; F%space_charge_method = rhs
+rhs = 94 + offset; F%space_charge_method = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 93 + offset; F%ptc_integration_type = rhs
+rhs = 95 + offset; F%ptc_integration_type = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 94 + offset; F%field_calc = rhs
+rhs = 96 + offset; F%field_calc = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 95 + offset; F%aperture_at = rhs
+rhs = 97 + offset; F%aperture_at = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 96 + offset; F%aperture_type = rhs
+rhs = 98 + offset; F%aperture_type = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 97 + offset; F%ref_species = rhs
+rhs = 99 + offset; F%ref_species = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 98 + offset; F%orientation = rhs
+rhs = 100 + offset; F%orientation = rhs
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 99 + offset; F%symplectify = (modulo(rhs, 2) == 0)
+rhs = 101 + offset; F%symplectify = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 100 + offset; F%mode_flip = (modulo(rhs, 2) == 0)
+rhs = 102 + offset; F%mode_flip = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 101 + offset; F%multipoles_on = (modulo(rhs, 2) == 0)
+rhs = 103 + offset; F%multipoles_on = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 102 + offset; F%scale_multipoles = (modulo(rhs, 2) == 0)
+rhs = 104 + offset; F%scale_multipoles = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 103 + offset; F%taylor_map_includes_offsets = (modulo(rhs, 2) == 0)
+rhs = 105 + offset; F%taylor_map_includes_offsets = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 104 + offset; F%field_master = (modulo(rhs, 2) == 0)
+rhs = 106 + offset; F%field_master = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 105 + offset; F%is_on = (modulo(rhs, 2) == 0)
+rhs = 107 + offset; F%is_on = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 106 + offset; F%logic = (modulo(rhs, 2) == 0)
+rhs = 108 + offset; F%logic = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 107 + offset; F%bmad_logic = (modulo(rhs, 2) == 0)
+rhs = 109 + offset; F%bmad_logic = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 108 + offset; F%select = (modulo(rhs, 2) == 0)
+rhs = 110 + offset; F%select = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 109 + offset; F%offset_moves_aperture = (modulo(rhs, 2) == 0)
+rhs = 111 + offset; F%offset_moves_aperture = (modulo(rhs, 2) == 0)
 
 end subroutine set_ele_test_pattern
 !---------------------------------------------------------------------------------

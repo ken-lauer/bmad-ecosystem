@@ -120,6 +120,8 @@ class CPP_rad_int_branch;
 class CPP_rad_int_all_ele;
 class CPP_ele_reference;
 class CPP_branch_reference;
+class CPP_rf_stair_step;
+class CPP_rf_ele;
 class CPP_ele;
 class CPP_complex_taylor_term;
 class CPP_complex_taylor;
@@ -1356,6 +1358,8 @@ class CPP_xy_disp : public std::enable_shared_from_this<CPP_xy_disp> {
   Real etap{0.0};
   Real deta_ds{0.0};
   Real sigma{0.0};
+  Real deta_dpz{0.0};
+  Real detap_dpz{0.0};
 
   CPP_xy_disp() {}
 
@@ -1393,6 +1397,8 @@ class CPP_twiss : public std::enable_shared_from_this<CPP_twiss> {
   Real norm_emit{0.0};
   Real dbeta_dpz{0.0};
   Real dalpha_dpz{0.0};
+  Real deta_dpz{0.0};
+  Real detap_dpz{0.0};
 
   CPP_twiss() {}
 
@@ -2786,6 +2792,7 @@ class Opaque_track_point_class {
 
 class CPP_track_point : public std::enable_shared_from_this<CPP_track_point> {
  public:
+  Real s_lab{0.0};
   Real s_body{0.0};
   CPP_coord orb;
   CPP_em_field field;
@@ -2933,6 +2940,7 @@ class CPP_bmad_common : public std::enable_shared_from_this<CPP_bmad_common> {
   Bool absolute_time_tracking{false};
   Bool absolute_time_ref_shift{true};
   Bool convert_to_kinetic_momentum{false};
+  Bool normalize_twiss{true};
   Bool aperture_limit_on{true};
   Bool debug{false};
 
@@ -3119,6 +3127,69 @@ bool operator==(const CPP_branch_reference&, const CPP_branch_reference&);
 void to_json(json&, const CPP_branch_reference&);
 
 //--------------------------------------------------------------------
+// CPP_rf_stair_step
+
+class Opaque_rf_stair_step_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_rf_stair_step
+    : public std::enable_shared_from_this<CPP_rf_stair_step> {
+ public:
+  Real E_tot0{0.0};
+  Real E_tot1{0.0};
+  Real p0c{0.0};
+  Real p1c{0.0};
+  Real dE_amp{0.0};
+  Real scale{0.0};
+  Real dtime{0.0};
+  Real s{0.0};
+
+  CPP_rf_stair_step() {}
+
+  virtual ~CPP_rf_stair_step() {}
+  std::shared_ptr<CPP_rf_stair_step> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_rf_stair_step& obj);
+};
+
+extern "C" void rf_stair_step_to_c(
+    const Opaque_rf_stair_step_class*,
+    CPP_rf_stair_step&);
+extern "C" void rf_stair_step_to_f(
+    const CPP_rf_stair_step&,
+    Opaque_rf_stair_step_class*);
+
+bool operator==(const CPP_rf_stair_step&, const CPP_rf_stair_step&);
+void to_json(json&, const CPP_rf_stair_step&);
+
+//--------------------------------------------------------------------
+// CPP_rf_ele
+
+class Opaque_rf_ele_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_rf_ele : public std::enable_shared_from_this<CPP_rf_ele> {
+ public:
+  VariableArray1D<CPP_rf_stair_step> steps;
+  Real ds_step{0.0};
+
+  CPP_rf_ele() {}
+
+  virtual ~CPP_rf_ele() {}
+  std::shared_ptr<CPP_rf_ele> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_rf_ele& obj);
+};
+
+extern "C" void rf_ele_to_c(const Opaque_rf_ele_class*, CPP_rf_ele&);
+extern "C" void rf_ele_to_f(const CPP_rf_ele&, Opaque_rf_ele_class*);
+
+bool operator==(const CPP_rf_ele&, const CPP_rf_ele&);
+void to_json(json&, const CPP_rf_ele&);
+
+//--------------------------------------------------------------------
 // CPP_ele
 
 class Opaque_ele_class {
@@ -3140,6 +3211,7 @@ class CPP_ele : public std::enable_shared_from_this<CPP_ele> {
   CPP_bookkeeping_state bookkeeping_state;
   optional_ref<CPP_branch> branch;
   std::optional<CPP_controller> control;
+  std::optional<CPP_rf_ele> rf;
   std::optional<CPP_ele_reference> lord;
   CPP_floor_position floor;
   std::optional<CPP_high_energy_space_charge> high_energy_space_charge;

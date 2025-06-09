@@ -1,7 +1,9 @@
 module forest_json
+use, intrinsic :: iso_fortran_env
 use json_module
 use json_string_utilities, only: integer_to_string
 use json_kinds, only: CK
+integer, parameter, private :: dp = REAL64
 contains
 subroutine complex_to_json (input, json_root, depth, max_depth)
   use precision_constants, only: dp

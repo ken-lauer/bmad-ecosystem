@@ -1,7 +1,9 @@
 module bmad_json
+use, intrinsic :: iso_fortran_env
 use json_module
 use json_string_utilities, only: integer_to_string
 use json_kinds, only: CK
+integer, parameter, private :: dp = REAL64
 contains
 subroutine complex_to_json (input, json_root, depth, max_depth)
   use precision_def, only: dp
@@ -501,6 +503,7 @@ subroutine bmad_common_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'absolute_time_tracking', input%absolute_time_tracking)
   call json%add(json_root, 'absolute_time_ref_shift', input%absolute_time_ref_shift)
   call json%add(json_root, 'convert_to_kinetic_momentum', input%convert_to_kinetic_momentum)
+  call json%add(json_root, 'normalize_twiss', input%normalize_twiss)
   call json%add(json_root, 'aperture_limit_on', input%aperture_limit_on)
   call json%add(json_root, 'debug', input%debug)
 end subroutine bmad_common_struct_to_json
@@ -610,7 +613,6 @@ subroutine bmad_private_struct_to_json (input, json_root, depth, max_depth)
     return
   endif
   call json%create_object(json_root, '')
-  call json%add(json_root, 'rf_clock_period', input%rf_clock_period)
   call json%add(json_root, 'random_on', input%random_on)
 end subroutine bmad_private_struct_to_json
 subroutine bookkeeping_state_struct_to_json (input, json_root, depth, max_depth)
@@ -1954,7 +1956,7 @@ subroutine coord_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, json_list1)
   nullify(json_list1)
   call json%add(json_root, 's', input%s)
-  call json%add(json_root, 't', input%t)
+  call json%add(json_root, 't', real(input%t, dp))
   !'real(rp) :: spin(3) = 0'
   call json%create_array(json_list1, 'spin')
   do i1 = lbound(input%spin, 1), ubound(input%spin, 1)
@@ -2620,6 +2622,11 @@ subroutine ele_struct_to_json (input, json_root, depth, max_depth)
     call json%add(json_root, json_val)
   endif
   ! config skip_members: ele_struct%converter (type, EG: Positron converter in linac.)
+  if (associated(input%rf)) then
+    call rf_ele_struct_to_json(input%rf, json_val, depth=depth + 1, max_depth=max_depth)
+    call json%rename(json_val, 'rf')
+    call json%add(json_root, json_val)
+  endif
   ! config skip_members: ele_struct%foil (type, )
   ! config skip_members: ele_struct%lord (type, Pointer to a slice lord.)
   if (associated(input%ptc_fibre)) then
@@ -3168,6 +3175,7 @@ subroutine extra_parsing_info_struct_to_json (input, json_root, depth, max_depth
   call json%add(json_root, 'absolute_time_ref_shift_set', input%absolute_time_ref_shift_set)
   call json%add(json_root, 'convert_to_kinetic_momentum_set', input%convert_to_kinetic_momentum_set)
   call json%add(json_root, 'aperture_limit_on_set', input%aperture_limit_on_set)
+  call json%add(json_root, 'normalize_twiss_set', input%normalize_twiss_set)
   call json%add(json_root, 'sad_eps_scale_set', input%sad_eps_scale_set)
   call json%add(json_root, 'sad_amp_max_set', input%sad_amp_max_set)
   call json%add(json_root, 'sad_n_div_max_set', input%sad_n_div_max_set)
@@ -6881,6 +6889,69 @@ subroutine resonance_h_struct_to_json (input, json_root, depth, max_depth)
   call json%rename(json_list1, 'c_val')
   call json%add(json_root, json_list1)
 end subroutine resonance_h_struct_to_json
+subroutine rf_ele_struct_to_json (input, json_root, depth, max_depth)
+  use bmad_struct, only: rf_ele_struct
+  implicit none
+  type(json_core) :: json
+  type (rf_ele_struct), pointer, intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  integer, optional, value :: max_depth
+  integer i1, i2, i3, i4, i5, i6
+  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
+  if (.not. present(depth)) depth = 0
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  if (.not. associated(input)) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  call json%create_object(json_root, '')
+  if (allocated(input%steps)) then
+    !'type (rf_stair_step_struct), allocatable :: steps(:)'
+    call json%create_array(json_list1, 'steps')
+    do i1 = lbound(input%steps, 1), ubound(input%steps, 1)
+      call rf_stair_step_struct_to_json(input%steps(i1), json_val, depth=depth + 1, max_depth=max_depth)
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
+  call json%add(json_root, 'ds_step', input%ds_step)
+end subroutine rf_ele_struct_to_json
+subroutine rf_stair_step_struct_to_json (input, json_root, depth, max_depth)
+  use bmad_struct, only: rf_stair_step_struct
+  implicit none
+  type(json_core) :: json
+  type (rf_stair_step_struct), pointer, intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  integer, optional, value :: max_depth
+  integer i1, i2, i3, i4, i5, i6
+  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
+  if (.not. present(depth)) depth = 0
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  if (.not. associated(input)) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  call json%create_object(json_root, '')
+  call json%add(json_root, 'e_tot0', input%E_tot0)
+  call json%add(json_root, 'e_tot1', input%E_tot1)
+  call json%add(json_root, 'p0c', input%p0c)
+  call json%add(json_root, 'p1c', input%p1c)
+  call json%add(json_root, 'de_amp', input%dE_amp)
+  call json%add(json_root, 'scale', input%scale)
+  call json%add(json_root, 'dtime', input%dtime)
+  call json%add(json_root, 's', input%s)
+end subroutine rf_stair_step_struct_to_json
 subroutine runge_kutta_common_struct_to_json (input, json_root, depth, max_depth)
   use runge_kutta_mod, only: runge_kutta_common_struct
   implicit none
@@ -7960,6 +8031,7 @@ subroutine track_point_struct_to_json (input, json_root, depth, max_depth)
     return
   endif
   call json%create_object(json_root, '')
+  call json%add(json_root, 's_lab', input%s_lab)
   call json%add(json_root, 's_body', input%s_body)
   call coord_struct_to_json(input%orb, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'orb')
@@ -8062,6 +8134,8 @@ subroutine twiss_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'norm_emit', input%norm_emit)
   call json%add(json_root, 'dbeta_dpz', input%dbeta_dpz)
   call json%add(json_root, 'dalpha_dpz', input%dalpha_dpz)
+  call json%add(json_root, 'deta_dpz', input%deta_dpz)
+  call json%add(json_root, 'detap_dpz', input%detap_dpz)
 end subroutine twiss_struct_to_json
 subroutine wake_lr_mode_struct_to_json (input, json_root, depth, max_depth)
   use bmad_struct, only: wake_lr_mode_struct
@@ -8569,5 +8643,7 @@ subroutine xy_disp_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'etap', input%etap)
   call json%add(json_root, 'deta_ds', input%deta_ds)
   call json%add(json_root, 'sigma', input%sigma)
+  call json%add(json_root, 'deta_dpz', input%deta_dpz)
+  call json%add(json_root, 'detap_dpz', input%detap_dpz)
 end subroutine xy_disp_struct_to_json
 end module bmad_json

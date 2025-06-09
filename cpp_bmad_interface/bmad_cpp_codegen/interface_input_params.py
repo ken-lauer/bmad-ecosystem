@@ -135,6 +135,8 @@ struct_list = [
     "rad_int_all_ele_struct",
     "ele_reference_struct",
     "branch_reference_struct",
+    "rf_stair_step_struct",
+    "rf_ele_struct",
     "ele_struct",
     "complex_taylor_term_struct",
     "complex_taylor_struct",

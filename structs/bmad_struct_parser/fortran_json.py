@@ -59,9 +59,12 @@ end subroutine complex_to_json
 }
 
 default_header = """\
+use, intrinsic :: iso_fortran_env
 use json_module
 use json_string_utilities, only: integer_to_string
 use json_kinds, only: CK
+
+integer, parameter, private :: dp = REAL64
 """
 
 
@@ -134,9 +137,12 @@ class ListBuilder:
                 "real": "create_real",
                 "logical": "create_logical",
             }[member.type.lower()]
-            iteration = (
-                f"call json%{create}({self.json_value_var}, {self.struct_var}%{member.name}({iter_vars}), '')"
-            )
+
+            if self.member.type.lower() == "real" and str(self.member.type_info.kind).lower() == "qp":
+                var = f"real({self.json_value_var}, dp)"
+            else:
+                var = self.json_value_var
+            iteration = f"call json%{create}({var}, {self.struct_var}%{member.name}({iter_vars}), '')"
         elif member.type.lower() in {"character"}:
             iteration = f"call json%create_string({self.json_value_var}, trim({self.struct_var}%{member.name}({iter_vars})), '')"
         elif member.type.lower() in {"complex"}:
@@ -325,7 +331,10 @@ class Converter:
                 f"call json%add({parent_json_var}, '{member.name.lower()}', int({struct_var}%{member.name}))"
             )
         elif member.type.lower() in {"real", "logical"}:
-            code = f"call json%add({parent_json_var}, '{member.name.lower()}', {struct_var}%{member.name})"
+            var = f"{struct_var}%{member.name}"
+            if member.type.lower() == "real" and str(member.type_info.kind).lower() == "qp":
+                var = f"real({var}, dp)"
+            code = f"call json%add({parent_json_var}, '{member.name.lower()}', {var})"
         elif member.type.lower() in {"character"}:
             code = (
                 f"call json%add({parent_json_var}, '{member.name.lower()}', trim({struct_var}%{member.name}))"

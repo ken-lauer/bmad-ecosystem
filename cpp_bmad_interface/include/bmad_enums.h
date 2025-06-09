@@ -25,7 +25,7 @@
 namespace Bmad {
 
 // Enums from bmad_struct.f90
-const int BMAD_INC_VERSION = 331;
+const int BMAD_INC_VERSION = 335;
 const int NONE = 1;
 // maximum multipole order
 const int N_POLE_MAXX = 21;
@@ -586,7 +586,6 @@ const int Z_APERTURE_WIDTH2 = 28;
 const int USER_SETS_LENGTH = 28;
 const int RF_CLOCK_HARMONIC = 28;
 const int B_FIELD_TOT = 28;
-const int ATOMIC_WEIGHT = 28;
 const int UPSTREAM_COORD_DIR = 29;
 const int DZ_ORIGIN = 29;
 const int MOSAIC_DIFFRACTION_NUM = 29;
@@ -623,10 +622,11 @@ const int T_OFFSET = 32;
 const int DS_SLICE = 32;
 const int USE_REFLECTIVITY_TABLE = 32;
 const int INIT_NEEDED = 32;
+const int N_RF_STEPS = 32;
 const int ANGLE = 33;
 const int N_CELL = 33;
 const int MODE_FLIP = 33;
-const int Z_CROSSING = 33;
+const int CROSSING_TIME = 33;
 const int X_KICK = 33;
 // Note: [x_kick$, px_kick$, ..., pz_kick$] must be in order.
 const int X_PITCH = 34;
@@ -754,15 +754,19 @@ const int TAYLOR_MAP_INCLUDES_OFFSETS = 88;
 const int PIXEL = 88;
 const int P88 = 88;
 const int RADIATION_LENGTH = 88;
+const int DETA_DPZ_X = 88;
 const int CSR_METHOD = 89;
 const int VAR = 89;
 const int Z_REF = 89;
 const int P89 = 89;
 const int RADIATION_LENGTH_USED = 89;
+const int DETA_DPZ_Y = 89;
 const int PZ_REF = 90;
 const int SPACE_CHARGE_METHOD = 90;
 const int P90 = 90;
+const int DETAP_DPZ_X = 90;
 const int MAT6_CALC_METHOD = 91;
+const int DETAP_DPZ_Y = 91;
 const int TRACKING_METHOD = 92;
 const int S_LONG = 92;
 const int REF_TIME = 93;
@@ -777,7 +781,6 @@ const int ETA_B = 96;
 const int Y_LIMIT = 97;
 const int ETAP_B = 97;
 const int OFFSET_MOVES_APERTURE = 98;
-const int APERTURE_LIMIT_ON = 99;
 const int ALPHA_A = 99;
 const int REFLECTIVITY_TABLE = 99;
 const int ENERGY_PROBABILITY_CURVE = 99;
@@ -1140,7 +1143,6 @@ enum class EleAttribute : size_t {
   USER_SETS_LENGTH = 28,
   RF_CLOCK_HARMONIC = 28,
   B_FIELD_TOT = 28,
-  ATOMIC_WEIGHT = 28,
   UPSTREAM_COORD_DIR = 29,
   DZ_ORIGIN = 29,
   MOSAIC_DIFFRACTION_NUM = 29,
@@ -1177,10 +1179,11 @@ enum class EleAttribute : size_t {
   DS_SLICE = 32,
   USE_REFLECTIVITY_TABLE = 32,
   INIT_NEEDED = 32,
+  N_RF_STEPS = 32,
   ANGLE = 33,
   N_CELL = 33,
   MODE_FLIP = 33,
-  Z_CROSSING = 33,
+  CROSSING_TIME = 33,
   X_KICK = 33,
   // Note: [x_kick$, px_kick$, ..., pz_kick$] must be in order.
   X_PITCH = 34,
@@ -1377,31 +1380,31 @@ const double FOURPI = 4 * PI;
 const double SQRT_2 = 1.414213562373095048801688724209698;
 const double SQRT_3 = 1.732050807568877293527446341505872;
 // Mass [eV]
-const double M_ELECTRON = 0.51099895000E6;
+const double M_ELECTRON = 0.51099895069E6;
 // Mass [eV]
-const double M_PROTON = 0.93827208816E9;
+const double M_PROTON = 0.93827208943E9;
 // Mass [eV]
-const double M_NEUTRON = 0.93956542052E9;
+const double M_NEUTRON = 0.93956542194E9;
 // Mass [eV]
 const double M_MUON = 105.6583755E6;
 // Mass He3 nucleus
-const double M_HELION = 2.808391607035771E9;
+const double M_HELION = 2.80839161112E9;
 // [GeV] FOR MAD COMPATIBILITY USE ONLY. USE M_ELECTRON INSTEAD.
 const double E_MASS = 1E-9 * M_ELECTRON;
 // [GeV] FOR MAD COMPATIBILITY USE ONLY. USE M_PROTON INSTEAD.
 const double P_MASS = 1E-9 * M_PROTON;
 // Mass [eV]
-const double M_PION_0 = 134.9766E6;
+const double M_PION_0 = 134.9768E6;
 // Mass [eV]
-const double M_PION_CHARGED = 139.57018E6;
+const double M_PION_CHARGED = 139.57039E6;
 // Mass [eV]
-const double M_DEUTERON = 1.87561294257E9;
+const double M_DEUTERON = 1.87561294500E9;
 // unified atomic mass unit u (or dalton) in [eV]
-const double ATOMIC_MASS_UNIT = 931.49410242E6;
+const double ATOMIC_MASS_UNIT = 931.49410372E6;
 // speed of light
 const double C_LIGHT = 2.99792458E8;
 // classical electron radius
-const double R_E = 2.8179403262E-15;
+const double R_E = 2.8179403227E-15;
 // proton radius
 const double R_P = R_E * M_ELECTRON / M_PROTON;
 // electron charge [Coul]
@@ -1411,16 +1414,16 @@ const double H_PLANCK = 4.135667696E-15;
 // h_planck/twopi [eV*sec]
 const double H_BAR_PLANCK = H_PLANCK / TWOPI;
 // Vacuum permeability 2018 CODATA.
-const double MU_0_VAC = 1.25663706212E-6;
+const double MU_0_VAC = 1.25663706127E-6;
 // e^2 / (4 pi eps_0) [m*eV]
 const double CLASSICAL_RADIUS_FACTOR = R_E * M_ELECTRON;
 // Number / mole  (exact)
 const double N_AVOGADRO = 6.02214076E23;
-const double FINE_STRUCTURE_CONSTANT = 7.2973525693E-3;
-const double ANOMALOUS_MAG_MOMENT_ELECTRON = 1.15965218128E-3;
+const double FINE_STRUCTURE_CONSTANT = 7.2973525643E-3;
+const double ANOMALOUS_MAG_MOMENT_ELECTRON = 1.15965218059E-3;
 const double ANOMALOUS_MAG_MOMENT_PROTON = 1.79284734463E0;
 // ~fine_structure_constant / twopi
-const double ANOMALOUS_MAG_MOMENT_MUON = 1.16592089E-3;
+const double ANOMALOUS_MAG_MOMENT_MUON = 1.1659217E-3;
 const double ANOMALOUS_MAG_MOMENT_DEUTERON = -0.14298726925E0;
 const double ANOMALOUS_MAG_MOMENT_NEUTRON = -1.91304273E0;
 const double ANOMALOUS_MAG_MOMENT_HE3 = -4.184153686E0;

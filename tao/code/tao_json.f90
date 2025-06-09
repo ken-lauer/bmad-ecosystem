@@ -1,7 +1,9 @@
 module tao_json
+use, intrinsic :: iso_fortran_env
 use json_module
 use json_string_utilities, only: integer_to_string
 use json_kinds, only: CK
+integer, parameter, private :: dp = REAL64
 contains
 subroutine complex_to_json (input, json_root, depth, max_depth)
   use precision_def, only: dp
@@ -2522,8 +2524,8 @@ subroutine tao_plot_cache_struct_to_json (input, json_root, depth, max_depth)
     return
   endif
   call json%create_object(json_root, '')
-  call ele_struct_to_json(input%ele, json_val, depth=depth + 1, max_depth=max_depth)
-  call json%rename(json_val, 'ele')
+  call ele_struct_to_json(input%ele_to_s, json_val, depth=depth + 1, max_depth=max_depth)
+  call json%rename(json_val, 'ele_to_s')
   call json%add(json_root, json_val)
   call coord_struct_to_json(input%orbit, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'orbit')

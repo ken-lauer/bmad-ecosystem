@@ -430,8 +430,19 @@
           "kind": "rp"
         }
       },
-      "i": {
+      "q": {
         "line": 47,
+        "definition": "real(qp), pointer :: q => null()",
+        "name": "q",
+        "default": "null()",
+        "type_info": {
+          "type": "real",
+          "pointer": true,
+          "kind": "qp"
+        }
+      },
+      "i": {
+        "line": 48,
         "definition": "integer, pointer :: i => null()",
         "name": "i",
         "default": "null()",
@@ -441,7 +452,7 @@
         }
       },
       "l": {
-        "line": 48,
+        "line": 49,
         "definition": "logical, pointer :: l => null()",
         "name": "l",
         "default": "null()",
@@ -451,7 +462,7 @@
         }
       },
       "r1": {
-        "line": 49,
+        "line": 50,
         "definition": "real(rp), pointer :: r1(:) => null()",
         "name": "r1",
         "default": "null()",
@@ -463,7 +474,7 @@
         }
       },
       "i1": {
-        "line": 50,
+        "line": 51,
         "definition": "integer, pointer :: i1(:) => null()",
         "name": "i1",
         "default": "null()",
@@ -528,12 +539,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/precision_def.f90",
-    "line": 8,
+    "line": 10,
     "name": "global_common_struct",
     "module": "precision_def",
     "members": {
       "mp_threading_is_safe": {
-        "line": 9,
+        "line": 11,
         "definition": "logical :: mp_threading_is_safe = .true.",
         "name": "mp_threading_is_safe",
         "comment": "Can threading be used with MP? EG ramping is not thread safe.",
@@ -543,7 +554,7 @@
         }
       },
       "exit_on_error": {
-        "line": 10,
+        "line": 12,
         "definition": "logical :: exit_on_error  = .true.",
         "name": "exit_on_error",
         "comment": "Exit program on error?",
@@ -553,7 +564,7 @@
         }
       },
       "debug": {
-        "line": 11,
+        "line": 13,
         "definition": "integer :: debug = 0",
         "name": "debug",
         "comment": "Used for debugging purpeses",
@@ -566,12 +577,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/sim_utils_struct.f90",
-    "line": 77,
+    "line": 78,
     "name": "molecular_component_struct",
     "module": "sim_utils_struct",
     "members": {
       "atom": {
-        "line": 78,
+        "line": 79,
         "definition": "character(2) :: atom = ''",
         "name": "atom",
         "default": "''",
@@ -581,7 +592,7 @@
         }
       },
       "number": {
-        "line": 79,
+        "line": 80,
         "definition": "integer :: number = 0",
         "name": "number",
         "default": "0",
@@ -593,12 +604,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/sim_utils/interfaces/precision_def.f90",
-    "line": 16,
+    "line": 18,
     "name": "named_number_struct",
     "module": "precision_def",
     "members": {
       "name": {
-        "line": 17,
+        "line": 19,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "default": "''",
@@ -608,7 +619,7 @@
         }
       },
       "value": {
-        "line": 18,
+        "line": 20,
         "definition": "real(rp) :: value = 0",
         "name": "value",
         "default": "0",

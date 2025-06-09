@@ -1,7 +1,9 @@
 module sim_utils_json
+use, intrinsic :: iso_fortran_env
 use json_module
 use json_string_utilities, only: integer_to_string
 use json_kinds, only: CK
+integer, parameter, private :: dp = REAL64
 contains
 subroutine complex_to_json (input, json_root, depth, max_depth)
   use precision_def, only: dp
@@ -41,6 +43,9 @@ subroutine all_pointer_struct_to_json (input, json_root, depth, max_depth)
   call json%create_object(json_root, '')
   if (associated(input%r)) then
     call json%add(json_root, 'r', input%r)
+  endif
+  if (associated(input%q)) then
+    call json%add(json_root, 'q', real(input%q, dp))
   endif
   if (associated(input%i)) then
     call json%add(json_root, 'i', int(input%i))

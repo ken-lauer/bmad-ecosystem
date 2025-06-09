@@ -626,7 +626,9 @@ void to_json(json& j, const CPP_xy_disp& obj) {
       {"eta", obj.eta},
       {"etap", obj.etap},
       {"deta_ds", obj.deta_ds},
-      {"sigma", obj.sigma}};
+      {"sigma", obj.sigma},
+      {"deta_dpz", obj.deta_dpz},
+      {"detap_dpz", obj.detap_dpz}};
 }
 
 ostream& operator<<(ostream& os, const CPP_xy_disp& obj) {
@@ -651,7 +653,9 @@ void to_json(json& j, const CPP_twiss& obj) {
       {"emit", obj.emit},
       {"norm_emit", obj.norm_emit},
       {"dbeta_dpz", obj.dbeta_dpz},
-      {"dalpha_dpz", obj.dalpha_dpz}};
+      {"dalpha_dpz", obj.dalpha_dpz},
+      {"deta_dpz", obj.deta_dpz},
+      {"detap_dpz", obj.detap_dpz}};
 }
 
 ostream& operator<<(ostream& os, const CPP_twiss& obj) {
@@ -1405,6 +1409,7 @@ ostream& operator<<(ostream& os, const CPP_strong_beam& obj) {
 
 void to_json(json& j, const CPP_track_point& obj) {
   j = json{
+      {"s_lab", obj.s_lab},
       {"s_body", obj.s_body},
       {"orb", obj.orb},
       {"field", obj.field},
@@ -1507,6 +1512,7 @@ void to_json(json& j, const CPP_bmad_common& obj) {
       {"absolute_time_tracking", obj.absolute_time_tracking},
       {"absolute_time_ref_shift", obj.absolute_time_ref_shift},
       {"convert_to_kinetic_momentum", obj.convert_to_kinetic_momentum},
+      {"normalize_twiss", obj.normalize_twiss},
       {"aperture_limit_on", obj.aperture_limit_on},
       {"debug", obj.debug}};
 }
@@ -1597,6 +1603,38 @@ ostream& operator<<(ostream& os, const CPP_branch_reference& obj) {
   return os;
 }
 
+void to_json(json& j, const CPP_rf_stair_step& obj) {
+  j = json{
+      {"E_tot0", obj.E_tot0},
+      {"E_tot1", obj.E_tot1},
+      {"p0c", obj.p0c},
+      {"p1c", obj.p1c},
+      {"dE_amp", obj.dE_amp},
+      {"scale", obj.scale},
+      {"dtime", obj.dtime},
+      {"s", obj.s}};
+}
+
+ostream& operator<<(ostream& os, const CPP_rf_stair_step& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_rf_ele& obj) {
+  j = json{{"steps", obj.steps}, {"ds_step", obj.ds_step}};
+}
+
+ostream& operator<<(ostream& os, const CPP_rf_ele& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
 void to_json(json& j, const CPP_ele& obj) {
   j = json{
       {"name", obj.name},
@@ -1612,6 +1650,7 @@ void to_json(json& j, const CPP_ele& obj) {
       {"ac_kick", obj.ac_kick},
       {"bookkeeping_state", obj.bookkeeping_state},
       {"control", obj.control},
+      {"rf", obj.rf},
       {"lord", obj.lord},
       {"floor", obj.floor},
       {"high_energy_space_charge", obj.high_energy_space_charge},

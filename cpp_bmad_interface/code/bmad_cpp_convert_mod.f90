@@ -792,6 +792,24 @@ end interface
 !--------------------------------------------------------------------------
 
 interface 
+  subroutine rf_stair_step_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine rf_ele_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+!--------------------------------------------------------------------------
+
+interface 
   subroutine ele_to_f (C, Fp) bind(c)
     import c_ptr
     type(c_ptr), value :: C, Fp
@@ -4801,11 +4819,12 @@ implicit none
 
 interface
   !! f_side.to_c2_f2_sub_arg
-  subroutine xy_disp_to_c2 (C, z_eta, z_etap, z_deta_ds, z_sigma) bind(c)
+  subroutine xy_disp_to_c2 (C, z_eta, z_etap, z_deta_ds, z_sigma, z_deta_dpz, z_detap_dpz) &
+      bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
-    real(c_double) :: z_eta, z_etap, z_deta_ds, z_sigma
+    real(c_double) :: z_eta, z_etap, z_deta_ds, z_sigma, z_deta_dpz, z_detap_dpz
 end subroutine
 end interface
 
@@ -4821,7 +4840,7 @@ call c_f_pointer (Fp, F)
 
 
 !! f_side.to_c2_call
-call xy_disp_to_c2 (C, F%eta, F%etap, F%deta_ds, F%sigma)
+call xy_disp_to_c2 (C, F%eta, F%etap, F%deta_ds, F%sigma, F%deta_dpz, F%detap_dpz)
 
 end subroutine xy_disp_to_c
 
@@ -4841,7 +4860,8 @@ end subroutine xy_disp_to_c
 !-
 
 !! f_side.to_c2_f2_sub_arg
-subroutine xy_disp_to_f2 (Fp, z_eta, z_etap, z_deta_ds, z_sigma) bind(c)
+subroutine xy_disp_to_f2 (Fp, z_eta, z_etap, z_deta_ds, z_sigma, z_deta_dpz, z_detap_dpz) &
+    bind(c)
 
 
 implicit none
@@ -4850,7 +4870,7 @@ type(c_ptr), value :: Fp
 type(xy_disp_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
-real(c_double) :: z_eta, z_etap, z_deta_ds, z_sigma
+real(c_double) :: z_eta, z_etap, z_deta_ds, z_sigma, z_deta_dpz, z_detap_dpz
 
 call c_f_pointer (Fp, F)
 
@@ -4862,6 +4882,10 @@ call c_f_pointer (Fp, F)
   F%deta_ds = z_deta_ds
 !! f_side.to_f2_trans[0D_NOT_real]
   F%sigma = z_sigma
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%deta_dpz = z_deta_dpz
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%detap_dpz = z_detap_dpz
 
 end subroutine xy_disp_to_f2
 
@@ -4887,12 +4911,14 @@ implicit none
 interface
   !! f_side.to_c2_f2_sub_arg
   subroutine twiss_to_c2 (C, z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds, &
-      z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz) bind(c)
+      z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz, &
+      z_detap_dpz) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     real(c_double) :: z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds
-    real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz
+    real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz
+    real(c_double) :: z_detap_dpz
 end subroutine
 end interface
 
@@ -4909,7 +4935,7 @@ call c_f_pointer (Fp, F)
 
 !! f_side.to_c2_call
 call twiss_to_c2 (C, F%beta, F%alpha, F%gamma, F%phi, F%eta, F%etap, F%deta_ds, F%sigma, &
-    F%sigma_p, F%emit, F%norm_emit, F%dbeta_dpz, F%dalpha_dpz)
+    F%sigma_p, F%emit, F%norm_emit, F%dbeta_dpz, F%dalpha_dpz, F%deta_dpz, F%detap_dpz)
 
 end subroutine twiss_to_c
 
@@ -4930,7 +4956,7 @@ end subroutine twiss_to_c
 
 !! f_side.to_c2_f2_sub_arg
 subroutine twiss_to_f2 (Fp, z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds, z_sigma, &
-    z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz) bind(c)
+    z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz, z_detap_dpz) bind(c)
 
 
 implicit none
@@ -4940,7 +4966,8 @@ type(twiss_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 real(c_double) :: z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds
-real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz
+real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz
+real(c_double) :: z_detap_dpz
 
 call c_f_pointer (Fp, F)
 
@@ -4970,6 +4997,10 @@ call c_f_pointer (Fp, F)
   F%dbeta_dpz = z_dbeta_dpz
 !! f_side.to_f2_trans[0D_NOT_real]
   F%dalpha_dpz = z_dalpha_dpz
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%deta_dpz = z_deta_dpz
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%detap_dpz = z_detap_dpz
 
 end subroutine twiss_to_f2
 
@@ -9337,12 +9368,12 @@ implicit none
 
 interface
   !! f_side.to_c2_f2_sub_arg
-  subroutine track_point_to_c2 (C, z_s_body, z_orb, z_field, z_strong_beam, z_vec0, z_mat6) &
-      bind(c)
+  subroutine track_point_to_c2 (C, z_s_lab, z_s_body, z_orb, z_field, z_strong_beam, z_vec0, &
+      z_mat6) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
-    real(c_double) :: z_s_body, z_vec0(*), z_mat6(*)
+    real(c_double) :: z_s_lab, z_s_body, z_vec0(*), z_mat6(*)
     type(c_ptr), value :: z_orb, z_field, z_strong_beam
 end subroutine
 end interface
@@ -9359,8 +9390,8 @@ call c_f_pointer (Fp, F)
 
 
 !! f_side.to_c2_call
-call track_point_to_c2 (C, F%s_body, c_loc(F%orb), c_loc(F%field), c_loc(F%strong_beam), &
-    fvec2vec(F%vec0, 6), mat2vec(F%mat6, 6*6))
+call track_point_to_c2 (C, F%s_lab, F%s_body, c_loc(F%orb), c_loc(F%field), &
+    c_loc(F%strong_beam), fvec2vec(F%vec0, 6), mat2vec(F%mat6, 6*6))
 
 end subroutine track_point_to_c
 
@@ -9380,8 +9411,8 @@ end subroutine track_point_to_c
 !-
 
 !! f_side.to_c2_f2_sub_arg
-subroutine track_point_to_f2 (Fp, z_s_body, z_orb, z_field, z_strong_beam, z_vec0, z_mat6) &
-    bind(c)
+subroutine track_point_to_f2 (Fp, z_s_lab, z_s_body, z_orb, z_field, z_strong_beam, z_vec0, &
+    z_mat6) bind(c)
 
 
 implicit none
@@ -9390,11 +9421,13 @@ type(c_ptr), value :: Fp
 type(track_point_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
-real(c_double) :: z_s_body, z_vec0(*), z_mat6(*)
+real(c_double) :: z_s_lab, z_s_body, z_vec0(*), z_mat6(*)
 type(c_ptr), value :: z_orb, z_field, z_strong_beam
 
 call c_f_pointer (Fp, F)
 
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%s_lab = z_s_lab
 !! f_side.to_f2_trans[0D_NOT_real]
   F%s_body = z_s_body
 !! f_side.to_f2_trans[0D_NOT_type]
@@ -9692,8 +9725,8 @@ interface
       z_high_energy_space_charge_on, z_csr_and_space_charge_on, z_spin_tracking_on, &
       z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, z_radiation_zero_average, &
       z_radiation_fluctuations_on, z_conserve_taylor_maps, z_absolute_time_tracking, &
-      z_absolute_time_ref_shift, z_convert_to_kinetic_momentum, z_aperture_limit_on, z_debug) &
-      bind(c)
+      z_absolute_time_ref_shift, z_convert_to_kinetic_momentum, z_normalize_twiss, &
+      z_aperture_limit_on, z_debug) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
@@ -9703,7 +9736,7 @@ interface
     integer(c_int) :: z_sad_n_div_max, z_taylor_order, z_runge_kutta_order, z_default_integ_order, z_max_num_runge_kutta_step
     logical(c_bool) :: z_rf_phase_below_transition_ref, z_sr_wakes_on, z_lr_wakes_on, z_auto_bookkeeper, z_high_energy_space_charge_on, z_csr_and_space_charge_on, z_spin_tracking_on
     logical(c_bool) :: z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, z_radiation_zero_average, z_radiation_fluctuations_on, z_conserve_taylor_maps, z_absolute_time_tracking, z_absolute_time_ref_shift
-    logical(c_bool) :: z_convert_to_kinetic_momentum, z_aperture_limit_on, z_debug
+    logical(c_bool) :: z_convert_to_kinetic_momentum, z_normalize_twiss, z_aperture_limit_on, z_debug
 end subroutine
 end interface
 
@@ -9732,7 +9765,8 @@ call bmad_common_to_c2 (C, F%max_aperture_limit, fvec2vec(F%d_orb, 6), F%default
     c_logic(F%radiation_damping_on), c_logic(F%radiation_zero_average), &
     c_logic(F%radiation_fluctuations_on), c_logic(F%conserve_taylor_maps), &
     c_logic(F%absolute_time_tracking), c_logic(F%absolute_time_ref_shift), &
-    c_logic(F%convert_to_kinetic_momentum), c_logic(F%aperture_limit_on), c_logic(F%debug))
+    c_logic(F%convert_to_kinetic_momentum), c_logic(F%normalize_twiss), &
+    c_logic(F%aperture_limit_on), c_logic(F%debug))
 
 end subroutine bmad_common_to_c
 
@@ -9763,7 +9797,7 @@ subroutine bmad_common_to_f2 (Fp, z_max_aperture_limit, z_d_orb, z_default_ds_st
     z_spin_tracking_on, z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, &
     z_radiation_zero_average, z_radiation_fluctuations_on, z_conserve_taylor_maps, &
     z_absolute_time_tracking, z_absolute_time_ref_shift, z_convert_to_kinetic_momentum, &
-    z_aperture_limit_on, z_debug) bind(c)
+    z_normalize_twiss, z_aperture_limit_on, z_debug) bind(c)
 
 
 implicit none
@@ -9778,7 +9812,7 @@ real(c_double) :: z_electric_dipole_moment, z_synch_rad_scale, z_sad_eps_scale, 
 integer(c_int) :: z_sad_n_div_max, z_taylor_order, z_runge_kutta_order, z_default_integ_order, z_max_num_runge_kutta_step
 logical(c_bool) :: z_rf_phase_below_transition_ref, z_sr_wakes_on, z_lr_wakes_on, z_auto_bookkeeper, z_high_energy_space_charge_on, z_csr_and_space_charge_on, z_spin_tracking_on
 logical(c_bool) :: z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, z_radiation_zero_average, z_radiation_fluctuations_on, z_conserve_taylor_maps, z_absolute_time_tracking, z_absolute_time_ref_shift
-logical(c_bool) :: z_convert_to_kinetic_momentum, z_aperture_limit_on, z_debug
+logical(c_bool) :: z_convert_to_kinetic_momentum, z_normalize_twiss, z_aperture_limit_on, z_debug
 
 call c_f_pointer (Fp, F)
 
@@ -9858,6 +9892,8 @@ call c_f_pointer (Fp, F)
   F%absolute_time_ref_shift = f_logic(z_absolute_time_ref_shift)
 !! f_side.to_f2_trans[0D_NOT_logical]
   F%convert_to_kinetic_momentum = f_logic(z_convert_to_kinetic_momentum)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%normalize_twiss = f_logic(z_normalize_twiss)
 !! f_side.to_f2_trans[0D_NOT_logical]
   F%aperture_limit_on = f_logic(z_aperture_limit_on)
 !! f_side.to_f2_trans[0D_NOT_logical]
@@ -10364,6 +10400,213 @@ end subroutine branch_reference_to_f2
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
+! Subroutine rf_stair_step_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad rf_stair_step_struct to a C++ CPP_rf_stair_step structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad rf_stair_step_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_rf_stair_step struct.
+!-
+
+subroutine rf_stair_step_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine rf_stair_step_to_c2 (C, z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, &
+      z_dtime, z_s) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, z_dtime
+    real(c_double) :: z_s
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(rf_stair_step_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call rf_stair_step_to_c2 (C, F%E_tot0, F%E_tot1, F%p0c, F%p1c, F%dE_amp, F%scale, F%dtime, F%s)
+
+end subroutine rf_stair_step_to_c
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine rf_stair_step_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_rf_stair_step structure to a Bmad rf_stair_step_struct structure.
+! This routine is called by rf_stair_step_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the rf_stair_step_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad rf_stair_step_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine rf_stair_step_to_f2 (Fp, z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, &
+    z_dtime, z_s) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(rf_stair_step_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, z_dtime
+real(c_double) :: z_s
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%E_tot0 = z_E_tot0
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%E_tot1 = z_E_tot1
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%p0c = z_p0c
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%p1c = z_p1c
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%dE_amp = z_dE_amp
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%scale = z_scale
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%dtime = z_dtime
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%s = z_s
+
+end subroutine rf_stair_step_to_f2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine rf_ele_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad rf_ele_struct to a C++ CPP_rf_ele structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad rf_ele_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_rf_ele struct.
+!-
+
+subroutine rf_ele_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine rf_ele_to_c2 (C, z_steps, n1_steps, z_ds_step) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr) :: z_steps(*)
+    integer(c_int), value :: n1_steps
+    real(c_double) :: z_ds_step
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(rf_ele_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_steps(:)
+  integer(c_int) :: n1_steps
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_steps = 0
+  if (allocated(F%steps)) then
+    n1_steps = size(F%steps)
+    lb1 = lbound(F%steps, 1) - 1
+    allocate (z_steps(n1_steps))
+    do jd1 = 1, n1_steps
+      z_steps(jd1) = c_loc(F%steps(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call rf_ele_to_c2 (C, z_steps, n1_steps, F%ds_step)
+
+end subroutine rf_ele_to_c
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine rf_ele_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_rf_ele structure to a Bmad rf_ele_struct structure.
+! This routine is called by rf_ele_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the rf_ele_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad rf_ele_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine rf_ele_to_f2 (Fp, z_steps, n1_steps, z_ds_step) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(rf_ele_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr) :: z_steps(*)
+integer(c_int), value :: n1_steps
+real(c_double) :: z_ds_step
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_steps == 0) then
+    if (allocated(F%steps)) then
+      deallocate(F%steps)
+    endif
+  else
+    if (allocated(F%steps)) then
+      if (n1_steps == 0 .or. any(shape(F%steps) /= [n1_steps])) deallocate(F%steps)
+      if (any(lbound(F%steps) /= 1)) deallocate(F%steps)
+    endif
+    if (.not. allocated(F%steps)) allocate(F%steps(1:n1_steps+1-1))
+    do jd1 = 1, n1_steps
+      call rf_stair_step_to_f (z_steps(jd1), c_loc(F%steps(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%ds_step = z_ds_step
+
+end subroutine rf_ele_to_f2
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
 ! Subroutine ele_to_c (Fp, C) bind(c)
 !
 ! Routine to convert a Bmad ele_struct to a C++ CPP_ele structure
@@ -10383,17 +10626,17 @@ interface
   !! f_side.to_c2_f2_sub_arg
   subroutine ele_to_c2 (C, z_name, z_type, z_alias, z_component_name, z_descrip, n_descrip, &
       z_a, z_b, z_z, z_x, z_y, z_ac_kick, n_ac_kick, z_bookkeeping_state, z_control, n_control, &
-      z_lord, n_lord, z_floor, z_high_energy_space_charge, n_high_energy_space_charge, z_mode3, &
-      n_mode3, z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, z_spin_taylor_ref_orb_in, &
-      z_spin_taylor, z_wake, n_wake, z_wall3d, n1_wall3d, z_cartesian_map, n1_cartesian_map, &
-      z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, z_grid_field, &
-      n1_grid_field, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, &
-      z_time_ref_orb_out, z_value, z_old_value, z_spin_q, z_vec0, z_mat6, z_c_mat, z_gamma_c, &
-      z_s_start, z_s, z_ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole, z_a_pole_elec, &
-      n1_a_pole_elec, z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r, n1_r, n2_r, &
-      n3_r, z_key, z_sub_key, z_ix_ele, z_ix_branch, z_lord_status, z_n_slave, z_n_slave_field, &
-      z_ix1_slave, z_slave_status, z_n_lord, z_n_lord_field, z_n_lord_ramper, z_ic1_lord, &
-      z_ix_pointer, z_ixx, z_iyy, z_izz, z_mat6_calc_method, z_tracking_method, &
+      z_rf, n_rf, z_lord, n_lord, z_floor, z_high_energy_space_charge, &
+      n_high_energy_space_charge, z_mode3, n_mode3, z_photon, n_photon, z_rad_map, n_rad_map, &
+      z_taylor, z_spin_taylor_ref_orb_in, z_spin_taylor, z_wake, n_wake, z_wall3d, n1_wall3d, &
+      z_cartesian_map, n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, &
+      n1_gen_grad_map, z_grid_field, n1_grid_field, z_map_ref_orb_in, z_map_ref_orb_out, &
+      z_time_ref_orb_in, z_time_ref_orb_out, z_value, z_old_value, z_spin_q, z_vec0, z_mat6, &
+      z_c_mat, z_gamma_c, z_s_start, z_s, z_ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole, &
+      z_a_pole_elec, n1_a_pole_elec, z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r, &
+      n1_r, n2_r, n3_r, z_key, z_sub_key, z_ix_ele, z_ix_branch, z_lord_status, z_n_slave, &
+      z_n_slave_field, z_ix1_slave, z_slave_status, z_n_lord, z_n_lord_field, z_n_lord_ramper, &
+      z_ic1_lord, z_ix_pointer, z_ixx, z_iyy, z_izz, z_mat6_calc_method, z_tracking_method, &
       z_spin_tracking_method, z_csr_method, z_space_charge_method, z_ptc_integration_type, &
       z_field_calc, z_aperture_at, z_aperture_type, z_ref_species, z_orientation, &
       z_symplectify, z_mode_flip, z_multipoles_on, z_scale_multipoles, &
@@ -10403,13 +10646,13 @@ interface
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     character(c_char) :: z_name(*), z_type(*), z_alias(*), z_component_name(*), z_descrip(*)
-    integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_lord, n_high_energy_space_charge, n_mode3, n_photon
-    integer(c_int), value :: n_rad_map, n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map, n1_grid_field
-    integer(c_int), value :: n1_a_pole, n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r, n2_r
-    integer(c_int), value :: n3_r
+    integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_rf, n_lord, n_high_energy_space_charge, n_mode3
+    integer(c_int), value :: n_photon, n_rad_map, n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map
+    integer(c_int), value :: n1_grid_field, n1_a_pole, n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r
+    integer(c_int), value :: n2_r, n3_r
     type(c_ptr), value :: z_a, z_b, z_z, z_x, z_y, z_ac_kick, z_bookkeeping_state
-    type(c_ptr), value :: z_control, z_lord, z_floor, z_high_energy_space_charge, z_mode3, z_photon, z_rad_map
-    type(c_ptr), value :: z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out
+    type(c_ptr), value :: z_control, z_rf, z_lord, z_floor, z_high_energy_space_charge, z_mode3, z_photon
+    type(c_ptr), value :: z_rad_map, z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out
     type(c_ptr) :: z_taylor(*), z_spin_taylor(*), z_wall3d(*), z_cartesian_map(*), z_cylindrical_map(*), z_gen_grad_map(*), z_grid_field(*)
     real(c_double) :: z_spin_taylor_ref_orb_in(*), z_value(*), z_old_value(*), z_spin_q(*), z_vec0(*), z_mat6(*), z_c_mat(*)
     real(c_double) :: z_gamma_c, z_s_start, z_s, z_ref_time, z_a_pole(*), z_b_pole(*), z_a_pole_elec(*)
@@ -10432,6 +10675,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
   integer(c_int) :: n_descrip
   integer(c_int) :: n_ac_kick
   integer(c_int) :: n_control
+  integer(c_int) :: n_rf
   type(ele_reference_struct), target :: ref_lord
   integer(c_int) :: n_lord
   integer(c_int) :: n_high_energy_space_charge
@@ -10476,6 +10720,9 @@ call c_f_pointer (Fp, F)
 !! f_side.to_c_trans[0D_PTR_type]
   n_control = 0
   if (associated(F%control)) n_control = 1
+!! f_side.to_c_trans[0D_PTR_type]
+  n_rf = 0
+  if (associated(F%rf)) n_rf = 1
 !! f_side.to_c_trans[0D_PTR_type]
   n_lord = 0
   if (associated(F%lord) .and. F%n_lord > 0) then 
@@ -10594,28 +10841,28 @@ call c_f_pointer (Fp, F)
 call ele_to_c2 (C, trim(F%name) // c_null_char, trim(F%type) // c_null_char, trim(F%alias) // &
     c_null_char, trim(F%component_name) // c_null_char, f_descrip, n_descrip, c_loc(F%a), &
     c_loc(F%b), c_loc(F%z), c_loc(F%x), c_loc(F%y), c_loc(F%ac_kick), n_ac_kick, &
-    c_loc(F%bookkeeping_state), c_loc(F%control), n_control, c_loc(ref_lord), n_lord, &
-    c_loc(F%floor), c_loc(F%high_energy_space_charge), n_high_energy_space_charge, &
-    c_loc(F%mode3), n_mode3, c_loc(F%photon), n_photon, c_loc(F%rad_map), n_rad_map, z_taylor, &
-    fvec2vec(F%spin_taylor_ref_orb_in, 6), z_spin_taylor, c_loc(F%wake), n_wake, z_wall3d, &
-    n1_wall3d, z_cartesian_map, n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, &
-    z_gen_grad_map, n1_gen_grad_map, z_grid_field, n1_grid_field, c_loc(F%map_ref_orb_in), &
-    c_loc(F%map_ref_orb_out), c_loc(F%time_ref_orb_in), c_loc(F%time_ref_orb_out), &
-    fvec2vec(F%value, num_ele_attrib$), fvec2vec(F%old_value, num_ele_attrib$), &
-    mat2vec(F%spin_q, 4*7), fvec2vec(F%vec0, 6), mat2vec(F%mat6, 6*6), mat2vec(F%c_mat, 2*2), &
-    F%gamma_c, F%s_start, F%s, F%ref_time, fvec2vec(F%a_pole, n1_a_pole), n1_a_pole, &
-    fvec2vec(F%b_pole, n1_b_pole), n1_b_pole, fvec2vec(F%a_pole_elec, n1_a_pole_elec), &
-    n1_a_pole_elec, fvec2vec(F%b_pole_elec, n1_b_pole_elec), n1_b_pole_elec, fvec2vec(F%custom, &
-    n1_custom), n1_custom, tensor2vec(F%r, n1_r*n2_r*n3_r), n1_r, n2_r, n3_r, F%key, F%sub_key, &
-    F%ix_ele, F%ix_branch, F%lord_status, F%n_slave, F%n_slave_field, F%ix1_slave, &
-    F%slave_status, F%n_lord, F%n_lord_field, F%n_lord_ramper, F%ic1_lord, F%ix_pointer, F%ixx, &
-    F%iyy, F%izz, F%mat6_calc_method, F%tracking_method, F%spin_tracking_method, F%csr_method, &
-    F%space_charge_method, F%ptc_integration_type, F%field_calc, F%aperture_at, &
-    F%aperture_type, F%ref_species, F%orientation, c_logic(F%symplectify), &
-    c_logic(F%mode_flip), c_logic(F%multipoles_on), c_logic(F%scale_multipoles), &
-    c_logic(F%taylor_map_includes_offsets), c_logic(F%field_master), c_logic(F%is_on), &
-    c_logic(F%logic), c_logic(F%bmad_logic), c_logic(F%select), &
-    c_logic(F%offset_moves_aperture))
+    c_loc(F%bookkeeping_state), c_loc(F%control), n_control, c_loc(F%rf), n_rf, &
+    c_loc(ref_lord), n_lord, c_loc(F%floor), c_loc(F%high_energy_space_charge), &
+    n_high_energy_space_charge, c_loc(F%mode3), n_mode3, c_loc(F%photon), n_photon, &
+    c_loc(F%rad_map), n_rad_map, z_taylor, fvec2vec(F%spin_taylor_ref_orb_in, 6), &
+    z_spin_taylor, c_loc(F%wake), n_wake, z_wall3d, n1_wall3d, z_cartesian_map, &
+    n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, &
+    z_grid_field, n1_grid_field, c_loc(F%map_ref_orb_in), c_loc(F%map_ref_orb_out), &
+    c_loc(F%time_ref_orb_in), c_loc(F%time_ref_orb_out), fvec2vec(F%value, num_ele_attrib$), &
+    fvec2vec(F%old_value, num_ele_attrib$), mat2vec(F%spin_q, 4*7), fvec2vec(F%vec0, 6), &
+    mat2vec(F%mat6, 6*6), mat2vec(F%c_mat, 2*2), F%gamma_c, F%s_start, F%s, F%ref_time, &
+    fvec2vec(F%a_pole, n1_a_pole), n1_a_pole, fvec2vec(F%b_pole, n1_b_pole), n1_b_pole, &
+    fvec2vec(F%a_pole_elec, n1_a_pole_elec), n1_a_pole_elec, fvec2vec(F%b_pole_elec, &
+    n1_b_pole_elec), n1_b_pole_elec, fvec2vec(F%custom, n1_custom), n1_custom, tensor2vec(F%r, &
+    n1_r*n2_r*n3_r), n1_r, n2_r, n3_r, F%key, F%sub_key, F%ix_ele, F%ix_branch, F%lord_status, &
+    F%n_slave, F%n_slave_field, F%ix1_slave, F%slave_status, F%n_lord, F%n_lord_field, &
+    F%n_lord_ramper, F%ic1_lord, F%ix_pointer, F%ixx, F%iyy, F%izz, F%mat6_calc_method, &
+    F%tracking_method, F%spin_tracking_method, F%csr_method, F%space_charge_method, &
+    F%ptc_integration_type, F%field_calc, F%aperture_at, F%aperture_type, F%ref_species, &
+    F%orientation, c_logic(F%symplectify), c_logic(F%mode_flip), c_logic(F%multipoles_on), &
+    c_logic(F%scale_multipoles), c_logic(F%taylor_map_includes_offsets), &
+    c_logic(F%field_master), c_logic(F%is_on), c_logic(F%logic), c_logic(F%bmad_logic), &
+    c_logic(F%select), c_logic(F%offset_moves_aperture))
 
 end subroutine ele_to_c
 
@@ -10636,22 +10883,22 @@ end subroutine ele_to_c
 
 !! f_side.to_c2_f2_sub_arg
 subroutine ele_to_f2 (Fp, z_name, z_type, z_alias, z_component_name, z_descrip, n_descrip, z_a, &
-    z_b, z_z, z_x, z_y, z_ac_kick, n_ac_kick, z_bookkeeping_state, z_control, n_control, &
-    z_lord, n_lord, z_floor, z_high_energy_space_charge, n_high_energy_space_charge, z_mode3, &
-    n_mode3, z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, z_spin_taylor_ref_orb_in, &
-    z_spin_taylor, z_wake, n_wake, z_wall3d, n1_wall3d, z_cartesian_map, n1_cartesian_map, &
-    z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, n1_gen_grad_map, z_grid_field, &
-    n1_grid_field, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out, &
-    z_value, z_old_value, z_spin_q, z_vec0, z_mat6, z_c_mat, z_gamma_c, z_s_start, z_s, &
-    z_ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole, z_a_pole_elec, n1_a_pole_elec, &
-    z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r, n1_r, n2_r, n3_r, z_key, &
-    z_sub_key, z_ix_ele, z_ix_branch, z_lord_status, z_n_slave, z_n_slave_field, z_ix1_slave, &
-    z_slave_status, z_n_lord, z_n_lord_field, z_n_lord_ramper, z_ic1_lord, z_ix_pointer, z_ixx, &
-    z_iyy, z_izz, z_mat6_calc_method, z_tracking_method, z_spin_tracking_method, z_csr_method, &
-    z_space_charge_method, z_ptc_integration_type, z_field_calc, z_aperture_at, &
-    z_aperture_type, z_ref_species, z_orientation, z_symplectify, z_mode_flip, z_multipoles_on, &
-    z_scale_multipoles, z_taylor_map_includes_offsets, z_field_master, z_is_on, z_logic, &
-    z_bmad_logic, z_select, z_offset_moves_aperture) bind(c)
+    z_b, z_z, z_x, z_y, z_ac_kick, n_ac_kick, z_bookkeeping_state, z_control, n_control, z_rf, &
+    n_rf, z_lord, n_lord, z_floor, z_high_energy_space_charge, n_high_energy_space_charge, &
+    z_mode3, n_mode3, z_photon, n_photon, z_rad_map, n_rad_map, z_taylor, &
+    z_spin_taylor_ref_orb_in, z_spin_taylor, z_wake, n_wake, z_wall3d, n1_wall3d, &
+    z_cartesian_map, n1_cartesian_map, z_cylindrical_map, n1_cylindrical_map, z_gen_grad_map, &
+    n1_gen_grad_map, z_grid_field, n1_grid_field, z_map_ref_orb_in, z_map_ref_orb_out, &
+    z_time_ref_orb_in, z_time_ref_orb_out, z_value, z_old_value, z_spin_q, z_vec0, z_mat6, &
+    z_c_mat, z_gamma_c, z_s_start, z_s, z_ref_time, z_a_pole, n1_a_pole, z_b_pole, n1_b_pole, &
+    z_a_pole_elec, n1_a_pole_elec, z_b_pole_elec, n1_b_pole_elec, z_custom, n1_custom, z_r, &
+    n1_r, n2_r, n3_r, z_key, z_sub_key, z_ix_ele, z_ix_branch, z_lord_status, z_n_slave, &
+    z_n_slave_field, z_ix1_slave, z_slave_status, z_n_lord, z_n_lord_field, z_n_lord_ramper, &
+    z_ic1_lord, z_ix_pointer, z_ixx, z_iyy, z_izz, z_mat6_calc_method, z_tracking_method, &
+    z_spin_tracking_method, z_csr_method, z_space_charge_method, z_ptc_integration_type, &
+    z_field_calc, z_aperture_at, z_aperture_type, z_ref_species, z_orientation, z_symplectify, &
+    z_mode_flip, z_multipoles_on, z_scale_multipoles, z_taylor_map_includes_offsets, &
+    z_field_master, z_is_on, z_logic, z_bmad_logic, z_select, z_offset_moves_aperture) bind(c)
 
 
 implicit none
@@ -10662,16 +10909,17 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 character(c_char) :: z_name(*), z_type(*), z_alias(*), z_component_name(*), z_descrip(*)
 integer(c_int), pointer :: f_descrip
-integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_lord, n_high_energy_space_charge, n_mode3, n_photon
-integer(c_int), value :: n_rad_map, n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map, n1_grid_field
-integer(c_int), value :: n1_a_pole, n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r, n2_r
-integer(c_int), value :: n3_r
+integer(c_int), value :: n_descrip, n_ac_kick, n_control, n_rf, n_lord, n_high_energy_space_charge, n_mode3
+integer(c_int), value :: n_photon, n_rad_map, n_wake, n1_wall3d, n1_cartesian_map, n1_cylindrical_map, n1_gen_grad_map
+integer(c_int), value :: n1_grid_field, n1_a_pole, n1_b_pole, n1_a_pole_elec, n1_b_pole_elec, n1_custom, n1_r
+integer(c_int), value :: n2_r, n3_r
 type(c_ptr), value :: z_a, z_b, z_z, z_x, z_y, z_ac_kick, z_bookkeeping_state
-type(c_ptr), value :: z_control, z_lord, z_floor, z_high_energy_space_charge, z_mode3, z_photon, z_rad_map
-type(c_ptr), value :: z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out, z_a_pole, z_b_pole
-type(c_ptr), value :: z_a_pole_elec, z_b_pole_elec, z_custom, z_r
+type(c_ptr), value :: z_control, z_rf, z_lord, z_floor, z_high_energy_space_charge, z_mode3, z_photon
+type(c_ptr), value :: z_rad_map, z_wake, z_map_ref_orb_in, z_map_ref_orb_out, z_time_ref_orb_in, z_time_ref_orb_out, z_a_pole
+type(c_ptr), value :: z_b_pole, z_a_pole_elec, z_b_pole_elec, z_custom, z_r
 type(ac_kicker_struct), pointer :: f_ac_kick
 type(controller_struct), pointer :: f_control
+type(rf_ele_struct), pointer :: f_rf
 type(ele_reference_struct), target :: lord_ref
 type(high_energy_space_charge_struct), pointer :: f_high_energy_space_charge
 type(mode3_struct), pointer :: f_mode3
@@ -10731,6 +10979,13 @@ call c_f_pointer (Fp, F)
   else
     if (.not. associated(F%control)) allocate(F%control)
     call controller_to_f (z_control, c_loc(F%control))
+  endif
+!! f_side.to_f2_trans[0D_PTR_type]
+  if (n_rf == 0) then
+    if (associated(F%rf)) deallocate(F%rf)
+  else
+    if (.not. associated(F%rf)) allocate(F%rf)
+    call rf_ele_to_f (z_rf, c_loc(F%rf))
   endif
 !! f_side.to_f2_trans[0D_PTR_type]
   if (n_lord == 0) then
