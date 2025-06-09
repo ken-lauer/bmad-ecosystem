@@ -56,7 +56,7 @@ use expression_mod
 implicit none
 
 type (ele_struct), target :: ele
-type (ele_struct), pointer :: lord, slave, ele0, lord2
+type (ele_struct), pointer :: lord, slave, ele0, lord2, ele2
 type (lat_struct), pointer :: lat
 type (branch_struct), pointer :: branch
 type (floor_position_struct) :: floor, f0, floor2
@@ -98,6 +98,7 @@ integer nl, nt, n_term, n_att, attrib_type, n_char, iy, particle, ix_pole_max, l
 integer id1, id2, id3, ne, na, nn
 
 real(rp) coef, val, L_mis(3), S_mis(3,3), value
+real(rp) a_orig(0:n_pole_maxx), b_orig(0:n_pole_maxx)
 real(rp) a(0:n_pole_maxx), b(0:n_pole_maxx)
 real(rp) a2(0:n_pole_maxx), b2(0:n_pole_maxx)
 real(rp) knl(0:n_pole_maxx), tn(0:n_pole_maxx)
@@ -267,25 +268,26 @@ if (associated(ele%a_pole) .or. associated(ele%a_pole_elec)) then
   nl=nl+1; write (li(nl), '(5x, a, l1)') 'MULTIPOLES_ON    = ', ele%multipoles_on 
 endif
 
-if (associated(ele%a_pole)) then
+a = 0; b = 0; a2 = 0; b2 = 0; knl = 0; tn = 0
+call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
+
+if (ix_pole_max > -1) then
   if (attribute_index(ele, 'SCALE_MULTIPOLES') == scale_multipoles$) then
     nl=nl+1; write (li(nl), '(5x, a, l1, 2x, a)') 'SCALE_MULTIPOLES = ', ele%scale_multipoles, &
                                     '! Magnet strength scaling? Reference momentum scaling done if FIELD_MASTER = T.'
   endif
 
   if (associated(branch)) param = branch%param
+  call multipole_ele_to_ab (ele, .false.,  ix_pole_max, a_orig, b_orig)
 
-  a = 0; b = 0; a2 = 0; b2 = 0; knl = 0; tn = 0
   if (ele%key == multipole$) then
-    call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
     call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
   else
-    call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
     call multipole_ele_to_ab (ele, .true.,  ix_pole_max, a2, b2)
     call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
   endif
 
-  do im = 0, n_pole_maxx
+  do im = 0, ix_pole_max
     if (ele%key == multipole$) then
       if (a(im) == 0 .and. b(im) == 0 .and. tn(im) == 0) cycle
 
@@ -303,11 +305,11 @@ if (associated(ele%a_pole)) then
                  'B', im, ' =', ele%b_pole(im), 'B', im, '(w/Tilt) =', b2(im), 'T', im, '(equiv)  =', tn(im)
 
     else
-      if (ele%a_pole(im) == 0 .and. ele%b_pole(im) == 0 .and. a(im) == 0 .and. b(im) == 0) cycle
+      if (a_orig(im) == 0 .and. b_orig(im) == 0 .and. a(im) == 0 .and. b(im) == 0) cycle
 
-      nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'A', im, ' =', ele%a_pole(im), &
+      nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'A', im, ' =', a_orig(im), &
                  'A', im, '(Scaled) =', a(im), 'A', im, '(w/Tilt) =', a2(im), 'K', im, 'L(equiv) =', knl(im)
-      nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'B', im, ' =', ele%b_pole(im), &
+      nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'B', im, ' =', b_orig(im), &
                  'B', im, '(Scaled) =', b(im), 'B', im, '(w/Tilt) =', b2(im), 'T', im, '(equiv)  =', tn(im)
     endif
 
@@ -316,13 +318,14 @@ endif
 
 ! Electric Multipoles
 
-if (associated(ele%a_pole_elec)) then
-  call multipole_ele_to_ab (ele, .false., ix_pole_max, a, b, electric$)
+call multipole_ele_to_ab (ele, .false., ix_pole_max, a, b, electric$)
+call multipole_ele_to_ab (ele, .false., ix_pole_max, a_orig, b_orig, electric$, original = .true.)
 
-  do im = 0, n_pole_maxx
+if (associated(ele%a_pole_elec)) then
+  do im = 0, ix_pole_max
     if (a(im) == 0 .and. b(im) == 0) cycle
-    nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'A', im, '_elec =', ele%a_pole_elec(im), 'A', im, '_elec(Scaled) =', a(im)
-    nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'B', im, '_elec =', ele%b_pole_elec(im), 'B', im, '_elec(Scaled) =', b(im)
+    nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'A', im, '_elec =', a_orig(im), 'A', im, '_elec(Scaled) =', a(im)
+    nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'B', im, '_elec =', b_orig(im), 'B', im, '_elec(Scaled) =', b(im)
   enddo
 endif
 
@@ -1633,11 +1636,11 @@ character(42), parameter :: att_name(103) = [character(42):: 'X_PITCH', 'Y_PITCH
                 'PZ_APERTURE_WIDTH2', 'Z_APERTURE_WIDTH2', 'CMAT_11', 'CMAT_21', 'X_DISPERSION_ERR', &
                 'X_DISPERSION_CALIB', 'K1X', 'RF_FREQUENCY', 'UPSTREAM_ELE_DIR', 'SIG_X', &
                 'BETA_A0', 'BETA_B0', 'ALPHA_A0', 'ALPHA_B0', 'ETA_X0', 'ETAP_X0', 'X1_EDGE', 'Y1_EDGE', &
-                'ETA_Y0', 'ETAP_Y0', 'KICK0', 'X0', 'PX0', 'Y0', 'PY0', 'Z0', 'PZ0', 'ATOMIC_WEIGHT', &
+                'ETA_Y0', 'ETAP_Y0', 'KICK0', 'X0', 'PX0', 'Y0', 'PY0', 'Z0', 'PZ0', &
                 'C11_MAT0', 'C12_MAT0', 'C21_MAT0', 'C22_MAT0', 'HARMON', 'FINAL_CHARGE', &
                 'MODE_FLIP0', 'BETA_A_STRONG', 'BETA_B_STRONG', 'REF_TIME_START', 'THICKNESS', &
                 'PX_KICK', 'PY_KICK', 'PZ_KICK', 'E_TOT_OFFSET', 'FLEXIBLE', 'CRUNCH', 'NOISE', &
-                'F_FACTOR', 'EXACT_MULTIPOLES', 'Z_CROSSING', 'SPIN_TRACKING_MODEL', &
+                'F_FACTOR', 'EXACT_MULTIPOLES', 'CROSSING_TIME', 'SPIN_TRACKING_MODEL', 'VOLTAGE_ERR', &
                 'SPIN_DN_DPZ_X', 'INHERIT_FROM_FORK', 'N_PERIOD', 'G_MAX', 'PC_STRONG']
 
 character(42), parameter :: att2_name(103) = [character(42):: 'X_PITCH_TOT', 'Y_PITCH_TOT', 'X_OFFSET_TOT', &
@@ -1650,11 +1653,11 @@ character(42), parameter :: att2_name(103) = [character(42):: 'X_PITCH_TOT', 'Y_
                 'PZ_APERTURE_CENTER', 'Z_APERTURE_CENTER', 'CMAT_12', 'CMAT_22', 'Y_DISPERSION_ERR', &
                 'Y_DISPERSION_CALIB', 'K1Y', 'RF_WAVELENGTH', 'DOWNSTREAM_ELE_DIR', 'SIG_Y', &
                 'BETA_A1', 'BETA_B1', 'ALPHA_A1', 'ALPHA_B1', 'ETA_X1', 'ETAP_X1', 'X2_EDGE', 'Y2_EDGE', &
-                'ETA_Y1', 'ETAP_Y1', 'MATRIX', 'X1', 'PX1', 'Y1', 'PY1', 'Z1', 'PZ1', 'Z_CHARGE', &
+                'ETA_Y1', 'ETAP_Y1', 'MATRIX', 'X1', 'PX1', 'Y1', 'PY1', 'Z1', 'PZ1', &
                 'C11_MAT1', 'C12_MAT1', 'C21_MAT1', 'C22_MAT1', 'HARMON_MASTER', 'SCATTER', &
                 'MODE_FLIP1', 'ALPHA_A_STRONG', 'ALPHA_B_STRONG', 'DELTA_REF_TIME', 'DTHICKNESS_DX', &
                 'X_KICK', 'Y_KICK', 'Z_KICK', 'E_TOT_START', 'REF_COORDS', 'CRUNCH_CALIB', 'N_SAMPLE', &
-                'SCATTER_METHOD', 'FIDUCIAL_PT', 'S_BETA_MIN', 'RECALC', &
+                'SCATTER_METHOD', 'FIDUCIAL_PT', 'S_BETA_MIN', 'RECALC', 'GRADIENT_ERR', &
                 'SPIN_DN_DPZ_Y', 'MODE_FLIP', 'L_PERIOD', 'B_MAX', 'E_TOT_STRONG']
 
 ! Exceptional cases

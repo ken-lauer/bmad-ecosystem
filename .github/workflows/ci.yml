@@ -1,13 +1,9 @@
 name: Bmad Ecosystem - Build & Test
 
 on:
-  # Run on demand
+  # Run on demand, push, or pull request
   workflow_dispatch:
-
-  # Run on push to any branch
   push:
-
-  # Run on pull requests
   pull_request:
 
   ## Future Ideas:
@@ -22,6 +18,10 @@ on:
 # Configuration for the version of external packages
 # We do this so we can cache them and avoid checking out that big
 # repository at all times.
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   EXTERNAL_PACKAGES_VERSION: main

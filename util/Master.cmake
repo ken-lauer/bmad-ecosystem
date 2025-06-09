@@ -137,7 +137,12 @@ IF (${ACC_ENABLE_MPI})
   EXEC_PROGRAM (mpifort ARGS --showme:libs OUTPUT_VARIABLE MPI_LIBS)
   EXEC_PROGRAM (mpifort ARGS --showme:version OUTPUT_VARIABLE MPI_FORT_VERSION)
   # The preprocessor option flag "-DACC_MPI" was requested and tested in RT#31494 but not implemented until RT#58944
-  SET (MPI_COMPILE_FLAGS "-DACC_MPI ${MPI_COMPILE_FLAGS}")
+  # The -fallow-argument-mismatch flag allows, for mpi routines, actual argument type mismatch which is not an error.
+  IF (${CMAKE_Fortran_COMPILER} STREQUAL "gfortran")
+    SET (MPI_COMPILE_FLAGS "-DACC_MPI -fallow-argument-mismatch ${MPI_COMPILE_FLAGS}")
+  ELSE ()
+    SET (MPI_COMPILE_FLAGS "-DACC_MPI ${MPI_COMPILE_FLAGS}")
+  ENDIF ()
 ENDIF ()
 
 #----------------------------------------------------------------
@@ -499,13 +504,18 @@ SET (MASTER_INC_DIRS
 )
 
 # If we use system HDF5 libraries, search for include directories
-find_package(HDF5 COMPONENTS Fortran)
+find_package(HDF5 COMPONENTS Fortran HL)
 foreach(h5dir ${HDF5_Fortran_INCLUDE_DIRS})
   list(FIND CMAKE_Fortran_IMPLICIT_INCLUDE_DIRECTORIES "${h5dir}" h5found)
   if (h5found EQUAL -1)
     list(APPEND MASTER_INC_DIRS "${h5dir}")
   endif()
 endforeach()
+if (HDF5_FOUND)
+  list(FILTER HDF5_Fortran_HL_LIBRARIES EXCLUDE REGEX "-NOTFOUND$")
+  list(FILTER HDF5_Fortran_LIBRARIES EXCLUDE REGEX "-NOTFOUND$")
+  set(SHARED_LINK_LIBS ${HDF5_Fortran_HL_LIBRARIES} ${HDF5_Fortran_LIBRARIES} ${SHARED_LINK_LIBS})
+endif()
 
 #------------------------------------------------------
 # Add local include paths to search list if they exist

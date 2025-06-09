@@ -95,7 +95,7 @@ endif
 ! For elements where the reference energy is changing the reference energy in the body is 
 ! taken, by convention, to be the reference energy at the exit end.
 
-call reference_energy_correction (ele, orbit, first_track_edge$, mat6, make_matrix)
+call ele_reference_energy_correction (ele, orbit, first_track_edge$, mat6, make_matrix)
 
 ! If the element is using a hard edge model then need to stop at the hard edges
 ! to apply the appropriate hard edge kick.
@@ -153,7 +153,7 @@ do n_step = 1, n_step_max
 
   if ((s_body-s2_body)*s_dir > -ds_tiny) then
     if (present(track) .and. abs(s_body-s_last_save) > 2*ds_tiny) call save_a_step (track, ele, param, .true., orbit, s_body-ds_tiny*s_dir, .true., mat6, make_matrix)
-    call reference_energy_correction (ele, orbit, second_track_edge$, mat6, make_matrix)
+    call ele_reference_energy_correction (ele, orbit, second_track_edge$, mat6, make_matrix)
     err_flag = .false.
     return
   end if
@@ -363,7 +363,7 @@ do
     rel_tol = bmad_com%rel_tol_adaptive_tracking / sqrt_N
     abs_tol = bmad_com%abs_tol_adaptive_tracking / sqrt_N
     pol = 1.0_rp  ! Spin scale
-    r_scal(:) = abs([orb%vec(:), orb%t, pol, pol, pol]) + abs(ds*dr_ds(1:10)) + TINY
+    r_scal(:) = abs([real(rp):: orb%vec(:), 1e-9_rp, pol, pol, pol]) + abs(ds*dr_ds(1:10)) + TINY
     err_max = maxval(abs(r_err(1:10)/(r_scal(:)*rel_tol + abs_tol)))
     if (err_max <=  1.0) exit
     ds_temp = safety * ds * (err_max**p_shrink)
@@ -666,7 +666,7 @@ character(*), parameter :: r_name = 'kick_vector_calc'
 ! Exception: pipe element.
 
 if ((ele%slave_status == slice_slave$ .or. ele%slave_status == super_slave$) .and. ele%key /= pipe$) then
-  ele0 => pointer_to_lord(ele, 1)
+  ele0 => pointer_to_super_lord(ele)
 else
   ele0 => ele
 endif

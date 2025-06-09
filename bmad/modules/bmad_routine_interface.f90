@@ -409,12 +409,13 @@ subroutine allocate_element_array (ele, upper_bound)
   integer, optional :: upper_bound
 end subroutine
 
-subroutine allocate_lat_ele_array (lat, upper_bound, ix_branch)
+subroutine allocate_lat_ele_array (lat, upper_bound, ix_branch, do_ramper_slave_setup)
   import
   implicit none
   type (lat_struct), target :: lat
   integer, optional :: upper_bound
   integer, optional :: ix_branch
+  logical, optional :: do_ramper_slave_setup
 end subroutine
 
 subroutine aml_parser (lat_file, lat, make_mats6, digested_read_ok, use_line, err_flag)
@@ -1174,6 +1175,16 @@ end subroutine
 !   type (ele_struct) ele
 ! end subroutine
 
+subroutine ele_reference_energy_correction (ele, orbit, particle_at, mat6, make_matrix)
+  import
+  implicit none
+  type (ele_struct) :: ele
+  type (coord_struct) :: orbit
+  real(rp), optional :: mat6(6,6)
+  integer particle_at
+  logical, optional :: make_matrix
+end subroutine
+
 subroutine ele_to_fibre (ele, ptc_fibre, use_offsets, err_flag, integ_order, steps, for_layout, ref_in)
   import
   implicit none
@@ -1554,14 +1565,15 @@ subroutine lat_compute_ref_energy_and_time (lat, err_flag)
   logical err_flag
 end subroutine
 
-subroutine lat_ele_locator (loc_str, lat, eles, n_loc, err, above_ubound_is_err, ix_dflt_branch, order_by_index)
+subroutine lat_ele_locator (loc_str, lat, eles, n_loc, err, above_ubound_is_err, ix_dflt_branch, &
+                                                                               order_by_index, append_eles)
   import
   implicit none
   character(*) loc_str
   type (lat_struct), target :: lat
   type (ele_pointer_struct), allocatable :: eles(:)
   integer n_loc
-  logical, optional :: above_ubound_is_err, err, order_by_index
+  logical, optional :: above_ubound_is_err, err, order_by_index, append_eles
   integer, optional :: ix_dflt_branch
 end subroutine
 
@@ -1861,7 +1873,7 @@ subroutine multipole_ab_to_kt (an, bn, knl, tn)
   real(rp) knl(0:), tn(0:)
 end subroutine
 
-recursive subroutine multipole_ele_to_ab (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1)
+recursive subroutine multipole_ele_to_ab (ele, use_ele_tilt, ix_pole_max, a, b, pole_type, include_kicks, b1, original)
   import
   implicit none
   type (ele_struct), target :: ele
@@ -1871,6 +1883,7 @@ recursive subroutine multipole_ele_to_ab (ele, use_ele_tilt, ix_pole_max, a, b, 
   integer, optional :: pole_type, include_kicks
   integer include_kck
   logical use_ele_tilt
+  logical, optional :: original
 end subroutine
 
 subroutine multipole_ele_to_kt (ele, use_ele_tilt, ix_pole_max, knl, tilt, pole_type, include_kicks)
@@ -1984,6 +1997,15 @@ subroutine orbit_amplitude_calc (ele, orb, amp_a, amp_b, amp_na, amp_nb)
   real(rp), optional :: amp_a, amp_b, amp_na, amp_nb
 end subroutine
 
+subroutine orbit_reference_energy_correction (orbit, p0c_new, mat6, make_matrix)
+  import
+  implicit none
+  type (coord_struct) :: orbit
+  real(rp) p0c_new
+  real(rp), optional :: mat6(6,6)
+  logical, optional :: make_matrix
+end subroutine
+
 function orbit_to_floor_phase_space (orbit, ele) result (floor_phase_space)
   import
   implicit none
@@ -2040,7 +2062,7 @@ function particle_is_moving_forward (orbit, dir) result (is_moving_forward)
   logical is_moving_forward
 end function
 
-function particle_rf_time (orbit, ele, reference_active_edge, s_rel, time_coords, rf_freq, rf_clock_harmonic) result (time)
+function particle_rf_time (orbit, ele, reference_active_edge, s_rel, time_coords, rf_freq, rf_clock_harmonic, abs_time) result (time)
   import
   implicit none
   type (coord_struct) orbit
@@ -2048,7 +2070,7 @@ function particle_rf_time (orbit, ele, reference_active_edge, s_rel, time_coords
   real(rp), optional :: s_rel, rf_freq
   real(rp) time
   integer, optional :: rf_clock_harmonic
-  logical, optional :: reference_active_edge, time_coords
+  logical, optional :: reference_active_edge, time_coords, abs_time
 end function
 
 function patch_flips_propagation_direction (x_pitch, y_pitch) result (is_flip)
@@ -2165,6 +2187,15 @@ function pointer_to_next_ele (this_ele, offset, skip_beginning, follow_fork) res
   type (ele_struct), pointer :: next_ele
   integer, optional :: offset
   logical, optional :: skip_beginning, follow_fork
+end function
+
+function pointer_to_super_lord (slave, control, ix_slave_back, ix_control, ix_ic) result (lord_ptr)
+  import
+  implicit none
+  type (ele_struct), target :: slave
+  type (control_struct), pointer, optional :: control
+  type (ele_struct), pointer :: lord_ptr
+  integer, optional :: ix_slave_back, ix_control, ix_ic
 end function
 
 function pointer_to_wake_ele (ele, delta_s) result (wake_ele)
@@ -2294,16 +2325,6 @@ subroutine reallocate_expression_stack (stack, n, exact)
   logical, optional :: exact
 end subroutine
 
-subroutine reference_energy_correction (ele, orbit, particle_at, mat6, make_matrix)
-  import
-  implicit none
-  type (ele_struct) :: ele
-  type (coord_struct) :: orbit
-  real(rp), optional :: mat6(6,6)
-  integer particle_at
-  logical, optional :: make_matrix
-end subroutine
-
 function rel_tracking_charge_to_mass (orbit, ref_species) result (rel_charge)
   import
   implicit none
@@ -2395,10 +2416,11 @@ function rf_is_on (branch, ix_ele1, ix_ele2) result (is_on)
   logical is_on
 end function
 
-function rf_ref_time_offset (ele) result (time)
+function rf_ref_time_offset (ele, ds) result (time)
   import
   implicit none
   type (ele_struct) ele
+  real(rp), optional :: ds
   real(rp) time
 end function
 
@@ -2975,6 +2997,16 @@ subroutine track_a_gkicker (orbit, ele, param, mat6, make_matrix)
 end subroutine
 
 subroutine track_a_lcavity (orbit, ele, param, mat6, make_matrix)
+  import
+  implicit none
+  type (coord_struct) orbit
+  type (ele_struct), target :: ele
+  type (lat_param_struct) param
+  real(rp), optional :: mat6(6,6)
+  logical, optional :: make_matrix
+end subroutine
+
+subroutine track_a_lcavity_old (orbit, ele, param, mat6, make_matrix)
   import
   implicit none
   type (coord_struct) orbit
@@ -4597,6 +4629,19 @@ if (associated(ele_in%mode3)) then
   ele_out%mode3 = ele_in%mode3
 else
   if (associated (ele_save%mode3)) deallocate (ele_save%mode3)
+endif
+
+! %rf
+
+if (associated(ele_in%rf)) then
+  if (associated (ele_save%rf)) then
+    ele_out%rf => ele_save%rf
+  else
+    allocate (ele_out%rf)
+  endif
+  ele_out%rf = ele_in%rf
+else
+  if (associated (ele_save%rf)) deallocate (ele_save%rf)
 endif
 
 ! %high_energy_space_charge

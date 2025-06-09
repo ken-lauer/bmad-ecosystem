@@ -389,33 +389,50 @@ end subroutine tao_get_data
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
 !+
-! Subroutine tao_data_coupling_init (u)
+! Subroutine tao_expression_hash_substitute(expression, eval_ele)
 !
-! Routine to initialize the coupling structure for a lattice branch.
-! This routine is called by tao_lattic_calc and is not meant for general use.
+! Routine to, in the expression, substitute the evaluation lattice element name in place
+! of hash ("#") characters. Care is taken to only do this where it makes sense.
+! For example, "Q1##3" where here "##3" means the third instance of Q1, does not qualify.
+!
+! Specifically, a substitution will be done if the character before the hash and the 
+! character after are one of:
+!   [,]-*+/:|@<>, or a blank character, or the beginning or end of the expression
 !
 ! Input:
-!   branch -- branch_struct: New lattice branch.
+!   expression    -- character(*): Expression.
+!   eval_ele      -- character(*), optional: Evaluation element name to substitute in.
+!                     If not present, expression will not be modified.
+!
+! Output:
+!   expression    -- character(*): Expression with substitutions made.
 !-
 
-subroutine tao_data_coupling_init (branch)
+subroutine tao_expression_hash_substitute(expression, eval_ele)
 
-type (branch_struct) branch
-integer m
+character(*) expression
+character(*), optional :: eval_ele
+integer ix, ix2, n
 
 ! 
 
-m = branch%n_ele_max
-if (.not. allocated(scratch%cc)) allocate (scratch%cc(0:m))
-if (ubound(scratch%cc, 1) < m) then
-  deallocate(scratch%cc)
-  allocate(scratch%cc(0:m))
-endif
+if (.not. present(eval_ele)) return
 
-scratch%cc%coupling_calc_done = .false.
-scratch%cc%amp_calc_done = .false.
+n = len_trim(eval_ele)
+ix = 0
+do
+  ix2 = index(expression(ix+1:), '#')
+  if (ix2 == 0) return
+  ix = ix + ix2
+  if (ix > 1) then
+    if (index('[,]-*+/:|@<> ', expression(ix-1:ix-1)) == 0) cycle
+  endif
+  if (index('[,]-*+/:|@<> ', expression(ix+1:ix+1)) == 0) cycle
+  expression(ix:) = trim(eval_ele) // expression(ix+1:)
+  ix = ix + n
+enddo
 
-end subroutine tao_data_coupling_init
+end subroutine tao_expression_hash_substitute
 
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
@@ -1110,39 +1127,6 @@ endif
 
 end function tao_pointer_to_datum_ele
 
-!-------------------------------------------------------------------------
-!-------------------------------------------------------------------------
-!-------------------------------------------------------------------------
-!+
-! Subroutine tao_to_real (expression, value, err_flag)
-!
-! Mathematically evaluates an expression.
-!
-! Input:
-!   expression    -- character(*): arithmetic expression
-!
-! Output:
-!   value        -- real(rp): Value of arithmetic expression.
-!   err_flag     -- Logical: TRUE on error.
-!-
-
-subroutine tao_to_real (expression, value, err_flag)
-
-character(*) :: expression
-
-real(rp) value
-real(rp), allocatable :: vec(:)
-
-logical err_flag
-
-!
-
-call tao_evaluate_expression (expression, 1, .false., vec, err_flag)
-if (err_flag) return
-value = vec(1)
-
-end subroutine tao_to_real
-
 !---------------------------------------------------------------------------
 !---------------------------------------------------------------------------
 !---------------------------------------------------------------------------
@@ -1301,7 +1285,7 @@ endif
 
 if (source == 'at_ele') then
   call re_allocate(stack%value, 1)
-  stack%value(1) = tao_param_value_at_s (str, dflt_ele, dflt_orbit, err_flag)
+  stack%value(1) = tao_param_value_at_s (str, dflt_ele, dflt_ele, dflt_orbit, err_flag)
   call tao_re_allocate_expression_info (stack%info, 1)
   stack%info%good = (.not. err_flag)
   return
@@ -1538,7 +1522,7 @@ if (substr(datum%data_type,1,2) == 'r.') then
   orb_at_s = orbit(ix_ref)
   call mat6_from_s_to_s (branch%lat, ele_at_s%mat6, ele_at_s%vec0, s_eval_ref, datum%s, &
                                                        orbit(ele%ix_ele), orb2, branch%ix_branch, .true.)
-  value = tao_param_value_at_s (datum%data_type, ele_at_s, orb_at_s, err, bad_datum = bad_datum)
+  value = tao_param_value_at_s (datum%data_type, ele_at_s, ele_at_s, orb_at_s, err, bad_datum = bad_datum)
   if (err) then
     err_str = 'CANNOT EVALUATE DATUM AT OFFSET POSITION.'
     return
@@ -1552,7 +1536,7 @@ else
     return
   endif
 
-  value = tao_param_value_at_s (datum%data_type, ele_at_s, orb_at_s, err, bad_datum = bad_datum)
+  value = tao_param_value_at_s (datum%data_type, ele_at_s, ele_at_s, orb_at_s, err, bad_datum = bad_datum)
   if (err) then
     err_str = 'CANNOT EVALUATE DATUM AT OFFSET POSITION.'
     return
@@ -1566,7 +1550,7 @@ else
       return
     endif
 
-    value = value - tao_param_value_at_s (datum%data_type, ele_at_s, orb_at_s, err, bad_datum = bad_datum)
+    value = value - tao_param_value_at_s (datum%data_type, ele_at_s, ele_at_s, orb_at_s, err, bad_datum = bad_datum)
     if (err) then
       err_str = 'CANNOT EVALUATE DATUM AT REFERENCE POSITION.'
       return

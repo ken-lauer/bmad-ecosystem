@@ -91,6 +91,7 @@ type ltt_params_struct
   logical :: use_rf_clock = .false.
   logical :: debug = .false.
   logical :: regression_test = .false.          ! Only used for regression testing. Not of general interest.
+  logical :: set_beambeam_crossing_time = .false.
   logical :: set_beambeam_z_crossing = .false.
   logical :: print_info_messages = .true.          ! Informational messages printed?
   !
@@ -516,7 +517,7 @@ type (branch_struct), pointer :: branch
 type (ele_struct), pointer :: ele
 type (rad_map_ele_struct), pointer :: ri
 
-real(rp) closed_orb(6), f_tol, time
+real(rp) closed_orb(6), f_tol, time, ff
 
 integer i, iv, n, ix_branch, ib, n_slice, ie, ir, info, n_rf_included, n_rf_excluded
 
@@ -572,13 +573,7 @@ endif
 ! Setup RF clock if wanted.
 
 if (lttp%use_rf_clock) then
-  if (.not. rf_clock_setup(branch, n_rf_included, n_rf_excluded)) then
-    call out_io (s_fatal$, r_name, 'RF CLOCK SETUP FAILED! STOPPING HERE.')
-    stop
-  endif
-  call out_io(s_info$, r_name, 'RF clock setup done. ')
-  if (.not. bmad_com%absolute_time_tracking) call out_io (s_warn$, r_name, 'Absolute time tracking not in use!!', &
-                                                                           'The RF clock will not be active!!')
+  call out_io (s_info$, r_name, 'LTT%USE_RF_CLOCK NOT LONGER USED AND WILL BE IGNORED.')
 endif
 
 if (lttp%simulation_mode == 'BMAD' .and. .not. bmad_com%absolute_time_tracking) then
@@ -622,14 +617,22 @@ if (lttp%tracking_method == 'PTC' .or. lttp%simulation_mode == 'CHECK') then
   if (bmad_com%spin_tracking_on) ltt_com%ptc_state = ltt_com%ptc_state + SPIN0
 endif
 
+
 if (lttp%set_beambeam_z_crossing) then
+  call out_io(s_error$, r_name, '"lttp%set_beambeam_z_crossing" is now "lttp%set_beambeam_crossing_time".', &
+                              'Please change your init file.')
+  stop
+endif
+
+if (lttp%set_beambeam_crossing_time) then
   do ie = 1, branch%n_ele_track
     ele => branch%ele(ie)
     if (ele%key /= beambeam$) cycle
+    ff = -1.0_rp / (c_light * ltt_com%bmad_closed_orb(ie)%beta)
     if (lttp%tracking_method == 'PTC') then
-      ele%value(z_crossing$) = ltt_com%bmad_closed_orb(ie)%vec(5) + (ltt_com%ptc_closed_orb(5) - ltt_com%bmad_closed_orb(0)%vec(5))
+      ele%value(crossing_time$) = ff * (ltt_com%bmad_closed_orb(ie)%vec(5) + (ltt_com%ptc_closed_orb(5) - ltt_com%bmad_closed_orb(0)%vec(5)))
     else
-      ele%value(z_crossing$) = ltt_com%bmad_closed_orb(ie)%vec(5)
+      ele%value(crossing_time$) = ff * ltt_com%bmad_closed_orb(ie)%vec(5)
     endif
   enddo
 endif
@@ -892,7 +895,6 @@ endif
 
 call ltt_write_line('# ltt%split_bends_for_stochastic_rad      = ' // logic_str(lttp%split_bends_for_stochastic_rad), lttp, iu, print_this)
 call ltt_write_line('# ltt%core_emit_combined_calc             = ' // logic_str(lttp%core_emit_combined_calc), lttp, iu, print_this)
-call ltt_write_line('# ltt%use_rf_clock                        = ' // logic_str(lttp%use_rf_clock), lttp, iu, print_this)
 call ltt_write_line('# ltt%action_angle_calc_uses_1turn_matrix = ' // logic_str(lttp%action_angle_calc_uses_1turn_matrix), lttp, iu, print_this)
 
 if (bmad_com%sr_wakes_on) then
@@ -912,7 +914,7 @@ call ltt_write_line('# ltt%output_combined_bunches             = ' // logic_str(
 call ltt_write_line('# ltt%ramp_update_each_particle           = ' // logic_str(lttp%ramp_update_each_particle), lttp, iu, print_this)
 call ltt_write_line('# ltt%ramp_particle_energy_without_rf     = ' // logic_str(lttp%ramp_particle_energy_without_rf), lttp, iu, print_this)
 call ltt_write_line('# ltt%ramping_start_time                  = ' // real_str(lttp%ramping_start_time, 6), lttp, iu, print_this)
-call ltt_write_line('# ltt%set_beambeam_z_crossing             = ' // logic_str(lttp%set_beambeam_z_crossing), lttp, iu, print_this)
+call ltt_write_line('# ltt%set_beambeam_crossing_time          = ' // logic_str(lttp%set_beambeam_crossing_time), lttp, iu, print_this)
 call ltt_write_line('# ltt%random_seed                         = ' // int_str(lttp%random_seed), lttp, iu, print_this)
 
 if (lttp%random_seed == 0) then
@@ -2225,12 +2227,7 @@ do i = 1, size(lttp%column)
     case ('PY');          st%value = orb%vec(4)
     case ('Z');           st%value = orb%vec(5)
     case ('PZ');          st%value = orb%vec(6)
-    case ('TIME');
-      if (lttp%use_rf_clock) then
-        st%value = orb%t + orb%phase(1)*bmad_private%rf_clock_period
-      else
-        st%value = orb%t
-      endif
+    case ('TIME');        st%value = orb%t
     case ('P0C');         st%value = (1.0_rp + orb%vec(6)) * orb%p0c
     case ('E_TOT');       st%value = (1.0_rp + orb%vec(6)) * orb%p0c / mass_of(orb%species)
     case ('SX');          st%value = orb%spin(1)
@@ -2338,7 +2335,6 @@ write (iu,  '(a, l1)')   '# Radiation_Fluctuations_on           = ', bmad_com%ra
 write (iu,  '(a, l1)')   '# Spin_tracking_on                    = ', bmad_com%spin_tracking_on
 write (iu,  '(a, l1)')   '# sr_wakes_on                         = ', bmad_com%sr_wakes_on
 write (iu,  '(a, l1)')   '# RF_is_on                            = ', rf_is_on(ltt_com%tracking_lat%branch(ltt_com%ix_branch))
-write (iu,  '(a, l1)')   '# use_rf_clock                        = ', lttp%use_rf_clock
 write (iu,  '(a, l1)')   '# action_angle_calc_uses_1turn_matrix = ', lttp%action_angle_calc_uses_1turn_matrix
 if (bmad_com%sr_wakes_on) then
   write (iu, '(a, i0)')  '# Number_of_wake_elements             = ', size(ltt_com%ix_wake_ele)
@@ -2393,7 +2389,7 @@ do i = 1, 6
   orb4_sum(i) = orb4_sum(i) + sum((bunch%particle%vec(i)-ave)**4, bunch%particle%state == alive$) 
 enddo
 
-bd%params%t = ltt_bunch_time_sum(bunch, lttp) / bd%n_live
+bd%params%t = sum(bunch%particle%t, bunch%particle%state == alive$) / bd%n_live
 
 !
 
@@ -3286,27 +3282,6 @@ write(str, '(a, f8.2, 2a, 2x, i0, 2a)') 'dTime:', (time_now-ltt_com%time_start)/
 
 call out_io(s_blank$, r_name, str)
 end subroutine ltt_print_mpi_info
-
-!-------------------------------------------------------------------------------------------
-!-------------------------------------------------------------------------------------------
-!-------------------------------------------------------------------------------------------
-
-function ltt_bunch_time_sum (bunch, lttp) result (time_sum)
-
-type (bunch_struct) bunch
-type (ltt_params_struct) lttp
-
-real(rp) time_sum
-
-!
-
-if (lttp%use_rf_clock) then
-  time_sum = sum(bunch%particle%t+bunch%particle%phase(1)*bmad_private%rf_clock_period, bunch%particle%state == alive$)
-else
-  time_sum = sum(bunch%particle%t, bunch%particle%state == alive$)
-endif
-
-end function ltt_bunch_time_sum
 
 !-------------------------------------------------------------------------------------------
 !-------------------------------------------------------------------------------------------

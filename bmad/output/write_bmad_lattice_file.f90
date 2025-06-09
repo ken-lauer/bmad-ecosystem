@@ -204,6 +204,7 @@ call write_if_logic_param_changed (bmad_com%absolute_time_ref_shift,         bma
 call write_if_logic_param_changed (bmad_com%absolute_time_tracking,          bmad_com_default%absolute_time_tracking,           'bmad_com[absolute_time_tracking]')
 call write_if_logic_param_changed (bmad_com%convert_to_kinetic_momentum,     bmad_com_default%convert_to_kinetic_momentum,      'bmad_com[convert_to_kinetic_momentum]')
 call write_if_logic_param_changed (bmad_com%aperture_limit_on,               bmad_com_default%aperture_limit_on,                'bmad_com[aperture_limit_on]')
+call write_if_logic_param_changed (bmad_com%normalize_twiss,                 bmad_com_default%normalize_twiss,                  'bmad_com[normalize_twiss]')
 
 call write_if_logic_param_changed (ptc_com%use_orientation_patches,     ptc_com_default%use_orientation_patches,      'ptc_com[use_orientation_patches]')
 call write_if_logic_param_changed (ptc_com%print_info_messages,         ptc_com_default%print_info_messages,          'ptc_com[print_info_messages]')
@@ -266,6 +267,10 @@ if (ele%a%dbeta_dpz /= 0)   write (iu, '(2a)') 'beginning[dbeta_dpz_a]  = ', re_
 if (ele%b%dbeta_dpz /= 0)   write (iu, '(2a)') 'beginning[dbeta_dpz_b]  = ', re_str(ele%b%dbeta_dpz)
 if (ele%a%dalpha_dpz /= 0)  write (iu, '(2a)') 'beginning[dalpha_dpz_a] = ', re_str(ele%a%dalpha_dpz)
 if (ele%b%dalpha_dpz /= 0)  write (iu, '(2a)') 'beginning[dalpha_dpz_b] = ', re_str(ele%b%dalpha_dpz)
+if (ele%x%deta_dpz /= 0)    write (iu, '(2a)') 'beginning[deta_dpz_x]   = ', re_str(ele%x%deta_dpz)
+if (ele%y%deta_dpz /= 0)    write (iu, '(2a)') 'beginning[deta_dpz_y]   = ', re_str(ele%y%deta_dpz)
+if (ele%x%detap_dpz /= 0)   write (iu, '(2a)') 'beginning[detap_dpz_x]  = ', re_str(ele%x%detap_dpz)
+if (ele%y%detap_dpz /= 0)   write (iu, '(2a)') 'beginning[detap_dpz_y]  = ', re_str(ele%y%detap_dpz)
 
 ! particle_start. Note: For an open geometry, orbit0 should be the same as lat%particle_start
 
@@ -833,7 +838,8 @@ do ib = 0, ubound(lat%branch, 1)
       ! Default for ds_step and integrator_order is determined by attribute_bookkeeper based upon the
       ! settings of other parameters like the element's strength.
       if (attrib%name == 'DS_STEP' .or. attrib%name == 'INTEGRATOR_ORDER') then
-        call transfer_ele (ele, this_ele, .true.) 
+        call transfer_ele (ele, this_ele, .true.)
+        this_ele%lord_status = not_a_lord$   ! So attribute_bookkeeper will not touch slaves.
         this_ele%value(ds_step$) = 0
         this_ele%value(num_steps$) = 0
         this_ele%value(integrator_order$) = 0

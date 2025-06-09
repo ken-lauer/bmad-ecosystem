@@ -1974,12 +1974,11 @@ end select
 ! Check_sum is a hash number that is used to see if a value has been changed.
 ! This is used implicitly in attribute_bookkeeper.
 
-ele0 => ele
-if (ele%slave_status == slice_slave$ .or. ele%slave_status == super_slave$) ele0 => pointer_to_lord(ele0, 1)
+ele0 => pointer_to_super_lord(ele)
 ele%value(check_sum$) = 0
 
 if (associated(ele0%a_pole)) then
-  do i = 0, ubound(ele%a_pole, 1)
+  do i = 0, ubound(ele0%a_pole, 1)
     ele%value(check_sum$) = ele%value(check_sum$) + fraction(ele0%a_pole(i)) + fraction(ele0%b_pole(i))
     ele%value(check_sum$) = ele%value(check_sum$) + (exponent(ele0%a_pole(i)) + exponent(fraction(ele0%b_pole(i)))) / 10
   enddo
@@ -1987,7 +1986,7 @@ endif
 
 
 if (associated(ele0%a_pole_elec)) then
-  do i = 0, ubound(ele%a_pole_elec, 1)
+  do i = 0, ubound(ele0%a_pole_elec, 1)
     ele%value(check_sum$) = ele%value(check_sum$) + fraction(ele0%a_pole_elec(i)) + fraction(ele0%b_pole_elec(i))
     ele%value(check_sum$) = ele%value(check_sum$) + (exponent(ele0%a_pole_elec(i)) + exponent(fraction(ele0%b_pole_elec(i)))) / 10
   enddo

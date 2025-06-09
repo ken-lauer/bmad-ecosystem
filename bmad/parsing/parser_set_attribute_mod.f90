@@ -309,6 +309,10 @@ if (ele%key == beambeam$) then
   case ('BETA_B');    word = 'BETA_B_STRONG'
   case ('ALPHA_A');   word = 'ALPHA_A_STRONG'
   case ('ALPHA_B');   word = 'ALPHA_B_STRONG'
+  case ('Z_CROSSING')
+    call parser_error('THE Z_CROSSING ATTRIBUTE IS NOW NO LONGER USED FOR ELEMENT: ' // ele%name, &
+                      'USE THE CROSSING_TIME ATTRIBUTE INSTEAD.', &
+                      'SEE THE BMAD MANUAL SECTION ON THE BEAMBEAM ELEMENT FOR CONVERSION DETAILS.')
   end select
 endif
 
@@ -458,13 +462,20 @@ if (key == def_particle_start$ .or. key == def_bmad_com$ .or. key == def_space_c
     return
   endif
 
-  if (associated(a_ptrs(1)%r)) then
+  if (associated(a_ptrs(1)%q)) then
+    call parse_evaluate_value (err_str, value, lat, delim, delim_found, err_flag, ele = ele) 
+    if (err_flag) return
+    a_ptrs(1)%q = value
+    ! This is done so init_coord will use %t to set %vec(5) and not vice versa.
+    if (associated(a_ptrs(1)%q, lat%particle_start%t)) lat%particle_start%vec(5) = real_garbage$
+
+  elseif (associated(a_ptrs(1)%r)) then
     call parse_evaluate_value (err_str, value, lat, delim, delim_found, err_flag, ele = ele) 
     if (err_flag) return
     a_ptrs(1)%r = value
 
     ! This is done so init_coord will use %t to set %vec(5) and not vice versa.
-    if (associated(a_ptrs(1)%r, lat%particle_start%t)) lat%particle_start%vec(5) = real_garbage$
+    if (associated(a_ptrs(1)%q, lat%particle_start%t)) lat%particle_start%vec(5) = real_garbage$
 
     if (associated(a_ptrs(1)%r, bmad_com%max_aperture_limit))              bp_com%extra%max_aperture_limit_set          = .true.
     if (associated(a_ptrs(1)%r, bmad_com%default_ds_step))                 bp_com%extra%default_ds_step_set             = .true.
@@ -499,11 +510,11 @@ if (key == def_particle_start$ .or. key == def_bmad_com$ .or. key == def_space_c
   elseif (associated(a_ptrs(1)%i)) then
     call parse_evaluate_value (trim(ele%name) // ' ' // word, value, lat, delim, delim_found, err_flag, ele = ele) 
     if (err_flag) return
-    if (associated(a_ptrs(1)%i, lat%particle_start%direction) .and. nint(value) /= -1 .and. nint(value) /= 1) then
+    if (associated(a_ptrs(1)%i, lat%particle_start%direction) .and. nint_chk(value) /= -1 .and. nint_chk(value) /= 1) then
       call parser_error ('VALUE OF PARTICLE_START[DIRECTION] MUST BE -1 OR 1.')
       return
     endif
-    a_ptrs(1)%i = nint(value)
+    a_ptrs(1)%i = nint_chk(value)
     if (associated(a_ptrs(1)%i, bmad_com%taylor_order))                   bp_com%extra%taylor_order_set                    = .true.
     if (associated(a_ptrs(1)%i, bmad_com%default_integ_order))            bp_com%extra%default_integ_order_set             = .true.
     if (associated(a_ptrs(1)%i, bmad_com%runge_kutta_order))              bp_com%extra%runge_kutta_order_set               = .true.
@@ -536,6 +547,7 @@ if (key == def_particle_start$ .or. key == def_bmad_com$ .or. key == def_space_c
     if (associated(a_ptrs(1)%l, bmad_com%absolute_time_tracking))         bp_com%extra%absolute_time_tracking_set          = .true.
     if (associated(a_ptrs(1)%l, bmad_com%convert_to_kinetic_momentum))    bp_com%extra%convert_to_kinetic_momentum_set     = .true.
     if (associated(a_ptrs(1)%l, bmad_com%aperture_limit_on))              bp_com%extra%aperture_limit_on_set               = .true.
+    if (associated(a_ptrs(1)%l, bmad_com%normalize_twiss))                bp_com%extra%normalize_twiss_set                 = .true.
     if (associated(a_ptrs(1)%l, bmad_com%debug))                          bp_com%extra%debug_set                           = .true.
 
     if (associated(a_ptrs(1)%l, space_charge_com%lsc_kick_transverse_dependence)) bp_com%extra%lsc_kick_transverse_dependence_set = .true.
@@ -590,7 +602,7 @@ if (delim == '(' .and. .not. (word == 'TERM' .and. how == def$)) then
       call get_switch ('WALL ELE_ANCHOR_PT', anchor_pt_name(1:), a_ptr%i, err_flag, ele, delim, delim_found)
     else
       call parse_evaluate_value (trim(ele%name) // ' ' // word, value, lat, delim, delim_found, err_flag, ele = ele)
-      a_ptr%i = nint(value)
+      a_ptr%i = nint_chk(value)
     endif
   else
     call parser_get_logical (word, a_ptr%l, ele%name, delim, delim_found, err_flag)
@@ -2231,7 +2243,7 @@ case default   ! normal attribute
       endif
     !
     elseif (attrib_word == 'RAN_SEED') then
-      bp_com%extra%ran_seed = nint(value)
+      bp_com%extra%ran_seed = nint_chk(value)
       call ran_seed_put (bp_com%extra%ran_seed)  ! init random number generator
     elseif (attrib_word == 'APERTURE') then
       ele%value(x1_limit$) = value

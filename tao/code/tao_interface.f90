@@ -189,6 +189,12 @@ subroutine tao_data_check (err)
   logical err
 end subroutine
 
+subroutine tao_data_coupling_init (branch)
+  import
+  implicit none
+  type (branch_struct) branch
+end subroutine
+
 function tao_data_sanity_check (datum, print_err, default_data_type, uni) result (is_valid)
   import
   type (tao_data_struct) datum
@@ -583,10 +589,10 @@ subroutine tao_pointer_to_universes (name_in, unis, err, name_out, explicit_uni,
   logical, optional :: explicit_uni
 end subroutine
 
-function tao_param_value_at_s (dat_name, ele, orbit, err_flag, why_invalid, print_err, bad_datum) result (value)
+function tao_param_value_at_s (dat_name, ele_to_s, ele_here, orbit, err_flag, why_invalid, print_err, bad_datum) result (value)
   import
   implicit none
-  type (ele_struct) ele
+  type (ele_struct) ele_to_s, ele_here
   type (coord_struct) orbit
   real(rp) value
   character(*) dat_name
@@ -893,6 +899,14 @@ subroutine tao_taper_cmd(except, uni_names)
   import
   implicit none
   character(*) except, uni_names
+end subroutine
+
+subroutine tao_to_real (expression, value, err_flag)
+  import
+  implicit none
+  character(*) :: expression
+  real(rp) value
+  logical err_flag
 end subroutine
 
 subroutine tao_top_level (command, errcode)
@@ -1234,7 +1248,7 @@ character(*), parameter :: r_name = 'tao_pointer_to_universe_str'
 
 nullify(u)
 
-ix = tao_uni_ampersand_index(string)
+ix = tao_uni_atsign_index(string)
 if (ix == 0) then
   u => s%u(tao_universe_index(-1))
   return
@@ -1268,9 +1282,9 @@ end function tao_pointer_to_universe_str
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
 !+
-! Function tao_uni_ampersand_index(string) result (ix_amp)
+! Function tao_uni_atsign_index(string) result (ix_amp)
 !
-! Routine to return the index of an ampersand ("@") sign in a string if the ampersand is
+! Routine to return the index of an atsign ("@") character in a string if the atsign is
 ! being used as a separator between a universe spec and the rest of the string.
 !
 ! For example:
@@ -1284,7 +1298,7 @@ end function tao_pointer_to_universe_str
 !   ix_amp      -- integer: Index of universe "@". Set to zero if no universe "@" found.
 !-
 
-function tao_uni_ampersand_index(string) result (ix_amp)
+function tao_uni_atsign_index(string) result (ix_amp)
 
 implicit none
 
@@ -1303,6 +1317,6 @@ do i = 1, len(string)
   return
 enddo
 
-end function tao_uni_ampersand_index
+end function tao_uni_atsign_index
 
 end module
