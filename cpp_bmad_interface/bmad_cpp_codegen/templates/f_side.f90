@@ -66,6 +66,22 @@ subroutine to_c (Fp, C) bind(C)
 end subroutine to_c
 
 !!!! section:to_c
+!!!! type:0D_NOT_real16
+subroutine to_c (Fp, C) bind(C)
+  !!!! begin:to_c2_type_and_name
+  real(c_double) :: z_NAME
+  !!!! end:to_c2_type_and_name
+  call c_f_pointer (Fp, F)
+  call to_c2 (C, 
+
+  ! NOTE/TODO: precision loss - quad to double!
+  !!!! begin:to_c2_call
+  real(F%NAME, 8)
+  !!!! end:to_c2_call
+  )
+end subroutine to_c
+
+!!!! section:to_c
 !!!! type:0D_NOT_size
 !!!! type:1D_NOT_size
 !!!! type:2D_NOT_size
@@ -702,6 +718,7 @@ end subroutine to_f2
 !!!! type:0D_NOT_integer
 !!!! type:0D_NOT_integer8
 !!!! type:0D_NOT_real
+!!!! type:0D_NOT_real16
 subroutine to_f2 (C, z_NAME) bind(c)
   !!!! case:0D_NOT_complex:to_f2_type_and_name
   complex(c_double_complex) :: z_NAME
@@ -710,6 +727,8 @@ subroutine to_f2 (C, z_NAME) bind(c)
   !!!! case:0D_NOT_integer8:to_f2_type_and_name
   integer(c_long) :: z_NAME
   !!!! case:0D_NOT_real:to_f2_type_and_name
+  real(c_double) :: z_NAME
+  !!!! case:0D_NOT_real16:to_f2_type_and_name
   real(c_double) :: z_NAME
   call c_f_pointer (Fp, F)
   !!!! begin:to_f2_trans
@@ -1734,6 +1753,7 @@ is_eq = is_eq .and. (f1%NAME .eqv. f2%NAME)
 !!!! type:0D_NOT_integer
 !!!! type:0D_NOT_integer8
 !!!! type:0D_NOT_real
+!!!! type:0D_NOT_real16
 !!!! type:0D_NOT_type
 !!!! begin:equality_test
 is_eq = is_eq .and. (f1%NAME == f2%NAME)
@@ -2293,6 +2313,7 @@ endif
 !!!! type:0D_NOT_integer8
 !!!! type:0D_NOT_logical
 !!!! type:0D_NOT_real
+!!!! type:0D_NOT_real16
 !!!! type:0D_NOT_size
 !!!! type:1D_NOT_size
 !!!! type:2D_NOT_size
@@ -2306,6 +2327,8 @@ rhs
 !!!! case:0D_NOT_logical:test_value
 (modulo(rhs, 2) == 0)
 !!!! case:0D_NOT_real:test_value
+rhs
+!!!! case:0D_NOT_real16:test_value
 rhs
 !!!! case:0D_NOT_size:test_value
 

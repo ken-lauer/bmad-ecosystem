@@ -1317,7 +1317,7 @@ do jd1 = 1, size(F%vec,1); lb1 = lbound(F%vec,1) - 1
 enddo
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 2 + offset; F%s = rhs
-!! f_side.test_pat[0D_NOT_real] Real
+!! f_side.test_pat[0D_NOT_real16] Real
 rhs = 3 + offset; F%t = rhs
 !! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
 do jd1 = 1, size(F%spin,1); lb1 = lbound(F%spin,1) - 1

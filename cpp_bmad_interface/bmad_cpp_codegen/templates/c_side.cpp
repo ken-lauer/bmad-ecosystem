@@ -20,6 +20,7 @@ class CppClass {
 //// type:0D_NOT_integer8
 //// type:0D_NOT_logical
 //// type:0D_NOT_real
+//// type:0D_NOT_real16
 //// type:0D_NOT_size
 //// type:0D_NOT_type
 //// type:1D_NOT_complex
@@ -44,6 +45,8 @@ void to_f__variant_0(const CppClass& C, OpaqueClass* F) {
   //// case:0D_NOT_logical:to_f2_arg
   c_Bool&
   //// case:0D_NOT_real:to_f2_arg
+  c_Real&
+  //// case:0D_NOT_real16:to_f2_arg
   c_Real&
   //// case:0D_NOT_size:to_f2_arg
   c_Int
@@ -77,6 +80,8 @@ void to_f__variant_0(const CppClass& C, OpaqueClass* F) {
       //// case:0D_NOT_logical:to_f2_call
       C.NAME,
       //// case:0D_NOT_real:to_f2_call
+      C.NAME,
+      //// case:0D_NOT_real16:to_f2_call
       C.NAME,
       //// case:0D_NOT_size:to_f2_call
       NAME,
@@ -603,6 +608,7 @@ void to_f__variant_34(const CppClass& C, OpaqueClass* F) {
 //// type:0D_NOT_integer8
 //// type:0D_NOT_logical
 //// type:0D_NOT_real
+//// type:0D_NOT_real16
 //// type:0D_NOT_size
 //// type:1D_NOT_size
 //// type:2D_NOT_size
@@ -618,6 +624,8 @@ void to_c2__variant_0(
     //// case:0D_NOT_logical:to_c2_arg
     c_Bool& z_NAME,
     //// case:0D_NOT_real:to_c2_arg
+    c_Real& z_NAME,
+    //// case:0D_NOT_real16:to_c2_arg
     c_Real& z_NAME,
     //// case:0D_NOT_size:to_c2_arg
     c_Int NAME,
@@ -1146,6 +1154,7 @@ void EQUALITY_TEST(STRUCT_CPP_CLASS& C) {
     //// type:0D_NOT_integer8
     //// type:0D_NOT_logical
     //// type:0D_NOT_real
+    //// type:0D_NOT_real16
     //// type:0D_NOT_size
     //// type:0D_NOT_type
     //// type:1D_NOT_size
@@ -1693,6 +1702,7 @@ void TEST_PAT(STRUCT_CPP_CLASS& C) {
   //// type:0D_NOT_integer8
   //// type:0D_NOT_logical
   //// type:0D_NOT_real
+  //// type:0D_NOT_real16
   //// type:0D_NOT_size
   //// type:1D_NOT_size
   //// type:2D_NOT_size
@@ -1706,6 +1716,8 @@ void TEST_PAT(STRUCT_CPP_CLASS& C) {
   //// case:0D_NOT_logical:test_value
   (rhs % 2 == 0);
   //// case:0D_NOT_real:test_value
+  rhs;
+  //// case:0D_NOT_real16:test_value
   rhs;
   //// case:0D_NOT_size:test_value
   rhs;
@@ -1873,6 +1885,7 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
 
     //// section:c_class
     //// type:0D_NOT_real
+    //// type:0D_NOT_real16
     //// begin:c_class
     Real
     //// end:c_class
@@ -2162,6 +2175,7 @@ void CLASS_INITIALIZER(STRUCT_CPP_CLASS& C) {
     //// type:0D_NOT_integer8
     //// type:0D_NOT_logical
     //// type:0D_NOT_real
+    //// type:0D_NOT_real16
     //// type:0D_NOT_size
     //// type:1D_NOT_character
     //// type:1D_NOT_complex
@@ -2240,6 +2254,7 @@ void CONSTRUCT_VALUE(STRUCT_CPP_CLASS& C) {
     //// type:0D_ALLOC_real
     //// type:0D_NOT_complex
     //// type:0D_NOT_real
+    //// type:0D_NOT_real16
     //// type:0D_PTR_complex
     //// type:0D_PTR_real
     //// type:1D_ALLOC_complex

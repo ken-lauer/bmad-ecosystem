@@ -573,7 +573,7 @@ extern "C" void coord_to_c2(
   C.vec << z_vec;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.s = z_s;
-  // c_side.to_c2_set[0D_NOT_real] Real
+  // c_side.to_c2_set[0D_NOT_real16] Real
   C.t = z_t;
   // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
   C.spin << z_spin;

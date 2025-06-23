@@ -806,7 +806,7 @@ void set_CPP_coord_test_pattern(CPP_coord& C, int ix_patt) {
   // c_side.test_pat[0D_NOT_real]
   rhs = 2 + offset;
   C.s = rhs;
-  // c_side.test_pat[0D_NOT_real]
+  // c_side.test_pat[0D_NOT_real16]
   rhs = 3 + offset;
   C.t = rhs;
   // c_side.test_pat[1D_NOT_real]

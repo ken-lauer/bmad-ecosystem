@@ -53,6 +53,7 @@ DEBUG_INSTANTIATION = False
 # Constants
 
 REAL = "real"
+REAL16 = "real16"  # quad precision
 CMPLX = "complex"
 INT = "integer"
 INT8 = "integer8"
@@ -60,7 +61,9 @@ LOGIC = "logical"
 CHAR = "character"
 STRUCT = "type"
 SIZE = "size"
-ArgumentType = Literal["real", "complex", "integer", "integer8", "logical", "character", "type", "size"]
+ArgumentType = Literal[
+    "real", "real16", "complex", "integer", "integer8", "logical", "character", "type", "size"
+]
 
 NOT = "NOT"
 PTR = "PTR"
@@ -90,6 +93,7 @@ class FullType(NamedTuple):
 
         if type_name not in (
             "real",
+            "real16",
             "complex",
             "integer",
             "integer8",
@@ -351,6 +355,9 @@ class Argument:
             type_ = INT8
         else:
             type_ = member.type
+
+        if member.kind and member.kind.lower() == "qp" and member.type.lower() == "real":
+            type_ = REAL16
 
         if member.type_info.pointer:
             pointer_type = PTR
@@ -1906,6 +1913,7 @@ def get_c_type(type_val: str) -> str:
     """Get the C++ type string for a given type value"""
     type_mapping = {
         REAL: "Real",
+        REAL16: "Real",
         CMPLX: "Complex",
         INT: "Int",
         INT8: "Int8",

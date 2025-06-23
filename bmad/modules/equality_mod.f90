@@ -297,7 +297,7 @@ is_eq = .true.
 is_eq = is_eq .and. all(f1%vec == f2%vec)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s == f2%s)
-!! f_side.equality_test[0D_NOT_real]
+!! f_side.equality_test[0D_NOT_real16]
 is_eq = is_eq .and. (f1%t == f2%t)
 !! f_side.equality_test[1D_NOT_real]
 is_eq = is_eq .and. all(f1%spin == f2%spin)

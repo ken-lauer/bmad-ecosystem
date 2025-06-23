@@ -1857,9 +1857,10 @@ call c_f_pointer (Fp, F)
 
 
 !! f_side.to_c2_call
-call coord_to_c2 (C, fvec2vec(F%vec, 6), F%s, F%t, fvec2vec(F%spin, 3), fvec2vec(F%field, 2), &
-    fvec2vec(F%phase, 2), F%charge, F%dt_ref, F%r, F%p0c, F%E_potential, F%beta, F%ix_ele, &
-    F%ix_branch, F%ix_turn, F%ix_user, F%state, F%direction, F%time_dir, F%species, F%location)
+call coord_to_c2 (C, fvec2vec(F%vec, 6), F%s, real(F%t, 8), fvec2vec(F%spin, 3), &
+    fvec2vec(F%field, 2), fvec2vec(F%phase, 2), F%charge, F%dt_ref, F%r, F%p0c, F%E_potential, &
+    F%beta, F%ix_ele, F%ix_branch, F%ix_turn, F%ix_user, F%state, F%direction, F%time_dir, &
+    F%species, F%location)
 
 end subroutine coord_to_c
 
@@ -1901,7 +1902,7 @@ call c_f_pointer (Fp, F)
   F%vec = z_vec(1:6)
 !! f_side.to_f2_trans[0D_NOT_real]
   F%s = z_s
-!! f_side.to_f2_trans[0D_NOT_real]
+!! f_side.to_f2_trans[0D_NOT_real16]
   F%t = z_t
 !! f_side.to_f2_trans[1D_NOT_real]
   F%spin = z_spin(1:3)
