@@ -1,6 +1,7 @@
 #include <array>
 #include <complex>
 #include <memory>
+#include <optional>
 #include <vector>
 
 #ifndef BMAD_STD_TYPEDEF
