@@ -1329,6 +1329,8 @@ bool operator==(const CPP_bmad_common& x, const CPP_bmad_common& y) {
       is_eq && (x.convert_to_kinetic_momentum == y.convert_to_kinetic_momentum);
   is_eq = is_eq && (x.normalize_twiss == y.normalize_twiss);
   is_eq = is_eq && (x.aperture_limit_on == y.aperture_limit_on);
+  is_eq =
+      is_eq && (x.spin_n0_direction_user_set == y.spin_n0_direction_user_set);
   is_eq = is_eq && (x.debug == y.debug);
   return is_eq;
 };
@@ -1376,29 +1378,12 @@ bool operator==(const CPP_rad_int_all_ele& x, const CPP_rad_int_all_ele& y) {
 
 //--------------------------------------------------------------
 
-bool operator==(const CPP_ele_reference& x, const CPP_ele_reference& y) {
-  bool is_eq = true;
-  is_eq = is_eq && (x.ix_ele == y.ix_ele);
-  is_eq = is_eq && (x.ix_branch == y.ix_branch);
-  return is_eq;
-};
-
-//--------------------------------------------------------------
-
-bool operator==(const CPP_branch_reference& x, const CPP_branch_reference& y) {
-  bool is_eq = true;
-  is_eq = is_eq && (x.ix_branch == y.ix_branch);
-  return is_eq;
-};
-
-//--------------------------------------------------------------
-
 bool operator==(const CPP_rf_stair_step& x, const CPP_rf_stair_step& y) {
   bool is_eq = true;
   is_eq = is_eq && (x.E_tot0 == y.E_tot0);
   is_eq = is_eq && (x.E_tot1 == y.E_tot1);
   is_eq = is_eq && (x.p0c == y.p0c);
-  is_eq = is_eq && (x.p1c == y.p1c);
+  is_eq = is_eq && (x.dp0c == y.dp0c);
   is_eq = is_eq && (x.dE_amp == y.dE_amp);
   is_eq = is_eq && (x.scale == y.scale);
   is_eq = is_eq && (x.dtime == y.dtime);

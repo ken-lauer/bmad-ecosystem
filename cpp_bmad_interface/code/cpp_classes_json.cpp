@@ -1514,6 +1514,7 @@ void to_json(json& j, const CPP_bmad_common& obj) {
       {"convert_to_kinetic_momentum", obj.convert_to_kinetic_momentum},
       {"normalize_twiss", obj.normalize_twiss},
       {"aperture_limit_on", obj.aperture_limit_on},
+      {"spin_n0_direction_user_set", obj.spin_n0_direction_user_set},
       {"debug", obj.debug}};
 }
 
@@ -1579,36 +1580,12 @@ ostream& operator<<(ostream& os, const CPP_rad_int_all_ele& obj) {
   return os;
 }
 
-void to_json(json& j, const CPP_ele_reference& obj) {
-  j = json{{"ix_ele", obj.ix_ele}, {"ix_branch", obj.ix_branch}};
-}
-
-ostream& operator<<(ostream& os, const CPP_ele_reference& obj) {
-  json j;
-  to_json(j, obj);
-  std::string str = nlohmann::to_string(j);
-  os << str;
-  return os;
-}
-
-void to_json(json& j, const CPP_branch_reference& obj) {
-  j = json{{"ix_branch", obj.ix_branch}};
-}
-
-ostream& operator<<(ostream& os, const CPP_branch_reference& obj) {
-  json j;
-  to_json(j, obj);
-  std::string str = nlohmann::to_string(j);
-  os << str;
-  return os;
-}
-
 void to_json(json& j, const CPP_rf_stair_step& obj) {
   j = json{
       {"E_tot0", obj.E_tot0},
       {"E_tot1", obj.E_tot1},
       {"p0c", obj.p0c},
-      {"p1c", obj.p1c},
+      {"dp0c", obj.dp0c},
       {"dE_amp", obj.dE_amp},
       {"scale", obj.scale},
       {"dtime", obj.dtime},

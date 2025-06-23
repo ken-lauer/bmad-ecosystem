@@ -5340,6 +5340,7 @@ extern "C" void bmad_common_to_f2(
     c_Bool&,
     c_Bool&,
     c_Bool&,
+    c_Bool&,
     c_Bool&);
 
 extern "C" void bmad_common_to_f(
@@ -5388,6 +5389,7 @@ extern "C" void bmad_common_to_f(
       C.convert_to_kinetic_momentum,
       C.normalize_twiss,
       C.aperture_limit_on,
+      C.spin_n0_direction_user_set,
       C.debug);
 }
 
@@ -5434,6 +5436,7 @@ extern "C" void bmad_common_to_c2(
     c_Bool& z_convert_to_kinetic_momentum,
     c_Bool& z_normalize_twiss,
     c_Bool& z_aperture_limit_on,
+    c_Bool& z_spin_n0_direction_user_set,
     c_Bool& z_debug) {
   // c_side.to_c2_set[0D_NOT_real] Real
   C.max_aperture_limit = z_max_aperture_limit;
@@ -5515,6 +5518,8 @@ extern "C" void bmad_common_to_c2(
   C.normalize_twiss = z_normalize_twiss;
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.aperture_limit_on = z_aperture_limit_on;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.spin_n0_direction_user_set = z_spin_n0_direction_user_set;
   // c_side.to_c2_set[0D_NOT_logical] Bool
   C.debug = z_debug;
 }
@@ -5724,64 +5729,6 @@ extern "C" void rad_int_all_ele_to_c2(
 
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
-// CPP_ele_reference
-
-extern "C" void ele_reference_to_c(
-    const Opaque_ele_reference_class*,
-    CPP_ele_reference&);
-
-// c_side.to_f2_arg
-extern "C" void ele_reference_to_f2(
-    Opaque_ele_reference_class*,
-    c_Int&,
-    c_Int&);
-
-extern "C" void ele_reference_to_f(
-    const CPP_ele_reference& C,
-    Opaque_ele_reference_class* F) {
-  // c_side.to_f2_call
-  ele_reference_to_f2(F, C.ix_ele, C.ix_branch);
-}
-
-// c_side.to_c2_arg
-extern "C" void ele_reference_to_c2(
-    CPP_ele_reference& C,
-    c_Int& z_ix_ele,
-    c_Int& z_ix_branch) {
-  // c_side.to_c2_set[0D_NOT_integer] Int
-  C.ix_ele = z_ix_ele;
-  // c_side.to_c2_set[0D_NOT_integer] Int
-  C.ix_branch = z_ix_branch;
-}
-
-//--------------------------------------------------------------------
-//--------------------------------------------------------------------
-// CPP_branch_reference
-
-extern "C" void branch_reference_to_c(
-    const Opaque_branch_reference_class*,
-    CPP_branch_reference&);
-
-// c_side.to_f2_arg
-extern "C" void branch_reference_to_f2(Opaque_branch_reference_class*, c_Int&);
-
-extern "C" void branch_reference_to_f(
-    const CPP_branch_reference& C,
-    Opaque_branch_reference_class* F) {
-  // c_side.to_f2_call
-  branch_reference_to_f2(F, C.ix_branch);
-}
-
-// c_side.to_c2_arg
-extern "C" void branch_reference_to_c2(
-    CPP_branch_reference& C,
-    c_Int& z_ix_branch) {
-  // c_side.to_c2_set[0D_NOT_integer] Int
-  C.ix_branch = z_ix_branch;
-}
-
-//--------------------------------------------------------------------
-//--------------------------------------------------------------------
 // CPP_rf_stair_step
 
 extern "C" void rf_stair_step_to_c(
@@ -5805,7 +5752,7 @@ extern "C" void rf_stair_step_to_f(
     Opaque_rf_stair_step_class* F) {
   // c_side.to_f2_call
   rf_stair_step_to_f2(
-      F, C.E_tot0, C.E_tot1, C.p0c, C.p1c, C.dE_amp, C.scale, C.dtime, C.s);
+      F, C.E_tot0, C.E_tot1, C.p0c, C.dp0c, C.dE_amp, C.scale, C.dtime, C.s);
 }
 
 // c_side.to_c2_arg
@@ -5814,7 +5761,7 @@ extern "C" void rf_stair_step_to_c2(
     c_Real& z_E_tot0,
     c_Real& z_E_tot1,
     c_Real& z_p0c,
-    c_Real& z_p1c,
+    c_Real& z_dp0c,
     c_Real& z_dE_amp,
     c_Real& z_scale,
     c_Real& z_dtime,
@@ -5826,7 +5773,7 @@ extern "C" void rf_stair_step_to_c2(
   // c_side.to_c2_set[0D_NOT_real] Real
   C.p0c = z_p0c;
   // c_side.to_c2_set[0D_NOT_real] Real
-  C.p1c = z_p1c;
+  C.dp0c = z_dp0c;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.dE_amp = z_dE_amp;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -5910,7 +5857,7 @@ extern "C" void ele_to_f2(
     c_Int,
     const CPP_rf_ele*,
     c_Int,
-    const CPP_ele_reference*,
+    const CPP_lat_ele_loc*,
     c_Int,
     const CPP_floor_position&,
     const CPP_high_energy_space_charge*,
@@ -6018,7 +5965,7 @@ extern "C" void ele_to_f(const CPP_ele& C, Opaque_ele_class* F) {
   auto n_control = C.control ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_rf_ele>
   auto n_rf = C.rf ? 1 : 0;
-  // c_side.to_f_setup[0D_PTR_type]   std::optional<CPP_ele_reference>
+  // c_side.to_f_setup[0D_PTR_type]   std::optional<CPP_lat_ele_loc>
   auto n_lord = C.lord ? 1 : 0;
   // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_high_energy_space_charge>
   auto n_high_energy_space_charge = C.high_energy_space_charge ? 1 : 0;
@@ -6428,15 +6375,15 @@ extern "C" void ele_to_c2(
     C.rf.emplace();
     rf_ele_to_c(z_rf, C.rf.value());
   }
-  // c_side.to_c2_set[0D_PTR_type]   std::optional<CPP_ele_reference>
+  // c_side.to_c2_set[0D_PTR_type]   std::optional<CPP_lat_ele_loc>
   // NOTE: The parameter z_n_lord is set before C.n_lord
   if (z_n_lord == 0) {
     C.lord.reset();
   } else {
     C.lord.emplace();
-    ele_reference_to_c(
+    lat_ele_loc_to_c(
         // TODO
-        (const Opaque_ele_reference_class*)z_lord,
+        (const Bmad::Opaque_lat_ele_loc_class*)z_lord,
         C.lord.value());
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_floor_position

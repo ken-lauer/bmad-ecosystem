@@ -25,7 +25,7 @@
 namespace Bmad {
 
 // Enums from bmad_struct.f90
-const int BMAD_INC_VERSION = 335;
+const int BMAD_INC_VERSION = 336;
 const int NONE = 1;
 // maximum multipole order
 const int N_POLE_MAXX = 21;
@@ -427,7 +427,6 @@ const int B_MAX = 5;
 const int V_DISPLACE = 5;
 const int GRADIENT_TOT = 5;
 const int HARMON_MASTER = 5;
-const int KS = 5;
 const int FLEXIBLE = 5;
 const int CRUNCH = 5;
 const int REF_ORBIT_FOLLOWS = 5;
@@ -490,7 +489,7 @@ const int SIG_VX = 17;
 const int STATIC_LINEAR_MAP = 17;
 const int SIG_VY = 18;
 const int CONSTANT_REF_ENERGY = 18;
-const int LONGITUDINAL_MODE = 18;
+const int KS = 18;
 const int SIG_E = 19;
 const int SIG_PZ = 19;
 const int AUTOSCALE_AMPLITUDE = 19;
@@ -622,7 +621,7 @@ const int T_OFFSET = 32;
 const int DS_SLICE = 32;
 const int USE_REFLECTIVITY_TABLE = 32;
 const int INIT_NEEDED = 32;
-const int N_RF_STEPS = 32;
+const int LONGITUDINAL_MODE = 32;
 const int ANGLE = 33;
 const int N_CELL = 33;
 const int MODE_FLIP = 33;
@@ -660,6 +659,7 @@ const int B_FIELD = 43;
 const int E_FIELD = 43;
 const int HIGH_ENERGY_SPACE_CHARGE_ON = 43;
 const int CRAB_X4 = 43;
+const int N_RF_STEPS = 43;
 const int PHOTON_TYPE = 44;
 const int COUPLER_PHASE = 44;
 const int DB_FIELD = 44;
@@ -984,7 +984,6 @@ enum class EleAttribute : size_t {
   V_DISPLACE = 5,
   GRADIENT_TOT = 5,
   HARMON_MASTER = 5,
-  KS = 5,
   FLEXIBLE = 5,
   CRUNCH = 5,
   REF_ORBIT_FOLLOWS = 5,
@@ -1047,7 +1046,7 @@ enum class EleAttribute : size_t {
   STATIC_LINEAR_MAP = 17,
   SIG_VY = 18,
   CONSTANT_REF_ENERGY = 18,
-  LONGITUDINAL_MODE = 18,
+  KS = 18,
   SIG_E = 19,
   SIG_PZ = 19,
   AUTOSCALE_AMPLITUDE = 19,
@@ -1179,7 +1178,7 @@ enum class EleAttribute : size_t {
   DS_SLICE = 32,
   USE_REFLECTIVITY_TABLE = 32,
   INIT_NEEDED = 32,
-  N_RF_STEPS = 32,
+  LONGITUDINAL_MODE = 32,
   ANGLE = 33,
   N_CELL = 33,
   MODE_FLIP = 33,
@@ -1217,6 +1216,7 @@ enum class EleAttribute : size_t {
   E_FIELD = 43,
   HIGH_ENERGY_SPACE_CHARGE_ON = 43,
   CRAB_X4 = 43,
+  N_RF_STEPS = 43,
   PHOTON_TYPE = 44,
   COUPLER_PHASE = 44,
   DB_FIELD = 44,

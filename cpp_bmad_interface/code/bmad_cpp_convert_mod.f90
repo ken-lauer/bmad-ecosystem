@@ -1,4 +1,3 @@
-
 !+
 ! Fortran side of the Bmad / C++ structure interface.
 !
@@ -10,10 +9,11 @@
 
 module bmad_cpp_convert_mod
 
-use bmad_struct
-use cpp_bmad_interface_helper_structs
 use fortran_cpp_utils
+use bmad_struct
+
 use, intrinsic :: iso_c_binding
+
 
 !--------------------------------------------------------------------------
 
@@ -24,6 +24,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -32,6 +33,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -42,6 +44,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -50,6 +53,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -60,6 +64,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -68,6 +73,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -78,6 +84,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -86,6 +93,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -96,6 +104,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -104,6 +113,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -114,6 +124,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -122,6 +133,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -132,6 +144,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -140,6 +153,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -150,6 +164,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -158,6 +173,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -168,6 +184,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -176,6 +193,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -186,6 +204,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -194,6 +213,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -204,6 +224,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -212,6 +233,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -222,6 +244,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -230,6 +253,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -240,6 +264,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -248,6 +273,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -258,6 +284,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -266,6 +293,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -276,6 +304,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -284,6 +313,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -294,6 +324,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -302,6 +333,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -312,6 +344,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -320,6 +353,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -330,6 +364,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -338,6 +373,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -348,6 +384,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -356,6 +393,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -366,6 +404,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -374,6 +413,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -384,6 +424,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -392,6 +433,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -402,6 +444,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -410,6 +453,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -420,6 +464,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -428,6 +473,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -438,6 +484,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -446,6 +493,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -456,6 +504,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -464,6 +513,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -474,6 +524,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -482,6 +533,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -492,6 +544,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -500,6 +553,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -510,6 +564,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -518,6 +573,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -528,6 +584,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -536,6 +593,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -546,6 +604,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -554,6 +613,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -564,6 +624,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -572,6 +633,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -582,6 +644,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -590,6 +653,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -600,6 +664,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -608,6 +673,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -618,6 +684,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -626,6 +693,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -636,6 +704,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -644,6 +713,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -654,6 +724,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -662,6 +733,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -672,6 +744,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -680,6 +753,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -690,6 +764,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -698,6 +773,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -708,6 +784,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -716,6 +793,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -726,6 +804,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -734,6 +813,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -744,6 +824,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -752,6 +833,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -762,6 +844,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -771,23 +854,6 @@ interface
   end subroutine
 end interface
 
-!--------------------------------------------------------------------------
-
-interface 
-  subroutine ele_reference_to_f (C, Fp) bind(c)
-    import c_ptr
-    type(c_ptr), value :: C, Fp
-  end subroutine
-end interface
-
-!--------------------------------------------------------------------------
-
-interface 
-  subroutine branch_reference_to_f (C, Fp) bind(c)
-    import c_ptr
-    type(c_ptr), value :: C, Fp
-  end subroutine
-end interface
 
 !--------------------------------------------------------------------------
 
@@ -798,6 +864,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -806,6 +873,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -816,6 +884,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -824,6 +893,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -834,6 +904,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -842,6 +913,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -852,6 +924,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -860,6 +933,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -870,6 +944,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -878,6 +953,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -888,6 +964,7 @@ interface
   end subroutine
 end interface
 
+
 !--------------------------------------------------------------------------
 
 interface 
@@ -896,6 +973,7 @@ interface
     type(c_ptr), value :: C, Fp
   end subroutine
 end interface
+
 
 !--------------------------------------------------------------------------
 
@@ -906,7 +984,68 @@ interface
   end subroutine
 end interface
 
+
 contains
+
+!-----------------------------------------------------------------------------
+
+subroutine lat_struct_to_f2_finalize_ele(lat, branch, ele)
+
+  use bmad_struct, only: lat_struct, branch_struct, ele_struct
+
+type (lat_struct), target :: lat
+type (branch_struct), pointer :: branch
+type (ele_struct), pointer :: ele, lord
+
+  ! ele_struct%branch
+ 
+  ele%branch => branch
+  if (.not. associated(ele%lord)) then
+    return
+  endif
+
+  ! ele_struct%lord is just a reference
+  if (ele%lord%ix_branch >= lbound(lat%branch, 1) .and. ele%lord%ix_branch <= ubound(lat%branch, 1)) then
+    if (ele%lord%ix_ele >= lbound(lat%branch(ele%lord%ix_branch)%ele, 1) .and. ele%lord%ix_ele <= ubound(lat%branch(ele%lord%ix_branch)%ele, 1)) then
+      ele%lord => lat%branch(ele%lord%ix_branch)%ele(ele%lord%ix_ele)
+    endif
+  endif
+
+end subroutine
+
+subroutine lat_struct_to_f2_finalize(lat)
+
+  use bmad_struct, only: lat_struct, branch_struct, ele_struct
+
+implicit none
+
+type (lat_struct), target :: lat
+type (branch_struct), pointer :: branch
+! type (lat_ele_loc_struct), pointer :: loc
+type (ele_struct), pointer :: ele
+
+integer ib, ie
+
+if (.not. allocated(lat%branch)) return
+
+if (lat%use_name == 'TEST-LATTICE-FROM-TEST-SUITE') then
+  return
+endif
+
+do ib = 0, ubound(lat%branch, 1)
+  branch => lat%branch(ib)
+  branch%lat => lat
+  if (associated(branch)) then
+    do ie = 0, min(branch%n_ele_max, ubound(branch%ele, 1))
+      ele => branch%ele(ie)
+      call lat_struct_to_f2_finalize_ele(lat, branch, ele)
+    enddo
+  endif
+enddo
+lat%ele => lat%branch(0)%ele
+
+end subroutine lat_struct_to_f2_finalize
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -953,6 +1092,7 @@ call spline_to_c2 (C, F%x0, F%y0, F%x1, fvec2vec(F%coef, 4))
 
 end subroutine spline_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -992,6 +1132,7 @@ call c_f_pointer (Fp, F)
   F%coef = z_coef(1:4)
 
 end subroutine spline_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1038,6 +1179,7 @@ call spin_polar_to_c2 (C, F%polarization, F%theta, F%phi, F%xi)
 
 end subroutine spin_polar_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -1077,6 +1219,7 @@ call c_f_pointer (Fp, F)
   F%xi = z_xi
 
 end subroutine spin_polar_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1124,6 +1267,7 @@ call ac_kicker_time_to_c2 (C, F%amp, F%time, c_loc(F%spline))
 
 end subroutine ac_kicker_time_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -1162,6 +1306,7 @@ call c_f_pointer (Fp, F)
   call spline_to_f(z_spline, c_loc(F%spline))
 
 end subroutine ac_kicker_time_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1209,6 +1354,7 @@ call ac_kicker_freq_to_c2 (C, F%f, F%amp, F%phi, F%rf_clock_harmonic)
 
 end subroutine ac_kicker_freq_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -1249,6 +1395,7 @@ call c_f_pointer (Fp, F)
   F%rf_clock_harmonic = z_rf_clock_harmonic
 
 end subroutine ac_kicker_freq_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1321,6 +1468,7 @@ call ac_kicker_to_c2 (C, z_amp_vs_time, n1_amp_vs_time, z_frequency, n1_frequenc
 
 end subroutine ac_kicker_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -1385,6 +1533,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine ac_kicker_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1430,6 +1579,7 @@ call interval1_coef_to_c2 (C, F%c0, F%c1, F%n_exp)
 
 end subroutine interval1_coef_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -1467,6 +1617,7 @@ call c_f_pointer (Fp, F)
   F%n_exp = z_n_exp
 
 end subroutine interval1_coef_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1565,6 +1716,7 @@ call photon_reflect_table_to_c2 (C, fvec2vec(F%angle, n1_angle), n1_angle, fvec2
     n1_bragg_angle)
 
 end subroutine photon_reflect_table_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1681,6 +1833,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine photon_reflect_table_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1745,6 +1898,7 @@ call photon_reflect_surface_to_c2 (C, trim(F%name) // c_null_char, trim(F%descri
     F%surface_roughness_rms, F%roughness_correlation_len, F%ix_surface)
 
 end subroutine photon_reflect_surface_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1811,6 +1965,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine photon_reflect_surface_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1863,6 +2018,7 @@ call coord_to_c2 (C, fvec2vec(F%vec, 6), F%s, real(F%t, 8), fvec2vec(F%spin, 3),
     F%species, F%location)
 
 end subroutine coord_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -1943,6 +2099,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine coord_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2001,6 +2158,7 @@ call coord_array_to_c2 (C, z_orbit, n1_orbit)
 
 end subroutine coord_array_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -2049,6 +2207,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine coord_array_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2096,6 +2255,7 @@ call bpm_phase_coupling_to_c2 (C, F%K_22a, F%K_12a, F%K_11b, F%K_12b, F%Cbar22_a
     F%Cbar11_b, F%Cbar12_b, F%phi_a, F%phi_b)
 
 end subroutine bpm_phase_coupling_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2151,6 +2311,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine bpm_phase_coupling_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2198,6 +2359,7 @@ call expression_atom_to_c2 (C, trim(F%name) // c_null_char, F%type, F%value)
 
 end subroutine expression_atom_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -2237,6 +2399,7 @@ call c_f_pointer (Fp, F)
   F%value = z_value
 
 end subroutine expression_atom_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2313,6 +2476,7 @@ call wake_sr_z_long_to_c2 (C, fvec2vec(F%w, n1_w), n1_w, fvec2vec(F%fw, n1_fw), 
     F%z0, F%smoothing_sigma, F%position_dependence, c_logic(F%time_based))
 
 end subroutine wake_sr_z_long_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2411,6 +2575,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine wake_sr_z_long_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2459,6 +2624,7 @@ call wake_sr_mode_to_c2 (C, F%amp, F%damp, F%k, F%phi, F%b_sin, F%b_cos, F%a_sin
     F%polarization, F%position_dependence)
 
 end subroutine wake_sr_mode_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2514,6 +2680,7 @@ call c_f_pointer (Fp, F)
   F%position_dependence = z_position_dependence
 
 end subroutine wake_sr_mode_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2592,6 +2759,7 @@ call wake_sr_to_c2 (C, trim(F%file) // c_null_char, c_loc(F%z_long), z_long, n1_
     c_logic(F%scale_with_length))
 
 end subroutine wake_sr_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2677,6 +2845,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine wake_sr_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2726,6 +2895,7 @@ call wake_lr_mode_to_c2 (C, F%freq, F%freq_in, F%R_over_Q, F%Q, F%damp, F%phi, F
     F%b_sin, F%b_cos, F%a_sin, F%a_cos, F%m, c_logic(F%polarized))
 
 end subroutine wake_lr_mode_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2789,6 +2959,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine wake_lr_mode_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2851,6 +3022,7 @@ call wake_lr_to_c2 (C, trim(F%file) // c_null_char, z_mode, n1_mode, F%t_ref, F%
     F%amp_scale, F%time_scale, c_logic(F%self_wake_on))
 
 end subroutine wake_lr_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2916,6 +3088,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine wake_lr_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -2961,6 +3134,7 @@ call lat_ele_loc_to_c2 (C, F%ix_ele, F%ix_branch)
 
 end subroutine lat_ele_loc_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -2996,6 +3170,7 @@ call c_f_pointer (Fp, F)
   F%ix_branch = z_ix_branch
 
 end subroutine lat_ele_loc_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3042,6 +3217,7 @@ call wake_to_c2 (C, c_loc(F%sr), c_loc(F%lr))
 
 end subroutine wake_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3077,6 +3253,7 @@ call c_f_pointer (Fp, F)
   call wake_lr_to_f(z_lr, c_loc(F%lr))
 
 end subroutine wake_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3124,6 +3301,7 @@ call taylor_term_to_c2 (C, F%coef, fvec2vec(F%expn, 6))
 
 end subroutine taylor_term_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3160,6 +3338,7 @@ call c_f_pointer (Fp, F)
   F%expn = z_expn(1:6)
 
 end subroutine taylor_term_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3220,6 +3399,7 @@ call taylor_to_c2 (C, F%ref, z_term, n1_term)
 
 end subroutine taylor_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3271,6 +3451,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine taylor_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3317,6 +3498,7 @@ call em_taylor_term_to_c2 (C, F%coef, fvec2vec(F%expn, 2))
 
 end subroutine em_taylor_term_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3353,6 +3535,7 @@ call c_f_pointer (Fp, F)
   F%expn = z_expn(1:2)
 
 end subroutine em_taylor_term_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3413,6 +3596,7 @@ call em_taylor_to_c2 (C, F%ref, z_term, n1_term)
 
 end subroutine em_taylor_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3464,6 +3648,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine em_taylor_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3511,6 +3696,7 @@ call cartesian_map_term1_to_c2 (C, F%coef, F%kx, F%ky, F%kz, F%x0, F%y0, F%phi_z
     F%form)
 
 end subroutine cartesian_map_term1_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3563,6 +3749,7 @@ call c_f_pointer (Fp, F)
   F%form = z_form
 
 end subroutine cartesian_map_term1_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3624,6 +3811,7 @@ call cartesian_map_term_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_term,
 
 end subroutine cartesian_map_term_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3677,6 +3865,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine cartesian_map_term_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3732,6 +3921,7 @@ call cartesian_map_to_c2 (C, F%field_scale, fvec2vec(F%r0, 3), F%master_paramete
 
 end subroutine cartesian_map_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3786,6 +3976,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine cartesian_map_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3831,6 +4022,7 @@ call cylindrical_map_term1_to_c2 (C, F%e_coef, F%b_coef)
 
 end subroutine cylindrical_map_term1_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3866,6 +4058,7 @@ call c_f_pointer (Fp, F)
   F%b_coef = z_b_coef
 
 end subroutine cylindrical_map_term1_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -3927,6 +4120,7 @@ call cylindrical_map_term_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_ter
 
 end subroutine cylindrical_map_term_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -3980,6 +4174,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine cylindrical_map_term_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4035,6 +4230,7 @@ call cylindrical_map_to_c2 (C, F%m, F%harmonic, F%phi0_fieldmap, F%theta0_azimut
     n_ptr)
 
 end subroutine cylindrical_map_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4098,6 +4294,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine cylindrical_map_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4144,6 +4341,7 @@ call bicubic_cmplx_coef_to_c2 (C, mat2vec(F%coef, 4*4), fvec2vec(F%i_box, 2))
 
 end subroutine bicubic_cmplx_coef_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -4180,6 +4378,7 @@ call c_f_pointer (Fp, F)
   F%i_box = z_i_box(1:2)
 
 end subroutine bicubic_cmplx_coef_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4227,6 +4426,7 @@ call tricubic_cmplx_coef_to_c2 (C, tensor2vec(F%coef, 4*4*4), fvec2vec(F%i_box, 
 
 end subroutine tricubic_cmplx_coef_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -4263,6 +4463,7 @@ call c_f_pointer (Fp, F)
   F%i_box = z_i_box(1:3)
 
 end subroutine tricubic_cmplx_coef_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4309,6 +4510,7 @@ call grid_field_pt1_to_c2 (C, fvec2vec(F%E, 3), fvec2vec(F%B, 3))
 
 end subroutine grid_field_pt1_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -4344,6 +4546,7 @@ call c_f_pointer (Fp, F)
   F%B = z_B(1:3)
 
 end subroutine grid_field_pt1_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4409,6 +4612,7 @@ call grid_field_pt_to_c2 (C, trim(F%file) // c_null_char, F%n_link, z_pt, n1_pt,
 
 end subroutine grid_field_pt_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -4460,6 +4664,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine grid_field_pt_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4532,6 +4737,7 @@ call grid_field_to_c2 (C, F%geometry, F%harmonic, F%phi0_fieldmap, F%field_scale
     fvec2vec(F%r0, 3), c_logic(F%curved_ref_frame), c_loc(F%ptr), n_ptr, z_bi_coef, z_tri_coef)
 
 end subroutine grid_field_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4614,6 +4820,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine grid_field_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4659,6 +4866,7 @@ call floor_position_to_c2 (C, fvec2vec(F%r, 3), mat2vec(F%w, 3*3), F%theta, F%ph
 
 end subroutine floor_position_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -4700,6 +4908,7 @@ call c_f_pointer (Fp, F)
   F%psi = z_psi
 
 end subroutine floor_position_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4748,6 +4957,7 @@ call high_energy_space_charge_to_c2 (C, c_loc(F%closed_orb), F%kick_const, F%sig
     F%phi, F%sin_phi, F%cos_phi, F%sig_z)
 
 end subroutine high_energy_space_charge_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4799,6 +5009,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine high_energy_space_charge_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4845,6 +5056,7 @@ call xy_disp_to_c2 (C, F%eta, F%etap, F%deta_ds, F%sigma, F%deta_dpz, F%detap_dp
 
 end subroutine xy_disp_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -4889,6 +5101,7 @@ call c_f_pointer (Fp, F)
   F%detap_dpz = z_detap_dpz
 
 end subroutine xy_disp_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -4939,6 +5152,7 @@ call twiss_to_c2 (C, F%beta, F%alpha, F%gamma, F%phi, F%eta, F%etap, F%deta_ds, 
     F%sigma_p, F%emit, F%norm_emit, F%dbeta_dpz, F%dalpha_dpz, F%deta_dpz, F%detap_dpz)
 
 end subroutine twiss_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5005,6 +5219,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine twiss_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5052,6 +5267,7 @@ call mode3_to_c2 (C, mat2vec(F%v, 6*6), c_loc(F%a), c_loc(F%b), c_loc(F%c), c_lo
 
 end subroutine mode3_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5096,6 +5312,7 @@ call c_f_pointer (Fp, F)
   call twiss_to_f(z_y, c_loc(F%y))
 
 end subroutine mode3_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5145,6 +5362,7 @@ call bookkeeping_state_to_c2 (C, F%attributes, F%control, F%floor_position, F%s_
     F%ref_energy, F%mat6, F%rad_int, F%ptc, c_logic(F%has_misalign))
 
 end subroutine bookkeeping_state_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5199,6 +5417,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine bookkeeping_state_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5246,6 +5465,7 @@ call rad_map_to_c2 (C, fvec2vec(F%ref_orb, 6), mat2vec(F%damp_dmat, 6*6), &
 
 end subroutine rad_map_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5288,6 +5508,7 @@ call c_f_pointer (Fp, F)
   call vec2mat(z_stoc_mat, F%stoc_mat)
 
 end subroutine rad_map_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5335,6 +5556,7 @@ call rad_map_ele_to_c2 (C, c_loc(F%rm0), c_loc(F%rm1), c_logic(F%stale))
 
 end subroutine rad_map_ele_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5373,6 +5595,7 @@ call c_f_pointer (Fp, F)
   F%stale = f_logic(z_stale)
 
 end subroutine rad_map_ele_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5432,6 +5655,7 @@ call gen_grad1_to_c2 (C, F%m, F%sincos, F%n_deriv_max, mat2vec(F%deriv, n1_deriv
 
 end subroutine gen_grad1_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5485,6 +5709,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine gen_grad1_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5550,6 +5775,7 @@ call gen_grad_map_to_c2 (C, trim(F%file) // c_null_char, z_gg, n1_gg, F%ele_anch
     c_logic(F%curved_ref_frame))
 
 end subroutine gen_grad_map_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5624,6 +5850,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine gen_grad_map_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5669,6 +5896,7 @@ call surface_segmented_pt_to_c2 (C, F%x0, F%y0, F%z0, F%dz_dx, F%dz_dy)
 
 end subroutine surface_segmented_pt_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5710,6 +5938,7 @@ call c_f_pointer (Fp, F)
   F%dz_dy = z_dz_dy
 
 end subroutine surface_segmented_pt_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5774,6 +6003,7 @@ call surface_segmented_to_c2 (C, c_logic(F%active), fvec2vec(F%dr, 2), fvec2vec(
 
 end subroutine surface_segmented_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5830,6 +6060,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine surface_segmented_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5876,6 +6107,7 @@ call surface_h_misalign_pt_to_c2 (C, F%x0, F%y0, F%rot_y, F%rot_t, F%rot_y_rms, 
 
 end subroutine surface_h_misalign_pt_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -5920,6 +6152,7 @@ call c_f_pointer (Fp, F)
   F%rot_t_rms = z_rot_t_rms
 
 end subroutine surface_h_misalign_pt_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -5984,6 +6217,7 @@ call surface_h_misalign_to_c2 (C, c_logic(F%active), fvec2vec(F%dr, 2), fvec2vec
 
 end subroutine surface_h_misalign_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6040,6 +6274,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine surface_h_misalign_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6086,6 +6321,7 @@ call surface_displacement_pt_to_c2 (C, F%x0, F%y0, F%z0, F%dz_dx, F%dz_dy, F%d2z
 
 end subroutine surface_displacement_pt_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6130,6 +6366,7 @@ call c_f_pointer (Fp, F)
   F%d2z_dxdy = z_d2z_dxdy
 
 end subroutine surface_displacement_pt_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6194,6 +6431,7 @@ call surface_displacement_to_c2 (C, c_logic(F%active), fvec2vec(F%dr, 2), fvec2v
 
 end subroutine surface_displacement_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6250,6 +6488,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine surface_displacement_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6295,6 +6534,7 @@ call target_point_to_c2 (C, fvec2vec(F%r, 3))
 
 end subroutine target_point_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6328,6 +6568,7 @@ call c_f_pointer (Fp, F)
   F%r = z_r(1:3)
 
 end subroutine target_point_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6377,6 +6618,7 @@ call surface_curvature_to_c2 (C, mat2vec(F%xy, 7*7), F%spherical, fvec2vec(F%ell
 
 end subroutine surface_curvature_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6418,6 +6660,7 @@ call c_f_pointer (Fp, F)
   F%has_curvature = f_logic(z_has_curvature)
 
 end subroutine surface_curvature_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6471,6 +6714,7 @@ call photon_target_to_c2 (C, F%type, F%n_corner, c_loc(F%ele_loc), z_corner, c_l
 
 end subroutine photon_target_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6516,6 +6760,7 @@ call c_f_pointer (Fp, F)
   call target_point_to_f(z_center, c_loc(F%center))
 
 end subroutine photon_target_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6564,6 +6809,7 @@ call photon_material_to_c2 (C, F%f0_m1, F%f0_m2, F%f_0, F%f_h, F%f_hbar, F%f_hkl
     fvec2vec(F%h_norm, 3), fvec2vec(F%l_ref, 3))
 
 end subroutine photon_material_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6615,6 +6861,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine photon_material_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6664,6 +6911,7 @@ call pixel_pt_to_c2 (C, F%n_photon, F%E_x, F%E_y, F%intensity_x, F%intensity_y, 
     fvec2vec(F%init_orbit_rms, 6))
 
 end subroutine pixel_pt_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6719,6 +6967,7 @@ call c_f_pointer (Fp, F)
   F%init_orbit_rms = z_init_orbit_rms(1:6)
 
 end subroutine pixel_pt_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6784,6 +7033,7 @@ call pixel_detec_to_c2 (C, fvec2vec(F%dr, 2), fvec2vec(F%r0, 2), F%n_track_tot, 
 
 end subroutine pixel_detec_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -6844,6 +7094,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine pixel_detec_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -6921,6 +7172,7 @@ call photon_element_to_c2 (C, c_loc(F%curvature), c_loc(F%target), c_loc(F%mater
     n1_integrated_init_energy_prob)
 
 end subroutine photon_element_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7009,6 +7261,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine photon_element_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7057,6 +7310,7 @@ call wall3d_vertex_to_c2 (C, F%x, F%y, F%radius_x, F%radius_y, F%tilt, F%angle, 
     F%type)
 
 end subroutine wall3d_vertex_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7110,6 +7364,7 @@ call c_f_pointer (Fp, F)
   F%type = z_type
 
 end subroutine wall3d_vertex_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7185,6 +7440,7 @@ call wall3d_section_to_c2 (C, trim(F%name) // c_null_char, trim(F%material) // c
     fvec2vec(F%p1_coef, 3), fvec2vec(F%p2_coef, 3))
 
 end subroutine wall3d_section_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7287,6 +7543,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine wall3d_section_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7352,6 +7609,7 @@ call wall3d_to_c2 (C, trim(F%name) // c_null_char, F%type, F%ix_wall3d, F%n_link
     c_logic(F%superimpose), F%ele_anchor_pt, z_section, n1_section)
 
 end subroutine wall3d_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7425,6 +7683,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine wall3d_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7476,6 +7735,7 @@ call ramper_lord_to_c2 (C, F%ix_ele, F%ix_con, F%attrib_ptr, n_attrib_ptr)
 
 end subroutine ramper_lord_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -7521,6 +7781,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine ramper_lord_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7592,6 +7853,7 @@ call control_to_c2 (C, F%value, fvec2vec(F%y_knot, n1_y_knot), n1_y_knot, z_stac
     c_null_char, F%ix_attrib)
 
 end subroutine control_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7671,6 +7933,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine control_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7717,6 +7980,7 @@ call control_var1_to_c2 (C, trim(F%name) // c_null_char, F%value, F%old_value)
 
 end subroutine control_var1_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -7755,6 +8019,7 @@ call c_f_pointer (Fp, F)
   F%old_value = z_old_value
 
 end subroutine control_var1_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7826,6 +8091,7 @@ call control_ramp1_to_c2 (C, fvec2vec(F%y_knot, n1_y_knot), n1_y_knot, z_stack, 
 
 end subroutine control_ramp1_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -7896,6 +8162,7 @@ call c_f_pointer (Fp, F)
   F%is_controller = f_logic(z_is_controller)
 
 end subroutine control_ramp1_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -7987,6 +8254,7 @@ call controller_to_c2 (C, z_var, n1_var, z_ramp, n1_ramp, z_ramper_lord, n1_ramp
     fvec2vec(F%x_knot, n1_x_knot), n1_x_knot)
 
 end subroutine controller_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8081,6 +8349,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine controller_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8128,6 +8397,7 @@ call ellipse_beam_init_to_c2 (C, F%part_per_ellipse, F%n_ellipse, F%sigma_cutoff
 
 end subroutine ellipse_beam_init_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -8167,6 +8437,7 @@ call c_f_pointer (Fp, F)
   F%sigma_cutoff = z_sigma_cutoff
 
 end subroutine ellipse_beam_init_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8214,6 +8485,7 @@ call kv_beam_init_to_c2 (C, fvec2vec(F%part_per_phi, 2), F%n_I2, F%A)
 
 end subroutine kv_beam_init_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -8252,6 +8524,7 @@ call c_f_pointer (Fp, F)
   F%A = z_A
 
 end subroutine kv_beam_init_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8300,6 +8573,7 @@ call grid_beam_init_to_c2 (C, F%n_x, F%n_px, F%x_min, F%x_max, F%px_min, F%px_ma
 
 end subroutine grid_beam_init_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -8345,6 +8619,7 @@ call c_f_pointer (Fp, F)
   F%px_max = z_px_max
 
 end subroutine grid_beam_init_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8428,6 +8703,7 @@ call beam_init_to_c2 (C, trim(F%position_file) // c_null_char, z_distribution_ty
     c_logic(F%use_z_as_t), trim(F%file_name) // c_null_char)
 
 end subroutine beam_init_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8552,6 +8828,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine beam_init_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8606,6 +8883,7 @@ call lat_param_to_c2 (C, F%n_part, F%total_length, F%unstable_factor, mat2vec(F%
     F%g3_integral, c_loc(F%bookkeeping_state), c_loc(F%beam_init))
 
 end subroutine lat_param_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8680,6 +8958,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine lat_param_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8726,6 +9005,7 @@ call mode_info_to_c2 (C, c_logic(F%stable), F%tune, F%emit, F%chrom, F%sigma, F%
 
 end subroutine mode_info_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -8770,6 +9050,7 @@ call c_f_pointer (Fp, F)
   F%sigmap = z_sigmap
 
 end subroutine mode_info_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8818,6 +9099,7 @@ call pre_tracker_to_c2 (C, F%who, F%ix_ele_start, F%ix_ele_end, trim(F%input_fil
 
 end subroutine pre_tracker_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -8858,6 +9140,7 @@ call c_f_pointer (Fp, F)
   call to_f_str(z_input_file, F%input_file)
 
 end subroutine pre_tracker_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -8906,6 +9189,7 @@ call anormal_mode_to_c2 (C, F%emittance, F%emittance_no_vert, fvec2vec(F%synch_i
 
 end subroutine anormal_mode_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -8952,6 +9236,7 @@ call c_f_pointer (Fp, F)
   F%tune = z_tune
 
 end subroutine anormal_mode_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9000,6 +9285,7 @@ call linac_normal_mode_to_c2 (C, F%i2_E4, F%i3_E7, F%i5a_E6, F%i5b_E6, F%sig_E1,
 
 end subroutine linac_normal_mode_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -9046,6 +9332,7 @@ call c_f_pointer (Fp, F)
   F%b_emittance_end = z_b_emittance_end
 
 end subroutine linac_normal_mode_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9097,6 +9384,7 @@ call normal_modes_to_c2 (C, fvec2vec(F%synch_int, 4), F%sigE_E, F%sig_z, F%e_los
     c_loc(F%b), c_loc(F%z), c_loc(F%lin))
 
 end subroutine normal_modes_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9160,6 +9448,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine normal_modes_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9206,6 +9495,7 @@ call em_field_to_c2 (C, fvec2vec(F%E, 3), fvec2vec(F%B, 3), mat2vec(F%dE, 3*3), 
 
 end subroutine em_field_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -9251,6 +9541,7 @@ call c_f_pointer (Fp, F)
   F%A = z_A(1:3)
 
 end subroutine em_field_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9300,6 +9591,7 @@ call strong_beam_to_c2 (C, F%ix_slice, F%x_center, F%y_center, F%x_sigma, F%y_si
 
 end subroutine strong_beam_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -9347,6 +9639,7 @@ call c_f_pointer (Fp, F)
   F%dy = z_dy
 
 end subroutine strong_beam_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9396,6 +9689,7 @@ call track_point_to_c2 (C, F%s_lab, F%s_body, c_loc(F%orb), c_loc(F%field), &
 
 end subroutine track_point_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -9443,6 +9737,7 @@ call c_f_pointer (Fp, F)
   call vec2mat(z_mat6, F%mat6)
 
 end subroutine track_point_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9504,6 +9799,7 @@ call track_to_c2 (C, z_pt, n1_pt, F%ds_save, F%n_pt, F%n_bad, F%n_ok)
 
 end subroutine track_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -9562,6 +9858,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine track_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9619,6 +9916,7 @@ call space_charge_common_to_c2 (C, F%ds_track_step, F%dt_track_step, F%cathode_s
     // c_null_char)
 
 end subroutine space_charge_common_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9694,6 +9992,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine space_charge_common_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9727,7 +10026,7 @@ interface
       z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, z_radiation_zero_average, &
       z_radiation_fluctuations_on, z_conserve_taylor_maps, z_absolute_time_tracking, &
       z_absolute_time_ref_shift, z_convert_to_kinetic_momentum, z_normalize_twiss, &
-      z_aperture_limit_on, z_debug) bind(c)
+      z_aperture_limit_on, z_spin_n0_direction_user_set, z_debug) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
@@ -9737,7 +10036,7 @@ interface
     integer(c_int) :: z_sad_n_div_max, z_taylor_order, z_runge_kutta_order, z_default_integ_order, z_max_num_runge_kutta_step
     logical(c_bool) :: z_rf_phase_below_transition_ref, z_sr_wakes_on, z_lr_wakes_on, z_auto_bookkeeper, z_high_energy_space_charge_on, z_csr_and_space_charge_on, z_spin_tracking_on
     logical(c_bool) :: z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, z_radiation_zero_average, z_radiation_fluctuations_on, z_conserve_taylor_maps, z_absolute_time_tracking, z_absolute_time_ref_shift
-    logical(c_bool) :: z_convert_to_kinetic_momentum, z_normalize_twiss, z_aperture_limit_on, z_debug
+    logical(c_bool) :: z_convert_to_kinetic_momentum, z_normalize_twiss, z_aperture_limit_on, z_spin_n0_direction_user_set, z_debug
 end subroutine
 end interface
 
@@ -9767,9 +10066,10 @@ call bmad_common_to_c2 (C, F%max_aperture_limit, fvec2vec(F%d_orb, 6), F%default
     c_logic(F%radiation_fluctuations_on), c_logic(F%conserve_taylor_maps), &
     c_logic(F%absolute_time_tracking), c_logic(F%absolute_time_ref_shift), &
     c_logic(F%convert_to_kinetic_momentum), c_logic(F%normalize_twiss), &
-    c_logic(F%aperture_limit_on), c_logic(F%debug))
+    c_logic(F%aperture_limit_on), c_logic(F%spin_n0_direction_user_set), c_logic(F%debug))
 
 end subroutine bmad_common_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9798,7 +10098,7 @@ subroutine bmad_common_to_f2 (Fp, z_max_aperture_limit, z_d_orb, z_default_ds_st
     z_spin_tracking_on, z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, &
     z_radiation_zero_average, z_radiation_fluctuations_on, z_conserve_taylor_maps, &
     z_absolute_time_tracking, z_absolute_time_ref_shift, z_convert_to_kinetic_momentum, &
-    z_normalize_twiss, z_aperture_limit_on, z_debug) bind(c)
+    z_normalize_twiss, z_aperture_limit_on, z_spin_n0_direction_user_set, z_debug) bind(c)
 
 
 implicit none
@@ -9813,7 +10113,7 @@ real(c_double) :: z_electric_dipole_moment, z_synch_rad_scale, z_sad_eps_scale, 
 integer(c_int) :: z_sad_n_div_max, z_taylor_order, z_runge_kutta_order, z_default_integ_order, z_max_num_runge_kutta_step
 logical(c_bool) :: z_rf_phase_below_transition_ref, z_sr_wakes_on, z_lr_wakes_on, z_auto_bookkeeper, z_high_energy_space_charge_on, z_csr_and_space_charge_on, z_spin_tracking_on
 logical(c_bool) :: z_spin_sokolov_ternov_flipping_on, z_radiation_damping_on, z_radiation_zero_average, z_radiation_fluctuations_on, z_conserve_taylor_maps, z_absolute_time_tracking, z_absolute_time_ref_shift
-logical(c_bool) :: z_convert_to_kinetic_momentum, z_normalize_twiss, z_aperture_limit_on, z_debug
+logical(c_bool) :: z_convert_to_kinetic_momentum, z_normalize_twiss, z_aperture_limit_on, z_spin_n0_direction_user_set, z_debug
 
 call c_f_pointer (Fp, F)
 
@@ -9898,9 +10198,12 @@ call c_f_pointer (Fp, F)
 !! f_side.to_f2_trans[0D_NOT_logical]
   F%aperture_limit_on = f_logic(z_aperture_limit_on)
 !! f_side.to_f2_trans[0D_NOT_logical]
+  F%spin_n0_direction_user_set = f_logic(z_spin_n0_direction_user_set)
+!! f_side.to_f2_trans[0D_NOT_logical]
   F%debug = f_logic(z_debug)
 
 end subroutine bmad_common_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -9952,6 +10255,7 @@ call rad_int1_to_c2 (C, F%i0, F%i1, F%i2, F%i3, F%i4a, F%i4b, F%i4z, F%i5a, F%i5
     F%lin_sig_E, F%n_steps)
 
 end subroutine rad_int1_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10025,6 +10329,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine rad_int1_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10083,6 +10388,7 @@ call rad_int_branch_to_c2 (C, z_ele, n1_ele)
 
 end subroutine rad_int_branch_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -10130,6 +10436,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine rad_int_branch_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10189,6 +10496,7 @@ call rad_int_all_ele_to_c2 (C, z_branch, n1_branch)
 
 end subroutine rad_int_all_ele_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -10237,165 +10545,6 @@ call c_f_pointer (Fp, F)
 
 end subroutine rad_int_all_ele_to_f2
 
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine ele_reference_to_c (Fp, C) bind(c)
-!
-! Routine to convert a Bmad ele_reference_struct to a C++ CPP_ele_reference structure
-!
-! Input:
-!   Fp -- type(c_ptr), value :: Input Bmad ele_reference_struct structure.
-!
-! Output:
-!   C -- type(c_ptr), value :: Output C++ CPP_ele_reference struct.
-!-
-
-subroutine ele_reference_to_c (Fp, C) bind(c)
-
-implicit none
-
-interface
-  !! f_side.to_c2_f2_sub_arg
-  subroutine ele_reference_to_c2 (C, z_ix_ele, z_ix_branch) bind(c)
-    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
-    !! f_side.to_c2_type :: f_side.to_c2_name
-    type(c_ptr), value :: C
-    integer(c_int) :: z_ix_ele, z_ix_branch
-end subroutine
-end interface
-
-type(c_ptr), value :: Fp
-type(c_ptr), value :: C
-type(ele_reference_struct), pointer :: F
-integer jd, jd1, jd2, jd3, lb1, lb2, lb3
-!! f_side.to_c_var
-
-!
-
-call c_f_pointer (Fp, F)
-
-
-!! f_side.to_c2_call
-call ele_reference_to_c2 (C, F%ix_ele, F%ix_branch)
-
-end subroutine ele_reference_to_c
-
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine ele_reference_to_f2 (Fp, ...etc...) bind(c)
-!
-! Routine used in converting a C++ CPP_ele_reference structure to a Bmad ele_reference_struct structure.
-! This routine is called by ele_reference_to_c and is not meant to be called directly.
-!
-! Input:
-!   ...etc... -- Components of the structure. See the ele_reference_to_f2 code for more details.
-!
-! Output:
-!   Fp -- type(c_ptr), value :: Bmad ele_reference_struct structure.
-!-
-
-!! f_side.to_c2_f2_sub_arg
-subroutine ele_reference_to_f2 (Fp, z_ix_ele, z_ix_branch) bind(c)
-
-
-implicit none
-
-type(c_ptr), value :: Fp
-type(ele_reference_struct), pointer :: F
-integer jd, jd1, jd2, jd3, lb1, lb2, lb3
-!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
-integer(c_int) :: z_ix_ele, z_ix_branch
-
-call c_f_pointer (Fp, F)
-
-!! f_side.to_f2_trans[0D_NOT_integer]
-  F%ix_ele = z_ix_ele
-!! f_side.to_f2_trans[0D_NOT_integer]
-  F%ix_branch = z_ix_branch
-
-end subroutine ele_reference_to_f2
-
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine branch_reference_to_c (Fp, C) bind(c)
-!
-! Routine to convert a Bmad branch_reference_struct to a C++ CPP_branch_reference structure
-!
-! Input:
-!   Fp -- type(c_ptr), value :: Input Bmad branch_reference_struct structure.
-!
-! Output:
-!   C -- type(c_ptr), value :: Output C++ CPP_branch_reference struct.
-!-
-
-subroutine branch_reference_to_c (Fp, C) bind(c)
-
-implicit none
-
-interface
-  !! f_side.to_c2_f2_sub_arg
-  subroutine branch_reference_to_c2 (C, z_ix_branch) bind(c)
-    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
-    !! f_side.to_c2_type :: f_side.to_c2_name
-    type(c_ptr), value :: C
-    integer(c_int) :: z_ix_branch
-end subroutine
-end interface
-
-type(c_ptr), value :: Fp
-type(c_ptr), value :: C
-type(branch_reference_struct), pointer :: F
-integer jd, jd1, jd2, jd3, lb1, lb2, lb3
-!! f_side.to_c_var
-
-!
-
-call c_f_pointer (Fp, F)
-
-
-!! f_side.to_c2_call
-call branch_reference_to_c2 (C, F%ix_branch)
-
-end subroutine branch_reference_to_c
-
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine branch_reference_to_f2 (Fp, ...etc...) bind(c)
-!
-! Routine used in converting a C++ CPP_branch_reference structure to a Bmad branch_reference_struct structure.
-! This routine is called by branch_reference_to_c and is not meant to be called directly.
-!
-! Input:
-!   ...etc... -- Components of the structure. See the branch_reference_to_f2 code for more details.
-!
-! Output:
-!   Fp -- type(c_ptr), value :: Bmad branch_reference_struct structure.
-!-
-
-!! f_side.to_c2_f2_sub_arg
-subroutine branch_reference_to_f2 (Fp, z_ix_branch) bind(c)
-
-
-implicit none
-
-type(c_ptr), value :: Fp
-type(branch_reference_struct), pointer :: F
-integer jd, jd1, jd2, jd3, lb1, lb2, lb3
-!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
-integer(c_int) :: z_ix_branch
-
-call c_f_pointer (Fp, F)
-
-!! f_side.to_f2_trans[0D_NOT_integer]
-  F%ix_branch = z_ix_branch
-
-end subroutine branch_reference_to_f2
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10418,12 +10567,12 @@ implicit none
 
 interface
   !! f_side.to_c2_f2_sub_arg
-  subroutine rf_stair_step_to_c2 (C, z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, &
+  subroutine rf_stair_step_to_c2 (C, z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, &
       z_dtime, z_s) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
-    real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, z_dtime
+    real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, z_dtime
     real(c_double) :: z_s
 end subroutine
 end interface
@@ -10440,9 +10589,11 @@ call c_f_pointer (Fp, F)
 
 
 !! f_side.to_c2_call
-call rf_stair_step_to_c2 (C, F%E_tot0, F%E_tot1, F%p0c, F%p1c, F%dE_amp, F%scale, F%dtime, F%s)
+call rf_stair_step_to_c2 (C, F%E_tot0, F%E_tot1, F%p0c, F%dp0c, F%dE_amp, F%scale, F%dtime, &
+    F%s)
 
 end subroutine rf_stair_step_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10460,7 +10611,7 @@ end subroutine rf_stair_step_to_c
 !-
 
 !! f_side.to_c2_f2_sub_arg
-subroutine rf_stair_step_to_f2 (Fp, z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, &
+subroutine rf_stair_step_to_f2 (Fp, z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, &
     z_dtime, z_s) bind(c)
 
 
@@ -10470,7 +10621,7 @@ type(c_ptr), value :: Fp
 type(rf_stair_step_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
-real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, z_dtime
+real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, z_dtime
 real(c_double) :: z_s
 
 call c_f_pointer (Fp, F)
@@ -10482,7 +10633,7 @@ call c_f_pointer (Fp, F)
 !! f_side.to_f2_trans[0D_NOT_real]
   F%p0c = z_p0c
 !! f_side.to_f2_trans[0D_NOT_real]
-  F%p1c = z_p1c
+  F%dp0c = z_dp0c
 !! f_side.to_f2_trans[0D_NOT_real]
   F%dE_amp = z_dE_amp
 !! f_side.to_f2_trans[0D_NOT_real]
@@ -10493,6 +10644,7 @@ call c_f_pointer (Fp, F)
   F%s = z_s
 
 end subroutine rf_stair_step_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10553,6 +10705,7 @@ call rf_ele_to_c2 (C, z_steps, n1_steps, F%ds_step)
 
 end subroutine rf_ele_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -10603,6 +10756,7 @@ call c_f_pointer (Fp, F)
   F%ds_step = z_ds_step
 
 end subroutine rf_ele_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -10677,7 +10831,7 @@ integer jd, jd1, jd2, jd3, lb1, lb2, lb3
   integer(c_int) :: n_ac_kick
   integer(c_int) :: n_control
   integer(c_int) :: n_rf
-  type(ele_reference_struct), target :: ref_lord
+  type(lat_ele_loc_struct), target :: ref_lord
   integer(c_int) :: n_lord
   integer(c_int) :: n_high_energy_space_charge
   integer(c_int) :: n_mode3
@@ -10867,6 +11021,7 @@ call ele_to_c2 (C, trim(F%name) // c_null_char, trim(F%type) // c_null_char, tri
 
 end subroutine ele_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -10921,7 +11076,7 @@ type(c_ptr), value :: z_b_pole, z_a_pole_elec, z_b_pole_elec, z_custom, z_r
 type(ac_kicker_struct), pointer :: f_ac_kick
 type(controller_struct), pointer :: f_control
 type(rf_ele_struct), pointer :: f_rf
-type(ele_reference_struct), target :: lord_ref
+type(lat_ele_loc_struct), target :: lord_ref
 type(high_energy_space_charge_struct), pointer :: f_high_energy_space_charge
 type(mode3_struct), pointer :: f_mode3
 type(photon_element_struct), pointer :: f_photon
@@ -10994,7 +11149,7 @@ call c_f_pointer (Fp, F)
   else
     if (associated(F%lord)) deallocate(F%lord)
     allocate(F%lord)
-    call ele_reference_to_f (z_lord, c_loc(lord_ref))
+    call lat_ele_loc_to_f (z_lord, c_loc(lord_ref))
     F%lord%ix_ele = lord_ref%ix_ele
     F%lord%ix_branch = lord_ref%ix_branch
     F%lord%name = '<temporary reference>'
@@ -11304,6 +11459,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine ele_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -11350,6 +11506,7 @@ call complex_taylor_term_to_c2 (C, F%coef, fvec2vec(F%expn, 6))
 
 end subroutine complex_taylor_term_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -11386,6 +11543,7 @@ call c_f_pointer (Fp, F)
   F%expn = z_expn(1:6)
 
 end subroutine complex_taylor_term_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -11446,6 +11604,7 @@ call complex_taylor_to_c2 (C, F%ref, z_term, n1_term)
 
 end subroutine complex_taylor_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -11496,6 +11655,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine complex_taylor_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -11573,6 +11733,7 @@ call branch_to_c2 (C, trim(F%name) // c_null_char, F%ix_branch, F%ix_from_branch
     z_ele, n1_ele, c_loc(F%param), z_wall3d, n1_wall3d)
 
 end subroutine branch_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -11663,6 +11824,7 @@ call c_f_pointer (Fp, F)
   endif
 
 end subroutine branch_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -11816,6 +11978,7 @@ call lat_to_c2 (C, trim(F%use_name) // c_null_char, trim(F%lattice) // c_null_ch
     F%creation_hash, F%ramper_slave_bookkeeping)
 
 end subroutine lat_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12029,6 +12192,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine lat_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12099,6 +12263,7 @@ call bunch_to_c2 (C, z_particle, n1_particle, fvec2vec(F%ix_z, n1_ix_z), n1_ix_z
     F%ix_bunch, F%ix_turn, F%n_live, F%n_good, F%n_bad)
 
 end subroutine bunch_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12191,6 +12356,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine bunch_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12246,6 +12412,7 @@ call bunch_params_to_c2 (C, c_loc(F%centroid), c_loc(F%x), c_loc(F%y), c_loc(F%z
     c_logic(F%twiss_valid))
 
 end subroutine bunch_params_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12332,6 +12499,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine bunch_params_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12390,6 +12558,7 @@ call beam_to_c2 (C, z_bunch, n1_bunch)
 
 end subroutine beam_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -12438,6 +12607,7 @@ call c_f_pointer (Fp, F)
 
 end subroutine beam_to_f2
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12484,6 +12654,7 @@ call aperture_point_to_c2 (C, F%x, F%y, F%plane, F%ix_ele, F%i_turn)
 
 end subroutine aperture_point_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -12526,6 +12697,7 @@ call c_f_pointer (Fp, F)
   F%i_turn = z_i_turn
 
 end subroutine aperture_point_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12575,6 +12747,7 @@ call aperture_param_to_c2 (C, F%min_angle, F%max_angle, F%n_angle, F%n_turn, F%x
     F%y_init, F%rel_accuracy, F%abs_accuracy, trim(F%start_ele) // c_null_char)
 
 end subroutine aperture_param_to_c
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12628,6 +12801,7 @@ call c_f_pointer (Fp, F)
   call to_f_str(z_start_ele, F%start_ele)
 
 end subroutine aperture_param_to_f2
+
 
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
@@ -12689,6 +12863,7 @@ call aperture_scan_to_c2 (C, z_point, n1_point, c_loc(F%ref_orb), F%pz_start)
 
 end subroutine aperture_scan_to_c
 
+
 !--------------------------------------------------------------------------
 !--------------------------------------------------------------------------
 !+
@@ -12742,4 +12917,6 @@ call c_f_pointer (Fp, F)
   F%pz_start = z_pz_start
 
 end subroutine aperture_scan_to_f2
-end module
+
+
+end module bmad_cpp_convert_mod

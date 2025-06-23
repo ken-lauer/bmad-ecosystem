@@ -2398,7 +2398,7 @@ end subroutine
 !!!! section:ele_struct_reference_to_c
 subroutine ele_struct_reference_to_c (Fp, C) bind(C)
   !!!! begin:ele_struct%lord.to_c_var
-  type(ele_reference_struct), target :: ref_NAME
+  type(lat_ele_loc_struct), target :: ref_NAME
   !!!! end:ele_struct%lord.to_c_var
   !!!! begin:ele_struct%lord.to_c2_type_and_name
   type(c_ptr), value :: z_NAME
@@ -2422,7 +2422,7 @@ end subroutine
 !!!! section:ele_struct_reference_to_f
 subroutine ele_struct_lord_reference_to_f (Fp, C) bind(C)
   !!!! begin:ele_struct%lord.to_f2_var
-  type(ele_reference_struct), target :: lord_ref
+  type(lat_ele_loc_struct), target :: lord_ref
   !!!! end:ele_struct%lord.to_f2_var
   
   !!!! begin:ele_struct%lord.to_f2_trans
@@ -2431,7 +2431,7 @@ subroutine ele_struct_lord_reference_to_f (Fp, C) bind(C)
   else
     if (associated(F%lord)) deallocate(F%lord)
     allocate(F%lord)
-    call ele_reference_to_f (z_lord, c_loc(lord_ref))
+    call lat_ele_loc_to_f (z_lord, c_loc(lord_ref))
     F%lord%ix_ele = lord_ref%ix_ele
     F%lord%ix_branch = lord_ref%ix_branch
     F%lord%name = '<temporary reference>'

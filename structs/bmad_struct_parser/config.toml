@@ -94,19 +94,19 @@ skip_includes = ["mpif.h"]
 skip_files = []
 skip_members = []
 
-[[sources]]
-source_dir = "${ACC_ROOT_DIR}/cpp_bmad_interface"
-fortran_filename = "${ACC_ROOT_DIR}/cpp_bmad_interface/code/helper_struct_json.f90"
-json_filename = "json/cpp_bmad_helper_structs.json"
-function_prefix = "cpp_"
-skip_includes = []
-skip_structs = [
-  # test structures
-  "all_encompassing_struct",
-  "wake_lr_struct",
-  "wake_struct",
-]
-
-[sources.json_config]
-skip_files = ["test_struct_defs.f90", "bmad_cpp_convert_mod.f90"]
-skip_members = []
+# [[sources]]
+# source_dir = "${ACC_ROOT_DIR}/cpp_bmad_interface"
+# fortran_filename = "${ACC_ROOT_DIR}/cpp_bmad_interface/code/helper_struct_json.f90"
+# json_filename = "json/cpp_bmad_helper_structs.json"
+# function_prefix = "cpp_"
+# skip_includes = []
+# skip_structs = [
+#   # test structures
+#   "all_encompassing_struct",
+#   "wake_lr_struct",
+#   "wake_struct",
+# ]
+# 
+# [sources.json_config]
+# skip_files = ["test_struct_defs.f90", "bmad_cpp_convert_mod.f90"]
+# skip_members = []

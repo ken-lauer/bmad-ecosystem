@@ -24,23 +24,16 @@ struct_def_json_files = [
     "structs/json/forest_structs.json",
     "structs/json/sim_utils_structs.json",
     "structs/json/tao_structs.json",
-    "structs/json/cpp_bmad_helper_structs.json",
 ]
 
 # List of use statements needed in various Fortran modules.
 
-conversion_use_statements = [
-    "use bmad_struct",
-    "use cpp_bmad_interface_helper_structs",
-]
 equality_use_statements = [
     "use bmad_struct",
-    "use cpp_bmad_interface_helper_structs",
 ]
 test_use_statements = [
     "use bmad_json",
     "use sim_utils_json",
-    "use cpp_bmad_interface_helper_structs",
     "use helper_struct_json",
 ]
 
@@ -133,8 +126,6 @@ struct_list = [
     "rad_int1_struct",
     "rad_int_branch_struct",
     "rad_int_all_ele_struct",
-    "ele_reference_struct",
-    "branch_reference_struct",
     "rf_stair_step_struct",
     "rf_ele_struct",
     "ele_struct",

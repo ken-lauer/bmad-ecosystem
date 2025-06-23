@@ -118,8 +118,6 @@ class CPP_bmad_common;
 class CPP_rad_int1;
 class CPP_rad_int_branch;
 class CPP_rad_int_all_ele;
-class CPP_ele_reference;
-class CPP_branch_reference;
 class CPP_rf_stair_step;
 class CPP_rf_ele;
 class CPP_ele;
@@ -2942,6 +2940,7 @@ class CPP_bmad_common : public std::enable_shared_from_this<CPP_bmad_common> {
   Bool convert_to_kinetic_momentum{false};
   Bool normalize_twiss{true};
   Bool aperture_limit_on{true};
+  Bool spin_n0_direction_user_set{false};
   Bool debug{false};
 
   CPP_bmad_common() {}
@@ -3066,67 +3065,6 @@ bool operator==(const CPP_rad_int_all_ele&, const CPP_rad_int_all_ele&);
 void to_json(json&, const CPP_rad_int_all_ele&);
 
 //--------------------------------------------------------------------
-// CPP_ele_reference
-
-class Opaque_ele_reference_class {
-}; // Opaque class for pointers to corresponding fortran structs.
-
-class CPP_ele_reference
-    : public std::enable_shared_from_this<CPP_ele_reference> {
- public:
-  Int ix_ele{-1};
-  Int ix_branch{0};
-
-  CPP_ele_reference() {}
-
-  virtual ~CPP_ele_reference() {}
-  std::shared_ptr<CPP_ele_reference> getptr() {
-    return shared_from_this();
-  }
-  friend ostream& operator<<(ostream& os, const CPP_ele_reference& obj);
-};
-
-extern "C" void ele_reference_to_c(
-    const Opaque_ele_reference_class*,
-    CPP_ele_reference&);
-extern "C" void ele_reference_to_f(
-    const CPP_ele_reference&,
-    Opaque_ele_reference_class*);
-
-bool operator==(const CPP_ele_reference&, const CPP_ele_reference&);
-void to_json(json&, const CPP_ele_reference&);
-
-//--------------------------------------------------------------------
-// CPP_branch_reference
-
-class Opaque_branch_reference_class {
-}; // Opaque class for pointers to corresponding fortran structs.
-
-class CPP_branch_reference
-    : public std::enable_shared_from_this<CPP_branch_reference> {
- public:
-  Int ix_branch{0};
-
-  CPP_branch_reference() {}
-
-  virtual ~CPP_branch_reference() {}
-  std::shared_ptr<CPP_branch_reference> getptr() {
-    return shared_from_this();
-  }
-  friend ostream& operator<<(ostream& os, const CPP_branch_reference& obj);
-};
-
-extern "C" void branch_reference_to_c(
-    const Opaque_branch_reference_class*,
-    CPP_branch_reference&);
-extern "C" void branch_reference_to_f(
-    const CPP_branch_reference&,
-    Opaque_branch_reference_class*);
-
-bool operator==(const CPP_branch_reference&, const CPP_branch_reference&);
-void to_json(json&, const CPP_branch_reference&);
-
-//--------------------------------------------------------------------
 // CPP_rf_stair_step
 
 class Opaque_rf_stair_step_class {
@@ -3138,7 +3076,7 @@ class CPP_rf_stair_step
   Real E_tot0{0.0};
   Real E_tot1{0.0};
   Real p0c{0.0};
-  Real p1c{0.0};
+  Real dp0c{0.0};
   Real dE_amp{0.0};
   Real scale{0.0};
   Real dtime{0.0};
@@ -3212,7 +3150,7 @@ class CPP_ele : public std::enable_shared_from_this<CPP_ele> {
   optional_ref<CPP_branch> branch;
   std::optional<CPP_controller> control;
   std::optional<CPP_rf_ele> rf;
-  std::optional<CPP_ele_reference> lord;
+  std::optional<CPP_lat_ele_loc> lord;
   CPP_floor_position floor;
   std::optional<CPP_high_energy_space_charge> high_energy_space_charge;
   std::optional<CPP_mode3> mode3;

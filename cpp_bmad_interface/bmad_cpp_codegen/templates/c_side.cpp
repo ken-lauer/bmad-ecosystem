@@ -2438,11 +2438,11 @@ void ele_struct_fixes() {
   //// end:ele_struct%old_value.test_pat
 
   //// begin:ele_struct%lord.c_class
-  std::optional<CPP_ele_reference>;
+  std::optional<CPP_lat_ele_loc>;
   //// end:ele_struct%lord.c_class
 
   //// begin:ele_struct%lord.to_f2_arg
-  const CPP_ele_reference*;
+  const CPP_lat_ele_loc*;
   //// end:ele_struct%lord.to_f2_arg
 
   //// begin:ele_struct%lord.to_f2_call
@@ -2455,9 +2455,9 @@ void ele_struct_fixes() {
     C.lord.reset();
   } else {
     C.lord.emplace();
-    ele_reference_to_c(
+    lat_ele_loc_to_c(
         // TODO
-        (const Opaque_ele_reference_class*)z_lord,
+        (const Bmad::Opaque_lat_ele_loc_class*)z_lord,
         C.lord.value());
   }
   //// end:ele_struct%lord.to_c2_set

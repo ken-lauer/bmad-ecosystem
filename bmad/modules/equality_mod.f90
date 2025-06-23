@@ -12,7 +12,6 @@
 
 module equality_mod
 use bmad_struct
-use cpp_bmad_interface_helper_structs
 
 interface operator (==)
   module procedure eq_spline, eq_spin_polar, eq_ac_kicker_time, eq_ac_kicker_freq, eq_ac_kicker
@@ -31,10 +30,10 @@ interface operator (==)
   module procedure eq_ellipse_beam_init, eq_kv_beam_init, eq_grid_beam_init, eq_beam_init, eq_lat_param
   module procedure eq_mode_info, eq_pre_tracker, eq_anormal_mode, eq_linac_normal_mode, eq_normal_modes
   module procedure eq_em_field, eq_strong_beam, eq_track_point, eq_track, eq_space_charge_common
-  module procedure eq_bmad_common, eq_rad_int1, eq_rad_int_branch, eq_rad_int_all_ele, eq_ele_reference
-  module procedure eq_branch_reference, eq_rf_stair_step, eq_rf_ele, eq_ele, eq_complex_taylor_term
-  module procedure eq_complex_taylor, eq_branch, eq_lat, eq_bunch, eq_bunch_params
-  module procedure eq_beam, eq_aperture_point, eq_aperture_param, eq_aperture_scan
+  module procedure eq_bmad_common, eq_rad_int1, eq_rad_int_branch, eq_rad_int_all_ele, eq_rf_stair_step
+  module procedure eq_rf_ele, eq_ele, eq_complex_taylor_term, eq_complex_taylor, eq_branch
+  module procedure eq_lat, eq_bunch, eq_bunch_params, eq_beam, eq_aperture_point
+  module procedure eq_aperture_param, eq_aperture_scan
 end interface
 
 contains
@@ -2746,6 +2745,8 @@ is_eq = is_eq .and. (f1%normalize_twiss .eqv. f2%normalize_twiss)
 !! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%aperture_limit_on .eqv. f2%aperture_limit_on)
 !! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%spin_n0_direction_user_set .eqv. f2%spin_n0_direction_user_set)
+!! f_side.equality_test[0D_NOT_logical]
 is_eq = is_eq .and. (f1%debug .eqv. f2%debug)
 
 end function eq_bmad_common
@@ -2853,46 +2854,6 @@ end function eq_rad_int_all_ele
 !--------------------------------------------------------------------------------
 !--------------------------------------------------------------------------------
 
-elemental function eq_ele_reference (f1, f2) result (is_eq)
-
-implicit none
-
-type(ele_reference_struct), intent(in) :: f1, f2
-logical is_eq
-
-!
-
-is_eq = .true.
-!! f_side.equality_test[0D_NOT_integer]
-is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
-!! f_side.equality_test[0D_NOT_integer]
-is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
-
-end function eq_ele_reference
-
-
-!--------------------------------------------------------------------------------
-!--------------------------------------------------------------------------------
-
-elemental function eq_branch_reference (f1, f2) result (is_eq)
-
-implicit none
-
-type(branch_reference_struct), intent(in) :: f1, f2
-logical is_eq
-
-!
-
-is_eq = .true.
-!! f_side.equality_test[0D_NOT_integer]
-is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
-
-end function eq_branch_reference
-
-
-!--------------------------------------------------------------------------------
-!--------------------------------------------------------------------------------
-
 elemental function eq_rf_stair_step (f1, f2) result (is_eq)
 
 implicit none
@@ -2910,7 +2871,7 @@ is_eq = is_eq .and. (f1%E_tot1 == f2%E_tot1)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%p0c == f2%p0c)
 !! f_side.equality_test[0D_NOT_real]
-is_eq = is_eq .and. (f1%p1c == f2%p1c)
+is_eq = is_eq .and. (f1%dp0c == f2%dp0c)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dE_amp == f2%dE_amp)
 !! f_side.equality_test[0D_NOT_real]

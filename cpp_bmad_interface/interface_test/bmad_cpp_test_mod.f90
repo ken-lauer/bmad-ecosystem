@@ -6,7 +6,6 @@ use bmad_cpp_convert_mod
 use equality_mod
 use bmad_json
 use sim_utils_json
-use cpp_bmad_interface_helper_structs
 use helper_struct_json
 
 contains
@@ -12009,7 +12008,9 @@ rhs = 39 + offset; F%normalize_twiss = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
 rhs = 40 + offset; F%aperture_limit_on = (modulo(rhs, 2) == 0)
 !! f_side.test_pat[0D_NOT_logical] Bool
-rhs = 41 + offset; F%debug = (modulo(rhs, 2) == 0)
+rhs = 41 + offset; F%spin_n0_direction_user_set = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 42 + offset; F%debug = (modulo(rhs, 2) == 0)
 
 end subroutine set_bmad_common_test_pattern
 !---------------------------------------------------------------------------------
@@ -12454,256 +12455,6 @@ end subroutine set_rad_int_all_ele_test_pattern
 !---------------------------------------------------------------------------------
 !---------------------------------------------------------------------------------
 
-subroutine test1_f_ele_reference (ok)
-
-implicit none
-
-type(ele_reference_struct), target :: f_ele_reference, f2_ele_reference
-
-type(json_core) :: json
-type(json_value), pointer :: json_root
-
-logical(c_bool) c_ok
-logical ok
-
-interface
-subroutine test_c_ele_reference (c_ele_reference, c_ok) bind(c)
-    import c_ptr, c_bool
-    type(c_ptr), value :: c_ele_reference
-    logical(c_bool) c_ok
-end subroutine
-end interface
-
-!
-
-ok = .true.
-call set_ele_reference_test_pattern (f2_ele_reference, 1)
-
-call test_c_ele_reference(c_loc(f2_ele_reference), c_ok)
-if (.not. f_logic(c_ok)) ok = .false.
-
-call set_ele_reference_test_pattern (f_ele_reference, 4)
-if (f_ele_reference == f2_ele_reference) then
-  print *, '[4] ele_reference: C side convert C->F: Good'
-else
-  print *, '[4] ele_reference: C SIDE CONVERT C->F: FAILED!'
-  ok = .false.
-
-  nullify(json_root)
-  call ele_reference_struct_to_json(f_ele_reference, json_root)
-  call json%print(json_root, 'test_f_ele_reference_pattern_4_expected_f.json')
-  call json%destroy(json_root)
-
-  nullify(json_root)
-  call ele_reference_struct_to_json(f2_ele_reference, json_root)
-  call json%print(json_root, 'test_f_ele_reference_pattern_4_actual_f2cpp.json')
-  call json%destroy(json_root)
-  print *, '    Wrote JSON files for comparison (test_f_ele_reference_pattern_4_*.json)'
-
-endif
-
-! clean up test pattern data - < 3 deallocates arrays and such
-call set_ele_reference_test_pattern (f_ele_reference, -1)
-call set_ele_reference_test_pattern (f2_ele_reference, -1)
-
-end subroutine test1_f_ele_reference
-
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-
-subroutine test2_f_ele_reference (c_ele_reference, c_ok) bind(c)
-
-implicit none
-
-type(json_core) :: json
-type(json_value), pointer :: json_root
-
-type(c_ptr), value :: c_ele_reference
-type(ele_reference_struct), target :: f_ele_reference, f2_ele_reference
-logical(c_bool) c_ok
-
-!
-
-c_ok = c_logic(.true.)
-call ele_reference_to_f (c_ele_reference, c_loc(f_ele_reference))
-
-call set_ele_reference_test_pattern (f2_ele_reference, 2)
-if (f_ele_reference == f2_ele_reference) then
-  print *, '[2] ele_reference: F side convert C->F: Good'
-else
-  print *, '[2] ele_reference: F SIDE CONVERT C->F: FAILED!'
-  c_ok = c_logic(.false.)
-
-  nullify(json_root)
-  call ele_reference_struct_to_json(f_ele_reference, json_root)
-  call json%print(json_root, 'test_f_ele_reference_pattern_2_actual_fcpp.json')
-  call json%destroy(json_root)
-
-  nullify(json_root)
-  call ele_reference_struct_to_json(f2_ele_reference, json_root)
-  call json%print(json_root, 'test_f_ele_reference_pattern_2_expected_f2.json')
-  call json%destroy(json_root)
-  print *, '    Wrote JSON files for comparison (test_f_ele_reference_pattern_2_*.json)'
-
-endif
-
-call set_ele_reference_test_pattern (f2_ele_reference, 3)
-call ele_reference_to_c (c_loc(f2_ele_reference), c_ele_reference)
-
-! clean up test pattern data - < 3 deallocates arrays and such
-call set_ele_reference_test_pattern (f_ele_reference, -1)
-call set_ele_reference_test_pattern (f2_ele_reference, -1)
-
-end subroutine test2_f_ele_reference
-
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-
-subroutine set_ele_reference_test_pattern (F, ix_patt)
-
-implicit none
-
-type(ele_reference_struct) F
-integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
-
-!
-
-offset = 100 * ix_patt
-
-!! f_side.test_pat[0D_NOT_integer] Int
-rhs = 1 + offset; F%ix_ele = rhs
-!! f_side.test_pat[0D_NOT_integer] Int
-rhs = 2 + offset; F%ix_branch = rhs
-
-end subroutine set_ele_reference_test_pattern
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-
-subroutine test1_f_branch_reference (ok)
-
-implicit none
-
-type(branch_reference_struct), target :: f_branch_reference, f2_branch_reference
-
-type(json_core) :: json
-type(json_value), pointer :: json_root
-
-logical(c_bool) c_ok
-logical ok
-
-interface
-subroutine test_c_branch_reference (c_branch_reference, c_ok) bind(c)
-    import c_ptr, c_bool
-    type(c_ptr), value :: c_branch_reference
-    logical(c_bool) c_ok
-end subroutine
-end interface
-
-!
-
-ok = .true.
-call set_branch_reference_test_pattern (f2_branch_reference, 1)
-
-call test_c_branch_reference(c_loc(f2_branch_reference), c_ok)
-if (.not. f_logic(c_ok)) ok = .false.
-
-call set_branch_reference_test_pattern (f_branch_reference, 4)
-if (f_branch_reference == f2_branch_reference) then
-  print *, '[4] branch_reference: C side convert C->F: Good'
-else
-  print *, '[4] branch_reference: C SIDE CONVERT C->F: FAILED!'
-  ok = .false.
-
-  nullify(json_root)
-  call branch_reference_struct_to_json(f_branch_reference, json_root)
-  call json%print(json_root, 'test_f_branch_reference_pattern_4_expected_f.json')
-  call json%destroy(json_root)
-
-  nullify(json_root)
-  call branch_reference_struct_to_json(f2_branch_reference, json_root)
-  call json%print(json_root, 'test_f_branch_reference_pattern_4_actual_f2cpp.json')
-  call json%destroy(json_root)
-  print *, '    Wrote JSON files for comparison (test_f_branch_reference_pattern_4_*.json)'
-
-endif
-
-! clean up test pattern data - < 3 deallocates arrays and such
-call set_branch_reference_test_pattern (f_branch_reference, -1)
-call set_branch_reference_test_pattern (f2_branch_reference, -1)
-
-end subroutine test1_f_branch_reference
-
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-
-subroutine test2_f_branch_reference (c_branch_reference, c_ok) bind(c)
-
-implicit none
-
-type(json_core) :: json
-type(json_value), pointer :: json_root
-
-type(c_ptr), value :: c_branch_reference
-type(branch_reference_struct), target :: f_branch_reference, f2_branch_reference
-logical(c_bool) c_ok
-
-!
-
-c_ok = c_logic(.true.)
-call branch_reference_to_f (c_branch_reference, c_loc(f_branch_reference))
-
-call set_branch_reference_test_pattern (f2_branch_reference, 2)
-if (f_branch_reference == f2_branch_reference) then
-  print *, '[2] branch_reference: F side convert C->F: Good'
-else
-  print *, '[2] branch_reference: F SIDE CONVERT C->F: FAILED!'
-  c_ok = c_logic(.false.)
-
-  nullify(json_root)
-  call branch_reference_struct_to_json(f_branch_reference, json_root)
-  call json%print(json_root, 'test_f_branch_reference_pattern_2_actual_fcpp.json')
-  call json%destroy(json_root)
-
-  nullify(json_root)
-  call branch_reference_struct_to_json(f2_branch_reference, json_root)
-  call json%print(json_root, 'test_f_branch_reference_pattern_2_expected_f2.json')
-  call json%destroy(json_root)
-  print *, '    Wrote JSON files for comparison (test_f_branch_reference_pattern_2_*.json)'
-
-endif
-
-call set_branch_reference_test_pattern (f2_branch_reference, 3)
-call branch_reference_to_c (c_loc(f2_branch_reference), c_branch_reference)
-
-! clean up test pattern data - < 3 deallocates arrays and such
-call set_branch_reference_test_pattern (f_branch_reference, -1)
-call set_branch_reference_test_pattern (f2_branch_reference, -1)
-
-end subroutine test2_f_branch_reference
-
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-
-subroutine set_branch_reference_test_pattern (F, ix_patt)
-
-implicit none
-
-type(branch_reference_struct) F
-integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
-
-!
-
-offset = 100 * ix_patt
-
-!! f_side.test_pat[0D_NOT_integer] Int
-rhs = 1 + offset; F%ix_branch = rhs
-
-end subroutine set_branch_reference_test_pattern
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-!---------------------------------------------------------------------------------
-
 subroutine test1_f_rf_stair_step (ok)
 
 implicit none
@@ -12827,7 +12578,7 @@ rhs = 2 + offset; F%E_tot1 = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 3 + offset; F%p0c = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 4 + offset; F%p1c = rhs
+rhs = 4 + offset; F%dp0c = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 5 + offset; F%dE_amp = rhs
 !! f_side.test_pat[0D_NOT_real] Real
@@ -13170,7 +12921,7 @@ else
   rhs = 17 + offset
   call set_rf_ele_test_pattern (F%rf, ix_patt)
 endif
-!! f_side.test_pat[0D_PTR_type]   std::optional<CPP_ele_reference>
+!! f_side.test_pat[0D_PTR_type]   std::optional<CPP_lat_ele_loc>
 if (ix_patt < 3) then
   if (associated(F%lord)) then
     call set_ele_test_pattern (F%lord, -1)

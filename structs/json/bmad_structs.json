@@ -392,12 +392,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1947,
+    "line": 1951,
     "name": "anormal_mode_struct",
     "module": "bmad_struct",
     "members": {
       "emittance": {
-        "line": 1948,
+        "line": 1952,
         "definition": "real(rp) :: emittance = 0",
         "name": "emittance",
         "comment": "Beam emittance (unnormalized). Includes vertical photon opening angle.",
@@ -408,7 +408,7 @@
         }
       },
       "emittance_no_vert": {
-        "line": 1949,
+        "line": 1953,
         "definition": "real(rp) :: emittance_no_vert = 0",
         "name": "emittance_no_vert",
         "comment": "Unnormalized beam emittance without the vertical photon opening angle taken into account.",
@@ -419,7 +419,7 @@
         }
       },
       "synch_int": {
-        "line": 1950,
+        "line": 1954,
         "definition": "real(rp) :: synch_int(4:6) = 0",
         "name": "synch_int",
         "comment": "Synchrotron integrals",
@@ -431,7 +431,7 @@
         }
       },
       "j_damp": {
-        "line": 1951,
+        "line": 1955,
         "definition": "real(rp) :: j_damp = 0",
         "name": "j_damp",
         "comment": "damping partition number",
@@ -442,7 +442,7 @@
         }
       },
       "alpha_damp": {
-        "line": 1952,
+        "line": 1956,
         "definition": "real(rp) :: alpha_damp = 0",
         "name": "alpha_damp",
         "comment": "damping per turn",
@@ -453,7 +453,7 @@
         }
       },
       "chrom": {
-        "line": 1953,
+        "line": 1957,
         "definition": "real(rp) :: chrom = 0",
         "name": "chrom",
         "comment": "Chromaticity",
@@ -464,7 +464,7 @@
         }
       },
       "tune": {
-        "line": 1954,
+        "line": 1958,
         "definition": "real(rp) :: tune = 0",
         "name": "tune",
         "comment": "\"Fractional\" tune in radians",
@@ -478,12 +478,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2099,
+    "line": 2103,
     "name": "aperture_param_struct",
     "module": "bmad_struct",
     "members": {
       "min_angle": {
-        "line": 2100,
+        "line": 2104,
         "definition": "real(rp) :: min_angle = 0",
         "name": "min_angle",
         "default": "0",
@@ -493,7 +493,7 @@
         }
       },
       "max_angle": {
-        "line": 2101,
+        "line": 2105,
         "definition": "real(rp) :: max_angle = pi",
         "name": "max_angle",
         "default": "pi",
@@ -503,7 +503,7 @@
         }
       },
       "n_angle": {
-        "line": 2102,
+        "line": 2106,
         "definition": "integer :: n_angle   = 9",
         "name": "n_angle",
         "default": "9",
@@ -512,7 +512,7 @@
         }
       },
       "n_turn": {
-        "line": 2103,
+        "line": 2107,
         "definition": "integer :: n_turn = 100",
         "name": "n_turn",
         "comment": "Number of turns a particle must survive.",
@@ -522,7 +522,7 @@
         }
       },
       "x_init": {
-        "line": 2104,
+        "line": 2108,
         "definition": "real(rp) :: x_init = 1e-3_rp",
         "name": "x_init",
         "comment": "Initial x coordinate to start with for theta_xy = 0.",
@@ -533,7 +533,7 @@
         }
       },
       "y_init": {
-        "line": 2105,
+        "line": 2109,
         "definition": "real(rp) :: y_init = 1e-3_rp",
         "name": "y_init",
         "comment": "Initial y coordinate to start with for theta_xy = pi/2.",
@@ -544,7 +544,7 @@
         }
       },
       "rel_accuracy": {
-        "line": 2106,
+        "line": 2110,
         "definition": "real(rp) :: rel_accuracy = 1e-2_rp",
         "name": "rel_accuracy",
         "comment": "Relative resolution of bracketed aperture.",
@@ -555,7 +555,7 @@
         }
       },
       "abs_accuracy": {
-        "line": 2107,
+        "line": 2111,
         "definition": "real(rp) :: abs_accuracy = 1e-5_rp",
         "name": "abs_accuracy",
         "comment": "Absolute resolution of bracketed aperture (meters).",
@@ -566,7 +566,7 @@
         }
       },
       "start_ele": {
-        "line": 2108,
+        "line": 2112,
         "definition": "character(40) :: start_ele = ''",
         "name": "start_ele",
         "comment": "Element to start tracking at.",
@@ -580,12 +580,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2090,
+    "line": 2094,
     "name": "aperture_point_struct",
     "module": "bmad_struct",
     "members": {
       "x": {
-        "line": 2091,
+        "line": 2095,
         "definition": "real(rp) x, y",
         "name": "x",
         "comment": "(x,y) aperture point with respect to the reference orbit.",
@@ -596,7 +596,7 @@
         }
       },
       "y": {
-        "line": 2091,
+        "line": 2095,
         "definition": "real(rp) x, y",
         "name": "y",
         "comment": "(x,y) aperture point with respect to the reference orbit.",
@@ -607,7 +607,7 @@
         }
       },
       "plane": {
-        "line": 2092,
+        "line": 2096,
         "definition": "integer plane",
         "name": "plane",
         "comment": "plane determining loss",
@@ -617,7 +617,7 @@
         }
       },
       "ix_ele": {
-        "line": 2093,
+        "line": 2097,
         "definition": "integer ix_ele",
         "name": "ix_ele",
         "comment": "ele index particle lost at",
@@ -627,7 +627,7 @@
         }
       },
       "i_turn": {
-        "line": 2094,
+        "line": 2098,
         "definition": "integer i_turn",
         "name": "i_turn",
         "comment": "turn particle lost at",
@@ -640,12 +640,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2113,
+    "line": 2117,
     "name": "aperture_scan_struct",
     "module": "bmad_struct",
     "members": {
       "point": {
-        "line": 2114,
+        "line": 2118,
         "definition": "type (aperture_point_struct), allocatable :: point(:)",
         "name": "point",
         "comment": "Set of aperture points at different angles.",
@@ -658,7 +658,7 @@
         }
       },
       "ref_orb": {
-        "line": 2115,
+        "line": 2119,
         "definition": "type (coord_struct) :: ref_orb",
         "name": "ref_orb",
         "comment": "Ref orbit around which the scan is made.",
@@ -669,7 +669,7 @@
         }
       },
       "pz_start": {
-        "line": 2116,
+        "line": 2120,
         "definition": "real(rp) :: pz_start = 0",
         "name": "pz_start",
         "comment": "Starting pz.",
@@ -1033,7 +1033,7 @@
         "line": 1168,
         "definition": "logical :: use_particle_start = .false.",
         "name": "use_particle_start",
-        "comment": "Use lat%particle_start instead of beam_init%center, %spin?",
+        "comment": "Use lat%particle_start instead of beam_init%center, %t_offset, and %spin?",
         "default": ".false.",
         "type_info": {
           "type": "logical"
@@ -1094,12 +1094,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2251,
+    "line": 2256,
     "name": "bmad_common_struct",
     "module": "bmad_struct",
     "members": {
       "max_aperture_limit": {
-        "line": 2252,
+        "line": 2257,
         "definition": "real(rp) :: max_aperture_limit = 1d3",
         "name": "max_aperture_limit",
         "comment": "Max Aperture.",
@@ -1110,7 +1110,7 @@
         }
       },
       "d_orb": {
-        "line": 2253,
+        "line": 2258,
         "definition": "real(rp) :: d_orb(6)           = 1d-5",
         "name": "d_orb",
         "comment": "Orbit deltas for the mat6 via tracking calc.",
@@ -1122,7 +1122,7 @@
         }
       },
       "default_ds_step": {
-        "line": 2254,
+        "line": 2259,
         "definition": "real(rp) :: default_ds_step    = 0.2_rp",
         "name": "default_ds_step",
         "comment": "Default integration step for eles without an explicit step calc.",
@@ -1133,7 +1133,7 @@
         }
       },
       "significant_length": {
-        "line": 2255,
+        "line": 2260,
         "definition": "real(rp) :: significant_length = 1d-10",
         "name": "significant_length",
         "comment": "meter",
@@ -1144,7 +1144,7 @@
         }
       },
       "rel_tol_tracking": {
-        "line": 2256,
+        "line": 2261,
         "definition": "real(rp) :: rel_tol_tracking = 1d-9",
         "name": "rel_tol_tracking",
         "comment": "Closed orbit relative tolerance.",
@@ -1155,7 +1155,7 @@
         }
       },
       "abs_tol_tracking": {
-        "line": 2257,
+        "line": 2262,
         "definition": "real(rp) :: abs_tol_tracking = 1d-12",
         "name": "abs_tol_tracking",
         "comment": "Closed orbit absolute tolerance.",
@@ -1166,7 +1166,7 @@
         }
       },
       "rel_tol_adaptive_tracking": {
-        "line": 2258,
+        "line": 2263,
         "definition": "real(rp) :: rel_tol_adaptive_tracking = 1d-8",
         "name": "rel_tol_adaptive_tracking",
         "comment": "Runge-Kutta tracking relative tolerance.",
@@ -1177,7 +1177,7 @@
         }
       },
       "abs_tol_adaptive_tracking": {
-        "line": 2259,
+        "line": 2264,
         "definition": "real(rp) :: abs_tol_adaptive_tracking = 1d-10",
         "name": "abs_tol_adaptive_tracking",
         "comment": "Runge-Kutta tracking absolute tolerance.",
@@ -1188,7 +1188,7 @@
         }
       },
       "init_ds_adaptive_tracking": {
-        "line": 2260,
+        "line": 2265,
         "definition": "real(rp) :: init_ds_adaptive_tracking = 1d-3",
         "name": "init_ds_adaptive_tracking",
         "comment": "Initial step size",
@@ -1199,7 +1199,7 @@
         }
       },
       "min_ds_adaptive_tracking": {
-        "line": 2261,
+        "line": 2266,
         "definition": "real(rp) :: min_ds_adaptive_tracking = 0",
         "name": "min_ds_adaptive_tracking",
         "comment": "Min step size to take.",
@@ -1210,7 +1210,7 @@
         }
       },
       "fatal_ds_adaptive_tracking": {
-        "line": 2262,
+        "line": 2267,
         "definition": "real(rp) :: fatal_ds_adaptive_tracking = 1d-8",
         "name": "fatal_ds_adaptive_tracking",
         "comment": "If actual step size is below this particle is lost.",
@@ -1221,7 +1221,7 @@
         }
       },
       "autoscale_amp_abs_tol": {
-        "line": 2263,
+        "line": 2268,
         "definition": "real(rp) :: autoscale_amp_abs_tol = 0.1_rp",
         "name": "autoscale_amp_abs_tol",
         "comment": "Autoscale absolute amplitude tolerance (eV).",
@@ -1232,7 +1232,7 @@
         }
       },
       "autoscale_amp_rel_tol": {
-        "line": 2264,
+        "line": 2269,
         "definition": "real(rp) :: autoscale_amp_rel_tol = 1d-6",
         "name": "autoscale_amp_rel_tol",
         "comment": "Autoscale relative amplitude tolerance",
@@ -1243,7 +1243,7 @@
         }
       },
       "autoscale_phase_tol": {
-        "line": 2265,
+        "line": 2270,
         "definition": "real(rp) :: autoscale_phase_tol = 1d-5",
         "name": "autoscale_phase_tol",
         "comment": "Autoscale phase tolerance.",
@@ -1254,7 +1254,7 @@
         }
       },
       "electric_dipole_moment": {
-        "line": 2266,
+        "line": 2271,
         "definition": "real(rp) :: electric_dipole_moment = 0",
         "name": "electric_dipole_moment",
         "comment": "Particle's EDM. Call set_ptc to transfer value to PTC.",
@@ -1265,7 +1265,7 @@
         }
       },
       "synch_rad_scale": {
-        "line": 2267,
+        "line": 2272,
         "definition": "real(rp) :: synch_rad_scale = 1.0_rp",
         "name": "synch_rad_scale",
         "comment": "Synch radiation kick scale. 1 => normal, 0 => no kicks.",
@@ -1276,7 +1276,7 @@
         }
       },
       "sad_eps_scale": {
-        "line": 2268,
+        "line": 2273,
         "definition": "real(rp) :: sad_eps_scale = 5.0d-3",
         "name": "sad_eps_scale",
         "comment": "Used in sad_mult step length calc.",
@@ -1287,7 +1287,7 @@
         }
       },
       "sad_amp_max": {
-        "line": 2269,
+        "line": 2274,
         "definition": "real(rp) :: sad_amp_max = 5.0d-2",
         "name": "sad_amp_max",
         "comment": "Used in sad_mult step length calc.",
@@ -1298,7 +1298,7 @@
         }
       },
       "sad_n_div_max": {
-        "line": 2270,
+        "line": 2275,
         "definition": "integer :: sad_n_div_max = 1000",
         "name": "sad_n_div_max",
         "comment": "Used in sad_mult step length calc.",
@@ -1308,7 +1308,7 @@
         }
       },
       "taylor_order": {
-        "line": 2271,
+        "line": 2276,
         "definition": "integer :: taylor_order = 0",
         "name": "taylor_order",
         "comment": "Taylor order to use. 0 -> default = ptc_private%taylor_order_saved.",
@@ -1318,7 +1318,7 @@
         }
       },
       "runge_kutta_order": {
-        "line": 2272,
+        "line": 2277,
         "definition": "integer :: runge_kutta_order = 4",
         "name": "runge_kutta_order",
         "comment": "Runge Kutta order.",
@@ -1328,7 +1328,7 @@
         }
       },
       "default_integ_order": {
-        "line": 2273,
+        "line": 2278,
         "definition": "integer :: default_integ_order = 2",
         "name": "default_integ_order",
         "comment": "PTC integration order.",
@@ -1338,7 +1338,7 @@
         }
       },
       "max_num_runge_kutta_step": {
-        "line": 2274,
+        "line": 2279,
         "definition": "integer :: max_num_runge_kutta_step = 10000",
         "name": "max_num_runge_kutta_step",
         "comment": "Maximum number of RK steps before particle is considered lost.",
@@ -1348,7 +1348,7 @@
         }
       },
       "rf_phase_below_transition_ref": {
-        "line": 2275,
+        "line": 2280,
         "definition": "logical :: rf_phase_below_transition_ref = .false.",
         "name": "rf_phase_below_transition_ref",
         "comment": "Autoscale uses below transition stable point for RFCavities?",
@@ -1358,7 +1358,7 @@
         }
       },
       "sr_wakes_on": {
-        "line": 2276,
+        "line": 2281,
         "definition": "logical :: sr_wakes_on = .true.",
         "name": "sr_wakes_on",
         "comment": "Short range wakefields?",
@@ -1368,7 +1368,7 @@
         }
       },
       "lr_wakes_on": {
-        "line": 2277,
+        "line": 2282,
         "definition": "logical :: lr_wakes_on = .true.",
         "name": "lr_wakes_on",
         "comment": "Long range wakefields",
@@ -1378,7 +1378,7 @@
         }
       },
       "auto_bookkeeper": {
-        "line": 2278,
+        "line": 2283,
         "definition": "logical :: auto_bookkeeper = .true.",
         "name": "auto_bookkeeper",
         "comment": "Automatic bookkeeping?",
@@ -1388,7 +1388,7 @@
         }
       },
       "high_energy_space_charge_on": {
-        "line": 2279,
+        "line": 2284,
         "definition": "logical :: high_energy_space_charge_on = .false.",
         "name": "high_energy_space_charge_on",
         "comment": "High energy space charge effect switch.",
@@ -1398,7 +1398,7 @@
         }
       },
       "csr_and_space_charge_on": {
-        "line": 2280,
+        "line": 2285,
         "definition": "logical :: csr_and_space_charge_on = .false.",
         "name": "csr_and_space_charge_on",
         "comment": "Space charge switch.",
@@ -1408,7 +1408,7 @@
         }
       },
       "spin_tracking_on": {
-        "line": 2281,
+        "line": 2286,
         "definition": "logical :: spin_tracking_on = .false.",
         "name": "spin_tracking_on",
         "comment": "spin tracking?",
@@ -1418,7 +1418,7 @@
         }
       },
       "spin_sokolov_ternov_flipping_on": {
-        "line": 2282,
+        "line": 2287,
         "definition": "logical :: spin_sokolov_ternov_flipping_on = .false.",
         "name": "spin_sokolov_ternov_flipping_on",
         "comment": "Spin flipping during synchrotron radiation emission?",
@@ -1428,7 +1428,7 @@
         }
       },
       "radiation_damping_on": {
-        "line": 2283,
+        "line": 2288,
         "definition": "logical :: radiation_damping_on = .false.",
         "name": "radiation_damping_on",
         "comment": "Radiation damping toggle.",
@@ -1438,7 +1438,7 @@
         }
       },
       "radiation_zero_average": {
-        "line": 2284,
+        "line": 2289,
         "definition": "logical :: radiation_zero_average = .false.",
         "name": "radiation_zero_average",
         "comment": "Shift damping to be zero on the zero orbit to get rid of sawtooth?",
@@ -1448,7 +1448,7 @@
         }
       },
       "radiation_fluctuations_on": {
-        "line": 2285,
+        "line": 2290,
         "definition": "logical :: radiation_fluctuations_on = .false.",
         "name": "radiation_fluctuations_on",
         "comment": "Radiation fluctuations toggle.",
@@ -1458,7 +1458,7 @@
         }
       },
       "conserve_taylor_maps": {
-        "line": 2286,
+        "line": 2291,
         "definition": "logical :: conserve_taylor_maps = .true.",
         "name": "conserve_taylor_maps",
         "comment": "Enable bookkeeper to set ele%taylor_map_includes_offsets = F?",
@@ -1468,7 +1468,7 @@
         }
       },
       "absolute_time_tracking": {
-        "line": 2287,
+        "line": 2292,
         "definition": "logical :: absolute_time_tracking = .false.",
         "name": "absolute_time_tracking",
         "comment": "Absolute or relative time tracking?",
@@ -1478,7 +1478,7 @@
         }
       },
       "absolute_time_ref_shift": {
-        "line": 2288,
+        "line": 2293,
         "definition": "logical :: absolute_time_ref_shift = .true.",
         "name": "absolute_time_ref_shift",
         "comment": "Apply reference time shift when using absolute time tracking?",
@@ -1488,7 +1488,7 @@
         }
       },
       "convert_to_kinetic_momentum": {
-        "line": 2289,
+        "line": 2294,
         "definition": "logical :: convert_to_kinetic_momentum = .false.",
         "name": "convert_to_kinetic_momentum",
         "comment": "Cancel kicks due to finite vector potential when doing symplectic tracking? Set to True to test symp_lie_bmad against runge_kutta.",
@@ -1498,7 +1498,7 @@
         }
       },
       "normalize_twiss": {
-        "line": 2291,
+        "line": 2296,
         "definition": "logical :: normalize_twiss = .true.",
         "name": "normalize_twiss",
         "comment": "Normalize matrix when computing Twiss for off-energy ref?",
@@ -1508,7 +1508,7 @@
         }
       },
       "aperture_limit_on": {
-        "line": 2292,
+        "line": 2297,
         "definition": "logical :: aperture_limit_on = .true.",
         "name": "aperture_limit_on",
         "comment": "Use apertures in tracking?",
@@ -1517,8 +1517,18 @@
           "type": "logical"
         }
       },
+      "spin_n0_direction_user_set": {
+        "line": 2298,
+        "definition": "logical :: spin_n0_direction_user_set = .false.",
+        "name": "spin_n0_direction_user_set",
+        "comment": "User sets direction of n0 for closed geometry branches?",
+        "default": ".false.",
+        "type_info": {
+          "type": "logical"
+        }
+      },
       "debug": {
-        "line": 2293,
+        "line": 2299,
         "definition": "logical :: debug = .false.",
         "name": "debug",
         "comment": "Used for code debugging.",
@@ -1531,12 +1541,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1556,
+    "line": 1559,
     "name": "bmad_normal_form_struct",
     "module": "bmad_struct",
     "members": {
       "ele_origin": {
-        "line": 1557,
+        "line": 1560,
         "definition": "type (ele_struct), pointer :: ele_origin => null()",
         "name": "ele_origin",
         "comment": "Element at which the on-turn map was created.",
@@ -1548,7 +1558,7 @@
         }
       },
       "M": {
-        "line": 1558,
+        "line": 1561,
         "definition": "type (taylor_struct) :: M(6) = taylor_struct()",
         "name": "M",
         "comment": "One-turn taylor map: M = A o N o A_inv, N = exp(:h:)",
@@ -1560,7 +1570,7 @@
         }
       },
       "A": {
-        "line": 1559,
+        "line": 1562,
         "definition": "type (taylor_struct) :: A(6) = taylor_struct()",
         "name": "A",
         "comment": "Map from Floquet -> Lab coordinates",
@@ -1572,7 +1582,7 @@
         }
       },
       "A_inv": {
-        "line": 1560,
+        "line": 1563,
         "definition": "type (taylor_struct) :: A_inv(6) = taylor_struct()",
         "name": "A_inv",
         "comment": "Map from Lab -> Floquet coordinates",
@@ -1584,7 +1594,7 @@
         }
       },
       "dhdj": {
-        "line": 1561,
+        "line": 1564,
         "definition": "type (taylor_struct) :: dhdj(6) = taylor_struct()",
         "name": "dhdj",
         "comment": "Nonlinear tune function operating on Floquet coordinates",
@@ -1596,7 +1606,7 @@
         }
       },
       "F": {
-        "line": 1562,
+        "line": 1565,
         "definition": "type (complex_taylor_struct) :: F(6) = complex_taylor_struct()",
         "name": "F",
         "comment": "Vector field factorization in phasor basis:",
@@ -1608,7 +1618,7 @@
         }
       },
       "L": {
-        "line": 1563,
+        "line": 1566,
         "definition": "type (complex_taylor_struct) :: L(6) = complex_taylor_struct()",
         "name": "L",
         "comment": "L component",
@@ -1620,7 +1630,7 @@
         }
       },
       "h": {
-        "line": 1564,
+        "line": 1567,
         "definition": "type (resonance_h_struct), allocatable :: h(:)",
         "name": "h",
         "default": null,
@@ -1635,12 +1645,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2301,
+    "line": 2307,
     "name": "bmad_private_struct",
     "module": "bmad_struct",
     "members": {
       "random_on": {
-        "line": 2302,
+        "line": 2308,
         "definition": "logical :: random_on = .true.",
         "name": "random_on",
         "comment": "Temporarily turned off, for example, with the closed orbit calc.",
@@ -1888,12 +1898,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1582,
+    "line": 1585,
     "name": "branch_struct",
     "module": "bmad_struct",
     "members": {
       "name": {
-        "line": 1583,
+        "line": 1586,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "comment": "Name of line that defines the branch.",
@@ -1904,7 +1914,7 @@
         }
       },
       "ix_branch": {
-        "line": 1584,
+        "line": 1587,
         "definition": "integer :: ix_branch = -1",
         "name": "ix_branch",
         "comment": "Index of this branch. 0 => Main branch",
@@ -1914,7 +1924,7 @@
         }
       },
       "ix_from_branch": {
-        "line": 1585,
+        "line": 1588,
         "definition": "integer :: ix_from_branch = -1",
         "name": "ix_from_branch",
         "comment": "-1 => No creating fork element to this branch.",
@@ -1924,7 +1934,7 @@
         }
       },
       "ix_from_ele": {
-        "line": 1586,
+        "line": 1589,
         "definition": "integer :: ix_from_ele = -1",
         "name": "ix_from_ele",
         "comment": "Index of creating fork element which forks to this branch.",
@@ -1934,7 +1944,7 @@
         }
       },
       "ix_to_ele": {
-        "line": 1587,
+        "line": 1590,
         "definition": "integer :: ix_to_ele = -1",
         "name": "ix_to_ele",
         "comment": "Index of element in this branch that creating fork element forks to.",
@@ -1944,7 +1954,7 @@
         }
       },
       "n_ele_track": {
-        "line": 1588,
+        "line": 1591,
         "definition": "integer :: n_ele_track",
         "name": "n_ele_track",
         "default": null,
@@ -1953,7 +1963,7 @@
         }
       },
       "n_ele_max": {
-        "line": 1589,
+        "line": 1592,
         "definition": "integer :: n_ele_max",
         "name": "n_ele_max",
         "default": null,
@@ -1962,7 +1972,7 @@
         }
       },
       "lat": {
-        "line": 1590,
+        "line": 1593,
         "definition": "type (lat_struct), pointer :: lat => null()",
         "name": "lat",
         "default": "null()",
@@ -1973,7 +1983,7 @@
         }
       },
       "a": {
-        "line": 1591,
+        "line": 1594,
         "definition": "type (mode_info_struct) :: a , b , z",
         "name": "a",
         "comment": "Note: Tunes are the fractional part.",
@@ -1984,7 +1994,7 @@
         }
       },
       "b": {
-        "line": 1591,
+        "line": 1594,
         "definition": "type (mode_info_struct) :: a , b , z",
         "name": "b",
         "comment": "Note: Tunes are the fractional part.",
@@ -1995,7 +2005,7 @@
         }
       },
       "z": {
-        "line": 1591,
+        "line": 1594,
         "definition": "type (mode_info_struct) :: a , b , z",
         "name": "z",
         "comment": "Note: Tunes are the fractional part.",
@@ -2006,7 +2016,7 @@
         }
       },
       "ele": {
-        "line": 1592,
+        "line": 1595,
         "definition": "type (ele_struct), pointer :: ele(:) => null()",
         "name": "ele",
         "default": "null()",
@@ -2018,7 +2028,7 @@
         }
       },
       "param": {
-        "line": 1593,
+        "line": 1596,
         "definition": "type (lat_param_struct) :: param",
         "name": "param",
         "default": null,
@@ -2028,7 +2038,7 @@
         }
       },
       "wall3d": {
-        "line": 1594,
+        "line": 1597,
         "definition": "type (wall3d_struct), pointer :: wall3d(:) => null()",
         "name": "wall3d",
         "default": "null()",
@@ -2040,7 +2050,7 @@
         }
       },
       "ptc": {
-        "line": 1595,
+        "line": 1598,
         "definition": "type (ptc_branch1_struct) ptc",
         "name": "ptc",
         "comment": "Pointer to layout. Note: ptc info not transferred with \"branch1 = branch2\" set.",
@@ -2777,12 +2787,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1350,
+    "line": 1353,
     "name": "control_ramp1_struct",
     "module": "bmad_struct",
     "members": {
       "y_knot": {
-        "line": 1351,
+        "line": 1354,
         "definition": "real(rp), allocatable :: y_knot(:)",
         "name": "y_knot",
         "default": null,
@@ -2794,7 +2804,7 @@
         }
       },
       "stack": {
-        "line": 1352,
+        "line": 1355,
         "definition": "type (expression_atom_struct), allocatable :: stack(:)",
         "name": "stack",
         "comment": "Evaluation stack",
@@ -2807,7 +2817,7 @@
         }
       },
       "attribute": {
-        "line": 1353,
+        "line": 1356,
         "definition": "character(40) :: attribute = ''",
         "name": "attribute",
         "comment": "Name of attribute controlled. Set to \"FIELD_OVERLAPS\" for field overlaps.",
@@ -2818,7 +2828,7 @@
         }
       },
       "slave_name": {
-        "line": 1354,
+        "line": 1357,
         "definition": "character(40) :: slave_name = ''",
         "name": "slave_name",
         "comment": "Name of slave.",
@@ -2829,7 +2839,7 @@
         }
       },
       "is_controller": {
-        "line": 1355,
+        "line": 1358,
         "definition": "logical :: is_controller = .false.",
         "name": "is_controller",
         "comment": "Is the slave a controller? If so bookkeeping is different.",
@@ -2842,12 +2852,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1332,
+    "line": 1335,
     "name": "control_struct",
     "module": "bmad_struct",
     "members": {
       "value": {
-        "line": 1333,
+        "line": 1336,
         "definition": "real(rp) :: value = 0",
         "name": "value",
         "comment": "Used by group, and overlay elements.",
@@ -2858,7 +2868,7 @@
         }
       },
       "y_knot": {
-        "line": 1334,
+        "line": 1337,
         "definition": "real(rp), allocatable :: y_knot(:)",
         "name": "y_knot",
         "default": null,
@@ -2870,7 +2880,7 @@
         }
       },
       "stack": {
-        "line": 1335,
+        "line": 1338,
         "definition": "type (expression_atom_struct), allocatable :: stack(:)",
         "name": "stack",
         "comment": "Evaluation stack",
@@ -2883,7 +2893,7 @@
         }
       },
       "slave": {
-        "line": 1336,
+        "line": 1339,
         "definition": "type (lat_ele_loc_struct) :: slave = lat_ele_loc_struct()",
         "name": "slave",
         "default": "lat_ele_loc_struct()",
@@ -2893,7 +2903,7 @@
         }
       },
       "lord": {
-        "line": 1337,
+        "line": 1340,
         "definition": "type (lat_ele_loc_struct) :: lord = lat_ele_loc_struct()",
         "name": "lord",
         "default": "lat_ele_loc_struct()",
@@ -2903,7 +2913,7 @@
         }
       },
       "slave_name": {
-        "line": 1338,
+        "line": 1341,
         "definition": "character(40) :: slave_name = ''",
         "name": "slave_name",
         "comment": "Name of slave.",
@@ -2914,7 +2924,7 @@
         }
       },
       "attribute": {
-        "line": 1339,
+        "line": 1342,
         "definition": "character(40) :: attribute = ''",
         "name": "attribute",
         "comment": "Name of attribute controlled. Set to \"FIELD_OVERLAPS\" for field overlaps. Set to \"INPUT\" or \"OUTPUT\" for feedback slaves.",
@@ -2925,7 +2935,7 @@
         }
       },
       "ix_attrib": {
-        "line": 1341,
+        "line": 1344,
         "definition": "integer :: ix_attrib = -1",
         "name": "ix_attrib",
         "comment": "Index of attribute controlled. See note above!",
@@ -2938,12 +2948,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1344,
+    "line": 1347,
     "name": "control_var1_struct",
     "module": "bmad_struct",
     "members": {
       "name": {
-        "line": 1345,
+        "line": 1348,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "default": "''",
@@ -2953,7 +2963,7 @@
         }
       },
       "value": {
-        "line": 1346,
+        "line": 1349,
         "definition": "real(rp) :: value = 0",
         "name": "value",
         "default": "0",
@@ -2963,7 +2973,7 @@
         }
       },
       "old_value": {
-        "line": 1347,
+        "line": 1350,
         "definition": "real(rp) :: old_value = 0",
         "name": "old_value",
         "default": "0",
@@ -2976,12 +2986,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1367,
+    "line": 1370,
     "name": "controller_struct",
     "module": "bmad_struct",
     "members": {
       "var": {
-        "line": 1368,
+        "line": 1371,
         "definition": "type (control_var1_struct), allocatable :: var(:)",
         "name": "var",
         "default": null,
@@ -2993,7 +3003,7 @@
         }
       },
       "ramp": {
-        "line": 1369,
+        "line": 1372,
         "definition": "type (control_ramp1_struct), allocatable :: ramp(:)",
         "name": "ramp",
         "comment": "For ramper lord elements",
@@ -3006,7 +3016,7 @@
         }
       },
       "ramper_lord": {
-        "line": 1370,
+        "line": 1373,
         "definition": "type (ramper_lord_struct), allocatable :: ramper_lord(:)",
         "name": "ramper_lord",
         "comment": "Ramper lord info for this slave",
@@ -3019,7 +3029,7 @@
         }
       },
       "x_knot": {
-        "line": 1371,
+        "line": 1374,
         "definition": "real(rp), allocatable :: x_knot(:)",
         "name": "x_knot",
         "default": null,
@@ -3222,12 +3232,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1314,
+    "line": 1317,
     "name": "converter_distribution_struct",
     "module": "bmad_struct",
     "members": {
       "thickness": {
-        "line": 1315,
+        "line": 1318,
         "definition": "real(rp) :: thickness = -1",
         "name": "thickness",
         "default": "-1",
@@ -3237,7 +3247,7 @@
         }
       },
       "sub_dist": {
-        "line": 1316,
+        "line": 1319,
         "definition": "type (converter_sub_distribution_struct), allocatable :: sub_dist(:)",
         "name": "sub_dist",
         "comment": "Distribution at various pc_in values.",
@@ -3394,12 +3404,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1322,
+    "line": 1325,
     "name": "converter_struct",
     "module": "bmad_struct",
     "members": {
       "species_out": {
-        "line": 1323,
+        "line": 1326,
         "definition": "integer :: species_out = 0",
         "name": "species_out",
         "comment": "Output species",
@@ -3409,7 +3419,7 @@
         }
       },
       "material_type": {
-        "line": 1324,
+        "line": 1327,
         "definition": "character(40) :: material_type = ''",
         "name": "material_type",
         "default": "''",
@@ -3419,7 +3429,7 @@
         }
       },
       "dist": {
-        "line": 1325,
+        "line": 1328,
         "definition": "type (converter_distribution_struct), allocatable :: dist(:)",
         "name": "dist",
         "comment": "Distribution at various thicknesses",
@@ -4031,12 +4041,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1392,
+    "line": 1395,
     "name": "ele_struct",
     "module": "bmad_struct",
     "members": {
       "name": {
-        "line": 1393,
+        "line": 1396,
         "definition": "character(40) :: name = '<Initialized>'",
         "name": "name",
         "comment": "name of element.",
@@ -4047,7 +4057,7 @@
         }
       },
       "type": {
-        "line": 1394,
+        "line": 1397,
         "definition": "character(40) :: type = ''",
         "name": "type",
         "comment": "type name.",
@@ -4058,7 +4068,7 @@
         }
       },
       "alias": {
-        "line": 1395,
+        "line": 1398,
         "definition": "character(40) :: alias = ''",
         "name": "alias",
         "comment": "Another name.",
@@ -4069,7 +4079,7 @@
         }
       },
       "component_name": {
-        "line": 1396,
+        "line": 1399,
         "definition": "character(40) :: component_name = ''",
         "name": "component_name",
         "comment": "Used by overlays, multipass patch, etc.",
@@ -4080,7 +4090,7 @@
         }
       },
       "descrip": {
-        "line": 1397,
+        "line": 1400,
         "definition": "character(200), pointer :: descrip => null()",
         "name": "descrip",
         "comment": "Description string.",
@@ -4092,7 +4102,7 @@
         }
       },
       "a": {
-        "line": 1398,
+        "line": 1401,
         "definition": "type (twiss_struct) :: a = twiss_struct()",
         "name": "a",
         "comment": "Twiss parameters at end of element",
@@ -4103,7 +4113,7 @@
         }
       },
       "b": {
-        "line": 1399,
+        "line": 1402,
         "definition": "type (twiss_struct) :: b = twiss_struct()",
         "name": "b",
         "comment": "Twiss parameters at end of element",
@@ -4114,7 +4124,7 @@
         }
       },
       "z": {
-        "line": 1400,
+        "line": 1403,
         "definition": "type (twiss_struct) :: z = twiss_struct()",
         "name": "z",
         "comment": "Twiss parameters at end of element",
@@ -4125,7 +4135,7 @@
         }
       },
       "x": {
-        "line": 1401,
+        "line": 1404,
         "definition": "type (xy_disp_struct) :: x = xy_disp_struct()",
         "name": "x",
         "comment": "Projected dispersions.",
@@ -4136,7 +4146,7 @@
         }
       },
       "y": {
-        "line": 1402,
+        "line": 1405,
         "definition": "type (xy_disp_struct) :: y = xy_disp_struct()",
         "name": "y",
         "comment": "Projected dispersions.",
@@ -4147,7 +4157,7 @@
         }
       },
       "ac_kick": {
-        "line": 1403,
+        "line": 1406,
         "definition": "type (ac_kicker_struct), pointer :: ac_kick => null()",
         "name": "ac_kick",
         "comment": "ac_kicker element parameters.",
@@ -4159,7 +4169,7 @@
         }
       },
       "bookkeeping_state": {
-        "line": 1404,
+        "line": 1407,
         "definition": "type (bookkeeping_state_struct) :: bookkeeping_state = bookkeeping_state_struct()",
         "name": "bookkeeping_state",
         "comment": "Attribute bookkeeping",
@@ -4170,7 +4180,7 @@
         }
       },
       "branch": {
-        "line": 1405,
+        "line": 1408,
         "definition": "type (branch_struct), pointer :: branch => null()",
         "name": "branch",
         "comment": "Pointer to branch containing element.",
@@ -4182,7 +4192,7 @@
         }
       },
       "control": {
-        "line": 1406,
+        "line": 1409,
         "definition": "type (controller_struct), pointer :: control => null()",
         "name": "control",
         "comment": "group & overlay variables.",
@@ -4194,7 +4204,7 @@
         }
       },
       "converter": {
-        "line": 1407,
+        "line": 1410,
         "definition": "type (converter_struct), pointer :: converter => null()",
         "name": "converter",
         "comment": "EG: Positron converter in linac.",
@@ -4206,7 +4216,7 @@
         }
       },
       "rf": {
-        "line": 1408,
+        "line": 1411,
         "definition": "type (rf_ele_struct), pointer :: rf => null()",
         "name": "rf",
         "comment": "RF parameters.",
@@ -4218,7 +4228,7 @@
         }
       },
       "foil": {
-        "line": 1409,
+        "line": 1412,
         "definition": "type (foil_struct), pointer :: foil => null()",
         "name": "foil",
         "default": "null()",
@@ -4229,7 +4239,7 @@
         }
       },
       "lord": {
-        "line": 1410,
+        "line": 1413,
         "definition": "type (ele_struct), pointer :: lord => null()",
         "name": "lord",
         "comment": "Pointer to a slice lord.",
@@ -4241,7 +4251,7 @@
         }
       },
       "ptc_fibre": {
-        "line": 1411,
+        "line": 1414,
         "definition": "type (fibre), pointer :: ptc_fibre => null()",
         "name": "ptc_fibre",
         "comment": "PTC track corresponding to this ele.",
@@ -4253,7 +4263,7 @@
         }
       },
       "floor": {
-        "line": 1412,
+        "line": 1415,
         "definition": "type (floor_position_struct) :: floor = floor_position_struct(vec3_zero$, mat3_unit$, 0.0_rp, 0.0_rp, 0.0_rp)",
         "name": "floor",
         "default": "floor_position_struct(vec3_zero$, mat3_unit$, 0.0_rp, 0.0_rp, 0.0_rp)",
@@ -4263,7 +4273,7 @@
         }
       },
       "high_energy_space_charge": {
-        "line": 1413,
+        "line": 1416,
         "definition": "type (high_energy_space_charge_struct), pointer :: high_energy_space_charge => null()",
         "name": "high_energy_space_charge",
         "default": "null()",
@@ -4274,7 +4284,7 @@
         }
       },
       "mode3": {
-        "line": 1414,
+        "line": 1417,
         "definition": "type (mode3_struct), pointer :: mode3 => null()",
         "name": "mode3",
         "comment": "6D normal mode structure.",
@@ -4286,7 +4296,7 @@
         }
       },
       "photon": {
-        "line": 1415,
+        "line": 1418,
         "definition": "type (photon_element_struct), pointer :: photon => null()",
         "name": "photon",
         "default": "null()",
@@ -4297,7 +4307,7 @@
         }
       },
       "multipole_cache": {
-        "line": 1416,
+        "line": 1419,
         "definition": "type (multipole_cache_struct), allocatable :: multipole_cache",
         "name": "multipole_cache",
         "default": null,
@@ -4308,7 +4318,7 @@
         }
       },
       "rad_map": {
-        "line": 1417,
+        "line": 1420,
         "definition": "type (rad_map_ele_struct), pointer :: rad_map => null()",
         "name": "rad_map",
         "comment": "Radiation kick parameters Note: The reference orbits for spin and orbit Taylor maps are not necessarily the same. For example, Sprint spin Taylor maps can be with respect to the zero orbit independent of the orbital map.",
@@ -4320,7 +4330,7 @@
         }
       },
       "taylor": {
-        "line": 1420,
+        "line": 1423,
         "definition": "type (taylor_struct) :: taylor(6) = taylor_struct()",
         "name": "taylor",
         "comment": "Phase space Taylor map.",
@@ -4332,7 +4342,7 @@
         }
       },
       "spin_taylor_ref_orb_in": {
-        "line": 1421,
+        "line": 1424,
         "definition": "real(rp) :: spin_taylor_ref_orb_in(6) = real_garbage$",
         "name": "spin_taylor_ref_orb_in",
         "default": "real_garbage$",
@@ -4343,7 +4353,7 @@
         }
       },
       "spin_taylor": {
-        "line": 1422,
+        "line": 1425,
         "definition": "type (taylor_struct) :: spin_taylor(0:3) = taylor_struct()",
         "name": "spin_taylor",
         "comment": "Quaternion Spin Taylor map.",
@@ -4355,7 +4365,7 @@
         }
       },
       "wake": {
-        "line": 1423,
+        "line": 1426,
         "definition": "type (wake_struct), pointer :: wake => null()",
         "name": "wake",
         "comment": "Wakes",
@@ -4367,7 +4377,7 @@
         }
       },
       "wall3d": {
-        "line": 1424,
+        "line": 1427,
         "definition": "type (wall3d_struct), pointer :: wall3d(:) => null()",
         "name": "wall3d",
         "comment": "Chamber or capillary wall E/M field structs.",
@@ -4380,7 +4390,7 @@
         }
       },
       "cartesian_map": {
-        "line": 1426,
+        "line": 1429,
         "definition": "type (cartesian_map_struct), pointer :: cartesian_map(:) => null()",
         "name": "cartesian_map",
         "comment": "Used to define E/M fields",
@@ -4393,7 +4403,7 @@
         }
       },
       "cylindrical_map": {
-        "line": 1427,
+        "line": 1430,
         "definition": "type (cylindrical_map_struct), pointer :: cylindrical_map(:) => null()",
         "name": "cylindrical_map",
         "comment": "Used to define E/M fields",
@@ -4406,7 +4416,7 @@
         }
       },
       "gen_grad_map": {
-        "line": 1428,
+        "line": 1431,
         "definition": "type (gen_grad_map_struct), pointer :: gen_grad_map(:) => null()",
         "name": "gen_grad_map",
         "comment": "Used to define E/M fields.",
@@ -4419,7 +4429,7 @@
         }
       },
       "grid_field": {
-        "line": 1429,
+        "line": 1432,
         "definition": "type (grid_field_struct), pointer :: grid_field(:) => null()",
         "name": "grid_field",
         "comment": "Used to define E/M fields. The difference between map_ref_orb and time_ref_orb is that map_ref_orb is the reference orbit for the 1st order spin/orbit map which, in general, is non-zero while time_ref_orb follows the reference particle which is generally the zero orbit (non-zero, for example, in the second slice of a sliced wiggler).",
@@ -4432,7 +4442,7 @@
         }
       },
       "map_ref_orb_in": {
-        "line": 1433,
+        "line": 1436,
         "definition": "type (coord_struct) :: map_ref_orb_in = coord_struct()",
         "name": "map_ref_orb_in",
         "comment": "Entrance end transfer map ref orbit",
@@ -4443,7 +4453,7 @@
         }
       },
       "map_ref_orb_out": {
-        "line": 1434,
+        "line": 1437,
         "definition": "type (coord_struct) :: map_ref_orb_out = coord_struct()",
         "name": "map_ref_orb_out",
         "comment": "Exit end transfer map ref orbit",
@@ -4454,7 +4464,7 @@
         }
       },
       "time_ref_orb_in": {
-        "line": 1435,
+        "line": 1438,
         "definition": "type (coord_struct) :: time_ref_orb_in = coord_struct()",
         "name": "time_ref_orb_in",
         "comment": "Reference orbit at entrance end for ref_time calc.",
@@ -4465,7 +4475,7 @@
         }
       },
       "time_ref_orb_out": {
-        "line": 1436,
+        "line": 1439,
         "definition": "type (coord_struct) :: time_ref_orb_out = coord_struct()",
         "name": "time_ref_orb_out",
         "comment": "Reference orbit at exit end for ref_time calc.",
@@ -4476,7 +4486,7 @@
         }
       },
       "value": {
-        "line": 1437,
+        "line": 1440,
         "definition": "real(rp) :: value(num_ele_attrib$) = 0",
         "name": "value",
         "comment": "attribute values.",
@@ -4488,7 +4498,7 @@
         }
       },
       "old_value": {
-        "line": 1438,
+        "line": 1441,
         "definition": "real(rp) :: old_value(num_ele_attrib$) = 0",
         "name": "old_value",
         "comment": "Used to see if %value(:) array has changed. Note: The reference orbit for spin/orbit matrices is %map_ref_orb_in/out",
@@ -4500,7 +4510,7 @@
         }
       },
       "spin_q": {
-        "line": 1440,
+        "line": 1443,
         "definition": "real(rp) :: spin_q(0:3,0:6) = real_garbage$",
         "name": "spin_q",
         "comment": "0th and 1st order Spin transport quaternion.",
@@ -4512,7 +4522,7 @@
         }
       },
       "vec0": {
-        "line": 1441,
+        "line": 1444,
         "definition": "real(rp) :: vec0(6) = 0",
         "name": "vec0",
         "comment": "0th order transport vector.",
@@ -4524,7 +4534,7 @@
         }
       },
       "mat6": {
-        "line": 1442,
+        "line": 1445,
         "definition": "real(rp) :: mat6(6,6) = 0",
         "name": "mat6",
         "comment": "1st order transport matrix.",
@@ -4536,7 +4546,7 @@
         }
       },
       "c_mat": {
-        "line": 1443,
+        "line": 1446,
         "definition": "real(rp) :: c_mat(2,2) = 0",
         "name": "c_mat",
         "comment": "2x2 C coupling matrix",
@@ -4548,7 +4558,7 @@
         }
       },
       "gamma_c": {
-        "line": 1444,
+        "line": 1447,
         "definition": "real(rp) :: gamma_c = 1",
         "name": "gamma_c",
         "comment": "gamma associated with C matrix",
@@ -4559,7 +4569,7 @@
         }
       },
       "s_start": {
-        "line": 1445,
+        "line": 1448,
         "definition": "real(rp) :: s_start = 0",
         "name": "s_start",
         "comment": "longitudinal ref position at entrance_end",
@@ -4570,7 +4580,7 @@
         }
       },
       "s": {
-        "line": 1446,
+        "line": 1449,
         "definition": "real(rp) :: s = 0",
         "name": "s",
         "comment": "longitudinal ref position at the exit end.",
@@ -4581,7 +4591,7 @@
         }
       },
       "ref_time": {
-        "line": 1447,
+        "line": 1450,
         "definition": "real(rp) :: ref_time = 0",
         "name": "ref_time",
         "comment": "Time ref particle passes exit end.",
@@ -4592,7 +4602,7 @@
         }
       },
       "a_pole": {
-        "line": 1448,
+        "line": 1451,
         "definition": "real(rp), pointer :: a_pole(:) => null()",
         "name": "a_pole",
         "comment": "knl for multipole elements.",
@@ -4605,7 +4615,7 @@
         }
       },
       "b_pole": {
-        "line": 1449,
+        "line": 1452,
         "definition": "real(rp), pointer :: b_pole(:) => null()",
         "name": "b_pole",
         "comment": "tilt for multipole elements.",
@@ -4618,7 +4628,7 @@
         }
       },
       "a_pole_elec": {
-        "line": 1450,
+        "line": 1453,
         "definition": "real(rp), pointer :: a_pole_elec(:) => null()",
         "name": "a_pole_elec",
         "comment": "Electrostatic multipoles. ksnl for multipole elements.",
@@ -4631,7 +4641,7 @@
         }
       },
       "b_pole_elec": {
-        "line": 1451,
+        "line": 1454,
         "definition": "real(rp), pointer :: b_pole_elec(:) => null()",
         "name": "b_pole_elec",
         "comment": "Electrostatic multipoles.",
@@ -4644,7 +4654,7 @@
         }
       },
       "custom": {
-        "line": 1452,
+        "line": 1455,
         "definition": "real(rp), pointer :: custom(:) => null()",
         "name": "custom",
         "comment": "Custom attributes.",
@@ -4657,7 +4667,7 @@
         }
       },
       "r": {
-        "line": 1453,
+        "line": 1456,
         "definition": "real(rp), pointer :: r(:,:,:) => null()",
         "name": "r",
         "comment": "For general use. Not used by Bmad.",
@@ -4670,7 +4680,7 @@
         }
       },
       "key": {
-        "line": 1454,
+        "line": 1457,
         "definition": "integer :: key = 0",
         "name": "key",
         "comment": "Element class (quadrupole, etc.).",
@@ -4680,7 +4690,7 @@
         }
       },
       "sub_key": {
-        "line": 1455,
+        "line": 1458,
         "definition": "integer :: sub_key = 0",
         "name": "sub_key",
         "comment": "Records bend input type.",
@@ -4690,7 +4700,7 @@
         }
       },
       "ix_ele": {
-        "line": 1456,
+        "line": 1459,
         "definition": "integer :: ix_ele = -1",
         "name": "ix_ele",
         "comment": "Index in branch ele(0:) array. Set to ix_slice_slave$ = -2 for slice_slave$ elements.",
@@ -4700,7 +4710,7 @@
         }
       },
       "ix_branch": {
-        "line": 1457,
+        "line": 1460,
         "definition": "integer :: ix_branch = 0",
         "name": "ix_branch",
         "comment": "Index in lat%branch(:) array. Note: lat%ele => lat%branch(0).",
@@ -4710,7 +4720,7 @@
         }
       },
       "lord_status": {
-        "line": 1458,
+        "line": 1461,
         "definition": "integer :: lord_status = not_a_lord$",
         "name": "lord_status",
         "comment": "Type of lord element this is. overlay_lord$, etc.",
@@ -4720,7 +4730,7 @@
         }
       },
       "n_slave": {
-        "line": 1459,
+        "line": 1462,
         "definition": "integer :: n_slave = 0",
         "name": "n_slave",
         "comment": "Number of slaves (except field overlap slaves) of this element.",
@@ -4730,7 +4740,7 @@
         }
       },
       "n_slave_field": {
-        "line": 1460,
+        "line": 1463,
         "definition": "integer :: n_slave_field = 0",
         "name": "n_slave_field",
         "comment": "Number of field slaves of this element.",
@@ -4740,7 +4750,7 @@
         }
       },
       "ix1_slave": {
-        "line": 1461,
+        "line": 1464,
         "definition": "integer :: ix1_slave = 0",
         "name": "ix1_slave",
         "comment": "Pointer index to this element's slaves.",
@@ -4750,7 +4760,7 @@
         }
       },
       "slave_status": {
-        "line": 1462,
+        "line": 1465,
         "definition": "integer :: slave_status = free$",
         "name": "slave_status",
         "comment": "Type of slave element this is. multipass_slave$, slice_slave$, etc.",
@@ -4760,7 +4770,7 @@
         }
       },
       "n_lord": {
-        "line": 1463,
+        "line": 1466,
         "definition": "integer :: n_lord = 0",
         "name": "n_lord",
         "comment": "Number of lords (except field overlap and ramper lords).",
@@ -4770,7 +4780,7 @@
         }
       },
       "n_lord_field": {
-        "line": 1464,
+        "line": 1467,
         "definition": "integer :: n_lord_field = 0",
         "name": "n_lord_field",
         "comment": "Number of field lords of this element.",
@@ -4780,7 +4790,7 @@
         }
       },
       "n_lord_ramper": {
-        "line": 1465,
+        "line": 1468,
         "definition": "integer :: n_lord_ramper = 0",
         "name": "n_lord_ramper",
         "comment": "Number of ramper lords.",
@@ -4790,7 +4800,7 @@
         }
       },
       "ic1_lord": {
-        "line": 1466,
+        "line": 1469,
         "definition": "integer :: ic1_lord = 0",
         "name": "ic1_lord",
         "comment": "Pointer index to this element's lords.",
@@ -4800,7 +4810,7 @@
         }
       },
       "ix_pointer": {
-        "line": 1467,
+        "line": 1470,
         "definition": "integer :: ix_pointer = 0",
         "name": "ix_pointer",
         "comment": "For general use. Not used by Bmad.",
@@ -4810,7 +4820,7 @@
         }
       },
       "ixx": {
-        "line": 1468,
+        "line": 1471,
         "definition": "integer :: ixx = 0, iyy = 0, izz = 0",
         "name": "ixx",
         "comment": "Index for Bmad internal use.",
@@ -4820,7 +4830,7 @@
         }
       },
       "iyy": {
-        "line": 1468,
+        "line": 1471,
         "definition": "integer :: ixx = 0, iyy = 0, izz = 0",
         "name": "iyy",
         "comment": "Index for Bmad internal use.",
@@ -4830,7 +4840,7 @@
         }
       },
       "izz": {
-        "line": 1468,
+        "line": 1471,
         "definition": "integer :: ixx = 0, iyy = 0, izz = 0",
         "name": "izz",
         "comment": "Index for Bmad internal use.",
@@ -4840,7 +4850,7 @@
         }
       },
       "mat6_calc_method": {
-        "line": 1469,
+        "line": 1472,
         "definition": "integer :: mat6_calc_method = bmad_standard$",
         "name": "mat6_calc_method",
         "comment": "taylor$, symp_lie_ptc$, etc.",
@@ -4850,7 +4860,7 @@
         }
       },
       "tracking_method": {
-        "line": 1470,
+        "line": 1473,
         "definition": "integer :: tracking_method = bmad_standard$",
         "name": "tracking_method",
         "comment": "taylor$, linear$, etc.",
@@ -4860,7 +4870,7 @@
         }
       },
       "spin_tracking_method": {
-        "line": 1471,
+        "line": 1474,
         "definition": "integer :: spin_tracking_method = tracking$",
         "name": "spin_tracking_method",
         "comment": "symp_lie_ptc$, etc.",
@@ -4870,7 +4880,7 @@
         }
       },
       "csr_method": {
-        "line": 1472,
+        "line": 1475,
         "definition": "integer :: csr_method = off$",
         "name": "csr_method",
         "comment": "or one_dim$ (\"1_dim\"), steady_state_3d$",
@@ -4880,7 +4890,7 @@
         }
       },
       "space_charge_method": {
-        "line": 1473,
+        "line": 1476,
         "definition": "integer :: space_charge_method = off$",
         "name": "space_charge_method",
         "comment": "slice$, slice_longitudinal$, slice_transverse$, fft_3D$, cathode_fft_3d$",
@@ -4890,7 +4900,7 @@
         }
       },
       "ptc_integration_type": {
-        "line": 1474,
+        "line": 1477,
         "definition": "integer :: ptc_integration_type = matrix_kick$",
         "name": "ptc_integration_type",
         "comment": "drift_kick$, matrix_kick$, or ripken_kick$",
@@ -4900,7 +4910,7 @@
         }
       },
       "field_calc": {
-        "line": 1475,
+        "line": 1478,
         "definition": "integer :: field_calc = bmad_standard$",
         "name": "field_calc",
         "comment": "no_field$, fieldmap$, refer_to_lords$, or custom$",
@@ -4910,7 +4920,7 @@
         }
       },
       "aperture_at": {
-        "line": 1476,
+        "line": 1479,
         "definition": "integer :: aperture_at = exit_end$",
         "name": "aperture_at",
         "comment": "Aperture location: entrance_end$, ...",
@@ -4920,7 +4930,7 @@
         }
       },
       "aperture_type": {
-        "line": 1477,
+        "line": 1480,
         "definition": "integer :: aperture_type = rectangular$",
         "name": "aperture_type",
         "comment": "rectangular$, elliptical$, auto_aperture$, ...",
@@ -4930,7 +4940,7 @@
         }
       },
       "ref_species": {
-        "line": 1478,
+        "line": 1481,
         "definition": "integer :: ref_species = not_set$",
         "name": "ref_species",
         "comment": "Reference species",
@@ -4940,7 +4950,7 @@
         }
       },
       "orientation": {
-        "line": 1479,
+        "line": 1482,
         "definition": "integer :: orientation = 1",
         "name": "orientation",
         "comment": "-1 -> Element is longitudinally reversed. +1 -> Normal.",
@@ -4950,7 +4960,7 @@
         }
       },
       "symplectify": {
-        "line": 1480,
+        "line": 1483,
         "definition": "logical :: symplectify = .false.",
         "name": "symplectify",
         "comment": "Symplectify mat6 matrices.",
@@ -4960,7 +4970,7 @@
         }
       },
       "mode_flip": {
-        "line": 1481,
+        "line": 1484,
         "definition": "logical :: mode_flip = .false.",
         "name": "mode_flip",
         "comment": "Have the normal modes traded places?",
@@ -4970,7 +4980,7 @@
         }
       },
       "multipoles_on": {
-        "line": 1482,
+        "line": 1485,
         "definition": "logical :: multipoles_on = .true.",
         "name": "multipoles_on",
         "comment": "For turning multipoles on/off",
@@ -4980,7 +4990,7 @@
         }
       },
       "scale_multipoles": {
-        "line": 1483,
+        "line": 1486,
         "definition": "logical :: scale_multipoles = .true.",
         "name": "scale_multipoles",
         "comment": "Are ab_multipoles within other elements (EG: quads, etc.) scaled by the strength of the element?",
@@ -4990,7 +5000,7 @@
         }
       },
       "taylor_map_includes_offsets": {
-        "line": 1485,
+        "line": 1488,
         "definition": "logical :: taylor_map_includes_offsets = .true.",
         "name": "taylor_map_includes_offsets",
         "comment": "Taylor map calculated with element misalignments?",
@@ -5000,7 +5010,7 @@
         }
       },
       "field_master": {
-        "line": 1486,
+        "line": 1489,
         "definition": "logical :: field_master = .false.",
         "name": "field_master",
         "comment": "Calculate strength from the field value?",
@@ -5010,7 +5020,7 @@
         }
       },
       "is_on": {
-        "line": 1487,
+        "line": 1490,
         "definition": "logical :: is_on = .true.",
         "name": "is_on",
         "comment": "For turning element on/off.",
@@ -5020,7 +5030,7 @@
         }
       },
       "logic": {
-        "line": 1488,
+        "line": 1491,
         "definition": "logical :: logic = .false.",
         "name": "logic",
         "comment": "For general use. Not used by Bmad (except during lattice parsing).",
@@ -5030,7 +5040,7 @@
         }
       },
       "bmad_logic": {
-        "line": 1489,
+        "line": 1492,
         "definition": "logical :: bmad_logic = .false.",
         "name": "bmad_logic",
         "comment": "For Bmad internal use only.",
@@ -5040,7 +5050,7 @@
         }
       },
       "select": {
-        "line": 1490,
+        "line": 1493,
         "definition": "logical :: select = .false.",
         "name": "select",
         "comment": "For Bmad internal use only.",
@@ -5050,7 +5060,7 @@
         }
       },
       "offset_moves_aperture": {
-        "line": 1491,
+        "line": 1494,
         "definition": "logical :: offset_moves_aperture = .false.",
         "name": "offset_moves_aperture",
         "comment": "element offsets affects aperture? ! final :: ele_finalizer",
@@ -5102,12 +5112,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1998,
+    "line": 2002,
     "name": "em_field_struct",
     "module": "bmad_struct",
     "members": {
       "E": {
-        "line": 1999,
+        "line": 2003,
         "definition": "real(rp) :: E(3) = 0",
         "name": "E",
         "comment": "electric field.",
@@ -5119,7 +5129,7 @@
         }
       },
       "B": {
-        "line": 2000,
+        "line": 2004,
         "definition": "real(rp) :: B(3) = 0",
         "name": "B",
         "comment": "magnetic field.",
@@ -5131,7 +5141,7 @@
         }
       },
       "dE": {
-        "line": 2001,
+        "line": 2005,
         "definition": "real(rp) :: dE(3,3) = 0",
         "name": "dE",
         "comment": "electric field gradient.",
@@ -5143,7 +5153,7 @@
         }
       },
       "dB": {
-        "line": 2002,
+        "line": 2006,
         "definition": "real(rp) :: dB(3,3) = 0",
         "name": "dB",
         "comment": "magnetic field gradient.",
@@ -5155,7 +5165,7 @@
         }
       },
       "phi": {
-        "line": 2003,
+        "line": 2007,
         "definition": "real(rp) :: phi = 0",
         "name": "phi",
         "comment": "Electric scalar potential.",
@@ -5166,7 +5176,7 @@
         }
       },
       "phi_B": {
-        "line": 2004,
+        "line": 2008,
         "definition": "real(rp) :: phi_B = 0",
         "name": "phi_B",
         "comment": "Magnetic scalar potential.",
@@ -5177,7 +5187,7 @@
         }
       },
       "A": {
-        "line": 2005,
+        "line": 2009,
         "definition": "real(rp) :: A(3) = 0",
         "name": "A",
         "comment": "Magnetic vector potential.",
@@ -5288,12 +5298,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2167,
+    "line": 2171,
     "name": "extra_parsing_info_struct",
     "module": "bmad_struct",
     "members": {
       "ran_state": {
-        "line": 2168,
+        "line": 2172,
         "definition": "type (random_state_struct) :: ran_state           = random_state_struct()",
         "name": "ran_state",
         "default": "random_state_struct()",
@@ -5303,7 +5313,7 @@
         }
       },
       "ran_seed": {
-        "line": 2169,
+        "line": 2173,
         "definition": "integer :: ran_seed                               = 0",
         "name": "ran_seed",
         "default": "0",
@@ -5312,7 +5322,7 @@
         }
       },
       "undeterministic_ran_function_called": {
-        "line": 2170,
+        "line": 2174,
         "definition": "logical :: undeterministic_ran_function_called    = .false.",
         "name": "undeterministic_ran_function_called",
         "comment": "Used with bmad_com",
@@ -5322,7 +5332,7 @@
         }
       },
       "d_orb_set": {
-        "line": 2172,
+        "line": 2176,
         "definition": "logical :: d_orb_set                              = .false.",
         "name": "d_orb_set",
         "default": ".false.",
@@ -5331,7 +5341,7 @@
         }
       },
       "max_aperture_limit_set": {
-        "line": 2173,
+        "line": 2177,
         "definition": "logical :: max_aperture_limit_set                 = .false.",
         "name": "max_aperture_limit_set",
         "default": ".false.",
@@ -5340,7 +5350,7 @@
         }
       },
       "default_ds_step_set": {
-        "line": 2174,
+        "line": 2178,
         "definition": "logical :: default_ds_step_set                    = .false.",
         "name": "default_ds_step_set",
         "default": ".false.",
@@ -5349,7 +5359,7 @@
         }
       },
       "significant_length_set": {
-        "line": 2175,
+        "line": 2179,
         "definition": "logical :: significant_length_set                 = .false.",
         "name": "significant_length_set",
         "default": ".false.",
@@ -5358,7 +5368,7 @@
         }
       },
       "rel_tol_tracking_set": {
-        "line": 2176,
+        "line": 2180,
         "definition": "logical :: rel_tol_tracking_set                   = .false.",
         "name": "rel_tol_tracking_set",
         "default": ".false.",
@@ -5367,7 +5377,7 @@
         }
       },
       "abs_tol_tracking_set": {
-        "line": 2177,
+        "line": 2181,
         "definition": "logical :: abs_tol_tracking_set                   = .false.",
         "name": "abs_tol_tracking_set",
         "default": ".false.",
@@ -5376,7 +5386,7 @@
         }
       },
       "rel_tol_adaptive_tracking_set": {
-        "line": 2178,
+        "line": 2182,
         "definition": "logical :: rel_tol_adaptive_tracking_set          = .false.",
         "name": "rel_tol_adaptive_tracking_set",
         "default": ".false.",
@@ -5385,7 +5395,7 @@
         }
       },
       "abs_tol_adaptive_tracking_set": {
-        "line": 2179,
+        "line": 2183,
         "definition": "logical :: abs_tol_adaptive_tracking_set          = .false.",
         "name": "abs_tol_adaptive_tracking_set",
         "default": ".false.",
@@ -5394,7 +5404,7 @@
         }
       },
       "init_ds_adaptive_tracking_set": {
-        "line": 2180,
+        "line": 2184,
         "definition": "logical :: init_ds_adaptive_tracking_set          = .false.",
         "name": "init_ds_adaptive_tracking_set",
         "default": ".false.",
@@ -5403,7 +5413,7 @@
         }
       },
       "min_ds_adaptive_tracking_set": {
-        "line": 2181,
+        "line": 2185,
         "definition": "logical :: min_ds_adaptive_tracking_set           = .false.",
         "name": "min_ds_adaptive_tracking_set",
         "default": ".false.",
@@ -5412,7 +5422,7 @@
         }
       },
       "fatal_ds_adaptive_tracking_set": {
-        "line": 2182,
+        "line": 2186,
         "definition": "logical :: fatal_ds_adaptive_tracking_set         = .false.",
         "name": "fatal_ds_adaptive_tracking_set",
         "default": ".false.",
@@ -5421,7 +5431,7 @@
         }
       },
       "synch_rad_scale_set": {
-        "line": 2183,
+        "line": 2187,
         "definition": "logical :: synch_rad_scale_set                    = .false.",
         "name": "synch_rad_scale_set",
         "default": ".false.",
@@ -5430,7 +5440,7 @@
         }
       },
       "autoscale_amp_abs_tol_set": {
-        "line": 2184,
+        "line": 2188,
         "definition": "logical :: autoscale_amp_abs_tol_set              = .false.",
         "name": "autoscale_amp_abs_tol_set",
         "default": ".false.",
@@ -5439,7 +5449,7 @@
         }
       },
       "autoscale_amp_rel_tol_set": {
-        "line": 2185,
+        "line": 2189,
         "definition": "logical :: autoscale_amp_rel_tol_set              = .false.",
         "name": "autoscale_amp_rel_tol_set",
         "default": ".false.",
@@ -5448,7 +5458,7 @@
         }
       },
       "autoscale_phase_tol_set": {
-        "line": 2186,
+        "line": 2190,
         "definition": "logical :: autoscale_phase_tol_set                = .false.",
         "name": "autoscale_phase_tol_set",
         "default": ".false.",
@@ -5457,7 +5467,7 @@
         }
       },
       "rf_phase_below_transition_ref_set": {
-        "line": 2187,
+        "line": 2191,
         "definition": "logical :: rf_phase_below_transition_ref_set      = .false.",
         "name": "rf_phase_below_transition_ref_set",
         "default": ".false.",
@@ -5466,7 +5476,7 @@
         }
       },
       "electric_dipole_moment_set": {
-        "line": 2188,
+        "line": 2192,
         "definition": "logical :: electric_dipole_moment_set             = .false.",
         "name": "electric_dipole_moment_set",
         "default": ".false.",
@@ -5475,7 +5485,7 @@
         }
       },
       "taylor_order_set": {
-        "line": 2189,
+        "line": 2193,
         "definition": "logical :: taylor_order_set                       = .false.",
         "name": "taylor_order_set",
         "default": ".false.",
@@ -5484,7 +5494,7 @@
         }
       },
       "runge_kutta_order_set": {
-        "line": 2190,
+        "line": 2194,
         "definition": "logical :: runge_kutta_order_set                  = .false.",
         "name": "runge_kutta_order_set",
         "default": ".false.",
@@ -5493,7 +5503,7 @@
         }
       },
       "default_integ_order_set": {
-        "line": 2191,
+        "line": 2195,
         "definition": "logical :: default_integ_order_set                = .false.",
         "name": "default_integ_order_set",
         "default": ".false.",
@@ -5502,7 +5512,7 @@
         }
       },
       "sr_wakes_on_set": {
-        "line": 2192,
+        "line": 2196,
         "definition": "logical :: sr_wakes_on_set                        = .false.",
         "name": "sr_wakes_on_set",
         "default": ".false.",
@@ -5511,7 +5521,7 @@
         }
       },
       "lr_wakes_on_set": {
-        "line": 2193,
+        "line": 2197,
         "definition": "logical :: lr_wakes_on_set                        = .false.",
         "name": "lr_wakes_on_set",
         "default": ".false.",
@@ -5520,7 +5530,7 @@
         }
       },
       "high_energy_space_charge_on_set": {
-        "line": 2194,
+        "line": 2198,
         "definition": "logical :: high_energy_space_charge_on_set        = .false.",
         "name": "high_energy_space_charge_on_set",
         "default": ".false.",
@@ -5529,7 +5539,7 @@
         }
       },
       "csr_and_space_charge_on_set": {
-        "line": 2195,
+        "line": 2199,
         "definition": "logical :: csr_and_space_charge_on_set            = .false.",
         "name": "csr_and_space_charge_on_set",
         "default": ".false.",
@@ -5538,7 +5548,7 @@
         }
       },
       "spin_tracking_on_set": {
-        "line": 2196,
+        "line": 2200,
         "definition": "logical :: spin_tracking_on_set                   = .false.",
         "name": "spin_tracking_on_set",
         "default": ".false.",
@@ -5547,7 +5557,7 @@
         }
       },
       "spin_sokolov_ternov_flipping_on_set": {
-        "line": 2197,
+        "line": 2201,
         "definition": "logical :: spin_sokolov_ternov_flipping_on_set    = .false.",
         "name": "spin_sokolov_ternov_flipping_on_set",
         "default": ".false.",
@@ -5556,7 +5566,7 @@
         }
       },
       "radiation_damping_on_set": {
-        "line": 2198,
+        "line": 2202,
         "definition": "logical :: radiation_damping_on_set               = .false.",
         "name": "radiation_damping_on_set",
         "default": ".false.",
@@ -5565,7 +5575,7 @@
         }
       },
       "radiation_zero_average_set": {
-        "line": 2199,
+        "line": 2203,
         "definition": "logical :: radiation_zero_average_set             = .false.",
         "name": "radiation_zero_average_set",
         "default": ".false.",
@@ -5574,7 +5584,7 @@
         }
       },
       "radiation_fluctuations_on_set": {
-        "line": 2200,
+        "line": 2204,
         "definition": "logical :: radiation_fluctuations_on_set          = .false.",
         "name": "radiation_fluctuations_on_set",
         "default": ".false.",
@@ -5583,7 +5593,7 @@
         }
       },
       "conserve_taylor_maps_set": {
-        "line": 2201,
+        "line": 2205,
         "definition": "logical :: conserve_taylor_maps_set               = .false.",
         "name": "conserve_taylor_maps_set",
         "default": ".false.",
@@ -5592,7 +5602,7 @@
         }
       },
       "absolute_time_tracking_set": {
-        "line": 2202,
+        "line": 2206,
         "definition": "logical :: absolute_time_tracking_set             = .false.",
         "name": "absolute_time_tracking_set",
         "default": ".false.",
@@ -5601,7 +5611,7 @@
         }
       },
       "absolute_time_ref_shift_set": {
-        "line": 2203,
+        "line": 2207,
         "definition": "logical :: absolute_time_ref_shift_set            = .false.",
         "name": "absolute_time_ref_shift_set",
         "default": ".false.",
@@ -5610,7 +5620,7 @@
         }
       },
       "convert_to_kinetic_momentum_set": {
-        "line": 2204,
+        "line": 2208,
         "definition": "logical :: convert_to_kinetic_momentum_set        = .false.",
         "name": "convert_to_kinetic_momentum_set",
         "default": ".false.",
@@ -5619,7 +5629,7 @@
         }
       },
       "aperture_limit_on_set": {
-        "line": 2205,
+        "line": 2209,
         "definition": "logical :: aperture_limit_on_set                  = .false.",
         "name": "aperture_limit_on_set",
         "default": ".false.",
@@ -5628,7 +5638,7 @@
         }
       },
       "normalize_twiss_set": {
-        "line": 2206,
+        "line": 2210,
         "definition": "logical :: normalize_twiss_set                    = .false.",
         "name": "normalize_twiss_set",
         "default": ".false.",
@@ -5637,7 +5647,7 @@
         }
       },
       "sad_eps_scale_set": {
-        "line": 2207,
+        "line": 2211,
         "definition": "logical :: sad_eps_scale_set                      = .false.",
         "name": "sad_eps_scale_set",
         "default": ".false.",
@@ -5646,7 +5656,7 @@
         }
       },
       "sad_amp_max_set": {
-        "line": 2208,
+        "line": 2212,
         "definition": "logical :: sad_amp_max_set                        = .false.",
         "name": "sad_amp_max_set",
         "default": ".false.",
@@ -5655,7 +5665,7 @@
         }
       },
       "sad_n_div_max_set": {
-        "line": 2209,
+        "line": 2213,
         "definition": "logical :: sad_n_div_max_set                      = .false.",
         "name": "sad_n_div_max_set",
         "default": ".false.",
@@ -5664,7 +5674,7 @@
         }
       },
       "max_num_runge_kutta_step_set": {
-        "line": 2210,
+        "line": 2214,
         "definition": "logical :: max_num_runge_kutta_step_set           = .false.",
         "name": "max_num_runge_kutta_step_set",
         "default": ".false.",
@@ -5672,8 +5682,17 @@
           "type": "logical"
         }
       },
+      "spin_n0_direction_user_set_set": {
+        "line": 2215,
+        "definition": "logical :: spin_n0_direction_user_set_set         = .false.",
+        "name": "spin_n0_direction_user_set_set",
+        "default": ".false.",
+        "type_info": {
+          "type": "logical"
+        }
+      },
       "debug_set": {
-        "line": 2211,
+        "line": 2216,
         "definition": "logical :: debug_set                              = .false.",
         "name": "debug_set",
         "comment": "Used with space_charge_com",
@@ -5683,7 +5702,7 @@
         }
       },
       "ds_track_step_set": {
-        "line": 2213,
+        "line": 2218,
         "definition": "logical :: ds_track_step_set                      = .false.",
         "name": "ds_track_step_set",
         "default": ".false.",
@@ -5692,7 +5711,7 @@
         }
       },
       "dt_track_step_set": {
-        "line": 2214,
+        "line": 2219,
         "definition": "logical :: dt_track_step_set                      = .false.",
         "name": "dt_track_step_set",
         "default": ".false.",
@@ -5701,7 +5720,7 @@
         }
       },
       "cathode_strength_cutoff_set": {
-        "line": 2215,
+        "line": 2220,
         "definition": "logical :: cathode_strength_cutoff_set            = .false.",
         "name": "cathode_strength_cutoff_set",
         "default": ".false.",
@@ -5710,7 +5729,7 @@
         }
       },
       "sc_rel_tol_tracking_set": {
-        "line": 2216,
+        "line": 2221,
         "definition": "logical :: sc_rel_tol_tracking_set                = .false.",
         "name": "sc_rel_tol_tracking_set",
         "comment": "For: space_charge_com%rel_tol_tracking",
@@ -5720,7 +5739,7 @@
         }
       },
       "sc_abs_tol_tracking_set": {
-        "line": 2217,
+        "line": 2222,
         "definition": "logical :: sc_abs_tol_tracking_set                = .false.",
         "name": "sc_abs_tol_tracking_set",
         "comment": "For: space_charge_com%abs_tol_tracking",
@@ -5730,7 +5749,7 @@
         }
       },
       "beam_chamber_height_set": {
-        "line": 2218,
+        "line": 2223,
         "definition": "logical :: beam_chamber_height_set                = .false.",
         "name": "beam_chamber_height_set",
         "default": ".false.",
@@ -5739,7 +5758,7 @@
         }
       },
       "lsc_sigma_cutoff_set": {
-        "line": 2219,
+        "line": 2224,
         "definition": "logical :: lsc_sigma_cutoff_set                   = .false.",
         "name": "lsc_sigma_cutoff_set",
         "default": ".false.",
@@ -5748,7 +5767,7 @@
         }
       },
       "particle_sigma_cutoff_set": {
-        "line": 2220,
+        "line": 2225,
         "definition": "logical :: particle_sigma_cutoff_set              = .false.",
         "name": "particle_sigma_cutoff_set",
         "default": ".false.",
@@ -5757,7 +5776,7 @@
         }
       },
       "space_charge_mesh_size_set": {
-        "line": 2221,
+        "line": 2226,
         "definition": "logical :: space_charge_mesh_size_set             = .false.",
         "name": "space_charge_mesh_size_set",
         "default": ".false.",
@@ -5766,7 +5785,7 @@
         }
       },
       "csr3d_mesh_size_set": {
-        "line": 2222,
+        "line": 2227,
         "definition": "logical :: csr3d_mesh_size_set                    = .false.",
         "name": "csr3d_mesh_size_set",
         "default": ".false.",
@@ -5775,7 +5794,7 @@
         }
       },
       "n_bin_set": {
-        "line": 2223,
+        "line": 2228,
         "definition": "logical :: n_bin_set                              = .false.",
         "name": "n_bin_set",
         "default": ".false.",
@@ -5784,7 +5803,7 @@
         }
       },
       "particle_bin_span_set": {
-        "line": 2224,
+        "line": 2229,
         "definition": "logical :: particle_bin_span_set                  = .false.",
         "name": "particle_bin_span_set",
         "default": ".false.",
@@ -5793,7 +5812,7 @@
         }
       },
       "n_shield_images_set": {
-        "line": 2225,
+        "line": 2230,
         "definition": "logical :: n_shield_images_set                    = .false.",
         "name": "n_shield_images_set",
         "default": ".false.",
@@ -5802,7 +5821,7 @@
         }
       },
       "sc_min_in_bin_set": {
-        "line": 2226,
+        "line": 2231,
         "definition": "logical :: sc_min_in_bin_set                      = .false.",
         "name": "sc_min_in_bin_set",
         "default": ".false.",
@@ -5811,7 +5830,7 @@
         }
       },
       "lsc_kick_transverse_dependence_set": {
-        "line": 2227,
+        "line": 2232,
         "definition": "logical :: lsc_kick_transverse_dependence_set     = .false.",
         "name": "lsc_kick_transverse_dependence_set",
         "default": ".false.",
@@ -5820,7 +5839,7 @@
         }
       },
       "sc_debug_set": {
-        "line": 2228,
+        "line": 2233,
         "definition": "logical :: sc_debug_set                           = .false.",
         "name": "sc_debug_set",
         "default": ".false.",
@@ -5829,7 +5848,7 @@
         }
       },
       "diagnostic_output_file_set": {
-        "line": 2229,
+        "line": 2234,
         "definition": "logical :: diagnostic_output_file_set             = .false.",
         "name": "diagnostic_output_file_set",
         "comment": "Used with ptc_com",
@@ -5839,7 +5858,7 @@
         }
       },
       "old_integrator_set": {
-        "line": 2231,
+        "line": 2236,
         "definition": "logical :: old_integrator_set                     = .false.",
         "name": "old_integrator_set",
         "default": ".false.",
@@ -5848,7 +5867,7 @@
         }
       },
       "use_orientation_patches_set": {
-        "line": 2232,
+        "line": 2237,
         "definition": "logical :: use_orientation_patches_set            = .false.",
         "name": "use_orientation_patches_set",
         "default": ".false.",
@@ -5857,7 +5876,7 @@
         }
       },
       "print_info_messages_set": {
-        "line": 2233,
+        "line": 2238,
         "definition": "logical :: print_info_messages_set                = .false.",
         "name": "print_info_messages_set",
         "default": ".false.",
@@ -5866,7 +5885,7 @@
         }
       },
       "max_fringe_order_set": {
-        "line": 2234,
+        "line": 2239,
         "definition": "logical :: max_fringe_order_set                   = .false.",
         "name": "max_fringe_order_set",
         "default": ".false.",
@@ -5875,7 +5894,7 @@
         }
       },
       "exact_model_set": {
-        "line": 2235,
+        "line": 2240,
         "definition": "logical :: exact_model_set                        = .false.",
         "name": "exact_model_set",
         "default": ".false.",
@@ -5884,7 +5903,7 @@
         }
       },
       "exact_misalign_set": {
-        "line": 2236,
+        "line": 2241,
         "definition": "logical :: exact_misalign_set                     = .false.",
         "name": "exact_misalign_set",
         "default": ".false.",
@@ -5893,7 +5912,7 @@
         }
       },
       "vertical_kick_set": {
-        "line": 2237,
+        "line": 2242,
         "definition": "logical :: vertical_kick_set                      = .false.",
         "name": "vertical_kick_set",
         "default": ".false.",
@@ -5902,7 +5921,7 @@
         }
       },
       "cut_factor_set": {
-        "line": 2238,
+        "line": 2243,
         "definition": "logical :: cut_factor_set                         = .false.",
         "name": "cut_factor_set",
         "default": ".false.",
@@ -5911,7 +5930,7 @@
         }
       },
       "translate_patch_drift_time_set": {
-        "line": 2239,
+        "line": 2244,
         "definition": "logical :: translate_patch_drift_time_set         = .false.",
         "name": "translate_patch_drift_time_set",
         "default": ".false.",
@@ -6829,12 +6848,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1499,
+    "line": 1502,
     "name": "lat_param_struct",
     "module": "bmad_struct",
     "members": {
       "n_part": {
-        "line": 1500,
+        "line": 1503,
         "definition": "real(rp) :: n_part = 0",
         "name": "n_part",
         "comment": "Particles/bunch (for BeamBeam elements).",
@@ -6845,7 +6864,7 @@
         }
       },
       "total_length": {
-        "line": 1501,
+        "line": 1504,
         "definition": "real(rp) :: total_length = 0",
         "name": "total_length",
         "comment": "total_length of branch. Warning: branch may not start at s = 0.",
@@ -6856,7 +6875,7 @@
         }
       },
       "unstable_factor": {
-        "line": 1502,
+        "line": 1505,
         "definition": "real(rp) :: unstable_factor = 0",
         "name": "unstable_factor",
         "comment": "If positive: Growth rate/turn if unstable in closed branches or |orbit-aperture|/aperture if particle hits wall. Zero otherwise.",
@@ -6867,7 +6886,7 @@
         }
       },
       "t1_with_RF": {
-        "line": 1504,
+        "line": 1507,
         "definition": "real(rp) :: t1_with_RF(6,6) = 0",
         "name": "t1_with_RF",
         "comment": "Full 1-turn matrix with RF on.",
@@ -6879,7 +6898,7 @@
         }
       },
       "t1_no_RF": {
-        "line": 1505,
+        "line": 1508,
         "definition": "real(rp) :: t1_no_RF(6,6) = 0",
         "name": "t1_no_RF",
         "comment": "Full 1-turn matrix with RF off.",
@@ -6891,7 +6910,7 @@
         }
       },
       "spin_tune": {
-        "line": 1506,
+        "line": 1509,
         "definition": "real(rp) :: spin_tune = 0",
         "name": "spin_tune",
         "comment": "Closed orbit spin tune.",
@@ -6902,7 +6921,7 @@
         }
       },
       "particle": {
-        "line": 1507,
+        "line": 1510,
         "definition": "integer :: particle = not_set$",
         "name": "particle",
         "comment": "Reference particle: positron$, electron$, etc. Call lattice_bookkeeper if this is changed.",
@@ -6912,7 +6931,7 @@
         }
       },
       "default_tracking_species": {
-        "line": 1509,
+        "line": 1512,
         "definition": "integer :: default_tracking_species = ref_particle$",
         "name": "default_tracking_species",
         "comment": "Default particle type to use in tracking.",
@@ -6922,7 +6941,7 @@
         }
       },
       "geometry": {
-        "line": 1510,
+        "line": 1513,
         "definition": "integer :: geometry = 0",
         "name": "geometry",
         "comment": "open$ or closed$",
@@ -6932,7 +6951,7 @@
         }
       },
       "ixx": {
-        "line": 1511,
+        "line": 1514,
         "definition": "integer :: ixx = 0",
         "name": "ixx",
         "comment": "Integer for general use",
@@ -6942,7 +6961,7 @@
         }
       },
       "stable": {
-        "line": 1512,
+        "line": 1515,
         "definition": "logical :: stable = .false.",
         "name": "stable",
         "comment": "is closed lat stable?",
@@ -6952,7 +6971,7 @@
         }
       },
       "live_branch": {
-        "line": 1513,
+        "line": 1516,
         "definition": "logical :: live_branch = .true.",
         "name": "live_branch",
         "comment": "Should tracking be done on the branch?",
@@ -6962,7 +6981,7 @@
         }
       },
       "g1_integral": {
-        "line": 1514,
+        "line": 1517,
         "definition": "real(rp) :: g1_integral = -1",
         "name": "g1_integral",
         "comment": "Approximate |g| (bending strength) integral of branch.",
@@ -6973,7 +6992,7 @@
         }
       },
       "g2_integral": {
-        "line": 1515,
+        "line": 1518,
         "definition": "real(rp) :: g2_integral = -1",
         "name": "g2_integral",
         "comment": "Approximate g^2 integral of branch.",
@@ -6984,7 +7003,7 @@
         }
       },
       "g3_integral": {
-        "line": 1516,
+        "line": 1519,
         "definition": "real(rp) :: g3_integral = -1",
         "name": "g3_integral",
         "comment": "Approximate g^2 integral of branch.",
@@ -6995,7 +7014,7 @@
         }
       },
       "bookkeeping_state": {
-        "line": 1517,
+        "line": 1520,
         "definition": "type (bookkeeping_state_struct) :: bookkeeping_state = bookkeeping_state_struct()",
         "name": "bookkeeping_state",
         "comment": "Overall status for the branch.",
@@ -7006,7 +7025,7 @@
         }
       },
       "beam_init": {
-        "line": 1519,
+        "line": 1522,
         "definition": "type (beam_init_struct) :: beam_init = beam_init_struct()",
         "name": "beam_init",
         "comment": "For beam initialization.",
@@ -7039,12 +7058,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1617,
+    "line": 1620,
     "name": "lat_struct",
     "module": "bmad_struct",
     "members": {
       "use_name": {
-        "line": 1618,
+        "line": 1621,
         "definition": "character(200) :: use_name = ''",
         "name": "use_name",
         "comment": "Name of lat given by USE statement",
@@ -7055,7 +7074,7 @@
         }
       },
       "lattice": {
-        "line": 1619,
+        "line": 1622,
         "definition": "character(40) :: lattice = ''",
         "name": "lattice",
         "comment": "Lattice",
@@ -7066,7 +7085,7 @@
         }
       },
       "machine": {
-        "line": 1620,
+        "line": 1623,
         "definition": "character(40) :: machine = ''",
         "name": "machine",
         "comment": "Name of the machine the lattice is for (\"LHC\", etc).",
@@ -7077,7 +7096,7 @@
         }
       },
       "input_file_name": {
-        "line": 1621,
+        "line": 1624,
         "definition": "character(400) :: input_file_name = ''",
         "name": "input_file_name",
         "comment": "Name of the lattice input file",
@@ -7088,7 +7107,7 @@
         }
       },
       "title": {
-        "line": 1622,
+        "line": 1625,
         "definition": "character(80) :: title = ''",
         "name": "title",
         "comment": "General title",
@@ -7099,7 +7118,7 @@
         }
       },
       "print_str": {
-        "line": 1623,
+        "line": 1626,
         "definition": "character(100), allocatable :: print_str(:)",
         "name": "print_str",
         "comment": "Saved print statements.",
@@ -7112,7 +7131,7 @@
         }
       },
       "constant": {
-        "line": 1624,
+        "line": 1627,
         "definition": "type (expression_atom_struct), allocatable :: constant(:)",
         "name": "constant",
         "comment": "Constants defined in the lattice",
@@ -7125,7 +7144,7 @@
         }
       },
       "a": {
-        "line": 1625,
+        "line": 1628,
         "definition": "type (mode_info_struct), pointer :: a => null(), b => null(), z => null()",
         "name": "a",
         "comment": "Tunes (fractional part), etc.",
@@ -7137,7 +7156,7 @@
         }
       },
       "b": {
-        "line": 1625,
+        "line": 1628,
         "definition": "type (mode_info_struct), pointer :: a => null(), b => null(), z => null()",
         "name": "b",
         "comment": "Tunes (fractional part), etc.",
@@ -7149,7 +7168,7 @@
         }
       },
       "z": {
-        "line": 1625,
+        "line": 1628,
         "definition": "type (mode_info_struct), pointer :: a => null(), b => null(), z => null()",
         "name": "z",
         "comment": "Tunes (fractional part), etc.",
@@ -7161,7 +7180,7 @@
         }
       },
       "param": {
-        "line": 1626,
+        "line": 1629,
         "definition": "type (lat_param_struct), pointer :: param => null()",
         "name": "param",
         "comment": "Parameters",
@@ -7173,7 +7192,7 @@
         }
       },
       "lord_state": {
-        "line": 1627,
+        "line": 1630,
         "definition": "type (bookkeeping_state_struct) lord_state",
         "name": "lord_state",
         "comment": "lord bookkeeping status.",
@@ -7184,7 +7203,7 @@
         }
       },
       "ele_init": {
-        "line": 1628,
+        "line": 1631,
         "definition": "type (ele_struct) ele_init",
         "name": "ele_init",
         "comment": "For use by any program",
@@ -7195,7 +7214,7 @@
         }
       },
       "ele": {
-        "line": 1629,
+        "line": 1632,
         "definition": "type (ele_struct), pointer ::  ele(:) => null()",
         "name": "ele",
         "comment": "Array of elements [=> branch(0)].",
@@ -7208,7 +7227,7 @@
         }
       },
       "branch": {
-        "line": 1630,
+        "line": 1633,
         "definition": "type (branch_struct), allocatable :: branch(:)",
         "name": "branch",
         "comment": "Branch(0:) array",
@@ -7221,7 +7240,7 @@
         }
       },
       "control": {
-        "line": 1631,
+        "line": 1634,
         "definition": "type (control_struct), allocatable :: control(:)",
         "name": "control",
         "comment": "Control list",
@@ -7234,7 +7253,7 @@
         }
       },
       "particle_start": {
-        "line": 1632,
+        "line": 1635,
         "definition": "type (coord_struct) particle_start",
         "name": "particle_start",
         "comment": "Starting particle_coords.",
@@ -7245,7 +7264,7 @@
         }
       },
       "beam_init": {
-        "line": 1633,
+        "line": 1636,
         "definition": "type (beam_init_struct) beam_init",
         "name": "beam_init",
         "comment": "Beam initialization.",
@@ -7256,7 +7275,7 @@
         }
       },
       "pre_tracker": {
-        "line": 1634,
+        "line": 1637,
         "definition": "type (pre_tracker_struct) pre_tracker",
         "name": "pre_tracker",
         "comment": "For OPAL/IMPACT-T",
@@ -7267,7 +7286,7 @@
         }
       },
       "nametable": {
-        "line": 1635,
+        "line": 1638,
         "definition": "type (nametable_struct) nametable",
         "name": "nametable",
         "comment": "For quick searching by element name.",
@@ -7278,7 +7297,7 @@
         }
       },
       "custom": {
-        "line": 1636,
+        "line": 1639,
         "definition": "real(rp), allocatable :: custom(:)",
         "name": "custom",
         "comment": "Custom attributes.",
@@ -7291,7 +7310,7 @@
         }
       },
       "version": {
-        "line": 1637,
+        "line": 1640,
         "definition": "integer :: version = -1",
         "name": "version",
         "comment": "Version number",
@@ -7301,7 +7320,7 @@
         }
       },
       "n_ele_track": {
-        "line": 1638,
+        "line": 1641,
         "definition": "integer, pointer :: n_ele_track => null()",
         "name": "n_ele_track",
         "comment": "Number of lat elements to track through.",
@@ -7312,7 +7331,7 @@
         }
       },
       "n_ele_max": {
-        "line": 1639,
+        "line": 1642,
         "definition": "integer, pointer :: n_ele_max => null()",
         "name": "n_ele_max",
         "comment": "Index of last valid element in %ele(:) array",
@@ -7323,7 +7342,7 @@
         }
       },
       "n_control_max": {
-        "line": 1640,
+        "line": 1643,
         "definition": "integer :: n_control_max = 0",
         "name": "n_control_max",
         "comment": "Last index used in control_array",
@@ -7333,7 +7352,7 @@
         }
       },
       "n_ic_max": {
-        "line": 1641,
+        "line": 1644,
         "definition": "integer :: n_ic_max = 0",
         "name": "n_ic_max",
         "comment": "Last index used in ic_array",
@@ -7343,7 +7362,7 @@
         }
       },
       "input_taylor_order": {
-        "line": 1642,
+        "line": 1645,
         "definition": "integer :: input_taylor_order = 0",
         "name": "input_taylor_order",
         "comment": "As set in the input file",
@@ -7353,7 +7372,7 @@
         }
       },
       "ic": {
-        "line": 1643,
+        "line": 1646,
         "definition": "integer, allocatable :: ic(:)",
         "name": "ic",
         "comment": "Index to %control(:) from slaves.",
@@ -7365,7 +7384,7 @@
         }
       },
       "photon_type": {
-        "line": 1644,
+        "line": 1647,
         "definition": "integer :: photon_type = incoherent$",
         "name": "photon_type",
         "comment": "Or coherent$. For X-ray simulations.",
@@ -7375,7 +7394,7 @@
         }
       },
       "creation_hash": {
-        "line": 1645,
+        "line": 1648,
         "definition": "integer :: creation_hash = 0",
         "name": "creation_hash",
         "comment": "Set by bmad_parser. creation_hash will vary if any of the lattice files are modified.",
@@ -7385,7 +7404,7 @@
         }
       },
       "ramper_slave_bookkeeping": {
-        "line": 1647,
+        "line": 1650,
         "definition": "integer :: ramper_slave_bookkeeping = stale$",
         "name": "ramper_slave_bookkeeping",
         "default": "stale$",
@@ -7397,12 +7416,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1957,
+    "line": 1961,
     "name": "linac_normal_mode_struct",
     "module": "bmad_struct",
     "members": {
       "i2_E4": {
-        "line": 1958,
+        "line": 1962,
         "definition": "real(rp) :: i2_E4 = 0",
         "name": "i2_E4",
         "comment": "Integral: g^2 * gamma^4",
@@ -7413,7 +7432,7 @@
         }
       },
       "i3_E7": {
-        "line": 1959,
+        "line": 1963,
         "definition": "real(rp) :: i3_E7 = 0",
         "name": "i3_E7",
         "comment": "Integral: g^3 * gamma^7",
@@ -7424,7 +7443,7 @@
         }
       },
       "i5a_E6": {
-        "line": 1960,
+        "line": 1964,
         "definition": "real(rp) :: i5a_E6 = 0",
         "name": "i5a_E6",
         "comment": "Integral: (g^3 * H_a) * gamma^6",
@@ -7435,7 +7454,7 @@
         }
       },
       "i5b_E6": {
-        "line": 1961,
+        "line": 1965,
         "definition": "real(rp) :: i5b_E6 = 0",
         "name": "i5b_E6",
         "comment": "Integral: (g^3 * H_b) * gamma^6",
@@ -7446,7 +7465,7 @@
         }
       },
       "sig_E1": {
-        "line": 1962,
+        "line": 1966,
         "definition": "real(rp) :: sig_E1 = 0",
         "name": "sig_E1",
         "comment": "Energy spread after 1 pass (eV)",
@@ -7457,7 +7476,7 @@
         }
       },
       "a_emittance_end": {
-        "line": 1963,
+        "line": 1967,
         "definition": "real(rp) :: a_emittance_end = 0",
         "name": "a_emittance_end",
         "comment": "a mode emittance at end of linac",
@@ -7468,7 +7487,7 @@
         }
       },
       "b_emittance_end": {
-        "line": 1964,
+        "line": 1968,
         "definition": "real(rp) :: b_emittance_end = 0",
         "name": "b_emittance_end",
         "comment": "b mode emittance at end of linac",
@@ -7818,12 +7837,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1535,
+    "line": 1538,
     "name": "mode_info_struct",
     "module": "bmad_struct",
     "members": {
       "stable": {
-        "line": 1536,
+        "line": 1539,
         "definition": "logical :: stable = .false.",
         "name": "stable",
         "comment": "Is the mode stable?",
@@ -7833,7 +7852,7 @@
         }
       },
       "tune": {
-        "line": 1537,
+        "line": 1540,
         "definition": "real(rp) :: tune   = 0",
         "name": "tune",
         "comment": "\"fractional\" tune in radians",
@@ -7844,7 +7863,7 @@
         }
       },
       "emit": {
-        "line": 1538,
+        "line": 1541,
         "definition": "real(rp) :: emit   = 0",
         "name": "emit",
         "comment": "Emittance (unnormalized).",
@@ -7855,7 +7874,7 @@
         }
       },
       "chrom": {
-        "line": 1539,
+        "line": 1542,
         "definition": "real(rp) :: chrom  = 0",
         "name": "chrom",
         "comment": "Chromaticity.",
@@ -7866,7 +7885,7 @@
         }
       },
       "sigma": {
-        "line": 1540,
+        "line": 1543,
         "definition": "real(rp) :: sigma  = 0",
         "name": "sigma",
         "comment": "Beam size.",
@@ -7877,7 +7896,7 @@
         }
       },
       "sigmap": {
-        "line": 1541,
+        "line": 1544,
         "definition": "real(rp) :: sigmap = 0",
         "name": "sigmap",
         "comment": "Beam divergence.",
@@ -7891,12 +7910,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2081,
+    "line": 2085,
     "name": "multipass_all_info_struct",
     "module": "bmad_struct",
     "members": {
       "lord": {
-        "line": 2082,
+        "line": 2086,
         "definition": "type (multipass_lord_info_struct), allocatable :: lord(:)",
         "name": "lord",
         "comment": "Array of lords",
@@ -7909,7 +7928,7 @@
         }
       },
       "branch": {
-        "line": 2083,
+        "line": 2087,
         "definition": "type (multipass_branch_info_struct), allocatable :: branch(:)",
         "name": "branch",
         "default": null,
@@ -7924,12 +7943,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2074,
+    "line": 2078,
     "name": "multipass_branch_info_struct",
     "module": "bmad_struct",
     "members": {
       "ele": {
-        "line": 2075,
+        "line": 2079,
         "definition": "type (multipass_ele_info_struct), allocatable :: ele(:)",
         "name": "ele",
         "default": null,
@@ -7944,12 +7963,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2067,
+    "line": 2071,
     "name": "multipass_ele_info_struct",
     "module": "bmad_struct",
     "members": {
       "multipass": {
-        "line": 2068,
+        "line": 2072,
         "definition": "logical multipass",
         "name": "multipass",
         "comment": "True if involved in multipass. False otherwise",
@@ -7959,7 +7978,7 @@
         }
       },
       "ix_pass": {
-        "line": 2069,
+        "line": 2073,
         "definition": "integer ix_pass",
         "name": "ix_pass",
         "comment": "Pass number",
@@ -7969,7 +7988,7 @@
         }
       },
       "ix_lord": {
-        "line": 2070,
+        "line": 2074,
         "definition": "integer, allocatable :: ix_lord(:)",
         "name": "ix_lord",
         "comment": "Pointers to lord(:) array",
@@ -7981,7 +8000,7 @@
         }
       },
       "ix_super": {
-        "line": 2071,
+        "line": 2075,
         "definition": "integer, allocatable :: ix_super(:)",
         "name": "ix_super",
         "comment": "Indexes to slave(ix_pass, super_slave%ix_ele) matrix",
@@ -7996,12 +8015,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2056,
+    "line": 2060,
     "name": "multipass_lord_info_struct",
     "module": "bmad_struct",
     "members": {
       "lord": {
-        "line": 2057,
+        "line": 2061,
         "definition": "type (ele_struct), pointer :: lord",
         "name": "lord",
         "comment": "Lord element",
@@ -8013,7 +8032,7 @@
         }
       },
       "n_pass": {
-        "line": 2058,
+        "line": 2062,
         "definition": "integer n_pass",
         "name": "n_pass",
         "comment": "Number of passes (= number of slaves)",
@@ -8023,7 +8042,7 @@
         }
       },
       "n_super_slave": {
-        "line": 2059,
+        "line": 2063,
         "definition": "integer n_super_slave",
         "name": "n_super_slave",
         "comment": "Number of super_slaves per super_lord.",
@@ -8033,7 +8052,7 @@
         }
       },
       "super_lord": {
-        "line": 2060,
+        "line": 2064,
         "definition": "type (ele_pointer_struct), allocatable :: super_lord(:)",
         "name": "super_lord",
         "comment": "Super_lord list if they exist.",
@@ -8046,7 +8065,7 @@
         }
       },
       "slave": {
-        "line": 2061,
+        "line": 2065,
         "definition": "type (ele_pointer_struct), allocatable :: slave(:,:)",
         "name": "slave",
         "comment": "Slaves list in tracking part.",
@@ -8221,12 +8240,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1967,
+    "line": 1971,
     "name": "normal_modes_struct",
     "module": "bmad_struct",
     "members": {
       "synch_int": {
-        "line": 1968,
+        "line": 1972,
         "definition": "real(rp) :: synch_int(0:3) = 0",
         "name": "synch_int",
         "comment": "Synchrotron integrals I0, I1, I2, and I3",
@@ -8238,7 +8257,7 @@
         }
       },
       "sigE_E": {
-        "line": 1969,
+        "line": 1973,
         "definition": "real(rp) :: sigE_E = 0",
         "name": "sigE_E",
         "comment": "SigmaE/E",
@@ -8249,7 +8268,7 @@
         }
       },
       "sig_z": {
-        "line": 1970,
+        "line": 1974,
         "definition": "real(rp) :: sig_z = 0",
         "name": "sig_z",
         "comment": "Sigma_Z",
@@ -8260,7 +8279,7 @@
         }
       },
       "e_loss": {
-        "line": 1971,
+        "line": 1975,
         "definition": "real(rp) :: e_loss = 0",
         "name": "e_loss",
         "comment": "Energy loss / turn (eV)",
@@ -8271,7 +8290,7 @@
         }
       },
       "rf_voltage": {
-        "line": 1972,
+        "line": 1976,
         "definition": "real(rp) :: rf_voltage = 0",
         "name": "rf_voltage",
         "comment": "Total rfcavity voltage (eV)",
@@ -8282,7 +8301,7 @@
         }
       },
       "pz_aperture": {
-        "line": 1973,
+        "line": 1977,
         "definition": "real(rp) :: pz_aperture = 0",
         "name": "pz_aperture",
         "comment": "pz aperture limit. Used with Touschek calculations.",
@@ -8293,7 +8312,7 @@
         }
       },
       "pz_average": {
-        "line": 1974,
+        "line": 1978,
         "definition": "real(rp) :: pz_average = 0",
         "name": "pz_average",
         "comment": "Average over branch due to damping.",
@@ -8304,7 +8323,7 @@
         }
       },
       "momentum_compaction": {
-        "line": 1975,
+        "line": 1979,
         "definition": "real(rp) :: momentum_compaction = 0",
         "name": "momentum_compaction",
         "default": "0",
@@ -8314,7 +8333,7 @@
         }
       },
       "dpz_damp": {
-        "line": 1976,
+        "line": 1980,
         "definition": "real(rp) :: dpz_damp = 0",
         "name": "dpz_damp",
         "comment": "Change in pz without RF",
@@ -8325,7 +8344,7 @@
         }
       },
       "a": {
-        "line": 1977,
+        "line": 1981,
         "definition": "type (anormal_mode_struct) :: a = anormal_mode_struct()",
         "name": "a",
         "default": "anormal_mode_struct()",
@@ -8335,7 +8354,7 @@
         }
       },
       "b": {
-        "line": 1978,
+        "line": 1982,
         "definition": "type (anormal_mode_struct) :: b = anormal_mode_struct()",
         "name": "b",
         "default": "anormal_mode_struct()",
@@ -8345,7 +8364,7 @@
         }
       },
       "z": {
-        "line": 1979,
+        "line": 1983,
         "definition": "type (anormal_mode_struct) :: z = anormal_mode_struct()",
         "name": "z",
         "default": "anormal_mode_struct()",
@@ -8355,7 +8374,7 @@
         }
       },
       "lin": {
-        "line": 1980,
+        "line": 1984,
         "definition": "type (linac_normal_mode_struct) :: lin = linac_normal_mode_struct()",
         "name": "lin",
         "default": "linac_normal_mode_struct()",
@@ -9045,12 +9064,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2387,
+    "line": 2393,
     "name": "pmd_header_struct",
     "module": "bmad_struct",
     "members": {
       "openPMD": {
-        "line": 2388,
+        "line": 2394,
         "definition": "character(:), allocatable :: openPMD",
         "name": "openPMD",
         "default": null,
@@ -9061,7 +9080,7 @@
         }
       },
       "openPMDextension": {
-        "line": 2389,
+        "line": 2395,
         "definition": "character(:), allocatable :: openPMDextension",
         "name": "openPMDextension",
         "default": null,
@@ -9072,7 +9091,7 @@
         }
       },
       "basePath": {
-        "line": 2390,
+        "line": 2396,
         "definition": "character(:), allocatable :: basePath",
         "name": "basePath",
         "default": null,
@@ -9083,7 +9102,7 @@
         }
       },
       "particlesPath": {
-        "line": 2391,
+        "line": 2397,
         "definition": "character(:), allocatable :: particlesPath",
         "name": "particlesPath",
         "default": null,
@@ -9094,7 +9113,7 @@
         }
       },
       "meshesPath": {
-        "line": 2392,
+        "line": 2398,
         "definition": "character(:), allocatable :: meshesPath",
         "name": "meshesPath",
         "default": null,
@@ -9105,7 +9124,7 @@
         }
       },
       "author": {
-        "line": 2393,
+        "line": 2399,
         "definition": "character(:), allocatable :: author",
         "name": "author",
         "default": null,
@@ -9116,7 +9135,7 @@
         }
       },
       "software": {
-        "line": 2394,
+        "line": 2400,
         "definition": "character(:), allocatable :: software",
         "name": "software",
         "default": null,
@@ -9127,7 +9146,7 @@
         }
       },
       "softwareVersion": {
-        "line": 2395,
+        "line": 2401,
         "definition": "character(:), allocatable :: softwareVersion",
         "name": "softwareVersion",
         "default": null,
@@ -9138,7 +9157,7 @@
         }
       },
       "date": {
-        "line": 2396,
+        "line": 2402,
         "definition": "character(:), allocatable :: date",
         "name": "date",
         "default": null,
@@ -9149,7 +9168,7 @@
         }
       },
       "latticeFile": {
-        "line": 2397,
+        "line": 2403,
         "definition": "character(:), allocatable :: latticeFile",
         "name": "latticeFile",
         "default": null,
@@ -9160,7 +9179,7 @@
         }
       },
       "latticeName": {
-        "line": 2398,
+        "line": 2404,
         "definition": "character(:), allocatable :: latticeName",
         "name": "latticeName",
         "default": null,
@@ -9174,12 +9193,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1601,
+    "line": 1604,
     "name": "pre_tracker_struct",
     "module": "bmad_struct",
     "members": {
       "who": {
-        "line": 1602,
+        "line": 1605,
         "definition": "integer :: who = 0",
         "name": "who",
         "comment": "Can be opal$, or impactt$",
@@ -9189,7 +9208,7 @@
         }
       },
       "ix_ele_start": {
-        "line": 1603,
+        "line": 1606,
         "definition": "integer :: ix_ele_start = 0",
         "name": "ix_ele_start",
         "default": "0",
@@ -9198,7 +9217,7 @@
         }
       },
       "ix_ele_end": {
-        "line": 1604,
+        "line": 1607,
         "definition": "integer :: ix_ele_end = 0",
         "name": "ix_ele_end",
         "default": "0",
@@ -9207,7 +9226,7 @@
         }
       },
       "input_file": {
-        "line": 1605,
+        "line": 1608,
         "definition": "character(400) :: input_file = ''",
         "name": "input_file",
         "default": "''",
@@ -9220,12 +9239,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1528,
+    "line": 1531,
     "name": "ptc_branch1_struct",
     "module": "bmad_struct",
     "members": {
       "m_u_layout": {
-        "line": 1529,
+        "line": 1532,
         "definition": "type (ptc_layout_pointer_struct), allocatable :: m_u_layout(:)",
         "name": "m_u_layout",
         "default": null,
@@ -9237,7 +9256,7 @@
         }
       },
       "m_t_layout": {
-        "line": 1530,
+        "line": 1533,
         "definition": "type (layout), pointer :: m_t_layout => null()",
         "name": "m_t_layout",
         "comment": "Tracking layout.",
@@ -9252,12 +9271,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2310,
+    "line": 2316,
     "name": "ptc_common_struct",
     "module": "bmad_struct",
     "members": {
       "max_fringe_order": {
-        "line": 2311,
+        "line": 2317,
         "definition": "integer, pointer :: max_fringe_order  => null()",
         "name": "max_fringe_order",
         "comment": "Points to PTC HIGHEST_FRINGE. 2 (default) => Quadrupole.",
@@ -9268,7 +9287,7 @@
         }
       },
       "old_integrator": {
-        "line": 2312,
+        "line": 2318,
         "definition": "integer, pointer :: old_integrator    => null()",
         "name": "old_integrator",
         "comment": "Points to PTC OLD_INTEGRATOR. -1 = False, 1 = True.",
@@ -9279,7 +9298,7 @@
         }
       },
       "exact_model": {
-        "line": 2313,
+        "line": 2319,
         "definition": "logical, pointer :: exact_model       => null()",
         "name": "exact_model",
         "comment": "Points to PTC EXACT_MODEL. Default True.",
@@ -9290,7 +9309,7 @@
         }
       },
       "exact_misalign": {
-        "line": 2314,
+        "line": 2320,
         "definition": "logical, pointer :: exact_misalign    => null()",
         "name": "exact_misalign",
         "comment": "Points to PTC ALWAYS_EXACTMIS. Default True. Notice different names.",
@@ -9301,7 +9320,7 @@
         }
       },
       "vertical_kick": {
-        "line": 2315,
+        "line": 2321,
         "definition": "real(rp), pointer :: vertical_kick    => null()",
         "name": "vertical_kick",
         "comment": "Points to PTC VERTICAL_KICK for 6D emittance calc. 0 => off, 1 => on (default).",
@@ -9313,7 +9332,7 @@
         }
       },
       "cut_factor": {
-        "line": 2316,
+        "line": 2322,
         "definition": "real(rp) :: cut_factor = 0.006",
         "name": "cut_factor",
         "comment": "Cut factor for PTC tracking",
@@ -9324,7 +9343,7 @@
         }
       },
       "print_step_warning": {
-        "line": 2317,
+        "line": 2323,
         "definition": "logical :: print_step_warning = .false.",
         "name": "print_step_warning",
         "comment": "Print warning if element uses too many steps. Below is stuff that should not be set except by experts",
@@ -9334,7 +9353,7 @@
         }
       },
       "use_orientation_patches": {
-        "line": 2319,
+        "line": 2325,
         "definition": "logical :: use_orientation_patches = .true.",
         "name": "use_orientation_patches",
         "comment": "offset, pitch, and tilt attributes are put in ptc patch?",
@@ -9344,7 +9363,7 @@
         }
       },
       "print_info_messages": {
-        "line": 2320,
+        "line": 2326,
         "definition": "logical :: print_info_messages = .false.",
         "name": "print_info_messages",
         "comment": "Allow PTC to print informational messages (which can clutter the output)?",
@@ -9354,7 +9373,7 @@
         }
       },
       "translate_patch_drift_time": {
-        "line": 2321,
+        "line": 2327,
         "definition": "logical :: translate_patch_drift_time = .true.",
         "name": "translate_patch_drift_time",
         "comment": "When a Bmad patch is translated to a PTC fibre, is the drift time included in the translation?",
@@ -9367,12 +9386,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1524,
+    "line": 1527,
     "name": "ptc_layout_pointer_struct",
     "module": "bmad_struct",
     "members": {
       "ptr": {
-        "line": 1525,
+        "line": 1528,
         "definition": "type (layout), pointer :: ptr => null()",
         "name": "ptr",
         "default": "null()",
@@ -9386,12 +9405,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1567,
+    "line": 1570,
     "name": "ptc_normal_form_struct",
     "module": "bmad_struct",
     "members": {
       "ele_origin": {
-        "line": 1568,
+        "line": 1571,
         "definition": "type (ele_struct), pointer :: ele_origin => null()",
         "name": "ele_origin",
         "comment": "Element at which the on-turn map was created.",
@@ -9403,7 +9422,7 @@
         }
       },
       "one_turn_map": {
-        "line": 1569,
+        "line": 1572,
         "definition": "type (probe_8) one_turn_map",
         "name": "one_turn_map",
         "comment": "One turn map",
@@ -9414,7 +9433,7 @@
         }
       },
       "orb0": {
-        "line": 1570,
+        "line": 1573,
         "definition": "real(rp) orb0(6)",
         "name": "orb0",
         "comment": "Closed orbit at element.",
@@ -9426,7 +9445,7 @@
         }
       },
       "normal_form": {
-        "line": 1571,
+        "line": 1574,
         "definition": "type (c_normal_form) normal_form",
         "name": "normal_form",
         "comment": "Complex normal form",
@@ -9437,7 +9456,7 @@
         }
       },
       "phase": {
-        "line": 1572,
+        "line": 1575,
         "definition": "type (c_taylor) phase(3)",
         "name": "phase",
         "comment": "Phase/chromaticity maps",
@@ -9449,7 +9468,7 @@
         }
       },
       "path_length": {
-        "line": 1573,
+        "line": 1576,
         "definition": "type (c_taylor) path_length",
         "name": "path_length",
         "comment": "Path length map. Gives momentum compaction.",
@@ -9460,7 +9479,7 @@
         }
       },
       "spin_tune": {
-        "line": 1574,
+        "line": 1577,
         "definition": "type (c_taylor) spin_tune",
         "name": "spin_tune",
         "comment": "Amplitude dependent spin tune",
@@ -9471,7 +9490,7 @@
         }
       },
       "isf": {
-        "line": 1575,
+        "line": 1578,
         "definition": "type (c_quaternion) isf",
         "name": "isf",
         "comment": "Invariant spin field in (x, px, ...) space.",
@@ -9482,7 +9501,7 @@
         }
       },
       "state": {
-        "line": 1576,
+        "line": 1579,
         "definition": "type (internal_state) state",
         "name": "state",
         "comment": "PTC state",
@@ -9493,7 +9512,7 @@
         }
       },
       "valid_map": {
-        "line": 1577,
+        "line": 1580,
         "definition": "logical :: valid_map = .false.",
         "name": "valid_map",
         "default": ".false.",
@@ -9505,12 +9524,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2337,
+    "line": 2343,
     "name": "ptc_private_struct",
     "module": "bmad_struct",
     "members": {
       "base_state": {
-        "line": 2338,
+        "line": 2344,
         "definition": "type (internal_state) :: base_state",
         "name": "base_state",
         "comment": "Base PTC state.",
@@ -9521,7 +9540,7 @@
         }
       },
       "e_tot_set": {
-        "line": 2339,
+        "line": 2345,
         "definition": "real(rp) :: e_tot_set = 0",
         "name": "e_tot_set",
         "default": "0",
@@ -9531,7 +9550,7 @@
         }
       },
       "taylor_order_ptc": {
-        "line": 2340,
+        "line": 2346,
         "definition": "integer :: taylor_order_ptc = 0",
         "name": "taylor_order_ptc",
         "comment": "What has been set in PTC. 0 -> not yet set. See above.",
@@ -9541,7 +9560,7 @@
         }
       },
       "taylor_order_saved": {
-        "line": 2341,
+        "line": 2347,
         "definition": "integer :: taylor_order_saved = 3",
         "name": "taylor_order_saved",
         "comment": "Default to use at startup.",
@@ -9551,7 +9570,7 @@
         }
       },
       "init_ptc_needed": {
-        "line": 2342,
+        "line": 2348,
         "definition": "logical :: init_ptc_needed = .true.",
         "name": "init_ptc_needed",
         "default": ".true.",
@@ -9560,7 +9579,7 @@
         }
       },
       "init_spin_needed": {
-        "line": 2343,
+        "line": 2349,
         "definition": "logical :: init_spin_needed = .true.",
         "name": "init_spin_needed",
         "default": ".true.",
@@ -9572,12 +9591,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2354,
+    "line": 2360,
     "name": "rad_int1_struct",
     "module": "bmad_struct",
     "members": {
       "i0": {
-        "line": 2355,
+        "line": 2361,
         "definition": "real(rp) :: i0   = 0",
         "name": "i0",
         "default": "0",
@@ -9587,7 +9606,7 @@
         }
       },
       "i1": {
-        "line": 2356,
+        "line": 2362,
         "definition": "real(rp) :: i1   = 0",
         "name": "i1",
         "default": "0",
@@ -9597,7 +9616,7 @@
         }
       },
       "i2": {
-        "line": 2357,
+        "line": 2363,
         "definition": "real(rp) :: i2   = 0",
         "name": "i2",
         "default": "0",
@@ -9607,7 +9626,7 @@
         }
       },
       "i3": {
-        "line": 2358,
+        "line": 2364,
         "definition": "real(rp) :: i3   = 0",
         "name": "i3",
         "default": "0",
@@ -9617,7 +9636,7 @@
         }
       },
       "i4a": {
-        "line": 2359,
+        "line": 2365,
         "definition": "real(rp) :: i4a  = 0",
         "name": "i4a",
         "default": "0",
@@ -9627,7 +9646,7 @@
         }
       },
       "i4b": {
-        "line": 2360,
+        "line": 2366,
         "definition": "real(rp) :: i4b  = 0",
         "name": "i4b",
         "default": "0",
@@ -9637,7 +9656,7 @@
         }
       },
       "i4z": {
-        "line": 2361,
+        "line": 2367,
         "definition": "real(rp) :: i4z  = 0",
         "name": "i4z",
         "default": "0",
@@ -9647,7 +9666,7 @@
         }
       },
       "i5a": {
-        "line": 2362,
+        "line": 2368,
         "definition": "real(rp) :: i5a  = 0",
         "name": "i5a",
         "default": "0",
@@ -9657,7 +9676,7 @@
         }
       },
       "i5b": {
-        "line": 2363,
+        "line": 2369,
         "definition": "real(rp) :: i5b  = 0",
         "name": "i5b",
         "default": "0",
@@ -9667,7 +9686,7 @@
         }
       },
       "i6b": {
-        "line": 2364,
+        "line": 2370,
         "definition": "real(rp) :: i6b  = 0",
         "name": "i6b",
         "default": "0",
@@ -9677,7 +9696,7 @@
         }
       },
       "lin_i2_E4": {
-        "line": 2365,
+        "line": 2371,
         "definition": "real(rp) :: lin_i2_E4   = 0",
         "name": "lin_i2_E4",
         "default": "0",
@@ -9687,7 +9706,7 @@
         }
       },
       "lin_i3_E7": {
-        "line": 2366,
+        "line": 2372,
         "definition": "real(rp) :: lin_i3_E7   = 0",
         "name": "lin_i3_E7",
         "default": "0",
@@ -9697,7 +9716,7 @@
         }
       },
       "lin_i5a_E6": {
-        "line": 2367,
+        "line": 2373,
         "definition": "real(rp) :: lin_i5a_E6  = 0",
         "name": "lin_i5a_E6",
         "default": "0",
@@ -9707,7 +9726,7 @@
         }
       },
       "lin_i5b_E6": {
-        "line": 2368,
+        "line": 2374,
         "definition": "real(rp) :: lin_i5b_E6  = 0",
         "name": "lin_i5b_E6",
         "default": "0",
@@ -9717,7 +9736,7 @@
         }
       },
       "lin_norm_emit_a": {
-        "line": 2369,
+        "line": 2375,
         "definition": "real(rp) :: lin_norm_emit_a = 0",
         "name": "lin_norm_emit_a",
         "comment": "Running sum",
@@ -9728,7 +9747,7 @@
         }
       },
       "lin_norm_emit_b": {
-        "line": 2370,
+        "line": 2376,
         "definition": "real(rp) :: lin_norm_emit_b = 0",
         "name": "lin_norm_emit_b",
         "comment": "Running sum",
@@ -9739,7 +9758,7 @@
         }
       },
       "lin_sig_E": {
-        "line": 2371,
+        "line": 2377,
         "definition": "real(rp) :: lin_sig_E       = 0",
         "name": "lin_sig_E",
         "comment": "Running sum",
@@ -9750,7 +9769,7 @@
         }
       },
       "n_steps": {
-        "line": 2372,
+        "line": 2378,
         "definition": "real(rp) :: n_steps         = 0",
         "name": "n_steps",
         "comment": "number of qromb steps needed",
@@ -9764,12 +9783,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2381,
+    "line": 2387,
     "name": "rad_int_all_ele_struct",
     "module": "bmad_struct",
     "members": {
       "branch": {
-        "line": 2382,
+        "line": 2388,
         "definition": "type (rad_int_branch_struct), allocatable :: branch(:)",
         "name": "branch",
         "comment": "Array is indexed from 0",
@@ -9785,12 +9804,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2377,
+    "line": 2383,
     "name": "rad_int_branch_struct",
     "module": "bmad_struct",
     "members": {
       "ele": {
-        "line": 2378,
+        "line": 2384,
         "definition": "type (rad_int1_struct), allocatable :: ele(:)",
         "name": "ele",
         "comment": "Array is indexed from 0",
@@ -10268,12 +10287,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1361,
+    "line": 1364,
     "name": "ramper_lord_struct",
     "module": "bmad_struct",
     "members": {
       "ix_ele": {
-        "line": 1362,
+        "line": 1365,
         "definition": "integer :: ix_ele = 0",
         "name": "ix_ele",
         "comment": "Lord index",
@@ -10283,7 +10302,7 @@
         }
       },
       "ix_con": {
-        "line": 1363,
+        "line": 1366,
         "definition": "integer :: ix_con = 0",
         "name": "ix_con",
         "comment": "Index in lord%control%ramp(:) array",
@@ -10293,7 +10312,7 @@
         }
       },
       "attrib_ptr": {
-        "line": 1364,
+        "line": 1367,
         "definition": "real(rp), pointer :: attrib_ptr => null()",
         "name": "attrib_ptr",
         "comment": "Pointer to attribute in this element.",
@@ -10308,12 +10327,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1546,
+    "line": 1549,
     "name": "resonance_h_struct",
     "module": "bmad_struct",
     "members": {
       "id": {
-        "line": 1547,
+        "line": 1550,
         "definition": "character(6) :: id = ''",
         "name": "id",
         "comment": "6 digit ID. EG: '003100'",
@@ -10324,7 +10343,7 @@
         }
       },
       "c_val": {
-        "line": 1548,
+        "line": 1551,
         "definition": "complex(rp) :: c_val = 0",
         "name": "c_val",
         "comment": "Resonance value",
@@ -10338,12 +10357,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1307,
+    "line": 1310,
     "name": "rf_ele_struct",
     "module": "bmad_struct",
     "members": {
       "steps": {
-        "line": 1308,
+        "line": 1311,
         "definition": "type (rf_stair_step_struct), allocatable :: steps(:)",
         "name": "steps",
         "comment": "Energy stair step array indexed from zero.",
@@ -10356,7 +10375,7 @@
         }
       },
       "ds_step": {
-        "line": 1309,
+        "line": 1312,
         "definition": "real(rp) :: ds_step = 0",
         "name": "ds_step",
         "comment": "length of a stair step.",
@@ -10370,15 +10389,15 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 1288,
+    "line": 1289,
     "name": "rf_stair_step_struct",
     "module": "bmad_struct",
     "members": {
       "E_tot0": {
-        "line": 1289,
+        "line": 1290,
         "definition": "real(rp) :: E_tot0 = 0",
         "name": "E_tot0",
-        "comment": "Reference energy before kick.",
+        "comment": "Reference energy in the drift region before the kick point.",
         "default": "0",
         "type_info": {
           "type": "real",
@@ -10386,10 +10405,10 @@
         }
       },
       "E_tot1": {
-        "line": 1290,
+        "line": 1291,
         "definition": "real(rp) :: E_tot1 = 0",
         "name": "E_tot1",
-        "comment": "Reference energy after kick.",
+        "comment": "Reference energy after the kick point.",
         "default": "0",
         "type_info": {
           "type": "real",
@@ -10397,21 +10416,21 @@
         }
       },
       "p0c": {
-        "line": 1291,
+        "line": 1292,
         "definition": "real(rp) :: p0c = 0",
         "name": "p0c",
-        "comment": "Reference momentum before kick.",
+        "comment": "Reference momentum in the drift region (before the kick point).",
         "default": "0",
         "type_info": {
           "type": "real",
           "kind": "rp"
         }
       },
-      "p1c": {
-        "line": 1292,
-        "definition": "real(rp) :: p1c = 0",
-        "name": "p1c",
-        "comment": "Reference momentum after kick.",
+      "dp0c": {
+        "line": 1293,
+        "definition": "real(rp) :: dp0c = 0",
+        "name": "dp0c",
+        "comment": "Change in reference momentum",
         "default": "0",
         "type_info": {
           "type": "real",
@@ -10419,7 +10438,7 @@
         }
       },
       "dE_amp": {
-        "line": 1293,
+        "line": 1294,
         "definition": "real(rp) :: dE_amp = 0",
         "name": "dE_amp",
         "comment": "Amplitude of RF kick sinusoid.",
@@ -10430,10 +10449,10 @@
         }
       },
       "scale": {
-        "line": 1294,
+        "line": 1295,
         "definition": "real(rp) :: scale = 0",
         "name": "scale",
-        "comment": "Scale for multipole kicks. Sum over all steps will be 1.",
+        "comment": "Scale for multipole kick at the kick point. Sum over all steps will be 1.",
         "default": "0",
         "type_info": {
           "type": "real",
@@ -10441,10 +10460,10 @@
         }
       },
       "dtime": {
-        "line": 1295,
+        "line": 1296,
         "definition": "real(rp) :: dtime = 0",
         "name": "dtime",
-        "comment": "Reference Time at energy kick with respect to beginning of element.",
+        "comment": "Reference Time at the kick point with respect to beginning of element.",
         "default": "0",
         "type_info": {
           "type": "real",
@@ -10452,10 +10471,10 @@
         }
       },
       "s": {
-        "line": 1296,
+        "line": 1297,
         "definition": "real(rp) :: s = 0",
         "name": "s",
-        "comment": "S-position at kick from beginning of element.",
+        "comment": "S-position at the kick point relative to the beginning of the element.",
         "default": "0",
         "type_info": {
           "type": "real",
@@ -10670,12 +10689,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2122,
+    "line": 2126,
     "name": "space_charge_common_struct",
     "module": "bmad_struct",
     "members": {
       "ds_track_step": {
-        "line": 2123,
+        "line": 2127,
         "definition": "real(rp) :: ds_track_step = 0",
         "name": "ds_track_step",
         "comment": "CSR tracking step size",
@@ -10686,7 +10705,7 @@
         }
       },
       "dt_track_step": {
-        "line": 2124,
+        "line": 2128,
         "definition": "real(rp) :: dt_track_step = 1d-12",
         "name": "dt_track_step",
         "comment": "Time Runge kutta initial step.",
@@ -10697,7 +10716,7 @@
         }
       },
       "cathode_strength_cutoff": {
-        "line": 2125,
+        "line": 2129,
         "definition": "real(rp) :: cathode_strength_cutoff = 0.01",
         "name": "cathode_strength_cutoff",
         "comment": "Cutoff for the cathode field calc.",
@@ -10708,7 +10727,7 @@
         }
       },
       "rel_tol_tracking": {
-        "line": 2126,
+        "line": 2130,
         "definition": "real(rp) :: rel_tol_tracking = 1d-8",
         "name": "rel_tol_tracking",
         "comment": "Relative tolerance for tracking.",
@@ -10719,7 +10738,7 @@
         }
       },
       "abs_tol_tracking": {
-        "line": 2127,
+        "line": 2131,
         "definition": "real(rp) :: abs_tol_tracking = 1d-10",
         "name": "abs_tol_tracking",
         "comment": "Absolute tolerance for tracking.",
@@ -10730,7 +10749,7 @@
         }
       },
       "beam_chamber_height": {
-        "line": 2128,
+        "line": 2132,
         "definition": "real(rp) :: beam_chamber_height = 0",
         "name": "beam_chamber_height",
         "comment": "Used in shielding calculation.",
@@ -10741,7 +10760,7 @@
         }
       },
       "lsc_sigma_cutoff": {
-        "line": 2129,
+        "line": 2133,
         "definition": "real(rp) :: lsc_sigma_cutoff = 0.1",
         "name": "lsc_sigma_cutoff",
         "comment": "Cutoff for the 1-dim longitudinal SC calc. If a bin sigma is < cutoff * sigma_ave then ignore.",
@@ -10752,7 +10771,7 @@
         }
       },
       "particle_sigma_cutoff": {
-        "line": 2131,
+        "line": 2135,
         "definition": "real(rp) :: particle_sigma_cutoff = -1",
         "name": "particle_sigma_cutoff",
         "comment": "3D SC calc cutoff for particles with (x,y,z) position far from the center. Negative or zero means ignore.",
@@ -10763,7 +10782,7 @@
         }
       },
       "space_charge_mesh_size": {
-        "line": 2133,
+        "line": 2137,
         "definition": "integer :: space_charge_mesh_size(3) = [32, 32, 64]",
         "name": "space_charge_mesh_size",
         "comment": "Gird size for fft_3d space charge calc.",
@@ -10774,7 +10793,7 @@
         }
       },
       "csr3d_mesh_size": {
-        "line": 2134,
+        "line": 2138,
         "definition": "integer :: csr3d_mesh_size(3) = [32, 32, 64]",
         "name": "csr3d_mesh_size",
         "comment": "Gird size for CSR.",
@@ -10785,7 +10804,7 @@
         }
       },
       "n_bin": {
-        "line": 2135,
+        "line": 2139,
         "definition": "integer :: n_bin = 0",
         "name": "n_bin",
         "comment": "Number of bins used",
@@ -10795,7 +10814,7 @@
         }
       },
       "particle_bin_span": {
-        "line": 2136,
+        "line": 2140,
         "definition": "integer :: particle_bin_span = 2",
         "name": "particle_bin_span",
         "comment": "Longitudinal particle length / dz_bin",
@@ -10805,7 +10824,7 @@
         }
       },
       "n_shield_images": {
-        "line": 2137,
+        "line": 2141,
         "definition": "integer :: n_shield_images = 0",
         "name": "n_shield_images",
         "comment": "Chamber wall shielding. 0 = no shielding.",
@@ -10815,7 +10834,7 @@
         }
       },
       "sc_min_in_bin": {
-        "line": 2138,
+        "line": 2142,
         "definition": "integer :: sc_min_in_bin = 10",
         "name": "sc_min_in_bin",
         "comment": "Minimum number of particles in a bin for sigmas to be valid.",
@@ -10825,7 +10844,7 @@
         }
       },
       "lsc_kick_transverse_dependence": {
-        "line": 2139,
+        "line": 2143,
         "definition": "logical :: lsc_kick_transverse_dependence = .false.",
         "name": "lsc_kick_transverse_dependence",
         "default": ".false.",
@@ -10834,7 +10853,7 @@
         }
       },
       "debug": {
-        "line": 2140,
+        "line": 2144,
         "definition": "logical :: debug = .false.",
         "name": "debug",
         "default": ".false.",
@@ -10843,7 +10862,7 @@
         }
       },
       "diagnostic_output_file": {
-        "line": 2141,
+        "line": 2145,
         "definition": "character(400) :: diagnostic_output_file = ''",
         "name": "diagnostic_output_file",
         "comment": "If non-blank write a diagnostic (EG wake) file",
@@ -11157,12 +11176,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2016,
+    "line": 2020,
     "name": "strong_beam_struct",
     "module": "bmad_struct",
     "members": {
       "ix_slice": {
-        "line": 2017,
+        "line": 2021,
         "definition": "integer :: ix_slice = 0",
         "name": "ix_slice",
         "comment": "0 -> at element center and not at slice.",
@@ -11172,7 +11191,7 @@
         }
       },
       "x_center": {
-        "line": 2018,
+        "line": 2022,
         "definition": "real(rp) :: x_center = 0, y_center = 0",
         "name": "x_center",
         "comment": "Strong beam slice center.",
@@ -11183,7 +11202,7 @@
         }
       },
       "y_center": {
-        "line": 2018,
+        "line": 2022,
         "definition": "real(rp) :: x_center = 0, y_center = 0",
         "name": "y_center",
         "comment": "Strong beam slice center.",
@@ -11194,7 +11213,7 @@
         }
       },
       "x_sigma": {
-        "line": 2019,
+        "line": 2023,
         "definition": "real(rp) :: x_sigma = 0, y_sigma = 0",
         "name": "x_sigma",
         "comment": "Strong beam slice sigma.",
@@ -11205,7 +11224,7 @@
         }
       },
       "y_sigma": {
-        "line": 2019,
+        "line": 2023,
         "definition": "real(rp) :: x_sigma = 0, y_sigma = 0",
         "name": "y_sigma",
         "comment": "Strong beam slice sigma.",
@@ -11216,7 +11235,7 @@
         }
       },
       "dx": {
-        "line": 2020,
+        "line": 2024,
         "definition": "real(rp) :: dx = 0, dy = 0",
         "name": "dx",
         "comment": "Particle - beam slice distance.",
@@ -11227,7 +11246,7 @@
         }
       },
       "dy": {
-        "line": 2020,
+        "line": 2024,
         "definition": "real(rp) :: dx = 0, dy = 0",
         "name": "dy",
         "comment": "Particle - beam slice distance.",
@@ -11949,12 +11968,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2148,
+    "line": 2152,
     "name": "time_runge_kutta_common_struct",
     "module": "bmad_struct",
     "members": {
       "num_steps_done": {
-        "line": 2149,
+        "line": 2153,
         "definition": "integer :: num_steps_done = -1",
         "name": "num_steps_done",
         "comment": "Number of integration steps. Not used by Bmad. For external use.",
@@ -11964,7 +11983,7 @@
         }
       },
       "print_too_many_step_err": {
-        "line": 2150,
+        "line": 2154,
         "definition": "logical :: print_too_many_step_err = .true.",
         "name": "print_too_many_step_err",
         "default": ".true.",
@@ -11976,12 +11995,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2025,
+    "line": 2029,
     "name": "track_point_struct",
     "module": "bmad_struct",
     "members": {
       "s_lab": {
-        "line": 2026,
+        "line": 2030,
         "definition": "real(rp) s_lab",
         "name": "s_lab",
         "comment": "Longitudinal lab coord with respect to the upstream end.",
@@ -11992,7 +12011,7 @@
         }
       },
       "s_body": {
-        "line": 2027,
+        "line": 2031,
         "definition": "real(rp) s_body",
         "name": "s_body",
         "comment": "Longitudinal body coord with respect to the entrance end.",
@@ -12003,7 +12022,7 @@
         }
       },
       "orb": {
-        "line": 2028,
+        "line": 2032,
         "definition": "type (coord_struct) orb",
         "name": "orb",
         "comment": "Particle position in lab coords.",
@@ -12014,7 +12033,7 @@
         }
       },
       "field": {
-        "line": 2029,
+        "line": 2033,
         "definition": "type (em_field_struct) field",
         "name": "field",
         "comment": "E&M fields in lab coordinates.",
@@ -12025,7 +12044,7 @@
         }
       },
       "strong_beam": {
-        "line": 2030,
+        "line": 2034,
         "definition": "type (strong_beam_struct) strong_beam",
         "name": "strong_beam",
         "comment": "Strong beam info for beambeam element.",
@@ -12036,7 +12055,7 @@
         }
       },
       "vec0": {
-        "line": 2031,
+        "line": 2035,
         "definition": "real(rp) vec0(6)",
         "name": "vec0",
         "comment": "0th order part of xfer map from the beginning.",
@@ -12048,7 +12067,7 @@
         }
       },
       "mat6": {
-        "line": 2032,
+        "line": 2036,
         "definition": "real(rp) mat6(6,6)",
         "name": "mat6",
         "comment": "1st order part of xfer map (transfer matrix).",
@@ -12063,12 +12082,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/bmad/modules/bmad_struct.f90",
-    "line": 2037,
+    "line": 2041,
     "name": "track_struct",
     "module": "bmad_struct",
     "members": {
       "pt": {
-        "line": 2038,
+        "line": 2042,
         "definition": "type (track_point_struct), allocatable :: pt(:)",
         "name": "pt",
         "comment": "Array of track points indexed from 0.",
@@ -12081,7 +12100,7 @@
         }
       },
       "ds_save": {
-        "line": 2039,
+        "line": 2043,
         "definition": "real(rp) :: ds_save = 1d-3",
         "name": "ds_save",
         "comment": "Min distance between points. Not positive => Save at all points.",
@@ -12092,7 +12111,7 @@
         }
       },
       "n_pt": {
-        "line": 2040,
+        "line": 2044,
         "definition": "integer :: n_pt = -1",
         "name": "n_pt",
         "comment": "Track upper bound for %pt(0:) array. n_bad and n_ok are used by adaptive trackers to record the number of times the step length had to be shortened.",
@@ -12102,7 +12121,7 @@
         }
       },
       "n_bad": {
-        "line": 2042,
+        "line": 2046,
         "definition": "integer :: n_bad = 0",
         "name": "n_bad",
         "comment": "Number of \"bad\" steps where the step length was shortened.",
@@ -12112,7 +12131,7 @@
         }
       },
       "n_ok": {
-        "line": 2043,
+        "line": 2047,
         "definition": "integer :: n_ok = 0",
         "name": "n_ok",
         "comment": "Number of \"good\" steps where the step length was not shortened.",
