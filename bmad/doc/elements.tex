@@ -3175,6 +3175,10 @@ The attributes specific to an \vn{lcavity} are
   longitudinal_mode = <Int>   ! Longitudinal mode. Default is 1. May be 0 or 1.
 \end{example}
 
+%%  ks              = <Real>    ! Normalized solenoid strength.
+%%  bs_field        = <Real>    ! Solenoid field strength.
+%% Normalized field with respect to the reference energy at the exit end of the element.
+
 The \vn{voltage} and \vn{voltage_err} attributes can be used in place of \vn{gradient} and \vn{gradient_err}.
 The relationship between gradient and voltage is
 \begin{example}
@@ -3183,9 +3187,10 @@ The relationship between gradient and voltage is
 \end{example}
 
 The energy kick felt by a particle, assuming no phase slippage, is 
-\begin{example}
-  dE = \(r_q\) * gradient_tot * L * cos(\(2\,\pi\) * (\(\phi_t\) + \(\phi_\REF\)))
-\end{example}
+\begin{equation}
+  \text{dE} = r_q \cdot \text{gradient_tot} \cdot L  \cdot \cos(2 \, \pi \, (\phi_t + \phi_\REF))
+  \label{dergl}
+\end{equation}
 where $r_q$ is the charge of the particle relative to the charge of the reference particle.
 \index{multipass}
 where the total gradient is
@@ -5105,7 +5110,7 @@ See \sref{s:list.solenoid} for a full list of element attributes along with a th
 \index{bs_gradient}
 Attributes specific to an \vn{solenoid} element are:
 \begin{example}
-  ks           = <Real>  ! Solenoid strength.
+  ks           = <Real>  ! Normalized solenoid strength.
   bs_field     = <Real>  ! Solenoid field strength.
   field_master = <T/F>   ! See \sref{s:field.master}.
   l_soft_edge  = <Real>  ! For modeling a ``soft" fringe.

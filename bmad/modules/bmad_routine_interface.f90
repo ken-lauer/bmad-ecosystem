@@ -1066,6 +1066,12 @@ subroutine do_mode_flip (ele, err_flag)
   logical, optional :: err_flag
 end subroutine
 
+function dpc_given_dE(pc_old, mass, dE) result(dpc)
+  import
+  implicit none
+  real(rp) pc_old, mass, dE, dpc
+end function
+
 function e_accel_field (ele, voltage_or_gradient, bmad_standard_tracking) result (field)
   import
   implicit none
@@ -1075,14 +1081,23 @@ function e_accel_field (ele, voltage_or_gradient, bmad_standard_tracking) result
   logical, optional :: bmad_standard_tracking
 end function
 
-recursive subroutine ele_compute_ref_energy_and_time (ele0, ele, param, err_flag)
+recursive subroutine ele_compute_ref_energy_and_time (ele0, ele, param, err_flag, include_downstream_end)
   import
   implicit none
   type (ele_struct), target :: ele0, ele
   type (lat_param_struct) param
   real(rp) e_tot_start, p0c_start, ref_time_start
   logical err_flag
+  logical, optional :: include_downstream_end
 end subroutine
+
+function ele_full_name (ele, template) result (str)
+  import
+  implicit none
+  type (ele_struct) ele
+  character(*), optional :: template
+  character(:), allocatable :: str
+end function
 
 recursive subroutine ele_geometry (floor_start, ele, floor_end, len_scale, ignore_patch_err)
   import
@@ -1132,14 +1147,6 @@ function ele_loc_name (ele, show_branch0, parens) result (str)
   character(10) str
 end function
 
-function ele_full_name (ele, template) result (str)
-  import
-  implicit none
-  type (ele_struct) ele
-  character(*), optional :: template
-  character(:), allocatable :: str
-end function
-
 subroutine ele_misalignment_L_S_calc (ele, L_mis, S_mis)
   import
   implicit none
@@ -1184,6 +1191,15 @@ subroutine ele_reference_energy_correction (ele, orbit, particle_at, mat6, make_
   integer particle_at
   logical, optional :: make_matrix
 end subroutine
+
+function ele_rf_step_index(E_ref, s_rel, ele, include_downstream_end) result (ix_step)
+  import
+  implicit none
+  type (ele_struct) :: ele
+  real(rp) E_ref, s_rel
+  integer ix_step
+  logical, optional :: include_downstream_end
+end function
 
 subroutine ele_to_fibre (ele, ptc_fibre, use_offsets, err_flag, integ_order, steps, for_layout, ref_in)
   import
@@ -1997,11 +2013,11 @@ subroutine orbit_amplitude_calc (ele, orb, amp_a, amp_b, amp_na, amp_nb)
   real(rp), optional :: amp_a, amp_b, amp_na, amp_nb
 end subroutine
 
-subroutine orbit_reference_energy_correction (orbit, p0c_new, mat6, make_matrix)
+subroutine orbit_reference_energy_correction (orbit, dp0c, mat6, make_matrix)
   import
   implicit none
   type (coord_struct) :: orbit
-  real(rp) p0c_new
+  real(rp) dp0c
   real(rp), optional :: mat6(6,6)
   logical, optional :: make_matrix
 end subroutine
@@ -2715,14 +2731,14 @@ subroutine sol_quad_mat6_calc (ks, k1, tilt, length, ele, orbit, mat6, make_matr
   logical, optional :: make_matrix
 end subroutine
 
-subroutine solenoid_track_and_mat (ele, length, param, start_orb, end_orb, mat6, make_matrix)
+subroutine solenoid_track_and_mat (ele, length, param, start_orb, end_orb, mat6, make_matrix, ks, beta_ref)
   import
   implicit none
   type (ele_struct), target :: ele
   type (lat_param_struct) param
   type (coord_struct) start_orb, end_orb
   real(rp) length
-  real(rp), optional :: mat6(:,:)
+  real(rp), optional :: mat6(:,:), ks, beta_ref
   logical, optional :: make_matrix
 end subroutine
 
