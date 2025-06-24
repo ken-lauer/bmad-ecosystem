@@ -6,7 +6,6 @@ use bmad_cpp_convert_mod
 use equality_mod
 use bmad_json
 use sim_utils_json
-use helper_struct_json
 
 contains
 

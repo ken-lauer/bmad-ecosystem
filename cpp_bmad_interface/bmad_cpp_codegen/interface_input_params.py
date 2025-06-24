@@ -34,7 +34,6 @@ equality_use_statements = [
 test_use_statements = [
     "use bmad_json",
     "use sim_utils_json",
-    "use helper_struct_json",
 ]
 
 # List of structures to setup interfaces for.
