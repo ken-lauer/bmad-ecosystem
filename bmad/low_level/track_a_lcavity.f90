@@ -34,11 +34,11 @@ type (coord_struct) :: orbit
 type (ele_struct), target :: ele
 type (ele_struct), pointer :: lord
 type (lat_param_struct) :: param
-type (rf_stair_step_struct), pointer :: stair
+type (rf_stair_step_struct), pointer :: step
 
 real(rp), optional :: mat6(6,6)
 real(rp) length, s_now, s_end, kmat(6,6), phase, ds
-real(rp) mc2, gradient_tot, ks_rel
+real(rp) mc2, gradient_tot
 real(rp) an(0:n_pole_maxx), bn(0:n_pole_maxx), an_elec(0:n_pole_maxx), bn_elec(0:n_pole_maxx)
 
 integer ix_mag_max, ix_elec_max, ix_step_start, ix_step_end, n_steps, direction
@@ -92,45 +92,31 @@ call offset_particle (ele, set$, orbit, mat6 = mat6, make_matrix = make_mat)
 
 ! Beginning Edge
 
-phase = this_rf_phase(ix_step_start, orbit, lord)
+phase = this_rf_phase(orbit, lord)
 call rf_coupler_kick (ele, param, first_track_edge$, phase, orbit, mat6, make_mat)
 if (fringe_here(ele, orbit, first_track_edge$)) call fringe_kick(orbit, lord, +1, phase, mc2, mat6, make_mat)
 
 ! Body
 
-ks_rel = ele%value(ks$) * ele%value(p0c$)
-
 do ix_step = ix_step_start, ix_step_end, direction
-  stair => lord%rf%steps(ix_step)
+  step => lord%rf%steps(ix_step)
 
   if (ix_step == ix_step_end) then
     ! Drift to end. The first and last steps have no drift section.
     if (ix_step == 0 .or. ix_step == n_steps) cycle
     ds = s_end - s_now
-    if (ele%value(ks$) == 0) then
-      call track_a_drift(orbit, ds, mat6, make_mat, ele%orientation)
-    else
-      call solenoid_track_and_mat (ele, ds, param, orbit, orbit, mat6, make_mat, ks_rel/orbit%p0c, stair%p0c/stair%E_tot0)
-    endif
+    call step_drift(orbit, ds, step, ele, param, mat6, make_mat)
 
   else
     ! Drift to edge of step and kick
     if (direction == 1) then
-      ds = stair%s - s_now
-      if (ele%value(ks$) == 0) then
-        call track_a_drift(orbit, ds, mat6, make_mat, ele%orientation)
-      else
-        call solenoid_track_and_mat (ele, ds, param, orbit, orbit, mat6, make_mat, ks_rel/orbit%p0c, stair%p0c/stair%E_tot0)
-      endif
-      s_now = stair%s
-      call this_energy_kick(orbit, lord, stair, direction, mat6, make_mat)
+      ds = step%s - s_now
+      call step_drift(orbit, ds, step, ele, param, mat6, make_mat)
+      s_now = step%s
+      call this_energy_kick(orbit, lord, step, direction, mat6, make_mat)
     else
       ds = lord%rf%steps(ix_step-1)%s - s_now
-      if (ele%value(ks$) == 0) then
-        call track_a_drift(orbit, ds, mat6, make_mat, ele%orientation)
-      else
-        call solenoid_track_and_mat (ele, ds, param, orbit, orbit, mat6, make_mat, ks_rel/orbit%p0c, stair%p0c/stair%E_tot0)
-      endif
+      call step_drift(orbit, ds, step, ele, param, mat6, make_mat)
       s_now = lord%rf%steps(ix_step-1)%s
       call this_energy_kick(orbit, lord, lord%rf%steps(ix_step-1), direction, mat6, make_mat)
     endif
@@ -139,7 +125,7 @@ enddo
 
 ! End Edge
 
-phase = this_rf_phase(ix_step_end, orbit, lord)
+phase = this_rf_phase(orbit, lord)
 if (fringe_here(ele, orbit, second_track_edge$)) call fringe_kick(orbit, lord, -1, phase, mc2, mat6, make_mat)
 call rf_coupler_kick (ele, param, second_track_edge$, phase, orbit, mat6, make_mat)
 
@@ -149,6 +135,32 @@ call offset_particle (ele, unset$, orbit, mat6 = mat6, make_matrix = make_mat)
 
 !---------------------------------------------------------------------------------------
 contains
+
+subroutine step_drift(orbit, ds, step, ele, param, mat6, make_mat)
+
+type (coord_struct) orbit
+type (ele_struct) ele
+type (lat_param_struct) param
+type (rf_stair_step_struct) :: step
+
+real(rp) ds, ks_rel
+real(rp), optional :: mat6(6,6)
+logical make_mat
+
+!
+
+ks_rel = ele%value(ks$) * ele%value(p0c$)
+
+if (lord%value(ks$) == 0) then
+  call track_a_drift(orbit, ds, mat6, make_mat, ele%orientation)
+else
+  call solenoid_track_and_mat (ele, ds, param, orbit, orbit, mat6, make_mat, ks_rel/orbit%p0c, step%p0c/step%E_tot0)
+endif
+
+end subroutine step_drift
+
+!---------------------------------------------------------------------------------------
+! contains
 
 subroutine fringe_kick(orbit, lord, edge, phase, mc2, mat6, make_mat)
 
@@ -164,7 +176,7 @@ logical make_mat
 
 !
 
-ff = edge * charge_of(orbit%species) / (2.0_rp * charge_of(lord%ref_species))
+ff = edge * orbit%time_dir * charge_of(orbit%species) / (2.0_rp * charge_of(lord%ref_species))
 f = ff / orbit%p0c
 pc = orbit%p0c * (1 + orbit%vec(6))
 ez_field = gradient_tot * cos(phase)
@@ -219,6 +231,11 @@ if (ix_mag_max > -1)  call ab_multipole_kicks (an,      bn,      ix_mag_max,  lo
 if (ix_elec_max > -1) call ab_multipole_kicks (an_elec, bn_elec, ix_elec_max, lord, orbit, electric$, length*scale, mat6, make_mat)
 
 !-------------------------------------------------
+! Standing wave transverse half kick
+
+if (nint(lord%value(cavity_type$)) == standing_wave$) call standing_wave_transverse_kick(orbit, lord, scale, mat6, make_mat)
+
+!-------------------------------------------------
 ! Calc some stuff
 
 if (direction == 1) then
@@ -229,7 +246,7 @@ else
   p1c = step%p0c
 endif
 
-phase = this_rf_phase(ix_step, orbit, lord)
+phase = this_rf_phase(orbit, lord)
 dE_amp = direction * step%dE_amp 
 dE = dE_amp * cos(phase)
 
@@ -245,11 +262,6 @@ pc_end = (1 + pz_end) * orbit%p0c
 call to_energy_coords(orbit, mc2, mat6, make_mat)
 
 !-------------------------------------------------
-! Standing wave transverse half kick
-
-if (nint(lord%value(cavity_type$)) == standing_wave$) call standing_wave_transverse_kick(orbit, lord, scale, mat6, make_mat)
-
-!-------------------------------------------------
 ! Energy kick
 
 orbit%vec(6) = orbit%vec(6) + dE / orbit%p0c
@@ -260,15 +272,15 @@ if (make_mat) then
 endif
 
 !-------------------------------------------------
-! Standing wave transverse half kick
-
-if (nint(lord%value(cavity_type$)) == standing_wave$) call standing_wave_transverse_kick(orbit, lord, scale, mat6, make_mat)
-
-!-------------------------------------------------
 ! Convert to momentum coords
 
 call to_momentum_coords(orbit, pz_end, mc2, mat6, make_mat)
 call orbit_reference_energy_correction(orbit, dp0c, mat6, make_mat)
+
+!-------------------------------------------------
+! Standing wave transverse half kick
+
+if (nint(lord%value(cavity_type$)) == standing_wave$) call standing_wave_transverse_kick(orbit, lord, scale, mat6, make_mat)
 
 !-------------------------------------------------
 ! Multipole half kicks
@@ -286,43 +298,43 @@ subroutine standing_wave_transverse_kick(orbit, lord, scale, mat6, make_mat)
 type (coord_struct) orbit
 type (ele_struct) lord
 
-real(rp) scale, coef, kmat(6,6)
+real(rp) scale, coef, kmat(6,6), rel_p
 real(rp), optional :: mat6(6,6)
 
 logical make_mat
 
 !
 
-coef = scale * lord%value(l$) * lord%value(gradient_tot$)**2 / (8.0_rp * orbit%p0c**2 * orbit%vec(6))
+rel_p = 1.0_rp + orbit%vec(6)
+coef = scale * orbit%time_dir * lord%value(l$) * lord%value(gradient_tot$)**2 / (8.0_rp * orbit%p0c**2 * rel_p)
 
 if (make_mat) then
   call mat_make_unit(kmat)
   kmat(2,1) = -coef
-  kmat(2,6) = coef * orbit%vec(1) / orbit%vec(6)
+  kmat(2,6) =  coef * orbit%vec(1) / rel_p
   kmat(4,3) = -coef
-  kmat(4,6) = coef * orbit%vec(3) / orbit%vec(6)
-  kmat(5,1) = -coef * orbit%vec(1) / orbit%vec(6)
-  kmat(5,3) = -coef * orbit%vec(3) / orbit%vec(6)
-  kmat(5,6) = coef * (orbit%vec(1)**2 + orbit%vec(3)**2) / orbit%vec(6)**2
+  kmat(4,6) =  coef * orbit%vec(3) / rel_p
+  kmat(5,1) = -coef * orbit%vec(1) / rel_p
+  kmat(5,3) = -coef * orbit%vec(3) / rel_p
+  kmat(5,6) =  coef * (orbit%vec(1)**2 + orbit%vec(3)**2) / rel_p**2
   mat6 = matmul(kmat, mat6)
 endif
 
 orbit%vec(2) = orbit%vec(2) - coef * orbit%vec(1)
 orbit%vec(4) = orbit%vec(4) - coef * orbit%vec(3)
-orbit%vec(5) = orbit%vec(5) - 0.5_rp * coef * (orbit%vec(1)**2 + orbit%vec(3)**2) / orbit%vec(6)
+orbit%vec(5) = orbit%vec(5) - 0.5_rp * coef * (orbit%vec(1)**2 + orbit%vec(3)**2) / rel_p
 
 end subroutine standing_wave_transverse_kick
 
 !---------------------------------------------------------------------------------------
 ! contains
 
-function this_rf_phase(ix_step, orbit, lord) result (phase)
+function this_rf_phase(orbit, lord) result (phase)
 
 type (coord_struct) orbit
 type (ele_struct) lord
 
 real(rp) phase
-integer ix_step
 
 !
 
