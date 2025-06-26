@@ -11,6 +11,8 @@ use tao_interface, dummy => tao_json_cmd
 
 use json_module
 use json_string_utilities, only: integer_to_string
+use json_kinds, only: CK
+use tao_c_interface_mod, only: tao_c_interface_com
 use tao_command_mod, only: tao_next_switch, tao_next_word
 use tao_json, only: tao_plot_page_struct_to_json, tao_global_struct_to_json, &
             tao_super_universe_struct_to_json, tao_lattice_struct_to_json
@@ -24,9 +26,9 @@ type(json_value), pointer :: json_root, json_obj, json_arr, json_val
 
 type (tao_lattice_struct), pointer :: tao_lat
 type (ele_struct), pointer :: ele
-integer :: iu_write, ix, ix_line
+integer :: iu_write, ix, ix_line, i
 integer, target :: nl
-logical :: err, opened
+logical :: err, opened, array_out
 
 character(*) input_str
 character(*), parameter :: r_name = 'tao_json_cmd'
@@ -45,13 +47,17 @@ character(n_char_show), pointer :: li_ptr(:)
 nullify(json_root)
 line = input_str
 opened = .false.
+array_out = .false.
 
 do
-  call tao_next_switch (line, [character(8):: '-append', '-write'], .false., switch, err)
+  call tao_next_switch (line, [character(10):: '-append', '-write', '-array_out'], .false., switch, err)
   if (err) return
   if (switch == '') exit
 
   select case (switch)
+  case ('-array_out')
+    array_out = .true.
+
   case ('-append', '-write')
     call tao_next_word(line, file_name)
     iu_write = lunget()
@@ -134,12 +140,23 @@ contains
 subroutine end_stuff(li, nl)
 
   integer, target :: nl
+  integer :: str_len
   character(n_char_show), allocatable, target :: li(:)
+  character(kind=CK,len=:), allocatable :: str
 
   if (associated(json_root)) then
-    if (opened) then
+    if (array_out) then
+      call json%serialize(json_root, str)
+
+      str_len = len(str)
+      call reallocate_c_string_scratch(str_len + 1)
+      tao_c_interface_com%c_string(1:str_len) = [ character(len=1, kind=c_char) :: str(1:str_len) ]
+      tao_c_interface_com%c_string(str_len + 1) = c_null_char
+
+    elseif (opened) then
       call json%print(json_root, iu_write)
       close (iu_write)
+
     else
       call json%print(json_root)
     endif
@@ -153,6 +170,16 @@ end subroutine
 
 !----------------------------------------------------------------------
 ! contains
+
+subroutine reallocate_c_string_scratch(n)
+integer :: n
+if (.not. allocated(tao_c_interface_com%c_string)) allocate (tao_c_interface_com%c_string(n))
+if (size(tao_c_interface_com%c_string) < n) then
+  deallocate (tao_c_interface_com%c_string)
+  allocate (tao_c_interface_com%c_string(n))
+endif
+tao_c_interface_com%n_char = n
+end subroutine
 
 function point_to_uni (line, compound_word, err) result (u)
 

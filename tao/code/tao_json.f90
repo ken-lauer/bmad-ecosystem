@@ -337,6 +337,16 @@ subroutine tao_c_interface_common_struct_to_json (input, json_root, depth, max_d
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
+  if (allocated(input%c_string)) then
+    !'character(c_char), allocatable :: c_string(:)'
+    call json%create_array(json_list1, 'c_string')
+    do i1 = lbound(input%c_string, 1), ubound(input%c_string, 1)
+      call json%create_string(json_val, trim(input%c_string(i1)), '')
+      call json%add(json_list1, json_val)
+    enddo
+    call json%add(json_root, json_list1)
+    nullify(json_list1)
+  endif
   if (allocated(input%c_integer)) then
     !'integer(c_int), allocatable :: c_integer(:)'
     call json%create_array(json_list1, 'c_integer')
@@ -357,6 +367,7 @@ subroutine tao_c_interface_common_struct_to_json (input, json_root, depth, max_d
   nullify(json_list1)
   call json%add(json_root, 'n_real', int(input%n_real))
   call json%add(json_root, 'n_int', int(input%n_int))
+  call json%add(json_root, 'n_char', int(input%n_char))
 end subroutine tao_c_interface_common_struct_to_json
 subroutine tao_cmd_history_struct_to_json (input, json_root, depth, max_depth)
   use tao_struct, only: tao_cmd_history_struct

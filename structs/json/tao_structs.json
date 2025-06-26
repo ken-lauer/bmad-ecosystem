@@ -591,8 +591,20 @@
           "kind": "c_double"
         }
       },
-      "c_integer": {
+      "c_string": {
         "line": 18,
+        "definition": "character(c_char), allocatable :: c_string(:)",
+        "name": "c_string",
+        "default": null,
+        "type_info": {
+          "type": "character",
+          "allocatable": true,
+          "dimension": ":",
+          "kind": "c_char"
+        }
+      },
+      "c_integer": {
+        "line": 19,
         "definition": "integer(c_int), allocatable :: c_integer(:)",
         "name": "c_integer",
         "default": null,
@@ -604,7 +616,7 @@
         }
       },
       "c_line": {
-        "line": 19,
+        "line": 20,
         "definition": "character(c_char) :: c_line(n_char_show+1)",
         "name": "c_line",
         "default": null,
@@ -615,8 +627,8 @@
         }
       },
       "n_real": {
-        "line": 20,
-        "definition": "integer(c_int) :: n_real = 0, n_int = 0",
+        "line": 21,
+        "definition": "integer(c_int) :: n_real = 0, n_int = 0, n_char = 0",
         "name": "n_real",
         "default": "0",
         "type_info": {
@@ -625,9 +637,19 @@
         }
       },
       "n_int": {
-        "line": 20,
-        "definition": "integer(c_int) :: n_real = 0, n_int = 0",
+        "line": 21,
+        "definition": "integer(c_int) :: n_real = 0, n_int = 0, n_char = 0",
         "name": "n_int",
+        "default": "0",
+        "type_info": {
+          "type": "integer",
+          "kind": "c_int"
+        }
+      },
+      "n_char": {
+        "line": 21,
+        "definition": "integer(c_int) :: n_real = 0, n_int = 0, n_char = 0",
+        "name": "n_char",
         "default": "0",
         "type_info": {
           "type": "integer",
