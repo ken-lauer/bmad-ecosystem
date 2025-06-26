@@ -2938,7 +2938,7 @@ class CPP_bmad_common : public std::enable_shared_from_this<CPP_bmad_common> {
   Bool absolute_time_tracking{false};
   Bool absolute_time_ref_shift{true};
   Bool convert_to_kinetic_momentum{false};
-  Bool normalize_twiss{true};
+  Bool normalize_twiss{false};
   Bool aperture_limit_on{true};
   Bool spin_n0_direction_user_set{false};
   Bool debug{false};

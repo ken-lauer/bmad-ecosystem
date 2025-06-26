@@ -1499,10 +1499,10 @@
       },
       "normalize_twiss": {
         "line": 2296,
-        "definition": "logical :: normalize_twiss = .true.",
+        "definition": "logical :: normalize_twiss = .false.",
         "name": "normalize_twiss",
         "comment": "Normalize matrix when computing Twiss for off-energy ref?",
-        "default": ".true.",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
         }
