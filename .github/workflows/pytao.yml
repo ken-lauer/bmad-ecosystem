@@ -4,7 +4,12 @@ on:
   push:
   pull_request:
   workflow_dispatch:
-
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
+        required: false
+        default: false
 jobs:
   build:
     name: ${{ matrix.os }} Python ${{ matrix.python-version }}
@@ -68,6 +73,12 @@ jobs:
           echo -e '## Updated Python code\n\n```' >> "$GITHUB_STEP_SUMMARY"
           git diff | tee -a "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Run Tests
         shell: bash -l {0}
