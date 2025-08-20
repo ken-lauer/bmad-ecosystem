@@ -25,7 +25,7 @@
 namespace Bmad {
 
 // Enums from bmad_struct.f90
-const int BMAD_INC_VERSION = 337;
+const int BMAD_INC_VERSION = 343;
 const int NONE = 1;
 // maximum multipole order
 const int N_POLE_MAXX = 21;
@@ -85,6 +85,8 @@ const int RAMPER_LORD = 13;
 // governor$ = Union of overlay and group lords.
 const int GOVERNOR = 14;
 const int FIELD_LORD = 15;
+// Used with pointer_to_lord(...)
+const int MULTIPOLE_SOURCE = -1;
 const int AUTO_APERTURE = 1;
 const int RECTANGULAR = 2;
 const int ELLIPTICAL = 3;
@@ -310,7 +312,8 @@ const int FOIL = 66;
 const int THICK_MULTIPOLE = 67;
 const int PICKUP = 68;
 const int FEEDBACK = 69;
-const int N_KEY = 69;
+const int FIXER = 70;
+const int N_KEY = 70;
 const int STANDARD = 1;
 const int MATCH_TWISS = 2;
 const int IDENTITY = 3;
@@ -393,6 +396,35 @@ const int HGAP = 23;
 const int HGAPX = 24;
 const int H1 = 25;
 const int H2 = 26;
+const int X_STORED = 15;
+const int PX_STORED = 16;
+const int Y_STORED = 17;
+const int PY_STORED = 18;
+const int Z_STORED = 19;
+const int PZ_STORED = 20;
+const int BETA_A_STORED = 21;
+const int ALPHA_A_STORED = 22;
+const int BETA_B_STORED = 23;
+const int ALPHA_B_STORED = 24;
+const int PHI_A_STORED = 25;
+const int PHI_B_STORED = 26;
+const int MODE_FLIP_STORED = 27;
+const int ETA_X_STORED = 34;
+const int ETAP_X_STORED = 35;
+const int ETA_Y_STORED = 36;
+const int ETAP_Y_STORED = 37;
+const int CMAT_11_STORED = 38;
+const int CMAT_12_STORED = 39;
+const int CMAT_21_STORED = 40;
+const int CMAT_22_STORED = 41;
+const int DBETA_DPZ_A_STORED = 42;
+const int DBETA_DPZ_B_STORED = 43;
+const int DALPHA_DPZ_A_STORED = 44;
+const int DALPHA_DPZ_B_STORED = 45;
+const int DETA_DPZ_X_STORED = 46;
+const int DETA_DPZ_Y_STORED = 47;
+const int DETAP_DPZ_X_STORED = 48;
+const int DETAP_DPZ_Y_STORED = 49;
 const int RADIUS = 3;
 const int FOCAL_STRENGTH = 5;
 // Assumed unique. Do not assign 1 to another attribute.
@@ -421,6 +453,7 @@ const int CRITICAL_ANGLE_FACTOR = 4;
 const int TILT_CORR = 4;
 const int REF_COORDS = 4;
 const int DT_MAX = 4;
+const int IX_FIXER = 4;
 const int GRAZE_ANGLE = 5;
 const int K2 = 5;
 const int B_MAX = 5;
@@ -933,13 +966,13 @@ const int COMMA = 38;
 const int RMS = 39;
 const int AVERAGE = 40;
 const int SUM = 41;
-const int L_FUNC_PARENS = 42;
 const int ARG_COUNT = 43;
 const int ANTIPARTICLE = 44;
 const int COT = 45;
 const int SEC = 46;
 const int CSC = 47;
 const int SIGN = 48;
+const int L_FUNC_PARENS = 42;
 const int SINH = 49;
 const int COSH = 50;
 const int TANH = 51;
@@ -951,6 +984,19 @@ const int ACOTH = 56;
 const int MIN = 57;
 const int MAX = 58;
 const int MODULO = 59;
+const int ROOT = 60;
+const int PARENS = 61;
+const int SQUARE_BRACKETS = 62;
+const int CURLY_BRACKETS = 63;
+const int FUNC_PARENS = 64;
+const int ARROW = 65;
+const int EQUAL = 66;
+const int COLON = 67;
+const int DOUBLE_COLON = 68;
+const int COMPOUND = 69;
+const int FUNCTION = 70;
+const int VERTICAL_BAR = 71;
+const int BLANK = 72;
 enum class EleAttribute : size_t {
   // Assumed unique. Do not assign 1 to another attribute.
   L = 1,
@@ -978,6 +1024,7 @@ enum class EleAttribute : size_t {
   TILT_CORR = 4,
   REF_COORDS = 4,
   DT_MAX = 4,
+  IX_FIXER = 4,
   GRAZE_ANGLE = 5,
   K2 = 5,
   B_MAX = 5,
@@ -1346,7 +1393,8 @@ enum class EleKey : size_t {
   THICK_MULTIPOLE = 67,
   PICKUP = 68,
   FEEDBACK = 69,
-  N_KEY = 69,
+  FIXER = 70,
+  N_KEY = 70,
 }; // enum class EleKey
 
 // Enums from output_mod.f90

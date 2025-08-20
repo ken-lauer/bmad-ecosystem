@@ -1,12 +1,12 @@
 [
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 731,
+    "line": 734,
     "name": "do_loop_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 732,
+        "line": 735,
         "definition": "character(20) :: name = ''",
         "name": "name",
         "comment": "do loop index name",
@@ -17,7 +17,7 @@
         }
       },
       "index": {
-        "line": 733,
+        "line": 736,
         "definition": "integer :: index = 0, start = 0, end = 0, step = 0",
         "name": "index",
         "comment": "for do loops",
@@ -27,7 +27,7 @@
         }
       },
       "start": {
-        "line": 733,
+        "line": 736,
         "definition": "integer :: index = 0, start = 0, end = 0, step = 0",
         "name": "start",
         "comment": "for do loops",
@@ -37,7 +37,7 @@
         }
       },
       "end": {
-        "line": 733,
+        "line": 736,
         "definition": "integer :: index = 0, start = 0, end = 0, step = 0",
         "name": "end",
         "comment": "for do loops",
@@ -47,7 +47,7 @@
         }
       },
       "step": {
-        "line": 733,
+        "line": 736,
         "definition": "integer :: index = 0, start = 0, end = 0, step = 0",
         "name": "step",
         "comment": "for do loops",
@@ -57,7 +57,7 @@
         }
       },
       "n_line_start": {
-        "line": 734,
+        "line": 737,
         "definition": "integer :: n_line_start = 0, n_line_end = 0",
         "name": "n_line_start",
         "comment": "lines in each nested loop",
@@ -67,7 +67,7 @@
         }
       },
       "n_line_end": {
-        "line": 734,
+        "line": 737,
         "definition": "integer :: n_line_start = 0, n_line_end = 0",
         "name": "n_line_end",
         "comment": "lines in each nested loop",
@@ -77,7 +77,7 @@
         }
       },
       "value": {
-        "line": 735,
+        "line": 738,
         "definition": "integer :: value = int_garbage$",
         "name": "value",
         "default": "int_garbage$",
@@ -89,12 +89,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 713,
+    "line": 716,
     "name": "tao_alias_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 714,
+        "line": 717,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "default": "''",
@@ -104,7 +104,7 @@
         }
       },
       "expanded_str": {
-        "line": 715,
+        "line": 718,
         "definition": "character(200) :: expanded_str = ''",
         "name": "expanded_str",
         "default": "''",
@@ -117,12 +117,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 989,
+    "line": 985,
     "name": "tao_beam_branch_struct",
     "module": "tao_struct",
     "members": {
       "beam_at_start": {
-        "line": 990,
+        "line": 986,
         "definition": "type (beam_struct) beam_at_start",
         "name": "beam_at_start",
         "comment": "Initial beam",
@@ -133,7 +133,7 @@
         }
       },
       "beam_init": {
-        "line": 991,
+        "line": 987,
         "definition": "type (beam_init_struct) :: beam_init",
         "name": "beam_init",
         "comment": "User set beam distrubution at track start.",
@@ -144,7 +144,7 @@
         }
       },
       "beam_init_used": {
-        "line": 992,
+        "line": 988,
         "definition": "type (beam_init_struct) :: beam_init_used",
         "name": "beam_init_used",
         "comment": "beam distribution with emit values set.",
@@ -155,7 +155,7 @@
         }
       },
       "init_starting_distribution": {
-        "line": 993,
+        "line": 989,
         "definition": "logical :: init_starting_distribution = .true.",
         "name": "init_starting_distribution",
         "comment": "Init beam",
@@ -165,7 +165,7 @@
         }
       },
       "track_start": {
-        "line": 994,
+        "line": 990,
         "definition": "character(40) :: track_start = ''",
         "name": "track_start",
         "comment": "Tracking start element.",
@@ -176,7 +176,7 @@
         }
       },
       "track_end": {
-        "line": 995,
+        "line": 991,
         "definition": "character(40) :: track_end = ''",
         "name": "track_end",
         "default": "''",
@@ -186,7 +186,7 @@
         }
       },
       "ix_branch": {
-        "line": 996,
+        "line": 992,
         "definition": "integer :: ix_branch = 0",
         "name": "ix_branch",
         "comment": "Branch tracked. If track_start or track_end is a lord, ix_track_start/end index will be a index of slave.",
@@ -196,7 +196,7 @@
         }
       },
       "ix_track_start": {
-        "line": 998,
+        "line": 994,
         "definition": "integer :: ix_track_start = not_set$",
         "name": "ix_track_start",
         "comment": "Element track start index.",
@@ -206,7 +206,7 @@
         }
       },
       "ix_track_end": {
-        "line": 999,
+        "line": 995,
         "definition": "integer :: ix_track_end = not_set$",
         "name": "ix_track_end",
         "comment": "Element track end index",
@@ -219,12 +219,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 841,
+    "line": 844,
     "name": "tao_beam_shake_struct",
     "module": "tao_struct",
     "members": {
       "cbar": {
-        "line": 842,
+        "line": 845,
         "definition": "real(rp) cbar(2,2)",
         "name": "cbar",
         "default": null,
@@ -235,7 +235,7 @@
         }
       },
       "k_11a": {
-        "line": 843,
+        "line": 846,
         "definition": "real(rp) k_11a, k_12a, k_12b, k_22b",
         "name": "k_11a",
         "default": null,
@@ -245,7 +245,7 @@
         }
       },
       "k_12a": {
-        "line": 843,
+        "line": 846,
         "definition": "real(rp) k_11a, k_12a, k_12b, k_22b",
         "name": "k_12a",
         "default": null,
@@ -255,7 +255,7 @@
         }
       },
       "k_12b": {
-        "line": 843,
+        "line": 846,
         "definition": "real(rp) k_11a, k_12a, k_12b, k_22b",
         "name": "k_12b",
         "default": null,
@@ -265,7 +265,7 @@
         }
       },
       "k_22b": {
-        "line": 843,
+        "line": 846,
         "definition": "real(rp) k_11a, k_12a, k_12b, k_22b",
         "name": "k_22b",
         "default": null,
@@ -275,7 +275,7 @@
         }
       },
       "amp_a": {
-        "line": 844,
+        "line": 847,
         "definition": "real(rp) amp_a, amp_b, amp_na, amp_nb",
         "name": "amp_a",
         "default": null,
@@ -285,7 +285,7 @@
         }
       },
       "amp_b": {
-        "line": 844,
+        "line": 847,
         "definition": "real(rp) amp_a, amp_b, amp_na, amp_nb",
         "name": "amp_b",
         "default": null,
@@ -295,7 +295,7 @@
         }
       },
       "amp_na": {
-        "line": 844,
+        "line": 847,
         "definition": "real(rp) amp_a, amp_b, amp_na, amp_nb",
         "name": "amp_na",
         "default": null,
@@ -305,7 +305,7 @@
         }
       },
       "amp_nb": {
-        "line": 844,
+        "line": 847,
         "definition": "real(rp) amp_a, amp_b, amp_na, amp_nb",
         "name": "amp_nb",
         "default": null,
@@ -315,7 +315,7 @@
         }
       },
       "one": {
-        "line": 845,
+        "line": 848,
         "definition": "real(rp) :: one = 1.0",
         "name": "one",
         "default": "1.0",
@@ -325,7 +325,7 @@
         }
       },
       "coupling_calc_done": {
-        "line": 846,
+        "line": 849,
         "definition": "logical :: coupling_calc_done = .false.",
         "name": "coupling_calc_done",
         "default": ".false.",
@@ -334,7 +334,7 @@
         }
       },
       "amp_calc_done": {
-        "line": 847,
+        "line": 850,
         "definition": "logical :: amp_calc_done = .false.",
         "name": "amp_calc_done",
         "default": ".false.",
@@ -346,12 +346,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1011,
+    "line": 1007,
     "name": "tao_beam_uni_struct",
     "module": "tao_struct",
     "members": {
       "saved_at": {
-        "line": 1012,
+        "line": 1008,
         "definition": "character(200) :: saved_at = ''",
         "name": "saved_at",
         "default": "''",
@@ -361,7 +361,7 @@
         }
       },
       "dump_file": {
-        "line": 1013,
+        "line": 1009,
         "definition": "character(400) :: dump_file = ''",
         "name": "dump_file",
         "default": "''",
@@ -371,7 +371,7 @@
         }
       },
       "dump_at": {
-        "line": 1014,
+        "line": 1010,
         "definition": "character(200) :: dump_at = ''",
         "name": "dump_at",
         "default": "''",
@@ -381,7 +381,7 @@
         }
       },
       "track_beam_in_universe": {
-        "line": 1015,
+        "line": 1011,
         "definition": "logical :: track_beam_in_universe = .false.",
         "name": "track_beam_in_universe",
         "comment": "Beam tracking enabled in this universe?",
@@ -391,7 +391,7 @@
         }
       },
       "always_reinit": {
-        "line": 1016,
+        "line": 1012,
         "definition": "logical :: always_reinit = .false.",
         "name": "always_reinit",
         "default": ".false.",
@@ -690,12 +690,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 718,
+    "line": 721,
     "name": "tao_command_file_struct",
     "module": "tao_struct",
     "members": {
       "full_name": {
-        "line": 719,
+        "line": 722,
         "definition": "character(400) :: full_name = ''",
         "name": "full_name",
         "default": "''",
@@ -705,7 +705,7 @@
         }
       },
       "dir": {
-        "line": 720,
+        "line": 723,
         "definition": "character(400) :: dir = './'",
         "name": "dir",
         "default": "'./'",
@@ -715,7 +715,7 @@
         }
       },
       "ix_unit": {
-        "line": 721,
+        "line": 724,
         "definition": "integer :: ix_unit",
         "name": "ix_unit",
         "default": null,
@@ -724,7 +724,7 @@
         }
       },
       "cmd_arg": {
-        "line": 722,
+        "line": 725,
         "definition": "character(40) :: cmd_arg(9) = ''",
         "name": "cmd_arg",
         "comment": "Command file arguments.",
@@ -736,7 +736,7 @@
         }
       },
       "quiet": {
-        "line": 723,
+        "line": 726,
         "definition": "character(12) :: quiet = 'off'",
         "name": "quiet",
         "default": "'off'",
@@ -746,7 +746,7 @@
         }
       },
       "paused": {
-        "line": 724,
+        "line": 727,
         "definition": "logical :: paused = .false.",
         "name": "paused",
         "comment": "Is the command file paused?",
@@ -756,7 +756,7 @@
         }
       },
       "n_line": {
-        "line": 725,
+        "line": 728,
         "definition": "integer :: n_line = 0",
         "name": "n_line",
         "comment": "Current line number",
@@ -766,7 +766,7 @@
         }
       },
       "reset_at_end": {
-        "line": 726,
+        "line": 729,
         "definition": "logical :: reset_at_end = .true.",
         "name": "reset_at_end",
         "comment": "Reset lattice_calc_on and plot_on at end of file?",
@@ -776,7 +776,7 @@
         }
       },
       "lattice_calc_save": {
-        "line": 727,
+        "line": 730,
         "definition": "logical :: lattice_calc_save = .true.",
         "name": "lattice_calc_save",
         "default": ".true.",
@@ -785,7 +785,7 @@
         }
       },
       "plot_save": {
-        "line": 728,
+        "line": 731,
         "definition": "logical :: plot_save = .true.",
         "name": "plot_save",
         "default": ".true.",
@@ -797,12 +797,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 743,
+    "line": 746,
     "name": "tao_common_struct",
     "module": "tao_struct",
     "members": {
       "alias": {
-        "line": 744,
+        "line": 747,
         "definition": "type (tao_alias_struct) :: alias(200) = tao_alias_struct()",
         "name": "alias",
         "default": "tao_alias_struct()",
@@ -813,7 +813,7 @@
         }
       },
       "key": {
-        "line": 745,
+        "line": 748,
         "definition": "type (tao_alias_struct) :: key(100) = tao_alias_struct()",
         "name": "key",
         "default": "tao_alias_struct()",
@@ -824,7 +824,7 @@
         }
       },
       "cmd_file": {
-        "line": 746,
+        "line": 749,
         "definition": "type (tao_command_file_struct), allocatable :: cmd_file(:)",
         "name": "cmd_file",
         "default": null,
@@ -836,7 +836,7 @@
         }
       },
       "symbolic_num": {
-        "line": 747,
+        "line": 750,
         "definition": "type (named_number_struct), allocatable :: symbolic_num(:)",
         "name": "symbolic_num",
         "comment": "Named numbers",
@@ -849,7 +849,7 @@
         }
       },
       "plot_place_buffer": {
-        "line": 748,
+        "line": 751,
         "definition": "type (tao_plot_region_struct), allocatable :: plot_place_buffer(:)",
         "name": "plot_place_buffer",
         "comment": "Used when %external_plotting is on.",
@@ -862,7 +862,7 @@
         }
       },
       "do_loop": {
-        "line": 749,
+        "line": 752,
         "definition": "type (do_loop_struct), allocatable :: do_loop(:)",
         "name": "do_loop",
         "default": null,
@@ -874,7 +874,7 @@
         }
       },
       "covar": {
-        "line": 750,
+        "line": 753,
         "definition": "real(rp), allocatable :: covar(:,:), alpha(:,:)",
         "name": "covar",
         "default": null,
@@ -886,7 +886,7 @@
         }
       },
       "alpha": {
-        "line": 750,
+        "line": 753,
         "definition": "real(rp), allocatable :: covar(:,:), alpha(:,:)",
         "name": "alpha",
         "default": null,
@@ -898,7 +898,7 @@
         }
       },
       "dummy_target": {
-        "line": 751,
+        "line": 754,
         "definition": "real(rp) :: dummy_target = 0",
         "name": "dummy_target",
         "comment": "Dummy varaible",
@@ -909,7 +909,7 @@
         }
       },
       "ix_ref_taylor": {
-        "line": 752,
+        "line": 755,
         "definition": "integer :: ix_ref_taylor = -1, ix_ele_taylor = -1",
         "name": "ix_ref_taylor",
         "comment": "Taylor map end points",
@@ -919,7 +919,7 @@
         }
       },
       "ix_ele_taylor": {
-        "line": 752,
+        "line": 755,
         "definition": "integer :: ix_ref_taylor = -1, ix_ele_taylor = -1",
         "name": "ix_ele_taylor",
         "comment": "Taylor map end points",
@@ -929,7 +929,7 @@
         }
       },
       "n_alias": {
-        "line": 753,
+        "line": 756,
         "definition": "integer :: n_alias = 0",
         "name": "n_alias",
         "default": "0",
@@ -938,7 +938,7 @@
         }
       },
       "cmd_file_level": {
-        "line": 754,
+        "line": 757,
         "definition": "integer :: cmd_file_level = 0",
         "name": "cmd_file_level",
         "comment": "For nested command files. 0 -> no command file.",
@@ -948,7 +948,7 @@
         }
       },
       "ix_key_bank": {
-        "line": 755,
+        "line": 758,
         "definition": "integer :: ix_key_bank = 0",
         "name": "ix_key_bank",
         "comment": "For single mode.",
@@ -958,7 +958,7 @@
         }
       },
       "ix_history": {
-        "line": 756,
+        "line": 759,
         "definition": "integer :: ix_history = 0",
         "name": "ix_history",
         "comment": "Index to latest command in the history circular buffer.",
@@ -968,7 +968,7 @@
         }
       },
       "n_history": {
-        "line": 757,
+        "line": 760,
         "definition": "integer :: n_history = 0",
         "name": "n_history",
         "comment": "Number of commands issued from beginning of starting Tao.",
@@ -978,7 +978,7 @@
         }
       },
       "lev_loop": {
-        "line": 758,
+        "line": 761,
         "definition": "integer :: lev_loop = 0",
         "name": "lev_loop",
         "comment": "in do loop nest level",
@@ -988,7 +988,7 @@
         }
       },
       "n_err_messages_printed": {
-        "line": 759,
+        "line": 762,
         "definition": "integer :: n_err_messages_printed = 0",
         "name": "n_err_messages_printed",
         "comment": "Used by tao_set_invalid to limit number of messages.",
@@ -998,7 +998,7 @@
         }
       },
       "n_universes": {
-        "line": 760,
+        "line": 763,
         "definition": "integer :: n_universes = n_uni_init$",
         "name": "n_universes",
         "default": "n_uni_init$",
@@ -1007,7 +1007,7 @@
         }
       },
       "ix_beam_track_active_element": {
-        "line": 761,
+        "line": 764,
         "definition": "integer :: ix_beam_track_active_element = -1",
         "name": "ix_beam_track_active_element",
         "comment": "Element being tracked through `tao_beam_track`.",
@@ -1017,7 +1017,7 @@
         }
       },
       "cmd_file_paused": {
-        "line": 762,
+        "line": 765,
         "definition": "logical :: cmd_file_paused = .false.",
         "name": "cmd_file_paused",
         "default": ".false.",
@@ -1026,7 +1026,7 @@
         }
       },
       "use_cmd_here": {
-        "line": 763,
+        "line": 766,
         "definition": "logical :: use_cmd_here  = .false.",
         "name": "use_cmd_here",
         "comment": "Used for commands recalled from the cmd history stack",
@@ -1036,7 +1036,7 @@
         }
       },
       "cmd_from_cmd_file": {
-        "line": 764,
+        "line": 767,
         "definition": "logical :: cmd_from_cmd_file = .false.",
         "name": "cmd_from_cmd_file",
         "comment": "was command from a command file?",
@@ -1046,7 +1046,7 @@
         }
       },
       "use_saved_beam_in_tracking": {
-        "line": 765,
+        "line": 768,
         "definition": "logical :: use_saved_beam_in_tracking = .false.",
         "name": "use_saved_beam_in_tracking",
         "default": ".false.",
@@ -1055,7 +1055,7 @@
         }
       },
       "single_mode": {
-        "line": 766,
+        "line": 769,
         "definition": "logical :: single_mode = .false.",
         "name": "single_mode",
         "default": ".false.",
@@ -1064,7 +1064,7 @@
         }
       },
       "combine_consecutive_elements_of_like_name": {
-        "line": 767,
+        "line": 770,
         "definition": "logical :: combine_consecutive_elements_of_like_name = .false.",
         "name": "combine_consecutive_elements_of_like_name",
         "default": ".false.",
@@ -1073,7 +1073,7 @@
         }
       },
       "have_tracked_beam": {
-        "line": 768,
+        "line": 771,
         "definition": "logical :: have_tracked_beam = .false.",
         "name": "have_tracked_beam",
         "comment": "Used to catch error when beam plotting without having tracked a beam.",
@@ -1083,7 +1083,7 @@
         }
       },
       "init_plot_needed": {
-        "line": 769,
+        "line": 772,
         "definition": "logical :: init_plot_needed      = .true.",
         "name": "init_plot_needed",
         "comment": "reinitialize plotting?",
@@ -1093,7 +1093,7 @@
         }
       },
       "init_beam": {
-        "line": 770,
+        "line": 773,
         "definition": "logical :: init_beam             = .true.",
         "name": "init_beam",
         "comment": "Used by custom programs to control Tao init",
@@ -1103,7 +1103,7 @@
         }
       },
       "init_var": {
-        "line": 771,
+        "line": 774,
         "definition": "logical :: init_var              = .true.",
         "name": "init_var",
         "comment": "Used by custom programs to control Tao init",
@@ -1113,7 +1113,7 @@
         }
       },
       "init_read_lat_info": {
-        "line": 772,
+        "line": 775,
         "definition": "logical :: init_read_lat_info    = .true.",
         "name": "init_read_lat_info",
         "comment": "Used by custom programs to control Tao init",
@@ -1123,7 +1123,7 @@
         }
       },
       "optimizer_running": {
-        "line": 773,
+        "line": 776,
         "definition": "logical :: optimizer_running     = .false.",
         "name": "optimizer_running",
         "default": ".false.",
@@ -1132,7 +1132,7 @@
         }
       },
       "have_datums_using_expressions": {
-        "line": 774,
+        "line": 777,
         "definition": "logical :: have_datums_using_expressions = .false.",
         "name": "have_datums_using_expressions",
         "default": ".false.",
@@ -1141,7 +1141,7 @@
         }
       },
       "print_to_terminal": {
-        "line": 775,
+        "line": 778,
         "definition": "logical :: print_to_terminal = .true.",
         "name": "print_to_terminal",
         "comment": "Print command prompt to the terminal? For use with GUIs.",
@@ -1151,7 +1151,7 @@
         }
       },
       "lattice_calc_done": {
-        "line": 776,
+        "line": 779,
         "definition": "logical :: lattice_calc_done = .false.",
         "name": "lattice_calc_done",
         "comment": "Used by GUI for deciding when to refresh.",
@@ -1161,7 +1161,7 @@
         }
       },
       "add_measurement_noise": {
-        "line": 777,
+        "line": 780,
         "definition": "logical :: add_measurement_noise = .true.",
         "name": "add_measurement_noise",
         "comment": "Turn off to take data derivatives.",
@@ -1171,7 +1171,7 @@
         }
       },
       "is_err_message_printed": {
-        "line": 778,
+        "line": 781,
         "definition": "logical :: is_err_message_printed(2) = .false.",
         "name": "is_err_message_printed",
         "comment": "Used by tao_set_invalid",
@@ -1182,7 +1182,7 @@
         }
       },
       "command_arg_has_been_executed": {
-        "line": 779,
+        "line": 782,
         "definition": "logical :: command_arg_has_been_executed = .false.",
         "name": "command_arg_has_been_executed",
         "comment": "Has the -command command line argument been executed?",
@@ -1192,7 +1192,7 @@
         }
       },
       "all_merit_weights_positive": {
-        "line": 780,
+        "line": 783,
         "definition": "logical :: all_merit_weights_positive = .true.",
         "name": "all_merit_weights_positive",
         "default": ".true.",
@@ -1201,7 +1201,7 @@
         }
       },
       "multi_turn_orbit_is_plotted": {
-        "line": 781,
+        "line": 784,
         "definition": "logical :: multi_turn_orbit_is_plotted = .false.",
         "name": "multi_turn_orbit_is_plotted",
         "comment": "Is a multi_turn_orbit being plotted?",
@@ -1211,7 +1211,7 @@
         }
       },
       "force_chrom_calc": {
-        "line": 782,
+        "line": 785,
         "definition": "logical :: force_chrom_calc = .false.",
         "name": "force_chrom_calc",
         "comment": "Used by a routine to force a single chromaticity calculation.",
@@ -1221,7 +1221,7 @@
         }
       },
       "force_rad_int_calc": {
-        "line": 783,
+        "line": 786,
         "definition": "logical :: force_rad_int_calc = .false.",
         "name": "force_rad_int_calc",
         "comment": "Used by a routine to force a single radiation integrals calculation",
@@ -1231,7 +1231,7 @@
         }
       },
       "rad_int_ri_calc_on": {
-        "line": 784,
+        "line": 787,
         "definition": "logical :: rad_int_ri_calc_on = .true.",
         "name": "rad_int_ri_calc_on",
         "comment": "\"Classical\" radiation integrals calculation on/off.",
@@ -1241,7 +1241,7 @@
         }
       },
       "rad_int_6d_calc_on": {
-        "line": 785,
+        "line": 788,
         "definition": "logical :: rad_int_6d_calc_on = .true.",
         "name": "rad_int_6d_calc_on",
         "comment": "6D Radiation integrals calculation on/off.",
@@ -1251,7 +1251,7 @@
         }
       },
       "valid_plot_who": {
-        "line": 786,
+        "line": 789,
         "definition": "character(16) :: valid_plot_who(10) = ''",
         "name": "valid_plot_who",
         "comment": "model, base, ref etc...",
@@ -1263,7 +1263,7 @@
         }
       },
       "single_mode_buffer": {
-        "line": 787,
+        "line": 790,
         "definition": "character(200) :: single_mode_buffer = ''",
         "name": "single_mode_buffer",
         "default": "''",
@@ -1273,7 +1273,7 @@
         }
       },
       "cmd": {
-        "line": 788,
+        "line": 791,
         "definition": "character(200) :: cmd = ''",
         "name": "cmd",
         "comment": "Used for the cmd history",
@@ -1284,7 +1284,7 @@
         }
       },
       "saved_cmd_line": {
-        "line": 789,
+        "line": 792,
         "definition": "character(200) :: saved_cmd_line = ''",
         "name": "saved_cmd_line",
         "comment": "Saved part of command line when there are mulitple commands on a line",
@@ -1298,12 +1298,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 378,
+    "line": 379,
     "name": "tao_curve_array_struct",
     "module": "tao_struct",
     "members": {
       "c": {
-        "line": 379,
+        "line": 380,
         "definition": "type (tao_curve_struct), pointer :: c",
         "name": "c",
         "default": null,
@@ -1317,12 +1317,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 182,
+    "line": 183,
     "name": "tao_curve_color_struct",
     "module": "tao_struct",
     "members": {
       "data_type": {
-        "line": 183,
+        "line": 184,
         "definition": "character(100) :: data_type = ''",
         "name": "data_type",
         "comment": "Datum type to use for z-axis.",
@@ -1333,7 +1333,7 @@
         }
       },
       "is_on": {
-        "line": 184,
+        "line": 185,
         "definition": "logical :: is_on = .false.",
         "name": "is_on",
         "comment": "On/Off",
@@ -1343,7 +1343,7 @@
         }
       },
       "min": {
-        "line": 185,
+        "line": 186,
         "definition": "real(rp) :: min = 0, max = 0",
         "name": "min",
         "comment": "Min and max values for mapping z-axis to color.",
@@ -1354,7 +1354,7 @@
         }
       },
       "max": {
-        "line": 185,
+        "line": 186,
         "definition": "real(rp) :: min = 0, max = 0",
         "name": "max",
         "comment": "Min and max values for mapping z-axis to color.",
@@ -1365,7 +1365,7 @@
         }
       },
       "autoscale": {
-        "line": 186,
+        "line": 187,
         "definition": "logical :: autoscale = .true.",
         "name": "autoscale",
         "comment": "Set %min, %max automatically to the limits of %data_type",
@@ -1689,12 +1689,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 174,
+    "line": 175,
     "name": "tao_curve_orbit_struct",
     "module": "tao_struct",
     "members": {
       "x": {
-        "line": 175,
+        "line": 176,
         "definition": "real(rp) :: x = 0, y = 0",
         "name": "x",
         "comment": "Transverse offset",
@@ -1705,7 +1705,7 @@
         }
       },
       "y": {
-        "line": 175,
+        "line": 176,
         "definition": "real(rp) :: x = 0, y = 0",
         "name": "y",
         "comment": "Transverse offset",
@@ -1716,7 +1716,7 @@
         }
       },
       "t": {
-        "line": 176,
+        "line": 177,
         "definition": "real(rp) :: t = 0",
         "name": "t",
         "comment": "Time",
@@ -1730,12 +1730,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 192,
+    "line": 193,
     "name": "tao_curve_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 193,
+        "line": 194,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "comment": "Name identifying the curve.",
@@ -1746,7 +1746,7 @@
         }
       },
       "data_source": {
-        "line": 194,
+        "line": 195,
         "definition": "character(40) :: data_source  = ''",
         "name": "data_source",
         "comment": "'lat', 'beam', 'data' (deprecated: 'dat'), 'var', 'multi_turn_orbit'",
@@ -1757,7 +1757,7 @@
         }
       },
       "data_index": {
-        "line": 195,
+        "line": 196,
         "definition": "character(100) :: data_index  = ''",
         "name": "data_index",
         "comment": "Used for calculating %ix_symb(:).",
@@ -1768,7 +1768,7 @@
         }
       },
       "data_type_x": {
-        "line": 196,
+        "line": 197,
         "definition": "character(100) :: data_type_x = ''",
         "name": "data_type_x",
         "comment": "Used for data slices and phase space plots.",
@@ -1779,7 +1779,7 @@
         }
       },
       "data_type": {
-        "line": 197,
+        "line": 198,
         "definition": "character(:), allocatable :: data_type",
         "name": "data_type",
         "comment": "'orbit.x', etc.",
@@ -1791,7 +1791,7 @@
         }
       },
       "ele_ref_name": {
-        "line": 198,
+        "line": 199,
         "definition": "character(40) :: ele_ref_name = ''",
         "name": "ele_ref_name",
         "comment": "Reference element.",
@@ -1802,7 +1802,7 @@
         }
       },
       "legend_text": {
-        "line": 199,
+        "line": 200,
         "definition": "character(40) :: legend_text = ''",
         "name": "legend_text",
         "comment": "String to draw in a curve legend.",
@@ -1813,7 +1813,7 @@
         }
       },
       "message_text": {
-        "line": 200,
+        "line": 201,
         "definition": "character(40) :: message_text = ''",
         "name": "message_text",
         "comment": "Informational message to draw with graph.",
@@ -1824,7 +1824,7 @@
         }
       },
       "component": {
-        "line": 201,
+        "line": 202,
         "definition": "character(60) :: component = ''",
         "name": "component",
         "comment": "Who to plot. Eg: 'meas - design'",
@@ -1835,7 +1835,7 @@
         }
       },
       "why_invalid": {
-        "line": 202,
+        "line": 203,
         "definition": "character(80) :: why_invalid = '???'",
         "name": "why_invalid",
         "comment": "Informative string to print.",
@@ -1846,7 +1846,7 @@
         }
       },
       "g": {
-        "line": 203,
+        "line": 204,
         "definition": "type (tao_graph_struct), pointer :: g",
         "name": "g",
         "comment": "pointer to parent graph",
@@ -1858,7 +1858,7 @@
         }
       },
       "hist": {
-        "line": 204,
+        "line": 205,
         "definition": "type (tao_histogram_struct) :: hist = tao_histogram_struct()",
         "name": "hist",
         "default": "tao_histogram_struct()",
@@ -1868,7 +1868,7 @@
         }
       },
       "z_color": {
-        "line": 205,
+        "line": 206,
         "definition": "type (tao_curve_color_struct) :: z_color = tao_curve_color_struct()",
         "name": "z_color",
         "default": "tao_curve_color_struct()",
@@ -1878,7 +1878,7 @@
         }
       },
       "x_line": {
-        "line": 206,
+        "line": 207,
         "definition": "real(rp), allocatable :: x_line(:)",
         "name": "x_line",
         "comment": "Coords for drawing a curve",
@@ -1891,7 +1891,7 @@
         }
       },
       "y_line": {
-        "line": 207,
+        "line": 208,
         "definition": "real(rp), allocatable :: y_line(:)",
         "name": "y_line",
         "default": null,
@@ -1903,7 +1903,7 @@
         }
       },
       "y2_line": {
-        "line": 208,
+        "line": 209,
         "definition": "real(rp), allocatable :: y2_line(:)",
         "name": "y2_line",
         "comment": "Second array needed for beam chamber curve.",
@@ -1916,7 +1916,7 @@
         }
       },
       "ix_line": {
-        "line": 209,
+        "line": 210,
         "definition": "integer, allocatable :: ix_line(:)",
         "name": "ix_line",
         "comment": "Used by wave and aperture curves.",
@@ -1928,7 +1928,7 @@
         }
       },
       "x_symb": {
-        "line": 210,
+        "line": 211,
         "definition": "real(rp), allocatable :: x_symb(:)",
         "name": "x_symb",
         "comment": "Coords for drawing the symbols",
@@ -1941,7 +1941,7 @@
         }
       },
       "y_symb": {
-        "line": 211,
+        "line": 212,
         "definition": "real(rp), allocatable :: y_symb(:)",
         "name": "y_symb",
         "default": null,
@@ -1953,7 +1953,7 @@
         }
       },
       "z_symb": {
-        "line": 212,
+        "line": 213,
         "definition": "real(rp), allocatable :: z_symb(:)",
         "name": "z_symb",
         "comment": "Symbol color",
@@ -1966,7 +1966,7 @@
         }
       },
       "err_symb": {
-        "line": 213,
+        "line": 214,
         "definition": "real(rp), allocatable :: err_symb(:)",
         "name": "err_symb",
         "comment": "Error bars",
@@ -1979,7 +1979,7 @@
         }
       },
       "symb_size": {
-        "line": 214,
+        "line": 215,
         "definition": "real(rp), allocatable :: symb_size(:)",
         "name": "symb_size",
         "comment": "Symbol size. Used with symbol_size_scale.",
@@ -1992,7 +1992,7 @@
         }
       },
       "ix_symb": {
-        "line": 215,
+        "line": 216,
         "definition": "integer, allocatable :: ix_symb(:)",
         "name": "ix_symb",
         "comment": "Corresponding index in d1_data%d(:) array.",
@@ -2004,7 +2004,7 @@
         }
       },
       "y_axis_scale_factor": {
-        "line": 216,
+        "line": 217,
         "definition": "real(rp) :: y_axis_scale_factor = 1",
         "name": "y_axis_scale_factor",
         "comment": "y-axis conversion from internal to plotting units.",
@@ -2015,7 +2015,7 @@
         }
       },
       "line": {
-        "line": 217,
+        "line": 218,
         "definition": "type (qp_line_struct) :: line = qp_line_struct()",
         "name": "line",
         "comment": "Line attributes",
@@ -2026,7 +2026,7 @@
         }
       },
       "symbol": {
-        "line": 218,
+        "line": 219,
         "definition": "type (qp_symbol_struct) :: symbol = qp_symbol_struct()",
         "name": "symbol",
         "comment": "Symbol attributes",
@@ -2037,7 +2037,7 @@
         }
       },
       "orbit": {
-        "line": 219,
+        "line": 220,
         "definition": "type (tao_curve_orbit_struct) :: orbit = tao_curve_orbit_struct()",
         "name": "orbit",
         "comment": "Used for E/B field plotting.",
@@ -2048,7 +2048,7 @@
         }
       },
       "ix_universe": {
-        "line": 220,
+        "line": 221,
         "definition": "integer :: ix_universe = -1",
         "name": "ix_universe",
         "comment": "Universe where data is. -1 => use s%global%default_universe",
@@ -2058,7 +2058,7 @@
         }
       },
       "symbol_every": {
-        "line": 221,
+        "line": 222,
         "definition": "integer :: symbol_every = 1",
         "name": "symbol_every",
         "comment": "Symbol every how many points.",
@@ -2068,7 +2068,7 @@
         }
       },
       "ix_branch": {
-        "line": 222,
+        "line": 223,
         "definition": "integer :: ix_branch = -1",
         "name": "ix_branch",
         "default": "-1",
@@ -2077,7 +2077,7 @@
         }
       },
       "ix_bunch": {
-        "line": 223,
+        "line": 224,
         "definition": "integer :: ix_bunch = 0",
         "name": "ix_bunch",
         "comment": "Bunch to plot.",
@@ -2087,7 +2087,7 @@
         }
       },
       "n_turn": {
-        "line": 224,
+        "line": 225,
         "definition": "integer :: n_turn = -1",
         "name": "n_turn",
         "comment": "Used for multi_turn_orbit plotting",
@@ -2097,7 +2097,7 @@
         }
       },
       "use_y2": {
-        "line": 225,
+        "line": 226,
         "definition": "logical :: use_y2 = .false.",
         "name": "use_y2",
         "comment": "Use y2 axis?",
@@ -2107,7 +2107,7 @@
         }
       },
       "draw_line": {
-        "line": 226,
+        "line": 227,
         "definition": "logical :: draw_line = .true.",
         "name": "draw_line",
         "comment": "Draw a line through the data points?",
@@ -2117,7 +2117,7 @@
         }
       },
       "draw_symbols": {
-        "line": 227,
+        "line": 228,
         "definition": "logical :: draw_symbols = .true.",
         "name": "draw_symbols",
         "comment": "Draw a symbol at the data points?",
@@ -2127,7 +2127,7 @@
         }
       },
       "draw_symbol_index": {
-        "line": 228,
+        "line": 229,
         "definition": "logical :: draw_symbol_index = .false.",
         "name": "draw_symbol_index",
         "comment": "Draw the symbol index number curve%ix_symb?",
@@ -2137,7 +2137,7 @@
         }
       },
       "draw_error_bars": {
-        "line": 229,
+        "line": 230,
         "definition": "logical :: draw_error_bars = .false.",
         "name": "draw_error_bars",
         "comment": "Draw error bars based upon data%error_rms if drawing data? !! logical :: draw_rms = .false.          ! Show mean and RMS values with legend?",
@@ -2147,7 +2147,7 @@
         }
       },
       "smooth_line_calc": {
-        "line": 231,
+        "line": 232,
         "definition": "logical :: smooth_line_calc = .true.",
         "name": "smooth_line_calc",
         "comment": "Calculate data between element edge points?",
@@ -2157,7 +2157,7 @@
         }
       },
       "valid": {
-        "line": 232,
+        "line": 233,
         "definition": "logical :: valid = .false.",
         "name": "valid",
         "comment": "valid data?",
@@ -2447,12 +2447,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 424,
+    "line": 425,
     "name": "tao_data_struct",
     "module": "tao_struct",
     "members": {
       "ele_name": {
-        "line": 425,
+        "line": 426,
         "definition": "character(40) :: ele_name = ''",
         "name": "ele_name",
         "comment": "Name of the lattice element where datum is evaluated.",
@@ -2463,7 +2463,7 @@
         }
       },
       "ele_start_name": {
-        "line": 426,
+        "line": 427,
         "definition": "character(40) :: ele_start_name = ''",
         "name": "ele_start_name",
         "comment": "Name of starting lattice element when there is a range",
@@ -2474,7 +2474,7 @@
         }
       },
       "ele_ref_name": {
-        "line": 427,
+        "line": 428,
         "definition": "character(40) :: ele_ref_name = ''",
         "name": "ele_ref_name",
         "comment": "Name of reference lattice element",
@@ -2485,7 +2485,7 @@
         }
       },
       "data_type": {
-        "line": 428,
+        "line": 429,
         "definition": "character(:), allocatable :: data_type",
         "name": "data_type",
         "comment": "Type of data: 'orbit.x', etc.",
@@ -2497,7 +2497,7 @@
         }
       },
       "merit_type": {
-        "line": 429,
+        "line": 430,
         "definition": "character(40) :: merit_type = ''",
         "name": "merit_type",
         "comment": "Type of constraint: 'target', 'max', 'min', etc.",
@@ -2508,7 +2508,7 @@
         }
       },
       "id": {
-        "line": 430,
+        "line": 431,
         "definition": "character(40) :: id = ''",
         "name": "id",
         "comment": "Used by Tao extension code. Not used by Tao directly.",
@@ -2519,7 +2519,7 @@
         }
       },
       "data_source": {
-        "line": 431,
+        "line": 432,
         "definition": "character(20) :: data_source = ''",
         "name": "data_source",
         "comment": "'lat', 'beam', 'data' or 'var'. Last two used for expressions.",
@@ -2530,7 +2530,7 @@
         }
       },
       "why_invalid": {
-        "line": 432,
+        "line": 433,
         "definition": "character(100) :: why_invalid = ''",
         "name": "why_invalid",
         "comment": "Informational string if there is a problem.",
@@ -2541,7 +2541,7 @@
         }
       },
       "ix_uni": {
-        "line": 433,
+        "line": 434,
         "definition": "integer :: ix_uni = -1",
         "name": "ix_uni",
         "comment": "Universe index of datum.",
@@ -2551,7 +2551,7 @@
         }
       },
       "ix_bunch": {
-        "line": 434,
+        "line": 435,
         "definition": "integer :: ix_bunch = 0",
         "name": "ix_bunch",
         "comment": "Bunch number to get the data from.",
@@ -2561,7 +2561,7 @@
         }
       },
       "ix_branch": {
-        "line": 435,
+        "line": 436,
         "definition": "integer :: ix_branch = 0",
         "name": "ix_branch",
         "comment": "Index of the associated lattice branch.",
@@ -2571,7 +2571,7 @@
         }
       },
       "ix_ele": {
-        "line": 436,
+        "line": 437,
         "definition": "integer :: ix_ele = -1",
         "name": "ix_ele",
         "comment": "Index of the lattice element corresponding to ele_name",
@@ -2581,7 +2581,7 @@
         }
       },
       "ix_ele_start": {
-        "line": 437,
+        "line": 438,
         "definition": "integer :: ix_ele_start = -1",
         "name": "ix_ele_start",
         "comment": "Index of lattice elment when there is a range",
@@ -2591,7 +2591,7 @@
         }
       },
       "ix_ele_ref": {
-        "line": 438,
+        "line": 439,
         "definition": "integer :: ix_ele_ref = -1",
         "name": "ix_ele_ref",
         "comment": "Index of lattice elment when there is a reference.",
@@ -2601,7 +2601,7 @@
         }
       },
       "ix_ele_merit": {
-        "line": 439,
+        "line": 440,
         "definition": "integer :: ix_ele_merit = -1",
         "name": "ix_ele_merit",
         "comment": "Index of lattice elment where merit is evaluated.",
@@ -2611,7 +2611,7 @@
         }
       },
       "ix_d1": {
-        "line": 440,
+        "line": 441,
         "definition": "integer :: ix_d1 = -1",
         "name": "ix_d1",
         "comment": "Index number in u%d2_data(i)%d1_data(j)%d(:) array.",
@@ -2621,7 +2621,7 @@
         }
       },
       "ix_data": {
-        "line": 441,
+        "line": 442,
         "definition": "integer :: ix_data = -1",
         "name": "ix_data",
         "comment": "Index of this datum in the u%data(:) array of data_structs.",
@@ -2631,7 +2631,7 @@
         }
       },
       "ix_dModel": {
-        "line": 442,
+        "line": 443,
         "definition": "integer :: ix_dModel = -1",
         "name": "ix_dModel",
         "comment": "Row number in the dModel_dVar derivative matrix.",
@@ -2641,7 +2641,7 @@
         }
       },
       "eval_point": {
-        "line": 443,
+        "line": 444,
         "definition": "integer :: eval_point = anchor_end$",
         "name": "eval_point",
         "comment": "or anchor_center$, anchor_beginning$. Where to evaluate data relative to the element.",
@@ -2651,7 +2651,7 @@
         }
       },
       "meas_value": {
-        "line": 444,
+        "line": 445,
         "definition": "real(rp) :: meas_value = 0",
         "name": "meas_value",
         "comment": "Measured datum value.",
@@ -2662,7 +2662,7 @@
         }
       },
       "ref_value": {
-        "line": 445,
+        "line": 446,
         "definition": "real(rp) :: ref_value = 0",
         "name": "ref_value",
         "comment": "Measured datum value from the reference data set.",
@@ -2673,7 +2673,7 @@
         }
       },
       "model_value": {
-        "line": 446,
+        "line": 447,
         "definition": "real(rp) :: model_value = 0",
         "name": "model_value",
         "comment": "Datum value as calculated from the model.",
@@ -2684,7 +2684,7 @@
         }
       },
       "design_value": {
-        "line": 447,
+        "line": 448,
         "definition": "real(rp) :: design_value = 0",
         "name": "design_value",
         "comment": "What the datum value is in the design lattice.",
@@ -2695,7 +2695,7 @@
         }
       },
       "old_value": {
-        "line": 448,
+        "line": 449,
         "definition": "real(rp) :: old_value = 0",
         "name": "old_value",
         "comment": "The model_value at some previous time.",
@@ -2706,7 +2706,7 @@
         }
       },
       "base_value": {
-        "line": 449,
+        "line": 450,
         "definition": "real(rp) :: base_value = 0",
         "name": "base_value",
         "comment": "The value as calculated from the base model.",
@@ -2717,7 +2717,7 @@
         }
       },
       "error_rms": {
-        "line": 450,
+        "line": 451,
         "definition": "real(rp) :: error_rms = 0",
         "name": "error_rms",
         "comment": "Measurement error RMS. Used in plotting.",
@@ -2728,7 +2728,7 @@
         }
       },
       "delta_merit": {
-        "line": 451,
+        "line": 452,
         "definition": "real(rp) :: delta_merit = 0",
         "name": "delta_merit",
         "comment": "Diff used to calculate the merit function term.",
@@ -2739,7 +2739,7 @@
         }
       },
       "weight": {
-        "line": 452,
+        "line": 453,
         "definition": "real(rp) :: weight = 0",
         "name": "weight",
         "comment": "Weight for the merit function term.",
@@ -2750,7 +2750,7 @@
         }
       },
       "invalid_value": {
-        "line": 453,
+        "line": 454,
         "definition": "real(rp) :: invalid_value = 0",
         "name": "invalid_value",
         "comment": "Value used in merit calc if good_model = F (or possibly good_design & good_base).",
@@ -2761,7 +2761,7 @@
         }
       },
       "merit": {
-        "line": 454,
+        "line": 455,
         "definition": "real(rp) :: merit = 0",
         "name": "merit",
         "comment": "Merit function term value: weight * delta_merit^2",
@@ -2772,7 +2772,7 @@
         }
       },
       "s": {
-        "line": 455,
+        "line": 456,
         "definition": "real(rp) :: s = real_garbage$",
         "name": "s",
         "comment": "longitudinal position of ele.",
@@ -2783,7 +2783,7 @@
         }
       },
       "s_offset": {
-        "line": 456,
+        "line": 457,
         "definition": "real(rp) :: s_offset = 0",
         "name": "s_offset",
         "comment": "Offset of the evaluation point.",
@@ -2794,7 +2794,7 @@
         }
       },
       "err_message_printed": {
-        "line": 457,
+        "line": 458,
         "definition": "logical :: err_message_printed = .false.",
         "name": "err_message_printed",
         "comment": "Used to prevent zillions of error messages being generated",
@@ -2804,7 +2804,7 @@
         }
       },
       "exists": {
-        "line": 458,
+        "line": 459,
         "definition": "logical :: exists = .false.",
         "name": "exists",
         "comment": "See above",
@@ -2814,7 +2814,7 @@
         }
       },
       "good_model": {
-        "line": 459,
+        "line": 460,
         "definition": "logical :: good_model = .false.",
         "name": "good_model",
         "comment": "See above",
@@ -2824,7 +2824,7 @@
         }
       },
       "good_base": {
-        "line": 460,
+        "line": 461,
         "definition": "logical :: good_base = .false.",
         "name": "good_base",
         "comment": "See above",
@@ -2834,7 +2834,7 @@
         }
       },
       "good_design": {
-        "line": 461,
+        "line": 462,
         "definition": "logical :: good_design = .false.",
         "name": "good_design",
         "comment": "See above",
@@ -2844,7 +2844,7 @@
         }
       },
       "good_meas": {
-        "line": 462,
+        "line": 463,
         "definition": "logical :: good_meas = .false.",
         "name": "good_meas",
         "comment": "See above",
@@ -2854,7 +2854,7 @@
         }
       },
       "good_ref": {
-        "line": 463,
+        "line": 464,
         "definition": "logical :: good_ref = .false.",
         "name": "good_ref",
         "comment": "See above",
@@ -2864,7 +2864,7 @@
         }
       },
       "good_user": {
-        "line": 464,
+        "line": 465,
         "definition": "logical :: good_user = .true.",
         "name": "good_user",
         "comment": "See above",
@@ -2874,7 +2874,7 @@
         }
       },
       "good_opt": {
-        "line": 465,
+        "line": 466,
         "definition": "logical :: good_opt = .true.",
         "name": "good_opt",
         "comment": "See above",
@@ -2884,7 +2884,7 @@
         }
       },
       "good_plot": {
-        "line": 466,
+        "line": 467,
         "definition": "logical :: good_plot = .true.",
         "name": "good_plot",
         "comment": "See above",
@@ -2894,7 +2894,7 @@
         }
       },
       "useit_plot": {
-        "line": 467,
+        "line": 468,
         "definition": "logical :: useit_plot = .false.",
         "name": "useit_plot",
         "comment": "See above",
@@ -2904,7 +2904,7 @@
         }
       },
       "useit_opt": {
-        "line": 468,
+        "line": 469,
         "definition": "logical :: useit_opt = .false.",
         "name": "useit_opt",
         "comment": "See above",
@@ -2914,7 +2914,7 @@
         }
       },
       "spin_map": {
-        "line": 469,
+        "line": 470,
         "definition": "type (tao_spin_map_struct) :: spin_map",
         "name": "spin_map",
         "default": null,
@@ -2924,7 +2924,7 @@
         }
       },
       "d1": {
-        "line": 470,
+        "line": 471,
         "definition": "type (tao_d1_data_struct), pointer :: d1 => null()",
         "name": "d1",
         "comment": "Pointer to the parent d1_data_struct",
@@ -2934,29 +2934,17 @@
           "pointer": true,
           "kind": "tao_d1_data_struct"
         }
-      },
-      "stack": {
-        "line": 471,
-        "definition": "type (tao_eval_stack1_struct), allocatable :: stack(:)",
-        "name": "stack",
-        "default": null,
-        "type_info": {
-          "type": "type",
-          "allocatable": true,
-          "dimension": ":",
-          "kind": "tao_eval_stack1_struct"
-        }
       }
     }
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 160,
+    "line": 161,
     "name": "tao_data_var_component_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 161,
+        "line": 162,
         "definition": "character(16) :: name = ''",
         "name": "name",
         "comment": "Eg: 'meas', 'ref', 'model', etc.",
@@ -2967,7 +2955,7 @@
         }
       },
       "sign": {
-        "line": 162,
+        "line": 163,
         "definition": "real(rp) :: sign = 1",
         "name": "sign",
         "comment": "+1 or -1",
@@ -3254,12 +3242,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 131,
+    "line": 132,
     "name": "tao_drawing_struct",
     "module": "tao_struct",
     "members": {
       "ele_shape": {
-        "line": 132,
+        "line": 133,
         "definition": "type (tao_ele_shape_struct), allocatable :: ele_shape(:)",
         "name": "ele_shape",
         "default": null,
@@ -3274,12 +3262,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1052,
+    "line": 1048,
     "name": "tao_dynamic_aperture_struct",
     "module": "tao_struct",
     "members": {
       "param": {
-        "line": 1053,
+        "line": 1049,
         "definition": "type (aperture_param_struct) param",
         "name": "param",
         "default": null,
@@ -3289,7 +3277,7 @@
         }
       },
       "scan": {
-        "line": 1054,
+        "line": 1050,
         "definition": "type (aperture_scan_struct), allocatable :: scan(:)",
         "name": "scan",
         "comment": "One scan for each pz.",
@@ -3302,7 +3290,7 @@
         }
       },
       "pz": {
-        "line": 1055,
+        "line": 1051,
         "definition": "real(rp), allocatable :: pz(:)",
         "name": "pz",
         "default": null,
@@ -3314,7 +3302,7 @@
         }
       },
       "ellipse_scale": {
-        "line": 1056,
+        "line": 1052,
         "definition": "real(rp) :: ellipse_scale = 1",
         "name": "ellipse_scale",
         "default": "1",
@@ -3324,7 +3312,7 @@
         }
       },
       "a_emit": {
-        "line": 1057,
+        "line": 1053,
         "definition": "real(rp) :: a_emit = -1, b_emit = -1",
         "name": "a_emit",
         "default": "-1",
@@ -3334,7 +3322,7 @@
         }
       },
       "b_emit": {
-        "line": 1057,
+        "line": 1053,
         "definition": "real(rp) :: a_emit = -1, b_emit = -1",
         "name": "b_emit",
         "default": "-1",
@@ -3347,12 +3335,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 110,
+    "line": 111,
     "name": "tao_ele_pointer_struct",
     "module": "tao_struct",
     "members": {
       "eles": {
-        "line": 111,
+        "line": 112,
         "definition": "type (ele_pointer_struct), allocatable :: eles(:)",
         "name": "eles",
         "default": null,
@@ -3364,7 +3352,7 @@
         }
       },
       "n_loc": {
-        "line": 112,
+        "line": 113,
         "definition": "integer :: n_loc = 0",
         "name": "n_loc",
         "default": "0",
@@ -3480,12 +3468,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 116,
+    "line": 117,
     "name": "tao_ele_shape_struct",
     "module": "tao_struct",
     "members": {
       "ele_id": {
-        "line": 117,
+        "line": 118,
         "definition": "character(60) :: ele_id = ''",
         "name": "ele_id",
         "comment": "element \"key::name\" to match to.",
@@ -3496,7 +3484,7 @@
         }
       },
       "shape": {
-        "line": 118,
+        "line": 119,
         "definition": "character(40) :: shape = ''",
         "name": "shape",
         "comment": "Shape to draw",
@@ -3507,7 +3495,7 @@
         }
       },
       "color": {
-        "line": 119,
+        "line": 120,
         "definition": "character(16) :: color = 'black'",
         "name": "color",
         "comment": "Color of shape",
@@ -3518,7 +3506,7 @@
         }
       },
       "size": {
-        "line": 120,
+        "line": 121,
         "definition": "real(rp) :: size = 0",
         "name": "size",
         "comment": "plot vertical height",
@@ -3529,7 +3517,7 @@
         }
       },
       "label": {
-        "line": 121,
+        "line": 122,
         "definition": "character(16) :: label = 'name'",
         "name": "label",
         "comment": "Can be: 'name', 's', 'none'",
@@ -3540,7 +3528,7 @@
         }
       },
       "draw": {
-        "line": 122,
+        "line": 123,
         "definition": "logical :: draw = .true.",
         "name": "draw",
         "comment": "Draw the shape?",
@@ -3550,7 +3538,7 @@
         }
       },
       "multi": {
-        "line": 123,
+        "line": 124,
         "definition": "logical :: multi = .false.",
         "name": "multi",
         "comment": "Can be part of a multi-shape.",
@@ -3560,7 +3548,7 @@
         }
       },
       "line_width": {
-        "line": 124,
+        "line": 125,
         "definition": "integer :: line_width = 1",
         "name": "line_width",
         "comment": "Width of lines used to draw the shape.",
@@ -3570,7 +3558,7 @@
         }
       },
       "offset": {
-        "line": 125,
+        "line": 126,
         "definition": "real(rp) :: offset = 0",
         "name": "offset",
         "comment": "Vertical offset.",
@@ -3581,7 +3569,7 @@
         }
       },
       "ix_key": {
-        "line": 126,
+        "line": 127,
         "definition": "integer :: ix_key = 0",
         "name": "ix_key",
         "comment": "Extracted from ele_id. 0 => all classes (quadrupole, etc.)",
@@ -3591,7 +3579,7 @@
         }
       },
       "name_ele": {
-        "line": 127,
+        "line": 128,
         "definition": "character(40) :: name_ele = ''",
         "name": "name_ele",
         "comment": "Name of element.",
@@ -3602,7 +3590,7 @@
         }
       },
       "uni": {
-        "line": 128,
+        "line": 129,
         "definition": "type (tao_ele_pointer_struct), allocatable :: uni(:)",
         "name": "uni",
         "default": null,
@@ -3618,7 +3606,7 @@
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
     "line": 99,
-    "name": "tao_eval_stack1_struct",
+    "name": "tao_eval_node_struct",
     "module": "tao_struct",
     "members": {
       "type": {
@@ -3687,6 +3675,19 @@
           "dimension": ":",
           "kind": "tao_real_pointer_struct"
         }
+      },
+      "node": {
+        "line": 106,
+        "definition": "type (tao_eval_node_struct), pointer :: node(:) => null()",
+        "name": "node",
+        "comment": "Child nodes for tree construction.",
+        "default": "null()",
+        "type_info": {
+          "type": "type",
+          "dimension": ":",
+          "pointer": true,
+          "kind": "tao_eval_node_struct"
+        }
       }
     }
   },
@@ -3733,12 +3734,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 237,
+    "line": 238,
     "name": "tao_floor_plan_struct",
     "module": "tao_struct",
     "members": {
       "view": {
-        "line": 238,
+        "line": 239,
         "definition": "character(2) :: view = 'zx'",
         "name": "view",
         "comment": "or 'xz'.",
@@ -3749,7 +3750,7 @@
         }
       },
       "rotation": {
-        "line": 239,
+        "line": 240,
         "definition": "real(rp) :: rotation = 0",
         "name": "rotation",
         "comment": "Rotation of floor plan plot: 1.0 -> 360^deg",
@@ -3760,7 +3761,7 @@
         }
       },
       "correct_distortion": {
-        "line": 240,
+        "line": 241,
         "definition": "logical :: correct_distortion = .true.",
         "name": "correct_distortion",
         "comment": "T -> Shrink one axis so x-scale = y-scale.",
@@ -3770,7 +3771,7 @@
         }
       },
       "flip_label_side": {
-        "line": 241,
+        "line": 242,
         "definition": "logical :: flip_label_side = .false.",
         "name": "flip_label_side",
         "comment": "Draw element label on other side of element?",
@@ -3780,7 +3781,7 @@
         }
       },
       "size_is_absolute": {
-        "line": 242,
+        "line": 243,
         "definition": "logical :: size_is_absolute = .false.",
         "name": "size_is_absolute",
         "comment": "Are shape sizes in meters or window pixels?",
@@ -3790,7 +3791,7 @@
         }
       },
       "draw_only_first_pass": {
-        "line": 243,
+        "line": 244,
         "definition": "logical :: draw_only_first_pass = .false.",
         "name": "draw_only_first_pass",
         "comment": "Draw only first pass with multipass elements?",
@@ -3800,7 +3801,7 @@
         }
       },
       "draw_building_wall": {
-        "line": 244,
+        "line": 245,
         "definition": "logical :: draw_building_wall = .true.",
         "name": "draw_building_wall",
         "comment": "Draw the building wall?",
@@ -3810,7 +3811,7 @@
         }
       },
       "orbit_scale": {
-        "line": 245,
+        "line": 246,
         "definition": "real(rp) :: orbit_scale = 0",
         "name": "orbit_scale",
         "comment": "Scale factor for drawing orbits. 0 -> Do not draw.",
@@ -3821,7 +3822,7 @@
         }
       },
       "orbit_color": {
-        "line": 246,
+        "line": 247,
         "definition": "character(16) :: orbit_color = 'red'",
         "name": "orbit_color",
         "default": "'red'",
@@ -3831,7 +3832,7 @@
         }
       },
       "orbit_pattern": {
-        "line": 247,
+        "line": 248,
         "definition": "character(16) :: orbit_pattern = 'solid'",
         "name": "orbit_pattern",
         "default": "'solid'",
@@ -3841,7 +3842,7 @@
         }
       },
       "orbit_lattice": {
-        "line": 248,
+        "line": 249,
         "definition": "character(16) :: orbit_lattice = 'model'",
         "name": "orbit_lattice",
         "comment": "Or 'design' or 'base'",
@@ -3852,7 +3853,7 @@
         }
       },
       "orbit_width": {
-        "line": 249,
+        "line": 250,
         "definition": "integer :: orbit_width = 1",
         "name": "orbit_width",
         "default": "1",
@@ -4266,8 +4267,18 @@
           "type": "logical"
         }
       },
-      "cmd_file_abort_on_error": {
+      "blank_line_between_commands": {
         "line": 680,
+        "definition": "logical :: blank_line_between_commands = .true.",
+        "name": "blank_line_between_commands",
+        "comment": "Add a blank line between command output?",
+        "default": ".true.",
+        "type_info": {
+          "type": "logical"
+        }
+      },
+      "cmd_file_abort_on_error": {
+        "line": 681,
         "definition": "logical :: cmd_file_abort_on_error = .true.",
         "name": "cmd_file_abort_on_error",
         "comment": "Abort open command files if there is an error?",
@@ -4277,20 +4288,10 @@
         }
       },
       "concatenate_maps": {
-        "line": 681,
+        "line": 682,
         "definition": "logical :: concatenate_maps = .false.",
         "name": "concatenate_maps",
         "comment": "False => tracking using DA.",
-        "default": ".false.",
-        "type_info": {
-          "type": "logical"
-        }
-      },
-      "debug_on": {
-        "line": 682,
-        "definition": "logical :: debug_on = .false.",
-        "name": "debug_on",
-        "comment": "For debugging.",
         "default": ".false.",
         "type_info": {
           "type": "logical"
@@ -4535,21 +4536,41 @@
           "type": "logical"
         }
       },
-      "blank_line_between_commands": {
+      "symbol_import": {
         "line": 707,
-        "definition": "logical :: blank_line_between_commands = .true.",
-        "name": "blank_line_between_commands",
-        "comment": "Add a blank line between command output?",
-        "default": ".true.",
+        "definition": "logical :: symbol_import = .false.",
+        "name": "symbol_import",
+        "comment": "Import symbols from lattice file(s)? Internal stuff",
+        "default": ".false.",
         "type_info": {
           "type": "logical"
         }
       },
-      "symbol_import": {
-        "line": 708,
-        "definition": "logical :: symbol_import = .false.",
-        "name": "symbol_import",
-        "comment": "Import symbols from lattice file(s)?",
+      "debug_on": {
+        "line": 709,
+        "definition": "logical :: debug_on = .false.",
+        "name": "debug_on",
+        "comment": "For debugging.",
+        "default": ".false.",
+        "type_info": {
+          "type": "logical"
+        }
+      },
+      "expression_tree_on": {
+        "line": 710,
+        "definition": "logical :: expression_tree_on = .false.",
+        "name": "expression_tree_on",
+        "comment": "Use an expression tree instead of a stack?",
+        "default": ".false.",
+        "type_info": {
+          "type": "logical"
+        }
+      },
+      "verbose_on": {
+        "line": 711,
+        "definition": "logical :: verbose_on = .false.",
+        "name": "verbose_on",
+        "comment": "For verbose output. Used with debugging.",
         "default": ".false.",
         "type_info": {
           "type": "logical"
@@ -4559,12 +4580,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 374,
+    "line": 375,
     "name": "tao_graph_array_struct",
     "module": "tao_struct",
     "members": {
       "g": {
-        "line": 375,
+        "line": 376,
         "definition": "type (tao_graph_struct), pointer :: g",
         "name": "g",
         "default": null,
@@ -4941,12 +4962,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 256,
+    "line": 257,
     "name": "tao_graph_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 257,
+        "line": 258,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "comment": "Name identifying the graph",
@@ -4957,7 +4978,7 @@
         }
       },
       "type": {
-        "line": 258,
+        "line": 259,
         "definition": "character(40) :: type = ''",
         "name": "type",
         "comment": "'data', 'lat_layout', 'phase_space', 'histogram', 'dynamic_aperture'",
@@ -4968,7 +4989,7 @@
         }
       },
       "title": {
-        "line": 259,
+        "line": 260,
         "definition": "character(100) :: title = ''",
         "name": "title",
         "default": "''",
@@ -4978,7 +4999,7 @@
         }
       },
       "title_suffix": {
-        "line": 260,
+        "line": 261,
         "definition": "character(100) :: title_suffix = ''",
         "name": "title_suffix",
         "default": "''",
@@ -4988,7 +5009,7 @@
         }
       },
       "text_legend": {
-        "line": 261,
+        "line": 262,
         "definition": "character(100) :: text_legend(10) = ''",
         "name": "text_legend",
         "comment": "Array for holding descriptive info.",
@@ -5000,7 +5021,7 @@
         }
       },
       "text_legend_out": {
-        "line": 262,
+        "line": 263,
         "definition": "character(100) :: text_legend_out(10) = ''",
         "name": "text_legend_out",
         "comment": "Array for holding descriptive info.",
@@ -5012,7 +5033,7 @@
         }
       },
       "why_invalid": {
-        "line": 263,
+        "line": 264,
         "definition": "character(80) :: why_invalid = '???'",
         "name": "why_invalid",
         "comment": "Informative string to print.",
@@ -5023,7 +5044,7 @@
         }
       },
       "curve": {
-        "line": 264,
+        "line": 265,
         "definition": "type (tao_curve_struct), allocatable :: curve(:)",
         "name": "curve",
         "default": null,
@@ -5035,7 +5056,7 @@
         }
       },
       "p": {
-        "line": 265,
+        "line": 266,
         "definition": "type (tao_plot_struct), pointer :: p => null()",
         "name": "p",
         "comment": "pointer to parent plot",
@@ -5047,7 +5068,7 @@
         }
       },
       "floor_plan": {
-        "line": 266,
+        "line": 267,
         "definition": "type (tao_floor_plan_struct) :: floor_plan = tao_floor_plan_struct()",
         "name": "floor_plan",
         "default": "tao_floor_plan_struct()",
@@ -5057,7 +5078,7 @@
         }
       },
       "text_legend_origin": {
-        "line": 267,
+        "line": 268,
         "definition": "type (qp_point_struct) :: text_legend_origin = qp_point_struct()",
         "name": "text_legend_origin",
         "default": "qp_point_struct()",
@@ -5067,7 +5088,7 @@
         }
       },
       "curve_legend_origin": {
-        "line": 268,
+        "line": 269,
         "definition": "type (qp_point_struct) :: curve_legend_origin = qp_point_struct()",
         "name": "curve_legend_origin",
         "default": "qp_point_struct()",
@@ -5077,7 +5098,7 @@
         }
       },
       "curve_legend": {
-        "line": 269,
+        "line": 270,
         "definition": "type (qp_legend_struct) :: curve_legend = qp_legend_struct()",
         "name": "curve_legend",
         "default": "qp_legend_struct()",
@@ -5087,7 +5108,7 @@
         }
       },
       "x": {
-        "line": 270,
+        "line": 271,
         "definition": "type (qp_axis_struct) :: x = qp_axis_struct()",
         "name": "x",
         "comment": "X-axis parameters.",
@@ -5098,7 +5119,7 @@
         }
       },
       "y": {
-        "line": 271,
+        "line": 272,
         "definition": "type (qp_axis_struct) :: y = qp_axis_struct()",
         "name": "y",
         "comment": "Y-axis attributes.",
@@ -5109,7 +5130,7 @@
         }
       },
       "x2": {
-        "line": 272,
+        "line": 273,
         "definition": "type (qp_axis_struct) :: x2 = qp_axis_struct()",
         "name": "x2",
         "comment": "X2-axis attributes (Not currently used).",
@@ -5120,7 +5141,7 @@
         }
       },
       "y2": {
-        "line": 273,
+        "line": 274,
         "definition": "type (qp_axis_struct) :: y2 = qp_axis_struct()",
         "name": "y2",
         "comment": "Y2-axis attributes.",
@@ -5131,7 +5152,7 @@
         }
       },
       "margin": {
-        "line": 274,
+        "line": 275,
         "definition": "type (qp_rect_struct) :: margin = qp_rect_struct()",
         "name": "margin",
         "comment": "Margin around the graph.",
@@ -5142,7 +5163,7 @@
         }
       },
       "scale_margin": {
-        "line": 275,
+        "line": 276,
         "definition": "type (qp_rect_struct) :: scale_margin = qp_rect_struct()",
         "name": "scale_margin",
         "comment": "Margin for scaling",
@@ -5153,7 +5174,7 @@
         }
       },
       "x_axis_scale_factor": {
-        "line": 276,
+        "line": 277,
         "definition": "real(rp) :: x_axis_scale_factor = 1",
         "name": "x_axis_scale_factor",
         "comment": "x-axis conversion from internal to plotting units.",
@@ -5164,7 +5185,7 @@
         }
       },
       "symbol_size_scale": {
-        "line": 277,
+        "line": 278,
         "definition": "real(rp) :: symbol_size_scale = 0",
         "name": "symbol_size_scale",
         "comment": "Symbol size scale factor for phase_space plots.",
@@ -5175,7 +5196,7 @@
         }
       },
       "box": {
-        "line": 278,
+        "line": 279,
         "definition": "integer :: box(4) = 0",
         "name": "box",
         "comment": "Defines which box the plot is put in.",
@@ -5186,7 +5207,7 @@
         }
       },
       "ix_branch": {
-        "line": 279,
+        "line": 280,
         "definition": "integer :: ix_branch = -1",
         "name": "ix_branch",
         "comment": "Branch in lattice. Used when there are no associated curves.",
@@ -5196,7 +5217,7 @@
         }
       },
       "ix_universe": {
-        "line": 280,
+        "line": 281,
         "definition": "integer :: ix_universe = -1",
         "name": "ix_universe",
         "comment": "Used for lat_layout plots.",
@@ -5206,7 +5227,7 @@
         }
       },
       "clip": {
-        "line": 281,
+        "line": 282,
         "definition": "logical :: clip = .false.",
         "name": "clip",
         "comment": "Clip plot at graph boundary.",
@@ -5216,7 +5237,7 @@
         }
       },
       "y2_mirrors_y": {
-        "line": 282,
+        "line": 283,
         "definition": "logical :: y2_mirrors_y = .true.",
         "name": "y2_mirrors_y",
         "comment": "Y2-axis same as Y-axis?",
@@ -5226,7 +5247,7 @@
         }
       },
       "limited": {
-        "line": 283,
+        "line": 284,
         "definition": "logical :: limited = .false.",
         "name": "limited",
         "comment": "True if at least one data point past graph bounds.",
@@ -5236,7 +5257,7 @@
         }
       },
       "draw_axes": {
-        "line": 284,
+        "line": 285,
         "definition": "logical :: draw_axes = .true.",
         "name": "draw_axes",
         "comment": "Draw axes, labels, etc?",
@@ -5246,7 +5267,7 @@
         }
       },
       "draw_curve_legend": {
-        "line": 285,
+        "line": 286,
         "definition": "logical :: draw_curve_legend = .true.",
         "name": "draw_curve_legend",
         "comment": "Legend for displaying curve info.",
@@ -5256,7 +5277,7 @@
         }
       },
       "draw_grid": {
-        "line": 286,
+        "line": 287,
         "definition": "logical :: draw_grid = .true.",
         "name": "draw_grid",
         "comment": "Draw a grid?",
@@ -5266,7 +5287,7 @@
         }
       },
       "draw_title": {
-        "line": 287,
+        "line": 288,
         "definition": "logical :: draw_title = .true.",
         "name": "draw_title",
         "default": ".true.",
@@ -5275,7 +5296,7 @@
         }
       },
       "draw_only_good_user_data_or_vars": {
-        "line": 288,
+        "line": 289,
         "definition": "logical :: draw_only_good_user_data_or_vars = .true.",
         "name": "draw_only_good_user_data_or_vars",
         "default": ".true.",
@@ -5284,7 +5305,7 @@
         }
       },
       "allow_wrap_around": {
-        "line": 289,
+        "line": 290,
         "definition": "logical :: allow_wrap_around = .true.",
         "name": "allow_wrap_around",
         "comment": "\"Wrap\" curves to extend past lattice boundaries?",
@@ -5294,7 +5315,7 @@
         }
       },
       "is_valid": {
-        "line": 290,
+        "line": 291,
         "definition": "logical :: is_valid = .false.",
         "name": "is_valid",
         "comment": "EG: Bad x_axis_type.",
@@ -5307,12 +5328,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 165,
+    "line": 166,
     "name": "tao_histogram_struct",
     "module": "tao_struct",
     "members": {
       "density_normalized": {
-        "line": 166,
+        "line": 167,
         "definition": "logical :: density_normalized = .false.",
         "name": "density_normalized",
         "default": ".false.",
@@ -5321,7 +5342,7 @@
         }
       },
       "weight_by_charge": {
-        "line": 167,
+        "line": 168,
         "definition": "logical :: weight_by_charge = .true.",
         "name": "weight_by_charge",
         "default": ".true.",
@@ -5330,7 +5351,7 @@
         }
       },
       "minimum": {
-        "line": 168,
+        "line": 169,
         "definition": "real(rp) :: minimum = 0, maximum = 0",
         "name": "minimum",
         "comment": "Computed by Tao. Not User settable.",
@@ -5341,7 +5362,7 @@
         }
       },
       "maximum": {
-        "line": 168,
+        "line": 169,
         "definition": "real(rp) :: minimum = 0, maximum = 0",
         "name": "maximum",
         "comment": "Computed by Tao. Not User settable.",
@@ -5352,7 +5373,7 @@
         }
       },
       "width": {
-        "line": 169,
+        "line": 170,
         "definition": "real(rp) :: width = 0, center = 0",
         "name": "width",
         "default": "0",
@@ -5362,7 +5383,7 @@
         }
       },
       "center": {
-        "line": 169,
+        "line": 170,
         "definition": "real(rp) :: width = 0, center = 0",
         "name": "center",
         "default": "0",
@@ -5372,7 +5393,7 @@
         }
       },
       "number": {
-        "line": 170,
+        "line": 171,
         "definition": "integer :: number = 0",
         "name": "number",
         "default": "0",
@@ -5384,12 +5405,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 794,
+    "line": 797,
     "name": "tao_init_struct",
     "module": "tao_struct",
     "members": {
       "parse_cmd_args": {
-        "line": 795,
+        "line": 798,
         "definition": "logical :: parse_cmd_args = .true.",
         "name": "parse_cmd_args",
         "comment": "Used by custom programs to control Tao init",
@@ -5399,7 +5420,7 @@
         }
       },
       "debug_switch": {
-        "line": 796,
+        "line": 799,
         "definition": "logical :: debug_switch = .false.",
         "name": "debug_switch",
         "comment": "Is the \"-debug\" switch present?",
@@ -5409,7 +5430,7 @@
         }
       },
       "external_plotting_switch": {
-        "line": 797,
+        "line": 800,
         "definition": "logical :: external_plotting_switch = .false.",
         "name": "external_plotting_switch",
         "comment": "Is \"-external_plotting\" switch present?",
@@ -5419,7 +5440,7 @@
         }
       },
       "init_name": {
-        "line": 798,
+        "line": 801,
         "definition": "character(16) :: init_name = 'Tao'",
         "name": "init_name",
         "comment": "label for initialization",
@@ -5430,7 +5451,7 @@
         }
       },
       "hook_init_file": {
-        "line": 799,
+        "line": 802,
         "definition": "character(400) :: hook_init_file = ''",
         "name": "hook_init_file",
         "default": "''",
@@ -5440,7 +5461,7 @@
         }
       },
       "hook_lat_file": {
-        "line": 800,
+        "line": 803,
         "definition": "character(400) :: hook_lat_file = ''",
         "name": "hook_lat_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5451,7 +5472,7 @@
         }
       },
       "hook_beam_file": {
-        "line": 801,
+        "line": 804,
         "definition": "character(400) :: hook_beam_file = ''",
         "name": "hook_beam_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5462,7 +5483,7 @@
         }
       },
       "hook_data_file": {
-        "line": 802,
+        "line": 805,
         "definition": "character(400) :: hook_data_file = ''",
         "name": "hook_data_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5473,7 +5494,7 @@
         }
       },
       "hook_plot_file": {
-        "line": 803,
+        "line": 806,
         "definition": "character(400) :: hook_plot_file = ''",
         "name": "hook_plot_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5484,7 +5505,7 @@
         }
       },
       "hook_startup_file": {
-        "line": 804,
+        "line": 807,
         "definition": "character(400) :: hook_startup_file = ''",
         "name": "hook_startup_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5495,7 +5516,7 @@
         }
       },
       "hook_var_file": {
-        "line": 805,
+        "line": 808,
         "definition": "character(400) :: hook_var_file = ''",
         "name": "hook_var_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5506,7 +5527,7 @@
         }
       },
       "hook_building_wall_file": {
-        "line": 806,
+        "line": 809,
         "definition": "character(400) :: hook_building_wall_file = ''",
         "name": "hook_building_wall_file",
         "comment": "To be set by tao_hook_parse_command_args",
@@ -5517,7 +5538,7 @@
         }
       },
       "init_file_arg_path": {
-        "line": 807,
+        "line": 810,
         "definition": "character(400) :: init_file_arg_path = ''",
         "name": "init_file_arg_path",
         "comment": "Path part of init_tao_file",
@@ -5528,7 +5549,7 @@
         }
       },
       "lattice_file_arg": {
-        "line": 808,
+        "line": 811,
         "definition": "character(400) :: lattice_file_arg = ''",
         "name": "lattice_file_arg",
         "comment": "-lattice_file        command line argument.",
@@ -5539,7 +5560,7 @@
         }
       },
       "hook_init_file_arg": {
-        "line": 809,
+        "line": 812,
         "definition": "character(400) :: hook_init_file_arg = ''",
         "name": "hook_init_file_arg",
         "comment": "-hook_init_file      command line argument",
@@ -5550,7 +5571,7 @@
         }
       },
       "init_file_arg": {
-        "line": 810,
+        "line": 813,
         "definition": "character(400) :: init_file_arg = ''",
         "name": "init_file_arg",
         "comment": "-init_file           command line argument.",
@@ -5561,7 +5582,7 @@
         }
       },
       "beam_file_arg": {
-        "line": 811,
+        "line": 814,
         "definition": "character(400) :: beam_file_arg = ''",
         "name": "beam_file_arg",
         "comment": "-beam_file           command line argument.",
@@ -5572,7 +5593,7 @@
         }
       },
       "beam_init_position_file_arg": {
-        "line": 812,
+        "line": 815,
         "definition": "character(400) :: beam_init_position_file_arg = ''",
         "name": "beam_init_position_file_arg",
         "comment": "-beam_init_position_file command line argument.",
@@ -5583,7 +5604,7 @@
         }
       },
       "command_arg": {
-        "line": 813,
+        "line": 816,
         "definition": "character(500) :: command_arg = ''",
         "name": "command_arg",
         "comment": "-command             command line argument.",
@@ -5594,7 +5615,7 @@
         }
       },
       "data_file_arg": {
-        "line": 814,
+        "line": 817,
         "definition": "character(400) :: data_file_arg = ''",
         "name": "data_file_arg",
         "comment": "-data_file           command line argument.",
@@ -5605,7 +5626,7 @@
         }
       },
       "plot_file_arg": {
-        "line": 815,
+        "line": 818,
         "definition": "character(400) :: plot_file_arg = ''",
         "name": "plot_file_arg",
         "comment": "-plot_file           command line argument.",
@@ -5616,7 +5637,7 @@
         }
       },
       "startup_file_arg": {
-        "line": 816,
+        "line": 819,
         "definition": "character(400) :: startup_file_arg = ''",
         "name": "startup_file_arg",
         "comment": "-startup_file        command line argument.",
@@ -5627,7 +5648,7 @@
         }
       },
       "var_file_arg": {
-        "line": 817,
+        "line": 820,
         "definition": "character(400) :: var_file_arg = ''",
         "name": "var_file_arg",
         "comment": "-var_file            command line argument.",
@@ -5638,7 +5659,7 @@
         }
       },
       "building_wall_file_arg": {
-        "line": 818,
+        "line": 821,
         "definition": "character(400) :: building_wall_file_arg = ''",
         "name": "building_wall_file_arg",
         "comment": "-building_wall_file  command line argument.",
@@ -5649,7 +5670,7 @@
         }
       },
       "geometry_arg": {
-        "line": 819,
+        "line": 822,
         "definition": "character(16) :: geometry_arg = ''",
         "name": "geometry_arg",
         "comment": "-geometry            command line argument.",
@@ -5660,7 +5681,7 @@
         }
       },
       "slice_lattice_arg": {
-        "line": 820,
+        "line": 823,
         "definition": "character(80) :: slice_lattice_arg = ''",
         "name": "slice_lattice_arg",
         "comment": "-slice_lattice       command line argument.",
@@ -5671,7 +5692,7 @@
         }
       },
       "start_branch_at_arg": {
-        "line": 821,
+        "line": 824,
         "definition": "character(40) :: start_branch_at_arg = ''",
         "name": "start_branch_at_arg",
         "comment": "-start_branch_at     command line argument.",
@@ -5682,7 +5703,7 @@
         }
       },
       "log_startup_arg": {
-        "line": 822,
+        "line": 825,
         "definition": "character(12) :: log_startup_arg = ''",
         "name": "log_startup_arg",
         "comment": "-log_startup         command line argument",
@@ -5693,7 +5714,7 @@
         }
       },
       "no_stopping_arg": {
-        "line": 823,
+        "line": 826,
         "definition": "character(12) :: no_stopping_arg = ''",
         "name": "no_stopping_arg",
         "comment": "-no_stopping         command line argument",
@@ -5704,7 +5725,7 @@
         }
       },
       "noplot_arg": {
-        "line": 824,
+        "line": 827,
         "definition": "character(12) :: noplot_arg = ''",
         "name": "noplot_arg",
         "comment": "-noplot              command line argument",
@@ -5715,7 +5736,7 @@
         }
       },
       "no_rad_int_arg": {
-        "line": 825,
+        "line": 828,
         "definition": "character(12) :: no_rad_int_arg = ''",
         "name": "no_rad_int_arg",
         "comment": "-no_rad_int          command line argument",
@@ -5726,7 +5747,7 @@
         }
       },
       "reverse_arg": {
-        "line": 826,
+        "line": 829,
         "definition": "character(12) :: reverse_arg = ''",
         "name": "reverse_arg",
         "comment": "-reverse             command line argument",
@@ -5737,7 +5758,7 @@
         }
       },
       "debug_arg": {
-        "line": 827,
+        "line": 830,
         "definition": "character(12) :: debug_arg = ''",
         "name": "debug_arg",
         "comment": "-debug               command line argument",
@@ -5748,7 +5769,7 @@
         }
       },
       "disable_smooth_line_calc_arg": {
-        "line": 828,
+        "line": 831,
         "definition": "character(12) :: disable_smooth_line_calc_arg = ''",
         "name": "disable_smooth_line_calc_arg",
         "comment": "-disable_smooth_line_calc",
@@ -5759,7 +5780,7 @@
         }
       },
       "rf_on_arg": {
-        "line": 829,
+        "line": 832,
         "definition": "character(12) :: rf_on_arg = ''",
         "name": "rf_on_arg",
         "comment": "-rf_on               command line argument",
@@ -5770,7 +5791,7 @@
         }
       },
       "prompt_color_arg": {
-        "line": 830,
+        "line": 833,
         "definition": "character(12) :: prompt_color_arg = ''",
         "name": "prompt_color_arg",
         "comment": "-prompt_color        command line argument",
@@ -5781,7 +5802,7 @@
         }
       },
       "quiet_arg": {
-        "line": 831,
+        "line": 834,
         "definition": "character(12) :: quiet_arg = ''",
         "name": "quiet_arg",
         "comment": "-quiet               command line argument",
@@ -5792,7 +5813,7 @@
         }
       },
       "noinit_arg": {
-        "line": 832,
+        "line": 835,
         "definition": "character(12) :: noinit_arg = ''",
         "name": "noinit_arg",
         "comment": "-noinit              command line argument",
@@ -5803,7 +5824,7 @@
         }
       },
       "nostartup_arg": {
-        "line": 833,
+        "line": 836,
         "definition": "character(12) :: nostartup_arg = ''",
         "name": "nostartup_arg",
         "comment": "-nostartup           command line argument",
@@ -5814,7 +5835,7 @@
         }
       },
       "symbol_import_arg": {
-        "line": 834,
+        "line": 837,
         "definition": "character(12) :: symbol_import_arg = ''",
         "name": "symbol_import_arg",
         "comment": "-symbol_import       command line argument",
@@ -5825,7 +5846,7 @@
         }
       },
       "unique_name_suffix": {
-        "line": 835,
+        "line": 838,
         "definition": "character(100) :: unique_name_suffix = ''",
         "name": "unique_name_suffix",
         "default": "''",
@@ -5963,40 +5984,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 872,
-    "name": "tao_lat_mode_struct",
-    "module": "tao_struct",
-    "members": {
-      "chrom": {
-        "line": 873,
-        "definition": "real(rp) chrom",
-        "name": "chrom",
-        "default": null,
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        }
-      },
-      "growth_rate": {
-        "line": 874,
-        "definition": "real(rp) growth_rate",
-        "name": "growth_rate",
-        "default": null,
-        "type_info": {
-          "type": "real",
-          "kind": "rp"
-        }
-      }
-    }
-  },
-  {
-    "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 877,
+    "line": 874,
     "name": "tao_lat_sigma_struct",
     "module": "tao_struct",
     "members": {
       "mat": {
-        "line": 878,
+        "line": 875,
         "definition": "real(rp) :: mat(6,6) = 0",
         "name": "mat",
         "default": "0",
@@ -6010,12 +6003,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 926,
+    "line": 923,
     "name": "tao_lattice_branch_struct",
     "module": "tao_struct",
     "members": {
       "tao_lat": {
-        "line": 927,
+        "line": 924,
         "definition": "type (tao_lattice_struct), pointer :: tao_lat => null()",
         "name": "tao_lat",
         "comment": "Parent tao_lat",
@@ -6027,7 +6020,7 @@
         }
       },
       "lat_sigma": {
-        "line": 928,
+        "line": 925,
         "definition": "type (tao_lat_sigma_struct), allocatable :: lat_sigma(:)",
         "name": "lat_sigma",
         "comment": "Sigma matrix derived from lattice (not beam).",
@@ -6040,7 +6033,7 @@
         }
       },
       "spin_ele": {
-        "line": 929,
+        "line": 926,
         "definition": "type (tao_spin_ele_struct), allocatable :: spin_ele(:)",
         "name": "spin_ele",
         "comment": "Spin stuff",
@@ -6053,7 +6046,7 @@
         }
       },
       "bunch_params": {
-        "line": 930,
+        "line": 927,
         "definition": "type (bunch_params_struct), allocatable :: bunch_params(:)",
         "name": "bunch_params",
         "comment": "Per element",
@@ -6066,7 +6059,7 @@
         }
       },
       "bunch_params_comb": {
-        "line": 931,
+        "line": 928,
         "definition": "type (bunch_track_struct), allocatable :: bunch_params_comb(:)",
         "name": "bunch_params_comb",
         "comment": "A comb for each bunch in beam.",
@@ -6079,7 +6072,7 @@
         }
       },
       "orbit": {
-        "line": 932,
+        "line": 929,
         "definition": "type (coord_struct), allocatable :: orbit(:)",
         "name": "orbit",
         "default": null,
@@ -6091,7 +6084,7 @@
         }
       },
       "plot_cache": {
-        "line": 933,
+        "line": 930,
         "definition": "type (tao_plot_cache_struct), allocatable :: plot_cache(:)",
         "name": "plot_cache",
         "comment": "Plotting data cache",
@@ -6103,28 +6096,8 @@
           "kind": "tao_plot_cache_struct"
         }
       },
-      "a": {
-        "line": 934,
-        "definition": "type (tao_lat_mode_struct) a, b",
-        "name": "a",
-        "default": null,
-        "type_info": {
-          "type": "type",
-          "kind": "tao_lat_mode_struct"
-        }
-      },
-      "b": {
-        "line": 934,
-        "definition": "type (tao_lat_mode_struct) a, b",
-        "name": "b",
-        "default": null,
-        "type_info": {
-          "type": "type",
-          "kind": "tao_lat_mode_struct"
-        }
-      },
       "spin": {
-        "line": 935,
+        "line": 931,
         "definition": "type (tao_spin_polarization_struct) spin",
         "name": "spin",
         "default": null,
@@ -6134,7 +6107,7 @@
         }
       },
       "srdt": {
-        "line": 936,
+        "line": 932,
         "definition": "type (summation_rdt_struct) srdt",
         "name": "srdt",
         "default": null,
@@ -6144,7 +6117,7 @@
         }
       },
       "orb0": {
-        "line": 937,
+        "line": 933,
         "definition": "type (coord_struct) orb0",
         "name": "orb0",
         "comment": "For saving beginning orbit",
@@ -6155,7 +6128,7 @@
         }
       },
       "modes_ri": {
-        "line": 938,
+        "line": 934,
         "definition": "type (normal_modes_struct) modes_ri",
         "name": "modes_ri",
         "comment": "Synchrotron integrals stuff",
@@ -6166,7 +6139,7 @@
         }
       },
       "modes_6d": {
-        "line": 939,
+        "line": 935,
         "definition": "type (normal_modes_struct) modes_6d",
         "name": "modes_6d",
         "comment": "6D radiation matrices.",
@@ -6177,7 +6150,7 @@
         }
       },
       "ptc_normal_form": {
-        "line": 940,
+        "line": 936,
         "definition": "type (ptc_normal_form_struct) ptc_normal_form",
         "name": "ptc_normal_form",
         "comment": "Collection of normal form structures defined in PTC",
@@ -6188,7 +6161,7 @@
         }
       },
       "bmad_normal_form": {
-        "line": 941,
+        "line": 937,
         "definition": "type (bmad_normal_form_struct) bmad_normal_form",
         "name": "bmad_normal_form",
         "comment": "Collection of normal form structures defined in Bmad",
@@ -6199,7 +6172,7 @@
         }
       },
       "high_E_orb": {
-        "line": 942,
+        "line": 938,
         "definition": "type (coord_struct), allocatable :: high_E_orb(:), low_E_orb(:)",
         "name": "high_E_orb",
         "default": null,
@@ -6211,7 +6184,7 @@
         }
       },
       "low_E_orb": {
-        "line": 942,
+        "line": 938,
         "definition": "type (coord_struct), allocatable :: high_E_orb(:), low_E_orb(:)",
         "name": "low_E_orb",
         "default": null,
@@ -6223,7 +6196,7 @@
         }
       },
       "cache_x_min": {
-        "line": 943,
+        "line": 939,
         "definition": "real(rp) :: cache_x_min = 0, cache_x_max = 0",
         "name": "cache_x_min",
         "default": "0",
@@ -6233,7 +6206,7 @@
         }
       },
       "cache_x_max": {
-        "line": 943,
+        "line": 939,
         "definition": "real(rp) :: cache_x_min = 0, cache_x_max = 0",
         "name": "cache_x_max",
         "default": "0",
@@ -6243,7 +6216,7 @@
         }
       },
       "comb_ds_save": {
-        "line": 944,
+        "line": 940,
         "definition": "real(rp) :: comb_ds_save = -1",
         "name": "comb_ds_save",
         "comment": "Master parameter for %bunch_params_comb(:)%ds_save",
@@ -6254,7 +6227,7 @@
         }
       },
       "track_state": {
-        "line": 945,
+        "line": 941,
         "definition": "integer track_state",
         "name": "track_state",
         "default": null,
@@ -6263,7 +6236,7 @@
         }
       },
       "cache_n_pts": {
-        "line": 946,
+        "line": 942,
         "definition": "integer :: cache_n_pts = 0",
         "name": "cache_n_pts",
         "default": "0",
@@ -6272,7 +6245,7 @@
         }
       },
       "ix_rad_int_cache": {
-        "line": 947,
+        "line": 943,
         "definition": "integer ix_rad_int_cache",
         "name": "ix_rad_int_cache",
         "comment": "Radiation integrals cache index.",
@@ -6282,7 +6255,7 @@
         }
       },
       "has_open_match_element": {
-        "line": 948,
+        "line": 944,
         "definition": "logical :: has_open_match_element = .false.",
         "name": "has_open_match_element",
         "default": ".false.",
@@ -6291,7 +6264,7 @@
         }
       },
       "plot_cache_valid": {
-        "line": 949,
+        "line": 945,
         "definition": "logical :: plot_cache_valid = .false.",
         "name": "plot_cache_valid",
         "comment": "Valid plotting data cache?",
@@ -6301,7 +6274,7 @@
         }
       },
       "spin_map_valid": {
-        "line": 950,
+        "line": 946,
         "definition": "logical :: spin_map_valid = .false.",
         "name": "spin_map_valid",
         "default": ".false.",
@@ -6310,7 +6283,7 @@
         }
       },
       "twiss_valid": {
-        "line": 951,
+        "line": 947,
         "definition": "logical :: twiss_valid = .true.",
         "name": "twiss_valid",
         "comment": "Invalid EG with unstable 1-turn matrix with a closed branch. With open branch: twiss_valid = T even if some Twiss (and orbit) is invalid.",
@@ -6320,7 +6293,7 @@
         }
       },
       "mode_flip_here": {
-        "line": 953,
+        "line": 949,
         "definition": "logical :: mode_flip_here = .false.",
         "name": "mode_flip_here",
         "comment": "Twiss parameter mode flip seen?",
@@ -6333,12 +6306,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 959,
+    "line": 955,
     "name": "tao_lattice_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 960,
+        "line": 956,
         "definition": "character(8) :: name",
         "name": "name",
         "comment": "\"model\", \"base\", or \"design\".",
@@ -6349,7 +6322,7 @@
         }
       },
       "lat": {
-        "line": 961,
+        "line": 957,
         "definition": "type (lat_struct) lat",
         "name": "lat",
         "comment": "lattice structures",
@@ -6360,7 +6333,7 @@
         }
       },
       "high_E_lat": {
-        "line": 962,
+        "line": 958,
         "definition": "type (lat_struct) :: high_E_lat, low_E_lat",
         "name": "high_E_lat",
         "comment": "For chrom calc.",
@@ -6371,7 +6344,7 @@
         }
       },
       "low_E_lat": {
-        "line": 962,
+        "line": 958,
         "definition": "type (lat_struct) :: high_E_lat, low_E_lat",
         "name": "low_E_lat",
         "comment": "For chrom calc.",
@@ -6382,7 +6355,7 @@
         }
       },
       "u": {
-        "line": 963,
+        "line": 959,
         "definition": "type (tao_universe_struct), pointer :: u => null()",
         "name": "u",
         "comment": "Parent universe",
@@ -6394,7 +6367,7 @@
         }
       },
       "rad_int_by_ele_ri": {
-        "line": 964,
+        "line": 960,
         "definition": "type (rad_int_all_ele_struct) rad_int_by_ele_ri",
         "name": "rad_int_by_ele_ri",
         "default": null,
@@ -6404,7 +6377,7 @@
         }
       },
       "rad_int_by_ele_6d": {
-        "line": 965,
+        "line": 961,
         "definition": "type (rad_int_all_ele_struct) rad_int_by_ele_6d",
         "name": "rad_int_by_ele_6d",
         "default": null,
@@ -6414,7 +6387,7 @@
         }
       },
       "tao_branch": {
-        "line": 966,
+        "line": 962,
         "definition": "type (tao_lattice_branch_struct), allocatable :: tao_branch(:)",
         "name": "tao_branch",
         "default": null,
@@ -6426,7 +6399,7 @@
         }
       },
       "chrom_calc_ok": {
-        "line": 967,
+        "line": 963,
         "definition": "logical :: chrom_calc_ok = .false.",
         "name": "chrom_calc_ok",
         "default": ".false.",
@@ -6435,7 +6408,7 @@
         }
       },
       "rad_int_calc_ok": {
-        "line": 968,
+        "line": 964,
         "definition": "logical :: rad_int_calc_ok = .false.",
         "name": "rad_int_calc_ok",
         "default": ".false.",
@@ -6444,7 +6417,7 @@
         }
       },
       "emit_6d_calc_ok": {
-        "line": 969,
+        "line": 965,
         "definition": "logical :: emit_6d_calc_ok = .false.",
         "name": "emit_6d_calc_ok",
         "default": ".false.",
@@ -6474,12 +6447,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1004,
+    "line": 1000,
     "name": "tao_model_branch_struct",
     "module": "tao_struct",
     "members": {
       "ele": {
-        "line": 1005,
+        "line": 1001,
         "definition": "type (tao_model_element_struct), allocatable :: ele(:)",
         "name": "ele",
         "comment": "Per element information",
@@ -6492,7 +6465,7 @@
         }
       },
       "beam": {
-        "line": 1006,
+        "line": 1002,
         "definition": "type (tao_beam_branch_struct) beam",
         "name": "beam",
         "default": null,
@@ -6505,12 +6478,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 979,
+    "line": 975,
     "name": "tao_model_element_struct",
     "module": "tao_struct",
     "members": {
       "beam": {
-        "line": 980,
+        "line": 976,
         "definition": "type (beam_struct) beam",
         "name": "beam",
         "comment": "Beam distribution at element.",
@@ -6521,7 +6494,7 @@
         }
       },
       "save_beam_internally": {
-        "line": 981,
+        "line": 977,
         "definition": "logical save_beam_internally",
         "name": "save_beam_internally",
         "comment": "Save beam here? Beam also saved at fork elements and at track ends.",
@@ -6531,7 +6504,7 @@
         }
       },
       "save_beam_to_file": {
-        "line": 982,
+        "line": 978,
         "definition": "logical save_beam_to_file",
         "name": "save_beam_to_file",
         "comment": "Save beam to a file? Beam also saved at fork elements and at track ends.",
@@ -6544,12 +6517,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1041,
+    "line": 1037,
     "name": "tao_mpi_struct",
     "module": "tao_struct",
     "members": {
       "on": {
-        "line": 1042,
+        "line": 1038,
         "definition": "logical :: on = .false.",
         "name": "on",
         "comment": "Is MPI on?",
@@ -6559,7 +6532,7 @@
         }
       },
       "master": {
-        "line": 1043,
+        "line": 1039,
         "definition": "logical :: master = .true.",
         "name": "master",
         "comment": "Is this the master task? If yes, rank == 0",
@@ -6569,7 +6542,7 @@
         }
       },
       "rank": {
-        "line": 1044,
+        "line": 1040,
         "definition": "integer :: rank = 0",
         "name": "rank",
         "comment": "Rank of task (rank is 0, 1, 2, ... n_tasks-1 )",
@@ -6579,7 +6552,7 @@
         }
       },
       "max_rank": {
-        "line": 1045,
+        "line": 1041,
         "definition": "integer :: max_rank = 0",
         "name": "max_rank",
         "comment": "Maximum rank, should be n_tasks-1",
@@ -6589,7 +6562,7 @@
         }
       },
       "host_name": {
-        "line": 1046,
+        "line": 1042,
         "definition": "character(200) :: host_name = ''",
         "name": "host_name",
         "comment": "Name of the host machine",
@@ -6603,12 +6576,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1094,
+    "line": 1090,
     "name": "tao_ping_scale_struct",
     "module": "tao_struct",
     "members": {
       "a_mode_meas": {
-        "line": 1095,
+        "line": 1091,
         "definition": "real(rp) :: a_mode_meas = 1",
         "name": "a_mode_meas",
         "default": "1",
@@ -6618,7 +6591,7 @@
         }
       },
       "a_mode_ref": {
-        "line": 1096,
+        "line": 1092,
         "definition": "real(rp) :: a_mode_ref = 1",
         "name": "a_mode_ref",
         "default": "1",
@@ -6628,7 +6601,7 @@
         }
       },
       "b_mode_meas": {
-        "line": 1097,
+        "line": 1093,
         "definition": "real(rp) :: b_mode_meas = 1",
         "name": "b_mode_meas",
         "default": "1",
@@ -6638,7 +6611,7 @@
         }
       },
       "b_mode_ref": {
-        "line": 1098,
+        "line": 1094,
         "definition": "real(rp) :: b_mode_ref = 1",
         "name": "b_mode_ref",
         "default": "1",
@@ -6679,12 +6652,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 370,
+    "line": 371,
     "name": "tao_plot_array_struct",
     "module": "tao_struct",
     "members": {
       "p": {
-        "line": 371,
+        "line": 372,
         "definition": "type (tao_plot_struct), pointer :: p",
         "name": "p",
         "default": null,
@@ -6698,12 +6671,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 916,
+    "line": 913,
     "name": "tao_plot_cache_struct",
     "module": "tao_struct",
     "members": {
       "ele_to_s": {
-        "line": 917,
+        "line": 914,
         "definition": "type (ele_struct) ele_to_s",
         "name": "ele_to_s",
         "comment": "Integrated element from branch beginning. Will be marked as a hybrid element.",
@@ -6714,7 +6687,7 @@
         }
       },
       "orbit": {
-        "line": 918,
+        "line": 915,
         "definition": "type (coord_struct) orbit",
         "name": "orbit",
         "default": null,
@@ -6724,7 +6697,7 @@
         }
       },
       "err": {
-        "line": 919,
+        "line": 916,
         "definition": "logical err",
         "name": "err",
         "default": null,
@@ -7073,12 +7046,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 336,
+    "line": 337,
     "name": "tao_plot_page_struct",
     "module": "tao_struct",
     "members": {
       "title": {
-        "line": 337,
+        "line": 338,
         "definition": "type (tao_title_struct) :: title = tao_title_struct()",
         "name": "title",
         "comment": "Title  at top of page.",
@@ -7089,7 +7062,7 @@
         }
       },
       "subtitle": {
-        "line": 338,
+        "line": 339,
         "definition": "type (tao_title_struct) :: subtitle = tao_title_struct()",
         "name": "subtitle",
         "comment": "Subtitle below title at top of page.",
@@ -7100,7 +7073,7 @@
         }
       },
       "border": {
-        "line": 339,
+        "line": 340,
         "definition": "type (qp_rect_struct) :: border = qp_rect_struct()",
         "name": "border",
         "comment": "Border around plots edge of page.",
@@ -7111,7 +7084,7 @@
         }
       },
       "floor_plan": {
-        "line": 340,
+        "line": 341,
         "definition": "type (tao_drawing_struct) :: floor_plan = tao_drawing_struct(null())",
         "name": "floor_plan",
         "default": "tao_drawing_struct(null())",
@@ -7121,7 +7094,7 @@
         }
       },
       "lat_layout": {
-        "line": 341,
+        "line": 342,
         "definition": "type (tao_drawing_struct) :: lat_layout = tao_drawing_struct(null())",
         "name": "lat_layout",
         "default": "tao_drawing_struct(null())",
@@ -7131,7 +7104,7 @@
         }
       },
       "pattern": {
-        "line": 342,
+        "line": 343,
         "definition": "type (tao_shape_pattern_struct), allocatable :: pattern(:)",
         "name": "pattern",
         "default": null,
@@ -7143,7 +7116,7 @@
         }
       },
       "template": {
-        "line": 343,
+        "line": 344,
         "definition": "type (tao_plot_struct), allocatable :: template(:)",
         "name": "template",
         "comment": "Templates for the plots.",
@@ -7156,7 +7129,7 @@
         }
       },
       "region": {
-        "line": 344,
+        "line": 345,
         "definition": "type (tao_plot_region_struct), allocatable :: region(:)",
         "name": "region",
         "default": null,
@@ -7168,7 +7141,7 @@
         }
       },
       "plot_display_type": {
-        "line": 345,
+        "line": 346,
         "definition": "character(8) :: plot_display_type = 'X'",
         "name": "plot_display_type",
         "comment": "'X' or 'TK'",
@@ -7179,7 +7152,7 @@
         }
       },
       "size": {
-        "line": 346,
+        "line": 347,
         "definition": "real(rp) :: size(2) = 0",
         "name": "size",
         "comment": "width and height of plot window in pixels.",
@@ -7191,7 +7164,7 @@
         }
       },
       "text_height": {
-        "line": 347,
+        "line": 348,
         "definition": "real(rp) :: text_height = 12",
         "name": "text_height",
         "comment": "In points. Scales the height of all text",
@@ -7202,7 +7175,7 @@
         }
       },
       "main_title_text_scale": {
-        "line": 348,
+        "line": 349,
         "definition": "real(rp) :: main_title_text_scale  = 1.3",
         "name": "main_title_text_scale",
         "comment": "Relative to text_height",
@@ -7213,7 +7186,7 @@
         }
       },
       "graph_title_text_scale": {
-        "line": 349,
+        "line": 350,
         "definition": "real(rp) :: graph_title_text_scale = 1.1",
         "name": "graph_title_text_scale",
         "comment": "Relative to text_height",
@@ -7224,7 +7197,7 @@
         }
       },
       "axis_number_text_scale": {
-        "line": 350,
+        "line": 351,
         "definition": "real(rp) :: axis_number_text_scale = 0.9",
         "name": "axis_number_text_scale",
         "comment": "Relative to text_height",
@@ -7235,7 +7208,7 @@
         }
       },
       "axis_label_text_scale": {
-        "line": 351,
+        "line": 352,
         "definition": "real(rp) :: axis_label_text_scale  = 1.0",
         "name": "axis_label_text_scale",
         "comment": "Relative to text_height",
@@ -7246,7 +7219,7 @@
         }
       },
       "legend_text_scale": {
-        "line": 352,
+        "line": 353,
         "definition": "real(rp) :: legend_text_scale      = 0.9",
         "name": "legend_text_scale",
         "comment": "Relative to text_height. For legends, plot_page, and lat_layout",
@@ -7257,7 +7230,7 @@
         }
       },
       "key_table_text_scale": {
-        "line": 353,
+        "line": 354,
         "definition": "real(rp) :: key_table_text_scale   = 0.9",
         "name": "key_table_text_scale",
         "comment": "Relative to text_height",
@@ -7268,7 +7241,7 @@
         }
       },
       "floor_plan_shape_scale": {
-        "line": 354,
+        "line": 355,
         "definition": "real(rp) :: floor_plan_shape_scale = 1.0",
         "name": "floor_plan_shape_scale",
         "default": "1.0",
@@ -7278,7 +7251,7 @@
         }
       },
       "floor_plan_text_scale": {
-        "line": 355,
+        "line": 356,
         "definition": "real(rp) :: floor_plan_text_scale  = 1.0",
         "name": "floor_plan_text_scale",
         "comment": "Scale used = floor_plan_text_scale * legend_text_scale",
@@ -7289,7 +7262,7 @@
         }
       },
       "lat_layout_shape_scale": {
-        "line": 356,
+        "line": 357,
         "definition": "real(rp) :: lat_layout_shape_scale = 1.0",
         "name": "lat_layout_shape_scale",
         "default": "1.0",
@@ -7299,7 +7272,7 @@
         }
       },
       "lat_layout_text_scale": {
-        "line": 357,
+        "line": 358,
         "definition": "real(rp) :: lat_layout_text_scale  = 1.0",
         "name": "lat_layout_text_scale",
         "comment": "Scale used = lat_layout_text_scale * legend_text_scale",
@@ -7310,7 +7283,7 @@
         }
       },
       "n_curve_pts": {
-        "line": 358,
+        "line": 359,
         "definition": "integer :: n_curve_pts = n_curve_pts_init$",
         "name": "n_curve_pts",
         "comment": "Default number of points for plotting a smooth curve.",
@@ -7320,7 +7293,7 @@
         }
       },
       "id_window": {
-        "line": 359,
+        "line": 360,
         "definition": "integer :: id_window = -1",
         "name": "id_window",
         "comment": "X window id number.",
@@ -7330,7 +7303,7 @@
         }
       },
       "delete_overlapping_plots": {
-        "line": 360,
+        "line": 361,
         "definition": "logical :: delete_overlapping_plots = .true.",
         "name": "delete_overlapping_plots",
         "comment": "Delete overlapping plots when a plot is placed?",
@@ -7340,7 +7313,7 @@
         }
       },
       "draw_graph_title_suffix": {
-        "line": 361,
+        "line": 362,
         "definition": "logical :: draw_graph_title_suffix = .true.",
         "name": "draw_graph_title_suffix",
         "comment": "Draw the graph title suffix?",
@@ -7353,12 +7326,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 321,
+    "line": 322,
     "name": "tao_plot_region_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 322,
+        "line": 323,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "comment": "Region name. Eg: 'r13', etc.",
@@ -7369,7 +7342,7 @@
         }
       },
       "plot": {
-        "line": 323,
+        "line": 324,
         "definition": "type (tao_plot_struct) :: plot",
         "name": "plot",
         "comment": "Plot associated with this region",
@@ -7380,7 +7353,7 @@
         }
       },
       "location": {
-        "line": 324,
+        "line": 325,
         "definition": "real(rp) :: location(4) = 0",
         "name": "location",
         "comment": "[x1, x2, y1, y2] location on page.",
@@ -7392,7 +7365,7 @@
         }
       },
       "visible": {
-        "line": 325,
+        "line": 326,
         "definition": "logical :: visible = .false.",
         "name": "visible",
         "comment": "To draw or not to draw.",
@@ -7402,7 +7375,7 @@
         }
       },
       "list_with_show_plot_command": {
-        "line": 326,
+        "line": 327,
         "definition": "logical :: list_with_show_plot_command = .true.",
         "name": "list_with_show_plot_command",
         "comment": "False used for default plots to shorten the output of \"show plot\"",
@@ -7412,7 +7385,7 @@
         }
       },
       "setup_done": {
-        "line": 327,
+        "line": 328,
         "definition": "logical :: setup_done = .false.",
         "name": "setup_done",
         "comment": "Used for plot bookkeeping.",
@@ -7425,12 +7398,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 298,
+    "line": 299,
     "name": "tao_plot_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 299,
+        "line": 300,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "comment": "Identifying name. Rule: If name is blank, plot is not valid.",
@@ -7441,7 +7414,7 @@
         }
       },
       "description": {
-        "line": 300,
+        "line": 301,
         "definition": "character(100) :: description = ''",
         "name": "description",
         "comment": "Descriptive string.",
@@ -7452,7 +7425,7 @@
         }
       },
       "graph": {
-        "line": 301,
+        "line": 302,
         "definition": "type (tao_graph_struct), allocatable :: graph(:)",
         "name": "graph",
         "comment": "individual graphs of a plot",
@@ -7465,7 +7438,7 @@
         }
       },
       "r": {
-        "line": 302,
+        "line": 303,
         "definition": "type (tao_plot_region_struct), pointer :: r => null()",
         "name": "r",
         "comment": "pointer to parent.",
@@ -7477,7 +7450,7 @@
         }
       },
       "ix_plot": {
-        "line": 303,
+        "line": 304,
         "definition": "integer :: ix_plot = -1",
         "name": "ix_plot",
         "comment": "Index in s%plot_page%template(:) or %region(:) arrays.",
@@ -7487,7 +7460,7 @@
         }
       },
       "n_curve_pts": {
-        "line": 304,
+        "line": 305,
         "definition": "integer :: n_curve_pts = -1",
         "name": "n_curve_pts",
         "comment": "Overrides s%plot_page%n_curve_pts.",
@@ -7497,7 +7470,7 @@
         }
       },
       "type": {
-        "line": 305,
+        "line": 306,
         "definition": "character(8) :: type = 'normal'",
         "name": "type",
         "comment": "or 'wave'",
@@ -7508,7 +7481,7 @@
         }
       },
       "x_axis_type": {
-        "line": 306,
+        "line": 307,
         "definition": "character(16) :: x_axis_type = ''",
         "name": "x_axis_type",
         "comment": "'index', 'ele_index', 's', 'none', 'floor', 'phase_space', etc.",
@@ -7519,7 +7492,7 @@
         }
       },
       "autoscale_x": {
-        "line": 307,
+        "line": 308,
         "definition": "logical :: autoscale_x = .false.",
         "name": "autoscale_x",
         "comment": "Horizontal autoscale.",
@@ -7529,7 +7502,7 @@
         }
       },
       "autoscale_y": {
-        "line": 308,
+        "line": 309,
         "definition": "logical :: autoscale_y = .false.",
         "name": "autoscale_y",
         "comment": "Vertical autoscale.",
@@ -7539,7 +7512,7 @@
         }
       },
       "autoscale_gang_x": {
-        "line": 309,
+        "line": 310,
         "definition": "logical :: autoscale_gang_x = .true.",
         "name": "autoscale_gang_x",
         "comment": "scale cmd scales graphs together?",
@@ -7549,7 +7522,7 @@
         }
       },
       "autoscale_gang_y": {
-        "line": 310,
+        "line": 311,
         "definition": "logical :: autoscale_gang_y = .true.",
         "name": "autoscale_gang_y",
         "comment": "scale cmd scales graphs together?",
@@ -7559,7 +7532,7 @@
         }
       },
       "list_with_show_plot_command": {
-        "line": 311,
+        "line": 312,
         "definition": "logical :: list_with_show_plot_command = .true.",
         "name": "list_with_show_plot_command",
         "comment": "False used for default plots to shorten the output of \"show plot\"",
@@ -7569,7 +7542,7 @@
         }
       },
       "phantom": {
-        "line": 312,
+        "line": 313,
         "definition": "logical :: phantom = .false.",
         "name": "phantom",
         "comment": "Used by tao_plot_init to add info lines to \"show plot -templates\"",
@@ -7579,7 +7552,7 @@
         }
       },
       "default_plot": {
-        "line": 313,
+        "line": 314,
         "definition": "logical :: default_plot = .false.",
         "name": "default_plot",
         "comment": "One of Tao's default plots?",
@@ -7631,12 +7604,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 366,
+    "line": 367,
     "name": "tao_region_array_struct",
     "module": "tao_struct",
     "members": {
       "r": {
-        "line": 367,
+        "line": 368,
         "definition": "type (tao_plot_region_struct), pointer :: r",
         "name": "r",
         "default": null,
@@ -7681,12 +7654,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 850,
+    "line": 853,
     "name": "tao_scratch_space_struct",
     "module": "tao_struct",
     "members": {
       "cc": {
-        "line": 851,
+        "line": 854,
         "definition": "type (tao_beam_shake_struct), allocatable :: cc(:)",
         "name": "cc",
         "default": null,
@@ -7698,7 +7671,7 @@
         }
       },
       "eles": {
-        "line": 852,
+        "line": 855,
         "definition": "type (ele_pointer_struct), allocatable :: eles(:)",
         "name": "eles",
         "default": null,
@@ -7710,7 +7683,7 @@
         }
       },
       "d1_array": {
-        "line": 853,
+        "line": 856,
         "definition": "type (tao_d1_data_array_struct), allocatable :: d1_array(:)",
         "name": "d1_array",
         "default": null,
@@ -7722,7 +7695,7 @@
         }
       },
       "v1_array": {
-        "line": 854,
+        "line": 857,
         "definition": "type (tao_v1_var_array_struct), allocatable :: v1_array(:)",
         "name": "v1_array",
         "default": null,
@@ -7733,20 +7706,8 @@
           "kind": "tao_v1_var_array_struct"
         }
       },
-      "stack": {
-        "line": 855,
-        "definition": "type (tao_eval_stack1_struct), allocatable :: stack(:)",
-        "name": "stack",
-        "default": null,
-        "type_info": {
-          "type": "type",
-          "allocatable": true,
-          "dimension": ":",
-          "kind": "tao_eval_stack1_struct"
-        }
-      },
       "var_array": {
-        "line": 856,
+        "line": 858,
         "definition": "type (tao_var_array_struct), allocatable :: var_array(:)",
         "name": "var_array",
         "default": null,
@@ -7758,7 +7719,7 @@
         }
       },
       "attribs": {
-        "line": 857,
+        "line": 859,
         "definition": "type (all_pointer_struct), allocatable :: attribs(:)",
         "name": "attribs",
         "default": null,
@@ -7770,7 +7731,7 @@
         }
       },
       "comp": {
-        "line": 858,
+        "line": 860,
         "definition": "type (tao_data_var_component_struct), allocatable :: comp(:)",
         "name": "comp",
         "default": null,
@@ -7782,7 +7743,7 @@
         }
       },
       "info": {
-        "line": 859,
+        "line": 861,
         "definition": "type (tao_expression_info_struct), allocatable :: info(:)",
         "name": "info",
         "default": null,
@@ -7794,7 +7755,7 @@
         }
       },
       "info_x": {
-        "line": 860,
+        "line": 862,
         "definition": "type (tao_expression_info_struct), allocatable :: info_x(:), info_y(:), info_ix(:)",
         "name": "info_x",
         "default": null,
@@ -7806,7 +7767,7 @@
         }
       },
       "info_y": {
-        "line": 860,
+        "line": 862,
         "definition": "type (tao_expression_info_struct), allocatable :: info_x(:), info_y(:), info_ix(:)",
         "name": "info_y",
         "default": null,
@@ -7818,7 +7779,7 @@
         }
       },
       "info_ix": {
-        "line": 860,
+        "line": 862,
         "definition": "type (tao_expression_info_struct), allocatable :: info_x(:), info_y(:), info_ix(:)",
         "name": "info_ix",
         "default": null,
@@ -7830,7 +7791,7 @@
         }
       },
       "picked": {
-        "line": 861,
+        "line": 863,
         "definition": "logical, allocatable :: picked(:)",
         "name": "picked",
         "default": null,
@@ -7841,7 +7802,7 @@
         }
       },
       "axis1": {
-        "line": 862,
+        "line": 864,
         "definition": "real(rp), allocatable :: axis1(:), axis2(:), axis3(:)",
         "name": "axis1",
         "default": null,
@@ -7853,7 +7814,7 @@
         }
       },
       "axis2": {
-        "line": 862,
+        "line": 864,
         "definition": "real(rp), allocatable :: axis1(:), axis2(:), axis3(:)",
         "name": "axis2",
         "default": null,
@@ -7865,7 +7826,7 @@
         }
       },
       "axis3": {
-        "line": 862,
+        "line": 864,
         "definition": "real(rp), allocatable :: axis1(:), axis2(:), axis3(:)",
         "name": "axis3",
         "default": null,
@@ -7877,7 +7838,7 @@
         }
       },
       "x": {
-        "line": 863,
+        "line": 865,
         "definition": "real(rp), allocatable :: x(:), y(:), err(:)",
         "name": "x",
         "default": null,
@@ -7889,7 +7850,7 @@
         }
       },
       "y": {
-        "line": 863,
+        "line": 865,
         "definition": "real(rp), allocatable :: x(:), y(:), err(:)",
         "name": "y",
         "default": null,
@@ -7901,7 +7862,7 @@
         }
       },
       "err": {
-        "line": 863,
+        "line": 865,
         "definition": "real(rp), allocatable :: x(:), y(:), err(:)",
         "name": "err",
         "default": null,
@@ -7913,7 +7874,7 @@
         }
       },
       "y_value": {
-        "line": 864,
+        "line": 866,
         "definition": "real(rp), allocatable :: y_value(:)",
         "name": "y_value",
         "default": null,
@@ -7925,7 +7886,7 @@
         }
       },
       "srdt_cache": {
-        "line": 865,
+        "line": 867,
         "definition": "complex(rp), allocatable :: srdt_cache(:,:,:)",
         "name": "srdt_cache",
         "default": null,
@@ -7940,12 +7901,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 135,
+    "line": 136,
     "name": "tao_shape_pattern_point_struct",
     "module": "tao_struct",
     "members": {
       "s": {
-        "line": 136,
+        "line": 137,
         "definition": "real(rp) :: s = real_garbage$, y = real_garbage$, radius = 0",
         "name": "s",
         "default": "real_garbage$",
@@ -7955,7 +7916,7 @@
         }
       },
       "y": {
-        "line": 136,
+        "line": 137,
         "definition": "real(rp) :: s = real_garbage$, y = real_garbage$, radius = 0",
         "name": "y",
         "default": "real_garbage$",
@@ -7965,7 +7926,7 @@
         }
       },
       "radius": {
-        "line": 136,
+        "line": 137,
         "definition": "real(rp) :: s = real_garbage$, y = real_garbage$, radius = 0",
         "name": "radius",
         "default": "0",
@@ -7978,12 +7939,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 139,
+    "line": 140,
     "name": "tao_shape_pattern_struct",
     "module": "tao_struct",
     "members": {
       "name": {
-        "line": 140,
+        "line": 141,
         "definition": "character(40) :: name = ''",
         "name": "name",
         "default": "''",
@@ -7993,7 +7954,7 @@
         }
       },
       "line": {
-        "line": 141,
+        "line": 142,
         "definition": "type (qp_line_struct) :: line = qp_line_struct(1, 'Not_Set', 'solid')",
         "name": "line",
         "comment": "Line color and pattern set by shape using this pattern.",
@@ -8004,7 +7965,7 @@
         }
       },
       "pt": {
-        "line": 142,
+        "line": 143,
         "definition": "type (tao_shape_pattern_point_struct), allocatable :: pt(:)",
         "name": "pt",
         "default": null,
@@ -8019,12 +7980,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 881,
+    "line": 878,
     "name": "tao_spin_dn_dpz_struct",
     "module": "tao_struct",
     "members": {
       "vec": {
-        "line": 882,
+        "line": 879,
         "definition": "real(rp) vec(3)",
         "name": "vec",
         "comment": "n0 derivative wrt pz.",
@@ -8036,7 +7997,7 @@
         }
       },
       "partial": {
-        "line": 883,
+        "line": 880,
         "definition": "real(rp) partial(3,3)",
         "name": "partial",
         "comment": "partial(i:) is spin n0 derivative wrt pz for i^th oscillation mode (1 => a-mode, etc.)",
@@ -8048,7 +8009,7 @@
         }
       },
       "partial2": {
-        "line": 884,
+        "line": 881,
         "definition": "real(rp) partial2(3,3)",
         "name": "partial2",
         "comment": "partial(i:) is spin n0 derivative wrt pz with i^th oscillation mode missing (1 => a-mode, etc.)",
@@ -8063,12 +8024,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 887,
+    "line": 884,
     "name": "tao_spin_ele_struct",
     "module": "tao_struct",
     "members": {
       "dn_dpz": {
-        "line": 888,
+        "line": 885,
         "definition": "type (tao_spin_dn_dpz_struct) dn_dpz",
         "name": "dn_dpz",
         "default": null,
@@ -8078,7 +8039,7 @@
         }
       },
       "orb_eigen_val": {
-        "line": 889,
+        "line": 886,
         "definition": "real(rp) :: orb_eigen_val(6) = 0",
         "name": "orb_eigen_val",
         "default": "0",
@@ -8089,7 +8050,7 @@
         }
       },
       "orb_eigen_vec": {
-        "line": 890,
+        "line": 887,
         "definition": "real(rp) :: orb_eigen_vec(6,6) = 0",
         "name": "orb_eigen_vec",
         "comment": "(j,:) is j^th vector",
@@ -8101,7 +8062,7 @@
         }
       },
       "spin_eigen_vec": {
-        "line": 891,
+        "line": 888,
         "definition": "real(rp) :: spin_eigen_vec(6,3) = 0",
         "name": "spin_eigen_vec",
         "comment": "(j,:) is j^th vector",
@@ -8113,7 +8074,7 @@
         }
       },
       "valid": {
-        "line": 892,
+        "line": 889,
         "definition": "logical :: valid = .false.",
         "name": "valid",
         "default": ".false.",
@@ -8125,12 +8086,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 384,
+    "line": 385,
     "name": "tao_spin_map_struct",
     "module": "tao_struct",
     "members": {
       "valid": {
-        "line": 385,
+        "line": 386,
         "definition": "logical :: valid = .false.",
         "name": "valid",
         "default": ".false.",
@@ -8139,7 +8100,7 @@
         }
       },
       "map1": {
-        "line": 386,
+        "line": 387,
         "definition": "type (spin_orbit_map1_struct) :: map1 = spin_orbit_map1_struct()",
         "name": "map1",
         "default": "spin_orbit_map1_struct()",
@@ -8149,7 +8110,7 @@
         }
       },
       "axis_input": {
-        "line": 387,
+        "line": 388,
         "definition": "type (spin_axis_struct) :: axis_input = spin_axis_struct()",
         "name": "axis_input",
         "comment": "Input axes.",
@@ -8160,7 +8121,7 @@
         }
       },
       "axis0": {
-        "line": 388,
+        "line": 389,
         "definition": "type (spin_axis_struct) :: axis0 = spin_axis_struct()",
         "name": "axis0",
         "comment": "Initial axes.",
@@ -8171,7 +8132,7 @@
         }
       },
       "axis1": {
-        "line": 389,
+        "line": 390,
         "definition": "type (spin_axis_struct) :: axis1 = spin_axis_struct()",
         "name": "axis1",
         "comment": "Final axes.",
@@ -8182,7 +8143,7 @@
         }
       },
       "ix_ele": {
-        "line": 390,
+        "line": 391,
         "definition": "integer :: ix_ele = 0, ix_ref = 0, ix_uni = 0",
         "name": "ix_ele",
         "default": "0",
@@ -8191,7 +8152,7 @@
         }
       },
       "ix_ref": {
-        "line": 390,
+        "line": 391,
         "definition": "integer :: ix_ele = 0, ix_ref = 0, ix_uni = 0",
         "name": "ix_ref",
         "default": "0",
@@ -8200,7 +8161,7 @@
         }
       },
       "ix_uni": {
-        "line": 390,
+        "line": 391,
         "definition": "integer :: ix_ele = 0, ix_ref = 0, ix_uni = 0",
         "name": "ix_uni",
         "default": "0",
@@ -8209,7 +8170,7 @@
         }
       },
       "ix_branch": {
-        "line": 391,
+        "line": 392,
         "definition": "integer :: ix_branch = 0",
         "name": "ix_branch",
         "default": "0",
@@ -8218,7 +8179,7 @@
         }
       },
       "mat8": {
-        "line": 392,
+        "line": 393,
         "definition": "real(rp) :: mat8(8,8) = 0",
         "name": "mat8",
         "default": "0",
@@ -8232,12 +8193,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 895,
+    "line": 892,
     "name": "tao_spin_polarization_struct",
     "module": "tao_struct",
     "members": {
       "tune": {
-        "line": 896,
+        "line": 893,
         "definition": "real(rp) :: tune = real_garbage$",
         "name": "tune",
         "default": "real_garbage$",
@@ -8247,7 +8208,7 @@
         }
       },
       "pol_limit_st": {
-        "line": 897,
+        "line": 894,
         "definition": "real(rp) :: pol_limit_st = real_garbage$",
         "name": "pol_limit_st",
         "comment": "Polarization calculated using Sokolov-Ternov formula.",
@@ -8258,7 +8219,7 @@
         }
       },
       "pol_limit_dk": {
-        "line": 898,
+        "line": 895,
         "definition": "real(rp) :: pol_limit_dk = real_garbage$",
         "name": "pol_limit_dk",
         "comment": "Equalibrium Polarization calculated via the Derbenev-Kondratenko-Mane formula.",
@@ -8269,7 +8230,7 @@
         }
       },
       "pol_limit_dk_partial": {
-        "line": 899,
+        "line": 896,
         "definition": "real(rp) :: pol_limit_dk_partial(3) = real_garbage$",
         "name": "pol_limit_dk_partial",
         "comment": "Limit using only single mode to calc dn_dpz",
@@ -8281,7 +8242,7 @@
         }
       },
       "pol_limit_dk_partial2": {
-        "line": 900,
+        "line": 897,
         "definition": "real(rp) :: pol_limit_dk_partial2(3) = real_garbage$",
         "name": "pol_limit_dk_partial2",
         "comment": "Limit using only single mode to calc dn_dpz",
@@ -8293,7 +8254,7 @@
         }
       },
       "pol_rate_bks": {
-        "line": 901,
+        "line": 898,
         "definition": "real(rp) :: pol_rate_bks = real_garbage$",
         "name": "pol_rate_bks",
         "comment": "BKS Polarization rate (1/sec).",
@@ -8304,7 +8265,7 @@
         }
       },
       "depol_rate": {
-        "line": 902,
+        "line": 899,
         "definition": "real(rp) :: depol_rate = real_garbage$",
         "name": "depol_rate",
         "comment": "Depolarization rate (1/sec).",
@@ -8315,7 +8276,7 @@
         }
       },
       "depol_rate_partial": {
-        "line": 903,
+        "line": 900,
         "definition": "real(rp) :: depol_rate_partial(3) = real_garbage$",
         "name": "depol_rate_partial",
         "comment": "Depolarization rate (1/sec) using only single mode to calc dn_dpz.",
@@ -8327,7 +8288,7 @@
         }
       },
       "depol_rate_partial2": {
-        "line": 904,
+        "line": 901,
         "definition": "real(rp) :: depol_rate_partial2(3) = real_garbage$",
         "name": "depol_rate_partial2",
         "comment": "Depolarization rate (1/sec) using only two modes to calc dn_dpz.",
@@ -8339,7 +8300,7 @@
         }
       },
       "integral_bn": {
-        "line": 905,
+        "line": 902,
         "definition": "real(rp) :: integral_bn = real_garbage$",
         "name": "integral_bn",
         "comment": "Integral of g^3 * b_hat * n_0",
@@ -8350,7 +8311,7 @@
         }
       },
       "integral_bdn": {
-        "line": 906,
+        "line": 903,
         "definition": "real(rp) :: integral_bdn = real_garbage$",
         "name": "integral_bdn",
         "comment": "Integral of g^3 * b_hat * dn/ddelta",
@@ -8361,7 +8322,7 @@
         }
       },
       "integral_1ns": {
-        "line": 907,
+        "line": 904,
         "definition": "real(rp) :: integral_1ns = real_garbage$",
         "name": "integral_1ns",
         "comment": "Integral of g^3 (1 - 2(n * s_hat)/9)",
@@ -8372,7 +8333,7 @@
         }
       },
       "integral_dn2": {
-        "line": 908,
+        "line": 905,
         "definition": "real(rp) :: integral_dn2 = real_garbage$",
         "name": "integral_dn2",
         "comment": "Integral of g^3 * 11 (dn/ddelta)^2 / 9",
@@ -8383,7 +8344,7 @@
         }
       },
       "valid": {
-        "line": 909,
+        "line": 906,
         "definition": "logical :: valid = .false.",
         "name": "valid",
         "default": ".false.",
@@ -8392,7 +8353,7 @@
         }
       },
       "q_1turn": {
-        "line": 910,
+        "line": 907,
         "definition": "type (spin_orbit_map1_struct) :: q_1turn",
         "name": "q_1turn",
         "comment": "Save results from spin_concat_linear_maps in tao_spin_polarization.",
@@ -8403,7 +8364,7 @@
         }
       },
       "q_ele": {
-        "line": 911,
+        "line": 908,
         "definition": "type (spin_orbit_map1_struct), allocatable :: q_ele(:)",
         "name": "q_ele",
         "comment": "Save results from spin_concat_linear_maps in tao_spin_polarization.",
@@ -8438,12 +8399,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1135,
+    "line": 1131,
     "name": "tao_super_universe_struct",
     "module": "tao_struct",
     "members": {
       "global": {
-        "line": 1136,
+        "line": 1132,
         "definition": "type (tao_global_struct) :: global = tao_global_struct()",
         "name": "global",
         "comment": "User accessible global variables.",
@@ -8454,7 +8415,7 @@
         }
       },
       "init": {
-        "line": 1137,
+        "line": 1133,
         "definition": "type (tao_init_struct) :: init = tao_init_struct()",
         "name": "init",
         "comment": "Initialization parameters",
@@ -8465,7 +8426,7 @@
         }
       },
       "com": {
-        "line": 1138,
+        "line": 1134,
         "definition": "type (tao_common_struct) :: com",
         "name": "com",
         "comment": "Non-initialization common parameters",
@@ -8476,7 +8437,7 @@
         }
       },
       "plot_page": {
-        "line": 1139,
+        "line": 1135,
         "definition": "type (tao_plot_page_struct) :: plot_page",
         "name": "plot_page",
         "comment": "Defines the plot window.",
@@ -8487,7 +8448,7 @@
         }
       },
       "v1_var": {
-        "line": 1140,
+        "line": 1136,
         "definition": "type (tao_v1_var_struct), allocatable :: v1_var(:)",
         "name": "v1_var",
         "comment": "The variable types",
@@ -8500,7 +8461,7 @@
         }
       },
       "var": {
-        "line": 1141,
+        "line": 1137,
         "definition": "type (tao_var_struct), allocatable :: var(:)",
         "name": "var",
         "comment": "array of all variables.",
@@ -8513,7 +8474,7 @@
         }
       },
       "u": {
-        "line": 1142,
+        "line": 1138,
         "definition": "type (tao_universe_struct), allocatable :: u(:)",
         "name": "u",
         "comment": "array of universes.",
@@ -8526,7 +8487,7 @@
         }
       },
       "mpi": {
-        "line": 1143,
+        "line": 1139,
         "definition": "type (tao_mpi_struct) :: mpi = tao_mpi_struct()",
         "name": "mpi",
         "default": "tao_mpi_struct()",
@@ -8536,7 +8497,7 @@
         }
       },
       "key": {
-        "line": 1144,
+        "line": 1140,
         "definition": "integer, allocatable :: key(:)",
         "name": "key",
         "default": null,
@@ -8547,7 +8508,7 @@
         }
       },
       "building_wall": {
-        "line": 1145,
+        "line": 1141,
         "definition": "type (tao_building_wall_struct) :: building_wall",
         "name": "building_wall",
         "default": null,
@@ -8557,7 +8518,7 @@
         }
       },
       "wave": {
-        "line": 1146,
+        "line": 1142,
         "definition": "type (tao_wave_struct) :: wave",
         "name": "wave",
         "default": null,
@@ -8567,7 +8528,7 @@
         }
       },
       "n_var_used": {
-        "line": 1147,
+        "line": 1143,
         "definition": "integer :: n_var_used = 0",
         "name": "n_var_used",
         "default": "0",
@@ -8576,7 +8537,7 @@
         }
       },
       "n_v1_var_used": {
-        "line": 1148,
+        "line": 1144,
         "definition": "integer :: n_v1_var_used = 0",
         "name": "n_v1_var_used",
         "default": "0",
@@ -8585,7 +8546,7 @@
         }
       },
       "history": {
-        "line": 1149,
+        "line": 1145,
         "definition": "type (tao_cmd_history_struct) :: history(1000) = tao_cmd_history_struct()",
         "name": "history",
         "comment": "command history",
@@ -8597,7 +8558,7 @@
         }
       },
       "initialized": {
-        "line": 1150,
+        "line": 1146,
         "definition": "logical :: initialized = .false.",
         "name": "initialized",
         "comment": "Does tao_init() need to be called?",
@@ -8610,12 +8571,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 152,
+    "line": 153,
     "name": "tao_title_struct",
     "module": "tao_struct",
     "members": {
       "string": {
-        "line": 153,
+        "line": 154,
         "definition": "character(100) :: string = ''",
         "name": "string",
         "comment": "title character string.",
@@ -8626,7 +8587,7 @@
         }
       },
       "x": {
-        "line": 154,
+        "line": 155,
         "definition": "real(rp) :: x = 0.5, y = 0.97",
         "name": "x",
         "comment": "x, y rwt lower left corner",
@@ -8637,7 +8598,7 @@
         }
       },
       "y": {
-        "line": 154,
+        "line": 155,
         "definition": "real(rp) :: x = 0.5, y = 0.97",
         "name": "y",
         "comment": "x, y rwt lower left corner",
@@ -8648,7 +8609,7 @@
         }
       },
       "units": {
-        "line": 155,
+        "line": 156,
         "definition": "character(16) :: units = '%PAGE'",
         "name": "units",
         "comment": "%BOX, POINTS, etc...",
@@ -8659,7 +8620,7 @@
         }
       },
       "justify": {
-        "line": 156,
+        "line": 157,
         "definition": "character(2) :: justify = 'CC'",
         "name": "justify",
         "comment": "Left, Center, or Right justification.",
@@ -8670,7 +8631,7 @@
         }
       },
       "draw_it": {
-        "line": 157,
+        "line": 158,
         "definition": "logical :: draw_it = .true.",
         "name": "draw_it",
         "comment": "draw the title?",
@@ -8733,12 +8694,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1022,
+    "line": 1018,
     "name": "tao_universe_calc_struct",
     "module": "tao_struct",
     "members": {
       "srdt_for_data": {
-        "line": 1023,
+        "line": 1019,
         "definition": "integer :: srdt_for_data = 0",
         "name": "srdt_for_data",
         "comment": "0 = false, 1 = 1st order, 2 = 1st & 2nd order",
@@ -8748,7 +8709,7 @@
         }
       },
       "rad_int_for_data": {
-        "line": 1024,
+        "line": 1020,
         "definition": "logical :: rad_int_for_data = .false.",
         "name": "rad_int_for_data",
         "comment": "Do the radiation integrals need to be computed for",
@@ -8758,7 +8719,7 @@
         }
       },
       "rad_int_for_plotting": {
-        "line": 1025,
+        "line": 1021,
         "definition": "logical :: rad_int_for_plotting = .false.",
         "name": "rad_int_for_plotting",
         "comment": "data or plotting?",
@@ -8768,7 +8729,7 @@
         }
       },
       "chrom_for_data": {
-        "line": 1026,
+        "line": 1022,
         "definition": "logical :: chrom_for_data = .false.",
         "name": "chrom_for_data",
         "comment": "Does the chromaticity need to be computed for",
@@ -8778,7 +8739,7 @@
         }
       },
       "chrom_for_plotting": {
-        "line": 1027,
+        "line": 1023,
         "definition": "logical :: chrom_for_plotting = .false.",
         "name": "chrom_for_plotting",
         "comment": "data or plotting?",
@@ -8788,7 +8749,7 @@
         }
       },
       "lat_sigma_for_data": {
-        "line": 1028,
+        "line": 1024,
         "definition": "logical :: lat_sigma_for_data = .false.",
         "name": "lat_sigma_for_data",
         "comment": "Do the beam sigmas need to be computed for",
@@ -8798,7 +8759,7 @@
         }
       },
       "lat_sigma_for_plotting": {
-        "line": 1029,
+        "line": 1025,
         "definition": "logical :: lat_sigma_for_plotting = .false.",
         "name": "lat_sigma_for_plotting",
         "comment": "data or plotting?",
@@ -8808,7 +8769,7 @@
         }
       },
       "dynamic_aperture": {
-        "line": 1030,
+        "line": 1026,
         "definition": "logical :: dynamic_aperture = .false.",
         "name": "dynamic_aperture",
         "comment": "Do the dynamic_aperture calc?",
@@ -8818,7 +8779,7 @@
         }
       },
       "one_turn_map": {
-        "line": 1031,
+        "line": 1027,
         "definition": "logical :: one_turn_map = .false.",
         "name": "one_turn_map",
         "comment": "Compute the one turn map?",
@@ -8828,7 +8789,7 @@
         }
       },
       "lattice": {
-        "line": 1032,
+        "line": 1028,
         "definition": "logical :: lattice = .true.",
         "name": "lattice",
         "comment": "Used to indicate which lattices need tracking done.",
@@ -8838,7 +8799,7 @@
         }
       },
       "twiss": {
-        "line": 1033,
+        "line": 1029,
         "definition": "logical :: twiss = .true.",
         "name": "twiss",
         "comment": "calc linear transfer matrix?",
@@ -8848,7 +8809,7 @@
         }
       },
       "track": {
-        "line": 1034,
+        "line": 1030,
         "definition": "logical :: track = .true.",
         "name": "track",
         "comment": "tracking needs to be done?",
@@ -8858,7 +8819,7 @@
         }
       },
       "spin_matrices": {
-        "line": 1035,
+        "line": 1031,
         "definition": "logical :: spin_matrices = .false.",
         "name": "spin_matrices",
         "comment": "Calculate G and D spin matrices?",
@@ -8871,12 +8832,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1103,
+    "line": 1099,
     "name": "tao_universe_pointer_struct",
     "module": "tao_struct",
     "members": {
       "u": {
-        "line": 1104,
+        "line": 1100,
         "definition": "type (tao_universe_struct), pointer :: u",
         "name": "u",
         "default": null,
@@ -8890,12 +8851,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1110,
+    "line": 1106,
     "name": "tao_universe_struct",
     "module": "tao_struct",
     "members": {
       "model": {
-        "line": 1111,
+        "line": 1107,
         "definition": "type (tao_lattice_struct), pointer :: model, design, base",
         "name": "model",
         "default": null,
@@ -8906,7 +8867,7 @@
         }
       },
       "design": {
-        "line": 1111,
+        "line": 1107,
         "definition": "type (tao_lattice_struct), pointer :: model, design, base",
         "name": "design",
         "default": null,
@@ -8917,7 +8878,7 @@
         }
       },
       "base": {
-        "line": 1111,
+        "line": 1107,
         "definition": "type (tao_lattice_struct), pointer :: model, design, base",
         "name": "base",
         "default": null,
@@ -8928,7 +8889,7 @@
         }
       },
       "beam": {
-        "line": 1112,
+        "line": 1108,
         "definition": "type (tao_beam_uni_struct) beam",
         "name": "beam",
         "default": null,
@@ -8938,7 +8899,7 @@
         }
       },
       "dynamic_aperture": {
-        "line": 1113,
+        "line": 1109,
         "definition": "type (tao_dynamic_aperture_struct) :: dynamic_aperture",
         "name": "dynamic_aperture",
         "default": null,
@@ -8948,7 +8909,7 @@
         }
       },
       "model_branch": {
-        "line": 1114,
+        "line": 1110,
         "definition": "type (tao_model_branch_struct), pointer :: model_branch(:)",
         "name": "model_branch",
         "comment": "model specific information",
@@ -8961,7 +8922,7 @@
         }
       },
       "d2_data": {
-        "line": 1115,
+        "line": 1111,
         "definition": "type (tao_d2_data_struct), allocatable :: d2_data(:)",
         "name": "d2_data",
         "comment": "The data types",
@@ -8974,7 +8935,7 @@
         }
       },
       "data": {
-        "line": 1116,
+        "line": 1112,
         "definition": "type (tao_data_struct), allocatable :: data(:)",
         "name": "data",
         "comment": "Array of all data.",
@@ -8987,7 +8948,7 @@
         }
       },
       "ping_scale": {
-        "line": 1117,
+        "line": 1113,
         "definition": "type (tao_ping_scale_struct) ping_scale",
         "name": "ping_scale",
         "default": null,
@@ -8997,7 +8958,7 @@
         }
       },
       "scratch_lat": {
-        "line": 1118,
+        "line": 1114,
         "definition": "type (lat_struct) scratch_lat",
         "name": "scratch_lat",
         "comment": "Scratch area.",
@@ -9008,7 +8969,7 @@
         }
       },
       "calc": {
-        "line": 1119,
+        "line": 1115,
         "definition": "type (tao_universe_calc_struct) calc",
         "name": "calc",
         "comment": "What needs to be calculated?",
@@ -9019,7 +8980,7 @@
         }
       },
       "ele_order": {
-        "line": 1120,
+        "line": 1116,
         "definition": "type (lat_ele_order_struct) ele_order",
         "name": "ele_order",
         "comment": "Order of elements with same name.",
@@ -9030,7 +8991,7 @@
         }
       },
       "spin_map": {
-        "line": 1121,
+        "line": 1117,
         "definition": "type (tao_spin_map_struct) :: spin_map",
         "name": "spin_map",
         "default": null,
@@ -9040,7 +9001,7 @@
         }
       },
       "dModel_dVar": {
-        "line": 1122,
+        "line": 1118,
         "definition": "real(rp), allocatable :: dModel_dVar(:,:)",
         "name": "dModel_dVar",
         "comment": "Derivative matrix.",
@@ -9053,7 +9014,7 @@
         }
       },
       "ix_uni": {
-        "line": 1123,
+        "line": 1119,
         "definition": "integer :: ix_uni = -1",
         "name": "ix_uni",
         "comment": "Universe index.",
@@ -9063,7 +9024,7 @@
         }
       },
       "n_d2_data_used": {
-        "line": 1124,
+        "line": 1120,
         "definition": "integer :: n_d2_data_used = -1",
         "name": "n_d2_data_used",
         "comment": "Number of used %d2_data(:) components.",
@@ -9073,7 +9034,7 @@
         }
       },
       "n_data_used": {
-        "line": 1125,
+        "line": 1121,
         "definition": "integer :: n_data_used = -1",
         "name": "n_data_used",
         "comment": "Number of used %data(:) components.",
@@ -9083,7 +9044,7 @@
         }
       },
       "is_on": {
-        "line": 1126,
+        "line": 1122,
         "definition": "logical :: is_on = .true.",
         "name": "is_on",
         "comment": "universe turned on",
@@ -9093,7 +9054,7 @@
         }
       },
       "design_same_as_previous": {
-        "line": 1127,
+        "line": 1123,
         "definition": "logical :: design_same_as_previous = .false.",
         "name": "design_same_as_previous",
         "comment": "Design lat same as the previous uni?",
@@ -9103,7 +9064,7 @@
         }
       },
       "picked_uni": {
-        "line": 1128,
+        "line": 1124,
         "definition": "logical :: picked_uni = .false.",
         "name": "picked_uni",
         "comment": "Scratch logical.",
@@ -9822,12 +9783,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1063,
+    "line": 1059,
     "name": "tao_wave_kick_pt_struct",
     "module": "tao_struct",
     "members": {
       "phi_s": {
-        "line": 1064,
+        "line": 1060,
         "definition": "real(rp) :: phi_s, phi_r, phi, amp",
         "name": "phi_s",
         "default": null,
@@ -9837,7 +9798,7 @@
         }
       },
       "phi_r": {
-        "line": 1064,
+        "line": 1060,
         "definition": "real(rp) :: phi_s, phi_r, phi, amp",
         "name": "phi_r",
         "default": null,
@@ -9847,7 +9808,7 @@
         }
       },
       "phi": {
-        "line": 1064,
+        "line": 1060,
         "definition": "real(rp) :: phi_s, phi_r, phi, amp",
         "name": "phi",
         "default": null,
@@ -9857,7 +9818,7 @@
         }
       },
       "amp": {
-        "line": 1064,
+        "line": 1060,
         "definition": "real(rp) :: phi_s, phi_r, phi, amp",
         "name": "amp",
         "default": null,
@@ -9867,7 +9828,7 @@
         }
       },
       "s": {
-        "line": 1065,
+        "line": 1061,
         "definition": "real(rp) :: s",
         "name": "s",
         "comment": "s-position of kick",
@@ -9878,7 +9839,7 @@
         }
       },
       "ix_dat_before_kick": {
-        "line": 1066,
+        "line": 1062,
         "definition": "integer :: ix_dat_before_kick",
         "name": "ix_dat_before_kick",
         "comment": "Index of datum in data array just before the kick.",
@@ -9888,7 +9849,7 @@
         }
       },
       "ele": {
-        "line": 1067,
+        "line": 1063,
         "definition": "type (ele_struct), pointer :: ele",
         "name": "ele",
         "comment": "lattice element at position of kick.",
@@ -9903,12 +9864,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/tao/code/tao_struct.f90",
-    "line": 1070,
+    "line": 1066,
     "name": "tao_wave_struct",
     "module": "tao_struct",
     "members": {
       "data_type": {
-        "line": 1071,
+        "line": 1067,
         "definition": "character(40) :: data_type = ''",
         "name": "data_type",
         "default": "''",
@@ -9918,7 +9879,7 @@
         }
       },
       "rms_rel_a": {
-        "line": 1072,
+        "line": 1068,
         "definition": "real(rp) :: rms_rel_a = 0, rms_rel_b = 0, rms_rel_as = 0",
         "name": "rms_rel_a",
         "default": "0",
@@ -9928,7 +9889,7 @@
         }
       },
       "rms_rel_b": {
-        "line": 1072,
+        "line": 1068,
         "definition": "real(rp) :: rms_rel_a = 0, rms_rel_b = 0, rms_rel_as = 0",
         "name": "rms_rel_b",
         "default": "0",
@@ -9938,7 +9899,7 @@
         }
       },
       "rms_rel_as": {
-        "line": 1072,
+        "line": 1068,
         "definition": "real(rp) :: rms_rel_a = 0, rms_rel_b = 0, rms_rel_as = 0",
         "name": "rms_rel_as",
         "default": "0",
@@ -9948,7 +9909,7 @@
         }
       },
       "rms_rel_bs": {
-        "line": 1073,
+        "line": 1069,
         "definition": "real(rp) :: rms_rel_bs = 0, rms_rel_ar = 0, rms_rel_br = 0",
         "name": "rms_rel_bs",
         "default": "0",
@@ -9958,7 +9919,7 @@
         }
       },
       "rms_rel_ar": {
-        "line": 1073,
+        "line": 1069,
         "definition": "real(rp) :: rms_rel_bs = 0, rms_rel_ar = 0, rms_rel_br = 0",
         "name": "rms_rel_ar",
         "default": "0",
@@ -9968,7 +9929,7 @@
         }
       },
       "rms_rel_br": {
-        "line": 1073,
+        "line": 1069,
         "definition": "real(rp) :: rms_rel_bs = 0, rms_rel_ar = 0, rms_rel_br = 0",
         "name": "rms_rel_br",
         "default": "0",
@@ -9978,7 +9939,7 @@
         }
       },
       "rms_rel_k": {
-        "line": 1074,
+        "line": 1070,
         "definition": "real(rp) :: rms_rel_k = 0, rms_rel_ks = 0, rms_rel_kr = 0",
         "name": "rms_rel_k",
         "default": "0",
@@ -9988,7 +9949,7 @@
         }
       },
       "rms_rel_ks": {
-        "line": 1074,
+        "line": 1070,
         "definition": "real(rp) :: rms_rel_k = 0, rms_rel_ks = 0, rms_rel_kr = 0",
         "name": "rms_rel_ks",
         "default": "0",
@@ -9998,7 +9959,7 @@
         }
       },
       "rms_rel_kr": {
-        "line": 1074,
+        "line": 1070,
         "definition": "real(rp) :: rms_rel_k = 0, rms_rel_ks = 0, rms_rel_kr = 0",
         "name": "rms_rel_kr",
         "default": "0",
@@ -10008,7 +9969,7 @@
         }
       },
       "rms_phi": {
-        "line": 1075,
+        "line": 1071,
         "definition": "real(rp) :: rms_phi = 0, rms_phi_s = 0, rms_phi_r = 0",
         "name": "rms_phi",
         "default": "0",
@@ -10018,7 +9979,7 @@
         }
       },
       "rms_phi_s": {
-        "line": 1075,
+        "line": 1071,
         "definition": "real(rp) :: rms_phi = 0, rms_phi_s = 0, rms_phi_r = 0",
         "name": "rms_phi_s",
         "default": "0",
@@ -10028,7 +9989,7 @@
         }
       },
       "rms_phi_r": {
-        "line": 1075,
+        "line": 1071,
         "definition": "real(rp) :: rms_phi = 0, rms_phi_s = 0, rms_phi_r = 0",
         "name": "rms_phi_r",
         "default": "0",
@@ -10038,7 +9999,7 @@
         }
       },
       "amp_ba_s": {
-        "line": 1076,
+        "line": 1072,
         "definition": "real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba = 0",
         "name": "amp_ba_s",
         "default": "0",
@@ -10048,7 +10009,7 @@
         }
       },
       "amp_ba_r": {
-        "line": 1076,
+        "line": 1072,
         "definition": "real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba = 0",
         "name": "amp_ba_r",
         "default": "0",
@@ -10058,7 +10019,7 @@
         }
       },
       "chi_a": {
-        "line": 1076,
+        "line": 1072,
         "definition": "real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba = 0",
         "name": "chi_a",
         "default": "0",
@@ -10068,7 +10029,7 @@
         }
       },
       "chi_c": {
-        "line": 1076,
+        "line": 1072,
         "definition": "real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba = 0",
         "name": "chi_c",
         "default": "0",
@@ -10078,7 +10039,7 @@
         }
       },
       "chi_ba": {
-        "line": 1076,
+        "line": 1072,
         "definition": "real(rp) :: amp_ba_s = 0, amp_ba_r = 0, chi_a = 0, chi_c = 0, chi_ba = 0",
         "name": "chi_ba",
         "default": "0",
@@ -10088,7 +10049,7 @@
         }
       },
       "amp_a": {
-        "line": 1077,
+        "line": 1073,
         "definition": "real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0",
         "name": "amp_a",
         "default": "0",
@@ -10099,7 +10060,7 @@
         }
       },
       "amp_b": {
-        "line": 1077,
+        "line": 1073,
         "definition": "real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0",
         "name": "amp_b",
         "default": "0",
@@ -10110,7 +10071,7 @@
         }
       },
       "amp_ba": {
-        "line": 1077,
+        "line": 1073,
         "definition": "real(rp) :: amp_a(2) = 0, amp_b(2) = 0, amp_ba(2) = 0",
         "name": "amp_ba",
         "default": "0",
@@ -10121,7 +10082,7 @@
         }
       },
       "coef_a": {
-        "line": 1078,
+        "line": 1074,
         "definition": "real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0",
         "name": "coef_a",
         "default": "0",
@@ -10132,7 +10093,7 @@
         }
       },
       "coef_b": {
-        "line": 1078,
+        "line": 1074,
         "definition": "real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0",
         "name": "coef_b",
         "default": "0",
@@ -10143,7 +10104,7 @@
         }
       },
       "coef_ba": {
-        "line": 1078,
+        "line": 1074,
         "definition": "real(rp) :: coef_a(4) = 0, coef_b(4) = 0, coef_ba(4) = 0",
         "name": "coef_ba",
         "default": "0",
@@ -10154,7 +10115,7 @@
         }
       },
       "n_func": {
-        "line": 1079,
+        "line": 1075,
         "definition": "integer :: n_func = 0",
         "name": "n_func",
         "comment": "Number of functions used in the fit.",
@@ -10164,7 +10125,7 @@
         }
       },
       "ix_a1": {
-        "line": 1080,
+        "line": 1076,
         "definition": "integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1",
         "name": "ix_a1",
         "default": "-1",
@@ -10173,7 +10134,7 @@
         }
       },
       "ix_a2": {
-        "line": 1080,
+        "line": 1076,
         "definition": "integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1",
         "name": "ix_a2",
         "default": "-1",
@@ -10182,7 +10143,7 @@
         }
       },
       "ix_b1": {
-        "line": 1080,
+        "line": 1076,
         "definition": "integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1",
         "name": "ix_b1",
         "default": "-1",
@@ -10191,7 +10152,7 @@
         }
       },
       "ix_b2": {
-        "line": 1080,
+        "line": 1076,
         "definition": "integer :: ix_a1 = -1, ix_a2 = -1, ix_b1 = -1, ix_b2 = -1",
         "name": "ix_b2",
         "default": "-1",
@@ -10200,7 +10161,7 @@
         }
       },
       "i_a1": {
-        "line": 1081,
+        "line": 1077,
         "definition": "integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b = 0",
         "name": "i_a1",
         "default": "0",
@@ -10209,7 +10170,7 @@
         }
       },
       "i_a2": {
-        "line": 1081,
+        "line": 1077,
         "definition": "integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b = 0",
         "name": "i_a2",
         "default": "0",
@@ -10218,7 +10179,7 @@
         }
       },
       "i_b1": {
-        "line": 1081,
+        "line": 1077,
         "definition": "integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b = 0",
         "name": "i_b1",
         "default": "0",
@@ -10227,7 +10188,7 @@
         }
       },
       "i_b2": {
-        "line": 1081,
+        "line": 1077,
         "definition": "integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b = 0",
         "name": "i_b2",
         "default": "0",
@@ -10236,7 +10197,7 @@
         }
       },
       "n_a": {
-        "line": 1081,
+        "line": 1077,
         "definition": "integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b = 0",
         "name": "n_a",
         "default": "0",
@@ -10245,7 +10206,7 @@
         }
       },
       "n_b": {
-        "line": 1081,
+        "line": 1077,
         "definition": "integer :: i_a1 = 0, i_a2 = 0, i_b1 = 0, i_b2 = 0, n_a = 0, n_b = 0",
         "name": "n_b",
         "default": "0",
@@ -10254,7 +10215,7 @@
         }
       },
       "i_curve_wrap_pt": {
-        "line": 1082,
+        "line": 1078,
         "definition": "integer :: i_curve_wrap_pt = 0",
         "name": "i_curve_wrap_pt",
         "comment": "Index of last point before wrap in curve array.",
@@ -10264,7 +10225,7 @@
         }
       },
       "ix_data": {
-        "line": 1083,
+        "line": 1079,
         "definition": "integer, allocatable :: ix_data(:)",
         "name": "ix_data",
         "comment": "Translates from plot point to datum index",
@@ -10276,7 +10237,7 @@
         }
       },
       "n_kick": {
-        "line": 1084,
+        "line": 1080,
         "definition": "integer :: n_kick = 0",
         "name": "n_kick",
         "default": "0",
@@ -10285,7 +10246,7 @@
         }
       },
       "kick": {
-        "line": 1085,
+        "line": 1081,
         "definition": "type (tao_wave_kick_pt_struct), allocatable :: kick(:)",
         "name": "kick",
         "default": null,
@@ -10297,7 +10258,7 @@
         }
       },
       "base_graph": {
-        "line": 1086,
+        "line": 1082,
         "definition": "type (tao_graph_struct) :: base_graph",
         "name": "base_graph",
         "comment": "Graph before curves extended to 1.5 periods.",
@@ -10308,7 +10269,7 @@
         }
       },
       "region": {
-        "line": 1087,
+        "line": 1083,
         "definition": "type (tao_plot_region_struct), pointer :: region => null()",
         "name": "region",
         "comment": "Where the wave plot is",
@@ -10320,7 +10281,7 @@
         }
       },
       "d1_dat": {
-        "line": 1088,
+        "line": 1084,
         "definition": "type (tao_d1_data_struct), pointer :: d1_dat => null()",
         "name": "d1_dat",
         "comment": "D1 data for analysis",

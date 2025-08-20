@@ -1208,6 +1208,8 @@ is_eq = is_eq .and. (f1%emit == f2%emit)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%norm_emit == f2%norm_emit)
 !! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%chrom == f2%chrom)
+!! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dbeta_dpz == f2%dbeta_dpz)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dalpha_dpz == f2%dalpha_dpz)
@@ -2871,15 +2873,17 @@ is_eq = is_eq .and. (f1%E_tot1 == f2%E_tot1)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%p0c == f2%p0c)
 !! f_side.equality_test[0D_NOT_real]
-is_eq = is_eq .and. (f1%dp0c == f2%dp0c)
+is_eq = is_eq .and. (f1%p1c == f2%p1c)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%dE_amp == f2%dE_amp)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%scale == f2%scale)
 !! f_side.equality_test[0D_NOT_real]
-is_eq = is_eq .and. (f1%dtime == f2%dtime)
+is_eq = is_eq .and. (f1%time == f2%time)
 !! f_side.equality_test[0D_NOT_real]
 is_eq = is_eq .and. (f1%s == f2%s)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_step == f2%ix_step)
 
 end function eq_rf_stair_step
 
@@ -3236,6 +3240,8 @@ is_eq = is_eq .and. (f1%ix_from_ele == f2%ix_from_ele)
 !! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%ix_to_ele == f2%ix_to_ele)
 !! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_fixer == f2%ix_fixer)
+!! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ele_track == f2%n_ele_track)
 !! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ele_max == f2%n_ele_max)
@@ -3253,6 +3259,8 @@ if (.not. is_eq) return
 if (associated(f1%ele)) is_eq = all(f1%ele == f2%ele)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%param == f2%param)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%particle_start == f2%particle_start)
 !! f_side.equality_test[1D_PTR_type]
 is_eq = is_eq .and. (associated(f1%wall3d) .eqv. associated(f2%wall3d))
 if (.not. is_eq) return

@@ -2288,6 +2288,7 @@ extern "C" void twiss_to_f2(
     c_Real&,
     c_Real&,
     c_Real&,
+    c_Real&,
     c_Real&);
 
 extern "C" void twiss_to_f(const CPP_twiss& C, Opaque_twiss_class* F) {
@@ -2305,6 +2306,7 @@ extern "C" void twiss_to_f(const CPP_twiss& C, Opaque_twiss_class* F) {
       C.sigma_p,
       C.emit,
       C.norm_emit,
+      C.chrom,
       C.dbeta_dpz,
       C.dalpha_dpz,
       C.deta_dpz,
@@ -2325,6 +2327,7 @@ extern "C" void twiss_to_c2(
     c_Real& z_sigma_p,
     c_Real& z_emit,
     c_Real& z_norm_emit,
+    c_Real& z_chrom,
     c_Real& z_dbeta_dpz,
     c_Real& z_dalpha_dpz,
     c_Real& z_deta_dpz,
@@ -2351,6 +2354,8 @@ extern "C" void twiss_to_c2(
   C.emit = z_emit;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.norm_emit = z_norm_emit;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.chrom = z_chrom;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.dbeta_dpz = z_dbeta_dpz;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -5745,14 +5750,24 @@ extern "C" void rf_stair_step_to_f2(
     c_Real&,
     c_Real&,
     c_Real&,
-    c_Real&);
+    c_Real&,
+    c_Int&);
 
 extern "C" void rf_stair_step_to_f(
     const CPP_rf_stair_step& C,
     Opaque_rf_stair_step_class* F) {
   // c_side.to_f2_call
   rf_stair_step_to_f2(
-      F, C.E_tot0, C.E_tot1, C.p0c, C.dp0c, C.dE_amp, C.scale, C.dtime, C.s);
+      F,
+      C.E_tot0,
+      C.E_tot1,
+      C.p0c,
+      C.p1c,
+      C.dE_amp,
+      C.scale,
+      C.time,
+      C.s,
+      C.ix_step);
 }
 
 // c_side.to_c2_arg
@@ -5761,11 +5776,12 @@ extern "C" void rf_stair_step_to_c2(
     c_Real& z_E_tot0,
     c_Real& z_E_tot1,
     c_Real& z_p0c,
-    c_Real& z_dp0c,
+    c_Real& z_p1c,
     c_Real& z_dE_amp,
     c_Real& z_scale,
-    c_Real& z_dtime,
-    c_Real& z_s) {
+    c_Real& z_time,
+    c_Real& z_s,
+    c_Int& z_ix_step) {
   // c_side.to_c2_set[0D_NOT_real] Real
   C.E_tot0 = z_E_tot0;
   // c_side.to_c2_set[0D_NOT_real] Real
@@ -5773,15 +5789,17 @@ extern "C" void rf_stair_step_to_c2(
   // c_side.to_c2_set[0D_NOT_real] Real
   C.p0c = z_p0c;
   // c_side.to_c2_set[0D_NOT_real] Real
-  C.dp0c = z_dp0c;
+  C.p1c = z_p1c;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.dE_amp = z_dE_amp;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.scale = z_scale;
   // c_side.to_c2_set[0D_NOT_real] Real
-  C.dtime = z_dtime;
+  C.time = z_time;
   // c_side.to_c2_set[0D_NOT_real] Real
   C.s = z_s;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_step = z_ix_step;
 }
 
 //--------------------------------------------------------------------
@@ -6696,12 +6714,14 @@ extern "C" void branch_to_f2(
     c_Int&,
     c_Int&,
     c_Int&,
+    c_Int&,
     const CPP_mode_info&,
     const CPP_mode_info&,
     const CPP_mode_info&,
     const CPP_ele**,
     c_Int,
     const CPP_lat_param&,
+    const CPP_coord&,
     const CPP_wall3d**,
     c_Int);
 
@@ -6731,6 +6751,7 @@ extern "C" void branch_to_f(const CPP_branch& C, Opaque_branch_class* F) {
       C.ix_from_branch,
       C.ix_from_ele,
       C.ix_to_ele,
+      C.ix_fixer,
       C.n_ele_track,
       C.n_ele_max,
       C.a,
@@ -6739,6 +6760,7 @@ extern "C" void branch_to_f(const CPP_branch& C, Opaque_branch_class* F) {
       z_ele,
       n1_ele,
       C.param,
+      C.particle_start,
       z_wall3d,
       n1_wall3d);
 
@@ -6758,6 +6780,7 @@ extern "C" void branch_to_c2(
     c_Int& z_ix_from_branch,
     c_Int& z_ix_from_ele,
     c_Int& z_ix_to_ele,
+    c_Int& z_ix_fixer,
     c_Int& z_n_ele_track,
     c_Int& z_n_ele_max,
     const Opaque_mode_info_class* z_a,
@@ -6766,6 +6789,7 @@ extern "C" void branch_to_c2(
     Opaque_ele_class** z_ele,
     c_Int n1_ele,
     const Opaque_lat_param_class* z_param,
+    const Opaque_coord_class* z_particle_start,
     Opaque_wall3d_class** z_wall3d,
     c_Int n1_wall3d) {
   // c_side.to_c2_set[0D_NOT_character] string
@@ -6778,6 +6802,8 @@ extern "C" void branch_to_c2(
   C.ix_from_ele = z_ix_from_ele;
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.ix_to_ele = z_ix_to_ele;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_fixer = z_ix_fixer;
   // c_side.to_c2_set[0D_NOT_integer] Int
   C.n_ele_track = z_n_ele_track;
   // c_side.to_c2_set[0D_NOT_integer] Int
@@ -6795,6 +6821,8 @@ extern "C" void branch_to_c2(
   }
   // c_side.to_c2_set[0D_NOT_type] CPP_lat_param
   lat_param_to_c(z_param, C.param);
+  // c_side.to_c2_set[0D_NOT_type] CPP_coord
+  coord_to_c(z_particle_start, C.particle_start);
   // c_side.to_c2_set[1D_PTR_type] VariableArray1D<CPP_wall3d>
   C.wall3d.resize(n1_wall3d);
   for (size_t i{0}; i < n1_wall3d; i++) {

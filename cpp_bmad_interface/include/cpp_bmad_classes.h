@@ -1393,6 +1393,7 @@ class CPP_twiss : public std::enable_shared_from_this<CPP_twiss> {
   Real sigma_p{0.0};
   Real emit{0.0};
   Real norm_emit{0.0};
+  Real chrom{0.0};
   Real dbeta_dpz{0.0};
   Real dalpha_dpz{0.0};
   Real deta_dpz{0.0};
@@ -3076,11 +3077,12 @@ class CPP_rf_stair_step
   Real E_tot0{0.0};
   Real E_tot1{0.0};
   Real p0c{0.0};
-  Real dp0c{0.0};
+  Real p1c{0.0};
   Real dE_amp{0.0};
   Real scale{0.0};
-  Real dtime{0.0};
+  Real time{0.0};
   Real s{0.0};
+  Int ix_step{0};
 
   CPP_rf_stair_step() {}
 
@@ -3339,6 +3341,7 @@ class CPP_branch : public std::enable_shared_from_this<CPP_branch> {
   Int ix_from_branch{-1};
   Int ix_from_ele{-1};
   Int ix_to_ele{-1};
+  Int ix_fixer{0};
   Int n_ele_track{0};
   Int n_ele_max{0};
   optional_ref<CPP_lat> lat;
@@ -3347,6 +3350,7 @@ class CPP_branch : public std::enable_shared_from_this<CPP_branch> {
   CPP_mode_info z;
   VariableArray1D<CPP_ele> ele;
   CPP_lat_param param;
+  CPP_coord particle_start;
   VariableArray1D<CPP_wall3d> wall3d;
 
   CPP_branch() {}

@@ -1186,16 +1186,6 @@ subroutine tao_data_struct_to_json (input, json_root, depth, max_depth)
   call json%rename(json_val, 'spin_map')
   call json%add(json_root, json_val)
   ! parent pointer skip: d1 (type, Pointer to the parent d1_data_struct)
-  if (allocated(input%stack)) then
-    !'type (tao_eval_stack1_struct), allocatable :: stack(:)'
-    call json%create_array(json_list1, 'stack')
-    do i1 = lbound(input%stack, 1), ubound(input%stack, 1)
-      call tao_eval_stack1_struct_to_json(input%stack(i1), json_val, depth=depth + 1, max_depth=max_depth)
-      call json%add(json_list1, json_val)
-    enddo
-    call json%add(json_root, json_list1)
-    nullify(json_list1)
-  endif
 end subroutine tao_data_struct_to_json
 subroutine tao_data_var_component_struct_to_json (input, json_root, depth, max_depth)
   use tao_struct, only: tao_data_var_component_struct
@@ -1490,11 +1480,11 @@ subroutine tao_ele_shape_struct_to_json (input, json_root, depth, max_depth)
     nullify(json_list1)
   endif
 end subroutine tao_ele_shape_struct_to_json
-subroutine tao_eval_stack1_struct_to_json (input, json_root, depth, max_depth)
-  use tao_struct, only: tao_eval_stack1_struct
+subroutine tao_eval_node_struct_to_json (input, json_root, depth, max_depth)
+  use tao_struct, only: tao_eval_node_struct
   implicit none
   type(json_core) :: json
-  type (tao_eval_stack1_struct), pointer, intent(in) :: input
+  type (tao_eval_node_struct), pointer, intent(in) :: input
   type (json_value), pointer :: json_val
   type (json_value), pointer, intent(inout) :: json_root
   integer, optional, value :: depth
@@ -1544,7 +1534,8 @@ subroutine tao_eval_stack1_struct_to_json (input, json_root, depth, max_depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-end subroutine tao_eval_stack1_struct_to_json
+  ! config skip_members: tao_eval_node_struct%node (type, Child nodes for tree construction.)
+end subroutine tao_eval_node_struct_to_json
 subroutine tao_expression_info_struct_to_json (input, json_root, depth, max_depth)
   use tao_struct, only: tao_expression_info_struct
   use bmad_json, only: ele_struct_to_json
@@ -1668,9 +1659,9 @@ subroutine tao_global_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'history_file', trim(input%history_file))
   call json%add(json_root, 'beam_timer_on', input%beam_timer_on)
   call json%add(json_root, 'box_plots', input%box_plots)
+  call json%add(json_root, 'blank_line_between_commands', input%blank_line_between_commands)
   call json%add(json_root, 'cmd_file_abort_on_error', input%cmd_file_abort_on_error)
   call json%add(json_root, 'concatenate_maps', input%concatenate_maps)
-  call json%add(json_root, 'debug_on', input%debug_on)
   call json%add(json_root, 'derivative_recalc', input%derivative_recalc)
   call json%add(json_root, 'derivative_uses_design', input%derivative_uses_design)
   call json%add(json_root, 'disable_smooth_line_calc', input%disable_smooth_line_calc)
@@ -1695,8 +1686,10 @@ subroutine tao_global_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'svd_retreat_on_merit_increase', input%svd_retreat_on_merit_increase)
   call json%add(json_root, 'var_limits_on', input%var_limits_on)
   call json%add(json_root, 'wait_for_cr_in_single_mode', input%wait_for_CR_in_single_mode)
-  call json%add(json_root, 'blank_line_between_commands', input%blank_line_between_commands)
   call json%add(json_root, 'symbol_import', input%symbol_import)
+  call json%add(json_root, 'debug_on', input%debug_on)
+  call json%add(json_root, 'expression_tree_on', input%expression_tree_on)
+  call json%add(json_root, 'verbose_on', input%verbose_on)
 end subroutine tao_global_struct_to_json
 subroutine tao_graph_array_struct_to_json (input, json_root, depth, max_depth)
   use tao_struct, only: tao_graph_array_struct
@@ -2070,30 +2063,6 @@ subroutine tao_key_input_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'good_opt', input%good_opt)
   call json%add(json_root, 'merit_type', trim(input%merit_type))
 end subroutine tao_key_input_to_json
-subroutine tao_lat_mode_struct_to_json (input, json_root, depth, max_depth)
-  use tao_struct, only: tao_lat_mode_struct
-  implicit none
-  type(json_core) :: json
-  type (tao_lat_mode_struct), pointer, intent(in) :: input
-  type (json_value), pointer :: json_val
-  type (json_value), pointer, intent(inout) :: json_root
-  integer, optional, value :: depth
-  integer, optional, value :: max_depth
-  integer i1, i2, i3, i4, i5, i6
-  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
-  if (.not. present(depth)) depth = 0
-  if (present(max_depth) .and. depth >= max_depth) then
-    call json%create_null(json_root, '')
-    return
-  endif
-  if (.not. associated(input)) then
-    call json%create_null(json_root, '')
-    return
-  endif
-  call json%create_object(json_root, '')
-  call json%add(json_root, 'chrom', input%chrom)
-  call json%add(json_root, 'growth_rate', input%growth_rate)
-end subroutine tao_lat_mode_struct_to_json
 subroutine tao_lat_sigma_struct_to_json (input, json_root, depth, max_depth)
   use tao_struct, only: tao_lat_sigma_struct
   implicit none
@@ -2212,12 +2181,6 @@ subroutine tao_lattice_branch_struct_to_json (input, json_root, depth, max_depth
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  call tao_lat_mode_struct_to_json(input%a, json_val, depth=depth + 1, max_depth=max_depth)
-  call json%rename(json_val, 'a')
-  call json%add(json_root, json_val)
-  call tao_lat_mode_struct_to_json(input%b, json_val, depth=depth + 1, max_depth=max_depth)
-  call json%rename(json_val, 'b')
-  call json%add(json_root, json_val)
   call tao_spin_polarization_struct_to_json(input%spin, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'spin')
   call json%add(json_root, json_val)
@@ -2956,16 +2919,6 @@ subroutine tao_scratch_space_struct_to_json (input, json_root, depth, max_depth)
     call json%create_array(json_list1, 'v1_array')
     do i1 = lbound(input%v1_array, 1), ubound(input%v1_array, 1)
       call tao_v1_var_array_struct_to_json(input%v1_array(i1), json_val, depth=depth + 1, max_depth=max_depth)
-      call json%add(json_list1, json_val)
-    enddo
-    call json%add(json_root, json_list1)
-    nullify(json_list1)
-  endif
-  if (allocated(input%stack)) then
-    !'type (tao_eval_stack1_struct), allocatable :: stack(:)'
-    call json%create_array(json_list1, 'stack')
-    do i1 = lbound(input%stack, 1), ubound(input%stack, 1)
-      call tao_eval_stack1_struct_to_json(input%stack(i1), json_val, depth=depth + 1, max_depth=max_depth)
       call json%add(json_list1, json_val)
     enddo
     call json%add(json_root, json_list1)

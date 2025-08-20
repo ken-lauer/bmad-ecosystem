@@ -727,6 +727,9 @@ subroutine bp_common_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'i_const_init', int(input%i_const_init))
   call json%add(json_root, 'ios_next_chunk', int(input%ios_next_chunk))
   call json%add(json_root, 'ios_this_chunk', int(input%ios_this_chunk))
+  call json%add(json_root, 'ix_fixer', int(input%ix_fixer))
+  call json%add(json_root, 'line1_file_name', trim(input%line1_file_name))
+  call json%add(json_root, 'line2_file_name', trim(input%line2_file_name))
   if (allocated(input%lat_file_names)) then
     !'character(400), allocatable :: lat_file_names(:)'
     call json%create_array(json_list1, 'lat_file_names')
@@ -737,8 +740,6 @@ subroutine bp_common_struct_to_json (input, json_root, depth, max_depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  call json%add(json_root, 'line1_file_name', trim(input%line1_file_name))
-  call json%add(json_root, 'line2_file_name', trim(input%line2_file_name))
   call json%add(json_root, 'parse_line', trim(input%parse_line))
   call json%add(json_root, 'input_line1', trim(input%input_line1))
   call json%add(json_root, 'input_line2', trim(input%input_line2))
@@ -878,6 +879,7 @@ subroutine branch_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'ix_from_branch', int(input%ix_from_branch))
   call json%add(json_root, 'ix_from_ele', int(input%ix_from_ele))
   call json%add(json_root, 'ix_to_ele', int(input%ix_to_ele))
+  call json%add(json_root, 'ix_fixer', int(input%ix_fixer))
   call json%add(json_root, 'n_ele_track', int(input%n_ele_track))
   call json%add(json_root, 'n_ele_max', int(input%n_ele_max))
   ! config skip_members: branch_struct%lat (type, )
@@ -902,6 +904,9 @@ subroutine branch_struct_to_json (input, json_root, depth, max_depth)
   endif
   call lat_param_struct_to_json(input%param, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'param')
+  call json%add(json_root, json_val)
+  call coord_struct_to_json(input%particle_start, json_val, depth=depth + 1, max_depth=max_depth)
+  call json%rename(json_val, 'particle_start')
   call json%add(json_root, json_val)
   if (associated(input%wall3d)) then
     !'type (wall3d_struct), pointer :: wall3d(:) => null()'
@@ -3115,6 +3120,32 @@ subroutine expression_atom_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'type', int(input%type))
   call json%add(json_root, 'value', input%value)
 end subroutine expression_atom_struct_to_json
+subroutine expression_tree_struct_to_json (input, json_root, depth, max_depth)
+  use bmad_struct, only: expression_tree_struct
+  implicit none
+  type(json_core) :: json
+  type (expression_tree_struct), pointer, intent(in) :: input
+  type (json_value), pointer :: json_val
+  type (json_value), pointer, intent(inout) :: json_root
+  integer, optional, value :: depth
+  integer, optional, value :: max_depth
+  integer i1, i2, i3, i4, i5, i6
+  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
+  if (.not. present(depth)) depth = 0
+  if (present(max_depth) .and. depth >= max_depth) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  if (.not. associated(input)) then
+    call json%create_null(json_root, '')
+    return
+  endif
+  call json%create_object(json_root, '')
+  call json%add(json_root, 'name', trim(input%name))
+  call json%add(json_root, 'type', int(input%type))
+  call json%add(json_root, 'value', input%value)
+  ! config skip_members: expression_tree_struct%node (type, Child nodes. Note: Pointer used here since Ifort does not support allocatable.)
+end subroutine expression_tree_struct_to_json
 subroutine extra_parsing_info_struct_to_json (input, json_root, depth, max_depth)
   use bmad_struct, only: extra_parsing_info_struct
   use sim_utils_json, only: random_state_struct_to_json
@@ -6948,11 +6979,12 @@ subroutine rf_stair_step_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'e_tot0', input%E_tot0)
   call json%add(json_root, 'e_tot1', input%E_tot1)
   call json%add(json_root, 'p0c', input%p0c)
-  call json%add(json_root, 'dp0c', input%dp0c)
+  call json%add(json_root, 'p1c', input%p1c)
   call json%add(json_root, 'de_amp', input%dE_amp)
   call json%add(json_root, 'scale', input%scale)
-  call json%add(json_root, 'dtime', input%dtime)
+  call json%add(json_root, 'time', input%time)
   call json%add(json_root, 's', input%s)
+  call json%add(json_root, 'ix_step', int(input%ix_step))
 end subroutine rf_stair_step_struct_to_json
 subroutine runge_kutta_common_struct_to_json (input, json_root, depth, max_depth)
   use runge_kutta_mod, only: runge_kutta_common_struct
@@ -8134,6 +8166,7 @@ subroutine twiss_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'sigma_p', input%sigma_p)
   call json%add(json_root, 'emit', input%emit)
   call json%add(json_root, 'norm_emit', input%norm_emit)
+  call json%add(json_root, 'chrom', input%chrom)
   call json%add(json_root, 'dbeta_dpz', input%dbeta_dpz)
   call json%add(json_root, 'dalpha_dpz', input%dalpha_dpz)
   call json%add(json_root, 'deta_dpz', input%deta_dpz)

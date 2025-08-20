@@ -5125,14 +5125,14 @@ implicit none
 interface
   !! f_side.to_c2_f2_sub_arg
   subroutine twiss_to_c2 (C, z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds, &
-      z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz, &
+      z_sigma, z_sigma_p, z_emit, z_norm_emit, z_chrom, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz, &
       z_detap_dpz) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     real(c_double) :: z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds
-    real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz
-    real(c_double) :: z_detap_dpz
+    real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_chrom, z_dbeta_dpz, z_dalpha_dpz
+    real(c_double) :: z_deta_dpz, z_detap_dpz
 end subroutine
 end interface
 
@@ -5149,7 +5149,8 @@ call c_f_pointer (Fp, F)
 
 !! f_side.to_c2_call
 call twiss_to_c2 (C, F%beta, F%alpha, F%gamma, F%phi, F%eta, F%etap, F%deta_ds, F%sigma, &
-    F%sigma_p, F%emit, F%norm_emit, F%dbeta_dpz, F%dalpha_dpz, F%deta_dpz, F%detap_dpz)
+    F%sigma_p, F%emit, F%norm_emit, F%chrom, F%dbeta_dpz, F%dalpha_dpz, F%deta_dpz, &
+    F%detap_dpz)
 
 end subroutine twiss_to_c
 
@@ -5171,7 +5172,8 @@ end subroutine twiss_to_c
 
 !! f_side.to_c2_f2_sub_arg
 subroutine twiss_to_f2 (Fp, z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds, z_sigma, &
-    z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz, z_detap_dpz) bind(c)
+    z_sigma_p, z_emit, z_norm_emit, z_chrom, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz, &
+    z_detap_dpz) bind(c)
 
 
 implicit none
@@ -5181,8 +5183,8 @@ type(twiss_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 real(c_double) :: z_beta, z_alpha, z_gamma, z_phi, z_eta, z_etap, z_deta_ds
-real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_dbeta_dpz, z_dalpha_dpz, z_deta_dpz
-real(c_double) :: z_detap_dpz
+real(c_double) :: z_sigma, z_sigma_p, z_emit, z_norm_emit, z_chrom, z_dbeta_dpz, z_dalpha_dpz
+real(c_double) :: z_deta_dpz, z_detap_dpz
 
 call c_f_pointer (Fp, F)
 
@@ -5208,6 +5210,8 @@ call c_f_pointer (Fp, F)
   F%emit = z_emit
 !! f_side.to_f2_trans[0D_NOT_real]
   F%norm_emit = z_norm_emit
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%chrom = z_chrom
 !! f_side.to_f2_trans[0D_NOT_real]
   F%dbeta_dpz = z_dbeta_dpz
 !! f_side.to_f2_trans[0D_NOT_real]
@@ -10567,13 +10571,14 @@ implicit none
 
 interface
   !! f_side.to_c2_f2_sub_arg
-  subroutine rf_stair_step_to_c2 (C, z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, &
-      z_dtime, z_s) bind(c)
+  subroutine rf_stair_step_to_c2 (C, z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, &
+      z_time, z_s, z_ix_step) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
-    real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, z_dtime
+    real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, z_time
     real(c_double) :: z_s
+    integer(c_int) :: z_ix_step
 end subroutine
 end interface
 
@@ -10589,8 +10594,8 @@ call c_f_pointer (Fp, F)
 
 
 !! f_side.to_c2_call
-call rf_stair_step_to_c2 (C, F%E_tot0, F%E_tot1, F%p0c, F%dp0c, F%dE_amp, F%scale, F%dtime, &
-    F%s)
+call rf_stair_step_to_c2 (C, F%E_tot0, F%E_tot1, F%p0c, F%p1c, F%dE_amp, F%scale, F%time, F%s, &
+    F%ix_step)
 
 end subroutine rf_stair_step_to_c
 
@@ -10611,8 +10616,8 @@ end subroutine rf_stair_step_to_c
 !-
 
 !! f_side.to_c2_f2_sub_arg
-subroutine rf_stair_step_to_f2 (Fp, z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, &
-    z_dtime, z_s) bind(c)
+subroutine rf_stair_step_to_f2 (Fp, z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, &
+    z_time, z_s, z_ix_step) bind(c)
 
 
 implicit none
@@ -10621,8 +10626,9 @@ type(c_ptr), value :: Fp
 type(rf_stair_step_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
-real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_dp0c, z_dE_amp, z_scale, z_dtime
+real(c_double) :: z_E_tot0, z_E_tot1, z_p0c, z_p1c, z_dE_amp, z_scale, z_time
 real(c_double) :: z_s
+integer(c_int) :: z_ix_step
 
 call c_f_pointer (Fp, F)
 
@@ -10633,15 +10639,17 @@ call c_f_pointer (Fp, F)
 !! f_side.to_f2_trans[0D_NOT_real]
   F%p0c = z_p0c
 !! f_side.to_f2_trans[0D_NOT_real]
-  F%dp0c = z_dp0c
+  F%p1c = z_p1c
 !! f_side.to_f2_trans[0D_NOT_real]
   F%dE_amp = z_dE_amp
 !! f_side.to_f2_trans[0D_NOT_real]
   F%scale = z_scale
 !! f_side.to_f2_trans[0D_NOT_real]
-  F%dtime = z_dtime
+  F%time = z_time
 !! f_side.to_f2_trans[0D_NOT_real]
   F%s = z_s
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_step = z_ix_step
 
 end subroutine rf_stair_step_to_f2
 
@@ -11679,14 +11687,14 @@ implicit none
 interface
   !! f_side.to_c2_f2_sub_arg
   subroutine branch_to_c2 (C, z_name, z_ix_branch, z_ix_from_branch, z_ix_from_ele, &
-      z_ix_to_ele, z_n_ele_track, z_n_ele_max, z_a, z_b, z_z, z_ele, n1_ele, z_param, z_wall3d, &
-      n1_wall3d) bind(c)
+      z_ix_to_ele, z_ix_fixer, z_n_ele_track, z_n_ele_max, z_a, z_b, z_z, z_ele, n1_ele, &
+      z_param, z_particle_start, z_wall3d, n1_wall3d) bind(c)
     import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
     !! f_side.to_c2_type :: f_side.to_c2_name
     type(c_ptr), value :: C
     character(c_char) :: z_name(*)
-    integer(c_int) :: z_ix_branch, z_ix_from_branch, z_ix_from_ele, z_ix_to_ele, z_n_ele_track, z_n_ele_max
-    type(c_ptr), value :: z_a, z_b, z_z, z_param
+    integer(c_int) :: z_ix_branch, z_ix_from_branch, z_ix_from_ele, z_ix_to_ele, z_ix_fixer, z_n_ele_track, z_n_ele_max
+    type(c_ptr), value :: z_a, z_b, z_z, z_param, z_particle_start
     type(c_ptr) :: z_ele(*), z_wall3d(*)
     integer(c_int), value :: n1_ele, n1_wall3d
 end subroutine
@@ -11729,8 +11737,8 @@ call c_f_pointer (Fp, F)
 
 !! f_side.to_c2_call
 call branch_to_c2 (C, trim(F%name) // c_null_char, F%ix_branch, F%ix_from_branch, &
-    F%ix_from_ele, F%ix_to_ele, F%n_ele_track, F%n_ele_max, c_loc(F%a), c_loc(F%b), c_loc(F%z), &
-    z_ele, n1_ele, c_loc(F%param), z_wall3d, n1_wall3d)
+    F%ix_from_ele, F%ix_to_ele, F%ix_fixer, F%n_ele_track, F%n_ele_max, c_loc(F%a), c_loc(F%b), &
+    c_loc(F%z), z_ele, n1_ele, c_loc(F%param), c_loc(F%particle_start), z_wall3d, n1_wall3d)
 
 end subroutine branch_to_c
 
@@ -11752,8 +11760,8 @@ end subroutine branch_to_c
 
 !! f_side.to_c2_f2_sub_arg
 subroutine branch_to_f2 (Fp, z_name, z_ix_branch, z_ix_from_branch, z_ix_from_ele, z_ix_to_ele, &
-    z_n_ele_track, z_n_ele_max, z_a, z_b, z_z, z_ele, n1_ele, z_param, z_wall3d, n1_wall3d) &
-    bind(c)
+    z_ix_fixer, z_n_ele_track, z_n_ele_max, z_a, z_b, z_z, z_ele, n1_ele, z_param, &
+    z_particle_start, z_wall3d, n1_wall3d) bind(c)
 
 
 implicit none
@@ -11763,8 +11771,8 @@ type(branch_struct), pointer :: F
 integer jd, jd1, jd2, jd3, lb1, lb2, lb3
 !! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
 character(c_char) :: z_name(*)
-integer(c_int) :: z_ix_branch, z_ix_from_branch, z_ix_from_ele, z_ix_to_ele, z_n_ele_track, z_n_ele_max
-type(c_ptr), value :: z_a, z_b, z_z, z_param
+integer(c_int) :: z_ix_branch, z_ix_from_branch, z_ix_from_ele, z_ix_to_ele, z_ix_fixer, z_n_ele_track, z_n_ele_max
+type(c_ptr), value :: z_a, z_b, z_z, z_param, z_particle_start
 type(c_ptr) :: z_ele(*), z_wall3d(*)
 integer(c_int), value :: n1_ele, n1_wall3d
 
@@ -11780,6 +11788,8 @@ call c_f_pointer (Fp, F)
   F%ix_from_ele = z_ix_from_ele
 !! f_side.to_f2_trans[0D_NOT_integer]
   F%ix_to_ele = z_ix_to_ele
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_fixer = z_ix_fixer
 !! f_side.to_f2_trans[0D_NOT_integer]
   F%n_ele_track = z_n_ele_track
 !! f_side.to_f2_trans[0D_NOT_integer]
@@ -11807,6 +11817,8 @@ call c_f_pointer (Fp, F)
   endif
 !! f_side.to_f2_trans[0D_NOT_type]
   call lat_param_to_f(z_param, c_loc(F%param))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call coord_to_f(z_particle_start, c_loc(F%particle_start))
 !! f_side.to_f2_trans[1D_PTR_type]
   if (n1_wall3d == 0) then
     if (associated(F%wall3d)) then

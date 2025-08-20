@@ -136,12 +136,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/code/a_scratch_size.f90",
-    "line": 268,
+    "line": 273,
     "name": "CONTROL",
     "module": "precision_constants",
     "members": {
       "total_da_size": {
-        "line": 270,
+        "line": 275,
         "definition": "real(dp),pointer :: total_da_size => null()",
         "name": "total_da_size",
         "comment": "in megabytes",
@@ -153,7 +153,7 @@
         }
       },
       "lda_used": {
-        "line": 271,
+        "line": 276,
         "definition": "integer,pointer :: lda_used => null()",
         "name": "lda_used",
         "comment": "maximum number of da variables in Berz's",
@@ -164,7 +164,7 @@
         }
       },
       "OLD": {
-        "line": 272,
+        "line": 277,
         "definition": "logical(lp),pointer  :: OLD => null()",
         "name": "OLD",
         "comment": "= true  = bERZ",
@@ -176,7 +176,7 @@
         }
       },
       "real_warning": {
-        "line": 273,
+        "line": 278,
         "definition": "logical(lp),pointer  :: real_warning => null()",
         "name": "real_warning",
         "comment": "= true",
@@ -188,7 +188,7 @@
         }
       },
       "no": {
-        "line": 274,
+        "line": 279,
         "definition": "integer,pointer :: no  => null()",
         "name": "no",
         "comment": "order of da",
@@ -199,7 +199,7 @@
         }
       },
       "nv": {
-        "line": 275,
+        "line": 280,
         "definition": "integer,pointer :: nv  => null()",
         "name": "nv",
         "comment": "number of variables",
@@ -210,7 +210,7 @@
         }
       },
       "nd": {
-        "line": 276,
+        "line": 281,
         "definition": "integer,pointer :: nd  => null()",
         "name": "nd",
         "comment": "degrees of freedom",
@@ -221,7 +221,7 @@
         }
       },
       "nd2": {
-        "line": 277,
+        "line": 282,
         "definition": "integer,pointer :: nd2 => null()",
         "name": "nd2",
         "comment": "phase space dimension",
@@ -232,7 +232,7 @@
         }
       },
       "np": {
-        "line": 278,
+        "line": 283,
         "definition": "integer,pointer :: np  => null()",
         "name": "np",
         "comment": "number of parameters in fpp",
@@ -243,7 +243,7 @@
         }
       },
       "nspin": {
-        "line": 279,
+        "line": 284,
         "definition": "integer,pointer :: nspin => null()",
         "name": "nspin",
         "comment": "number of spin variables (0 or 3) integer,pointer :: SPIN_pos => null()       ! position of spin variables (0 or 3)",
@@ -254,7 +254,7 @@
         }
       },
       "ndpt": {
-        "line": 281,
+        "line": 286,
         "definition": "integer,pointer :: ndpt     => null()",
         "name": "ndpt",
         "comment": "constant energy variable position is different from zero",
@@ -265,7 +265,7 @@
         }
       },
       "ndptb": {
-        "line": 282,
+        "line": 287,
         "definition": "integer,pointer ::ndptb  => null()",
         "name": "ndptb",
         "default": "null()",
@@ -275,7 +275,7 @@
         }
       },
       "NPARA": {
-        "line": 283,
+        "line": 288,
         "definition": "integer,pointer :: NPARA    => null()",
         "name": "NPARA",
         "comment": "PARAMETER LOCATION IN PTC in fpp",
@@ -286,7 +286,7 @@
         }
       },
       "npara_fpp": {
-        "line": 284,
+        "line": 289,
         "definition": "integer,pointer :: npara_fpp=> null()",
         "name": "npara_fpp",
         "comment": "PARAMETER LOCATION IN FPP or PTC",
@@ -297,7 +297,7 @@
         }
       },
       "np_pol": {
-        "line": 285,
+        "line": 290,
         "definition": "integer,pointer :: np_pol   => null()",
         "name": "np_pol",
         "comment": "parameters produced through pol_block",
@@ -308,7 +308,7 @@
         }
       },
       "nd2t": {
-        "line": 286,
+        "line": 291,
         "definition": "integer,pointer :: nd2t   => null()",
         "name": "nd2t",
         "comment": "harmonic planes minus clocks",
@@ -319,7 +319,7 @@
         }
       },
       "nd2harm": {
-        "line": 287,
+        "line": 292,
         "definition": "integer,pointer :: nd2harm   => null()",
         "name": "nd2harm",
         "comment": "harmonic plane",
@@ -330,7 +330,7 @@
         }
       },
       "ndc2t": {
-        "line": 288,
+        "line": 293,
         "definition": "integer,pointer :: ndc2t   => null()",
         "name": "ndc2t",
         "comment": "0 or 2 : jordan planes",
@@ -341,7 +341,7 @@
         }
       },
       "pos_of_delta": {
-        "line": 289,
+        "line": 294,
         "definition": "integer,pointer :: pos_of_delta   => null()",
         "name": "pos_of_delta",
         "comment": "constant delta",
@@ -352,7 +352,7 @@
         }
       },
       "rf": {
-        "line": 290,
+        "line": 295,
         "definition": "integer,pointer :: rf   => null()",
         "name": "rf",
         "comment": "# of modulated planes",
@@ -363,7 +363,7 @@
         }
       },
       "knob": {
-        "line": 291,
+        "line": 296,
         "definition": "logical(lp),pointer :: knob => null()",
         "name": "knob",
         "default": "null()",
@@ -374,7 +374,7 @@
         }
       },
       "valishev": {
-        "line": 292,
+        "line": 297,
         "definition": "logical(lp),pointer :: valishev => null()",
         "name": "valishev",
         "comment": "integer, pointer :: NDPT_OTHER",
@@ -386,7 +386,7 @@
         }
       },
       "setknob": {
-        "line": 294,
+        "line": 299,
         "definition": "logical(lp), pointer :: setknob => null()",
         "name": "setknob",
         "default": "null()",
@@ -397,7 +397,7 @@
         }
       },
       "da_absolute_aperture": {
-        "line": 295,
+        "line": 300,
         "definition": "REAL(dp),pointer     :: da_absolute_aperture => null()",
         "name": "da_absolute_aperture",
         "comment": "in case one tracks with da.",
@@ -409,7 +409,7 @@
         }
       },
       "wherelost": {
-        "line": 297,
+        "line": 302,
         "definition": "integer,pointer :: wherelost => null()",
         "name": "wherelost",
         "comment": "counting lost particles in integration nodes",
@@ -420,7 +420,7 @@
         }
       },
       "ROOT_CHECK": {
-        "line": 298,
+        "line": 303,
         "definition": "logical(lp),pointer  :: ROOT_CHECK => null()",
         "name": "ROOT_CHECK",
         "comment": "=.TRUE. performs check in roots and hyperbolic if true",
@@ -432,7 +432,7 @@
         }
       },
       "CHECK_STABLE": {
-        "line": 299,
+        "line": 304,
         "definition": "logical(lp),pointer  :: CHECK_STABLE => null()",
         "name": "CHECK_STABLE",
         "comment": "=.TRUE. particle status",
@@ -444,7 +444,7 @@
         }
       },
       "CHECK_MADX_APERTURE": {
-        "line": 300,
+        "line": 305,
         "definition": "logical(lp),pointer  :: CHECK_MADX_APERTURE => null()",
         "name": "CHECK_MADX_APERTURE",
         "comment": "=.TRUE. false means particle lost in aperture",
@@ -456,7 +456,7 @@
         }
       },
       "APERTURE_FLAG": {
-        "line": 301,
+        "line": 306,
         "definition": "logical(lp),pointer  :: APERTURE_FLAG => null()",
         "name": "APERTURE_FLAG",
         "comment": "=.TRUE. aperture checks globally done (default)",
@@ -468,7 +468,7 @@
         }
       },
       "s_aperture_CHECK": {
-        "line": 302,
+        "line": 307,
         "definition": "logical(lp),pointer  :: s_aperture_CHECK => null()",
         "name": "s_aperture_CHECK",
         "comment": "=.TRUE. aperture checks globally done (default)",
@@ -480,7 +480,7 @@
         }
       },
       "WATCH_USER": {
-        "line": 303,
+        "line": 308,
         "definition": "logical(lp),pointer  :: WATCH_USER => null()",
         "name": "WATCH_USER",
         "comment": "FALSE NORMALLY : WATCHES USER FOR FAILING TO CHECK APERTURES",
@@ -492,7 +492,7 @@
         }
       },
       "absolute_aperture": {
-        "line": 304,
+        "line": 309,
         "definition": "REAL(dp),pointer     :: absolute_aperture => null()",
         "name": "absolute_aperture",
         "comment": "=1e3_dp generic aperture check",
@@ -504,7 +504,7 @@
         }
       },
       "hyperbolic_aperture": {
-        "line": 305,
+        "line": 310,
         "definition": "real(dp),pointer :: hyperbolic_aperture => null()",
         "name": "hyperbolic_aperture",
         "comment": "controls crashes in exponentials influence fibre creation",
@@ -516,7 +516,7 @@
         }
       },
       "MADTHICK": {
-        "line": 307,
+        "line": 312,
         "definition": "integer, pointer :: MADTHICK => null()",
         "name": "MADTHICK",
         "default": "null()",
@@ -526,7 +526,7 @@
         }
       },
       "MADTHIN_NORMAL": {
-        "line": 308,
+        "line": 313,
         "definition": "integer, pointer :: MADTHIN_NORMAL => null()",
         "name": "MADTHIN_NORMAL",
         "default": "null()",
@@ -536,7 +536,7 @@
         }
       },
       "MADTHIN_SKEW": {
-        "line": 309,
+        "line": 314,
         "definition": "integer, pointer :: MADTHIN_SKEW => null()",
         "name": "MADTHIN_SKEW",
         "default": "null()",
@@ -546,7 +546,7 @@
         }
       },
       "NSTD": {
-        "line": 310,
+        "line": 315,
         "definition": "integer, pointer::  NSTD => null(),METD => null()",
         "name": "NSTD",
         "comment": "number of steps and integration method",
@@ -557,7 +557,7 @@
         }
       },
       "METD": {
-        "line": 310,
+        "line": 315,
         "definition": "integer, pointer::  NSTD => null(),METD => null()",
         "name": "METD",
         "comment": "number of steps and integration method",
@@ -568,7 +568,7 @@
         }
       },
       "MADLENGTH": {
-        "line": 311,
+        "line": 316,
         "definition": "logical(lp), pointer :: MADLENGTH => null()",
         "name": "MADLENGTH",
         "comment": "=.false. rbend crazy length in mad8 as input",
@@ -580,7 +580,7 @@
         }
       },
       "MAD": {
-        "line": 312,
+        "line": 317,
         "definition": "logical(lp), pointer :: MAD       => null()",
         "name": "MAD",
         "comment": "=.false. mad definition of multipole for input only",
@@ -592,7 +592,7 @@
         }
       },
       "EXACT_MODEL": {
-        "line": 313,
+        "line": 318,
         "definition": "logical(lp), pointer :: EXACT_MODEL => null()",
         "name": "EXACT_MODEL",
         "comment": "= .false. exact model used",
@@ -604,7 +604,7 @@
         }
       },
       "ALWAYS_EXACTMIS": {
-        "line": 314,
+        "line": 319,
         "definition": "logical(lp), pointer :: ALWAYS_EXACTMIS => null()",
         "name": "ALWAYS_EXACTMIS",
         "comment": "=.TRUE. exact formula in tracking used for that element",
@@ -616,7 +616,7 @@
         }
       },
       "ALWAYS_knobs": {
-        "line": 315,
+        "line": 320,
         "definition": "logical(lp),pointer :: ALWAYS_knobs => null()",
         "name": "ALWAYS_knobs",
         "comment": "=.false. ptc knob default status",
@@ -628,7 +628,7 @@
         }
       },
       "recirculator_cheat": {
-        "line": 316,
+        "line": 321,
         "definition": "logical(lp),pointer :: recirculator_cheat => null()",
         "name": "recirculator_cheat",
         "comment": "=.false.  if true energy patches use the time formula always",
@@ -640,7 +640,7 @@
         }
       },
       "sixtrack_compatible": {
-        "line": 317,
+        "line": 322,
         "definition": "logical(lp),pointer :: sixtrack_compatible => null()",
         "name": "sixtrack_compatible",
         "comment": "to insure some sixtrack compatibility default=false",
@@ -652,7 +652,7 @@
         }
       },
       "CAVITY_TOTALPATH": {
-        "line": 318,
+        "line": 323,
         "definition": "integer, pointer:: CAVITY_TOTALPATH => null()",
         "name": "CAVITY_TOTALPATH",
         "comment": "REAL PILL B0X =1 , FAKE =0  default",
@@ -663,7 +663,7 @@
         }
       },
       "HIGHEST_FRINGE": {
-        "line": 319,
+        "line": 324,
         "definition": "integer,pointer :: HIGHEST_FRINGE => null()",
         "name": "HIGHEST_FRINGE",
         "comment": "=2  quadrupole fringe ON IF FRINGE PRESENT",
@@ -674,7 +674,7 @@
         }
       },
       "do_beam_beam": {
-        "line": 320,
+        "line": 325,
         "definition": "logical(lp),pointer :: do_beam_beam => null()",
         "name": "do_beam_beam",
         "comment": "obvious meaning: false normally creates a reverse propagator",
@@ -686,7 +686,7 @@
         }
       },
       "FIBRE_DIR": {
-        "line": 322,
+        "line": 327,
         "definition": "integer,pointer ::FIBRE_DIR => null()",
         "name": "FIBRE_DIR",
         "comment": "=1 or -1 for reversed",
@@ -697,7 +697,7 @@
         }
       },
       "INITIAL_CHARGE": {
-        "line": 323,
+        "line": 328,
         "definition": "real(dp),pointer ::INITIAL_CHARGE => null()",
         "name": "INITIAL_CHARGE",
         "comment": "=1 or -1 AND  ADJUST THE MASS IS THE PREFERED MODE creates a reverse propagator and a reversed ring in combination with above",
@@ -709,7 +709,7 @@
         }
       },
       "FIBRE_flip": {
-        "line": 325,
+        "line": 330,
         "definition": "logical(lp),pointer ::FIBRE_flip => null()",
         "name": "FIBRE_flip",
         "comment": "=.true. x_prime true means noncanonical outside magnets. x(5) variables stays the same.",
@@ -721,7 +721,7 @@
         }
       },
       "eps_pos": {
-        "line": 327,
+        "line": 332,
         "definition": "real(dp), pointer :: eps_pos => null()",
         "name": "eps_pos",
         "comment": "fill once and never touch again",
@@ -733,7 +733,7 @@
         }
       },
       "SECTOR_NMUL_MAX": {
-        "line": 329,
+        "line": 334,
         "definition": "integer, pointer :: SECTOR_NMUL_MAX => null()",
         "name": "SECTOR_NMUL_MAX",
         "comment": "= 10 maxwell equations is solved to order 10 in exact sectors",
@@ -744,7 +744,7 @@
         }
       },
       "SECTOR_NMUL": {
-        "line": 330,
+        "line": 335,
         "definition": "integer, pointer :: SECTOR_NMUL     => null()",
         "name": "SECTOR_NMUL",
         "comment": "= 4  MULTIPOLES IN TEAPOT BEND ALLOWED BY DEFAULT",
@@ -755,7 +755,7 @@
         }
       },
       "wedge_coeff": {
-        "line": 331,
+        "line": 336,
         "definition": "real(dp), pointer :: wedge_coeff(:) => null()",
         "name": "wedge_coeff",
         "comment": "QUAD_KICK IN WEDGE",
@@ -768,7 +768,7 @@
         }
       },
       "MAD8_WEDGE": {
-        "line": 332,
+        "line": 337,
         "definition": "logical(lp), pointer :: MAD8_WEDGE  => null()",
         "name": "MAD8_WEDGE",
         "comment": "QUAD_KICK + FRINGE IF FRINGE IS OUT.",
@@ -780,7 +780,7 @@
         }
       },
       "electron": {
-        "line": 333,
+        "line": 338,
         "definition": "logical(lp), pointer:: electron     => null()",
         "name": "electron",
         "comment": "electron if true otherwise proton",
@@ -792,7 +792,7 @@
         }
       },
       "massfactor": {
-        "line": 334,
+        "line": 339,
         "definition": "real(dp), pointer :: massfactor     => null()",
         "name": "massfactor",
         "comment": "=one  sets variable muon and electron must be true global on the fly",
@@ -804,7 +804,7 @@
         }
       },
       "compute_stoch_kick": {
-        "line": 336,
+        "line": 341,
         "definition": "logical(lp), pointer :: compute_stoch_kick => null()",
         "name": "compute_stoch_kick",
         "comment": "= .false. store stochastic kick for stochastic tracking",
@@ -816,7 +816,7 @@
         }
       },
       "FEED_P0C": {
-        "line": 337,
+        "line": 342,
         "definition": "logical(lp),pointer :: FEED_P0C => null()",
         "name": "FEED_P0C",
         "comment": "=.FALSE.  work takes p0c instead of energy",
@@ -828,7 +828,7 @@
         }
       },
       "ALWAYS_EXACT_PATCHING": {
-        "line": 338,
+        "line": 343,
         "definition": "logical(lp),pointer :: ALWAYS_EXACT_PATCHING => null()",
         "name": "ALWAYS_EXACT_PATCHING",
         "comment": "=.TRUE. patching done correctly used to output horror messages",
@@ -840,7 +840,7 @@
         }
       },
       "stable_da": {
-        "line": 340,
+        "line": 345,
         "definition": "logical(lp),pointer :: stable_da => null()",
         "name": "stable_da",
         "comment": "=.true.  interrupts DA if check_da is true",
@@ -852,7 +852,7 @@
         }
       },
       "STABLE_DA_pancake": {
-        "line": 341,
+        "line": 346,
         "definition": "logical(lp),pointer  :: STABLE_DA_pancake => null()",
         "name": "STABLE_DA_pancake",
         "comment": "=.TRUE. particle status",
@@ -864,7 +864,7 @@
         }
       },
       "check_da": {
-        "line": 342,
+        "line": 347,
         "definition": "logical(lp),pointer :: check_da  => null()",
         "name": "check_da",
         "comment": "=.true.",
@@ -876,7 +876,7 @@
         }
       },
       "OLD_IMPLEMENTATION_OF_SIXTRACK": {
-        "line": 343,
+        "line": 348,
         "definition": "logical(lp),pointer :: OLD_IMPLEMENTATION_OF_SIXTRACK => null()",
         "name": "OLD_IMPLEMENTATION_OF_SIXTRACK",
         "comment": "=.true.",
@@ -888,7 +888,7 @@
         }
       },
       "phase0": {
-        "line": 344,
+        "line": 349,
         "definition": "real(dp),pointer :: phase0  => null()",
         "name": "phase0",
         "comment": "default phase in cavity",
@@ -900,7 +900,7 @@
         }
       },
       "global_verbose": {
-        "line": 345,
+        "line": 350,
         "definition": "logical(lp), pointer :: global_verbose => null()",
         "name": "global_verbose",
         "default": "null()",
@@ -911,7 +911,7 @@
         }
       },
       "no_hyperbolic_in_normal_form": {
-        "line": 346,
+        "line": 351,
         "definition": "logical(lp), pointer :: no_hyperbolic_in_normal_form => null()",
         "name": "no_hyperbolic_in_normal_form",
         "comment": "unstable produces exception",
@@ -923,7 +923,7 @@
         }
       },
       "ndpt_bmad": {
-        "line": 347,
+        "line": 352,
         "definition": "integer, pointer :: ndpt_bmad => null()",
         "name": "ndpt_bmad",
         "default": "null()",
@@ -3984,12 +3984,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/code/a_scratch_size.f90",
-    "line": 1249,
+    "line": 1336,
     "name": "file_",
     "module": "file_handler",
     "members": {
       "MF": {
-        "line": 1250,
+        "line": 1337,
         "definition": "logical(lp) MF",
         "name": "MF",
         "comment": "AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.",
@@ -4003,12 +4003,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/code/a_scratch_size.f90",
-    "line": 1255,
+    "line": 1342,
     "name": "file_K",
     "module": "file_handler",
     "members": {
       "MF": {
-        "line": 1256,
+        "line": 1343,
         "definition": "logical(lp) MF",
         "name": "MF",
         "comment": "AIMIN CHANGES FOR MS4.0 logical(lp) :: mf=.false.",
@@ -4504,12 +4504,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/code/a_scratch_size.f90",
-    "line": 1496,
+    "line": 1583,
     "name": "my_1D_taylor",
     "module": "my_own_1d_tpsa",
     "members": {
       "a": {
-        "line": 1497,
+        "line": 1584,
         "definition": "real(dp) a(0:N_my_1D_taylor)",
         "name": "a",
         "default": null,
@@ -4523,12 +4523,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/code/a_scratch_size.f90",
-    "line": 2006,
+    "line": 2093,
     "name": "my_linear_taylor",
     "module": "my_own_linear_tpsa",
     "members": {
       "a": {
-        "line": 2007,
+        "line": 2094,
         "definition": "complex(dp) a(0:n_mono)",
         "name": "a",
         "comment": "@2  &nbsp; Taylor series \u0083e\u0083C\u0083\u0089\u0081[\u0093W\u008aJ\u0081i\u0083e\u0083C\u0083\u0089\u0081[\u0082\u00c4\u0082\u00f1\u0082\u00a9\u0082\u00a2) \u0095\u0082\u0093\u00ae\u008f\u00ac\u0090\u0094\u0093_\u0090\u0094\u0081i\u0082\u00d3\u0082\u00c7\u0082\u00a4\u0082\u00b5\u0082\u00e5\u0082\u00a4\u0082\u00b7\u0082\u00a4\u0082\u00c4\u0082\u00f1\u0082\u00b7\u0082\u00a4\u0081j",
@@ -6907,7 +6907,7 @@
         "line": 117,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "BN",
-        "comment": "Multipole component",
+        "comment": "Multipole component real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
         "default": "null()",
         "type_info": {
           "type": "real",
@@ -6917,8 +6917,8 @@
         }
       },
       "VOLT": {
-        "line": 118,
-        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 119,
+        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),t => null()",
         "name": "VOLT",
         "default": "null()",
         "type_info": {
@@ -6928,8 +6928,8 @@
         }
       },
       "FREQ": {
-        "line": 118,
-        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 119,
+        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),t => null()",
         "name": "FREQ",
         "default": "null()",
         "type_info": {
@@ -6939,8 +6939,8 @@
         }
       },
       "PHAS": {
-        "line": 118,
-        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 119,
+        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),t => null()",
         "name": "PHAS",
         "default": "null()",
         "type_info": {
@@ -6950,8 +6950,8 @@
         }
       },
       "DELTA_E": {
-        "line": 118,
-        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 119,
+        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),t => null()",
         "name": "DELTA_E",
         "default": "null()",
         "type_info": {
@@ -6960,20 +6960,9 @@
           "kind": "dp"
         }
       },
-      "phase0": {
-        "line": 118,
-        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
-        "name": "phase0",
-        "default": "null()",
-        "type_info": {
-          "type": "real",
-          "pointer": true,
-          "kind": "dp"
-        }
-      },
       "t": {
-        "line": 118,
-        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 119,
+        "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS => null(),DELTA_E => null(),t => null()",
         "name": "t",
         "default": "null()",
         "type_info": {
@@ -6983,7 +6972,7 @@
         }
       },
       "F": {
-        "line": 119,
+        "line": 120,
         "definition": "real(dp), POINTER :: F(:) => null()",
         "name": "F",
         "default": "null()",
@@ -6995,7 +6984,7 @@
         }
       },
       "A": {
-        "line": 120,
+        "line": 121,
         "definition": "real(dp), POINTER :: A => null(),R => null()",
         "name": "A",
         "default": "null()",
@@ -7006,7 +6995,7 @@
         }
       },
       "R": {
-        "line": 120,
+        "line": 121,
         "definition": "real(dp), POINTER :: A => null(),R => null()",
         "name": "R",
         "default": "null()",
@@ -7017,7 +7006,7 @@
         }
       },
       "PH": {
-        "line": 121,
+        "line": 122,
         "definition": "real(dp), POINTER :: PH(:) => null()",
         "name": "PH",
         "default": "null()",
@@ -7029,7 +7018,7 @@
         }
       },
       "NF": {
-        "line": 122,
+        "line": 123,
         "definition": "INTEGER , POINTER :: NF => null()",
         "name": "NF",
         "default": "null()",
@@ -7039,7 +7028,7 @@
         }
       },
       "N_BESSEL": {
-        "line": 123,
+        "line": 124,
         "definition": "integer, POINTER :: N_BESSEL => null(),CAVITY_TOTALPATH => null()",
         "name": "N_BESSEL",
         "comment": "Cavity information",
@@ -7050,7 +7039,7 @@
         }
       },
       "CAVITY_TOTALPATH": {
-        "line": 123,
+        "line": 124,
         "definition": "integer, POINTER :: N_BESSEL => null(),CAVITY_TOTALPATH => null()",
         "name": "CAVITY_TOTALPATH",
         "comment": "Cavity information",
@@ -7061,7 +7050,7 @@
         }
       },
       "always_on": {
-        "line": 124,
+        "line": 125,
         "definition": "logical, pointer :: always_on => null()",
         "name": "always_on",
         "default": "null()",
@@ -7071,7 +7060,7 @@
         }
       },
       "xprime": {
-        "line": 125,
+        "line": 126,
         "definition": "logical,pointer :: xprime => null()",
         "name": "xprime",
         "default": "null()",
@@ -7081,7 +7070,7 @@
         }
       },
       "ACC": {
-        "line": 126,
+        "line": 127,
         "definition": "type(acceleration), pointer :: ACC => null()",
         "name": "ACC",
         "default": "null()",
@@ -7092,7 +7081,7 @@
         }
       },
       "H1": {
-        "line": 127,
+        "line": 128,
         "definition": "real(dp),   POINTER:: H1 => null(),H2 => null()",
         "name": "H1",
         "default": "null()",
@@ -7103,7 +7092,7 @@
         }
       },
       "H2": {
-        "line": 127,
+        "line": 128,
         "definition": "real(dp),   POINTER:: H1 => null(),H2 => null()",
         "name": "H2",
         "default": "null()",
@@ -7114,7 +7103,7 @@
         }
       },
       "AN0": {
-        "line": 128,
+        "line": 129,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()",
         "name": "AN0",
         "comment": "Multipole component",
@@ -7127,7 +7116,7 @@
         }
       },
       "BN0": {
-        "line": 128,
+        "line": 129,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()",
         "name": "BN0",
         "comment": "Multipole component",
@@ -7143,12 +7132,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 132,
+    "line": 133,
     "name": "CAV4P",
     "module": "definition",
     "members": {
       "THIN": {
-        "line": 133,
+        "line": 134,
         "definition": "logical(lp), POINTER :: THIN => null()",
         "name": "THIN",
         "default": "null()",
@@ -7159,7 +7148,7 @@
         }
       },
       "P": {
-        "line": 134,
+        "line": 135,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -7170,7 +7159,7 @@
         }
       },
       "L": {
-        "line": 135,
+        "line": 136,
         "definition": "TYPE(REAL_8) , POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -7181,7 +7170,7 @@
         }
       },
       "AN": {
-        "line": 136,
+        "line": 137,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -7194,7 +7183,7 @@
         }
       },
       "BN": {
-        "line": 136,
+        "line": 137,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -7207,7 +7196,7 @@
         }
       },
       "VOLT": {
-        "line": 137,
+        "line": 138,
         "definition": "TYPE(REAL_8), POINTER :: VOLT => null(), FREQ => null(),PHAS => null()",
         "name": "VOLT",
         "comment": "Cavity Information",
@@ -7219,7 +7208,7 @@
         }
       },
       "FREQ": {
-        "line": 137,
+        "line": 138,
         "definition": "TYPE(REAL_8), POINTER :: VOLT => null(), FREQ => null(),PHAS => null()",
         "name": "FREQ",
         "comment": "Cavity Information",
@@ -7231,7 +7220,7 @@
         }
       },
       "PHAS": {
-        "line": 137,
+        "line": 138,
         "definition": "TYPE(REAL_8), POINTER :: VOLT => null(), FREQ => null(),PHAS => null()",
         "name": "PHAS",
         "comment": "Cavity Information",
@@ -7243,8 +7232,8 @@
         }
       },
       "DELTA_E": {
-        "line": 138,
-        "definition": "real(dp), POINTER :: DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 139,
+        "definition": "real(dp), POINTER :: DELTA_E => null(), t => null()",
         "name": "DELTA_E",
         "comment": "Cavity information",
         "default": "null()",
@@ -7254,23 +7243,11 @@
           "kind": "dp"
         }
       },
-      "phase0": {
-        "line": 138,
-        "definition": "real(dp), POINTER :: DELTA_E => null(),phase0 => null(),t => null()",
-        "name": "phase0",
-        "comment": "Cavity information",
-        "default": "null()",
-        "type_info": {
-          "type": "real",
-          "pointer": true,
-          "kind": "dp"
-        }
-      },
       "t": {
-        "line": 138,
-        "definition": "real(dp), POINTER :: DELTA_E => null(),phase0 => null(),t => null()",
+        "line": 139,
+        "definition": "real(dp), POINTER :: DELTA_E => null(), t => null()",
         "name": "t",
-        "comment": "Cavity information",
+        "comment": "Cavity information real(dp), POINTER :: DELTA_E => null(),phase0 => null(),t => null()                        ! Cavity information",
         "default": "null()",
         "type_info": {
           "type": "real",
@@ -7279,7 +7256,7 @@
         }
       },
       "F": {
-        "line": 139,
+        "line": 141,
         "definition": "TYPE(REAL_8), POINTER :: F(:) => null()",
         "name": "F",
         "default": "null()",
@@ -7291,7 +7268,7 @@
         }
       },
       "PH": {
-        "line": 140,
+        "line": 142,
         "definition": "TYPE(REAL_8), POINTER :: PH(:) => null()",
         "name": "PH",
         "default": "null()",
@@ -7303,7 +7280,7 @@
         }
       },
       "A": {
-        "line": 141,
+        "line": 143,
         "definition": "TYPE(REAL_8), POINTER :: A => null(),R => null()",
         "name": "A",
         "default": "null()",
@@ -7314,7 +7291,7 @@
         }
       },
       "R": {
-        "line": 141,
+        "line": 143,
         "definition": "TYPE(REAL_8), POINTER :: A => null(),R => null()",
         "name": "R",
         "default": "null()",
@@ -7325,7 +7302,7 @@
         }
       },
       "NF": {
-        "line": 142,
+        "line": 144,
         "definition": "INTEGER , POINTER :: NF => null()",
         "name": "NF",
         "default": "null()",
@@ -7335,7 +7312,7 @@
         }
       },
       "N_BESSEL": {
-        "line": 143,
+        "line": 145,
         "definition": "integer, POINTER :: N_BESSEL => null(),CAVITY_TOTALPATH => null()",
         "name": "N_BESSEL",
         "comment": "Cavity information",
@@ -7346,7 +7323,7 @@
         }
       },
       "CAVITY_TOTALPATH": {
-        "line": 143,
+        "line": 145,
         "definition": "integer, POINTER :: N_BESSEL => null(),CAVITY_TOTALPATH => null()",
         "name": "CAVITY_TOTALPATH",
         "comment": "Cavity information",
@@ -7357,7 +7334,7 @@
         }
       },
       "always_on": {
-        "line": 144,
+        "line": 146,
         "definition": "logical, pointer :: always_on => null()",
         "name": "always_on",
         "default": "null()",
@@ -7367,7 +7344,7 @@
         }
       },
       "xprime": {
-        "line": 145,
+        "line": 147,
         "definition": "logical,pointer :: xprime => null()",
         "name": "xprime",
         "default": "null()",
@@ -7377,7 +7354,7 @@
         }
       },
       "ACC": {
-        "line": 146,
+        "line": 148,
         "definition": "type(acceleration), pointer :: ACC => null()",
         "name": "ACC",
         "default": "null()",
@@ -7388,7 +7365,7 @@
         }
       },
       "H1": {
-        "line": 147,
+        "line": 149,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(),H2 => null()",
         "name": "H1",
         "default": "null()",
@@ -7399,7 +7376,7 @@
         }
       },
       "H2": {
-        "line": 147,
+        "line": 149,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(),H2 => null()",
         "name": "H2",
         "default": "null()",
@@ -7410,7 +7387,7 @@
         }
       },
       "AN0": {
-        "line": 148,
+        "line": 150,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()",
         "name": "AN0",
         "comment": "Multipole component",
@@ -7423,7 +7400,7 @@
         }
       },
       "BN0": {
-        "line": 148,
+        "line": 150,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN0 => null(),BN0 => null()",
         "name": "BN0",
         "comment": "Multipole component",
@@ -7439,12 +7416,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 151,
+    "line": 153,
     "name": "CAV_TRAV",
     "module": "definition",
     "members": {
       "THIN": {
-        "line": 152,
+        "line": 154,
         "definition": "logical(lp), POINTER :: THIN => null()",
         "name": "THIN",
         "default": "null()",
@@ -7455,7 +7432,7 @@
         }
       },
       "P": {
-        "line": 153,
+        "line": 155,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -7466,7 +7443,7 @@
         }
       },
       "L": {
-        "line": 154,
+        "line": 156,
         "definition": "real(dp) , POINTER ::L => null()",
         "name": "L",
         "comment": "Storage space for computed",
@@ -7478,7 +7455,7 @@
         }
       },
       "VOLT": {
-        "line": 155,
+        "line": 157,
         "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS,DELTA_E => null(),phase0 => null()",
         "name": "VOLT",
         "default": "null()",
@@ -7489,7 +7466,7 @@
         }
       },
       "FREQ": {
-        "line": 155,
+        "line": 157,
         "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS,DELTA_E => null(),phase0 => null()",
         "name": "FREQ",
         "default": "null()",
@@ -7500,7 +7477,7 @@
         }
       },
       "PHAS": {
-        "line": 155,
+        "line": 157,
         "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS,DELTA_E => null(),phase0 => null()",
         "name": "PHAS",
         "default": null,
@@ -7511,7 +7488,7 @@
         }
       },
       "DELTA_E": {
-        "line": 155,
+        "line": 157,
         "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS,DELTA_E => null(),phase0 => null()",
         "name": "DELTA_E",
         "default": "null()",
@@ -7522,7 +7499,7 @@
         }
       },
       "phase0": {
-        "line": 155,
+        "line": 157,
         "definition": "real(dp), POINTER :: VOLT => null(), FREQ => null(),PHAS,DELTA_E => null(),phase0 => null()",
         "name": "phase0",
         "default": "null()",
@@ -7533,7 +7510,7 @@
         }
       },
       "PSI": {
-        "line": 156,
+        "line": 158,
         "definition": "real(dp), POINTER :: PSI => null(),DPHAS => null(),DVDS => null()",
         "name": "PSI",
         "default": "null()",
@@ -7544,7 +7521,7 @@
         }
       },
       "DPHAS": {
-        "line": 156,
+        "line": 158,
         "definition": "real(dp), POINTER :: PSI => null(),DPHAS => null(),DVDS => null()",
         "name": "DPHAS",
         "default": "null()",
@@ -7555,7 +7532,7 @@
         }
       },
       "DVDS": {
-        "line": 156,
+        "line": 158,
         "definition": "real(dp), POINTER :: PSI => null(),DPHAS => null(),DVDS => null()",
         "name": "DVDS",
         "default": "null()",
@@ -7566,7 +7543,7 @@
         }
       },
       "always_on": {
-        "line": 157,
+        "line": 159,
         "definition": "logical, pointer :: always_on => null(), implicit => null()",
         "name": "always_on",
         "default": "null()",
@@ -7576,7 +7553,7 @@
         }
       },
       "implicit": {
-        "line": 157,
+        "line": 159,
         "definition": "logical, pointer :: always_on => null(), implicit => null()",
         "name": "implicit",
         "default": "null()",
@@ -7586,7 +7563,7 @@
         }
       },
       "CAVITY_TOTALPATH": {
-        "line": 158,
+        "line": 160,
         "definition": "integer, POINTER :: CAVITY_TOTALPATH => null()",
         "name": "CAVITY_TOTALPATH",
         "comment": "Cavity information",
@@ -7597,7 +7574,7 @@
         }
       },
       "AN": {
-        "line": 159,
+        "line": 161,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -7610,7 +7587,7 @@
         }
       },
       "BN": {
-        "line": 159,
+        "line": 161,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -7626,12 +7603,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 163,
+    "line": 165,
     "name": "CAV_TRAVP",
     "module": "definition",
     "members": {
       "THIN": {
-        "line": 164,
+        "line": 166,
         "definition": "logical(lp), POINTER :: THIN => null()",
         "name": "THIN",
         "default": "null()",
@@ -7642,7 +7619,7 @@
         }
       },
       "P": {
-        "line": 165,
+        "line": 167,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -7653,7 +7630,7 @@
         }
       },
       "L": {
-        "line": 166,
+        "line": 168,
         "definition": "TYPE(REAL_8) , POINTER ::L  => null()",
         "name": "L",
         "comment": "Storage space for computed",
@@ -7665,7 +7642,7 @@
         }
       },
       "VOLT": {
-        "line": 167,
+        "line": 169,
         "definition": "TYPE(REAL_8), POINTER :: VOLT => null(), FREQ => null(),PHAS => null()",
         "name": "VOLT",
         "default": "null()",
@@ -7676,7 +7653,7 @@
         }
       },
       "FREQ": {
-        "line": 167,
+        "line": 169,
         "definition": "TYPE(REAL_8), POINTER :: VOLT => null(), FREQ => null(),PHAS => null()",
         "name": "FREQ",
         "default": "null()",
@@ -7687,7 +7664,7 @@
         }
       },
       "PHAS": {
-        "line": 167,
+        "line": 169,
         "definition": "TYPE(REAL_8), POINTER :: VOLT => null(), FREQ => null(),PHAS => null()",
         "name": "PHAS",
         "default": "null()",
@@ -7698,7 +7675,7 @@
         }
       },
       "PSI": {
-        "line": 168,
+        "line": 170,
         "definition": "TYPE(REAL_8), POINTER :: PSI => null(),DPHAS => null(),DVDS => null()",
         "name": "PSI",
         "default": "null()",
@@ -7709,7 +7686,7 @@
         }
       },
       "DPHAS": {
-        "line": 168,
+        "line": 170,
         "definition": "TYPE(REAL_8), POINTER :: PSI => null(),DPHAS => null(),DVDS => null()",
         "name": "DPHAS",
         "default": "null()",
@@ -7720,7 +7697,7 @@
         }
       },
       "DVDS": {
-        "line": 168,
+        "line": 170,
         "definition": "TYPE(REAL_8), POINTER :: PSI => null(),DPHAS => null(),DVDS => null()",
         "name": "DVDS",
         "default": "null()",
@@ -7731,7 +7708,7 @@
         }
       },
       "DELTA_E": {
-        "line": 169,
+        "line": 171,
         "definition": "real(dp), POINTER :: DELTA_E  => null(),phase0 => null()",
         "name": "DELTA_E",
         "default": "null()",
@@ -7742,7 +7719,7 @@
         }
       },
       "phase0": {
-        "line": 169,
+        "line": 171,
         "definition": "real(dp), POINTER :: DELTA_E  => null(),phase0 => null()",
         "name": "phase0",
         "default": "null()",
@@ -7753,7 +7730,7 @@
         }
       },
       "always_on": {
-        "line": 170,
+        "line": 172,
         "definition": "logical, pointer :: always_on => null(), implicit => null()",
         "name": "always_on",
         "default": "null()",
@@ -7763,7 +7740,7 @@
         }
       },
       "implicit": {
-        "line": 170,
+        "line": 172,
         "definition": "logical, pointer :: always_on => null(), implicit => null()",
         "name": "implicit",
         "default": "null()",
@@ -7773,7 +7750,7 @@
         }
       },
       "CAVITY_TOTALPATH": {
-        "line": 171,
+        "line": 173,
         "definition": "integer, POINTER :: CAVITY_TOTALPATH  => null()",
         "name": "CAVITY_TOTALPATH",
         "comment": "Cavity information",
@@ -7784,7 +7761,7 @@
         }
       },
       "AN": {
-        "line": 172,
+        "line": 174,
         "definition": "type(real_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -7797,7 +7774,7 @@
         }
       },
       "BN": {
-        "line": 172,
+        "line": 174,
         "definition": "type(real_8),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -8274,12 +8251,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 341,
+    "line": 343,
     "name": "ECOL",
     "module": "definition",
     "members": {
       "P": {
-        "line": 342,
+        "line": 344,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -8290,7 +8267,7 @@
         }
       },
       "L": {
-        "line": 343,
+        "line": 345,
         "definition": "real(dp) , POINTER ::L => null()",
         "name": "L",
         "comment": "collimator of MAD type(MADX_APERTURE), POINTER :: A => null()",
@@ -8305,12 +8282,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 347,
+    "line": 349,
     "name": "ECOLP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 348,
+        "line": 350,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -8321,7 +8298,7 @@
         }
       },
       "L": {
-        "line": 349,
+        "line": 351,
         "definition": "TYPE(REAL_8) , POINTER ::L => null()",
         "name": "L",
         "comment": "type(MADX_APERTURE), POINTER :: A => null()",
@@ -10119,12 +10096,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 390,
+    "line": 392,
     "name": "ENGE",
     "module": "definition",
     "members": {
       "P": {
-        "line": 391,
+        "line": 393,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -10135,7 +10112,7 @@
         }
       },
       "L": {
-        "line": 392,
+        "line": 394,
         "definition": "real(dp), POINTER ::L => null(), D => null()",
         "name": "L",
         "default": "null()",
@@ -10146,7 +10123,7 @@
         }
       },
       "D": {
-        "line": 392,
+        "line": 394,
         "definition": "real(dp), POINTER ::L => null(), D => null()",
         "name": "D",
         "default": "null()",
@@ -10157,7 +10134,7 @@
         }
       },
       "AN": {
-        "line": 393,
+        "line": 395,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -10170,7 +10147,7 @@
         }
       },
       "BN": {
-        "line": 393,
+        "line": 395,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -10183,7 +10160,7 @@
         }
       },
       "A": {
-        "line": 394,
+        "line": 396,
         "definition": "real(dp),  DIMENSION(:), POINTER :: A => null()",
         "name": "A",
         "comment": "ENGE  COEFFICIENTS",
@@ -10196,7 +10173,7 @@
         }
       },
       "nbessel": {
-        "line": 395,
+        "line": 397,
         "definition": "integer,  pointer :: nbessel => null()",
         "name": "nbessel",
         "default": "null()",
@@ -10206,7 +10183,7 @@
         }
       },
       "F": {
-        "line": 396,
+        "line": 398,
         "definition": "type(my_1D_taylor), POINTER :: F => null()",
         "name": "F",
         "default": "null()",
@@ -10220,12 +10197,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 399,
+    "line": 401,
     "name": "ENGEP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 400,
+        "line": 402,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -10236,7 +10213,7 @@
         }
       },
       "L": {
-        "line": 401,
+        "line": 403,
         "definition": "TYPE(REAL_8), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -10247,7 +10224,7 @@
         }
       },
       "AN": {
-        "line": 402,
+        "line": 404,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -10260,7 +10237,7 @@
         }
       },
       "BN": {
-        "line": 402,
+        "line": 404,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -10273,7 +10250,7 @@
         }
       },
       "D": {
-        "line": 403,
+        "line": 405,
         "definition": "real(dp), POINTER ::D => null()",
         "name": "D",
         "default": "null()",
@@ -10284,7 +10261,7 @@
         }
       },
       "A": {
-        "line": 404,
+        "line": 406,
         "definition": "real(dp),  DIMENSION(:), POINTER :: A => null()",
         "name": "A",
         "comment": "ENGE  COEFFICIENTS",
@@ -10297,7 +10274,7 @@
         }
       },
       "nbessel": {
-        "line": 405,
+        "line": 407,
         "definition": "integer,  pointer :: nbessel => null()",
         "name": "nbessel",
         "default": "null()",
@@ -10307,7 +10284,7 @@
         }
       },
       "F": {
-        "line": 406,
+        "line": 408,
         "definition": "type(my_1D_taylor), POINTER :: F => null()",
         "name": "F",
         "default": "null()",
@@ -10321,12 +10298,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 353,
+    "line": 355,
     "name": "ESEPTUM",
     "module": "definition",
     "members": {
       "P": {
-        "line": 354,
+        "line": 356,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -10337,7 +10314,7 @@
         }
       },
       "L": {
-        "line": 355,
+        "line": 357,
         "definition": "real(dp) , POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -10348,7 +10325,7 @@
         }
       },
       "VOLT": {
-        "line": 356,
+        "line": 358,
         "definition": "real(dp) , POINTER ::VOLT => null()",
         "name": "VOLT",
         "comment": "VOLTAGE IN MV/M",
@@ -10360,7 +10337,7 @@
         }
       },
       "PHAS": {
-        "line": 357,
+        "line": 359,
         "definition": "real(dp) , POINTER ::PHAS => null()",
         "name": "PHAS",
         "comment": "TILT TO MIMIC E_X AND E_Y OF MAD-X",
@@ -10375,12 +10352,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 360,
+    "line": 362,
     "name": "ESEPTUMP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 361,
+        "line": 363,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -10391,7 +10368,7 @@
         }
       },
       "L": {
-        "line": 362,
+        "line": 364,
         "definition": "TYPE(REAL_8) , POINTER ::L  => null()",
         "name": "L",
         "comment": "monitor and instrument of MAD",
@@ -10403,7 +10380,7 @@
         }
       },
       "VOLT": {
-        "line": 363,
+        "line": 365,
         "definition": "TYPE(REAL_8) , POINTER ::VOLT => null()",
         "name": "VOLT",
         "comment": "VOLTAGE IN MV/M",
@@ -10415,7 +10392,7 @@
         }
       },
       "PHAS": {
-        "line": 364,
+        "line": 366,
         "definition": "TYPE(REAL_8) , POINTER ::PHAS => null()",
         "name": "PHAS",
         "comment": "TILT TO MIMIC E_X AND E_Y OF MAD-X",
@@ -10781,12 +10758,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 444,
+    "line": 446,
     "name": "HELICAL_DIPOLE",
     "module": "definition",
     "members": {
       "P": {
-        "line": 445,
+        "line": 447,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -10797,7 +10774,7 @@
         }
       },
       "L": {
-        "line": 446,
+        "line": 448,
         "definition": "real(dp), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -10808,7 +10785,7 @@
         }
       },
       "AN": {
-        "line": 447,
+        "line": 449,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -10821,7 +10798,7 @@
         }
       },
       "BN": {
-        "line": 447,
+        "line": 449,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -10834,7 +10811,7 @@
         }
       },
       "fake_shift": {
-        "line": 447,
+        "line": 449,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null(),fake_shift=> null()",
         "name": "fake_shift",
         "comment": "Multipole component",
@@ -10847,7 +10824,7 @@
         }
       },
       "FREQ": {
-        "line": 448,
+        "line": 450,
         "definition": "real(dp), POINTER :: FREQ => null(), PHAS => null()",
         "name": "FREQ",
         "default": "null()",
@@ -10858,7 +10835,7 @@
         }
       },
       "PHAS": {
-        "line": 448,
+        "line": 450,
         "definition": "real(dp), POINTER :: FREQ => null(), PHAS => null()",
         "name": "PHAS",
         "default": "null()",
@@ -10869,7 +10846,7 @@
         }
       },
       "N_BESSEL": {
-        "line": 449,
+        "line": 451,
         "definition": "integer, POINTER :: N_BESSEL => null()",
         "name": "N_BESSEL",
         "default": "null()",
@@ -10882,12 +10859,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 452,
+    "line": 454,
     "name": "HELICAL_DIPOLEP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 453,
+        "line": 455,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -10898,7 +10875,7 @@
         }
       },
       "L": {
-        "line": 454,
+        "line": 456,
         "definition": "TYPE(REAL_8), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -10909,7 +10886,7 @@
         }
       },
       "AN": {
-        "line": 455,
+        "line": 457,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "default": "null()",
@@ -10921,7 +10898,7 @@
         }
       },
       "BN": {
-        "line": 455,
+        "line": 457,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "default": "null()",
@@ -10933,7 +10910,7 @@
         }
       },
       "fake_shift": {
-        "line": 456,
+        "line": 458,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: fake_shift=> null()",
         "name": "fake_shift",
         "default": "null()",
@@ -10945,7 +10922,7 @@
         }
       },
       "FREQ": {
-        "line": 457,
+        "line": 459,
         "definition": "TYPE(REAL_8),  POINTER :: FREQ => null(), PHAS => null()",
         "name": "FREQ",
         "default": "null()",
@@ -10956,7 +10933,7 @@
         }
       },
       "PHAS": {
-        "line": 457,
+        "line": 459,
         "definition": "TYPE(REAL_8),  POINTER :: FREQ => null(), PHAS => null()",
         "name": "PHAS",
         "default": "null()",
@@ -10967,7 +10944,7 @@
         }
       },
       "N_BESSEL": {
-        "line": 458,
+        "line": 460,
         "definition": "integer, POINTER :: N_BESSEL => null()",
         "name": "N_BESSEL",
         "default": "null()",
@@ -11769,12 +11746,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 200,
+    "line": 202,
     "name": "KTK",
     "module": "definition",
     "members": {
       "P": {
-        "line": 201,
+        "line": 203,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -11785,7 +11762,7 @@
         }
       },
       "L": {
-        "line": 202,
+        "line": 204,
         "definition": "real(dp), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -11796,7 +11773,7 @@
         }
       },
       "AN": {
-        "line": 203,
+        "line": 205,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -11809,7 +11786,7 @@
         }
       },
       "BN": {
-        "line": 203,
+        "line": 205,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -11822,7 +11799,7 @@
         }
       },
       "MATX": {
-        "line": 204,
+        "line": 206,
         "definition": "real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATX",
         "comment": "LINEAR MATRIX",
@@ -11835,7 +11812,7 @@
         }
       },
       "MATY": {
-        "line": 204,
+        "line": 206,
         "definition": "real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATY",
         "comment": "LINEAR MATRIX frs     real(dp),  DIMENSION(:), POINTER :: lx(:) => null(), ly(:) => null()",
@@ -11848,7 +11825,7 @@
         }
       },
       "lx": {
-        "line": 206,
+        "line": 208,
         "definition": "real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()",
         "name": "lx",
         "default": "null()",
@@ -11860,7 +11837,7 @@
         }
       },
       "ly": {
-        "line": 206,
+        "line": 208,
         "definition": "real(dp),  DIMENSION(:), POINTER :: lx => null(), ly => null()",
         "name": "ly",
         "default": "null()",
@@ -11872,7 +11849,7 @@
         }
       },
       "FINT": {
-        "line": 207,
+        "line": 209,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -11885,7 +11862,7 @@
         }
       },
       "HGAP": {
-        "line": 207,
+        "line": 209,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -11898,7 +11875,7 @@
         }
       },
       "H1": {
-        "line": 208,
+        "line": 210,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -11910,7 +11887,7 @@
         }
       },
       "H2": {
-        "line": 208,
+        "line": 210,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -11922,7 +11899,7 @@
         }
       },
       "VA": {
-        "line": 209,
+        "line": 211,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -11934,7 +11911,7 @@
         }
       },
       "VS": {
-        "line": 209,
+        "line": 211,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -11949,12 +11926,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 212,
+    "line": 214,
     "name": "KTKP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 213,
+        "line": 215,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -11965,7 +11942,7 @@
         }
       },
       "L": {
-        "line": 214,
+        "line": 216,
         "definition": "TYPE(REAL_8), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -11976,7 +11953,7 @@
         }
       },
       "AN": {
-        "line": 215,
+        "line": 217,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -11989,7 +11966,7 @@
         }
       },
       "BN": {
-        "line": 215,
+        "line": 217,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -12002,7 +11979,7 @@
         }
       },
       "MATX": {
-        "line": 216,
+        "line": 218,
         "definition": "TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATX",
         "comment": "LINEAR MATRIX",
@@ -12015,7 +11992,7 @@
         }
       },
       "MATY": {
-        "line": 216,
+        "line": 218,
         "definition": "TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATY",
         "comment": "LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:) => null(), ly(:) => null()",
@@ -12028,7 +12005,7 @@
         }
       },
       "lx": {
-        "line": 218,
+        "line": 220,
         "definition": "TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null(), ly => null()",
         "name": "lx",
         "default": "null()",
@@ -12040,7 +12017,7 @@
         }
       },
       "ly": {
-        "line": 218,
+        "line": 220,
         "definition": "TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null(), ly => null()",
         "name": "ly",
         "default": "null()",
@@ -12052,7 +12029,7 @@
         }
       },
       "FINT": {
-        "line": 219,
+        "line": 221,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -12065,7 +12042,7 @@
         }
       },
       "HGAP": {
-        "line": 219,
+        "line": 221,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -12078,7 +12055,7 @@
         }
       },
       "H1": {
-        "line": 220,
+        "line": 222,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -12090,7 +12067,7 @@
         }
       },
       "H2": {
-        "line": 220,
+        "line": 222,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -12102,7 +12079,7 @@
         }
       },
       "VA": {
-        "line": 221,
+        "line": 223,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -12114,7 +12091,7 @@
         }
       },
       "VS": {
-        "line": 221,
+        "line": 223,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -13015,12 +12992,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 317,
+    "line": 319,
     "name": "MON",
     "module": "definition",
     "members": {
       "P": {
-        "line": 318,
+        "line": 320,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -13031,7 +13008,7 @@
         }
       },
       "L": {
-        "line": 319,
+        "line": 321,
         "definition": "real(dp) , POINTER ::L => null()",
         "name": "L",
         "comment": "monitor and instrument of MAD",
@@ -13043,7 +13020,7 @@
         }
       },
       "x": {
-        "line": 320,
+        "line": 322,
         "definition": "real(dp), pointer :: x => null(), y => null()",
         "name": "x",
         "default": "null()",
@@ -13054,7 +13031,7 @@
         }
       },
       "y": {
-        "line": 320,
+        "line": 322,
         "definition": "real(dp), pointer :: x => null(), y => null()",
         "name": "y",
         "default": "null()",
@@ -13068,12 +13045,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 323,
+    "line": 325,
     "name": "MONP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 324,
+        "line": 326,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -13084,7 +13061,7 @@
         }
       },
       "L": {
-        "line": 325,
+        "line": 327,
         "definition": "TYPE(REAL_8) , POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -13095,7 +13072,7 @@
         }
       },
       "x": {
-        "line": 326,
+        "line": 328,
         "definition": "real(dp), pointer :: x => null(), y => null()",
         "name": "x",
         "default": "null()",
@@ -13106,7 +13083,7 @@
         }
       },
       "y": {
-        "line": 326,
+        "line": 328,
         "definition": "real(dp), pointer :: x => null(), y => null()",
         "name": "y",
         "default": "null()",
@@ -13321,12 +13298,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 262,
+    "line": 264,
     "name": "NSMI",
     "module": "definition",
     "members": {
       "P": {
-        "line": 263,
+        "line": 265,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -13337,7 +13314,7 @@
         }
       },
       "BN": {
-        "line": 264,
+        "line": 266,
         "definition": "real(dp),  DIMENSION(:), POINTER :: BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -13353,12 +13330,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 267,
+    "line": 269,
     "name": "NSMIP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 268,
+        "line": 270,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -13369,7 +13346,7 @@
         }
       },
       "BN": {
-        "line": 269,
+        "line": 271,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -13755,12 +13732,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 424,
+    "line": 426,
     "name": "PANCAKE",
     "module": "definition",
     "members": {
       "P": {
-        "line": 425,
+        "line": 427,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -13771,7 +13748,7 @@
         }
       },
       "L": {
-        "line": 426,
+        "line": 428,
         "definition": "real(dp),  POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -13782,7 +13759,7 @@
         }
       },
       "B": {
-        "line": 427,
+        "line": 429,
         "definition": "type(tree_element),  POINTER :: B(:) => null()",
         "name": "B",
         "default": "null()",
@@ -13794,7 +13771,7 @@
         }
       },
       "SCALE": {
-        "line": 428,
+        "line": 430,
         "definition": "REAL(DP), POINTER :: SCALE=> null(),angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "SCALE",
         "default": "null()",
@@ -13805,7 +13782,7 @@
         }
       },
       "angc": {
-        "line": 428,
+        "line": 430,
         "definition": "REAL(DP), POINTER :: SCALE=> null(),angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "angc",
         "default": "null()",
@@ -13816,7 +13793,7 @@
         }
       },
       "dc": {
-        "line": 428,
+        "line": 430,
         "definition": "REAL(DP), POINTER :: SCALE=> null(),angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "dc",
         "default": "null()",
@@ -13827,7 +13804,7 @@
         }
       },
       "hc": {
-        "line": 428,
+        "line": 430,
         "definition": "REAL(DP), POINTER :: SCALE=> null(),angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "hc",
         "default": "null()",
@@ -13838,7 +13815,7 @@
         }
       },
       "xc": {
-        "line": 428,
+        "line": 430,
         "definition": "REAL(DP), POINTER :: SCALE=> null(),angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "xc",
         "default": "null()",
@@ -13849,7 +13826,7 @@
         }
       },
       "vc": {
-        "line": 428,
+        "line": 430,
         "definition": "REAL(DP), POINTER :: SCALE=> null(),angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "vc",
         "default": "null()",
@@ -13860,7 +13837,7 @@
         }
       },
       "xprime": {
-        "line": 429,
+        "line": 431,
         "definition": "logical,pointer :: xprime => null()",
         "name": "xprime",
         "comment": "type(gen_grad_field_coeff),pointer :: gf => null()",
@@ -13874,12 +13851,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 433,
+    "line": 435,
     "name": "PANCAKEP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 434,
+        "line": 436,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -13890,7 +13867,7 @@
         }
       },
       "L": {
-        "line": 435,
+        "line": 437,
         "definition": "TYPE(REAL_8),  POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -13901,7 +13878,7 @@
         }
       },
       "B": {
-        "line": 436,
+        "line": 438,
         "definition": "type(tree_element),  POINTER :: B(:) => null()",
         "name": "B",
         "default": "null()",
@@ -13913,7 +13890,7 @@
         }
       },
       "SCALE": {
-        "line": 437,
+        "line": 439,
         "definition": "TYPE(REAL_8), POINTER :: SCALE => null()",
         "name": "SCALE",
         "default": "null()",
@@ -13924,7 +13901,7 @@
         }
       },
       "angc": {
-        "line": 438,
+        "line": 440,
         "definition": "real(dp),pointer :: angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "angc",
         "default": "null()",
@@ -13935,7 +13912,7 @@
         }
       },
       "dc": {
-        "line": 438,
+        "line": 440,
         "definition": "real(dp),pointer :: angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "dc",
         "default": "null()",
@@ -13946,7 +13923,7 @@
         }
       },
       "hc": {
-        "line": 438,
+        "line": 440,
         "definition": "real(dp),pointer :: angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "hc",
         "default": "null()",
@@ -13957,7 +13934,7 @@
         }
       },
       "xc": {
-        "line": 438,
+        "line": 440,
         "definition": "real(dp),pointer :: angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "xc",
         "default": "null()",
@@ -13968,7 +13945,7 @@
         }
       },
       "vc": {
-        "line": 438,
+        "line": 440,
         "definition": "real(dp),pointer :: angc=> null(),dc=> null(),hc=> null(),xc => null(),vc => null()",
         "name": "vc",
         "default": "null()",
@@ -13979,7 +13956,7 @@
         }
       },
       "xprime": {
-        "line": 439,
+        "line": 441,
         "definition": "logical,pointer :: xprime=> null()",
         "name": "xprime",
         "comment": "type(gen_grad_field_coeff),pointer :: gf => null()",
@@ -14559,12 +14536,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 329,
+    "line": 331,
     "name": "RCOL",
     "module": "definition",
     "members": {
       "P": {
-        "line": 330,
+        "line": 332,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -14575,7 +14552,7 @@
         }
       },
       "L": {
-        "line": 331,
+        "line": 333,
         "definition": "real(dp) , POINTER :: L => null()",
         "name": "L",
         "comment": "collimator of MAD type(MADX_APERTURE), POINTER :: A => null()",
@@ -14590,12 +14567,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 335,
+    "line": 337,
     "name": "RCOLP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 336,
+        "line": 338,
         "definition": "TYPE(MAGNET_CHART), POINTER :: P => null()",
         "name": "P",
         "default": "null()",
@@ -14606,7 +14583,7 @@
         }
       },
       "L": {
-        "line": 337,
+        "line": 339,
         "definition": "TYPE(REAL_8) , POINTER ::L => null()",
         "name": "L",
         "comment": "type(MADX_APERTURE), POINTER :: A => null()",
@@ -14825,12 +14802,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 177,
+    "line": 179,
     "name": "SOL5",
     "module": "definition",
     "members": {
       "P": {
-        "line": 178,
+        "line": 180,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -14841,7 +14818,7 @@
         }
       },
       "L": {
-        "line": 179,
+        "line": 181,
         "definition": "real(dp), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -14852,7 +14829,7 @@
         }
       },
       "B_SOL": {
-        "line": 180,
+        "line": 182,
         "definition": "real(dp), POINTER ::B_SOL => null()",
         "name": "B_SOL",
         "default": "null()",
@@ -14863,7 +14840,7 @@
         }
       },
       "AN": {
-        "line": 181,
+        "line": 183,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -14876,7 +14853,7 @@
         }
       },
       "BN": {
-        "line": 181,
+        "line": 183,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(),BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -14889,7 +14866,7 @@
         }
       },
       "FINT": {
-        "line": 182,
+        "line": 184,
         "definition": "real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -14902,7 +14879,7 @@
         }
       },
       "HGAP": {
-        "line": 182,
+        "line": 184,
         "definition": "real(dp), DIMENSION(:),    POINTER:: FINT => null(),HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -14915,7 +14892,7 @@
         }
       },
       "H1": {
-        "line": 183,
+        "line": 185,
         "definition": "real(dp),   POINTER:: H1 => null(),H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -14927,7 +14904,7 @@
         }
       },
       "H2": {
-        "line": 183,
+        "line": 185,
         "definition": "real(dp),   POINTER:: H1 => null(),H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -14939,7 +14916,7 @@
         }
       },
       "VA": {
-        "line": 184,
+        "line": 186,
         "definition": "real(dp),   POINTER:: VA => null(),VS  => null()",
         "name": "VA",
         "comment": "sad f1,f2",
@@ -14951,7 +14928,7 @@
         }
       },
       "VS": {
-        "line": 184,
+        "line": 186,
         "definition": "real(dp),   POINTER:: VA => null(),VS  => null()",
         "name": "VS",
         "comment": "sad f1,f2",
@@ -14963,7 +14940,7 @@
         }
       },
       "dx": {
-        "line": 185,
+        "line": 187,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "dx",
         "comment": "SADISTIC",
@@ -14975,7 +14952,7 @@
         }
       },
       "dy": {
-        "line": 185,
+        "line": 187,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "dy",
         "comment": "SADISTIC",
@@ -14987,7 +14964,7 @@
         }
       },
       "pitch_x": {
-        "line": 185,
+        "line": 187,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "pitch_x",
         "comment": "SADISTIC",
@@ -14999,7 +14976,7 @@
         }
       },
       "pitch_y": {
-        "line": 185,
+        "line": 187,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "pitch_y",
         "comment": "SADISTIC",
@@ -15014,12 +14991,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 188,
+    "line": 190,
     "name": "SOL5P",
     "module": "definition",
     "members": {
       "P": {
-        "line": 189,
+        "line": 191,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -15030,7 +15007,7 @@
         }
       },
       "AN": {
-        "line": 190,
+        "line": 192,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -15043,7 +15020,7 @@
         }
       },
       "BN": {
-        "line": 190,
+        "line": 192,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -15056,7 +15033,7 @@
         }
       },
       "L": {
-        "line": 191,
+        "line": 193,
         "definition": "TYPE(REAL_8), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -15067,7 +15044,7 @@
         }
       },
       "B_SOL": {
-        "line": 192,
+        "line": 194,
         "definition": "TYPE(REAL_8), POINTER ::B_SOL => null()",
         "name": "B_SOL",
         "default": "null()",
@@ -15078,7 +15055,7 @@
         }
       },
       "FINT": {
-        "line": 193,
+        "line": 195,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15091,7 +15068,7 @@
         }
       },
       "HGAP": {
-        "line": 193,
+        "line": 195,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15104,7 +15081,7 @@
         }
       },
       "H1": {
-        "line": 194,
+        "line": 196,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15116,7 +15093,7 @@
         }
       },
       "H2": {
-        "line": 194,
+        "line": 196,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15128,7 +15105,7 @@
         }
       },
       "VA": {
-        "line": 195,
+        "line": 197,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -15140,7 +15117,7 @@
         }
       },
       "VS": {
-        "line": 195,
+        "line": 197,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -15152,7 +15129,7 @@
         }
       },
       "dx": {
-        "line": 196,
+        "line": 198,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "dx",
         "comment": "SADISTIC",
@@ -15164,7 +15141,7 @@
         }
       },
       "dy": {
-        "line": 196,
+        "line": 198,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "dy",
         "comment": "SADISTIC",
@@ -15176,7 +15153,7 @@
         }
       },
       "pitch_x": {
-        "line": 196,
+        "line": 198,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "pitch_x",
         "comment": "SADISTIC",
@@ -15188,7 +15165,7 @@
         }
       },
       "pitch_y": {
-        "line": 196,
+        "line": 198,
         "definition": "real(dp),   POINTER:: dx => null(),dy => null(),pitch_x => null(),pitch_y => null()",
         "name": "pitch_y",
         "comment": "SADISTIC",
@@ -15203,12 +15180,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 272,
+    "line": 274,
     "name": "SSMI",
     "module": "definition",
     "members": {
       "P": {
-        "line": 273,
+        "line": 275,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -15219,7 +15196,7 @@
         }
       },
       "AN": {
-        "line": 274,
+        "line": 276,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN  => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -15235,12 +15212,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 277,
+    "line": 279,
     "name": "SSMIP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 278,
+        "line": 280,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -15251,7 +15228,7 @@
         }
       },
       "AN": {
-        "line": 279,
+        "line": 281,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -15267,12 +15244,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 367,
+    "line": 369,
     "name": "STREX",
     "module": "definition",
     "members": {
       "P": {
-        "line": 368,
+        "line": 370,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -15283,7 +15260,7 @@
         }
       },
       "L": {
-        "line": 369,
+        "line": 371,
         "definition": "real(dp), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -15294,7 +15271,7 @@
         }
       },
       "AN": {
-        "line": 370,
+        "line": 372,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -15307,7 +15284,7 @@
         }
       },
       "BN": {
-        "line": 370,
+        "line": 372,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -15320,7 +15297,7 @@
         }
       },
       "DRIFTKICK": {
-        "line": 371,
+        "line": 373,
         "definition": "logical(lp), POINTER :: DRIFTKICK => null()",
         "name": "DRIFTKICK",
         "comment": ", LIKEMAD => null()",
@@ -15332,7 +15309,7 @@
         }
       },
       "FINT": {
-        "line": 372,
+        "line": 374,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15345,7 +15322,7 @@
         }
       },
       "HGAP": {
-        "line": 372,
+        "line": 374,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15358,7 +15335,7 @@
         }
       },
       "H1": {
-        "line": 373,
+        "line": 375,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15370,7 +15347,7 @@
         }
       },
       "H2": {
-        "line": 373,
+        "line": 375,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15382,7 +15359,7 @@
         }
       },
       "VA": {
-        "line": 374,
+        "line": 376,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -15394,7 +15371,7 @@
         }
       },
       "VS": {
-        "line": 374,
+        "line": 376,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -15406,7 +15383,7 @@
         }
       },
       "f": {
-        "line": 375,
+        "line": 377,
         "definition": "integer, pointer :: f => null()",
         "name": "f",
         "default": "null()",
@@ -15419,12 +15396,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 378,
+    "line": 380,
     "name": "STREXP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 379,
+        "line": 381,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -15435,7 +15412,7 @@
         }
       },
       "L": {
-        "line": 380,
+        "line": 382,
         "definition": "TYPE(REAL_8), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -15446,7 +15423,7 @@
         }
       },
       "AN": {
-        "line": 381,
+        "line": 383,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -15459,7 +15436,7 @@
         }
       },
       "BN": {
-        "line": 381,
+        "line": 383,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -15472,7 +15449,7 @@
         }
       },
       "DRIFTKICK": {
-        "line": 382,
+        "line": 384,
         "definition": "logical(lp),  POINTER :: DRIFTKICK => null()",
         "name": "DRIFTKICK",
         "comment": ", LIKEMAD => null()",
@@ -15484,7 +15461,7 @@
         }
       },
       "FINT": {
-        "line": 383,
+        "line": 385,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15497,7 +15474,7 @@
         }
       },
       "HGAP": {
-        "line": 383,
+        "line": 385,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15510,7 +15487,7 @@
         }
       },
       "H1": {
-        "line": 384,
+        "line": 386,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15522,7 +15499,7 @@
         }
       },
       "H2": {
-        "line": 384,
+        "line": 386,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15534,7 +15511,7 @@
         }
       },
       "VA": {
-        "line": 385,
+        "line": 387,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -15546,7 +15523,7 @@
         }
       },
       "VS": {
-        "line": 385,
+        "line": 387,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -15558,7 +15535,7 @@
         }
       },
       "f": {
-        "line": 386,
+        "line": 388,
         "definition": "integer, pointer :: f => null()",
         "name": "f",
         "default": "null()",
@@ -15743,12 +15720,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 283,
+    "line": 285,
     "name": "TEAPOT",
     "module": "definition",
     "members": {
       "P": {
-        "line": 284,
+        "line": 286,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -15759,7 +15736,7 @@
         }
       },
       "L": {
-        "line": 285,
+        "line": 287,
         "definition": "real(dp),  POINTER ::L => null(),b_sol=>null()",
         "name": "L",
         "default": "null()",
@@ -15770,7 +15747,7 @@
         }
       },
       "b_sol": {
-        "line": 285,
+        "line": 287,
         "definition": "real(dp),  POINTER ::L => null(),b_sol=>null()",
         "name": "b_sol",
         "default": "null()",
@@ -15781,7 +15758,7 @@
         }
       },
       "AN": {
-        "line": 286,
+        "line": 288,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -15794,7 +15771,7 @@
         }
       },
       "BN": {
-        "line": 286,
+        "line": 288,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -15807,7 +15784,7 @@
         }
       },
       "bf_x": {
-        "line": 287,
+        "line": 289,
         "definition": "real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()",
         "name": "bf_x",
         "comment": "B field polynomial",
@@ -15820,7 +15797,7 @@
         }
       },
       "bf_y": {
-        "line": 287,
+        "line": 289,
         "definition": "real(dp),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()",
         "name": "bf_y",
         "comment": "B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()",
@@ -15833,7 +15810,7 @@
         }
       },
       "DRIFTKICK": {
-        "line": 289,
+        "line": 291,
         "definition": "logical(lp),   POINTER :: DRIFTKICK => null()",
         "name": "DRIFTKICK",
         "comment": "Split flag",
@@ -15845,7 +15822,7 @@
         }
       },
       "FINT": {
-        "line": 290,
+        "line": 292,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15858,7 +15835,7 @@
         }
       },
       "HGAP": {
-        "line": 290,
+        "line": 292,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15871,7 +15848,7 @@
         }
       },
       "H1": {
-        "line": 291,
+        "line": 293,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15883,7 +15860,7 @@
         }
       },
       "H2": {
-        "line": 291,
+        "line": 293,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -15895,7 +15872,7 @@
         }
       },
       "f": {
-        "line": 292,
+        "line": 294,
         "definition": "integer, pointer :: f => null()",
         "name": "f",
         "default": "null()",
@@ -15905,7 +15882,7 @@
         }
       },
       "VA": {
-        "line": 293,
+        "line": 295,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -15917,7 +15894,7 @@
         }
       },
       "VS": {
-        "line": 293,
+        "line": 295,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole !  electric info",
@@ -15929,7 +15906,7 @@
         }
       },
       "AE": {
-        "line": 295,
+        "line": 297,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()",
         "name": "AE",
         "comment": "an,bn for electric stuff",
@@ -15942,7 +15919,7 @@
         }
       },
       "BE": {
-        "line": 295,
+        "line": 297,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AE => null(), BE => null()",
         "name": "BE",
         "comment": "an,bn for electric stuff",
@@ -15955,7 +15932,7 @@
         }
       },
       "e_x": {
-        "line": 296,
+        "line": 298,
         "definition": "real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "e_x",
         "default": "null()",
@@ -15967,7 +15944,7 @@
         }
       },
       "e_y": {
-        "line": 296,
+        "line": 298,
         "definition": "real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "e_y",
         "default": "null()",
@@ -15979,7 +15956,7 @@
         }
       },
       "PHI": {
-        "line": 296,
+        "line": 298,
         "definition": "real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "PHI",
         "default": "null()",
@@ -15991,7 +15968,7 @@
         }
       },
       "vm": {
-        "line": 296,
+        "line": 298,
         "definition": "real(dp),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "vm",
         "default": "null()",
@@ -16003,7 +15980,7 @@
         }
       },
       "ELECTRIC": {
-        "line": 297,
+        "line": 299,
         "definition": "LOGICAL(LP), POINTER :: ELECTRIC => null()",
         "name": "ELECTRIC",
         "default": "null()",
@@ -16017,12 +15994,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 300,
+    "line": 302,
     "name": "TEAPOTP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 301,
+        "line": 303,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -16033,7 +16010,7 @@
         }
       },
       "L": {
-        "line": 302,
+        "line": 304,
         "definition": "TYPE(REAL_8),  POINTER ::L => null(),b_sol=>null()",
         "name": "L",
         "default": "null()",
@@ -16044,7 +16021,7 @@
         }
       },
       "b_sol": {
-        "line": 302,
+        "line": 304,
         "definition": "TYPE(REAL_8),  POINTER ::L => null(),b_sol=>null()",
         "name": "b_sol",
         "default": "null()",
@@ -16055,7 +16032,7 @@
         }
       },
       "AN": {
-        "line": 303,
+        "line": 305,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -16068,7 +16045,7 @@
         }
       },
       "BN": {
-        "line": 303,
+        "line": 305,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -16081,7 +16058,7 @@
         }
       },
       "bf_x": {
-        "line": 304,
+        "line": 306,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()",
         "name": "bf_x",
         "comment": "B field polynomial",
@@ -16094,7 +16071,7 @@
         }
       },
       "bf_y": {
-        "line": 304,
+        "line": 306,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: bf_x => null(),bf_y => null()",
         "name": "bf_y",
         "comment": "B field polynomial INTEGER,POINTER :: SECTOR_NMUL => null()",
@@ -16107,7 +16084,7 @@
         }
       },
       "DRIFTKICK": {
-        "line": 306,
+        "line": 308,
         "definition": "logical(lp),   POINTER :: DRIFTKICK => null()",
         "name": "DRIFTKICK",
         "default": "null()",
@@ -16118,7 +16095,7 @@
         }
       },
       "FINT": {
-        "line": 307,
+        "line": 309,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16131,7 +16108,7 @@
         }
       },
       "HGAP": {
-        "line": 307,
+        "line": 309,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16144,7 +16121,7 @@
         }
       },
       "H1": {
-        "line": 308,
+        "line": 310,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16156,7 +16133,7 @@
         }
       },
       "H2": {
-        "line": 308,
+        "line": 310,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16168,7 +16145,7 @@
         }
       },
       "f": {
-        "line": 309,
+        "line": 311,
         "definition": "integer, pointer :: f => null()",
         "name": "f",
         "default": "null()",
@@ -16178,7 +16155,7 @@
         }
       },
       "VA": {
-        "line": 310,
+        "line": 312,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -16190,7 +16167,7 @@
         }
       },
       "VS": {
-        "line": 310,
+        "line": 312,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole !  electric info",
@@ -16202,7 +16179,7 @@
         }
       },
       "AE": {
-        "line": 312,
+        "line": 314,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()",
         "name": "AE",
         "comment": "an,bn for electric stuff",
@@ -16215,7 +16192,7 @@
         }
       },
       "BE": {
-        "line": 312,
+        "line": 314,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AE => null(), BE => null()",
         "name": "BE",
         "comment": "an,bn for electric stuff",
@@ -16228,7 +16205,7 @@
         }
       },
       "e_x": {
-        "line": 313,
+        "line": 315,
         "definition": "TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "e_x",
         "default": "null()",
@@ -16240,7 +16217,7 @@
         }
       },
       "e_y": {
-        "line": 313,
+        "line": 315,
         "definition": "TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "e_y",
         "default": "null()",
@@ -16252,7 +16229,7 @@
         }
       },
       "PHI": {
-        "line": 313,
+        "line": 315,
         "definition": "TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "PHI",
         "default": "null()",
@@ -16264,7 +16241,7 @@
         }
       },
       "vm": {
-        "line": 313,
+        "line": 315,
         "definition": "TYPE(REAL_8),  DIMENSION(:),  POINTER :: e_x => null(),e_y => null(),PHI => null(),vm => null()",
         "name": "vm",
         "default": "null()",
@@ -16276,7 +16253,7 @@
         }
       },
       "ELECTRIC": {
-        "line": 314,
+        "line": 316,
         "definition": "LOGICAL(LP), POINTER :: ELECTRIC => null()",
         "name": "ELECTRIC",
         "default": "null()",
@@ -16290,12 +16267,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 224,
+    "line": 226,
     "name": "TKTF",
     "module": "definition",
     "members": {
       "P": {
-        "line": 225,
+        "line": 227,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -16306,7 +16283,7 @@
         }
       },
       "L": {
-        "line": 226,
+        "line": 228,
         "definition": "real(dp), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -16317,7 +16294,7 @@
         }
       },
       "AN": {
-        "line": 227,
+        "line": 229,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -16330,7 +16307,7 @@
         }
       },
       "BN": {
-        "line": 227,
+        "line": 229,
         "definition": "real(dp),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -16343,7 +16320,7 @@
         }
       },
       "MATX": {
-        "line": 228,
+        "line": 230,
         "definition": "real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATX",
         "comment": "LINEAR MATRIX",
@@ -16356,7 +16333,7 @@
         }
       },
       "MATY": {
-        "line": 228,
+        "line": 230,
         "definition": "real(dp),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATY",
         "comment": "LINEAR MATRIX",
@@ -16369,7 +16346,7 @@
         }
       },
       "MATX2": {
-        "line": 229,
+        "line": 231,
         "definition": "real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()",
         "name": "MATX2",
         "comment": "LINEAR MATRIX",
@@ -16382,7 +16359,7 @@
         }
       },
       "MATY2": {
-        "line": 229,
+        "line": 231,
         "definition": "real(dp),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()",
         "name": "MATY2",
         "comment": "LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER :: lx(:) => null()",
@@ -16395,7 +16372,7 @@
         }
       },
       "lx": {
-        "line": 231,
+        "line": 233,
         "definition": "real(dp), DIMENSION(:), POINTER :: lx => null()",
         "name": "lx",
         "default": "null()",
@@ -16407,7 +16384,7 @@
         }
       },
       "RMATX": {
-        "line": 232,
+        "line": 234,
         "definition": "real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()",
         "name": "RMATX",
         "comment": "LINEAR MATRIX",
@@ -16420,7 +16397,7 @@
         }
       },
       "RMATY": {
-        "line": 232,
+        "line": 234,
         "definition": "real(dp), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()",
         "name": "RMATY",
         "comment": "LINEAR MATRIX frs     real(dp), DIMENSION(:), POINTER ::   Rlx(:) => null()",
@@ -16433,7 +16410,7 @@
         }
       },
       "Rlx": {
-        "line": 234,
+        "line": 236,
         "definition": "real(dp), DIMENSION(:), POINTER ::   Rlx => null()",
         "name": "Rlx",
         "comment": "real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp), DIMENSION(:), POINTER ::   dy(:) => null()",
@@ -16446,7 +16423,7 @@
         }
       },
       "FINT": {
-        "line": 237,
+        "line": 239,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16459,7 +16436,7 @@
         }
       },
       "HGAP": {
-        "line": 237,
+        "line": 239,
         "definition": "real(dp), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16472,7 +16449,7 @@
         }
       },
       "H1": {
-        "line": 238,
+        "line": 240,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16484,7 +16461,7 @@
         }
       },
       "H2": {
-        "line": 238,
+        "line": 240,
         "definition": "real(dp),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16496,7 +16473,7 @@
         }
       },
       "VA": {
-        "line": 239,
+        "line": 241,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -16508,7 +16485,7 @@
         }
       },
       "VS": {
-        "line": 239,
+        "line": 241,
         "definition": "real(dp),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -16520,7 +16497,7 @@
         }
       },
       "f": {
-        "line": 240,
+        "line": 242,
         "definition": "integer, pointer :: f => null()",
         "name": "f",
         "default": "null()",
@@ -16533,12 +16510,12 @@
   },
   {
     "filename": "$ACC_ROOT_DIR/forest/include/a_def_all_kind.inc",
-    "line": 243,
+    "line": 245,
     "name": "TKTFP",
     "module": "definition",
     "members": {
       "P": {
-        "line": 244,
+        "line": 246,
         "definition": "TYPE(MAGNET_CHART), POINTER:: P => null()",
         "name": "P",
         "default": "null()",
@@ -16549,7 +16526,7 @@
         }
       },
       "L": {
-        "line": 245,
+        "line": 247,
         "definition": "TYPE(REAL_8), POINTER ::L => null()",
         "name": "L",
         "default": "null()",
@@ -16560,7 +16537,7 @@
         }
       },
       "AN": {
-        "line": 246,
+        "line": 248,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "AN",
         "comment": "Multipole component",
@@ -16573,7 +16550,7 @@
         }
       },
       "BN": {
-        "line": 246,
+        "line": 248,
         "definition": "TYPE(REAL_8),  DIMENSION(:), POINTER :: AN => null(), BN => null()",
         "name": "BN",
         "comment": "Multipole component",
@@ -16586,7 +16563,7 @@
         }
       },
       "MATX": {
-        "line": 247,
+        "line": 249,
         "definition": "TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATX",
         "comment": "LINEAR MATRIX",
@@ -16599,7 +16576,7 @@
         }
       },
       "MATY": {
-        "line": 247,
+        "line": 249,
         "definition": "TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX => null(), MATY => null()",
         "name": "MATY",
         "comment": "LINEAR MATRIX",
@@ -16612,7 +16589,7 @@
         }
       },
       "MATX2": {
-        "line": 248,
+        "line": 250,
         "definition": "TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()",
         "name": "MATX2",
         "comment": "LINEAR MATRIX",
@@ -16625,7 +16602,7 @@
         }
       },
       "MATY2": {
-        "line": 248,
+        "line": 250,
         "definition": "TYPE(REAL_8),  DIMENSION(:,:), POINTER :: MATX2 => null(), MATY2 => null()",
         "name": "MATY2",
         "comment": "LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:), POINTER :: lx(:) => null()",
@@ -16638,7 +16615,7 @@
         }
       },
       "lx": {
-        "line": 250,
+        "line": 252,
         "definition": "TYPE(REAL_8), DIMENSION(:), POINTER :: lx => null()",
         "name": "lx",
         "default": "null()",
@@ -16650,7 +16627,7 @@
         }
       },
       "RMATX": {
-        "line": 251,
+        "line": 253,
         "definition": "TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()",
         "name": "RMATX",
         "comment": "LINEAR MATRIX",
@@ -16663,7 +16640,7 @@
         }
       },
       "RMATY": {
-        "line": 251,
+        "line": 253,
         "definition": "TYPE(REAL_8), DIMENSION(:,:), POINTER :: RMATX => null(), RMATY => null()",
         "name": "RMATY",
         "comment": "LINEAR MATRIX frs     TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx(:) => null()",
@@ -16676,7 +16653,7 @@
         }
       },
       "Rlx": {
-        "line": 253,
+        "line": 255,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER :: Rlx => null()",
         "name": "Rlx",
         "comment": "real(dp), DIMENSION(:), POINTER ::   dx(:) => null() real(dp), DIMENSION(:), POINTER ::   dy(:) => null()",
@@ -16689,7 +16666,7 @@
         }
       },
       "FINT": {
-        "line": 256,
+        "line": 258,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "FINT",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16702,7 +16679,7 @@
         }
       },
       "HGAP": {
-        "line": 256,
+        "line": 258,
         "definition": "TYPE(REAL_8), DIMENSION(:),   POINTER:: FINT => null(), HGAP => null()",
         "name": "HGAP",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16715,7 +16692,7 @@
         }
       },
       "H1": {
-        "line": 257,
+        "line": 259,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H1",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16727,7 +16704,7 @@
         }
       },
       "H2": {
-        "line": 257,
+        "line": 259,
         "definition": "TYPE(REAL_8),   POINTER:: H1 => null(), H2 => null()",
         "name": "H2",
         "comment": "FRINGE FUDGE FOR MAD",
@@ -16739,7 +16716,7 @@
         }
       },
       "VA": {
-        "line": 258,
+        "line": 260,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VA",
         "comment": "valishev-like multipole",
@@ -16751,7 +16728,7 @@
         }
       },
       "VS": {
-        "line": 258,
+        "line": 260,
         "definition": "TYPE(REAL_8),   POINTER:: VA => null(), VS => null()",
         "name": "VS",
         "comment": "valishev-like multipole",
@@ -16763,7 +16740,7 @@
         }
       },
       "f": {
-        "line": 259,
+        "line": 261,
         "definition": "integer, pointer :: f => null()",
         "name": "f",
         "default": "null()",

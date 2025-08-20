@@ -59,6 +59,8 @@ skip_members = [
   "hdf5_info_struct%data_dim",
   # TODO: tree_element_zhe renaming (Ci_tpsa.f90 skipped)
   "ptc_rad_map_struct%sub_map",
+  # TODO: recursive
+  "expression_tree_struct%node",
 ]
 
 [[sources]]
@@ -92,7 +94,10 @@ skip_includes = ["mpif.h"]
 
 [sources.json_config]
 skip_files = []
-skip_members = []
+skip_members = [
+  # TODO: recursive
+  "tao_eval_node_struct%node",
+]
 
 # [[sources]]
 # source_dir = "${ACC_ROOT_DIR}/cpp_bmad_interface"

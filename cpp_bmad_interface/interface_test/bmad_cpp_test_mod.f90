@@ -5525,13 +5525,15 @@ rhs = 10 + offset; F%emit = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 11 + offset; F%norm_emit = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 12 + offset; F%dbeta_dpz = rhs
+rhs = 12 + offset; F%chrom = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 13 + offset; F%dalpha_dpz = rhs
+rhs = 13 + offset; F%dbeta_dpz = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 14 + offset; F%deta_dpz = rhs
+rhs = 14 + offset; F%dalpha_dpz = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 15 + offset; F%detap_dpz = rhs
+rhs = 15 + offset; F%deta_dpz = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 16 + offset; F%detap_dpz = rhs
 
 end subroutine set_twiss_test_pattern
 !---------------------------------------------------------------------------------
@@ -12577,15 +12579,17 @@ rhs = 2 + offset; F%E_tot1 = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 3 + offset; F%p0c = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 4 + offset; F%dp0c = rhs
+rhs = 4 + offset; F%p1c = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 5 + offset; F%dE_amp = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 6 + offset; F%scale = rhs
 !! f_side.test_pat[0D_NOT_real] Real
-rhs = 7 + offset; F%dtime = rhs
+rhs = 7 + offset; F%time = rhs
 !! f_side.test_pat[0D_NOT_real] Real
 rhs = 8 + offset; F%s = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 9 + offset; F%ix_step = rhs
 
 end subroutine set_rf_stair_step_test_pattern
 !---------------------------------------------------------------------------------
@@ -13742,9 +13746,11 @@ rhs = 4 + offset; F%ix_from_ele = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
 rhs = 5 + offset; F%ix_to_ele = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 6 + offset; F%n_ele_track = rhs
+rhs = 6 + offset; F%ix_fixer = rhs
 !! f_side.test_pat[0D_NOT_integer] Int
-rhs = 7 + offset; F%n_ele_max = rhs
+rhs = 7 + offset; F%n_ele_track = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 8 + offset; F%n_ele_max = rhs
 !! f_side.test_pat[0D_NOT_type] CPP_mode_info
 call set_mode_info_test_pattern (F%a, ix_patt)
 !! f_side.test_pat[0D_NOT_type] CPP_mode_info
@@ -13771,6 +13777,8 @@ else
 endif
 !! f_side.test_pat[0D_NOT_type] CPP_lat_param
 call set_lat_param_test_pattern (F%param, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_coord
+call set_coord_test_pattern (F%particle_start, ix_patt)
 !! f_side.test_pat[1D_PTR_type] VariableArray1D<CPP_wall3d>
 if (ix_patt < 3) then
   if (associated(F%wall3d)) then

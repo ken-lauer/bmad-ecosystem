@@ -1130,7 +1130,7 @@ void set_CPP_expression_atom_test_pattern(CPP_expression_atom& C, int ix_patt) {
   auto offset = 100 * ix_patt;
 
   // c_side.test_pat[0D_NOT_character]
-  C.name.resize(40);
+  C.name.resize(60);
   for (size_t i{0}; i < C.name.size(); i++) {
     int rhs = 101 + i + 1 + offset;
     C.name[i] = 'a' + rhs % 26;
@@ -3674,15 +3674,18 @@ void set_CPP_twiss_test_pattern(CPP_twiss& C, int ix_patt) {
   C.norm_emit = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 12 + offset;
-  C.dbeta_dpz = rhs;
+  C.chrom = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 13 + offset;
-  C.dalpha_dpz = rhs;
+  C.dbeta_dpz = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 14 + offset;
-  C.deta_dpz = rhs;
+  C.dalpha_dpz = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 15 + offset;
+  C.deta_dpz = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 16 + offset;
   C.detap_dpz = rhs;
 }
 
@@ -8616,7 +8619,7 @@ void set_CPP_rf_stair_step_test_pattern(CPP_rf_stair_step& C, int ix_patt) {
   C.p0c = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 4 + offset;
-  C.dp0c = rhs;
+  C.p1c = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 5 + offset;
   C.dE_amp = rhs;
@@ -8625,10 +8628,13 @@ void set_CPP_rf_stair_step_test_pattern(CPP_rf_stair_step& C, int ix_patt) {
   C.scale = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 7 + offset;
-  C.dtime = rhs;
+  C.time = rhs;
   // c_side.test_pat[0D_NOT_real]
   rhs = 8 + offset;
   C.s = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 9 + offset;
+  C.ix_step = rhs;
 }
 
 //--------------------------------------------------------------
@@ -9469,9 +9475,12 @@ void set_CPP_branch_test_pattern(CPP_branch& C, int ix_patt) {
   C.ix_to_ele = rhs;
   // c_side.test_pat[0D_NOT_integer]
   rhs = 6 + offset;
-  C.n_ele_track = rhs;
+  C.ix_fixer = rhs;
   // c_side.test_pat[0D_NOT_integer]
   rhs = 7 + offset;
+  C.n_ele_track = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 8 + offset;
   C.n_ele_max = rhs;
   // c_side.test_pat[0D_NOT_type]
   set_CPP_mode_info_test_pattern(C.a, ix_patt);
@@ -9490,6 +9499,8 @@ void set_CPP_branch_test_pattern(CPP_branch& C, int ix_patt) {
   }
   // c_side.test_pat[0D_NOT_type]
   set_CPP_lat_param_test_pattern(C.param, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_coord_test_pattern(C.particle_start, ix_patt);
   // c_side.test_pat[1D_PTR_type]
   if (ix_patt < 3) {
     C.wall3d.resize(0);

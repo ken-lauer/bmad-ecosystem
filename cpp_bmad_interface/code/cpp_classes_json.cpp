@@ -652,6 +652,7 @@ void to_json(json& j, const CPP_twiss& obj) {
       {"sigma_p", obj.sigma_p},
       {"emit", obj.emit},
       {"norm_emit", obj.norm_emit},
+      {"chrom", obj.chrom},
       {"dbeta_dpz", obj.dbeta_dpz},
       {"dalpha_dpz", obj.dalpha_dpz},
       {"deta_dpz", obj.deta_dpz},
@@ -1585,11 +1586,12 @@ void to_json(json& j, const CPP_rf_stair_step& obj) {
       {"E_tot0", obj.E_tot0},
       {"E_tot1", obj.E_tot1},
       {"p0c", obj.p0c},
-      {"dp0c", obj.dp0c},
+      {"p1c", obj.p1c},
       {"dE_amp", obj.dE_amp},
       {"scale", obj.scale},
-      {"dtime", obj.dtime},
-      {"s", obj.s}};
+      {"time", obj.time},
+      {"s", obj.s},
+      {"ix_step", obj.ix_step}};
 }
 
 ostream& operator<<(ostream& os, const CPP_rf_stair_step& obj) {
@@ -1743,6 +1745,7 @@ void to_json(json& j, const CPP_branch& obj) {
       {"ix_from_branch", obj.ix_from_branch},
       {"ix_from_ele", obj.ix_from_ele},
       {"ix_to_ele", obj.ix_to_ele},
+      {"ix_fixer", obj.ix_fixer},
       {"n_ele_track", obj.n_ele_track},
       {"n_ele_max", obj.n_ele_max},
       {"a", obj.a},
@@ -1750,6 +1753,7 @@ void to_json(json& j, const CPP_branch& obj) {
       {"z", obj.z},
       {"ele", obj.ele},
       {"param", obj.param},
+      {"particle_start", obj.particle_start},
       {"wall3d", obj.wall3d}};
 }
 

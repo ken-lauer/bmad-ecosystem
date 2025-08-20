@@ -1887,9 +1887,6 @@ subroutine CAV4_to_json (input, json_root, depth, max_depth)
   if (associated(input%DELTA_E)) then
     call json%add(json_root, 'delta_e', input%DELTA_E)
   endif
-  if (associated(input%phase0)) then
-    call json%add(json_root, 'phase0', input%phase0)
-  endif
   if (associated(input%t)) then
     call json%add(json_root, 't', input%t)
   endif
@@ -2033,9 +2030,6 @@ subroutine CAV4P_to_json (input, json_root, depth, max_depth)
   endif
   if (associated(input%DELTA_E)) then
     call json%add(json_root, 'delta_e', input%DELTA_E)
-  endif
-  if (associated(input%phase0)) then
-    call json%add(json_root, 'phase0', input%phase0)
   endif
   if (associated(input%t)) then
     call json%add(json_root, 't', input%t)
