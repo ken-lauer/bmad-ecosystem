@@ -76,7 +76,8 @@ if (ix_elec_max > -1) call ab_multipole_kicks (an_elec, bn_elec, ix_elec_max, el
 voltage = e_accel_field(ele, voltage$, .true.) * charge_dir
 
 phase0 = twopi * (ele%value(phi0$) + ele%value(phi0_multipass$) - &
-            (particle_rf_time (orbit, ele, .false.) - rf_ref_time_offset(ele)) * ele%value(rf_frequency$))
+                                   (particle_rf_time (orbit, ele, .false., rf_freq = ele%value(rf_frequency$)) - &
+                                   rf_ref_time_offset(ele)) * ele%value(rf_frequency$))
 if (bmad_com%absolute_time_tracking .and. ele%orientation*orbit%time_dir*orbit%direction == -1) then
   phase0 = phase0 - twopi * ele%value(rf_frequency$) * dt_ref
 endif
@@ -132,6 +133,8 @@ enddo
 ! coupler kick, multipoles, back to lab coords.
 
 call rf_coupler_kick (ele, param, second_track_edge$, phase, orbit, mat6, make_matrix)
+orbit%phase(1) = modulo2(phase, 0.5_rp)
+
 
 if (ix_elec_max > -1) call ab_multipole_kicks (an_elec, bn_elec, ix_elec_max, ele, orbit, electric$, 0.5_rp*step_len, mat6, make_matrix)
 if (ix_mag_max > -1)  call ab_multipole_kicks (an,      bn,      ix_mag_max,  ele, orbit, magnetic$, 0.5_rp*r_step,   mat6, make_matrix)

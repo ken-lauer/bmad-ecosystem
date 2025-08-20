@@ -389,7 +389,7 @@ end subroutine tao_get_data
 !-----------------------------------------------------------------------
 !-----------------------------------------------------------------------
 !+
-! Subroutine tao_expression_hash_substitute(expression, eval_ele)
+! Subroutine tao_expression_hash_substitute(expression_in, expression_out, eval_ele)
 !
 ! Routine to, in the expression, substitute the evaluation lattice element name in place
 ! of hash ("#") characters. Care is taken to only do this where it makes sense.
@@ -400,35 +400,40 @@ end subroutine tao_get_data
 !   [,]-*+/:|@<>, or a blank character, or the beginning or end of the expression
 !
 ! Input:
-!   expression    -- character(*): Expression.
-!   eval_ele      -- character(*), optional: Evaluation element name to substitute in.
-!                     If not present, expression will not be modified.
+!   expression_in   -- character(*): Expression.
+!   eval_ele        -- ele_struct, optional: Evaluation element name to substitute in.
+!                       If not present, expression will not be modified.
 !
 ! Output:
-!   expression    -- character(*): Expression with substitutions made.
+!   expression_out  -- character(*): Expression with substitutions made.
 !-
 
-subroutine tao_expression_hash_substitute(expression, eval_ele)
+subroutine tao_expression_hash_substitute(expression_in, expression_out, eval_ele)
 
-character(*) expression
-character(*), optional :: eval_ele
+type (ele_struct), optional, pointer :: eval_ele
+character(*) expression_in, expression_out
+character(40) ele_name
 integer ix, ix2, n
 
 ! 
 
+expression_out = expression_in
 if (.not. present(eval_ele)) return
+if (.not. associated(eval_ele)) return
+ele_name = ele_full_name(eval_ele, '!#')
 
-n = len_trim(eval_ele)
+n = len_trim(ele_name)
 ix = 0
+
 do
-  ix2 = index(expression(ix+1:), '#')
+  ix2 = index(expression_out(ix+1:), '#')
   if (ix2 == 0) return
   ix = ix + ix2
   if (ix > 1) then
-    if (index('[,]-*+/:|@<> ', expression(ix-1:ix-1)) == 0) cycle
+    if (index('[,]-*+/:|@<> ', expression_out(ix-1:ix-1)) == 0) cycle
   endif
-  if (index('[,]-*+/:|@<> ', expression(ix+1:ix+1)) == 0) cycle
-  expression(ix:) = trim(eval_ele) // expression(ix+1:)
+  if (index('[,]-*+/:|@<> ', expression_out(ix+1:ix+1)) == 0) cycle
+  expression_out(ix:) = trim(ele_name) // expression_out(ix+1:)
   ix = ix + n
 enddo
 
@@ -1136,8 +1141,8 @@ subroutine tao_param_value_routine (str, use_good_user, saved_prefix, stack, err
                     dflt_source, dflt_ele_ref, dflt_ele_start, dflt_ele, dflt_dat_or_var_index, dflt_uni, &
                     dflt_eval_point, dflt_s_offset, dflt_orbit, datum)
 
-type (tao_eval_stack1_struct) stack
-type (tao_eval_stack1_struct), allocatable :: stack2(:)
+type (tao_eval_node_struct) stack
+type (tao_eval_node_struct), allocatable :: stack2(:)
 type (tao_real_pointer_struct), allocatable :: re_array(:)
 type (tao_data_array_struct), allocatable :: d_array(:)
 type (tao_integer_array_struct), allocatable :: int_array(:)
@@ -1195,36 +1200,38 @@ if (allocated(s%com%symbolic_num)) then
 endif
 
 ! An array "[...]", but not "[1,2]@ele::q[k1]"
+! This is only a problem with the old expression evaluator.
 
-if (str(1:1) == '[' .and. index(str, ']@') == 0) then
-  n = len_trim(str)
-  if (str(n:n) /= ']') then
-    if (print_err) call out_io (s_error$, r_name, "Malformed array: " // str)
-    err_flag = .true.
-    return
-  endif
+if (.not. s%global%expression_tree_on) then
+  if (str(1:1) == '[' .and. index(str, ']@') == 0) then
+    n = len_trim(str)
+    if (str(n:n) /= ']') then
+      if (print_err) call out_io (s_error$, r_name, "Malformed array: " // str)
+      err_flag = .true.
+      return
+    endif
 
-  str2 = str(2:n-1)
-  call re_allocate (stack%value, 0)
+    str2 = str(2:n-1)
+    call re_allocate (stack%value, 0)
 
-  do
-    call word_read (str2, ',', word2, ix_word, delim, delim_found, str2, ignore_interior = .true.)
-    call tao_evaluate_expression (word2, 1, use_good_user, value, err_flag, print_err, &
-                         info, stack2, dflt_component, dflt_source, dflt_ele_ref, dflt_ele_start, &
-                         dflt_ele, dflt_dat_or_var_index, dflt_uni, dflt_eval_point, dflt_s_offset, dflt_orbit)
-    if (err_flag) return
-    m = size(stack%value)
-    call re_allocate(stack%value, m+1)
-    call tao_re_allocate_expression_info (stack%info, m+1)
-    stack%value(m+1) = value(1)
-    stack%info(m+1)%good = .true.
-    do i = 1, size(stack2)
-      if (.not. allocated(stack2(i)%info)) cycle
-      stack%info(m+1)%good = (stack%info(m+1)%good .and. stack2(i)%info(1)%good)
+    do
+      call word_read (str2, ',', word2, ix_word, delim, delim_found, str2, ignore_interior = .true.)
+      call tao_evaluate_expression (word2, 1, use_good_user, value, err_flag, print_err, &
+                           info, stack2, dflt_component, dflt_source, dflt_ele_ref, dflt_ele_start, &
+                           dflt_ele, dflt_dat_or_var_index, dflt_uni, dflt_eval_point, dflt_s_offset, dflt_orbit)
+      if (err_flag) return
+      m = size(stack%value)
+      call re_allocate(stack%value, m+1)
+      call tao_re_allocate_expression_info (stack%info, m+1)
+      stack%value(m+1) = value(1)
+      stack%info(m+1)%good = .true.
+      do i = 1, size(stack2)
+        if (.not. allocated(stack2(i)%info)) cycle
+        stack%info(m+1)%good = (stack%info(m+1)%good .and. stack2(i)%info(1)%good)
+      enddo
+      if (.not. delim_found) return
     enddo
-    if (.not. delim_found) return
-  enddo
-
+  endif
 endif
 
 ! Case where str represents a number.
@@ -1566,12 +1573,12 @@ end function tao_evaluate_datum_at_s
 !-------------------------------------------------------------------------
 !-------------------------------------------------------------------------
 !+
-! Subroutine tao_evaluate_stack (stack, n_size_in, use_good_user, value, info, err_flag, print_err, expression)
+! Subroutine tao_evaluate_stack_old (stack, n_size_in, use_good_user, value, info, err_flag, print_err, expression)
 !
 ! Routine to evaluate an expression stack.
 !
 ! Input:
-!   stack(:)      -- tao_eval_stack1_struct: Expression stack
+!   stack(:)      -- tao_eval_node_struct: Expression stack
 !   n_size_in     -- integer: Desired array size. If the expression evaluates to a
 !                      a scalar, each value in the value array will get this value.
 !                      If n_size = 0, the natural size is determined by the expression itself.
@@ -1588,14 +1595,14 @@ end function tao_evaluate_datum_at_s
 !   err_flag      -- Logical: True on error. False otherwise
 !-
 
-subroutine tao_evaluate_stack (stack, n_size_in, use_good_user, value, err_flag, print_err, expression, info_in)
+subroutine tao_evaluate_stack_old (stack, n_size_in, use_good_user, value, err_flag, print_err, expression, info_in)
 
 use expression_mod
 
-type (tao_eval_stack1_struct), target :: stack(:)
-type (tao_eval_stack1_struct), pointer :: ss
-type (tao_eval_stack1_struct), pointer :: s(:)
-type (tao_eval_stack1_struct) stk2(20)
+type (tao_eval_node_struct), target :: stack(:)
+type (tao_eval_node_struct), pointer :: ss
+type (tao_eval_node_struct), pointer :: s(:)
+type (tao_eval_node_struct) stk2(20)
 type (tao_expression_info_struct), allocatable, optional :: info_in(:)
 type (tao_expression_info_struct), allocatable :: info(:)
 
@@ -1607,7 +1614,7 @@ integer i, i2, j, n, ns, ni, n_size
 logical err_flag, use_good_user, print_err, info_allocated
 
 character(*) expression
-character(*), parameter :: r_name = 'tao_evaluate_stack'
+character(*), parameter :: r_name = 'tao_evaluate_stack_old'
 
 ! Calculate good
 
@@ -1618,8 +1625,8 @@ n_size = max(1, n_size_in)
 do i = 1, size(stack)
   ss => stack(i)
 
-  select case (ss%type)
-  case (average$, sum$, rms$, min$, max$); n_size = 1
+  select case (ss%name)
+  case ('average', 'sum', 'rms', 'min', 'max'); n_size = 1
   end select
 
   if (allocated(ss%value)) then
@@ -1781,110 +1788,69 @@ do i = 1, size(stack)
     endif
     i2 = i2 - 1
 
-  case (cot$)
-    stk2(i2)%value = 1.0_rp / tan(stk2(i2)%value)
+  case (function$)
+    select case (stack(i)%name)
+    case ('cot');       stk2(i2)%value = 1.0_rp / tan(stk2(i2)%value)
+    case ('csc');       stk2(i2)%value = 1.0_rp / sin(stk2(i2)%value)
+    case ('sec');       stk2(i2)%value = 1.0_rp / cos(stk2(i2)%value)
+    case ('sin');       stk2(i2)%value = sin(stk2(i2)%value)
+    case ('sinc');      stk2(i2)%value = sinc(stk2(i2)%value)
+    case ('cos');       stk2(i2)%value = cos(stk2(i2)%value)
+    case ('tan');       stk2(i2)%value = tan(stk2(i2)%value)
+    case ('asin');      stk2(i2)%value = asin(stk2(i2)%value)
+    case ('acos');      stk2(i2)%value = acos(stk2(i2)%value)
+    case ('atan');      stk2(i2)%value = atan(stk2(i2)%value)
+    case ('atan2');     stk2(i2-1)%value = atan2(stk2(i2-1)%value, stk2(i2)%value)
+      i2 = i2 - 1
+    case ('modulo');    stk2(i2-1)%value = modulo(stk2(i2-1)%value, stk2(i2)%value)
+      i2 = i2 - 1
+    case ('sinh');      stk2(i2)%value = sinh(stk2(i2)%value)
+    case ('cosh');      stk2(i2)%value = cosh(stk2(i2)%value)
+    case ('tanh');      stk2(i2)%value = tanh(stk2(i2)%value)
+    case ('coth');      stk2(i2)%value = 1.0_rp / tanh(stk2(i2)%value)
+    case ('asinh');     stk2(i2)%value = asinh(stk2(i2)%value)
+    case ('acosh');     stk2(i2)%value = acosh(stk2(i2)%value)
+    case ('atanh');     stk2(i2)%value = atanh(stk2(i2)%value)
+    case ('acoth');     stk2(i2)%value = 1.0_rp / atanh(stk2(i2)%value)
+    case ('abs');       stk2(i2)%value = abs(stk2(i2)%value)
+    case ('sqrt');      stk2(i2)%value = sqrt(stk2(i2)%value)
+    case ('log');       stk2(i2)%value = log(stk2(i2)%value)
+    case ('exp');       stk2(i2)%value = exp(stk2(i2)%value)
+    case ('int');       stk2(i2)%value = int(stk2(i2)%value)
+    case ('sign');      stk2(i2)%value = sign_of(stk2(i2)%value)
+    case ('nint');      stk2(i2)%value = nint(stk2(i2)%value)
+    case ('floor');     stk2(i2)%value = floor(stk2(i2)%value)
+    case ('ceiling');   stk2(i2)%value = ceiling(stk2(i2)%value)
 
-  case (csc$) 
-    stk2(i2)%value = 1.0_rp / sin(stk2(i2)%value)
+    case ('rms');       stk2(i2)%value(1) = rms_value(stk2(i2)%value, info%good)
+      call re_allocate(stk2(i2)%value, 1)
+      info(1)%good = any(info%good)
+      call tao_re_allocate_expression_info(info, 1)
 
-  case (sec$)
-    stk2(i2)%value = 1.0_rp / cos(stk2(i2)%value)
+    case ('average', 'mean')
+      if (any(info%good)) then
+        stk2(i2)%value(1) = sum(stk2(i2)%value, mask = info%good) / count(info%good)
+      endif
+      call re_allocate(stk2(i2)%value, 1)
+      info(1)%good = any(info%good)
+      call tao_re_allocate_expression_info(info, 1)
 
-  case (sin$) 
-    stk2(i2)%value = sin(stk2(i2)%value)
+    case ('sum', 'min', 'max')
+      select case (stack(i)%name)
+      case ('sum'); stk2(i2)%value(1) = sum(stk2(i2)%value, mask = info%good)
+      case ('min'); stk2(i2)%value(1) = minval(stk2(i2)%value, mask = info%good)
+      case ('max'); stk2(i2)%value(1) = maxval(stk2(i2)%value, mask = info%good)
+      end select
+      call re_allocate(stk2(i2)%value, 1)
+      info(1)%good = .true.
+      call tao_re_allocate_expression_info(info, 1)
 
-  case (sinc$) 
-    stk2(i2)%value = sinc(stk2(i2)%value)
-
-  case (cos$) 
-    stk2(i2)%value = cos(stk2(i2)%value)
-
-  case (tan$) 
-    stk2(i2)%value = tan(stk2(i2)%value)
-
-  case (asin$) 
-    stk2(i2)%value = asin(stk2(i2)%value)
-
-  case (acos$) 
-    stk2(i2)%value = acos(stk2(i2)%value)
-
-  case (atan$) 
-    stk2(i2)%value = atan(stk2(i2)%value)
-
-  case (atan2$) 
-    stk2(i2-1)%value = atan2(stk2(i2-1)%value, stk2(i2)%value)
-    i2 = i2 - 1
-
-  case (modulo$) 
-    stk2(i2-1)%value = modulo(stk2(i2-1)%value, stk2(i2)%value)
-    i2 = i2 - 1
-
-  case (sinh$)
-    stk2(i2)%value = sinh(stk2(i2)%value)
-
-  case (cosh$) 
-    stk2(i2)%value = cosh(stk2(i2)%value)
-
-  case (tanh$) 
-    stk2(i2)%value = tanh(stk2(i2)%value)
-
-  case (coth$)
-    stk2(i2)%value = 1.0_rp / tanh(stk2(i2)%value)
-
-  case (asinh$) 
-    stk2(i2)%value = asinh(stk2(i2)%value)
-
-  case (acosh$) 
-    stk2(i2)%value = acosh(stk2(i2)%value)
-
-  case (atanh$) 
-    stk2(i2)%value = atanh(stk2(i2)%value)
-
-  case (acoth$)
-    stk2(i2)%value = 1.0_rp / atanh(stk2(i2)%value)
-
-  case (abs$) 
-    stk2(i2)%value = abs(stk2(i2)%value)
-
-  case (rms$)
-    stk2(i2)%value(1) = rms_value(stk2(i2)%value, info%good)
-    call re_allocate(stk2(i2)%value, 1)
-    info(1)%good = any(info%good)
-    call tao_re_allocate_expression_info(info, 1)
-
-  case (average$)
-    if (any(info%good)) then
-      stk2(i2)%value(1) = sum(stk2(i2)%value, mask = info%good) / count(info%good)
-    endif
-    call re_allocate(stk2(i2)%value, 1)
-    info(1)%good = any(info%good)
-    call tao_re_allocate_expression_info(info, 1)
-
-  case (sum$, min$, max$)
-    select case (stack(i)%type)
-    case (sum$); stk2(i2)%value(1) = sum(stk2(i2)%value, mask = info%good)
-    case (min$); stk2(i2)%value(1) = minval(stk2(i2)%value, mask = info%good)
-    case (max$); stk2(i2)%value(1) = maxval(stk2(i2)%value, mask = info%good)
-    end select
-    call re_allocate(stk2(i2)%value, 1)
-    info(1)%good = .true.
-    call tao_re_allocate_expression_info(info, 1)
-
-  case (sqrt$) 
-    stk2(i2)%value = sqrt(stk2(i2)%value)
-
-  case (log$) 
-    stk2(i2)%value = log(stk2(i2)%value)
-
-  case (exp$) 
-    stk2(i2)%value = exp(stk2(i2)%value)
-
-  case (factorial$) 
+    case ('factorial');
     do n = 1, size(stk2(i2)%value)
       stk2(i2)%value(n) = factorial(nint(stk2(i2)%value(n)))
     enddo
 
-  case (ran$) 
+    case ('ran');
     i2 = i2 + 1
     call re_allocate(stk2(i2)%value, n_size)
     call ran_uniform(stk2(i2)%value)
@@ -1894,49 +1860,35 @@ do i = 1, size(stack)
       info%good = info(1)%good
     endif
 
-  case (ran_gauss$) 
-    if (nint(stack(i-1)%value(1)) == 0) then
-      i2 = i2 + 1
-      call re_allocate(stk2(i2)%value, n_size)
-      call ran_gauss(stk2(i2)%value)
-    else
-      call re_allocate(value, n_size)
-      call ran_gauss(value, sigma_cut = stk2(i2)%value(1))
-      call re_allocate(stk2(i2)%value, n_size)
-      stk2(i2)%value = value
-    endif
+    case ('ran_gauss')
+      if (nint(stack(i-1)%value(1)) == 0) then
+        i2 = i2 + 1
+        call re_allocate(stk2(i2)%value, n_size)
+        call ran_gauss(stk2(i2)%value)
+      else
+        call re_allocate(value, n_size)
+        call ran_gauss(value, sigma_cut = stk2(i2)%value(1))
+        call re_allocate(stk2(i2)%value, n_size)
+        stk2(i2)%value = value
+      endif
 
-    if (size(info) == 1) then
-      call tao_re_allocate_expression_info(info, n_size)
-      info%good = info(1)%good
-    endif
+      if (size(info) == 1) then
+        call tao_re_allocate_expression_info(info, n_size)
+        info%good = info(1)%good
+      endif
 
-  case (int$)
-    stk2(i2)%value = int(stk2(i2)%value)
-
-  case (sign$)
-    stk2(i2)%value = sign_of(stk2(i2)%value)
-
-  case (nint$)
-    stk2(i2)%value = nint(stk2(i2)%value)
-
-  case (floor$)
-    stk2(i2)%value = floor(stk2(i2)%value)
-
-  case (ceiling$)
-    stk2(i2)%value = ceiling(stk2(i2)%value)
-
-  case (mass_of$, charge_of$, anomalous_moment_of$)
-    species = species_id(stk2(i2)%name)
-    if (species == invalid$) then
-      if (print_err) call out_io (s_error$, r_name, 'Not a valid species name: ' // stk2(i2)%name)
-      err_flag = .true.
-      return
-    endif
-    select case (stack(i)%type)
-    case (mass_of$);              stk2(i2)%value = mass_of(species)
-    case (charge_of$);            stk2(i2)%value = charge_of(species)
-    case (anomalous_moment_of$);  stk2(i2)%value = anomalous_moment_of(species)
+    case ('mass_of', 'charge_of', 'anomalous_moment_of')
+      species = species_id(stk2(i2)%name)
+      if (species == invalid$) then
+        if (print_err) call out_io (s_error$, r_name, 'Not a valid species name: ' // stk2(i2)%name)
+        err_flag = .true.
+        return
+      endif
+      select case (stack(i)%name)
+      case ('mass_of');              stk2(i2)%value = mass_of(species)
+      case ('charge_of');            stk2(i2)%value = charge_of(species)
+      case ('anomalous_moment_of');  stk2(i2)%value = anomalous_moment_of(species)
+      end select
     end select
 
   case default
@@ -2006,7 +1958,7 @@ if (.not. ok) then
 endif
 end function this_size_check
 
-end subroutine tao_evaluate_stack 
+end subroutine tao_evaluate_stack_old 
 
 !----------------------------------------------------------------------------
 !----------------------------------------------------------------------------

@@ -226,14 +226,17 @@ select case (tracking_method)
 case (bmad_standard$)
   if (end_orb%species == photon$) then
     call track1_bmad_photon (end_orb, ele, param, err)
+    if (err) return
+
   else
     call track1_bmad (end_orb, ele, param, err, track, mat6 = ele%mat6, make_matrix = make_map1)
+    if (err) return
 
     select case (ele%key)
     case (beambeam$, crab_cavity$, patch$);  do_spin_tracking = .false.
+    case (lcavity$);                         do_spin_tracking = (do_spin_tracking .and. nint(ele%value(n_rf_steps$)) < 1)
     end select
   endif
-  if (err) return
 
 case (runge_kutta$, fixed_step_runge_kutta$) 
   call track1_runge_kutta (end_orb, ele, param, err, track, mat6 = ele%mat6, make_matrix = make_map1)
@@ -250,6 +253,8 @@ case (taylor$)
 
 case (symp_lie_bmad$) 
   call symp_lie_bmad (ele, param, end_orb, track, mat6 = ele%mat6, make_matrix = make_map1)
+  stm = ele%spin_tracking_method
+  if (stm == tracking$ .or. stm == symp_lie_ptc$) do_spin_tracking = .false.
 
 case (symp_lie_ptc$)
   call track1_symp_lie_ptc (end_orb, ele, param, track)

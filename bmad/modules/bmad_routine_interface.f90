@@ -1628,6 +1628,13 @@ subroutine lattice_bookkeeper (lat, err_flag)
   logical, optional :: err_flag
 end subroutine
 
+subroutine lcavity_rf_step_setup(ele, include_downstream_end)
+  import
+  implicit none
+  type (ele_struct) ele
+  logical, optional :: include_downstream_end
+end subroutine
+
 subroutine linear_to_spin_taylor(q_map, spin_taylor)
   import
   type (taylor_struct) spin_taylor(0:3)
@@ -2013,11 +2020,11 @@ subroutine orbit_amplitude_calc (ele, orb, amp_a, amp_b, amp_na, amp_nb)
   real(rp), optional :: amp_a, amp_b, amp_na, amp_nb
 end subroutine
 
-subroutine orbit_reference_energy_correction (orbit, dp0c, mat6, make_matrix)
+subroutine orbit_reference_energy_correction (orbit, p0c_new, mat6, make_matrix)
   import
   implicit none
   type (coord_struct) :: orbit
-  real(rp) dp0c
+  real(rp) p0c_new
   real(rp), optional :: mat6(6,6)
   logical, optional :: make_matrix
 end subroutine
@@ -2078,14 +2085,13 @@ function particle_is_moving_forward (orbit, dir) result (is_moving_forward)
   logical is_moving_forward
 end function
 
-function particle_rf_time (orbit, ele, reference_active_edge, s_rel, time_coords, rf_freq, rf_clock_harmonic, abs_time) result (time)
+function particle_rf_time (orbit, ele, reference_active_edge, s_rel, time_coords, rf_freq, abs_time) result (time)
   import
   implicit none
   type (coord_struct) orbit
   type (ele_struct), target :: ele
   real(rp), optional :: s_rel, rf_freq
-  real(rp) time
-  integer, optional :: rf_clock_harmonic
+  real(qp) time
   logical, optional :: reference_active_edge, time_coords, abs_time
 end function
 
@@ -2731,14 +2737,14 @@ subroutine sol_quad_mat6_calc (ks, k1, tilt, length, ele, orbit, mat6, make_matr
   logical, optional :: make_matrix
 end subroutine
 
-subroutine solenoid_track_and_mat (ele, length, param, start_orb, end_orb, mat6, make_matrix, ks, beta_ref)
+subroutine solenoid_track_and_mat (ele, length, param, start_orb, end_orb, mat6, make_matrix)
   import
   implicit none
   type (ele_struct), target :: ele
   type (lat_param_struct) param
   type (coord_struct) start_orb, end_orb
   real(rp) length
-  real(rp), optional :: mat6(:,:), ks, beta_ref
+  real(rp), optional :: mat6(:,:)
   logical, optional :: make_matrix
 end subroutine
 
@@ -3409,11 +3415,13 @@ subroutine transfer_lat_parameters (lat_in, lat_out)
   type (lat_struct) :: lat_out
 end subroutine
 
-subroutine transfer_map_calc (lat, t_map, err_flag, ix1, ix2, ref_orb, ix_branch, one_turn, unit_start, concat_if_possible)
+subroutine transfer_map_calc (lat, t_map, err_flag, ix1, ix2, ref_orb, ix_branch, one_turn, &
+                                                       unit_start, concat_if_possible, spin_map)
   import
   implicit none
   type (lat_struct), target :: lat
   type (taylor_struct) :: t_map(:)
+  type (taylor_struct), optional :: spin_map(:)
   type (coord_struct), optional :: ref_orb
   integer, intent(in), optional :: ix1, ix2, ix_branch
   logical err_flag
@@ -3586,13 +3594,13 @@ subroutine type_ele (ele, type_zero_attrib, type_mat6, type_taylor, twiss_out, t
   character(*), optional, allocatable :: lines(:)
 end subroutine
 
-subroutine type_taylors (bmad_taylor, max_order, lines, n_lines, file_id, out_style, clean, out_var_suffix)
+subroutine type_taylors (bmad_taylor, max_order, lines, n_lines, file_id, out_style, clean, out_var_suffix, append)
   import
   implicit none
   type (taylor_struct), intent(in), target :: bmad_taylor(:)
   integer, optional, intent(out) :: n_lines
   integer, optional :: max_order, file_id
-  logical, optional :: clean
+  logical, optional :: clean, append
   character(*), optional :: out_style, out_var_suffix
   character(*), optional, allocatable :: lines(:)
 end subroutine

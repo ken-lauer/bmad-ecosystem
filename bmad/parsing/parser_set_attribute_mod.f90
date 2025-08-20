@@ -42,6 +42,7 @@ subroutine parser_set_attribute (how, ele, delim, delim_found, err_flag, pele, c
                                                                  heterogeneous_ele_list, set_field_master)
 
 use photon_reflection_mod, only: finalize_reflectivity_table
+use fixer_mod, only: set_active_fixer
 
 implicit none
 
@@ -1922,6 +1923,14 @@ case ('SYMPLECTIFY')
   
 case ('IS_ON')
   call parser_get_logical (attrib_word, ele%is_on, ele%name, delim, delim_found, err_flag)
+  if (ele%key == beginning_ele$ .or. ele%key == fixer$) then
+    if (bp_com%parser_name == 'bmad_parser2') then
+      call set_active_fixer(ele)
+    elseif (ele%is_on) then
+      bp_com%ix_fixer = bp_com%ix_fixer + 1
+      ele%value(ix_fixer$) = bp_com%ix_fixer  ! Used to indicate last fixer set on.
+    endif
+  endif
 
 case ('SUPERIMPOSE')
   call parser_get_logical (attrib_word, logic, ele%name, delim, delim_found, err_flag); if (err_flag) return
@@ -1956,10 +1965,11 @@ case ('CSR_METHOD')
   ele%csr_method = switch
 
 case ('DEFAULT_TRACKING_SPECIES')
-  call get_next_word (word, ix_word, ':,=(){}', delim, delim_found, .false.)
+  ! "()" are not delims since "antiparticle(...)" is possible.
+  call get_next_word (word, ix_word, ':,={}', delim, delim_found, .false.)  
   ix = species_id(word)
   if (ix == invalid$) then
-    call parser_error ('INVALID PARTICLE SPECIES: ' // word)
+    call parser_error ('INVALID DEFAULT_TRACKING_SPECIES: ' // word)
     return
   endif
 
@@ -2060,7 +2070,8 @@ case ('ORIGIN_ELE_REF_PT')
   ele%value(origin_ele_ref_pt$) = ix
 
 case ('PARTICLE')
-  call get_next_word (word, ix_word, ':,=(){}', delim, delim_found, .false.)
+  ! "()" are not delims since "antiparticle(...)" is possible.
+  call get_next_word (word, ix_word, ':,={}', delim, delim_found, .false.)
   ix = species_id(word)
   if (ix == invalid$ .or. ix == ref_particle$ .or. ix == anti_ref_particle$) then
     call parser_error ('INVALID REFERENCE PARTICLE SPECIES: ' // word)
@@ -2120,7 +2131,8 @@ case ('SPATIAL_DISTRIBUTION')
   ele%value(spatial_distribution$) = ix
 
 case ('SPECIES_OUT')
-  call get_next_word (word, ix_word, ':,=(){}', delim, delim_found, .false.)
+  ! "()" are not delims since "antiparticle(...)" is possible.
+  call get_next_word (word, ix_word, ':,={}', delim, delim_found, .false.)
   ix = species_id(word)
   if (ix == invalid$ .or. ix == ref_particle$ .or. ix == anti_ref_particle$) then
     call parser_error ('INVALID SPECIES_OUT: ' // word)
@@ -2129,7 +2141,8 @@ case ('SPECIES_OUT')
   ele%converter%species_out = ix
 
 case ('SPECIES_STRONG')
-  call get_next_word (word, ix_word, ':,=(){}', delim, delim_found, .false.)
+  ! "()" are not delims since "antiparticle(...)" is possible.
+  call get_next_word (word, ix_word, ':,={}', delim, delim_found, .false.)
   ix = species_id(word)
   if (ix == invalid$ .or. ix == ref_particle$ .or. ix == anti_ref_particle$) then
     call parser_error ('INVALID SPECIES_STRONG: ' // word)

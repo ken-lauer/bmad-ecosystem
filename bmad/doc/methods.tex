@@ -498,8 +498,7 @@ Here the small angle approximation ($p_x, p_y \ll 1$) has been used.
 %-----------------
 Since speed may be an issue, \bmad has an global parameter called \vn{spin_tracking_on} which is
 part of the \vn{bmad_com} instance (\sref{s:bmad.ptc.com}) that determines whether spin is tracked or
-not. Note: There is also another \vn{bmad_com} parameter called \vn{spin_baier_katkov_flipping_on}
-which can influence spin tracking.
+not. 
 
 \index{spin_fringe_on}
 The \vn{spin_fringe_on} element attribute (\sref{s:fringe.at}) can be used to toggle whether the
@@ -528,14 +527,14 @@ Example:
 \begin{sideways}\vn{Magnus}\end{sideways} &
 \begin{sideways}\vn{Sprint}\end{sideways} &
 \begin{sideways}\vn{Symp_Lie_PTC}\end{sideways} &
-\begin{sideways}\vn{Tracking}\end{sideways}
-\begin{sideways}\vn{Transverse_Kick}\end{sideways} &
+\begin{sideways}\vn{Tracking}\end{sideways} &
+\begin{sideways}\vn{Transverse_Kick}\end{sideways}
 \\ \midrule
 %                                      O   C   M  Spt SLP Trk TK
   \vn{ab_multipole and multipole}    & X & X &   &   &   & D &   \\  
   \vn{ac_kicker}                     & X & X &   &   &   & D &   \\  
   \vn{beambeam}                      & X & X &   &   &   & D &   \\  
-  \vn{bends: rbend and sbend}        & X & X & X  & X & X & D &   \\ 
+  \vn{bends: rbend and sbend}        & X & X & X & X & X & D &   \\ 
   \vn{converter}                     & X & X &   &   &   & D &   \\  
   \vn{crab_cavity}                   & X & X &   &   &   & D &   \\  
   \vn{custom}                        & X & D &   &   &   & X &   \\  
@@ -547,10 +546,10 @@ Example:
   \vn{fiducial}                      & X & X &   &   & X & D &   \\  
   \vn{floor_shift}                   & X & X &   &   & X & D &   \\  
   \vn{hkicker}                       & X & X & X & X & X & D &   \\  
-  \vn{instrument, monitor and pipe}  & X & X & X  & X & X & D &   \\  
+  \vn{instrument, monitor and pipe}  & X & X & X & X & X & D &   \\  
   \vn{kicker}                        & X & X & X & X & X & D &   \\  
-  \vn{lcavity and rfcavity}          & X & X & X &   & X & D &   \\  
-  \vn{marker}                        & X & X & X &   & X & D &   \\  
+  \vn{lcavity and rfcavity}          & X & X &   &   & X & D &   \\  
+  \vn{marker}                        & X & X &   &   &   & D &   \\  
   \vn{match}                         & D &   &   &   &   &   & X \\  
   \vn{octupole}                      & X & X &   & X & X & D &   \\ 
   \vn{patch}                         & X & X &   &   & X & D &   \\ 

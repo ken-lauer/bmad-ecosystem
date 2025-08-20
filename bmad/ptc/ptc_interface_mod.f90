@@ -13,9 +13,10 @@ use attribute_mod
 interface assignment (=)
   module procedure damap_equal_bmad_taylor
   module procedure bmad_taylor_equal_damap
-  module procedure real_8_equal_bmad_taylor
+  module procedure reals_8_equal_bmad_taylors
   module procedure ptc_taylor_equal_bmad_taylor
-  module procedure bmad_taylor_equal_real_8
+  module procedure ptc_taylors_equal_bmad_taylors
+  module procedure bmad_taylors_equal_reals_8
   module procedure universal_equal_universal
   module procedure bmad_taylor_equal_ptc_taylor
   module procedure bmad_taylors_equal_ptc_taylors
@@ -1116,7 +1117,7 @@ end subroutine damap_equal_bmad_taylor
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
 !+
-! Subroutine bmad_taylor_equal_real_8 (bmad_taylor, y8)
+! Subroutine bmad_taylors_equal_reals_8 (bmad_taylor, y8)
 !
 ! Subroutine to convert from a real_8 taylor map in Etienne's PTC 
 ! to a taylor map in Bmad. This does not do any
@@ -1132,7 +1133,7 @@ end subroutine damap_equal_bmad_taylor
 !   bmad_taylor(:) -- Taylor_struct: Input taylor map.
 !-
 
-subroutine bmad_taylor_equal_real_8 (bmad_taylor, y8)
+subroutine bmad_taylors_equal_reals_8 (bmad_taylor, y8)
 
 use polymorphic_taylor, only: assignment (=), universal_taylor, real_8
 use definition, only: real_8
@@ -1154,13 +1155,13 @@ do i = 1, size(y8)
   u_t(i) = -1  ! deallocate
 enddo
 
-end subroutine bmad_taylor_equal_real_8
+end subroutine bmad_taylors_equal_reals_8
 
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
 !+
-! Subroutine real_8_equal_bmad_taylor (y8, bmad_taylor)
+! Subroutine reals_8_equal_bmad_taylors (y8, bmad_taylor)
 !
 ! Subroutine to convert from a taylor map in Bmad to a real_8 taylor map in Etienne's PTC. 
 !
@@ -1174,7 +1175,7 @@ end subroutine bmad_taylor_equal_real_8
 !   y8(:) -- real_8: PTC Taylor map.
 !-
 
-subroutine real_8_equal_bmad_taylor (y8, bmad_taylor)
+subroutine reals_8_equal_bmad_taylors (y8, bmad_taylor)
 
 use polymorphic_taylor, only: kill, assignment(=), real_8, universal_taylor, alloc
 
@@ -1195,9 +1196,8 @@ call alloc(y8)
 
 n_taylor = size(bmad_taylor)  ! Generally n_taylor = 6
 do i = 1, n_taylor
-
   n = size(bmad_taylor(i)%term)
-  allocate (u_t%n, u_t%nv, u_t%c(n), u_t%j(n,n_taylor))
+  allocate (u_t%n, u_t%nv, u_t%c(n), u_t%j(n,6))
   u_t%n = n
   u_t%nv = n_taylor
 
@@ -1210,7 +1210,7 @@ do i = 1, n_taylor
   u_t = -1   ! deallocate
 enddo
 
-end subroutine real_8_equal_bmad_taylor
+end subroutine reals_8_equal_bmad_taylors
 
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
@@ -1224,10 +1224,10 @@ end subroutine real_8_equal_bmad_taylor
 !       ptc_taylor = bmad_taylor
 !
 ! Input:
-!   bmad_taylor(:) -- taylor_struct: Input taylor map.
+!   bmad_taylor -- taylor_struct: Input taylor map.
 !
 ! Output:
-!   ptc_taylor(:)   -- taylor: PTC Taylor map.
+!   ptc_taylor   -- taylor: PTC Taylor map.
 !-
 
 subroutine ptc_taylor_equal_bmad_taylor (ptc_taylor, bmad_taylor)
@@ -1264,6 +1264,43 @@ ptc_taylor = u_t
 u_t = -1   ! deallocate
 
 end subroutine ptc_taylor_equal_bmad_taylor
+
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!------------------------------------------------------------------------
+!+
+! Subroutine ptc_taylors_equal_bmad_taylors (ptc_taylor, bmad_taylor)
+!
+! Subroutine to convert from a taylor map in Bmad to a taylor map in Etienne's PTC. 
+!
+! Subroutine overloads "=" in expressions
+!       ptc_taylor = bmad_taylor
+!
+! Input:
+!   bmad_taylor(:) -- taylor_struct: Input taylor map.
+!
+! Output:
+!   ptc_taylor(:)   -- taylor: PTC Taylor map.
+!-
+
+subroutine ptc_taylors_equal_bmad_taylors (ptc_taylor, bmad_taylor)
+
+use polymorphic_taylor, only: alloc, kill, assignment(=), taylor, universal_taylor
+
+implicit none
+
+type (taylor), intent(inout) :: ptc_taylor(:)
+type (taylor_struct), intent(in) :: bmad_taylor(:)
+integer it
+character(*), parameter :: r_name = 'ptc_taylors_equal_bmad_taylors'
+
+!
+
+do it = 1, size(bmad_taylor)
+  ptc_taylor(it) = bmad_taylor(it)
+enddo
+
+end subroutine ptc_taylors_equal_bmad_taylors
 
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
@@ -1801,9 +1838,6 @@ end subroutine concat_real_8
 ! Note: The constant terms of the taylor map are removed in the process.
 ! Note: The genfield uses PTC coordinates.
 !
-! Moudules needed:
-!   use ptc_interface_mod
-!
 ! Input:
 !   bmad_taylor(:) -- Taylor_struct: Input taylor map.
 !
@@ -1867,9 +1901,6 @@ end subroutine taylor_to_genfield
 ! Note: It is assumed that taylor_out has been deallocated before the call to
 ! this routine. Calling this routine with the first two actual arguments the
 ! same is prohibited.
-!
-! Moudules needed:
-!   use ptc_interface_mod
 !
 ! Input:
 !  taylor_in(:)              -- Taylor_struct: Input taylor map.
@@ -1937,9 +1968,6 @@ end subroutine remove_constant_taylor
 ! Subroutine taylor_inverse (taylor_in, taylor_inv, err)
 !
 ! Subroutine to invert a taylor map. Since the inverse map is truncated, it is not exact.
-!
-! Moudules needed:
-!   use ptc_interface_mod
 !
 ! Input:
 !   taylor_in(:)  -- Taylor_struct: Input taylor map.
@@ -2093,37 +2121,43 @@ end subroutine concat_taylor
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
 !+
-! Subroutine concat_ele_taylor (taylor1, ele, taylor3, err_flag)
+! Subroutine concat_ele_taylor (orb_taylor, ele, err_flag, spin_taylor)
 !
-! Routine to concatinate two taylor maps:
-!   taylor3[x] = ele_taylor(taylor1[x])
+! Routine to concatinate an orbital taylor map and, optionally if present and 
+! bmad_com%spin_tracking_on = T, a spin taylor map.
+!
+! Transform:
+!   orb_taylor[x] -> ele_taylor(orb_taylor[x])
 ! If ele%taylor_map_includes_offsets = True:  ele_taylor == ele%taylor 
 ! If ele%taylor_map_includes_offsets = False: ele_taylor == ele%taylor + offset corrections. 
 !
 ! Also see: concat_taylor
 !
 ! Input:
-!   taylor1(6)  -- Taylor_struct: Taylor map.
-!   ele         -- ele_struct: Element containing a Taylor map.
+!   orb_taylor(6)   -- taylor_struct: Orbital Taylor map.
+!   ele             -- ele_struct: Element containing a Taylor map.
+!   spin_taylor(4)  -- taylor_struct, optional: Spin map to propagate
 !
 ! Output
-!   taylor3(6)  -- Taylor_struct: Concatinated map
-!   err_flag    -- logical: Set True if there is an error. False otherwise.
+!   orb_taylor(6)   -- taylor_struct: Concatinated orbital map
+!   err_flag        -- logical: Set True if there is an error. False otherwise.
+!   spin_taylor(4)  -- taylor_struct, optional: Concatinated spin map.
 !-
 
-Subroutine concat_ele_taylor (taylor1, ele, taylor3, err_flag)
+Subroutine concat_ele_taylor (orb_taylor, ele, err_flag, spin_taylor)
 
 use s_tracking, only: mis_fib, alloc, kill, dtiltd, assignment(=), real_8, fibre
 
 implicit none
 
 type (ele_struct) ele
-type (taylor_struct) taylor1(:), taylor3(:)
+type (taylor_struct) orb_taylor(:)
+type (taylor_struct), optional :: spin_taylor(:)
 type (lat_param_struct) param
-type (real_8) x_ele(6), x_body(6), x1(6), x3(6)
+type (real_8) x_tilt(6), x_body(6), x1(6), x3(6), x_orb(6), x_tot(6)
 type (fibre), pointer :: fib
 
-real(rp) beta0, beta1, tilt
+real(rp) tilt
 real(8) x_dp(6)
 logical err_flag
 character(*), parameter :: r_name = 'concat_ele_taylor'
@@ -2134,7 +2168,8 @@ err_flag = .false.
 
 if (ele%key == match$) then
   call mat6_to_taylor (ele%vec0, ele%mat6, ele%taylor)
-  call concat_taylor (taylor1, ele%taylor, taylor3)
+  call concat_taylor (orb_taylor, ele%taylor, orb_taylor)
+  !! if (present(spin_taylor) .and. bmad_com%spin_tracking_on) call concat_taylor (spin_taylor, ele%spin_taylor, spin_taylor)
   return
 endif
 
@@ -2142,7 +2177,8 @@ endif
 ! in ele%taylor.
 
 if (ele%taylor_map_includes_offsets .or. ele%key == taylor$) then
-  call concat_taylor (taylor1, ele%taylor, taylor3)
+  call concat_taylor (orb_taylor, ele%taylor, orb_taylor)
+  if (present(spin_taylor) .and. bmad_com%spin_tracking_on) call concat_taylor (spin_taylor, ele%spin_taylor, spin_taylor)
   return
 endif
 
@@ -2163,16 +2199,14 @@ endif
 
 ! Init
 
-call alloc(x_ele)
+call alloc(x_tilt)
 call alloc(x_body)
+call alloc(x_tot)
 call alloc(x1)
 call alloc(x3)
 
-beta0 = ele%value(p0c_start$)/ele%value(e_tot_start$)
-beta1 = ele%value(p0c$)/ele%value(e_tot$)
-
 x_dp = 0
-x_ele = x_dp  ! x_ele = Identity map 
+x_tilt = x_dp  ! x_tilt = Identity map 
 
 if (ele%key == sbend$) then
   tilt = ele%value(ref_tilt_tot$)
@@ -2180,29 +2214,42 @@ else
   tilt = ele%value(tilt_tot$)
 endif
 
-call dtiltd (tilt, 1, x_ele)
-call mis_fib (fib, x_ele, ptc_private%base_state, .true., entering = .true.)
+call dtiltd (tilt, 1, x_tilt)
+call mis_fib (fib, x_tilt, ptc_private%base_state, .true., entering = .true.)
+
+! orb_taylor
 
 x_body = ele%taylor
 
-call concat_real_8 (x_ele, x_body, x_ele)
-call mis_fib (fib, x_ele, ptc_private%base_state, .true., entering = .false.)
-call dtiltd (tilt, 2, x_ele)
+call concat_real_8 (x_tilt, x_body, x_tot)
+call mis_fib (fib, x_tot, ptc_private%base_state, .true., entering = .false.)
+call dtiltd (tilt, 2, x_tot)
 
-! Concat with taylor1
+x1 = orb_taylor
+call concat_real_8 (x1, x_tot, x3, ele%taylor%ref)
+orb_taylor = x3
 
-x1 = taylor1
-call concat_real_8 (x1, x_ele, x3, ele%taylor%ref)
+! spin_taylor
 
-! convert x3 to final result taylor3
+if (present(spin_taylor) .and. bmad_com%spin_tracking_on) then
+  x_body = ele%spin_taylor
 
-taylor3(:)%ref = taylor1(:)%ref
-taylor3 = x3
+  call concat_real_8 (x_tilt, x_body, x_tot)
+  call mis_fib (fib, x_tot, ptc_private%base_state, .true., entering = .false.)
+  call dtiltd (tilt, 2, x_tot)
+
+  x1 = orb_taylor
+  call concat_real_8 (x1, x_tot, x3, ele%taylor%ref)
+  orb_taylor = x3
+endif
+
+
 
 ! Cleanup
 
-call kill(x_ele)
+call kill(x_tilt)
 call kill(x_body)
+call kill(x_tot)
 call kill(x1)
 call kill(x3)
 
@@ -2416,51 +2463,59 @@ end subroutine real_8_to_taylor
 !------------------------------------------------------------------------
 !------------------------------------------------------------------------
 !+
-! Subroutine taylor_propagate1 (bmad_taylor, ele, param, err_flag, ref_in)
+! Subroutine taylor_propagate1 (orb_taylor, ele, param, err_flag, ref_in, spin_taylor)
 !
-! Subroutine to track (symplectic integration) a taylor map through an element.
+! Subroutine to track (symplectic integration) a orbital map, and optionally a spin map, through an element.
+! The spin tracking is only done if spin_taylor is present and bmad_com%spin_tracking_on = T.
 ! The alternative routine, if ele has a taylor map, is concat_taylor.
 !
 ! This routine will fail if there is no corresponding ptc fibre for this
 ! element. In general, the transfer_map_calc routine should be used instead.
 !
 ! Input:
-!   bmad_taylor(6)   -- Taylor_struct: Map to be tracked
-!   ele              -- Ele_struct: Element to track through
-!   param            -- lat_param_struct: 
-!   ref_in           -- coord_struct, optional: Particle to be tracked.
-!                         Must be present if the particle to be tracked is not the reference particle or
-!                         if the direction of propagation is backwards.
+!   orb_taylor(6)     -- taylor_struct: Map to be tracked
+!   ele               -- ele_struct: Element to track through
+!   param             -- lat_param_struct: 
+!   ref_in            -- coord_struct, optional: Particle to be tracked.
+!                          Must be present if the particle to be tracked is not the reference particle or
+!                          if the direction of propagation is backwards.
+!   spin_taylor(4)    -- taylor_struct, optional: Spin map to be tracked
 !
 ! Output:
-!   bmad_taylor(6)  -- Taylor_struct: Map through element.
-!   err_flag        -- logical: Set True if there is an error. False otherwise.
+!   orb_taylor(6)     -- taylor_struct: Map through element.
+!   err_flag          -- logical: Set True if there is an error. False otherwise.
+!   spin_taylor(4)    -- taylor_struct, optional: Tracked spin map.
 !-
 
-subroutine taylor_propagate1 (bmad_taylor, ele, param, err_flag, ref_in)
+subroutine taylor_propagate1 (orb_taylor, ele, param, err_flag, ref_in, spin_taylor)
 
-use s_tracking
+use pointer_lattice
 use mad_like, only: real_8, fibre, ptc_track => track
 use ptc_spin, only: track_probe_x
 use madx_ptc_module, only: bmadl
 
+
 implicit none
 
-type (taylor_struct) bmad_taylor(:)
-type (real_8), save :: ptc_tlr(6)
+type (taylor_struct) orb_taylor(:)
+type (taylor_struct), optional :: spin_taylor(0:)
+type (real_8) :: ptc_re8(6)
+type (probe_8) :: ptc_prb
 type (ele_struct) ele, drift_ele
 type (lat_param_struct) param
 type (fibre), pointer :: ptc_fibre
 type (coord_struct), optional :: ref_in
+type (taylor) ptaylor(6)
 
-real(rp) beta0, beta1, m2_rel
+real(rp) m2_rel
+integer ii
 logical err_flag
 character(*), parameter :: r_name = 'taylor_propagate1'
 
 ! If the element is a taylor then just concat since this is faster.
 
 if (ele%key == taylor$) then
-  call concat_ele_taylor (bmad_taylor, ele, bmad_taylor, err_flag)
+  call concat_ele_taylor (orb_taylor, ele, err_flag, spin_taylor)
   return
 endif
 
@@ -2470,12 +2525,6 @@ call ptc_set_taylor_order_if_needed()
 
 ! Init ptc map with bmad map
 
-beta0 = ele%value(p0c_start$) / ele%value(e_tot_start$)
-beta1 = ele%value(p0c$) / ele%value(e_tot$)
-
-call alloc (ptc_tlr)
-ptc_tlr = bmad_taylor
-
 ! track the map
 
 call ele_to_fibre (ele, ptc_fibre, .true., err_flag, ref_in = ref_in)
@@ -2484,15 +2533,26 @@ if (err_flag) then
   return
 endif
 
-call track_probe_x (ptc_tlr, ptc_private%base_state, fibre1 = bmadl%start)
+if (bmad_com%spin_tracking_on .and. present(spin_taylor)) then
+  call alloc (ptc_prb)
 
-! transfer ptc map back to bmad map
+  ptc_prb%x = orb_taylor
+  ptc_prb%q%x = spin_taylor
 
-bmad_taylor = ptc_tlr
+  call track_probe (ptc_prb, ptc_private%base_state+spin0, fibre1 = bmadl%start)
 
-! cleanup
+  orb_taylor = ptc_prb%x
+  spin_taylor = ptc_prb%q%x
 
-call kill (ptc_tlr)
+  call kill (ptc_prb)
+
+else
+  call alloc (ptc_re8)
+  ptc_re8 = orb_taylor
+  call track_probe_x (ptc_re8, ptc_private%base_state, fibre1 = bmadl%start)
+  orb_taylor = ptc_re8
+  call kill (ptc_re8)
+endif
 
 end subroutine taylor_propagate1
 
@@ -3079,7 +3139,8 @@ add_multipoles = .true.
 
 select case (key)
 
-case (marker$, detector$, fork$, photon_fork$, beginning_ele$, em_field$, patch$, fiducial$, floor_shift$, gkicker$)
+case (marker$, fixer$, detector$, fork$, photon_fork$, beginning_ele$, &
+                                    em_field$, patch$, fiducial$, floor_shift$, gkicker$)
   return
 
 case (crab_cavity$)

@@ -275,11 +275,13 @@ do ib = 0, ubound(lat_out%branch, 1)
         init_hybrid_needed = .false.
 
       else
-        if (ele_in%key == marker$ .or. ele_in%key == photon_fork$ .or. ele_in%key == fork$) cycle
+        select case (ele_in%key)
+        case (marker$, photon_fork$, fixer$, fork$); cycle
+        end select
 
         if (do_taylor) then
           if (associated(ele_in%taylor(1)%term)) then
-            call concat_ele_taylor (ele_out%taylor, ele_in, ele_out%taylor, err_flag)
+            call concat_ele_taylor (ele_out%taylor, ele_in, err_flag)
           else
             call taylor_propagate1 (ele_out%taylor, ele_in, b_in%param, err_flag)
           endif

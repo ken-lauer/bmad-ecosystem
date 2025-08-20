@@ -266,55 +266,49 @@ endif
 
 if (associated(ele%a_pole) .or. associated(ele%a_pole_elec)) then
   nl=nl+1; write (li(nl), '(5x, a, l1)') 'MULTIPOLES_ON    = ', ele%multipoles_on 
+  nl=nl+1; write (li(nl), '(5x, a, l1, 2x, a)') 'SCALE_MULTIPOLES = ', ele%scale_multipoles, &
+                                    '! Magnet strength scaling? Reference momentum scaling done if FIELD_MASTER = T.'
 endif
 
 a = 0; b = 0; a2 = 0; b2 = 0; knl = 0; tn = 0
 call multipole_ele_to_ab (ele, .false., ix_pole_max, a,  b)
 
-if (ix_pole_max > -1) then
-  if (attribute_index(ele, 'SCALE_MULTIPOLES') == scale_multipoles$) then
-    nl=nl+1; write (li(nl), '(5x, a, l1, 2x, a)') 'SCALE_MULTIPOLES = ', ele%scale_multipoles, &
-                                    '! Magnet strength scaling? Reference momentum scaling done if FIELD_MASTER = T.'
-  endif
+if (associated(branch)) param = branch%param
+call multipole_ele_to_ab (ele, .false.,  ix_pole_max, a_orig, b_orig)
 
-  if (associated(branch)) param = branch%param
-  call multipole_ele_to_ab (ele, .false.,  ix_pole_max, a_orig, b_orig)
-
-  if (ele%key == multipole$) then
-    call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
-  else
-    call multipole_ele_to_ab (ele, .true.,  ix_pole_max, a2, b2)
-    call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
-  endif
-
-  do im = 0, ix_pole_max
-    if (ele%key == multipole$) then
-      if (a(im) == 0 .and. b(im) == 0 .and. tn(im) == 0) cycle
-
-      nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
-              'K', im, 'L       =', ele%a_pole(im), 'KS', im, '       =', ele%a_pole_elec(im), 'T', im, '        =', ele%b_pole(im)
-      nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
-              'B', im, '(equiv) =', b(im),          'A', im,  '(equiv) =', a(im),              'T', im, '(equiv) =', tn(im)
-
-    elseif (ele%key == ab_multipole$) then
-      if (a(im) == 0 .and. b(im) == 0) cycle
-
-      nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
-                 'A', im, ' =', ele%a_pole(im), 'A', im, '(w/Tilt) =', a2(im), 'K', im, 'L(equiv) =', knl(im)
-      nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
-                 'B', im, ' =', ele%b_pole(im), 'B', im, '(w/Tilt) =', b2(im), 'T', im, '(equiv)  =', tn(im)
-
-    else
-      if (a_orig(im) == 0 .and. b_orig(im) == 0 .and. a(im) == 0 .and. b(im) == 0) cycle
-
-      nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'A', im, ' =', a_orig(im), &
-                 'A', im, '(Scaled) =', a(im), 'A', im, '(w/Tilt) =', a2(im), 'K', im, 'L(equiv) =', knl(im)
-      nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'B', im, ' =', b_orig(im), &
-                 'B', im, '(Scaled) =', b(im), 'B', im, '(w/Tilt) =', b2(im), 'T', im, '(equiv)  =', tn(im)
-    endif
-
-  enddo
+if (ele%key == multipole$) then
+  call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
+else
+  call multipole_ele_to_ab (ele, .true.,  ix_pole_max, a2, b2)
+  call multipole_ele_to_kt (ele, .true.,  ix_pole_max, knl, tn)
 endif
+
+do im = 0, ix_pole_max
+  if (ele%key == multipole$) then
+    if (a(im) == 0 .and. b(im) == 0 .and. tn(im) == 0) cycle
+
+    nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
+            'K', im, 'L       =', ele%a_pole(im), 'KS', im, '       =', ele%a_pole_elec(im), 'T', im, '        =', ele%b_pole(im)
+    nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
+            'B', im, '(equiv) =', b(im),          'A', im,  '(equiv) =', a(im),              'T', im, '(equiv) =', tn(im)
+
+  elseif (ele%key == ab_multipole$) then
+    if (a(im) == 0 .and. b(im) == 0) cycle
+
+    nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
+               'A', im, ' =', ele%a_pole(im), 'A', im, '(w/Tilt) =', a2(im), 'K', im, 'L(equiv) =', knl(im)
+    nl=nl+1; write (li(nl), '(2x, 3(3x, a, i0, a, es11.3))') &
+               'B', im, ' =', ele%b_pole(im), 'B', im, '(w/Tilt) =', b2(im), 'T', im, '(equiv)  =', tn(im)
+
+  else
+    if (a_orig(im) == 0 .and. b_orig(im) == 0 .and. a(im) == 0 .and. b(im) == 0) cycle
+
+    nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'A', im, ' =', a_orig(im), &
+               'A', im, '(Scaled) =', a(im), 'A', im, '(w/Tilt) =', a2(im), 'K', im, 'L(equiv) =', knl(im)
+    nl=nl+1; write (li(nl), '(2x, 4(3x, a, i0, a, es11.3))') 'B', im, ' =', b_orig(im), &
+               'B', im, '(Scaled) =', b(im), 'B', im, '(w/Tilt) =', b2(im), 'T', im, '(equiv)  =', tn(im)
+  endif
+enddo
 
 ! Electric Multipoles
 
@@ -973,11 +967,11 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
     lord => pointer_to_lord(ele, 1)
     nl=nl+1; write (li(nl), '(3a, i0, a)') 'Associated Multipass_Lord: ', trim(lord%name), '  (Index: ', lord%ix_ele, ')'
     nl=nl+1; li(nl) = 'Other slaves of this Lord:'
-    nl=nl+1; li(nl) = '     Index   Name'
+    nl=nl+1; li(nl) = '   Name'
     do im = 1, lord%n_slave
       slave => pointer_to_slave(lord, im)
       if (slave%ix_ele == ele%ix_ele .and. slave%ix_branch == ele%ix_branch) cycle
-      nl=nl+1; write (li(nl), '(a, 3x, a)') adjustr(ele_loc_name(slave)), trim(slave%name)
+      nl=nl+1; write (li(nl), '(3x, a)') ele_full_name(slave)
     enddo
 
   case (super_slave$)
@@ -988,8 +982,8 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
       if (lord%lord_status /= super_lord$) cycle
       if (lord%slave_status == multipass_slave$) then
         lord2 => pointer_to_lord(lord, 1)
-        nl=nl+1; write (li(nl), '(i8, 3x, a, t45, 3a, 2x, a)') lord%ix_ele, trim(lord%name), trim(key_name(lord%key)), &
-                      '   --> Multipass_slave of: ', trim(ele_loc_name(lord2)), lord2%name
+        nl=nl+1; write (li(nl), '(i8, 3x, a, t45, 3a)') lord%ix_ele, trim(lord%name), trim(key_name(lord%key)), &
+                      '   --> Multipass_slave of: ', ele_full_name(lord2)
       else
         nl=nl+1; write (li(nl), '(i8, 3x, a, t45, a)') lord%ix_ele, trim(lord%name), trim(key_name(lord%key))
       endif
@@ -1073,17 +1067,14 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
       do j = 1, lord%n_lord_field
         has_it = .true.
         lord2 => pointer_to_lord(lord, lord%n_lord+im)
-        nl=nl+1; write (li(nl), '(a8, t12, a35, a16, f10.3)') &
-                      trim(ele_loc_name(lord2)), lord2%name, key_name(lord2%key)
+        nl=nl+1; write (li(nl), '(3x, a, t48, a)') ele_full_name(lord2), key_name(lord2%key)
       enddo
     enddo
   else
     do im = 1, ele%n_lord_field
       has_it = .true.
       lord => pointer_to_lord(ele, ele%n_lord+im)
-      nl=nl+1; write (li(nl), '(a8, t12, a35, a16, f10.3)') &
-                    trim(ele_loc_name(lord)), lord%name, key_name(lord%key)
-
+      nl=nl+1; write (li(nl), '(3x, a, t48, a16)') ele_full_name(lord), key_name(lord%key)
     enddo
   endif
 
@@ -1173,20 +1164,20 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
     case (multipass_lord$, super_lord$, girder_lord$, control_lord$)
       if (ele%key == feedback$) then
         nl=nl+1; write (li(nl), '(a, i4)') 'Slaves:'
-        nl=nl+1; li(nl) = '   Index   Name';  li(nl)(n_char+14:) = 'Ele_Type           Slave_Type      S'
+        nl=nl+1; li(nl) = '   Name';  li(nl)(n_char+14:) = 'Ele_Type           Slave_Type      S'
         do im = 1, ele%n_slave
           slave => pointer_to_slave (ele, im, ctl)
-          nl=nl+1; write (li(nl), '(a8, t12, a, 2x, a16, 3x, a6, f14.6)') trim(ele_loc_name(slave)), &
-                                      slave%name(1:n_char), key_name(slave%key), ctl%attribute, slave%s
+          nl=nl+1; write (li(nl), '(3x, a)') ele_full_name(slave)
+          write (li(nl)(n_char+14:), '(a16, 3x, a6, f14.6)') key_name(slave%key), ctl%attribute, slave%s
         enddo
 
       else
         nl=nl+1; write (li(nl), '(a, i4)') 'Slaves:'
-        nl=nl+1; li(nl) = '   Index   Name';  li(nl)(n_char+14:) = 'Type                     S'
+        nl=nl+1; li(nl) = '   Name';  li(nl)(n_char+14:) = 'Type                     S'
         do im = 1, ele%n_slave
           slave => pointer_to_slave (ele, im)
-          nl=nl+1; write (li(nl), '(a8, t12, a, 2x, a16, 3x, f14.6)') &
-                      trim(ele_loc_name(slave)), slave%name(1:n_char), key_name(slave%key), slave%s
+          nl=nl+1; write (li(nl), '(3x, a)') ele_full_name(slave)
+          write (li(nl)(n_char+14:), '(a16, 3x, f14.6)') key_name(slave%key), slave%s
         enddo
       endif
 
@@ -1246,8 +1237,8 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
           call split_expression_string (knots_to_string(ele%control%x_knot, ctl%y_knot), 70, 5, li2)
         endif
 
-        nl=nl+1; write (li(nl), '(a8, t12, a, 2x, a18, 2a, 4x, a)') trim(ele_loc_name(slave)), &
-                                  slave%name(1:n_char), ctl%attribute, attrib_val_str, str1(1:17), trim(li2(1))
+        nl=nl+1; write (li(nl), '(a)') ele_full_name(slave)
+        write (li(nl)(50:), '(a18, 2a, 4x, a)') ctl%attribute, attrib_val_str, str1(1:17), trim(li2(1))
         if (nl+size(li2)+100 > size(li)) call re_allocate (li, nl+size(li2)+100)
         do im = 2, size(li2)
           n = 50 + n_char + len(attrib_val_str)
@@ -1263,7 +1254,7 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
   has_it = .false.
   nl=nl+1; li(nl) = ' '
   nl=nl+1; li(nl) = "This element's field overlaps:"
-  nl=nl+1; li(nl) = '   Index   Name                                      Type '
+  nl=nl+1; li(nl) = '   Name                                               Type '
 
   if (ele%slave_status == super_slave$ .or. ele%slave_status == multipass_slave$) then
     do im = 1, ele%n_lord
@@ -1271,17 +1262,15 @@ if (associated(lat) .and. integer_option(short$, type_control) /= no$) then
       if (lord%slave_status == multipass_slave$) lord => pointer_to_lord(lord, 1)
       do j = 1, lord%n_slave_field
         has_it = .true.
-        slave => pointer_to_slave(ele, im, lord_type = field_lord$)
-        nl=nl+1; write (li(nl), '(a8, t12, a30, a16, f10.3)') &
-                      trim(ele_loc_name(slave)), slave%name, trim(key_name(slave%key))
+        slave => pointer_to_slave(lord, j, lord_type = field_lord$)
+        nl=nl+1; write (li(nl), '(3x, a, t48, a)') ele_full_name(slave), trim(key_name(slave%key))
       enddo
     enddo
   else
     do im = 1, ele%n_slave_field
       has_it = .true.
       slave => pointer_to_slave(ele, im, lord_type = field_lord$)
-      nl=nl+1; write (li(nl), '(a8, t12, a30, a16, f10.3)') &
-                    trim(ele_loc_name(slave)), slave%name, trim(key_name(slave%key))
+      nl=nl+1; write (li(nl), '(3x, a, t48, a)') ele_full_name(slave), trim(key_name(slave%key))
     enddo
   endif
 
@@ -1626,7 +1615,7 @@ character(*) attrib_name
 character(40) a_name, a2_name
 logical is_2nd_col_attrib
 
-character(42), parameter :: att_name(103) = [character(42):: 'X_PITCH', 'Y_PITCH', 'X_OFFSET', &
+character(42), parameter :: att_name(118) = [character(42):: 'X_PITCH', 'Y_PITCH', 'X_OFFSET', &
                 'Y_OFFSET', 'Z_OFFSET', 'REF_TILT', 'TILT', 'ROLL', 'X1_LIMIT', 'Y1_LIMIT', &
                 'FB1', 'FQ1', 'LORD_PAD1', 'HKICK', 'VKICK', 'KICK', 'FRINGE_TYPE', 'DS_STEP', 'R0_MAG', &
                 'KS', 'K1', 'K2', 'G', 'DG', 'G_TOT', 'H1', 'E1', 'FINT', 'HGAP', &
@@ -1641,9 +1630,12 @@ character(42), parameter :: att_name(103) = [character(42):: 'X_PITCH', 'Y_PITCH
                 'MODE_FLIP0', 'BETA_A_STRONG', 'BETA_B_STRONG', 'REF_TIME_START', 'THICKNESS', &
                 'PX_KICK', 'PY_KICK', 'PZ_KICK', 'E_TOT_OFFSET', 'FLEXIBLE', 'CRUNCH', 'NOISE', &
                 'F_FACTOR', 'EXACT_MULTIPOLES', 'CROSSING_TIME', 'SPIN_TRACKING_MODEL', 'VOLTAGE_ERR', &
-                'SPIN_DN_DPZ_X', 'INHERIT_FROM_FORK', 'N_PERIOD', 'G_MAX', 'PC_STRONG']
+                'SPIN_DN_DPZ_X', 'INHERIT_FROM_FORK', 'N_PERIOD', 'G_MAX', 'PC_STRONG', &
+                'BETA_A_SET', 'ALPHA_A_SET', 'ETA_X_SET', 'ETAP_X_SET', 'PHI_A_SET', 'CMAT_11_SET', 'CMAT_21_SET', &
+                'DBETA_DPZ_A_SET', 'DALPHA_DPZ_A_SET', 'DETA_DPZ_X_SET', 'DETAP_DPZ_X_SET', &
+                'X_SET', 'Y_SET', 'Z_SET', 'PHI_A_SET']
 
-character(42), parameter :: att2_name(103) = [character(42):: 'X_PITCH_TOT', 'Y_PITCH_TOT', 'X_OFFSET_TOT', &
+character(42), parameter :: att2_name(118) = [character(42):: 'X_PITCH_TOT', 'Y_PITCH_TOT', 'X_OFFSET_TOT', &
                 'Y_OFFSET_TOT', 'Z_OFFSET_TOT', 'REF_TILT_TOT', 'TILT_TOT', 'ROLL_TOT', 'X2_LIMIT', 'Y2_LIMIT', &
                 'FB2', 'FQ2', 'LORD_PAD2', 'BL_HKICK', 'BL_VKICK', 'BL_KICK', 'FRINGE_AT', 'NUM_STEPS', 'R0_ELEC', &
                 'BS_FIELD', 'B1_GRADIENT', 'B2_GRADIENT', 'B_FIELD', 'DB_FIELD', 'B_FIELD_TOT', 'H2', 'E2', 'FINTX', 'HGAPX', &
@@ -1658,7 +1650,10 @@ character(42), parameter :: att2_name(103) = [character(42):: 'X_PITCH_TOT', 'Y_
                 'MODE_FLIP1', 'ALPHA_A_STRONG', 'ALPHA_B_STRONG', 'DELTA_REF_TIME', 'DTHICKNESS_DX', &
                 'X_KICK', 'Y_KICK', 'Z_KICK', 'E_TOT_START', 'REF_COORDS', 'CRUNCH_CALIB', 'N_SAMPLE', &
                 'SCATTER_METHOD', 'FIDUCIAL_PT', 'S_BETA_MIN', 'RECALC', 'GRADIENT_ERR', &
-                'SPIN_DN_DPZ_Y', 'MODE_FLIP', 'L_PERIOD', 'B_MAX', 'E_TOT_STRONG']
+                'SPIN_DN_DPZ_Y', 'MODE_FLIP', 'L_PERIOD', 'B_MAX', 'E_TOT_STRONG', &
+                'BETA_B_SET', 'ALPHA_B_SET', 'ETA_Y_SET', 'ETAP_Y_SET', 'PHI_N_SET', 'CMAT_12_SET', 'CMAT_22_SET', &
+                'DBETA_DPZ_B_SET', 'DALPHA_DPZ_B_SET', 'DETA_DPZ_Y_SET', 'DETAP_DPZ_Y_SET', &
+                'PX_SET', 'PY_SET', 'PZ_SET', 'PHI_B_SET']
 
 ! Exceptional cases
 

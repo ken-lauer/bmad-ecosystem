@@ -103,11 +103,11 @@ case (def_line$)
   ele%value = g
   ele%s     = g
   ele%ref_time = g
-  ele%a = twiss_struct(g, g, g, g, g, g, g, g, g, g, g, g, g)
-  ele%b = twiss_struct(g, g, g, g, g, g, g, g, g, g, g, g, g)
-  ele%z = twiss_struct(g, g, g, g, g, g, g, g, g, g, g, g, g)
-  ele%x = xy_disp_struct(g, g, g, g)
-  ele%y = xy_disp_struct(g, g, g, g)
+  ele%a = twiss_struct(g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g)
+  ele%b = twiss_struct(g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g)
+  ele%z = twiss_struct(g, g, g, g, g, g, g, g, g, g, g, g, g, g, g, g)
+  ele%x = xy_disp_struct(g, g, g, g, g, g)
+  ele%y = xy_disp_struct(g, g, g, g, g, g)
   ele%floor = floor_position_struct([g,g,g], mat3_unit$, g,g,g)
   ele%value(inherit_from_fork$) = g
 
@@ -170,6 +170,9 @@ case (floor_shift$)
   ele%value(origin_ele_ref_pt$) = exit_end$
   ele%value(upstream_coord_dir$) = 1
   ele%value(downstream_coord_dir$) = 1
+
+case (fixer$)
+  ele%is_on = .false.
 
 case (foil$)
   ele%value(num_steps$) = 10

@@ -15,6 +15,7 @@ type (control_struct), pointer :: ctl
 type (control_ramp1_struct), pointer :: ramp(:)
 type (nametable_struct) ntab
 type (expression_atom_struct), allocatable :: stack(:)
+type (expression_tree_struct) tree
 type (ele_pointer_struct), allocatable :: ramper(:)
 type (material_struct), pointer :: mater(:), mater2(:)
 
@@ -23,13 +24,21 @@ character(40) :: loc_str(19) = [character(40):: 'qu1-1', 'qu1-5', 'qu2+1', 'qu2+
           '1>>drift::3:15', 'sb', '3:15', '1>>quad::*', 'octupole::1>>*', &
           'sb##2', 'type::*', 'alias::"q*t"', 'descrip::"So Long"', 'sb%', &
           '0>>drift::qu1:qu2', '1>>drift::qu1:qu2', 'sbend::17:5', 'quad::*,~2>>*', 'Quad::*&*9*']
-character(40) :: exp_str(4) = [character(40):: &
-                      'atan2(1,2) + ran()', &
-                      'atan2(atan2(1,2), atan(0.5))', &
+character(60) :: exp_str(4) = [character(60):: &
+                      '1e-9*mass_of(#3He+2) + charge_of(Al+3)', &
+                      'atan2(atan2(1,2), atan(0.5)) + ran()', &
                       'atan(atan((1/(3+4))))', &
                       'ran_gauss(0.3*2) + ran_gauss()']
 
-character(100) str, err_str
+character(60) :: tree_str(5) = [character(60):: &
+                      '-A^-B + tan(4*c)', &
+                      'xyz = -3^-2 + tan(4^atan(10,11)*c) * ran_gauss() - xxx->b', &
+                      '{(4) / 7.32e+34} + [8] * atan(10,11)', &
+                      'abc {ran(), gar()}^5', &
+                      'abc {ran(), gar}^5 + [4*5 ] ) ), + 64' &
+                              ]
+
+character(200) str, err_str
 
 real(rp), allocatable :: save(:)
 real(rp) m1(6,6), m2(6,6), r0(6), vec1(6), vec2(6), val
@@ -43,8 +52,15 @@ nargs = command_argument_count()
 
 if (nargs > 0) then
   call get_command_argument(1, lat_file)
-  val = expression_value(lat_file, err)
-  print *, val
+  print '(a)', quote(lat_file)
+  print *, '---------------'
+  call expression_string_to_tree(lat_file, tree, err, err_str)
+  call type_expression_tree(tree)
+  str = expression_tree_to_string(tree)
+  print *, '---------------'
+  print '(a)', quote(str)
+  print '(a)', quote(err_str)
+  call deallocate_tree(tree)
   stop
 endif
 
@@ -58,6 +74,28 @@ endif
 ! endif
 
 open (1, file = 'output.now', recl = 200)
+
+!-----------------------------------------
+
+do i = 1, size(tree_str)
+  call expression_string_to_tree(tree_str(i), tree, err, err_str)
+  str = expression_tree_to_string(tree)
+  write (1, '(a, i0, 2a)') '"Tree2-str', i, '" STR        ', quote(str)
+  write (1, '(a, i0, 2a)') '"Tree2-err', i, '" STR        ', quote(err_str)
+enddo
+
+call ran_seed_put (1234)
+do i = 1, size(exp_str)
+  val = expression_value(exp_str(i), err)
+  write (1, '(a, i0, a, f14.8)') '"Expression-val', i, '" ABS 1E-10 ', val
+  call expression_string_to_stack (exp_str(i), stack, n_stack, err, err_str)
+  str = expression_stack_to_string(stack)
+  write (1, '(a, i0, 2a)') '"Expression-str', i, '" STR  ', quote(str)
+  call expression_string_to_tree(exp_str(i), tree, err, err_str)
+  str = expression_tree_to_string(tree)
+  write (1, '(a, i0, 2a)') '"Tree-str', i, '" STR        ', quote(str)
+  call deallocate_tree(tree)
+enddo
 
 !-----------------------------------------
 
@@ -93,19 +131,6 @@ do i = 1, lat%n_ele_max
     write (1, '(3a, es20.12)') '"', trim(ele%name), '-p0c" REL 1E-10', ele%value(p0c$)
     write (1, '(3a, es20.12)') '"', trim(ele%name), '-hkick" REL 1E-10', ele%value(hkick$)
   end select
-
-
-enddo
-
-!-----------------------------------------
-
-call ran_seed_put (1234)
-do i = 1, size(exp_str)
-  val = expression_value(exp_str(i), err)
-  write (1, '(a, i0, a, f14.8)') '"Expression-val', i, '" ABS 1E-10 ', val
-  call expression_string_to_stack (exp_str(i), stack, n_stack, err, err_str)
-  str = expression_stack_to_string(stack)
-  write (1, '(a, i0, 2a)') '"Expression-str', i, '" STR  ', quote(str)
 enddo
 
 !

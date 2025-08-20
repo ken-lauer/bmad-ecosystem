@@ -86,8 +86,7 @@ if (ele1%a%beta <= 0 .or. ele1%b%beta <= 0) then
     endif
   endif
 
-  call out_io (s_error$, r_name, 'NON-POSITIVE BETA DETECTED AT ELEMENT: ' // &
-                                  trim(ele1%name) // '  ' // ele_loc_name(ele1, .true., '()'))
+  call out_io (s_error$, r_name, 'NON-POSITIVE BETA DETECTED AT ELEMENT: ' // ele_full_name(ele1))
   return
 endif
 
@@ -97,11 +96,12 @@ key2 = ele2%key
 !---------------------------------------------------------------------
 ! markers are easy
 
-if (key2 == marker$ .or. key2 == photon_fork$ .or. key2 == fork$) then
+select case (key2)
+case (marker$, photon_fork$, fork$, fixer$)
   call transfer_twiss (ele1, ele2)
   if (present(err_flag)) err_flag = .false.
   return
-endif
+end select
 
 !
 

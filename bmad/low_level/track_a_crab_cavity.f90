@@ -80,9 +80,9 @@ call track_this_drift(orbit, dl/2, ele, mat6, make_matrix)
 do i = 1, n_slice
   s_here = (i - 0.5_rp) * dl
 
-  phase0 = twopi * (ele%value(phi0$) + ele%value(phi0_multipass$) + ele%value(phi0_autoscale$) - &
-          (particle_rf_time (orbit, ele, .false.) - rf_ref_time_offset(ele, s_here)) * &
-          ele%value(rf_frequency$))
+  phase0 = twopi * (ele%value(phi0$) + ele%value(phi0_autoscale$) - ele%value(rf_frequency$) * &
+          (particle_rf_time (orbit, ele, .false., rf_freq = ele%value(rf_frequency$)) - rf_ref_time_offset(ele, s_here)))
+  if (.not. bmad_com%absolute_time_tracking) phase0 = phase0 + twopi * ele%value(phi0_multipass$)
   if (ele%orientation == -1) phase0 = phase0 + twopi * ele%value(rf_frequency$) * dt_length
   phase = phase0
 
@@ -135,6 +135,8 @@ do i = 1, n_slice
 enddo
 
 call track_this_drift(orbit, dl/2, ele, mat6, make_matrix)
+orbit%phase(1) = modulo2(phase, 0.5_rp)
+
 
 ! coupler kick, multipoles, back to lab coords.
 

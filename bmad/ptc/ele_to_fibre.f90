@@ -349,7 +349,8 @@ case (sol_quad$)
   ptc_key%list%usethin = .false.  ! So zero length element is not treated as a multipole
 
 !------------------------------
-case (marker$, detector$, fork$, photon_fork$, beginning_ele$, patch$, floor_shift$, fiducial$, taylor$, match$)
+case (marker$, detector$, fixer$, fork$, photon_fork$, beginning_ele$, &
+                                      patch$, floor_shift$, fiducial$, taylor$, match$)
   ptc_key%magnet = 'marker'
   ptc_key%nstep = 1
 
@@ -396,7 +397,8 @@ case (rfcavity$, lcavity$)
   end select
 
   ptc_key%list%freq0 = val(rf_frequency$)
-  phi_tot = val(phi0$) + val(phi0_multipass$) + val(phi0_err$) + val(phi0_autoscale$)
+  phi_tot = val(phi0$) + val(phi0_multipass$) + val(phi0_err$)
+  if (ele%tracking_method /= bmad_standard$) phi_tot = phi_tot + val(phi0_autoscale$)
 
   if (key == lcavity$) then
     ptc_key%list%lag = pi / 2 - twopi * phi_tot
@@ -694,10 +696,17 @@ endif
 !----------------------------------------------
 
 if (ele%key == lcavity$ .or. ele%key == rfcavity$) then
-  do i = n_mult, 1, -1
-    call add_to_cavity(ptc_fibre, i, 0, bn_ptc(i))
-    call add_to_cavity(ptc_fibre, -i, 0, an_ptc(i))
-  enddo
+  if (ptc_fibre%mag%kind == kind4) then
+    do i = n_mult, 1, -1
+      call add_to_cavity(ptc_fibre, i, 0, bn_ptc(i))
+      call add_to_cavity(ptc_fibre, -i, 0, an_ptc(i))
+    enddo
+  elseif (ptc_fibre%mag%kind == kind21) then
+    do i = n_mult, 1, -1
+      call add(ptc_fibre, i, 0, bn_ptc(i))
+      call add(ptc_fibre, -i, 0, an_ptc(i))
+    enddo
+  endif
 endif
 
 !----------------------------------------------

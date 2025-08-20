@@ -748,13 +748,15 @@ will stop. The default value is zero. Also see \vn{global%merit_stop_value}.
   \item{\vn{global%lattice_calc_on}} \Newline
 \vn{global%lattice_calc_on} controls whether lattice calculations are done when there are changes in
 the lattice. Lattice calculations include the calculation of orbits, Twiss parameters, beam
-tracking, etc. This switch is useful in controlling unnecessary calculational overhead.  A typical
-scenario where this switch is used involves first setting \vn{%lattice_calc_on} to \vn{False} (using
-the \vn{set} command (\sref{s:set})), then executing a set of commands, and finally setting
-\vn{%lattice_calc_on} back to \vn{True}. This saves some of the calculational overhead that each
-command generates. Similarly, \vn{global%plot_on} can be toggled to save even more time. Also see
-the \vn{set universe} command (\sref{s:set.universe}) for ways to suppress certain types of
-calculations (for example, calculating the Twiss parameters) that are not needed.
+tracking, etc. This also includes plotting calculations so while \vn{%lattice_calc_on} is set to
+False, the plot window will not update. This switch is useful in controlling unnecessary
+calculational overhead.  A typical scenario where this switch is used involves first setting
+\vn{%lattice_calc_on} to \vn{False} (using the \vn{set} command (\sref{s:set})), then executing a
+set of commands, and finally setting \vn{%lattice_calc_on} back to \vn{True}. This saves some of the
+calculational overhead that each command generates. Similarly, \vn{global%plot_on} can be toggled to
+save even more time. Also see the \vn{set universe} command (\sref{s:set.universe}) for ways to
+suppress certain types of calculations (for example, calculating the Twiss parameters) that are not
+needed.
 %
   \item{\vn{global%force_plot_data_calc}} \Newline
 Sometimes it is convenient to have \tao calculate plotting curve points even when \tao is not doing
@@ -1348,12 +1350,13 @@ Variables are initialized using the \vn{tao_var} namelist. The format for this i
 Example:
 \begin{example}
   &tao_var
-    v1_var%name      = "v_steer"   ! vertical steerings
-    default_universe  = "clone 2,3"
-    default_attribute = "vkick"     ! vertical kick attribute
-    default_weight    = 1e3
-    default_step      = 1e-5
-    var(0:99)%ele_name  = "v00w", "v01w", "v02w", "    ", "v04w", ...
+    v1_var%name        = "v_steer"   ! vertical steerings
+    default_universe   = "clone 2,3"
+    default_attribute  = "vkick"     ! vertical kick attribute
+    default_weight     = 1e3
+    default_step       = 1e-5
+    var(0:99)%ele_name = "v00w", "v01w", "v02w", "    ", "v04w", ...
+    var(2)%attribute   = "hkick"     ! Override default
   /
 \end{example}
 
@@ -3215,7 +3218,8 @@ of this structure can be set to control how a floor plan is drawn. The component
   type tao_floor_plan_struct:
     rotation             = <real>      ! Rotation of floor plan plot: 1.0 -> 360 deg. 
     view                 = "<string>"  ! View plane for floor plan plot. default = "zx"
-    correct_distortion   = <logical>   ! For Floor Plan plots: Default = F
+    correct_distortion   = <logical>   ! Scale plot to use an equal aspect ratio so squares
+                                       !   in real space are drawn as squares? Default = T
     flip_label_side      = <logical>   ! Draw element label on other side of element?
     size_is_absolute     = <logical>   ! Shape sizes scaled to absolute dimensions?
     draw_only_first_pass = <logical>   ! Draw only first pass with multipass elements?
@@ -3233,15 +3237,16 @@ A graph is initialized with a \vn{tao_template_graph} namelist (\sref{s:template
     graph%floor_plan%orbit_scale = 100
     graph%floor_plan%orbit_color = "red"
     graph%floor_plan%orbit_width = 3
+    graph%floor_plan%view = "zx"
   /
 \end{example}
 
-The \vn{scale} component scales the displacement of the orbit from the lattice reference coordinate
-system (which is the centerline of the lattice elements if there are no misalignments). So a value
-of 100.0, a 1~cm orbit is drawn 1~meter from the centerline. A setting of zero (the default) means
-that the orbit is now drawn. Note: If \vn{scale} is not unity, the plotted orbit when going through
-a \vn{patch} element with a finite transverse offset will show a discontinuity due to the
-discontinuity of the reference orbit.
+The \vn{orbit_scale} component scales the displacement of the orbit from the lattice reference
+coordinate system (which is the centerline of the lattice elements if there are no
+misalignments). So a value of 100.0, a 1~cm orbit is drawn 1~meter from the centerline. A setting of
+zero (the default) means that the orbit is now drawn. Note: If \vn{orbit_scale} is not unity, the
+plotted orbit when going through a \vn{patch} element with a finite transverse offset will show a
+discontinuity due to the discontinuity of the reference orbit.
 
 What plane a floor plan is projected onto is determined by the setting of the
 \vn{graph%floor_plan%view} switch. This switch is a two character string.  Each character is either
@@ -3330,7 +3335,8 @@ To prevent the drawing of the axes set \vn{graph%draw_axes} to False.  To preven
 grid at the major division points set \vn{graph%draw_grid} to False.
 
 By default, the horizontal or vertical margins of the graph will be increased so that the horizontal
-scale (meters per plotting inch) is equal to the vertical scale.  If
+scale (meters per plotting inch) is equal to the vertical scale. That is, both axes will have an
+equal aspect ratio and squares in real space will be drawn as squares in the plot. If
 \vn{graph%floor_plan%correct_distortion} is set to \vn{False}, this scaling will not be done.
 
 Note: The \vn{show ele -floor} command (\sref{s:show}) can be used to view an element's global

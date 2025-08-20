@@ -25,16 +25,17 @@ available in \bmad.
   EM_Field          & \ref{s:em.field}      &  Rcollimator       & \ref{s:col}        \\
   Feedback          & \ref{s:feedback}      &  RF_bend           & \ref{s:rf.bend}    \\
   Fiducial          & \ref{s:fiducial}      &  RFcavity          & \ref{s:rfcav}      \\
-  Floor_Shift       & \ref{s:floor.ele}     &  Sad_Mult          & \ref{s:sad.mult}   \\
-  Foil              & \ref{s:foil}          &  Sbend             & \ref{s:bend}       \\
-  Fork              & \ref{s:fork}          &  Sextupole         & \ref{s:sex}        \\
-  GKicker           & \ref{s:gkicker}       &  Sol_Quad          & \ref{s:sq}         \\
-  HKicker           & \ref{s:hvkicker}      &  Solenoid          & \ref{s:sol}        \\
-  Hybrid            & \ref{s:hybrid}        &  Taylor            & \ref{s:taylor}     \\
-  Instrument        & \ref{s:monitor}       &  Thick_Multipole   & \ref{s:thick.mult} \\
-  Kicker            & \ref{s:kicker}        &  Undulator         & \ref{s:wiggler}    \\
-  Lcavity           & \ref{s:lcav}          &  VKicker           & \ref{s:hvkicker}   \\ 
-  Marker            & \ref{s:mark}          &  Wiggler           & \ref{s:wiggler}    \\
+  Fixer             & \ref{s:fixer}         &  Sad_Mult          & \ref{s:sad.mult}   \\
+  Floor_Shift       & \ref{s:floor.ele}     &  Sbend             & \ref{s:bend}       \\
+  Foil              & \ref{s:foil}          &  Sextupole         & \ref{s:sex}        \\
+  Fork              & \ref{s:fork}          &  Sol_Quad          & \ref{s:sq}         \\
+  GKicker           & \ref{s:gkicker}       &  Solenoid          & \ref{s:sol}        \\
+  HKicker           & \ref{s:hvkicker}      &  Taylor            & \ref{s:taylor}     \\
+  Hybrid            & \ref{s:hybrid}        &  Thick_Multipole   & \ref{s:thick.mult} \\
+  Instrument        & \ref{s:monitor}       &  Undulator         & \ref{s:wiggler}    \\
+  Kicker            & \ref{s:kicker}        &  VKicker           & \ref{s:hvkicker}   \\ 
+  Lcavity           & \ref{s:lcav}          &  Wiggler           & \ref{s:wiggler}    \\
+  Marker            & \ref{s:mark}          &                    &                    \\
   \bottomrule
 \end{tabular}
 } \caption{Table of element types suitable for use with charged particles. Also see
@@ -58,19 +59,19 @@ use.
 {\tt
 \begin{tabular}{llll} \toprule
   {\it Element}      & {\it Section}         & {\it Element}         & {\it Section}       \\ \midrule
-  Beginning_Ele      & \ref{s:begin.ele}     &    Lens               & \ref{s:lens}        \\
-  Capillary          & \ref{s:capillary}     &  Marker               & \ref{s:mark}        \\
-  Crystal            & \ref{s:crystal}       &  Mask                 & \ref{s:mask}        \\
-  Custom             & \ref{s:custom}        &  Match                & \ref{s:match}       \\
-  Detector           & \ref{s:detector}      &  Monitor              & \ref{s:monitor}     \\ 
-  Diffraction_Plate  & \ref{s:diff.plate}    &  Mirror               & \ref{s:mirror}      \\
-  Drift              & \ref{s:drift}         &  Multilayer_Mirror    & \ref{s:multilayer}  \\
-  Ecollimator        & \ref{s:col}           &  Patch                & \ref{s:patch}       \\
-  Fiducial           & \ref{s:fiducial}      &  Photon_Fork          & \ref{s:fork}        \\
-  Floor_Shift        & \ref{s:floor.ele}     &  Photon_Init          & \ref{s:photon.init} \\
-  Fork               & \ref{s:fork}          &  Pipe                 & \ref{s:monitor}     \\
-  GKicker            & \ref{s:gkicker}       &  Rcollimator          & \ref{s:col}         \\
-  Instrument         & \ref{s:monitor}       &  Sample               & \ref{s:sample}      \\
+  Beginning_Ele      & \ref{s:begin.ele}     &  Marker               & \ref{s:mark}        \\
+  Capillary          & \ref{s:capillary}     &  Mask                 & \ref{s:mask}        \\
+  Crystal            & \ref{s:crystal}       &  Match                & \ref{s:match}       \\
+  Custom             & \ref{s:custom}        &  Monitor              & \ref{s:monitor}     \\ 
+  Detector           & \ref{s:detector}      &  Mirror               & \ref{s:mirror}      \\
+  Diffraction_Plate  & \ref{s:diff.plate}    &  Multilayer_Mirror    & \ref{s:multilayer}  \\
+  Drift              & \ref{s:drift}         &  Patch                & \ref{s:patch}       \\
+  Ecollimator        & \ref{s:col}           &  Photon_Fork          & \ref{s:fork}        \\
+  Fiducial           & \ref{s:fiducial}      &  Photon_Init          & \ref{s:photon.init} \\
+  Floor_Shift        & \ref{s:floor.ele}     &  Pipe                 & \ref{s:monitor}     \\
+  Fork               & \ref{s:fork}          &  Rcollimator          & \ref{s:col}         \\
+  GKicker            & \ref{s:gkicker}       &  Sample               & \ref{s:sample}      \\
+  Instrument         & \ref{s:monitor}       &                       &                     \\
   \bottomrule
 \end{tabular}
 }
@@ -1188,30 +1189,28 @@ The attributes specific to an \vn{crab_cavity} are
   phi0_multipass  = <Real>    ! Phase (rad/2\(\pi\)) with respect to a multipass lord (\sref{c:multipass}).
   rf_frequency    = <Real>    ! RF frequency (Hz).
   harmon          = <Real>    ! Harmonic number
-  harmon_master   = <Logic>   ! Is harmon or rf_frequency the dependent var with ref energy changes?
+  harmon_master   = <Logic>   ! Is harmon or rf_frequency the dependent variable
+                              !   with reference energy changes?
   voltage                     ! Cavity voltage. Dependent attribute (\sref{s:depend}).
 \end{example}
 
-The Hamiltonian  $H_{\text{crab}}$ for a thin crab cavity is\cite{b:crab1}:
+The Hamiltonian $H_{\text{crab}}$ for a thin crab cavity in energy-time phase space coordinates
+(\sref{energy.phase.space}) is\cite{b:crab1}:
 \begin{equation}
-  H_{\text{crab}} = -r_q \, V\, x \, \sin(k \, t + 2 \, \pi \, \phi_0)
+  H_{\text{crab}} = \frac{-r_q \, e \, V}{c P_0} \, x \, \sin(2 \, \pi \, (f_\txt{rf} \, t + \phi_0))
 \end{equation}
-where $x$ and $z$ are particle coordinates, $r_q$ is the charge relative to the reference
+where $x$ is the particle position, $t$ is the time, $r_q$ is the charge relative to the reference
 particle, $V$ is the ``effective'' cavity voltage, $\phi_0$ is a user settable
-phase, and $k$ is the wave number
-\begin{equation}
-  k = \frac{2 \, \pi \, f_{\text{rf}}}{c}
-\end{equation}
-Which give kicks of
+phase, and $f_\txt{rf}$ is the RF frequency. The kick is:
 \begin{align} 
-  \Delta p_x &= -\frac{1}{c \, P_0} \, \frac{\partial H_{\text{crab}}}{\partial x} = 
-    \frac{r_q \, V}{c \, P_0} \, \sin(k \, t + 2 \, \pi \, \phi_0) \CRNO 
-  \Delta E &= -\frac{\partial H_{\text{crab}}}{\partial t} = 
-    r_q \, V \, \, k \, x \, \cos(k \, t + 2 \, \pi \, \phi_0) 
+  \Delta p_x &= - \frac{\partial H_{\text{crab}}}{\partial x} = 
+    \frac{r_q \, e \, V}{c \, P_0} \, \sin(2 \, \pi \, (f_\txt{rf} \, t + \phi_0)) \CRNO 
+  \Delta E &= -c \, P_0 \, \frac{\partial H_{\text{crab}}}{\partial t} = 
+    2 \, \pi \, r_q \, e \, V \, \, f_\txt{rf} \, x \, \cos(2 \, \pi \, (f_\txt{rf} \, t + \phi_0)) 
 \end{align} 
 Note: The sign of $H_{\text{crab}}$ used by Authors in the literature is not standardized. \bmad
-uses the convention such that a particle with the charge of the reference particle and with $z$ and
-$V$ positive will have a positive $\Delta p_x$.
+uses the convention such that a particle with the charge of the reference particle and with phase
+space $z$ (which has opposite sign to $t$) and $V$ positive will have a positive $\Delta p_x$.
 
 In the above equations $r_q$ is the relative charge between the reference particle (set by the
 \vn{parameter[particle]} parameter in a lattice file) and the particle being tracked through the
@@ -1223,8 +1222,8 @@ the centerline\cite{b:kim}. With this mode, the transverse kick is due to the ma
 longitudinal kick is due to the electric field. Using this, the integrated electric and magnetic
 fields needed for spin tracking are:
 \begin{align}
-  \int \! B_y &= \frac{-V}{c} \, \sin(k \, z + 2 \, \pi \, \phi_0) \CRNO 
-  \int \! E_s &=  \beta \, V \, \, k \, x \, \cos(k \, z + 2 \, \pi \, \phi_0) 
+  \int \! B_y &= \frac{-V}{c} \, \sin(2 \, \pi \, (f_\txt{rf} \, t + \phi_0)) \CRNO 
+  \int \! E_s &= 2 \, \pi \, \beta \, V \, \, f_\txt{rf} \, x \, \cos(2 \, \pi \, (f_\txt{rf} \, t + \phi_0))
 \end{align}
 where $\beta = v/c$ is the normalized speed of the particle.
 
@@ -2105,6 +2104,21 @@ Example:
 See \sref{s:ex.collide} for an example where a fiducial element is
 used to position the second ring in a dual ring colliding beam 
 machine.
+
+\newpage
+
+%-----------------------------------------------------------------
+\section{Fixer}
+\label{s:fixer}
+
+A \vn{fixer} element is used to set the particle orbit and/or the Twiss parameters at
+any point in an open geometry lattice branch. The orbit and/or Twiss parameter can then
+be propagated both forward and backwards.
+
+<b>This element is in construction and is not yet usable.</b>
+
+A \vn{fixer} element has zero length. For tracking particles, a \vn{fixer} element is like a \vn{marker}. That is, there is no change in phase space coordinates when a particle is tracked
+through a \vn{fixer} element.
 
 \newpage
 
@@ -3172,11 +3186,12 @@ The attributes specific to an \vn{lcavity} are
   voltage_tot                 ! Net voltage = voltage + voltage_err. Dependent param (\sref{s:depend}).
   l_active        = <Real>    ! Active region length. Dependent attribute (\sref{s:depend}).
   n_cell          = <Int>     ! Number of cavity cells. Default is 1.
-  longitudinal_mode = <Int>   ! Longitudinal mode. Default is 1. May be 0 or 1.
+  n_rf_steps      = <Int>     ! Number of steps in kick-drift-kick model.
+  ks              = <Real>    ! Normalized solenoid strength.
+  bs_field        = <Real>    ! Solenoid field strength.
+  longitudinal_mode = <Int>   ! Longitudinal mode. Default is 0. May be 0 or 1.
 \end{example}
 
-%%  ks              = <Real>    ! Normalized solenoid strength.
-%%  bs_field        = <Real>    ! Solenoid field strength.
 %% Normalized field with respect to the reference energy at the exit end of the element.
 
 The \vn{voltage} and \vn{voltage_err} attributes can be used in place of \vn{gradient} and \vn{gradient_err}.
@@ -3191,20 +3206,18 @@ The energy kick felt by a particle, assuming no phase slippage, is
   \text{dE} = r_q \cdot \text{gradient_tot} \cdot L  \cdot \cos(2 \, \pi \, (\phi_t + \phi_\REF))
   \label{dergl}
 \end{equation}
-where $r_q$ is the charge of the particle relative to the charge of the reference particle.
-\index{multipass}
+where $r_q$ is the charge of the particle relative to the charge of the reference particle and
 where the total gradient is
 \begin{example}
-  gradient_tot = (gradient + gradient_err) * field_autoscale
+  gradient_tot = gradient + gradient_err
 \end{example}
 $\phi_t$ is the part of the phase due to when the particle arrives at the cavity and depends upon
 whether \vn{absolute time tracking} or \vn{relative time tracking} is being used as discussed in
 \sref{s:rf.time}. The phase $\phi_\REF$ is
 \begin{example}
-  \(\phi_\REF\) = phi0 + phi0_multipass + phi0_err + phi0_autoscale
+  \(\phi_\REF\) = phi0 + phi0_multipass + phi0_err
   \label{lcav.phi}
 \end{example}
-
 In the above equation $r_q$ is the relative charge between the reference particle (set by the
 \vn{parameter[particle]} parameter in a lattice file) and the particle being tracked through the
 cavity. For example, if the reference particle and the tracked particle are the same, $r_q$ is
@@ -3213,9 +3226,19 @@ unity independent of the type of particle tracked.
 \vn{phi0_multipass} is only to be used with multipass to shift the phase of the cavity from pass to
 pass. See \sref{c:multipass}.
 
-\vn{phi0_autoscale} and \vn{field_autoscale} are calculated by \bmad's auto-scale module. See
-Section~\sref{s:autoscale} for more details. Autoscaling can be toggled on/off by using the
-\vn{autoscale_phase} and \vn{autoscale_amplitude} toggles.
+The \vn{phi0_autoscale} and \vn{field_autoscale} parameters are
+calculated by \bmad's auto-scale module to adjust the RF amplitude and phase so that during tracking,
+the energy gain of
+a particle on the reference orb is what the user expects based upon the set set volateage and phase. See
+Section~\sref{s:autoscale} for more details. In particular, the gradient and phase are adjusted by
+\begin{example}
+  gradient (tracking) = gradient_tot * field_autoscale
+  \(\phi_\REF\) (tracking) = \(\phi_\REF\) + phi0_autoscale
+\end{example}
+These autoscale shifts are not used when an element's \vn{tracking_method} is \vn{bmad_standard} since,
+in this case, the tracking algoithms is such that no adjustments are needed.
+The calculation of autoscale values
+can be toggled on/off by setting the \vn{autoscale_phase} and \vn{autoscale_amplitude} logicals.
 
 The energy change of the reference particle is just the energy change for a 
 particle with $z = 0$ and no phase or gradient errors. Thus
@@ -3230,6 +3253,13 @@ sign. Essentially the MAD8 documentation gives
   dE = gradient * L * cos(\(2\,\pi\) * (\(\phi_\REF\) - phi(z))) ! WRONG
 \end{example}
 This is incorrect. 
+
+The \vn{n_rf_steps} parameter sets the number of drifts used in the kick-drift-kick model
+(\sref{s:lcavity.std}) used when the \vn{tracking_method} is set to \vn{bmad_standard}. When using
+a fixed step Runge-Kutta \vn{tracking_method}, the step size is determined by the setting of
+\vn{num_steps} or \vn{ds_step}. The reason why there are two different paramters to choose a step
+size is due to the fact that, in general, the number of drifts needed for an accurate result
+is much smaller than the number Runge-Kutta steps.
 
 When short-range wakefields are being simulated, with \vn{bmad_com%sr_wakes_on = True}
 (\sref{s:bmad.ptc.com}), the \vn{e_loss} attribute can be used to modify the gradient in order to
@@ -3251,30 +3281,32 @@ settings are:
   standing_wave    ! Default
   traveling_wave
 \end{example}
-The \vn{cavity_type} switch is ignored if a field map is used.  With the \vn{standing_wave} setting,
-the transverse trajectory through an \vn{lcavity} is modeled using equations developed by Rosenzweig
-and Serafini\cite{b:rosenzweig} modified to give the correct phase-space area at non
-ultra-relativistic energies.  See Section \sref{s:lcavity.std} for more details.  Note: The transfer
-matrix for an \vn{lcavity} with finite \vn{gradient} is never symplectic. See
-\sref{s:phase.space}. In addition, couplers (\sref{s:rf.coupler}) and HOM wakes (\sref{s:wakes}) can
-be modeled.
+The \vn{cavity_type} switch is ignored if a field map is used.  The \vn{traveling_wave} cavity has
+an electromagnetic wave traveling (in body coordinates) in the forward direction. The
+\vn{standing_wave} cavity has a standing wave which can be decomposed into a forward traveling wave
+and a backwards traveling wave.
 
-When an element's \vn{tracking_method} is set to \vn{runge_kutta}, the fields used with
-\vn{field_calc} set to \vn{bmad_standard} are described in Section~(\sref{s:rf.fields}). With
-\vn{cavity_type} set to \vn{standing_wave}, the longitudinal mode is set by the
-\vn{longitudinal_mode} parameter. The possible values are 0 or 1 and the default setting is 0.
+With the \vn{standing_wave} setting, the transverse trajectory through an \vn{lcavity} is modeled
+using equations developed by Rosenzweig and Serafini\cite{b:rosenzweig}. See Section
+\sref{s:lcavity.std} for more details.  Note: The transfer matrix for an \vn{lcavity} with finite
+\vn{gradient} is never symplectic if the reference energy at either end is different. See
+\sref{s:phase.space}. 
 
-If an element's \vn{cavity_type} parameter is set to \vn{standing_wave}, and if the \vn{field_calc}
-parameter is set to \vn{bmad_standard}, and if an element's \vn{tracking_method} is set to
-\vn{runge_kutta} (\sref{s:tkm}), the ``active region'' over which there is a finite field is
-\vn{n_cell} half-wave pillbox resonators where each pillbox has length $\lambda/2$
-(\sref{s:rf.fields}). The default setting for \vn{n_cell} is 1. The dependent parameter
-\vn{l_active} is set to the length of the active region. The active region should have a length less
-than the length of the element. If the length of the element is not equal to the active region, the
-active region is centered in the element and the regions to either side are treated as field free.
+With \vn{field_calc} set to \vn{bmad_standard}, the electromagnetic fields in a \vn{lcavity} are
+described in Section~(\sref{s:rf.fields}). With \vn{cavity_type} set to \vn{standing_wave}, the
+longitudinal mode is set by the \vn{longitudinal_mode} parameter. The possible values are 0 or 1 and
+the default setting is 0. The electromagnetic fields are used for tracking when an element's
+\vn{tracking_method} is set to \vn{runge_kutta} or any similar tracking method.  If an element's
+\vn{cavity_type} parameter is set to \vn{standing_wave}, with \vn{field_calc} set to
+\vn{bmad_standard}, the ``active region'' over which there is a finite field is \vn{n_cell}
+half-wave pillbox resonators where each pillbox has length $\lambda/2$ (\sref{s:rf.fields}). The
+default setting for \vn{n_cell} is 1. The dependent parameter \vn{l_active} is set to the length of
+the active region. The active region should have a length less than the length of the element. If
+the length of the element is not equal to the active region, the active region is centered in the
+element and the regions to either side are treated as field free.
 
-Note: When an element's \vn{tracking_method} is set to \vn{bmad_standard}, settings for the
-parameters \vn{n_cell}, and \vn{longitudinal_mode} are ignored.
+When an element's \vn{tracking_method} is set to \vn{bmad_standard}, settings for the
+parameters \vn{n_cell}, and \vn{longitudinal_mode}, \vn{num_steps}, and \vn{ds_step} are ignored.
 
 Example:
 \begin{example}
@@ -3282,23 +3314,8 @@ Example:
          tracking_method = runge_kutta, n_cell = 3, longitudinal_mode = 1
 \end{example}
 
-Note: Multipoles \ref{s:multip} do not vary in time.
-
-{\em Note: The default \vn{bmad_standard} tracking for \vn{lcavity} elements when the velocity
-$\beta$ is significantly different from 1 can only be considered as a rough approximation. Indeed,
-the only accurate way to simulate a cavity in this situation is by integrating through the actual
-field [Cf.~Runge Kutta tracking (\sref{s:tkm})]}
-
-\newpage
-
-%-----------------------------------------------------------------
-\section{Lens}
-\label{s:lens}
-\index{lens|hyperbf}
-
-A \vn{lens} is an element for concentrating or dispersing light rays.
-
-This element is under development...
+\vn{Lcavity} elements can model couplers (\sref{s:rf.coupler}) and HOM wakes (\sref{s:wakes}) as well as
+multipoles (\ref{s:multip}). Note that multipoles in a \vn{lcavity} do not vary in time.
 
 \newpage
 
@@ -4728,7 +4745,7 @@ Attributes specific to an \vn{rfcavity} are:
   phi0_multipass  = <Real>    ! Phase variation with multipass (rad/2pi).
   phi0_autoscale  = <Real>    ! Set by Bmad if autoscaling is turned on (rad/2pi).
   gradient        = <Real>    ! Accelerating gradient (V/m). Dependent attribute (\sref{s:depend}).
-  longitudinal_mode = <Int>   ! Longitudinal mode. Default is 1. May be 0 or 1.
+  longitudinal_mode = <Int>   ! Longitudinal mode. Default is 0. May be 0 or 1.
 \end{example}
 
 The integrated energy kick felt by a particle, assuming no phase slippage, is 
@@ -4738,7 +4755,7 @@ The integrated energy kick felt by a particle, assuming no phase slippage, is
 \index{multipass}
 where
 \begin{example}
-  \(\phi_\REF\) = phi0 + phi0_multipass + phi0_autoscale
+  \(\phi_\REF\) = phi0 + phi0_multipass
   \label{rfcav.phi}
 \end{example}
 and $\phi_t$ is the part of the phase due to when the particle arrives at the cavity and depends
@@ -4761,9 +4778,19 @@ The correspondence between the \bmad \vn{phi0} attribute and the \vn{lag} attrib
 (Table~\ref{t:constants}). Notice that the energy kick is independent of the sign of the charge of
 the particle
 
-\vn{phi0_autoscale} and \vn{field_autoscale} are calculated by \bmad's auto-scale module. See
-Section~\sref{s:autoscale} for more details. Autoscaling can be toggled on/off by using the
-\vn{autoscale_phase} and \vn{autoscale_amplitude} toggles.
+The \vn{phi0_autoscale} and \vn{field_autoscale} parameters are
+calculated by \bmad's auto-scale module to adjust the RF amplitude and phase so that during tracking,
+the energy gain of
+a particle on the reference orb is what the user expects based upon the set set volateage and phase. See
+Section~\sref{s:autoscale} for more details. In particular, the gradient and phase are adjusted by
+\begin{example}
+  gradient (tracking) = gradient * field_autoscale
+  \(\phi_\REF\) (tracking) = \(\phi_\REF\) + phi0_autoscale
+\end{example}
+These autoscale shifts are not used when an element's \vn{tracking_method} is \vn{bmad_standard} since,
+in this case, the tracking algoithms is such that no adjustments are needed.
+The calculation of autoscale values
+can be toggled on/off by setting the \vn{autoscale_phase} and \vn{autoscale_amplitude} logicals.
 
 Note: Zero phase for $\phi_\REF$ corresponds to the stable fixed point above transition.
 

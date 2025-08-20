@@ -75,7 +75,7 @@ endif
 
 !
 
-if (ele%key == marker$) return
+if (ele%key == marker$ .or. ele%key == fixer$) return
 
 ! Must set all poles even if zero since they might have been non-zero beforehand.
 ! Note: On ptc side bn(1) is error field when creating a fibre but is total field when fibre is being modified.	 
@@ -149,7 +149,8 @@ case (sol_quad$)
   call set_real (mag%b_sol, magp%b_sol, val(ks$))
 
 case (rfcavity$, lcavity$, crab_cavity$)
-  phi_tot = twopi * (val(phi0$) + val(phi0_multipass$) + val(phi0_err$) + val(phi0_autoscale$))
+  phi_tot = twopi * (val(phi0$) + val(phi0_multipass$) + val(phi0_err$))
+  if (ele%tracking_method /= bmad_standard$) phi_tot = phi_tot + val(phi0_autoscale$)
   if (ele%key == lcavity$) phi_tot = pi / 2 - twopi * phi_tot
 
   select case (cavity_type)

@@ -19,7 +19,7 @@ private next_in_branch
 ! IF YOU CHANGE THE LAT_STRUCT OR ANY ASSOCIATED STRUCTURES YOU MUST INCREASE THE VERSION NUMBER !!!
 ! THIS IS USED BY BMAD_PARSER TO MAKE SURE DIGESTED FILES ARE OK.
 
-integer, parameter :: bmad_inc_version$ = 337
+integer, parameter :: bmad_inc_version$ = 343
 
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -52,10 +52,21 @@ integer, parameter :: var_offset$ = 2000              ! Important: var_offset$ >
 integer, parameter :: n_var_max$ = 999                ! Maximum number of variables per controller.
 integer, parameter :: taylor_offset$ = 1000000000     ! Taylor term index offset.
 
+! See the documentation in the Bmad manual for more details.
+
 type expression_atom_struct
-  character(40) :: name = ''
+  character(60) :: name = ''
   integer :: type = 0   ! plus$, minum$, sin$, cos$, etc. To convert to string use: expression_op_name
   real(rp) :: value = 0
+end type
+
+! See the documentation in the Bmad manual for more details.
+
+type expression_tree_struct
+  character(60) :: name = ''
+  integer :: type = 0   ! plus$, minum$, sin$, cos$, etc. 
+  real(rp) :: value = 0
+  type (expression_tree_struct), pointer :: node(:) => null()  ! Child nodes. Note: Pointer used here since Ifort does not support allocatable.
 end type
 
 !-------------------------------------------------------------------------
@@ -130,6 +141,7 @@ integer, parameter :: group_lord$ = 4, super_lord$ = 5, overlay_lord$ = 6
 integer, parameter :: girder_lord$ = 7, multipass_lord$ = 8, multipass_slave$ = 9
 integer, parameter :: not_a_lord$ = 10, slice_slave$ = 11, control_lord$ = 12, ramper_lord$ = 13
 integer, parameter :: governor$ = 14, field_lord$ = 15    ! governor$ = Union of overlay and group lords.
+integer, parameter :: multipole_source$ = -1   ! Used with pointer_to_lord(...)
 
 character(20), parameter :: control_name(13) = [character(20):: &
             'Minor_Slave', 'Super_Slave', 'Free', 'Group_Lord', &
@@ -179,7 +191,7 @@ character(24) :: matrix_status_name(9) = [character(24) :: 'OK', 'IN_STOP_BAND',
 
 type twiss_struct
   real(rp) :: beta = 0, alpha = 0, gamma = 0, phi = 0, eta = 0, etap = 0, deta_ds = 0
-  real(rp) :: sigma = 0, sigma_p = 0, emit = 0, norm_emit = 0
+  real(rp) :: sigma = 0, sigma_p = 0, emit = 0, norm_emit = 0, chrom = 0
   real(rp) :: dbeta_dpz = 0, dalpha_dpz = 0, deta_dpz = 0, detap_dpz = 0
 end type
 
@@ -532,7 +544,7 @@ type coord_struct                 ! Particle coordinates at a single point
   real(qp) :: t = 0               ! Absolute time (not relative to reference). Note: Quad precision!
   real(rp) :: spin(3) = 0         ! Spin.
   real(rp) :: field(2) = 0        ! Photon E-field intensity (x,y).
-  real(rp) :: phase(2) = 0        ! Photon E-field phase (x,y).
+  real(rp) :: phase(2) = 0        ! Photon E-field phase (x,y). For charged particles, phase(1) is RF phase.
   real(rp) :: charge = 0          ! Macroparticle weight (which is different from particle species charge). 
                                   !   For some space charge calcs the weight is in Coulombs.
   real(rp) :: dt_ref = 0          ! Used in:
@@ -1287,14 +1299,15 @@ end type
 ! A single step is a drift followed by an energy kick.
 
 type rf_stair_step_struct
-  real(rp) :: E_tot0 = 0      ! Reference energy in the drift region before the kick point. 
+  real(rp) :: E_tot0 = 0      ! Reference energy in the drift region (before the kick point). 
   real(rp) :: E_tot1 = 0      ! Reference energy after the kick point.
   real(rp) :: p0c = 0         ! Reference momentum in the drift region (before the kick point).
-  real(rp) :: dp0c = 0        ! Change in reference momentum
-  real(rp) :: dE_amp = 0      ! Amplitude of RF kick sinusoid.
+  real(rp) :: p1c = 0         ! Reference momentum after the kick point.
+  real(rp) :: dE_amp = 0      ! Amplitude of RF kick sinusoid including error voltage.
   real(rp) :: scale = 0       ! Scale for multipole kick at the kick point. Sum over all steps will be 1.
-  real(rp) :: dtime = 0       ! Reference Time at the kick point with respect to beginning of element.
+  real(rp) :: time = 0        ! Reference particle time at the kick point with respect to beginning of element.
   real(rp) :: s = 0           ! S-position at the kick point relative to the beginning of the element.
+  integer :: ix_step = 0      ! Step index in ele%rf%steps(:) array
 end type
 
 ! Element RF parameter struct.
@@ -1303,8 +1316,9 @@ end type
 ! The first and last kicks are at the element ends with the
 ! the end kicks being half of the interior kicks.
 ! Exceptions:
-!   The zeroth step is just the initial kick (no drift).
+!   The zeroth step is just the initial kick (no drift). A particle at step zero is just outside the entrance end.
 !   The last (N+1)th step is a "phantom" (no drift and no kick) that just holds the final energy value.
+!     A particle at the (N+1)th step is just outside the exit end.
 ! Note: ele%rf is not allocated for slice and super slaves.
 
 type rf_ele_struct
@@ -1588,12 +1602,14 @@ type branch_struct
   integer :: ix_from_branch = -1   ! -1 => No creating fork element to this branch.
   integer :: ix_from_ele = -1      ! Index of creating fork element which forks to this branch.
   integer :: ix_to_ele = -1        ! Index of element in this branch that creating fork element forks to.
-  integer :: n_ele_track
-  integer :: n_ele_max
+  integer :: ix_fixer = 0          ! Index of active fixer or beginning_ele element.
+  integer :: n_ele_track = 0
+  integer :: n_ele_max = 0
   type (lat_struct), pointer :: lat => null()
   type (mode_info_struct) :: a , b , z  ! Note: Tunes are the fractional part.
   type (ele_struct), pointer :: ele(:) => null()
-  type (lat_param_struct) :: param 
+  type (lat_param_struct) :: param
+  type (coord_struct) :: particle_start 
   type (wall3d_struct), pointer :: wall3d(:) => null()
   type (ptc_branch1_struct) ptc              ! Pointer to layout. Note: ptc info not transferred with "branch1 = branch2" set.
 end type
@@ -1670,7 +1686,7 @@ integer, parameter :: floor_shift$ = 49, fiducial$ = 50, undulator$ = 51, diffra
 integer, parameter :: photon_init$ = 53, sample$ = 54, detector$ = 55, sad_mult$ = 56, mask$ = 57
 integer, parameter :: ac_kicker$ = 58, lens$ = 59, def_space_charge_com$ = 60, crab_cavity$ = 61
 integer, parameter :: ramper$ = 62, def_ptc_com$ = 63, rf_bend$ = 64, gkicker$ = 65, foil$ = 66
-integer, parameter :: thick_multipole$ = 67, pickup$ = 68, feedback$ = 69, n_key$ = 69
+integer, parameter :: thick_multipole$ = 67, pickup$ = 68, feedback$ = 69, fixer$ = 70, n_key$ = 70
 
 ! A "!" as the first character is to prevent name matching by the key_name_to_key_index routine.
 
@@ -1688,7 +1704,7 @@ character(20), parameter :: key_name(n_key$) = [ &
     'Undulator         ', 'Diffraction_Plate ', 'Photon_Init       ', 'Sample            ', 'Detector          ', &
     'Sad_Mult          ', 'Mask              ', 'AC_Kicker         ', 'Lens              ', '!Space_Charge_Com ', &
     'Crab_Cavity       ', 'Ramper            ', '!PTC_Com          ', 'RF_Bend           ', 'GKicker           ', &
-    'Foil              ', 'Thick_Multipole   ', 'Pickup            ', 'Feedback          ']
+    'Foil              ', 'Thick_Multipole   ', 'Pickup            ', 'Feedback          ', 'Fixer             ']
 
 ! These logical arrays get set in init_attribute_name_array and are used
 ! to sort elements that have kick or orientation attributes from elements that do not.
@@ -1718,7 +1734,7 @@ integer, parameter :: val1$=19, val2$=20, val3$=21, val4$=22, val5$=23, &
 !   Range [beta_a0$, alpha_b0$] and [beta_a1$, alpha_b1$] hold all twiss.
 !   Range [eta_x0$, etap_y0$] and [eta_x1$, etap_y1$] hold all dispersion.
 !   Range [c11_mat0$, c22_mat0$] and [c11_mat1$, c22_mat1$] hold all C-matrix values
-    
+
 integer, parameter :: beta_a0$ = 2, alpha_a0$ = 3, beta_b0$ = 4, alpha_b0$ = 5
 integer, parameter :: beta_a1$ = 6, alpha_a1$ = 7, beta_b1$ = 8, alpha_b1$ = 9
 integer, parameter :: dphi_a$ = 10, dphi_b$ = 11
@@ -1740,6 +1756,14 @@ integer, parameter :: e_photon$ = 9
 integer, parameter :: e1$ = 19, e2$ = 20
 integer, parameter :: fint$ = 21, fintx$ = 22, hgap$ = 23, hgapx$ = 24, h1$ = 25, h2$ = 26
 
+integer, parameter :: x_stored$ = 15, px_stored$ = 16, y_stored$ = 17, py_stored$ = 18, z_stored$ = 19, pz_stored$ = 20
+integer, parameter :: beta_a_stored$ = 21, alpha_a_stored$ = 22, beta_b_stored$ = 23, alpha_b_stored$ = 24
+integer, parameter :: phi_a_stored$ = 25, phi_b_stored$ = 26, mode_flip_stored$ = 27
+integer, parameter :: eta_x_stored$ = 34, etap_x_stored$ = 35, eta_y_stored$ = 36, etap_y_stored$ = 37
+integer, parameter :: cmat_11_stored$ = 38, cmat_12_stored$ = 39, cmat_21_stored$ = 40, cmat_22_stored$ = 41
+integer, parameter :: dbeta_dpz_a_stored$ = 42, dbeta_dpz_b_stored$ = 43, dalpha_dpz_a_stored$ = 44, dalpha_dpz_b_stored$ = 45
+integer, parameter :: deta_dpz_x_stored$ = 46, deta_dpz_y_stored$ = 47, detap_dpz_x_stored$ = 48, detap_dpz_y_stored$ = 49
+
 integer, parameter :: radius$ = 3, focal_strength$ = 5
 
 integer, parameter :: l$ = 1                          ! Assumed unique. Do not assign 1 to another attribute.
@@ -1747,7 +1771,7 @@ integer, parameter :: tilt$ = 2, roll$ = 2, n_part$ = 2, inherit_from_fork$ = 2 
 integer, parameter :: ref_tilt$ = 3, direction$ = 3, repetition_frequency$ = 3, deta_ds_master$ = 3, &
                       kick$ = 3, x_gain_err$ = 3, taylor_order$ = 3, r_solenoid$ = 3, final_charge$ = 3
 integer, parameter :: k1$ = 4, kx$ = 4, harmon$ = 4, h_displace$ = 4, y_gain_err$ = 4, s_twiss_ref$ = 4, &
-                      critical_angle_factor$ = 4, tilt_corr$ = 4, ref_coords$ = 4, dt_max$ = 4
+                      critical_angle_factor$ = 4, tilt_corr$ = 4, ref_coords$ = 4, dt_max$ = 4, ix_fixer$ = 4
 integer, parameter :: graze_angle$ = 5, k2$ = 5, b_max$ = 5, v_displace$ = 5, gradient_tot$ = 5, harmon_master$ = 5, &
                       flexible$ = 5, crunch$ = 5, ref_orbit_follows$ = 5, pc_out_min$ = 5
 integer, parameter :: gradient$ = 6, k3$ = 6, noise$ = 6, new_branch$ = 6, ix_branch$ = 6, g_max$ = 6, &
@@ -2420,28 +2444,35 @@ integer, parameter :: sin$ = 11, cos$ = 12, tan$ = 13
 integer, parameter :: asin$ = 14, acos$ = 15, atan$ = 16, abs$ = 17, sqrt$ = 18
 integer, parameter :: log$ = 19, exp$ = 20, ran$ = 21, ran_gauss$ = 22, atan2$ = 23
 integer, parameter :: factorial$ = 24, int$ = 25, nint$ = 26, floor$ = 27, ceiling$ = 28
-integer, parameter :: numeric$ = 29, variable$ = 30
-integer, parameter :: mass_of$ = 31, charge_of$ = 32, anomalous_moment_of$ = 33, species$ = 34, species_const$ = 35
-integer, parameter :: sinc$ = 36, constant$ = 37, comma$ = 38, rms$ = 39, average$ = 40, sum$ = 41, l_func_parens$ = 42
+integer, parameter :: numeric$ = 29, variable$ = 30, mass_of$ = 31
+integer, parameter :: charge_of$ = 32, anomalous_moment_of$ = 33, species$ = 34, species_const$ = 35
+integer, parameter :: sinc$ = 36, constant$ = 37, comma$ = 38, rms$ = 39, average$ = 40, sum$ = 41
 integer, parameter :: arg_count$ = 43, antiparticle$ = 44, cot$ = 45, sec$ = 46, csc$ = 47, sign$ = 48
-integer, parameter :: sinh$ = 49, cosh$ = 50, tanh$ = 51, coth$ = 52, asinh$ = 53, acosh$ = 54, atanh$ = 55, acoth$ = 56
-integer, parameter :: min$ = 57, max$ = 58, modulo$ = 59
+integer, parameter :: l_func_parens$ = 42, sinh$ = 49, cosh$ = 50, tanh$ = 51, coth$ = 52, asinh$ = 53
+integer, parameter :: acosh$ = 54, atanh$ = 55, acoth$ = 56, min$ = 57, max$ = 58, modulo$ = 59
+integer, parameter :: root$ = 60, parens$ = 61, square_brackets$ = 62, curly_brackets$ = 63, func_parens$ = 64
+integer, parameter :: arrow$ = 65, equal$ = 66, colon$ = 67, double_colon$ = 68, compound$ = 69, function$ = 70
+integer, parameter :: vertical_bar$ = 71, blank$ = 72
 
 ! Names beginning with "?!+" are place holders that will never match to anything in an expression string.
 ! Note: "min", "max", "rms" and "average" are not implemented in Bmad but is used by Tao.
+! Note: "species" is a function and "species_const" is a specified species like "electron".
 
-character(20), parameter :: expression_op_name(59) = [character(20) :: '+', '-', '*', '/', &
-                                    '(', ')', '^', '-', '+', '', 'sin', 'cos', 'tan', &
-                                    'asin', 'acos', 'atan', 'abs', 'sqrt', 'log', 'exp', 'ran', &
-                                    'ran_gauss', 'atan2', 'factorial', 'int', 'nint', 'floor', 'ceiling', &
-                                    '?!+Numeric', '?!+Variable', 'mass_of', 'charge_of', 'anomalous_moment_of', &
-                                    'species', '?!+Species', 'sinc', '?!+Constant', ',', 'rms', 'average', 'sum', &
-                                    '(', '?!+Arg Count', 'antiparticle', 'cot', 'sec', 'csc', 'sign', &
-                                    'sinh', 'cosh', 'tanh', 'coth', 'asinh', 'acosh', 'atanh', 'acoth', 'min', 'max', 'modulo']
+character(20), parameter :: expression_op_name(72) = [character(20) :: '+', '-', '*', '/', &
+                                '(', ')', '^', '-', '+', '', 'sin', 'cos', 'tan', &
+                                'asin', 'acos', 'atan', 'abs', 'sqrt', 'log', 'exp', 'ran', &
+                                'ran_gauss', 'atan2', 'factorial', 'int', 'nint', 'floor', 'ceiling', &
+                                '?!+Numeric', '?!+Variable', 'mass_of', 'charge_of', 'anomalous_moment_of', &
+                                'species', '?!+Species', 'sinc', '?!+Constant', ',', 'rms', 'average', 'sum', &
+                                '(', '?!+Arg Count', 'antiparticle', 'cot', 'sec', 'csc', 'sign', &
+                                'sinh', 'cosh', 'tanh', 'coth', 'asinh', 'acosh', 'atanh', 'acoth', 'min', &
+                                'max', 'modulo', 'root', '()', '[]', '{}', '()', '->', '=', ':', '::', 'compound', &
+                                '?!+Function', '|', ' ']
 
-integer, parameter :: expression_eval_level(59) = [1, 1, 2, 2, 0, 0, 4, 3, 3, -1, &
+integer, parameter :: expression_eval_level(69) = [1, 1, 3, 3, 0, 0, 4, 2, 2, -1, &
               9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, &
-              9, 9, 9, 9, 0, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
+              9, 9, 9, 9, 0, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, &
+              0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 contains
 
