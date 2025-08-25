@@ -4207,9 +4207,11 @@ subroutine lat_struct_to_json (input, json_root, depth, max_depth)
     call json%add(json_root, json_list1)
     nullify(json_list1)
   endif
-  call coord_struct_to_json(input%particle_start, json_val, depth=depth + 1, max_depth=max_depth)
-  call json%rename(json_val, 'particle_start')
-  call json%add(json_root, json_val)
+  if (associated(input%particle_start)) then
+    call coord_struct_to_json(input%particle_start, json_val, depth=depth + 1, max_depth=max_depth)
+    call json%rename(json_val, 'particle_start')
+    call json%add(json_root, json_val)
+  endif
   call beam_init_struct_to_json(input%beam_init, json_val, depth=depth + 1, max_depth=max_depth)
   call json%rename(json_val, 'beam_init')
   call json%add(json_root, json_val)

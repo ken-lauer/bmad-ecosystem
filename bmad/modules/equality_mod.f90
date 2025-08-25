@@ -3338,8 +3338,10 @@ if (.not. is_eq) return
 if (allocated(f1%control)) is_eq = all(shape(f1%control) == shape(f2%control))
 if (.not. is_eq) return
 if (allocated(f1%control)) is_eq = all(f1%control == f2%control)
-!! f_side.equality_test[0D_NOT_type]
-is_eq = is_eq .and. (f1%particle_start == f2%particle_start)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%particle_start) .eqv. associated(f2%particle_start))
+if (.not. is_eq) return
+if (associated(f1%particle_start)) is_eq = (f1%particle_start == f2%particle_start)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%beam_init == f2%beam_init)
 !! f_side.equality_test[0D_NOT_type]

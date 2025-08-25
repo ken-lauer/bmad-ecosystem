@@ -3391,7 +3391,7 @@ class CPP_lat : public std::enable_shared_from_this<CPP_lat> {
   CPP_ele ele_init;
   VariableArray1D<CPP_branch> branch;
   VariableArray1D<CPP_control> control;
-  CPP_coord particle_start;
+  std::optional<CPP_coord> particle_start;
   CPP_beam_init beam_init;
   CPP_pre_tracker pre_tracker;
   VariableArray1D<Real> custom;

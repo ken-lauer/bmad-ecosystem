@@ -6866,7 +6866,8 @@ extern "C" void lat_to_f2(
     c_Int,
     const CPP_control**,
     c_Int,
-    const CPP_coord&,
+    const CPP_coord*,
+    c_Int,
     const CPP_beam_init&,
     const CPP_pre_tracker&,
     c_RealArr,
@@ -6926,6 +6927,8 @@ extern "C" void lat_to_f(const CPP_lat& C, Opaque_lat_class* F) {
     for (size_t i{0}; i < n1_control; i++)
       z_control[i] = &C.control[i];
   }
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_coord>
+  auto n_particle_start = C.particle_start ? 1 : 0;
   // c_side.to_f_setup[1D_ALLOC_real] VariableArray1D<Real>
   size_t n1_custom = C.custom.size();
   c_RealArr z_custom = nullptr;
@@ -6969,7 +6972,8 @@ extern "C" void lat_to_f(const CPP_lat& C, Opaque_lat_class* F) {
       n1_branch,
       z_control,
       n1_control,
-      C.particle_start,
+      (C.particle_start ? &C.particle_start.value() : nullptr),
+      n_particle_start,
       C.beam_init,
       C.pre_tracker,
       z_custom,
@@ -7028,7 +7032,8 @@ extern "C" void lat_to_c2(
     c_Int n1_branch,
     Opaque_control_class** z_control,
     c_Int n1_control,
-    const Opaque_coord_class* z_particle_start,
+    Opaque_coord_class* z_particle_start,
+    c_Int n_particle_start,
     const Opaque_beam_init_class* z_beam_init,
     const Opaque_pre_tracker_class* z_pre_tracker,
     c_RealArr z_custom,
@@ -7107,8 +7112,13 @@ extern "C" void lat_to_c2(
   for (size_t i{0}; i < n1_control; i++) {
     control_to_c(z_control[i], C.control[i]);
   }
-  // c_side.to_c2_set[0D_NOT_type] CPP_coord
-  coord_to_c(z_particle_start, C.particle_start);
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_coord>
+  if (n_particle_start == 0) {
+    C.particle_start.reset();
+  } else {
+    C.particle_start.emplace();
+    coord_to_c(z_particle_start, C.particle_start.value());
+  }
   // c_side.to_c2_set[0D_NOT_type] CPP_beam_init
   beam_init_to_c(z_beam_init, C.beam_init);
   // c_side.to_c2_set[0D_NOT_type] CPP_pre_tracker

@@ -2039,9 +2039,9 @@
       },
       "param": {
         "line": 1611,
-        "definition": "type (lat_param_struct) :: param",
+        "definition": "type (lat_param_struct) :: param = lat_param_struct()",
         "name": "param",
-        "default": null,
+        "default": "lat_param_struct()",
         "type_info": {
           "type": "type",
           "kind": "lat_param_struct"
@@ -2049,9 +2049,9 @@
       },
       "particle_start": {
         "line": 1612,
-        "definition": "type (coord_struct) :: particle_start",
+        "definition": "type (coord_struct) :: particle_start = coord_struct()",
         "name": "particle_start",
-        "default": null,
+        "default": "coord_struct()",
         "type_info": {
           "type": "type",
           "kind": "coord_struct"
@@ -7325,12 +7325,13 @@
       },
       "particle_start": {
         "line": 1651,
-        "definition": "type (coord_struct) particle_start",
+        "definition": "type (coord_struct), pointer :: particle_start => null()",
         "name": "particle_start",
         "comment": "Starting particle_coords.",
-        "default": null,
+        "default": "null()",
         "type_info": {
           "type": "type",
+          "pointer": true,
           "kind": "coord_struct"
         }
       },

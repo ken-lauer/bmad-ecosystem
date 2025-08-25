@@ -9680,8 +9680,13 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
       set_CPP_control_test_pattern(C.control[i], ix_patt + i + 1);
     }
   }
-  // c_side.test_pat[0D_NOT_type]
-  set_CPP_coord_test_pattern(C.particle_start, ix_patt);
+  // c_side.test_pat[0D_PTR_type]
+  if (ix_patt < 3) {
+    C.particle_start.reset();
+  } else {
+    C.particle_start.emplace();
+    set_CPP_coord_test_pattern(C.particle_start.value(), ix_patt);
+  }
   // c_side.test_pat[0D_NOT_type]
   set_CPP_beam_init_test_pattern(C.beam_init, ix_patt);
   // c_side.test_pat[0D_NOT_type]
@@ -9692,35 +9697,35 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
   } else {
     C.custom.resize(3);
     for (size_t i{0}; i < C.custom.size(); i++) {
-      int rhs = 101 + i + 27 + offset;
+      int rhs = 101 + i + 28 + offset;
       C.custom[i] = rhs;
     }
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 29 + offset;
+  rhs = 30 + offset;
   C.version = rhs;
   // c_side.test_pat[0D_PTR_integer]
   if (ix_patt < 3) {
     C.n_ele_track.reset();
   } else {
-    rhs = 30 + offset;
+    rhs = 31 + offset;
     C.n_ele_track.emplace(rhs);
   }
   // c_side.test_pat[0D_PTR_integer]
   if (ix_patt < 3) {
     C.n_ele_max.reset();
   } else {
-    rhs = 32 + offset;
+    rhs = 33 + offset;
     C.n_ele_max.emplace(rhs);
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 34 + offset;
+  rhs = 35 + offset;
   C.n_control_max = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 35 + offset;
+  rhs = 36 + offset;
   C.n_ic_max = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 36 + offset;
+  rhs = 37 + offset;
   C.input_taylor_order = rhs;
   // c_side.test_pat[1D_ALLOC_integer]
   if (ix_patt < 3) {
@@ -9728,18 +9733,18 @@ void set_CPP_lat_test_pattern(CPP_lat& C, int ix_patt) {
   } else {
     C.ic.resize(3);
     for (size_t i{0}; i < C.ic.size(); i++) {
-      int rhs = 101 + i + 37 + offset;
+      int rhs = 101 + i + 38 + offset;
       C.ic[i] = rhs;
     }
   }
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 39 + offset;
+  rhs = 40 + offset;
   C.photon_type = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 40 + offset;
+  rhs = 41 + offset;
   C.creation_hash = rhs;
   // c_side.test_pat[0D_NOT_integer]
-  rhs = 41 + offset;
+  rhs = 42 + offset;
   C.ramper_slave_bookkeeping = rhs;
 }
 

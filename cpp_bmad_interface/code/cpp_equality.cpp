@@ -1618,7 +1618,12 @@ bool operator==(const CPP_lat& x, const CPP_lat& y) {
   is_eq = is_eq && (x.ele_init == y.ele_init);
   is_eq = is_eq && is_all_equal(x.branch, y.branch);
   is_eq = is_eq && is_all_equal(x.control, y.control);
-  is_eq = is_eq && (x.particle_start == y.particle_start);
+  is_eq =
+      is_eq && (x.particle_start.has_value() == y.particle_start.has_value());
+  if (!is_eq)
+    return false;
+  if (x.particle_start)
+    is_eq = (*x.particle_start == *y.particle_start);
   is_eq = is_eq && (x.beam_init == y.beam_init);
   is_eq = is_eq && (x.pre_tracker == y.pre_tracker);
   is_eq = is_eq && is_all_equal(x.custom, y.custom);
