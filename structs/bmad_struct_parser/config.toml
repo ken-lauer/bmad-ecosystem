@@ -70,7 +70,8 @@ json_filename = "json/sim_utils_structs.json"
 function_prefix = "sim_utils_"
 skip_includes = ["fftw3.f03"]
 skip_structs = [
-  # TODO: plplot backend / struct not found during compilation?
+  # TODO: CESR_PGPLOT, CESR_PLPLOT #define regions
+  "pg_interface_struct",
   "pl_interface_struct",
   "viewport_size",
   # TODO: openmpi vs not

@@ -25,7 +25,7 @@
 namespace Bmad {
 
 // Enums from bmad_struct.f90
-const int BMAD_INC_VERSION = 343;
+const int BMAD_INC_VERSION = 344;
 const int NONE = 1;
 // maximum multipole order
 const int N_POLE_MAXX = 21;
@@ -396,6 +396,9 @@ const int HGAP = 23;
 const int HGAPX = 24;
 const int H1 = 25;
 const int H2 = 26;
+const int SPIN_X_STORED = 55;
+const int SPIN_Y_STORED = 56;
+const int SPIN_Z_STORED = 57;
 const int X_STORED = 15;
 const int PX_STORED = 16;
 const int Y_STORED = 17;

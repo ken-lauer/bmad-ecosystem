@@ -727,7 +727,7 @@ subroutine bp_common_struct_to_json (input, json_root, depth, max_depth)
   call json%add(json_root, 'i_const_init', int(input%i_const_init))
   call json%add(json_root, 'ios_next_chunk', int(input%ios_next_chunk))
   call json%add(json_root, 'ios_this_chunk', int(input%ios_this_chunk))
-  call json%add(json_root, 'ix_fixer', int(input%ix_fixer))
+  call json%add(json_root, 'n_fixer_set', int(input%n_fixer_set))
   call json%add(json_root, 'line1_file_name', trim(input%line1_file_name))
   call json%add(json_root, 'line2_file_name', trim(input%line2_file_name))
   if (allocated(input%lat_file_names)) then

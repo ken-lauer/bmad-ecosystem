@@ -954,33 +954,6 @@ subroutine out_io_output_direct_struct_to_json (input, json_root, depth, max_dep
   call json%add(json_root, json_list1)
   nullify(json_list1)
 end subroutine out_io_output_direct_struct_to_json
-subroutine pg_interface_struct_to_json (input, json_root, depth, max_depth)
-  use pgplot_interface, only: pg_interface_struct
-  implicit none
-  type(json_core) :: json
-  type (pg_interface_struct), pointer, intent(in) :: input
-  type (json_value), pointer :: json_val
-  type (json_value), pointer, intent(inout) :: json_root
-  integer, optional, value :: depth
-  integer, optional, value :: max_depth
-  integer i1, i2, i3, i4, i5, i6
-  type (json_value), pointer :: json_list1, json_list2, json_list3, json_list4, json_list5
-  if (.not. present(depth)) depth = 0
-  if (present(max_depth) .and. depth >= max_depth) then
-    call json%create_null(json_root, '')
-    return
-  endif
-  if (.not. associated(input)) then
-    call json%create_null(json_root, '')
-    return
-  endif
-  call json%create_object(json_root, '')
-  call json%add(json_root, 'page_type', trim(input%page_type))
-  call json%add(json_root, 'plot_file', trim(input%plot_file))
-  call json%add(json_root, 'i_chan', int(input%i_chan))
-  call json%add(json_root, 'qp_to_pg_text_height_factor', input%qp_to_pg_text_height_factor)
-  call json%add(json_root, 'page_scale', input%page_scale)
-end subroutine pg_interface_struct_to_json
 subroutine qp_arrow_struct_to_json (input, json_root, depth, max_depth)
   use quick_plot_struct, only: qp_arrow_struct
   implicit none

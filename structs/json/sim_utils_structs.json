@@ -2046,62 +2046,6 @@
     }
   },
   {
-    "filename": "$ACC_ROOT_DIR/sim_utils/plot/pgplot_interface.f90",
-    "line": 37,
-    "name": "pg_interface_struct",
-    "module": "pgplot_interface",
-    "members": {
-      "page_type": {
-        "line": 38,
-        "definition": "character(16) page_type",
-        "name": "page_type",
-        "default": null,
-        "type_info": {
-          "type": "character",
-          "kind": "16"
-        }
-      },
-      "plot_file": {
-        "line": 39,
-        "definition": "character(100) plot_file",
-        "name": "plot_file",
-        "default": null,
-        "type_info": {
-          "type": "character",
-          "kind": "100"
-        }
-      },
-      "i_chan": {
-        "line": 40,
-        "definition": "integer :: i_chan = -1",
-        "name": "i_chan",
-        "default": "-1",
-        "type_info": {
-          "type": "integer"
-        }
-      },
-      "qp_to_pg_text_height_factor": {
-        "line": 41,
-        "definition": "real qp_to_pg_text_height_factor",
-        "name": "qp_to_pg_text_height_factor",
-        "default": null,
-        "type_info": {
-          "type": "real"
-        }
-      },
-      "page_scale": {
-        "line": 42,
-        "definition": "real page_scale",
-        "name": "page_scale",
-        "comment": "scaling for entire page",
-        "default": null,
-        "type_info": {
-          "type": "real"
-        }
-      }
-    }
-  },
-  {
     "filename": "$ACC_ROOT_DIR/sim_utils/plot/quick_plot_struct.f90",
     "line": 129,
     "name": "qp_arrow_struct",
