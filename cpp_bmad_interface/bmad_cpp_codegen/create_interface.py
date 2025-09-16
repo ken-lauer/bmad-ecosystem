@@ -24,7 +24,6 @@ import string
 import sys
 import textwrap
 from dataclasses import dataclass, field, fields
-from typing import Literal, NamedTuple
 
 import bmad_struct_parser
 from bmad_struct_parser import Structure as ParsedStructure
@@ -38,129 +37,36 @@ from .paths import (
     CPP_INTERFACE_ROOT,
     TEMPLATES_PATH,
 )
-from .util import write_if_differs
+from .proxy import create_cpp_proxy_code, create_fortran_proxy_code
+from .types import (
+    ALLOC,
+    CHAR,
+    CMPLX,
+    INT,
+    INT8,
+    LOGIC,
+    NOT,
+    PTR,
+    REAL,
+    REAL16,
+    SIZE,
+    STRUCT,
+    ArgumentType,
+    FullType,
+    PointerType,
+)
+from .util import is_number, wrap_line, write_if_differs
 
 logger = logging.getLogger(__name__)
-##################################################################################
-##################################################################################
-# Settings
 
-N_CHAR_MAX = 95
 DEBUG = False  # Change to True to enable more verbose printout
 DEBUG_EQUALITY = False
 DEBUG_INSTANTIATION = False
-
-# Constants
-
-REAL = "real"
-REAL16 = "real16"  # quad precision
-CMPLX = "complex"
-INT = "integer"
-INT8 = "integer8"
-LOGIC = "logical"
-CHAR = "character"
-STRUCT = "type"
-SIZE = "size"
-ArgumentType = Literal[
-    "real", "real16", "complex", "integer", "integer8", "logical", "character", "type", "size"
-]
-
-NOT = "NOT"
-PTR = "PTR"
-ALLOC = "ALLOC"
-PointerType = Literal["NOT", "PTR", "ALLOC"]
-
-
-class FullType(NamedTuple):
-    type: ArgumentType
-    dim: int
-    ptr: PointerType
-
-    def sort_key(self):
-        return (self.dim, self.ptr, self.type)
-
-    def __str__(self) -> str:
-        return f"{self.dim}D_{self.ptr}_{self.type}"
-
-    @staticmethod
-    def from_template(type: str) -> FullType:
-        dim, ptr, type_name = type.split("_")
-
-        try:
-            dim = int(dim.lower().rstrip("d"))
-        except TypeError:
-            raise ValueError(f"Dimension of type from template is not integer: {type=} {dim=}") from None
-
-        if type_name not in (
-            "real",
-            "real16",
-            "complex",
-            "integer",
-            "integer8",
-            "logical",
-            "character",
-            "type",
-            "size",
-        ):
-            raise ValueError(f"Unexpected type: {type_name}")
-        if ptr not in ("NOT", "PTR", "ALLOC"):
-            raise ValueError(f"Invalid pointer type: {type=} {ptr=}")
-        return FullType(type_name, dim, ptr)
-
-
-##################################################################################
-##################################################################################
-
-
-def is_number(s: str) -> bool:
-    try:
-        float(s.replace("d", "e").replace("D", "e"))
-        return True
-    except ValueError:
-        return False
-
-
-def wrap_line(line, indent, cont_char):
-    """
-    Wrap a line of text to a maximum width with appropriate indentation and continuation character.
-
-    Parameters
-    ----------
-    line : str
-        The text line to wrap
-    indent : str
-        String to use for initial indentation
-    cont_char : str
-        Character to append to continued lines
-
-    Returns
-    -------
-    str
-        A string with the wrapped line
-    """
-    lines = textwrap.wrap(line, width=N_CHAR_MAX, initial_indent=indent, subsequent_indent=indent + "    ")
-
-    result = []
-    for i, wrapped_line in enumerate(lines):
-        if i < len(lines) - 1:
-            result.append(wrapped_line + cont_char + "\n")
-        else:
-            result.append(wrapped_line + "\n")
-
-    return "".join(result)
 
 
 def print_debug(line):
     if DEBUG:
         logger.warning(line)
-
-
-def indent(string: str, numspace: int) -> str:
-    """Indent each line of the string by numspace spaces."""
-    prefix = " " * numspace
-    lines = string.splitlines(keepends=True)
-    indented_lines = [prefix + line for line in lines]
-    return "".join(indented_lines)
 
 
 @dataclass
@@ -1837,6 +1743,18 @@ def write_output(structs: list[CodegenStructure]) -> None:
     write_if_differs(
         create_fortran_equality_check_code,
         (ACC_ROOT_DIR / params.equality_mod_dir / params.equality_mod_file).with_suffix(".f90"),
+        structs,
+    )
+    write_if_differs(
+        create_fortran_proxy_code,
+        (ACC_ROOT_DIR / params.proxy_mod_file).with_suffix(".f90"),
+        structs,
+    )
+    cpp_proxy_template = (TEMPLATES_PATH / "tao_proxies.hpp").read_text()
+    write_if_differs(
+        create_cpp_proxy_code,
+        (ACC_ROOT_DIR / params.proxy_header_file).with_suffix(".hpp"),
+        cpp_proxy_template,
         structs,
     )
 

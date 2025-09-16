@@ -4,11 +4,14 @@ import logging
 import pathlib
 import subprocess
 import tempfile
+import textwrap
 from collections.abc import Callable
 
 from .paths import CLANG_FORMAT_PATH
 
 logger = logging.getLogger(__name__)
+
+N_CHAR_MAX = 95
 
 
 def write_if_differs(
@@ -83,3 +86,49 @@ def write_if_differs(
 
     logger.info(f"* Not writing {target_path} (contents same)")
     return False
+
+
+def is_number(s: str) -> bool:
+    try:
+        float(s.replace("d", "e").replace("D", "e"))
+        return True
+    except ValueError:
+        return False
+
+
+def wrap_line(line, indent, cont_char):
+    """
+    Wrap a line of text to a maximum width with appropriate indentation and continuation character.
+
+    Parameters
+    ----------
+    line : str
+        The text line to wrap
+    indent : str
+        String to use for initial indentation
+    cont_char : str
+        Character to append to continued lines
+
+    Returns
+    -------
+    str
+        A string with the wrapped line
+    """
+    lines = textwrap.wrap(line, width=N_CHAR_MAX, initial_indent=indent, subsequent_indent=indent + "    ")
+
+    result = []
+    for i, wrapped_line in enumerate(lines):
+        if i < len(lines) - 1:
+            result.append(wrapped_line + cont_char + "\n")
+        else:
+            result.append(wrapped_line + "\n")
+
+    return "".join(result)
+
+
+def indent(string: str, numspace: int) -> str:
+    """Indent each line of the string by numspace spaces."""
+    prefix = " " * numspace
+    lines = string.splitlines(keepends=True)
+    indented_lines = [prefix + line for line in lines]
+    return "".join(indented_lines)
