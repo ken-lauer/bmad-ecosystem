@@ -1,0 +1,299 @@
+#pragma once
+
+#include <memory>
+#include <stdexcept>
+#include <string>
+
+// Forward declarations for Fortran interface
+extern "C" {
+int ele_get_name(void* ele_ptr, char* buf);
+
+// Global functions (index-based, only for initial access)
+int tao_get_n_universes();
+void* tao_c_get_lattice_ptr(int ix_uni, int ix_lat);
+void* tao_c_get_branch_ptr(int ix_uni, int ix_lat, int ix_branch);
+void* tao_c_get_element_ptr(int ix_uni, int ix_lat, int ix_branch, int ix_ele);
+
+// Pointer-based functions (efficient access using C pointers)
+int tao_lat_get_n_branches(void* lat_ptr);
+void* tao_lat_get_branch_ptr(void* lat_ptr, int ix_branch);
+int tao_branch_get_n_elements(void* branch_ptr);
+void* tao_branch_get_element_ptr(void* branch_ptr, int ix_ele);
+}
+
+namespace tao {
+
+// Lattice type enumeration
+enum class LatticeType : int { MODEL = 1, DESIGN = 2, BASE = 3 };
+
+// Exception classes
+class TaoException : public std::runtime_error {
+ public:
+  explicit TaoException(const std::string& message)
+      : std::runtime_error(message) {}
+};
+
+class InvalidIndexException : public TaoException {
+ public:
+  InvalidIndexException(const std::string& index_type, int index, int max_value)
+      : TaoException(
+            "Invalid " + index_type + " index " + std::to_string(index) +
+            " (valid range: 0-" + std::to_string(max_value - 1) + ")") {}
+};
+
+class NullPointerException : public TaoException {
+ public:
+  NullPointerException(const std::string& context)
+      : TaoException("Null pointer encountered in " + context) {}
+};
+
+// Forward declarations
+class UniverseProxy;
+class LatticeProxy;
+class BranchProxy;
+class ElementProxy;
+
+// Non-Tao proxy classes that directly reference Fortran memory
+class ElementProxy {
+ private:
+  void* fortran_ptr_;
+
+ public:
+  explicit ElementProxy(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("ElementProxy constructor");
+    }
+  }
+
+  void* get_fortran_ptr() const {
+    return fortran_ptr_;
+  }
+
+  // Example attribute access methods would go here
+  const std::string name() const;
+  // std::string get_type() const;
+  // double get_length() const;
+};
+
+class BranchProxy {
+ private:
+  void* fortran_ptr_;
+
+ public:
+  explicit BranchProxy(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("BranchProxy constructor");
+    }
+  }
+
+  void* get_fortran_ptr() const {
+    return fortran_ptr_;
+  }
+
+  ElementProxy get_element(int ix_ele) const {
+    int n_elements = tao_branch_get_n_elements(fortran_ptr_);
+    if (n_elements < 0) {
+      throw TaoException("Failed to get number of elements from branch");
+    }
+    if (ix_ele < 0 || ix_ele >= n_elements) {
+      throw InvalidIndexException("element", ix_ele, n_elements);
+    }
+
+    void* ele_ptr = tao_branch_get_element_ptr(fortran_ptr_, ix_ele);
+    if (!ele_ptr) {
+      throw NullPointerException(
+          "get_element for index " + std::to_string(ix_ele));
+    }
+    return ElementProxy(ele_ptr);
+  }
+
+  int get_n_elements() const {
+    int n = tao_branch_get_n_elements(fortran_ptr_);
+    if (n < 0) {
+      throw TaoException("Failed to get number of elements from branch");
+    }
+    return n;
+  }
+};
+
+class LatticeProxy {
+ private:
+  void* fortran_ptr_;
+
+ public:
+  explicit LatticeProxy(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("LatticeProxy constructor");
+    }
+  }
+
+  void* get_fortran_ptr() const {
+    return fortran_ptr_;
+  }
+
+  BranchProxy get_branch(int ix_branch) const {
+    int n_branches = tao_lat_get_n_branches(fortran_ptr_);
+    if (n_branches < 0) {
+      throw TaoException("Failed to get number of branches from lattice");
+    }
+    if (ix_branch < 0 || ix_branch >= n_branches) {
+      throw InvalidIndexException("branch", ix_branch, n_branches);
+    }
+
+    void* branch_ptr = tao_lat_get_branch_ptr(fortran_ptr_, ix_branch);
+    if (!branch_ptr) {
+      throw NullPointerException(
+          "get_branch for index " + std::to_string(ix_branch));
+    }
+    return BranchProxy(branch_ptr);
+  }
+
+  int get_n_branches() const {
+    int n = tao_lat_get_n_branches(fortran_ptr_);
+    if (n < 0) {
+      throw TaoException("Failed to get number of branches from lattice");
+    }
+    return n;
+  }
+};
+
+class UniverseProxy {
+ private:
+  int ix_uni_;
+
+ public:
+  explicit UniverseProxy(int ix_uni) : ix_uni_(ix_uni) {
+    int n_universes = tao_get_n_universes();
+    if (ix_uni < 0 || ix_uni >= n_universes) {
+      throw InvalidIndexException("universe", ix_uni, n_universes);
+    }
+  }
+
+  LatticeProxy get_lattice(LatticeType lattice_type) const {
+    void* lat_ptr =
+        tao_c_get_lattice_ptr(ix_uni_, static_cast<int>(lattice_type));
+    if (!lat_ptr) {
+      throw NullPointerException(
+          "get_lattice for universe " + std::to_string(ix_uni_));
+    }
+    return LatticeProxy(lat_ptr);
+  }
+
+  int get_universe_index() const {
+    return ix_uni_;
+  }
+};
+
+// Tao proxy classes for navigating the hierarchy
+class TaoElementProxy {
+ private:
+  int ix_uni_, ix_lat_, ix_branch_, ix_ele_;
+
+ public:
+  TaoElementProxy(
+      int ix_uni,
+      LatticeType lattice_type,
+      int ix_branch,
+      int ix_ele)
+      : ix_uni_(ix_uni),
+        ix_lat_(static_cast<int>(lattice_type)),
+        ix_branch_(ix_branch),
+        ix_ele_(ix_ele) {}
+
+  ElementProxy operator*() const {
+    void* ele_ptr =
+        tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
+    if (!ele_ptr) {
+      throw NullPointerException(
+          "TaoElementProxy dereference for ix_uni=" + std::to_string(ix_uni_) +
+          " ix_lat=" + std::to_string(ix_lat_) +
+          " ix_branch=" + std::to_string(ix_branch_) +
+          " ix_ele=" + std::to_string(ix_ele_) + "");
+    }
+    return ElementProxy(ele_ptr);
+  }
+
+  std::unique_ptr<ElementProxy> operator->() const {
+    return std::make_unique<ElementProxy>(**this);
+  }
+};
+
+class TaoBranchProxy {
+ private:
+  int ix_uni_, ix_lat_, ix_branch_;
+
+ public:
+  TaoBranchProxy(int ix_uni, LatticeType lattice_type, int ix_branch)
+      : ix_uni_(ix_uni),
+        ix_lat_(static_cast<int>(lattice_type)),
+        ix_branch_(ix_branch) {}
+
+  BranchProxy operator*() const {
+    void* branch_ptr = tao_c_get_branch_ptr(ix_uni_, ix_lat_, ix_branch_);
+    if (!branch_ptr) {
+      throw NullPointerException(
+          "TaoBranchProxy dereference for [" + std::to_string(ix_uni_) + "," +
+          std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) + "]");
+    }
+    return BranchProxy(branch_ptr);
+  }
+
+  std::unique_ptr<BranchProxy> operator->() const {
+    return std::make_unique<BranchProxy>(**this);
+  }
+
+  TaoElementProxy get_element(int ix_ele) const {
+    return TaoElementProxy(
+        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch_, ix_ele);
+  }
+};
+
+class TaoLatticeProxy {
+ private:
+  int ix_uni_, ix_lat_;
+
+ public:
+  TaoLatticeProxy(int ix_uni, LatticeType lattice_type)
+      : ix_uni_(ix_uni), ix_lat_(static_cast<int>(lattice_type)) {}
+
+  LatticeProxy operator*() const {
+    void* lat_ptr = tao_c_get_lattice_ptr(ix_uni_, ix_lat_);
+    if (!lat_ptr) {
+      throw NullPointerException(
+          "TaoLatticeProxy dereference for [" + std::to_string(ix_uni_) + "," +
+          std::to_string(ix_lat_) + "]");
+    }
+    return LatticeProxy(lat_ptr);
+  }
+
+  std::unique_ptr<LatticeProxy> operator->() const {
+    return std::make_unique<LatticeProxy>(**this);
+  }
+
+  TaoBranchProxy get_branch(int ix_branch) const {
+    return TaoBranchProxy(
+        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch);
+  }
+};
+
+class TaoUniverseProxy {
+ private:
+  int ix_uni_;
+
+ public:
+  explicit TaoUniverseProxy(int ix_uni) : ix_uni_(ix_uni) {}
+
+  UniverseProxy operator*() const {
+    return UniverseProxy(ix_uni_);
+  }
+
+  std::unique_ptr<UniverseProxy> operator->() const {
+    return std::make_unique<UniverseProxy>(**this);
+  }
+
+  TaoLatticeProxy get_lattice(LatticeType lattice_type) const {
+    return TaoLatticeProxy(ix_uni_, lattice_type);
+  }
+};
+
+} // namespace tao

@@ -20,6 +20,7 @@ set(EXE_SPECS
 
 set(SHARED_DEPS
   bmad
+  tao
   sim_utils
   jsonfortran
 )
