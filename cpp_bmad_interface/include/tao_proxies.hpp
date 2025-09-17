@@ -282,20 +282,26 @@ void photon_reflect_table_struct_get_bragg_angle_info(
     int* upper_bound,
     bool* is_allocated);
 
-void photon_reflect_surface_struct_get_name(
+void photon_reflect_surface_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void photon_reflect_surface_struct_get_description(
+void photon_reflect_surface_struct_get_description_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void photon_reflect_surface_struct_get_reflectivity_file(
+void photon_reflect_surface_struct_get_reflectivity_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void photon_reflect_surface_struct_get_surface_roughness_rms(
     const void* struct_obj,
@@ -411,10 +417,12 @@ void bpm_phase_coupling_struct_get_phi_b(
     const void* struct_obj,
     double* value_out);
 
-void expression_atom_struct_get_name(
+void expression_atom_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void expression_atom_struct_get_type(const void* struct_obj, int* value_out);
 
@@ -470,10 +478,12 @@ void wake_sr_mode_struct_get_position_dependence(
     const void* struct_obj,
     int* value_out);
 
-void wake_sr_struct_get_file(
+void wake_sr_struct_get_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void wake_sr_struct_get_z_long(const void* struct_obj, void** ptr_out);
 
@@ -519,10 +529,12 @@ void wake_lr_mode_struct_get_m(const void* struct_obj, int* value_out);
 
 void wake_lr_mode_struct_get_polarized(const void* struct_obj, bool* value_out);
 
-void wake_lr_struct_get_file(
+void wake_lr_struct_get_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void wake_lr_struct_get_t_ref(const void* struct_obj, double* value_out);
 
@@ -600,10 +612,12 @@ void cartesian_map_term1_struct_get_form(
     const void* struct_obj,
     int* value_out);
 
-void cartesian_map_term_struct_get_file(
+void cartesian_map_term_struct_get_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void cartesian_map_term_struct_get_n_link(
     const void* struct_obj,
@@ -642,10 +656,12 @@ void cylindrical_map_term1_struct_get_b_coef(
     const void* struct_obj,
     double _Complex* value_out);
 
-void cylindrical_map_term_struct_get_file(
+void cylindrical_map_term_struct_get_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void cylindrical_map_term_struct_get_n_link(
     const void* struct_obj,
@@ -716,10 +732,12 @@ void grid_field_pt1_struct_get_B_info(
     int* lower_bound,
     int* upper_bound);
 
-void grid_field_pt_struct_get_file(
+void grid_field_pt_struct_get_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void grid_field_pt_struct_get_n_link(const void* struct_obj, int* value_out);
 
@@ -939,10 +957,12 @@ void gen_grad1_struct_get_deriv_info(
     int* stride2,
     bool* is_allocated);
 
-void gen_grad_map_struct_get_file(
+void gen_grad_map_struct_get_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void gen_grad_map_struct_get_ele_anchor_pt(
     const void* struct_obj,
@@ -1299,15 +1319,19 @@ void wall3d_vertex_struct_get_y0(const void* struct_obj, double* value_out);
 
 void wall3d_vertex_struct_get_type(const void* struct_obj, int* value_out);
 
-void wall3d_section_struct_get_name(
+void wall3d_section_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void wall3d_section_struct_get_material(
+void wall3d_section_struct_get_material_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void wall3d_section_struct_get_surface(const void* struct_obj, void** ptr_out);
 
@@ -1382,10 +1406,12 @@ void wall3d_section_struct_get_p2_coef_info(
     int* lower_bound,
     int* upper_bound);
 
-void wall3d_struct_get_name(
+void wall3d_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void wall3d_struct_get_type(const void* struct_obj, int* value_out);
 
@@ -1395,15 +1421,19 @@ void wall3d_struct_get_n_link(const void* struct_obj, int* value_out);
 
 void wall3d_struct_get_thickness(const void* struct_obj, double* value_out);
 
-void wall3d_struct_get_clear_material(
+void wall3d_struct_get_clear_material_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void wall3d_struct_get_opaque_material(
+void wall3d_struct_get_opaque_material_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void wall3d_struct_get_superimpose(const void* struct_obj, bool* value_out);
 
@@ -1431,22 +1461,28 @@ void control_struct_get_slave(const void* struct_obj, void** ptr_out);
 
 void control_struct_get_lord(const void* struct_obj, void** ptr_out);
 
-void control_struct_get_slave_name(
+void control_struct_get_slave_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void control_struct_get_attribute(
+void control_struct_get_attribute_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void control_struct_get_ix_attrib(const void* struct_obj, int* value_out);
 
-void control_var1_struct_get_name(
+void control_var1_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void control_var1_struct_get_value(const void* struct_obj, double* value_out);
 
@@ -1462,15 +1498,19 @@ void control_ramp1_struct_get_y_knot_info(
     int* upper_bound,
     bool* is_allocated);
 
-void control_ramp1_struct_get_attribute(
+void control_ramp1_struct_get_attribute_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void control_ramp1_struct_get_slave_name(
+void control_ramp1_struct_get_slave_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void control_ramp1_struct_get_is_controller(
     const void* struct_obj,
@@ -1523,10 +1563,12 @@ void grid_beam_init_struct_get_px_max(
     const void* struct_obj,
     double* value_out);
 
-void beam_init_struct_get_position_file(
+void beam_init_struct_get_position_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void beam_init_struct_get_spin_info(
     const void* struct_obj,
@@ -1567,15 +1609,19 @@ void beam_init_struct_get_renorm_center(
 
 void beam_init_struct_get_renorm_sigma(const void* struct_obj, bool* value_out);
 
-void beam_init_struct_get_random_engine(
+void beam_init_struct_get_random_engine_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void beam_init_struct_get_random_gauss_converter(
+void beam_init_struct_get_random_gauss_converter_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void beam_init_struct_get_random_sigma_cutoff(
     const void* struct_obj,
@@ -1618,10 +1664,12 @@ void beam_init_struct_get_n_bunch(const void* struct_obj, int* value_out);
 
 void beam_init_struct_get_ix_turn(const void* struct_obj, int* value_out);
 
-void beam_init_struct_get_species(
+void beam_init_struct_get_species_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void beam_init_struct_get_full_6D_coupling_calc(
     const void* struct_obj,
@@ -1635,10 +1683,12 @@ void beam_init_struct_get_use_t_coords(const void* struct_obj, bool* value_out);
 
 void beam_init_struct_get_use_z_as_t(const void* struct_obj, bool* value_out);
 
-void beam_init_struct_get_file_name(
+void beam_init_struct_get_file_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void lat_param_struct_get_n_part(const void* struct_obj, double* value_out);
 
@@ -1704,10 +1754,12 @@ void pre_tracker_struct_get_ix_ele_start(
 
 void pre_tracker_struct_get_ix_ele_end(const void* struct_obj, int* value_out);
 
-void pre_tracker_struct_get_input_file(
+void pre_tracker_struct_get_input_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void anormal_mode_struct_get_emittance(
     const void* struct_obj,
@@ -1937,10 +1989,12 @@ void space_charge_common_struct_get_debug(
     const void* struct_obj,
     bool* value_out);
 
-void space_charge_common_struct_get_diagnostic_output_file(
+void space_charge_common_struct_get_diagnostic_output_file_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void bmad_common_struct_get_max_aperture_limit(
     const void* struct_obj,
@@ -2171,18 +2225,41 @@ void rf_stair_step_struct_get_ix_step(const void* struct_obj, int* value_out);
 
 void rf_ele_struct_get_ds_step(const void* struct_obj, double* value_out);
 
-void ele_struct_get_name(const void* struct_obj, char* str_out, int* str_len);
-
-void ele_struct_get_type(const void* struct_obj, char* str_out, int* str_len);
-
-void ele_struct_get_alias(const void* struct_obj, char* str_out, int* str_len);
-
-void ele_struct_get_component_name(
+void ele_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void ele_struct_get_descrip(const void* struct_obj, char** ptr_out);
+void ele_struct_get_type_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void ele_struct_get_alias_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void ele_struct_get_component_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void ele_struct_get_descrip_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
 
 void ele_struct_get_a(const void* struct_obj, void** ptr_out);
 
@@ -2365,10 +2442,12 @@ void complex_taylor_struct_get_ref(
     const void* struct_obj,
     double _Complex* value_out);
 
-void branch_struct_get_name(
+void branch_struct_get_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void branch_struct_get_ix_branch(const void* struct_obj, int* value_out);
 
@@ -2396,27 +2475,40 @@ void branch_struct_get_param(const void* struct_obj, void** ptr_out);
 
 void branch_struct_get_particle_start(const void* struct_obj, void** ptr_out);
 
-void lat_struct_get_use_name(
+void lat_struct_get_use_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void lat_struct_get_lattice(
+void lat_struct_get_lattice_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void lat_struct_get_machine(
+void lat_struct_get_machine_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void lat_struct_get_input_file_name(
+void lat_struct_get_input_file_name_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
-void lat_struct_get_title(const void* struct_obj, char* str_out, int* str_len);
+void lat_struct_get_title_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void lat_struct_get_a(const void* struct_obj, void** ptr_out);
 
@@ -2614,10 +2706,12 @@ void aperture_param_struct_get_abs_accuracy(
     const void* struct_obj,
     double* value_out);
 
-void aperture_param_struct_get_start_ele(
+void aperture_param_struct_get_start_ele_info(
     const void* struct_obj,
-    char* str_out,
-    int* str_len);
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
 
 void aperture_scan_struct_get_ref_orb(const void* struct_obj, void** ptr_out);
 
@@ -3054,37 +3148,104 @@ class ElementProxy {
   }
 
   std::string name() const {
-    char buffer[1024]; // Adjust size as needed
-    int str_len;
-    ele_struct_get_name(fortran_ptr_, buffer, &str_len);
-    return std::string(buffer, str_len);
+    auto char_array = get_name_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_name_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    ele_struct_get_name_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
   }
 
   std::string type() const {
-    char buffer[1024]; // Adjust size as needed
-    int str_len;
-    ele_struct_get_type(fortran_ptr_, buffer, &str_len);
-    return std::string(buffer, str_len);
+    auto char_array = get_type_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_type_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    ele_struct_get_type_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
   }
 
   std::string alias() const {
-    char buffer[1024]; // Adjust size as needed
-    int str_len;
-    ele_struct_get_alias(fortran_ptr_, buffer, &str_len);
-    return std::string(buffer, str_len);
+    auto char_array = get_alias_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_alias_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    ele_struct_get_alias_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
   }
 
   std::string component_name() const {
-    char buffer[1024]; // Adjust size as needed
-    int str_len;
-    ele_struct_get_component_name(fortran_ptr_, buffer, &str_len);
-    return std::string(buffer, str_len);
+    auto char_array = get_component_name_chars();
+    return std::string(char_array.data(), char_array.size());
   }
 
-  char* descrip() const {
-    char* ptr;
-    ele_struct_get_descrip(fortran_ptr_, &ptr);
-    return ptr;
+  FortranArray1D<char> get_component_name_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    ele_struct_get_component_name_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  std::string descrip() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+    bool is_allocated;
+
+    ele_struct_get_descrip_info(
+        fortran_ptr_,
+        &data_ptr,
+        &size_out,
+        &lower_bound,
+        &upper_bound,
+        &is_allocated);
+
+    if (!is_allocated || size_out == 0) {
+      return std::string();
+    }
+
+    return std::string(data_ptr, size_out);
+  }
+
+  FortranArray1D<char> get_descrip_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+    bool is_allocated;
+
+    ele_struct_get_descrip_info(
+        fortran_ptr_,
+        &data_ptr,
+        &size_out,
+        &lower_bound,
+        &upper_bound,
+        &is_allocated);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, is_allocated);
   }
 
   const void* a() const {

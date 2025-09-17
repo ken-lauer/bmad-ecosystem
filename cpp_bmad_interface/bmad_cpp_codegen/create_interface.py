@@ -1750,7 +1750,7 @@ def write_output(structs: list[CodegenStructure]) -> None:
         (ACC_ROOT_DIR / params.proxy_mod_file).with_suffix(".f90"),
         structs,
     )
-    cpp_proxy_template = (TEMPLATES_PATH / "tao_proxies.hpp").read_text()
+    cpp_proxy_template = (CODEGEN_ROOT / "tao_proxies.tpl.hpp").read_text()
     write_if_differs(
         create_cpp_proxy_code,
         (ACC_ROOT_DIR / params.proxy_header_file).with_suffix(".hpp"),

@@ -342,57 +342,45 @@ contains
 
 ! photon_reflect_surface_struct
 
-  subroutine photon_reflect_surface_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine photon_reflect_surface_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine photon_reflect_surface_struct_get_description(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine photon_reflect_surface_struct_get_description_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%description)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%description(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%description)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%description), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine photon_reflect_surface_struct_get_reflectivity_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine photon_reflect_surface_struct_get_reflectivity_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%reflectivity_file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%reflectivity_file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%reflectivity_file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%reflectivity_file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! skipped photon_reflect_surface_struct%table: Unsupported type: 1D_ALLOC_type
@@ -758,21 +746,17 @@ contains
 
 ! expression_atom_struct
 
-  subroutine expression_atom_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine expression_atom_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(expression_atom_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -976,21 +960,17 @@ contains
 
 ! wake_sr_struct
 
-  subroutine wake_sr_struct_get_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wake_sr_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wake_sr_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -1198,21 +1178,17 @@ contains
 
 ! wake_lr_struct
 
-  subroutine wake_lr_struct_get_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wake_lr_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wake_lr_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! skipped wake_lr_struct%mode: Unsupported type: 1D_ALLOC_type
@@ -1475,21 +1451,17 @@ contains
 
 ! cartesian_map_term_struct
 
-  subroutine cartesian_map_term_struct_get_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine cartesian_map_term_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(cartesian_map_term_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -1595,21 +1567,17 @@ contains
 
 ! cylindrical_map_term_struct
 
-  subroutine cylindrical_map_term_struct_get_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine cylindrical_map_term_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(cylindrical_map_term_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -1795,21 +1763,17 @@ contains
 
 ! grid_field_pt_struct
 
-  subroutine grid_field_pt_struct_get_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine grid_field_pt_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(grid_field_pt_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -2583,21 +2547,17 @@ contains
 
 ! gen_grad_map_struct
 
-  subroutine gen_grad_map_struct_get_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine gen_grad_map_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(gen_grad_map_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! skipped gen_grad_map_struct%gg: Unsupported type: 1D_ALLOC_type
@@ -3566,39 +3526,31 @@ contains
 
 ! wall3d_section_struct
 
-  subroutine wall3d_section_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wall3d_section_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine wall3d_section_struct_get_material(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wall3d_section_struct_get_material_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%material)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%material(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%material)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%material), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! skipped wall3d_section_struct%v: Unsupported type: 1D_ALLOC_type
@@ -3798,21 +3750,17 @@ contains
 
 ! wall3d_struct
 
-  subroutine wall3d_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wall3d_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -3856,39 +3804,31 @@ contains
   end subroutine
 
 
-  subroutine wall3d_struct_get_clear_material(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wall3d_struct_get_clear_material_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%clear_material)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%clear_material(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%clear_material)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%clear_material), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine wall3d_struct_get_opaque_material(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine wall3d_struct_get_opaque_material_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%opaque_material)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%opaque_material(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%opaque_material)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%opaque_material), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -4004,39 +3944,31 @@ contains
   end subroutine
 
 
-  subroutine control_struct_get_slave_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine control_struct_get_slave_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%slave_name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%slave_name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%slave_name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%slave_name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine control_struct_get_attribute(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine control_struct_get_attribute_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%attribute)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%attribute(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%attribute)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%attribute), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -4051,21 +3983,17 @@ contains
 
 ! control_var1_struct
 
-  subroutine control_var1_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine control_var1_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_var1_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -4115,39 +4043,31 @@ contains
 
 ! skipped control_ramp1_struct%stack: Unsupported type: 1D_ALLOC_type
 
-  subroutine control_ramp1_struct_get_attribute(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine control_ramp1_struct_get_attribute_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_ramp1_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%attribute)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%attribute(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%attribute)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%attribute), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine control_ramp1_struct_get_slave_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine control_ramp1_struct_get_slave_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_ramp1_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%slave_name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%slave_name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%slave_name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%slave_name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -4317,21 +4237,17 @@ contains
 
 ! beam_init_struct
 
-  subroutine beam_init_struct_get_position_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine beam_init_struct_get_position_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%position_file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%position_file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%position_file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%position_file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! skipped beam_init_struct%distribution_type: Unsupported type: 1D_NOT_character
@@ -4440,39 +4356,31 @@ contains
   end subroutine
 
 
-  subroutine beam_init_struct_get_random_engine(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine beam_init_struct_get_random_engine_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%random_engine)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%random_engine(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%random_engine)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%random_engine), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine beam_init_struct_get_random_gauss_converter(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine beam_init_struct_get_random_gauss_converter_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%random_gauss_converter)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%random_gauss_converter(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%random_gauss_converter)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%random_gauss_converter), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -4620,21 +4528,17 @@ contains
   end subroutine
 
 
-  subroutine beam_init_struct_get_species(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine beam_init_struct_get_species_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%species)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%species(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%species)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%species), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -4678,21 +4582,17 @@ contains
   end subroutine
 
 
-  subroutine beam_init_struct_get_file_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine beam_init_struct_get_file_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%file_name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%file_name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%file_name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%file_name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! lat_param_struct
@@ -4941,21 +4841,17 @@ contains
   end subroutine
 
 
-  subroutine pre_tracker_struct_get_input_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine pre_tracker_struct_get_input_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pre_tracker_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%input_file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%input_file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%input_file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%input_file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! anormal_mode_struct
@@ -5653,21 +5549,17 @@ contains
   end subroutine
 
 
-  subroutine space_charge_common_struct_get_diagnostic_output_file(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine space_charge_common_struct_get_diagnostic_output_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(space_charge_common_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%diagnostic_output_file)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%diagnostic_output_file(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%diagnostic_output_file)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%diagnostic_output_file), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! bmad_common_struct
@@ -6385,88 +6277,82 @@ contains
 
 ! ele_struct
 
-  subroutine ele_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine ele_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine ele_struct_get_type(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine ele_struct_get_type_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%type)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%type(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%type)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%type), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine ele_struct_get_alias(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine ele_struct_get_alias_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%alias)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%alias(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%alias)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%alias), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine ele_struct_get_component_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine ele_struct_get_component_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%component_name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%component_name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%component_name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%component_name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine ele_struct_get_descrip(struct_obj_ptr, ptr_out) bind(c)
+  subroutine ele_struct_get_descrip_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: ptr_out
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%descrip)) then
-      ptr_out = c_loc(struct_obj%descrip)
+      data_ptr = c_loc(struct_obj%descrip)
+      lower_bound = 1_c_int
+      upper_bound = int(len_trim(struct_obj%descrip), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
     else
-      ptr_out = c_null_ptr
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
     endif
   end subroutine
 
@@ -7261,21 +7147,17 @@ contains
 ! skipped complex_taylor_struct%term: Unsupported type: 1D_PTR_type
 ! branch_struct
 
-  subroutine branch_struct_get_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine branch_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(branch_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
@@ -7416,93 +7298,73 @@ contains
 ! skipped branch_struct%wall3d: Unsupported type: 1D_PTR_type
 ! lat_struct
 
-  subroutine lat_struct_get_use_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine lat_struct_get_use_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%use_name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%use_name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%use_name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%use_name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine lat_struct_get_lattice(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine lat_struct_get_lattice_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%lattice)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%lattice(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%lattice)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%lattice), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine lat_struct_get_machine(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine lat_struct_get_machine_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%machine)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%machine(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%machine)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%machine), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine lat_struct_get_input_file_name(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine lat_struct_get_input_file_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%input_file_name)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%input_file_name(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%input_file_name)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%input_file_name), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 
-  subroutine lat_struct_get_title(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine lat_struct_get_title_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%title)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%title(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%title)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%title), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! skipped lat_struct%print_str: Unsupported type: 1D_ALLOC_character
@@ -8276,21 +8138,17 @@ contains
   end subroutine
 
 
-  subroutine aperture_param_struct_get_start_ele(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine aperture_param_struct_get_start_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(aperture_param_struct), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%start_ele)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%start_ele(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%start_ele)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%start_ele), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 
 ! aperture_scan_struct

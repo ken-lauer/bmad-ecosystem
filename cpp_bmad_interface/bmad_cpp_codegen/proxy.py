@@ -382,37 +382,43 @@ fortran_templates = {
     # CHARACTER types
     FullType("character", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, str_out, str_len) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    character(kind=c_char), intent(out) :: str_out(*)
-    integer(c_int), intent(out) :: str_len
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(STRUCTNAME), pointer :: struct_obj
-    integer :: i, actual_len
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
-    actual_len = len_trim(struct_obj%ATTRNAME)
-    str_len = actual_len
-    
-    do i = 1, actual_len
-      str_out(i) = struct_obj%ATTRNAME(i:i)
-    end do
-    str_out(actual_len + 1) = c_null_char
+    data_ptr = c_loc(struct_obj%ATTRNAME)
+    lower_bound = 1_c_int
+    upper_bound = int(len_trim(struct_obj%ATTRNAME), c_int)
+    size_out = upper_bound - lower_bound + 1
   end subroutine
 """,
         "c_type": "char*",
     },
     FullType("character", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c)
     type(c_ptr), intent(in), value :: struct_obj_ptr
-    type(c_ptr), intent(out) :: ptr_out
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
     type(STRUCTNAME), pointer :: struct_obj
-    
+
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ATTRNAME)) then
-      ptr_out = c_loc(struct_obj%ATTRNAME)
+      data_ptr = c_loc(struct_obj%ATTRNAME)
+      lower_bound = 1_c_int
+      upper_bound = int(len_trim(struct_obj%ATTRNAME), c_int)
+      size_out = upper_bound - lower_bound + 1
+      is_allocated = .true.
     else
-      ptr_out = c_null_ptr
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      is_allocated = .false.
     endif
   end subroutine
 """,
@@ -834,30 +840,74 @@ cpp_templates = {
     # CHARACTER types
     FullType("character", 0, "NOT"): {
         "declaration": """
-    void STRUCTNAME_get_ATTRNAME(const void* struct_obj, char* str_out, int* str_len);
+    void STRUCTNAME_get_ATTRNAME_info(
+        const void* struct_obj,
+        char** data_ptr,
+        int* size_out,
+        int* lower_bound,
+        int* upper_bound
+    );
 """,
         "accessor": """
     std::string ATTRNAME() const {
-        char buffer[1024];  // Adjust size as needed
-        int str_len;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, buffer, &str_len);
-        return std::string(buffer, str_len);
+        auto char_array = get_ATTRNAME_chars();
+        return std::string(char_array.data(), char_array.size());
+    }
+
+    FortranArray1D<char> get_ATTRNAME_chars() const {
+        char* data_ptr;
+        int size_out, lower_bound, upper_bound;
+
+        STRUCTNAME_get_ATTRNAME_info(
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
+        );
+
+        return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, true);
     }
 """,
         "cpp_type": "std::string",
     },
     FullType("character", 0, "PTR"): {
         "declaration": """
-    void STRUCTNAME_get_ATTRNAME(const void* struct_obj, char** ptr_out);
+    void STRUCTNAME_get_ATTRNAME_info(
+        const void* struct_obj,
+        char** data_ptr,
+        int* size_out,
+        int* lower_bound,
+        int* upper_bound,
+        bool* is_allocated
+    );
 """,
         "accessor": """
-    char* ATTRNAME() const {
-        char* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
-        return ptr;
+    std::string ATTRNAME() const {
+        char* data_ptr;
+        int size_out, lower_bound, upper_bound;
+        bool is_allocated;
+
+        STRUCTNAME_get_ATTRNAME_info(
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+        );
+
+        if (!is_allocated || size_out == 0) {
+            return std::string();
+        }
+
+        return std::string(data_ptr, size_out);
+    }
+
+    FortranArray1D<char> get_ATTRNAME_chars() const {
+        char* data_ptr;
+        int size_out, lower_bound, upper_bound;
+        bool is_allocated;
+
+        STRUCTNAME_get_ATTRNAME_info(
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+        );
+
+        return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
     }
 """,
-        "cpp_type": "char*",
+        "cpp_type": "std::string",
     },
     # TYPE (derived type pointer)
     FullType("type", 0, "NOT"): {
