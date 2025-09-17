@@ -240,6 +240,7 @@
 // skipped tao_universe_struct%data: Unsupported type: 1D_ALLOC_type
 #pragma once
 
+#include "cpp_bmad_classes.h"
 #include "fortran_arrays.hpp"
 #include "tao_proxies.hpp"
 
@@ -250,8 +251,8 @@
 #include <utility>
 #include <vector>
 
-// Forward declarations for Fortran interface
 extern "C" {
+// Forward declarations for Fortran interface
 
 void spline_struct_get_x0(const void* struct_obj, double* value_out);
 
@@ -3632,6 +3633,12 @@ class ElementProxy {
 
   void* get_fortran_ptr() const {
     return fortran_ptr_;
+  }
+
+  std::shared_ptr<CPP_ele> deepcopy() const {
+    auto ele = std::make_shared<CPP_ele>();
+    ele_to_c(static_cast<Opaque_ele_class*>(fortran_ptr_), *ele);
+    return ele;
   }
 
   std::string name() const {

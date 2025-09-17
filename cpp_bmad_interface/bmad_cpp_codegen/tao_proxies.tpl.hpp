@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cpp_bmad_classes.h"
 #include "fortran_arrays.hpp"
 #include "tao_proxies.hpp"
 
@@ -10,8 +11,8 @@
 #include <utility>
 #include <vector>
 
-// Forward declarations for Fortran interface
 extern "C" {
+// Forward declarations for Fortran interface
 // ${forward_declarations}
 
 // Global functions (index-based, only for initial access)
@@ -74,6 +75,12 @@ class ElementProxy {
 
   void* get_fortran_ptr() const {
     return fortran_ptr_;
+  }
+
+  std::shared_ptr<CPP_ele> deepcopy() const {
+    auto ele = std::make_shared<CPP_ele>();
+    ele_to_c(static_cast<Opaque_ele_class*>(fortran_ptr_), *ele);
+    return ele;
   }
 
   // ${ele_struct_class_body}
