@@ -490,6 +490,8 @@ class CodegenStructure:
     to_c2_post: str = ""
     to_f2_post: str = ""
 
+    module: str = "unknown_module"
+
     @property
     def args_to_convert(self):
         return [arg for arg in self.arg if f"{self.f_name}%{arg.f_name}" not in params.interface_ignore_list]
@@ -615,12 +617,13 @@ def match_structure_definition(
         if struct.f_name == fstruct.name:
             break
     else:
-        raise RuntimeError(f"Structure not found: {struct.f_name}")
+        raise RuntimeError(f"Structure not found: {struct.f_name!r}")
 
     struct.f_name = fstruct.name
     struct.short_name = fstruct.name.removesuffix("_struct")
     struct.cpp_class = "CPP_" + struct.short_name
     struct.arg = [Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()]
+    struct.module = fstruct.module
 
 
 def set_translations(
@@ -1020,9 +1023,10 @@ contains
 
             elemental function eq_{struct.short_name} (f1, f2) result (is_eq)
 
+            use {struct.module}, only: {struct.f_name}
             implicit none
 
-            type({struct.short_name}_struct), intent(in) :: f1, f2
+            type({struct.f_name}), intent(in) :: f1, f2
             logical is_eq
 
             !

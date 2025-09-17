@@ -174,8 +174,73 @@
 // aperture_param_struct
 // aperture_scan_struct
 // skipped aperture_scan_struct%point: Unsupported type: 1D_ALLOC_type
+// tao_spin_dn_dpz_struct
+// skipped tao_spin_dn_dpz_struct%partial: Unsupported type: 2D_NOT_real
+// skipped tao_spin_dn_dpz_struct%partial2: Unsupported type: 2D_NOT_real
+// resonance_h_struct
+// spin_orbit_map1_struct
+// skipped spin_orbit_map1_struct%orb_mat: Unsupported type: 2D_NOT_real
+// skipped spin_orbit_map1_struct%spin_q: Unsupported type: 2D_NOT_real
+// spin_axis_struct
+// ptc_normal_form_struct
+// bmad_normal_form_struct
+// skipped bmad_normal_form_struct%M: Unsupported type: 1D_NOT_type
+// skipped bmad_normal_form_struct%A: Unsupported type: 1D_NOT_type
+// skipped bmad_normal_form_struct%A_inv: Unsupported type: 1D_NOT_type
+// skipped bmad_normal_form_struct%dhdj: Unsupported type: 1D_NOT_type
+// skipped bmad_normal_form_struct%F: Unsupported type: 1D_NOT_type
+// skipped bmad_normal_form_struct%L: Unsupported type: 1D_NOT_type
+// skipped bmad_normal_form_struct%h: Unsupported type: 1D_ALLOC_type
+// bunch_track_struct
+// skipped bunch_track_struct%pt: Unsupported type: 1D_ALLOC_type
+// summation_rdt_struct
+// lat_ele_order1_struct
+// lat_ele_order_array_struct
+// skipped lat_ele_order_array_struct%ele: Unsupported type: 1D_ALLOC_type
+// tao_lat_sigma_struct
+// skipped tao_lat_sigma_struct%mat: Unsupported type: 2D_NOT_real
+// tao_spin_ele_struct
+// skipped tao_spin_ele_struct%orb_eigen_vec: Unsupported type: 2D_NOT_real
+// skipped tao_spin_ele_struct%spin_eigen_vec: Unsupported type: 2D_NOT_real
+// tao_plot_cache_struct
+// tao_spin_polarization_struct
+// skipped tao_spin_polarization_struct%q_ele: Unsupported type: 1D_ALLOC_type
+// tao_lattice_branch_struct
+// skipped tao_lattice_branch_struct%lat_sigma: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%spin_ele: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%bunch_params: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%bunch_params_comb: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%orbit: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%plot_cache: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%high_E_orb: Unsupported type: 1D_ALLOC_type
+// skipped tao_lattice_branch_struct%low_E_orb: Unsupported type: 1D_ALLOC_type
+// tao_model_element_struct
+// tao_beam_branch_struct
+// tao_d1_data_struct
+// tao_lattice_struct
+// skipped tao_lattice_struct%tao_branch: Unsupported type: 1D_ALLOC_type
+// tao_beam_uni_struct
+// tao_dynamic_aperture_struct
+// skipped tao_dynamic_aperture_struct%scan: Unsupported type: 1D_ALLOC_type
+// tao_model_branch_struct
+// skipped tao_model_branch_struct%ele: Unsupported type: 1D_ALLOC_type
+// tao_d2_data_struct
+// skipped tao_d2_data_struct%descrip: Unsupported type: 1D_NOT_character
+// skipped tao_d2_data_struct%d1: Unsupported type: 1D_ALLOC_type
+// tao_spin_map_struct
+// skipped tao_spin_map_struct%mat8: Unsupported type: 2D_NOT_real
+// tao_data_struct
+// tao_ping_scale_struct
+// tao_universe_calc_struct
+// lat_ele_order_struct
+// skipped lat_ele_order_struct%branch: Unsupported type: 1D_ALLOC_type
+// tao_universe_struct
+// skipped tao_universe_struct%model_branch: Unsupported type: 1D_PTR_type
+// skipped tao_universe_struct%d2_data: Unsupported type: 1D_ALLOC_type
+// skipped tao_universe_struct%data: Unsupported type: 1D_ALLOC_type
 #pragma once
 
+#include "fortran_arrays.hpp"
 #include "tao_proxies.hpp"
 
 #include <iterator>
@@ -2719,8 +2784,797 @@ void aperture_scan_struct_get_pz_start(
     const void* struct_obj,
     double* value_out);
 
+void tao_spin_dn_dpz_struct_get_vec_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void resonance_h_struct_get_id_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void resonance_h_struct_get_c_val(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void spin_orbit_map1_struct_get_vec0_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void spin_axis_struct_get_l_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void spin_axis_struct_get_n0_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void spin_axis_struct_get_m_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void ptc_normal_form_struct_get_ele_origin(
+    const void* struct_obj,
+    void** ptr_out);
+
+void ptc_normal_form_struct_get_orb0_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void ptc_normal_form_struct_get_valid_map(
+    const void* struct_obj,
+    bool* value_out);
+
+void bmad_normal_form_struct_get_ele_origin(
+    const void* struct_obj,
+    void** ptr_out);
+
+void bunch_track_struct_get_ds_save(const void* struct_obj, double* value_out);
+
+void bunch_track_struct_get_n_pt(const void* struct_obj, int* value_out);
+
+void summation_rdt_struct_get_h11001(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h00111(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h20001(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h00201(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h10002(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h21000(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h30000(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h10110(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h10020(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h10200(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h31000(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h40000(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h20110(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h11200(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h20020(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h20200(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h00310(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h00400(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h22000(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h00220(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void summation_rdt_struct_get_h11110(
+    const void* struct_obj,
+    double _Complex* value_out);
+
+void lat_ele_order1_struct_get_ix_branch(
+    const void* struct_obj,
+    int* value_out);
+
+void lat_ele_order1_struct_get_ix_order(const void* struct_obj, int* value_out);
+
+void tao_spin_ele_struct_get_dn_dpz(const void* struct_obj, void** ptr_out);
+
+void tao_spin_ele_struct_get_orb_eigen_val_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_spin_ele_struct_get_valid(const void* struct_obj, bool* value_out);
+
+void tao_plot_cache_struct_get_ele_to_s(const void* struct_obj, void** ptr_out);
+
+void tao_plot_cache_struct_get_orbit(const void* struct_obj, void** ptr_out);
+
+void tao_plot_cache_struct_get_err(const void* struct_obj, bool* value_out);
+
+void tao_spin_polarization_struct_get_tune(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_pol_limit_st(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_pol_limit_dk(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_pol_limit_dk_partial_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_spin_polarization_struct_get_pol_limit_dk_partial2_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_spin_polarization_struct_get_pol_rate_bks(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_depol_rate(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_depol_rate_partial_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_spin_polarization_struct_get_depol_rate_partial2_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_spin_polarization_struct_get_integral_bn(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_integral_bdn(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_integral_1ns(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_integral_dn2(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_spin_polarization_struct_get_valid(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_spin_polarization_struct_get_q_1turn(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_lattice_branch_struct_get_spin(const void* struct_obj, void** ptr_out);
+
+void tao_lattice_branch_struct_get_srdt(const void* struct_obj, void** ptr_out);
+
+void tao_lattice_branch_struct_get_orb0(const void* struct_obj, void** ptr_out);
+
+void tao_lattice_branch_struct_get_modes_ri(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_lattice_branch_struct_get_modes_6d(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_lattice_branch_struct_get_ptc_normal_form(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_lattice_branch_struct_get_bmad_normal_form(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_lattice_branch_struct_get_cache_x_min(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_lattice_branch_struct_get_cache_x_max(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_lattice_branch_struct_get_comb_ds_save(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_lattice_branch_struct_get_track_state(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_lattice_branch_struct_get_cache_n_pts(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_lattice_branch_struct_get_ix_rad_int_cache(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_lattice_branch_struct_get_has_open_match_element(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_plot_cache_valid(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_spin_map_valid(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_twiss_valid(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_mode_flip_here(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_chrom_calc_ok(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_rad_int_calc_ok(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_emit_6d_calc_ok(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_lattice_branch_struct_get_sigma_track_ok(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_model_element_struct_get_beam(const void* struct_obj, void** ptr_out);
+
+void tao_model_element_struct_get_save_beam_internally(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_model_element_struct_get_save_beam_to_file(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_beam_branch_struct_get_beam_at_start(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_beam_branch_struct_get_beam_init(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_beam_branch_struct_get_beam_init_used(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_beam_branch_struct_get_init_starting_distribution(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_beam_branch_struct_get_track_start_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_beam_branch_struct_get_track_end_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_beam_branch_struct_get_ix_branch(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_beam_branch_struct_get_ix_track_start(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_beam_branch_struct_get_ix_track_end(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_d1_data_struct_get_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_lattice_struct_get_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_lattice_struct_get_lat(const void* struct_obj, void** ptr_out);
+
+void tao_lattice_struct_get_high_E_lat(const void* struct_obj, void** ptr_out);
+
+void tao_lattice_struct_get_low_E_lat(const void* struct_obj, void** ptr_out);
+
+void tao_lattice_struct_get_rad_int_by_ele_ri(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_lattice_struct_get_rad_int_by_ele_6d(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_beam_uni_struct_get_saved_at_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_beam_uni_struct_get_dump_file_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_beam_uni_struct_get_dump_at_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_beam_uni_struct_get_track_beam_in_universe(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_beam_uni_struct_get_always_reinit(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_dynamic_aperture_struct_get_param(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_dynamic_aperture_struct_get_pz_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated);
+
+void tao_dynamic_aperture_struct_get_ellipse_scale(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_dynamic_aperture_struct_get_a_emit(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_dynamic_aperture_struct_get_b_emit(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_model_branch_struct_get_beam(const void* struct_obj, void** ptr_out);
+
+void tao_d2_data_struct_get_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_d2_data_struct_get_data_file_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_d2_data_struct_get_ref_file_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_d2_data_struct_get_data_date_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_d2_data_struct_get_ref_date_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_d2_data_struct_get_ix_universe(const void* struct_obj, int* value_out);
+
+void tao_d2_data_struct_get_ix_d2_data(const void* struct_obj, int* value_out);
+
+void tao_d2_data_struct_get_ix_ref(const void* struct_obj, int* value_out);
+
+void tao_d2_data_struct_get_data_read_in(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_d2_data_struct_get_ref_read_in(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_spin_map_struct_get_valid(const void* struct_obj, bool* value_out);
+
+void tao_spin_map_struct_get_map1(const void* struct_obj, void** ptr_out);
+
+void tao_spin_map_struct_get_axis_input(const void* struct_obj, void** ptr_out);
+
+void tao_spin_map_struct_get_axis0(const void* struct_obj, void** ptr_out);
+
+void tao_spin_map_struct_get_axis1(const void* struct_obj, void** ptr_out);
+
+void tao_spin_map_struct_get_ix_ele(const void* struct_obj, int* value_out);
+
+void tao_spin_map_struct_get_ix_ref(const void* struct_obj, int* value_out);
+
+void tao_spin_map_struct_get_ix_uni(const void* struct_obj, int* value_out);
+
+void tao_spin_map_struct_get_ix_branch(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ele_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_ele_start_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_ele_ref_name_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_merit_type_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_id_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_data_source_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_why_invalid_info(
+    const void* struct_obj,
+    char** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound);
+
+void tao_data_struct_get_ix_uni(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_bunch(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_branch(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_ele(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_ele_start(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_ele_ref(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_ele_merit(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_d1(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_data(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_ix_dModel(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_eval_point(const void* struct_obj, int* value_out);
+
+void tao_data_struct_get_meas_value(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_ref_value(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_model_value(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_design_value(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_data_struct_get_old_value(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_base_value(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_error_rms(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_delta_merit(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_weight(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_invalid_value(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_data_struct_get_merit(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_s(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_s_offset(const void* struct_obj, double* value_out);
+
+void tao_data_struct_get_err_message_printed(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_data_struct_get_exists(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_model(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_base(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_design(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_meas(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_ref(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_user(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_opt(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_good_plot(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_useit_plot(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_useit_opt(const void* struct_obj, bool* value_out);
+
+void tao_data_struct_get_spin_map(const void* struct_obj, void** ptr_out);
+
+void tao_data_struct_get_d1(const void* struct_obj, void** ptr_out);
+
+void tao_ping_scale_struct_get_a_mode_meas(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_ping_scale_struct_get_a_mode_ref(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_ping_scale_struct_get_b_mode_meas(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_ping_scale_struct_get_b_mode_ref(
+    const void* struct_obj,
+    double* value_out);
+
+void tao_universe_calc_struct_get_srdt_for_data(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_universe_calc_struct_get_rad_int_for_data(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_rad_int_for_plotting(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_chrom_for_data(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_chrom_for_plotting(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_lat_sigma_for_data(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_lat_sigma_for_plotting(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_dynamic_aperture(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_one_turn_map(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_lattice(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_twiss(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_track(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_calc_struct_get_spin_matrices(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_struct_get_model(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_design(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_base(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_beam(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_dynamic_aperture(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_universe_struct_get_ping_scale(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_scratch_lat(
+    const void* struct_obj,
+    void** ptr_out);
+
+void tao_universe_struct_get_calc(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_ele_order(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_spin_map(const void* struct_obj, void** ptr_out);
+
+void tao_universe_struct_get_dModel_dVar_info(
+    const void* struct_obj,
+    double** data_ptr,
+    int* dim1_size,
+    int* dim1_lower,
+    int* dim1_upper,
+    int* dim2_size,
+    int* dim2_lower,
+    int* dim2_upper,
+    int* stride1,
+    int* stride2,
+    bool* is_allocated);
+
+void tao_universe_struct_get_ix_uni(const void* struct_obj, int* value_out);
+
+void tao_universe_struct_get_n_d2_data_used(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_universe_struct_get_n_data_used(
+    const void* struct_obj,
+    int* value_out);
+
+void tao_universe_struct_get_is_on(const void* struct_obj, bool* value_out);
+
+void tao_universe_struct_get_design_same_as_previous(
+    const void* struct_obj,
+    bool* value_out);
+
+void tao_universe_struct_get_picked_uni(
+    const void* struct_obj,
+    bool* value_out);
+
 // Global functions (index-based, only for initial access)
 int tao_get_n_universes();
+void* tao_c_get_universe_ptr(int ix_uni);
 void* tao_c_get_lattice_ptr(int ix_uni, int ix_lat);
 void* tao_c_get_branch_ptr(int ix_uni, int ix_lat, int ix_branch);
 void* tao_c_get_element_ptr(int ix_uni, int ix_lat, int ix_branch, int ix_ele);
@@ -2733,373 +3587,6 @@ void* tao_branch_get_element_ptr(void* branch_ptr, int ix_ele);
 }
 
 namespace tao {
-
-// Template wrapper for 1D arrays
-template <typename T>
-class FortranArray1D {
- private:
-  T* data_;
-  int size_;
-  int lower_bound_;
-  int upper_bound_;
-  bool valid_;
-
- public:
-  // Constructor
-  FortranArray1D(T* data, int size, int lower, int upper, bool valid)
-      : data_(data),
-        size_(size),
-        lower_bound_(lower),
-        upper_bound_(upper),
-        valid_(valid) {}
-
-  // Default constructor for invalid arrays
-  FortranArray1D()
-      : data_(nullptr),
-        size_(0),
-        lower_bound_(0),
-        upper_bound_(-1),
-        valid_(false) {}
-
-  // Fortran-style indexing (using bounds)
-  T& operator()(int i) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < lower_bound_ || i > upper_bound_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
-          "]");
-    }
-    return data_[i - lower_bound_];
-  }
-
-  const T& operator()(int i) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < lower_bound_ || i > upper_bound_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
-          "]");
-    }
-    return data_[i - lower_bound_];
-  }
-
-  // C-style indexing (0-based)
-  T& operator[](int i) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= size_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
-          std::to_string(size_ - 1) + "]");
-    }
-    return data_[i];
-  }
-
-  const T& operator[](int i) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= size_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
-          std::to_string(size_ - 1) + "]");
-    }
-    return data_[i];
-  }
-
-  // Safe access methods
-  T& at(int i) {
-    return operator[](i);
-  }
-  const T& at(int i) const {
-    return operator[](i);
-  }
-
-  T& at_fortran(int i) {
-    return operator()(i);
-  }
-  const T& at_fortran(int i) const {
-    return operator()(i);
-  }
-
-  // Array properties
-  bool is_valid() const {
-    return valid_;
-  }
-  int size() const {
-    return size_;
-  }
-  std::pair<int, int> bounds() const {
-    return {lower_bound_, upper_bound_};
-  }
-  int lower_bound() const {
-    return lower_bound_;
-  }
-  int upper_bound() const {
-    return upper_bound_;
-  }
-
-  // Raw data access
-  T* data() {
-    return valid_ ? data_ : nullptr;
-  }
-  const T* data() const {
-    return valid_ ? data_ : nullptr;
-  }
-
-  // Iterator support for C++ range-based loops
-  T* begin() {
-    return valid_ ? data_ : nullptr;
-  }
-  T* end() {
-    return valid_ ? data_ + size_ : nullptr;
-  }
-  const T* begin() const {
-    return valid_ ? data_ : nullptr;
-  }
-  const T* end() const {
-    return valid_ ? data_ + size_ : nullptr;
-  }
-  const T* cbegin() const {
-    return begin();
-  }
-  const T* cend() const {
-    return end();
-  }
-
-  // Convert to std::vector (copies data)
-  std::vector<T> to_vector() const {
-    if (!valid_)
-      return std::vector<T>();
-    return std::vector<T>(data_, data_ + size_);
-  }
-
-  // Empty check
-  bool empty() const {
-    return !valid_ || size_ == 0;
-  }
-};
-
-// Template wrapper for 2D arrays
-template <typename T>
-class FortranArray2D {
- private:
-  T* data_;
-  int dim1_size_, dim1_lower_, dim1_upper_;
-  int dim2_size_, dim2_lower_, dim2_upper_;
-  int stride1_, stride2_;
-  bool valid_;
-
-  // Helper to compute linear index
-  int linear_index(int i, int j) const {
-    return (i - dim1_lower_) * stride1_ + (j - dim2_lower_) * stride2_;
-  }
-
- public:
-  // Constructor
-  FortranArray2D(
-      T* data,
-      int dim1_size,
-      int dim1_lower,
-      int dim1_upper,
-      int dim2_size,
-      int dim2_lower,
-      int dim2_upper,
-      int stride1,
-      int stride2,
-      bool valid)
-      : data_(data),
-        dim1_size_(dim1_size),
-        dim1_lower_(dim1_lower),
-        dim1_upper_(dim1_upper),
-        dim2_size_(dim2_size),
-        dim2_lower_(dim2_lower),
-        dim2_upper_(dim2_upper),
-        stride1_(stride1),
-        stride2_(stride2),
-        valid_(valid) {}
-
-  // Default constructor for invalid arrays
-  FortranArray2D()
-      : data_(nullptr),
-        dim1_size_(0),
-        dim1_lower_(0),
-        dim1_upper_(-1),
-        dim2_size_(0),
-        dim2_lower_(0),
-        dim2_upper_(-1),
-        stride1_(0),
-        stride2_(0),
-        valid_(false) {}
-
-  // Fortran-style indexing (using bounds)
-  T& operator()(int i, int j) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < dim1_lower_ || i > dim1_upper_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(dim1_lower_) + "," + std::to_string(dim1_upper_) +
-          "]");
-    }
-    if (j < dim2_lower_ || j > dim2_upper_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) + " not in [" +
-          std::to_string(dim2_lower_) + "," + std::to_string(dim2_upper_) +
-          "]");
-    }
-    return data_[linear_index(i, j)];
-  }
-
-  const T& operator()(int i, int j) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < dim1_lower_ || i > dim1_upper_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(dim1_lower_) + "," + std::to_string(dim1_upper_) +
-          "]");
-    }
-    if (j < dim2_lower_ || j > dim2_upper_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) + " not in [" +
-          std::to_string(dim2_lower_) + "," + std::to_string(dim2_upper_) +
-          "]");
-    }
-    return data_[linear_index(i, j)];
-  }
-
-  // C-style indexing (0-based) - treats as row-major
-  T& at(int i, int j) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= dim1_size_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) +
-          " not in [0," + std::to_string(dim1_size_ - 1) + "]");
-    }
-    if (j < 0 || j >= dim2_size_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) +
-          " not in [0," + std::to_string(dim2_size_ - 1) + "]");
-    }
-    return data_[i * stride1_ + j * stride2_];
-  }
-
-  const T& at(int i, int j) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= dim1_size_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) +
-          " not in [0," + std::to_string(dim1_size_ - 1) + "]");
-    }
-    if (j < 0 || j >= dim2_size_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) +
-          " not in [0," + std::to_string(dim2_size_ - 1) + "]");
-    }
-    return data_[i * stride1_ + j * stride2_];
-  }
-
-  // Safe Fortran-style access
-  T& at_fortran(int i, int j) {
-    return operator()(i, j);
-  }
-  const T& at_fortran(int i, int j) const {
-    return operator()(i, j);
-  }
-
-  // Array properties
-  bool is_valid() const {
-    return valid_;
-  }
-  std::pair<int, int> size() const {
-    return {dim1_size_, dim2_size_};
-  }
-  int size(int dim) const {
-    if (dim == 1)
-      return dim1_size_;
-    if (dim == 2)
-      return dim2_size_;
-    throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
-  }
-
-  std::pair<std::pair<int, int>, std::pair<int, int>> bounds() const {
-    return {{dim1_lower_, dim1_upper_}, {dim2_lower_, dim2_upper_}};
-  }
-  std::pair<int, int> bounds(int dim) const {
-    if (dim == 1)
-      return {dim1_lower_, dim1_upper_};
-    if (dim == 2)
-      return {dim2_lower_, dim2_upper_};
-    throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
-  }
-
-  int lower_bound(int dim) const {
-    if (dim == 1)
-      return dim1_lower_;
-    if (dim == 2)
-      return dim2_lower_;
-    throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
-  }
-
-  int upper_bound(int dim) const {
-    if (dim == 1)
-      return dim1_upper_;
-    if (dim == 2)
-      return dim2_upper_;
-    throw std::out_of_range("Invalid dimension: " + std::to_string(dim));
-  }
-
-  std::pair<int, int> strides() const {
-    return {stride1_, stride2_};
-  }
-
-  // Raw data access
-  T* data() {
-    return valid_ ? data_ : nullptr;
-  }
-  const T* data() const {
-    return valid_ ? data_ : nullptr;
-  }
-
-  // Convert to std::vector of std::vectors (copies data, row-major)
-  std::vector<std::vector<T>> to_vector() const {
-    if (!valid_)
-      return std::vector<std::vector<T>>();
-
-    std::vector<std::vector<T>> result(dim1_size_, std::vector<T>(dim2_size_));
-    for (int i = 0; i < dim1_size_; ++i) {
-      for (int j = 0; j < dim2_size_; ++j) {
-        result[i][j] = data_[i * stride1_ + j * stride2_];
-      }
-    }
-    return result;
-  }
-
-  // Convert to flat std::vector (copies data)
-  std::vector<T> to_flat_vector() const {
-    if (!valid_)
-      return std::vector<T>();
-
-    std::vector<T> result;
-    result.reserve(dim1_size_ * dim2_size_);
-    for (int i = 0; i < dim1_size_; ++i) {
-      for (int j = 0; j < dim2_size_; ++j) {
-        result.push_back(data_[i * stride1_ + j * stride2_]);
-      }
-    }
-    return result;
-  }
-
-  // Empty check
-  bool empty() const {
-    return !valid_ || dim1_size_ == 0 || dim2_size_ == 0;
-  }
-};
 
 // Lattice type enumeration
 enum class LatticeType : int { MODEL = 1, DESIGN = 2, BASE = 3 };
@@ -3716,6 +4203,100 @@ class BranchProxy {
     }
     return n;
   }
+
+  std::string name() const {
+    auto char_array = get_name_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_name_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    branch_struct_get_name_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  int ix_branch() const {
+    int value;
+    branch_struct_get_ix_branch(fortran_ptr_, &value);
+    return value;
+  }
+
+  int ix_from_branch() const {
+    int value;
+    branch_struct_get_ix_from_branch(fortran_ptr_, &value);
+    return value;
+  }
+
+  int ix_from_ele() const {
+    int value;
+    branch_struct_get_ix_from_ele(fortran_ptr_, &value);
+    return value;
+  }
+
+  int ix_to_ele() const {
+    int value;
+    branch_struct_get_ix_to_ele(fortran_ptr_, &value);
+    return value;
+  }
+
+  int ix_fixer() const {
+    int value;
+    branch_struct_get_ix_fixer(fortran_ptr_, &value);
+    return value;
+  }
+
+  int n_ele_track() const {
+    int value;
+    branch_struct_get_n_ele_track(fortran_ptr_, &value);
+    return value;
+  }
+
+  int n_ele_max() const {
+    int value;
+    branch_struct_get_n_ele_max(fortran_ptr_, &value);
+    return value;
+  }
+
+  const void* lat() const {
+    void* ptr;
+    branch_struct_get_lat(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* a() const {
+    void* ptr;
+    branch_struct_get_a(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* b() const {
+    void* ptr;
+    branch_struct_get_b(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* z() const {
+    void* ptr;
+    branch_struct_get_z(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* param() const {
+    void* ptr;
+    branch_struct_get_param(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* particle_start() const {
+    void* ptr;
+    branch_struct_get_particle_start(fortran_ptr_, &ptr);
+    return ptr;
+  }
 };
 
 class LatticeProxy {
@@ -3757,32 +4338,382 @@ class LatticeProxy {
     }
     return n;
   }
+
+  std::string use_name() const {
+    auto char_array = get_use_name_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_use_name_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    lat_struct_get_use_name_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  std::string lattice() const {
+    auto char_array = get_lattice_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_lattice_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    lat_struct_get_lattice_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  std::string machine() const {
+    auto char_array = get_machine_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_machine_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    lat_struct_get_machine_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  std::string input_file_name() const {
+    auto char_array = get_input_file_name_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_input_file_name_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    lat_struct_get_input_file_name_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  std::string title() const {
+    auto char_array = get_title_chars();
+    return std::string(char_array.data(), char_array.size());
+  }
+
+  FortranArray1D<char> get_title_chars() const {
+    char* data_ptr;
+    int size_out, lower_bound, upper_bound;
+
+    lat_struct_get_title_info(
+        fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound);
+
+    return FortranArray1D<char>(
+        data_ptr, size_out, lower_bound, upper_bound, true);
+  }
+
+  const void* a() const {
+    void* ptr;
+    lat_struct_get_a(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* b() const {
+    void* ptr;
+    lat_struct_get_b(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* z() const {
+    void* ptr;
+    lat_struct_get_z(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* param() const {
+    void* ptr;
+    lat_struct_get_param(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* lord_state() const {
+    void* ptr;
+    lat_struct_get_lord_state(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* ele_init() const {
+    void* ptr;
+    lat_struct_get_ele_init(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* particle_start() const {
+    void* ptr;
+    lat_struct_get_particle_start(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* beam_init() const {
+    void* ptr;
+    lat_struct_get_beam_init(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* pre_tracker() const {
+    void* ptr;
+    lat_struct_get_pre_tracker(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  FortranArray1D<double> custom() const {
+    double* data_ptr;
+    int size_out, lower_bound, upper_bound;
+    bool is_allocated;
+
+    lat_struct_get_custom_info(
+        fortran_ptr_,
+        &data_ptr,
+        &size_out,
+        &lower_bound,
+        &upper_bound,
+        &is_allocated);
+
+    return FortranArray1D<double>(
+        data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+  }
+
+  int version() const {
+    int value;
+    lat_struct_get_version(fortran_ptr_, &value);
+    return value;
+  }
+
+  int* n_ele_track() const {
+    int* ptr;
+    lat_struct_get_n_ele_track(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  int* n_ele_max() const {
+    int* ptr;
+    lat_struct_get_n_ele_max(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  int n_control_max() const {
+    int value;
+    lat_struct_get_n_control_max(fortran_ptr_, &value);
+    return value;
+  }
+
+  int n_ic_max() const {
+    int value;
+    lat_struct_get_n_ic_max(fortran_ptr_, &value);
+    return value;
+  }
+
+  int input_taylor_order() const {
+    int value;
+    lat_struct_get_input_taylor_order(fortran_ptr_, &value);
+    return value;
+  }
+
+  FortranArray1D<int> ic() const {
+    int* data_ptr;
+    int size_out, lower_bound, upper_bound;
+    bool is_allocated;
+
+    lat_struct_get_ic_info(
+        fortran_ptr_,
+        &data_ptr,
+        &size_out,
+        &lower_bound,
+        &upper_bound,
+        &is_allocated);
+
+    return FortranArray1D<int>(
+        data_ptr, size_out, lower_bound, upper_bound, is_allocated);
+  }
+
+  int photon_type() const {
+    int value;
+    lat_struct_get_photon_type(fortran_ptr_, &value);
+    return value;
+  }
+
+  int creation_hash() const {
+    int value;
+    lat_struct_get_creation_hash(fortran_ptr_, &value);
+    return value;
+  }
+
+  int ramper_slave_bookkeeping() const {
+    int value;
+    lat_struct_get_ramper_slave_bookkeeping(fortran_ptr_, &value);
+    return value;
+  }
 };
 
 class UniverseProxy {
  private:
-  int ix_uni_;
+  void* fortran_ptr_;
 
  public:
-  explicit UniverseProxy(int ix_uni) : ix_uni_(ix_uni) {
-    int n_universes = tao_get_n_universes();
-    if (ix_uni < 0 || ix_uni >= n_universes) {
-      throw InvalidIndexException("universe", ix_uni, n_universes);
+  explicit UniverseProxy(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("UniverseProxy constructor");
     }
   }
 
-  LatticeProxy get_lattice(LatticeType lattice_type) const {
-    void* lat_ptr =
-        tao_c_get_lattice_ptr(ix_uni_, static_cast<int>(lattice_type));
-    if (!lat_ptr) {
-      throw NullPointerException(
-          "get_lattice for universe " + std::to_string(ix_uni_));
-    }
-    return LatticeProxy(lat_ptr);
+  // LatticeProxy get_lattice(LatticeType lattice_type) const {
+  //   void* lat_ptr =
+  //       tao_c_get_lattice_ptr(ix_uni_, static_cast<int>(lattice_type));
+  //   if (!lat_ptr) {
+  //     throw NullPointerException(
+  //         "get_lattice for universe " + std::to_string(ix_uni_));
+  //   }
+  //   return LatticeProxy(lat_ptr);
+  // }
+
+  // int get_universe_index() const {
+  //   return ix_uni_;
+  // }
+
+  const void* model() const {
+    void* ptr;
+    tao_universe_struct_get_model(fortran_ptr_, &ptr);
+    return ptr;
   }
 
-  int get_universe_index() const {
-    return ix_uni_;
+  const void* design() const {
+    void* ptr;
+    tao_universe_struct_get_design(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* base() const {
+    void* ptr;
+    tao_universe_struct_get_base(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* beam() const {
+    void* ptr;
+    tao_universe_struct_get_beam(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* dynamic_aperture() const {
+    void* ptr;
+    tao_universe_struct_get_dynamic_aperture(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* ping_scale() const {
+    void* ptr;
+    tao_universe_struct_get_ping_scale(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* scratch_lat() const {
+    void* ptr;
+    tao_universe_struct_get_scratch_lat(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* calc() const {
+    void* ptr;
+    tao_universe_struct_get_calc(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* ele_order() const {
+    void* ptr;
+    tao_universe_struct_get_ele_order(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  const void* spin_map() const {
+    void* ptr;
+    tao_universe_struct_get_spin_map(fortran_ptr_, &ptr);
+    return ptr;
+  }
+
+  FortranArray2D<double> dModel_dVar() const {
+    double* data_ptr;
+    int dim1_size, dim1_lower, dim1_upper;
+    int dim2_size, dim2_lower, dim2_upper;
+    int stride1, stride2;
+    bool is_allocated;
+
+    tao_universe_struct_get_dModel_dVar_info(
+        fortran_ptr_,
+        &data_ptr,
+        &dim1_size,
+        &dim1_lower,
+        &dim1_upper,
+        &dim2_size,
+        &dim2_lower,
+        &dim2_upper,
+        &stride1,
+        &stride2,
+        &is_allocated);
+
+    return FortranArray2D<double>(
+        data_ptr,
+        dim1_size,
+        dim1_lower,
+        dim1_upper,
+        dim2_size,
+        dim2_lower,
+        dim2_upper,
+        stride1,
+        stride2,
+        is_allocated);
+  }
+
+  int ix_uni() const {
+    int value;
+    tao_universe_struct_get_ix_uni(fortran_ptr_, &value);
+    return value;
+  }
+
+  int n_d2_data_used() const {
+    int value;
+    tao_universe_struct_get_n_d2_data_used(fortran_ptr_, &value);
+    return value;
+  }
+
+  int n_data_used() const {
+    int value;
+    tao_universe_struct_get_n_data_used(fortran_ptr_, &value);
+    return value;
+  }
+
+  bool is_on() const {
+    bool value;
+    tao_universe_struct_get_is_on(fortran_ptr_, &value);
+    return value;
+  }
+
+  bool design_same_as_previous() const {
+    bool value;
+    tao_universe_struct_get_design_same_as_previous(fortran_ptr_, &value);
+    return value;
+  }
+
+  bool picked_uni() const {
+    bool value;
+    tao_universe_struct_get_picked_uni(fortran_ptr_, &value);
+    return value;
   }
 };
 
@@ -3886,7 +4817,11 @@ class TaoUniverseProxy {
   explicit TaoUniverseProxy(int ix_uni) : ix_uni_(ix_uni) {}
 
   UniverseProxy operator*() const {
-    return UniverseProxy(ix_uni_);
+    int n_universes = tao_get_n_universes();
+    if (ix_uni_ < 0 || ix_uni_ >= n_universes) {
+      throw InvalidIndexException("universe", ix_uni_, n_universes);
+    }
+    return UniverseProxy(tao_c_get_universe_ptr(ix_uni_));
   }
 
   std::unique_ptr<UniverseProxy> operator->() const {

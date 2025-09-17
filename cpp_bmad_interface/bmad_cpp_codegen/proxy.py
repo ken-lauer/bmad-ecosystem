@@ -984,22 +984,24 @@ def create_fortran_proxy_code(fout, structs: list[CodegenStructure]):
         """\
 module bmad_struct_proxy_mod
   use bmad_struct
+  use tao_struct
   use, intrinsic :: iso_c_binding
 contains
 """,
         file=fout,
     )
     for struct in structs:
-        print(f"! {struct.f_name}", file=fout)
+        print(f"  !! {struct.f_name}", file=fout)
         for arg in struct.arg:
             if not arg.is_component:
                 continue
             try:
                 acc = generate_accessor_code(struct.f_name, arg.f_name, arg.full_type)
             except ValueError as ex:
-                print(f"! skipped {struct.f_name}%{arg.f_name}: {ex}", file=fout)
+                print(f"  ! skipped {struct.f_name}%{arg.f_name}: {ex}", file=fout)
                 continue
 
+            print(f"  ! {struct.f_name}%{arg.f_name}: {arg.full_type}", file=fout)
             print(acc["fortran"], file=fout)
     print("end module", file=fout)
 

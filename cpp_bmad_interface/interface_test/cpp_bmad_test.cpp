@@ -10438,3 +10438,3103 @@ extern "C" void test_c_aperture_scan(
   set_CPP_aperture_scan_test_pattern(C2, 4);
   aperture_scan_to_f(C2, F);
 }
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_spin_dn_dpz(CPP_tao_spin_dn_dpz&, bool&);
+
+void set_CPP_tao_spin_dn_dpz_test_pattern(CPP_tao_spin_dn_dpz& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.vec.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.vec[i] = rhs;
+  }
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.partial.size(); i++)
+    for (size_t j{0}; j < C.partial[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 2 + offset;
+      C.partial[i][j] = rhs;
+    }
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.partial2.size(); i++)
+    for (size_t j{0}; j < C.partial2[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 3 + offset;
+      C.partial2[i][j] = rhs;
+    }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_spin_dn_dpz(
+    Opaque_tao_spin_dn_dpz_class* F,
+    bool& c_ok) {
+  CPP_tao_spin_dn_dpz C, C2;
+
+  c_ok = true;
+
+  tao_spin_dn_dpz_to_c(F, C);
+  set_CPP_tao_spin_dn_dpz_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_spin_dn_dpz: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_spin_dn_dpz: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_spin_dn_dpz.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_dn_dpz.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_dn_dpz.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_spin_dn_dpz.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_dn_dpz_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_spin_dn_dpz(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_spin_dn_dpz_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_spin_dn_dpz: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_spin_dn_dpz: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_spin_dn_dpz.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_dn_dpz.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_dn_dpz.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_spin_dn_dpz.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_dn_dpz_test_pattern(C2, 4);
+  tao_spin_dn_dpz_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_resonance_h(CPP_resonance_h&, bool&);
+
+void set_CPP_resonance_h_test_pattern(CPP_resonance_h& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_character]
+  C.id.resize(6);
+  for (size_t i{0}; i < C.id.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.id[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 2 + offset;
+  C.c_val = Complex(rhs, 100 + rhs);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_resonance_h(Opaque_resonance_h_class* F, bool& c_ok) {
+  CPP_resonance_h C, C2;
+
+  c_ok = true;
+
+  resonance_h_to_c(F, C);
+  set_CPP_resonance_h_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] resonance_h: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] resonance_h: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("resonance_h.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("resonance_h.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to resonance_h.pat1.c.actual.json" << endl;
+    cout << "     C2 written to resonance_h.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_resonance_h_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_resonance_h(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_resonance_h_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] resonance_h: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] resonance_h: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("resonance_h.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("resonance_h.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to resonance_h.pat3.c.expected.json" << endl;
+    cout << "     C2 written to resonance_h.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_resonance_h_test_pattern(C2, 4);
+  resonance_h_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_spin_orbit_map1(CPP_spin_orbit_map1&, bool&);
+
+void set_CPP_spin_orbit_map1_test_pattern(CPP_spin_orbit_map1& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.orb_mat.size(); i++)
+    for (size_t j{0}; j < C.orb_mat[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 1 + offset;
+      C.orb_mat[i][j] = rhs;
+    }
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.vec0.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.vec0[i] = rhs;
+  }
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.spin_q.size(); i++)
+    for (size_t j{0}; j < C.spin_q[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 3 + offset;
+      C.spin_q[i][j] = rhs;
+    }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_spin_orbit_map1(
+    Opaque_spin_orbit_map1_class* F,
+    bool& c_ok) {
+  CPP_spin_orbit_map1 C, C2;
+
+  c_ok = true;
+
+  spin_orbit_map1_to_c(F, C);
+  set_CPP_spin_orbit_map1_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] spin_orbit_map1: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] spin_orbit_map1: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("spin_orbit_map1.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("spin_orbit_map1.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to spin_orbit_map1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to spin_orbit_map1.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_spin_orbit_map1_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_spin_orbit_map1(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_spin_orbit_map1_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] spin_orbit_map1: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] spin_orbit_map1: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("spin_orbit_map1.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("spin_orbit_map1.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to spin_orbit_map1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to spin_orbit_map1.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_spin_orbit_map1_test_pattern(C2, 4);
+  spin_orbit_map1_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_spin_axis(CPP_spin_axis&, bool&);
+
+void set_CPP_spin_axis_test_pattern(CPP_spin_axis& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.l.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.l[i] = rhs;
+  }
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.n0.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.n0[i] = rhs;
+  }
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.m.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.m[i] = rhs;
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_spin_axis(Opaque_spin_axis_class* F, bool& c_ok) {
+  CPP_spin_axis C, C2;
+
+  c_ok = true;
+
+  spin_axis_to_c(F, C);
+  set_CPP_spin_axis_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] spin_axis: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] spin_axis: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("spin_axis.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("spin_axis.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to spin_axis.pat1.c.actual.json" << endl;
+    cout << "     C2 written to spin_axis.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_spin_axis_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_spin_axis(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_spin_axis_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] spin_axis: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] spin_axis: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("spin_axis.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("spin_axis.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to spin_axis.pat3.c.expected.json" << endl;
+    cout << "     C2 written to spin_axis.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_spin_axis_test_pattern(C2, 4);
+  spin_axis_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_ptc_normal_form(CPP_ptc_normal_form&, bool&);
+
+void set_CPP_ptc_normal_form_test_pattern(CPP_ptc_normal_form& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_PTR_type]
+  if (ix_patt < 3) {
+    C.ele_origin.reset();
+  } else {
+    C.ele_origin.emplace();
+    set_CPP_ele_test_pattern(C.ele_origin.value(), ix_patt);
+  }
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.orb0.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.orb0[i] = rhs;
+  }
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 4 + offset;
+  C.valid_map = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_ptc_normal_form(
+    Opaque_ptc_normal_form_class* F,
+    bool& c_ok) {
+  CPP_ptc_normal_form C, C2;
+
+  c_ok = true;
+
+  ptc_normal_form_to_c(F, C);
+  set_CPP_ptc_normal_form_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] ptc_normal_form: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] ptc_normal_form: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("ptc_normal_form.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("ptc_normal_form.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to ptc_normal_form.pat1.c.actual.json" << endl;
+    cout << "     C2 written to ptc_normal_form.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_ptc_normal_form_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_ptc_normal_form(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_ptc_normal_form_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] ptc_normal_form: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] ptc_normal_form: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("ptc_normal_form.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("ptc_normal_form.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to ptc_normal_form.pat3.c.expected.json" << endl;
+    cout << "     C2 written to ptc_normal_form.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_ptc_normal_form_test_pattern(C2, 4);
+  ptc_normal_form_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_bmad_normal_form(CPP_bmad_normal_form&, bool&);
+
+void set_CPP_bmad_normal_form_test_pattern(
+    CPP_bmad_normal_form& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_PTR_type]
+  if (ix_patt < 3) {
+    C.ele_origin.reset();
+  } else {
+    C.ele_origin.emplace();
+    set_CPP_ele_test_pattern(C.ele_origin.value(), ix_patt);
+  }
+  // c_side.test_pat[1D_NOT_type]
+  for (size_t i{0}; i < C.M.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    set_CPP_taylor_test_pattern(C.M[i], ix_patt + i + 1);
+  }
+  // c_side.test_pat[1D_NOT_type]
+  for (size_t i{0}; i < C.A.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    set_CPP_taylor_test_pattern(C.A[i], ix_patt + i + 1);
+  }
+  // c_side.test_pat[1D_NOT_type]
+  for (size_t i{0}; i < C.A_inv.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    set_CPP_taylor_test_pattern(C.A_inv[i], ix_patt + i + 1);
+  }
+  // c_side.test_pat[1D_NOT_type]
+  for (size_t i{0}; i < C.dhdj.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    set_CPP_taylor_test_pattern(C.dhdj[i], ix_patt + i + 1);
+  }
+  // c_side.test_pat[1D_NOT_type]
+  for (size_t i{0}; i < C.F.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    set_CPP_complex_taylor_test_pattern(C.F[i], ix_patt + i + 1);
+  }
+  // c_side.test_pat[1D_NOT_type]
+  for (size_t i{0}; i < C.L.size(); i++) {
+    int rhs = 101 + i + 8 + offset;
+    set_CPP_complex_taylor_test_pattern(C.L[i], ix_patt + i + 1);
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.h.resize(0);
+  } else {
+    C.h.resize(3);
+    for (size_t i{0}; i < C.h.size(); i++) {
+      set_CPP_resonance_h_test_pattern(C.h[i], ix_patt + i + 1);
+    }
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_bmad_normal_form(
+    Opaque_bmad_normal_form_class* F,
+    bool& c_ok) {
+  CPP_bmad_normal_form C, C2;
+
+  c_ok = true;
+
+  bmad_normal_form_to_c(F, C);
+  set_CPP_bmad_normal_form_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] bmad_normal_form: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] bmad_normal_form: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("bmad_normal_form.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("bmad_normal_form.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to bmad_normal_form.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bmad_normal_form.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_bmad_normal_form_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_bmad_normal_form(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_bmad_normal_form_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] bmad_normal_form: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] bmad_normal_form: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("bmad_normal_form.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("bmad_normal_form.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to bmad_normal_form.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bmad_normal_form.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_bmad_normal_form_test_pattern(C2, 4);
+  bmad_normal_form_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_bunch_track(CPP_bunch_track&, bool&);
+
+void set_CPP_bunch_track_test_pattern(CPP_bunch_track& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.pt.resize(0);
+  } else {
+    C.pt.resize(3);
+    for (size_t i{0}; i < C.pt.size(); i++) {
+      set_CPP_bunch_params_test_pattern(C.pt[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 3 + offset;
+  C.ds_save = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 4 + offset;
+  C.n_pt = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_bunch_track(Opaque_bunch_track_class* F, bool& c_ok) {
+  CPP_bunch_track C, C2;
+
+  c_ok = true;
+
+  bunch_track_to_c(F, C);
+  set_CPP_bunch_track_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] bunch_track: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] bunch_track: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("bunch_track.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("bunch_track.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to bunch_track.pat1.c.actual.json" << endl;
+    cout << "     C2 written to bunch_track.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_bunch_track_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_bunch_track(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_bunch_track_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] bunch_track: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] bunch_track: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("bunch_track.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("bunch_track.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to bunch_track.pat3.c.expected.json" << endl;
+    cout << "     C2 written to bunch_track.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_bunch_track_test_pattern(C2, 4);
+  bunch_track_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_summation_rdt(CPP_summation_rdt&, bool&);
+
+void set_CPP_summation_rdt_test_pattern(CPP_summation_rdt& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 1 + offset;
+  C.h11001 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 2 + offset;
+  C.h00111 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 3 + offset;
+  C.h20001 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 4 + offset;
+  C.h00201 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 5 + offset;
+  C.h10002 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 6 + offset;
+  C.h21000 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 7 + offset;
+  C.h30000 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 8 + offset;
+  C.h10110 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 9 + offset;
+  C.h10020 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 10 + offset;
+  C.h10200 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 11 + offset;
+  C.h31000 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 12 + offset;
+  C.h40000 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 13 + offset;
+  C.h20110 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 14 + offset;
+  C.h11200 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 15 + offset;
+  C.h20020 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 16 + offset;
+  C.h20200 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 17 + offset;
+  C.h00310 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 18 + offset;
+  C.h00400 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 19 + offset;
+  C.h22000 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 20 + offset;
+  C.h00220 = Complex(rhs, 100 + rhs);
+  // c_side.test_pat[0D_NOT_complex]
+  rhs = 21 + offset;
+  C.h11110 = Complex(rhs, 100 + rhs);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_summation_rdt(
+    Opaque_summation_rdt_class* F,
+    bool& c_ok) {
+  CPP_summation_rdt C, C2;
+
+  c_ok = true;
+
+  summation_rdt_to_c(F, C);
+  set_CPP_summation_rdt_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] summation_rdt: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] summation_rdt: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("summation_rdt.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("summation_rdt.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to summation_rdt.pat1.c.actual.json" << endl;
+    cout << "     C2 written to summation_rdt.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_summation_rdt_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_summation_rdt(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_summation_rdt_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] summation_rdt: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] summation_rdt: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("summation_rdt.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("summation_rdt.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to summation_rdt.pat3.c.expected.json" << endl;
+    cout << "     C2 written to summation_rdt.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_summation_rdt_test_pattern(C2, 4);
+  summation_rdt_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_lat_ele_order1(CPP_lat_ele_order1&, bool&);
+
+void set_CPP_lat_ele_order1_test_pattern(CPP_lat_ele_order1& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 1 + offset;
+  C.ix_branch = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 2 + offset;
+  C.ix_order = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_lat_ele_order1(
+    Opaque_lat_ele_order1_class* F,
+    bool& c_ok) {
+  CPP_lat_ele_order1 C, C2;
+
+  c_ok = true;
+
+  lat_ele_order1_to_c(F, C);
+  set_CPP_lat_ele_order1_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] lat_ele_order1: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] lat_ele_order1: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("lat_ele_order1.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("lat_ele_order1.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to lat_ele_order1.pat1.c.actual.json" << endl;
+    cout << "     C2 written to lat_ele_order1.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_lat_ele_order1_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_lat_ele_order1(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_lat_ele_order1_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] lat_ele_order1: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] lat_ele_order1: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("lat_ele_order1.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("lat_ele_order1.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to lat_ele_order1.pat3.c.expected.json" << endl;
+    cout << "     C2 written to lat_ele_order1.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_lat_ele_order1_test_pattern(C2, 4);
+  lat_ele_order1_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_lat_ele_order_array(CPP_lat_ele_order_array&, bool&);
+
+void set_CPP_lat_ele_order_array_test_pattern(
+    CPP_lat_ele_order_array& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.ele.resize(0);
+  } else {
+    C.ele.resize(3);
+    for (size_t i{0}; i < C.ele.size(); i++) {
+      set_CPP_lat_ele_order1_test_pattern(C.ele[i], ix_patt + i + 1);
+    }
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_lat_ele_order_array(
+    Opaque_lat_ele_order_array_class* F,
+    bool& c_ok) {
+  CPP_lat_ele_order_array C, C2;
+
+  c_ok = true;
+
+  lat_ele_order_array_to_c(F, C);
+  set_CPP_lat_ele_order_array_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] lat_ele_order_array: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] lat_ele_order_array: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("lat_ele_order_array.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("lat_ele_order_array.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to lat_ele_order_array.pat1.c.actual.json" << endl;
+    cout << "     C2 written to lat_ele_order_array.pat1.c2.expected.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_lat_ele_order_array_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_lat_ele_order_array(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_lat_ele_order_array_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] lat_ele_order_array: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] lat_ele_order_array: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("lat_ele_order_array.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("lat_ele_order_array.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to lat_ele_order_array.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to lat_ele_order_array.pat3.c2.actual.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_lat_ele_order_array_test_pattern(C2, 4);
+  lat_ele_order_array_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_lat_sigma(CPP_tao_lat_sigma&, bool&);
+
+void set_CPP_tao_lat_sigma_test_pattern(CPP_tao_lat_sigma& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.mat.size(); i++)
+    for (size_t j{0}; j < C.mat[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 1 + offset;
+      C.mat[i][j] = rhs;
+    }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_lat_sigma(
+    Opaque_tao_lat_sigma_class* F,
+    bool& c_ok) {
+  CPP_tao_lat_sigma C, C2;
+
+  c_ok = true;
+
+  tao_lat_sigma_to_c(F, C);
+  set_CPP_tao_lat_sigma_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_lat_sigma: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_lat_sigma: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_lat_sigma.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_lat_sigma.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_lat_sigma.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_lat_sigma.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_lat_sigma_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_lat_sigma(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_lat_sigma_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_lat_sigma: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_lat_sigma: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_lat_sigma.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_lat_sigma.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_lat_sigma.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_lat_sigma.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_lat_sigma_test_pattern(C2, 4);
+  tao_lat_sigma_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_spin_ele(CPP_tao_spin_ele&, bool&);
+
+void set_CPP_tao_spin_ele_test_pattern(CPP_tao_spin_ele& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_spin_dn_dpz_test_pattern(C.dn_dpz, ix_patt);
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.orb_eigen_val.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.orb_eigen_val[i] = rhs;
+  }
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.orb_eigen_vec.size(); i++)
+    for (size_t j{0}; j < C.orb_eigen_vec[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 3 + offset;
+      C.orb_eigen_vec[i][j] = rhs;
+    }
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.spin_eigen_vec.size(); i++)
+    for (size_t j{0}; j < C.spin_eigen_vec[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 4 + offset;
+      C.spin_eigen_vec[i][j] = rhs;
+    }
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 5 + offset;
+  C.valid = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_spin_ele(Opaque_tao_spin_ele_class* F, bool& c_ok) {
+  CPP_tao_spin_ele C, C2;
+
+  c_ok = true;
+
+  tao_spin_ele_to_c(F, C);
+  set_CPP_tao_spin_ele_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_spin_ele: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_spin_ele: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_spin_ele.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_ele.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_ele.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_spin_ele.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_ele_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_spin_ele(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_spin_ele_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_spin_ele: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_spin_ele: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_spin_ele.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_ele.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_ele.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_spin_ele.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_ele_test_pattern(C2, 4);
+  tao_spin_ele_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_plot_cache(CPP_tao_plot_cache&, bool&);
+
+void set_CPP_tao_plot_cache_test_pattern(CPP_tao_plot_cache& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_ele_test_pattern(C.ele_to_s, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_coord_test_pattern(C.orbit, ix_patt);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 3 + offset;
+  C.err = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_plot_cache(
+    Opaque_tao_plot_cache_class* F,
+    bool& c_ok) {
+  CPP_tao_plot_cache C, C2;
+
+  c_ok = true;
+
+  tao_plot_cache_to_c(F, C);
+  set_CPP_tao_plot_cache_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_plot_cache: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_plot_cache: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_plot_cache.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_plot_cache.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_plot_cache.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_plot_cache.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_plot_cache_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_plot_cache(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_plot_cache_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_plot_cache: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_plot_cache: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_plot_cache.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_plot_cache.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_plot_cache.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_plot_cache.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_plot_cache_test_pattern(C2, 4);
+  tao_plot_cache_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_spin_polarization(
+    CPP_tao_spin_polarization&,
+    bool&);
+
+void set_CPP_tao_spin_polarization_test_pattern(
+    CPP_tao_spin_polarization& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 1 + offset;
+  C.tune = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 2 + offset;
+  C.pol_limit_st = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 3 + offset;
+  C.pol_limit_dk = rhs;
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.pol_limit_dk_partial.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    C.pol_limit_dk_partial[i] = rhs;
+  }
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.pol_limit_dk_partial2.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    C.pol_limit_dk_partial2[i] = rhs;
+  }
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 6 + offset;
+  C.pol_rate_bks = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 7 + offset;
+  C.depol_rate = rhs;
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.depol_rate_partial.size(); i++) {
+    int rhs = 101 + i + 8 + offset;
+    C.depol_rate_partial[i] = rhs;
+  }
+  // c_side.test_pat[1D_NOT_real]
+  for (size_t i{0}; i < C.depol_rate_partial2.size(); i++) {
+    int rhs = 101 + i + 9 + offset;
+    C.depol_rate_partial2[i] = rhs;
+  }
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 10 + offset;
+  C.integral_bn = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 11 + offset;
+  C.integral_bdn = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 12 + offset;
+  C.integral_1ns = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 13 + offset;
+  C.integral_dn2 = rhs;
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 14 + offset;
+  C.valid = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_spin_orbit_map1_test_pattern(C.q_1turn, ix_patt);
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.q_ele.resize(0);
+  } else {
+    C.q_ele.resize(3);
+    for (size_t i{0}; i < C.q_ele.size(); i++) {
+      set_CPP_spin_orbit_map1_test_pattern(C.q_ele[i], ix_patt + i + 1);
+    }
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_spin_polarization(
+    Opaque_tao_spin_polarization_class* F,
+    bool& c_ok) {
+  CPP_tao_spin_polarization C, C2;
+
+  c_ok = true;
+
+  tao_spin_polarization_to_c(F, C);
+  set_CPP_tao_spin_polarization_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_spin_polarization: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_spin_polarization: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_spin_polarization.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_polarization.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_polarization.pat1.c.actual.json"
+         << endl;
+    cout << "     C2 written to tao_spin_polarization.pat1.c2.expected.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_polarization_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_spin_polarization(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_spin_polarization_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_spin_polarization: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_spin_polarization: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_spin_polarization.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_polarization.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_polarization.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to tao_spin_polarization.pat3.c2.actual.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_polarization_test_pattern(C2, 4);
+  tao_spin_polarization_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_lattice_branch(CPP_tao_lattice_branch&, bool&);
+
+void set_CPP_tao_lattice_branch_test_pattern(
+    CPP_tao_lattice_branch& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.lat_sigma.resize(0);
+  } else {
+    C.lat_sigma.resize(3);
+    for (size_t i{0}; i < C.lat_sigma.size(); i++) {
+      set_CPP_tao_lat_sigma_test_pattern(C.lat_sigma[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.spin_ele.resize(0);
+  } else {
+    C.spin_ele.resize(3);
+    for (size_t i{0}; i < C.spin_ele.size(); i++) {
+      set_CPP_tao_spin_ele_test_pattern(C.spin_ele[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.bunch_params.resize(0);
+  } else {
+    C.bunch_params.resize(3);
+    for (size_t i{0}; i < C.bunch_params.size(); i++) {
+      set_CPP_bunch_params_test_pattern(C.bunch_params[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.bunch_params_comb.resize(0);
+  } else {
+    C.bunch_params_comb.resize(3);
+    for (size_t i{0}; i < C.bunch_params_comb.size(); i++) {
+      set_CPP_bunch_track_test_pattern(C.bunch_params_comb[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.orbit.resize(0);
+  } else {
+    C.orbit.resize(3);
+    for (size_t i{0}; i < C.orbit.size(); i++) {
+      set_CPP_coord_test_pattern(C.orbit[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.plot_cache.resize(0);
+  } else {
+    C.plot_cache.resize(3);
+    for (size_t i{0}; i < C.plot_cache.size(); i++) {
+      set_CPP_tao_plot_cache_test_pattern(C.plot_cache[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_spin_polarization_test_pattern(C.spin, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_summation_rdt_test_pattern(C.srdt, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_coord_test_pattern(C.orb0, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_normal_modes_test_pattern(C.modes_ri, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_normal_modes_test_pattern(C.modes_6d, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_ptc_normal_form_test_pattern(C.ptc_normal_form, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_bmad_normal_form_test_pattern(C.bmad_normal_form, ix_patt);
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.high_E_orb.resize(0);
+  } else {
+    C.high_E_orb.resize(3);
+    for (size_t i{0}; i < C.high_E_orb.size(); i++) {
+      set_CPP_coord_test_pattern(C.high_E_orb[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.low_E_orb.resize(0);
+  } else {
+    C.low_E_orb.resize(3);
+    for (size_t i{0}; i < C.low_E_orb.size(); i++) {
+      set_CPP_coord_test_pattern(C.low_E_orb[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 24 + offset;
+  C.cache_x_min = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 25 + offset;
+  C.cache_x_max = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 26 + offset;
+  C.comb_ds_save = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 27 + offset;
+  C.track_state = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 28 + offset;
+  C.cache_n_pts = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 29 + offset;
+  C.ix_rad_int_cache = rhs;
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 30 + offset;
+  C.has_open_match_element = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 31 + offset;
+  C.plot_cache_valid = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 32 + offset;
+  C.spin_map_valid = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 33 + offset;
+  C.twiss_valid = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 34 + offset;
+  C.mode_flip_here = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 35 + offset;
+  C.chrom_calc_ok = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 36 + offset;
+  C.rad_int_calc_ok = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 37 + offset;
+  C.emit_6d_calc_ok = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 38 + offset;
+  C.sigma_track_ok = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_lattice_branch(
+    Opaque_tao_lattice_branch_class* F,
+    bool& c_ok) {
+  CPP_tao_lattice_branch C, C2;
+
+  c_ok = true;
+
+  tao_lattice_branch_to_c(F, C);
+  set_CPP_tao_lattice_branch_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_lattice_branch: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_lattice_branch: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_lattice_branch.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_lattice_branch.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_lattice_branch.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_lattice_branch.pat1.c2.expected.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_lattice_branch_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_lattice_branch(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_lattice_branch_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_lattice_branch: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_lattice_branch: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_lattice_branch.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_lattice_branch.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_lattice_branch.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_lattice_branch.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_lattice_branch_test_pattern(C2, 4);
+  tao_lattice_branch_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_model_element(CPP_tao_model_element&, bool&);
+
+void set_CPP_tao_model_element_test_pattern(
+    CPP_tao_model_element& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_beam_test_pattern(C.beam, ix_patt);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 2 + offset;
+  C.save_beam_internally = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 3 + offset;
+  C.save_beam_to_file = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_model_element(
+    Opaque_tao_model_element_class* F,
+    bool& c_ok) {
+  CPP_tao_model_element C, C2;
+
+  c_ok = true;
+
+  tao_model_element_to_c(F, C);
+  set_CPP_tao_model_element_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_model_element: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_model_element: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_model_element.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_model_element.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_model_element.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_model_element.pat1.c2.expected.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_model_element_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_model_element(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_model_element_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_model_element: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_model_element: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_model_element.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_model_element.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_model_element.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_model_element.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_model_element_test_pattern(C2, 4);
+  tao_model_element_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_beam_branch(CPP_tao_beam_branch&, bool&);
+
+void set_CPP_tao_beam_branch_test_pattern(CPP_tao_beam_branch& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_beam_test_pattern(C.beam_at_start, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_beam_init_test_pattern(C.beam_init, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_beam_init_test_pattern(C.beam_init_used, ix_patt);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 4 + offset;
+  C.init_starting_distribution = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_character]
+  C.track_start.resize(40);
+  for (size_t i{0}; i < C.track_start.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    C.track_start[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.track_end.resize(40);
+  for (size_t i{0}; i < C.track_end.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    C.track_end[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 7 + offset;
+  C.ix_branch = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 8 + offset;
+  C.ix_track_start = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 9 + offset;
+  C.ix_track_end = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_beam_branch(
+    Opaque_tao_beam_branch_class* F,
+    bool& c_ok) {
+  CPP_tao_beam_branch C, C2;
+
+  c_ok = true;
+
+  tao_beam_branch_to_c(F, C);
+  set_CPP_tao_beam_branch_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_beam_branch: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_beam_branch: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_beam_branch.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_beam_branch.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_beam_branch.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_beam_branch.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_beam_branch_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_beam_branch(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_beam_branch_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_beam_branch: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_beam_branch: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_beam_branch.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_beam_branch.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_beam_branch.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_beam_branch.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_beam_branch_test_pattern(C2, 4);
+  tao_beam_branch_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_d1_data(CPP_tao_d1_data&, bool&);
+
+void set_CPP_tao_d1_data_test_pattern(CPP_tao_d1_data& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_character]
+  C.name.resize(40);
+  for (size_t i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.name[i] = 'a' + rhs % 26;
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_d1_data(Opaque_tao_d1_data_class* F, bool& c_ok) {
+  CPP_tao_d1_data C, C2;
+
+  c_ok = true;
+
+  tao_d1_data_to_c(F, C);
+  set_CPP_tao_d1_data_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_d1_data: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_d1_data: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_d1_data.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_d1_data.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_d1_data.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_d1_data.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_d1_data_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_d1_data(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_d1_data_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_d1_data: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_d1_data: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_d1_data.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_d1_data.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_d1_data.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_d1_data.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_d1_data_test_pattern(C2, 4);
+  tao_d1_data_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_lattice(CPP_tao_lattice&, bool&);
+
+void set_CPP_tao_lattice_test_pattern(CPP_tao_lattice& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_character]
+  C.name.resize(8);
+  for (size_t i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_lat_test_pattern(C.lat, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_lat_test_pattern(C.high_E_lat, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_lat_test_pattern(C.low_E_lat, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_rad_int_all_ele_test_pattern(C.rad_int_by_ele_ri, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_rad_int_all_ele_test_pattern(C.rad_int_by_ele_6d, ix_patt);
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.tao_branch.resize(0);
+  } else {
+    C.tao_branch.resize(3);
+    for (size_t i{0}; i < C.tao_branch.size(); i++) {
+      set_CPP_tao_lattice_branch_test_pattern(C.tao_branch[i], ix_patt + i + 1);
+    }
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_lattice(Opaque_tao_lattice_class* F, bool& c_ok) {
+  CPP_tao_lattice C, C2;
+
+  c_ok = true;
+
+  tao_lattice_to_c(F, C);
+  set_CPP_tao_lattice_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_lattice: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_lattice: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_lattice.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_lattice.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_lattice.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_lattice.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_lattice_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_lattice(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_lattice_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_lattice: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_lattice: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_lattice.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_lattice.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_lattice.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_lattice.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_lattice_test_pattern(C2, 4);
+  tao_lattice_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_beam_uni(CPP_tao_beam_uni&, bool&);
+
+void set_CPP_tao_beam_uni_test_pattern(CPP_tao_beam_uni& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_character]
+  C.saved_at.resize(200);
+  for (size_t i{0}; i < C.saved_at.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.saved_at[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.dump_file.resize(400);
+  for (size_t i{0}; i < C.dump_file.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.dump_file[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.dump_at.resize(200);
+  for (size_t i{0}; i < C.dump_at.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.dump_at[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 4 + offset;
+  C.track_beam_in_universe = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 5 + offset;
+  C.always_reinit = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_beam_uni(Opaque_tao_beam_uni_class* F, bool& c_ok) {
+  CPP_tao_beam_uni C, C2;
+
+  c_ok = true;
+
+  tao_beam_uni_to_c(F, C);
+  set_CPP_tao_beam_uni_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_beam_uni: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_beam_uni: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_beam_uni.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_beam_uni.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_beam_uni.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_beam_uni.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_beam_uni_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_beam_uni(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_beam_uni_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_beam_uni: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_beam_uni: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_beam_uni.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_beam_uni.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_beam_uni.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_beam_uni.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_beam_uni_test_pattern(C2, 4);
+  tao_beam_uni_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_dynamic_aperture(CPP_tao_dynamic_aperture&, bool&);
+
+void set_CPP_tao_dynamic_aperture_test_pattern(
+    CPP_tao_dynamic_aperture& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_aperture_param_test_pattern(C.param, ix_patt);
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.scan.resize(0);
+  } else {
+    C.scan.resize(3);
+    for (size_t i{0}; i < C.scan.size(); i++) {
+      set_CPP_aperture_scan_test_pattern(C.scan[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_real]
+  if (ix_patt < 3) {
+    C.pz.resize(0);
+  } else {
+    C.pz.resize(3);
+    for (size_t i{0}; i < C.pz.size(); i++) {
+      int rhs = 101 + i + 4 + offset;
+      C.pz[i] = rhs;
+    }
+  }
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 6 + offset;
+  C.ellipse_scale = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 7 + offset;
+  C.a_emit = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 8 + offset;
+  C.b_emit = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_dynamic_aperture(
+    Opaque_tao_dynamic_aperture_class* F,
+    bool& c_ok) {
+  CPP_tao_dynamic_aperture C, C2;
+
+  c_ok = true;
+
+  tao_dynamic_aperture_to_c(F, C);
+  set_CPP_tao_dynamic_aperture_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_dynamic_aperture: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_dynamic_aperture: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_dynamic_aperture.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_dynamic_aperture.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_dynamic_aperture.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_dynamic_aperture.pat1.c2.expected.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_dynamic_aperture_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_dynamic_aperture(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_dynamic_aperture_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_dynamic_aperture: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_dynamic_aperture: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_dynamic_aperture.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_dynamic_aperture.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_dynamic_aperture.pat3.c.expected.json"
+         << endl;
+    cout << "     C2 written to tao_dynamic_aperture.pat3.c2.actual.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_dynamic_aperture_test_pattern(C2, 4);
+  tao_dynamic_aperture_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_model_branch(CPP_tao_model_branch&, bool&);
+
+void set_CPP_tao_model_branch_test_pattern(
+    CPP_tao_model_branch& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.ele.resize(0);
+  } else {
+    C.ele.resize(3);
+    for (size_t i{0}; i < C.ele.size(); i++) {
+      set_CPP_tao_model_element_test_pattern(C.ele[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_beam_branch_test_pattern(C.beam, ix_patt);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_model_branch(
+    Opaque_tao_model_branch_class* F,
+    bool& c_ok) {
+  CPP_tao_model_branch C, C2;
+
+  c_ok = true;
+
+  tao_model_branch_to_c(F, C);
+  set_CPP_tao_model_branch_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_model_branch: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_model_branch: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_model_branch.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_model_branch.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_model_branch.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_model_branch.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_model_branch_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_model_branch(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_model_branch_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_model_branch: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_model_branch: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_model_branch.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_model_branch.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_model_branch.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_model_branch.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_model_branch_test_pattern(C2, 4);
+  tao_model_branch_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_d2_data(CPP_tao_d2_data&, bool&);
+
+void set_CPP_tao_d2_data_test_pattern(CPP_tao_d2_data& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_character]
+  C.name.resize(40);
+  for (size_t i{0}; i < C.name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.data_file_name.resize(400);
+  for (size_t i{0}; i < C.data_file_name.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.data_file_name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.ref_file_name.resize(400);
+  for (size_t i{0}; i < C.ref_file_name.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.ref_file_name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.data_date.resize(24);
+  for (size_t i{0}; i < C.data_date.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    C.data_date[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.ref_date.resize(24);
+  for (size_t i{0}; i < C.ref_date.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    C.ref_date[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[1D_NOT_character]
+  for (size_t i{0}; i < C.descrip.size(); i++) {
+    C.descrip[i].resize(80);
+    for (size_t j{0}; j < C.descrip[i].size(); j++) {
+      C.descrip[i][j] = 'a' + (101 + i + 10 * (j + 1) + 6 + offset) % 26;
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.d1.resize(0);
+  } else {
+    C.d1.resize(3);
+    for (size_t i{0}; i < C.d1.size(); i++) {
+      set_CPP_tao_d1_data_test_pattern(C.d1[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 9 + offset;
+  C.ix_universe = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 10 + offset;
+  C.ix_d2_data = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 11 + offset;
+  C.ix_ref = rhs;
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 12 + offset;
+  C.data_read_in = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 13 + offset;
+  C.ref_read_in = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_d2_data(Opaque_tao_d2_data_class* F, bool& c_ok) {
+  CPP_tao_d2_data C, C2;
+
+  c_ok = true;
+
+  tao_d2_data_to_c(F, C);
+  set_CPP_tao_d2_data_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_d2_data: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_d2_data: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_d2_data.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_d2_data.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_d2_data.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_d2_data.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_d2_data_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_d2_data(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_d2_data_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_d2_data: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_d2_data: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_d2_data.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_d2_data.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_d2_data.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_d2_data.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_d2_data_test_pattern(C2, 4);
+  tao_d2_data_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_spin_map(CPP_tao_spin_map&, bool&);
+
+void set_CPP_tao_spin_map_test_pattern(CPP_tao_spin_map& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 1 + offset;
+  C.valid = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_spin_orbit_map1_test_pattern(C.map1, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_spin_axis_test_pattern(C.axis_input, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_spin_axis_test_pattern(C.axis0, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_spin_axis_test_pattern(C.axis1, ix_patt);
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 6 + offset;
+  C.ix_ele = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 7 + offset;
+  C.ix_ref = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 8 + offset;
+  C.ix_uni = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 9 + offset;
+  C.ix_branch = rhs;
+  // c_side.test_pat[2D_NOT_real]
+  for (size_t i{0}; i < C.mat8.size(); i++)
+    for (size_t j{0}; j < C.mat8[0].size(); j++) {
+      int rhs = 101 + i + 10 * (j + 1) + 10 + offset;
+      C.mat8[i][j] = rhs;
+    }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_spin_map(Opaque_tao_spin_map_class* F, bool& c_ok) {
+  CPP_tao_spin_map C, C2;
+
+  c_ok = true;
+
+  tao_spin_map_to_c(F, C);
+  set_CPP_tao_spin_map_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_spin_map: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_spin_map: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_spin_map.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_map.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_map.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_spin_map.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_map_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_spin_map(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_spin_map_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_spin_map: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_spin_map: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_spin_map.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_spin_map.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_spin_map.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_spin_map.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_spin_map_test_pattern(C2, 4);
+  tao_spin_map_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_data(CPP_tao_data&, bool&);
+
+void set_CPP_tao_data_test_pattern(CPP_tao_data& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_character]
+  C.ele_name.resize(40);
+  for (size_t i{0}; i < C.ele_name.size(); i++) {
+    int rhs = 101 + i + 1 + offset;
+    C.ele_name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.ele_start_name.resize(40);
+  for (size_t i{0}; i < C.ele_start_name.size(); i++) {
+    int rhs = 101 + i + 2 + offset;
+    C.ele_start_name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.ele_ref_name.resize(40);
+  for (size_t i{0}; i < C.ele_ref_name.size(); i++) {
+    int rhs = 101 + i + 3 + offset;
+    C.ele_ref_name[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.merit_type.resize(40);
+  for (size_t i{0}; i < C.merit_type.size(); i++) {
+    int rhs = 101 + i + 4 + offset;
+    C.merit_type[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.id.resize(40);
+  for (size_t i{0}; i < C.id.size(); i++) {
+    int rhs = 101 + i + 5 + offset;
+    C.id[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.data_source.resize(20);
+  for (size_t i{0}; i < C.data_source.size(); i++) {
+    int rhs = 101 + i + 6 + offset;
+    C.data_source[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_character]
+  C.why_invalid.resize(100);
+  for (size_t i{0}; i < C.why_invalid.size(); i++) {
+    int rhs = 101 + i + 7 + offset;
+    C.why_invalid[i] = 'a' + rhs % 26;
+  }
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 8 + offset;
+  C.ix_uni = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 9 + offset;
+  C.ix_bunch = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 10 + offset;
+  C.ix_branch = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 11 + offset;
+  C.ix_ele = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 12 + offset;
+  C.ix_ele_start = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 13 + offset;
+  C.ix_ele_ref = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 14 + offset;
+  C.ix_ele_merit = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 15 + offset;
+  C.ix_d1 = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 16 + offset;
+  C.ix_data = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 17 + offset;
+  C.ix_dModel = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 18 + offset;
+  C.eval_point = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 19 + offset;
+  C.meas_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 20 + offset;
+  C.ref_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 21 + offset;
+  C.model_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 22 + offset;
+  C.design_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 23 + offset;
+  C.old_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 24 + offset;
+  C.base_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 25 + offset;
+  C.error_rms = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 26 + offset;
+  C.delta_merit = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 27 + offset;
+  C.weight = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 28 + offset;
+  C.invalid_value = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 29 + offset;
+  C.merit = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 30 + offset;
+  C.s = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 31 + offset;
+  C.s_offset = rhs;
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 32 + offset;
+  C.err_message_printed = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 33 + offset;
+  C.exists = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 34 + offset;
+  C.good_model = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 35 + offset;
+  C.good_base = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 36 + offset;
+  C.good_design = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 37 + offset;
+  C.good_meas = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 38 + offset;
+  C.good_ref = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 39 + offset;
+  C.good_user = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 40 + offset;
+  C.good_opt = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 41 + offset;
+  C.good_plot = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 42 + offset;
+  C.useit_plot = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 43 + offset;
+  C.useit_opt = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_spin_map_test_pattern(C.spin_map, ix_patt);
+  // c_side.test_pat[0D_PTR_type]
+  if (ix_patt < 3) {
+    C.d1.reset();
+  } else {
+    C.d1.emplace();
+    set_CPP_tao_d1_data_test_pattern(C.d1.value(), ix_patt);
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_data(Opaque_tao_data_class* F, bool& c_ok) {
+  CPP_tao_data C, C2;
+
+  c_ok = true;
+
+  tao_data_to_c(F, C);
+  set_CPP_tao_data_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_data: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_data: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_data.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_data.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_data.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_data.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_data_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_data(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_data_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_data: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_data: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_data.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_data.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_data.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_data.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_data_test_pattern(C2, 4);
+  tao_data_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_ping_scale(CPP_tao_ping_scale&, bool&);
+
+void set_CPP_tao_ping_scale_test_pattern(CPP_tao_ping_scale& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 1 + offset;
+  C.a_mode_meas = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 2 + offset;
+  C.a_mode_ref = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 3 + offset;
+  C.b_mode_meas = rhs;
+  // c_side.test_pat[0D_NOT_real]
+  rhs = 4 + offset;
+  C.b_mode_ref = rhs;
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_ping_scale(
+    Opaque_tao_ping_scale_class* F,
+    bool& c_ok) {
+  CPP_tao_ping_scale C, C2;
+
+  c_ok = true;
+
+  tao_ping_scale_to_c(F, C);
+  set_CPP_tao_ping_scale_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_ping_scale: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_ping_scale: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_ping_scale.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_ping_scale.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_ping_scale.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_ping_scale.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_ping_scale_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_ping_scale(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_ping_scale_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_ping_scale: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_ping_scale: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_ping_scale.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_ping_scale.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_ping_scale.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_ping_scale.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_ping_scale_test_pattern(C2, 4);
+  tao_ping_scale_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_universe_calc(CPP_tao_universe_calc&, bool&);
+
+void set_CPP_tao_universe_calc_test_pattern(
+    CPP_tao_universe_calc& C,
+    int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 1 + offset;
+  C.srdt_for_data = rhs;
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 2 + offset;
+  C.rad_int_for_data = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 3 + offset;
+  C.rad_int_for_plotting = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 4 + offset;
+  C.chrom_for_data = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 5 + offset;
+  C.chrom_for_plotting = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 6 + offset;
+  C.lat_sigma_for_data = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 7 + offset;
+  C.lat_sigma_for_plotting = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 8 + offset;
+  C.dynamic_aperture = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 9 + offset;
+  C.one_turn_map = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 10 + offset;
+  C.lattice = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 11 + offset;
+  C.twiss = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 12 + offset;
+  C.track = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 13 + offset;
+  C.spin_matrices = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_universe_calc(
+    Opaque_tao_universe_calc_class* F,
+    bool& c_ok) {
+  CPP_tao_universe_calc C, C2;
+
+  c_ok = true;
+
+  tao_universe_calc_to_c(F, C);
+  set_CPP_tao_universe_calc_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_universe_calc: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_universe_calc: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_universe_calc.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_universe_calc.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_universe_calc.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_universe_calc.pat1.c2.expected.json"
+         << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_universe_calc_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_universe_calc(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_universe_calc_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_universe_calc: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_universe_calc: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_universe_calc.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_universe_calc.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_universe_calc.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_universe_calc.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_universe_calc_test_pattern(C2, 4);
+  tao_universe_calc_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_lat_ele_order(CPP_lat_ele_order&, bool&);
+
+void set_CPP_lat_ele_order_test_pattern(CPP_lat_ele_order& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.branch.resize(0);
+  } else {
+    C.branch.resize(3);
+    for (size_t i{0}; i < C.branch.size(); i++) {
+      set_CPP_lat_ele_order_array_test_pattern(C.branch[i], ix_patt + i + 1);
+    }
+  }
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_lat_ele_order(
+    Opaque_lat_ele_order_class* F,
+    bool& c_ok) {
+  CPP_lat_ele_order C, C2;
+
+  c_ok = true;
+
+  lat_ele_order_to_c(F, C);
+  set_CPP_lat_ele_order_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] lat_ele_order: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] lat_ele_order: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("lat_ele_order.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("lat_ele_order.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to lat_ele_order.pat1.c.actual.json" << endl;
+    cout << "     C2 written to lat_ele_order.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_lat_ele_order_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_lat_ele_order(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_lat_ele_order_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] lat_ele_order: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] lat_ele_order: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("lat_ele_order.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("lat_ele_order.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to lat_ele_order.pat3.c.expected.json" << endl;
+    cout << "     C2 written to lat_ele_order.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_lat_ele_order_test_pattern(C2, 4);
+  lat_ele_order_to_f(C2, F);
+}
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+
+extern "C" void test2_f_tao_universe(CPP_tao_universe&, bool&);
+
+void set_CPP_tao_universe_test_pattern(CPP_tao_universe& C, int ix_patt) {
+  auto rhs = 0;
+  auto offset = 100 * ix_patt;
+
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_beam_uni_test_pattern(C.beam, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_dynamic_aperture_test_pattern(C.dynamic_aperture, ix_patt);
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.d2_data.resize(0);
+  } else {
+    C.d2_data.resize(3);
+    for (size_t i{0}; i < C.d2_data.size(); i++) {
+      set_CPP_tao_d2_data_test_pattern(C.d2_data[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[1D_ALLOC_type]
+  if (ix_patt < 3) {
+    C.data.resize(0);
+  } else {
+    C.data.resize(3);
+    for (size_t i{0}; i < C.data.size(); i++) {
+      set_CPP_tao_data_test_pattern(C.data[i], ix_patt + i + 1);
+    }
+  }
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_ping_scale_test_pattern(C.ping_scale, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_lat_test_pattern(C.scratch_lat, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_universe_calc_test_pattern(C.calc, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_lat_ele_order_test_pattern(C.ele_order, ix_patt);
+  // c_side.test_pat[0D_NOT_type]
+  set_CPP_tao_spin_map_test_pattern(C.spin_map, ix_patt);
+  // c_side.test_pat[2D_ALLOC_real]
+  if (ix_patt < 3) {
+    C.dModel_dVar.resize(0);
+  } else {
+    C.dModel_dVar.resize(3);
+    for (size_t i{0}; i < C.dModel_dVar.size(); i++) {
+      C.dModel_dVar[i].resize(2);
+      for (size_t j{0}; j < C.dModel_dVar[0].size(); j++) {
+        int rhs = 101 + i + 10 * (j + 1) + 12 + offset;
+        C.dModel_dVar[i][j] = rhs;
+      }
+    }
+  }
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 15 + offset;
+  C.ix_uni = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 16 + offset;
+  C.n_d2_data_used = rhs;
+  // c_side.test_pat[0D_NOT_integer]
+  rhs = 17 + offset;
+  C.n_data_used = rhs;
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 18 + offset;
+  C.is_on = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 19 + offset;
+  C.design_same_as_previous = (rhs % 2 == 0);
+  // c_side.test_pat[0D_NOT_logical]
+  rhs = 20 + offset;
+  C.picked_uni = (rhs % 2 == 0);
+}
+
+//--------------------------------------------------------------
+
+extern "C" void test_c_tao_universe(Opaque_tao_universe_class* F, bool& c_ok) {
+  CPP_tao_universe C, C2;
+
+  c_ok = true;
+
+  tao_universe_to_c(F, C);
+  set_CPP_tao_universe_test_pattern(C2, 1);
+
+  cout << "" << endl;
+  if (C == C2) {
+    cout << " [1] tao_universe: C side convert F->C: Good" << endl;
+  } else {
+    cout << " [1] tao_universe: C SIDE CONVERT F->C: FAILED!" << endl;
+
+    {
+      std::ofstream c_file("tao_universe.pat1.c.actual.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_universe.pat1.c2.expected.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_universe.pat1.c.actual.json" << endl;
+    cout << "     C2 written to tao_universe.pat1.c2.expected.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_universe_test_pattern(C2, 2);
+  bool c_ok2;
+  test2_f_tao_universe(C2, c_ok2);
+  if (!c_ok2)
+    c_ok = false;
+
+  set_CPP_tao_universe_test_pattern(C, 3);
+  if (C == C2) {
+    cout << " [3] tao_universe: F side convert F->C: Good" << endl;
+  } else {
+    cout << " [3] tao_universe: F SIDE CONVERT F->C: FAILED!" << endl;
+    {
+      std::ofstream c_file("tao_universe.pat3.c.expected.json");
+      c_file << C;
+    }
+
+    {
+      std::ofstream c2_file("tao_universe.pat3.c2.actual.json");
+      c2_file << C2;
+    }
+
+    cout << "     C written to tao_universe.pat3.c.expected.json" << endl;
+    cout << "     C2 written to tao_universe.pat3.c2.actual.json" << endl;
+    c_ok = false;
+  }
+
+  set_CPP_tao_universe_test_pattern(C2, 4);
+  tao_universe_to_f(C2, F);
+}

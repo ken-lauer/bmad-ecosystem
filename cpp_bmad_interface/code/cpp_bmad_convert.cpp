@@ -7631,3 +7631,2341 @@ extern "C" void aperture_scan_to_c2(
   // c_side.to_c2_set[0D_NOT_real] Real
   C.pz_start = z_pz_start;
 }
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_spin_dn_dpz
+
+extern "C" void tao_spin_dn_dpz_to_c(
+    const Opaque_tao_spin_dn_dpz_class*,
+    CPP_tao_spin_dn_dpz&);
+
+// c_side.to_f2_arg
+extern "C" void tao_spin_dn_dpz_to_f2(
+    Opaque_tao_spin_dn_dpz_class*,
+    c_RealArr,
+    c_RealArr,
+    c_RealArr);
+
+extern "C" void tao_spin_dn_dpz_to_f(
+    const CPP_tao_spin_dn_dpz& C,
+    Opaque_tao_spin_dn_dpz_class* F) {
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 3, 3>
+  Real z_partial[3 * 3];
+  matrix_to_vec(C.partial, z_partial);
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 3, 3>
+  Real z_partial2[3 * 3];
+  matrix_to_vec(C.partial2, z_partial2);
+
+  // c_side.to_f2_call
+  tao_spin_dn_dpz_to_f2(F, &C.vec[0], z_partial, z_partial2);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_spin_dn_dpz_to_c2(
+    CPP_tao_spin_dn_dpz& C,
+    c_RealArr z_vec,
+    c_RealArr z_partial,
+    c_RealArr z_partial2) {
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.vec << z_vec;
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 3, 3>
+  C.partial << z_partial;
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 3, 3>
+  C.partial2 << z_partial2;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_resonance_h
+
+extern "C" void resonance_h_to_c(
+    const Opaque_resonance_h_class*,
+    CPP_resonance_h&);
+
+// c_side.to_f2_arg
+extern "C" void resonance_h_to_f2(
+    Opaque_resonance_h_class*,
+    c_Char,
+    c_Complex&);
+
+extern "C" void resonance_h_to_f(
+    const CPP_resonance_h& C,
+    Opaque_resonance_h_class* F) {
+  // c_side.to_f2_call
+  resonance_h_to_f2(F, C.id.c_str(), C.c_val);
+}
+
+// c_side.to_c2_arg
+extern "C" void resonance_h_to_c2(
+    CPP_resonance_h& C,
+    c_Char z_id,
+    c_Complex& z_c_val) {
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.id = std::string{z_id};
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.c_val = z_c_val;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_spin_orbit_map1
+
+extern "C" void spin_orbit_map1_to_c(
+    const Opaque_spin_orbit_map1_class*,
+    CPP_spin_orbit_map1&);
+
+// c_side.to_f2_arg
+extern "C" void spin_orbit_map1_to_f2(
+    Opaque_spin_orbit_map1_class*,
+    c_RealArr,
+    c_RealArr,
+    c_RealArr);
+
+extern "C" void spin_orbit_map1_to_f(
+    const CPP_spin_orbit_map1& C,
+    Opaque_spin_orbit_map1_class* F) {
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 6, 6>
+  Real z_orb_mat[6 * 6];
+  matrix_to_vec(C.orb_mat, z_orb_mat);
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 4, 7>
+  Real z_spin_q[4 * 7];
+  matrix_to_vec(C.spin_q, z_spin_q);
+
+  // c_side.to_f2_call
+  spin_orbit_map1_to_f2(F, z_orb_mat, &C.vec0[0], z_spin_q);
+}
+
+// c_side.to_c2_arg
+extern "C" void spin_orbit_map1_to_c2(
+    CPP_spin_orbit_map1& C,
+    c_RealArr z_orb_mat,
+    c_RealArr z_vec0,
+    c_RealArr z_spin_q) {
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 6, 6>
+  C.orb_mat << z_orb_mat;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 6>
+  C.vec0 << z_vec0;
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 4, 7>
+  C.spin_q << z_spin_q;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_spin_axis
+
+extern "C" void spin_axis_to_c(const Opaque_spin_axis_class*, CPP_spin_axis&);
+
+// c_side.to_f2_arg
+extern "C" void spin_axis_to_f2(
+    Opaque_spin_axis_class*,
+    c_RealArr,
+    c_RealArr,
+    c_RealArr);
+
+extern "C" void spin_axis_to_f(
+    const CPP_spin_axis& C,
+    Opaque_spin_axis_class* F) {
+  // c_side.to_f2_call
+  spin_axis_to_f2(F, &C.l[0], &C.n0[0], &C.m[0]);
+}
+
+// c_side.to_c2_arg
+extern "C" void spin_axis_to_c2(
+    CPP_spin_axis& C,
+    c_RealArr z_l,
+    c_RealArr z_n0,
+    c_RealArr z_m) {
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.l << z_l;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.n0 << z_n0;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.m << z_m;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_ptc_normal_form
+
+extern "C" void ptc_normal_form_to_c(
+    const Opaque_ptc_normal_form_class*,
+    CPP_ptc_normal_form&);
+
+// c_side.to_f2_arg
+extern "C" void ptc_normal_form_to_f2(
+    Opaque_ptc_normal_form_class*,
+    const CPP_ele*,
+    c_Int,
+    c_RealArr,
+    c_Bool&);
+
+extern "C" void ptc_normal_form_to_f(
+    const CPP_ptc_normal_form& C,
+    Opaque_ptc_normal_form_class* F) {
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_ele>
+  auto n_ele_origin = C.ele_origin ? 1 : 0;
+
+  // c_side.to_f2_call
+  ptc_normal_form_to_f2(
+      F,
+      (C.ele_origin ? &C.ele_origin.value() : nullptr),
+      n_ele_origin,
+      &C.orb0[0],
+      C.valid_map);
+}
+
+// c_side.to_c2_arg
+extern "C" void ptc_normal_form_to_c2(
+    CPP_ptc_normal_form& C,
+    Opaque_ele_class* z_ele_origin,
+    c_Int n_ele_origin,
+    c_RealArr z_orb0,
+    c_Bool& z_valid_map) {
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_ele>
+  if (n_ele_origin == 0) {
+    C.ele_origin.reset();
+  } else {
+    C.ele_origin.emplace();
+    ele_to_c(z_ele_origin, C.ele_origin.value());
+  }
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 6>
+  C.orb0 << z_orb0;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.valid_map = z_valid_map;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_bmad_normal_form
+
+extern "C" void bmad_normal_form_to_c(
+    const Opaque_bmad_normal_form_class*,
+    CPP_bmad_normal_form&);
+
+// c_side.to_f2_arg
+extern "C" void bmad_normal_form_to_f2(
+    Opaque_bmad_normal_form_class*,
+    const CPP_ele*,
+    c_Int,
+    const CPP_taylor**,
+    const CPP_taylor**,
+    const CPP_taylor**,
+    const CPP_taylor**,
+    const CPP_complex_taylor**,
+    const CPP_complex_taylor**,
+    const CPP_resonance_h**,
+    c_Int);
+
+extern "C" void bmad_normal_form_to_f(
+    const CPP_bmad_normal_form& C,
+    Opaque_bmad_normal_form_class* F) {
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_ele>
+  auto n_ele_origin = C.ele_origin ? 1 : 0;
+  // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  const CPP_taylor* z_M[6];
+  for (int i = 0; i < 6; i++) {
+    z_M[i] = &C.M[i];
+  }
+  // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  const CPP_taylor* z_A[6];
+  for (int i = 0; i < 6; i++) {
+    z_A[i] = &C.A[i];
+  }
+  // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  const CPP_taylor* z_A_inv[6];
+  for (int i = 0; i < 6; i++) {
+    z_A_inv[i] = &C.A_inv[i];
+  }
+  // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  const CPP_taylor* z_dhdj[6];
+  for (int i = 0; i < 6; i++) {
+    z_dhdj[i] = &C.dhdj[i];
+  }
+  // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_complex_taylor, 6>
+  const CPP_complex_taylor* z_F[6];
+  for (int i = 0; i < 6; i++) {
+    z_F[i] = &C.F[i];
+  }
+  // c_side.to_f_setup[1D_NOT_type] FixedArray1D<CPP_complex_taylor, 6>
+  const CPP_complex_taylor* z_L[6];
+  for (int i = 0; i < 6; i++) {
+    z_L[i] = &C.L[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_resonance_h>
+  size_t n1_h = C.h.size();
+  const CPP_resonance_h** z_h = nullptr;
+  if (n1_h != 0) {
+    z_h = new const CPP_resonance_h*[n1_h];
+    for (size_t i{0}; i < n1_h; i++)
+      z_h[i] = &C.h[i];
+  }
+
+  // c_side.to_f2_call
+  bmad_normal_form_to_f2(
+      F,
+      (C.ele_origin ? &C.ele_origin.value() : nullptr),
+      n_ele_origin,
+      z_M,
+      z_A,
+      z_A_inv,
+      z_dhdj,
+      z_F,
+      z_L,
+      z_h,
+      n1_h);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_h)
+    delete[] z_h;
+}
+
+// c_side.to_c2_arg
+extern "C" void bmad_normal_form_to_c2(
+    CPP_bmad_normal_form& C,
+    Opaque_ele_class* z_ele_origin,
+    c_Int n_ele_origin,
+    const Opaque_taylor_class** z_M,
+    const Opaque_taylor_class** z_A,
+    const Opaque_taylor_class** z_A_inv,
+    const Opaque_taylor_class** z_dhdj,
+    const Opaque_complex_taylor_class** z_F,
+    const Opaque_complex_taylor_class** z_L,
+    Opaque_resonance_h_class** z_h,
+    c_Int n1_h) {
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_ele>
+  if (n_ele_origin == 0) {
+    C.ele_origin.reset();
+  } else {
+    C.ele_origin.emplace();
+    ele_to_c(z_ele_origin, C.ele_origin.value());
+  }
+  // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  for (size_t i{0}; i < C.M.size(); i++) {
+    taylor_to_c(z_M[i], C.M[i]);
+  }
+  // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  for (size_t i{0}; i < C.A.size(); i++) {
+    taylor_to_c(z_A[i], C.A[i]);
+  }
+  // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  for (size_t i{0}; i < C.A_inv.size(); i++) {
+    taylor_to_c(z_A_inv[i], C.A_inv[i]);
+  }
+  // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+  for (size_t i{0}; i < C.dhdj.size(); i++) {
+    taylor_to_c(z_dhdj[i], C.dhdj[i]);
+  }
+  // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_complex_taylor, 6>
+  for (size_t i{0}; i < C.F.size(); i++) {
+    complex_taylor_to_c(z_F[i], C.F[i]);
+  }
+  // c_side.to_c2_set[1D_NOT_type] FixedArray1D<CPP_complex_taylor, 6>
+  for (size_t i{0}; i < C.L.size(); i++) {
+    complex_taylor_to_c(z_L[i], C.L[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_resonance_h>
+  C.h.resize(n1_h);
+  for (size_t i{0}; i < n1_h; i++) {
+    resonance_h_to_c(z_h[i], C.h[i]);
+  }
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_bunch_track
+
+extern "C" void bunch_track_to_c(
+    const Opaque_bunch_track_class*,
+    CPP_bunch_track&);
+
+// c_side.to_f2_arg
+extern "C" void bunch_track_to_f2(
+    Opaque_bunch_track_class*,
+    const CPP_bunch_params**,
+    c_Int,
+    c_Real&,
+    c_Int&);
+
+extern "C" void bunch_track_to_f(
+    const CPP_bunch_track& C,
+    Opaque_bunch_track_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_bunch_params>
+  size_t n1_pt = C.pt.size();
+  const CPP_bunch_params** z_pt = nullptr;
+  if (n1_pt != 0) {
+    z_pt = new const CPP_bunch_params*[n1_pt];
+    for (size_t i{0}; i < n1_pt; i++)
+      z_pt[i] = &C.pt[i];
+  }
+
+  // c_side.to_f2_call
+  bunch_track_to_f2(F, z_pt, n1_pt, C.ds_save, C.n_pt);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_pt)
+    delete[] z_pt;
+}
+
+// c_side.to_c2_arg
+extern "C" void bunch_track_to_c2(
+    CPP_bunch_track& C,
+    Opaque_bunch_params_class** z_pt,
+    c_Int n1_pt,
+    c_Real& z_ds_save,
+    c_Int& z_n_pt) {
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_bunch_params>
+  C.pt.resize(n1_pt);
+  for (size_t i{0}; i < n1_pt; i++) {
+    bunch_params_to_c(z_pt[i], C.pt[i]);
+  }
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.ds_save = z_ds_save;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.n_pt = z_n_pt;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_summation_rdt
+
+extern "C" void summation_rdt_to_c(
+    const Opaque_summation_rdt_class*,
+    CPP_summation_rdt&);
+
+// c_side.to_f2_arg
+extern "C" void summation_rdt_to_f2(
+    Opaque_summation_rdt_class*,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&,
+    c_Complex&);
+
+extern "C" void summation_rdt_to_f(
+    const CPP_summation_rdt& C,
+    Opaque_summation_rdt_class* F) {
+  // c_side.to_f2_call
+  summation_rdt_to_f2(
+      F,
+      C.h11001,
+      C.h00111,
+      C.h20001,
+      C.h00201,
+      C.h10002,
+      C.h21000,
+      C.h30000,
+      C.h10110,
+      C.h10020,
+      C.h10200,
+      C.h31000,
+      C.h40000,
+      C.h20110,
+      C.h11200,
+      C.h20020,
+      C.h20200,
+      C.h00310,
+      C.h00400,
+      C.h22000,
+      C.h00220,
+      C.h11110);
+}
+
+// c_side.to_c2_arg
+extern "C" void summation_rdt_to_c2(
+    CPP_summation_rdt& C,
+    c_Complex& z_h11001,
+    c_Complex& z_h00111,
+    c_Complex& z_h20001,
+    c_Complex& z_h00201,
+    c_Complex& z_h10002,
+    c_Complex& z_h21000,
+    c_Complex& z_h30000,
+    c_Complex& z_h10110,
+    c_Complex& z_h10020,
+    c_Complex& z_h10200,
+    c_Complex& z_h31000,
+    c_Complex& z_h40000,
+    c_Complex& z_h20110,
+    c_Complex& z_h11200,
+    c_Complex& z_h20020,
+    c_Complex& z_h20200,
+    c_Complex& z_h00310,
+    c_Complex& z_h00400,
+    c_Complex& z_h22000,
+    c_Complex& z_h00220,
+    c_Complex& z_h11110) {
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h11001 = z_h11001;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h00111 = z_h00111;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h20001 = z_h20001;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h00201 = z_h00201;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h10002 = z_h10002;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h21000 = z_h21000;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h30000 = z_h30000;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h10110 = z_h10110;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h10020 = z_h10020;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h10200 = z_h10200;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h31000 = z_h31000;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h40000 = z_h40000;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h20110 = z_h20110;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h11200 = z_h11200;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h20020 = z_h20020;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h20200 = z_h20200;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h00310 = z_h00310;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h00400 = z_h00400;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h22000 = z_h22000;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h00220 = z_h00220;
+  // c_side.to_c2_set[0D_NOT_complex] Complex
+  C.h11110 = z_h11110;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_lat_ele_order1
+
+extern "C" void lat_ele_order1_to_c(
+    const Opaque_lat_ele_order1_class*,
+    CPP_lat_ele_order1&);
+
+// c_side.to_f2_arg
+extern "C" void lat_ele_order1_to_f2(
+    Opaque_lat_ele_order1_class*,
+    c_Int&,
+    c_Int&);
+
+extern "C" void lat_ele_order1_to_f(
+    const CPP_lat_ele_order1& C,
+    Opaque_lat_ele_order1_class* F) {
+  // c_side.to_f2_call
+  lat_ele_order1_to_f2(F, C.ix_branch, C.ix_order);
+}
+
+// c_side.to_c2_arg
+extern "C" void lat_ele_order1_to_c2(
+    CPP_lat_ele_order1& C,
+    c_Int& z_ix_branch,
+    c_Int& z_ix_order) {
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_branch = z_ix_branch;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_order = z_ix_order;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_lat_ele_order_array
+
+extern "C" void lat_ele_order_array_to_c(
+    const Opaque_lat_ele_order_array_class*,
+    CPP_lat_ele_order_array&);
+
+// c_side.to_f2_arg
+extern "C" void lat_ele_order_array_to_f2(
+    Opaque_lat_ele_order_array_class*,
+    const CPP_lat_ele_order1**,
+    c_Int);
+
+extern "C" void lat_ele_order_array_to_f(
+    const CPP_lat_ele_order_array& C,
+    Opaque_lat_ele_order_array_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_lat_ele_order1>
+  size_t n1_ele = C.ele.size();
+  const CPP_lat_ele_order1** z_ele = nullptr;
+  if (n1_ele != 0) {
+    z_ele = new const CPP_lat_ele_order1*[n1_ele];
+    for (size_t i{0}; i < n1_ele; i++)
+      z_ele[i] = &C.ele[i];
+  }
+
+  // c_side.to_f2_call
+  lat_ele_order_array_to_f2(F, z_ele, n1_ele);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_ele)
+    delete[] z_ele;
+}
+
+// c_side.to_c2_arg
+extern "C" void lat_ele_order_array_to_c2(
+    CPP_lat_ele_order_array& C,
+    Opaque_lat_ele_order1_class** z_ele,
+    c_Int n1_ele) {
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_lat_ele_order1>
+  C.ele.resize(n1_ele);
+  for (size_t i{0}; i < n1_ele; i++) {
+    lat_ele_order1_to_c(z_ele[i], C.ele[i]);
+  }
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_lat_sigma
+
+extern "C" void tao_lat_sigma_to_c(
+    const Opaque_tao_lat_sigma_class*,
+    CPP_tao_lat_sigma&);
+
+// c_side.to_f2_arg
+extern "C" void tao_lat_sigma_to_f2(Opaque_tao_lat_sigma_class*, c_RealArr);
+
+extern "C" void tao_lat_sigma_to_f(
+    const CPP_tao_lat_sigma& C,
+    Opaque_tao_lat_sigma_class* F) {
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 6, 6>
+  Real z_mat[6 * 6];
+  matrix_to_vec(C.mat, z_mat);
+
+  // c_side.to_f2_call
+  tao_lat_sigma_to_f2(F, z_mat);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_lat_sigma_to_c2(CPP_tao_lat_sigma& C, c_RealArr z_mat) {
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 6, 6>
+  C.mat << z_mat;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_spin_ele
+
+extern "C" void tao_spin_ele_to_c(
+    const Opaque_tao_spin_ele_class*,
+    CPP_tao_spin_ele&);
+
+// c_side.to_f2_arg
+extern "C" void tao_spin_ele_to_f2(
+    Opaque_tao_spin_ele_class*,
+    const CPP_tao_spin_dn_dpz&,
+    c_RealArr,
+    c_RealArr,
+    c_RealArr,
+    c_Bool&);
+
+extern "C" void tao_spin_ele_to_f(
+    const CPP_tao_spin_ele& C,
+    Opaque_tao_spin_ele_class* F) {
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 6, 6>
+  Real z_orb_eigen_vec[6 * 6];
+  matrix_to_vec(C.orb_eigen_vec, z_orb_eigen_vec);
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 6, 3>
+  Real z_spin_eigen_vec[6 * 3];
+  matrix_to_vec(C.spin_eigen_vec, z_spin_eigen_vec);
+
+  // c_side.to_f2_call
+  tao_spin_ele_to_f2(
+      F,
+      C.dn_dpz,
+      &C.orb_eigen_val[0],
+      z_orb_eigen_vec,
+      z_spin_eigen_vec,
+      C.valid);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_spin_ele_to_c2(
+    CPP_tao_spin_ele& C,
+    const Opaque_tao_spin_dn_dpz_class* z_dn_dpz,
+    c_RealArr z_orb_eigen_val,
+    c_RealArr z_orb_eigen_vec,
+    c_RealArr z_spin_eigen_vec,
+    c_Bool& z_valid) {
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_spin_dn_dpz
+  tao_spin_dn_dpz_to_c(z_dn_dpz, C.dn_dpz);
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 6>
+  C.orb_eigen_val << z_orb_eigen_val;
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 6, 6>
+  C.orb_eigen_vec << z_orb_eigen_vec;
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 6, 3>
+  C.spin_eigen_vec << z_spin_eigen_vec;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.valid = z_valid;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_plot_cache
+
+extern "C" void tao_plot_cache_to_c(
+    const Opaque_tao_plot_cache_class*,
+    CPP_tao_plot_cache&);
+
+// c_side.to_f2_arg
+extern "C" void tao_plot_cache_to_f2(
+    Opaque_tao_plot_cache_class*,
+    const CPP_ele&,
+    const CPP_coord&,
+    c_Bool&);
+
+extern "C" void tao_plot_cache_to_f(
+    const CPP_tao_plot_cache& C,
+    Opaque_tao_plot_cache_class* F) {
+  // c_side.to_f2_call
+  tao_plot_cache_to_f2(F, C.ele_to_s, C.orbit, C.err);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_plot_cache_to_c2(
+    CPP_tao_plot_cache& C,
+    const Opaque_ele_class* z_ele_to_s,
+    const Opaque_coord_class* z_orbit,
+    c_Bool& z_err) {
+  // c_side.to_c2_set[0D_NOT_type] CPP_ele
+  ele_to_c(z_ele_to_s, C.ele_to_s);
+  // c_side.to_c2_set[0D_NOT_type] CPP_coord
+  coord_to_c(z_orbit, C.orbit);
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.err = z_err;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_spin_polarization
+
+extern "C" void tao_spin_polarization_to_c(
+    const Opaque_tao_spin_polarization_class*,
+    CPP_tao_spin_polarization&);
+
+// c_side.to_f2_arg
+extern "C" void tao_spin_polarization_to_f2(
+    Opaque_tao_spin_polarization_class*,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_RealArr,
+    c_RealArr,
+    c_Real&,
+    c_Real&,
+    c_RealArr,
+    c_RealArr,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Bool&,
+    const CPP_spin_orbit_map1&,
+    const CPP_spin_orbit_map1**,
+    c_Int);
+
+extern "C" void tao_spin_polarization_to_f(
+    const CPP_tao_spin_polarization& C,
+    Opaque_tao_spin_polarization_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_spin_orbit_map1>
+  size_t n1_q_ele = C.q_ele.size();
+  const CPP_spin_orbit_map1** z_q_ele = nullptr;
+  if (n1_q_ele != 0) {
+    z_q_ele = new const CPP_spin_orbit_map1*[n1_q_ele];
+    for (size_t i{0}; i < n1_q_ele; i++)
+      z_q_ele[i] = &C.q_ele[i];
+  }
+
+  // c_side.to_f2_call
+  tao_spin_polarization_to_f2(
+      F,
+      C.tune,
+      C.pol_limit_st,
+      C.pol_limit_dk,
+      &C.pol_limit_dk_partial[0],
+      &C.pol_limit_dk_partial2[0],
+      C.pol_rate_bks,
+      C.depol_rate,
+      &C.depol_rate_partial[0],
+      &C.depol_rate_partial2[0],
+      C.integral_bn,
+      C.integral_bdn,
+      C.integral_1ns,
+      C.integral_dn2,
+      C.valid,
+      C.q_1turn,
+      z_q_ele,
+      n1_q_ele);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_q_ele)
+    delete[] z_q_ele;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_spin_polarization_to_c2(
+    CPP_tao_spin_polarization& C,
+    c_Real& z_tune,
+    c_Real& z_pol_limit_st,
+    c_Real& z_pol_limit_dk,
+    c_RealArr z_pol_limit_dk_partial,
+    c_RealArr z_pol_limit_dk_partial2,
+    c_Real& z_pol_rate_bks,
+    c_Real& z_depol_rate,
+    c_RealArr z_depol_rate_partial,
+    c_RealArr z_depol_rate_partial2,
+    c_Real& z_integral_bn,
+    c_Real& z_integral_bdn,
+    c_Real& z_integral_1ns,
+    c_Real& z_integral_dn2,
+    c_Bool& z_valid,
+    const Opaque_spin_orbit_map1_class* z_q_1turn,
+    Opaque_spin_orbit_map1_class** z_q_ele,
+    c_Int n1_q_ele) {
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.tune = z_tune;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.pol_limit_st = z_pol_limit_st;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.pol_limit_dk = z_pol_limit_dk;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.pol_limit_dk_partial << z_pol_limit_dk_partial;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.pol_limit_dk_partial2 << z_pol_limit_dk_partial2;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.pol_rate_bks = z_pol_rate_bks;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.depol_rate = z_depol_rate;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.depol_rate_partial << z_depol_rate_partial;
+  // c_side.to_c2_set[1D_NOT_real] FixedArray1D<Real, 3>
+  C.depol_rate_partial2 << z_depol_rate_partial2;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.integral_bn = z_integral_bn;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.integral_bdn = z_integral_bdn;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.integral_1ns = z_integral_1ns;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.integral_dn2 = z_integral_dn2;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.valid = z_valid;
+  // c_side.to_c2_set[0D_NOT_type] CPP_spin_orbit_map1
+  spin_orbit_map1_to_c(z_q_1turn, C.q_1turn);
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_spin_orbit_map1>
+  C.q_ele.resize(n1_q_ele);
+  for (size_t i{0}; i < n1_q_ele; i++) {
+    spin_orbit_map1_to_c(z_q_ele[i], C.q_ele[i]);
+  }
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_lattice_branch
+
+extern "C" void tao_lattice_branch_to_c(
+    const Opaque_tao_lattice_branch_class*,
+    CPP_tao_lattice_branch&);
+
+// c_side.to_f2_arg
+extern "C" void tao_lattice_branch_to_f2(
+    Opaque_tao_lattice_branch_class*,
+    const CPP_tao_lat_sigma**,
+    c_Int,
+    const CPP_tao_spin_ele**,
+    c_Int,
+    const CPP_bunch_params**,
+    c_Int,
+    const CPP_bunch_track**,
+    c_Int,
+    const CPP_coord**,
+    c_Int,
+    const CPP_tao_plot_cache**,
+    c_Int,
+    const CPP_tao_spin_polarization&,
+    const CPP_summation_rdt&,
+    const CPP_coord&,
+    const CPP_normal_modes&,
+    const CPP_normal_modes&,
+    const CPP_ptc_normal_form&,
+    const CPP_bmad_normal_form&,
+    const CPP_coord**,
+    c_Int,
+    const CPP_coord**,
+    c_Int,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&);
+
+extern "C" void tao_lattice_branch_to_f(
+    const CPP_tao_lattice_branch& C,
+    Opaque_tao_lattice_branch_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_lat_sigma>
+  size_t n1_lat_sigma = C.lat_sigma.size();
+  const CPP_tao_lat_sigma** z_lat_sigma = nullptr;
+  if (n1_lat_sigma != 0) {
+    z_lat_sigma = new const CPP_tao_lat_sigma*[n1_lat_sigma];
+    for (size_t i{0}; i < n1_lat_sigma; i++)
+      z_lat_sigma[i] = &C.lat_sigma[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_spin_ele>
+  size_t n1_spin_ele = C.spin_ele.size();
+  const CPP_tao_spin_ele** z_spin_ele = nullptr;
+  if (n1_spin_ele != 0) {
+    z_spin_ele = new const CPP_tao_spin_ele*[n1_spin_ele];
+    for (size_t i{0}; i < n1_spin_ele; i++)
+      z_spin_ele[i] = &C.spin_ele[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_bunch_params>
+  size_t n1_bunch_params = C.bunch_params.size();
+  const CPP_bunch_params** z_bunch_params = nullptr;
+  if (n1_bunch_params != 0) {
+    z_bunch_params = new const CPP_bunch_params*[n1_bunch_params];
+    for (size_t i{0}; i < n1_bunch_params; i++)
+      z_bunch_params[i] = &C.bunch_params[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_bunch_track>
+  size_t n1_bunch_params_comb = C.bunch_params_comb.size();
+  const CPP_bunch_track** z_bunch_params_comb = nullptr;
+  if (n1_bunch_params_comb != 0) {
+    z_bunch_params_comb = new const CPP_bunch_track*[n1_bunch_params_comb];
+    for (size_t i{0}; i < n1_bunch_params_comb; i++)
+      z_bunch_params_comb[i] = &C.bunch_params_comb[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_coord>
+  size_t n1_orbit = C.orbit.size();
+  const CPP_coord** z_orbit = nullptr;
+  if (n1_orbit != 0) {
+    z_orbit = new const CPP_coord*[n1_orbit];
+    for (size_t i{0}; i < n1_orbit; i++)
+      z_orbit[i] = &C.orbit[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_plot_cache>
+  size_t n1_plot_cache = C.plot_cache.size();
+  const CPP_tao_plot_cache** z_plot_cache = nullptr;
+  if (n1_plot_cache != 0) {
+    z_plot_cache = new const CPP_tao_plot_cache*[n1_plot_cache];
+    for (size_t i{0}; i < n1_plot_cache; i++)
+      z_plot_cache[i] = &C.plot_cache[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_coord>
+  size_t n1_high_E_orb = C.high_E_orb.size();
+  const CPP_coord** z_high_E_orb = nullptr;
+  if (n1_high_E_orb != 0) {
+    z_high_E_orb = new const CPP_coord*[n1_high_E_orb];
+    for (size_t i{0}; i < n1_high_E_orb; i++)
+      z_high_E_orb[i] = &C.high_E_orb[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_coord>
+  size_t n1_low_E_orb = C.low_E_orb.size();
+  const CPP_coord** z_low_E_orb = nullptr;
+  if (n1_low_E_orb != 0) {
+    z_low_E_orb = new const CPP_coord*[n1_low_E_orb];
+    for (size_t i{0}; i < n1_low_E_orb; i++)
+      z_low_E_orb[i] = &C.low_E_orb[i];
+  }
+
+  // c_side.to_f2_call
+  tao_lattice_branch_to_f2(
+      F,
+      z_lat_sigma,
+      n1_lat_sigma,
+      z_spin_ele,
+      n1_spin_ele,
+      z_bunch_params,
+      n1_bunch_params,
+      z_bunch_params_comb,
+      n1_bunch_params_comb,
+      z_orbit,
+      n1_orbit,
+      z_plot_cache,
+      n1_plot_cache,
+      C.spin,
+      C.srdt,
+      C.orb0,
+      C.modes_ri,
+      C.modes_6d,
+      C.ptc_normal_form,
+      C.bmad_normal_form,
+      z_high_E_orb,
+      n1_high_E_orb,
+      z_low_E_orb,
+      n1_low_E_orb,
+      C.cache_x_min,
+      C.cache_x_max,
+      C.comb_ds_save,
+      C.track_state,
+      C.cache_n_pts,
+      C.ix_rad_int_cache,
+      C.has_open_match_element,
+      C.plot_cache_valid,
+      C.spin_map_valid,
+      C.twiss_valid,
+      C.mode_flip_here,
+      C.chrom_calc_ok,
+      C.rad_int_calc_ok,
+      C.emit_6d_calc_ok,
+      C.sigma_track_ok);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_lat_sigma)
+    delete[] z_lat_sigma;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_spin_ele)
+    delete[] z_spin_ele;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_bunch_params)
+    delete[] z_bunch_params;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_bunch_params_comb)
+    delete[] z_bunch_params_comb;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_orbit)
+    delete[] z_orbit;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_plot_cache)
+    delete[] z_plot_cache;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_high_E_orb)
+    delete[] z_high_E_orb;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_low_E_orb)
+    delete[] z_low_E_orb;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_lattice_branch_to_c2(
+    CPP_tao_lattice_branch& C,
+    Opaque_tao_lat_sigma_class** z_lat_sigma,
+    c_Int n1_lat_sigma,
+    Opaque_tao_spin_ele_class** z_spin_ele,
+    c_Int n1_spin_ele,
+    Opaque_bunch_params_class** z_bunch_params,
+    c_Int n1_bunch_params,
+    Opaque_bunch_track_class** z_bunch_params_comb,
+    c_Int n1_bunch_params_comb,
+    Opaque_coord_class** z_orbit,
+    c_Int n1_orbit,
+    Opaque_tao_plot_cache_class** z_plot_cache,
+    c_Int n1_plot_cache,
+    const Opaque_tao_spin_polarization_class* z_spin,
+    const Opaque_summation_rdt_class* z_srdt,
+    const Opaque_coord_class* z_orb0,
+    const Opaque_normal_modes_class* z_modes_ri,
+    const Opaque_normal_modes_class* z_modes_6d,
+    const Opaque_ptc_normal_form_class* z_ptc_normal_form,
+    const Opaque_bmad_normal_form_class* z_bmad_normal_form,
+    Opaque_coord_class** z_high_E_orb,
+    c_Int n1_high_E_orb,
+    Opaque_coord_class** z_low_E_orb,
+    c_Int n1_low_E_orb,
+    c_Real& z_cache_x_min,
+    c_Real& z_cache_x_max,
+    c_Real& z_comb_ds_save,
+    c_Int& z_track_state,
+    c_Int& z_cache_n_pts,
+    c_Int& z_ix_rad_int_cache,
+    c_Bool& z_has_open_match_element,
+    c_Bool& z_plot_cache_valid,
+    c_Bool& z_spin_map_valid,
+    c_Bool& z_twiss_valid,
+    c_Bool& z_mode_flip_here,
+    c_Bool& z_chrom_calc_ok,
+    c_Bool& z_rad_int_calc_ok,
+    c_Bool& z_emit_6d_calc_ok,
+    c_Bool& z_sigma_track_ok) {
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_lat_sigma>
+  C.lat_sigma.resize(n1_lat_sigma);
+  for (size_t i{0}; i < n1_lat_sigma; i++) {
+    tao_lat_sigma_to_c(z_lat_sigma[i], C.lat_sigma[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_spin_ele>
+  C.spin_ele.resize(n1_spin_ele);
+  for (size_t i{0}; i < n1_spin_ele; i++) {
+    tao_spin_ele_to_c(z_spin_ele[i], C.spin_ele[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_bunch_params>
+  C.bunch_params.resize(n1_bunch_params);
+  for (size_t i{0}; i < n1_bunch_params; i++) {
+    bunch_params_to_c(z_bunch_params[i], C.bunch_params[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_bunch_track>
+  C.bunch_params_comb.resize(n1_bunch_params_comb);
+  for (size_t i{0}; i < n1_bunch_params_comb; i++) {
+    bunch_track_to_c(z_bunch_params_comb[i], C.bunch_params_comb[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_coord>
+  C.orbit.resize(n1_orbit);
+  for (size_t i{0}; i < n1_orbit; i++) {
+    coord_to_c(z_orbit[i], C.orbit[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_plot_cache>
+  C.plot_cache.resize(n1_plot_cache);
+  for (size_t i{0}; i < n1_plot_cache; i++) {
+    tao_plot_cache_to_c(z_plot_cache[i], C.plot_cache[i]);
+  }
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_spin_polarization
+  tao_spin_polarization_to_c(z_spin, C.spin);
+  // c_side.to_c2_set[0D_NOT_type] CPP_summation_rdt
+  summation_rdt_to_c(z_srdt, C.srdt);
+  // c_side.to_c2_set[0D_NOT_type] CPP_coord
+  coord_to_c(z_orb0, C.orb0);
+  // c_side.to_c2_set[0D_NOT_type] CPP_normal_modes
+  normal_modes_to_c(z_modes_ri, C.modes_ri);
+  // c_side.to_c2_set[0D_NOT_type] CPP_normal_modes
+  normal_modes_to_c(z_modes_6d, C.modes_6d);
+  // c_side.to_c2_set[0D_NOT_type] CPP_ptc_normal_form
+  ptc_normal_form_to_c(z_ptc_normal_form, C.ptc_normal_form);
+  // c_side.to_c2_set[0D_NOT_type] CPP_bmad_normal_form
+  bmad_normal_form_to_c(z_bmad_normal_form, C.bmad_normal_form);
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_coord>
+  C.high_E_orb.resize(n1_high_E_orb);
+  for (size_t i{0}; i < n1_high_E_orb; i++) {
+    coord_to_c(z_high_E_orb[i], C.high_E_orb[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_coord>
+  C.low_E_orb.resize(n1_low_E_orb);
+  for (size_t i{0}; i < n1_low_E_orb; i++) {
+    coord_to_c(z_low_E_orb[i], C.low_E_orb[i]);
+  }
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.cache_x_min = z_cache_x_min;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.cache_x_max = z_cache_x_max;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.comb_ds_save = z_comb_ds_save;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.track_state = z_track_state;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.cache_n_pts = z_cache_n_pts;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_rad_int_cache = z_ix_rad_int_cache;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.has_open_match_element = z_has_open_match_element;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.plot_cache_valid = z_plot_cache_valid;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.spin_map_valid = z_spin_map_valid;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.twiss_valid = z_twiss_valid;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.mode_flip_here = z_mode_flip_here;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.chrom_calc_ok = z_chrom_calc_ok;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.rad_int_calc_ok = z_rad_int_calc_ok;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.emit_6d_calc_ok = z_emit_6d_calc_ok;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.sigma_track_ok = z_sigma_track_ok;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_model_element
+
+extern "C" void tao_model_element_to_c(
+    const Opaque_tao_model_element_class*,
+    CPP_tao_model_element&);
+
+// c_side.to_f2_arg
+extern "C" void tao_model_element_to_f2(
+    Opaque_tao_model_element_class*,
+    const CPP_beam&,
+    c_Bool&,
+    c_Bool&);
+
+extern "C" void tao_model_element_to_f(
+    const CPP_tao_model_element& C,
+    Opaque_tao_model_element_class* F) {
+  // c_side.to_f2_call
+  tao_model_element_to_f2(
+      F, C.beam, C.save_beam_internally, C.save_beam_to_file);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_model_element_to_c2(
+    CPP_tao_model_element& C,
+    const Opaque_beam_class* z_beam,
+    c_Bool& z_save_beam_internally,
+    c_Bool& z_save_beam_to_file) {
+  // c_side.to_c2_set[0D_NOT_type] CPP_beam
+  beam_to_c(z_beam, C.beam);
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.save_beam_internally = z_save_beam_internally;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.save_beam_to_file = z_save_beam_to_file;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_beam_branch
+
+extern "C" void tao_beam_branch_to_c(
+    const Opaque_tao_beam_branch_class*,
+    CPP_tao_beam_branch&);
+
+// c_side.to_f2_arg
+extern "C" void tao_beam_branch_to_f2(
+    Opaque_tao_beam_branch_class*,
+    const CPP_beam&,
+    const CPP_beam_init&,
+    const CPP_beam_init&,
+    c_Bool&,
+    c_Char,
+    c_Char,
+    c_Int&,
+    c_Int&,
+    c_Int&);
+
+extern "C" void tao_beam_branch_to_f(
+    const CPP_tao_beam_branch& C,
+    Opaque_tao_beam_branch_class* F) {
+  // c_side.to_f2_call
+  tao_beam_branch_to_f2(
+      F,
+      C.beam_at_start,
+      C.beam_init,
+      C.beam_init_used,
+      C.init_starting_distribution,
+      C.track_start.c_str(),
+      C.track_end.c_str(),
+      C.ix_branch,
+      C.ix_track_start,
+      C.ix_track_end);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_beam_branch_to_c2(
+    CPP_tao_beam_branch& C,
+    const Opaque_beam_class* z_beam_at_start,
+    const Opaque_beam_init_class* z_beam_init,
+    const Opaque_beam_init_class* z_beam_init_used,
+    c_Bool& z_init_starting_distribution,
+    c_Char z_track_start,
+    c_Char z_track_end,
+    c_Int& z_ix_branch,
+    c_Int& z_ix_track_start,
+    c_Int& z_ix_track_end) {
+  // c_side.to_c2_set[0D_NOT_type] CPP_beam
+  beam_to_c(z_beam_at_start, C.beam_at_start);
+  // c_side.to_c2_set[0D_NOT_type] CPP_beam_init
+  beam_init_to_c(z_beam_init, C.beam_init);
+  // c_side.to_c2_set[0D_NOT_type] CPP_beam_init
+  beam_init_to_c(z_beam_init_used, C.beam_init_used);
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.init_starting_distribution = z_init_starting_distribution;
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.track_start = std::string{z_track_start};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.track_end = std::string{z_track_end};
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_branch = z_ix_branch;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_track_start = z_ix_track_start;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_track_end = z_ix_track_end;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_d1_data
+
+extern "C" void tao_d1_data_to_c(
+    const Opaque_tao_d1_data_class*,
+    CPP_tao_d1_data&);
+
+// c_side.to_f2_arg
+extern "C" void tao_d1_data_to_f2(Opaque_tao_d1_data_class*, c_Char);
+
+extern "C" void tao_d1_data_to_f(
+    const CPP_tao_d1_data& C,
+    Opaque_tao_d1_data_class* F) {
+  // c_side.to_f2_call
+  tao_d1_data_to_f2(F, C.name.c_str());
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_d1_data_to_c2(CPP_tao_d1_data& C, c_Char z_name) {
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.name = std::string{z_name};
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_lattice
+
+extern "C" void tao_lattice_to_c(
+    const Opaque_tao_lattice_class*,
+    CPP_tao_lattice&);
+
+// c_side.to_f2_arg
+extern "C" void tao_lattice_to_f2(
+    Opaque_tao_lattice_class*,
+    c_Char,
+    const CPP_lat&,
+    const CPP_lat&,
+    const CPP_lat&,
+    const CPP_rad_int_all_ele&,
+    const CPP_rad_int_all_ele&,
+    const CPP_tao_lattice_branch**,
+    c_Int);
+
+extern "C" void tao_lattice_to_f(
+    const CPP_tao_lattice& C,
+    Opaque_tao_lattice_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_lattice_branch>
+  size_t n1_tao_branch = C.tao_branch.size();
+  const CPP_tao_lattice_branch** z_tao_branch = nullptr;
+  if (n1_tao_branch != 0) {
+    z_tao_branch = new const CPP_tao_lattice_branch*[n1_tao_branch];
+    for (size_t i{0}; i < n1_tao_branch; i++)
+      z_tao_branch[i] = &C.tao_branch[i];
+  }
+
+  // c_side.to_f2_call
+  tao_lattice_to_f2(
+      F,
+      C.name.c_str(),
+      C.lat,
+      C.high_E_lat,
+      C.low_E_lat,
+      C.rad_int_by_ele_ri,
+      C.rad_int_by_ele_6d,
+      z_tao_branch,
+      n1_tao_branch);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_tao_branch)
+    delete[] z_tao_branch;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_lattice_to_c2(
+    CPP_tao_lattice& C,
+    c_Char z_name,
+    const Opaque_lat_class* z_lat,
+    const Opaque_lat_class* z_high_E_lat,
+    const Opaque_lat_class* z_low_E_lat,
+    const Opaque_rad_int_all_ele_class* z_rad_int_by_ele_ri,
+    const Opaque_rad_int_all_ele_class* z_rad_int_by_ele_6d,
+    Opaque_tao_lattice_branch_class** z_tao_branch,
+    c_Int n1_tao_branch) {
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.name = std::string{z_name};
+  // c_side.to_c2_set[0D_NOT_type] CPP_lat
+  lat_to_c(z_lat, C.lat);
+  // c_side.to_c2_set[0D_NOT_type] CPP_lat
+  lat_to_c(z_high_E_lat, C.high_E_lat);
+  // c_side.to_c2_set[0D_NOT_type] CPP_lat
+  lat_to_c(z_low_E_lat, C.low_E_lat);
+  // c_side.to_c2_set[0D_NOT_type] CPP_rad_int_all_ele
+  rad_int_all_ele_to_c(z_rad_int_by_ele_ri, C.rad_int_by_ele_ri);
+  // c_side.to_c2_set[0D_NOT_type] CPP_rad_int_all_ele
+  rad_int_all_ele_to_c(z_rad_int_by_ele_6d, C.rad_int_by_ele_6d);
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_lattice_branch>
+  C.tao_branch.resize(n1_tao_branch);
+  for (size_t i{0}; i < n1_tao_branch; i++) {
+    tao_lattice_branch_to_c(z_tao_branch[i], C.tao_branch[i]);
+  }
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_beam_uni
+
+extern "C" void tao_beam_uni_to_c(
+    const Opaque_tao_beam_uni_class*,
+    CPP_tao_beam_uni&);
+
+// c_side.to_f2_arg
+extern "C" void tao_beam_uni_to_f2(
+    Opaque_tao_beam_uni_class*,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Bool&,
+    c_Bool&);
+
+extern "C" void tao_beam_uni_to_f(
+    const CPP_tao_beam_uni& C,
+    Opaque_tao_beam_uni_class* F) {
+  // c_side.to_f2_call
+  tao_beam_uni_to_f2(
+      F,
+      C.saved_at.c_str(),
+      C.dump_file.c_str(),
+      C.dump_at.c_str(),
+      C.track_beam_in_universe,
+      C.always_reinit);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_beam_uni_to_c2(
+    CPP_tao_beam_uni& C,
+    c_Char z_saved_at,
+    c_Char z_dump_file,
+    c_Char z_dump_at,
+    c_Bool& z_track_beam_in_universe,
+    c_Bool& z_always_reinit) {
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.saved_at = std::string{z_saved_at};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.dump_file = std::string{z_dump_file};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.dump_at = std::string{z_dump_at};
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.track_beam_in_universe = z_track_beam_in_universe;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.always_reinit = z_always_reinit;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_dynamic_aperture
+
+extern "C" void tao_dynamic_aperture_to_c(
+    const Opaque_tao_dynamic_aperture_class*,
+    CPP_tao_dynamic_aperture&);
+
+// c_side.to_f2_arg
+extern "C" void tao_dynamic_aperture_to_f2(
+    Opaque_tao_dynamic_aperture_class*,
+    const CPP_aperture_param&,
+    const CPP_aperture_scan**,
+    c_Int,
+    c_RealArr,
+    c_Int,
+    c_Real&,
+    c_Real&,
+    c_Real&);
+
+extern "C" void tao_dynamic_aperture_to_f(
+    const CPP_tao_dynamic_aperture& C,
+    Opaque_tao_dynamic_aperture_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_aperture_scan>
+  size_t n1_scan = C.scan.size();
+  const CPP_aperture_scan** z_scan = nullptr;
+  if (n1_scan != 0) {
+    z_scan = new const CPP_aperture_scan*[n1_scan];
+    for (size_t i{0}; i < n1_scan; i++)
+      z_scan[i] = &C.scan[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_real] VariableArray1D<Real>
+  size_t n1_pz = C.pz.size();
+  c_RealArr z_pz = nullptr;
+  if (n1_pz > 0) {
+    z_pz = &C.pz[0];
+  }
+
+  // c_side.to_f2_call
+  tao_dynamic_aperture_to_f2(
+      F,
+      C.param,
+      z_scan,
+      n1_scan,
+      z_pz,
+      n1_pz,
+      C.ellipse_scale,
+      C.a_emit,
+      C.b_emit);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_scan)
+    delete[] z_scan;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_dynamic_aperture_to_c2(
+    CPP_tao_dynamic_aperture& C,
+    const Opaque_aperture_param_class* z_param,
+    Opaque_aperture_scan_class** z_scan,
+    c_Int n1_scan,
+    c_RealArr z_pz,
+    c_Int n1_pz,
+    c_Real& z_ellipse_scale,
+    c_Real& z_a_emit,
+    c_Real& z_b_emit) {
+  // c_side.to_c2_set[0D_NOT_type] CPP_aperture_param
+  aperture_param_to_c(z_param, C.param);
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_aperture_scan>
+  C.scan.resize(n1_scan);
+  for (size_t i{0}; i < n1_scan; i++) {
+    aperture_scan_to_c(z_scan[i], C.scan[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_real] VariableArray1D<Real>
+  C.pz.resize(n1_pz);
+  C.pz << z_pz;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.ellipse_scale = z_ellipse_scale;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.a_emit = z_a_emit;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.b_emit = z_b_emit;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_model_branch
+
+extern "C" void tao_model_branch_to_c(
+    const Opaque_tao_model_branch_class*,
+    CPP_tao_model_branch&);
+
+// c_side.to_f2_arg
+extern "C" void tao_model_branch_to_f2(
+    Opaque_tao_model_branch_class*,
+    const CPP_tao_model_element**,
+    c_Int,
+    const CPP_tao_beam_branch&);
+
+extern "C" void tao_model_branch_to_f(
+    const CPP_tao_model_branch& C,
+    Opaque_tao_model_branch_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_model_element>
+  size_t n1_ele = C.ele.size();
+  const CPP_tao_model_element** z_ele = nullptr;
+  if (n1_ele != 0) {
+    z_ele = new const CPP_tao_model_element*[n1_ele];
+    for (size_t i{0}; i < n1_ele; i++)
+      z_ele[i] = &C.ele[i];
+  }
+
+  // c_side.to_f2_call
+  tao_model_branch_to_f2(F, z_ele, n1_ele, C.beam);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_ele)
+    delete[] z_ele;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_model_branch_to_c2(
+    CPP_tao_model_branch& C,
+    Opaque_tao_model_element_class** z_ele,
+    c_Int n1_ele,
+    const Opaque_tao_beam_branch_class* z_beam) {
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_model_element>
+  C.ele.resize(n1_ele);
+  for (size_t i{0}; i < n1_ele; i++) {
+    tao_model_element_to_c(z_ele[i], C.ele[i]);
+  }
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_beam_branch
+  tao_beam_branch_to_c(z_beam, C.beam);
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_d2_data
+
+extern "C" void tao_d2_data_to_c(
+    const Opaque_tao_d2_data_class*,
+    CPP_tao_d2_data&);
+
+// c_side.to_f2_arg
+extern "C" void tao_d2_data_to_f2(
+    Opaque_tao_d2_data_class*,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char*,
+    const CPP_tao_d1_data**,
+    c_Int,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Bool&,
+    c_Bool&);
+
+extern "C" void tao_d2_data_to_f(
+    const CPP_tao_d2_data& C,
+    Opaque_tao_d2_data_class* F) {
+  // c_side.to_f_setup[1D_NOT_character] FixedArray1D<string, 10>
+  c_Char z_descrip[10];
+  for (size_t i{0}; i < 10; i++) {
+    z_descrip[i] = C.descrip[i].c_str();
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_d1_data>
+  size_t n1_d1 = C.d1.size();
+  const CPP_tao_d1_data** z_d1 = nullptr;
+  if (n1_d1 != 0) {
+    z_d1 = new const CPP_tao_d1_data*[n1_d1];
+    for (size_t i{0}; i < n1_d1; i++)
+      z_d1[i] = &C.d1[i];
+  }
+
+  // c_side.to_f2_call
+  tao_d2_data_to_f2(
+      F,
+      C.name.c_str(),
+      C.data_file_name.c_str(),
+      C.ref_file_name.c_str(),
+      C.data_date.c_str(),
+      C.ref_date.c_str(),
+      z_descrip,
+      z_d1,
+      n1_d1,
+      C.ix_universe,
+      C.ix_d2_data,
+      C.ix_ref,
+      C.data_read_in,
+      C.ref_read_in);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_d1)
+    delete[] z_d1;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_d2_data_to_c2(
+    CPP_tao_d2_data& C,
+    c_Char z_name,
+    c_Char z_data_file_name,
+    c_Char z_ref_file_name,
+    c_Char z_data_date,
+    c_Char z_ref_date,
+    c_Char* z_descrip,
+    Opaque_tao_d1_data_class** z_d1,
+    c_Int n1_d1,
+    c_Int& z_ix_universe,
+    c_Int& z_ix_d2_data,
+    c_Int& z_ix_ref,
+    c_Bool& z_data_read_in,
+    c_Bool& z_ref_read_in) {
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.name = std::string{z_name};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.data_file_name = std::string{z_data_file_name};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.ref_file_name = std::string{z_ref_file_name};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.data_date = std::string{z_data_date};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.ref_date = std::string{z_ref_date};
+  // c_side.to_c2_set[1D_NOT_character] FixedArray1D<string, 10>
+  for (size_t i{0}; i < C.descrip.size(); i++)
+    C.descrip[i] = z_descrip[i];
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_d1_data>
+  C.d1.resize(n1_d1);
+  for (size_t i{0}; i < n1_d1; i++) {
+    tao_d1_data_to_c(z_d1[i], C.d1[i]);
+  }
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_universe = z_ix_universe;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_d2_data = z_ix_d2_data;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ref = z_ix_ref;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.data_read_in = z_data_read_in;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.ref_read_in = z_ref_read_in;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_spin_map
+
+extern "C" void tao_spin_map_to_c(
+    const Opaque_tao_spin_map_class*,
+    CPP_tao_spin_map&);
+
+// c_side.to_f2_arg
+extern "C" void tao_spin_map_to_f2(
+    Opaque_tao_spin_map_class*,
+    c_Bool&,
+    const CPP_spin_orbit_map1&,
+    const CPP_spin_axis&,
+    const CPP_spin_axis&,
+    const CPP_spin_axis&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_RealArr);
+
+extern "C" void tao_spin_map_to_f(
+    const CPP_tao_spin_map& C,
+    Opaque_tao_spin_map_class* F) {
+  // c_side.to_f_setup[2D_NOT_real] FixedArray2D<Real, 8, 8>
+  Real z_mat8[8 * 8];
+  matrix_to_vec(C.mat8, z_mat8);
+
+  // c_side.to_f2_call
+  tao_spin_map_to_f2(
+      F,
+      C.valid,
+      C.map1,
+      C.axis_input,
+      C.axis0,
+      C.axis1,
+      C.ix_ele,
+      C.ix_ref,
+      C.ix_uni,
+      C.ix_branch,
+      z_mat8);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_spin_map_to_c2(
+    CPP_tao_spin_map& C,
+    c_Bool& z_valid,
+    const Opaque_spin_orbit_map1_class* z_map1,
+    const Opaque_spin_axis_class* z_axis_input,
+    const Opaque_spin_axis_class* z_axis0,
+    const Opaque_spin_axis_class* z_axis1,
+    c_Int& z_ix_ele,
+    c_Int& z_ix_ref,
+    c_Int& z_ix_uni,
+    c_Int& z_ix_branch,
+    c_RealArr z_mat8) {
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.valid = z_valid;
+  // c_side.to_c2_set[0D_NOT_type] CPP_spin_orbit_map1
+  spin_orbit_map1_to_c(z_map1, C.map1);
+  // c_side.to_c2_set[0D_NOT_type] CPP_spin_axis
+  spin_axis_to_c(z_axis_input, C.axis_input);
+  // c_side.to_c2_set[0D_NOT_type] CPP_spin_axis
+  spin_axis_to_c(z_axis0, C.axis0);
+  // c_side.to_c2_set[0D_NOT_type] CPP_spin_axis
+  spin_axis_to_c(z_axis1, C.axis1);
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ele = z_ix_ele;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ref = z_ix_ref;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_uni = z_ix_uni;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_branch = z_ix_branch;
+  // c_side.to_c2_set[2D_NOT_real] FixedArray2D<Real, 8, 8>
+  C.mat8 << z_mat8;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_data
+
+extern "C" void tao_data_to_c(const Opaque_tao_data_class*, CPP_tao_data&);
+
+// c_side.to_f2_arg
+extern "C" void tao_data_to_f2(
+    Opaque_tao_data_class*,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Char,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    const CPP_tao_spin_map&,
+    const CPP_tao_d1_data*,
+    c_Int);
+
+extern "C" void tao_data_to_f(const CPP_tao_data& C, Opaque_tao_data_class* F) {
+  // c_side.to_f_setup[0D_PTR_type] std::optional<CPP_tao_d1_data>
+  auto n_d1 = C.d1 ? 1 : 0;
+
+  // c_side.to_f2_call
+  tao_data_to_f2(
+      F,
+      C.ele_name.c_str(),
+      C.ele_start_name.c_str(),
+      C.ele_ref_name.c_str(),
+      C.merit_type.c_str(),
+      C.id.c_str(),
+      C.data_source.c_str(),
+      C.why_invalid.c_str(),
+      C.ix_uni,
+      C.ix_bunch,
+      C.ix_branch,
+      C.ix_ele,
+      C.ix_ele_start,
+      C.ix_ele_ref,
+      C.ix_ele_merit,
+      C.ix_d1,
+      C.ix_data,
+      C.ix_dModel,
+      C.eval_point,
+      C.meas_value,
+      C.ref_value,
+      C.model_value,
+      C.design_value,
+      C.old_value,
+      C.base_value,
+      C.error_rms,
+      C.delta_merit,
+      C.weight,
+      C.invalid_value,
+      C.merit,
+      C.s,
+      C.s_offset,
+      C.err_message_printed,
+      C.exists,
+      C.good_model,
+      C.good_base,
+      C.good_design,
+      C.good_meas,
+      C.good_ref,
+      C.good_user,
+      C.good_opt,
+      C.good_plot,
+      C.useit_plot,
+      C.useit_opt,
+      C.spin_map,
+      (C.d1 ? &C.d1.value() : nullptr),
+      n_d1);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_data_to_c2(
+    CPP_tao_data& C,
+    c_Char z_ele_name,
+    c_Char z_ele_start_name,
+    c_Char z_ele_ref_name,
+    c_Char z_merit_type,
+    c_Char z_id,
+    c_Char z_data_source,
+    c_Char z_why_invalid,
+    c_Int& z_ix_uni,
+    c_Int& z_ix_bunch,
+    c_Int& z_ix_branch,
+    c_Int& z_ix_ele,
+    c_Int& z_ix_ele_start,
+    c_Int& z_ix_ele_ref,
+    c_Int& z_ix_ele_merit,
+    c_Int& z_ix_d1,
+    c_Int& z_ix_data,
+    c_Int& z_ix_dModel,
+    c_Int& z_eval_point,
+    c_Real& z_meas_value,
+    c_Real& z_ref_value,
+    c_Real& z_model_value,
+    c_Real& z_design_value,
+    c_Real& z_old_value,
+    c_Real& z_base_value,
+    c_Real& z_error_rms,
+    c_Real& z_delta_merit,
+    c_Real& z_weight,
+    c_Real& z_invalid_value,
+    c_Real& z_merit,
+    c_Real& z_s,
+    c_Real& z_s_offset,
+    c_Bool& z_err_message_printed,
+    c_Bool& z_exists,
+    c_Bool& z_good_model,
+    c_Bool& z_good_base,
+    c_Bool& z_good_design,
+    c_Bool& z_good_meas,
+    c_Bool& z_good_ref,
+    c_Bool& z_good_user,
+    c_Bool& z_good_opt,
+    c_Bool& z_good_plot,
+    c_Bool& z_useit_plot,
+    c_Bool& z_useit_opt,
+    const Opaque_tao_spin_map_class* z_spin_map,
+    Opaque_tao_d1_data_class* z_d1,
+    c_Int n_d1) {
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.ele_name = std::string{z_ele_name};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.ele_start_name = std::string{z_ele_start_name};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.ele_ref_name = std::string{z_ele_ref_name};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.merit_type = std::string{z_merit_type};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.id = std::string{z_id};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.data_source = std::string{z_data_source};
+  // c_side.to_c2_set[0D_NOT_character] string
+  C.why_invalid = std::string{z_why_invalid};
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_uni = z_ix_uni;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_bunch = z_ix_bunch;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_branch = z_ix_branch;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ele = z_ix_ele;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ele_start = z_ix_ele_start;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ele_ref = z_ix_ele_ref;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_ele_merit = z_ix_ele_merit;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_d1 = z_ix_d1;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_data = z_ix_data;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_dModel = z_ix_dModel;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.eval_point = z_eval_point;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.meas_value = z_meas_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.ref_value = z_ref_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.model_value = z_model_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.design_value = z_design_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.old_value = z_old_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.base_value = z_base_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.error_rms = z_error_rms;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.delta_merit = z_delta_merit;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.weight = z_weight;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.invalid_value = z_invalid_value;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.merit = z_merit;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.s = z_s;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.s_offset = z_s_offset;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.err_message_printed = z_err_message_printed;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.exists = z_exists;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_model = z_good_model;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_base = z_good_base;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_design = z_good_design;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_meas = z_good_meas;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_ref = z_good_ref;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_user = z_good_user;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_opt = z_good_opt;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.good_plot = z_good_plot;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.useit_plot = z_useit_plot;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.useit_opt = z_useit_opt;
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_spin_map
+  tao_spin_map_to_c(z_spin_map, C.spin_map);
+  // c_side.to_c2_set[0D_PTR_type] std::optional<CPP_tao_d1_data>
+  if (n_d1 == 0) {
+    C.d1.reset();
+  } else {
+    C.d1.emplace();
+    tao_d1_data_to_c(z_d1, C.d1.value());
+  }
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_ping_scale
+
+extern "C" void tao_ping_scale_to_c(
+    const Opaque_tao_ping_scale_class*,
+    CPP_tao_ping_scale&);
+
+// c_side.to_f2_arg
+extern "C" void tao_ping_scale_to_f2(
+    Opaque_tao_ping_scale_class*,
+    c_Real&,
+    c_Real&,
+    c_Real&,
+    c_Real&);
+
+extern "C" void tao_ping_scale_to_f(
+    const CPP_tao_ping_scale& C,
+    Opaque_tao_ping_scale_class* F) {
+  // c_side.to_f2_call
+  tao_ping_scale_to_f2(
+      F, C.a_mode_meas, C.a_mode_ref, C.b_mode_meas, C.b_mode_ref);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_ping_scale_to_c2(
+    CPP_tao_ping_scale& C,
+    c_Real& z_a_mode_meas,
+    c_Real& z_a_mode_ref,
+    c_Real& z_b_mode_meas,
+    c_Real& z_b_mode_ref) {
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.a_mode_meas = z_a_mode_meas;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.a_mode_ref = z_a_mode_ref;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.b_mode_meas = z_b_mode_meas;
+  // c_side.to_c2_set[0D_NOT_real] Real
+  C.b_mode_ref = z_b_mode_ref;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_universe_calc
+
+extern "C" void tao_universe_calc_to_c(
+    const Opaque_tao_universe_calc_class*,
+    CPP_tao_universe_calc&);
+
+// c_side.to_f2_arg
+extern "C" void tao_universe_calc_to_f2(
+    Opaque_tao_universe_calc_class*,
+    c_Int&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&);
+
+extern "C" void tao_universe_calc_to_f(
+    const CPP_tao_universe_calc& C,
+    Opaque_tao_universe_calc_class* F) {
+  // c_side.to_f2_call
+  tao_universe_calc_to_f2(
+      F,
+      C.srdt_for_data,
+      C.rad_int_for_data,
+      C.rad_int_for_plotting,
+      C.chrom_for_data,
+      C.chrom_for_plotting,
+      C.lat_sigma_for_data,
+      C.lat_sigma_for_plotting,
+      C.dynamic_aperture,
+      C.one_turn_map,
+      C.lattice,
+      C.twiss,
+      C.track,
+      C.spin_matrices);
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_universe_calc_to_c2(
+    CPP_tao_universe_calc& C,
+    c_Int& z_srdt_for_data,
+    c_Bool& z_rad_int_for_data,
+    c_Bool& z_rad_int_for_plotting,
+    c_Bool& z_chrom_for_data,
+    c_Bool& z_chrom_for_plotting,
+    c_Bool& z_lat_sigma_for_data,
+    c_Bool& z_lat_sigma_for_plotting,
+    c_Bool& z_dynamic_aperture,
+    c_Bool& z_one_turn_map,
+    c_Bool& z_lattice,
+    c_Bool& z_twiss,
+    c_Bool& z_track,
+    c_Bool& z_spin_matrices) {
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.srdt_for_data = z_srdt_for_data;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.rad_int_for_data = z_rad_int_for_data;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.rad_int_for_plotting = z_rad_int_for_plotting;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.chrom_for_data = z_chrom_for_data;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.chrom_for_plotting = z_chrom_for_plotting;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.lat_sigma_for_data = z_lat_sigma_for_data;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.lat_sigma_for_plotting = z_lat_sigma_for_plotting;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.dynamic_aperture = z_dynamic_aperture;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.one_turn_map = z_one_turn_map;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.lattice = z_lattice;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.twiss = z_twiss;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.track = z_track;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.spin_matrices = z_spin_matrices;
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_lat_ele_order
+
+extern "C" void lat_ele_order_to_c(
+    const Opaque_lat_ele_order_class*,
+    CPP_lat_ele_order&);
+
+// c_side.to_f2_arg
+extern "C" void lat_ele_order_to_f2(
+    Opaque_lat_ele_order_class*,
+    const CPP_lat_ele_order_array**,
+    c_Int);
+
+extern "C" void lat_ele_order_to_f(
+    const CPP_lat_ele_order& C,
+    Opaque_lat_ele_order_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_lat_ele_order_array>
+  size_t n1_branch = C.branch.size();
+  const CPP_lat_ele_order_array** z_branch = nullptr;
+  if (n1_branch != 0) {
+    z_branch = new const CPP_lat_ele_order_array*[n1_branch];
+    for (size_t i{0}; i < n1_branch; i++)
+      z_branch[i] = &C.branch[i];
+  }
+
+  // c_side.to_f2_call
+  lat_ele_order_to_f2(F, z_branch, n1_branch);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_branch)
+    delete[] z_branch;
+}
+
+// c_side.to_c2_arg
+extern "C" void lat_ele_order_to_c2(
+    CPP_lat_ele_order& C,
+    Opaque_lat_ele_order_array_class** z_branch,
+    c_Int n1_branch) {
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_lat_ele_order_array>
+  C.branch.resize(n1_branch);
+  for (size_t i{0}; i < n1_branch; i++) {
+    lat_ele_order_array_to_c(z_branch[i], C.branch[i]);
+  }
+}
+
+//--------------------------------------------------------------------
+//--------------------------------------------------------------------
+// CPP_tao_universe
+
+extern "C" void tao_universe_to_c(
+    const Opaque_tao_universe_class*,
+    CPP_tao_universe&);
+
+// c_side.to_f2_arg
+extern "C" void tao_universe_to_f2(
+    Opaque_tao_universe_class*,
+    const CPP_tao_beam_uni&,
+    const CPP_tao_dynamic_aperture&,
+    const CPP_tao_d2_data**,
+    c_Int,
+    const CPP_tao_data**,
+    c_Int,
+    const CPP_tao_ping_scale&,
+    const CPP_lat&,
+    const CPP_tao_universe_calc&,
+    const CPP_lat_ele_order&,
+    const CPP_tao_spin_map&,
+    c_RealArr,
+    c_Int,
+    c_Int,
+    c_Int&,
+    c_Int&,
+    c_Int&,
+    c_Bool&,
+    c_Bool&,
+    c_Bool&);
+
+extern "C" void tao_universe_to_f(
+    const CPP_tao_universe& C,
+    Opaque_tao_universe_class* F) {
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_d2_data>
+  size_t n1_d2_data = C.d2_data.size();
+  const CPP_tao_d2_data** z_d2_data = nullptr;
+  if (n1_d2_data != 0) {
+    z_d2_data = new const CPP_tao_d2_data*[n1_d2_data];
+    for (size_t i{0}; i < n1_d2_data; i++)
+      z_d2_data[i] = &C.d2_data[i];
+  }
+  // c_side.to_f_setup[1D_ALLOC_type] VariableArray1D<CPP_tao_data>
+  size_t n1_data = C.data.size();
+  const CPP_tao_data** z_data = nullptr;
+  if (n1_data != 0) {
+    z_data = new const CPP_tao_data*[n1_data];
+    for (size_t i{0}; i < n1_data; i++)
+      z_data[i] = &C.data[i];
+  }
+  // c_side.to_f_setup[2D_ALLOC_real] VariableArray2D<Real>
+  size_t n1_dModel_dVar{C.dModel_dVar.size()};
+  size_t n2_dModel_dVar{size_t{0}};
+  Real* z_dModel_dVar = nullptr;
+  if (n1_dModel_dVar > 0) {
+    n2_dModel_dVar = C.dModel_dVar[0].size();
+    z_dModel_dVar = new Real[n1_dModel_dVar * n2_dModel_dVar];
+    matrix_to_vec(C.dModel_dVar, z_dModel_dVar);
+  }
+
+  // c_side.to_f2_call
+  tao_universe_to_f2(
+      F,
+      C.beam,
+      C.dynamic_aperture,
+      z_d2_data,
+      n1_d2_data,
+      z_data,
+      n1_data,
+      C.ping_scale,
+      C.scratch_lat,
+      C.calc,
+      C.ele_order,
+      C.spin_map,
+      z_dModel_dVar,
+      n1_dModel_dVar,
+      n2_dModel_dVar,
+      C.ix_uni,
+      C.n_d2_data_used,
+      C.n_data_used,
+      C.is_on,
+      C.design_same_as_previous,
+      C.picked_uni);
+
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_d2_data)
+    delete[] z_d2_data;
+  // c_side.to_f_cleanup[1D_ALLOC_type]
+  if (z_data)
+    delete[] z_data;
+  // c_side.to_f_cleanup[2D_ALLOC_real]
+  if (z_dModel_dVar)
+    delete[] z_dModel_dVar;
+}
+
+// c_side.to_c2_arg
+extern "C" void tao_universe_to_c2(
+    CPP_tao_universe& C,
+    const Opaque_tao_beam_uni_class* z_beam,
+    const Opaque_tao_dynamic_aperture_class* z_dynamic_aperture,
+    Opaque_tao_d2_data_class** z_d2_data,
+    c_Int n1_d2_data,
+    Opaque_tao_data_class** z_data,
+    c_Int n1_data,
+    const Opaque_tao_ping_scale_class* z_ping_scale,
+    const Opaque_lat_class* z_scratch_lat,
+    const Opaque_tao_universe_calc_class* z_calc,
+    const Opaque_lat_ele_order_class* z_ele_order,
+    const Opaque_tao_spin_map_class* z_spin_map,
+    c_RealArr z_dModel_dVar,
+    c_Int n1_dModel_dVar,
+    c_Int n2_dModel_dVar,
+    c_Int& z_ix_uni,
+    c_Int& z_n_d2_data_used,
+    c_Int& z_n_data_used,
+    c_Bool& z_is_on,
+    c_Bool& z_design_same_as_previous,
+    c_Bool& z_picked_uni) {
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_beam_uni
+  tao_beam_uni_to_c(z_beam, C.beam);
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_dynamic_aperture
+  tao_dynamic_aperture_to_c(z_dynamic_aperture, C.dynamic_aperture);
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_d2_data>
+  C.d2_data.resize(n1_d2_data);
+  for (size_t i{0}; i < n1_d2_data; i++) {
+    tao_d2_data_to_c(z_d2_data[i], C.d2_data[i]);
+  }
+  // c_side.to_c2_set[1D_ALLOC_type] VariableArray1D<CPP_tao_data>
+  C.data.resize(n1_data);
+  for (size_t i{0}; i < n1_data; i++) {
+    tao_data_to_c(z_data[i], C.data[i]);
+  }
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_ping_scale
+  tao_ping_scale_to_c(z_ping_scale, C.ping_scale);
+  // c_side.to_c2_set[0D_NOT_type] CPP_lat
+  lat_to_c(z_scratch_lat, C.scratch_lat);
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_universe_calc
+  tao_universe_calc_to_c(z_calc, C.calc);
+  // c_side.to_c2_set[0D_NOT_type] CPP_lat_ele_order
+  lat_ele_order_to_c(z_ele_order, C.ele_order);
+  // c_side.to_c2_set[0D_NOT_type] CPP_tao_spin_map
+  tao_spin_map_to_c(z_spin_map, C.spin_map);
+  // c_side.to_c2_set[2D_ALLOC_real] VariableArray2D<Real>
+  C.dModel_dVar.resize(n1_dModel_dVar);
+  for (size_t i{0}; i < n1_dModel_dVar; i++)
+    C.dModel_dVar[i].resize(n2_dModel_dVar);
+  C.dModel_dVar << z_dModel_dVar;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.ix_uni = z_ix_uni;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.n_d2_data_used = z_n_d2_data_used;
+  // c_side.to_c2_set[0D_NOT_integer] Int
+  C.n_data_used = z_n_data_used;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.is_on = z_is_on;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.design_same_as_previous = z_design_same_as_previous;
+  // c_side.to_c2_set[0D_NOT_logical] Bool
+  C.picked_uni = z_picked_uni;
+}

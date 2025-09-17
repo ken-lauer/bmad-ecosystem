@@ -6,6 +6,7 @@ use bmad_cpp_convert_mod
 use equality_mod
 use bmad_json
 use sim_utils_json
+use tao_json
 
 contains
 
@@ -15044,5 +15045,4556 @@ call set_coord_test_pattern (F%ref_orb, ix_patt)
 rhs = 4 + offset; F%pz_start = rhs
 
 end subroutine set_aperture_scan_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_spin_dn_dpz (ok)
+
+implicit none
+
+type(tao_spin_dn_dpz_struct), target :: f_tao_spin_dn_dpz, f2_tao_spin_dn_dpz
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_spin_dn_dpz (c_tao_spin_dn_dpz, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_spin_dn_dpz
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_spin_dn_dpz_test_pattern (f2_tao_spin_dn_dpz, 1)
+
+call test_c_tao_spin_dn_dpz(c_loc(f2_tao_spin_dn_dpz), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_spin_dn_dpz_test_pattern (f_tao_spin_dn_dpz, 4)
+if (f_tao_spin_dn_dpz == f2_tao_spin_dn_dpz) then
+  print *, '[4] tao_spin_dn_dpz: C side convert C->F: Good'
+else
+  print *, '[4] tao_spin_dn_dpz: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_spin_dn_dpz_struct_to_json(f_tao_spin_dn_dpz, json_root)
+  call json%print(json_root, 'test_f_tao_spin_dn_dpz_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_dn_dpz_struct_to_json(f2_tao_spin_dn_dpz, json_root)
+  call json%print(json_root, 'test_f_tao_spin_dn_dpz_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_dn_dpz_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_dn_dpz_test_pattern (f_tao_spin_dn_dpz, -1)
+call set_tao_spin_dn_dpz_test_pattern (f2_tao_spin_dn_dpz, -1)
+
+end subroutine test1_f_tao_spin_dn_dpz
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_spin_dn_dpz (c_tao_spin_dn_dpz, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_spin_dn_dpz
+type(tao_spin_dn_dpz_struct), target :: f_tao_spin_dn_dpz, f2_tao_spin_dn_dpz
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_spin_dn_dpz_to_f (c_tao_spin_dn_dpz, c_loc(f_tao_spin_dn_dpz))
+
+call set_tao_spin_dn_dpz_test_pattern (f2_tao_spin_dn_dpz, 2)
+if (f_tao_spin_dn_dpz == f2_tao_spin_dn_dpz) then
+  print *, '[2] tao_spin_dn_dpz: F side convert C->F: Good'
+else
+  print *, '[2] tao_spin_dn_dpz: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_spin_dn_dpz_struct_to_json(f_tao_spin_dn_dpz, json_root)
+  call json%print(json_root, 'test_f_tao_spin_dn_dpz_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_dn_dpz_struct_to_json(f2_tao_spin_dn_dpz, json_root)
+  call json%print(json_root, 'test_f_tao_spin_dn_dpz_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_dn_dpz_pattern_2_*.json)'
+
+endif
+
+call set_tao_spin_dn_dpz_test_pattern (f2_tao_spin_dn_dpz, 3)
+call tao_spin_dn_dpz_to_c (c_loc(f2_tao_spin_dn_dpz), c_tao_spin_dn_dpz)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_dn_dpz_test_pattern (f_tao_spin_dn_dpz, -1)
+call set_tao_spin_dn_dpz_test_pattern (f2_tao_spin_dn_dpz, -1)
+
+end subroutine test2_f_tao_spin_dn_dpz
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_spin_dn_dpz_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_spin_dn_dpz_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%vec,1); lb1 = lbound(F%vec,1) - 1
+  rhs = 100 + jd1 + 1 + offset
+  F%vec(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 3, 3>
+do jd1 = 1, size(F%partial,1); lb1 = lbound(F%partial,1) - 1
+  do jd2 = 1, size(F%partial,2); lb2 = lbound(F%partial,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 2 + offset
+    F%partial(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 3, 3>
+do jd1 = 1, size(F%partial2,1); lb1 = lbound(F%partial2,1) - 1
+  do jd2 = 1, size(F%partial2,2); lb2 = lbound(F%partial2,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 3 + offset
+    F%partial2(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+
+end subroutine set_tao_spin_dn_dpz_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_resonance_h (ok)
+
+implicit none
+
+type(resonance_h_struct), target :: f_resonance_h, f2_resonance_h
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_resonance_h (c_resonance_h, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_resonance_h
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_resonance_h_test_pattern (f2_resonance_h, 1)
+
+call test_c_resonance_h(c_loc(f2_resonance_h), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_resonance_h_test_pattern (f_resonance_h, 4)
+if (f_resonance_h == f2_resonance_h) then
+  print *, '[4] resonance_h: C side convert C->F: Good'
+else
+  print *, '[4] resonance_h: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call resonance_h_struct_to_json(f_resonance_h, json_root)
+  call json%print(json_root, 'test_f_resonance_h_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call resonance_h_struct_to_json(f2_resonance_h, json_root)
+  call json%print(json_root, 'test_f_resonance_h_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_resonance_h_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_resonance_h_test_pattern (f_resonance_h, -1)
+call set_resonance_h_test_pattern (f2_resonance_h, -1)
+
+end subroutine test1_f_resonance_h
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_resonance_h (c_resonance_h, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_resonance_h
+type(resonance_h_struct), target :: f_resonance_h, f2_resonance_h
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call resonance_h_to_f (c_resonance_h, c_loc(f_resonance_h))
+
+call set_resonance_h_test_pattern (f2_resonance_h, 2)
+if (f_resonance_h == f2_resonance_h) then
+  print *, '[2] resonance_h: F side convert C->F: Good'
+else
+  print *, '[2] resonance_h: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call resonance_h_struct_to_json(f_resonance_h, json_root)
+  call json%print(json_root, 'test_f_resonance_h_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call resonance_h_struct_to_json(f2_resonance_h, json_root)
+  call json%print(json_root, 'test_f_resonance_h_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_resonance_h_pattern_2_*.json)'
+
+endif
+
+call set_resonance_h_test_pattern (f2_resonance_h, 3)
+call resonance_h_to_c (c_loc(f2_resonance_h), c_resonance_h)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_resonance_h_test_pattern (f_resonance_h, -1)
+call set_resonance_h_test_pattern (f2_resonance_h, -1)
+
+end subroutine test2_f_resonance_h
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_resonance_h_test_pattern (F, ix_patt)
+
+implicit none
+
+type(resonance_h_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%id)
+  F%id(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 2 + offset; F%c_val = cmplx(rhs, 100+rhs)
+
+end subroutine set_resonance_h_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_spin_orbit_map1 (ok)
+
+implicit none
+
+type(spin_orbit_map1_struct), target :: f_spin_orbit_map1, f2_spin_orbit_map1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_spin_orbit_map1 (c_spin_orbit_map1, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_spin_orbit_map1
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_spin_orbit_map1_test_pattern (f2_spin_orbit_map1, 1)
+
+call test_c_spin_orbit_map1(c_loc(f2_spin_orbit_map1), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_spin_orbit_map1_test_pattern (f_spin_orbit_map1, 4)
+if (f_spin_orbit_map1 == f2_spin_orbit_map1) then
+  print *, '[4] spin_orbit_map1: C side convert C->F: Good'
+else
+  print *, '[4] spin_orbit_map1: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call spin_orbit_map1_struct_to_json(f_spin_orbit_map1, json_root)
+  call json%print(json_root, 'test_f_spin_orbit_map1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spin_orbit_map1_struct_to_json(f2_spin_orbit_map1, json_root)
+  call json%print(json_root, 'test_f_spin_orbit_map1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spin_orbit_map1_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spin_orbit_map1_test_pattern (f_spin_orbit_map1, -1)
+call set_spin_orbit_map1_test_pattern (f2_spin_orbit_map1, -1)
+
+end subroutine test1_f_spin_orbit_map1
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_spin_orbit_map1 (c_spin_orbit_map1, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_spin_orbit_map1
+type(spin_orbit_map1_struct), target :: f_spin_orbit_map1, f2_spin_orbit_map1
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call spin_orbit_map1_to_f (c_spin_orbit_map1, c_loc(f_spin_orbit_map1))
+
+call set_spin_orbit_map1_test_pattern (f2_spin_orbit_map1, 2)
+if (f_spin_orbit_map1 == f2_spin_orbit_map1) then
+  print *, '[2] spin_orbit_map1: F side convert C->F: Good'
+else
+  print *, '[2] spin_orbit_map1: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call spin_orbit_map1_struct_to_json(f_spin_orbit_map1, json_root)
+  call json%print(json_root, 'test_f_spin_orbit_map1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spin_orbit_map1_struct_to_json(f2_spin_orbit_map1, json_root)
+  call json%print(json_root, 'test_f_spin_orbit_map1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spin_orbit_map1_pattern_2_*.json)'
+
+endif
+
+call set_spin_orbit_map1_test_pattern (f2_spin_orbit_map1, 3)
+call spin_orbit_map1_to_c (c_loc(f2_spin_orbit_map1), c_spin_orbit_map1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spin_orbit_map1_test_pattern (f_spin_orbit_map1, -1)
+call set_spin_orbit_map1_test_pattern (f2_spin_orbit_map1, -1)
+
+end subroutine test2_f_spin_orbit_map1
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_spin_orbit_map1_test_pattern (F, ix_patt)
+
+implicit none
+
+type(spin_orbit_map1_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
+do jd1 = 1, size(F%orb_mat,1); lb1 = lbound(F%orb_mat,1) - 1
+  do jd2 = 1, size(F%orb_mat,2); lb2 = lbound(F%orb_mat,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 1 + offset
+    F%orb_mat(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
+do jd1 = 1, size(F%vec0,1); lb1 = lbound(F%vec0,1) - 1
+  rhs = 100 + jd1 + 2 + offset
+  F%vec0(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 4, 7>
+do jd1 = 1, size(F%spin_q,1); lb1 = lbound(F%spin_q,1) - 1
+  do jd2 = 1, size(F%spin_q,2); lb2 = lbound(F%spin_q,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 3 + offset
+    F%spin_q(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+
+end subroutine set_spin_orbit_map1_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_spin_axis (ok)
+
+implicit none
+
+type(spin_axis_struct), target :: f_spin_axis, f2_spin_axis
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_spin_axis (c_spin_axis, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_spin_axis
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_spin_axis_test_pattern (f2_spin_axis, 1)
+
+call test_c_spin_axis(c_loc(f2_spin_axis), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_spin_axis_test_pattern (f_spin_axis, 4)
+if (f_spin_axis == f2_spin_axis) then
+  print *, '[4] spin_axis: C side convert C->F: Good'
+else
+  print *, '[4] spin_axis: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call spin_axis_struct_to_json(f_spin_axis, json_root)
+  call json%print(json_root, 'test_f_spin_axis_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spin_axis_struct_to_json(f2_spin_axis, json_root)
+  call json%print(json_root, 'test_f_spin_axis_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spin_axis_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spin_axis_test_pattern (f_spin_axis, -1)
+call set_spin_axis_test_pattern (f2_spin_axis, -1)
+
+end subroutine test1_f_spin_axis
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_spin_axis (c_spin_axis, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_spin_axis
+type(spin_axis_struct), target :: f_spin_axis, f2_spin_axis
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call spin_axis_to_f (c_spin_axis, c_loc(f_spin_axis))
+
+call set_spin_axis_test_pattern (f2_spin_axis, 2)
+if (f_spin_axis == f2_spin_axis) then
+  print *, '[2] spin_axis: F side convert C->F: Good'
+else
+  print *, '[2] spin_axis: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call spin_axis_struct_to_json(f_spin_axis, json_root)
+  call json%print(json_root, 'test_f_spin_axis_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call spin_axis_struct_to_json(f2_spin_axis, json_root)
+  call json%print(json_root, 'test_f_spin_axis_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_spin_axis_pattern_2_*.json)'
+
+endif
+
+call set_spin_axis_test_pattern (f2_spin_axis, 3)
+call spin_axis_to_c (c_loc(f2_spin_axis), c_spin_axis)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_spin_axis_test_pattern (f_spin_axis, -1)
+call set_spin_axis_test_pattern (f2_spin_axis, -1)
+
+end subroutine test2_f_spin_axis
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_spin_axis_test_pattern (F, ix_patt)
+
+implicit none
+
+type(spin_axis_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%l,1); lb1 = lbound(F%l,1) - 1
+  rhs = 100 + jd1 + 1 + offset
+  F%l(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%n0,1); lb1 = lbound(F%n0,1) - 1
+  rhs = 100 + jd1 + 2 + offset
+  F%n0(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%m,1); lb1 = lbound(F%m,1) - 1
+  rhs = 100 + jd1 + 3 + offset
+  F%m(jd1+lb1) = rhs
+enddo
+
+end subroutine set_spin_axis_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_ptc_normal_form (ok)
+
+implicit none
+
+type(ptc_normal_form_struct), target :: f_ptc_normal_form, f2_ptc_normal_form
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_ptc_normal_form (c_ptc_normal_form, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_ptc_normal_form
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_ptc_normal_form_test_pattern (f2_ptc_normal_form, 1)
+
+call test_c_ptc_normal_form(c_loc(f2_ptc_normal_form), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_ptc_normal_form_test_pattern (f_ptc_normal_form, 4)
+if (f_ptc_normal_form == f2_ptc_normal_form) then
+  print *, '[4] ptc_normal_form: C side convert C->F: Good'
+else
+  print *, '[4] ptc_normal_form: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call ptc_normal_form_struct_to_json(f_ptc_normal_form, json_root)
+  call json%print(json_root, 'test_f_ptc_normal_form_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ptc_normal_form_struct_to_json(f2_ptc_normal_form, json_root)
+  call json%print(json_root, 'test_f_ptc_normal_form_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ptc_normal_form_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ptc_normal_form_test_pattern (f_ptc_normal_form, -1)
+call set_ptc_normal_form_test_pattern (f2_ptc_normal_form, -1)
+
+end subroutine test1_f_ptc_normal_form
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_ptc_normal_form (c_ptc_normal_form, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_ptc_normal_form
+type(ptc_normal_form_struct), target :: f_ptc_normal_form, f2_ptc_normal_form
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call ptc_normal_form_to_f (c_ptc_normal_form, c_loc(f_ptc_normal_form))
+
+call set_ptc_normal_form_test_pattern (f2_ptc_normal_form, 2)
+if (f_ptc_normal_form == f2_ptc_normal_form) then
+  print *, '[2] ptc_normal_form: F side convert C->F: Good'
+else
+  print *, '[2] ptc_normal_form: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call ptc_normal_form_struct_to_json(f_ptc_normal_form, json_root)
+  call json%print(json_root, 'test_f_ptc_normal_form_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call ptc_normal_form_struct_to_json(f2_ptc_normal_form, json_root)
+  call json%print(json_root, 'test_f_ptc_normal_form_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_ptc_normal_form_pattern_2_*.json)'
+
+endif
+
+call set_ptc_normal_form_test_pattern (f2_ptc_normal_form, 3)
+call ptc_normal_form_to_c (c_loc(f2_ptc_normal_form), c_ptc_normal_form)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_ptc_normal_form_test_pattern (f_ptc_normal_form, -1)
+call set_ptc_normal_form_test_pattern (f2_ptc_normal_form, -1)
+
+end subroutine test2_f_ptc_normal_form
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_ptc_normal_form_test_pattern (F, ix_patt)
+
+implicit none
+
+type(ptc_normal_form_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_ele>
+if (ix_patt < 3) then
+  if (associated(F%ele_origin)) then
+    call set_ele_test_pattern (F%ele_origin, -1)
+    deallocate (F%ele_origin)
+  endif
+else
+  if (.not. associated(F%ele_origin)) allocate (F%ele_origin)
+  rhs = 1 + offset
+  call set_ele_test_pattern (F%ele_origin, ix_patt)
+endif
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
+do jd1 = 1, size(F%orb0,1); lb1 = lbound(F%orb0,1) - 1
+  rhs = 100 + jd1 + 3 + offset
+  F%orb0(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 4 + offset; F%valid_map = (modulo(rhs, 2) == 0)
+
+end subroutine set_ptc_normal_form_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_bmad_normal_form (ok)
+
+implicit none
+
+type(bmad_normal_form_struct), target :: f_bmad_normal_form, f2_bmad_normal_form
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_bmad_normal_form (c_bmad_normal_form, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_bmad_normal_form
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_bmad_normal_form_test_pattern (f2_bmad_normal_form, 1)
+
+call test_c_bmad_normal_form(c_loc(f2_bmad_normal_form), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_bmad_normal_form_test_pattern (f_bmad_normal_form, 4)
+if (f_bmad_normal_form == f2_bmad_normal_form) then
+  print *, '[4] bmad_normal_form: C side convert C->F: Good'
+else
+  print *, '[4] bmad_normal_form: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call bmad_normal_form_struct_to_json(f_bmad_normal_form, json_root)
+  call json%print(json_root, 'test_f_bmad_normal_form_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bmad_normal_form_struct_to_json(f2_bmad_normal_form, json_root)
+  call json%print(json_root, 'test_f_bmad_normal_form_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bmad_normal_form_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bmad_normal_form_test_pattern (f_bmad_normal_form, -1)
+call set_bmad_normal_form_test_pattern (f2_bmad_normal_form, -1)
+
+end subroutine test1_f_bmad_normal_form
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_bmad_normal_form (c_bmad_normal_form, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_bmad_normal_form
+type(bmad_normal_form_struct), target :: f_bmad_normal_form, f2_bmad_normal_form
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call bmad_normal_form_to_f (c_bmad_normal_form, c_loc(f_bmad_normal_form))
+
+call set_bmad_normal_form_test_pattern (f2_bmad_normal_form, 2)
+if (f_bmad_normal_form == f2_bmad_normal_form) then
+  print *, '[2] bmad_normal_form: F side convert C->F: Good'
+else
+  print *, '[2] bmad_normal_form: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bmad_normal_form_struct_to_json(f_bmad_normal_form, json_root)
+  call json%print(json_root, 'test_f_bmad_normal_form_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bmad_normal_form_struct_to_json(f2_bmad_normal_form, json_root)
+  call json%print(json_root, 'test_f_bmad_normal_form_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bmad_normal_form_pattern_2_*.json)'
+
+endif
+
+call set_bmad_normal_form_test_pattern (f2_bmad_normal_form, 3)
+call bmad_normal_form_to_c (c_loc(f2_bmad_normal_form), c_bmad_normal_form)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bmad_normal_form_test_pattern (f_bmad_normal_form, -1)
+call set_bmad_normal_form_test_pattern (f2_bmad_normal_form, -1)
+
+end subroutine test2_f_bmad_normal_form
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_bmad_normal_form_test_pattern (F, ix_patt)
+
+implicit none
+
+type(bmad_normal_form_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_ele>
+if (ix_patt < 3) then
+  if (associated(F%ele_origin)) then
+    call set_ele_test_pattern (F%ele_origin, -1)
+    deallocate (F%ele_origin)
+  endif
+else
+  if (.not. associated(F%ele_origin)) allocate (F%ele_origin)
+  rhs = 1 + offset
+  call set_ele_test_pattern (F%ele_origin, ix_patt)
+endif
+!! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%M,1), ubound(F%M,1)
+    call set_taylor_test_pattern (F%M(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%M,1)
+    lb1 = lbound(F%M,1) - 1
+    rhs = 100 + jd1 + 3 + offset
+    call set_taylor_test_pattern (F%M(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%A,1), ubound(F%A,1)
+    call set_taylor_test_pattern (F%A(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%A,1)
+    lb1 = lbound(F%A,1) - 1
+    rhs = 100 + jd1 + 4 + offset
+    call set_taylor_test_pattern (F%A(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%A_inv,1), ubound(F%A_inv,1)
+    call set_taylor_test_pattern (F%A_inv(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%A_inv,1)
+    lb1 = lbound(F%A_inv,1) - 1
+    rhs = 100 + jd1 + 5 + offset
+    call set_taylor_test_pattern (F%A_inv(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_taylor, 6>
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%dhdj,1), ubound(F%dhdj,1)
+    call set_taylor_test_pattern (F%dhdj(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%dhdj,1)
+    lb1 = lbound(F%dhdj,1) - 1
+    rhs = 100 + jd1 + 6 + offset
+    call set_taylor_test_pattern (F%dhdj(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_complex_taylor, 6>
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%F,1), ubound(F%F,1)
+    call set_complex_taylor_test_pattern (F%F(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%F,1)
+    lb1 = lbound(F%F,1) - 1
+    rhs = 100 + jd1 + 7 + offset
+    call set_complex_taylor_test_pattern (F%F(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_NOT_type] FixedArray1D<CPP_complex_taylor, 6>
+if (ix_patt < 0) then
+  ! pattern < 0 means clean up memory
+  do jd1 = lbound(F%L,1), ubound(F%L,1)
+    call set_complex_taylor_test_pattern (F%L(jd1), -1)
+  enddo
+else
+  do jd1 = 1, size(F%L,1)
+    lb1 = lbound(F%L,1) - 1
+    rhs = 100 + jd1 + 8 + offset
+    call set_complex_taylor_test_pattern (F%L(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_resonance_h>
+if (ix_patt < 3) then
+  if (allocated(F%h)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%h,1), ubound(F%h,1)
+      call set_resonance_h_test_pattern (F%h(jd1), -1)
+    enddo
+    deallocate (F%h)
+  endif
+else
+  if (.not. allocated(F%h)) then
+    allocate (F%h(-1:1))
+  endif
+  do jd1 = 1, size(F%h,1)
+    lb1 = lbound(F%h,1) - 1
+    call set_resonance_h_test_pattern (F%h(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+
+end subroutine set_bmad_normal_form_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_bunch_track (ok)
+
+implicit none
+
+type(bunch_track_struct), target :: f_bunch_track, f2_bunch_track
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_bunch_track (c_bunch_track, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_bunch_track
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_bunch_track_test_pattern (f2_bunch_track, 1)
+
+call test_c_bunch_track(c_loc(f2_bunch_track), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_bunch_track_test_pattern (f_bunch_track, 4)
+if (f_bunch_track == f2_bunch_track) then
+  print *, '[4] bunch_track: C side convert C->F: Good'
+else
+  print *, '[4] bunch_track: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call bunch_track_struct_to_json(f_bunch_track, json_root)
+  call json%print(json_root, 'test_f_bunch_track_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bunch_track_struct_to_json(f2_bunch_track, json_root)
+  call json%print(json_root, 'test_f_bunch_track_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bunch_track_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bunch_track_test_pattern (f_bunch_track, -1)
+call set_bunch_track_test_pattern (f2_bunch_track, -1)
+
+end subroutine test1_f_bunch_track
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_bunch_track (c_bunch_track, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_bunch_track
+type(bunch_track_struct), target :: f_bunch_track, f2_bunch_track
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call bunch_track_to_f (c_bunch_track, c_loc(f_bunch_track))
+
+call set_bunch_track_test_pattern (f2_bunch_track, 2)
+if (f_bunch_track == f2_bunch_track) then
+  print *, '[2] bunch_track: F side convert C->F: Good'
+else
+  print *, '[2] bunch_track: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call bunch_track_struct_to_json(f_bunch_track, json_root)
+  call json%print(json_root, 'test_f_bunch_track_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call bunch_track_struct_to_json(f2_bunch_track, json_root)
+  call json%print(json_root, 'test_f_bunch_track_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_bunch_track_pattern_2_*.json)'
+
+endif
+
+call set_bunch_track_test_pattern (f2_bunch_track, 3)
+call bunch_track_to_c (c_loc(f2_bunch_track), c_bunch_track)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_bunch_track_test_pattern (f_bunch_track, -1)
+call set_bunch_track_test_pattern (f2_bunch_track, -1)
+
+end subroutine test2_f_bunch_track
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_bunch_track_test_pattern (F, ix_patt)
+
+implicit none
+
+type(bunch_track_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_bunch_params>
+if (ix_patt < 3) then
+  if (allocated(F%pt)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%pt,1), ubound(F%pt,1)
+      call set_bunch_params_test_pattern (F%pt(jd1), -1)
+    enddo
+    deallocate (F%pt)
+  endif
+else
+  if (.not. allocated(F%pt)) then
+    allocate (F%pt(-1:1))
+  endif
+  do jd1 = 1, size(F%pt,1)
+    lb1 = lbound(F%pt,1) - 1
+    call set_bunch_params_test_pattern (F%pt(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 3 + offset; F%ds_save = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 4 + offset; F%n_pt = rhs
+
+end subroutine set_bunch_track_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_summation_rdt (ok)
+
+implicit none
+
+type(summation_rdt_struct), target :: f_summation_rdt, f2_summation_rdt
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_summation_rdt (c_summation_rdt, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_summation_rdt
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_summation_rdt_test_pattern (f2_summation_rdt, 1)
+
+call test_c_summation_rdt(c_loc(f2_summation_rdt), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_summation_rdt_test_pattern (f_summation_rdt, 4)
+if (f_summation_rdt == f2_summation_rdt) then
+  print *, '[4] summation_rdt: C side convert C->F: Good'
+else
+  print *, '[4] summation_rdt: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call summation_rdt_struct_to_json(f_summation_rdt, json_root)
+  call json%print(json_root, 'test_f_summation_rdt_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call summation_rdt_struct_to_json(f2_summation_rdt, json_root)
+  call json%print(json_root, 'test_f_summation_rdt_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_summation_rdt_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_summation_rdt_test_pattern (f_summation_rdt, -1)
+call set_summation_rdt_test_pattern (f2_summation_rdt, -1)
+
+end subroutine test1_f_summation_rdt
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_summation_rdt (c_summation_rdt, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_summation_rdt
+type(summation_rdt_struct), target :: f_summation_rdt, f2_summation_rdt
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call summation_rdt_to_f (c_summation_rdt, c_loc(f_summation_rdt))
+
+call set_summation_rdt_test_pattern (f2_summation_rdt, 2)
+if (f_summation_rdt == f2_summation_rdt) then
+  print *, '[2] summation_rdt: F side convert C->F: Good'
+else
+  print *, '[2] summation_rdt: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call summation_rdt_struct_to_json(f_summation_rdt, json_root)
+  call json%print(json_root, 'test_f_summation_rdt_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call summation_rdt_struct_to_json(f2_summation_rdt, json_root)
+  call json%print(json_root, 'test_f_summation_rdt_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_summation_rdt_pattern_2_*.json)'
+
+endif
+
+call set_summation_rdt_test_pattern (f2_summation_rdt, 3)
+call summation_rdt_to_c (c_loc(f2_summation_rdt), c_summation_rdt)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_summation_rdt_test_pattern (f_summation_rdt, -1)
+call set_summation_rdt_test_pattern (f2_summation_rdt, -1)
+
+end subroutine test2_f_summation_rdt
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_summation_rdt_test_pattern (F, ix_patt)
+
+implicit none
+
+type(summation_rdt_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 1 + offset; F%h11001 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 2 + offset; F%h00111 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 3 + offset; F%h20001 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 4 + offset; F%h00201 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 5 + offset; F%h10002 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 6 + offset; F%h21000 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 7 + offset; F%h30000 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 8 + offset; F%h10110 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 9 + offset; F%h10020 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 10 + offset; F%h10200 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 11 + offset; F%h31000 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 12 + offset; F%h40000 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 13 + offset; F%h20110 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 14 + offset; F%h11200 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 15 + offset; F%h20020 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 16 + offset; F%h20200 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 17 + offset; F%h00310 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 18 + offset; F%h00400 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 19 + offset; F%h22000 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 20 + offset; F%h00220 = cmplx(rhs, 100+rhs)
+!! f_side.test_pat[0D_NOT_complex] Complex
+rhs = 21 + offset; F%h11110 = cmplx(rhs, 100+rhs)
+
+end subroutine set_summation_rdt_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_lat_ele_order1 (ok)
+
+implicit none
+
+type(lat_ele_order1_struct), target :: f_lat_ele_order1, f2_lat_ele_order1
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_lat_ele_order1 (c_lat_ele_order1, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_lat_ele_order1
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_lat_ele_order1_test_pattern (f2_lat_ele_order1, 1)
+
+call test_c_lat_ele_order1(c_loc(f2_lat_ele_order1), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_lat_ele_order1_test_pattern (f_lat_ele_order1, 4)
+if (f_lat_ele_order1 == f2_lat_ele_order1) then
+  print *, '[4] lat_ele_order1: C side convert C->F: Good'
+else
+  print *, '[4] lat_ele_order1: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call lat_ele_order1_struct_to_json(f_lat_ele_order1, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order1_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_order1_struct_to_json(f2_lat_ele_order1, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order1_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_order1_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_order1_test_pattern (f_lat_ele_order1, -1)
+call set_lat_ele_order1_test_pattern (f2_lat_ele_order1, -1)
+
+end subroutine test1_f_lat_ele_order1
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_lat_ele_order1 (c_lat_ele_order1, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_lat_ele_order1
+type(lat_ele_order1_struct), target :: f_lat_ele_order1, f2_lat_ele_order1
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call lat_ele_order1_to_f (c_lat_ele_order1, c_loc(f_lat_ele_order1))
+
+call set_lat_ele_order1_test_pattern (f2_lat_ele_order1, 2)
+if (f_lat_ele_order1 == f2_lat_ele_order1) then
+  print *, '[2] lat_ele_order1: F side convert C->F: Good'
+else
+  print *, '[2] lat_ele_order1: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call lat_ele_order1_struct_to_json(f_lat_ele_order1, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order1_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_order1_struct_to_json(f2_lat_ele_order1, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order1_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_order1_pattern_2_*.json)'
+
+endif
+
+call set_lat_ele_order1_test_pattern (f2_lat_ele_order1, 3)
+call lat_ele_order1_to_c (c_loc(f2_lat_ele_order1), c_lat_ele_order1)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_order1_test_pattern (f_lat_ele_order1, -1)
+call set_lat_ele_order1_test_pattern (f2_lat_ele_order1, -1)
+
+end subroutine test2_f_lat_ele_order1
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_lat_ele_order1_test_pattern (F, ix_patt)
+
+implicit none
+
+type(lat_ele_order1_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 1 + offset; F%ix_branch = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 2 + offset; F%ix_order = rhs
+
+end subroutine set_lat_ele_order1_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_lat_ele_order_array (ok)
+
+implicit none
+
+type(lat_ele_order_array_struct), target :: f_lat_ele_order_array, f2_lat_ele_order_array
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_lat_ele_order_array (c_lat_ele_order_array, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_lat_ele_order_array
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_lat_ele_order_array_test_pattern (f2_lat_ele_order_array, 1)
+
+call test_c_lat_ele_order_array(c_loc(f2_lat_ele_order_array), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_lat_ele_order_array_test_pattern (f_lat_ele_order_array, 4)
+if (f_lat_ele_order_array == f2_lat_ele_order_array) then
+  print *, '[4] lat_ele_order_array: C side convert C->F: Good'
+else
+  print *, '[4] lat_ele_order_array: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call lat_ele_order_array_struct_to_json(f_lat_ele_order_array, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_array_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_order_array_struct_to_json(f2_lat_ele_order_array, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_array_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_order_array_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_order_array_test_pattern (f_lat_ele_order_array, -1)
+call set_lat_ele_order_array_test_pattern (f2_lat_ele_order_array, -1)
+
+end subroutine test1_f_lat_ele_order_array
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_lat_ele_order_array (c_lat_ele_order_array, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_lat_ele_order_array
+type(lat_ele_order_array_struct), target :: f_lat_ele_order_array, f2_lat_ele_order_array
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call lat_ele_order_array_to_f (c_lat_ele_order_array, c_loc(f_lat_ele_order_array))
+
+call set_lat_ele_order_array_test_pattern (f2_lat_ele_order_array, 2)
+if (f_lat_ele_order_array == f2_lat_ele_order_array) then
+  print *, '[2] lat_ele_order_array: F side convert C->F: Good'
+else
+  print *, '[2] lat_ele_order_array: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call lat_ele_order_array_struct_to_json(f_lat_ele_order_array, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_array_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_order_array_struct_to_json(f2_lat_ele_order_array, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_array_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_order_array_pattern_2_*.json)'
+
+endif
+
+call set_lat_ele_order_array_test_pattern (f2_lat_ele_order_array, 3)
+call lat_ele_order_array_to_c (c_loc(f2_lat_ele_order_array), c_lat_ele_order_array)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_order_array_test_pattern (f_lat_ele_order_array, -1)
+call set_lat_ele_order_array_test_pattern (f2_lat_ele_order_array, -1)
+
+end subroutine test2_f_lat_ele_order_array
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_lat_ele_order_array_test_pattern (F, ix_patt)
+
+implicit none
+
+type(lat_ele_order_array_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_lat_ele_order1>
+if (ix_patt < 3) then
+  if (allocated(F%ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ele,1), ubound(F%ele,1)
+      call set_lat_ele_order1_test_pattern (F%ele(jd1), -1)
+    enddo
+    deallocate (F%ele)
+  endif
+else
+  if (.not. allocated(F%ele)) then
+    allocate (F%ele(-1:1))
+  endif
+  do jd1 = 1, size(F%ele,1)
+    lb1 = lbound(F%ele,1) - 1
+    call set_lat_ele_order1_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+
+end subroutine set_lat_ele_order_array_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_lat_sigma (ok)
+
+implicit none
+
+type(tao_lat_sigma_struct), target :: f_tao_lat_sigma, f2_tao_lat_sigma
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_lat_sigma (c_tao_lat_sigma, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_lat_sigma
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_lat_sigma_test_pattern (f2_tao_lat_sigma, 1)
+
+call test_c_tao_lat_sigma(c_loc(f2_tao_lat_sigma), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_lat_sigma_test_pattern (f_tao_lat_sigma, 4)
+if (f_tao_lat_sigma == f2_tao_lat_sigma) then
+  print *, '[4] tao_lat_sigma: C side convert C->F: Good'
+else
+  print *, '[4] tao_lat_sigma: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_lat_sigma_struct_to_json(f_tao_lat_sigma, json_root)
+  call json%print(json_root, 'test_f_tao_lat_sigma_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_lat_sigma_struct_to_json(f2_tao_lat_sigma, json_root)
+  call json%print(json_root, 'test_f_tao_lat_sigma_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_lat_sigma_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_lat_sigma_test_pattern (f_tao_lat_sigma, -1)
+call set_tao_lat_sigma_test_pattern (f2_tao_lat_sigma, -1)
+
+end subroutine test1_f_tao_lat_sigma
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_lat_sigma (c_tao_lat_sigma, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_lat_sigma
+type(tao_lat_sigma_struct), target :: f_tao_lat_sigma, f2_tao_lat_sigma
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_lat_sigma_to_f (c_tao_lat_sigma, c_loc(f_tao_lat_sigma))
+
+call set_tao_lat_sigma_test_pattern (f2_tao_lat_sigma, 2)
+if (f_tao_lat_sigma == f2_tao_lat_sigma) then
+  print *, '[2] tao_lat_sigma: F side convert C->F: Good'
+else
+  print *, '[2] tao_lat_sigma: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_lat_sigma_struct_to_json(f_tao_lat_sigma, json_root)
+  call json%print(json_root, 'test_f_tao_lat_sigma_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_lat_sigma_struct_to_json(f2_tao_lat_sigma, json_root)
+  call json%print(json_root, 'test_f_tao_lat_sigma_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_lat_sigma_pattern_2_*.json)'
+
+endif
+
+call set_tao_lat_sigma_test_pattern (f2_tao_lat_sigma, 3)
+call tao_lat_sigma_to_c (c_loc(f2_tao_lat_sigma), c_tao_lat_sigma)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_lat_sigma_test_pattern (f_tao_lat_sigma, -1)
+call set_tao_lat_sigma_test_pattern (f2_tao_lat_sigma, -1)
+
+end subroutine test2_f_tao_lat_sigma
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_lat_sigma_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_lat_sigma_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
+do jd1 = 1, size(F%mat,1); lb1 = lbound(F%mat,1) - 1
+  do jd2 = 1, size(F%mat,2); lb2 = lbound(F%mat,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 1 + offset
+    F%mat(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+
+end subroutine set_tao_lat_sigma_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_spin_ele (ok)
+
+implicit none
+
+type(tao_spin_ele_struct), target :: f_tao_spin_ele, f2_tao_spin_ele
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_spin_ele (c_tao_spin_ele, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_spin_ele
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_spin_ele_test_pattern (f2_tao_spin_ele, 1)
+
+call test_c_tao_spin_ele(c_loc(f2_tao_spin_ele), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_spin_ele_test_pattern (f_tao_spin_ele, 4)
+if (f_tao_spin_ele == f2_tao_spin_ele) then
+  print *, '[4] tao_spin_ele: C side convert C->F: Good'
+else
+  print *, '[4] tao_spin_ele: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_spin_ele_struct_to_json(f_tao_spin_ele, json_root)
+  call json%print(json_root, 'test_f_tao_spin_ele_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_ele_struct_to_json(f2_tao_spin_ele, json_root)
+  call json%print(json_root, 'test_f_tao_spin_ele_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_ele_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_ele_test_pattern (f_tao_spin_ele, -1)
+call set_tao_spin_ele_test_pattern (f2_tao_spin_ele, -1)
+
+end subroutine test1_f_tao_spin_ele
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_spin_ele (c_tao_spin_ele, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_spin_ele
+type(tao_spin_ele_struct), target :: f_tao_spin_ele, f2_tao_spin_ele
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_spin_ele_to_f (c_tao_spin_ele, c_loc(f_tao_spin_ele))
+
+call set_tao_spin_ele_test_pattern (f2_tao_spin_ele, 2)
+if (f_tao_spin_ele == f2_tao_spin_ele) then
+  print *, '[2] tao_spin_ele: F side convert C->F: Good'
+else
+  print *, '[2] tao_spin_ele: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_spin_ele_struct_to_json(f_tao_spin_ele, json_root)
+  call json%print(json_root, 'test_f_tao_spin_ele_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_ele_struct_to_json(f2_tao_spin_ele, json_root)
+  call json%print(json_root, 'test_f_tao_spin_ele_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_ele_pattern_2_*.json)'
+
+endif
+
+call set_tao_spin_ele_test_pattern (f2_tao_spin_ele, 3)
+call tao_spin_ele_to_c (c_loc(f2_tao_spin_ele), c_tao_spin_ele)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_ele_test_pattern (f_tao_spin_ele, -1)
+call set_tao_spin_ele_test_pattern (f2_tao_spin_ele, -1)
+
+end subroutine test2_f_tao_spin_ele
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_spin_ele_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_spin_ele_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_type] CPP_tao_spin_dn_dpz
+call set_tao_spin_dn_dpz_test_pattern (F%dn_dpz, ix_patt)
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 6>
+do jd1 = 1, size(F%orb_eigen_val,1); lb1 = lbound(F%orb_eigen_val,1) - 1
+  rhs = 100 + jd1 + 2 + offset
+  F%orb_eigen_val(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 6>
+do jd1 = 1, size(F%orb_eigen_vec,1); lb1 = lbound(F%orb_eigen_vec,1) - 1
+  do jd2 = 1, size(F%orb_eigen_vec,2); lb2 = lbound(F%orb_eigen_vec,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 3 + offset
+    F%orb_eigen_vec(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 6, 3>
+do jd1 = 1, size(F%spin_eigen_vec,1); lb1 = lbound(F%spin_eigen_vec,1) - 1
+  do jd2 = 1, size(F%spin_eigen_vec,2); lb2 = lbound(F%spin_eigen_vec,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 4 + offset
+    F%spin_eigen_vec(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 5 + offset; F%valid = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_spin_ele_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_plot_cache (ok)
+
+implicit none
+
+type(tao_plot_cache_struct), target :: f_tao_plot_cache, f2_tao_plot_cache
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_plot_cache (c_tao_plot_cache, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_plot_cache
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_plot_cache_test_pattern (f2_tao_plot_cache, 1)
+
+call test_c_tao_plot_cache(c_loc(f2_tao_plot_cache), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_plot_cache_test_pattern (f_tao_plot_cache, 4)
+if (f_tao_plot_cache == f2_tao_plot_cache) then
+  print *, '[4] tao_plot_cache: C side convert C->F: Good'
+else
+  print *, '[4] tao_plot_cache: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_plot_cache_struct_to_json(f_tao_plot_cache, json_root)
+  call json%print(json_root, 'test_f_tao_plot_cache_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_plot_cache_struct_to_json(f2_tao_plot_cache, json_root)
+  call json%print(json_root, 'test_f_tao_plot_cache_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_plot_cache_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_plot_cache_test_pattern (f_tao_plot_cache, -1)
+call set_tao_plot_cache_test_pattern (f2_tao_plot_cache, -1)
+
+end subroutine test1_f_tao_plot_cache
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_plot_cache (c_tao_plot_cache, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_plot_cache
+type(tao_plot_cache_struct), target :: f_tao_plot_cache, f2_tao_plot_cache
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_plot_cache_to_f (c_tao_plot_cache, c_loc(f_tao_plot_cache))
+
+call set_tao_plot_cache_test_pattern (f2_tao_plot_cache, 2)
+if (f_tao_plot_cache == f2_tao_plot_cache) then
+  print *, '[2] tao_plot_cache: F side convert C->F: Good'
+else
+  print *, '[2] tao_plot_cache: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_plot_cache_struct_to_json(f_tao_plot_cache, json_root)
+  call json%print(json_root, 'test_f_tao_plot_cache_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_plot_cache_struct_to_json(f2_tao_plot_cache, json_root)
+  call json%print(json_root, 'test_f_tao_plot_cache_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_plot_cache_pattern_2_*.json)'
+
+endif
+
+call set_tao_plot_cache_test_pattern (f2_tao_plot_cache, 3)
+call tao_plot_cache_to_c (c_loc(f2_tao_plot_cache), c_tao_plot_cache)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_plot_cache_test_pattern (f_tao_plot_cache, -1)
+call set_tao_plot_cache_test_pattern (f2_tao_plot_cache, -1)
+
+end subroutine test2_f_tao_plot_cache
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_plot_cache_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_plot_cache_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_type] CPP_ele
+call set_ele_test_pattern (F%ele_to_s, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_coord
+call set_coord_test_pattern (F%orbit, ix_patt)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 3 + offset; F%err = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_plot_cache_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_spin_polarization (ok)
+
+implicit none
+
+type(tao_spin_polarization_struct), target :: f_tao_spin_polarization, f2_tao_spin_polarization
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_spin_polarization (c_tao_spin_polarization, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_spin_polarization
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_spin_polarization_test_pattern (f2_tao_spin_polarization, 1)
+
+call test_c_tao_spin_polarization(c_loc(f2_tao_spin_polarization), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_spin_polarization_test_pattern (f_tao_spin_polarization, 4)
+if (f_tao_spin_polarization == f2_tao_spin_polarization) then
+  print *, '[4] tao_spin_polarization: C side convert C->F: Good'
+else
+  print *, '[4] tao_spin_polarization: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_spin_polarization_struct_to_json(f_tao_spin_polarization, json_root)
+  call json%print(json_root, 'test_f_tao_spin_polarization_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_polarization_struct_to_json(f2_tao_spin_polarization, json_root)
+  call json%print(json_root, 'test_f_tao_spin_polarization_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_polarization_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_polarization_test_pattern (f_tao_spin_polarization, -1)
+call set_tao_spin_polarization_test_pattern (f2_tao_spin_polarization, -1)
+
+end subroutine test1_f_tao_spin_polarization
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_spin_polarization (c_tao_spin_polarization, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_spin_polarization
+type(tao_spin_polarization_struct), target :: f_tao_spin_polarization, f2_tao_spin_polarization
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_spin_polarization_to_f (c_tao_spin_polarization, c_loc(f_tao_spin_polarization))
+
+call set_tao_spin_polarization_test_pattern (f2_tao_spin_polarization, 2)
+if (f_tao_spin_polarization == f2_tao_spin_polarization) then
+  print *, '[2] tao_spin_polarization: F side convert C->F: Good'
+else
+  print *, '[2] tao_spin_polarization: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_spin_polarization_struct_to_json(f_tao_spin_polarization, json_root)
+  call json%print(json_root, 'test_f_tao_spin_polarization_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_polarization_struct_to_json(f2_tao_spin_polarization, json_root)
+  call json%print(json_root, 'test_f_tao_spin_polarization_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_polarization_pattern_2_*.json)'
+
+endif
+
+call set_tao_spin_polarization_test_pattern (f2_tao_spin_polarization, 3)
+call tao_spin_polarization_to_c (c_loc(f2_tao_spin_polarization), c_tao_spin_polarization)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_polarization_test_pattern (f_tao_spin_polarization, -1)
+call set_tao_spin_polarization_test_pattern (f2_tao_spin_polarization, -1)
+
+end subroutine test2_f_tao_spin_polarization
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_spin_polarization_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_spin_polarization_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 1 + offset; F%tune = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 2 + offset; F%pol_limit_st = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 3 + offset; F%pol_limit_dk = rhs
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%pol_limit_dk_partial,1); lb1 = lbound(F%pol_limit_dk_partial,1) - 1
+  rhs = 100 + jd1 + 4 + offset
+  F%pol_limit_dk_partial(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%pol_limit_dk_partial2,1); lb1 = lbound(F%pol_limit_dk_partial2,1) - 1
+  rhs = 100 + jd1 + 5 + offset
+  F%pol_limit_dk_partial2(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 6 + offset; F%pol_rate_bks = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 7 + offset; F%depol_rate = rhs
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%depol_rate_partial,1); lb1 = lbound(F%depol_rate_partial,1) - 1
+  rhs = 100 + jd1 + 8 + offset
+  F%depol_rate_partial(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[1D_NOT_real] FixedArray1D<Real, 3>
+do jd1 = 1, size(F%depol_rate_partial2,1); lb1 = lbound(F%depol_rate_partial2,1) - 1
+  rhs = 100 + jd1 + 9 + offset
+  F%depol_rate_partial2(jd1+lb1) = rhs
+enddo
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 10 + offset; F%integral_bn = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 11 + offset; F%integral_bdn = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 12 + offset; F%integral_1ns = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 13 + offset; F%integral_dn2 = rhs
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 14 + offset; F%valid = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_type] CPP_spin_orbit_map1
+call set_spin_orbit_map1_test_pattern (F%q_1turn, ix_patt)
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_spin_orbit_map1>
+if (ix_patt < 3) then
+  if (allocated(F%q_ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%q_ele,1), ubound(F%q_ele,1)
+      call set_spin_orbit_map1_test_pattern (F%q_ele(jd1), -1)
+    enddo
+    deallocate (F%q_ele)
+  endif
+else
+  if (.not. allocated(F%q_ele)) then
+    allocate (F%q_ele(-1:1))
+  endif
+  do jd1 = 1, size(F%q_ele,1)
+    lb1 = lbound(F%q_ele,1) - 1
+    call set_spin_orbit_map1_test_pattern (F%q_ele(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+
+end subroutine set_tao_spin_polarization_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_lattice_branch (ok)
+
+implicit none
+
+type(tao_lattice_branch_struct), target :: f_tao_lattice_branch, f2_tao_lattice_branch
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_lattice_branch (c_tao_lattice_branch, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_lattice_branch
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_lattice_branch_test_pattern (f2_tao_lattice_branch, 1)
+
+call test_c_tao_lattice_branch(c_loc(f2_tao_lattice_branch), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_lattice_branch_test_pattern (f_tao_lattice_branch, 4)
+if (f_tao_lattice_branch == f2_tao_lattice_branch) then
+  print *, '[4] tao_lattice_branch: C side convert C->F: Good'
+else
+  print *, '[4] tao_lattice_branch: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_lattice_branch_struct_to_json(f_tao_lattice_branch, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_branch_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_lattice_branch_struct_to_json(f2_tao_lattice_branch, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_branch_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_lattice_branch_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_lattice_branch_test_pattern (f_tao_lattice_branch, -1)
+call set_tao_lattice_branch_test_pattern (f2_tao_lattice_branch, -1)
+
+end subroutine test1_f_tao_lattice_branch
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_lattice_branch (c_tao_lattice_branch, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_lattice_branch
+type(tao_lattice_branch_struct), target :: f_tao_lattice_branch, f2_tao_lattice_branch
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_lattice_branch_to_f (c_tao_lattice_branch, c_loc(f_tao_lattice_branch))
+
+call set_tao_lattice_branch_test_pattern (f2_tao_lattice_branch, 2)
+if (f_tao_lattice_branch == f2_tao_lattice_branch) then
+  print *, '[2] tao_lattice_branch: F side convert C->F: Good'
+else
+  print *, '[2] tao_lattice_branch: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_lattice_branch_struct_to_json(f_tao_lattice_branch, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_branch_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_lattice_branch_struct_to_json(f2_tao_lattice_branch, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_branch_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_lattice_branch_pattern_2_*.json)'
+
+endif
+
+call set_tao_lattice_branch_test_pattern (f2_tao_lattice_branch, 3)
+call tao_lattice_branch_to_c (c_loc(f2_tao_lattice_branch), c_tao_lattice_branch)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_lattice_branch_test_pattern (f_tao_lattice_branch, -1)
+call set_tao_lattice_branch_test_pattern (f2_tao_lattice_branch, -1)
+
+end subroutine test2_f_tao_lattice_branch
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_lattice_branch_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_lattice_branch_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_lat_sigma>
+if (ix_patt < 3) then
+  if (allocated(F%lat_sigma)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%lat_sigma,1), ubound(F%lat_sigma,1)
+      call set_tao_lat_sigma_test_pattern (F%lat_sigma(jd1), -1)
+    enddo
+    deallocate (F%lat_sigma)
+  endif
+else
+  if (.not. allocated(F%lat_sigma)) then
+    allocate (F%lat_sigma(-1:1))
+  endif
+  do jd1 = 1, size(F%lat_sigma,1)
+    lb1 = lbound(F%lat_sigma,1) - 1
+    call set_tao_lat_sigma_test_pattern (F%lat_sigma(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_spin_ele>
+if (ix_patt < 3) then
+  if (allocated(F%spin_ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%spin_ele,1), ubound(F%spin_ele,1)
+      call set_tao_spin_ele_test_pattern (F%spin_ele(jd1), -1)
+    enddo
+    deallocate (F%spin_ele)
+  endif
+else
+  if (.not. allocated(F%spin_ele)) then
+    allocate (F%spin_ele(-1:1))
+  endif
+  do jd1 = 1, size(F%spin_ele,1)
+    lb1 = lbound(F%spin_ele,1) - 1
+    call set_tao_spin_ele_test_pattern (F%spin_ele(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_bunch_params>
+if (ix_patt < 3) then
+  if (allocated(F%bunch_params)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%bunch_params,1), ubound(F%bunch_params,1)
+      call set_bunch_params_test_pattern (F%bunch_params(jd1), -1)
+    enddo
+    deallocate (F%bunch_params)
+  endif
+else
+  if (.not. allocated(F%bunch_params)) then
+    allocate (F%bunch_params(-1:1))
+  endif
+  do jd1 = 1, size(F%bunch_params,1)
+    lb1 = lbound(F%bunch_params,1) - 1
+    call set_bunch_params_test_pattern (F%bunch_params(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_bunch_track>
+if (ix_patt < 3) then
+  if (allocated(F%bunch_params_comb)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%bunch_params_comb,1), ubound(F%bunch_params_comb,1)
+      call set_bunch_track_test_pattern (F%bunch_params_comb(jd1), -1)
+    enddo
+    deallocate (F%bunch_params_comb)
+  endif
+else
+  if (.not. allocated(F%bunch_params_comb)) then
+    allocate (F%bunch_params_comb(-1:1))
+  endif
+  do jd1 = 1, size(F%bunch_params_comb,1)
+    lb1 = lbound(F%bunch_params_comb,1) - 1
+    call set_bunch_track_test_pattern (F%bunch_params_comb(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_coord>
+if (ix_patt < 3) then
+  if (allocated(F%orbit)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%orbit,1), ubound(F%orbit,1)
+      call set_coord_test_pattern (F%orbit(jd1), -1)
+    enddo
+    deallocate (F%orbit)
+  endif
+else
+  if (.not. allocated(F%orbit)) then
+    allocate (F%orbit(-1:1))
+  endif
+  do jd1 = 1, size(F%orbit,1)
+    lb1 = lbound(F%orbit,1) - 1
+    call set_coord_test_pattern (F%orbit(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_plot_cache>
+if (ix_patt < 3) then
+  if (allocated(F%plot_cache)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%plot_cache,1), ubound(F%plot_cache,1)
+      call set_tao_plot_cache_test_pattern (F%plot_cache(jd1), -1)
+    enddo
+    deallocate (F%plot_cache)
+  endif
+else
+  if (.not. allocated(F%plot_cache)) then
+    allocate (F%plot_cache(-1:1))
+  endif
+  do jd1 = 1, size(F%plot_cache,1)
+    lb1 = lbound(F%plot_cache,1) - 1
+    call set_tao_plot_cache_test_pattern (F%plot_cache(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_type] CPP_tao_spin_polarization
+call set_tao_spin_polarization_test_pattern (F%spin, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_summation_rdt
+call set_summation_rdt_test_pattern (F%srdt, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_coord
+call set_coord_test_pattern (F%orb0, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_normal_modes
+call set_normal_modes_test_pattern (F%modes_ri, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_normal_modes
+call set_normal_modes_test_pattern (F%modes_6d, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_ptc_normal_form
+call set_ptc_normal_form_test_pattern (F%ptc_normal_form, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_bmad_normal_form
+call set_bmad_normal_form_test_pattern (F%bmad_normal_form, ix_patt)
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_coord>
+if (ix_patt < 3) then
+  if (allocated(F%high_E_orb)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%high_E_orb,1), ubound(F%high_E_orb,1)
+      call set_coord_test_pattern (F%high_E_orb(jd1), -1)
+    enddo
+    deallocate (F%high_E_orb)
+  endif
+else
+  if (.not. allocated(F%high_E_orb)) then
+    allocate (F%high_E_orb(-1:1))
+  endif
+  do jd1 = 1, size(F%high_E_orb,1)
+    lb1 = lbound(F%high_E_orb,1) - 1
+    call set_coord_test_pattern (F%high_E_orb(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_coord>
+if (ix_patt < 3) then
+  if (allocated(F%low_E_orb)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%low_E_orb,1), ubound(F%low_E_orb,1)
+      call set_coord_test_pattern (F%low_E_orb(jd1), -1)
+    enddo
+    deallocate (F%low_E_orb)
+  endif
+else
+  if (.not. allocated(F%low_E_orb)) then
+    allocate (F%low_E_orb(-1:1))
+  endif
+  do jd1 = 1, size(F%low_E_orb,1)
+    lb1 = lbound(F%low_E_orb,1) - 1
+    call set_coord_test_pattern (F%low_E_orb(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 24 + offset; F%cache_x_min = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 25 + offset; F%cache_x_max = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 26 + offset; F%comb_ds_save = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 27 + offset; F%track_state = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 28 + offset; F%cache_n_pts = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 29 + offset; F%ix_rad_int_cache = rhs
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 30 + offset; F%has_open_match_element = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 31 + offset; F%plot_cache_valid = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 32 + offset; F%spin_map_valid = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 33 + offset; F%twiss_valid = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 34 + offset; F%mode_flip_here = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 35 + offset; F%chrom_calc_ok = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 36 + offset; F%rad_int_calc_ok = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 37 + offset; F%emit_6d_calc_ok = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 38 + offset; F%sigma_track_ok = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_lattice_branch_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_model_element (ok)
+
+implicit none
+
+type(tao_model_element_struct), target :: f_tao_model_element, f2_tao_model_element
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_model_element (c_tao_model_element, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_model_element
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_model_element_test_pattern (f2_tao_model_element, 1)
+
+call test_c_tao_model_element(c_loc(f2_tao_model_element), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_model_element_test_pattern (f_tao_model_element, 4)
+if (f_tao_model_element == f2_tao_model_element) then
+  print *, '[4] tao_model_element: C side convert C->F: Good'
+else
+  print *, '[4] tao_model_element: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_model_element_struct_to_json(f_tao_model_element, json_root)
+  call json%print(json_root, 'test_f_tao_model_element_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_model_element_struct_to_json(f2_tao_model_element, json_root)
+  call json%print(json_root, 'test_f_tao_model_element_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_model_element_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_model_element_test_pattern (f_tao_model_element, -1)
+call set_tao_model_element_test_pattern (f2_tao_model_element, -1)
+
+end subroutine test1_f_tao_model_element
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_model_element (c_tao_model_element, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_model_element
+type(tao_model_element_struct), target :: f_tao_model_element, f2_tao_model_element
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_model_element_to_f (c_tao_model_element, c_loc(f_tao_model_element))
+
+call set_tao_model_element_test_pattern (f2_tao_model_element, 2)
+if (f_tao_model_element == f2_tao_model_element) then
+  print *, '[2] tao_model_element: F side convert C->F: Good'
+else
+  print *, '[2] tao_model_element: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_model_element_struct_to_json(f_tao_model_element, json_root)
+  call json%print(json_root, 'test_f_tao_model_element_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_model_element_struct_to_json(f2_tao_model_element, json_root)
+  call json%print(json_root, 'test_f_tao_model_element_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_model_element_pattern_2_*.json)'
+
+endif
+
+call set_tao_model_element_test_pattern (f2_tao_model_element, 3)
+call tao_model_element_to_c (c_loc(f2_tao_model_element), c_tao_model_element)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_model_element_test_pattern (f_tao_model_element, -1)
+call set_tao_model_element_test_pattern (f2_tao_model_element, -1)
+
+end subroutine test2_f_tao_model_element
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_model_element_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_model_element_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_type] CPP_beam
+call set_beam_test_pattern (F%beam, ix_patt)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 2 + offset; F%save_beam_internally = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 3 + offset; F%save_beam_to_file = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_model_element_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_beam_branch (ok)
+
+implicit none
+
+type(tao_beam_branch_struct), target :: f_tao_beam_branch, f2_tao_beam_branch
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_beam_branch (c_tao_beam_branch, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_beam_branch
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_beam_branch_test_pattern (f2_tao_beam_branch, 1)
+
+call test_c_tao_beam_branch(c_loc(f2_tao_beam_branch), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_beam_branch_test_pattern (f_tao_beam_branch, 4)
+if (f_tao_beam_branch == f2_tao_beam_branch) then
+  print *, '[4] tao_beam_branch: C side convert C->F: Good'
+else
+  print *, '[4] tao_beam_branch: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_beam_branch_struct_to_json(f_tao_beam_branch, json_root)
+  call json%print(json_root, 'test_f_tao_beam_branch_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_beam_branch_struct_to_json(f2_tao_beam_branch, json_root)
+  call json%print(json_root, 'test_f_tao_beam_branch_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_beam_branch_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_beam_branch_test_pattern (f_tao_beam_branch, -1)
+call set_tao_beam_branch_test_pattern (f2_tao_beam_branch, -1)
+
+end subroutine test1_f_tao_beam_branch
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_beam_branch (c_tao_beam_branch, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_beam_branch
+type(tao_beam_branch_struct), target :: f_tao_beam_branch, f2_tao_beam_branch
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_beam_branch_to_f (c_tao_beam_branch, c_loc(f_tao_beam_branch))
+
+call set_tao_beam_branch_test_pattern (f2_tao_beam_branch, 2)
+if (f_tao_beam_branch == f2_tao_beam_branch) then
+  print *, '[2] tao_beam_branch: F side convert C->F: Good'
+else
+  print *, '[2] tao_beam_branch: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_beam_branch_struct_to_json(f_tao_beam_branch, json_root)
+  call json%print(json_root, 'test_f_tao_beam_branch_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_beam_branch_struct_to_json(f2_tao_beam_branch, json_root)
+  call json%print(json_root, 'test_f_tao_beam_branch_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_beam_branch_pattern_2_*.json)'
+
+endif
+
+call set_tao_beam_branch_test_pattern (f2_tao_beam_branch, 3)
+call tao_beam_branch_to_c (c_loc(f2_tao_beam_branch), c_tao_beam_branch)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_beam_branch_test_pattern (f_tao_beam_branch, -1)
+call set_tao_beam_branch_test_pattern (f2_tao_beam_branch, -1)
+
+end subroutine test2_f_tao_beam_branch
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_beam_branch_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_beam_branch_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_type] CPP_beam
+call set_beam_test_pattern (F%beam_at_start, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_beam_init
+call set_beam_init_test_pattern (F%beam_init, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_beam_init
+call set_beam_init_test_pattern (F%beam_init_used, ix_patt)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 4 + offset; F%init_starting_distribution = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%track_start)
+  F%track_start(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%track_end)
+  F%track_end(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 7 + offset; F%ix_branch = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 8 + offset; F%ix_track_start = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 9 + offset; F%ix_track_end = rhs
+
+end subroutine set_tao_beam_branch_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_d1_data (ok)
+
+implicit none
+
+type(tao_d1_data_struct), target :: f_tao_d1_data, f2_tao_d1_data
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_d1_data (c_tao_d1_data, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_d1_data
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_d1_data_test_pattern (f2_tao_d1_data, 1)
+
+call test_c_tao_d1_data(c_loc(f2_tao_d1_data), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_d1_data_test_pattern (f_tao_d1_data, 4)
+if (f_tao_d1_data == f2_tao_d1_data) then
+  print *, '[4] tao_d1_data: C side convert C->F: Good'
+else
+  print *, '[4] tao_d1_data: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_d1_data_struct_to_json(f_tao_d1_data, json_root)
+  call json%print(json_root, 'test_f_tao_d1_data_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_d1_data_struct_to_json(f2_tao_d1_data, json_root)
+  call json%print(json_root, 'test_f_tao_d1_data_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_d1_data_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_d1_data_test_pattern (f_tao_d1_data, -1)
+call set_tao_d1_data_test_pattern (f2_tao_d1_data, -1)
+
+end subroutine test1_f_tao_d1_data
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_d1_data (c_tao_d1_data, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_d1_data
+type(tao_d1_data_struct), target :: f_tao_d1_data, f2_tao_d1_data
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_d1_data_to_f (c_tao_d1_data, c_loc(f_tao_d1_data))
+
+call set_tao_d1_data_test_pattern (f2_tao_d1_data, 2)
+if (f_tao_d1_data == f2_tao_d1_data) then
+  print *, '[2] tao_d1_data: F side convert C->F: Good'
+else
+  print *, '[2] tao_d1_data: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_d1_data_struct_to_json(f_tao_d1_data, json_root)
+  call json%print(json_root, 'test_f_tao_d1_data_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_d1_data_struct_to_json(f2_tao_d1_data, json_root)
+  call json%print(json_root, 'test_f_tao_d1_data_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_d1_data_pattern_2_*.json)'
+
+endif
+
+call set_tao_d1_data_test_pattern (f2_tao_d1_data, 3)
+call tao_d1_data_to_c (c_loc(f2_tao_d1_data), c_tao_d1_data)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_d1_data_test_pattern (f_tao_d1_data, -1)
+call set_tao_d1_data_test_pattern (f2_tao_d1_data, -1)
+
+end subroutine test2_f_tao_d1_data
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_d1_data_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_d1_data_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%name)
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+enddo
+
+end subroutine set_tao_d1_data_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_lattice (ok)
+
+implicit none
+
+type(tao_lattice_struct), target :: f_tao_lattice, f2_tao_lattice
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_lattice (c_tao_lattice, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_lattice
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_lattice_test_pattern (f2_tao_lattice, 1)
+
+call test_c_tao_lattice(c_loc(f2_tao_lattice), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_lattice_test_pattern (f_tao_lattice, 4)
+if (f_tao_lattice == f2_tao_lattice) then
+  print *, '[4] tao_lattice: C side convert C->F: Good'
+else
+  print *, '[4] tao_lattice: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_lattice_struct_to_json(f_tao_lattice, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_lattice_struct_to_json(f2_tao_lattice, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_lattice_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_lattice_test_pattern (f_tao_lattice, -1)
+call set_tao_lattice_test_pattern (f2_tao_lattice, -1)
+
+end subroutine test1_f_tao_lattice
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_lattice (c_tao_lattice, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_lattice
+type(tao_lattice_struct), target :: f_tao_lattice, f2_tao_lattice
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_lattice_to_f (c_tao_lattice, c_loc(f_tao_lattice))
+
+call set_tao_lattice_test_pattern (f2_tao_lattice, 2)
+if (f_tao_lattice == f2_tao_lattice) then
+  print *, '[2] tao_lattice: F side convert C->F: Good'
+else
+  print *, '[2] tao_lattice: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_lattice_struct_to_json(f_tao_lattice, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_lattice_struct_to_json(f2_tao_lattice, json_root)
+  call json%print(json_root, 'test_f_tao_lattice_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_lattice_pattern_2_*.json)'
+
+endif
+
+call set_tao_lattice_test_pattern (f2_tao_lattice, 3)
+call tao_lattice_to_c (c_loc(f2_tao_lattice), c_tao_lattice)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_lattice_test_pattern (f_tao_lattice, -1)
+call set_tao_lattice_test_pattern (f2_tao_lattice, -1)
+
+end subroutine test2_f_tao_lattice
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_lattice_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_lattice_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%name)
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_type] CPP_lat
+call set_lat_test_pattern (F%lat, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_lat
+call set_lat_test_pattern (F%high_E_lat, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_lat
+call set_lat_test_pattern (F%low_E_lat, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_rad_int_all_ele
+call set_rad_int_all_ele_test_pattern (F%rad_int_by_ele_ri, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_rad_int_all_ele
+call set_rad_int_all_ele_test_pattern (F%rad_int_by_ele_6d, ix_patt)
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_lattice_branch>
+if (ix_patt < 3) then
+  if (allocated(F%tao_branch)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%tao_branch,1), ubound(F%tao_branch,1)
+      call set_tao_lattice_branch_test_pattern (F%tao_branch(jd1), -1)
+    enddo
+    deallocate (F%tao_branch)
+  endif
+else
+  if (.not. allocated(F%tao_branch)) then
+    allocate (F%tao_branch(-1:1))
+  endif
+  do jd1 = 1, size(F%tao_branch,1)
+    lb1 = lbound(F%tao_branch,1) - 1
+    call set_tao_lattice_branch_test_pattern (F%tao_branch(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+
+end subroutine set_tao_lattice_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_beam_uni (ok)
+
+implicit none
+
+type(tao_beam_uni_struct), target :: f_tao_beam_uni, f2_tao_beam_uni
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_beam_uni (c_tao_beam_uni, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_beam_uni
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_beam_uni_test_pattern (f2_tao_beam_uni, 1)
+
+call test_c_tao_beam_uni(c_loc(f2_tao_beam_uni), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_beam_uni_test_pattern (f_tao_beam_uni, 4)
+if (f_tao_beam_uni == f2_tao_beam_uni) then
+  print *, '[4] tao_beam_uni: C side convert C->F: Good'
+else
+  print *, '[4] tao_beam_uni: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_beam_uni_struct_to_json(f_tao_beam_uni, json_root)
+  call json%print(json_root, 'test_f_tao_beam_uni_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_beam_uni_struct_to_json(f2_tao_beam_uni, json_root)
+  call json%print(json_root, 'test_f_tao_beam_uni_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_beam_uni_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_beam_uni_test_pattern (f_tao_beam_uni, -1)
+call set_tao_beam_uni_test_pattern (f2_tao_beam_uni, -1)
+
+end subroutine test1_f_tao_beam_uni
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_beam_uni (c_tao_beam_uni, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_beam_uni
+type(tao_beam_uni_struct), target :: f_tao_beam_uni, f2_tao_beam_uni
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_beam_uni_to_f (c_tao_beam_uni, c_loc(f_tao_beam_uni))
+
+call set_tao_beam_uni_test_pattern (f2_tao_beam_uni, 2)
+if (f_tao_beam_uni == f2_tao_beam_uni) then
+  print *, '[2] tao_beam_uni: F side convert C->F: Good'
+else
+  print *, '[2] tao_beam_uni: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_beam_uni_struct_to_json(f_tao_beam_uni, json_root)
+  call json%print(json_root, 'test_f_tao_beam_uni_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_beam_uni_struct_to_json(f2_tao_beam_uni, json_root)
+  call json%print(json_root, 'test_f_tao_beam_uni_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_beam_uni_pattern_2_*.json)'
+
+endif
+
+call set_tao_beam_uni_test_pattern (f2_tao_beam_uni, 3)
+call tao_beam_uni_to_c (c_loc(f2_tao_beam_uni), c_tao_beam_uni)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_beam_uni_test_pattern (f_tao_beam_uni, -1)
+call set_tao_beam_uni_test_pattern (f2_tao_beam_uni, -1)
+
+end subroutine test2_f_tao_beam_uni
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_beam_uni_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_beam_uni_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%saved_at)
+  F%saved_at(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%dump_file)
+  F%dump_file(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%dump_at)
+  F%dump_at(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 4 + offset; F%track_beam_in_universe = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 5 + offset; F%always_reinit = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_beam_uni_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_dynamic_aperture (ok)
+
+implicit none
+
+type(tao_dynamic_aperture_struct), target :: f_tao_dynamic_aperture, f2_tao_dynamic_aperture
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_dynamic_aperture (c_tao_dynamic_aperture, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_dynamic_aperture
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_dynamic_aperture_test_pattern (f2_tao_dynamic_aperture, 1)
+
+call test_c_tao_dynamic_aperture(c_loc(f2_tao_dynamic_aperture), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_dynamic_aperture_test_pattern (f_tao_dynamic_aperture, 4)
+if (f_tao_dynamic_aperture == f2_tao_dynamic_aperture) then
+  print *, '[4] tao_dynamic_aperture: C side convert C->F: Good'
+else
+  print *, '[4] tao_dynamic_aperture: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_dynamic_aperture_struct_to_json(f_tao_dynamic_aperture, json_root)
+  call json%print(json_root, 'test_f_tao_dynamic_aperture_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_dynamic_aperture_struct_to_json(f2_tao_dynamic_aperture, json_root)
+  call json%print(json_root, 'test_f_tao_dynamic_aperture_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_dynamic_aperture_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_dynamic_aperture_test_pattern (f_tao_dynamic_aperture, -1)
+call set_tao_dynamic_aperture_test_pattern (f2_tao_dynamic_aperture, -1)
+
+end subroutine test1_f_tao_dynamic_aperture
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_dynamic_aperture (c_tao_dynamic_aperture, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_dynamic_aperture
+type(tao_dynamic_aperture_struct), target :: f_tao_dynamic_aperture, f2_tao_dynamic_aperture
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_dynamic_aperture_to_f (c_tao_dynamic_aperture, c_loc(f_tao_dynamic_aperture))
+
+call set_tao_dynamic_aperture_test_pattern (f2_tao_dynamic_aperture, 2)
+if (f_tao_dynamic_aperture == f2_tao_dynamic_aperture) then
+  print *, '[2] tao_dynamic_aperture: F side convert C->F: Good'
+else
+  print *, '[2] tao_dynamic_aperture: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_dynamic_aperture_struct_to_json(f_tao_dynamic_aperture, json_root)
+  call json%print(json_root, 'test_f_tao_dynamic_aperture_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_dynamic_aperture_struct_to_json(f2_tao_dynamic_aperture, json_root)
+  call json%print(json_root, 'test_f_tao_dynamic_aperture_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_dynamic_aperture_pattern_2_*.json)'
+
+endif
+
+call set_tao_dynamic_aperture_test_pattern (f2_tao_dynamic_aperture, 3)
+call tao_dynamic_aperture_to_c (c_loc(f2_tao_dynamic_aperture), c_tao_dynamic_aperture)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_dynamic_aperture_test_pattern (f_tao_dynamic_aperture, -1)
+call set_tao_dynamic_aperture_test_pattern (f2_tao_dynamic_aperture, -1)
+
+end subroutine test2_f_tao_dynamic_aperture
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_dynamic_aperture_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_dynamic_aperture_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_type] CPP_aperture_param
+call set_aperture_param_test_pattern (F%param, ix_patt)
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_aperture_scan>
+if (ix_patt < 3) then
+  if (allocated(F%scan)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%scan,1), ubound(F%scan,1)
+      call set_aperture_scan_test_pattern (F%scan(jd1), -1)
+    enddo
+    deallocate (F%scan)
+  endif
+else
+  if (.not. allocated(F%scan)) then
+    allocate (F%scan(-1:1))
+  endif
+  do jd1 = 1, size(F%scan,1)
+    lb1 = lbound(F%scan,1) - 1
+    call set_aperture_scan_test_pattern (F%scan(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_real] VariableArray1D<Real>
+if (ix_patt < 3) then
+  if (allocated(F%pz)) then
+     deallocate (F%pz)
+  endif
+else
+  if (.not. allocated(F%pz)) then
+    allocate (F%pz(-1:1))
+  endif
+  do jd1 = 1, size(F%pz,1)
+    lb1 = lbound(F%pz,1) - 1
+    rhs = 100 + jd1 + 4 + offset
+    F%pz(jd1+lb1) = rhs
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 6 + offset; F%ellipse_scale = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 7 + offset; F%a_emit = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 8 + offset; F%b_emit = rhs
+
+end subroutine set_tao_dynamic_aperture_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_model_branch (ok)
+
+implicit none
+
+type(tao_model_branch_struct), target :: f_tao_model_branch, f2_tao_model_branch
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_model_branch (c_tao_model_branch, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_model_branch
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_model_branch_test_pattern (f2_tao_model_branch, 1)
+
+call test_c_tao_model_branch(c_loc(f2_tao_model_branch), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_model_branch_test_pattern (f_tao_model_branch, 4)
+if (f_tao_model_branch == f2_tao_model_branch) then
+  print *, '[4] tao_model_branch: C side convert C->F: Good'
+else
+  print *, '[4] tao_model_branch: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_model_branch_struct_to_json(f_tao_model_branch, json_root)
+  call json%print(json_root, 'test_f_tao_model_branch_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_model_branch_struct_to_json(f2_tao_model_branch, json_root)
+  call json%print(json_root, 'test_f_tao_model_branch_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_model_branch_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_model_branch_test_pattern (f_tao_model_branch, -1)
+call set_tao_model_branch_test_pattern (f2_tao_model_branch, -1)
+
+end subroutine test1_f_tao_model_branch
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_model_branch (c_tao_model_branch, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_model_branch
+type(tao_model_branch_struct), target :: f_tao_model_branch, f2_tao_model_branch
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_model_branch_to_f (c_tao_model_branch, c_loc(f_tao_model_branch))
+
+call set_tao_model_branch_test_pattern (f2_tao_model_branch, 2)
+if (f_tao_model_branch == f2_tao_model_branch) then
+  print *, '[2] tao_model_branch: F side convert C->F: Good'
+else
+  print *, '[2] tao_model_branch: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_model_branch_struct_to_json(f_tao_model_branch, json_root)
+  call json%print(json_root, 'test_f_tao_model_branch_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_model_branch_struct_to_json(f2_tao_model_branch, json_root)
+  call json%print(json_root, 'test_f_tao_model_branch_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_model_branch_pattern_2_*.json)'
+
+endif
+
+call set_tao_model_branch_test_pattern (f2_tao_model_branch, 3)
+call tao_model_branch_to_c (c_loc(f2_tao_model_branch), c_tao_model_branch)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_model_branch_test_pattern (f_tao_model_branch, -1)
+call set_tao_model_branch_test_pattern (f2_tao_model_branch, -1)
+
+end subroutine test2_f_tao_model_branch
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_model_branch_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_model_branch_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_model_element>
+if (ix_patt < 3) then
+  if (allocated(F%ele)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%ele,1), ubound(F%ele,1)
+      call set_tao_model_element_test_pattern (F%ele(jd1), -1)
+    enddo
+    deallocate (F%ele)
+  endif
+else
+  if (.not. allocated(F%ele)) then
+    allocate (F%ele(-1:1))
+  endif
+  do jd1 = 1, size(F%ele,1)
+    lb1 = lbound(F%ele,1) - 1
+    call set_tao_model_element_test_pattern (F%ele(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_type] CPP_tao_beam_branch
+call set_tao_beam_branch_test_pattern (F%beam, ix_patt)
+
+end subroutine set_tao_model_branch_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_d2_data (ok)
+
+implicit none
+
+type(tao_d2_data_struct), target :: f_tao_d2_data, f2_tao_d2_data
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_d2_data (c_tao_d2_data, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_d2_data
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_d2_data_test_pattern (f2_tao_d2_data, 1)
+
+call test_c_tao_d2_data(c_loc(f2_tao_d2_data), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_d2_data_test_pattern (f_tao_d2_data, 4)
+if (f_tao_d2_data == f2_tao_d2_data) then
+  print *, '[4] tao_d2_data: C side convert C->F: Good'
+else
+  print *, '[4] tao_d2_data: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_d2_data_struct_to_json(f_tao_d2_data, json_root)
+  call json%print(json_root, 'test_f_tao_d2_data_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_d2_data_struct_to_json(f2_tao_d2_data, json_root)
+  call json%print(json_root, 'test_f_tao_d2_data_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_d2_data_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_d2_data_test_pattern (f_tao_d2_data, -1)
+call set_tao_d2_data_test_pattern (f2_tao_d2_data, -1)
+
+end subroutine test1_f_tao_d2_data
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_d2_data (c_tao_d2_data, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_d2_data
+type(tao_d2_data_struct), target :: f_tao_d2_data, f2_tao_d2_data
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_d2_data_to_f (c_tao_d2_data, c_loc(f_tao_d2_data))
+
+call set_tao_d2_data_test_pattern (f2_tao_d2_data, 2)
+if (f_tao_d2_data == f2_tao_d2_data) then
+  print *, '[2] tao_d2_data: F side convert C->F: Good'
+else
+  print *, '[2] tao_d2_data: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_d2_data_struct_to_json(f_tao_d2_data, json_root)
+  call json%print(json_root, 'test_f_tao_d2_data_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_d2_data_struct_to_json(f2_tao_d2_data, json_root)
+  call json%print(json_root, 'test_f_tao_d2_data_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_d2_data_pattern_2_*.json)'
+
+endif
+
+call set_tao_d2_data_test_pattern (f2_tao_d2_data, 3)
+call tao_d2_data_to_c (c_loc(f2_tao_d2_data), c_tao_d2_data)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_d2_data_test_pattern (f_tao_d2_data, -1)
+call set_tao_d2_data_test_pattern (f2_tao_d2_data, -1)
+
+end subroutine test2_f_tao_d2_data
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_d2_data_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_d2_data_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%name)
+  F%name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%data_file_name)
+  F%data_file_name(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%ref_file_name)
+  F%ref_file_name(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%data_date)
+  F%data_date(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%ref_date)
+  F%ref_date(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
+enddo
+!! f_side.test_pat[1D_NOT_character] FixedArray1D<string, 10>
+do jd1 = lbound(F%descrip, 1), ubound(F%descrip, 1)
+  do jd = 1, len(F%descrip(jd1))
+    F%descrip(jd1)(jd:jd) = char(ichar("a") + modulo(100+6+offset+10*jd+jd1, 26))
+  enddo
+enddo
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_d1_data>
+if (ix_patt < 3) then
+  if (allocated(F%d1)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%d1,1), ubound(F%d1,1)
+      call set_tao_d1_data_test_pattern (F%d1(jd1), -1)
+    enddo
+    deallocate (F%d1)
+  endif
+else
+  if (.not. allocated(F%d1)) then
+    allocate (F%d1(-1:1))
+  endif
+  do jd1 = 1, size(F%d1,1)
+    lb1 = lbound(F%d1,1) - 1
+    call set_tao_d1_data_test_pattern (F%d1(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 9 + offset; F%ix_universe = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 10 + offset; F%ix_d2_data = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 11 + offset; F%ix_ref = rhs
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 12 + offset; F%data_read_in = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 13 + offset; F%ref_read_in = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_d2_data_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_spin_map (ok)
+
+implicit none
+
+type(tao_spin_map_struct), target :: f_tao_spin_map, f2_tao_spin_map
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_spin_map (c_tao_spin_map, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_spin_map
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_spin_map_test_pattern (f2_tao_spin_map, 1)
+
+call test_c_tao_spin_map(c_loc(f2_tao_spin_map), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_spin_map_test_pattern (f_tao_spin_map, 4)
+if (f_tao_spin_map == f2_tao_spin_map) then
+  print *, '[4] tao_spin_map: C side convert C->F: Good'
+else
+  print *, '[4] tao_spin_map: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_spin_map_struct_to_json(f_tao_spin_map, json_root)
+  call json%print(json_root, 'test_f_tao_spin_map_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_map_struct_to_json(f2_tao_spin_map, json_root)
+  call json%print(json_root, 'test_f_tao_spin_map_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_map_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_map_test_pattern (f_tao_spin_map, -1)
+call set_tao_spin_map_test_pattern (f2_tao_spin_map, -1)
+
+end subroutine test1_f_tao_spin_map
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_spin_map (c_tao_spin_map, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_spin_map
+type(tao_spin_map_struct), target :: f_tao_spin_map, f2_tao_spin_map
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_spin_map_to_f (c_tao_spin_map, c_loc(f_tao_spin_map))
+
+call set_tao_spin_map_test_pattern (f2_tao_spin_map, 2)
+if (f_tao_spin_map == f2_tao_spin_map) then
+  print *, '[2] tao_spin_map: F side convert C->F: Good'
+else
+  print *, '[2] tao_spin_map: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_spin_map_struct_to_json(f_tao_spin_map, json_root)
+  call json%print(json_root, 'test_f_tao_spin_map_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_spin_map_struct_to_json(f2_tao_spin_map, json_root)
+  call json%print(json_root, 'test_f_tao_spin_map_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_spin_map_pattern_2_*.json)'
+
+endif
+
+call set_tao_spin_map_test_pattern (f2_tao_spin_map, 3)
+call tao_spin_map_to_c (c_loc(f2_tao_spin_map), c_tao_spin_map)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_spin_map_test_pattern (f_tao_spin_map, -1)
+call set_tao_spin_map_test_pattern (f2_tao_spin_map, -1)
+
+end subroutine test2_f_tao_spin_map
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_spin_map_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_spin_map_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 1 + offset; F%valid = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_type] CPP_spin_orbit_map1
+call set_spin_orbit_map1_test_pattern (F%map1, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_spin_axis
+call set_spin_axis_test_pattern (F%axis_input, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_spin_axis
+call set_spin_axis_test_pattern (F%axis0, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_spin_axis
+call set_spin_axis_test_pattern (F%axis1, ix_patt)
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 6 + offset; F%ix_ele = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 7 + offset; F%ix_ref = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 8 + offset; F%ix_uni = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 9 + offset; F%ix_branch = rhs
+!! f_side.test_pat[2D_NOT_real] FixedArray2D<Real, 8, 8>
+do jd1 = 1, size(F%mat8,1); lb1 = lbound(F%mat8,1) - 1
+  do jd2 = 1, size(F%mat8,2); lb2 = lbound(F%mat8,2) - 1
+    rhs = 100 + jd1 + 10*jd2 + 10 + offset
+    F%mat8(jd1+lb1,jd2+lb2) = rhs
+  enddo
+enddo
+
+end subroutine set_tao_spin_map_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_data (ok)
+
+implicit none
+
+type(tao_data_struct), target :: f_tao_data, f2_tao_data
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_data (c_tao_data, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_data
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_data_test_pattern (f2_tao_data, 1)
+
+call test_c_tao_data(c_loc(f2_tao_data), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_data_test_pattern (f_tao_data, 4)
+if (f_tao_data == f2_tao_data) then
+  print *, '[4] tao_data: C side convert C->F: Good'
+else
+  print *, '[4] tao_data: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_data_struct_to_json(f_tao_data, json_root)
+  call json%print(json_root, 'test_f_tao_data_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_data_struct_to_json(f2_tao_data, json_root)
+  call json%print(json_root, 'test_f_tao_data_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_data_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_data_test_pattern (f_tao_data, -1)
+call set_tao_data_test_pattern (f2_tao_data, -1)
+
+end subroutine test1_f_tao_data
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_data (c_tao_data, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_data
+type(tao_data_struct), target :: f_tao_data, f2_tao_data
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_data_to_f (c_tao_data, c_loc(f_tao_data))
+
+call set_tao_data_test_pattern (f2_tao_data, 2)
+if (f_tao_data == f2_tao_data) then
+  print *, '[2] tao_data: F side convert C->F: Good'
+else
+  print *, '[2] tao_data: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_data_struct_to_json(f_tao_data, json_root)
+  call json%print(json_root, 'test_f_tao_data_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_data_struct_to_json(f2_tao_data, json_root)
+  call json%print(json_root, 'test_f_tao_data_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_data_pattern_2_*.json)'
+
+endif
+
+call set_tao_data_test_pattern (f2_tao_data, 3)
+call tao_data_to_c (c_loc(f2_tao_data), c_tao_data)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_data_test_pattern (f_tao_data, -1)
+call set_tao_data_test_pattern (f2_tao_data, -1)
+
+end subroutine test2_f_tao_data
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_data_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_data_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%ele_name)
+  F%ele_name(jd1:jd1) = char(ichar("a") + modulo(100+1+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%ele_start_name)
+  F%ele_start_name(jd1:jd1) = char(ichar("a") + modulo(100+2+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%ele_ref_name)
+  F%ele_ref_name(jd1:jd1) = char(ichar("a") + modulo(100+3+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%merit_type)
+  F%merit_type(jd1:jd1) = char(ichar("a") + modulo(100+4+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%id)
+  F%id(jd1:jd1) = char(ichar("a") + modulo(100+5+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%data_source)
+  F%data_source(jd1:jd1) = char(ichar("a") + modulo(100+6+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_character] string
+do jd1 = 1, len(F%why_invalid)
+  F%why_invalid(jd1:jd1) = char(ichar("a") + modulo(100+7+offset+jd1, 26))
+enddo
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 8 + offset; F%ix_uni = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 9 + offset; F%ix_bunch = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 10 + offset; F%ix_branch = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 11 + offset; F%ix_ele = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 12 + offset; F%ix_ele_start = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 13 + offset; F%ix_ele_ref = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 14 + offset; F%ix_ele_merit = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 15 + offset; F%ix_d1 = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 16 + offset; F%ix_data = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 17 + offset; F%ix_dModel = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 18 + offset; F%eval_point = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 19 + offset; F%meas_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 20 + offset; F%ref_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 21 + offset; F%model_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 22 + offset; F%design_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 23 + offset; F%old_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 24 + offset; F%base_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 25 + offset; F%error_rms = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 26 + offset; F%delta_merit = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 27 + offset; F%weight = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 28 + offset; F%invalid_value = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 29 + offset; F%merit = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 30 + offset; F%s = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 31 + offset; F%s_offset = rhs
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 32 + offset; F%err_message_printed = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 33 + offset; F%exists = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 34 + offset; F%good_model = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 35 + offset; F%good_base = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 36 + offset; F%good_design = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 37 + offset; F%good_meas = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 38 + offset; F%good_ref = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 39 + offset; F%good_user = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 40 + offset; F%good_opt = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 41 + offset; F%good_plot = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 42 + offset; F%useit_plot = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 43 + offset; F%useit_opt = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_type] CPP_tao_spin_map
+call set_tao_spin_map_test_pattern (F%spin_map, ix_patt)
+!! f_side.test_pat[0D_PTR_type] std::optional<CPP_tao_d1_data>
+if (ix_patt < 3) then
+  if (associated(F%d1)) then
+    call set_tao_d1_data_test_pattern (F%d1, -1)
+    deallocate (F%d1)
+  endif
+else
+  if (.not. associated(F%d1)) allocate (F%d1)
+  rhs = 45 + offset
+  call set_tao_d1_data_test_pattern (F%d1, ix_patt)
+endif
+
+end subroutine set_tao_data_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_ping_scale (ok)
+
+implicit none
+
+type(tao_ping_scale_struct), target :: f_tao_ping_scale, f2_tao_ping_scale
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_ping_scale (c_tao_ping_scale, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_ping_scale
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_ping_scale_test_pattern (f2_tao_ping_scale, 1)
+
+call test_c_tao_ping_scale(c_loc(f2_tao_ping_scale), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_ping_scale_test_pattern (f_tao_ping_scale, 4)
+if (f_tao_ping_scale == f2_tao_ping_scale) then
+  print *, '[4] tao_ping_scale: C side convert C->F: Good'
+else
+  print *, '[4] tao_ping_scale: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_ping_scale_struct_to_json(f_tao_ping_scale, json_root)
+  call json%print(json_root, 'test_f_tao_ping_scale_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_ping_scale_struct_to_json(f2_tao_ping_scale, json_root)
+  call json%print(json_root, 'test_f_tao_ping_scale_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_ping_scale_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_ping_scale_test_pattern (f_tao_ping_scale, -1)
+call set_tao_ping_scale_test_pattern (f2_tao_ping_scale, -1)
+
+end subroutine test1_f_tao_ping_scale
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_ping_scale (c_tao_ping_scale, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_ping_scale
+type(tao_ping_scale_struct), target :: f_tao_ping_scale, f2_tao_ping_scale
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_ping_scale_to_f (c_tao_ping_scale, c_loc(f_tao_ping_scale))
+
+call set_tao_ping_scale_test_pattern (f2_tao_ping_scale, 2)
+if (f_tao_ping_scale == f2_tao_ping_scale) then
+  print *, '[2] tao_ping_scale: F side convert C->F: Good'
+else
+  print *, '[2] tao_ping_scale: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_ping_scale_struct_to_json(f_tao_ping_scale, json_root)
+  call json%print(json_root, 'test_f_tao_ping_scale_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_ping_scale_struct_to_json(f2_tao_ping_scale, json_root)
+  call json%print(json_root, 'test_f_tao_ping_scale_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_ping_scale_pattern_2_*.json)'
+
+endif
+
+call set_tao_ping_scale_test_pattern (f2_tao_ping_scale, 3)
+call tao_ping_scale_to_c (c_loc(f2_tao_ping_scale), c_tao_ping_scale)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_ping_scale_test_pattern (f_tao_ping_scale, -1)
+call set_tao_ping_scale_test_pattern (f2_tao_ping_scale, -1)
+
+end subroutine test2_f_tao_ping_scale
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_ping_scale_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_ping_scale_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 1 + offset; F%a_mode_meas = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 2 + offset; F%a_mode_ref = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 3 + offset; F%b_mode_meas = rhs
+!! f_side.test_pat[0D_NOT_real] Real
+rhs = 4 + offset; F%b_mode_ref = rhs
+
+end subroutine set_tao_ping_scale_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_universe_calc (ok)
+
+implicit none
+
+type(tao_universe_calc_struct), target :: f_tao_universe_calc, f2_tao_universe_calc
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_universe_calc (c_tao_universe_calc, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_universe_calc
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_universe_calc_test_pattern (f2_tao_universe_calc, 1)
+
+call test_c_tao_universe_calc(c_loc(f2_tao_universe_calc), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_universe_calc_test_pattern (f_tao_universe_calc, 4)
+if (f_tao_universe_calc == f2_tao_universe_calc) then
+  print *, '[4] tao_universe_calc: C side convert C->F: Good'
+else
+  print *, '[4] tao_universe_calc: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_universe_calc_struct_to_json(f_tao_universe_calc, json_root)
+  call json%print(json_root, 'test_f_tao_universe_calc_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_universe_calc_struct_to_json(f2_tao_universe_calc, json_root)
+  call json%print(json_root, 'test_f_tao_universe_calc_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_universe_calc_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_universe_calc_test_pattern (f_tao_universe_calc, -1)
+call set_tao_universe_calc_test_pattern (f2_tao_universe_calc, -1)
+
+end subroutine test1_f_tao_universe_calc
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_universe_calc (c_tao_universe_calc, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_universe_calc
+type(tao_universe_calc_struct), target :: f_tao_universe_calc, f2_tao_universe_calc
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_universe_calc_to_f (c_tao_universe_calc, c_loc(f_tao_universe_calc))
+
+call set_tao_universe_calc_test_pattern (f2_tao_universe_calc, 2)
+if (f_tao_universe_calc == f2_tao_universe_calc) then
+  print *, '[2] tao_universe_calc: F side convert C->F: Good'
+else
+  print *, '[2] tao_universe_calc: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_universe_calc_struct_to_json(f_tao_universe_calc, json_root)
+  call json%print(json_root, 'test_f_tao_universe_calc_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_universe_calc_struct_to_json(f2_tao_universe_calc, json_root)
+  call json%print(json_root, 'test_f_tao_universe_calc_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_universe_calc_pattern_2_*.json)'
+
+endif
+
+call set_tao_universe_calc_test_pattern (f2_tao_universe_calc, 3)
+call tao_universe_calc_to_c (c_loc(f2_tao_universe_calc), c_tao_universe_calc)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_universe_calc_test_pattern (f_tao_universe_calc, -1)
+call set_tao_universe_calc_test_pattern (f2_tao_universe_calc, -1)
+
+end subroutine test2_f_tao_universe_calc
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_universe_calc_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_universe_calc_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 1 + offset; F%srdt_for_data = rhs
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 2 + offset; F%rad_int_for_data = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 3 + offset; F%rad_int_for_plotting = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 4 + offset; F%chrom_for_data = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 5 + offset; F%chrom_for_plotting = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 6 + offset; F%lat_sigma_for_data = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 7 + offset; F%lat_sigma_for_plotting = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 8 + offset; F%dynamic_aperture = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 9 + offset; F%one_turn_map = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 10 + offset; F%lattice = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 11 + offset; F%twiss = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 12 + offset; F%track = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 13 + offset; F%spin_matrices = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_universe_calc_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_lat_ele_order (ok)
+
+implicit none
+
+type(lat_ele_order_struct), target :: f_lat_ele_order, f2_lat_ele_order
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_lat_ele_order (c_lat_ele_order, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_lat_ele_order
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_lat_ele_order_test_pattern (f2_lat_ele_order, 1)
+
+call test_c_lat_ele_order(c_loc(f2_lat_ele_order), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_lat_ele_order_test_pattern (f_lat_ele_order, 4)
+if (f_lat_ele_order == f2_lat_ele_order) then
+  print *, '[4] lat_ele_order: C side convert C->F: Good'
+else
+  print *, '[4] lat_ele_order: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call lat_ele_order_struct_to_json(f_lat_ele_order, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_order_struct_to_json(f2_lat_ele_order, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_order_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_order_test_pattern (f_lat_ele_order, -1)
+call set_lat_ele_order_test_pattern (f2_lat_ele_order, -1)
+
+end subroutine test1_f_lat_ele_order
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_lat_ele_order (c_lat_ele_order, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_lat_ele_order
+type(lat_ele_order_struct), target :: f_lat_ele_order, f2_lat_ele_order
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call lat_ele_order_to_f (c_lat_ele_order, c_loc(f_lat_ele_order))
+
+call set_lat_ele_order_test_pattern (f2_lat_ele_order, 2)
+if (f_lat_ele_order == f2_lat_ele_order) then
+  print *, '[2] lat_ele_order: F side convert C->F: Good'
+else
+  print *, '[2] lat_ele_order: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call lat_ele_order_struct_to_json(f_lat_ele_order, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call lat_ele_order_struct_to_json(f2_lat_ele_order, json_root)
+  call json%print(json_root, 'test_f_lat_ele_order_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_lat_ele_order_pattern_2_*.json)'
+
+endif
+
+call set_lat_ele_order_test_pattern (f2_lat_ele_order, 3)
+call lat_ele_order_to_c (c_loc(f2_lat_ele_order), c_lat_ele_order)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_lat_ele_order_test_pattern (f_lat_ele_order, -1)
+call set_lat_ele_order_test_pattern (f2_lat_ele_order, -1)
+
+end subroutine test2_f_lat_ele_order
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_lat_ele_order_test_pattern (F, ix_patt)
+
+implicit none
+
+type(lat_ele_order_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_lat_ele_order_array>
+if (ix_patt < 3) then
+  if (allocated(F%branch)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%branch,1), ubound(F%branch,1)
+      call set_lat_ele_order_array_test_pattern (F%branch(jd1), -1)
+    enddo
+    deallocate (F%branch)
+  endif
+else
+  if (.not. allocated(F%branch)) then
+    allocate (F%branch(-1:1))
+  endif
+  do jd1 = 1, size(F%branch,1)
+    lb1 = lbound(F%branch,1) - 1
+    call set_lat_ele_order_array_test_pattern (F%branch(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+
+end subroutine set_lat_ele_order_test_pattern
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test1_f_tao_universe (ok)
+
+implicit none
+
+type(tao_universe_struct), target :: f_tao_universe, f2_tao_universe
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+logical(c_bool) c_ok
+logical ok
+
+interface
+subroutine test_c_tao_universe (c_tao_universe, c_ok) bind(c)
+    import c_ptr, c_bool
+    type(c_ptr), value :: c_tao_universe
+    logical(c_bool) c_ok
+end subroutine
+end interface
+
+!
+
+ok = .true.
+call set_tao_universe_test_pattern (f2_tao_universe, 1)
+
+call test_c_tao_universe(c_loc(f2_tao_universe), c_ok)
+if (.not. f_logic(c_ok)) ok = .false.
+
+call set_tao_universe_test_pattern (f_tao_universe, 4)
+if (f_tao_universe == f2_tao_universe) then
+  print *, '[4] tao_universe: C side convert C->F: Good'
+else
+  print *, '[4] tao_universe: C SIDE CONVERT C->F: FAILED!'
+  ok = .false.
+
+  nullify(json_root)
+  call tao_universe_struct_to_json(f_tao_universe, json_root)
+  call json%print(json_root, 'test_f_tao_universe_pattern_4_expected_f.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_universe_struct_to_json(f2_tao_universe, json_root)
+  call json%print(json_root, 'test_f_tao_universe_pattern_4_actual_f2cpp.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_universe_pattern_4_*.json)'
+
+endif
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_universe_test_pattern (f_tao_universe, -1)
+call set_tao_universe_test_pattern (f2_tao_universe, -1)
+
+end subroutine test1_f_tao_universe
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine test2_f_tao_universe (c_tao_universe, c_ok) bind(c)
+
+implicit none
+
+type(json_core) :: json
+type(json_value), pointer :: json_root
+
+type(c_ptr), value :: c_tao_universe
+type(tao_universe_struct), target :: f_tao_universe, f2_tao_universe
+logical(c_bool) c_ok
+
+!
+
+c_ok = c_logic(.true.)
+call tao_universe_to_f (c_tao_universe, c_loc(f_tao_universe))
+
+call set_tao_universe_test_pattern (f2_tao_universe, 2)
+if (f_tao_universe == f2_tao_universe) then
+  print *, '[2] tao_universe: F side convert C->F: Good'
+else
+  print *, '[2] tao_universe: F SIDE CONVERT C->F: FAILED!'
+  c_ok = c_logic(.false.)
+
+  nullify(json_root)
+  call tao_universe_struct_to_json(f_tao_universe, json_root)
+  call json%print(json_root, 'test_f_tao_universe_pattern_2_actual_fcpp.json')
+  call json%destroy(json_root)
+
+  nullify(json_root)
+  call tao_universe_struct_to_json(f2_tao_universe, json_root)
+  call json%print(json_root, 'test_f_tao_universe_pattern_2_expected_f2.json')
+  call json%destroy(json_root)
+  print *, '    Wrote JSON files for comparison (test_f_tao_universe_pattern_2_*.json)'
+
+endif
+
+call set_tao_universe_test_pattern (f2_tao_universe, 3)
+call tao_universe_to_c (c_loc(f2_tao_universe), c_tao_universe)
+
+! clean up test pattern data - < 3 deallocates arrays and such
+call set_tao_universe_test_pattern (f_tao_universe, -1)
+call set_tao_universe_test_pattern (f2_tao_universe, -1)
+
+end subroutine test2_f_tao_universe
+
+!---------------------------------------------------------------------------------
+!---------------------------------------------------------------------------------
+
+subroutine set_tao_universe_test_pattern (F, ix_patt)
+
+implicit none
+
+type(tao_universe_struct) F
+integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
+
+!
+
+offset = 100 * ix_patt
+
+!! f_side.test_pat[0D_NOT_type] CPP_tao_beam_uni
+call set_tao_beam_uni_test_pattern (F%beam, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_tao_dynamic_aperture
+call set_tao_dynamic_aperture_test_pattern (F%dynamic_aperture, ix_patt)
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_d2_data>
+if (ix_patt < 3) then
+  if (allocated(F%d2_data)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%d2_data,1), ubound(F%d2_data,1)
+      call set_tao_d2_data_test_pattern (F%d2_data(jd1), -1)
+    enddo
+    deallocate (F%d2_data)
+  endif
+else
+  if (.not. allocated(F%d2_data)) then
+    allocate (F%d2_data(-1:1))
+  endif
+  do jd1 = 1, size(F%d2_data,1)
+    lb1 = lbound(F%d2_data,1) - 1
+    call set_tao_d2_data_test_pattern (F%d2_data(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[1D_ALLOC_type] VariableArray1D<CPP_tao_data>
+if (ix_patt < 3) then
+  if (allocated(F%data)) then
+    ! ensure memory is freed for previously-set patterns >= 3
+    do jd1 = lbound(F%data,1), ubound(F%data,1)
+      call set_tao_data_test_pattern (F%data(jd1), -1)
+    enddo
+    deallocate (F%data)
+  endif
+else
+  if (.not. allocated(F%data)) then
+    allocate (F%data(-1:1))
+  endif
+  do jd1 = 1, size(F%data,1)
+    lb1 = lbound(F%data,1) - 1
+    call set_tao_data_test_pattern (F%data(jd1+lb1), ix_patt+jd1)
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_type] CPP_tao_ping_scale
+call set_tao_ping_scale_test_pattern (F%ping_scale, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_lat
+call set_lat_test_pattern (F%scratch_lat, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_tao_universe_calc
+call set_tao_universe_calc_test_pattern (F%calc, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_lat_ele_order
+call set_lat_ele_order_test_pattern (F%ele_order, ix_patt)
+!! f_side.test_pat[0D_NOT_type] CPP_tao_spin_map
+call set_tao_spin_map_test_pattern (F%spin_map, ix_patt)
+!! f_side.test_pat[2D_ALLOC_real] VariableArray2D<Real>
+if (ix_patt < 3) then
+  if (allocated(F%dModel_dVar)) deallocate (F%dModel_dVar)
+else
+  if (.not. allocated(F%dModel_dVar)) allocate (F%dModel_dVar(-1:1, 2))
+  do jd1 = 1, size(F%dModel_dVar,1); lb1 = lbound(F%dModel_dVar,1) - 1
+    do jd2 = 1, size(F%dModel_dVar,2); lb2 = lbound(F%dModel_dVar,2) - 1
+      rhs = 100 + jd1 + 10*jd2 + 12 + offset
+      F%dModel_dVar(jd1+lb1,jd2+lb2) = rhs
+    enddo
+  enddo
+endif
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 15 + offset; F%ix_uni = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 16 + offset; F%n_d2_data_used = rhs
+!! f_side.test_pat[0D_NOT_integer] Int
+rhs = 17 + offset; F%n_data_used = rhs
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 18 + offset; F%is_on = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 19 + offset; F%design_same_as_previous = (modulo(rhs, 2) == 0)
+!! f_side.test_pat[0D_NOT_logical] Bool
+rhs = 20 + offset; F%picked_uni = (modulo(rhs, 2) == 0)
+
+end subroutine set_tao_universe_test_pattern
 
 end module

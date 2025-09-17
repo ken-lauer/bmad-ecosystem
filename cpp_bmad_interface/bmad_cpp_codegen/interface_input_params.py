@@ -33,10 +33,12 @@ struct_def_json_files = [
 
 equality_use_statements = [
     "use bmad_struct",
+    # "use tao_struct",
 ]
 test_use_statements = [
     "use bmad_json",
     "use sim_utils_json",
+    "use tao_json",
 ]
 
 # List of structures to setup interfaces for.
@@ -141,6 +143,41 @@ struct_list = [
     "aperture_point_struct",
     "aperture_param_struct",
     "aperture_scan_struct",
+    # Tao
+    "tao_spin_dn_dpz_struct",
+    # "probe_8",
+    # "c_normal_form",
+    # "c_taylor",
+    # "c_quaternion",
+    # "internal_state",
+    "resonance_h_struct",
+    "spin_orbit_map1_struct",
+    "spin_axis_struct",
+    "ptc_normal_form_struct",
+    "bmad_normal_form_struct",
+    "bunch_track_struct",
+    "summation_rdt_struct",
+    "lat_ele_order1_struct",
+    "lat_ele_order_array_struct",
+    "tao_lat_sigma_struct",
+    "tao_spin_ele_struct",
+    "tao_plot_cache_struct",
+    "tao_spin_polarization_struct",
+    "tao_lattice_branch_struct",
+    "tao_model_element_struct",
+    "tao_beam_branch_struct",
+    "tao_d1_data_struct",
+    "tao_lattice_struct",
+    "tao_beam_uni_struct",
+    "tao_dynamic_aperture_struct",
+    "tao_model_branch_struct",
+    "tao_d2_data_struct",
+    "tao_spin_map_struct",
+    "tao_data_struct",
+    "tao_ping_scale_struct",
+    "tao_universe_calc_struct",
+    "lat_ele_order_struct",
+    "tao_universe_struct",
 ]
 
 # List of structure components to not translate.
@@ -155,6 +192,13 @@ component_no_translate_list = {
     "ptc_branch1_info_struct",
     "branch_struct%ptc",
     # end PTC
+    # forest
+    "probe_8",
+    "c_normal_form",
+    "c_taylor",
+    "c_quaternion",
+    "internal_state",
+    # end forest
     "exact_bend_multipole_struct",
     "ele_struct%converter",  # Should be simple data? Check this
     "ele_struct%multipole_cache",
@@ -169,6 +213,15 @@ component_no_translate_list = {
     # "ele_struct%branch",
     # TODO: we need some sort workaround for grid field data:
     # "grid_field_pt_struct%pt",
+    # tao
+    "tao_data_struct%data_type",  # TODO: 0D_ALLOC_character
+    # TODO parent ref
+    "tao_lattice_branch_struct%tao_lat",
+    "tao_d1_data_struct%d2",
+    "tao_lattice_struct%u",
+    # TODO test pattern debugging
+    "tao_d1_data_struct%d",
+    # end tao
 }
 
 # List of structure components links:
@@ -179,6 +232,11 @@ component_no_translate_list = {
 interface_ignore_list = {
     "ele_struct%branch",
     "branch_struct%lat",
+    # TODO pointers in the test suite
+    "tao_universe_struct%base",
+    "tao_universe_struct%model",
+    "tao_universe_struct%design",
+    "tao_universe_struct%model_branch",
 }
 
 # List of structure components that are structures and are defined externally.

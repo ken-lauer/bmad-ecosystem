@@ -1932,5 +1932,554 @@ ostream& operator<<(ostream& os, const CPP_aperture_scan& obj) {
   return os;
 }
 
+void to_json(json& j, const CPP_tao_spin_dn_dpz& obj) {
+  j = json{
+      {"vec", obj.vec}, {"partial", obj.partial}, {"partial2", obj.partial2}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_spin_dn_dpz& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_resonance_h& obj) {
+  j = json{{"id", obj.id}, {"c_val", obj.c_val}};
+}
+
+ostream& operator<<(ostream& os, const CPP_resonance_h& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_spin_orbit_map1& obj) {
+  j = json{
+      {"orb_mat", obj.orb_mat}, {"vec0", obj.vec0}, {"spin_q", obj.spin_q}};
+}
+
+ostream& operator<<(ostream& os, const CPP_spin_orbit_map1& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_spin_axis& obj) {
+  j = json{{"l", obj.l}, {"n0", obj.n0}, {"m", obj.m}};
+}
+
+ostream& operator<<(ostream& os, const CPP_spin_axis& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_ptc_normal_form& obj) {
+  j = json{
+      {"ele_origin", obj.ele_origin},
+      {"orb0", obj.orb0},
+      {"valid_map", obj.valid_map}};
+}
+
+ostream& operator<<(ostream& os, const CPP_ptc_normal_form& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_bmad_normal_form& obj) {
+  j = json{
+      {"ele_origin", obj.ele_origin},
+      {"M", obj.M},
+      {"A", obj.A},
+      {"A_inv", obj.A_inv},
+      {"dhdj", obj.dhdj},
+      {"F", obj.F},
+      {"L", obj.L},
+      {"h", obj.h}};
+}
+
+ostream& operator<<(ostream& os, const CPP_bmad_normal_form& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_bunch_track& obj) {
+  j = json{{"pt", obj.pt}, {"ds_save", obj.ds_save}, {"n_pt", obj.n_pt}};
+}
+
+ostream& operator<<(ostream& os, const CPP_bunch_track& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_summation_rdt& obj) {
+  j = json{
+      {"h11001", obj.h11001}, {"h00111", obj.h00111}, {"h20001", obj.h20001},
+      {"h00201", obj.h00201}, {"h10002", obj.h10002}, {"h21000", obj.h21000},
+      {"h30000", obj.h30000}, {"h10110", obj.h10110}, {"h10020", obj.h10020},
+      {"h10200", obj.h10200}, {"h31000", obj.h31000}, {"h40000", obj.h40000},
+      {"h20110", obj.h20110}, {"h11200", obj.h11200}, {"h20020", obj.h20020},
+      {"h20200", obj.h20200}, {"h00310", obj.h00310}, {"h00400", obj.h00400},
+      {"h22000", obj.h22000}, {"h00220", obj.h00220}, {"h11110", obj.h11110}};
+}
+
+ostream& operator<<(ostream& os, const CPP_summation_rdt& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_lat_ele_order1& obj) {
+  j = json{{"ix_branch", obj.ix_branch}, {"ix_order", obj.ix_order}};
+}
+
+ostream& operator<<(ostream& os, const CPP_lat_ele_order1& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_lat_ele_order_array& obj) {
+  j = json{{"ele", obj.ele}};
+}
+
+ostream& operator<<(ostream& os, const CPP_lat_ele_order_array& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_lat_sigma& obj) {
+  j = json{{"mat", obj.mat}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_lat_sigma& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_spin_ele& obj) {
+  j = json{
+      {"dn_dpz", obj.dn_dpz},
+      {"orb_eigen_val", obj.orb_eigen_val},
+      {"orb_eigen_vec", obj.orb_eigen_vec},
+      {"spin_eigen_vec", obj.spin_eigen_vec},
+      {"valid", obj.valid}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_spin_ele& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_plot_cache& obj) {
+  j = json{{"ele_to_s", obj.ele_to_s}, {"orbit", obj.orbit}, {"err", obj.err}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_plot_cache& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_spin_polarization& obj) {
+  j = json{
+      {"tune", obj.tune},
+      {"pol_limit_st", obj.pol_limit_st},
+      {"pol_limit_dk", obj.pol_limit_dk},
+      {"pol_limit_dk_partial", obj.pol_limit_dk_partial},
+      {"pol_limit_dk_partial2", obj.pol_limit_dk_partial2},
+      {"pol_rate_bks", obj.pol_rate_bks},
+      {"depol_rate", obj.depol_rate},
+      {"depol_rate_partial", obj.depol_rate_partial},
+      {"depol_rate_partial2", obj.depol_rate_partial2},
+      {"integral_bn", obj.integral_bn},
+      {"integral_bdn", obj.integral_bdn},
+      {"integral_1ns", obj.integral_1ns},
+      {"integral_dn2", obj.integral_dn2},
+      {"valid", obj.valid},
+      {"q_1turn", obj.q_1turn},
+      {"q_ele", obj.q_ele}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_spin_polarization& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_lattice_branch& obj) {
+  j = json{
+      {"lat_sigma", obj.lat_sigma},
+      {"spin_ele", obj.spin_ele},
+      {"bunch_params", obj.bunch_params},
+      {"bunch_params_comb", obj.bunch_params_comb},
+      {"orbit", obj.orbit},
+      {"plot_cache", obj.plot_cache},
+      {"spin", obj.spin},
+      {"srdt", obj.srdt},
+      {"orb0", obj.orb0},
+      {"modes_ri", obj.modes_ri},
+      {"modes_6d", obj.modes_6d},
+      {"ptc_normal_form", obj.ptc_normal_form},
+      {"bmad_normal_form", obj.bmad_normal_form},
+      {"high_E_orb", obj.high_E_orb},
+      {"low_E_orb", obj.low_E_orb},
+      {"cache_x_min", obj.cache_x_min},
+      {"cache_x_max", obj.cache_x_max},
+      {"comb_ds_save", obj.comb_ds_save},
+      {"track_state", obj.track_state},
+      {"cache_n_pts", obj.cache_n_pts},
+      {"ix_rad_int_cache", obj.ix_rad_int_cache},
+      {"has_open_match_element", obj.has_open_match_element},
+      {"plot_cache_valid", obj.plot_cache_valid},
+      {"spin_map_valid", obj.spin_map_valid},
+      {"twiss_valid", obj.twiss_valid},
+      {"mode_flip_here", obj.mode_flip_here},
+      {"chrom_calc_ok", obj.chrom_calc_ok},
+      {"rad_int_calc_ok", obj.rad_int_calc_ok},
+      {"emit_6d_calc_ok", obj.emit_6d_calc_ok},
+      {"sigma_track_ok", obj.sigma_track_ok}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_lattice_branch& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_model_element& obj) {
+  j = json{
+      {"beam", obj.beam},
+      {"save_beam_internally", obj.save_beam_internally},
+      {"save_beam_to_file", obj.save_beam_to_file}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_model_element& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_beam_branch& obj) {
+  j = json{
+      {"beam_at_start", obj.beam_at_start},
+      {"beam_init", obj.beam_init},
+      {"beam_init_used", obj.beam_init_used},
+      {"init_starting_distribution", obj.init_starting_distribution},
+      {"track_start", obj.track_start},
+      {"track_end", obj.track_end},
+      {"ix_branch", obj.ix_branch},
+      {"ix_track_start", obj.ix_track_start},
+      {"ix_track_end", obj.ix_track_end}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_beam_branch& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_d1_data& obj) {
+  j = json{{"name", obj.name}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_d1_data& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_lattice& obj) {
+  j = json{
+      {"name", obj.name},
+      {"lat", obj.lat},
+      {"high_E_lat", obj.high_E_lat},
+      {"low_E_lat", obj.low_E_lat},
+      {"rad_int_by_ele_ri", obj.rad_int_by_ele_ri},
+      {"rad_int_by_ele_6d", obj.rad_int_by_ele_6d},
+      {"tao_branch", obj.tao_branch}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_lattice& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_beam_uni& obj) {
+  j = json{
+      {"saved_at", obj.saved_at},
+      {"dump_file", obj.dump_file},
+      {"dump_at", obj.dump_at},
+      {"track_beam_in_universe", obj.track_beam_in_universe},
+      {"always_reinit", obj.always_reinit}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_beam_uni& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_dynamic_aperture& obj) {
+  j = json{
+      {"param", obj.param},
+      {"scan", obj.scan},
+      {"pz", obj.pz},
+      {"ellipse_scale", obj.ellipse_scale},
+      {"a_emit", obj.a_emit},
+      {"b_emit", obj.b_emit}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_dynamic_aperture& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_model_branch& obj) {
+  j = json{{"ele", obj.ele}, {"beam", obj.beam}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_model_branch& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_d2_data& obj) {
+  j = json{
+      {"name", obj.name},
+      {"data_file_name", obj.data_file_name},
+      {"ref_file_name", obj.ref_file_name},
+      {"data_date", obj.data_date},
+      {"ref_date", obj.ref_date},
+      {"descrip", obj.descrip},
+      {"d1", obj.d1},
+      {"ix_universe", obj.ix_universe},
+      {"ix_d2_data", obj.ix_d2_data},
+      {"ix_ref", obj.ix_ref},
+      {"data_read_in", obj.data_read_in},
+      {"ref_read_in", obj.ref_read_in}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_d2_data& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_spin_map& obj) {
+  j = json{
+      {"valid", obj.valid},
+      {"map1", obj.map1},
+      {"axis_input", obj.axis_input},
+      {"axis0", obj.axis0},
+      {"axis1", obj.axis1},
+      {"ix_ele", obj.ix_ele},
+      {"ix_ref", obj.ix_ref},
+      {"ix_uni", obj.ix_uni},
+      {"ix_branch", obj.ix_branch},
+      {"mat8", obj.mat8}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_spin_map& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_data& obj) {
+  j = json{
+      {"ele_name", obj.ele_name},
+      {"ele_start_name", obj.ele_start_name},
+      {"ele_ref_name", obj.ele_ref_name},
+      {"merit_type", obj.merit_type},
+      {"id", obj.id},
+      {"data_source", obj.data_source},
+      {"why_invalid", obj.why_invalid},
+      {"ix_uni", obj.ix_uni},
+      {"ix_bunch", obj.ix_bunch},
+      {"ix_branch", obj.ix_branch},
+      {"ix_ele", obj.ix_ele},
+      {"ix_ele_start", obj.ix_ele_start},
+      {"ix_ele_ref", obj.ix_ele_ref},
+      {"ix_ele_merit", obj.ix_ele_merit},
+      {"ix_d1", obj.ix_d1},
+      {"ix_data", obj.ix_data},
+      {"ix_dModel", obj.ix_dModel},
+      {"eval_point", obj.eval_point},
+      {"meas_value", obj.meas_value},
+      {"ref_value", obj.ref_value},
+      {"model_value", obj.model_value},
+      {"design_value", obj.design_value},
+      {"old_value", obj.old_value},
+      {"base_value", obj.base_value},
+      {"error_rms", obj.error_rms},
+      {"delta_merit", obj.delta_merit},
+      {"weight", obj.weight},
+      {"invalid_value", obj.invalid_value},
+      {"merit", obj.merit},
+      {"s", obj.s},
+      {"s_offset", obj.s_offset},
+      {"err_message_printed", obj.err_message_printed},
+      {"exists", obj.exists},
+      {"good_model", obj.good_model},
+      {"good_base", obj.good_base},
+      {"good_design", obj.good_design},
+      {"good_meas", obj.good_meas},
+      {"good_ref", obj.good_ref},
+      {"good_user", obj.good_user},
+      {"good_opt", obj.good_opt},
+      {"good_plot", obj.good_plot},
+      {"useit_plot", obj.useit_plot},
+      {"useit_opt", obj.useit_opt},
+      {"spin_map", obj.spin_map},
+      {"d1", obj.d1}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_data& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_ping_scale& obj) {
+  j = json{
+      {"a_mode_meas", obj.a_mode_meas},
+      {"a_mode_ref", obj.a_mode_ref},
+      {"b_mode_meas", obj.b_mode_meas},
+      {"b_mode_ref", obj.b_mode_ref}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_ping_scale& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_universe_calc& obj) {
+  j = json{
+      {"srdt_for_data", obj.srdt_for_data},
+      {"rad_int_for_data", obj.rad_int_for_data},
+      {"rad_int_for_plotting", obj.rad_int_for_plotting},
+      {"chrom_for_data", obj.chrom_for_data},
+      {"chrom_for_plotting", obj.chrom_for_plotting},
+      {"lat_sigma_for_data", obj.lat_sigma_for_data},
+      {"lat_sigma_for_plotting", obj.lat_sigma_for_plotting},
+      {"dynamic_aperture", obj.dynamic_aperture},
+      {"one_turn_map", obj.one_turn_map},
+      {"lattice", obj.lattice},
+      {"twiss", obj.twiss},
+      {"track", obj.track},
+      {"spin_matrices", obj.spin_matrices}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_universe_calc& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_lat_ele_order& obj) {
+  j = json{{"branch", obj.branch}};
+}
+
+ostream& operator<<(ostream& os, const CPP_lat_ele_order& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
+void to_json(json& j, const CPP_tao_universe& obj) {
+  j = json{
+      {"beam", obj.beam},
+      {"dynamic_aperture", obj.dynamic_aperture},
+      {"d2_data", obj.d2_data},
+      {"data", obj.data},
+      {"ping_scale", obj.ping_scale},
+      {"scratch_lat", obj.scratch_lat},
+      {"calc", obj.calc},
+      {"ele_order", obj.ele_order},
+      {"spin_map", obj.spin_map},
+      {"dModel_dVar", obj.dModel_dVar},
+      {"ix_uni", obj.ix_uni},
+      {"n_d2_data_used", obj.n_d2_data_used},
+      {"n_data_used", obj.n_data_used},
+      {"is_on", obj.is_on},
+      {"design_same_as_previous", obj.design_same_as_previous},
+      {"picked_uni", obj.picked_uni}};
+}
+
+ostream& operator<<(ostream& os, const CPP_tao_universe& obj) {
+  json j;
+  to_json(j, obj);
+  std::string str = nlohmann::to_string(j);
+  os << str;
+  return os;
+}
+
 //--------------------------------------------------------------------
 } // namespace Bmad

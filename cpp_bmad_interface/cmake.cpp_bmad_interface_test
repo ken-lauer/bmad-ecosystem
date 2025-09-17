@@ -7,6 +7,7 @@ set (LINK_LIBS
   cpp_bmad_interface
   bmad
   sim_utils
+  tao
   jsonfortran
   ${ACC_BMAD_LINK_LIBS}
 )

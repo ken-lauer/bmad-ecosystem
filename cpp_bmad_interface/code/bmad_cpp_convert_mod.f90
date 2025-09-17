@@ -11,6 +11,7 @@ module bmad_cpp_convert_mod
 
 use fortran_cpp_utils
 use bmad_struct
+use tao_struct
 
 use, intrinsic :: iso_c_binding
 
@@ -979,6 +980,296 @@ end interface
 
 interface 
   subroutine aperture_scan_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_spin_dn_dpz_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine resonance_h_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine spin_orbit_map1_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine spin_axis_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine ptc_normal_form_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine bmad_normal_form_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine bunch_track_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine summation_rdt_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine lat_ele_order1_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine lat_ele_order_array_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_lat_sigma_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_spin_ele_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_plot_cache_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_spin_polarization_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_lattice_branch_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_model_element_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_beam_branch_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_d1_data_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_lattice_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_beam_uni_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_dynamic_aperture_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_model_branch_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_d2_data_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_spin_map_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_data_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_ping_scale_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_universe_calc_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine lat_ele_order_to_f (C, Fp) bind(c)
+    import c_ptr
+    type(c_ptr), value :: C, Fp
+  end subroutine
+end interface
+
+
+!--------------------------------------------------------------------------
+
+interface 
+  subroutine tao_universe_to_f (C, Fp) bind(c)
     import c_ptr
     type(c_ptr), value :: C, Fp
   end subroutine
@@ -12939,6 +13230,3621 @@ call c_f_pointer (Fp, F)
   F%pz_start = z_pz_start
 
 end subroutine aperture_scan_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_dn_dpz_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_spin_dn_dpz_struct to a C++ CPP_tao_spin_dn_dpz structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_spin_dn_dpz_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_spin_dn_dpz struct.
+!-
+
+subroutine tao_spin_dn_dpz_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_spin_dn_dpz_to_c2 (C, z_vec, z_partial, z_partial2) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_vec(*), z_partial(*), z_partial2(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_spin_dn_dpz_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_spin_dn_dpz_to_c2 (C, fvec2vec(F%vec, 3), mat2vec(F%partial, 3*3), mat2vec(F%partial2, &
+    3*3))
+
+end subroutine tao_spin_dn_dpz_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_dn_dpz_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_spin_dn_dpz structure to a Bmad tao_spin_dn_dpz_struct structure.
+! This routine is called by tao_spin_dn_dpz_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_spin_dn_dpz_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_spin_dn_dpz_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_spin_dn_dpz_to_f2 (Fp, z_vec, z_partial, z_partial2) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_spin_dn_dpz_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_vec(*), z_partial(*), z_partial2(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%vec = z_vec(1:3)
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_partial, F%partial)
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_partial2, F%partial2)
+
+end subroutine tao_spin_dn_dpz_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine resonance_h_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad resonance_h_struct to a C++ CPP_resonance_h structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad resonance_h_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_resonance_h struct.
+!-
+
+subroutine resonance_h_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine resonance_h_to_c2 (C, z_id, z_c_val) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    character(c_char) :: z_id(*)
+    complex(c_double_complex) :: z_c_val
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(resonance_h_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call resonance_h_to_c2 (C, trim(F%id) // c_null_char, F%c_val)
+
+end subroutine resonance_h_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine resonance_h_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_resonance_h structure to a Bmad resonance_h_struct structure.
+! This routine is called by resonance_h_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the resonance_h_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad resonance_h_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine resonance_h_to_f2 (Fp, z_id, z_c_val) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(resonance_h_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+character(c_char) :: z_id(*)
+complex(c_double_complex) :: z_c_val
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_id, F%id)
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%c_val = z_c_val
+
+end subroutine resonance_h_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine spin_orbit_map1_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad spin_orbit_map1_struct to a C++ CPP_spin_orbit_map1 structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad spin_orbit_map1_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_spin_orbit_map1 struct.
+!-
+
+subroutine spin_orbit_map1_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine spin_orbit_map1_to_c2 (C, z_orb_mat, z_vec0, z_spin_q) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_orb_mat(*), z_vec0(*), z_spin_q(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(spin_orbit_map1_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call spin_orbit_map1_to_c2 (C, mat2vec(F%orb_mat, 6*6), fvec2vec(F%vec0, 6), mat2vec(F%spin_q, &
+    4*7))
+
+end subroutine spin_orbit_map1_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine spin_orbit_map1_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_spin_orbit_map1 structure to a Bmad spin_orbit_map1_struct structure.
+! This routine is called by spin_orbit_map1_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the spin_orbit_map1_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad spin_orbit_map1_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine spin_orbit_map1_to_f2 (Fp, z_orb_mat, z_vec0, z_spin_q) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(spin_orbit_map1_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_orb_mat(*), z_vec0(*), z_spin_q(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_orb_mat, F%orb_mat)
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%vec0 = z_vec0(1:6)
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_spin_q, F%spin_q)
+
+end subroutine spin_orbit_map1_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine spin_axis_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad spin_axis_struct to a C++ CPP_spin_axis structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad spin_axis_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_spin_axis struct.
+!-
+
+subroutine spin_axis_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine spin_axis_to_c2 (C, z_l, z_n0, z_m) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_l(*), z_n0(*), z_m(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(spin_axis_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call spin_axis_to_c2 (C, fvec2vec(F%l, 3), fvec2vec(F%n0, 3), fvec2vec(F%m, 3))
+
+end subroutine spin_axis_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine spin_axis_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_spin_axis structure to a Bmad spin_axis_struct structure.
+! This routine is called by spin_axis_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the spin_axis_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad spin_axis_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine spin_axis_to_f2 (Fp, z_l, z_n0, z_m) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(spin_axis_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_l(*), z_n0(*), z_m(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%l = z_l(1:3)
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%n0 = z_n0(1:3)
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%m = z_m(1:3)
+
+end subroutine spin_axis_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine ptc_normal_form_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad ptc_normal_form_struct to a C++ CPP_ptc_normal_form structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad ptc_normal_form_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_ptc_normal_form struct.
+!-
+
+subroutine ptc_normal_form_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine ptc_normal_form_to_c2 (C, z_ele_origin, n_ele_origin, z_orb0, z_valid_map) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_ele_origin
+    integer(c_int), value :: n_ele_origin
+    real(c_double) :: z_orb0(*)
+    logical(c_bool) :: z_valid_map
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(ptc_normal_form_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  integer(c_int) :: n_ele_origin
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[0D_PTR_type]
+  n_ele_origin = 0
+  if (associated(F%ele_origin)) n_ele_origin = 1
+
+!! f_side.to_c2_call
+call ptc_normal_form_to_c2 (C, c_loc(F%ele_origin), n_ele_origin, fvec2vec(F%orb0, 6), &
+    c_logic(F%valid_map))
+
+end subroutine ptc_normal_form_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine ptc_normal_form_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_ptc_normal_form structure to a Bmad ptc_normal_form_struct structure.
+! This routine is called by ptc_normal_form_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the ptc_normal_form_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad ptc_normal_form_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine ptc_normal_form_to_f2 (Fp, z_ele_origin, n_ele_origin, z_orb0, z_valid_map) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(ptc_normal_form_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_ele_origin
+type(ele_struct), pointer :: f_ele_origin
+integer(c_int), value :: n_ele_origin
+real(c_double) :: z_orb0(*)
+logical(c_bool) :: z_valid_map
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_PTR_type]
+  if (n_ele_origin == 0) then
+    if (associated(F%ele_origin)) deallocate(F%ele_origin)
+  else
+    if (.not. associated(F%ele_origin)) allocate(F%ele_origin)
+    call ele_to_f (z_ele_origin, c_loc(F%ele_origin))
+  endif
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%orb0 = z_orb0(1:6)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%valid_map = f_logic(z_valid_map)
+
+end subroutine ptc_normal_form_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine bmad_normal_form_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad bmad_normal_form_struct to a C++ CPP_bmad_normal_form structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad bmad_normal_form_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_bmad_normal_form struct.
+!-
+
+subroutine bmad_normal_form_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine bmad_normal_form_to_c2 (C, z_ele_origin, n_ele_origin, z_M, z_A, z_A_inv, z_dhdj, &
+      z_F, z_L, z_h, n1_h) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_ele_origin
+    integer(c_int), value :: n_ele_origin, n1_h
+    type(c_ptr) :: z_M(*), z_A(*), z_A_inv(*), z_dhdj(*), z_F(*), z_L(*), z_h(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(bmad_normal_form_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  integer(c_int) :: n_ele_origin
+  type(c_ptr) :: z_M(6)
+  type(c_ptr) :: z_A(6)
+  type(c_ptr) :: z_A_inv(6)
+  type(c_ptr) :: z_dhdj(6)
+  type(c_ptr) :: z_F(6)
+  type(c_ptr) :: z_L(6)
+  type(c_ptr), allocatable :: z_h(:)
+  integer(c_int) :: n1_h
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[0D_PTR_type]
+  n_ele_origin = 0
+  if (associated(F%ele_origin)) n_ele_origin = 1
+!! f_side.to_c_trans[1D_NOT_type]
+  do jd1 = 1, size(F%M,1); lb1 = lbound(F%M,1) - 1
+  z_M(jd1) = c_loc(F%M(jd1+lb1))
+  enddo
+!! f_side.to_c_trans[1D_NOT_type]
+  do jd1 = 1, size(F%A,1); lb1 = lbound(F%A,1) - 1
+  z_A(jd1) = c_loc(F%A(jd1+lb1))
+  enddo
+!! f_side.to_c_trans[1D_NOT_type]
+  do jd1 = 1, size(F%A_inv,1); lb1 = lbound(F%A_inv,1) - 1
+  z_A_inv(jd1) = c_loc(F%A_inv(jd1+lb1))
+  enddo
+!! f_side.to_c_trans[1D_NOT_type]
+  do jd1 = 1, size(F%dhdj,1); lb1 = lbound(F%dhdj,1) - 1
+  z_dhdj(jd1) = c_loc(F%dhdj(jd1+lb1))
+  enddo
+!! f_side.to_c_trans[1D_NOT_type]
+  do jd1 = 1, size(F%F,1); lb1 = lbound(F%F,1) - 1
+  z_F(jd1) = c_loc(F%F(jd1+lb1))
+  enddo
+!! f_side.to_c_trans[1D_NOT_type]
+  do jd1 = 1, size(F%L,1); lb1 = lbound(F%L,1) - 1
+  z_L(jd1) = c_loc(F%L(jd1+lb1))
+  enddo
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_h = 0
+  if (allocated(F%h)) then
+    n1_h = size(F%h)
+    lb1 = lbound(F%h, 1) - 1
+    allocate (z_h(n1_h))
+    do jd1 = 1, n1_h
+      z_h(jd1) = c_loc(F%h(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call bmad_normal_form_to_c2 (C, c_loc(F%ele_origin), n_ele_origin, z_M, z_A, z_A_inv, z_dhdj, &
+    z_F, z_L, z_h, n1_h)
+
+end subroutine bmad_normal_form_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine bmad_normal_form_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_bmad_normal_form structure to a Bmad bmad_normal_form_struct structure.
+! This routine is called by bmad_normal_form_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the bmad_normal_form_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad bmad_normal_form_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine bmad_normal_form_to_f2 (Fp, z_ele_origin, n_ele_origin, z_M, z_A, z_A_inv, z_dhdj, &
+    z_F, z_L, z_h, n1_h) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(bmad_normal_form_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_ele_origin
+type(ele_struct), pointer :: f_ele_origin
+integer(c_int), value :: n_ele_origin, n1_h
+type(c_ptr) :: z_M(*), z_A(*), z_A_inv(*), z_dhdj(*), z_F(*), z_L(*), z_h(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_PTR_type]
+  if (n_ele_origin == 0) then
+    if (associated(F%ele_origin)) deallocate(F%ele_origin)
+  else
+    if (.not. associated(F%ele_origin)) allocate(F%ele_origin)
+    call ele_to_f (z_ele_origin, c_loc(F%ele_origin))
+  endif
+!! f_side.to_f2_trans[1D_NOT_type]
+  do jd1 = 1, size(F%M,1); lb1 = lbound(F%M,1) - 1
+  call taylor_to_f(z_M(jd1), c_loc(F%M(jd1+lb1)))
+  enddo
+!! f_side.to_f2_trans[1D_NOT_type]
+  do jd1 = 1, size(F%A,1); lb1 = lbound(F%A,1) - 1
+  call taylor_to_f(z_A(jd1), c_loc(F%A(jd1+lb1)))
+  enddo
+!! f_side.to_f2_trans[1D_NOT_type]
+  do jd1 = 1, size(F%A_inv,1); lb1 = lbound(F%A_inv,1) - 1
+  call taylor_to_f(z_A_inv(jd1), c_loc(F%A_inv(jd1+lb1)))
+  enddo
+!! f_side.to_f2_trans[1D_NOT_type]
+  do jd1 = 1, size(F%dhdj,1); lb1 = lbound(F%dhdj,1) - 1
+  call taylor_to_f(z_dhdj(jd1), c_loc(F%dhdj(jd1+lb1)))
+  enddo
+!! f_side.to_f2_trans[1D_NOT_type]
+  do jd1 = 1, size(F%F,1); lb1 = lbound(F%F,1) - 1
+  call complex_taylor_to_f(z_F(jd1), c_loc(F%F(jd1+lb1)))
+  enddo
+!! f_side.to_f2_trans[1D_NOT_type]
+  do jd1 = 1, size(F%L,1); lb1 = lbound(F%L,1) - 1
+  call complex_taylor_to_f(z_L(jd1), c_loc(F%L(jd1+lb1)))
+  enddo
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_h == 0) then
+    if (allocated(F%h)) then
+      deallocate(F%h)
+    endif
+  else
+    if (allocated(F%h)) then
+      if (n1_h == 0 .or. any(shape(F%h) /= [n1_h])) deallocate(F%h)
+      if (any(lbound(F%h) /= 1)) deallocate(F%h)
+    endif
+    if (.not. allocated(F%h)) allocate(F%h(1:n1_h+1-1))
+    do jd1 = 1, n1_h
+      call resonance_h_to_f (z_h(jd1), c_loc(F%h(jd1+1-1)))
+    enddo
+  endif
+
+end subroutine bmad_normal_form_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_track_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad bunch_track_struct to a C++ CPP_bunch_track structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad bunch_track_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_bunch_track struct.
+!-
+
+subroutine bunch_track_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine bunch_track_to_c2 (C, z_pt, n1_pt, z_ds_save, z_n_pt) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr) :: z_pt(*)
+    integer(c_int), value :: n1_pt
+    real(c_double) :: z_ds_save
+    integer(c_int) :: z_n_pt
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(bunch_track_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_pt(:)
+  integer(c_int) :: n1_pt
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_pt = 0
+  if (allocated(F%pt)) then
+    n1_pt = size(F%pt)
+    lb1 = lbound(F%pt, 1) - 1
+    allocate (z_pt(n1_pt))
+    do jd1 = 1, n1_pt
+      z_pt(jd1) = c_loc(F%pt(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call bunch_track_to_c2 (C, z_pt, n1_pt, F%ds_save, F%n_pt)
+
+end subroutine bunch_track_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine bunch_track_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_bunch_track structure to a Bmad bunch_track_struct structure.
+! This routine is called by bunch_track_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the bunch_track_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad bunch_track_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine bunch_track_to_f2 (Fp, z_pt, n1_pt, z_ds_save, z_n_pt) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(bunch_track_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr) :: z_pt(*)
+integer(c_int), value :: n1_pt
+real(c_double) :: z_ds_save
+integer(c_int) :: z_n_pt
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_pt == 0) then
+    if (allocated(F%pt)) then
+      deallocate(F%pt)
+    endif
+  else
+    if (allocated(F%pt)) then
+      if (n1_pt == 0 .or. any(shape(F%pt) /= [n1_pt])) deallocate(F%pt)
+      if (any(lbound(F%pt) /= 1)) deallocate(F%pt)
+    endif
+    if (.not. allocated(F%pt)) allocate(F%pt(1:n1_pt+1-1))
+    do jd1 = 1, n1_pt
+      call bunch_params_to_f (z_pt(jd1), c_loc(F%pt(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%ds_save = z_ds_save
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%n_pt = z_n_pt
+
+end subroutine bunch_track_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine summation_rdt_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad summation_rdt_struct to a C++ CPP_summation_rdt structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad summation_rdt_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_summation_rdt struct.
+!-
+
+subroutine summation_rdt_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine summation_rdt_to_c2 (C, z_h11001, z_h00111, z_h20001, z_h00201, z_h10002, &
+      z_h21000, z_h30000, z_h10110, z_h10020, z_h10200, z_h31000, z_h40000, z_h20110, z_h11200, &
+      z_h20020, z_h20200, z_h00310, z_h00400, z_h22000, z_h00220, z_h11110) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    complex(c_double_complex) :: z_h11001, z_h00111, z_h20001, z_h00201, z_h10002, z_h21000, z_h30000
+    complex(c_double_complex) :: z_h10110, z_h10020, z_h10200, z_h31000, z_h40000, z_h20110, z_h11200
+    complex(c_double_complex) :: z_h20020, z_h20200, z_h00310, z_h00400, z_h22000, z_h00220, z_h11110
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(summation_rdt_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call summation_rdt_to_c2 (C, F%h11001, F%h00111, F%h20001, F%h00201, F%h10002, F%h21000, &
+    F%h30000, F%h10110, F%h10020, F%h10200, F%h31000, F%h40000, F%h20110, F%h11200, F%h20020, &
+    F%h20200, F%h00310, F%h00400, F%h22000, F%h00220, F%h11110)
+
+end subroutine summation_rdt_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine summation_rdt_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_summation_rdt structure to a Bmad summation_rdt_struct structure.
+! This routine is called by summation_rdt_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the summation_rdt_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad summation_rdt_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine summation_rdt_to_f2 (Fp, z_h11001, z_h00111, z_h20001, z_h00201, z_h10002, z_h21000, &
+    z_h30000, z_h10110, z_h10020, z_h10200, z_h31000, z_h40000, z_h20110, z_h11200, z_h20020, &
+    z_h20200, z_h00310, z_h00400, z_h22000, z_h00220, z_h11110) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(summation_rdt_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+complex(c_double_complex) :: z_h11001, z_h00111, z_h20001, z_h00201, z_h10002, z_h21000, z_h30000
+complex(c_double_complex) :: z_h10110, z_h10020, z_h10200, z_h31000, z_h40000, z_h20110, z_h11200
+complex(c_double_complex) :: z_h20020, z_h20200, z_h00310, z_h00400, z_h22000, z_h00220, z_h11110
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h11001 = z_h11001
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h00111 = z_h00111
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h20001 = z_h20001
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h00201 = z_h00201
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h10002 = z_h10002
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h21000 = z_h21000
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h30000 = z_h30000
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h10110 = z_h10110
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h10020 = z_h10020
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h10200 = z_h10200
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h31000 = z_h31000
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h40000 = z_h40000
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h20110 = z_h20110
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h11200 = z_h11200
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h20020 = z_h20020
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h20200 = z_h20200
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h00310 = z_h00310
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h00400 = z_h00400
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h22000 = z_h22000
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h00220 = z_h00220
+!! f_side.to_f2_trans[0D_NOT_complex]
+  F%h11110 = z_h11110
+
+end subroutine summation_rdt_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine lat_ele_order1_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad lat_ele_order1_struct to a C++ CPP_lat_ele_order1 structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad lat_ele_order1_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_lat_ele_order1 struct.
+!-
+
+subroutine lat_ele_order1_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine lat_ele_order1_to_c2 (C, z_ix_branch, z_ix_order) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    integer(c_int) :: z_ix_branch, z_ix_order
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(lat_ele_order1_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call lat_ele_order1_to_c2 (C, F%ix_branch, F%ix_order)
+
+end subroutine lat_ele_order1_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine lat_ele_order1_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_lat_ele_order1 structure to a Bmad lat_ele_order1_struct structure.
+! This routine is called by lat_ele_order1_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the lat_ele_order1_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad lat_ele_order1_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine lat_ele_order1_to_f2 (Fp, z_ix_branch, z_ix_order) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(lat_ele_order1_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+integer(c_int) :: z_ix_branch, z_ix_order
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_branch = z_ix_branch
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_order = z_ix_order
+
+end subroutine lat_ele_order1_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine lat_ele_order_array_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad lat_ele_order_array_struct to a C++ CPP_lat_ele_order_array structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad lat_ele_order_array_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_lat_ele_order_array struct.
+!-
+
+subroutine lat_ele_order_array_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine lat_ele_order_array_to_c2 (C, z_ele, n1_ele) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr) :: z_ele(*)
+    integer(c_int), value :: n1_ele
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(lat_ele_order_array_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_ele(:)
+  integer(c_int) :: n1_ele
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_ele = 0
+  if (allocated(F%ele)) then
+    n1_ele = size(F%ele)
+    lb1 = lbound(F%ele, 1) - 1
+    allocate (z_ele(n1_ele))
+    do jd1 = 1, n1_ele
+      z_ele(jd1) = c_loc(F%ele(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call lat_ele_order_array_to_c2 (C, z_ele, n1_ele)
+
+end subroutine lat_ele_order_array_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine lat_ele_order_array_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_lat_ele_order_array structure to a Bmad lat_ele_order_array_struct structure.
+! This routine is called by lat_ele_order_array_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the lat_ele_order_array_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad lat_ele_order_array_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine lat_ele_order_array_to_f2 (Fp, z_ele, n1_ele) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(lat_ele_order_array_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr) :: z_ele(*)
+integer(c_int), value :: n1_ele
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_ele == 0) then
+    if (allocated(F%ele)) then
+      deallocate(F%ele)
+    endif
+  else
+    if (allocated(F%ele)) then
+      if (n1_ele == 0 .or. any(shape(F%ele) /= [n1_ele])) deallocate(F%ele)
+      if (any(lbound(F%ele) /= 1)) deallocate(F%ele)
+    endif
+    if (.not. allocated(F%ele)) allocate(F%ele(1:n1_ele+1-1))
+    do jd1 = 1, n1_ele
+      call lat_ele_order1_to_f (z_ele(jd1), c_loc(F%ele(jd1+1-1)))
+    enddo
+  endif
+
+end subroutine lat_ele_order_array_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_lat_sigma_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_lat_sigma_struct to a C++ CPP_tao_lat_sigma structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_lat_sigma_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_lat_sigma struct.
+!-
+
+subroutine tao_lat_sigma_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_lat_sigma_to_c2 (C, z_mat) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_mat(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_lat_sigma_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_lat_sigma_to_c2 (C, mat2vec(F%mat, 6*6))
+
+end subroutine tao_lat_sigma_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_lat_sigma_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_lat_sigma structure to a Bmad tao_lat_sigma_struct structure.
+! This routine is called by tao_lat_sigma_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_lat_sigma_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_lat_sigma_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_lat_sigma_to_f2 (Fp, z_mat) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_lat_sigma_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_mat(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_mat, F%mat)
+
+end subroutine tao_lat_sigma_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_ele_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_spin_ele_struct to a C++ CPP_tao_spin_ele structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_spin_ele_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_spin_ele struct.
+!-
+
+subroutine tao_spin_ele_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_spin_ele_to_c2 (C, z_dn_dpz, z_orb_eigen_val, z_orb_eigen_vec, &
+      z_spin_eigen_vec, z_valid) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_dn_dpz
+    real(c_double) :: z_orb_eigen_val(*), z_orb_eigen_vec(*), z_spin_eigen_vec(*)
+    logical(c_bool) :: z_valid
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_spin_ele_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_spin_ele_to_c2 (C, c_loc(F%dn_dpz), fvec2vec(F%orb_eigen_val, 6), &
+    mat2vec(F%orb_eigen_vec, 6*6), mat2vec(F%spin_eigen_vec, 6*3), c_logic(F%valid))
+
+end subroutine tao_spin_ele_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_ele_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_spin_ele structure to a Bmad tao_spin_ele_struct structure.
+! This routine is called by tao_spin_ele_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_spin_ele_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_spin_ele_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_spin_ele_to_f2 (Fp, z_dn_dpz, z_orb_eigen_val, z_orb_eigen_vec, &
+    z_spin_eigen_vec, z_valid) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_spin_ele_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_dn_dpz
+real(c_double) :: z_orb_eigen_val(*), z_orb_eigen_vec(*), z_spin_eigen_vec(*)
+logical(c_bool) :: z_valid
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_spin_dn_dpz_to_f(z_dn_dpz, c_loc(F%dn_dpz))
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%orb_eigen_val = z_orb_eigen_val(1:6)
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_orb_eigen_vec, F%orb_eigen_vec)
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_spin_eigen_vec, F%spin_eigen_vec)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%valid = f_logic(z_valid)
+
+end subroutine tao_spin_ele_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_plot_cache_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_plot_cache_struct to a C++ CPP_tao_plot_cache structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_plot_cache_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_plot_cache struct.
+!-
+
+subroutine tao_plot_cache_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_plot_cache_to_c2 (C, z_ele_to_s, z_orbit, z_err) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_ele_to_s, z_orbit
+    logical(c_bool) :: z_err
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_plot_cache_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_plot_cache_to_c2 (C, c_loc(F%ele_to_s), c_loc(F%orbit), c_logic(F%err))
+
+end subroutine tao_plot_cache_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_plot_cache_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_plot_cache structure to a Bmad tao_plot_cache_struct structure.
+! This routine is called by tao_plot_cache_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_plot_cache_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_plot_cache_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_plot_cache_to_f2 (Fp, z_ele_to_s, z_orbit, z_err) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_plot_cache_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_ele_to_s, z_orbit
+logical(c_bool) :: z_err
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_type]
+  call ele_to_f(z_ele_to_s, c_loc(F%ele_to_s))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call coord_to_f(z_orbit, c_loc(F%orbit))
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%err = f_logic(z_err)
+
+end subroutine tao_plot_cache_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_polarization_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_spin_polarization_struct to a C++ CPP_tao_spin_polarization structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_spin_polarization_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_spin_polarization struct.
+!-
+
+subroutine tao_spin_polarization_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_spin_polarization_to_c2 (C, z_tune, z_pol_limit_st, z_pol_limit_dk, &
+      z_pol_limit_dk_partial, z_pol_limit_dk_partial2, z_pol_rate_bks, z_depol_rate, &
+      z_depol_rate_partial, z_depol_rate_partial2, z_integral_bn, z_integral_bdn, &
+      z_integral_1ns, z_integral_dn2, z_valid, z_q_1turn, z_q_ele, n1_q_ele) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_tune, z_pol_limit_st, z_pol_limit_dk, z_pol_limit_dk_partial(*), z_pol_limit_dk_partial2(*), z_pol_rate_bks, z_depol_rate
+    real(c_double) :: z_depol_rate_partial(*), z_depol_rate_partial2(*), z_integral_bn, z_integral_bdn, z_integral_1ns, z_integral_dn2
+    logical(c_bool) :: z_valid
+    type(c_ptr), value :: z_q_1turn
+    type(c_ptr) :: z_q_ele(*)
+    integer(c_int), value :: n1_q_ele
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_spin_polarization_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_q_ele(:)
+  integer(c_int) :: n1_q_ele
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_q_ele = 0
+  if (allocated(F%q_ele)) then
+    n1_q_ele = size(F%q_ele)
+    lb1 = lbound(F%q_ele, 1) - 1
+    allocate (z_q_ele(n1_q_ele))
+    do jd1 = 1, n1_q_ele
+      z_q_ele(jd1) = c_loc(F%q_ele(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call tao_spin_polarization_to_c2 (C, F%tune, F%pol_limit_st, F%pol_limit_dk, &
+    fvec2vec(F%pol_limit_dk_partial, 3), fvec2vec(F%pol_limit_dk_partial2, 3), F%pol_rate_bks, &
+    F%depol_rate, fvec2vec(F%depol_rate_partial, 3), fvec2vec(F%depol_rate_partial2, 3), &
+    F%integral_bn, F%integral_bdn, F%integral_1ns, F%integral_dn2, c_logic(F%valid), &
+    c_loc(F%q_1turn), z_q_ele, n1_q_ele)
+
+end subroutine tao_spin_polarization_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_polarization_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_spin_polarization structure to a Bmad tao_spin_polarization_struct structure.
+! This routine is called by tao_spin_polarization_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_spin_polarization_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_spin_polarization_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_spin_polarization_to_f2 (Fp, z_tune, z_pol_limit_st, z_pol_limit_dk, &
+    z_pol_limit_dk_partial, z_pol_limit_dk_partial2, z_pol_rate_bks, z_depol_rate, &
+    z_depol_rate_partial, z_depol_rate_partial2, z_integral_bn, z_integral_bdn, z_integral_1ns, &
+    z_integral_dn2, z_valid, z_q_1turn, z_q_ele, n1_q_ele) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_spin_polarization_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_tune, z_pol_limit_st, z_pol_limit_dk, z_pol_limit_dk_partial(*), z_pol_limit_dk_partial2(*), z_pol_rate_bks, z_depol_rate
+real(c_double) :: z_depol_rate_partial(*), z_depol_rate_partial2(*), z_integral_bn, z_integral_bdn, z_integral_1ns, z_integral_dn2
+logical(c_bool) :: z_valid
+type(c_ptr), value :: z_q_1turn
+type(c_ptr) :: z_q_ele(*)
+integer(c_int), value :: n1_q_ele
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%tune = z_tune
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%pol_limit_st = z_pol_limit_st
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%pol_limit_dk = z_pol_limit_dk
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%pol_limit_dk_partial = z_pol_limit_dk_partial(1:3)
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%pol_limit_dk_partial2 = z_pol_limit_dk_partial2(1:3)
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%pol_rate_bks = z_pol_rate_bks
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%depol_rate = z_depol_rate
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%depol_rate_partial = z_depol_rate_partial(1:3)
+!! f_side.to_f2_trans[1D_NOT_real]
+  F%depol_rate_partial2 = z_depol_rate_partial2(1:3)
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%integral_bn = z_integral_bn
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%integral_bdn = z_integral_bdn
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%integral_1ns = z_integral_1ns
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%integral_dn2 = z_integral_dn2
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%valid = f_logic(z_valid)
+!! f_side.to_f2_trans[0D_NOT_type]
+  call spin_orbit_map1_to_f(z_q_1turn, c_loc(F%q_1turn))
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_q_ele == 0) then
+    if (allocated(F%q_ele)) then
+      deallocate(F%q_ele)
+    endif
+  else
+    if (allocated(F%q_ele)) then
+      if (n1_q_ele == 0 .or. any(shape(F%q_ele) /= [n1_q_ele])) deallocate(F%q_ele)
+      if (any(lbound(F%q_ele) /= 1)) deallocate(F%q_ele)
+    endif
+    if (.not. allocated(F%q_ele)) allocate(F%q_ele(1:n1_q_ele+1-1))
+    do jd1 = 1, n1_q_ele
+      call spin_orbit_map1_to_f (z_q_ele(jd1), c_loc(F%q_ele(jd1+1-1)))
+    enddo
+  endif
+
+end subroutine tao_spin_polarization_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_lattice_branch_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_lattice_branch_struct to a C++ CPP_tao_lattice_branch structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_lattice_branch_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_lattice_branch struct.
+!-
+
+subroutine tao_lattice_branch_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_lattice_branch_to_c2 (C, z_lat_sigma, n1_lat_sigma, z_spin_ele, n1_spin_ele, &
+      z_bunch_params, n1_bunch_params, z_bunch_params_comb, n1_bunch_params_comb, z_orbit, &
+      n1_orbit, z_plot_cache, n1_plot_cache, z_spin, z_srdt, z_orb0, z_modes_ri, z_modes_6d, &
+      z_ptc_normal_form, z_bmad_normal_form, z_high_E_orb, n1_high_E_orb, z_low_E_orb, &
+      n1_low_E_orb, z_cache_x_min, z_cache_x_max, z_comb_ds_save, z_track_state, z_cache_n_pts, &
+      z_ix_rad_int_cache, z_has_open_match_element, z_plot_cache_valid, z_spin_map_valid, &
+      z_twiss_valid, z_mode_flip_here, z_chrom_calc_ok, z_rad_int_calc_ok, z_emit_6d_calc_ok, &
+      z_sigma_track_ok) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr) :: z_lat_sigma(*), z_spin_ele(*), z_bunch_params(*), z_bunch_params_comb(*), z_orbit(*), z_plot_cache(*), z_high_E_orb(*)
+    type(c_ptr) :: z_low_E_orb(*)
+    integer(c_int), value :: n1_lat_sigma, n1_spin_ele, n1_bunch_params, n1_bunch_params_comb, n1_orbit, n1_plot_cache, n1_high_E_orb
+    integer(c_int), value :: n1_low_E_orb
+    type(c_ptr), value :: z_spin, z_srdt, z_orb0, z_modes_ri, z_modes_6d, z_ptc_normal_form, z_bmad_normal_form
+    real(c_double) :: z_cache_x_min, z_cache_x_max, z_comb_ds_save
+    integer(c_int) :: z_track_state, z_cache_n_pts, z_ix_rad_int_cache
+    logical(c_bool) :: z_has_open_match_element, z_plot_cache_valid, z_spin_map_valid, z_twiss_valid, z_mode_flip_here, z_chrom_calc_ok, z_rad_int_calc_ok
+    logical(c_bool) :: z_emit_6d_calc_ok, z_sigma_track_ok
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_lattice_branch_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_lat_sigma(:)
+  integer(c_int) :: n1_lat_sigma
+  type(c_ptr), allocatable :: z_spin_ele(:)
+  integer(c_int) :: n1_spin_ele
+  type(c_ptr), allocatable :: z_bunch_params(:)
+  integer(c_int) :: n1_bunch_params
+  type(c_ptr), allocatable :: z_bunch_params_comb(:)
+  integer(c_int) :: n1_bunch_params_comb
+  type(c_ptr), allocatable :: z_orbit(:)
+  integer(c_int) :: n1_orbit
+  type(c_ptr), allocatable :: z_plot_cache(:)
+  integer(c_int) :: n1_plot_cache
+  type(c_ptr), allocatable :: z_high_E_orb(:)
+  integer(c_int) :: n1_high_E_orb
+  type(c_ptr), allocatable :: z_low_E_orb(:)
+  integer(c_int) :: n1_low_E_orb
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_lat_sigma = 0
+  if (allocated(F%lat_sigma)) then
+    n1_lat_sigma = size(F%lat_sigma)
+    lb1 = lbound(F%lat_sigma, 1) - 1
+    allocate (z_lat_sigma(n1_lat_sigma))
+    do jd1 = 1, n1_lat_sigma
+      z_lat_sigma(jd1) = c_loc(F%lat_sigma(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_spin_ele = 0
+  if (allocated(F%spin_ele)) then
+    n1_spin_ele = size(F%spin_ele)
+    lb1 = lbound(F%spin_ele, 1) - 1
+    allocate (z_spin_ele(n1_spin_ele))
+    do jd1 = 1, n1_spin_ele
+      z_spin_ele(jd1) = c_loc(F%spin_ele(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_bunch_params = 0
+  if (allocated(F%bunch_params)) then
+    n1_bunch_params = size(F%bunch_params)
+    lb1 = lbound(F%bunch_params, 1) - 1
+    allocate (z_bunch_params(n1_bunch_params))
+    do jd1 = 1, n1_bunch_params
+      z_bunch_params(jd1) = c_loc(F%bunch_params(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_bunch_params_comb = 0
+  if (allocated(F%bunch_params_comb)) then
+    n1_bunch_params_comb = size(F%bunch_params_comb)
+    lb1 = lbound(F%bunch_params_comb, 1) - 1
+    allocate (z_bunch_params_comb(n1_bunch_params_comb))
+    do jd1 = 1, n1_bunch_params_comb
+      z_bunch_params_comb(jd1) = c_loc(F%bunch_params_comb(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_orbit = 0
+  if (allocated(F%orbit)) then
+    n1_orbit = size(F%orbit)
+    lb1 = lbound(F%orbit, 1) - 1
+    allocate (z_orbit(n1_orbit))
+    do jd1 = 1, n1_orbit
+      z_orbit(jd1) = c_loc(F%orbit(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_plot_cache = 0
+  if (allocated(F%plot_cache)) then
+    n1_plot_cache = size(F%plot_cache)
+    lb1 = lbound(F%plot_cache, 1) - 1
+    allocate (z_plot_cache(n1_plot_cache))
+    do jd1 = 1, n1_plot_cache
+      z_plot_cache(jd1) = c_loc(F%plot_cache(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_high_E_orb = 0
+  if (allocated(F%high_E_orb)) then
+    n1_high_E_orb = size(F%high_E_orb)
+    lb1 = lbound(F%high_E_orb, 1) - 1
+    allocate (z_high_E_orb(n1_high_E_orb))
+    do jd1 = 1, n1_high_E_orb
+      z_high_E_orb(jd1) = c_loc(F%high_E_orb(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_low_E_orb = 0
+  if (allocated(F%low_E_orb)) then
+    n1_low_E_orb = size(F%low_E_orb)
+    lb1 = lbound(F%low_E_orb, 1) - 1
+    allocate (z_low_E_orb(n1_low_E_orb))
+    do jd1 = 1, n1_low_E_orb
+      z_low_E_orb(jd1) = c_loc(F%low_E_orb(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call tao_lattice_branch_to_c2 (C, z_lat_sigma, n1_lat_sigma, z_spin_ele, n1_spin_ele, &
+    z_bunch_params, n1_bunch_params, z_bunch_params_comb, n1_bunch_params_comb, z_orbit, &
+    n1_orbit, z_plot_cache, n1_plot_cache, c_loc(F%spin), c_loc(F%srdt), c_loc(F%orb0), &
+    c_loc(F%modes_ri), c_loc(F%modes_6d), c_loc(F%ptc_normal_form), c_loc(F%bmad_normal_form), &
+    z_high_E_orb, n1_high_E_orb, z_low_E_orb, n1_low_E_orb, F%cache_x_min, F%cache_x_max, &
+    F%comb_ds_save, F%track_state, F%cache_n_pts, F%ix_rad_int_cache, &
+    c_logic(F%has_open_match_element), c_logic(F%plot_cache_valid), c_logic(F%spin_map_valid), &
+    c_logic(F%twiss_valid), c_logic(F%mode_flip_here), c_logic(F%chrom_calc_ok), &
+    c_logic(F%rad_int_calc_ok), c_logic(F%emit_6d_calc_ok), c_logic(F%sigma_track_ok))
+
+end subroutine tao_lattice_branch_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_lattice_branch_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_lattice_branch structure to a Bmad tao_lattice_branch_struct structure.
+! This routine is called by tao_lattice_branch_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_lattice_branch_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_lattice_branch_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_lattice_branch_to_f2 (Fp, z_lat_sigma, n1_lat_sigma, z_spin_ele, n1_spin_ele, &
+    z_bunch_params, n1_bunch_params, z_bunch_params_comb, n1_bunch_params_comb, z_orbit, &
+    n1_orbit, z_plot_cache, n1_plot_cache, z_spin, z_srdt, z_orb0, z_modes_ri, z_modes_6d, &
+    z_ptc_normal_form, z_bmad_normal_form, z_high_E_orb, n1_high_E_orb, z_low_E_orb, &
+    n1_low_E_orb, z_cache_x_min, z_cache_x_max, z_comb_ds_save, z_track_state, z_cache_n_pts, &
+    z_ix_rad_int_cache, z_has_open_match_element, z_plot_cache_valid, z_spin_map_valid, &
+    z_twiss_valid, z_mode_flip_here, z_chrom_calc_ok, z_rad_int_calc_ok, z_emit_6d_calc_ok, &
+    z_sigma_track_ok) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_lattice_branch_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr) :: z_lat_sigma(*), z_spin_ele(*), z_bunch_params(*), z_bunch_params_comb(*), z_orbit(*), z_plot_cache(*), z_high_E_orb(*)
+type(c_ptr) :: z_low_E_orb(*)
+integer(c_int), value :: n1_lat_sigma, n1_spin_ele, n1_bunch_params, n1_bunch_params_comb, n1_orbit, n1_plot_cache, n1_high_E_orb
+integer(c_int), value :: n1_low_E_orb
+type(c_ptr), value :: z_spin, z_srdt, z_orb0, z_modes_ri, z_modes_6d, z_ptc_normal_form, z_bmad_normal_form
+real(c_double) :: z_cache_x_min, z_cache_x_max, z_comb_ds_save
+integer(c_int) :: z_track_state, z_cache_n_pts, z_ix_rad_int_cache
+logical(c_bool) :: z_has_open_match_element, z_plot_cache_valid, z_spin_map_valid, z_twiss_valid, z_mode_flip_here, z_chrom_calc_ok, z_rad_int_calc_ok
+logical(c_bool) :: z_emit_6d_calc_ok, z_sigma_track_ok
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_lat_sigma == 0) then
+    if (allocated(F%lat_sigma)) then
+      deallocate(F%lat_sigma)
+    endif
+  else
+    if (allocated(F%lat_sigma)) then
+      if (n1_lat_sigma == 0 .or. any(shape(F%lat_sigma) /= [n1_lat_sigma])) deallocate(F%lat_sigma)
+      if (any(lbound(F%lat_sigma) /= 1)) deallocate(F%lat_sigma)
+    endif
+    if (.not. allocated(F%lat_sigma)) allocate(F%lat_sigma(1:n1_lat_sigma+1-1))
+    do jd1 = 1, n1_lat_sigma
+      call tao_lat_sigma_to_f (z_lat_sigma(jd1), c_loc(F%lat_sigma(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_spin_ele == 0) then
+    if (allocated(F%spin_ele)) then
+      deallocate(F%spin_ele)
+    endif
+  else
+    if (allocated(F%spin_ele)) then
+      if (n1_spin_ele == 0 .or. any(shape(F%spin_ele) /= [n1_spin_ele])) deallocate(F%spin_ele)
+      if (any(lbound(F%spin_ele) /= 1)) deallocate(F%spin_ele)
+    endif
+    if (.not. allocated(F%spin_ele)) allocate(F%spin_ele(1:n1_spin_ele+1-1))
+    do jd1 = 1, n1_spin_ele
+      call tao_spin_ele_to_f (z_spin_ele(jd1), c_loc(F%spin_ele(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_bunch_params == 0) then
+    if (allocated(F%bunch_params)) then
+      deallocate(F%bunch_params)
+    endif
+  else
+    if (allocated(F%bunch_params)) then
+      if (n1_bunch_params == 0 .or. any(shape(F%bunch_params) /= [n1_bunch_params])) deallocate(F%bunch_params)
+      if (any(lbound(F%bunch_params) /= 1)) deallocate(F%bunch_params)
+    endif
+    if (.not. allocated(F%bunch_params)) allocate(F%bunch_params(1:n1_bunch_params+1-1))
+    do jd1 = 1, n1_bunch_params
+      call bunch_params_to_f (z_bunch_params(jd1), c_loc(F%bunch_params(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_bunch_params_comb == 0) then
+    if (allocated(F%bunch_params_comb)) then
+      deallocate(F%bunch_params_comb)
+    endif
+  else
+    if (allocated(F%bunch_params_comb)) then
+      if (n1_bunch_params_comb == 0 .or. any(shape(F%bunch_params_comb) /= [n1_bunch_params_comb])) deallocate(F%bunch_params_comb)
+      if (any(lbound(F%bunch_params_comb) /= 1)) deallocate(F%bunch_params_comb)
+    endif
+    if (.not. allocated(F%bunch_params_comb)) allocate(F%bunch_params_comb(1:n1_bunch_params_comb+1-1))
+    do jd1 = 1, n1_bunch_params_comb
+      call bunch_track_to_f (z_bunch_params_comb(jd1), c_loc(F%bunch_params_comb(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_orbit == 0) then
+    if (allocated(F%orbit)) then
+      deallocate(F%orbit)
+    endif
+  else
+    if (allocated(F%orbit)) then
+      if (n1_orbit == 0 .or. any(shape(F%orbit) /= [n1_orbit])) deallocate(F%orbit)
+      if (any(lbound(F%orbit) /= 1)) deallocate(F%orbit)
+    endif
+    if (.not. allocated(F%orbit)) allocate(F%orbit(1:n1_orbit+1-1))
+    do jd1 = 1, n1_orbit
+      call coord_to_f (z_orbit(jd1), c_loc(F%orbit(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_plot_cache == 0) then
+    if (allocated(F%plot_cache)) then
+      deallocate(F%plot_cache)
+    endif
+  else
+    if (allocated(F%plot_cache)) then
+      if (n1_plot_cache == 0 .or. any(shape(F%plot_cache) /= [n1_plot_cache])) deallocate(F%plot_cache)
+      if (any(lbound(F%plot_cache) /= 1)) deallocate(F%plot_cache)
+    endif
+    if (.not. allocated(F%plot_cache)) allocate(F%plot_cache(1:n1_plot_cache+1-1))
+    do jd1 = 1, n1_plot_cache
+      call tao_plot_cache_to_f (z_plot_cache(jd1), c_loc(F%plot_cache(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_spin_polarization_to_f(z_spin, c_loc(F%spin))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call summation_rdt_to_f(z_srdt, c_loc(F%srdt))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call coord_to_f(z_orb0, c_loc(F%orb0))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call normal_modes_to_f(z_modes_ri, c_loc(F%modes_ri))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call normal_modes_to_f(z_modes_6d, c_loc(F%modes_6d))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call ptc_normal_form_to_f(z_ptc_normal_form, c_loc(F%ptc_normal_form))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call bmad_normal_form_to_f(z_bmad_normal_form, c_loc(F%bmad_normal_form))
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_high_E_orb == 0) then
+    if (allocated(F%high_E_orb)) then
+      deallocate(F%high_E_orb)
+    endif
+  else
+    if (allocated(F%high_E_orb)) then
+      if (n1_high_E_orb == 0 .or. any(shape(F%high_E_orb) /= [n1_high_E_orb])) deallocate(F%high_E_orb)
+      if (any(lbound(F%high_E_orb) /= 1)) deallocate(F%high_E_orb)
+    endif
+    if (.not. allocated(F%high_E_orb)) allocate(F%high_E_orb(1:n1_high_E_orb+1-1))
+    do jd1 = 1, n1_high_E_orb
+      call coord_to_f (z_high_E_orb(jd1), c_loc(F%high_E_orb(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_low_E_orb == 0) then
+    if (allocated(F%low_E_orb)) then
+      deallocate(F%low_E_orb)
+    endif
+  else
+    if (allocated(F%low_E_orb)) then
+      if (n1_low_E_orb == 0 .or. any(shape(F%low_E_orb) /= [n1_low_E_orb])) deallocate(F%low_E_orb)
+      if (any(lbound(F%low_E_orb) /= 1)) deallocate(F%low_E_orb)
+    endif
+    if (.not. allocated(F%low_E_orb)) allocate(F%low_E_orb(1:n1_low_E_orb+1-1))
+    do jd1 = 1, n1_low_E_orb
+      call coord_to_f (z_low_E_orb(jd1), c_loc(F%low_E_orb(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%cache_x_min = z_cache_x_min
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%cache_x_max = z_cache_x_max
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%comb_ds_save = z_comb_ds_save
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%track_state = z_track_state
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%cache_n_pts = z_cache_n_pts
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_rad_int_cache = z_ix_rad_int_cache
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%has_open_match_element = f_logic(z_has_open_match_element)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%plot_cache_valid = f_logic(z_plot_cache_valid)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%spin_map_valid = f_logic(z_spin_map_valid)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%twiss_valid = f_logic(z_twiss_valid)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%mode_flip_here = f_logic(z_mode_flip_here)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%chrom_calc_ok = f_logic(z_chrom_calc_ok)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%rad_int_calc_ok = f_logic(z_rad_int_calc_ok)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%emit_6d_calc_ok = f_logic(z_emit_6d_calc_ok)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%sigma_track_ok = f_logic(z_sigma_track_ok)
+
+end subroutine tao_lattice_branch_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_model_element_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_model_element_struct to a C++ CPP_tao_model_element structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_model_element_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_model_element struct.
+!-
+
+subroutine tao_model_element_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_model_element_to_c2 (C, z_beam, z_save_beam_internally, z_save_beam_to_file) &
+      bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_beam
+    logical(c_bool) :: z_save_beam_internally, z_save_beam_to_file
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_model_element_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_model_element_to_c2 (C, c_loc(F%beam), c_logic(F%save_beam_internally), &
+    c_logic(F%save_beam_to_file))
+
+end subroutine tao_model_element_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_model_element_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_model_element structure to a Bmad tao_model_element_struct structure.
+! This routine is called by tao_model_element_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_model_element_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_model_element_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_model_element_to_f2 (Fp, z_beam, z_save_beam_internally, z_save_beam_to_file) &
+    bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_model_element_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_beam
+logical(c_bool) :: z_save_beam_internally, z_save_beam_to_file
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_type]
+  call beam_to_f(z_beam, c_loc(F%beam))
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%save_beam_internally = f_logic(z_save_beam_internally)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%save_beam_to_file = f_logic(z_save_beam_to_file)
+
+end subroutine tao_model_element_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_beam_branch_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_beam_branch_struct to a C++ CPP_tao_beam_branch structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_beam_branch_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_beam_branch struct.
+!-
+
+subroutine tao_beam_branch_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_beam_branch_to_c2 (C, z_beam_at_start, z_beam_init, z_beam_init_used, &
+      z_init_starting_distribution, z_track_start, z_track_end, z_ix_branch, z_ix_track_start, &
+      z_ix_track_end) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_beam_at_start, z_beam_init, z_beam_init_used
+    logical(c_bool) :: z_init_starting_distribution
+    character(c_char) :: z_track_start(*), z_track_end(*)
+    integer(c_int) :: z_ix_branch, z_ix_track_start, z_ix_track_end
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_beam_branch_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_beam_branch_to_c2 (C, c_loc(F%beam_at_start), c_loc(F%beam_init), &
+    c_loc(F%beam_init_used), c_logic(F%init_starting_distribution), trim(F%track_start) // &
+    c_null_char, trim(F%track_end) // c_null_char, F%ix_branch, F%ix_track_start, &
+    F%ix_track_end)
+
+end subroutine tao_beam_branch_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_beam_branch_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_beam_branch structure to a Bmad tao_beam_branch_struct structure.
+! This routine is called by tao_beam_branch_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_beam_branch_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_beam_branch_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_beam_branch_to_f2 (Fp, z_beam_at_start, z_beam_init, z_beam_init_used, &
+    z_init_starting_distribution, z_track_start, z_track_end, z_ix_branch, z_ix_track_start, &
+    z_ix_track_end) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_beam_branch_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_beam_at_start, z_beam_init, z_beam_init_used
+logical(c_bool) :: z_init_starting_distribution
+character(c_char) :: z_track_start(*), z_track_end(*)
+integer(c_int) :: z_ix_branch, z_ix_track_start, z_ix_track_end
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_type]
+  call beam_to_f(z_beam_at_start, c_loc(F%beam_at_start))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call beam_init_to_f(z_beam_init, c_loc(F%beam_init))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call beam_init_to_f(z_beam_init_used, c_loc(F%beam_init_used))
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%init_starting_distribution = f_logic(z_init_starting_distribution)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_track_start, F%track_start)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_track_end, F%track_end)
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_branch = z_ix_branch
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_track_start = z_ix_track_start
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_track_end = z_ix_track_end
+
+end subroutine tao_beam_branch_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_d1_data_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_d1_data_struct to a C++ CPP_tao_d1_data structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_d1_data_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_d1_data struct.
+!-
+
+subroutine tao_d1_data_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_d1_data_to_c2 (C, z_name) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    character(c_char) :: z_name(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_d1_data_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_d1_data_to_c2 (C, trim(F%name) // c_null_char)
+
+end subroutine tao_d1_data_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_d1_data_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_d1_data structure to a Bmad tao_d1_data_struct structure.
+! This routine is called by tao_d1_data_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_d1_data_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_d1_data_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_d1_data_to_f2 (Fp, z_name) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_d1_data_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+character(c_char) :: z_name(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_name, F%name)
+
+end subroutine tao_d1_data_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_lattice_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_lattice_struct to a C++ CPP_tao_lattice structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_lattice_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_lattice struct.
+!-
+
+subroutine tao_lattice_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_lattice_to_c2 (C, z_name, z_lat, z_high_E_lat, z_low_E_lat, &
+      z_rad_int_by_ele_ri, z_rad_int_by_ele_6d, z_tao_branch, n1_tao_branch) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    character(c_char) :: z_name(*)
+    type(c_ptr), value :: z_lat, z_high_E_lat, z_low_E_lat, z_rad_int_by_ele_ri, z_rad_int_by_ele_6d
+    type(c_ptr) :: z_tao_branch(*)
+    integer(c_int), value :: n1_tao_branch
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_lattice_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_tao_branch(:)
+  integer(c_int) :: n1_tao_branch
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_tao_branch = 0
+  if (allocated(F%tao_branch)) then
+    n1_tao_branch = size(F%tao_branch)
+    lb1 = lbound(F%tao_branch, 1) - 1
+    allocate (z_tao_branch(n1_tao_branch))
+    do jd1 = 1, n1_tao_branch
+      z_tao_branch(jd1) = c_loc(F%tao_branch(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call tao_lattice_to_c2 (C, trim(F%name) // c_null_char, c_loc(F%lat), c_loc(F%high_E_lat), &
+    c_loc(F%low_E_lat), c_loc(F%rad_int_by_ele_ri), c_loc(F%rad_int_by_ele_6d), z_tao_branch, &
+    n1_tao_branch)
+
+end subroutine tao_lattice_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_lattice_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_lattice structure to a Bmad tao_lattice_struct structure.
+! This routine is called by tao_lattice_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_lattice_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_lattice_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_lattice_to_f2 (Fp, z_name, z_lat, z_high_E_lat, z_low_E_lat, &
+    z_rad_int_by_ele_ri, z_rad_int_by_ele_6d, z_tao_branch, n1_tao_branch) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_lattice_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+character(c_char) :: z_name(*)
+type(c_ptr), value :: z_lat, z_high_E_lat, z_low_E_lat, z_rad_int_by_ele_ri, z_rad_int_by_ele_6d
+type(c_ptr) :: z_tao_branch(*)
+integer(c_int), value :: n1_tao_branch
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_name, F%name)
+!! f_side.to_f2_trans[0D_NOT_type]
+  call lat_to_f(z_lat, c_loc(F%lat))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call lat_to_f(z_high_E_lat, c_loc(F%high_E_lat))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call lat_to_f(z_low_E_lat, c_loc(F%low_E_lat))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call rad_int_all_ele_to_f(z_rad_int_by_ele_ri, c_loc(F%rad_int_by_ele_ri))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call rad_int_all_ele_to_f(z_rad_int_by_ele_6d, c_loc(F%rad_int_by_ele_6d))
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_tao_branch == 0) then
+    if (allocated(F%tao_branch)) then
+      deallocate(F%tao_branch)
+    endif
+  else
+    if (allocated(F%tao_branch)) then
+      if (n1_tao_branch == 0 .or. any(shape(F%tao_branch) /= [n1_tao_branch])) deallocate(F%tao_branch)
+      if (any(lbound(F%tao_branch) /= 1)) deallocate(F%tao_branch)
+    endif
+    if (.not. allocated(F%tao_branch)) allocate(F%tao_branch(1:n1_tao_branch+1-1))
+    do jd1 = 1, n1_tao_branch
+      call tao_lattice_branch_to_f (z_tao_branch(jd1), c_loc(F%tao_branch(jd1+1-1)))
+    enddo
+  endif
+
+end subroutine tao_lattice_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_beam_uni_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_beam_uni_struct to a C++ CPP_tao_beam_uni structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_beam_uni_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_beam_uni struct.
+!-
+
+subroutine tao_beam_uni_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_beam_uni_to_c2 (C, z_saved_at, z_dump_file, z_dump_at, &
+      z_track_beam_in_universe, z_always_reinit) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    character(c_char) :: z_saved_at(*), z_dump_file(*), z_dump_at(*)
+    logical(c_bool) :: z_track_beam_in_universe, z_always_reinit
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_beam_uni_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_beam_uni_to_c2 (C, trim(F%saved_at) // c_null_char, trim(F%dump_file) // c_null_char, &
+    trim(F%dump_at) // c_null_char, c_logic(F%track_beam_in_universe), &
+    c_logic(F%always_reinit))
+
+end subroutine tao_beam_uni_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_beam_uni_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_beam_uni structure to a Bmad tao_beam_uni_struct structure.
+! This routine is called by tao_beam_uni_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_beam_uni_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_beam_uni_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_beam_uni_to_f2 (Fp, z_saved_at, z_dump_file, z_dump_at, &
+    z_track_beam_in_universe, z_always_reinit) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_beam_uni_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+character(c_char) :: z_saved_at(*), z_dump_file(*), z_dump_at(*)
+logical(c_bool) :: z_track_beam_in_universe, z_always_reinit
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_saved_at, F%saved_at)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_dump_file, F%dump_file)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_dump_at, F%dump_at)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%track_beam_in_universe = f_logic(z_track_beam_in_universe)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%always_reinit = f_logic(z_always_reinit)
+
+end subroutine tao_beam_uni_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_dynamic_aperture_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_dynamic_aperture_struct to a C++ CPP_tao_dynamic_aperture structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_dynamic_aperture_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_dynamic_aperture struct.
+!-
+
+subroutine tao_dynamic_aperture_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_dynamic_aperture_to_c2 (C, z_param, z_scan, n1_scan, z_pz, n1_pz, &
+      z_ellipse_scale, z_a_emit, z_b_emit) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_param
+    type(c_ptr) :: z_scan(*)
+    integer(c_int), value :: n1_scan, n1_pz
+    real(c_double) :: z_pz(*), z_ellipse_scale, z_a_emit, z_b_emit
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_dynamic_aperture_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_scan(:)
+  integer(c_int) :: n1_scan
+  integer(c_int) :: n1_pz
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_scan = 0
+  if (allocated(F%scan)) then
+    n1_scan = size(F%scan)
+    lb1 = lbound(F%scan, 1) - 1
+    allocate (z_scan(n1_scan))
+    do jd1 = 1, n1_scan
+      z_scan(jd1) = c_loc(F%scan(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_real]
+  n1_pz = 0
+  if (allocated(F%pz)) then
+    n1_pz = size(F%pz, 1)
+  endif
+
+!! f_side.to_c2_call
+call tao_dynamic_aperture_to_c2 (C, c_loc(F%param), z_scan, n1_scan, fvec2vec(F%pz, n1_pz), &
+    n1_pz, F%ellipse_scale, F%a_emit, F%b_emit)
+
+end subroutine tao_dynamic_aperture_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_dynamic_aperture_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_dynamic_aperture structure to a Bmad tao_dynamic_aperture_struct structure.
+! This routine is called by tao_dynamic_aperture_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_dynamic_aperture_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_dynamic_aperture_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_dynamic_aperture_to_f2 (Fp, z_param, z_scan, n1_scan, z_pz, n1_pz, &
+    z_ellipse_scale, z_a_emit, z_b_emit) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_dynamic_aperture_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_param, z_pz
+type(c_ptr) :: z_scan(*)
+integer(c_int), value :: n1_scan, n1_pz
+real(c_double), pointer :: f_pz(:)
+real(c_double) :: z_ellipse_scale, z_a_emit, z_b_emit
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_type]
+  call aperture_param_to_f(z_param, c_loc(F%param))
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_scan == 0) then
+    if (allocated(F%scan)) then
+      deallocate(F%scan)
+    endif
+  else
+    if (allocated(F%scan)) then
+      if (n1_scan == 0 .or. any(shape(F%scan) /= [n1_scan])) deallocate(F%scan)
+      if (any(lbound(F%scan) /= 1)) deallocate(F%scan)
+    endif
+    if (.not. allocated(F%scan)) allocate(F%scan(1:n1_scan+1-1))
+    do jd1 = 1, n1_scan
+      call aperture_scan_to_f (z_scan(jd1), c_loc(F%scan(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_real]
+  if (allocated(F%pz)) then
+    if (n1_pz == 0 .or. any(shape(F%pz) /= [n1_pz])) deallocate(F%pz)
+    if (any(lbound(F%pz) /= 1)) deallocate(F%pz)
+  endif
+  if (n1_pz /= 0) then
+    call c_f_pointer (z_pz, f_pz, [n1_pz])
+    if (.not. allocated(F%pz)) allocate(F%pz(n1_pz))
+    F%pz = f_pz(1:n1_pz)
+  else
+    if (allocated(F%pz)) deallocate(F%pz)
+  endif
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%ellipse_scale = z_ellipse_scale
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%a_emit = z_a_emit
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%b_emit = z_b_emit
+
+end subroutine tao_dynamic_aperture_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_model_branch_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_model_branch_struct to a C++ CPP_tao_model_branch structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_model_branch_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_model_branch struct.
+!-
+
+subroutine tao_model_branch_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_model_branch_to_c2 (C, z_ele, n1_ele, z_beam) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr) :: z_ele(*)
+    integer(c_int), value :: n1_ele
+    type(c_ptr), value :: z_beam
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_model_branch_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_ele(:)
+  integer(c_int) :: n1_ele
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_ele = 0
+  if (allocated(F%ele)) then
+    n1_ele = size(F%ele)
+    lb1 = lbound(F%ele, 1) - 1
+    allocate (z_ele(n1_ele))
+    do jd1 = 1, n1_ele
+      z_ele(jd1) = c_loc(F%ele(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call tao_model_branch_to_c2 (C, z_ele, n1_ele, c_loc(F%beam))
+
+end subroutine tao_model_branch_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_model_branch_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_model_branch structure to a Bmad tao_model_branch_struct structure.
+! This routine is called by tao_model_branch_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_model_branch_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_model_branch_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_model_branch_to_f2 (Fp, z_ele, n1_ele, z_beam) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_model_branch_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr) :: z_ele(*)
+integer(c_int), value :: n1_ele
+type(c_ptr), value :: z_beam
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_ele == 0) then
+    if (allocated(F%ele)) then
+      deallocate(F%ele)
+    endif
+  else
+    if (allocated(F%ele)) then
+      if (n1_ele == 0 .or. any(shape(F%ele) /= [n1_ele])) deallocate(F%ele)
+      if (any(lbound(F%ele) /= 1)) deallocate(F%ele)
+    endif
+    if (.not. allocated(F%ele)) allocate(F%ele(1:n1_ele+1-1))
+    do jd1 = 1, n1_ele
+      call tao_model_element_to_f (z_ele(jd1), c_loc(F%ele(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_beam_branch_to_f(z_beam, c_loc(F%beam))
+
+end subroutine tao_model_branch_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_d2_data_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_d2_data_struct to a C++ CPP_tao_d2_data structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_d2_data_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_d2_data struct.
+!-
+
+subroutine tao_d2_data_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_d2_data_to_c2 (C, z_name, z_data_file_name, z_ref_file_name, z_data_date, &
+      z_ref_date, z_descrip, z_d1, n1_d1, z_ix_universe, z_ix_d2_data, z_ix_ref, &
+      z_data_read_in, z_ref_read_in) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    character(c_char) :: z_name(*), z_data_file_name(*), z_ref_file_name(*), z_data_date(*), z_ref_date(*)
+    type(c_ptr) :: z_descrip(*), z_d1(*)
+    integer(c_int), value :: n1_d1
+    integer(c_int) :: z_ix_universe, z_ix_d2_data, z_ix_ref
+    logical(c_bool) :: z_data_read_in, z_ref_read_in
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_d2_data_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr) :: z_descrip(10)
+  character(80+1), target :: a_descrip(10)
+  type(c_ptr), allocatable :: z_d1(:)
+  integer(c_int) :: n1_d1
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_NOT_character]
+  do jd1 = 1, size(F%descrip,1); lb1 = lbound(F%descrip,1) - 1
+  a_descrip(jd1) = trim(F%descrip(jd1+lb1)) // c_null_char
+  z_descrip(jd1) = c_loc(a_descrip(jd1))
+  enddo
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_d1 = 0
+  if (allocated(F%d1)) then
+    n1_d1 = size(F%d1)
+    lb1 = lbound(F%d1, 1) - 1
+    allocate (z_d1(n1_d1))
+    do jd1 = 1, n1_d1
+      z_d1(jd1) = c_loc(F%d1(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call tao_d2_data_to_c2 (C, trim(F%name) // c_null_char, trim(F%data_file_name) // c_null_char, &
+    trim(F%ref_file_name) // c_null_char, trim(F%data_date) // c_null_char, trim(F%ref_date) // &
+    c_null_char, z_descrip, z_d1, n1_d1, F%ix_universe, F%ix_d2_data, F%ix_ref, &
+    c_logic(F%data_read_in), c_logic(F%ref_read_in))
+
+end subroutine tao_d2_data_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_d2_data_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_d2_data structure to a Bmad tao_d2_data_struct structure.
+! This routine is called by tao_d2_data_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_d2_data_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_d2_data_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_d2_data_to_f2 (Fp, z_name, z_data_file_name, z_ref_file_name, z_data_date, &
+    z_ref_date, z_descrip, z_d1, n1_d1, z_ix_universe, z_ix_d2_data, z_ix_ref, z_data_read_in, &
+    z_ref_read_in) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_d2_data_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+character(c_char) :: z_name(*), z_data_file_name(*), z_ref_file_name(*), z_data_date(*), z_ref_date(*)
+type(c_ptr) :: z_descrip(*), z_d1(*)
+character(c_char), pointer :: f_descrip
+integer(c_int), value :: n1_d1
+integer(c_int) :: z_ix_universe, z_ix_d2_data, z_ix_ref
+logical(c_bool) :: z_data_read_in, z_ref_read_in
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_name, F%name)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_data_file_name, F%data_file_name)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_ref_file_name, F%ref_file_name)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_data_date, F%data_date)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_ref_date, F%ref_date)
+!! f_side.to_f2_trans[1D_NOT_character]
+  do jd1 = 1, size(F%descrip,1); lb1 = lbound(F%descrip,1) - 1
+  call c_f_pointer (z_descrip(jd1), f_descrip)
+  call to_f_str(f_descrip, F%descrip(jd1+lb1))
+  enddo
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_d1 == 0) then
+    if (allocated(F%d1)) then
+      deallocate(F%d1)
+    endif
+  else
+    if (allocated(F%d1)) then
+      if (n1_d1 == 0 .or. any(shape(F%d1) /= [n1_d1])) deallocate(F%d1)
+      if (any(lbound(F%d1) /= 1)) deallocate(F%d1)
+    endif
+    if (.not. allocated(F%d1)) allocate(F%d1(1:n1_d1+1-1))
+    do jd1 = 1, n1_d1
+      call tao_d1_data_to_f (z_d1(jd1), c_loc(F%d1(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_universe = z_ix_universe
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_d2_data = z_ix_d2_data
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ref = z_ix_ref
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%data_read_in = f_logic(z_data_read_in)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%ref_read_in = f_logic(z_ref_read_in)
+
+end subroutine tao_d2_data_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_map_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_spin_map_struct to a C++ CPP_tao_spin_map structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_spin_map_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_spin_map struct.
+!-
+
+subroutine tao_spin_map_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_spin_map_to_c2 (C, z_valid, z_map1, z_axis_input, z_axis0, z_axis1, z_ix_ele, &
+      z_ix_ref, z_ix_uni, z_ix_branch, z_mat8) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    logical(c_bool) :: z_valid
+    type(c_ptr), value :: z_map1, z_axis_input, z_axis0, z_axis1
+    integer(c_int) :: z_ix_ele, z_ix_ref, z_ix_uni, z_ix_branch
+    real(c_double) :: z_mat8(*)
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_spin_map_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_spin_map_to_c2 (C, c_logic(F%valid), c_loc(F%map1), c_loc(F%axis_input), &
+    c_loc(F%axis0), c_loc(F%axis1), F%ix_ele, F%ix_ref, F%ix_uni, F%ix_branch, mat2vec(F%mat8, &
+    8*8))
+
+end subroutine tao_spin_map_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_spin_map_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_spin_map structure to a Bmad tao_spin_map_struct structure.
+! This routine is called by tao_spin_map_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_spin_map_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_spin_map_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_spin_map_to_f2 (Fp, z_valid, z_map1, z_axis_input, z_axis0, z_axis1, z_ix_ele, &
+    z_ix_ref, z_ix_uni, z_ix_branch, z_mat8) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_spin_map_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+logical(c_bool) :: z_valid
+type(c_ptr), value :: z_map1, z_axis_input, z_axis0, z_axis1
+integer(c_int) :: z_ix_ele, z_ix_ref, z_ix_uni, z_ix_branch
+real(c_double) :: z_mat8(*)
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%valid = f_logic(z_valid)
+!! f_side.to_f2_trans[0D_NOT_type]
+  call spin_orbit_map1_to_f(z_map1, c_loc(F%map1))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call spin_axis_to_f(z_axis_input, c_loc(F%axis_input))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call spin_axis_to_f(z_axis0, c_loc(F%axis0))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call spin_axis_to_f(z_axis1, c_loc(F%axis1))
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ele = z_ix_ele
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ref = z_ix_ref
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_uni = z_ix_uni
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_branch = z_ix_branch
+!! f_side.to_f2_trans[2D_NOT_real]
+  call vec2mat(z_mat8, F%mat8)
+
+end subroutine tao_spin_map_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_data_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_data_struct to a C++ CPP_tao_data structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_data_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_data struct.
+!-
+
+subroutine tao_data_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_data_to_c2 (C, z_ele_name, z_ele_start_name, z_ele_ref_name, z_merit_type, &
+      z_id, z_data_source, z_why_invalid, z_ix_uni, z_ix_bunch, z_ix_branch, z_ix_ele, &
+      z_ix_ele_start, z_ix_ele_ref, z_ix_ele_merit, z_ix_d1, z_ix_data, z_ix_dModel, &
+      z_eval_point, z_meas_value, z_ref_value, z_model_value, z_design_value, z_old_value, &
+      z_base_value, z_error_rms, z_delta_merit, z_weight, z_invalid_value, z_merit, z_s, &
+      z_s_offset, z_err_message_printed, z_exists, z_good_model, z_good_base, z_good_design, &
+      z_good_meas, z_good_ref, z_good_user, z_good_opt, z_good_plot, z_useit_plot, z_useit_opt, &
+      z_spin_map, z_d1, n_d1) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    character(c_char) :: z_ele_name(*), z_ele_start_name(*), z_ele_ref_name(*), z_merit_type(*), z_id(*), z_data_source(*), z_why_invalid(*)
+    integer(c_int) :: z_ix_uni, z_ix_bunch, z_ix_branch, z_ix_ele, z_ix_ele_start, z_ix_ele_ref, z_ix_ele_merit
+    integer(c_int) :: z_ix_d1, z_ix_data, z_ix_dModel, z_eval_point
+    real(c_double) :: z_meas_value, z_ref_value, z_model_value, z_design_value, z_old_value, z_base_value, z_error_rms
+    real(c_double) :: z_delta_merit, z_weight, z_invalid_value, z_merit, z_s, z_s_offset
+    logical(c_bool) :: z_err_message_printed, z_exists, z_good_model, z_good_base, z_good_design, z_good_meas, z_good_ref
+    logical(c_bool) :: z_good_user, z_good_opt, z_good_plot, z_useit_plot, z_useit_opt
+    type(c_ptr), value :: z_spin_map, z_d1
+    integer(c_int), value :: n_d1
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_data_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  integer(c_int) :: n_d1
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[0D_PTR_type]
+  n_d1 = 0
+  if (associated(F%d1)) n_d1 = 1
+
+!! f_side.to_c2_call
+call tao_data_to_c2 (C, trim(F%ele_name) // c_null_char, trim(F%ele_start_name) // c_null_char, &
+    trim(F%ele_ref_name) // c_null_char, trim(F%merit_type) // c_null_char, trim(F%id) // &
+    c_null_char, trim(F%data_source) // c_null_char, trim(F%why_invalid) // c_null_char, &
+    F%ix_uni, F%ix_bunch, F%ix_branch, F%ix_ele, F%ix_ele_start, F%ix_ele_ref, F%ix_ele_merit, &
+    F%ix_d1, F%ix_data, F%ix_dModel, F%eval_point, F%meas_value, F%ref_value, F%model_value, &
+    F%design_value, F%old_value, F%base_value, F%error_rms, F%delta_merit, F%weight, &
+    F%invalid_value, F%merit, F%s, F%s_offset, c_logic(F%err_message_printed), &
+    c_logic(F%exists), c_logic(F%good_model), c_logic(F%good_base), c_logic(F%good_design), &
+    c_logic(F%good_meas), c_logic(F%good_ref), c_logic(F%good_user), c_logic(F%good_opt), &
+    c_logic(F%good_plot), c_logic(F%useit_plot), c_logic(F%useit_opt), c_loc(F%spin_map), &
+    c_loc(F%d1), n_d1)
+
+end subroutine tao_data_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_data_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_data structure to a Bmad tao_data_struct structure.
+! This routine is called by tao_data_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_data_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_data_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_data_to_f2 (Fp, z_ele_name, z_ele_start_name, z_ele_ref_name, z_merit_type, &
+    z_id, z_data_source, z_why_invalid, z_ix_uni, z_ix_bunch, z_ix_branch, z_ix_ele, &
+    z_ix_ele_start, z_ix_ele_ref, z_ix_ele_merit, z_ix_d1, z_ix_data, z_ix_dModel, &
+    z_eval_point, z_meas_value, z_ref_value, z_model_value, z_design_value, z_old_value, &
+    z_base_value, z_error_rms, z_delta_merit, z_weight, z_invalid_value, z_merit, z_s, &
+    z_s_offset, z_err_message_printed, z_exists, z_good_model, z_good_base, z_good_design, &
+    z_good_meas, z_good_ref, z_good_user, z_good_opt, z_good_plot, z_useit_plot, z_useit_opt, &
+    z_spin_map, z_d1, n_d1) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_data_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+character(c_char) :: z_ele_name(*), z_ele_start_name(*), z_ele_ref_name(*), z_merit_type(*), z_id(*), z_data_source(*), z_why_invalid(*)
+integer(c_int) :: z_ix_uni, z_ix_bunch, z_ix_branch, z_ix_ele, z_ix_ele_start, z_ix_ele_ref, z_ix_ele_merit
+integer(c_int) :: z_ix_d1, z_ix_data, z_ix_dModel, z_eval_point
+real(c_double) :: z_meas_value, z_ref_value, z_model_value, z_design_value, z_old_value, z_base_value, z_error_rms
+real(c_double) :: z_delta_merit, z_weight, z_invalid_value, z_merit, z_s, z_s_offset
+logical(c_bool) :: z_err_message_printed, z_exists, z_good_model, z_good_base, z_good_design, z_good_meas, z_good_ref
+logical(c_bool) :: z_good_user, z_good_opt, z_good_plot, z_useit_plot, z_useit_opt
+type(c_ptr), value :: z_spin_map, z_d1
+type(tao_d1_data_struct), pointer :: f_d1
+integer(c_int), value :: n_d1
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_ele_name, F%ele_name)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_ele_start_name, F%ele_start_name)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_ele_ref_name, F%ele_ref_name)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_merit_type, F%merit_type)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_id, F%id)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_data_source, F%data_source)
+!! f_side.to_f2_trans[0D_NOT_character]
+  call to_f_str(z_why_invalid, F%why_invalid)
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_uni = z_ix_uni
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_bunch = z_ix_bunch
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_branch = z_ix_branch
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ele = z_ix_ele
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ele_start = z_ix_ele_start
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ele_ref = z_ix_ele_ref
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_ele_merit = z_ix_ele_merit
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_d1 = z_ix_d1
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_data = z_ix_data
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_dModel = z_ix_dModel
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%eval_point = z_eval_point
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%meas_value = z_meas_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%ref_value = z_ref_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%model_value = z_model_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%design_value = z_design_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%old_value = z_old_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%base_value = z_base_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%error_rms = z_error_rms
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%delta_merit = z_delta_merit
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%weight = z_weight
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%invalid_value = z_invalid_value
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%merit = z_merit
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%s = z_s
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%s_offset = z_s_offset
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%err_message_printed = f_logic(z_err_message_printed)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%exists = f_logic(z_exists)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_model = f_logic(z_good_model)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_base = f_logic(z_good_base)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_design = f_logic(z_good_design)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_meas = f_logic(z_good_meas)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_ref = f_logic(z_good_ref)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_user = f_logic(z_good_user)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_opt = f_logic(z_good_opt)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%good_plot = f_logic(z_good_plot)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%useit_plot = f_logic(z_useit_plot)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%useit_opt = f_logic(z_useit_opt)
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_spin_map_to_f(z_spin_map, c_loc(F%spin_map))
+!! f_side.to_f2_trans[0D_PTR_type]
+  if (n_d1 == 0) then
+    if (associated(F%d1)) deallocate(F%d1)
+  else
+    if (.not. associated(F%d1)) allocate(F%d1)
+    call tao_d1_data_to_f (z_d1, c_loc(F%d1))
+  endif
+
+end subroutine tao_data_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_ping_scale_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_ping_scale_struct to a C++ CPP_tao_ping_scale structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_ping_scale_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_ping_scale struct.
+!-
+
+subroutine tao_ping_scale_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_ping_scale_to_c2 (C, z_a_mode_meas, z_a_mode_ref, z_b_mode_meas, z_b_mode_ref) &
+      bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    real(c_double) :: z_a_mode_meas, z_a_mode_ref, z_b_mode_meas, z_b_mode_ref
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_ping_scale_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_ping_scale_to_c2 (C, F%a_mode_meas, F%a_mode_ref, F%b_mode_meas, F%b_mode_ref)
+
+end subroutine tao_ping_scale_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_ping_scale_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_ping_scale structure to a Bmad tao_ping_scale_struct structure.
+! This routine is called by tao_ping_scale_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_ping_scale_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_ping_scale_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_ping_scale_to_f2 (Fp, z_a_mode_meas, z_a_mode_ref, z_b_mode_meas, z_b_mode_ref) &
+    bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_ping_scale_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+real(c_double) :: z_a_mode_meas, z_a_mode_ref, z_b_mode_meas, z_b_mode_ref
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%a_mode_meas = z_a_mode_meas
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%a_mode_ref = z_a_mode_ref
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%b_mode_meas = z_b_mode_meas
+!! f_side.to_f2_trans[0D_NOT_real]
+  F%b_mode_ref = z_b_mode_ref
+
+end subroutine tao_ping_scale_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_universe_calc_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_universe_calc_struct to a C++ CPP_tao_universe_calc structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_universe_calc_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_universe_calc struct.
+!-
+
+subroutine tao_universe_calc_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_universe_calc_to_c2 (C, z_srdt_for_data, z_rad_int_for_data, &
+      z_rad_int_for_plotting, z_chrom_for_data, z_chrom_for_plotting, z_lat_sigma_for_data, &
+      z_lat_sigma_for_plotting, z_dynamic_aperture, z_one_turn_map, z_lattice, z_twiss, &
+      z_track, z_spin_matrices) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    integer(c_int) :: z_srdt_for_data
+    logical(c_bool) :: z_rad_int_for_data, z_rad_int_for_plotting, z_chrom_for_data, z_chrom_for_plotting, z_lat_sigma_for_data, z_lat_sigma_for_plotting, z_dynamic_aperture
+    logical(c_bool) :: z_one_turn_map, z_lattice, z_twiss, z_track, z_spin_matrices
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_universe_calc_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+
+!
+
+call c_f_pointer (Fp, F)
+
+
+!! f_side.to_c2_call
+call tao_universe_calc_to_c2 (C, F%srdt_for_data, c_logic(F%rad_int_for_data), &
+    c_logic(F%rad_int_for_plotting), c_logic(F%chrom_for_data), c_logic(F%chrom_for_plotting), &
+    c_logic(F%lat_sigma_for_data), c_logic(F%lat_sigma_for_plotting), &
+    c_logic(F%dynamic_aperture), c_logic(F%one_turn_map), c_logic(F%lattice), c_logic(F%twiss), &
+    c_logic(F%track), c_logic(F%spin_matrices))
+
+end subroutine tao_universe_calc_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_universe_calc_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_universe_calc structure to a Bmad tao_universe_calc_struct structure.
+! This routine is called by tao_universe_calc_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_universe_calc_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_universe_calc_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_universe_calc_to_f2 (Fp, z_srdt_for_data, z_rad_int_for_data, &
+    z_rad_int_for_plotting, z_chrom_for_data, z_chrom_for_plotting, z_lat_sigma_for_data, &
+    z_lat_sigma_for_plotting, z_dynamic_aperture, z_one_turn_map, z_lattice, z_twiss, z_track, &
+    z_spin_matrices) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_universe_calc_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+integer(c_int) :: z_srdt_for_data
+logical(c_bool) :: z_rad_int_for_data, z_rad_int_for_plotting, z_chrom_for_data, z_chrom_for_plotting, z_lat_sigma_for_data, z_lat_sigma_for_plotting, z_dynamic_aperture
+logical(c_bool) :: z_one_turn_map, z_lattice, z_twiss, z_track, z_spin_matrices
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%srdt_for_data = z_srdt_for_data
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%rad_int_for_data = f_logic(z_rad_int_for_data)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%rad_int_for_plotting = f_logic(z_rad_int_for_plotting)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%chrom_for_data = f_logic(z_chrom_for_data)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%chrom_for_plotting = f_logic(z_chrom_for_plotting)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%lat_sigma_for_data = f_logic(z_lat_sigma_for_data)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%lat_sigma_for_plotting = f_logic(z_lat_sigma_for_plotting)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%dynamic_aperture = f_logic(z_dynamic_aperture)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%one_turn_map = f_logic(z_one_turn_map)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%lattice = f_logic(z_lattice)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%twiss = f_logic(z_twiss)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%track = f_logic(z_track)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%spin_matrices = f_logic(z_spin_matrices)
+
+end subroutine tao_universe_calc_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine lat_ele_order_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad lat_ele_order_struct to a C++ CPP_lat_ele_order structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad lat_ele_order_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_lat_ele_order struct.
+!-
+
+subroutine lat_ele_order_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine lat_ele_order_to_c2 (C, z_branch, n1_branch) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr) :: z_branch(*)
+    integer(c_int), value :: n1_branch
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(lat_ele_order_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_branch(:)
+  integer(c_int) :: n1_branch
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_branch = 0
+  if (allocated(F%branch)) then
+    n1_branch = size(F%branch)
+    lb1 = lbound(F%branch, 1) - 1
+    allocate (z_branch(n1_branch))
+    do jd1 = 1, n1_branch
+      z_branch(jd1) = c_loc(F%branch(jd1+lb1))
+    enddo
+  endif
+
+!! f_side.to_c2_call
+call lat_ele_order_to_c2 (C, z_branch, n1_branch)
+
+end subroutine lat_ele_order_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine lat_ele_order_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_lat_ele_order structure to a Bmad lat_ele_order_struct structure.
+! This routine is called by lat_ele_order_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the lat_ele_order_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad lat_ele_order_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine lat_ele_order_to_f2 (Fp, z_branch, n1_branch) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(lat_ele_order_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr) :: z_branch(*)
+integer(c_int), value :: n1_branch
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_branch == 0) then
+    if (allocated(F%branch)) then
+      deallocate(F%branch)
+    endif
+  else
+    if (allocated(F%branch)) then
+      if (n1_branch == 0 .or. any(shape(F%branch) /= [n1_branch])) deallocate(F%branch)
+      if (any(lbound(F%branch) /= 1)) deallocate(F%branch)
+    endif
+    if (.not. allocated(F%branch)) allocate(F%branch(1:n1_branch+1-1))
+    do jd1 = 1, n1_branch
+      call lat_ele_order_array_to_f (z_branch(jd1), c_loc(F%branch(jd1+1-1)))
+    enddo
+  endif
+
+end subroutine lat_ele_order_to_f2
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_universe_to_c (Fp, C) bind(c)
+!
+! Routine to convert a Bmad tao_universe_struct to a C++ CPP_tao_universe structure
+!
+! Input:
+!   Fp -- type(c_ptr), value :: Input Bmad tao_universe_struct structure.
+!
+! Output:
+!   C -- type(c_ptr), value :: Output C++ CPP_tao_universe struct.
+!-
+
+subroutine tao_universe_to_c (Fp, C) bind(c)
+
+implicit none
+
+interface
+  !! f_side.to_c2_f2_sub_arg
+  subroutine tao_universe_to_c2 (C, z_beam, z_dynamic_aperture, z_d2_data, n1_d2_data, z_data, &
+      n1_data, z_ping_scale, z_scratch_lat, z_calc, z_ele_order, z_spin_map, z_dModel_dVar, &
+      n1_dModel_dVar, n2_dModel_dVar, z_ix_uni, z_n_d2_data_used, z_n_data_used, z_is_on, &
+      z_design_same_as_previous, z_picked_uni) bind(c)
+    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex
+    !! f_side.to_c2_type :: f_side.to_c2_name
+    type(c_ptr), value :: C
+    type(c_ptr), value :: z_beam, z_dynamic_aperture, z_ping_scale, z_scratch_lat, z_calc, z_ele_order, z_spin_map
+    type(c_ptr) :: z_d2_data(*), z_data(*)
+    integer(c_int), value :: n1_d2_data, n1_data, n1_dModel_dVar, n2_dModel_dVar
+    real(c_double) :: z_dModel_dVar(*)
+    integer(c_int) :: z_ix_uni, z_n_d2_data_used, z_n_data_used
+    logical(c_bool) :: z_is_on, z_design_same_as_previous, z_picked_uni
+end subroutine
+end interface
+
+type(c_ptr), value :: Fp
+type(c_ptr), value :: C
+type(tao_universe_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_c_var
+  type(c_ptr), allocatable :: z_d2_data(:)
+  integer(c_int) :: n1_d2_data
+  type(c_ptr), allocatable :: z_data(:)
+  integer(c_int) :: n1_data
+  integer(c_int) :: n1_dModel_dVar
+  integer(c_int) :: n2_dModel_dVar
+
+!
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_d2_data = 0
+  if (allocated(F%d2_data)) then
+    n1_d2_data = size(F%d2_data)
+    lb1 = lbound(F%d2_data, 1) - 1
+    allocate (z_d2_data(n1_d2_data))
+    do jd1 = 1, n1_d2_data
+      z_d2_data(jd1) = c_loc(F%d2_data(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[1D_ALLOC_type]
+  n1_data = 0
+  if (allocated(F%data)) then
+    n1_data = size(F%data)
+    lb1 = lbound(F%data, 1) - 1
+    allocate (z_data(n1_data))
+    do jd1 = 1, n1_data
+      z_data(jd1) = c_loc(F%data(jd1+lb1))
+    enddo
+  endif
+!! f_side.to_c_trans[2D_ALLOC_real]
+  if (allocated(F%dModel_dVar)) then
+    n1_dModel_dVar = size(F%dModel_dVar, 1)
+    n2_dModel_dVar = size(F%dModel_dVar, 2)
+  else
+    n1_dModel_dVar = 0; n2_dModel_dVar = 0
+  endif
+
+!! f_side.to_c2_call
+call tao_universe_to_c2 (C, c_loc(F%beam), c_loc(F%dynamic_aperture), z_d2_data, n1_d2_data, &
+    z_data, n1_data, c_loc(F%ping_scale), c_loc(F%scratch_lat), c_loc(F%calc), &
+    c_loc(F%ele_order), c_loc(F%spin_map), mat2vec(F%dModel_dVar, &
+    n1_dModel_dVar*n2_dModel_dVar), n1_dModel_dVar, n2_dModel_dVar, F%ix_uni, F%n_d2_data_used, &
+    F%n_data_used, c_logic(F%is_on), c_logic(F%design_same_as_previous), c_logic(F%picked_uni))
+
+end subroutine tao_universe_to_c
+
+
+!--------------------------------------------------------------------------
+!--------------------------------------------------------------------------
+!+
+! Subroutine tao_universe_to_f2 (Fp, ...etc...) bind(c)
+!
+! Routine used in converting a C++ CPP_tao_universe structure to a Bmad tao_universe_struct structure.
+! This routine is called by tao_universe_to_c and is not meant to be called directly.
+!
+! Input:
+!   ...etc... -- Components of the structure. See the tao_universe_to_f2 code for more details.
+!
+! Output:
+!   Fp -- type(c_ptr), value :: Bmad tao_universe_struct structure.
+!-
+
+!! f_side.to_c2_f2_sub_arg
+subroutine tao_universe_to_f2 (Fp, z_beam, z_dynamic_aperture, z_d2_data, n1_d2_data, z_data, &
+    n1_data, z_ping_scale, z_scratch_lat, z_calc, z_ele_order, z_spin_map, z_dModel_dVar, &
+    n1_dModel_dVar, n2_dModel_dVar, z_ix_uni, z_n_d2_data_used, z_n_data_used, z_is_on, &
+    z_design_same_as_previous, z_picked_uni) bind(c)
+
+
+implicit none
+
+type(c_ptr), value :: Fp
+type(tao_universe_struct), pointer :: F
+integer jd, jd1, jd2, jd3, lb1, lb2, lb3
+!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name
+type(c_ptr), value :: z_beam, z_dynamic_aperture, z_ping_scale, z_scratch_lat, z_calc, z_ele_order, z_spin_map
+type(c_ptr), value :: z_dModel_dVar
+type(c_ptr) :: z_d2_data(*), z_data(*)
+integer(c_int), value :: n1_d2_data, n1_data, n1_dModel_dVar, n2_dModel_dVar
+real(c_double), pointer :: f_dModel_dVar(:)
+integer(c_int) :: z_ix_uni, z_n_d2_data_used, z_n_data_used
+logical(c_bool) :: z_is_on, z_design_same_as_previous, z_picked_uni
+
+call c_f_pointer (Fp, F)
+
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_beam_uni_to_f(z_beam, c_loc(F%beam))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_dynamic_aperture_to_f(z_dynamic_aperture, c_loc(F%dynamic_aperture))
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_d2_data == 0) then
+    if (allocated(F%d2_data)) then
+      deallocate(F%d2_data)
+    endif
+  else
+    if (allocated(F%d2_data)) then
+      if (n1_d2_data == 0 .or. any(shape(F%d2_data) /= [n1_d2_data])) deallocate(F%d2_data)
+      if (any(lbound(F%d2_data) /= 1)) deallocate(F%d2_data)
+    endif
+    if (.not. allocated(F%d2_data)) allocate(F%d2_data(1:n1_d2_data+1-1))
+    do jd1 = 1, n1_d2_data
+      call tao_d2_data_to_f (z_d2_data(jd1), c_loc(F%d2_data(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[1D_ALLOC_type]
+  if (n1_data == 0) then
+    if (allocated(F%data)) then
+      deallocate(F%data)
+    endif
+  else
+    if (allocated(F%data)) then
+      if (n1_data == 0 .or. any(shape(F%data) /= [n1_data])) deallocate(F%data)
+      if (any(lbound(F%data) /= 1)) deallocate(F%data)
+    endif
+    if (.not. allocated(F%data)) allocate(F%data(1:n1_data+1-1))
+    do jd1 = 1, n1_data
+      call tao_data_to_f (z_data(jd1), c_loc(F%data(jd1+1-1)))
+    enddo
+  endif
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_ping_scale_to_f(z_ping_scale, c_loc(F%ping_scale))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call lat_to_f(z_scratch_lat, c_loc(F%scratch_lat))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_universe_calc_to_f(z_calc, c_loc(F%calc))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call lat_ele_order_to_f(z_ele_order, c_loc(F%ele_order))
+!! f_side.to_f2_trans[0D_NOT_type]
+  call tao_spin_map_to_f(z_spin_map, c_loc(F%spin_map))
+!! f_side.to_f2_trans[2D_ALLOC_real]
+  if (allocated(F%dModel_dVar)) then
+    if (n1_dModel_dVar == 0 .or. any(shape(F%dModel_dVar) /= [n1_dModel_dVar, n2_dModel_dVar])) deallocate(F%dModel_dVar)
+    if (any(lbound(F%dModel_dVar) /= 1)) deallocate(F%dModel_dVar)
+  endif
+  if (n1_dModel_dVar /= 0) then
+    call c_f_pointer (z_dModel_dVar, f_dModel_dVar, [n1_dModel_dVar*n2_dModel_dVar])
+    if (.not. allocated(F%dModel_dVar)) allocate(F%dModel_dVar(n1_dModel_dVar, n2_dModel_dVar))
+    call vec2mat(f_dModel_dVar, F%dModel_dVar)
+  else
+    if (allocated(F%dModel_dVar)) deallocate(F%dModel_dVar)
+  endif
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%ix_uni = z_ix_uni
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%n_d2_data_used = z_n_d2_data_used
+!! f_side.to_f2_trans[0D_NOT_integer]
+  F%n_data_used = z_n_data_used
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%is_on = f_logic(z_is_on)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%design_same_as_previous = f_logic(z_design_same_as_previous)
+!! f_side.to_f2_trans[0D_NOT_logical]
+  F%picked_uni = f_logic(z_picked_uni)
+
+end subroutine tao_universe_to_f2
 
 
 end module bmad_cpp_convert_mod

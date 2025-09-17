@@ -33,7 +33,13 @@ interface operator (==)
   module procedure eq_bmad_common, eq_rad_int1, eq_rad_int_branch, eq_rad_int_all_ele, eq_rf_stair_step
   module procedure eq_rf_ele, eq_ele, eq_complex_taylor_term, eq_complex_taylor, eq_branch
   module procedure eq_lat, eq_bunch, eq_bunch_params, eq_beam, eq_aperture_point
-  module procedure eq_aperture_param, eq_aperture_scan
+  module procedure eq_aperture_param, eq_aperture_scan, eq_tao_spin_dn_dpz, eq_resonance_h, eq_spin_orbit_map1
+  module procedure eq_spin_axis, eq_ptc_normal_form, eq_bmad_normal_form, eq_bunch_track, eq_summation_rdt
+  module procedure eq_lat_ele_order1, eq_lat_ele_order_array, eq_tao_lat_sigma, eq_tao_spin_ele, eq_tao_plot_cache
+  module procedure eq_tao_spin_polarization, eq_tao_lattice_branch, eq_tao_model_element, eq_tao_beam_branch, eq_tao_d1_data
+  module procedure eq_tao_lattice, eq_tao_beam_uni, eq_tao_dynamic_aperture, eq_tao_model_branch, eq_tao_d2_data
+  module procedure eq_tao_spin_map, eq_tao_data, eq_tao_ping_scale, eq_tao_universe_calc, eq_lat_ele_order
+  module procedure eq_tao_universe
 end interface
 
 contains
@@ -44,6 +50,7 @@ contains
 
 elemental function eq_spline (f1, f2) result (is_eq)
 
+use spline_mod, only: spline_struct
 implicit none
 
 type(spline_struct), intent(in) :: f1, f2
@@ -69,6 +76,7 @@ end function eq_spline
 
 elemental function eq_spin_polar (f1, f2) result (is_eq)
 
+use bmad_struct, only: spin_polar_struct
 implicit none
 
 type(spin_polar_struct), intent(in) :: f1, f2
@@ -94,6 +102,7 @@ end function eq_spin_polar
 
 elemental function eq_ac_kicker_time (f1, f2) result (is_eq)
 
+use bmad_struct, only: ac_kicker_time_struct
 implicit none
 
 type(ac_kicker_time_struct), intent(in) :: f1, f2
@@ -117,6 +126,7 @@ end function eq_ac_kicker_time
 
 elemental function eq_ac_kicker_freq (f1, f2) result (is_eq)
 
+use bmad_struct, only: ac_kicker_freq_struct
 implicit none
 
 type(ac_kicker_freq_struct), intent(in) :: f1, f2
@@ -142,6 +152,7 @@ end function eq_ac_kicker_freq
 
 elemental function eq_ac_kicker (f1, f2) result (is_eq)
 
+use bmad_struct, only: ac_kicker_struct
 implicit none
 
 type(ac_kicker_struct), intent(in) :: f1, f2
@@ -171,6 +182,7 @@ end function eq_ac_kicker
 
 elemental function eq_interval1_coef (f1, f2) result (is_eq)
 
+use bmad_struct, only: interval1_coef_struct
 implicit none
 
 type(interval1_coef_struct), intent(in) :: f1, f2
@@ -194,6 +206,7 @@ end function eq_interval1_coef
 
 elemental function eq_photon_reflect_table (f1, f2) result (is_eq)
 
+use bmad_struct, only: photon_reflect_table_struct
 implicit none
 
 type(photon_reflect_table_struct), intent(in) :: f1, f2
@@ -249,6 +262,7 @@ end function eq_photon_reflect_table
 
 elemental function eq_photon_reflect_surface (f1, f2) result (is_eq)
 
+use bmad_struct, only: photon_reflect_surface_struct
 implicit none
 
 type(photon_reflect_surface_struct), intent(in) :: f1, f2
@@ -284,6 +298,7 @@ end function eq_photon_reflect_surface
 
 elemental function eq_coord (f1, f2) result (is_eq)
 
+use bmad_struct, only: coord_struct
 implicit none
 
 type(coord_struct), intent(in) :: f1, f2
@@ -343,6 +358,7 @@ end function eq_coord
 
 elemental function eq_coord_array (f1, f2) result (is_eq)
 
+use bmad_struct, only: coord_array_struct
 implicit none
 
 type(coord_array_struct), intent(in) :: f1, f2
@@ -366,6 +382,7 @@ end function eq_coord_array
 
 elemental function eq_bpm_phase_coupling (f1, f2) result (is_eq)
 
+use bmad_struct, only: bpm_phase_coupling_struct
 implicit none
 
 type(bpm_phase_coupling_struct), intent(in) :: f1, f2
@@ -403,6 +420,7 @@ end function eq_bpm_phase_coupling
 
 elemental function eq_expression_atom (f1, f2) result (is_eq)
 
+use bmad_struct, only: expression_atom_struct
 implicit none
 
 type(expression_atom_struct), intent(in) :: f1, f2
@@ -426,6 +444,7 @@ end function eq_expression_atom
 
 elemental function eq_wake_sr_z_long (f1, f2) result (is_eq)
 
+use bmad_struct, only: wake_sr_z_long_struct
 implicit none
 
 type(wake_sr_z_long_struct), intent(in) :: f1, f2
@@ -477,6 +496,7 @@ end function eq_wake_sr_z_long
 
 elemental function eq_wake_sr_mode (f1, f2) result (is_eq)
 
+use bmad_struct, only: wake_sr_mode_struct
 implicit none
 
 type(wake_sr_mode_struct), intent(in) :: f1, f2
@@ -514,6 +534,7 @@ end function eq_wake_sr_mode
 
 elemental function eq_wake_sr (f1, f2) result (is_eq)
 
+use bmad_struct, only: wake_sr_struct
 implicit none
 
 type(wake_sr_struct), intent(in) :: f1, f2
@@ -559,6 +580,7 @@ end function eq_wake_sr
 
 elemental function eq_wake_lr_mode (f1, f2) result (is_eq)
 
+use bmad_struct, only: wake_lr_mode_struct
 implicit none
 
 type(wake_lr_mode_struct), intent(in) :: f1, f2
@@ -602,6 +624,7 @@ end function eq_wake_lr_mode
 
 elemental function eq_wake_lr (f1, f2) result (is_eq)
 
+use bmad_struct, only: wake_lr_struct
 implicit none
 
 type(wake_lr_struct), intent(in) :: f1, f2
@@ -637,6 +660,7 @@ end function eq_wake_lr
 
 elemental function eq_lat_ele_loc (f1, f2) result (is_eq)
 
+use bmad_struct, only: lat_ele_loc_struct
 implicit none
 
 type(lat_ele_loc_struct), intent(in) :: f1, f2
@@ -658,6 +682,7 @@ end function eq_lat_ele_loc
 
 elemental function eq_wake (f1, f2) result (is_eq)
 
+use bmad_struct, only: wake_struct
 implicit none
 
 type(wake_struct), intent(in) :: f1, f2
@@ -679,6 +704,7 @@ end function eq_wake
 
 elemental function eq_taylor_term (f1, f2) result (is_eq)
 
+use bmad_struct, only: taylor_term_struct
 implicit none
 
 type(taylor_term_struct), intent(in) :: f1, f2
@@ -700,6 +726,7 @@ end function eq_taylor_term
 
 elemental function eq_taylor (f1, f2) result (is_eq)
 
+use bmad_struct, only: taylor_struct
 implicit none
 
 type(taylor_struct), intent(in) :: f1, f2
@@ -725,6 +752,7 @@ end function eq_taylor
 
 elemental function eq_em_taylor_term (f1, f2) result (is_eq)
 
+use bmad_struct, only: em_taylor_term_struct
 implicit none
 
 type(em_taylor_term_struct), intent(in) :: f1, f2
@@ -746,6 +774,7 @@ end function eq_em_taylor_term
 
 elemental function eq_em_taylor (f1, f2) result (is_eq)
 
+use bmad_struct, only: em_taylor_struct
 implicit none
 
 type(em_taylor_struct), intent(in) :: f1, f2
@@ -771,6 +800,7 @@ end function eq_em_taylor
 
 elemental function eq_cartesian_map_term1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: cartesian_map_term1_struct
 implicit none
 
 type(cartesian_map_term1_struct), intent(in) :: f1, f2
@@ -806,6 +836,7 @@ end function eq_cartesian_map_term1
 
 elemental function eq_cartesian_map_term (f1, f2) result (is_eq)
 
+use bmad_struct, only: cartesian_map_term_struct
 implicit none
 
 type(cartesian_map_term_struct), intent(in) :: f1, f2
@@ -833,6 +864,7 @@ end function eq_cartesian_map_term
 
 elemental function eq_cartesian_map (f1, f2) result (is_eq)
 
+use bmad_struct, only: cartesian_map_struct
 implicit none
 
 type(cartesian_map_struct), intent(in) :: f1, f2
@@ -864,6 +896,7 @@ end function eq_cartesian_map
 
 elemental function eq_cylindrical_map_term1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: cylindrical_map_term1_struct
 implicit none
 
 type(cylindrical_map_term1_struct), intent(in) :: f1, f2
@@ -885,6 +918,7 @@ end function eq_cylindrical_map_term1
 
 elemental function eq_cylindrical_map_term (f1, f2) result (is_eq)
 
+use bmad_struct, only: cylindrical_map_term_struct
 implicit none
 
 type(cylindrical_map_term_struct), intent(in) :: f1, f2
@@ -912,6 +946,7 @@ end function eq_cylindrical_map_term
 
 elemental function eq_cylindrical_map (f1, f2) result (is_eq)
 
+use bmad_struct, only: cylindrical_map_struct
 implicit none
 
 type(cylindrical_map_struct), intent(in) :: f1, f2
@@ -951,6 +986,7 @@ end function eq_cylindrical_map
 
 elemental function eq_bicubic_cmplx_coef (f1, f2) result (is_eq)
 
+use cubic_interpolation_mod, only: bicubic_cmplx_coef_struct
 implicit none
 
 type(bicubic_cmplx_coef_struct), intent(in) :: f1, f2
@@ -972,6 +1008,7 @@ end function eq_bicubic_cmplx_coef
 
 elemental function eq_tricubic_cmplx_coef (f1, f2) result (is_eq)
 
+use cubic_interpolation_mod, only: tricubic_cmplx_coef_struct
 implicit none
 
 type(tricubic_cmplx_coef_struct), intent(in) :: f1, f2
@@ -993,6 +1030,7 @@ end function eq_tricubic_cmplx_coef
 
 elemental function eq_grid_field_pt1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: grid_field_pt1_struct
 implicit none
 
 type(grid_field_pt1_struct), intent(in) :: f1, f2
@@ -1014,6 +1052,7 @@ end function eq_grid_field_pt1
 
 elemental function eq_grid_field_pt (f1, f2) result (is_eq)
 
+use bmad_struct, only: grid_field_pt_struct
 implicit none
 
 type(grid_field_pt_struct), intent(in) :: f1, f2
@@ -1041,6 +1080,7 @@ end function eq_grid_field_pt
 
 elemental function eq_grid_field (f1, f2) result (is_eq)
 
+use bmad_struct, only: grid_field_struct
 implicit none
 
 type(grid_field_struct), intent(in) :: f1, f2
@@ -1088,6 +1128,7 @@ end function eq_grid_field
 
 elemental function eq_floor_position (f1, f2) result (is_eq)
 
+use bmad_struct, only: floor_position_struct
 implicit none
 
 type(floor_position_struct), intent(in) :: f1, f2
@@ -1115,6 +1156,7 @@ end function eq_floor_position
 
 elemental function eq_high_energy_space_charge (f1, f2) result (is_eq)
 
+use bmad_struct, only: high_energy_space_charge_struct
 implicit none
 
 type(high_energy_space_charge_struct), intent(in) :: f1, f2
@@ -1148,6 +1190,7 @@ end function eq_high_energy_space_charge
 
 elemental function eq_xy_disp (f1, f2) result (is_eq)
 
+use bmad_struct, only: xy_disp_struct
 implicit none
 
 type(xy_disp_struct), intent(in) :: f1, f2
@@ -1177,6 +1220,7 @@ end function eq_xy_disp
 
 elemental function eq_twiss (f1, f2) result (is_eq)
 
+use bmad_struct, only: twiss_struct
 implicit none
 
 type(twiss_struct), intent(in) :: f1, f2
@@ -1226,6 +1270,7 @@ end function eq_twiss
 
 elemental function eq_mode3 (f1, f2) result (is_eq)
 
+use bmad_struct, only: mode3_struct
 implicit none
 
 type(mode3_struct), intent(in) :: f1, f2
@@ -1255,6 +1300,7 @@ end function eq_mode3
 
 elemental function eq_bookkeeping_state (f1, f2) result (is_eq)
 
+use bmad_struct, only: bookkeeping_state_struct
 implicit none
 
 type(bookkeeping_state_struct), intent(in) :: f1, f2
@@ -1290,6 +1336,7 @@ end function eq_bookkeeping_state
 
 elemental function eq_rad_map (f1, f2) result (is_eq)
 
+use bmad_struct, only: rad_map_struct
 implicit none
 
 type(rad_map_struct), intent(in) :: f1, f2
@@ -1317,6 +1364,7 @@ end function eq_rad_map
 
 elemental function eq_rad_map_ele (f1, f2) result (is_eq)
 
+use bmad_struct, only: rad_map_ele_struct
 implicit none
 
 type(rad_map_ele_struct), intent(in) :: f1, f2
@@ -1340,6 +1388,7 @@ end function eq_rad_map_ele
 
 elemental function eq_gen_grad1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: gen_grad1_struct
 implicit none
 
 type(gen_grad1_struct), intent(in) :: f1, f2
@@ -1369,6 +1418,7 @@ end function eq_gen_grad1
 
 elemental function eq_gen_grad_map (f1, f2) result (is_eq)
 
+use bmad_struct, only: gen_grad_map_struct
 implicit none
 
 type(gen_grad_map_struct), intent(in) :: f1, f2
@@ -1412,6 +1462,7 @@ end function eq_gen_grad_map
 
 elemental function eq_surface_segmented_pt (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_segmented_pt_struct
 implicit none
 
 type(surface_segmented_pt_struct), intent(in) :: f1, f2
@@ -1439,6 +1490,7 @@ end function eq_surface_segmented_pt
 
 elemental function eq_surface_segmented (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_segmented_struct
 implicit none
 
 type(surface_segmented_struct), intent(in) :: f1, f2
@@ -1468,6 +1520,7 @@ end function eq_surface_segmented
 
 elemental function eq_surface_h_misalign_pt (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_h_misalign_pt_struct
 implicit none
 
 type(surface_h_misalign_pt_struct), intent(in) :: f1, f2
@@ -1497,6 +1550,7 @@ end function eq_surface_h_misalign_pt
 
 elemental function eq_surface_h_misalign (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_h_misalign_struct
 implicit none
 
 type(surface_h_misalign_struct), intent(in) :: f1, f2
@@ -1526,6 +1580,7 @@ end function eq_surface_h_misalign
 
 elemental function eq_surface_displacement_pt (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_displacement_pt_struct
 implicit none
 
 type(surface_displacement_pt_struct), intent(in) :: f1, f2
@@ -1555,6 +1610,7 @@ end function eq_surface_displacement_pt
 
 elemental function eq_surface_displacement (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_displacement_struct
 implicit none
 
 type(surface_displacement_struct), intent(in) :: f1, f2
@@ -1584,6 +1640,7 @@ end function eq_surface_displacement
 
 elemental function eq_target_point (f1, f2) result (is_eq)
 
+use bmad_struct, only: target_point_struct
 implicit none
 
 type(target_point_struct), intent(in) :: f1, f2
@@ -1603,6 +1660,7 @@ end function eq_target_point
 
 elemental function eq_surface_curvature (f1, f2) result (is_eq)
 
+use bmad_struct, only: surface_curvature_struct
 implicit none
 
 type(surface_curvature_struct), intent(in) :: f1, f2
@@ -1628,6 +1686,7 @@ end function eq_surface_curvature
 
 elemental function eq_photon_target (f1, f2) result (is_eq)
 
+use bmad_struct, only: photon_target_struct
 implicit none
 
 type(photon_target_struct), intent(in) :: f1, f2
@@ -1655,6 +1714,7 @@ end function eq_photon_target
 
 elemental function eq_photon_material (f1, f2) result (is_eq)
 
+use bmad_struct, only: photon_material_struct
 implicit none
 
 type(photon_material_struct), intent(in) :: f1, f2
@@ -1688,6 +1748,7 @@ end function eq_photon_material
 
 elemental function eq_pixel_pt (f1, f2) result (is_eq)
 
+use bmad_struct, only: pixel_pt_struct
 implicit none
 
 type(pixel_pt_struct), intent(in) :: f1, f2
@@ -1725,6 +1786,7 @@ end function eq_pixel_pt
 
 elemental function eq_pixel_detec (f1, f2) result (is_eq)
 
+use bmad_struct, only: pixel_detec_struct
 implicit none
 
 type(pixel_detec_struct), intent(in) :: f1, f2
@@ -1758,6 +1820,7 @@ end function eq_pixel_detec
 
 elemental function eq_photon_element (f1, f2) result (is_eq)
 
+use bmad_struct, only: photon_element_struct
 implicit none
 
 type(photon_element_struct), intent(in) :: f1, f2
@@ -1807,6 +1870,7 @@ end function eq_photon_element
 
 elemental function eq_wall3d_vertex (f1, f2) result (is_eq)
 
+use bmad_struct, only: wall3d_vertex_struct
 implicit none
 
 type(wall3d_vertex_struct), intent(in) :: f1, f2
@@ -1842,6 +1906,7 @@ end function eq_wall3d_vertex
 
 elemental function eq_wall3d_section (f1, f2) result (is_eq)
 
+use bmad_struct, only: wall3d_section_struct
 implicit none
 
 type(wall3d_section_struct), intent(in) :: f1, f2
@@ -1905,6 +1970,7 @@ end function eq_wall3d_section
 
 elemental function eq_wall3d (f1, f2) result (is_eq)
 
+use bmad_struct, only: wall3d_struct
 implicit none
 
 type(wall3d_struct), intent(in) :: f1, f2
@@ -1946,6 +2012,7 @@ end function eq_wall3d
 
 elemental function eq_ramper_lord (f1, f2) result (is_eq)
 
+use bmad_struct, only: ramper_lord_struct
 implicit none
 
 type(ramper_lord_struct), intent(in) :: f1, f2
@@ -1971,6 +2038,7 @@ end function eq_ramper_lord
 
 elemental function eq_control (f1, f2) result (is_eq)
 
+use bmad_struct, only: control_struct
 implicit none
 
 type(control_struct), intent(in) :: f1, f2
@@ -2012,6 +2080,7 @@ end function eq_control
 
 elemental function eq_control_var1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: control_var1_struct
 implicit none
 
 type(control_var1_struct), intent(in) :: f1, f2
@@ -2035,6 +2104,7 @@ end function eq_control_var1
 
 elemental function eq_control_ramp1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: control_ramp1_struct
 implicit none
 
 type(control_ramp1_struct), intent(in) :: f1, f2
@@ -2070,6 +2140,7 @@ end function eq_control_ramp1
 
 elemental function eq_controller (f1, f2) result (is_eq)
 
+use bmad_struct, only: controller_struct
 implicit none
 
 type(controller_struct), intent(in) :: f1, f2
@@ -2111,6 +2182,7 @@ end function eq_controller
 
 elemental function eq_ellipse_beam_init (f1, f2) result (is_eq)
 
+use bmad_struct, only: ellipse_beam_init_struct
 implicit none
 
 type(ellipse_beam_init_struct), intent(in) :: f1, f2
@@ -2134,6 +2206,7 @@ end function eq_ellipse_beam_init
 
 elemental function eq_kv_beam_init (f1, f2) result (is_eq)
 
+use bmad_struct, only: kv_beam_init_struct
 implicit none
 
 type(kv_beam_init_struct), intent(in) :: f1, f2
@@ -2157,6 +2230,7 @@ end function eq_kv_beam_init
 
 elemental function eq_grid_beam_init (f1, f2) result (is_eq)
 
+use bmad_struct, only: grid_beam_init_struct
 implicit none
 
 type(grid_beam_init_struct), intent(in) :: f1, f2
@@ -2186,6 +2260,7 @@ end function eq_grid_beam_init
 
 elemental function eq_beam_init (f1, f2) result (is_eq)
 
+use bmad_struct, only: beam_init_struct
 implicit none
 
 type(beam_init_struct), intent(in) :: f1, f2
@@ -2273,6 +2348,7 @@ end function eq_beam_init
 
 elemental function eq_lat_param (f1, f2) result (is_eq)
 
+use bmad_struct, only: lat_param_struct
 implicit none
 
 type(lat_param_struct), intent(in) :: f1, f2
@@ -2324,6 +2400,7 @@ end function eq_lat_param
 
 elemental function eq_mode_info (f1, f2) result (is_eq)
 
+use bmad_struct, only: mode_info_struct
 implicit none
 
 type(mode_info_struct), intent(in) :: f1, f2
@@ -2353,6 +2430,7 @@ end function eq_mode_info
 
 elemental function eq_pre_tracker (f1, f2) result (is_eq)
 
+use bmad_struct, only: pre_tracker_struct
 implicit none
 
 type(pre_tracker_struct), intent(in) :: f1, f2
@@ -2378,6 +2456,7 @@ end function eq_pre_tracker
 
 elemental function eq_anormal_mode (f1, f2) result (is_eq)
 
+use bmad_struct, only: anormal_mode_struct
 implicit none
 
 type(anormal_mode_struct), intent(in) :: f1, f2
@@ -2409,6 +2488,7 @@ end function eq_anormal_mode
 
 elemental function eq_linac_normal_mode (f1, f2) result (is_eq)
 
+use bmad_struct, only: linac_normal_mode_struct
 implicit none
 
 type(linac_normal_mode_struct), intent(in) :: f1, f2
@@ -2440,6 +2520,7 @@ end function eq_linac_normal_mode
 
 elemental function eq_normal_modes (f1, f2) result (is_eq)
 
+use bmad_struct, only: normal_modes_struct
 implicit none
 
 type(normal_modes_struct), intent(in) :: f1, f2
@@ -2483,6 +2564,7 @@ end function eq_normal_modes
 
 elemental function eq_em_field (f1, f2) result (is_eq)
 
+use bmad_struct, only: em_field_struct
 implicit none
 
 type(em_field_struct), intent(in) :: f1, f2
@@ -2514,6 +2596,7 @@ end function eq_em_field
 
 elemental function eq_strong_beam (f1, f2) result (is_eq)
 
+use bmad_struct, only: strong_beam_struct
 implicit none
 
 type(strong_beam_struct), intent(in) :: f1, f2
@@ -2545,6 +2628,7 @@ end function eq_strong_beam
 
 elemental function eq_track_point (f1, f2) result (is_eq)
 
+use bmad_struct, only: track_point_struct
 implicit none
 
 type(track_point_struct), intent(in) :: f1, f2
@@ -2576,6 +2660,7 @@ end function eq_track_point
 
 elemental function eq_track (f1, f2) result (is_eq)
 
+use bmad_struct, only: track_struct
 implicit none
 
 type(track_struct), intent(in) :: f1, f2
@@ -2607,6 +2692,7 @@ end function eq_track
 
 elemental function eq_space_charge_common (f1, f2) result (is_eq)
 
+use bmad_struct, only: space_charge_common_struct
 implicit none
 
 type(space_charge_common_struct), intent(in) :: f1, f2
@@ -2658,6 +2744,7 @@ end function eq_space_charge_common
 
 elemental function eq_bmad_common (f1, f2) result (is_eq)
 
+use bmad_struct, only: bmad_common_struct
 implicit none
 
 type(bmad_common_struct), intent(in) :: f1, f2
@@ -2759,6 +2846,7 @@ end function eq_bmad_common
 
 elemental function eq_rad_int1 (f1, f2) result (is_eq)
 
+use bmad_struct, only: rad_int1_struct
 implicit none
 
 type(rad_int1_struct), intent(in) :: f1, f2
@@ -2812,6 +2900,7 @@ end function eq_rad_int1
 
 elemental function eq_rad_int_branch (f1, f2) result (is_eq)
 
+use bmad_struct, only: rad_int_branch_struct
 implicit none
 
 type(rad_int_branch_struct), intent(in) :: f1, f2
@@ -2835,6 +2924,7 @@ end function eq_rad_int_branch
 
 elemental function eq_rad_int_all_ele (f1, f2) result (is_eq)
 
+use bmad_struct, only: rad_int_all_ele_struct
 implicit none
 
 type(rad_int_all_ele_struct), intent(in) :: f1, f2
@@ -2858,6 +2948,7 @@ end function eq_rad_int_all_ele
 
 elemental function eq_rf_stair_step (f1, f2) result (is_eq)
 
+use bmad_struct, only: rf_stair_step_struct
 implicit none
 
 type(rf_stair_step_struct), intent(in) :: f1, f2
@@ -2893,6 +2984,7 @@ end function eq_rf_stair_step
 
 elemental function eq_rf_ele (f1, f2) result (is_eq)
 
+use bmad_struct, only: rf_ele_struct
 implicit none
 
 type(rf_ele_struct), intent(in) :: f1, f2
@@ -2918,6 +3010,7 @@ end function eq_rf_ele
 
 recursive elemental function eq_ele (f1, f2) result (is_eq)
 
+use bmad_struct, only: ele_struct
 implicit none
 
 type(ele_struct), intent(in) :: f1, f2
@@ -3175,6 +3268,7 @@ end function eq_ele
 
 elemental function eq_complex_taylor_term (f1, f2) result (is_eq)
 
+use bmad_struct, only: complex_taylor_term_struct
 implicit none
 
 type(complex_taylor_term_struct), intent(in) :: f1, f2
@@ -3196,6 +3290,7 @@ end function eq_complex_taylor_term
 
 elemental function eq_complex_taylor (f1, f2) result (is_eq)
 
+use bmad_struct, only: complex_taylor_struct
 implicit none
 
 type(complex_taylor_struct), intent(in) :: f1, f2
@@ -3221,6 +3316,7 @@ end function eq_complex_taylor
 
 elemental function eq_branch (f1, f2) result (is_eq)
 
+use bmad_struct, only: branch_struct
 implicit none
 
 type(branch_struct), intent(in) :: f1, f2
@@ -3276,6 +3372,7 @@ end function eq_branch
 
 elemental function eq_lat (f1, f2) result (is_eq)
 
+use bmad_struct, only: lat_struct
 implicit none
 
 type(lat_struct), intent(in) :: f1, f2
@@ -3389,6 +3486,7 @@ end function eq_lat
 
 elemental function eq_bunch (f1, f2) result (is_eq)
 
+use bmad_struct, only: bunch_struct
 implicit none
 
 type(bunch_struct), intent(in) :: f1, f2
@@ -3442,6 +3540,7 @@ end function eq_bunch
 
 elemental function eq_bunch_params (f1, f2) result (is_eq)
 
+use bmad_struct, only: bunch_params_struct
 implicit none
 
 type(bunch_params_struct), intent(in) :: f1, f2
@@ -3505,6 +3604,7 @@ end function eq_bunch_params
 
 elemental function eq_beam (f1, f2) result (is_eq)
 
+use bmad_struct, only: beam_struct
 implicit none
 
 type(beam_struct), intent(in) :: f1, f2
@@ -3528,6 +3628,7 @@ end function eq_beam
 
 elemental function eq_aperture_point (f1, f2) result (is_eq)
 
+use bmad_struct, only: aperture_point_struct
 implicit none
 
 type(aperture_point_struct), intent(in) :: f1, f2
@@ -3555,6 +3656,7 @@ end function eq_aperture_point
 
 elemental function eq_aperture_param (f1, f2) result (is_eq)
 
+use bmad_struct, only: aperture_param_struct
 implicit none
 
 type(aperture_param_struct), intent(in) :: f1, f2
@@ -3590,6 +3692,7 @@ end function eq_aperture_param
 
 elemental function eq_aperture_scan (f1, f2) result (is_eq)
 
+use bmad_struct, only: aperture_scan_struct
 implicit none
 
 type(aperture_scan_struct), intent(in) :: f1, f2
@@ -3610,4 +3713,1092 @@ is_eq = is_eq .and. (f1%ref_orb == f2%ref_orb)
 is_eq = is_eq .and. (f1%pz_start == f2%pz_start)
 
 end function eq_aperture_scan
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_spin_dn_dpz (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_spin_dn_dpz_struct
+implicit none
+
+type(tao_spin_dn_dpz_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%vec == f2%vec)
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%partial == f2%partial)
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%partial2 == f2%partial2)
+
+end function eq_tao_spin_dn_dpz
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_resonance_h (f1, f2) result (is_eq)
+
+use bmad_struct, only: resonance_h_struct
+implicit none
+
+type(resonance_h_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%id == f2%id)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%c_val == f2%c_val)
+
+end function eq_resonance_h
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_spin_orbit_map1 (f1, f2) result (is_eq)
+
+use bmad_struct, only: spin_orbit_map1_struct
+implicit none
+
+type(spin_orbit_map1_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%orb_mat == f2%orb_mat)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%vec0 == f2%vec0)
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%spin_q == f2%spin_q)
+
+end function eq_spin_orbit_map1
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_spin_axis (f1, f2) result (is_eq)
+
+use bmad_struct, only: spin_axis_struct
+implicit none
+
+type(spin_axis_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%l == f2%l)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%n0 == f2%n0)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%m == f2%m)
+
+end function eq_spin_axis
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_ptc_normal_form (f1, f2) result (is_eq)
+
+use bmad_struct, only: ptc_normal_form_struct
+implicit none
+
+type(ptc_normal_form_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%ele_origin) .eqv. associated(f2%ele_origin))
+if (.not. is_eq) return
+if (associated(f1%ele_origin)) is_eq = (f1%ele_origin == f2%ele_origin)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%orb0 == f2%orb0)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%valid_map .eqv. f2%valid_map)
+
+end function eq_ptc_normal_form
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_bmad_normal_form (f1, f2) result (is_eq)
+
+use bmad_struct, only: bmad_normal_form_struct
+implicit none
+
+type(bmad_normal_form_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%ele_origin) .eqv. associated(f2%ele_origin))
+if (.not. is_eq) return
+if (associated(f1%ele_origin)) is_eq = (f1%ele_origin == f2%ele_origin)
+!! f_side.equality_test[1D_NOT_type]
+is_eq = is_eq .and. all(f1%M == f2%M)
+!! f_side.equality_test[1D_NOT_type]
+is_eq = is_eq .and. all(f1%A == f2%A)
+!! f_side.equality_test[1D_NOT_type]
+is_eq = is_eq .and. all(f1%A_inv == f2%A_inv)
+!! f_side.equality_test[1D_NOT_type]
+is_eq = is_eq .and. all(f1%dhdj == f2%dhdj)
+!! f_side.equality_test[1D_NOT_type]
+is_eq = is_eq .and. all(f1%F == f2%F)
+!! f_side.equality_test[1D_NOT_type]
+is_eq = is_eq .and. all(f1%L == f2%L)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%h) .eqv. allocated(f2%h))
+if (.not. is_eq) return
+if (allocated(f1%h)) is_eq = all(shape(f1%h) == shape(f2%h))
+if (.not. is_eq) return
+if (allocated(f1%h)) is_eq = all(f1%h == f2%h)
+
+end function eq_bmad_normal_form
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_bunch_track (f1, f2) result (is_eq)
+
+use bmad_struct, only: bunch_track_struct
+implicit none
+
+type(bunch_track_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%pt) .eqv. allocated(f2%pt))
+if (.not. is_eq) return
+if (allocated(f1%pt)) is_eq = all(shape(f1%pt) == shape(f2%pt))
+if (.not. is_eq) return
+if (allocated(f1%pt)) is_eq = all(f1%pt == f2%pt)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%ds_save == f2%ds_save)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%n_pt == f2%n_pt)
+
+end function eq_bunch_track
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_summation_rdt (f1, f2) result (is_eq)
+
+use srdt_mod, only: summation_rdt_struct
+implicit none
+
+type(summation_rdt_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h11001 == f2%h11001)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h00111 == f2%h00111)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h20001 == f2%h20001)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h00201 == f2%h00201)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h10002 == f2%h10002)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h21000 == f2%h21000)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h30000 == f2%h30000)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h10110 == f2%h10110)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h10020 == f2%h10020)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h10200 == f2%h10200)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h31000 == f2%h31000)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h40000 == f2%h40000)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h20110 == f2%h20110)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h11200 == f2%h11200)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h20020 == f2%h20020)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h20200 == f2%h20200)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h00310 == f2%h00310)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h00400 == f2%h00400)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h22000 == f2%h22000)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h00220 == f2%h00220)
+!! f_side.equality_test[0D_NOT_complex]
+is_eq = is_eq .and. (f1%h11110 == f2%h11110)
+
+end function eq_summation_rdt
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_lat_ele_order1 (f1, f2) result (is_eq)
+
+use bmad_struct, only: lat_ele_order1_struct
+implicit none
+
+type(lat_ele_order1_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_order == f2%ix_order)
+
+end function eq_lat_ele_order1
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_lat_ele_order_array (f1, f2) result (is_eq)
+
+use bmad_struct, only: lat_ele_order_array_struct
+implicit none
+
+type(lat_ele_order_array_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%ele) .eqv. allocated(f2%ele))
+if (.not. is_eq) return
+if (allocated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
+if (.not. is_eq) return
+if (allocated(f1%ele)) is_eq = all(f1%ele == f2%ele)
+
+end function eq_lat_ele_order_array
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_lat_sigma (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_lat_sigma_struct
+implicit none
+
+type(tao_lat_sigma_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%mat == f2%mat)
+
+end function eq_tao_lat_sigma
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_spin_ele (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_spin_ele_struct
+implicit none
+
+type(tao_spin_ele_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%dn_dpz == f2%dn_dpz)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%orb_eigen_val == f2%orb_eigen_val)
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%orb_eigen_vec == f2%orb_eigen_vec)
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%spin_eigen_vec == f2%spin_eigen_vec)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%valid .eqv. f2%valid)
+
+end function eq_tao_spin_ele
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_plot_cache (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_plot_cache_struct
+implicit none
+
+type(tao_plot_cache_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%ele_to_s == f2%ele_to_s)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%orbit == f2%orbit)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%err .eqv. f2%err)
+
+end function eq_tao_plot_cache
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_spin_polarization (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_spin_polarization_struct
+implicit none
+
+type(tao_spin_polarization_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%tune == f2%tune)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%pol_limit_st == f2%pol_limit_st)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%pol_limit_dk == f2%pol_limit_dk)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%pol_limit_dk_partial == f2%pol_limit_dk_partial)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%pol_limit_dk_partial2 == f2%pol_limit_dk_partial2)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%pol_rate_bks == f2%pol_rate_bks)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%depol_rate == f2%depol_rate)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%depol_rate_partial == f2%depol_rate_partial)
+!! f_side.equality_test[1D_NOT_real]
+is_eq = is_eq .and. all(f1%depol_rate_partial2 == f2%depol_rate_partial2)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%integral_bn == f2%integral_bn)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%integral_bdn == f2%integral_bdn)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%integral_1ns == f2%integral_1ns)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%integral_dn2 == f2%integral_dn2)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%valid .eqv. f2%valid)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%q_1turn == f2%q_1turn)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%q_ele) .eqv. allocated(f2%q_ele))
+if (.not. is_eq) return
+if (allocated(f1%q_ele)) is_eq = all(shape(f1%q_ele) == shape(f2%q_ele))
+if (.not. is_eq) return
+if (allocated(f1%q_ele)) is_eq = all(f1%q_ele == f2%q_ele)
+
+end function eq_tao_spin_polarization
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_lattice_branch (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_lattice_branch_struct
+implicit none
+
+type(tao_lattice_branch_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%lat_sigma) .eqv. allocated(f2%lat_sigma))
+if (.not. is_eq) return
+if (allocated(f1%lat_sigma)) is_eq = all(shape(f1%lat_sigma) == shape(f2%lat_sigma))
+if (.not. is_eq) return
+if (allocated(f1%lat_sigma)) is_eq = all(f1%lat_sigma == f2%lat_sigma)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%spin_ele) .eqv. allocated(f2%spin_ele))
+if (.not. is_eq) return
+if (allocated(f1%spin_ele)) is_eq = all(shape(f1%spin_ele) == shape(f2%spin_ele))
+if (.not. is_eq) return
+if (allocated(f1%spin_ele)) is_eq = all(f1%spin_ele == f2%spin_ele)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%bunch_params) .eqv. allocated(f2%bunch_params))
+if (.not. is_eq) return
+if (allocated(f1%bunch_params)) is_eq = all(shape(f1%bunch_params) == shape(f2%bunch_params))
+if (.not. is_eq) return
+if (allocated(f1%bunch_params)) is_eq = all(f1%bunch_params == f2%bunch_params)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%bunch_params_comb) .eqv. allocated(f2%bunch_params_comb))
+if (.not. is_eq) return
+if (allocated(f1%bunch_params_comb)) is_eq = all(shape(f1%bunch_params_comb) == shape(f2%bunch_params_comb))
+if (.not. is_eq) return
+if (allocated(f1%bunch_params_comb)) is_eq = all(f1%bunch_params_comb == f2%bunch_params_comb)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%orbit) .eqv. allocated(f2%orbit))
+if (.not. is_eq) return
+if (allocated(f1%orbit)) is_eq = all(shape(f1%orbit) == shape(f2%orbit))
+if (.not. is_eq) return
+if (allocated(f1%orbit)) is_eq = all(f1%orbit == f2%orbit)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%plot_cache) .eqv. allocated(f2%plot_cache))
+if (.not. is_eq) return
+if (allocated(f1%plot_cache)) is_eq = all(shape(f1%plot_cache) == shape(f2%plot_cache))
+if (.not. is_eq) return
+if (allocated(f1%plot_cache)) is_eq = all(f1%plot_cache == f2%plot_cache)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%spin == f2%spin)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%srdt == f2%srdt)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%orb0 == f2%orb0)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%modes_ri == f2%modes_ri)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%modes_6d == f2%modes_6d)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%ptc_normal_form == f2%ptc_normal_form)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%bmad_normal_form == f2%bmad_normal_form)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%high_E_orb) .eqv. allocated(f2%high_E_orb))
+if (.not. is_eq) return
+if (allocated(f1%high_E_orb)) is_eq = all(shape(f1%high_E_orb) == shape(f2%high_E_orb))
+if (.not. is_eq) return
+if (allocated(f1%high_E_orb)) is_eq = all(f1%high_E_orb == f2%high_E_orb)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%low_E_orb) .eqv. allocated(f2%low_E_orb))
+if (.not. is_eq) return
+if (allocated(f1%low_E_orb)) is_eq = all(shape(f1%low_E_orb) == shape(f2%low_E_orb))
+if (.not. is_eq) return
+if (allocated(f1%low_E_orb)) is_eq = all(f1%low_E_orb == f2%low_E_orb)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%cache_x_min == f2%cache_x_min)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%cache_x_max == f2%cache_x_max)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%comb_ds_save == f2%comb_ds_save)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%track_state == f2%track_state)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%cache_n_pts == f2%cache_n_pts)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_rad_int_cache == f2%ix_rad_int_cache)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%has_open_match_element .eqv. f2%has_open_match_element)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%plot_cache_valid .eqv. f2%plot_cache_valid)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%spin_map_valid .eqv. f2%spin_map_valid)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%twiss_valid .eqv. f2%twiss_valid)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%mode_flip_here .eqv. f2%mode_flip_here)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%chrom_calc_ok .eqv. f2%chrom_calc_ok)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%rad_int_calc_ok .eqv. f2%rad_int_calc_ok)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%emit_6d_calc_ok .eqv. f2%emit_6d_calc_ok)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%sigma_track_ok .eqv. f2%sigma_track_ok)
+
+end function eq_tao_lattice_branch
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_model_element (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_model_element_struct
+implicit none
+
+type(tao_model_element_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%beam == f2%beam)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%save_beam_internally .eqv. f2%save_beam_internally)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%save_beam_to_file .eqv. f2%save_beam_to_file)
+
+end function eq_tao_model_element
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_beam_branch (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_beam_branch_struct
+implicit none
+
+type(tao_beam_branch_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%beam_at_start == f2%beam_at_start)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%beam_init == f2%beam_init)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%beam_init_used == f2%beam_init_used)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%init_starting_distribution .eqv. f2%init_starting_distribution)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%track_start == f2%track_start)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%track_end == f2%track_end)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_track_start == f2%ix_track_start)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_track_end == f2%ix_track_end)
+
+end function eq_tao_beam_branch
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_d1_data (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_d1_data_struct
+implicit none
+
+type(tao_d1_data_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%name == f2%name)
+
+end function eq_tao_d1_data
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_lattice (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_lattice_struct
+implicit none
+
+type(tao_lattice_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%name == f2%name)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%lat == f2%lat)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%high_E_lat == f2%high_E_lat)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%low_E_lat == f2%low_E_lat)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%rad_int_by_ele_ri == f2%rad_int_by_ele_ri)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%rad_int_by_ele_6d == f2%rad_int_by_ele_6d)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%tao_branch) .eqv. allocated(f2%tao_branch))
+if (.not. is_eq) return
+if (allocated(f1%tao_branch)) is_eq = all(shape(f1%tao_branch) == shape(f2%tao_branch))
+if (.not. is_eq) return
+if (allocated(f1%tao_branch)) is_eq = all(f1%tao_branch == f2%tao_branch)
+
+end function eq_tao_lattice
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_beam_uni (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_beam_uni_struct
+implicit none
+
+type(tao_beam_uni_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%saved_at == f2%saved_at)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%dump_file == f2%dump_file)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%dump_at == f2%dump_at)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%track_beam_in_universe .eqv. f2%track_beam_in_universe)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%always_reinit .eqv. f2%always_reinit)
+
+end function eq_tao_beam_uni
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_dynamic_aperture (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_dynamic_aperture_struct
+implicit none
+
+type(tao_dynamic_aperture_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%param == f2%param)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%scan) .eqv. allocated(f2%scan))
+if (.not. is_eq) return
+if (allocated(f1%scan)) is_eq = all(shape(f1%scan) == shape(f2%scan))
+if (.not. is_eq) return
+if (allocated(f1%scan)) is_eq = all(f1%scan == f2%scan)
+!! f_side.equality_test[1D_ALLOC_real]
+is_eq = is_eq .and. (allocated(f1%pz) .eqv. allocated(f2%pz))
+if (.not. is_eq) return
+if (allocated(f1%pz)) is_eq = all(shape(f1%pz) == shape(f2%pz))
+if (.not. is_eq) return
+if (allocated(f1%pz)) is_eq = all(f1%pz == f2%pz)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%ellipse_scale == f2%ellipse_scale)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%a_emit == f2%a_emit)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%b_emit == f2%b_emit)
+
+end function eq_tao_dynamic_aperture
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_model_branch (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_model_branch_struct
+implicit none
+
+type(tao_model_branch_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%ele) .eqv. allocated(f2%ele))
+if (.not. is_eq) return
+if (allocated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
+if (.not. is_eq) return
+if (allocated(f1%ele)) is_eq = all(f1%ele == f2%ele)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%beam == f2%beam)
+
+end function eq_tao_model_branch
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_d2_data (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_d2_data_struct
+implicit none
+
+type(tao_d2_data_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%name == f2%name)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%data_file_name == f2%data_file_name)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%ref_file_name == f2%ref_file_name)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%data_date == f2%data_date)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%ref_date == f2%ref_date)
+!! f_side.equality_test[1D_NOT_character]
+is_eq = is_eq .and. all(f1%descrip == f2%descrip)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%d1) .eqv. allocated(f2%d1))
+if (.not. is_eq) return
+if (allocated(f1%d1)) is_eq = all(shape(f1%d1) == shape(f2%d1))
+if (.not. is_eq) return
+if (allocated(f1%d1)) is_eq = all(f1%d1 == f2%d1)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_universe == f2%ix_universe)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_d2_data == f2%ix_d2_data)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ref == f2%ix_ref)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%data_read_in .eqv. f2%data_read_in)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%ref_read_in .eqv. f2%ref_read_in)
+
+end function eq_tao_d2_data
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_spin_map (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_spin_map_struct
+implicit none
+
+type(tao_spin_map_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%valid .eqv. f2%valid)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%map1 == f2%map1)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%axis_input == f2%axis_input)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%axis0 == f2%axis0)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%axis1 == f2%axis1)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ref == f2%ix_ref)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_uni == f2%ix_uni)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
+!! f_side.equality_test[2D_NOT_real]
+is_eq = is_eq .and. all(f1%mat8 == f2%mat8)
+
+end function eq_tao_spin_map
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_data (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_data_struct
+implicit none
+
+type(tao_data_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%ele_name == f2%ele_name)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%ele_start_name == f2%ele_start_name)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%ele_ref_name == f2%ele_ref_name)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%merit_type == f2%merit_type)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%id == f2%id)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%data_source == f2%data_source)
+!! f_side.equality_test[0D_NOT_character]
+is_eq = is_eq .and. (f1%why_invalid == f2%why_invalid)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_uni == f2%ix_uni)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_bunch == f2%ix_bunch)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_branch == f2%ix_branch)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ele == f2%ix_ele)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ele_start == f2%ix_ele_start)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ele_ref == f2%ix_ele_ref)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_ele_merit == f2%ix_ele_merit)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_d1 == f2%ix_d1)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_data == f2%ix_data)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_dModel == f2%ix_dModel)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%eval_point == f2%eval_point)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%meas_value == f2%meas_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%ref_value == f2%ref_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%model_value == f2%model_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%design_value == f2%design_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%old_value == f2%old_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%base_value == f2%base_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%error_rms == f2%error_rms)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%delta_merit == f2%delta_merit)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%weight == f2%weight)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%invalid_value == f2%invalid_value)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%merit == f2%merit)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%s == f2%s)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%s_offset == f2%s_offset)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%err_message_printed .eqv. f2%err_message_printed)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%exists .eqv. f2%exists)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_model .eqv. f2%good_model)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_base .eqv. f2%good_base)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_design .eqv. f2%good_design)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_meas .eqv. f2%good_meas)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_ref .eqv. f2%good_ref)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_user .eqv. f2%good_user)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_opt .eqv. f2%good_opt)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%good_plot .eqv. f2%good_plot)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%useit_plot .eqv. f2%useit_plot)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%useit_opt .eqv. f2%useit_opt)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%spin_map == f2%spin_map)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%d1) .eqv. associated(f2%d1))
+if (.not. is_eq) return
+if (associated(f1%d1)) is_eq = (f1%d1 == f2%d1)
+
+end function eq_tao_data
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_ping_scale (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_ping_scale_struct
+implicit none
+
+type(tao_ping_scale_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%a_mode_meas == f2%a_mode_meas)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%a_mode_ref == f2%a_mode_ref)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%b_mode_meas == f2%b_mode_meas)
+!! f_side.equality_test[0D_NOT_real]
+is_eq = is_eq .and. (f1%b_mode_ref == f2%b_mode_ref)
+
+end function eq_tao_ping_scale
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_universe_calc (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_universe_calc_struct
+implicit none
+
+type(tao_universe_calc_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%srdt_for_data == f2%srdt_for_data)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%rad_int_for_data .eqv. f2%rad_int_for_data)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%rad_int_for_plotting .eqv. f2%rad_int_for_plotting)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%chrom_for_data .eqv. f2%chrom_for_data)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%chrom_for_plotting .eqv. f2%chrom_for_plotting)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%lat_sigma_for_data .eqv. f2%lat_sigma_for_data)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%lat_sigma_for_plotting .eqv. f2%lat_sigma_for_plotting)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%dynamic_aperture .eqv. f2%dynamic_aperture)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%one_turn_map .eqv. f2%one_turn_map)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%lattice .eqv. f2%lattice)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%twiss .eqv. f2%twiss)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%track .eqv. f2%track)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%spin_matrices .eqv. f2%spin_matrices)
+
+end function eq_tao_universe_calc
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_lat_ele_order (f1, f2) result (is_eq)
+
+use bmad_struct, only: lat_ele_order_struct
+implicit none
+
+type(lat_ele_order_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%branch) .eqv. allocated(f2%branch))
+if (.not. is_eq) return
+if (allocated(f1%branch)) is_eq = all(shape(f1%branch) == shape(f2%branch))
+if (.not. is_eq) return
+if (allocated(f1%branch)) is_eq = all(f1%branch == f2%branch)
+
+end function eq_lat_ele_order
+
+
+!--------------------------------------------------------------------------------
+!--------------------------------------------------------------------------------
+
+elemental function eq_tao_universe (f1, f2) result (is_eq)
+
+use tao_struct, only: tao_universe_struct
+implicit none
+
+type(tao_universe_struct), intent(in) :: f1, f2
+logical is_eq
+
+!
+
+is_eq = .true.
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%beam == f2%beam)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%dynamic_aperture == f2%dynamic_aperture)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%d2_data) .eqv. allocated(f2%d2_data))
+if (.not. is_eq) return
+if (allocated(f1%d2_data)) is_eq = all(shape(f1%d2_data) == shape(f2%d2_data))
+if (.not. is_eq) return
+if (allocated(f1%d2_data)) is_eq = all(f1%d2_data == f2%d2_data)
+!! f_side.equality_test[1D_ALLOC_type]
+is_eq = is_eq .and. (allocated(f1%data) .eqv. allocated(f2%data))
+if (.not. is_eq) return
+if (allocated(f1%data)) is_eq = all(shape(f1%data) == shape(f2%data))
+if (.not. is_eq) return
+if (allocated(f1%data)) is_eq = all(f1%data == f2%data)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%ping_scale == f2%ping_scale)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%scratch_lat == f2%scratch_lat)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%calc == f2%calc)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%ele_order == f2%ele_order)
+!! f_side.equality_test[0D_NOT_type]
+is_eq = is_eq .and. (f1%spin_map == f2%spin_map)
+!! f_side.equality_test[2D_ALLOC_real]
+is_eq = is_eq .and. (allocated(f1%dModel_dVar) .eqv. allocated(f2%dModel_dVar))
+if (.not. is_eq) return
+if (allocated(f1%dModel_dVar)) is_eq = all(shape(f1%dModel_dVar) == shape(f2%dModel_dVar))
+if (.not. is_eq) return
+if (allocated(f1%dModel_dVar)) is_eq = all(f1%dModel_dVar == f2%dModel_dVar)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%ix_uni == f2%ix_uni)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%n_d2_data_used == f2%n_d2_data_used)
+!! f_side.equality_test[0D_NOT_integer]
+is_eq = is_eq .and. (f1%n_data_used == f2%n_data_used)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%is_on .eqv. f2%is_on)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%design_same_as_previous .eqv. f2%design_same_as_previous)
+!! f_side.equality_test[0D_NOT_logical]
+is_eq = is_eq .and. (f1%picked_uni .eqv. f2%picked_uni)
+
+end function eq_tao_universe
 end module

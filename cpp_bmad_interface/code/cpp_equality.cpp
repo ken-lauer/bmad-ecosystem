@@ -1745,4 +1745,471 @@ bool operator==(const CPP_aperture_scan& x, const CPP_aperture_scan& y) {
   return is_eq;
 };
 
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_spin_dn_dpz& x, const CPP_tao_spin_dn_dpz& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.vec, y.vec);
+  is_eq = is_eq && is_all_equal(x.partial, y.partial);
+  is_eq = is_eq && is_all_equal(x.partial2, y.partial2);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_resonance_h& x, const CPP_resonance_h& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.id == y.id);
+  is_eq = is_eq && (x.c_val == y.c_val);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_spin_orbit_map1& x, const CPP_spin_orbit_map1& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.orb_mat, y.orb_mat);
+  is_eq = is_eq && is_all_equal(x.vec0, y.vec0);
+  is_eq = is_eq && is_all_equal(x.spin_q, y.spin_q);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_spin_axis& x, const CPP_spin_axis& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.l, y.l);
+  is_eq = is_eq && is_all_equal(x.n0, y.n0);
+  is_eq = is_eq && is_all_equal(x.m, y.m);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_ptc_normal_form& x, const CPP_ptc_normal_form& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ele_origin.has_value() == y.ele_origin.has_value());
+  if (!is_eq)
+    return false;
+  if (x.ele_origin)
+    is_eq = (*x.ele_origin == *y.ele_origin);
+  is_eq = is_eq && is_all_equal(x.orb0, y.orb0);
+  is_eq = is_eq && (x.valid_map == y.valid_map);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_bmad_normal_form& x, const CPP_bmad_normal_form& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ele_origin.has_value() == y.ele_origin.has_value());
+  if (!is_eq)
+    return false;
+  if (x.ele_origin)
+    is_eq = (*x.ele_origin == *y.ele_origin);
+  is_eq = is_eq && is_all_equal(x.M, y.M);
+  is_eq = is_eq && is_all_equal(x.A, y.A);
+  is_eq = is_eq && is_all_equal(x.A_inv, y.A_inv);
+  is_eq = is_eq && is_all_equal(x.dhdj, y.dhdj);
+  is_eq = is_eq && is_all_equal(x.F, y.F);
+  is_eq = is_eq && is_all_equal(x.L, y.L);
+  is_eq = is_eq && is_all_equal(x.h, y.h);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_bunch_track& x, const CPP_bunch_track& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.pt, y.pt);
+  is_eq = is_eq && (x.ds_save == y.ds_save);
+  is_eq = is_eq && (x.n_pt == y.n_pt);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_summation_rdt& x, const CPP_summation_rdt& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.h11001 == y.h11001);
+  is_eq = is_eq && (x.h00111 == y.h00111);
+  is_eq = is_eq && (x.h20001 == y.h20001);
+  is_eq = is_eq && (x.h00201 == y.h00201);
+  is_eq = is_eq && (x.h10002 == y.h10002);
+  is_eq = is_eq && (x.h21000 == y.h21000);
+  is_eq = is_eq && (x.h30000 == y.h30000);
+  is_eq = is_eq && (x.h10110 == y.h10110);
+  is_eq = is_eq && (x.h10020 == y.h10020);
+  is_eq = is_eq && (x.h10200 == y.h10200);
+  is_eq = is_eq && (x.h31000 == y.h31000);
+  is_eq = is_eq && (x.h40000 == y.h40000);
+  is_eq = is_eq && (x.h20110 == y.h20110);
+  is_eq = is_eq && (x.h11200 == y.h11200);
+  is_eq = is_eq && (x.h20020 == y.h20020);
+  is_eq = is_eq && (x.h20200 == y.h20200);
+  is_eq = is_eq && (x.h00310 == y.h00310);
+  is_eq = is_eq && (x.h00400 == y.h00400);
+  is_eq = is_eq && (x.h22000 == y.h22000);
+  is_eq = is_eq && (x.h00220 == y.h00220);
+  is_eq = is_eq && (x.h11110 == y.h11110);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_lat_ele_order1& x, const CPP_lat_ele_order1& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ix_branch == y.ix_branch);
+  is_eq = is_eq && (x.ix_order == y.ix_order);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_lat_ele_order_array& x,
+    const CPP_lat_ele_order_array& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.ele, y.ele);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_lat_sigma& x, const CPP_tao_lat_sigma& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.mat, y.mat);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_spin_ele& x, const CPP_tao_spin_ele& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.dn_dpz == y.dn_dpz);
+  is_eq = is_eq && is_all_equal(x.orb_eigen_val, y.orb_eigen_val);
+  is_eq = is_eq && is_all_equal(x.orb_eigen_vec, y.orb_eigen_vec);
+  is_eq = is_eq && is_all_equal(x.spin_eigen_vec, y.spin_eigen_vec);
+  is_eq = is_eq && (x.valid == y.valid);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_plot_cache& x, const CPP_tao_plot_cache& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ele_to_s == y.ele_to_s);
+  is_eq = is_eq && (x.orbit == y.orbit);
+  is_eq = is_eq && (x.err == y.err);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_tao_spin_polarization& x,
+    const CPP_tao_spin_polarization& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.tune == y.tune);
+  is_eq = is_eq && (x.pol_limit_st == y.pol_limit_st);
+  is_eq = is_eq && (x.pol_limit_dk == y.pol_limit_dk);
+  is_eq = is_eq && is_all_equal(x.pol_limit_dk_partial, y.pol_limit_dk_partial);
+  is_eq =
+      is_eq && is_all_equal(x.pol_limit_dk_partial2, y.pol_limit_dk_partial2);
+  is_eq = is_eq && (x.pol_rate_bks == y.pol_rate_bks);
+  is_eq = is_eq && (x.depol_rate == y.depol_rate);
+  is_eq = is_eq && is_all_equal(x.depol_rate_partial, y.depol_rate_partial);
+  is_eq = is_eq && is_all_equal(x.depol_rate_partial2, y.depol_rate_partial2);
+  is_eq = is_eq && (x.integral_bn == y.integral_bn);
+  is_eq = is_eq && (x.integral_bdn == y.integral_bdn);
+  is_eq = is_eq && (x.integral_1ns == y.integral_1ns);
+  is_eq = is_eq && (x.integral_dn2 == y.integral_dn2);
+  is_eq = is_eq && (x.valid == y.valid);
+  is_eq = is_eq && (x.q_1turn == y.q_1turn);
+  is_eq = is_eq && is_all_equal(x.q_ele, y.q_ele);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_tao_lattice_branch& x,
+    const CPP_tao_lattice_branch& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.lat_sigma, y.lat_sigma);
+  is_eq = is_eq && is_all_equal(x.spin_ele, y.spin_ele);
+  is_eq = is_eq && is_all_equal(x.bunch_params, y.bunch_params);
+  is_eq = is_eq && is_all_equal(x.bunch_params_comb, y.bunch_params_comb);
+  is_eq = is_eq && is_all_equal(x.orbit, y.orbit);
+  is_eq = is_eq && is_all_equal(x.plot_cache, y.plot_cache);
+  is_eq = is_eq && (x.spin == y.spin);
+  is_eq = is_eq && (x.srdt == y.srdt);
+  is_eq = is_eq && (x.orb0 == y.orb0);
+  is_eq = is_eq && (x.modes_ri == y.modes_ri);
+  is_eq = is_eq && (x.modes_6d == y.modes_6d);
+  is_eq = is_eq && (x.ptc_normal_form == y.ptc_normal_form);
+  is_eq = is_eq && (x.bmad_normal_form == y.bmad_normal_form);
+  is_eq = is_eq && is_all_equal(x.high_E_orb, y.high_E_orb);
+  is_eq = is_eq && is_all_equal(x.low_E_orb, y.low_E_orb);
+  is_eq = is_eq && (x.cache_x_min == y.cache_x_min);
+  is_eq = is_eq && (x.cache_x_max == y.cache_x_max);
+  is_eq = is_eq && (x.comb_ds_save == y.comb_ds_save);
+  is_eq = is_eq && (x.track_state == y.track_state);
+  is_eq = is_eq && (x.cache_n_pts == y.cache_n_pts);
+  is_eq = is_eq && (x.ix_rad_int_cache == y.ix_rad_int_cache);
+  is_eq = is_eq && (x.has_open_match_element == y.has_open_match_element);
+  is_eq = is_eq && (x.plot_cache_valid == y.plot_cache_valid);
+  is_eq = is_eq && (x.spin_map_valid == y.spin_map_valid);
+  is_eq = is_eq && (x.twiss_valid == y.twiss_valid);
+  is_eq = is_eq && (x.mode_flip_here == y.mode_flip_here);
+  is_eq = is_eq && (x.chrom_calc_ok == y.chrom_calc_ok);
+  is_eq = is_eq && (x.rad_int_calc_ok == y.rad_int_calc_ok);
+  is_eq = is_eq && (x.emit_6d_calc_ok == y.emit_6d_calc_ok);
+  is_eq = is_eq && (x.sigma_track_ok == y.sigma_track_ok);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_tao_model_element& x,
+    const CPP_tao_model_element& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.beam == y.beam);
+  is_eq = is_eq && (x.save_beam_internally == y.save_beam_internally);
+  is_eq = is_eq && (x.save_beam_to_file == y.save_beam_to_file);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_beam_branch& x, const CPP_tao_beam_branch& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.beam_at_start == y.beam_at_start);
+  is_eq = is_eq && (x.beam_init == y.beam_init);
+  is_eq = is_eq && (x.beam_init_used == y.beam_init_used);
+  is_eq =
+      is_eq && (x.init_starting_distribution == y.init_starting_distribution);
+  is_eq = is_eq && (x.track_start == y.track_start);
+  is_eq = is_eq && (x.track_end == y.track_end);
+  is_eq = is_eq && (x.ix_branch == y.ix_branch);
+  is_eq = is_eq && (x.ix_track_start == y.ix_track_start);
+  is_eq = is_eq && (x.ix_track_end == y.ix_track_end);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_d1_data& x, const CPP_tao_d1_data& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.name == y.name);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_lattice& x, const CPP_tao_lattice& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.name == y.name);
+  is_eq = is_eq && (x.lat == y.lat);
+  is_eq = is_eq && (x.high_E_lat == y.high_E_lat);
+  is_eq = is_eq && (x.low_E_lat == y.low_E_lat);
+  is_eq = is_eq && (x.rad_int_by_ele_ri == y.rad_int_by_ele_ri);
+  is_eq = is_eq && (x.rad_int_by_ele_6d == y.rad_int_by_ele_6d);
+  is_eq = is_eq && is_all_equal(x.tao_branch, y.tao_branch);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_beam_uni& x, const CPP_tao_beam_uni& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.saved_at == y.saved_at);
+  is_eq = is_eq && (x.dump_file == y.dump_file);
+  is_eq = is_eq && (x.dump_at == y.dump_at);
+  is_eq = is_eq && (x.track_beam_in_universe == y.track_beam_in_universe);
+  is_eq = is_eq && (x.always_reinit == y.always_reinit);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_tao_dynamic_aperture& x,
+    const CPP_tao_dynamic_aperture& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.param == y.param);
+  is_eq = is_eq && is_all_equal(x.scan, y.scan);
+  is_eq = is_eq && is_all_equal(x.pz, y.pz);
+  is_eq = is_eq && (x.ellipse_scale == y.ellipse_scale);
+  is_eq = is_eq && (x.a_emit == y.a_emit);
+  is_eq = is_eq && (x.b_emit == y.b_emit);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_model_branch& x, const CPP_tao_model_branch& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.ele, y.ele);
+  is_eq = is_eq && (x.beam == y.beam);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_d2_data& x, const CPP_tao_d2_data& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.name == y.name);
+  is_eq = is_eq && (x.data_file_name == y.data_file_name);
+  is_eq = is_eq && (x.ref_file_name == y.ref_file_name);
+  is_eq = is_eq && (x.data_date == y.data_date);
+  is_eq = is_eq && (x.ref_date == y.ref_date);
+  is_eq = is_eq && is_all_equal(x.descrip, y.descrip);
+  is_eq = is_eq && is_all_equal(x.d1, y.d1);
+  is_eq = is_eq && (x.ix_universe == y.ix_universe);
+  is_eq = is_eq && (x.ix_d2_data == y.ix_d2_data);
+  is_eq = is_eq && (x.ix_ref == y.ix_ref);
+  is_eq = is_eq && (x.data_read_in == y.data_read_in);
+  is_eq = is_eq && (x.ref_read_in == y.ref_read_in);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_spin_map& x, const CPP_tao_spin_map& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.valid == y.valid);
+  is_eq = is_eq && (x.map1 == y.map1);
+  is_eq = is_eq && (x.axis_input == y.axis_input);
+  is_eq = is_eq && (x.axis0 == y.axis0);
+  is_eq = is_eq && (x.axis1 == y.axis1);
+  is_eq = is_eq && (x.ix_ele == y.ix_ele);
+  is_eq = is_eq && (x.ix_ref == y.ix_ref);
+  is_eq = is_eq && (x.ix_uni == y.ix_uni);
+  is_eq = is_eq && (x.ix_branch == y.ix_branch);
+  is_eq = is_eq && is_all_equal(x.mat8, y.mat8);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_data& x, const CPP_tao_data& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.ele_name == y.ele_name);
+  is_eq = is_eq && (x.ele_start_name == y.ele_start_name);
+  is_eq = is_eq && (x.ele_ref_name == y.ele_ref_name);
+  is_eq = is_eq && (x.merit_type == y.merit_type);
+  is_eq = is_eq && (x.id == y.id);
+  is_eq = is_eq && (x.data_source == y.data_source);
+  is_eq = is_eq && (x.why_invalid == y.why_invalid);
+  is_eq = is_eq && (x.ix_uni == y.ix_uni);
+  is_eq = is_eq && (x.ix_bunch == y.ix_bunch);
+  is_eq = is_eq && (x.ix_branch == y.ix_branch);
+  is_eq = is_eq && (x.ix_ele == y.ix_ele);
+  is_eq = is_eq && (x.ix_ele_start == y.ix_ele_start);
+  is_eq = is_eq && (x.ix_ele_ref == y.ix_ele_ref);
+  is_eq = is_eq && (x.ix_ele_merit == y.ix_ele_merit);
+  is_eq = is_eq && (x.ix_d1 == y.ix_d1);
+  is_eq = is_eq && (x.ix_data == y.ix_data);
+  is_eq = is_eq && (x.ix_dModel == y.ix_dModel);
+  is_eq = is_eq && (x.eval_point == y.eval_point);
+  is_eq = is_eq && (x.meas_value == y.meas_value);
+  is_eq = is_eq && (x.ref_value == y.ref_value);
+  is_eq = is_eq && (x.model_value == y.model_value);
+  is_eq = is_eq && (x.design_value == y.design_value);
+  is_eq = is_eq && (x.old_value == y.old_value);
+  is_eq = is_eq && (x.base_value == y.base_value);
+  is_eq = is_eq && (x.error_rms == y.error_rms);
+  is_eq = is_eq && (x.delta_merit == y.delta_merit);
+  is_eq = is_eq && (x.weight == y.weight);
+  is_eq = is_eq && (x.invalid_value == y.invalid_value);
+  is_eq = is_eq && (x.merit == y.merit);
+  is_eq = is_eq && (x.s == y.s);
+  is_eq = is_eq && (x.s_offset == y.s_offset);
+  is_eq = is_eq && (x.err_message_printed == y.err_message_printed);
+  is_eq = is_eq && (x.exists == y.exists);
+  is_eq = is_eq && (x.good_model == y.good_model);
+  is_eq = is_eq && (x.good_base == y.good_base);
+  is_eq = is_eq && (x.good_design == y.good_design);
+  is_eq = is_eq && (x.good_meas == y.good_meas);
+  is_eq = is_eq && (x.good_ref == y.good_ref);
+  is_eq = is_eq && (x.good_user == y.good_user);
+  is_eq = is_eq && (x.good_opt == y.good_opt);
+  is_eq = is_eq && (x.good_plot == y.good_plot);
+  is_eq = is_eq && (x.useit_plot == y.useit_plot);
+  is_eq = is_eq && (x.useit_opt == y.useit_opt);
+  is_eq = is_eq && (x.spin_map == y.spin_map);
+  is_eq = is_eq && (x.d1.has_value() == y.d1.has_value());
+  if (!is_eq)
+    return false;
+  if (x.d1)
+    is_eq = (*x.d1 == *y.d1);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_ping_scale& x, const CPP_tao_ping_scale& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.a_mode_meas == y.a_mode_meas);
+  is_eq = is_eq && (x.a_mode_ref == y.a_mode_ref);
+  is_eq = is_eq && (x.b_mode_meas == y.b_mode_meas);
+  is_eq = is_eq && (x.b_mode_ref == y.b_mode_ref);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(
+    const CPP_tao_universe_calc& x,
+    const CPP_tao_universe_calc& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.srdt_for_data == y.srdt_for_data);
+  is_eq = is_eq && (x.rad_int_for_data == y.rad_int_for_data);
+  is_eq = is_eq && (x.rad_int_for_plotting == y.rad_int_for_plotting);
+  is_eq = is_eq && (x.chrom_for_data == y.chrom_for_data);
+  is_eq = is_eq && (x.chrom_for_plotting == y.chrom_for_plotting);
+  is_eq = is_eq && (x.lat_sigma_for_data == y.lat_sigma_for_data);
+  is_eq = is_eq && (x.lat_sigma_for_plotting == y.lat_sigma_for_plotting);
+  is_eq = is_eq && (x.dynamic_aperture == y.dynamic_aperture);
+  is_eq = is_eq && (x.one_turn_map == y.one_turn_map);
+  is_eq = is_eq && (x.lattice == y.lattice);
+  is_eq = is_eq && (x.twiss == y.twiss);
+  is_eq = is_eq && (x.track == y.track);
+  is_eq = is_eq && (x.spin_matrices == y.spin_matrices);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_lat_ele_order& x, const CPP_lat_ele_order& y) {
+  bool is_eq = true;
+  is_eq = is_eq && is_all_equal(x.branch, y.branch);
+  return is_eq;
+};
+
+//--------------------------------------------------------------
+
+bool operator==(const CPP_tao_universe& x, const CPP_tao_universe& y) {
+  bool is_eq = true;
+  is_eq = is_eq && (x.beam == y.beam);
+  is_eq = is_eq && (x.dynamic_aperture == y.dynamic_aperture);
+  is_eq = is_eq && is_all_equal(x.d2_data, y.d2_data);
+  is_eq = is_eq && is_all_equal(x.data, y.data);
+  is_eq = is_eq && (x.ping_scale == y.ping_scale);
+  is_eq = is_eq && (x.scratch_lat == y.scratch_lat);
+  is_eq = is_eq && (x.calc == y.calc);
+  is_eq = is_eq && (x.ele_order == y.ele_order);
+  is_eq = is_eq && (x.spin_map == y.spin_map);
+  is_eq = is_eq && is_all_equal(x.dModel_dVar, y.dModel_dVar);
+  is_eq = is_eq && (x.ix_uni == y.ix_uni);
+  is_eq = is_eq && (x.n_d2_data_used == y.n_d2_data_used);
+  is_eq = is_eq && (x.n_data_used == y.n_data_used);
+  is_eq = is_eq && (x.is_on == y.is_on);
+  is_eq = is_eq && (x.design_same_as_previous == y.design_same_as_previous);
+  is_eq = is_eq && (x.picked_uni == y.picked_uni);
+  return is_eq;
+};
+
 } // namespace Bmad

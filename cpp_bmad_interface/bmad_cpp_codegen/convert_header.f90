@@ -11,6 +11,7 @@ module bmad_cpp_convert_mod
 
 use fortran_cpp_utils
 use bmad_struct
+use tao_struct
 
 use, intrinsic :: iso_c_binding
 

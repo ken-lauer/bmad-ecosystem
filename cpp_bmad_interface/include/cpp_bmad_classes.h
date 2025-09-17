@@ -131,6 +131,35 @@ class CPP_beam;
 class CPP_aperture_point;
 class CPP_aperture_param;
 class CPP_aperture_scan;
+class CPP_tao_spin_dn_dpz;
+class CPP_resonance_h;
+class CPP_spin_orbit_map1;
+class CPP_spin_axis;
+class CPP_ptc_normal_form;
+class CPP_bmad_normal_form;
+class CPP_bunch_track;
+class CPP_summation_rdt;
+class CPP_lat_ele_order1;
+class CPP_lat_ele_order_array;
+class CPP_tao_lat_sigma;
+class CPP_tao_spin_ele;
+class CPP_tao_plot_cache;
+class CPP_tao_spin_polarization;
+class CPP_tao_lattice_branch;
+class CPP_tao_model_element;
+class CPP_tao_beam_branch;
+class CPP_tao_d1_data;
+class CPP_tao_lattice;
+class CPP_tao_beam_uni;
+class CPP_tao_dynamic_aperture;
+class CPP_tao_model_branch;
+class CPP_tao_d2_data;
+class CPP_tao_spin_map;
+class CPP_tao_data;
+class CPP_tao_ping_scale;
+class CPP_tao_universe_calc;
+class CPP_lat_ele_order;
+class CPP_tao_universe;
 
 //--------------------------------------------------------------------
 
@@ -3638,6 +3667,1074 @@ extern "C" void aperture_scan_to_f(
 
 bool operator==(const CPP_aperture_scan&, const CPP_aperture_scan&);
 void to_json(json&, const CPP_aperture_scan&);
+
+//--------------------------------------------------------------------
+// CPP_tao_spin_dn_dpz
+
+class Opaque_tao_spin_dn_dpz_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_spin_dn_dpz
+    : public std::enable_shared_from_this<CPP_tao_spin_dn_dpz> {
+ public:
+  FixedArray1D<Real, 3> vec{0.0};
+  FixedArray2D<Real, 3, 3> partial;
+  FixedArray2D<Real, 3, 3> partial2;
+
+  CPP_tao_spin_dn_dpz() {}
+
+  virtual ~CPP_tao_spin_dn_dpz() {}
+  std::shared_ptr<CPP_tao_spin_dn_dpz> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_spin_dn_dpz& obj);
+};
+
+extern "C" void tao_spin_dn_dpz_to_c(
+    const Opaque_tao_spin_dn_dpz_class*,
+    CPP_tao_spin_dn_dpz&);
+extern "C" void tao_spin_dn_dpz_to_f(
+    const CPP_tao_spin_dn_dpz&,
+    Opaque_tao_spin_dn_dpz_class*);
+
+bool operator==(const CPP_tao_spin_dn_dpz&, const CPP_tao_spin_dn_dpz&);
+void to_json(json&, const CPP_tao_spin_dn_dpz&);
+
+//--------------------------------------------------------------------
+// CPP_resonance_h
+
+class Opaque_resonance_h_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_resonance_h : public std::enable_shared_from_this<CPP_resonance_h> {
+ public:
+  string id{""};
+  Complex c_val{0.0};
+
+  CPP_resonance_h() {}
+
+  virtual ~CPP_resonance_h() {}
+  std::shared_ptr<CPP_resonance_h> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_resonance_h& obj);
+};
+
+extern "C" void resonance_h_to_c(
+    const Opaque_resonance_h_class*,
+    CPP_resonance_h&);
+extern "C" void resonance_h_to_f(
+    const CPP_resonance_h&,
+    Opaque_resonance_h_class*);
+
+bool operator==(const CPP_resonance_h&, const CPP_resonance_h&);
+void to_json(json&, const CPP_resonance_h&);
+
+//--------------------------------------------------------------------
+// CPP_spin_orbit_map1
+
+class Opaque_spin_orbit_map1_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_spin_orbit_map1
+    : public std::enable_shared_from_this<CPP_spin_orbit_map1> {
+ public:
+  FixedArray2D<Real, 6, 6> orb_mat;
+  FixedArray1D<Real, 6> vec0{0.0};
+  FixedArray2D<Real, 4, 7> spin_q;
+
+  CPP_spin_orbit_map1() {}
+
+  virtual ~CPP_spin_orbit_map1() {}
+  std::shared_ptr<CPP_spin_orbit_map1> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_spin_orbit_map1& obj);
+};
+
+extern "C" void spin_orbit_map1_to_c(
+    const Opaque_spin_orbit_map1_class*,
+    CPP_spin_orbit_map1&);
+extern "C" void spin_orbit_map1_to_f(
+    const CPP_spin_orbit_map1&,
+    Opaque_spin_orbit_map1_class*);
+
+bool operator==(const CPP_spin_orbit_map1&, const CPP_spin_orbit_map1&);
+void to_json(json&, const CPP_spin_orbit_map1&);
+
+//--------------------------------------------------------------------
+// CPP_spin_axis
+
+class Opaque_spin_axis_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_spin_axis : public std::enable_shared_from_this<CPP_spin_axis> {
+ public:
+  FixedArray1D<Real, 3> l{0.0};
+  FixedArray1D<Real, 3> n0{0.0};
+  FixedArray1D<Real, 3> m{0.0};
+
+  CPP_spin_axis() {}
+
+  virtual ~CPP_spin_axis() {}
+  std::shared_ptr<CPP_spin_axis> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_spin_axis& obj);
+};
+
+extern "C" void spin_axis_to_c(const Opaque_spin_axis_class*, CPP_spin_axis&);
+extern "C" void spin_axis_to_f(const CPP_spin_axis&, Opaque_spin_axis_class*);
+
+bool operator==(const CPP_spin_axis&, const CPP_spin_axis&);
+void to_json(json&, const CPP_spin_axis&);
+
+//--------------------------------------------------------------------
+// CPP_ptc_normal_form
+
+class Opaque_ptc_normal_form_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_ptc_normal_form
+    : public std::enable_shared_from_this<CPP_ptc_normal_form> {
+ public:
+  std::optional<CPP_ele> ele_origin;
+  FixedArray1D<Real, 6> orb0{0.0};
+  Bool valid_map{false};
+
+  CPP_ptc_normal_form() {}
+
+  virtual ~CPP_ptc_normal_form() {}
+  std::shared_ptr<CPP_ptc_normal_form> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_ptc_normal_form& obj);
+};
+
+extern "C" void ptc_normal_form_to_c(
+    const Opaque_ptc_normal_form_class*,
+    CPP_ptc_normal_form&);
+extern "C" void ptc_normal_form_to_f(
+    const CPP_ptc_normal_form&,
+    Opaque_ptc_normal_form_class*);
+
+bool operator==(const CPP_ptc_normal_form&, const CPP_ptc_normal_form&);
+void to_json(json&, const CPP_ptc_normal_form&);
+
+//--------------------------------------------------------------------
+// CPP_bmad_normal_form
+
+class Opaque_bmad_normal_form_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_bmad_normal_form
+    : public std::enable_shared_from_this<CPP_bmad_normal_form> {
+ public:
+  std::optional<CPP_ele> ele_origin;
+  FixedArray1D<CPP_taylor, 6> M;
+  FixedArray1D<CPP_taylor, 6> A;
+  FixedArray1D<CPP_taylor, 6> A_inv;
+  FixedArray1D<CPP_taylor, 6> dhdj;
+  FixedArray1D<CPP_complex_taylor, 6> F;
+  FixedArray1D<CPP_complex_taylor, 6> L;
+  VariableArray1D<CPP_resonance_h> h;
+
+  CPP_bmad_normal_form() {}
+
+  virtual ~CPP_bmad_normal_form() {}
+  std::shared_ptr<CPP_bmad_normal_form> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_bmad_normal_form& obj);
+};
+
+extern "C" void bmad_normal_form_to_c(
+    const Opaque_bmad_normal_form_class*,
+    CPP_bmad_normal_form&);
+extern "C" void bmad_normal_form_to_f(
+    const CPP_bmad_normal_form&,
+    Opaque_bmad_normal_form_class*);
+
+bool operator==(const CPP_bmad_normal_form&, const CPP_bmad_normal_form&);
+void to_json(json&, const CPP_bmad_normal_form&);
+
+//--------------------------------------------------------------------
+// CPP_bunch_track
+
+class Opaque_bunch_track_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_bunch_track : public std::enable_shared_from_this<CPP_bunch_track> {
+ public:
+  VariableArray1D<CPP_bunch_params> pt;
+  Real ds_save{-1};
+  Int n_pt{-1};
+
+  CPP_bunch_track() {}
+
+  virtual ~CPP_bunch_track() {}
+  std::shared_ptr<CPP_bunch_track> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_bunch_track& obj);
+};
+
+extern "C" void bunch_track_to_c(
+    const Opaque_bunch_track_class*,
+    CPP_bunch_track&);
+extern "C" void bunch_track_to_f(
+    const CPP_bunch_track&,
+    Opaque_bunch_track_class*);
+
+bool operator==(const CPP_bunch_track&, const CPP_bunch_track&);
+void to_json(json&, const CPP_bunch_track&);
+
+//--------------------------------------------------------------------
+// CPP_summation_rdt
+
+class Opaque_summation_rdt_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_summation_rdt
+    : public std::enable_shared_from_this<CPP_summation_rdt> {
+ public:
+  Complex h11001{0.0};
+  Complex h00111{0.0};
+  Complex h20001{0.0};
+  Complex h00201{0.0};
+  Complex h10002{0.0};
+  Complex h21000{0.0};
+  Complex h30000{0.0};
+  Complex h10110{0.0};
+  Complex h10020{0.0};
+  Complex h10200{0.0};
+  Complex h31000{0.0};
+  Complex h40000{0.0};
+  Complex h20110{0.0};
+  Complex h11200{0.0};
+  Complex h20020{0.0};
+  Complex h20200{0.0};
+  Complex h00310{0.0};
+  Complex h00400{0.0};
+  Complex h22000{0.0};
+  Complex h00220{0.0};
+  Complex h11110{0.0};
+
+  CPP_summation_rdt() {}
+
+  virtual ~CPP_summation_rdt() {}
+  std::shared_ptr<CPP_summation_rdt> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_summation_rdt& obj);
+};
+
+extern "C" void summation_rdt_to_c(
+    const Opaque_summation_rdt_class*,
+    CPP_summation_rdt&);
+extern "C" void summation_rdt_to_f(
+    const CPP_summation_rdt&,
+    Opaque_summation_rdt_class*);
+
+bool operator==(const CPP_summation_rdt&, const CPP_summation_rdt&);
+void to_json(json&, const CPP_summation_rdt&);
+
+//--------------------------------------------------------------------
+// CPP_lat_ele_order1
+
+class Opaque_lat_ele_order1_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_lat_ele_order1
+    : public std::enable_shared_from_this<CPP_lat_ele_order1> {
+ public:
+  Int ix_branch{-1};
+  Int ix_order{-1};
+
+  CPP_lat_ele_order1() {}
+
+  virtual ~CPP_lat_ele_order1() {}
+  std::shared_ptr<CPP_lat_ele_order1> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_lat_ele_order1& obj);
+};
+
+extern "C" void lat_ele_order1_to_c(
+    const Opaque_lat_ele_order1_class*,
+    CPP_lat_ele_order1&);
+extern "C" void lat_ele_order1_to_f(
+    const CPP_lat_ele_order1&,
+    Opaque_lat_ele_order1_class*);
+
+bool operator==(const CPP_lat_ele_order1&, const CPP_lat_ele_order1&);
+void to_json(json&, const CPP_lat_ele_order1&);
+
+//--------------------------------------------------------------------
+// CPP_lat_ele_order_array
+
+class Opaque_lat_ele_order_array_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_lat_ele_order_array
+    : public std::enable_shared_from_this<CPP_lat_ele_order_array> {
+ public:
+  VariableArray1D<CPP_lat_ele_order1> ele;
+
+  CPP_lat_ele_order_array() {}
+
+  virtual ~CPP_lat_ele_order_array() {}
+  std::shared_ptr<CPP_lat_ele_order_array> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_lat_ele_order_array& obj);
+};
+
+extern "C" void lat_ele_order_array_to_c(
+    const Opaque_lat_ele_order_array_class*,
+    CPP_lat_ele_order_array&);
+extern "C" void lat_ele_order_array_to_f(
+    const CPP_lat_ele_order_array&,
+    Opaque_lat_ele_order_array_class*);
+
+bool operator==(const CPP_lat_ele_order_array&, const CPP_lat_ele_order_array&);
+void to_json(json&, const CPP_lat_ele_order_array&);
+
+//--------------------------------------------------------------------
+// CPP_tao_lat_sigma
+
+class Opaque_tao_lat_sigma_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_lat_sigma
+    : public std::enable_shared_from_this<CPP_tao_lat_sigma> {
+ public:
+  FixedArray2D<Real, 6, 6> mat;
+
+  CPP_tao_lat_sigma() {}
+
+  virtual ~CPP_tao_lat_sigma() {}
+  std::shared_ptr<CPP_tao_lat_sigma> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_lat_sigma& obj);
+};
+
+extern "C" void tao_lat_sigma_to_c(
+    const Opaque_tao_lat_sigma_class*,
+    CPP_tao_lat_sigma&);
+extern "C" void tao_lat_sigma_to_f(
+    const CPP_tao_lat_sigma&,
+    Opaque_tao_lat_sigma_class*);
+
+bool operator==(const CPP_tao_lat_sigma&, const CPP_tao_lat_sigma&);
+void to_json(json&, const CPP_tao_lat_sigma&);
+
+//--------------------------------------------------------------------
+// CPP_tao_spin_ele
+
+class Opaque_tao_spin_ele_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_spin_ele : public std::enable_shared_from_this<CPP_tao_spin_ele> {
+ public:
+  CPP_tao_spin_dn_dpz dn_dpz;
+  FixedArray1D<Real, 6> orb_eigen_val{0.0};
+  FixedArray2D<Real, 6, 6> orb_eigen_vec;
+  FixedArray2D<Real, 6, 3> spin_eigen_vec;
+  Bool valid{false};
+
+  CPP_tao_spin_ele() {}
+
+  virtual ~CPP_tao_spin_ele() {}
+  std::shared_ptr<CPP_tao_spin_ele> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_spin_ele& obj);
+};
+
+extern "C" void tao_spin_ele_to_c(
+    const Opaque_tao_spin_ele_class*,
+    CPP_tao_spin_ele&);
+extern "C" void tao_spin_ele_to_f(
+    const CPP_tao_spin_ele&,
+    Opaque_tao_spin_ele_class*);
+
+bool operator==(const CPP_tao_spin_ele&, const CPP_tao_spin_ele&);
+void to_json(json&, const CPP_tao_spin_ele&);
+
+//--------------------------------------------------------------------
+// CPP_tao_plot_cache
+
+class Opaque_tao_plot_cache_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_plot_cache
+    : public std::enable_shared_from_this<CPP_tao_plot_cache> {
+ public:
+  CPP_ele ele_to_s;
+  CPP_coord orbit;
+  Bool err{false};
+
+  CPP_tao_plot_cache() {}
+
+  virtual ~CPP_tao_plot_cache() {}
+  std::shared_ptr<CPP_tao_plot_cache> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_plot_cache& obj);
+};
+
+extern "C" void tao_plot_cache_to_c(
+    const Opaque_tao_plot_cache_class*,
+    CPP_tao_plot_cache&);
+extern "C" void tao_plot_cache_to_f(
+    const CPP_tao_plot_cache&,
+    Opaque_tao_plot_cache_class*);
+
+bool operator==(const CPP_tao_plot_cache&, const CPP_tao_plot_cache&);
+void to_json(json&, const CPP_tao_plot_cache&);
+
+//--------------------------------------------------------------------
+// CPP_tao_spin_polarization
+
+class Opaque_tao_spin_polarization_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_spin_polarization
+    : public std::enable_shared_from_this<CPP_tao_spin_polarization> {
+ public:
+  Real tune{Bmad::REAL_GARBAGE};
+  Real pol_limit_st{Bmad::REAL_GARBAGE};
+  Real pol_limit_dk{Bmad::REAL_GARBAGE};
+  FixedArray1D<Real, 3> pol_limit_dk_partial{Bmad::REAL_GARBAGE};
+  FixedArray1D<Real, 3> pol_limit_dk_partial2{Bmad::REAL_GARBAGE};
+  Real pol_rate_bks{Bmad::REAL_GARBAGE};
+  Real depol_rate{Bmad::REAL_GARBAGE};
+  FixedArray1D<Real, 3> depol_rate_partial{Bmad::REAL_GARBAGE};
+  FixedArray1D<Real, 3> depol_rate_partial2{Bmad::REAL_GARBAGE};
+  Real integral_bn{Bmad::REAL_GARBAGE};
+  Real integral_bdn{Bmad::REAL_GARBAGE};
+  Real integral_1ns{Bmad::REAL_GARBAGE};
+  Real integral_dn2{Bmad::REAL_GARBAGE};
+  Bool valid{false};
+  CPP_spin_orbit_map1 q_1turn;
+  VariableArray1D<CPP_spin_orbit_map1> q_ele;
+
+  CPP_tao_spin_polarization() {}
+
+  virtual ~CPP_tao_spin_polarization() {}
+  std::shared_ptr<CPP_tao_spin_polarization> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_spin_polarization& obj);
+};
+
+extern "C" void tao_spin_polarization_to_c(
+    const Opaque_tao_spin_polarization_class*,
+    CPP_tao_spin_polarization&);
+extern "C" void tao_spin_polarization_to_f(
+    const CPP_tao_spin_polarization&,
+    Opaque_tao_spin_polarization_class*);
+
+bool operator==(
+    const CPP_tao_spin_polarization&,
+    const CPP_tao_spin_polarization&);
+void to_json(json&, const CPP_tao_spin_polarization&);
+
+//--------------------------------------------------------------------
+// CPP_tao_lattice_branch
+
+class Opaque_tao_lattice_branch_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_lattice_branch
+    : public std::enable_shared_from_this<CPP_tao_lattice_branch> {
+ public:
+  VariableArray1D<CPP_tao_lat_sigma> lat_sigma;
+  VariableArray1D<CPP_tao_spin_ele> spin_ele;
+  VariableArray1D<CPP_bunch_params> bunch_params;
+  VariableArray1D<CPP_bunch_track> bunch_params_comb;
+  VariableArray1D<CPP_coord> orbit;
+  VariableArray1D<CPP_tao_plot_cache> plot_cache;
+  CPP_tao_spin_polarization spin;
+  CPP_summation_rdt srdt;
+  CPP_coord orb0;
+  CPP_normal_modes modes_ri;
+  CPP_normal_modes modes_6d;
+  CPP_ptc_normal_form ptc_normal_form;
+  CPP_bmad_normal_form bmad_normal_form;
+  VariableArray1D<CPP_coord> high_E_orb;
+  VariableArray1D<CPP_coord> low_E_orb;
+  Real cache_x_min{0.0};
+  Real cache_x_max{0.0};
+  Real comb_ds_save{-1};
+  Int track_state{0};
+  Int cache_n_pts{0};
+  Int ix_rad_int_cache{0};
+  Bool has_open_match_element{false};
+  Bool plot_cache_valid{false};
+  Bool spin_map_valid{false};
+  Bool twiss_valid{true};
+  Bool mode_flip_here{false};
+  Bool chrom_calc_ok{false};
+  Bool rad_int_calc_ok{false};
+  Bool emit_6d_calc_ok{false};
+  Bool sigma_track_ok{false};
+
+  CPP_tao_lattice_branch() {}
+
+  virtual ~CPP_tao_lattice_branch() {}
+  std::shared_ptr<CPP_tao_lattice_branch> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_lattice_branch& obj);
+};
+
+extern "C" void tao_lattice_branch_to_c(
+    const Opaque_tao_lattice_branch_class*,
+    CPP_tao_lattice_branch&);
+extern "C" void tao_lattice_branch_to_f(
+    const CPP_tao_lattice_branch&,
+    Opaque_tao_lattice_branch_class*);
+
+bool operator==(const CPP_tao_lattice_branch&, const CPP_tao_lattice_branch&);
+void to_json(json&, const CPP_tao_lattice_branch&);
+
+//--------------------------------------------------------------------
+// CPP_tao_model_element
+
+class Opaque_tao_model_element_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_model_element
+    : public std::enable_shared_from_this<CPP_tao_model_element> {
+ public:
+  CPP_beam beam;
+  Bool save_beam_internally{false};
+  Bool save_beam_to_file{false};
+
+  CPP_tao_model_element() {}
+
+  virtual ~CPP_tao_model_element() {}
+  std::shared_ptr<CPP_tao_model_element> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_model_element& obj);
+};
+
+extern "C" void tao_model_element_to_c(
+    const Opaque_tao_model_element_class*,
+    CPP_tao_model_element&);
+extern "C" void tao_model_element_to_f(
+    const CPP_tao_model_element&,
+    Opaque_tao_model_element_class*);
+
+bool operator==(const CPP_tao_model_element&, const CPP_tao_model_element&);
+void to_json(json&, const CPP_tao_model_element&);
+
+//--------------------------------------------------------------------
+// CPP_tao_beam_branch
+
+class Opaque_tao_beam_branch_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_beam_branch
+    : public std::enable_shared_from_this<CPP_tao_beam_branch> {
+ public:
+  CPP_beam beam_at_start;
+  CPP_beam_init beam_init;
+  CPP_beam_init beam_init_used;
+  Bool init_starting_distribution{true};
+  string track_start{""};
+  string track_end{""};
+  Int ix_branch{0};
+  Int ix_track_start{Bmad::NOT_SET};
+  Int ix_track_end{Bmad::NOT_SET};
+
+  CPP_tao_beam_branch() {}
+
+  virtual ~CPP_tao_beam_branch() {}
+  std::shared_ptr<CPP_tao_beam_branch> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_beam_branch& obj);
+};
+
+extern "C" void tao_beam_branch_to_c(
+    const Opaque_tao_beam_branch_class*,
+    CPP_tao_beam_branch&);
+extern "C" void tao_beam_branch_to_f(
+    const CPP_tao_beam_branch&,
+    Opaque_tao_beam_branch_class*);
+
+bool operator==(const CPP_tao_beam_branch&, const CPP_tao_beam_branch&);
+void to_json(json&, const CPP_tao_beam_branch&);
+
+//--------------------------------------------------------------------
+// CPP_tao_d1_data
+
+class Opaque_tao_d1_data_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_d1_data : public std::enable_shared_from_this<CPP_tao_d1_data> {
+ public:
+  string name{""};
+
+  CPP_tao_d1_data() {}
+
+  virtual ~CPP_tao_d1_data() {}
+  std::shared_ptr<CPP_tao_d1_data> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_d1_data& obj);
+};
+
+extern "C" void tao_d1_data_to_c(
+    const Opaque_tao_d1_data_class*,
+    CPP_tao_d1_data&);
+extern "C" void tao_d1_data_to_f(
+    const CPP_tao_d1_data&,
+    Opaque_tao_d1_data_class*);
+
+bool operator==(const CPP_tao_d1_data&, const CPP_tao_d1_data&);
+void to_json(json&, const CPP_tao_d1_data&);
+
+//--------------------------------------------------------------------
+// CPP_tao_lattice
+
+class Opaque_tao_lattice_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_lattice : public std::enable_shared_from_this<CPP_tao_lattice> {
+ public:
+  string name{0};
+  CPP_lat lat;
+  CPP_lat high_E_lat;
+  CPP_lat low_E_lat;
+  CPP_rad_int_all_ele rad_int_by_ele_ri;
+  CPP_rad_int_all_ele rad_int_by_ele_6d;
+  VariableArray1D<CPP_tao_lattice_branch> tao_branch;
+
+  CPP_tao_lattice() {}
+
+  virtual ~CPP_tao_lattice() {}
+  std::shared_ptr<CPP_tao_lattice> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_lattice& obj);
+};
+
+extern "C" void tao_lattice_to_c(
+    const Opaque_tao_lattice_class*,
+    CPP_tao_lattice&);
+extern "C" void tao_lattice_to_f(
+    const CPP_tao_lattice&,
+    Opaque_tao_lattice_class*);
+
+bool operator==(const CPP_tao_lattice&, const CPP_tao_lattice&);
+void to_json(json&, const CPP_tao_lattice&);
+
+//--------------------------------------------------------------------
+// CPP_tao_beam_uni
+
+class Opaque_tao_beam_uni_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_beam_uni : public std::enable_shared_from_this<CPP_tao_beam_uni> {
+ public:
+  string saved_at{""};
+  string dump_file{""};
+  string dump_at{""};
+  Bool track_beam_in_universe{false};
+  Bool always_reinit{false};
+
+  CPP_tao_beam_uni() {}
+
+  virtual ~CPP_tao_beam_uni() {}
+  std::shared_ptr<CPP_tao_beam_uni> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_beam_uni& obj);
+};
+
+extern "C" void tao_beam_uni_to_c(
+    const Opaque_tao_beam_uni_class*,
+    CPP_tao_beam_uni&);
+extern "C" void tao_beam_uni_to_f(
+    const CPP_tao_beam_uni&,
+    Opaque_tao_beam_uni_class*);
+
+bool operator==(const CPP_tao_beam_uni&, const CPP_tao_beam_uni&);
+void to_json(json&, const CPP_tao_beam_uni&);
+
+//--------------------------------------------------------------------
+// CPP_tao_dynamic_aperture
+
+class Opaque_tao_dynamic_aperture_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_dynamic_aperture
+    : public std::enable_shared_from_this<CPP_tao_dynamic_aperture> {
+ public:
+  CPP_aperture_param param;
+  VariableArray1D<CPP_aperture_scan> scan;
+  VariableArray1D<Real> pz;
+  Real ellipse_scale{1};
+  Real a_emit{-1};
+  Real b_emit{-1};
+
+  CPP_tao_dynamic_aperture() {}
+
+  virtual ~CPP_tao_dynamic_aperture() {}
+  std::shared_ptr<CPP_tao_dynamic_aperture> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_dynamic_aperture& obj);
+};
+
+extern "C" void tao_dynamic_aperture_to_c(
+    const Opaque_tao_dynamic_aperture_class*,
+    CPP_tao_dynamic_aperture&);
+extern "C" void tao_dynamic_aperture_to_f(
+    const CPP_tao_dynamic_aperture&,
+    Opaque_tao_dynamic_aperture_class*);
+
+bool operator==(
+    const CPP_tao_dynamic_aperture&,
+    const CPP_tao_dynamic_aperture&);
+void to_json(json&, const CPP_tao_dynamic_aperture&);
+
+//--------------------------------------------------------------------
+// CPP_tao_model_branch
+
+class Opaque_tao_model_branch_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_model_branch
+    : public std::enable_shared_from_this<CPP_tao_model_branch> {
+ public:
+  VariableArray1D<CPP_tao_model_element> ele;
+  CPP_tao_beam_branch beam;
+
+  CPP_tao_model_branch() {}
+
+  virtual ~CPP_tao_model_branch() {}
+  std::shared_ptr<CPP_tao_model_branch> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_model_branch& obj);
+};
+
+extern "C" void tao_model_branch_to_c(
+    const Opaque_tao_model_branch_class*,
+    CPP_tao_model_branch&);
+extern "C" void tao_model_branch_to_f(
+    const CPP_tao_model_branch&,
+    Opaque_tao_model_branch_class*);
+
+bool operator==(const CPP_tao_model_branch&, const CPP_tao_model_branch&);
+void to_json(json&, const CPP_tao_model_branch&);
+
+//--------------------------------------------------------------------
+// CPP_tao_d2_data
+
+class Opaque_tao_d2_data_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_d2_data : public std::enable_shared_from_this<CPP_tao_d2_data> {
+ public:
+  string name{""};
+  string data_file_name{""};
+  string ref_file_name{""};
+  string data_date{""};
+  string ref_date{""};
+  FixedArray1D<string, 10> descrip{""};
+  VariableArray1D<CPP_tao_d1_data> d1;
+  Int ix_universe{0};
+  Int ix_d2_data{0};
+  Int ix_ref{0};
+  Bool data_read_in{false};
+  Bool ref_read_in{false};
+
+  CPP_tao_d2_data() {}
+
+  virtual ~CPP_tao_d2_data() {}
+  std::shared_ptr<CPP_tao_d2_data> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_d2_data& obj);
+};
+
+extern "C" void tao_d2_data_to_c(
+    const Opaque_tao_d2_data_class*,
+    CPP_tao_d2_data&);
+extern "C" void tao_d2_data_to_f(
+    const CPP_tao_d2_data&,
+    Opaque_tao_d2_data_class*);
+
+bool operator==(const CPP_tao_d2_data&, const CPP_tao_d2_data&);
+void to_json(json&, const CPP_tao_d2_data&);
+
+//--------------------------------------------------------------------
+// CPP_tao_spin_map
+
+class Opaque_tao_spin_map_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_spin_map : public std::enable_shared_from_this<CPP_tao_spin_map> {
+ public:
+  Bool valid{false};
+  CPP_spin_orbit_map1 map1;
+  CPP_spin_axis axis_input;
+  CPP_spin_axis axis0;
+  CPP_spin_axis axis1;
+  Int ix_ele{0};
+  Int ix_ref{0};
+  Int ix_uni{0};
+  Int ix_branch{0};
+  FixedArray2D<Real, 8, 8> mat8;
+
+  CPP_tao_spin_map() {}
+
+  virtual ~CPP_tao_spin_map() {}
+  std::shared_ptr<CPP_tao_spin_map> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_spin_map& obj);
+};
+
+extern "C" void tao_spin_map_to_c(
+    const Opaque_tao_spin_map_class*,
+    CPP_tao_spin_map&);
+extern "C" void tao_spin_map_to_f(
+    const CPP_tao_spin_map&,
+    Opaque_tao_spin_map_class*);
+
+bool operator==(const CPP_tao_spin_map&, const CPP_tao_spin_map&);
+void to_json(json&, const CPP_tao_spin_map&);
+
+//--------------------------------------------------------------------
+// CPP_tao_data
+
+class Opaque_tao_data_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_data : public std::enable_shared_from_this<CPP_tao_data> {
+ public:
+  string ele_name{""};
+  string ele_start_name{""};
+  string ele_ref_name{""};
+  string merit_type{""};
+  string id{""};
+  string data_source{""};
+  string why_invalid{""};
+  Int ix_uni{-1};
+  Int ix_bunch{0};
+  Int ix_branch{0};
+  Int ix_ele{-1};
+  Int ix_ele_start{-1};
+  Int ix_ele_ref{-1};
+  Int ix_ele_merit{-1};
+  Int ix_d1{-1};
+  Int ix_data{-1};
+  Int ix_dModel{-1};
+  Int eval_point{Bmad::ANCHOR_END};
+  Real meas_value{0.0};
+  Real ref_value{0.0};
+  Real model_value{0.0};
+  Real design_value{0.0};
+  Real old_value{0.0};
+  Real base_value{0.0};
+  Real error_rms{0.0};
+  Real delta_merit{0.0};
+  Real weight{0.0};
+  Real invalid_value{0.0};
+  Real merit{0.0};
+  Real s{Bmad::REAL_GARBAGE};
+  Real s_offset{0.0};
+  Bool err_message_printed{false};
+  Bool exists{false};
+  Bool good_model{false};
+  Bool good_base{false};
+  Bool good_design{false};
+  Bool good_meas{false};
+  Bool good_ref{false};
+  Bool good_user{true};
+  Bool good_opt{true};
+  Bool good_plot{true};
+  Bool useit_plot{false};
+  Bool useit_opt{false};
+  CPP_tao_spin_map spin_map;
+  std::optional<CPP_tao_d1_data> d1;
+
+  CPP_tao_data() {}
+
+  virtual ~CPP_tao_data() {}
+  std::shared_ptr<CPP_tao_data> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_data& obj);
+};
+
+extern "C" void tao_data_to_c(const Opaque_tao_data_class*, CPP_tao_data&);
+extern "C" void tao_data_to_f(const CPP_tao_data&, Opaque_tao_data_class*);
+
+bool operator==(const CPP_tao_data&, const CPP_tao_data&);
+void to_json(json&, const CPP_tao_data&);
+
+//--------------------------------------------------------------------
+// CPP_tao_ping_scale
+
+class Opaque_tao_ping_scale_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_ping_scale
+    : public std::enable_shared_from_this<CPP_tao_ping_scale> {
+ public:
+  Real a_mode_meas{1};
+  Real a_mode_ref{1};
+  Real b_mode_meas{1};
+  Real b_mode_ref{1};
+
+  CPP_tao_ping_scale() {}
+
+  virtual ~CPP_tao_ping_scale() {}
+  std::shared_ptr<CPP_tao_ping_scale> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_ping_scale& obj);
+};
+
+extern "C" void tao_ping_scale_to_c(
+    const Opaque_tao_ping_scale_class*,
+    CPP_tao_ping_scale&);
+extern "C" void tao_ping_scale_to_f(
+    const CPP_tao_ping_scale&,
+    Opaque_tao_ping_scale_class*);
+
+bool operator==(const CPP_tao_ping_scale&, const CPP_tao_ping_scale&);
+void to_json(json&, const CPP_tao_ping_scale&);
+
+//--------------------------------------------------------------------
+// CPP_tao_universe_calc
+
+class Opaque_tao_universe_calc_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_universe_calc
+    : public std::enable_shared_from_this<CPP_tao_universe_calc> {
+ public:
+  Int srdt_for_data{0};
+  Bool rad_int_for_data{false};
+  Bool rad_int_for_plotting{false};
+  Bool chrom_for_data{false};
+  Bool chrom_for_plotting{false};
+  Bool lat_sigma_for_data{false};
+  Bool lat_sigma_for_plotting{false};
+  Bool dynamic_aperture{false};
+  Bool one_turn_map{false};
+  Bool lattice{true};
+  Bool twiss{true};
+  Bool track{true};
+  Bool spin_matrices{false};
+
+  CPP_tao_universe_calc() {}
+
+  virtual ~CPP_tao_universe_calc() {}
+  std::shared_ptr<CPP_tao_universe_calc> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_universe_calc& obj);
+};
+
+extern "C" void tao_universe_calc_to_c(
+    const Opaque_tao_universe_calc_class*,
+    CPP_tao_universe_calc&);
+extern "C" void tao_universe_calc_to_f(
+    const CPP_tao_universe_calc&,
+    Opaque_tao_universe_calc_class*);
+
+bool operator==(const CPP_tao_universe_calc&, const CPP_tao_universe_calc&);
+void to_json(json&, const CPP_tao_universe_calc&);
+
+//--------------------------------------------------------------------
+// CPP_lat_ele_order
+
+class Opaque_lat_ele_order_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_lat_ele_order
+    : public std::enable_shared_from_this<CPP_lat_ele_order> {
+ public:
+  VariableArray1D<CPP_lat_ele_order_array> branch;
+
+  CPP_lat_ele_order() {}
+
+  virtual ~CPP_lat_ele_order() {}
+  std::shared_ptr<CPP_lat_ele_order> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_lat_ele_order& obj);
+};
+
+extern "C" void lat_ele_order_to_c(
+    const Opaque_lat_ele_order_class*,
+    CPP_lat_ele_order&);
+extern "C" void lat_ele_order_to_f(
+    const CPP_lat_ele_order&,
+    Opaque_lat_ele_order_class*);
+
+bool operator==(const CPP_lat_ele_order&, const CPP_lat_ele_order&);
+void to_json(json&, const CPP_lat_ele_order&);
+
+//--------------------------------------------------------------------
+// CPP_tao_universe
+
+class Opaque_tao_universe_class {
+}; // Opaque class for pointers to corresponding fortran structs.
+
+class CPP_tao_universe : public std::enable_shared_from_this<CPP_tao_universe> {
+ public:
+  std::optional<CPP_tao_lattice> model;
+  std::optional<CPP_tao_lattice> design;
+  std::optional<CPP_tao_lattice> base;
+  CPP_tao_beam_uni beam;
+  CPP_tao_dynamic_aperture dynamic_aperture;
+  VariableArray1D<CPP_tao_model_branch> model_branch;
+  VariableArray1D<CPP_tao_d2_data> d2_data;
+  VariableArray1D<CPP_tao_data> data;
+  CPP_tao_ping_scale ping_scale;
+  CPP_lat scratch_lat;
+  CPP_tao_universe_calc calc;
+  CPP_lat_ele_order ele_order;
+  CPP_tao_spin_map spin_map;
+  VariableArray2D<Real> dModel_dVar;
+  Int ix_uni{-1};
+  Int n_d2_data_used{-1};
+  Int n_data_used{-1};
+  Bool is_on{true};
+  Bool design_same_as_previous{false};
+  Bool picked_uni{false};
+
+  CPP_tao_universe() {}
+
+  virtual ~CPP_tao_universe() {}
+  std::shared_ptr<CPP_tao_universe> getptr() {
+    return shared_from_this();
+  }
+  friend ostream& operator<<(ostream& os, const CPP_tao_universe& obj);
+};
+
+extern "C" void tao_universe_to_c(
+    const Opaque_tao_universe_class*,
+    CPP_tao_universe&);
+extern "C" void tao_universe_to_f(
+    const CPP_tao_universe&,
+    Opaque_tao_universe_class*);
+
+bool operator==(const CPP_tao_universe&, const CPP_tao_universe&);
+void to_json(json&, const CPP_tao_universe&);
 //--------------------------------------------------------------------
 
 } // namespace Bmad

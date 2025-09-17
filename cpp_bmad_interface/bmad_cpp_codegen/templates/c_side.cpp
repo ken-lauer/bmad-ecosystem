@@ -2044,6 +2044,11 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
 
     //// section:c_class
     //// type:0D_ALLOC_type
+    //// begin:c_class
+    std::optional<CPP_KIND>
+    //// end:c_class
+
+    //// section:c_class
     //// type:0D_PTR_type
     //// begin:c_class
     std::optional<CPP_KIND>

@@ -104,6 +104,35 @@ call test1_f_beam(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_point(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_param(ok); if (.not. ok) all_ok = .false.
 call test1_f_aperture_scan(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_spin_dn_dpz(ok); if (.not. ok) all_ok = .false.
+call test1_f_resonance_h(ok); if (.not. ok) all_ok = .false.
+call test1_f_spin_orbit_map1(ok); if (.not. ok) all_ok = .false.
+call test1_f_spin_axis(ok); if (.not. ok) all_ok = .false.
+call test1_f_ptc_normal_form(ok); if (.not. ok) all_ok = .false.
+call test1_f_bmad_normal_form(ok); if (.not. ok) all_ok = .false.
+call test1_f_bunch_track(ok); if (.not. ok) all_ok = .false.
+call test1_f_summation_rdt(ok); if (.not. ok) all_ok = .false.
+call test1_f_lat_ele_order1(ok); if (.not. ok) all_ok = .false.
+call test1_f_lat_ele_order_array(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_lat_sigma(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_spin_ele(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_plot_cache(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_spin_polarization(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_lattice_branch(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_model_element(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_beam_branch(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_d1_data(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_lattice(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_beam_uni(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_dynamic_aperture(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_model_branch(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_d2_data(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_spin_map(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_data(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_ping_scale(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_universe_calc(ok); if (.not. ok) all_ok = .false.
+call test1_f_lat_ele_order(ok); if (.not. ok) all_ok = .false.
+call test1_f_tao_universe(ok); if (.not. ok) all_ok = .false.
 print *
 if (all_ok) then
   print *, 'Bottom Line: Everything OK!'

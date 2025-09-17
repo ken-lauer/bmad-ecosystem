@@ -40,6 +40,20 @@ contains
     n = size(s%u)
   end function
 
+  function c_get_universe_ptr(ix_uni) result(ptr) bind(c, name="tao_c_get_universe_ptr")
+    integer, intent(in) :: ix_uni
+    type(tao_universe_struct), pointer :: uni_ptr
+    type(c_ptr) :: ptr
+   
+    uni_ptr => get_universe_ptr(ix_uni)
+
+    if (associated(uni_ptr)) then
+      ptr = c_loc(uni_ptr)
+    else
+      ptr = c_null_ptr
+    endif
+  end function
+
   function c_get_lattice_ptr(ix_uni, ix_lat) result(ptr) bind(c, name='tao_c_get_lattice_ptr')
     integer(c_int), intent(in), value :: ix_uni, ix_lat
     type(c_ptr) :: ptr
@@ -137,12 +151,23 @@ contains
   end function
 
   ! Helper functions for internal use
+
+  function get_universe_ptr(ix_uni) result(uni_ptr)
+    integer, intent(in) :: ix_uni
+    type(tao_universe_struct), pointer :: uni_ptr
+    
+    uni_ptr => null()
+    if (ix_uni < lbound(s%u, 1) .or. ix_uni > ubound(s%u, 1)) return
+    
+    uni_ptr => s%u(ix_uni)
+  end function
+
   function get_lattice_ptr(ix_uni, ix_lat) result(lat_ptr)
     integer, intent(in) :: ix_uni, ix_lat
     type(lat_struct), pointer :: lat_ptr
     
     lat_ptr => null()
-    if (ix_uni < 1 .or. ix_uni > size(s%u)) return
+    if (ix_uni < lbound(s%u, 1) .or. ix_uni > ubound(s%u, 1)) return
     
     select case(ix_lat)
     case(LATTICE_MODEL)
