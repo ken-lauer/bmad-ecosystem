@@ -132,3 +132,12 @@ def indent(string: str, numspace: int) -> str:
     lines = string.splitlines(keepends=True)
     indented_lines = [prefix + line for line in lines]
     return "".join(indented_lines)
+
+
+def snake_to_camel(snake_str: str) -> str:
+    """Convert snake_case string to CamelCase."""
+    if not snake_str:
+        return snake_str
+
+    components = snake_str.split("_")
+    return "".join(word.capitalize() for word in components)

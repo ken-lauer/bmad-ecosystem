@@ -4,6 +4,7 @@
 #include "fortran_arrays.hpp"
 #include "tao_proxies.hpp"
 
+#include <complex>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
@@ -13,7 +14,7 @@
 
 extern "C" {
 // Forward declarations for Fortran interface
-// ${forward_declarations}
+// ${c_forward_declarations}
 
 // Global functions (index-based, only for initial access)
 int tao_get_n_universes();
@@ -59,22 +60,19 @@ class NullPointerException : public TaoException {
 class UniverseProxy;
 class LatticeProxy;
 class BranchProxy;
-class ElementProxy;
+class EleProxy;
+// ${class_forward_declarations}
 
 // Non-Tao proxy classes that directly reference Fortran memory
-class ElementProxy {
+class EleProxy {
  private:
   void* fortran_ptr_;
 
  public:
-  explicit ElementProxy(void* ptr) : fortran_ptr_(ptr) {
+  explicit EleProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
-      throw NullPointerException("ElementProxy constructor");
+      throw NullPointerException("EleProxy constructor");
     }
-  }
-
-  void* get_fortran_ptr() const {
-    return fortran_ptr_;
   }
 
   std::shared_ptr<CPP_ele> deepcopy() const {
@@ -97,11 +95,7 @@ class BranchProxy {
     }
   }
 
-  void* get_fortran_ptr() const {
-    return fortran_ptr_;
-  }
-
-  ElementProxy get_element(int ix_ele) const {
+  EleProxy get_element(int ix_ele) const {
     int n_elements = tao_branch_get_n_elements(fortran_ptr_);
     if (n_elements < 0) {
       throw TaoException("Failed to get number of elements from branch");
@@ -115,7 +109,7 @@ class BranchProxy {
       throw NullPointerException(
           "get_element for index " + std::to_string(ix_ele));
     }
-    return ElementProxy(ele_ptr);
+    return EleProxy(ele_ptr);
   }
 
   int get_n_elements() const {
@@ -138,10 +132,6 @@ class LatticeProxy {
     if (!ptr) {
       throw NullPointerException("LatticeProxy constructor");
     }
-  }
-
-  void* get_fortran_ptr() const {
-    return fortran_ptr_;
   }
 
   BranchProxy get_branch(int ix_branch) const {
@@ -216,7 +206,7 @@ class TaoElementProxy {
         ix_branch_(ix_branch),
         ix_ele_(ix_ele) {}
 
-  ElementProxy operator*() const {
+  EleProxy operator*() const {
     void* ele_ptr =
         tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
     if (!ele_ptr) {
@@ -226,11 +216,11 @@ class TaoElementProxy {
           " ix_branch=" + std::to_string(ix_branch_) +
           " ix_ele=" + std::to_string(ix_ele_) + "");
     }
-    return ElementProxy(ele_ptr);
+    return EleProxy(ele_ptr);
   }
 
-  std::unique_ptr<ElementProxy> operator->() const {
-    return std::make_unique<ElementProxy>(**this);
+  std::unique_ptr<EleProxy> operator->() const {
+    return std::make_unique<EleProxy>(**this);
   }
 };
 
@@ -315,5 +305,7 @@ class TaoUniverseProxy {
     return TaoLatticeProxy(ix_uni_, lattice_type);
   }
 };
+
+// ${other_proxy_classes}
 
 } // namespace tao

@@ -1,12 +1,38 @@
 from __future__ import annotations
 
+import logging
 from string import Template
 from typing import TYPE_CHECKING
+
+from bmad_cpp_codegen.util import snake_to_camel
 
 from .types import FullType
 
 if TYPE_CHECKING:
     from .create_interface import CodegenStructure
+
+logger = logging.getLogger(__name__)
+
+
+def struct_to_proxy_class_name(name: str) -> str:
+    return snake_to_camel(name.removesuffix("_struct") + "_proxy")
+
+
+def split_signature(cpp_template: str, class_name: str) -> tuple[str, str]:
+    """
+    Split a C++ method template into header declaration and implementation.
+    """
+    clean_template = cpp_template.strip()
+    assert "{" in clean_template
+    signature = clean_template[: clean_template.find("{")].strip()
+    header_declaration = signature + ";"
+
+    ret_type_and_method, args = signature.split("(", 1)
+    ret_type, method = ret_type_and_method.rsplit(" ", 1)
+    impl_sig = f"{ret_type} {class_name}::{method}({args}"
+    implementation = clean_template.replace(signature, impl_sig)
+    return header_declaration, implementation
+
 
 fortran_templates = {
     # REAL types
@@ -21,7 +47,6 @@ fortran_templates = {
     value_out = struct_obj%ATTRNAME
   end subroutine
 """,
-        "c_type": "double",
     },
     FullType("real", 0, "PTR"): {
         "getter": """
@@ -38,7 +63,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "double*",
     },
     FullType("real", 1, "NOT"): {
         "getter": """
@@ -55,7 +79,6 @@ fortran_templates = {
     size_out = upper_bound - lower_bound + 1
   end subroutine
 """,
-        "c_type": "double*",
     },
     FullType("complex", 1, "NOT"): {
         "getter": """
@@ -72,7 +95,6 @@ fortran_templates = {
     size_out = upper_bound - lower_bound + 1
   end subroutine
 """,
-        "c_type": "double _Complex*",
     },
     FullType("integer", 1, "NOT"): {
         "getter": """
@@ -89,7 +111,6 @@ fortran_templates = {
     size_out = upper_bound - lower_bound + 1
   end subroutine
 """,
-        "c_type": "int*",
     },
     FullType("real", 1, "ALLOC"): {
         "getter": """
@@ -116,7 +137,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "double*",
     },
     FullType("real", 2, "ALLOC"): {
         "getter": """
@@ -156,7 +176,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "double*",
     },
     # REAL16 types
     FullType("real16", 0, "NOT"): {
@@ -170,7 +189,6 @@ fortran_templates = {
     value_out = struct_obj%ATTRNAME
   end subroutine
 """,
-        "c_type": "long double",
     },
     FullType("real16", 0, "PTR"): {
         "getter": """
@@ -187,7 +205,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "long double*",
     },
     # INTEGER types
     FullType("integer", 0, "NOT"): {
@@ -201,7 +218,6 @@ fortran_templates = {
     value_out = struct_obj%ATTRNAME
   end subroutine
 """,
-        "c_type": "int",
     },
     FullType("integer", 0, "PTR"): {
         "getter": """
@@ -218,7 +234,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "int*",
     },
     FullType("integer", 1, "ALLOC"): {
         "getter": """
@@ -245,7 +260,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "int*",
     },
     FullType("integer", 2, "ALLOC"): {
         "getter": """
@@ -285,7 +299,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "int*",
     },
     FullType("integer8", 0, "NOT"): {
         "getter": """
@@ -298,7 +311,6 @@ fortran_templates = {
     value_out = struct_obj%ATTRNAME
   end subroutine
 """,
-        "c_type": "long long",
     },
     FullType("integer8", 0, "PTR"): {
         "getter": """
@@ -315,7 +327,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "long long*",
     },
     # COMPLEX types
     FullType("complex", 0, "NOT"): {
@@ -329,7 +340,6 @@ fortran_templates = {
     value_out = struct_obj%ATTRNAME
   end subroutine
 """,
-        "c_type": "double _Complex",
     },
     FullType("complex", 0, "PTR"): {
         "getter": """
@@ -346,7 +356,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "double _Complex*",
     },
     # LOGICAL types
     FullType("logical", 0, "NOT"): {
@@ -360,7 +369,6 @@ fortran_templates = {
     value_out = struct_obj%ATTRNAME
   end subroutine
 """,
-        "c_type": "bool",
     },
     FullType("logical", 0, "PTR"): {
         "getter": """
@@ -377,7 +385,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "bool*",
     },
     # CHARACTER types
     FullType("character", 0, "NOT"): {
@@ -395,7 +402,6 @@ fortran_templates = {
     size_out = upper_bound - lower_bound + 1
   end subroutine
 """,
-        "c_type": "char*",
     },
     FullType("character", 0, "PTR"): {
         "getter": """
@@ -422,7 +428,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "char*",
     },
     # TYPE (derived type - no pointer, just address)
     FullType("type", 0, "NOT"): {
@@ -436,7 +441,6 @@ fortran_templates = {
     ptr_out = c_loc(struct_obj%ATTRNAME)
   end subroutine
 """,
-        "c_type": "void*",
     },
     FullType("type", 0, "PTR"): {
         "getter": """
@@ -453,7 +457,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "void*",
     },
     # SIZE queries
     FullType("size", 0, "NOT"): {
@@ -476,7 +479,6 @@ fortran_templates = {
     endif
   end subroutine
 """,
-        "c_type": "int",
     },
 }
 
@@ -486,27 +488,29 @@ cpp_templates = {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, double* value_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     double ATTRNAME() const {
         double value;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
         return value;
     }
-""",
-        "cpp_type": "double",
+"""
+        ],
     },
     FullType("real", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, double** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     double* ATTRNAME() const {
         double* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
-""",
-        "cpp_type": "double*",
+"""
+        ],
     },
     FullType("real", 1, "NOT"): {
         "declaration": """
@@ -518,7 +522,8 @@ cpp_templates = {
         int* upper_bound
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray1D<double> ATTRNAME() const {
         double* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -529,22 +534,23 @@ cpp_templates = {
         
         return FortranArray1D<double>(data_ptr, size_out, lower_bound, upper_bound, true);
     }
-""",
-        "cpp_type": "FortranArray1D<double>",
+"""
+        ],
     },
     FullType("complex", 1, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME_info(
         const void* struct_obj,
-        double _Complex** data_ptr,
+        std::complex<double>** data_ptr,
         int* size_out, 
         int* lower_bound, 
         int* upper_bound
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray1D<std::complex<double>> ATTRNAME() const {
-        double _Complex* data_ptr;
+        std::complex<double>* data_ptr;
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_ATTRNAME_info(
@@ -556,8 +562,8 @@ cpp_templates = {
             size_out, lower_bound, upper_bound, true
         );
     }
-""",
-        "cpp_type": "FortranArray1D<std::complex<double>>",
+"""
+        ],
     },
     FullType("integer", 1, "NOT"): {
         "declaration": """
@@ -569,7 +575,8 @@ cpp_templates = {
         int* upper_bound
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray1D<int> ATTRNAME() const {
         int* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -580,8 +587,8 @@ cpp_templates = {
         
         return FortranArray1D<int>(data_ptr, size_out, lower_bound, upper_bound, true);
     }
-""",
-        "cpp_type": "FortranArray1D<int>",
+"""
+        ],
     },
     FullType("real", 1, "ALLOC"): {
         "declaration": """
@@ -594,7 +601,8 @@ cpp_templates = {
         bool* is_allocated
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray1D<double> ATTRNAME() const {
         double* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -606,8 +614,8 @@ cpp_templates = {
         
         return FortranArray1D<double>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
     }
-""",
-        "cpp_type": "FortranArray1D<double>",
+"""
+        ],
     },
     FullType("real", 2, "ALLOC"): {
         "declaration": """
@@ -620,7 +628,8 @@ cpp_templates = {
         bool* is_allocated
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray2D<double> ATTRNAME() const {
         double* data_ptr;
         int dim1_size, dim1_lower, dim1_upper;
@@ -640,62 +649,66 @@ cpp_templates = {
             dim2_size, dim2_lower, dim2_upper,
             stride1, stride2, is_allocated);
     }
-""",
-        "cpp_type": "FortranArray2D<double>",
+"""
+        ],
     },
     # REAL16 types
     FullType("real16", 0, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, long double* value_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     long double ATTRNAME() const {
         long double value;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
         return value;
     }
-""",
-        "cpp_type": "long double",
+"""
+        ],
     },
     FullType("real16", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, long double** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     long double* ATTRNAME() const {
         long double* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
-""",
-        "cpp_type": "long double*",
+"""
+        ],
     },
     # INTEGER types
     FullType("integer", 0, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, int* value_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     int ATTRNAME() const {
         int value;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
         return value;
     }
-""",
-        "cpp_type": "int",
+"""
+        ],
     },
     FullType("integer", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, int** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     int* ATTRNAME() const {
         int* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
-""",
-        "cpp_type": "int*",
+"""
+        ],
     },
     FullType("integer", 1, "ALLOC"): {
         "declaration": """
@@ -708,7 +721,8 @@ cpp_templates = {
         bool* is_allocated
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray1D<int> ATTRNAME() const {
         int* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -720,8 +734,8 @@ cpp_templates = {
         
         return FortranArray1D<int>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
     }
-""",
-        "cpp_type": "FortranArray1D<int>",
+"""
+        ],
     },
     FullType("integer", 2, "ALLOC"): {
         "declaration": """
@@ -734,7 +748,8 @@ cpp_templates = {
         bool* is_allocated
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     FortranArray2D<int> ATTRNAME() const {
         int* data_ptr;
         int dim1_size, dim1_lower, dim1_upper;
@@ -754,88 +769,94 @@ cpp_templates = {
             dim2_size, dim2_lower, dim2_upper,
             stride1, stride2, is_allocated);
     }
-""",
-        "cpp_type": "FortranArray2D<int>",
+"""
+        ],
     },
     FullType("integer8", 0, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, long long* value_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     long long ATTRNAME() const {
         long long value;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
         return value;
     }
-""",
-        "cpp_type": "long long",
+"""
+        ],
     },
     FullType("integer8", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, long long** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     long long* ATTRNAME() const {
         long long* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
-""",
-        "cpp_type": "long long*",
+"""
+        ],
     },
     # COMPLEX types
     FullType("complex", 0, "NOT"): {
         "declaration": """
-    void STRUCTNAME_get_ATTRNAME(const void* struct_obj, double _Complex* value_out);
+    void STRUCTNAME_get_ATTRNAME(const void* struct_obj, std::complex<double>* value_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     std::complex<double> ATTRNAME() const {
-        double _Complex c_value;
+        std::complex<double> c_value;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &c_value);
-        return std::complex<double>(creal(c_value), cimag(c_value));
+        return c_value;
     }
-""",
-        "cpp_type": "std::complex<double>",
+"""
+        ],
     },
     FullType("complex", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, double _Complex** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     std::complex<double>* ATTRNAME() const {
-        double _Complex* ptr;
+        std::complex<double>* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return reinterpret_cast<std::complex<double>*>(ptr);
     }
-""",
-        "cpp_type": "std::complex<double>*",
+"""
+        ],
     },
     # LOGICAL types
     FullType("logical", 0, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, bool* value_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     bool ATTRNAME() const {
         bool value;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
         return value;
     }
-""",
-        "cpp_type": "bool",
+"""
+        ],
     },
     FullType("logical", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, bool** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     bool* ATTRNAME() const {
         bool* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
-""",
-        "cpp_type": "bool*",
+"""
+        ],
     },
     # CHARACTER types
     FullType("character", 0, "NOT"): {
@@ -848,12 +869,14 @@ cpp_templates = {
         int* upper_bound
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     std::string ATTRNAME() const {
         auto char_array = get_ATTRNAME_chars();
         return std::string(char_array.data(), char_array.size());
     }
-
+    """,
+            """
     FortranArray1D<char> get_ATTRNAME_chars() const {
         char* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -865,7 +888,7 @@ cpp_templates = {
         return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, true);
     }
 """,
-        "cpp_type": "std::string",
+        ],
     },
     FullType("character", 0, "PTR"): {
         "declaration": """
@@ -878,7 +901,8 @@ cpp_templates = {
         bool* is_allocated
     );
 """,
-        "accessor": """
+        "accessor": [
+            """
     std::string ATTRNAME() const {
         char* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -894,7 +918,8 @@ cpp_templates = {
 
         return std::string(data_ptr, size_out);
     }
-
+""",
+            """
     FortranArray1D<char> get_ATTRNAME_chars() const {
         char* data_ptr;
         int size_out, lower_bound, upper_bound;
@@ -907,48 +932,51 @@ cpp_templates = {
         return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
     }
 """,
-        "cpp_type": "std::string",
+        ],
     },
     # TYPE (derived type pointer)
     FullType("type", 0, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, void** ptr_out);
 """,
-        "accessor": """
-    const void* ATTRNAME() const {
+        "accessor": [
+            """
+    ${return_proxy_name} ATTRNAME() const {
         void* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
-        return ptr;
+        return ${return_proxy_name}(fortran_ptr_);
     }
-""",
-        "cpp_type": "const void*",
+"""
+        ],
     },
     FullType("type", 0, "PTR"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, void** ptr_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     const void* ATTRNAME() const {
         void* ptr;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
-""",
-        "cpp_type": "const void*",
+"""
+        ],
     },
     # SIZE queries
     FullType("size", 0, "NOT"): {
         "declaration": """
     void STRUCTNAME_get_ATTRNAME(const void* struct_obj, int dim, int* size_out);
 """,
-        "accessor": """
+        "accessor": [
+            """
     int ATTRNAME(int dim = 1) const {
         int size_out;
         STRUCTNAME_get_ATTRNAME(fortran_ptr_, dim, &size_out);
         return size_out;
     }
-""",
-        "cpp_type": "int",
+"""
+        ],
     },
 }
 
@@ -967,15 +995,14 @@ def generate_accessor_code(struct_name: str, attr_name: str, full_type: FullType
     return {
         "fortran": fortran_template["getter"]
         .replace("STRUCTNAME", struct_name)
-        .replace("ATTRNAME", attr_name),
+        .replace("ATTRNAME", f"{attr_name}"),
         "cpp_declaration": cpp_template["declaration"]
         .replace("STRUCTNAME", struct_name)
-        .replace("ATTRNAME", attr_name),
-        "cpp_accessor": cpp_template["accessor"]
-        .replace("STRUCTNAME", struct_name)
-        .replace("ATTRNAME", attr_name),
-        "c_type": fortran_template["c_type"],
-        "cpp_type": cpp_template["cpp_type"],
+        .replace("ATTRNAME", f"{attr_name}"),
+        "cpp_accessor": [
+            acc.replace("STRUCTNAME", struct_name).replace("ATTRNAME", f"{attr_name}")
+            for acc in cpp_template["accessor"]
+        ],
     }
 
 
@@ -1006,15 +1033,34 @@ contains
     print("end module", file=fout)
 
 
-def create_cpp_proxy_code(fout, template_src: str, structs: list[CodegenStructure]):
+def get_proxy_header_and_code(template_src: str, structs: list[CodegenStructure]) -> tuple[str, str]:
     tpl = Template(template_src.replace("// ${", "${"))
 
-    forward_declarations = []
+    c_forward_declarations = []
     subs = {}
 
-    for struct in structs:
-        print(f"// {struct.f_name}", file=fout)
+    class_template = Template(
+        """
+class ${class_name} {
+ private:
+  void* fortran_ptr_;
 
+ public:
+  explicit ${class_name}(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("BranchProxy constructor");
+    }
+  }
+
+  ${class_body}
+};
+"""
+    )
+
+    classes = {}
+    all_impl = []
+    for struct in structs:
+        proxy_class_name = struct_to_proxy_class_name(struct.f_name)
         class_body = []
         for arg in struct.arg:
             if not arg.is_component:
@@ -1022,13 +1068,55 @@ def create_cpp_proxy_code(fout, template_src: str, structs: list[CodegenStructur
             try:
                 acc = generate_accessor_code(struct.f_name, arg.f_name, arg.full_type)
             except ValueError as ex:
-                print(f"// skipped {struct.f_name}%{arg.f_name}: {ex}", file=fout)
+                # print(f"// skipped {struct.f_name}%{arg.f_name}: {ex}", file=fout)
+                logging.warning(f"Proxy class {struct.f_name}%{arg.f_name} skipped: {ex}")
                 continue
 
-            class_body.append(acc["cpp_accessor"])
+            c_forward_declarations.append(acc["cpp_declaration"])
 
-            forward_declarations.append(acc["cpp_declaration"])
+            for accessor_body in acc["cpp_accessor"]:
+                if arg.full_type.type == "type":
+                    accessor_body = Template(accessor_body).substitute(
+                        return_proxy_name=struct_to_proxy_class_name(arg.kind)
+                    )
+                sig, impl = split_signature(accessor_body, proxy_class_name)
+                all_impl.append(impl)
+                class_body.append(sig)
 
         subs[f"{struct.f_name}_class_body"] = "\n".join(class_body)
-    subs["forward_declarations"] = "\n".join(forward_declarations)
-    print(tpl.substitute(subs), file=fout)
+
+        classes[struct.f_name] = class_body
+
+    class_forward_declarations = []
+    other_classes = []
+    for name, class_body in classes.items():
+        class_forward_declarations.append(f"class {struct_to_proxy_class_name(name)};")
+        if name not in ["ele_struct", "branch_struct", "tao_lattice_struct", "tao_universe_struct"]:
+            other_classes.append(
+                class_template.substitute(
+                    class_name=struct_to_proxy_class_name(name),
+                    class_body="\n".join(class_body),
+                )
+            )
+
+    subs["c_forward_declarations"] = "\n".join(c_forward_declarations)
+    subs["class_forward_declarations"] = "\n".join(class_forward_declarations)
+    subs["other_proxy_classes"] = "\n".join(other_classes)
+    header = tpl.substitute(subs)
+    impl = """
+#include "tao_proxies.hpp"
+
+using namespace tao;
+
+    """ + "\n".join(all_impl)
+    return header, impl
+
+
+def create_cpp_proxy_header(fout, template_src: str, structs: list[CodegenStructure]):
+    header, _ = get_proxy_header_and_code(template_src, structs)
+    fout.write(header)
+
+
+def create_cpp_proxy_impl(fout, template_src: str, structs: list[CodegenStructure]):
+    _, impl = get_proxy_header_and_code(template_src, structs)
+    fout.write(impl)

@@ -37,7 +37,7 @@ from .paths import (
     CPP_INTERFACE_ROOT,
     TEMPLATES_PATH,
 )
-from .proxy import create_cpp_proxy_code, create_fortran_proxy_code
+from .proxy import create_cpp_proxy_header, create_cpp_proxy_impl, create_fortran_proxy_code
 from .types import (
     ALLOC,
     CHAR,
@@ -1781,8 +1781,14 @@ def write_output(structs: list[CodegenStructure]) -> None:
     )
     cpp_proxy_template = (CODEGEN_ROOT / "tao_proxies.tpl.hpp").read_text()
     write_if_differs(
-        create_cpp_proxy_code,
+        create_cpp_proxy_header,
         CPP_INTERFACE_ROOT / "include" / "tao_proxies.hpp",
+        cpp_proxy_template,
+        structs,
+    )
+    write_if_differs(
+        create_cpp_proxy_impl,
+        CPP_INTERFACE_ROOT / "code" / "tao_proxies.cpp",
         cpp_proxy_template,
         structs,
     )
