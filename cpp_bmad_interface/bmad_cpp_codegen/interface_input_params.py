@@ -5,14 +5,6 @@ Configuration file for C++ code generation.
 from __future__ import annotations
 
 # Paths are relative to ACC_ROOT_DIR.
-equality_mod_dir = "bmad/modules"
-equality_mod_file = "equality_mod"
-proxy_mod_file = "bmad/modules/proxy_mod"
-proxy_header_file = "cpp_bmad_interface/include/tao_proxies.hpp"
-proxy_cpp_file = "cpp_bmad_interface/code/proxy_base.cpp"
-test_dir = "cpp_bmad_interface/interface_test"
-code_dir = "cpp_bmad_interface/code"
-
 struct_def_files = [
     "sim_utils/math/spline_mod.f90",
     "bmad/modules/bmad_struct.f90",

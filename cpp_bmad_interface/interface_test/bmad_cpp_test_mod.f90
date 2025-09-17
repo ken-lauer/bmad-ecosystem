@@ -4,6 +4,7 @@ use json_module, only: json_core, json_value
 
 use bmad_cpp_convert_mod
 use equality_mod
+use tao_equality_mod
 use bmad_json
 use sim_utils_json
 use tao_json

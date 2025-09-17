@@ -101,9 +101,12 @@ integer(c_int) :: err
 
 ! For keep terminal printing on for debugging.
 
+print *, "before tao_top_level", s%initialized
+print *, "calling tao_top_level", f_str
 call out_io_print_and_capture_setup (print_on = .false., capture_state = 'BUFFERED', capture_add_null = .true.)
 call to_f_str (c_str, f_str)
 call tao_top_level(command = trim(f_str), errcode = errcode)
+print *, "after tao_top_level", s%initialized
 err = errcode
 
 end function tao_c_init_tao

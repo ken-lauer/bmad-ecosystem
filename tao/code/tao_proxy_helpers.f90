@@ -1,6 +1,6 @@
 module tao_c_proxy_interface
   use bmad
-  use tao_struct
+  use tao_interface
   use fortran_cpp_utils, only: to_c_str
 
   implicit none
@@ -12,26 +12,9 @@ module tao_c_proxy_interface
 
 contains
 
-  function ele_get_name(ele, buf) result(n) bind(c, name='ele_get_name')
-    type(c_ptr), value :: ele
-    type(c_ptr), value :: buf  ! Change to c_ptr for C string buffer
+  function is_initialized() result(n) bind(c, name='tao_is_initialized')
     integer(c_int) :: n
-    
-    type(ele_struct), pointer :: f_ele  ! Make this a pointer
-    character(kind=c_char), pointer :: f_buf(:)
-    
-    ! Convert C pointer to Fortran pointer
-    call c_f_pointer(ele, f_ele)
-    
-    ! Convert C buffer pointer to Fortran character array pointer
-    ! Note: You'll need to know or determine the buffer size
-    call c_f_pointer(buf, f_buf, [len_trim(f_ele%name) + 1])
-    
-    ! Copy the string to the C buffer
-    call to_c_str(f_ele%name, f_buf)
-    
-    ! Return the length (or length + 1 for null terminator)
-    n = len_trim(f_ele%name)
+    n = s%initialized
   end function
 
   ! Global accessor functions (only these use indices)
@@ -167,14 +150,16 @@ contains
     type(lat_struct), pointer :: lat_ptr
     
     lat_ptr => null()
-    if (ix_uni < lbound(s%u, 1) .or. ix_uni > ubound(s%u, 1)) return
+    if (ix_uni < lbound(s%u, 1) .or. ix_uni > ubound(s%u, 1)) then
+      return
+    endif
     
     select case(ix_lat)
-    case(LATTICE_MODEL)
+    case (LATTICE_MODEL)
       lat_ptr => s%u(ix_uni)%model%lat
-    case(LATTICE_DESIGN) 
+    case (LATTICE_DESIGN) 
       lat_ptr => s%u(ix_uni)%design%lat
-    case(LATTICE_BASE)
+    case (LATTICE_BASE)
       lat_ptr => s%u(ix_uni)%base%lat
     end select
   end function
