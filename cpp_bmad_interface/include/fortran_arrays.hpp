@@ -372,4 +372,241 @@ class FortranArray2D {
     return !valid_ || dim1_size_ == 0 || dim2_size_ == 0;
   }
 };
+
+template <typename ProxyType>
+class FortranTypeArray1D {
+ private:
+  void* data_;           // Base pointer (could point to array of pointers OR array of structs)
+  int size_;
+  int lower_bound_;
+  int upper_bound_;
+  bool valid_;
+  bool is_pointer_array_; // true for pointer arrays, false for contiguous struct arrays
+  size_t element_size_;   // size of each element (only used for contiguous arrays)
+
+ public:
+  // Constructor for pointer arrays (like cartesian_map)
+  FortranTypeArray1D(void** pointer_array, int size, int lower, int upper, bool valid)
+      : data_(pointer_array),
+        size_(size),
+        lower_bound_(lower),
+        upper_bound_(upper),
+        valid_(valid),
+        is_pointer_array_(true),
+        element_size_(0) {}
+
+  // Constructor for contiguous struct arrays (like m_u_layout, taylor)
+  FortranTypeArray1D(void* struct_array, int size, int lower, int upper, bool valid, size_t element_size)
+      : data_(struct_array),
+        size_(size),
+        lower_bound_(lower),
+        upper_bound_(upper),
+        valid_(valid),
+        is_pointer_array_(false),
+        element_size_(element_size) {}
+
+  // Default constructor for invalid arrays
+  FortranTypeArray1D()
+      : data_(nullptr),
+        size_(0),
+        lower_bound_(0),
+        upper_bound_(-1),
+        valid_(false),
+        is_pointer_array_(false),
+        element_size_(0) {}
+
+ private:
+  // Helper to get pointer to element i (0-based indexing into data_)
+  void* get_element_ptr(int i) const {
+    if (is_pointer_array_) {
+      // For pointer arrays: data_ is void**, return the i-th pointer
+      return static_cast<void**>(data_)[i];
+    } else {
+      // For contiguous arrays: data_ is void*, compute offset
+      return static_cast<char*>(data_) + (i * element_size_);
+    }
+  }
+
+ public:
+  // Fortran-style indexing (using bounds) - returns Proxy object
+  ProxyType operator()(int i) {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < lower_bound_ || i > upper_bound_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [" +
+          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
+          "]");
+    }
+    return ProxyType(get_element_ptr(i - lower_bound_));
+  }
+
+  const ProxyType operator()(int i) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < lower_bound_ || i > upper_bound_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [" +
+          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
+          "]");
+    }
+    return ProxyType(get_element_ptr(i - lower_bound_));
+  }
+
+  // C-style indexing (0-based)
+  ProxyType operator[](int i) {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < 0 || i >= size_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
+          std::to_string(size_ - 1) + "]");
+    }
+    return ProxyType(get_element_ptr(i));
+  }
+
+  const ProxyType operator[](int i) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < 0 || i >= size_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
+          std::to_string(size_ - 1) + "]");
+    }
+    return ProxyType(get_element_ptr(i));
+  }
+
+  // Safe access methods
+  ProxyType at(int i) {
+    return operator[](i);
+  }
+  const ProxyType at(int i) const {
+    return operator[](i);
+  }
+
+  ProxyType at_fortran(int i) {
+    return operator()(i);
+  }
+  const ProxyType at_fortran(int i) const {
+    return operator()(i);
+  }
+
+  // Array properties
+  bool is_valid() const {
+    return valid_;
+  }
+  int size() const {
+    return size_;
+  }
+  std::pair<int, int> bounds() const {
+    return {lower_bound_, upper_bound_};
+  }
+  int lower_bound() const {
+    return lower_bound_;
+  }
+  int upper_bound() const {
+    return upper_bound_;
+  }
+  bool is_pointer_array() const {
+    return is_pointer_array_;
+  }
+  size_t element_size() const {
+    return element_size_;
+  }
+
+  // Raw data access
+  void* data() {
+    return valid_ ? data_ : nullptr;
+  }
+  const void* data() const {
+    return valid_ ? data_ : nullptr;
+  }
+
+  // Get pointer to specific element
+  void* element_ptr(int i) {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < 0 || i >= size_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
+          std::to_string(size_ - 1) + "]");
+    }
+    return get_element_ptr(i);
+  }
+
+  const void* element_ptr(int i) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < 0 || i >= size_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
+          std::to_string(size_ - 1) + "]");
+    }
+    return get_element_ptr(i);
+  }
+
+  // Iterator support
+  class iterator {
+   private:
+    const FortranTypeArray1D* array_;
+    int index_;
+   public:
+    iterator(const FortranTypeArray1D* array, int index) : array_(array), index_(index) {}
+    ProxyType operator*() { return ProxyType(array_->get_element_ptr(index_)); }
+    iterator& operator++() { ++index_; return *this; }
+    iterator operator++(int) { iterator tmp = *this; ++index_; return tmp; }
+    bool operator==(const iterator& other) const { return index_ == other.index_; }
+    bool operator!=(const iterator& other) const { return index_ != other.index_; }
+  };
+
+  class const_iterator {
+   private:
+    const FortranTypeArray1D* array_;
+    int index_;
+   public:
+    const_iterator(const FortranTypeArray1D* array, int index) : array_(array), index_(index) {}
+    const ProxyType operator*() const { return ProxyType(array_->get_element_ptr(index_)); }
+    const_iterator& operator++() { ++index_; return *this; }
+    const_iterator operator++(int) { const_iterator tmp = *this; ++index_; return tmp; }
+    bool operator==(const const_iterator& other) const { return index_ == other.index_; }
+    bool operator!=(const const_iterator& other) const { return index_ != other.index_; }
+  };
+
+  iterator begin() {
+    return valid_ ? iterator(this, 0) : iterator(this, size_);
+  }
+  iterator end() {
+    return iterator(this, size_);
+  }
+  const_iterator begin() const {
+    return valid_ ? const_iterator(this, 0) : const_iterator(this, size_);
+  }
+  const_iterator end() const {
+    return const_iterator(this, size_);
+  }
+  const_iterator cbegin() const {
+    return begin();
+  }
+  const_iterator cend() const {
+    return end();
+  }
+
+  // Convert to std::vector of Proxy objects
+  std::vector<ProxyType> to_vector() const {
+    if (!valid_)
+      return std::vector<ProxyType>();
+    
+    std::vector<ProxyType> result;
+    result.reserve(size_);
+    for (int i = 0; i < size_; ++i) {
+      result.emplace_back(get_element_ptr(i));
+    }
+    return result;
+  }
+
+  // Empty check
+  bool empty() const {
+    return !valid_ || size_ == 0;
+  }
+};
 } // namespace tao

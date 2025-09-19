@@ -178,8 +178,62 @@ contains
   end subroutine
 
   !! ac_kicker_struct
-  ! skipped ac_kicker_struct%amp_vs_time: Unsupported type: 1D_ALLOC_type
-  ! skipped ac_kicker_struct%frequency: Unsupported type: 1D_ALLOC_type
+  ! ac_kicker_struct%amp_vs_time: 1D_ALLOC_type
+
+  subroutine ac_kicker_struct_get_amp_vs_time_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ac_kicker_struct_get_amp_vs_time_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ac_kicker_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%amp_vs_time)) then
+      data_ptr = c_loc(struct_obj%amp_vs_time(lbound(struct_obj%amp_vs_time, 1)))
+      lower_bound = int(lbound(struct_obj%amp_vs_time, 1), c_int)
+      upper_bound = int(ubound(struct_obj%amp_vs_time, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%amp_vs_time(lbound(struct_obj%amp_vs_time, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ac_kicker_struct%frequency: 1D_ALLOC_type
+
+  subroutine ac_kicker_struct_get_frequency_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ac_kicker_struct_get_frequency_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ac_kicker_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%frequency)) then
+      data_ptr = c_loc(struct_obj%frequency(lbound(struct_obj%frequency, 1)))
+      lower_bound = int(lbound(struct_obj%frequency, 1), c_int)
+      upper_bound = int(ubound(struct_obj%frequency, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%frequency(lbound(struct_obj%frequency, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! interval1_coef_struct
   ! interval1_coef_struct%c0: 0D_NOT_real
 
@@ -265,7 +319,34 @@ contains
     endif
   end subroutine
 
-  ! skipped photon_reflect_table_struct%int1: Unsupported type: 1D_ALLOC_type
+  ! photon_reflect_table_struct%int1: 1D_ALLOC_type
+
+  subroutine photon_reflect_table_struct_get_int1_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='photon_reflect_table_struct_get_int1_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(photon_reflect_table_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%int1)) then
+      data_ptr = c_loc(struct_obj%int1(lbound(struct_obj%int1, 1)))
+      lower_bound = int(lbound(struct_obj%int1, 1), c_int)
+      upper_bound = int(ubound(struct_obj%int1, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%int1(lbound(struct_obj%int1, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! photon_reflect_table_struct%p_reflect: 2D_ALLOC_real
 
   subroutine photon_reflect_table_struct_get_p_reflect_info(struct_obj_ptr, data_ptr, &
@@ -411,7 +492,34 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped photon_reflect_surface_struct%table: Unsupported type: 1D_ALLOC_type
+  ! photon_reflect_surface_struct%table: 1D_ALLOC_type
+
+  subroutine photon_reflect_surface_struct_get_table_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='photon_reflect_surface_struct_get_table_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(photon_reflect_surface_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%table)) then
+      data_ptr = c_loc(struct_obj%table(lbound(struct_obj%table, 1)))
+      lower_bound = int(lbound(struct_obj%table, 1), c_int)
+      upper_bound = int(ubound(struct_obj%table, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%table(lbound(struct_obj%table, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! photon_reflect_surface_struct%surface_roughness_rms: 0D_NOT_real
 
   subroutine photon_reflect_surface_struct_get_surface_roughness_rms(struct_obj_ptr, value_out) bind(c, name='photon_reflect_surface_struct_get_surface_roughness_rms')
@@ -694,7 +802,34 @@ contains
   end subroutine
 
   !! coord_array_struct
-  ! skipped coord_array_struct%orbit: Unsupported type: 1D_ALLOC_type
+  ! coord_array_struct%orbit: 1D_ALLOC_type
+
+  subroutine coord_array_struct_get_orbit_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='coord_array_struct_get_orbit_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(coord_array_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%orbit)) then
+      data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
+      lower_bound = int(lbound(struct_obj%orbit, 1), c_int)
+      upper_bound = int(ubound(struct_obj%orbit, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%orbit(lbound(struct_obj%orbit, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! bpm_phase_coupling_struct
   ! bpm_phase_coupling_struct%K_22a: 0D_NOT_real
 
@@ -1066,8 +1201,62 @@ contains
     ptr_out = c_loc(struct_obj%z_long)
   end subroutine
 
-  ! skipped wake_sr_struct%long: Unsupported type: 1D_ALLOC_type
-  ! skipped wake_sr_struct%trans: Unsupported type: 1D_ALLOC_type
+  ! wake_sr_struct%long: 1D_ALLOC_type
+
+  subroutine wake_sr_struct_get_long_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='wake_sr_struct_get_long_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(wake_sr_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%long)) then
+      data_ptr = c_loc(struct_obj%long(lbound(struct_obj%long, 1)))
+      lower_bound = int(lbound(struct_obj%long, 1), c_int)
+      upper_bound = int(ubound(struct_obj%long, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%long(lbound(struct_obj%long, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! wake_sr_struct%trans: 1D_ALLOC_type
+
+  subroutine wake_sr_struct_get_trans_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='wake_sr_struct_get_trans_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(wake_sr_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%trans)) then
+      data_ptr = c_loc(struct_obj%trans(lbound(struct_obj%trans, 1)))
+      lower_bound = int(lbound(struct_obj%trans, 1), c_int)
+      upper_bound = int(ubound(struct_obj%trans, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%trans(lbound(struct_obj%trans, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! wake_sr_struct%z_ref_long: 0D_NOT_real
 
   subroutine wake_sr_struct_get_z_ref_long(struct_obj_ptr, value_out) bind(c, name='wake_sr_struct_get_z_ref_long')
@@ -1294,7 +1483,34 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped wake_lr_struct%mode: Unsupported type: 1D_ALLOC_type
+  ! wake_lr_struct%mode: 1D_ALLOC_type
+
+  subroutine wake_lr_struct_get_mode_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='wake_lr_struct_get_mode_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(wake_lr_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%mode)) then
+      data_ptr = c_loc(struct_obj%mode(lbound(struct_obj%mode, 1)))
+      lower_bound = int(lbound(struct_obj%mode, 1), c_int)
+      upper_bound = int(ubound(struct_obj%mode, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%mode(lbound(struct_obj%mode, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! wake_lr_struct%t_ref: 0D_NOT_real
 
   subroutine wake_lr_struct_get_t_ref(struct_obj_ptr, value_out) bind(c, name='wake_lr_struct_get_t_ref')
@@ -1435,7 +1651,34 @@ contains
     value_out = struct_obj%ref
   end subroutine
 
-  ! skipped taylor_struct%term: Unsupported type: 1D_PTR_type
+  ! taylor_struct%term: 1D_PTR_type
+
+  subroutine taylor_struct_get_term_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='taylor_struct_get_term_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(taylor_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      lower_bound = int(lbound(struct_obj%term, 1), c_int)
+      upper_bound = int(ubound(struct_obj%term, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%term(lbound(struct_obj%term, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! em_taylor_term_struct
   ! em_taylor_term_struct%coef: 0D_NOT_real
 
@@ -1475,7 +1718,34 @@ contains
     value_out = struct_obj%ref
   end subroutine
 
-  ! skipped em_taylor_struct%term: Unsupported type: 1D_ALLOC_type
+  ! em_taylor_struct%term: 1D_ALLOC_type
+
+  subroutine em_taylor_struct_get_term_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='em_taylor_struct_get_term_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(em_taylor_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      lower_bound = int(lbound(struct_obj%term, 1), c_int)
+      upper_bound = int(ubound(struct_obj%term, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%term(lbound(struct_obj%term, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! cartesian_map_term1_struct
   ! cartesian_map_term1_struct%coef: 0D_NOT_real
 
@@ -1603,7 +1873,34 @@ contains
     value_out = struct_obj%n_link
   end subroutine
 
-  ! skipped cartesian_map_term_struct%term: Unsupported type: 1D_ALLOC_type
+  ! cartesian_map_term_struct%term: 1D_ALLOC_type
+
+  subroutine cartesian_map_term_struct_get_term_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='cartesian_map_term_struct_get_term_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(cartesian_map_term_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      lower_bound = int(lbound(struct_obj%term, 1), c_int)
+      upper_bound = int(ubound(struct_obj%term, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%term(lbound(struct_obj%term, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! cartesian_map_struct
   ! cartesian_map_struct%field_scale: 0D_NOT_real
 
@@ -1729,7 +2026,34 @@ contains
     value_out = struct_obj%n_link
   end subroutine
 
-  ! skipped cylindrical_map_term_struct%term: Unsupported type: 1D_ALLOC_type
+  ! cylindrical_map_term_struct%term: 1D_ALLOC_type
+
+  subroutine cylindrical_map_term_struct_get_term_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='cylindrical_map_term_struct_get_term_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(cylindrical_map_term_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      lower_bound = int(lbound(struct_obj%term, 1), c_int)
+      upper_bound = int(ubound(struct_obj%term, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%term(lbound(struct_obj%term, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! cylindrical_map_struct
   ! cylindrical_map_struct%m: 0D_NOT_integer
 
@@ -2785,7 +3109,34 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped gen_grad_map_struct%gg: Unsupported type: 1D_ALLOC_type
+  ! gen_grad_map_struct%gg: 1D_ALLOC_type
+
+  subroutine gen_grad_map_struct_get_gg_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='gen_grad_map_struct_get_gg_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(gen_grad_map_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%gg)) then
+      data_ptr = c_loc(struct_obj%gg(lbound(struct_obj%gg, 1)))
+      lower_bound = int(lbound(struct_obj%gg, 1), c_int)
+      upper_bound = int(ubound(struct_obj%gg, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%gg(lbound(struct_obj%gg, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! gen_grad_map_struct%ele_anchor_pt: 0D_NOT_integer
 
   subroutine gen_grad_map_struct_get_ele_anchor_pt(struct_obj_ptr, value_out) bind(c, name='gen_grad_map_struct_get_ele_anchor_pt')
@@ -3297,7 +3648,23 @@ contains
     ptr_out = c_loc(struct_obj%ele_loc)
   end subroutine
 
-  ! skipped photon_target_struct%corner: Unsupported type: 1D_NOT_type
+  ! photon_target_struct%corner: 1D_NOT_type
+
+  subroutine photon_target_struct_get_corner_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='photon_target_struct_get_corner_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(photon_target_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%corner(lbound(struct_obj%corner, 1)))
+    lower_bound = int(lbound(struct_obj%corner, 1), c_int)
+    upper_bound = int(ubound(struct_obj%corner, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%corner(lbound(struct_obj%corner, 1))) / 8, c_size_t)
+  end subroutine
+
   ! photon_target_struct%center: 0D_NOT_type
 
   subroutine photon_target_struct_get_center(struct_obj_ptr, ptr_out) bind(c, name='photon_target_struct_get_center')
@@ -3709,7 +4076,34 @@ contains
     ptr_out = c_loc(struct_obj%reflectivity_table_pi)
   end subroutine
 
-  ! skipped photon_element_struct%init_energy_prob: Unsupported type: 1D_ALLOC_type
+  ! photon_element_struct%init_energy_prob: 1D_ALLOC_type
+
+  subroutine photon_element_struct_get_init_energy_prob_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='photon_element_struct_get_init_energy_prob_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(photon_element_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%init_energy_prob)) then
+      data_ptr = c_loc(struct_obj%init_energy_prob(lbound(struct_obj%init_energy_prob, 1)))
+      lower_bound = int(lbound(struct_obj%init_energy_prob, 1), c_int)
+      upper_bound = int(ubound(struct_obj%init_energy_prob, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%init_energy_prob(lbound(struct_obj%init_energy_prob, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! photon_element_struct%integrated_init_energy_prob: 1D_ALLOC_real
 
   subroutine photon_element_struct_get_integrated_init_energy_prob_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='photon_element_struct_get_integrated_init_energy_prob_info')
@@ -3866,7 +4260,34 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped wall3d_section_struct%v: Unsupported type: 1D_ALLOC_type
+  ! wall3d_section_struct%v: 1D_ALLOC_type
+
+  subroutine wall3d_section_struct_get_v_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='wall3d_section_struct_get_v_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(wall3d_section_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%v)) then
+      data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v, 1)))
+      lower_bound = int(lbound(struct_obj%v, 1), c_int)
+      upper_bound = int(ubound(struct_obj%v, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%v(lbound(struct_obj%v, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! wall3d_section_struct%surface: 0D_PTR_type
 
   subroutine wall3d_section_struct_get_surface(struct_obj_ptr, ptr_out) bind(c, name='wall3d_section_struct_get_surface')
@@ -4190,7 +4611,34 @@ contains
     value_out = struct_obj%ele_anchor_pt
   end subroutine
 
-  ! skipped wall3d_struct%section: Unsupported type: 1D_ALLOC_type
+  ! wall3d_struct%section: 1D_ALLOC_type
+
+  subroutine wall3d_struct_get_section_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='wall3d_struct_get_section_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(wall3d_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%section)) then
+      data_ptr = c_loc(struct_obj%section(lbound(struct_obj%section, 1)))
+      lower_bound = int(lbound(struct_obj%section, 1), c_int)
+      upper_bound = int(ubound(struct_obj%section, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%section(lbound(struct_obj%section, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! ramper_lord_struct
   ! ramper_lord_struct%ix_ele: 0D_NOT_integer
 
@@ -4266,7 +4714,34 @@ contains
     endif
   end subroutine
 
-  ! skipped control_struct%stack: Unsupported type: 1D_ALLOC_type
+  ! control_struct%stack: 1D_ALLOC_type
+
+  subroutine control_struct_get_stack_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='control_struct_get_stack_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(control_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%stack)) then
+      data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
+      lower_bound = int(lbound(struct_obj%stack, 1), c_int)
+      upper_bound = int(ubound(struct_obj%stack, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%stack(lbound(struct_obj%stack, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! control_struct%slave: 0D_NOT_type
 
   subroutine control_struct_get_slave(struct_obj_ptr, ptr_out) bind(c, name='control_struct_get_slave')
@@ -4394,7 +4869,34 @@ contains
     endif
   end subroutine
 
-  ! skipped control_ramp1_struct%stack: Unsupported type: 1D_ALLOC_type
+  ! control_ramp1_struct%stack: 1D_ALLOC_type
+
+  subroutine control_ramp1_struct_get_stack_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='control_ramp1_struct_get_stack_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(control_ramp1_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%stack)) then
+      data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
+      lower_bound = int(lbound(struct_obj%stack, 1), c_int)
+      upper_bound = int(ubound(struct_obj%stack, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%stack(lbound(struct_obj%stack, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! control_ramp1_struct%attribute: 0D_NOT_character
 
   subroutine control_ramp1_struct_get_attribute_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='control_ramp1_struct_get_attribute_info')
@@ -4437,9 +4939,90 @@ contains
   end subroutine
 
   !! controller_struct
-  ! skipped controller_struct%var: Unsupported type: 1D_ALLOC_type
-  ! skipped controller_struct%ramp: Unsupported type: 1D_ALLOC_type
-  ! skipped controller_struct%ramper_lord: Unsupported type: 1D_ALLOC_type
+  ! controller_struct%var: 1D_ALLOC_type
+
+  subroutine controller_struct_get_var_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='controller_struct_get_var_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(controller_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%var)) then
+      data_ptr = c_loc(struct_obj%var(lbound(struct_obj%var, 1)))
+      lower_bound = int(lbound(struct_obj%var, 1), c_int)
+      upper_bound = int(ubound(struct_obj%var, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%var(lbound(struct_obj%var, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! controller_struct%ramp: 1D_ALLOC_type
+
+  subroutine controller_struct_get_ramp_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='controller_struct_get_ramp_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(controller_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%ramp)) then
+      data_ptr = c_loc(struct_obj%ramp(lbound(struct_obj%ramp, 1)))
+      lower_bound = int(lbound(struct_obj%ramp, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ramp, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ramp(lbound(struct_obj%ramp, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! controller_struct%ramper_lord: 1D_ALLOC_type
+
+  subroutine controller_struct_get_ramper_lord_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='controller_struct_get_ramper_lord_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(controller_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%ramper_lord)) then
+      data_ptr = c_loc(struct_obj%ramper_lord(lbound(struct_obj%ramper_lord, 1)))
+      lower_bound = int(lbound(struct_obj%ramper_lord, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ramper_lord, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ramper_lord(lbound(struct_obj%ramper_lord, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! controller_struct%x_knot: 1D_ALLOC_real
 
   subroutine controller_struct_get_x_knot_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='controller_struct_get_x_knot_info')
@@ -4636,7 +5219,23 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped beam_init_struct%ellipse: Unsupported type: 1D_NOT_type
+  ! beam_init_struct%ellipse: 1D_NOT_type
+
+  subroutine beam_init_struct_get_ellipse_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='beam_init_struct_get_ellipse_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(beam_init_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%ellipse(lbound(struct_obj%ellipse, 1)))
+    lower_bound = int(lbound(struct_obj%ellipse, 1), c_int)
+    upper_bound = int(ubound(struct_obj%ellipse, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%ellipse(lbound(struct_obj%ellipse, 1))) / 8, c_size_t)
+  end subroutine
+
   ! beam_init_struct%KV: 0D_NOT_type
 
   subroutine beam_init_struct_get_KV(struct_obj_ptr, ptr_out) bind(c, name='beam_init_struct_get_KV')
@@ -4648,7 +5247,23 @@ contains
     ptr_out = c_loc(struct_obj%KV)
   end subroutine
 
-  ! skipped beam_init_struct%grid: Unsupported type: 1D_NOT_type
+  ! beam_init_struct%grid: 1D_NOT_type
+
+  subroutine beam_init_struct_get_grid_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='beam_init_struct_get_grid_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(beam_init_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%grid(lbound(struct_obj%grid, 1)))
+    lower_bound = int(lbound(struct_obj%grid, 1), c_int)
+    upper_bound = int(ubound(struct_obj%grid, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%grid(lbound(struct_obj%grid, 1))) / 8, c_size_t)
+  end subroutine
+
   ! beam_init_struct%center_jitter: 1D_NOT_real
 
   subroutine beam_init_struct_get_center_jitter_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='beam_init_struct_get_center_jitter_info')
@@ -5809,7 +6424,34 @@ contains
 
   ! skipped track_point_struct%mat6: Unsupported type: 2D_NOT_real
   !! track_struct
-  ! skipped track_struct%pt: Unsupported type: 1D_ALLOC_type
+  ! track_struct%pt: 1D_ALLOC_type
+
+  subroutine track_struct_get_pt_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='track_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(track_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
+      lower_bound = int(lbound(struct_obj%pt, 1), c_int)
+      upper_bound = int(ubound(struct_obj%pt, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! track_struct%ds_save: 0D_NOT_real
 
   subroutine track_struct_get_ds_save(struct_obj_ptr, value_out) bind(c, name='track_struct_get_ds_save')
@@ -6721,9 +7363,63 @@ contains
   end subroutine
 
   !! rad_int_branch_struct
-  ! skipped rad_int_branch_struct%ele: Unsupported type: 1D_ALLOC_type
+  ! rad_int_branch_struct%ele: 1D_ALLOC_type
+
+  subroutine rad_int_branch_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='rad_int_branch_struct_get_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(rad_int_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      lower_bound = int(lbound(struct_obj%ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ele(lbound(struct_obj%ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! rad_int_all_ele_struct
-  ! skipped rad_int_all_ele_struct%branch: Unsupported type: 1D_ALLOC_type
+  ! rad_int_all_ele_struct%branch: 1D_ALLOC_type
+
+  subroutine rad_int_all_ele_struct_get_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='rad_int_all_ele_struct_get_branch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(rad_int_all_ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%branch)) then
+      data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
+      lower_bound = int(lbound(struct_obj%branch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%branch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%branch(lbound(struct_obj%branch, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! rf_stair_step_struct
   ! rf_stair_step_struct%E_tot0: 0D_NOT_real
 
@@ -6825,7 +7521,34 @@ contains
   end subroutine
 
   !! rf_ele_struct
-  ! skipped rf_ele_struct%steps: Unsupported type: 1D_ALLOC_type
+  ! rf_ele_struct%steps: 1D_ALLOC_type
+
+  subroutine rf_ele_struct_get_steps_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='rf_ele_struct_get_steps_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(rf_ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%steps)) then
+      data_ptr = c_loc(struct_obj%steps(lbound(struct_obj%steps, 1)))
+      lower_bound = int(lbound(struct_obj%steps, 1), c_int)
+      upper_bound = int(ubound(struct_obj%steps, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%steps(lbound(struct_obj%steps, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! rf_ele_struct%ds_step: 0D_NOT_real
 
   subroutine rf_ele_struct_get_ds_step(struct_obj_ptr, value_out) bind(c, name='rf_ele_struct_get_ds_step')
@@ -7135,7 +7858,23 @@ contains
     endif
   end subroutine
 
-  ! skipped ele_struct%taylor: Unsupported type: 1D_NOT_type
+  ! ele_struct%taylor: 1D_NOT_type
+
+  subroutine ele_struct_get_taylor_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='ele_struct_get_taylor_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%taylor(lbound(struct_obj%taylor, 1)))
+    lower_bound = int(lbound(struct_obj%taylor, 1), c_int)
+    upper_bound = int(ubound(struct_obj%taylor, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%taylor(lbound(struct_obj%taylor, 1))) / 8, c_size_t)
+  end subroutine
+
   ! ele_struct%spin_taylor_ref_orb_in: 1D_NOT_real
 
   subroutine ele_struct_get_spin_taylor_ref_orb_in_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='ele_struct_get_spin_taylor_ref_orb_in_info')
@@ -7151,7 +7890,23 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
-  ! skipped ele_struct%spin_taylor: Unsupported type: 1D_NOT_type
+  ! ele_struct%spin_taylor: 1D_NOT_type
+
+  subroutine ele_struct_get_spin_taylor_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='ele_struct_get_spin_taylor_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%spin_taylor(lbound(struct_obj%spin_taylor, 1)))
+    lower_bound = int(lbound(struct_obj%spin_taylor, 1), c_int)
+    upper_bound = int(ubound(struct_obj%spin_taylor, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%spin_taylor(lbound(struct_obj%spin_taylor, 1))) / 8, c_size_t)
+  end subroutine
+
   ! ele_struct%wake: 0D_PTR_type
 
   subroutine ele_struct_get_wake(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_wake')
@@ -7167,11 +7922,146 @@ contains
     endif
   end subroutine
 
-  ! skipped ele_struct%wall3d: Unsupported type: 1D_PTR_type
-  ! skipped ele_struct%cartesian_map: Unsupported type: 1D_PTR_type
-  ! skipped ele_struct%cylindrical_map: Unsupported type: 1D_PTR_type
-  ! skipped ele_struct%gen_grad_map: Unsupported type: 1D_PTR_type
-  ! skipped ele_struct%grid_field: Unsupported type: 1D_PTR_type
+  ! ele_struct%wall3d: 1D_PTR_type
+
+  subroutine ele_struct_get_wall3d_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ele_struct_get_wall3d_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%wall3d)) then
+      data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
+      lower_bound = int(lbound(struct_obj%wall3d, 1), c_int)
+      upper_bound = int(ubound(struct_obj%wall3d, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%wall3d(lbound(struct_obj%wall3d, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%cartesian_map: 1D_PTR_type
+
+  subroutine ele_struct_get_cartesian_map_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ele_struct_get_cartesian_map_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%cartesian_map)) then
+      data_ptr = c_loc(struct_obj%cartesian_map(lbound(struct_obj%cartesian_map, 1)))
+      lower_bound = int(lbound(struct_obj%cartesian_map, 1), c_int)
+      upper_bound = int(ubound(struct_obj%cartesian_map, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%cartesian_map(lbound(struct_obj%cartesian_map, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%cylindrical_map: 1D_PTR_type
+
+  subroutine ele_struct_get_cylindrical_map_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ele_struct_get_cylindrical_map_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%cylindrical_map)) then
+      data_ptr = c_loc(struct_obj%cylindrical_map(lbound(struct_obj%cylindrical_map, 1)))
+      lower_bound = int(lbound(struct_obj%cylindrical_map, 1), c_int)
+      upper_bound = int(ubound(struct_obj%cylindrical_map, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%cylindrical_map(lbound(struct_obj%cylindrical_map, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%gen_grad_map: 1D_PTR_type
+
+  subroutine ele_struct_get_gen_grad_map_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ele_struct_get_gen_grad_map_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%gen_grad_map)) then
+      data_ptr = c_loc(struct_obj%gen_grad_map(lbound(struct_obj%gen_grad_map, 1)))
+      lower_bound = int(lbound(struct_obj%gen_grad_map, 1), c_int)
+      upper_bound = int(ubound(struct_obj%gen_grad_map, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%gen_grad_map(lbound(struct_obj%gen_grad_map, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! ele_struct%grid_field: 1D_PTR_type
+
+  subroutine ele_struct_get_grid_field_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ele_struct_get_grid_field_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(ele_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%grid_field)) then
+      data_ptr = c_loc(struct_obj%grid_field(lbound(struct_obj%grid_field, 1)))
+      lower_bound = int(lbound(struct_obj%grid_field, 1), c_int)
+      upper_bound = int(ubound(struct_obj%grid_field, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%grid_field(lbound(struct_obj%grid_field, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! ele_struct%map_ref_orb_in: 0D_NOT_type
 
   subroutine ele_struct_get_map_ref_orb_in(struct_obj_ptr, ptr_out) bind(c, name='ele_struct_get_map_ref_orb_in')
@@ -7782,7 +8672,34 @@ contains
     value_out = struct_obj%ref
   end subroutine
 
-  ! skipped complex_taylor_struct%term: Unsupported type: 1D_PTR_type
+  ! complex_taylor_struct%term: 1D_PTR_type
+
+  subroutine complex_taylor_struct_get_term_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='complex_taylor_struct_get_term_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(complex_taylor_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%term)) then
+      data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
+      lower_bound = int(lbound(struct_obj%term, 1), c_int)
+      upper_bound = int(ubound(struct_obj%term, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%term(lbound(struct_obj%term, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! branch_struct
   ! branch_struct%name: 0D_NOT_character
 
@@ -7924,7 +8841,34 @@ contains
     ptr_out = c_loc(struct_obj%z)
   end subroutine
 
-  ! skipped branch_struct%ele: Unsupported type: 1D_PTR_type
+  ! branch_struct%ele: 1D_PTR_type
+
+  subroutine branch_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='branch_struct_get_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      lower_bound = int(lbound(struct_obj%ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ele(lbound(struct_obj%ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! branch_struct%param: 0D_NOT_type
 
   subroutine branch_struct_get_param(struct_obj_ptr, ptr_out) bind(c, name='branch_struct_get_param')
@@ -7947,7 +8891,34 @@ contains
     ptr_out = c_loc(struct_obj%particle_start)
   end subroutine
 
-  ! skipped branch_struct%wall3d: Unsupported type: 1D_PTR_type
+  ! branch_struct%wall3d: 1D_PTR_type
+
+  subroutine branch_struct_get_wall3d_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='branch_struct_get_wall3d_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%wall3d)) then
+      data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
+      lower_bound = int(lbound(struct_obj%wall3d, 1), c_int)
+      upper_bound = int(ubound(struct_obj%wall3d, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%wall3d(lbound(struct_obj%wall3d, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! lat_struct
   ! lat_struct%use_name: 0D_NOT_character
 
@@ -8025,7 +8996,34 @@ contains
   end subroutine
 
   ! skipped lat_struct%print_str: Unsupported type: 1D_ALLOC_character
-  ! skipped lat_struct%constant: Unsupported type: 1D_ALLOC_type
+  ! lat_struct%constant: 1D_ALLOC_type
+
+  subroutine lat_struct_get_constant_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_struct_get_constant_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(lat_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%constant)) then
+      data_ptr = c_loc(struct_obj%constant(lbound(struct_obj%constant, 1)))
+      lower_bound = int(lbound(struct_obj%constant, 1), c_int)
+      upper_bound = int(ubound(struct_obj%constant, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%constant(lbound(struct_obj%constant, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! lat_struct%a: 0D_PTR_type
 
   subroutine lat_struct_get_a(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_a')
@@ -8108,8 +9106,62 @@ contains
     ptr_out = c_loc(struct_obj%ele_init)
   end subroutine
 
-  ! skipped lat_struct%branch: Unsupported type: 1D_ALLOC_type
-  ! skipped lat_struct%control: Unsupported type: 1D_ALLOC_type
+  ! lat_struct%branch: 1D_ALLOC_type
+
+  subroutine lat_struct_get_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_struct_get_branch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(lat_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%branch)) then
+      data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
+      lower_bound = int(lbound(struct_obj%branch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%branch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%branch(lbound(struct_obj%branch, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! lat_struct%control: 1D_ALLOC_type
+
+  subroutine lat_struct_get_control_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_struct_get_control_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(lat_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%control)) then
+      data_ptr = c_loc(struct_obj%control(lbound(struct_obj%control, 1)))
+      lower_bound = int(lbound(struct_obj%control, 1), c_int)
+      upper_bound = int(ubound(struct_obj%control, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%control(lbound(struct_obj%control, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! lat_struct%particle_start: 0D_PTR_type
 
   subroutine lat_struct_get_particle_start(struct_obj_ptr, ptr_out) bind(c, name='lat_struct_get_particle_start')
@@ -8305,7 +9357,34 @@ contains
   end subroutine
 
   !! bunch_struct
-  ! skipped bunch_struct%particle: Unsupported type: 1D_ALLOC_type
+  ! bunch_struct%particle: 1D_ALLOC_type
+
+  subroutine bunch_struct_get_particle_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='bunch_struct_get_particle_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(bunch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%particle)) then
+      data_ptr = c_loc(struct_obj%particle(lbound(struct_obj%particle, 1)))
+      lower_bound = int(lbound(struct_obj%particle, 1), c_int)
+      upper_bound = int(ubound(struct_obj%particle, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%particle(lbound(struct_obj%particle, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! bunch_struct%ix_z: 1D_ALLOC_integer
 
   subroutine bunch_struct_get_ix_z_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='bunch_struct_get_ix_z_info')
@@ -8716,7 +9795,34 @@ contains
   end subroutine
 
   !! beam_struct
-  ! skipped beam_struct%bunch: Unsupported type: 1D_ALLOC_type
+  ! beam_struct%bunch: 1D_ALLOC_type
+
+  subroutine beam_struct_get_bunch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='beam_struct_get_bunch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(beam_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%bunch)) then
+      data_ptr = c_loc(struct_obj%bunch(lbound(struct_obj%bunch, 1)))
+      lower_bound = int(lbound(struct_obj%bunch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%bunch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%bunch(lbound(struct_obj%bunch, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! aperture_point_struct
   ! aperture_point_struct%x: 0D_NOT_real
 
@@ -8878,7 +9984,34 @@ contains
   end subroutine
 
   !! aperture_scan_struct
-  ! skipped aperture_scan_struct%point: Unsupported type: 1D_ALLOC_type
+  ! aperture_scan_struct%point: 1D_ALLOC_type
+
+  subroutine aperture_scan_struct_get_point_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='aperture_scan_struct_get_point_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(aperture_scan_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%point)) then
+      data_ptr = c_loc(struct_obj%point(lbound(struct_obj%point, 1)))
+      lower_bound = int(lbound(struct_obj%point, 1), c_int)
+      upper_bound = int(ubound(struct_obj%point, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%point(lbound(struct_obj%point, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! aperture_scan_struct%ref_orb: 0D_NOT_type
 
   subroutine aperture_scan_struct_get_ref_orb(struct_obj_ptr, ptr_out) bind(c, name='aperture_scan_struct_get_ref_orb')
@@ -9068,15 +10201,165 @@ contains
     endif
   end subroutine
 
-  ! skipped bmad_normal_form_struct%M: Unsupported type: 1D_NOT_type
-  ! skipped bmad_normal_form_struct%A: Unsupported type: 1D_NOT_type
-  ! skipped bmad_normal_form_struct%A_inv: Unsupported type: 1D_NOT_type
-  ! skipped bmad_normal_form_struct%dhdj: Unsupported type: 1D_NOT_type
-  ! skipped bmad_normal_form_struct%F: Unsupported type: 1D_NOT_type
-  ! skipped bmad_normal_form_struct%L: Unsupported type: 1D_NOT_type
-  ! skipped bmad_normal_form_struct%h: Unsupported type: 1D_ALLOC_type
+  ! bmad_normal_form_struct%M: 1D_NOT_type
+
+  subroutine bmad_normal_form_struct_get_M_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='bmad_normal_form_struct_get_M_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%M(lbound(struct_obj%M, 1)))
+    lower_bound = int(lbound(struct_obj%M, 1), c_int)
+    upper_bound = int(ubound(struct_obj%M, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%M(lbound(struct_obj%M, 1))) / 8, c_size_t)
+  end subroutine
+
+  ! bmad_normal_form_struct%A: 1D_NOT_type
+
+  subroutine bmad_normal_form_struct_get_A_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='bmad_normal_form_struct_get_A_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%A(lbound(struct_obj%A, 1)))
+    lower_bound = int(lbound(struct_obj%A, 1), c_int)
+    upper_bound = int(ubound(struct_obj%A, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%A(lbound(struct_obj%A, 1))) / 8, c_size_t)
+  end subroutine
+
+  ! bmad_normal_form_struct%A_inv: 1D_NOT_type
+
+  subroutine bmad_normal_form_struct_get_A_inv_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='bmad_normal_form_struct_get_A_inv_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%A_inv(lbound(struct_obj%A_inv, 1)))
+    lower_bound = int(lbound(struct_obj%A_inv, 1), c_int)
+    upper_bound = int(ubound(struct_obj%A_inv, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%A_inv(lbound(struct_obj%A_inv, 1))) / 8, c_size_t)
+  end subroutine
+
+  ! bmad_normal_form_struct%dhdj: 1D_NOT_type
+
+  subroutine bmad_normal_form_struct_get_dhdj_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='bmad_normal_form_struct_get_dhdj_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%dhdj(lbound(struct_obj%dhdj, 1)))
+    lower_bound = int(lbound(struct_obj%dhdj, 1), c_int)
+    upper_bound = int(ubound(struct_obj%dhdj, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%dhdj(lbound(struct_obj%dhdj, 1))) / 8, c_size_t)
+  end subroutine
+
+  ! bmad_normal_form_struct%F: 1D_NOT_type
+
+  subroutine bmad_normal_form_struct_get_F_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='bmad_normal_form_struct_get_F_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%F(lbound(struct_obj%F, 1)))
+    lower_bound = int(lbound(struct_obj%F, 1), c_int)
+    upper_bound = int(ubound(struct_obj%F, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%F(lbound(struct_obj%F, 1))) / 8, c_size_t)
+  end subroutine
+
+  ! bmad_normal_form_struct%L: 1D_NOT_type
+
+  subroutine bmad_normal_form_struct_get_L_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, element_size) bind(c, name='bmad_normal_form_struct_get_L_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    data_ptr = c_loc(struct_obj%L(lbound(struct_obj%L, 1)))
+    lower_bound = int(lbound(struct_obj%L, 1), c_int)
+    upper_bound = int(ubound(struct_obj%L, 1), c_int)
+    size_out = upper_bound - lower_bound + 1
+    element_size = int(storage_size(struct_obj%L(lbound(struct_obj%L, 1))) / 8, c_size_t)
+  end subroutine
+
+  ! bmad_normal_form_struct%h: 1D_ALLOC_type
+
+  subroutine bmad_normal_form_struct_get_h_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='bmad_normal_form_struct_get_h_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(bmad_normal_form_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%h)) then
+      data_ptr = c_loc(struct_obj%h(lbound(struct_obj%h, 1)))
+      lower_bound = int(lbound(struct_obj%h, 1), c_int)
+      upper_bound = int(ubound(struct_obj%h, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%h(lbound(struct_obj%h, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! bunch_track_struct
-  ! skipped bunch_track_struct%pt: Unsupported type: 1D_ALLOC_type
+  ! bunch_track_struct%pt: 1D_ALLOC_type
+
+  subroutine bunch_track_struct_get_pt_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='bunch_track_struct_get_pt_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(bunch_track_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%pt)) then
+      data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
+      lower_bound = int(lbound(struct_obj%pt, 1), c_int)
+      upper_bound = int(ubound(struct_obj%pt, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%pt(lbound(struct_obj%pt, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! bunch_track_struct%ds_save: 0D_NOT_real
 
   subroutine bunch_track_struct_get_ds_save(struct_obj_ptr, value_out) bind(c, name='bunch_track_struct_get_ds_save')
@@ -9355,7 +10638,34 @@ contains
   end subroutine
 
   !! lat_ele_order_array_struct
-  ! skipped lat_ele_order_array_struct%ele: Unsupported type: 1D_ALLOC_type
+  ! lat_ele_order_array_struct%ele: 1D_ALLOC_type
+
+  subroutine lat_ele_order_array_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_ele_order_array_struct_get_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(lat_ele_order_array_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      lower_bound = int(lbound(struct_obj%ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ele(lbound(struct_obj%ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! tao_lat_sigma_struct
   ! skipped tao_lat_sigma_struct%mat: Unsupported type: 2D_NOT_real
   !! tao_spin_ele_struct
@@ -9614,14 +10924,203 @@ contains
     ptr_out = c_loc(struct_obj%q_1turn)
   end subroutine
 
-  ! skipped tao_spin_polarization_struct%q_ele: Unsupported type: 1D_ALLOC_type
+  ! tao_spin_polarization_struct%q_ele: 1D_ALLOC_type
+
+  subroutine tao_spin_polarization_struct_get_q_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_spin_polarization_struct_get_q_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_spin_polarization_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%q_ele)) then
+      data_ptr = c_loc(struct_obj%q_ele(lbound(struct_obj%q_ele, 1)))
+      lower_bound = int(lbound(struct_obj%q_ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%q_ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%q_ele(lbound(struct_obj%q_ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! tao_lattice_branch_struct
-  ! skipped tao_lattice_branch_struct%lat_sigma: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_lattice_branch_struct%spin_ele: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_lattice_branch_struct%bunch_params: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_lattice_branch_struct%bunch_params_comb: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_lattice_branch_struct%orbit: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_lattice_branch_struct%plot_cache: Unsupported type: 1D_ALLOC_type
+  ! tao_lattice_branch_struct%lat_sigma: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_lat_sigma_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_lat_sigma_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%lat_sigma)) then
+      data_ptr = c_loc(struct_obj%lat_sigma(lbound(struct_obj%lat_sigma, 1)))
+      lower_bound = int(lbound(struct_obj%lat_sigma, 1), c_int)
+      upper_bound = int(ubound(struct_obj%lat_sigma, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%lat_sigma(lbound(struct_obj%lat_sigma, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_lattice_branch_struct%spin_ele: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_spin_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_spin_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%spin_ele)) then
+      data_ptr = c_loc(struct_obj%spin_ele(lbound(struct_obj%spin_ele, 1)))
+      lower_bound = int(lbound(struct_obj%spin_ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%spin_ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%spin_ele(lbound(struct_obj%spin_ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_lattice_branch_struct%bunch_params: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_bunch_params_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_bunch_params_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%bunch_params)) then
+      data_ptr = c_loc(struct_obj%bunch_params(lbound(struct_obj%bunch_params, 1)))
+      lower_bound = int(lbound(struct_obj%bunch_params, 1), c_int)
+      upper_bound = int(ubound(struct_obj%bunch_params, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%bunch_params(lbound(struct_obj%bunch_params, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_lattice_branch_struct%bunch_params_comb: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_bunch_params_comb_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_bunch_params_comb_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%bunch_params_comb)) then
+      data_ptr = c_loc(struct_obj%bunch_params_comb(lbound(struct_obj%bunch_params_comb, 1)))
+      lower_bound = int(lbound(struct_obj%bunch_params_comb, 1), c_int)
+      upper_bound = int(ubound(struct_obj%bunch_params_comb, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%bunch_params_comb(lbound(struct_obj%bunch_params_comb, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_lattice_branch_struct%orbit: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_orbit_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_orbit_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%orbit)) then
+      data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
+      lower_bound = int(lbound(struct_obj%orbit, 1), c_int)
+      upper_bound = int(ubound(struct_obj%orbit, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%orbit(lbound(struct_obj%orbit, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_lattice_branch_struct%plot_cache: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_plot_cache_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_plot_cache_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%plot_cache)) then
+      data_ptr = c_loc(struct_obj%plot_cache(lbound(struct_obj%plot_cache, 1)))
+      lower_bound = int(lbound(struct_obj%plot_cache, 1), c_int)
+      upper_bound = int(ubound(struct_obj%plot_cache, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%plot_cache(lbound(struct_obj%plot_cache, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! tao_lattice_branch_struct%spin: 0D_NOT_type
 
   subroutine tao_lattice_branch_struct_get_spin(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_branch_struct_get_spin')
@@ -9699,8 +11198,62 @@ contains
     ptr_out = c_loc(struct_obj%bmad_normal_form)
   end subroutine
 
-  ! skipped tao_lattice_branch_struct%high_E_orb: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_lattice_branch_struct%low_E_orb: Unsupported type: 1D_ALLOC_type
+  ! tao_lattice_branch_struct%high_E_orb: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_high_E_orb_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_high_E_orb_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%high_E_orb)) then
+      data_ptr = c_loc(struct_obj%high_E_orb(lbound(struct_obj%high_E_orb, 1)))
+      lower_bound = int(lbound(struct_obj%high_E_orb, 1), c_int)
+      upper_bound = int(ubound(struct_obj%high_E_orb, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%high_E_orb(lbound(struct_obj%high_E_orb, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_lattice_branch_struct%low_E_orb: 1D_ALLOC_type
+
+  subroutine tao_lattice_branch_struct_get_low_E_orb_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_low_E_orb_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%low_E_orb)) then
+      data_ptr = c_loc(struct_obj%low_E_orb(lbound(struct_obj%low_E_orb, 1)))
+      lower_bound = int(lbound(struct_obj%low_E_orb, 1), c_int)
+      upper_bound = int(ubound(struct_obj%low_E_orb, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%low_E_orb(lbound(struct_obj%low_E_orb, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! tao_lattice_branch_struct%cache_x_min: 0D_NOT_real
 
   subroutine tao_lattice_branch_struct_get_cache_x_min(struct_obj_ptr, value_out) bind(c, name='tao_lattice_branch_struct_get_cache_x_min')
@@ -10095,7 +11648,34 @@ contains
     ptr_out = c_loc(struct_obj%rad_int_by_ele_6d)
   end subroutine
 
-  ! skipped tao_lattice_struct%tao_branch: Unsupported type: 1D_ALLOC_type
+  ! tao_lattice_struct%tao_branch: 1D_ALLOC_type
+
+  subroutine tao_lattice_struct_get_tao_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_struct_get_tao_branch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_lattice_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%tao_branch)) then
+      data_ptr = c_loc(struct_obj%tao_branch(lbound(struct_obj%tao_branch, 1)))
+      lower_bound = int(lbound(struct_obj%tao_branch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%tao_branch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%tao_branch(lbound(struct_obj%tao_branch, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! tao_beam_uni_struct
   ! tao_beam_uni_struct%saved_at: 0D_NOT_character
 
@@ -10176,7 +11756,34 @@ contains
     ptr_out = c_loc(struct_obj%param)
   end subroutine
 
-  ! skipped tao_dynamic_aperture_struct%scan: Unsupported type: 1D_ALLOC_type
+  ! tao_dynamic_aperture_struct%scan: 1D_ALLOC_type
+
+  subroutine tao_dynamic_aperture_struct_get_scan_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_dynamic_aperture_struct_get_scan_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_dynamic_aperture_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%scan)) then
+      data_ptr = c_loc(struct_obj%scan(lbound(struct_obj%scan, 1)))
+      lower_bound = int(lbound(struct_obj%scan, 1), c_int)
+      upper_bound = int(ubound(struct_obj%scan, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%scan(lbound(struct_obj%scan, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! tao_dynamic_aperture_struct%pz: 1D_ALLOC_real
 
   subroutine tao_dynamic_aperture_struct_get_pz_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='tao_dynamic_aperture_struct_get_pz_info')
@@ -10236,7 +11843,34 @@ contains
   end subroutine
 
   !! tao_model_branch_struct
-  ! skipped tao_model_branch_struct%ele: Unsupported type: 1D_ALLOC_type
+  ! tao_model_branch_struct%ele: 1D_ALLOC_type
+
+  subroutine tao_model_branch_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_model_branch_struct_get_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_model_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      lower_bound = int(lbound(struct_obj%ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ele(lbound(struct_obj%ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! tao_model_branch_struct%beam: 0D_NOT_type
 
   subroutine tao_model_branch_struct_get_beam(struct_obj_ptr, ptr_out) bind(c, name='tao_model_branch_struct_get_beam')
@@ -10325,7 +11959,34 @@ contains
   end subroutine
 
   ! skipped tao_d2_data_struct%descrip: Unsupported type: 1D_NOT_character
-  ! skipped tao_d2_data_struct%d1: Unsupported type: 1D_ALLOC_type
+  ! tao_d2_data_struct%d1: 1D_ALLOC_type
+
+  subroutine tao_d2_data_struct_get_d1_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_d2_data_struct_get_d1_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_d2_data_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%d1)) then
+      data_ptr = c_loc(struct_obj%d1(lbound(struct_obj%d1, 1)))
+      lower_bound = int(lbound(struct_obj%d1, 1), c_int)
+      upper_bound = int(ubound(struct_obj%d1, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%d1(lbound(struct_obj%d1, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! tao_d2_data_struct%ix_universe: 0D_NOT_integer
 
   subroutine tao_d2_data_struct_get_ix_universe(struct_obj_ptr, value_out) bind(c, name='tao_d2_data_struct_get_ix_universe')
@@ -11200,7 +12861,34 @@ contains
   end subroutine
 
   !! lat_ele_order_struct
-  ! skipped lat_ele_order_struct%branch: Unsupported type: 1D_ALLOC_type
+  ! lat_ele_order_struct%branch: 1D_ALLOC_type
+
+  subroutine lat_ele_order_struct_get_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_ele_order_struct_get_branch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(lat_ele_order_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%branch)) then
+      data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
+      lower_bound = int(lbound(struct_obj%branch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%branch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%branch(lbound(struct_obj%branch, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   !! tao_universe_struct
   ! tao_universe_struct%model: 0D_PTR_type
 
@@ -11269,9 +12957,90 @@ contains
     ptr_out = c_loc(struct_obj%dynamic_aperture)
   end subroutine
 
-  ! skipped tao_universe_struct%model_branch: Unsupported type: 1D_PTR_type
-  ! skipped tao_universe_struct%d2_data: Unsupported type: 1D_ALLOC_type
-  ! skipped tao_universe_struct%data: Unsupported type: 1D_ALLOC_type
+  ! tao_universe_struct%model_branch: 1D_PTR_type
+
+  subroutine tao_universe_struct_get_model_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_universe_struct_get_model_branch_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_universe_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%model_branch)) then
+      data_ptr = c_loc(struct_obj%model_branch(lbound(struct_obj%model_branch, 1)))
+      lower_bound = int(lbound(struct_obj%model_branch, 1), c_int)
+      upper_bound = int(ubound(struct_obj%model_branch, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%model_branch(lbound(struct_obj%model_branch, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_universe_struct%d2_data: 1D_ALLOC_type
+
+  subroutine tao_universe_struct_get_d2_data_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_universe_struct_get_d2_data_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_universe_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%d2_data)) then
+      data_ptr = c_loc(struct_obj%d2_data(lbound(struct_obj%d2_data, 1)))
+      lower_bound = int(lbound(struct_obj%d2_data, 1), c_int)
+      upper_bound = int(ubound(struct_obj%d2_data, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%d2_data(lbound(struct_obj%d2_data, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
+  ! tao_universe_struct%data: 1D_ALLOC_type
+
+  subroutine tao_universe_struct_get_data_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_universe_struct_get_data_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_universe_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (allocated(struct_obj%data)) then
+      data_ptr = c_loc(struct_obj%data(lbound(struct_obj%data, 1)))
+      lower_bound = int(lbound(struct_obj%data, 1), c_int)
+      upper_bound = int(ubound(struct_obj%data, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%data(lbound(struct_obj%data, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! tao_universe_struct%ping_scale: 0D_NOT_type
 
   subroutine tao_universe_struct_get_ping_scale(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_ping_scale')
