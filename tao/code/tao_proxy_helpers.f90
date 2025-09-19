@@ -14,7 +14,11 @@ contains
 
   function is_initialized() result(n) bind(c, name='tao_is_initialized')
     integer(c_int) :: n
-    n = s%initialized
+    if (s%initialized) then
+      n = 1
+    else
+      n = 0
+    end if
   end function
 
   ! Global accessor functions (only these use indices)
@@ -145,9 +149,9 @@ contains
     uni_ptr => s%u(ix_uni)
   end function
 
-  function get_lattice_ptr(ix_uni, ix_lat) result(lat_ptr)
+  function get_tao_lattice_ptr(ix_uni, ix_lat) result(lat_ptr)
     integer, intent(in) :: ix_uni, ix_lat
-    type(lat_struct), pointer :: lat_ptr
+    type(tao_lattice_struct), pointer :: lat_ptr
     
     lat_ptr => null()
     if (ix_uni < lbound(s%u, 1) .or. ix_uni > ubound(s%u, 1)) then
@@ -156,12 +160,25 @@ contains
     
     select case(ix_lat)
     case (LATTICE_MODEL)
-      lat_ptr => s%u(ix_uni)%model%lat
+      lat_ptr => s%u(ix_uni)%model
     case (LATTICE_DESIGN) 
-      lat_ptr => s%u(ix_uni)%design%lat
+      lat_ptr => s%u(ix_uni)%design
     case (LATTICE_BASE)
-      lat_ptr => s%u(ix_uni)%base%lat
+      lat_ptr => s%u(ix_uni)%base
     end select
+  end function
+
+  function get_lattice_ptr(ix_uni, ix_lat) result(lat_ptr)
+    integer, intent(in) :: ix_uni, ix_lat
+    type(tao_lattice_struct), pointer :: tao_lat_ptr
+    type(lat_struct), pointer :: lat_ptr
+
+    lat_ptr => null()
+    tao_lat_ptr => get_tao_lattice_ptr(ix_uni, ix_lat)
+    if (associated(tao_lat_ptr)) then
+      lat_ptr => tao_lat_ptr%lat
+    endif
+
   end function
 
   function get_branch_ptr(ix_uni, ix_lat, ix_branch) result(branch_ptr)

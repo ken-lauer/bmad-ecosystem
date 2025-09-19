@@ -3337,6 +3337,7 @@ void tao_universe_struct_get_picked_uni(
 // Global functions (index-based, only for initial access)
 int tao_get_n_universes();
 void* tao_c_get_universe_ptr(int ix_uni);
+void* tao_c_get_tao_lattice_ptr(int ix_uni, int ix_lat);
 void* tao_c_get_lattice_ptr(int ix_uni, int ix_lat);
 void* tao_c_get_branch_ptr(int ix_uni, int ix_lat, int ix_branch);
 void* tao_c_get_element_ptr(int ix_uni, int ix_lat, int ix_branch, int ix_ele);
@@ -3375,7 +3376,7 @@ class NullPointerException : public TaoException {
 };
 
 // Forward declarations
-class UniverseProxy;
+class TaoUniverseProxy;
 class LatticeProxy;
 class BranchProxy;
 class EleProxy;
@@ -3511,6 +3512,10 @@ class EleProxy {
  private:
   void* fortran_ptr_;
 
+  void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit EleProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -3608,6 +3613,10 @@ class BranchProxy {
  private:
   void* fortran_ptr_;
 
+  void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit BranchProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -3660,6 +3669,10 @@ class BranchProxy {
 class LatticeProxy {
  private:
   void* fortran_ptr_;
+
+  void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit LatticeProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -3725,169 +3738,13 @@ class LatticeProxy {
   int ramper_slave_bookkeeping() const;
 };
 
-class UniverseProxy {
- private:
-  void* fortran_ptr_;
-
- public:
-  explicit UniverseProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("UniverseProxy constructor");
-    }
-  }
-
-  // LatticeProxy get_lattice(LatticeType lattice_type) const {
-  //   void* lat_ptr =
-  //       tao_c_get_lattice_ptr(ix_uni_, static_cast<int>(lattice_type));
-  //   if (!lat_ptr) {
-  //     throw NullPointerException(
-  //         "get_lattice for universe " + std::to_string(ix_uni_));
-  //   }
-  //   return LatticeProxy(lat_ptr);
-  // }
-
-  // int get_universe_index() const {
-  //   return ix_uni_;
-  // }
-
-  const void* model() const;
-  const void* design() const;
-  const void* base() const;
-  TaoBeamUniProxy beam() const;
-  TaoDynamicApertureProxy dynamic_aperture() const;
-  TaoPingScaleProxy ping_scale() const;
-  LatProxy scratch_lat() const;
-  TaoUniverseCalcProxy calc() const;
-  LatEleOrderProxy ele_order() const;
-  TaoSpinMapProxy spin_map() const;
-  FortranArray2D<double> dModel_dVar() const;
-  int ix_uni() const;
-  int n_d2_data_used() const;
-  int n_data_used() const;
-  bool is_on() const;
-  bool design_same_as_previous() const;
-  bool picked_uni() const;
-};
-
-// Tao proxy classes for navigating the hierarchy
-class TaoElementProxy {
- private:
-  int ix_uni_, ix_lat_, ix_branch_, ix_ele_;
-
- public:
-  TaoElementProxy(
-      int ix_uni,
-      LatticeType lattice_type,
-      int ix_branch,
-      int ix_ele)
-      : ix_uni_(ix_uni),
-        ix_lat_(static_cast<int>(lattice_type)),
-        ix_branch_(ix_branch),
-        ix_ele_(ix_ele) {}
-
-  EleProxy operator*() const {
-    void* ele_ptr =
-        tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
-    if (!ele_ptr) {
-      throw NullPointerException(
-          "TaoElementProxy dereference for ix_uni=" + std::to_string(ix_uni_) +
-          " ix_lat=" + std::to_string(ix_lat_) +
-          " ix_branch=" + std::to_string(ix_branch_) +
-          " ix_ele=" + std::to_string(ix_ele_) + "");
-    }
-    return EleProxy(ele_ptr);
-  }
-
-  std::unique_ptr<EleProxy> operator->() const {
-    return std::make_unique<EleProxy>(**this);
-  }
-};
-
-class TaoBranchProxy {
- private:
-  int ix_uni_, ix_lat_, ix_branch_;
-
- public:
-  TaoBranchProxy(int ix_uni, LatticeType lattice_type, int ix_branch)
-      : ix_uni_(ix_uni),
-        ix_lat_(static_cast<int>(lattice_type)),
-        ix_branch_(ix_branch) {}
-
-  BranchProxy operator*() const {
-    void* branch_ptr = tao_c_get_branch_ptr(ix_uni_, ix_lat_, ix_branch_);
-    if (!branch_ptr) {
-      throw NullPointerException(
-          "TaoBranchProxy dereference for [" + std::to_string(ix_uni_) + "," +
-          std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) + "]");
-    }
-    return BranchProxy(branch_ptr);
-  }
-
-  std::unique_ptr<BranchProxy> operator->() const {
-    return std::make_unique<BranchProxy>(**this);
-  }
-
-  TaoElementProxy get_element(int ix_ele) const {
-    return TaoElementProxy(
-        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch_, ix_ele);
-  }
-};
-
-class TaoLatticeProxy {
- private:
-  int ix_uni_, ix_lat_;
-
- public:
-  TaoLatticeProxy(int ix_uni, LatticeType lattice_type)
-      : ix_uni_(ix_uni), ix_lat_(static_cast<int>(lattice_type)) {}
-
-  LatticeProxy operator*() const {
-    void* lat_ptr = tao_c_get_lattice_ptr(ix_uni_, ix_lat_);
-    if (!lat_ptr) {
-      throw NullPointerException(
-          "TaoLatticeProxy dereference for [" + std::to_string(ix_uni_) + "," +
-          std::to_string(ix_lat_) + "]");
-    }
-    return LatticeProxy(lat_ptr);
-  }
-
-  std::unique_ptr<LatticeProxy> operator->() const {
-    return std::make_unique<LatticeProxy>(**this);
-  }
-
-  TaoBranchProxy get_branch(int ix_branch) const {
-    return TaoBranchProxy(
-        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch);
-  }
-};
-
-class TaoUniverseProxy {
- private:
-  int ix_uni_;
-
- public:
-  explicit TaoUniverseProxy(int ix_uni) : ix_uni_(ix_uni) {}
-
-  UniverseProxy operator*() const {
-    int n_universes = tao_get_n_universes();
-    if (ix_uni_ < 0 || ix_uni_ >= n_universes) {
-      throw InvalidIndexException("universe", ix_uni_, n_universes);
-    }
-    return UniverseProxy(tao_c_get_universe_ptr(ix_uni_));
-  }
-
-  std::unique_ptr<UniverseProxy> operator->() const {
-    return std::make_unique<UniverseProxy>(**this);
-  }
-
-  TaoLatticeProxy get_lattice(LatticeType lattice_type) const {
-    return TaoLatticeProxy(ix_uni_, lattice_type);
-  }
-};
-
 class SplineProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SplineProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -3906,6 +3763,10 @@ class SpinPolarProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit SpinPolarProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -3923,6 +3784,10 @@ class AcKickerTimeProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit AcKickerTimeProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -3938,6 +3803,10 @@ class AcKickerTimeProxy {
 class AcKickerFreqProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit AcKickerFreqProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -3956,6 +3825,10 @@ class AcKickerProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit AcKickerProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -3967,6 +3840,10 @@ class AcKickerProxy {
 class Interval1CoefProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit Interval1CoefProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -3983,6 +3860,10 @@ class Interval1CoefProxy {
 class PhotonReflectTableProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit PhotonReflectTableProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4002,6 +3883,10 @@ class PhotonReflectTableProxy {
 class PhotonReflectSurfaceProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit PhotonReflectSurfaceProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4024,6 +3909,10 @@ class PhotonReflectSurfaceProxy {
 class CoordProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit CoordProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4059,6 +3948,10 @@ class CoordArrayProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit CoordArrayProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4070,6 +3963,10 @@ class CoordArrayProxy {
 class BpmPhaseCouplingProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BpmPhaseCouplingProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4094,6 +3991,10 @@ class ExpressionAtomProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit ExpressionAtomProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4110,6 +4011,10 @@ class ExpressionAtomProxy {
 class WakeSrZLongProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit WakeSrZLongProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4129,6 +4034,10 @@ class WakeSrZLongProxy {
 class WakeSrModeProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit WakeSrModeProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4153,6 +4062,10 @@ class WakeSrProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit WakeSrProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4174,6 +4087,10 @@ class WakeSrProxy {
 class WakeLrModeProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit WakeLrModeProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4201,6 +4118,10 @@ class WakeLrProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit WakeLrProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4221,6 +4142,10 @@ class LatEleLocProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LatEleLocProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4235,6 +4160,10 @@ class LatEleLocProxy {
 class WakeProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit WakeProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4251,6 +4180,10 @@ class TaylorTermProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaylorTermProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4266,6 +4199,10 @@ class TaylorProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaylorProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4279,6 +4216,10 @@ class TaylorProxy {
 class EmTaylorTermProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit EmTaylorTermProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4295,6 +4236,10 @@ class EmTaylorProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit EmTaylorProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4308,6 +4253,10 @@ class EmTaylorProxy {
 class CartesianMapTerm1Proxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit CartesianMapTerm1Proxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4331,6 +4280,10 @@ class CartesianMapTermProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit CartesianMapTermProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4346,6 +4299,10 @@ class CartesianMapTermProxy {
 class CartesianMapProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit CartesianMapProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4366,6 +4323,10 @@ class CylindricalMapTerm1Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit CylindricalMapTerm1Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4380,6 +4341,10 @@ class CylindricalMapTerm1Proxy {
 class CylindricalMapTermProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit CylindricalMapTermProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4396,6 +4361,10 @@ class CylindricalMapTermProxy {
 class CylindricalMapProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit CylindricalMapProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4420,6 +4389,10 @@ class BicubicCmplxCoefProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit BicubicCmplxCoefProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4434,6 +4407,10 @@ class TricubicCmplxCoefProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TricubicCmplxCoefProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4447,6 +4424,10 @@ class TricubicCmplxCoefProxy {
 class GridFieldPt1Proxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit GridFieldPt1Proxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4463,6 +4444,10 @@ class GridFieldPtProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit GridFieldPtProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4478,6 +4463,10 @@ class GridFieldPtProxy {
 class GridFieldProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit GridFieldProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4504,6 +4493,10 @@ class FloorPositionProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit FloorPositionProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4520,6 +4513,10 @@ class FloorPositionProxy {
 class HighEnergySpaceChargeProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit HighEnergySpaceChargeProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4542,6 +4539,10 @@ class XyDispProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit XyDispProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4560,6 +4561,10 @@ class XyDispProxy {
 class TwissProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TwissProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4590,6 +4595,10 @@ class Mode3Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit Mode3Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4607,6 +4616,10 @@ class Mode3Proxy {
 class BookkeepingStateProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BookkeepingStateProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4630,6 +4643,10 @@ class RadMapProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit RadMapProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4644,6 +4661,10 @@ class RadMapProxy {
 class RadMapEleProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit RadMapEleProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4661,6 +4682,10 @@ class GenGrad1Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit GenGrad1Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4677,6 +4702,10 @@ class GenGrad1Proxy {
 class GenGradMapProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit GenGradMapProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4702,6 +4731,10 @@ class SurfaceSegmentedPtProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit SurfaceSegmentedPtProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4720,6 +4753,10 @@ class SurfaceSegmentedProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit SurfaceSegmentedProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4735,6 +4772,10 @@ class SurfaceSegmentedProxy {
 class SurfaceHMisalignPtProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SurfaceHMisalignPtProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4755,6 +4796,10 @@ class SurfaceHMisalignProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit SurfaceHMisalignProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4770,6 +4815,10 @@ class SurfaceHMisalignProxy {
 class SurfaceDisplacementPtProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SurfaceDisplacementPtProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4790,6 +4839,10 @@ class SurfaceDisplacementProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit SurfaceDisplacementProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4806,6 +4859,10 @@ class TargetPointProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TargetPointProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4819,6 +4876,10 @@ class TargetPointProxy {
 class SurfaceCurvatureProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SurfaceCurvatureProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4836,6 +4897,10 @@ class PhotonTargetProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit PhotonTargetProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4852,6 +4917,10 @@ class PhotonTargetProxy {
 class PhotonMaterialProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit PhotonMaterialProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4873,6 +4942,10 @@ class PhotonMaterialProxy {
 class PixelPtProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit PixelPtProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4897,6 +4970,10 @@ class PixelDetecProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit PixelDetecProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4914,6 +4991,10 @@ class PixelDetecProxy {
 class PhotonElementProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit PhotonElementProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4939,6 +5020,10 @@ class Wall3dVertexProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit Wall3dVertexProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -4960,6 +5045,10 @@ class Wall3dVertexProxy {
 class Wall3dSectionProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit Wall3dSectionProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -4995,6 +5084,10 @@ class Wall3dProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit Wall3dProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5020,6 +5113,10 @@ class RamperLordProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit RamperLordProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5035,6 +5132,10 @@ class RamperLordProxy {
 class ControlProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit ControlProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5058,6 +5159,10 @@ class ControlVar1Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit ControlVar1Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5074,6 +5179,10 @@ class ControlVar1Proxy {
 class ControlRamp1Proxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit ControlRamp1Proxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5094,6 +5203,10 @@ class ControllerProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit ControllerProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5107,6 +5220,10 @@ class ControllerProxy {
 class EllipseBeamInitProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit EllipseBeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5124,6 +5241,10 @@ class KvBeamInitProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit KvBeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5139,6 +5260,10 @@ class KvBeamInitProxy {
 class GridBeamInitProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit GridBeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5158,6 +5283,10 @@ class GridBeamInitProxy {
 class BeamInitProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5209,6 +5338,10 @@ class LatParamProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LatParamProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5237,6 +5370,10 @@ class ModeInfoProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit ModeInfoProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5256,6 +5393,10 @@ class PreTrackerProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit PreTrackerProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5273,6 +5414,10 @@ class PreTrackerProxy {
 class AnormalModeProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit AnormalModeProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5294,6 +5439,10 @@ class LinacNormalModeProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LinacNormalModeProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5313,6 +5462,10 @@ class LinacNormalModeProxy {
 class NormalModesProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit NormalModesProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5340,6 +5493,10 @@ class EmFieldProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit EmFieldProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5357,6 +5514,10 @@ class EmFieldProxy {
 class StrongBeamProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit StrongBeamProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5378,6 +5539,10 @@ class TrackPointProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TrackPointProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5397,6 +5562,10 @@ class TrackProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TrackProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5413,6 +5582,10 @@ class TrackProxy {
 class SpaceChargeCommonProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SpaceChargeCommonProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5444,6 +5617,10 @@ class SpaceChargeCommonProxy {
 class BmadCommonProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BmadCommonProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5500,6 +5677,10 @@ class RadInt1Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit RadInt1Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5531,6 +5712,10 @@ class RadIntBranchProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit RadIntBranchProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5543,6 +5728,10 @@ class RadIntAllEleProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit RadIntAllEleProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5554,6 +5743,10 @@ class RadIntAllEleProxy {
 class RfStairStepProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit RfStairStepProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5577,6 +5770,10 @@ class RfEleProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit RfEleProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5590,6 +5787,10 @@ class RfEleProxy {
 class ComplexTaylorTermProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit ComplexTaylorTermProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5606,6 +5807,10 @@ class ComplexTaylorProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit ComplexTaylorProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5619,6 +5824,10 @@ class ComplexTaylorProxy {
 class LatProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit LatProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5663,6 +5872,10 @@ class BunchProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit BunchProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5688,6 +5901,10 @@ class BunchProxy {
 class BunchParamsProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BunchParamsProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5724,6 +5941,10 @@ class BeamProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit BeamProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5735,6 +5956,10 @@ class BeamProxy {
 class AperturePointProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit AperturePointProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5753,6 +5978,10 @@ class AperturePointProxy {
 class ApertureParamProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit ApertureParamProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5777,6 +6006,10 @@ class ApertureScanProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit ApertureScanProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5792,6 +6025,10 @@ class TaoSpinDnDpzProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoSpinDnDpzProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5805,6 +6042,10 @@ class TaoSpinDnDpzProxy {
 class ResonanceHProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit ResonanceHProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5822,6 +6063,10 @@ class SpinOrbitMap1Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit SpinOrbitMap1Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5835,6 +6080,10 @@ class SpinOrbitMap1Proxy {
 class SpinAxisProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SpinAxisProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5852,6 +6101,10 @@ class PtcNormalFormProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit PtcNormalFormProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5868,6 +6121,10 @@ class BmadNormalFormProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit BmadNormalFormProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5881,6 +6138,10 @@ class BmadNormalFormProxy {
 class BunchTrackProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BunchTrackProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5896,6 +6157,10 @@ class BunchTrackProxy {
 class SummationRdtProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit SummationRdtProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5931,6 +6196,10 @@ class LatEleOrder1Proxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LatEleOrder1Proxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5946,6 +6215,10 @@ class LatEleOrderArrayProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LatEleOrderArrayProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5958,6 +6231,10 @@ class TaoLatSigmaProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoLatSigmaProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -5969,6 +6246,10 @@ class TaoLatSigmaProxy {
 class TaoSpinEleProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoSpinEleProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -5986,6 +6267,10 @@ class TaoPlotCacheProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoPlotCacheProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6001,6 +6286,10 @@ class TaoPlotCacheProxy {
 class TaoSpinPolarizationProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoSpinPolarizationProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6029,6 +6318,10 @@ class TaoSpinPolarizationProxy {
 class TaoLatticeBranchProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoLatticeBranchProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6065,6 +6358,10 @@ class TaoModelElementProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoModelElementProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6080,6 +6377,10 @@ class TaoModelElementProxy {
 class TaoBeamBranchProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoBeamBranchProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6105,6 +6406,10 @@ class TaoD1DataProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoD1DataProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6116,9 +6421,37 @@ class TaoD1DataProxy {
   FortranArray1D<char> get_name_chars() const;
 };
 
+class TaoLatticeProxy {
+ private:
+  void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
+ public:
+  explicit TaoLatticeProxy(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("BranchProxy constructor");
+    }
+  }
+
+  std::string name() const;
+  FortranArray1D<char> get_name_chars() const;
+  LatProxy lat() const;
+  LatProxy high_E_lat() const;
+  LatProxy low_E_lat() const;
+  RadIntAllEleProxy rad_int_by_ele_ri() const;
+  RadIntAllEleProxy rad_int_by_ele_6d() const;
+};
+
 class TaoBeamUniProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoBeamUniProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6141,6 +6474,10 @@ class TaoDynamicApertureProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoDynamicApertureProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6159,6 +6496,10 @@ class TaoModelBranchProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoModelBranchProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6172,6 +6513,10 @@ class TaoModelBranchProxy {
 class TaoD2DataProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoD2DataProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6201,6 +6546,10 @@ class TaoSpinMapProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoSpinMapProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6222,6 +6571,10 @@ class TaoSpinMapProxy {
 class TaoDataProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoDataProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6288,6 +6641,10 @@ class TaoPingScaleProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit TaoPingScaleProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -6304,6 +6661,10 @@ class TaoPingScaleProxy {
 class TaoUniverseCalcProxy {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit TaoUniverseCalcProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -6331,11 +6692,184 @@ class LatEleOrderProxy {
  private:
   void* fortran_ptr_;
 
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LatEleOrderProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
       throw NullPointerException("BranchProxy constructor");
     }
+  }
+};
+
+class TaoUniverseProxy {
+ private:
+  void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
+ public:
+  explicit TaoUniverseProxy(void* ptr) : fortran_ptr_(ptr) {
+    if (!ptr) {
+      throw NullPointerException("BranchProxy constructor");
+    }
+  }
+
+  const void* model() const;
+  const void* design() const;
+  const void* base() const;
+  TaoBeamUniProxy beam() const;
+  TaoDynamicApertureProxy dynamic_aperture() const;
+  TaoPingScaleProxy ping_scale() const;
+  LatProxy scratch_lat() const;
+  TaoUniverseCalcProxy calc() const;
+  LatEleOrderProxy ele_order() const;
+  TaoSpinMapProxy spin_map() const;
+  FortranArray2D<double> dModel_dVar() const;
+  int ix_uni() const;
+  int n_d2_data_used() const;
+  int n_data_used() const;
+  bool is_on() const;
+  bool design_same_as_previous() const;
+  bool picked_uni() const;
+};
+
+// Tao proxy classes for navigating the hierarchy
+// TaoElementIndexProxy does not map onto a specific Tao struct
+// TaoUniverseProxy maps onto tao_universe_struct
+class TaoElementIndexProxy {
+ private:
+  int ix_uni_, ix_lat_, ix_branch_, ix_ele_;
+
+  // void* get_fortran_ptr_() const {
+  //   return fortran_ptr_;
+  // }
+
+ public:
+  TaoElementIndexProxy(
+      int ix_uni,
+      LatticeType lattice_type,
+      int ix_branch,
+      int ix_ele)
+      : ix_uni_(ix_uni),
+        ix_lat_(static_cast<int>(lattice_type)),
+        ix_branch_(ix_branch),
+        ix_ele_(ix_ele) {}
+
+  EleProxy operator*() const {
+    void* ele_ptr =
+        tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
+    if (!ele_ptr) {
+      throw NullPointerException(
+          "TaoElementIndexProxy dereference for ix_uni=" +
+          std::to_string(ix_uni_) + " ix_lat=" + std::to_string(ix_lat_) +
+          " ix_branch=" + std::to_string(ix_branch_) +
+          " ix_ele=" + std::to_string(ix_ele_) + "");
+    }
+    return EleProxy(ele_ptr);
+  }
+
+  std::unique_ptr<EleProxy> operator->() const {
+    return std::make_unique<EleProxy>(**this);
+  }
+};
+
+class TaoBranchIndexProxy {
+ private:
+  int ix_uni_, ix_lat_, ix_branch_;
+
+ public:
+  TaoBranchIndexProxy(int ix_uni, LatticeType lattice_type, int ix_branch)
+      : ix_uni_(ix_uni),
+        ix_lat_(static_cast<int>(lattice_type)),
+        ix_branch_(ix_branch) {}
+
+  BranchProxy operator*() const {
+    void* branch_ptr = tao_c_get_branch_ptr(ix_uni_, ix_lat_, ix_branch_);
+    if (!branch_ptr) {
+      throw NullPointerException(
+          "TaoBranchIndexProxy dereference for [" + std::to_string(ix_uni_) +
+          "," + std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) +
+          "]");
+    }
+    return BranchProxy(branch_ptr);
+  }
+
+  std::unique_ptr<BranchProxy> operator->() const {
+    return std::make_unique<BranchProxy>(**this);
+  }
+
+  TaoElementIndexProxy get_element(int ix_ele) const {
+    return TaoElementIndexProxy(
+        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch_, ix_ele);
+  }
+};
+
+class TaoLatticeIndexProxy {
+ private:
+  int ix_uni_, ix_lat_;
+
+  void* get_fortran_ptr_() const {
+    void* lat_ptr = tao_c_get_tao_lattice_ptr(ix_uni_, ix_lat_);
+    if (!lat_ptr) {
+      throw NullPointerException(
+          "TaoLatticeIndexProxy dereference for [" + std::to_string(ix_uni_) +
+          "," + std::to_string(ix_lat_) + "]");
+    }
+    return lat_ptr;
+  }
+
+ public:
+  TaoLatticeIndexProxy(int ix_uni, LatticeType lattice_type)
+      : ix_uni_(ix_uni), ix_lat_(static_cast<int>(lattice_type)) {}
+
+  TaoBranchIndexProxy get_branch(int ix_branch) const {
+    return TaoBranchIndexProxy(
+        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch);
+  }
+
+  TaoLatticeProxy operator*() const {
+    void* lat_ptr = tao_c_get_lattice_ptr(ix_uni_, ix_lat_);
+    if (!lat_ptr) {
+      throw NullPointerException(
+          "TaoLatticeProxy dereference for [" + std::to_string(ix_uni_) + "," +
+          std::to_string(ix_lat_) + "]");
+    }
+    return TaoLatticeProxy(lat_ptr);
+  }
+  std::unique_ptr<TaoLatticeProxy> operator->() const {
+    return std::make_unique<TaoLatticeProxy>(**this);
+  }
+};
+
+class TaoUniverseIndexProxy {
+ private:
+  int ix_uni_;
+
+  void* get_fortran_ptr_() const {
+    void* uni_ptr = tao_c_get_universe_ptr(ix_uni_);
+    if (!uni_ptr) {
+      throw NullPointerException(
+          "TaoUniverseIndexProxy dereference for universe " +
+          std::to_string(ix_uni_));
+    }
+    return uni_ptr;
+  }
+
+ public:
+  explicit TaoUniverseIndexProxy(int ix_uni) : ix_uni_(ix_uni) {}
+
+  TaoUniverseProxy operator*() const;
+  std::unique_ptr<TaoUniverseProxy> operator->() const {
+    return std::make_unique<TaoUniverseProxy>(**this);
+  }
+
+  TaoLatticeIndexProxy get_lattice(LatticeType lattice_type) const {
+    return TaoLatticeIndexProxy(ix_uni_, lattice_type);
   }
 };
 

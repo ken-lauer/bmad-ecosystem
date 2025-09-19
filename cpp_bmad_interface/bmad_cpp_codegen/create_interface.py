@@ -1779,17 +1779,20 @@ def write_output(structs: list[CodegenStructure]) -> None:
         CPP_INTERFACE_ROOT / "code" / "proxy_mod.f90",
         structs,
     )
-    cpp_proxy_template = (CODEGEN_ROOT / "tao_proxies.tpl.hpp").read_text()
+    cpp_proxy_header_template = (CODEGEN_ROOT / "tao_proxies.tpl.hpp").read_text()
+    cpp_proxy_cpp_template = (CODEGEN_ROOT / "tao_proxies.tpl.cpp").read_text()
     write_if_differs(
         create_cpp_proxy_header,
         CPP_INTERFACE_ROOT / "include" / "tao_proxies.hpp",
-        cpp_proxy_template,
+        cpp_proxy_header_template,
+        cpp_proxy_cpp_template,
         structs,
     )
     write_if_differs(
         create_cpp_proxy_impl,
         CPP_INTERFACE_ROOT / "code" / "tao_proxies.cpp",
-        cpp_proxy_template,
+        cpp_proxy_header_template,
+        cpp_proxy_cpp_template,
         structs,
     )
 

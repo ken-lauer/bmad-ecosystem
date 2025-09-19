@@ -38,7 +38,7 @@ fortran_templates = {
     # REAL types
     FullType("real", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -50,7 +50,7 @@ fortran_templates = {
     },
     FullType("real", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -66,7 +66,7 @@ fortran_templates = {
     },
     FullType("real", 1, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -82,7 +82,7 @@ fortran_templates = {
     },
     FullType("complex", 1, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -98,7 +98,7 @@ fortran_templates = {
     },
     FullType("integer", 1, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -114,7 +114,7 @@ fortran_templates = {
     },
     FullType("real", 1, "ALLOC"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -143,7 +143,7 @@ fortran_templates = {
   subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, &
       dim1_size, dim1_lower, dim1_upper, &
       dim2_size, dim2_lower, dim2_upper, &
-      stride1, stride2, is_allocated) bind(c)
+      stride1, stride2, is_allocated) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
@@ -180,7 +180,7 @@ fortran_templates = {
     # REAL16 types
     FullType("real16", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_long_double), intent(out) :: value_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -192,7 +192,7 @@ fortran_templates = {
     },
     FullType("real16", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -209,7 +209,7 @@ fortran_templates = {
     # INTEGER types
     FullType("integer", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -221,7 +221,7 @@ fortran_templates = {
     },
     FullType("integer", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -237,7 +237,7 @@ fortran_templates = {
     },
     FullType("integer", 1, "ALLOC"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -266,7 +266,7 @@ fortran_templates = {
   subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, &
       dim1_size, dim1_lower, dim1_upper, &
       dim2_size, dim2_lower, dim2_upper, &
-      stride1, stride2, is_allocated) bind(c)
+      stride1, stride2, is_allocated) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: dim1_size, dim1_lower, dim1_upper
@@ -302,7 +302,7 @@ fortran_templates = {
     },
     FullType("integer8", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_long_long), intent(out) :: value_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -314,7 +314,7 @@ fortran_templates = {
     },
     FullType("integer8", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -331,7 +331,7 @@ fortran_templates = {
     # COMPLEX types
     FullType("complex", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -343,7 +343,7 @@ fortran_templates = {
     },
     FullType("complex", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -360,7 +360,7 @@ fortran_templates = {
     # LOGICAL types
     FullType("logical", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, value_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -372,7 +372,7 @@ fortran_templates = {
     },
     FullType("logical", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -389,7 +389,7 @@ fortran_templates = {
     # CHARACTER types
     FullType("character", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -405,7 +405,7 @@ fortran_templates = {
     },
     FullType("character", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='STRUCTNAME_get_ATTRNAME_info')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
@@ -432,7 +432,7 @@ fortran_templates = {
     # TYPE (derived type - no pointer, just address)
     FullType("type", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -444,7 +444,7 @@ fortran_templates = {
     },
     FullType("type", 0, "PTR"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, ptr_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(STRUCTNAME), pointer :: struct_obj
@@ -461,7 +461,7 @@ fortran_templates = {
     # SIZE queries
     FullType("size", 0, "NOT"): {
         "getter": """
-  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, dim, size_out) bind(c)
+  subroutine STRUCTNAME_get_ATTRNAME(struct_obj_ptr, dim, size_out) bind(c, name='STRUCTNAME_get_ATTRNAME')
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(in), value :: dim
     integer(c_int), intent(out) :: size_out
@@ -492,7 +492,7 @@ cpp_templates = {
             """
     double ATTRNAME() const {
         double value;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &value);
         return value;
     }
 """
@@ -506,7 +506,7 @@ cpp_templates = {
             """
     double* ATTRNAME() const {
         double* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return ptr;
     }
 """
@@ -529,7 +529,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound
         );
         
         return FortranArray1D<double>(data_ptr, size_out, lower_bound, upper_bound, true);
@@ -554,7 +554,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound
         );
         
         return FortranArray1D<std::complex<double>>(
@@ -582,7 +582,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound
         );
         
         return FortranArray1D<int>(data_ptr, size_out, lower_bound, upper_bound, true);
@@ -609,7 +609,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
         
         return FortranArray1D<double>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
@@ -638,7 +638,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, 
+            get_fortran_ptr_(), &data_ptr, 
             &dim1_size, &dim1_lower, &dim1_upper,
             &dim2_size, &dim2_lower, &dim2_upper,
             &stride1, &stride2, &is_allocated
@@ -661,7 +661,7 @@ cpp_templates = {
             """
     long double ATTRNAME() const {
         long double value;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &value);
         return value;
     }
 """
@@ -675,7 +675,7 @@ cpp_templates = {
             """
     long double* ATTRNAME() const {
         long double* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return ptr;
     }
 """
@@ -690,7 +690,7 @@ cpp_templates = {
             """
     int ATTRNAME() const {
         int value;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &value);
         return value;
     }
 """
@@ -704,7 +704,7 @@ cpp_templates = {
             """
     int* ATTRNAME() const {
         int* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return ptr;
     }
 """
@@ -729,7 +729,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
         
         return FortranArray1D<int>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
@@ -758,7 +758,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, 
+            get_fortran_ptr_(), &data_ptr, 
             &dim1_size, &dim1_lower, &dim1_upper,
             &dim2_size, &dim2_lower, &dim2_upper,
             &stride1, &stride2, &is_allocated
@@ -780,7 +780,7 @@ cpp_templates = {
             """
     long long ATTRNAME() const {
         long long value;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &value);
         return value;
     }
 """
@@ -794,7 +794,7 @@ cpp_templates = {
             """
     long long* ATTRNAME() const {
         long long* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return ptr;
     }
 """
@@ -809,7 +809,7 @@ cpp_templates = {
             """
     std::complex<double> ATTRNAME() const {
         std::complex<double> c_value;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &c_value);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &c_value);
         return c_value;
     }
 """
@@ -823,7 +823,7 @@ cpp_templates = {
             """
     std::complex<double>* ATTRNAME() const {
         std::complex<double>* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return reinterpret_cast<std::complex<double>*>(ptr);
     }
 """
@@ -838,7 +838,7 @@ cpp_templates = {
             """
     bool ATTRNAME() const {
         bool value;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &value);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &value);
         return value;
     }
 """
@@ -852,7 +852,7 @@ cpp_templates = {
             """
     bool* ATTRNAME() const {
         bool* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return ptr;
     }
 """
@@ -882,7 +882,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
 
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound
         );
 
         return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, true);
@@ -909,7 +909,7 @@ cpp_templates = {
         bool is_allocated;
 
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
 
         if (!is_allocated || size_out == 0) {
@@ -926,7 +926,7 @@ cpp_templates = {
         bool is_allocated;
 
         STRUCTNAME_get_ATTRNAME_info(
-            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            get_fortran_ptr_(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
 
         return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
@@ -943,8 +943,8 @@ cpp_templates = {
             """
     ${return_proxy_name} ATTRNAME() const {
         void* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
-        return ${return_proxy_name}(fortran_ptr_);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
+        return ${return_proxy_name}(get_fortran_ptr_());
     }
 """
         ],
@@ -957,7 +957,7 @@ cpp_templates = {
             """
     const void* ATTRNAME() const {
         void* ptr;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, &ptr);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), &ptr);
         return ptr;
     }
 """
@@ -972,7 +972,7 @@ cpp_templates = {
             """
     int ATTRNAME(int dim = 1) const {
         int size_out;
-        STRUCTNAME_get_ATTRNAME(fortran_ptr_, dim, &size_out);
+        STRUCTNAME_get_ATTRNAME(get_fortran_ptr_(), dim, &size_out);
         return size_out;
     }
 """
@@ -1033,9 +1033,9 @@ contains
     print("end module", file=fout)
 
 
-def get_proxy_header_and_code(template_src: str, structs: list[CodegenStructure]) -> tuple[str, str]:
-    tpl = Template(template_src.replace("// ${", "${"))
-
+def get_proxy_header_and_code(
+    header_template_src: str, cpp_template_src: str, structs: list[CodegenStructure]
+) -> tuple[str, str]:
     c_forward_declarations = []
     subs = {}
 
@@ -1044,6 +1044,10 @@ def get_proxy_header_and_code(template_src: str, structs: list[CodegenStructure]
 class ${class_name} {
  private:
   void* fortran_ptr_;
+
+  inline void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit ${class_name}(void* ptr) : fortran_ptr_(ptr) {
@@ -1091,7 +1095,8 @@ class ${class_name} {
     other_classes = []
     for name, class_body in classes.items():
         class_forward_declarations.append(f"class {struct_to_proxy_class_name(name)};")
-        if name not in ["ele_struct", "branch_struct", "tao_lattice_struct", "tao_universe_struct"]:
+        # if name not in ["ele_struct", "branch_struct", "tao_lattice_struct", "tao_universe_struct"]:
+        if name not in ["ele_struct", "branch_struct"]:
             other_classes.append(
                 class_template.substitute(
                     class_name=struct_to_proxy_class_name(name),
@@ -1102,21 +1107,21 @@ class ${class_name} {
     subs["c_forward_declarations"] = "\n".join(c_forward_declarations)
     subs["class_forward_declarations"] = "\n".join(class_forward_declarations)
     subs["other_proxy_classes"] = "\n".join(other_classes)
-    header = tpl.substitute(subs)
-    impl = """
-#include "tao_proxies.hpp"
 
-using namespace tao;
-
-    """ + "\n".join(all_impl)
+    header = Template(header_template_src.replace("// ${", "${")).substitute(subs)
+    impl = cpp_template_src + "\n".join(all_impl)
     return header, impl
 
 
-def create_cpp_proxy_header(fout, template_src: str, structs: list[CodegenStructure]):
-    header, _ = get_proxy_header_and_code(template_src, structs)
+def create_cpp_proxy_header(
+    fout, header_template_src: str, cpp_template_src: str, structs: list[CodegenStructure]
+):
+    header, _ = get_proxy_header_and_code(header_template_src, cpp_template_src, structs)
     fout.write(header)
 
 
-def create_cpp_proxy_impl(fout, template_src: str, structs: list[CodegenStructure]):
-    _, impl = get_proxy_header_and_code(template_src, structs)
+def create_cpp_proxy_impl(
+    fout, header_template_src: str, cpp_template_src: str, structs: list[CodegenStructure]
+):
+    _, impl = get_proxy_header_and_code(header_template_src, cpp_template_src, structs)
     fout.write(impl)

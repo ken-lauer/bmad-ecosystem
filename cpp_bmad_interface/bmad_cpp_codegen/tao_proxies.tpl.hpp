@@ -19,6 +19,7 @@ extern "C" {
 // Global functions (index-based, only for initial access)
 int tao_get_n_universes();
 void* tao_c_get_universe_ptr(int ix_uni);
+void* tao_c_get_tao_lattice_ptr(int ix_uni, int ix_lat);
 void* tao_c_get_lattice_ptr(int ix_uni, int ix_lat);
 void* tao_c_get_branch_ptr(int ix_uni, int ix_lat, int ix_branch);
 void* tao_c_get_element_ptr(int ix_uni, int ix_lat, int ix_branch, int ix_ele);
@@ -57,7 +58,7 @@ class NullPointerException : public TaoException {
 };
 
 // Forward declarations
-class UniverseProxy;
+class TaoUniverseProxy;
 class LatticeProxy;
 class BranchProxy;
 class EleProxy;
@@ -67,6 +68,10 @@ class EleProxy;
 class EleProxy {
  private:
   void* fortran_ptr_;
+
+  void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit EleProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -87,6 +92,10 @@ class EleProxy {
 class BranchProxy {
  private:
   void* fortran_ptr_;
+
+  void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
 
  public:
   explicit BranchProxy(void* ptr) : fortran_ptr_(ptr) {
@@ -127,6 +136,10 @@ class LatticeProxy {
  private:
   void* fortran_ptr_;
 
+  void* get_fortran_ptr_() const {
+    return fortran_ptr_;
+  }
+
  public:
   explicit LatticeProxy(void* ptr) : fortran_ptr_(ptr) {
     if (!ptr) {
@@ -162,41 +175,21 @@ class LatticeProxy {
   // ${lat_struct_class_body}
 };
 
-class UniverseProxy {
- private:
-  void* fortran_ptr_;
-
- public:
-  explicit UniverseProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("UniverseProxy constructor");
-    }
-  }
-
-  // LatticeProxy get_lattice(LatticeType lattice_type) const {
-  //   void* lat_ptr =
-  //       tao_c_get_lattice_ptr(ix_uni_, static_cast<int>(lattice_type));
-  //   if (!lat_ptr) {
-  //     throw NullPointerException(
-  //         "get_lattice for universe " + std::to_string(ix_uni_));
-  //   }
-  //   return LatticeProxy(lat_ptr);
-  // }
-
-  // int get_universe_index() const {
-  //   return ix_uni_;
-  // }
-
-  // ${tao_universe_struct_class_body}
-};
+// ${other_proxy_classes}
 
 // Tao proxy classes for navigating the hierarchy
-class TaoElementProxy {
+// TaoElementIndexProxy does not map onto a specific Tao struct
+// TaoUniverseProxy maps onto tao_universe_struct
+class TaoElementIndexProxy {
  private:
   int ix_uni_, ix_lat_, ix_branch_, ix_ele_;
 
+  // void* get_fortran_ptr_() const {
+  //   return fortran_ptr_;
+  // }
+
  public:
-  TaoElementProxy(
+  TaoElementIndexProxy(
       int ix_uni,
       LatticeType lattice_type,
       int ix_branch,
@@ -211,8 +204,8 @@ class TaoElementProxy {
         tao_c_get_element_ptr(ix_uni_, ix_lat_, ix_branch_, ix_ele_);
     if (!ele_ptr) {
       throw NullPointerException(
-          "TaoElementProxy dereference for ix_uni=" + std::to_string(ix_uni_) +
-          " ix_lat=" + std::to_string(ix_lat_) +
+          "TaoElementIndexProxy dereference for ix_uni=" +
+          std::to_string(ix_uni_) + " ix_lat=" + std::to_string(ix_lat_) +
           " ix_branch=" + std::to_string(ix_branch_) +
           " ix_ele=" + std::to_string(ix_ele_) + "");
     }
@@ -224,12 +217,12 @@ class TaoElementProxy {
   }
 };
 
-class TaoBranchProxy {
+class TaoBranchIndexProxy {
  private:
   int ix_uni_, ix_lat_, ix_branch_;
 
  public:
-  TaoBranchProxy(int ix_uni, LatticeType lattice_type, int ix_branch)
+  TaoBranchIndexProxy(int ix_uni, LatticeType lattice_type, int ix_branch)
       : ix_uni_(ix_uni),
         ix_lat_(static_cast<int>(lattice_type)),
         ix_branch_(ix_branch) {}
@@ -238,8 +231,9 @@ class TaoBranchProxy {
     void* branch_ptr = tao_c_get_branch_ptr(ix_uni_, ix_lat_, ix_branch_);
     if (!branch_ptr) {
       throw NullPointerException(
-          "TaoBranchProxy dereference for [" + std::to_string(ix_uni_) + "," +
-          std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) + "]");
+          "TaoBranchIndexProxy dereference for [" + std::to_string(ix_uni_) +
+          "," + std::to_string(ix_lat_) + "," + std::to_string(ix_branch_) +
+          "]");
     }
     return BranchProxy(branch_ptr);
   }
@@ -248,64 +242,74 @@ class TaoBranchProxy {
     return std::make_unique<BranchProxy>(**this);
   }
 
-  TaoElementProxy get_element(int ix_ele) const {
-    return TaoElementProxy(
+  TaoElementIndexProxy get_element(int ix_ele) const {
+    return TaoElementIndexProxy(
         ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch_, ix_ele);
   }
 };
 
-class TaoLatticeProxy {
+class TaoLatticeIndexProxy {
  private:
   int ix_uni_, ix_lat_;
 
+  void* get_fortran_ptr_() const {
+    void* lat_ptr = tao_c_get_tao_lattice_ptr(ix_uni_, ix_lat_);
+    if (!lat_ptr) {
+      throw NullPointerException(
+          "TaoLatticeIndexProxy dereference for [" + std::to_string(ix_uni_) +
+          "," + std::to_string(ix_lat_) + "]");
+    }
+    return lat_ptr;
+  }
+
  public:
-  TaoLatticeProxy(int ix_uni, LatticeType lattice_type)
+  TaoLatticeIndexProxy(int ix_uni, LatticeType lattice_type)
       : ix_uni_(ix_uni), ix_lat_(static_cast<int>(lattice_type)) {}
 
-  LatticeProxy operator*() const {
+  TaoBranchIndexProxy get_branch(int ix_branch) const {
+    return TaoBranchIndexProxy(
+        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch);
+  }
+
+  TaoLatticeProxy operator*() const {
     void* lat_ptr = tao_c_get_lattice_ptr(ix_uni_, ix_lat_);
     if (!lat_ptr) {
       throw NullPointerException(
           "TaoLatticeProxy dereference for [" + std::to_string(ix_uni_) + "," +
           std::to_string(ix_lat_) + "]");
     }
-    return LatticeProxy(lat_ptr);
+    return TaoLatticeProxy(lat_ptr);
   }
-
-  std::unique_ptr<LatticeProxy> operator->() const {
-    return std::make_unique<LatticeProxy>(**this);
-  }
-
-  TaoBranchProxy get_branch(int ix_branch) const {
-    return TaoBranchProxy(
-        ix_uni_, static_cast<LatticeType>(ix_lat_), ix_branch);
+  std::unique_ptr<TaoLatticeProxy> operator->() const {
+    return std::make_unique<TaoLatticeProxy>(**this);
   }
 };
 
-class TaoUniverseProxy {
+class TaoUniverseIndexProxy {
  private:
   int ix_uni_;
 
- public:
-  explicit TaoUniverseProxy(int ix_uni) : ix_uni_(ix_uni) {}
-
-  UniverseProxy operator*() const {
-    int n_universes = tao_get_n_universes();
-    if (ix_uni_ < 0 || ix_uni_ >= n_universes) {
-      throw InvalidIndexException("universe", ix_uni_, n_universes);
+  void* get_fortran_ptr_() const {
+    void* uni_ptr = tao_c_get_universe_ptr(ix_uni_);
+    if (!uni_ptr) {
+      throw NullPointerException(
+          "TaoUniverseIndexProxy dereference for universe " +
+          std::to_string(ix_uni_));
     }
-    return UniverseProxy(tao_c_get_universe_ptr(ix_uni_));
+    return uni_ptr;
   }
 
-  std::unique_ptr<UniverseProxy> operator->() const {
-    return std::make_unique<UniverseProxy>(**this);
+ public:
+  explicit TaoUniverseIndexProxy(int ix_uni) : ix_uni_(ix_uni) {}
+
+  TaoUniverseProxy operator*() const;
+  std::unique_ptr<TaoUniverseProxy> operator->() const {
+    return std::make_unique<TaoUniverseProxy>(**this);
   }
 
-  TaoLatticeProxy get_lattice(LatticeType lattice_type) const {
-    return TaoLatticeProxy(ix_uni_, lattice_type);
+  TaoLatticeIndexProxy get_lattice(LatticeType lattice_type) const {
+    return TaoLatticeIndexProxy(ix_uni_, lattice_type);
   }
 };
-
-// ${other_proxy_classes}
 
 } // namespace tao
