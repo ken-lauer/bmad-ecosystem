@@ -1751,14 +1751,13 @@ def write_output(structs: list[CodegenStructure]) -> None:
     if DEBUG:
         write_parsed_structures(structs, "f_structs.parsed")
 
-    convert_fortran_header = (CODEGEN_ROOT / "convert_header.f90").read_text()
-
-    write_if_differs(
-        create_fortran_conversion_interface,
-        CPP_INTERFACE_ROOT / "code" / "bmad_cpp_convert_mod.f90",
-        convert_fortran_header,
-        structs,
-    )
+    # convert_fortran_header = (CODEGEN_ROOT / "convert_header.f90").read_text()
+    # write_if_differs(
+    #     create_fortran_conversion_interface,
+    #     CPP_INTERFACE_ROOT / "code" / "bmad_cpp_convert_mod.f90",
+    #     convert_fortran_header,
+    #     structs,
+    # )
     bmad_structs = [struct for struct in structs if struct.parsed.filename.parts[1].lower() not in {"tao"}]
     tao_structs = [struct for struct in structs if struct.parsed.filename.parts[1].lower() == "tao"]
 
@@ -1796,35 +1795,35 @@ def write_output(structs: list[CodegenStructure]) -> None:
         structs,
     )
 
-    write_if_differs(
-        write_tests_main,
-        CPP_INTERFACE_ROOT / "interface_test" / "main.f90",
-        structs,
-    )
-    write_if_differs(
-        write_tests_mod,
-        CPP_INTERFACE_ROOT / "interface_test" / "bmad_cpp_test_mod.f90",
-        structs,
-    )
-    write_if_differs(
-        write_cpp_classes,
-        CPP_INTERFACE_ROOT / "include" / "cpp_bmad_classes.h",
-        structs,
-    )
-    write_if_differs(
-        write_cpp_json_source,
-        CPP_INTERFACE_ROOT / "code" / "cpp_classes_json.cpp",
-        structs,
-    )
-    convert_header = (CODEGEN_ROOT / "convert_header.cpp").read_text()
+    # write_if_differs(
+    #     write_tests_main,
+    #     CPP_INTERFACE_ROOT / "interface_test" / "main.f90",
+    #     structs,
+    # )
+    # write_if_differs(
+    #     write_tests_mod,
+    #     CPP_INTERFACE_ROOT / "interface_test" / "bmad_cpp_test_mod.f90",
+    #     structs,
+    # )
+    # write_if_differs(
+    #     write_cpp_classes,
+    #     CPP_INTERFACE_ROOT / "include" / "cpp_bmad_classes.h",
+    #     structs,
+    # )
+    # write_if_differs(
+    #     write_cpp_json_source,
+    #     CPP_INTERFACE_ROOT / "code" / "cpp_classes_json.cpp",
+    #     structs,
+    # )
+    # convert_header = (CODEGEN_ROOT / "convert_header.cpp").read_text()
 
-    write_if_differs(
-        write_cpp_convert,
-        CPP_INTERFACE_ROOT / "code" / "cpp_bmad_convert.cpp",
-        convert_header,
-        structs,
-    )
-
+    # write_if_differs(
+    #     write_cpp_convert,
+    #     CPP_INTERFACE_ROOT / "code" / "cpp_bmad_convert.cpp",
+    #     convert_header,
+    #     structs,
+    # )
+    #
     equality_header = (CODEGEN_ROOT / "equality_header.cpp").read_text()
     write_if_differs(
         write_cpp_equality,
@@ -1832,11 +1831,11 @@ def write_output(structs: list[CodegenStructure]) -> None:
         equality_header,
         structs,
     )
-    write_if_differs(
-        write_cpp_test,
-        CPP_INTERFACE_ROOT / "interface_test" / "cpp_bmad_test.cpp",
-        structs,
-    )
+    # write_if_differs(
+    #     write_cpp_test,
+    #     CPP_INTERFACE_ROOT / "interface_test" / "cpp_bmad_test.cpp",
+    #     structs,
+    # )
 
 
 def get_c_type(type_val: str) -> str:

@@ -51,7 +51,7 @@ void to_f__variant_0(const CppClass& C, OpaqueClass* F) {
   //// case:0D_NOT_size:to_f2_arg
   c_Int
   //// case:0D_NOT_type:to_f2_arg
-  const CPP_KIND&
+  const PROXYCLS&
   //// case:1D_NOT_complex:to_f2_arg
   c_ComplexArr
   //// case:1D_NOT_integer:to_f2_arg
@@ -86,7 +86,7 @@ void to_f__variant_0(const CppClass& C, OpaqueClass* F) {
       //// case:0D_NOT_size:to_f2_call
       NAME,
       //// case:0D_NOT_type:to_f2_call
-      C.NAME,
+      C.NAME.get_fortran_ptr(),
       //// case:1D_NOT_complex:to_f2_call
       &C.NAME[0],
       //// case:1D_NOT_integer:to_f2_call
@@ -163,7 +163,7 @@ void to_f__variant_2(const CppClass& C, OpaqueClass* F) {
   //// case:0D_ALLOC_real:to_f2_arg
   c_RealArr
   //// case:0D_ALLOC_type:to_f2_arg
-  const CPP_KIND&
+  void*
   //// case:0D_PTR_complex:to_f2_arg
   c_ComplexArr
   //// case:0D_PTR_integer:to_f2_arg
@@ -175,7 +175,7 @@ void to_f__variant_2(const CppClass& C, OpaqueClass* F) {
   //// case:0D_PTR_real:to_f2_arg
   c_RealArr
   //// case:0D_PTR_type:to_f2_arg
-  const CPP_KIND*
+  void *
 
   // to_f2_call
 
@@ -190,7 +190,7 @@ void to_f__variant_2(const CppClass& C, OpaqueClass* F) {
   //// case:0D_ALLOC_real:to_f2_call
   C.NAME,
   //// case:0D_ALLOC_type:to_f2_call
-  *C.NAME,
+  C.NAME,
   //// case:0D_PTR_complex:to_f2_call
   (C.NAME ? &C.NAME.value() : nullptr),
   //// case:0D_PTR_integer:to_f2_call
@@ -234,16 +234,16 @@ void to_f__variant_3(const CppClass& C, OpaqueClass* F) {
 //// type:1D_NOT_type
 void to_f__variant_4(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
-  const CPP_KIND* z_NAME[DIM1];
+  void* z_NAME[DIM1];
   for (int i = 0; i < DIM1; i++) {
-    z_NAME[i] = &C.NAME[i];
+    z_NAME[i] = C.NAME[i].get_fortran_ptr();
   }
   //// end:to_f_setup
 
   to_f2(
       F, /*
   //// begin:to_f2_arg
-  const CPP_KIND**
+  void**
   //// end:to_f2_arg
   */
       //// begin:to_f2_call
@@ -321,9 +321,9 @@ void to_f__variant_10(const CppClass& C, OpaqueClass* F) {
 void to_f__variant_11(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   size_t n1_NAME = C.NAME.size();
-  const CPP_KIND** z_NAME = nullptr;
+  const PROXYCLS** z_NAME = nullptr;
   if (n1_NAME != 0) {
-    z_NAME = new const CPP_KIND*[n1_NAME];
+    z_NAME = new const PROXYCLS*[n1_NAME];
     for (size_t i{0}; i < n1_NAME; i++)
       z_NAME[i] = &C.NAME[i];
   }
@@ -332,7 +332,7 @@ void to_f__variant_11(const CppClass& C, OpaqueClass* F) {
   to_f2(
       F, /*
   //// begin:to_f2_arg
-  const CPP_KIND**
+  const PROXYCLS**
   //// end:to_f2_arg
   */
       //// begin:to_f2_call
@@ -374,7 +374,7 @@ void to_f__variant_16(const CppClass& C, OpaqueClass* F) {
 //// type:2D_NOT_type
 void to_f__variant_17(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
-  const CPP_KIND* z_NAME[DIM1 * DIM2];
+  const PROXYCLS* z_NAME[DIM1 * DIM2];
   for (size_t i{0}; i < DIM1; i++)
     for (size_t j{0}; j < DIM2; j++) {
       auto m = DIM2 * i + j;
@@ -385,7 +385,7 @@ void to_f__variant_17(const CppClass& C, OpaqueClass* F) {
   to_f2(
       F, /*
   //// begin:to_f2_arg
-  const CPP_KIND**
+  const PROXYCLS**
   //// end:to_f2_arg
   */
       //// begin:to_f2_call
@@ -397,7 +397,7 @@ void to_f__variant_17(const CppClass& C, OpaqueClass* F) {
 //// type:3D_NOT_type
 void to_f__variant_17a(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
-  const CPP_KIND* z_NAME[DIM1 * DIM2 * DIM3];
+  const PROXYCLS* z_NAME[DIM1 * DIM2 * DIM3];
   for (size_t i{0}; i < DIM1; i++) {
     for (size_t j{0}; j < DIM2; j++) {
       for (size_t k{0}; k < DIM3; k++) {
@@ -411,7 +411,7 @@ void to_f__variant_17a(const CppClass& C, OpaqueClass* F) {
   to_f2(
       F, /*
   //// begin:to_f2_arg
-  const CPP_KIND**
+  const PROXYCLS**
   //// end:to_f2_arg
   */
       //// begin:to_f2_call
@@ -467,10 +467,10 @@ void to_f__variant_23(const CppClass& C, OpaqueClass* F) {
   //// begin:to_f_setup
   size_t n1_NAME{C.NAME.size()};
   size_t n2_NAME{size_t{0}};
-  const CPP_KIND** z_NAME{nullptr};
+  const PROXYCLS** z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
-    z_NAME = new const CPP_KIND*[n1_NAME * n2_NAME];
+    z_NAME = new const PROXYCLS*[n1_NAME * n2_NAME];
     for (size_t i{0}; i < n1_NAME; i++) {
       for (size_t j{0}; j < n2_NAME; j++) {
         z_NAME[i * n2_NAME + j] = &C.NAME[i][j];
@@ -482,7 +482,7 @@ void to_f__variant_23(const CppClass& C, OpaqueClass* F) {
   to_f2(
       F, /*
   //// begin:to_f2_arg
-  const CPP_KIND**
+  const PROXYCLS**
   //// end:to_f2_arg
   */
       //// begin:to_f2_call
@@ -503,11 +503,11 @@ void to_f__variant_23a(const CppClass& C, OpaqueClass* F) {
   size_t n1_NAME{C.NAME.size()};
   size_t n2_NAME{size_t{0}};
   size_t n3_NAME{size_t{0}};
-  const CPP_KIND** z_NAME{nullptr};
+  const PROXYCLS** z_NAME{nullptr};
   if (n1_NAME > 0) {
     n2_NAME = C.NAME[0].size();
     n3_NAME = C.NAME[0][0].size();
-    z_NAME = new const CPP_KIND*[n1_NAME * n2_NAME * n3_NAME];
+    z_NAME = new const PROXYCLS*[n1_NAME * n2_NAME * n3_NAME];
     for (size_t i{0}; i < n1_NAME; i++) {
       for (size_t j{0}; j < n2_NAME; j++) {
         for (size_t k{0}; k < n3_NAME; k++) {
@@ -522,7 +522,7 @@ void to_f__variant_23a(const CppClass& C, OpaqueClass* F) {
   to_f2(
       F, /*
   //// begin:to_f2_arg
-  const CPP_KIND**
+  const PROXYCLS**
   //// end:to_f2_arg
   */
       //// begin:to_f2_call
@@ -1760,7 +1760,7 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// section:c_class
     //// type:0D_NOT_type
     //// begin:c_class
-    CPP_KIND
+    PROXYCLS
     //// end:c_class
 
     //// section:c_class
@@ -1778,7 +1778,7 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// section:c_class
     //// type:1D_NOT_type
     //// begin:c_class
-    FixedArray1D<CPP_KIND, DIM1>
+    FixedArray1D<PROXYCLS, DIM1>
     //// end:c_class
 
     //// section:c_class
@@ -1893,13 +1893,13 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// section:c_class
     //// type:2D_NOT_type
     //// begin:c_class
-    FixedArray2D<CPP_KIND, DIM1, DIM2>
+    FixedArray2D<PROXYCLS, DIM1, DIM2>
     //// end:c_class
 
     //// section:c_class
     //// type:3D_NOT_type
     //// begin:c_class
-    FixedArray3D<CPP_KIND, DIM1, DIM2, DIM3>
+    FixedArray3D<PROXYCLS, DIM1, DIM2, DIM3>
     //// end:c_class
 
     //// section:c_class
@@ -1913,7 +1913,7 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// type:1D_ALLOC_type
     //// type:1D_PTR_type
     //// begin:c_class
-    VariableArray1D<CPP_KIND>
+    VariableArray1D<PROXYCLS>
     //// end:c_class
 
     //// section:c_class
@@ -1962,7 +1962,7 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// type:2D_ALLOC_type
     //// type:2D_PTR_type
     //// begin:c_class
-    VariableArray2D<CPP_KIND>
+    VariableArray2D<PROXYCLS>
     //// end:c_class
 
     //// section:c_class
@@ -2004,7 +2004,7 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// type:3D_ALLOC_type
     //// type:3D_PTR_type
     //// begin:c_class
-    VariableArray3D<CPP_KIND>
+    VariableArray3D<PROXYCLS>
     //// end:c_class
 
     //// section:c_class
@@ -2045,13 +2045,13 @@ void C_CLASS(STRUCT_CPP_CLASS& C) {
     //// section:c_class
     //// type:0D_ALLOC_type
     //// begin:c_class
-    std::optional<CPP_KIND>
+    std::optional<PROXYCLS>
     //// end:c_class
 
     //// section:c_class
     //// type:0D_PTR_type
     //// begin:c_class
-    std::optional<CPP_KIND>
+    std::optional<PROXYCLS>
     //// end:c_class
 
     //// section:c_class

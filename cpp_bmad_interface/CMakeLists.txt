@@ -14,10 +14,6 @@ set(SRC_DIRS
   code
 )
 
-set(EXE_SPECS
-  cmake.cpp_bmad_interface_test
-)
-
 set(SHARED_DEPS
   bmad
   tao
