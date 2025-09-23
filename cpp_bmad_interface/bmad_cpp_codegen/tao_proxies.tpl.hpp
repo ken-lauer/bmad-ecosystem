@@ -2,7 +2,7 @@
 
 #include "cpp_bmad_classes.h"
 #include "fortran_arrays.hpp"
-#include "tao_proxies.hpp"
+#include "proxy_base.hpp"
 
 #include <complex>
 #include <iterator>
@@ -37,145 +37,14 @@ namespace tao {
 enum class LatticeType : int { MODEL = 1, DESIGN = 2, BASE = 3 };
 
 // Exception classes
-class TaoException : public std::runtime_error {
- public:
-  explicit TaoException(const std::string& message)
-      : std::runtime_error(message) {}
-};
-
-class InvalidIndexException : public TaoException {
- public:
-  InvalidIndexException(const std::string& index_type, int index, int max_value)
-      : TaoException(
-            "Invalid " + index_type + " index " + std::to_string(index) +
-            " (valid range: 0-" + std::to_string(max_value - 1) + ")") {}
-};
-
-class NullPointerException : public TaoException {
- public:
-  NullPointerException(const std::string& context)
-      : TaoException("Null pointer encountered in " + context) {}
-};
 
 // Forward declarations
-class TaoUniverseProxy;
-class LatticeProxy;
-class BranchProxy;
-class EleProxy;
+class TaoUniverseIndexProxy;
+class TaoLatticeIndexProxy;
+class TaoBranchIndexProxy;
 // ${class_forward_declarations}
 
-// Non-Tao proxy classes that directly reference Fortran memory
-class EleProxy {
- private:
-  void* fortran_ptr_;
-
-  void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit EleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("EleProxy constructor");
-    }
-  }
-
-  std::shared_ptr<CPP_ele> deepcopy() const {
-    auto ele = std::make_shared<CPP_ele>();
-    ele_to_c(static_cast<Opaque_ele_class*>(fortran_ptr_), *ele);
-    return ele;
-  }
-
-  // ${ele_struct_class_body}
-};
-
-class BranchProxy {
- private:
-  void* fortran_ptr_;
-
-  void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit BranchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BranchProxy constructor");
-    }
-  }
-
-  EleProxy get_element(int ix_ele) const {
-    int n_elements = tao_branch_get_n_elements(fortran_ptr_);
-    if (n_elements < 0) {
-      throw TaoException("Failed to get number of elements from branch");
-    }
-    if (ix_ele < 0 || ix_ele >= n_elements) {
-      throw InvalidIndexException("element", ix_ele, n_elements);
-    }
-
-    void* ele_ptr = tao_branch_get_element_ptr(fortran_ptr_, ix_ele);
-    if (!ele_ptr) {
-      throw NullPointerException(
-          "get_element for index " + std::to_string(ix_ele));
-    }
-    return EleProxy(ele_ptr);
-  }
-
-  int get_n_elements() const {
-    int n = tao_branch_get_n_elements(fortran_ptr_);
-    if (n < 0) {
-      throw TaoException("Failed to get number of elements from branch");
-    }
-    return n;
-  }
-
-  // ${branch_struct_class_body}
-};
-
-class LatticeProxy {
- private:
-  void* fortran_ptr_;
-
-  void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit LatticeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatticeProxy constructor");
-    }
-  }
-
-  BranchProxy get_branch(int ix_branch) const {
-    int n_branches = tao_lat_get_n_branches(fortran_ptr_);
-    if (n_branches < 0) {
-      throw TaoException("Failed to get number of branches from lattice");
-    }
-    if (ix_branch < 0 || ix_branch >= n_branches) {
-      throw InvalidIndexException("branch", ix_branch, n_branches);
-    }
-
-    void* branch_ptr = tao_lat_get_branch_ptr(fortran_ptr_, ix_branch);
-    if (!branch_ptr) {
-      throw NullPointerException(
-          "get_branch for index " + std::to_string(ix_branch));
-    }
-    return BranchProxy(branch_ptr);
-  }
-
-  int get_n_branches() const {
-    int n = tao_lat_get_n_branches(fortran_ptr_);
-    if (n < 0) {
-      throw TaoException("Failed to get number of branches from lattice");
-    }
-    return n;
-  }
-
-  // ${lat_struct_class_body}
-};
-
-// ${other_proxy_classes}
+// ${proxy_classes}
 
 // Tao proxy classes for navigating the hierarchy
 // TaoElementIndexProxy does not map onto a specific Tao struct

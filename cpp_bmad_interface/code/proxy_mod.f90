@@ -5,6 +5,40 @@ module bmad_struct_proxy_mod
 contains
 
   !! spline_struct
+
+  function allocate_fortran_spline_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(spline_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_spline_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(spline_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_spline_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(spline_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! spline_struct%x0: 0D_NOT_real
 
   subroutine spline_struct_get_x0(struct_obj_ptr, value_out) bind(c, name='spline_struct_get_x0')
@@ -54,6 +88,40 @@ contains
   end subroutine
 
   !! spin_polar_struct
+
+  function allocate_fortran_spin_polar_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(spin_polar_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_spin_polar_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(spin_polar_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_spin_polar_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(spin_polar_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! spin_polar_struct%polarization: 0D_NOT_real
 
   subroutine spin_polar_struct_get_polarization(struct_obj_ptr, value_out) bind(c, name='spin_polar_struct_get_polarization')
@@ -99,6 +167,40 @@ contains
   end subroutine
 
   !! ac_kicker_time_struct
+
+  function allocate_fortran_ac_kicker_time_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ac_kicker_time_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ac_kicker_time_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ac_kicker_time_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ac_kicker_time_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ac_kicker_time_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ac_kicker_time_struct%amp: 0D_NOT_real
 
   subroutine ac_kicker_time_struct_get_amp(struct_obj_ptr, value_out) bind(c, name='ac_kicker_time_struct_get_amp')
@@ -133,6 +235,40 @@ contains
   end subroutine
 
   !! ac_kicker_freq_struct
+
+  function allocate_fortran_ac_kicker_freq_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ac_kicker_freq_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ac_kicker_freq_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ac_kicker_freq_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ac_kicker_freq_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ac_kicker_freq_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ac_kicker_freq_struct%f: 0D_NOT_real
 
   subroutine ac_kicker_freq_struct_get_f(struct_obj_ptr, value_out) bind(c, name='ac_kicker_freq_struct_get_f')
@@ -178,6 +314,40 @@ contains
   end subroutine
 
   !! ac_kicker_struct
+
+  function allocate_fortran_ac_kicker_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ac_kicker_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ac_kicker_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ac_kicker_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ac_kicker_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ac_kicker_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ac_kicker_struct%amp_vs_time: 1D_ALLOC_type
 
   subroutine ac_kicker_struct_get_amp_vs_time_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='ac_kicker_struct_get_amp_vs_time_info')
@@ -235,6 +405,40 @@ contains
   end subroutine
 
   !! interval1_coef_struct
+
+  function allocate_fortran_interval1_coef_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(interval1_coef_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_interval1_coef_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(interval1_coef_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_interval1_coef_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(interval1_coef_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! interval1_coef_struct%c0: 0D_NOT_real
 
   subroutine interval1_coef_struct_get_c0(struct_obj_ptr, value_out) bind(c, name='interval1_coef_struct_get_c0')
@@ -269,6 +473,40 @@ contains
   end subroutine
 
   !! photon_reflect_table_struct
+
+  function allocate_fortran_photon_reflect_table_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(photon_reflect_table_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_photon_reflect_table_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(photon_reflect_table_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_photon_reflect_table_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(photon_reflect_table_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! photon_reflect_table_struct%angle: 1D_ALLOC_real
 
   subroutine photon_reflect_table_struct_get_angle_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='photon_reflect_table_struct_get_angle_info')
@@ -447,6 +685,40 @@ contains
   end subroutine
 
   !! photon_reflect_surface_struct
+
+  function allocate_fortran_photon_reflect_surface_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(photon_reflect_surface_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_photon_reflect_surface_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(photon_reflect_surface_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_photon_reflect_surface_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(photon_reflect_surface_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! photon_reflect_surface_struct%name: 0D_NOT_character
 
   subroutine photon_reflect_surface_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='photon_reflect_surface_struct_get_name_info')
@@ -554,6 +826,40 @@ contains
   end subroutine
 
   !! coord_struct
+
+  function allocate_fortran_coord_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(coord_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_coord_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(coord_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_coord_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(coord_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! coord_struct%vec: 1D_NOT_real
 
   subroutine coord_struct_get_vec_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='coord_struct_get_vec_info')
@@ -802,6 +1108,40 @@ contains
   end subroutine
 
   !! coord_array_struct
+
+  function allocate_fortran_coord_array_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(coord_array_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_coord_array_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(coord_array_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_coord_array_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(coord_array_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! coord_array_struct%orbit: 1D_ALLOC_type
 
   subroutine coord_array_struct_get_orbit_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='coord_array_struct_get_orbit_info')
@@ -831,6 +1171,40 @@ contains
   end subroutine
 
   !! bpm_phase_coupling_struct
+
+  function allocate_fortran_bpm_phase_coupling_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bpm_phase_coupling_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bpm_phase_coupling_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bpm_phase_coupling_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bpm_phase_coupling_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bpm_phase_coupling_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bpm_phase_coupling_struct%K_22a: 0D_NOT_real
 
   subroutine bpm_phase_coupling_struct_get_K_22a(struct_obj_ptr, value_out) bind(c, name='bpm_phase_coupling_struct_get_K_22a')
@@ -942,6 +1316,40 @@ contains
   end subroutine
 
   !! expression_atom_struct
+
+  function allocate_fortran_expression_atom_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(expression_atom_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_expression_atom_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(expression_atom_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_expression_atom_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(expression_atom_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! expression_atom_struct%name: 0D_NOT_character
 
   subroutine expression_atom_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='expression_atom_struct_get_name_info')
@@ -980,6 +1388,40 @@ contains
   end subroutine
 
   !! wake_sr_z_long_struct
+
+  function allocate_fortran_wake_sr_z_long_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wake_sr_z_long_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wake_sr_z_long_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wake_sr_z_long_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wake_sr_z_long_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wake_sr_z_long_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wake_sr_z_long_struct%w: 1D_ALLOC_real
 
   subroutine wake_sr_z_long_struct_get_w_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='wake_sr_z_long_struct_get_w_info')
@@ -1064,6 +1506,40 @@ contains
   end subroutine
 
   !! wake_sr_mode_struct
+
+  function allocate_fortran_wake_sr_mode_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wake_sr_mode_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wake_sr_mode_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wake_sr_mode_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wake_sr_mode_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wake_sr_mode_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wake_sr_mode_struct%amp: 0D_NOT_real
 
   subroutine wake_sr_mode_struct_get_amp(struct_obj_ptr, value_out) bind(c, name='wake_sr_mode_struct_get_amp')
@@ -1175,6 +1651,40 @@ contains
   end subroutine
 
   !! wake_sr_struct
+
+  function allocate_fortran_wake_sr_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wake_sr_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wake_sr_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wake_sr_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wake_sr_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wake_sr_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wake_sr_struct%file: 0D_NOT_character
 
   subroutine wake_sr_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='wake_sr_struct_get_file_info')
@@ -1324,6 +1834,40 @@ contains
   end subroutine
 
   !! wake_lr_mode_struct
+
+  function allocate_fortran_wake_lr_mode_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wake_lr_mode_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wake_lr_mode_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wake_lr_mode_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wake_lr_mode_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wake_lr_mode_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wake_lr_mode_struct%freq: 0D_NOT_real
 
   subroutine wake_lr_mode_struct_get_freq(struct_obj_ptr, value_out) bind(c, name='wake_lr_mode_struct_get_freq')
@@ -1468,6 +2012,40 @@ contains
   end subroutine
 
   !! wake_lr_struct
+
+  function allocate_fortran_wake_lr_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wake_lr_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wake_lr_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wake_lr_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wake_lr_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wake_lr_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wake_lr_struct%file: 0D_NOT_character
 
   subroutine wake_lr_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='wake_lr_struct_get_file_info')
@@ -1567,6 +2145,40 @@ contains
   end subroutine
 
   !! lat_ele_loc_struct
+
+  function allocate_fortran_lat_ele_loc_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(lat_ele_loc_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_lat_ele_loc_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(lat_ele_loc_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_lat_ele_loc_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(lat_ele_loc_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! lat_ele_loc_struct%ix_ele: 0D_NOT_integer
 
   subroutine lat_ele_loc_struct_get_ix_ele(struct_obj_ptr, value_out) bind(c, name='lat_ele_loc_struct_get_ix_ele')
@@ -1590,6 +2202,40 @@ contains
   end subroutine
 
   !! wake_struct
+
+  function allocate_fortran_wake_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wake_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wake_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wake_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wake_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wake_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wake_struct%sr: 0D_NOT_type
 
   subroutine wake_struct_get_sr(struct_obj_ptr, ptr_out) bind(c, name='wake_struct_get_sr')
@@ -1613,6 +2259,40 @@ contains
   end subroutine
 
   !! taylor_term_struct
+
+  function allocate_fortran_taylor_term_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(taylor_term_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_taylor_term_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(taylor_term_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_taylor_term_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(taylor_term_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! taylor_term_struct%coef: 0D_NOT_real
 
   subroutine taylor_term_struct_get_coef(struct_obj_ptr, value_out) bind(c, name='taylor_term_struct_get_coef')
@@ -1640,6 +2320,40 @@ contains
   end subroutine
 
   !! taylor_struct
+
+  function allocate_fortran_taylor_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(taylor_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_taylor_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(taylor_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_taylor_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(taylor_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! taylor_struct%ref: 0D_NOT_real
 
   subroutine taylor_struct_get_ref(struct_obj_ptr, value_out) bind(c, name='taylor_struct_get_ref')
@@ -1680,6 +2394,40 @@ contains
   end subroutine
 
   !! em_taylor_term_struct
+
+  function allocate_fortran_em_taylor_term_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(em_taylor_term_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_em_taylor_term_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(em_taylor_term_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_em_taylor_term_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(em_taylor_term_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! em_taylor_term_struct%coef: 0D_NOT_real
 
   subroutine em_taylor_term_struct_get_coef(struct_obj_ptr, value_out) bind(c, name='em_taylor_term_struct_get_coef')
@@ -1707,6 +2455,40 @@ contains
   end subroutine
 
   !! em_taylor_struct
+
+  function allocate_fortran_em_taylor_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(em_taylor_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_em_taylor_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(em_taylor_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_em_taylor_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(em_taylor_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! em_taylor_struct%ref: 0D_NOT_real
 
   subroutine em_taylor_struct_get_ref(struct_obj_ptr, value_out) bind(c, name='em_taylor_struct_get_ref')
@@ -1747,6 +2529,40 @@ contains
   end subroutine
 
   !! cartesian_map_term1_struct
+
+  function allocate_fortran_cartesian_map_term1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(cartesian_map_term1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_cartesian_map_term1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(cartesian_map_term1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_cartesian_map_term1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(cartesian_map_term1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! cartesian_map_term1_struct%coef: 0D_NOT_real
 
   subroutine cartesian_map_term1_struct_get_coef(struct_obj_ptr, value_out) bind(c, name='cartesian_map_term1_struct_get_coef')
@@ -1847,6 +2663,40 @@ contains
   end subroutine
 
   !! cartesian_map_term_struct
+
+  function allocate_fortran_cartesian_map_term_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(cartesian_map_term_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_cartesian_map_term_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(cartesian_map_term_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_cartesian_map_term_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(cartesian_map_term_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! cartesian_map_term_struct%file: 0D_NOT_character
 
   subroutine cartesian_map_term_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='cartesian_map_term_struct_get_file_info')
@@ -1902,6 +2752,40 @@ contains
   end subroutine
 
   !! cartesian_map_struct
+
+  function allocate_fortran_cartesian_map_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(cartesian_map_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_cartesian_map_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(cartesian_map_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_cartesian_map_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(cartesian_map_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! cartesian_map_struct%field_scale: 0D_NOT_real
 
   subroutine cartesian_map_struct_get_field_scale(struct_obj_ptr, value_out) bind(c, name='cartesian_map_struct_get_field_scale')
@@ -1977,6 +2861,40 @@ contains
   end subroutine
 
   !! cylindrical_map_term1_struct
+
+  function allocate_fortran_cylindrical_map_term1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(cylindrical_map_term1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_cylindrical_map_term1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(cylindrical_map_term1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_cylindrical_map_term1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(cylindrical_map_term1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! cylindrical_map_term1_struct%e_coef: 0D_NOT_complex
 
   subroutine cylindrical_map_term1_struct_get_e_coef(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_term1_struct_get_e_coef')
@@ -2000,6 +2918,40 @@ contains
   end subroutine
 
   !! cylindrical_map_term_struct
+
+  function allocate_fortran_cylindrical_map_term_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(cylindrical_map_term_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_cylindrical_map_term_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(cylindrical_map_term_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_cylindrical_map_term_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(cylindrical_map_term_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! cylindrical_map_term_struct%file: 0D_NOT_character
 
   subroutine cylindrical_map_term_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='cylindrical_map_term_struct_get_file_info')
@@ -2055,6 +3007,40 @@ contains
   end subroutine
 
   !! cylindrical_map_struct
+
+  function allocate_fortran_cylindrical_map_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(cylindrical_map_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_cylindrical_map_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(cylindrical_map_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_cylindrical_map_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(cylindrical_map_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! cylindrical_map_struct%m: 0D_NOT_integer
 
   subroutine cylindrical_map_struct_get_m(struct_obj_ptr, value_out) bind(c, name='cylindrical_map_struct_get_m')
@@ -2174,6 +3160,40 @@ contains
   end subroutine
 
   !! bicubic_cmplx_coef_struct
+
+  function allocate_fortran_bicubic_cmplx_coef_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bicubic_cmplx_coef_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bicubic_cmplx_coef_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bicubic_cmplx_coef_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bicubic_cmplx_coef_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bicubic_cmplx_coef_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! skipped bicubic_cmplx_coef_struct%coef: Unsupported type: 2D_NOT_complex
   ! bicubic_cmplx_coef_struct%i_box: 1D_NOT_integer
 
@@ -2191,6 +3211,40 @@ contains
   end subroutine
 
   !! tricubic_cmplx_coef_struct
+
+  function allocate_fortran_tricubic_cmplx_coef_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tricubic_cmplx_coef_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tricubic_cmplx_coef_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tricubic_cmplx_coef_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tricubic_cmplx_coef_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tricubic_cmplx_coef_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! skipped tricubic_cmplx_coef_struct%coef: Unsupported type: 3D_NOT_complex
   ! tricubic_cmplx_coef_struct%i_box: 1D_NOT_integer
 
@@ -2208,6 +3262,40 @@ contains
   end subroutine
 
   !! grid_field_pt1_struct
+
+  function allocate_fortran_grid_field_pt1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(grid_field_pt1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_grid_field_pt1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(grid_field_pt1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_grid_field_pt1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(grid_field_pt1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! grid_field_pt1_struct%E: 1D_NOT_complex
 
   subroutine grid_field_pt1_struct_get_E_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='grid_field_pt1_struct_get_E_info')
@@ -2239,6 +3327,40 @@ contains
   end subroutine
 
   !! grid_field_pt_struct
+
+  function allocate_fortran_grid_field_pt_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(grid_field_pt_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_grid_field_pt_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(grid_field_pt_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_grid_field_pt_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(grid_field_pt_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! grid_field_pt_struct%file: 0D_NOT_character
 
   subroutine grid_field_pt_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='grid_field_pt_struct_get_file_info')
@@ -2267,6 +3389,40 @@ contains
 
   ! skipped grid_field_pt_struct%pt: Unsupported type: 3D_ALLOC_type
   !! grid_field_struct
+
+  function allocate_fortran_grid_field_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(grid_field_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_grid_field_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(grid_field_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_grid_field_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(grid_field_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! grid_field_struct%geometry: 0D_NOT_integer
 
   subroutine grid_field_struct_get_geometry(struct_obj_ptr, value_out) bind(c, name='grid_field_struct_get_geometry')
@@ -2414,6 +3570,40 @@ contains
   ! skipped grid_field_struct%bi_coef: Unsupported type: 3D_NOT_type
   ! skipped grid_field_struct%tri_coef: Unsupported type: 3D_NOT_type
   !! floor_position_struct
+
+  function allocate_fortran_floor_position_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(floor_position_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_floor_position_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(floor_position_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_floor_position_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(floor_position_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! floor_position_struct%r: 1D_NOT_real
 
   subroutine floor_position_struct_get_r_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='floor_position_struct_get_r_info')
@@ -2464,6 +3654,40 @@ contains
   end subroutine
 
   !! high_energy_space_charge_struct
+
+  function allocate_fortran_high_energy_space_charge_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(high_energy_space_charge_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_high_energy_space_charge_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(high_energy_space_charge_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_high_energy_space_charge_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(high_energy_space_charge_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! high_energy_space_charge_struct%closed_orb: 0D_NOT_type
 
   subroutine high_energy_space_charge_struct_get_closed_orb(struct_obj_ptr, ptr_out) bind(c, name='high_energy_space_charge_struct_get_closed_orb')
@@ -2553,6 +3777,40 @@ contains
   end subroutine
 
   !! xy_disp_struct
+
+  function allocate_fortran_xy_disp_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(xy_disp_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_xy_disp_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(xy_disp_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_xy_disp_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(xy_disp_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! xy_disp_struct%eta: 0D_NOT_real
 
   subroutine xy_disp_struct_get_eta(struct_obj_ptr, value_out) bind(c, name='xy_disp_struct_get_eta')
@@ -2620,6 +3878,40 @@ contains
   end subroutine
 
   !! twiss_struct
+
+  function allocate_fortran_twiss_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(twiss_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_twiss_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(twiss_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_twiss_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(twiss_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! twiss_struct%beta: 0D_NOT_real
 
   subroutine twiss_struct_get_beta(struct_obj_ptr, value_out) bind(c, name='twiss_struct_get_beta')
@@ -2797,6 +4089,40 @@ contains
   end subroutine
 
   !! mode3_struct
+
+  function allocate_fortran_mode3_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(mode3_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_mode3_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(mode3_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_mode3_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(mode3_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! skipped mode3_struct%v: Unsupported type: 2D_NOT_real
   ! mode3_struct%a: 0D_NOT_type
 
@@ -2854,6 +4180,40 @@ contains
   end subroutine
 
   !! bookkeeping_state_struct
+
+  function allocate_fortran_bookkeeping_state_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bookkeeping_state_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bookkeeping_state_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bookkeeping_state_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bookkeeping_state_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bookkeeping_state_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bookkeeping_state_struct%attributes: 0D_NOT_integer
 
   subroutine bookkeeping_state_struct_get_attributes(struct_obj_ptr, value_out) bind(c, name='bookkeeping_state_struct_get_attributes')
@@ -2954,6 +4314,40 @@ contains
   end subroutine
 
   !! rad_map_struct
+
+  function allocate_fortran_rad_map_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rad_map_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rad_map_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rad_map_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rad_map_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rad_map_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rad_map_struct%ref_orb: 1D_NOT_real
 
   subroutine rad_map_struct_get_ref_orb_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='rad_map_struct_get_ref_orb_info')
@@ -2988,6 +4382,40 @@ contains
   ! skipped rad_map_struct%xfer_damp_mat: Unsupported type: 2D_NOT_real
   ! skipped rad_map_struct%stoc_mat: Unsupported type: 2D_NOT_real
   !! rad_map_ele_struct
+
+  function allocate_fortran_rad_map_ele_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rad_map_ele_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rad_map_ele_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rad_map_ele_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rad_map_ele_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rad_map_ele_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rad_map_ele_struct%rm0: 0D_NOT_type
 
   subroutine rad_map_ele_struct_get_rm0(struct_obj_ptr, ptr_out) bind(c, name='rad_map_ele_struct_get_rm0')
@@ -3022,6 +4450,40 @@ contains
   end subroutine
 
   !! gen_grad1_struct
+
+  function allocate_fortran_gen_grad1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(gen_grad1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_gen_grad1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(gen_grad1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_gen_grad1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(gen_grad1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! gen_grad1_struct%m: 0D_NOT_integer
 
   subroutine gen_grad1_struct_get_m(struct_obj_ptr, value_out) bind(c, name='gen_grad1_struct_get_m')
@@ -3094,6 +4556,40 @@ contains
   end subroutine
 
   !! gen_grad_map_struct
+
+  function allocate_fortran_gen_grad_map_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(gen_grad_map_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_gen_grad_map_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(gen_grad_map_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_gen_grad_map_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(gen_grad_map_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! gen_grad_map_struct%file: 0D_NOT_character
 
   subroutine gen_grad_map_struct_get_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='gen_grad_map_struct_get_file_info')
@@ -3241,6 +4737,40 @@ contains
   end subroutine
 
   !! surface_segmented_pt_struct
+
+  function allocate_fortran_surface_segmented_pt_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_segmented_pt_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_segmented_pt_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_segmented_pt_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_segmented_pt_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_segmented_pt_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! surface_segmented_pt_struct%x0: 0D_NOT_real
 
   subroutine surface_segmented_pt_struct_get_x0(struct_obj_ptr, value_out) bind(c, name='surface_segmented_pt_struct_get_x0')
@@ -3297,6 +4827,40 @@ contains
   end subroutine
 
   !! surface_segmented_struct
+
+  function allocate_fortran_surface_segmented_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_segmented_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_segmented_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_segmented_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_segmented_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_segmented_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! surface_segmented_struct%active: 0D_NOT_logical
 
   subroutine surface_segmented_struct_get_active(struct_obj_ptr, value_out) bind(c, name='surface_segmented_struct_get_active')
@@ -3340,6 +4904,40 @@ contains
 
   ! skipped surface_segmented_struct%pt: Unsupported type: 2D_ALLOC_type
   !! surface_h_misalign_pt_struct
+
+  function allocate_fortran_surface_h_misalign_pt_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_h_misalign_pt_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_h_misalign_pt_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_h_misalign_pt_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_h_misalign_pt_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_h_misalign_pt_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! surface_h_misalign_pt_struct%x0: 0D_NOT_real
 
   subroutine surface_h_misalign_pt_struct_get_x0(struct_obj_ptr, value_out) bind(c, name='surface_h_misalign_pt_struct_get_x0')
@@ -3407,6 +5005,40 @@ contains
   end subroutine
 
   !! surface_h_misalign_struct
+
+  function allocate_fortran_surface_h_misalign_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_h_misalign_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_h_misalign_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_h_misalign_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_h_misalign_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_h_misalign_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! surface_h_misalign_struct%active: 0D_NOT_logical
 
   subroutine surface_h_misalign_struct_get_active(struct_obj_ptr, value_out) bind(c, name='surface_h_misalign_struct_get_active')
@@ -3450,6 +5082,40 @@ contains
 
   ! skipped surface_h_misalign_struct%pt: Unsupported type: 2D_ALLOC_type
   !! surface_displacement_pt_struct
+
+  function allocate_fortran_surface_displacement_pt_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_displacement_pt_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_displacement_pt_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_displacement_pt_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_displacement_pt_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_displacement_pt_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! surface_displacement_pt_struct%x0: 0D_NOT_real
 
   subroutine surface_displacement_pt_struct_get_x0(struct_obj_ptr, value_out) bind(c, name='surface_displacement_pt_struct_get_x0')
@@ -3517,6 +5183,40 @@ contains
   end subroutine
 
   !! surface_displacement_struct
+
+  function allocate_fortran_surface_displacement_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_displacement_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_displacement_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_displacement_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_displacement_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_displacement_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! surface_displacement_struct%active: 0D_NOT_logical
 
   subroutine surface_displacement_struct_get_active(struct_obj_ptr, value_out) bind(c, name='surface_displacement_struct_get_active')
@@ -3560,6 +5260,40 @@ contains
 
   ! skipped surface_displacement_struct%pt: Unsupported type: 2D_ALLOC_type
   !! target_point_struct
+
+  function allocate_fortran_target_point_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(target_point_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_target_point_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(target_point_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_target_point_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(target_point_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! target_point_struct%r: 1D_NOT_real
 
   subroutine target_point_struct_get_r_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='target_point_struct_get_r_info')
@@ -3576,6 +5310,40 @@ contains
   end subroutine
 
   !! surface_curvature_struct
+
+  function allocate_fortran_surface_curvature_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(surface_curvature_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_surface_curvature_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(surface_curvature_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_surface_curvature_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(surface_curvature_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! skipped surface_curvature_struct%xy: Unsupported type: 2D_NOT_real
   ! surface_curvature_struct%spherical: 0D_NOT_real
 
@@ -3615,6 +5383,40 @@ contains
   end subroutine
 
   !! photon_target_struct
+
+  function allocate_fortran_photon_target_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(photon_target_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_photon_target_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(photon_target_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_photon_target_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(photon_target_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! photon_target_struct%type: 0D_NOT_integer
 
   subroutine photon_target_struct_get_type(struct_obj_ptr, value_out) bind(c, name='photon_target_struct_get_type')
@@ -3677,6 +5479,40 @@ contains
   end subroutine
 
   !! photon_material_struct
+
+  function allocate_fortran_photon_material_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(photon_material_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_photon_material_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(photon_material_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_photon_material_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(photon_material_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! photon_material_struct%f0_m1: 0D_NOT_complex
 
   subroutine photon_material_struct_get_f0_m1(struct_obj_ptr, value_out) bind(c, name='photon_material_struct_get_f0_m1')
@@ -3774,6 +5610,40 @@ contains
   end subroutine
 
   !! pixel_pt_struct
+
+  function allocate_fortran_pixel_pt_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(pixel_pt_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_pixel_pt_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(pixel_pt_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_pixel_pt_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(pixel_pt_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! pixel_pt_struct%n_photon: 0D_NOT_integer8
 
   subroutine pixel_pt_struct_get_n_photon(struct_obj_ptr, value_out) bind(c, name='pixel_pt_struct_get_n_photon')
@@ -3901,6 +5771,40 @@ contains
   end subroutine
 
   !! pixel_detec_struct
+
+  function allocate_fortran_pixel_detec_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(pixel_detec_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_pixel_detec_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(pixel_detec_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_pixel_detec_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(pixel_detec_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! pixel_detec_struct%dr: 1D_NOT_real
 
   subroutine pixel_detec_struct_get_dr_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='pixel_detec_struct_get_dr_info')
@@ -3966,6 +5870,40 @@ contains
 
   ! skipped pixel_detec_struct%pt: Unsupported type: 2D_ALLOC_type
   !! photon_element_struct
+
+  function allocate_fortran_photon_element_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(photon_element_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_photon_element_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(photon_element_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_photon_element_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(photon_element_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! photon_element_struct%curvature: 0D_NOT_type
 
   subroutine photon_element_struct_get_curvature(struct_obj_ptr, ptr_out) bind(c, name='photon_element_struct_get_curvature')
@@ -4130,6 +6068,40 @@ contains
   end subroutine
 
   !! wall3d_vertex_struct
+
+  function allocate_fortran_wall3d_vertex_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wall3d_vertex_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wall3d_vertex_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wall3d_vertex_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wall3d_vertex_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wall3d_vertex_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wall3d_vertex_struct%x: 0D_NOT_real
 
   subroutine wall3d_vertex_struct_get_x(struct_obj_ptr, value_out) bind(c, name='wall3d_vertex_struct_get_x')
@@ -4230,6 +6202,40 @@ contains
   end subroutine
 
   !! wall3d_section_struct
+
+  function allocate_fortran_wall3d_section_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wall3d_section_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wall3d_section_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wall3d_section_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wall3d_section_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wall3d_section_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wall3d_section_struct%name: 0D_NOT_character
 
   subroutine wall3d_section_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='wall3d_section_struct_get_name_info')
@@ -4500,6 +6506,40 @@ contains
   end subroutine
 
   !! wall3d_struct
+
+  function allocate_fortran_wall3d_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(wall3d_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_wall3d_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(wall3d_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_wall3d_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(wall3d_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! wall3d_struct%name: 0D_NOT_character
 
   subroutine wall3d_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='wall3d_struct_get_name_info')
@@ -4640,6 +6680,40 @@ contains
   end subroutine
 
   !! ramper_lord_struct
+
+  function allocate_fortran_ramper_lord_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ramper_lord_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ramper_lord_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ramper_lord_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ramper_lord_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ramper_lord_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ramper_lord_struct%ix_ele: 0D_NOT_integer
 
   subroutine ramper_lord_struct_get_ix_ele(struct_obj_ptr, value_out) bind(c, name='ramper_lord_struct_get_ix_ele')
@@ -4678,6 +6752,40 @@ contains
   end subroutine
 
   !! control_struct
+
+  function allocate_fortran_control_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(control_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_control_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(control_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_control_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(control_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! control_struct%value: 0D_NOT_real
 
   subroutine control_struct_get_value(struct_obj_ptr, value_out) bind(c, name='control_struct_get_value')
@@ -4806,6 +6914,40 @@ contains
   end subroutine
 
   !! control_var1_struct
+
+  function allocate_fortran_control_var1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(control_var1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_control_var1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(control_var1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_control_var1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(control_var1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! control_var1_struct%name: 0D_NOT_character
 
   subroutine control_var1_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='control_var1_struct_get_name_info')
@@ -4844,6 +6986,40 @@ contains
   end subroutine
 
   !! control_ramp1_struct
+
+  function allocate_fortran_control_ramp1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(control_ramp1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_control_ramp1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(control_ramp1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_control_ramp1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(control_ramp1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! control_ramp1_struct%y_knot: 1D_ALLOC_real
 
   subroutine control_ramp1_struct_get_y_knot_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated) bind(c, name='control_ramp1_struct_get_y_knot_info')
@@ -4939,6 +7115,40 @@ contains
   end subroutine
 
   !! controller_struct
+
+  function allocate_fortran_controller_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(controller_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_controller_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(controller_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_controller_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(controller_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! controller_struct%var: 1D_ALLOC_type
 
   subroutine controller_struct_get_var_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='controller_struct_get_var_info')
@@ -5049,6 +7259,40 @@ contains
   end subroutine
 
   !! ellipse_beam_init_struct
+
+  function allocate_fortran_ellipse_beam_init_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ellipse_beam_init_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ellipse_beam_init_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ellipse_beam_init_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ellipse_beam_init_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ellipse_beam_init_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ellipse_beam_init_struct%part_per_ellipse: 0D_NOT_integer
 
   subroutine ellipse_beam_init_struct_get_part_per_ellipse(struct_obj_ptr, value_out) bind(c, name='ellipse_beam_init_struct_get_part_per_ellipse')
@@ -5083,6 +7327,40 @@ contains
   end subroutine
 
   !! kv_beam_init_struct
+
+  function allocate_fortran_kv_beam_init_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(kv_beam_init_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_kv_beam_init_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(kv_beam_init_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_kv_beam_init_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(kv_beam_init_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! kv_beam_init_struct%part_per_phi: 1D_NOT_integer
 
   subroutine kv_beam_init_struct_get_part_per_phi_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='kv_beam_init_struct_get_part_per_phi_info')
@@ -5121,6 +7399,40 @@ contains
   end subroutine
 
   !! grid_beam_init_struct
+
+  function allocate_fortran_grid_beam_init_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(grid_beam_init_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_grid_beam_init_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(grid_beam_init_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_grid_beam_init_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(grid_beam_init_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! grid_beam_init_struct%n_x: 0D_NOT_integer
 
   subroutine grid_beam_init_struct_get_n_x(struct_obj_ptr, value_out) bind(c, name='grid_beam_init_struct_get_n_x')
@@ -5188,6 +7500,40 @@ contains
   end subroutine
 
   !! beam_init_struct
+
+  function allocate_fortran_beam_init_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(beam_init_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_beam_init_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(beam_init_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_beam_init_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(beam_init_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! beam_init_struct%position_file: 0D_NOT_character
 
   subroutine beam_init_struct_get_position_file_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='beam_init_struct_get_position_file_info')
@@ -5612,6 +7958,40 @@ contains
   end subroutine
 
   !! lat_param_struct
+
+  function allocate_fortran_lat_param_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(lat_param_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_lat_param_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(lat_param_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_lat_param_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(lat_param_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! lat_param_struct%n_part: 0D_NOT_real
 
   subroutine lat_param_struct_get_n_part(struct_obj_ptr, value_out) bind(c, name='lat_param_struct_get_n_part')
@@ -5780,6 +8160,40 @@ contains
   end subroutine
 
   !! mode_info_struct
+
+  function allocate_fortran_mode_info_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(mode_info_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_mode_info_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(mode_info_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_mode_info_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(mode_info_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! mode_info_struct%stable: 0D_NOT_logical
 
   subroutine mode_info_struct_get_stable(struct_obj_ptr, value_out) bind(c, name='mode_info_struct_get_stable')
@@ -5847,6 +8261,40 @@ contains
   end subroutine
 
   !! pre_tracker_struct
+
+  function allocate_fortran_pre_tracker_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(pre_tracker_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_pre_tracker_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(pre_tracker_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_pre_tracker_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(pre_tracker_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! pre_tracker_struct%who: 0D_NOT_integer
 
   subroutine pre_tracker_struct_get_who(struct_obj_ptr, value_out) bind(c, name='pre_tracker_struct_get_who')
@@ -5896,6 +8344,40 @@ contains
   end subroutine
 
   !! anormal_mode_struct
+
+  function allocate_fortran_anormal_mode_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(anormal_mode_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_anormal_mode_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(anormal_mode_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_anormal_mode_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(anormal_mode_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! anormal_mode_struct%emittance: 0D_NOT_real
 
   subroutine anormal_mode_struct_get_emittance(struct_obj_ptr, value_out) bind(c, name='anormal_mode_struct_get_emittance')
@@ -5978,6 +8460,40 @@ contains
   end subroutine
 
   !! linac_normal_mode_struct
+
+  function allocate_fortran_linac_normal_mode_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(linac_normal_mode_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_linac_normal_mode_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(linac_normal_mode_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_linac_normal_mode_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(linac_normal_mode_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! linac_normal_mode_struct%i2_E4: 0D_NOT_real
 
   subroutine linac_normal_mode_struct_get_i2_E4(struct_obj_ptr, value_out) bind(c, name='linac_normal_mode_struct_get_i2_E4')
@@ -6056,6 +8572,40 @@ contains
   end subroutine
 
   !! normal_modes_struct
+
+  function allocate_fortran_normal_modes_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(normal_modes_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_normal_modes_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(normal_modes_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_normal_modes_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(normal_modes_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! normal_modes_struct%synch_int: 1D_NOT_real
 
   subroutine normal_modes_struct_get_synch_int_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='normal_modes_struct_get_synch_int_info')
@@ -6204,6 +8754,40 @@ contains
   end subroutine
 
   !! em_field_struct
+
+  function allocate_fortran_em_field_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(em_field_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_em_field_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(em_field_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_em_field_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(em_field_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! em_field_struct%E: 1D_NOT_real
 
   subroutine em_field_struct_get_E_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='em_field_struct_get_E_info')
@@ -6274,6 +8858,40 @@ contains
   end subroutine
 
   !! strong_beam_struct
+
+  function allocate_fortran_strong_beam_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(strong_beam_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_strong_beam_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(strong_beam_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_strong_beam_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(strong_beam_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! strong_beam_struct%ix_slice: 0D_NOT_integer
 
   subroutine strong_beam_struct_get_ix_slice(struct_obj_ptr, value_out) bind(c, name='strong_beam_struct_get_ix_slice')
@@ -6352,6 +8970,40 @@ contains
   end subroutine
 
   !! track_point_struct
+
+  function allocate_fortran_track_point_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(track_point_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_track_point_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(track_point_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_track_point_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(track_point_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! track_point_struct%s_lab: 0D_NOT_real
 
   subroutine track_point_struct_get_s_lab(struct_obj_ptr, value_out) bind(c, name='track_point_struct_get_s_lab')
@@ -6424,6 +9076,40 @@ contains
 
   ! skipped track_point_struct%mat6: Unsupported type: 2D_NOT_real
   !! track_struct
+
+  function allocate_fortran_track_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(track_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_track_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(track_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_track_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(track_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! track_struct%pt: 1D_ALLOC_type
 
   subroutine track_struct_get_pt_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='track_struct_get_pt_info')
@@ -6497,6 +9183,40 @@ contains
   end subroutine
 
   !! space_charge_common_struct
+
+  function allocate_fortran_space_charge_common_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(space_charge_common_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_space_charge_common_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(space_charge_common_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_space_charge_common_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(space_charge_common_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! space_charge_common_struct%ds_track_step: 0D_NOT_real
 
   subroutine space_charge_common_struct_get_ds_track_step(struct_obj_ptr, value_out) bind(c, name='space_charge_common_struct_get_ds_track_step')
@@ -6697,6 +9417,40 @@ contains
   end subroutine
 
   !! bmad_common_struct
+
+  function allocate_fortran_bmad_common_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bmad_common_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bmad_common_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bmad_common_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bmad_common_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bmad_common_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bmad_common_struct%max_aperture_limit: 0D_NOT_real
 
   subroutine bmad_common_struct_get_max_aperture_limit(struct_obj_ptr, value_out) bind(c, name='bmad_common_struct_get_max_aperture_limit')
@@ -7164,6 +9918,40 @@ contains
   end subroutine
 
   !! rad_int1_struct
+
+  function allocate_fortran_rad_int1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rad_int1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rad_int1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rad_int1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rad_int1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rad_int1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rad_int1_struct%i0: 0D_NOT_real
 
   subroutine rad_int1_struct_get_i0(struct_obj_ptr, value_out) bind(c, name='rad_int1_struct_get_i0')
@@ -7363,6 +10151,40 @@ contains
   end subroutine
 
   !! rad_int_branch_struct
+
+  function allocate_fortran_rad_int_branch_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rad_int_branch_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rad_int_branch_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rad_int_branch_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rad_int_branch_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rad_int_branch_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rad_int_branch_struct%ele: 1D_ALLOC_type
 
   subroutine rad_int_branch_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='rad_int_branch_struct_get_ele_info')
@@ -7392,6 +10214,40 @@ contains
   end subroutine
 
   !! rad_int_all_ele_struct
+
+  function allocate_fortran_rad_int_all_ele_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rad_int_all_ele_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rad_int_all_ele_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rad_int_all_ele_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rad_int_all_ele_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rad_int_all_ele_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rad_int_all_ele_struct%branch: 1D_ALLOC_type
 
   subroutine rad_int_all_ele_struct_get_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='rad_int_all_ele_struct_get_branch_info')
@@ -7421,6 +10277,40 @@ contains
   end subroutine
 
   !! rf_stair_step_struct
+
+  function allocate_fortran_rf_stair_step_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rf_stair_step_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rf_stair_step_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rf_stair_step_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rf_stair_step_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rf_stair_step_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rf_stair_step_struct%E_tot0: 0D_NOT_real
 
   subroutine rf_stair_step_struct_get_E_tot0(struct_obj_ptr, value_out) bind(c, name='rf_stair_step_struct_get_E_tot0')
@@ -7521,6 +10411,40 @@ contains
   end subroutine
 
   !! rf_ele_struct
+
+  function allocate_fortran_rf_ele_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(rf_ele_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_rf_ele_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(rf_ele_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_rf_ele_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(rf_ele_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! rf_ele_struct%steps: 1D_ALLOC_type
 
   subroutine rf_ele_struct_get_steps_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='rf_ele_struct_get_steps_info')
@@ -7561,6 +10485,40 @@ contains
   end subroutine
 
   !! ele_struct
+
+  function allocate_fortran_ele_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ele_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ele_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ele_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ele_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ele_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ele_struct%name: 0D_NOT_character
 
   subroutine ele_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='ele_struct_get_name_info')
@@ -8634,6 +11592,40 @@ contains
   end subroutine
 
   !! complex_taylor_term_struct
+
+  function allocate_fortran_complex_taylor_term_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(complex_taylor_term_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_complex_taylor_term_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(complex_taylor_term_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_complex_taylor_term_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(complex_taylor_term_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! complex_taylor_term_struct%coef: 0D_NOT_complex
 
   subroutine complex_taylor_term_struct_get_coef(struct_obj_ptr, value_out) bind(c, name='complex_taylor_term_struct_get_coef')
@@ -8661,6 +11653,40 @@ contains
   end subroutine
 
   !! complex_taylor_struct
+
+  function allocate_fortran_complex_taylor_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(complex_taylor_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_complex_taylor_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(complex_taylor_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_complex_taylor_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(complex_taylor_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! complex_taylor_struct%ref: 0D_NOT_complex
 
   subroutine complex_taylor_struct_get_ref(struct_obj_ptr, value_out) bind(c, name='complex_taylor_struct_get_ref')
@@ -8701,6 +11727,40 @@ contains
   end subroutine
 
   !! branch_struct
+
+  function allocate_fortran_branch_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(branch_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_branch_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(branch_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_branch_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(branch_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! branch_struct%name: 0D_NOT_character
 
   subroutine branch_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='branch_struct_get_name_info')
@@ -8920,6 +11980,40 @@ contains
   end subroutine
 
   !! lat_struct
+
+  function allocate_fortran_lat_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(lat_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_lat_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(lat_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_lat_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(lat_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! lat_struct%use_name: 0D_NOT_character
 
   subroutine lat_struct_get_use_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='lat_struct_get_use_name_info')
@@ -9357,6 +12451,40 @@ contains
   end subroutine
 
   !! bunch_struct
+
+  function allocate_fortran_bunch_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bunch_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bunch_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bunch_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bunch_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bunch_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bunch_struct%particle: 1D_ALLOC_type
 
   subroutine bunch_struct_get_particle_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='bunch_struct_get_particle_info')
@@ -9543,6 +12671,40 @@ contains
   end subroutine
 
   !! bunch_params_struct
+
+  function allocate_fortran_bunch_params_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bunch_params_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bunch_params_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bunch_params_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bunch_params_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bunch_params_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bunch_params_struct%centroid: 0D_NOT_type
 
   subroutine bunch_params_struct_get_centroid(struct_obj_ptr, ptr_out) bind(c, name='bunch_params_struct_get_centroid')
@@ -9795,6 +12957,40 @@ contains
   end subroutine
 
   !! beam_struct
+
+  function allocate_fortran_beam_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(beam_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_beam_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(beam_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_beam_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(beam_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! beam_struct%bunch: 1D_ALLOC_type
 
   subroutine beam_struct_get_bunch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='beam_struct_get_bunch_info')
@@ -9824,6 +13020,40 @@ contains
   end subroutine
 
   !! aperture_point_struct
+
+  function allocate_fortran_aperture_point_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(aperture_point_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_aperture_point_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(aperture_point_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_aperture_point_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(aperture_point_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! aperture_point_struct%x: 0D_NOT_real
 
   subroutine aperture_point_struct_get_x(struct_obj_ptr, value_out) bind(c, name='aperture_point_struct_get_x')
@@ -9880,6 +13110,40 @@ contains
   end subroutine
 
   !! aperture_param_struct
+
+  function allocate_fortran_aperture_param_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(aperture_param_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_aperture_param_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(aperture_param_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_aperture_param_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(aperture_param_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! aperture_param_struct%min_angle: 0D_NOT_real
 
   subroutine aperture_param_struct_get_min_angle(struct_obj_ptr, value_out) bind(c, name='aperture_param_struct_get_min_angle')
@@ -9984,6 +13248,40 @@ contains
   end subroutine
 
   !! aperture_scan_struct
+
+  function allocate_fortran_aperture_scan_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(aperture_scan_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_aperture_scan_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(aperture_scan_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_aperture_scan_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(aperture_scan_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! aperture_scan_struct%point: 1D_ALLOC_type
 
   subroutine aperture_scan_struct_get_point_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='aperture_scan_struct_get_point_info')
@@ -10035,6 +13333,40 @@ contains
   end subroutine
 
   !! tao_spin_dn_dpz_struct
+
+  function allocate_fortran_tao_spin_dn_dpz_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_spin_dn_dpz_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_spin_dn_dpz_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_spin_dn_dpz_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_spin_dn_dpz_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_spin_dn_dpz_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_spin_dn_dpz_struct%vec: 1D_NOT_real
 
   subroutine tao_spin_dn_dpz_struct_get_vec_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_spin_dn_dpz_struct_get_vec_info')
@@ -10053,6 +13385,40 @@ contains
   ! skipped tao_spin_dn_dpz_struct%partial: Unsupported type: 2D_NOT_real
   ! skipped tao_spin_dn_dpz_struct%partial2: Unsupported type: 2D_NOT_real
   !! resonance_h_struct
+
+  function allocate_fortran_resonance_h_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(resonance_h_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_resonance_h_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(resonance_h_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_resonance_h_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(resonance_h_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! resonance_h_struct%id: 0D_NOT_character
 
   subroutine resonance_h_struct_get_id_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='resonance_h_struct_get_id_info')
@@ -10080,6 +13446,40 @@ contains
   end subroutine
 
   !! spin_orbit_map1_struct
+
+  function allocate_fortran_spin_orbit_map1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(spin_orbit_map1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_spin_orbit_map1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(spin_orbit_map1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_spin_orbit_map1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(spin_orbit_map1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! skipped spin_orbit_map1_struct%orb_mat: Unsupported type: 2D_NOT_real
   ! spin_orbit_map1_struct%vec0: 1D_NOT_real
 
@@ -10098,6 +13498,40 @@ contains
 
   ! skipped spin_orbit_map1_struct%spin_q: Unsupported type: 2D_NOT_real
   !! spin_axis_struct
+
+  function allocate_fortran_spin_axis_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(spin_axis_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_spin_axis_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(spin_axis_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_spin_axis_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(spin_axis_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! spin_axis_struct%l: 1D_NOT_real
 
   subroutine spin_axis_struct_get_l_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='spin_axis_struct_get_l_info')
@@ -10144,6 +13578,40 @@ contains
   end subroutine
 
   !! ptc_normal_form_struct
+
+  function allocate_fortran_ptc_normal_form_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(ptc_normal_form_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_ptc_normal_form_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(ptc_normal_form_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_ptc_normal_form_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(ptc_normal_form_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! ptc_normal_form_struct%ele_origin: 0D_PTR_type
 
   subroutine ptc_normal_form_struct_get_ele_origin(struct_obj_ptr, ptr_out) bind(c, name='ptc_normal_form_struct_get_ele_origin')
@@ -10186,6 +13654,40 @@ contains
   end subroutine
 
   !! bmad_normal_form_struct
+
+  function allocate_fortran_bmad_normal_form_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bmad_normal_form_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bmad_normal_form_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bmad_normal_form_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bmad_normal_form_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bmad_normal_form_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bmad_normal_form_struct%ele_origin: 0D_PTR_type
 
   subroutine bmad_normal_form_struct_get_ele_origin(struct_obj_ptr, ptr_out) bind(c, name='bmad_normal_form_struct_get_ele_origin')
@@ -10332,6 +13834,40 @@ contains
   end subroutine
 
   !! bunch_track_struct
+
+  function allocate_fortran_bunch_track_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(bunch_track_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_bunch_track_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(bunch_track_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_bunch_track_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(bunch_track_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! bunch_track_struct%pt: 1D_ALLOC_type
 
   subroutine bunch_track_struct_get_pt_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='bunch_track_struct_get_pt_info')
@@ -10383,6 +13919,40 @@ contains
   end subroutine
 
   !! summation_rdt_struct
+
+  function allocate_fortran_summation_rdt_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(summation_rdt_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_summation_rdt_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(summation_rdt_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_summation_rdt_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(summation_rdt_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! summation_rdt_struct%h11001: 0D_NOT_complex
 
   subroutine summation_rdt_struct_get_h11001(struct_obj_ptr, value_out) bind(c, name='summation_rdt_struct_get_h11001')
@@ -10615,6 +14185,40 @@ contains
   end subroutine
 
   !! lat_ele_order1_struct
+
+  function allocate_fortran_lat_ele_order1_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(lat_ele_order1_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_lat_ele_order1_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(lat_ele_order1_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_lat_ele_order1_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(lat_ele_order1_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! lat_ele_order1_struct%ix_branch: 0D_NOT_integer
 
   subroutine lat_ele_order1_struct_get_ix_branch(struct_obj_ptr, value_out) bind(c, name='lat_ele_order1_struct_get_ix_branch')
@@ -10638,6 +14242,40 @@ contains
   end subroutine
 
   !! lat_ele_order_array_struct
+
+  function allocate_fortran_lat_ele_order_array_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(lat_ele_order_array_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_lat_ele_order_array_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(lat_ele_order_array_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_lat_ele_order_array_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(lat_ele_order_array_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! lat_ele_order_array_struct%ele: 1D_ALLOC_type
 
   subroutine lat_ele_order_array_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_ele_order_array_struct_get_ele_info')
@@ -10667,8 +14305,76 @@ contains
   end subroutine
 
   !! tao_lat_sigma_struct
+
+  function allocate_fortran_tao_lat_sigma_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_lat_sigma_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_lat_sigma_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_lat_sigma_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_lat_sigma_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_lat_sigma_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! skipped tao_lat_sigma_struct%mat: Unsupported type: 2D_NOT_real
   !! tao_spin_ele_struct
+
+  function allocate_fortran_tao_spin_ele_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_spin_ele_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_spin_ele_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_spin_ele_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_spin_ele_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_spin_ele_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_spin_ele_struct%dn_dpz: 0D_NOT_type
 
   subroutine tao_spin_ele_struct_get_dn_dpz(struct_obj_ptr, ptr_out) bind(c, name='tao_spin_ele_struct_get_dn_dpz')
@@ -10709,6 +14415,40 @@ contains
   end subroutine
 
   !! tao_plot_cache_struct
+
+  function allocate_fortran_tao_plot_cache_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_plot_cache_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_plot_cache_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_plot_cache_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_plot_cache_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_plot_cache_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_plot_cache_struct%ele_to_s: 0D_NOT_type
 
   subroutine tao_plot_cache_struct_get_ele_to_s(struct_obj_ptr, ptr_out) bind(c, name='tao_plot_cache_struct_get_ele_to_s')
@@ -10743,6 +14483,40 @@ contains
   end subroutine
 
   !! tao_spin_polarization_struct
+
+  function allocate_fortran_tao_spin_polarization_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_spin_polarization_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_spin_polarization_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_spin_polarization_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_spin_polarization_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_spin_polarization_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_spin_polarization_struct%tune: 0D_NOT_real
 
   subroutine tao_spin_polarization_struct_get_tune(struct_obj_ptr, value_out) bind(c, name='tao_spin_polarization_struct_get_tune')
@@ -10953,6 +14727,40 @@ contains
   end subroutine
 
   !! tao_lattice_branch_struct
+
+  function allocate_fortran_tao_lattice_branch_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_lattice_branch_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_lattice_branch_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_lattice_branch_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_lattice_branch_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_lattice_branch_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_lattice_branch_struct%lat_sigma: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_lat_sigma_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_lat_sigma_info')
@@ -11420,6 +15228,40 @@ contains
   end subroutine
 
   !! tao_model_element_struct
+
+  function allocate_fortran_tao_model_element_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_model_element_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_model_element_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_model_element_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_model_element_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_model_element_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_model_element_struct%beam: 0D_NOT_type
 
   subroutine tao_model_element_struct_get_beam(struct_obj_ptr, ptr_out) bind(c, name='tao_model_element_struct_get_beam')
@@ -11454,6 +15296,40 @@ contains
   end subroutine
 
   !! tao_beam_branch_struct
+
+  function allocate_fortran_tao_beam_branch_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_beam_branch_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_beam_branch_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_beam_branch_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_beam_branch_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_beam_branch_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_beam_branch_struct%beam_at_start: 0D_NOT_type
 
   subroutine tao_beam_branch_struct_get_beam_at_start(struct_obj_ptr, ptr_out) bind(c, name='tao_beam_branch_struct_get_beam_at_start')
@@ -11562,6 +15438,40 @@ contains
   end subroutine
 
   !! tao_d1_data_struct
+
+  function allocate_fortran_tao_d1_data_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_d1_data_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_d1_data_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_d1_data_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_d1_data_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_d1_data_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_d1_data_struct%name: 0D_NOT_character
 
   subroutine tao_d1_data_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_d1_data_struct_get_name_info')
@@ -11578,6 +15488,40 @@ contains
   end subroutine
 
   !! tao_lattice_struct
+
+  function allocate_fortran_tao_lattice_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_lattice_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_lattice_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_lattice_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_lattice_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_lattice_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_lattice_struct%name: 0D_NOT_character
 
   subroutine tao_lattice_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_lattice_struct_get_name_info')
@@ -11677,6 +15621,40 @@ contains
   end subroutine
 
   !! tao_beam_uni_struct
+
+  function allocate_fortran_tao_beam_uni_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_beam_uni_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_beam_uni_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_beam_uni_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_beam_uni_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_beam_uni_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_beam_uni_struct%saved_at: 0D_NOT_character
 
   subroutine tao_beam_uni_struct_get_saved_at_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_beam_uni_struct_get_saved_at_info')
@@ -11745,6 +15723,40 @@ contains
   end subroutine
 
   !! tao_dynamic_aperture_struct
+
+  function allocate_fortran_tao_dynamic_aperture_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_dynamic_aperture_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_dynamic_aperture_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_dynamic_aperture_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_dynamic_aperture_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_dynamic_aperture_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_dynamic_aperture_struct%param: 0D_NOT_type
 
   subroutine tao_dynamic_aperture_struct_get_param(struct_obj_ptr, ptr_out) bind(c, name='tao_dynamic_aperture_struct_get_param')
@@ -11843,6 +15855,40 @@ contains
   end subroutine
 
   !! tao_model_branch_struct
+
+  function allocate_fortran_tao_model_branch_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_model_branch_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_model_branch_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_model_branch_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_model_branch_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_model_branch_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_model_branch_struct%ele: 1D_ALLOC_type
 
   subroutine tao_model_branch_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_model_branch_struct_get_ele_info')
@@ -11883,6 +15929,40 @@ contains
   end subroutine
 
   !! tao_d2_data_struct
+
+  function allocate_fortran_tao_d2_data_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_d2_data_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_d2_data_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_d2_data_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_d2_data_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_d2_data_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_d2_data_struct%name: 0D_NOT_character
 
   subroutine tao_d2_data_struct_get_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_d2_data_struct_get_name_info')
@@ -12043,6 +16123,40 @@ contains
   end subroutine
 
   !! tao_spin_map_struct
+
+  function allocate_fortran_tao_spin_map_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_spin_map_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_spin_map_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_spin_map_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_spin_map_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_spin_map_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_spin_map_struct%valid: 0D_NOT_logical
 
   subroutine tao_spin_map_struct_get_valid(struct_obj_ptr, value_out) bind(c, name='tao_spin_map_struct_get_valid')
@@ -12144,6 +16258,40 @@ contains
 
   ! skipped tao_spin_map_struct%mat8: Unsupported type: 2D_NOT_real
   !! tao_data_struct
+
+  function allocate_fortran_tao_data_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_data_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_data_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_data_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_data_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_data_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_data_struct%ele_name: 0D_NOT_character
 
   subroutine tao_data_struct_get_ele_name_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_ele_name_info')
@@ -12672,6 +16820,40 @@ contains
   end subroutine
 
   !! tao_ping_scale_struct
+
+  function allocate_fortran_tao_ping_scale_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_ping_scale_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_ping_scale_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_ping_scale_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_ping_scale_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_ping_scale_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_ping_scale_struct%a_mode_meas: 0D_NOT_real
 
   subroutine tao_ping_scale_struct_get_a_mode_meas(struct_obj_ptr, value_out) bind(c, name='tao_ping_scale_struct_get_a_mode_meas')
@@ -12717,6 +16899,40 @@ contains
   end subroutine
 
   !! tao_universe_calc_struct
+
+  function allocate_fortran_tao_universe_calc_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_universe_calc_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_universe_calc_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_universe_calc_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_universe_calc_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_universe_calc_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_universe_calc_struct%srdt_for_data: 0D_NOT_integer
 
   subroutine tao_universe_calc_struct_get_srdt_for_data(struct_obj_ptr, value_out) bind(c, name='tao_universe_calc_struct_get_srdt_for_data')
@@ -12861,6 +17077,40 @@ contains
   end subroutine
 
   !! lat_ele_order_struct
+
+  function allocate_fortran_lat_ele_order_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(lat_ele_order_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_lat_ele_order_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(lat_ele_order_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_lat_ele_order_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(lat_ele_order_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! lat_ele_order_struct%branch: 1D_ALLOC_type
 
   subroutine lat_ele_order_struct_get_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_ele_order_struct_get_branch_info')
@@ -12890,6 +17140,40 @@ contains
   end subroutine
 
   !! tao_universe_struct
+
+  function allocate_fortran_tao_universe_struct() result(ptr) bind(c)
+    implicit none
+    type(c_ptr) :: ptr
+    type(tao_universe_struct), pointer :: fptr
+
+    allocate(fptr)
+    ptr = c_loc(fptr)
+  end function
+
+  subroutine deallocate_fortran_tao_universe_struct(ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: ptr
+    type(tao_universe_struct), pointer :: fptr
+
+    if (c_associated(ptr)) then
+      call c_f_pointer(ptr, fptr)
+      deallocate(fptr)
+    end if
+  end subroutine
+
+  subroutine copy_fortran_tao_universe_struct(src_ptr, dst_ptr) bind(c)
+    implicit none
+    type(c_ptr), value :: src_ptr, dst_ptr
+    type(tao_universe_struct), pointer :: src, dst
+
+    if (c_associated(src_ptr) .and. c_associated(dst_ptr)) then
+      call c_f_pointer(src_ptr, src)
+      call c_f_pointer(dst_ptr, dst)
+      dst = src  ! Fortran derived type assignment
+    end if
+  end subroutine
+
+        
   ! tao_universe_struct%model: 0D_PTR_type
 
   subroutine tao_universe_struct_get_model(struct_obj_ptr, ptr_out) bind(c, name='tao_universe_struct_get_model')

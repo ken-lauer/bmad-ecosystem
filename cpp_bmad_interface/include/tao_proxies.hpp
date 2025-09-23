@@ -2,7 +2,7 @@
 
 #include "cpp_bmad_classes.h"
 #include "fortran_arrays.hpp"
-#include "tao_proxies.hpp"
+#include "proxy_base.hpp"
 
 #include <complex>
 #include <iterator>
@@ -3974,31 +3974,11 @@ namespace tao {
 enum class LatticeType : int { MODEL = 1, DESIGN = 2, BASE = 3 };
 
 // Exception classes
-class TaoException : public std::runtime_error {
- public:
-  explicit TaoException(const std::string& message)
-      : std::runtime_error(message) {}
-};
-
-class InvalidIndexException : public TaoException {
- public:
-  InvalidIndexException(const std::string& index_type, int index, int max_value)
-      : TaoException(
-            "Invalid " + index_type + " index " + std::to_string(index) +
-            " (valid range: 0-" + std::to_string(max_value - 1) + ")") {}
-};
-
-class NullPointerException : public TaoException {
- public:
-  NullPointerException(const std::string& context)
-      : TaoException("Null pointer encountered in " + context) {}
-};
 
 // Forward declarations
-class TaoUniverseProxy;
-class LatticeProxy;
-class BranchProxy;
-class EleProxy;
+class TaoUniverseIndexProxy;
+class TaoLatticeIndexProxy;
+class TaoBranchIndexProxy;
 class SplineProxy;
 class SpinPolarProxy;
 class AcKickerTimeProxy;
@@ -4126,27 +4106,3165 @@ class TaoUniverseCalcProxy;
 class LatEleOrderProxy;
 class TaoUniverseProxy;
 
-// Non-Tao proxy classes that directly reference Fortran memory
-class EleProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_spline_struct();
+void deallocate_fortran_spline_struct(void* ptr) noexcept;
+void copy_fortran_spline_struct_struct(const void* src, void* dst);
+}
 
-  void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<SplineProxy> {
+  static void* allocate() {
+    return allocate_fortran_spline_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_spline_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_spline_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "spline_struct";
+  }
+};
 
+class SplineProxy : public FortranProxy<SplineProxy> {
  public:
-  explicit EleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("EleProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
-  std::shared_ptr<CPP_ele> deepcopy() const {
-    auto ele = std::make_shared<CPP_ele>();
-    ele_to_c(static_cast<Opaque_ele_class*>(fortran_ptr_), *ele);
-    return ele;
+  double x0() const; // 0D_NOT_real
+  double y0() const; // 0D_NOT_real
+  double x1() const; // 0D_NOT_real
+  FortranArray1D<double> coef() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_spin_polar_struct();
+void deallocate_fortran_spin_polar_struct(void* ptr) noexcept;
+void copy_fortran_spin_polar_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<SpinPolarProxy> {
+  static void* allocate() {
+    return allocate_fortran_spin_polar_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_spin_polar_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_spin_polar_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "spin_polar_struct";
+  }
+};
+
+class SpinPolarProxy : public FortranProxy<SpinPolarProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double polarization() const; // 0D_NOT_real
+  double theta() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double xi() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_ac_kicker_time_struct();
+void deallocate_fortran_ac_kicker_time_struct(void* ptr) noexcept;
+void copy_fortran_ac_kicker_time_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<AcKickerTimeProxy> {
+  static void* allocate() {
+    return allocate_fortran_ac_kicker_time_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ac_kicker_time_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ac_kicker_time_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ac_kicker_time_struct";
+  }
+};
+
+class AcKickerTimeProxy : public FortranProxy<AcKickerTimeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double amp() const; // 0D_NOT_real
+  double time() const; // 0D_NOT_real
+  SplineProxy spline() const; // 0D_NOT_type
+};
+
+extern "C" {
+void* allocate_fortran_ac_kicker_freq_struct();
+void deallocate_fortran_ac_kicker_freq_struct(void* ptr) noexcept;
+void copy_fortran_ac_kicker_freq_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<AcKickerFreqProxy> {
+  static void* allocate() {
+    return allocate_fortran_ac_kicker_freq_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ac_kicker_freq_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ac_kicker_freq_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ac_kicker_freq_struct";
+  }
+};
+
+class AcKickerFreqProxy : public FortranProxy<AcKickerFreqProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double f() const; // 0D_NOT_real
+  double amp() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  int rf_clock_harmonic() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_ac_kicker_struct();
+void deallocate_fortran_ac_kicker_struct(void* ptr) noexcept;
+void copy_fortran_ac_kicker_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<AcKickerProxy> {
+  static void* allocate() {
+    return allocate_fortran_ac_kicker_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ac_kicker_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ac_kicker_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ac_kicker_struct";
+  }
+};
+
+class AcKickerProxy : public FortranProxy<AcKickerProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<AcKickerTimeProxy> amp_vs_time() const; // 1D_ALLOC_type
+  FortranTypeArray1D<AcKickerFreqProxy> frequency() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_interval1_coef_struct();
+void deallocate_fortran_interval1_coef_struct(void* ptr) noexcept;
+void copy_fortran_interval1_coef_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<Interval1CoefProxy> {
+  static void* allocate() {
+    return allocate_fortran_interval1_coef_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_interval1_coef_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_interval1_coef_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "interval1_coef_struct";
+  }
+};
+
+class Interval1CoefProxy : public FortranProxy<Interval1CoefProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double c0() const; // 0D_NOT_real
+  double c1() const; // 0D_NOT_real
+  double n_exp() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_photon_reflect_table_struct();
+void deallocate_fortran_photon_reflect_table_struct(void* ptr) noexcept;
+void copy_fortran_photon_reflect_table_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<PhotonReflectTableProxy> {
+  static void* allocate() {
+    return allocate_fortran_photon_reflect_table_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_photon_reflect_table_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_photon_reflect_table_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "photon_reflect_table_struct";
+  }
+};
+
+class PhotonReflectTableProxy : public FortranProxy<PhotonReflectTableProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> angle() const; // 1D_ALLOC_real
+  FortranArray1D<double> energy() const; // 1D_ALLOC_real
+  FortranTypeArray1D<Interval1CoefProxy> int1() const; // 1D_ALLOC_type
+  FortranArray2D<double> p_reflect() const; // 2D_ALLOC_real
+  double max_energy() const; // 0D_NOT_real
+  FortranArray1D<double> p_reflect_scratch() const; // 1D_ALLOC_real
+  FortranArray1D<double> bragg_angle() const; // 1D_ALLOC_real
+};
+
+extern "C" {
+void* allocate_fortran_photon_reflect_surface_struct();
+void deallocate_fortran_photon_reflect_surface_struct(void* ptr) noexcept;
+void copy_fortran_photon_reflect_surface_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<PhotonReflectSurfaceProxy> {
+  static void* allocate() {
+    return allocate_fortran_photon_reflect_surface_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_photon_reflect_surface_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_photon_reflect_surface_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "photon_reflect_surface_struct";
+  }
+};
+
+class PhotonReflectSurfaceProxy
+    : public FortranProxy<PhotonReflectSurfaceProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string name() const; // 0D_NOT_character
+  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  std::string description() const; // 0D_NOT_character
+  FortranArray1D<char> get_description_chars() const; // 0D_NOT_character
+  std::string reflectivity_file() const; // 0D_NOT_character
+  FortranArray1D<char> get_reflectivity_file_chars() const; // 0D_NOT_character
+  FortranTypeArray1D<PhotonReflectTableProxy> table() const; // 1D_ALLOC_type
+  double surface_roughness_rms() const; // 0D_NOT_real
+  double roughness_correlation_len() const; // 0D_NOT_real
+  int ix_surface() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_coord_struct();
+void deallocate_fortran_coord_struct(void* ptr) noexcept;
+void copy_fortran_coord_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<CoordProxy> {
+  static void* allocate() {
+    return allocate_fortran_coord_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_coord_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_coord_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "coord_struct";
+  }
+};
+
+class CoordProxy : public FortranProxy<CoordProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> vec() const; // 1D_NOT_real
+  double s() const; // 0D_NOT_real
+  long double t() const; // 0D_NOT_real16
+  FortranArray1D<double> spin() const; // 1D_NOT_real
+  FortranArray1D<double> field() const; // 1D_NOT_real
+  FortranArray1D<double> phase() const; // 1D_NOT_real
+  double charge() const; // 0D_NOT_real
+  double dt_ref() const; // 0D_NOT_real
+  double r() const; // 0D_NOT_real
+  double p0c() const; // 0D_NOT_real
+  double E_potential() const; // 0D_NOT_real
+  double beta() const; // 0D_NOT_real
+  int ix_ele() const; // 0D_NOT_integer
+  int ix_branch() const; // 0D_NOT_integer
+  int ix_turn() const; // 0D_NOT_integer
+  int ix_user() const; // 0D_NOT_integer
+  int state() const; // 0D_NOT_integer
+  int direction() const; // 0D_NOT_integer
+  int time_dir() const; // 0D_NOT_integer
+  int species() const; // 0D_NOT_integer
+  int location() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_coord_array_struct();
+void deallocate_fortran_coord_array_struct(void* ptr) noexcept;
+void copy_fortran_coord_array_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<CoordArrayProxy> {
+  static void* allocate() {
+    return allocate_fortran_coord_array_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_coord_array_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_coord_array_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "coord_array_struct";
+  }
+};
+
+class CoordArrayProxy : public FortranProxy<CoordArrayProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<CoordProxy> orbit() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_bpm_phase_coupling_struct();
+void deallocate_fortran_bpm_phase_coupling_struct(void* ptr) noexcept;
+void copy_fortran_bpm_phase_coupling_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<BpmPhaseCouplingProxy> {
+  static void* allocate() {
+    return allocate_fortran_bpm_phase_coupling_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bpm_phase_coupling_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bpm_phase_coupling_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bpm_phase_coupling_struct";
+  }
+};
+
+class BpmPhaseCouplingProxy : public FortranProxy<BpmPhaseCouplingProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double K_22a() const; // 0D_NOT_real
+  double K_12a() const; // 0D_NOT_real
+  double K_11b() const; // 0D_NOT_real
+  double K_12b() const; // 0D_NOT_real
+  double Cbar22_a() const; // 0D_NOT_real
+  double Cbar12_a() const; // 0D_NOT_real
+  double Cbar11_b() const; // 0D_NOT_real
+  double Cbar12_b() const; // 0D_NOT_real
+  double phi_a() const; // 0D_NOT_real
+  double phi_b() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_expression_atom_struct();
+void deallocate_fortran_expression_atom_struct(void* ptr) noexcept;
+void copy_fortran_expression_atom_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<ExpressionAtomProxy> {
+  static void* allocate() {
+    return allocate_fortran_expression_atom_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_expression_atom_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_expression_atom_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "expression_atom_struct";
+  }
+};
+
+class ExpressionAtomProxy : public FortranProxy<ExpressionAtomProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string name() const; // 0D_NOT_character
+  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  int type() const; // 0D_NOT_integer
+  double value() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_wake_sr_z_long_struct();
+void deallocate_fortran_wake_sr_z_long_struct(void* ptr) noexcept;
+void copy_fortran_wake_sr_z_long_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<WakeSrZLongProxy> {
+  static void* allocate() {
+    return allocate_fortran_wake_sr_z_long_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wake_sr_z_long_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wake_sr_z_long_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wake_sr_z_long_struct";
+  }
+};
+
+class WakeSrZLongProxy : public FortranProxy<WakeSrZLongProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> w() const; // 1D_ALLOC_real
+  double dz() const; // 0D_NOT_real
+  double z0() const; // 0D_NOT_real
+  double smoothing_sigma() const; // 0D_NOT_real
+  int position_dependence() const; // 0D_NOT_integer
+  bool time_based() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_wake_sr_mode_struct();
+void deallocate_fortran_wake_sr_mode_struct(void* ptr) noexcept;
+void copy_fortran_wake_sr_mode_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<WakeSrModeProxy> {
+  static void* allocate() {
+    return allocate_fortran_wake_sr_mode_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wake_sr_mode_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wake_sr_mode_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wake_sr_mode_struct";
+  }
+};
+
+class WakeSrModeProxy : public FortranProxy<WakeSrModeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double amp() const; // 0D_NOT_real
+  double damp() const; // 0D_NOT_real
+  double k() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double b_sin() const; // 0D_NOT_real
+  double b_cos() const; // 0D_NOT_real
+  double a_sin() const; // 0D_NOT_real
+  double a_cos() const; // 0D_NOT_real
+  int polarization() const; // 0D_NOT_integer
+  int position_dependence() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_wake_sr_struct();
+void deallocate_fortran_wake_sr_struct(void* ptr) noexcept;
+void copy_fortran_wake_sr_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<WakeSrProxy> {
+  static void* allocate() {
+    return allocate_fortran_wake_sr_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wake_sr_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wake_sr_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wake_sr_struct";
+  }
+};
+
+class WakeSrProxy : public FortranProxy<WakeSrProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string file() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  WakeSrZLongProxy z_long() const; // 0D_NOT_type
+  FortranTypeArray1D<WakeSrModeProxy> long_() const; // 1D_ALLOC_type
+  FortranTypeArray1D<WakeSrModeProxy> trans() const; // 1D_ALLOC_type
+  double z_ref_long() const; // 0D_NOT_real
+  double z_ref_trans() const; // 0D_NOT_real
+  double z_max() const; // 0D_NOT_real
+  double amp_scale() const; // 0D_NOT_real
+  double z_scale() const; // 0D_NOT_real
+  bool scale_with_length() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_wake_lr_mode_struct();
+void deallocate_fortran_wake_lr_mode_struct(void* ptr) noexcept;
+void copy_fortran_wake_lr_mode_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<WakeLrModeProxy> {
+  static void* allocate() {
+    return allocate_fortran_wake_lr_mode_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wake_lr_mode_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wake_lr_mode_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wake_lr_mode_struct";
+  }
+};
+
+class WakeLrModeProxy : public FortranProxy<WakeLrModeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double freq() const; // 0D_NOT_real
+  double freq_in() const; // 0D_NOT_real
+  double R_over_Q() const; // 0D_NOT_real
+  double Q() const; // 0D_NOT_real
+  double damp() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double angle() const; // 0D_NOT_real
+  double b_sin() const; // 0D_NOT_real
+  double b_cos() const; // 0D_NOT_real
+  double a_sin() const; // 0D_NOT_real
+  double a_cos() const; // 0D_NOT_real
+  int m() const; // 0D_NOT_integer
+  bool polarized() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_wake_lr_struct();
+void deallocate_fortran_wake_lr_struct(void* ptr) noexcept;
+void copy_fortran_wake_lr_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<WakeLrProxy> {
+  static void* allocate() {
+    return allocate_fortran_wake_lr_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wake_lr_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wake_lr_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wake_lr_struct";
+  }
+};
+
+class WakeLrProxy : public FortranProxy<WakeLrProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string file() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  FortranTypeArray1D<WakeLrModeProxy> mode() const; // 1D_ALLOC_type
+  double t_ref() const; // 0D_NOT_real
+  double freq_spread() const; // 0D_NOT_real
+  double amp_scale() const; // 0D_NOT_real
+  double time_scale() const; // 0D_NOT_real
+  bool self_wake_on() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_lat_ele_loc_struct();
+void deallocate_fortran_lat_ele_loc_struct(void* ptr) noexcept;
+void copy_fortran_lat_ele_loc_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<LatEleLocProxy> {
+  static void* allocate() {
+    return allocate_fortran_lat_ele_loc_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_lat_ele_loc_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_lat_ele_loc_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "lat_ele_loc_struct";
+  }
+};
+
+class LatEleLocProxy : public FortranProxy<LatEleLocProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int ix_ele() const; // 0D_NOT_integer
+  int ix_branch() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_wake_struct();
+void deallocate_fortran_wake_struct(void* ptr) noexcept;
+void copy_fortran_wake_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<WakeProxy> {
+  static void* allocate() {
+    return allocate_fortran_wake_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wake_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wake_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wake_struct";
+  }
+};
+
+class WakeProxy : public FortranProxy<WakeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  WakeSrProxy sr() const; // 0D_NOT_type
+  WakeLrProxy lr() const; // 0D_NOT_type
+};
+
+extern "C" {
+void* allocate_fortran_taylor_term_struct();
+void deallocate_fortran_taylor_term_struct(void* ptr) noexcept;
+void copy_fortran_taylor_term_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TaylorTermProxy> {
+  static void* allocate() {
+    return allocate_fortran_taylor_term_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_taylor_term_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_taylor_term_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "taylor_term_struct";
+  }
+};
+
+class TaylorTermProxy : public FortranProxy<TaylorTermProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double coef() const; // 0D_NOT_real
+  FortranArray1D<int> expn() const; // 1D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_taylor_struct();
+void deallocate_fortran_taylor_struct(void* ptr) noexcept;
+void copy_fortran_taylor_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TaylorProxy> {
+  static void* allocate() {
+    return allocate_fortran_taylor_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_taylor_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_taylor_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "taylor_struct";
+  }
+};
+
+class TaylorProxy : public FortranProxy<TaylorProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double ref() const; // 0D_NOT_real
+  FortranTypeArray1D<TaylorTermProxy> term() const; // 1D_PTR_type
+};
+
+extern "C" {
+void* allocate_fortran_em_taylor_term_struct();
+void deallocate_fortran_em_taylor_term_struct(void* ptr) noexcept;
+void copy_fortran_em_taylor_term_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<EmTaylorTermProxy> {
+  static void* allocate() {
+    return allocate_fortran_em_taylor_term_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_em_taylor_term_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_em_taylor_term_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "em_taylor_term_struct";
+  }
+};
+
+class EmTaylorTermProxy : public FortranProxy<EmTaylorTermProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double coef() const; // 0D_NOT_real
+  FortranArray1D<int> expn() const; // 1D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_em_taylor_struct();
+void deallocate_fortran_em_taylor_struct(void* ptr) noexcept;
+void copy_fortran_em_taylor_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<EmTaylorProxy> {
+  static void* allocate() {
+    return allocate_fortran_em_taylor_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_em_taylor_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_em_taylor_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "em_taylor_struct";
+  }
+};
+
+class EmTaylorProxy : public FortranProxy<EmTaylorProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double ref() const; // 0D_NOT_real
+  FortranTypeArray1D<EmTaylorTermProxy> term() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_cartesian_map_term1_struct();
+void deallocate_fortran_cartesian_map_term1_struct(void* ptr) noexcept;
+void copy_fortran_cartesian_map_term1_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<CartesianMapTerm1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_cartesian_map_term1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_cartesian_map_term1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_cartesian_map_term1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "cartesian_map_term1_struct";
+  }
+};
+
+class CartesianMapTerm1Proxy : public FortranProxy<CartesianMapTerm1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double coef() const; // 0D_NOT_real
+  double kx() const; // 0D_NOT_real
+  double ky() const; // 0D_NOT_real
+  double kz() const; // 0D_NOT_real
+  double x0() const; // 0D_NOT_real
+  double y0() const; // 0D_NOT_real
+  double phi_z() const; // 0D_NOT_real
+  int family() const; // 0D_NOT_integer
+  int form() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_cartesian_map_term_struct();
+void deallocate_fortran_cartesian_map_term_struct(void* ptr) noexcept;
+void copy_fortran_cartesian_map_term_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<CartesianMapTermProxy> {
+  static void* allocate() {
+    return allocate_fortran_cartesian_map_term_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_cartesian_map_term_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_cartesian_map_term_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "cartesian_map_term_struct";
+  }
+};
+
+class CartesianMapTermProxy : public FortranProxy<CartesianMapTermProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string file() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  int n_link() const; // 0D_NOT_integer
+  FortranTypeArray1D<CartesianMapTerm1Proxy> term() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_cartesian_map_struct();
+void deallocate_fortran_cartesian_map_struct(void* ptr) noexcept;
+void copy_fortran_cartesian_map_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<CartesianMapProxy> {
+  static void* allocate() {
+    return allocate_fortran_cartesian_map_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_cartesian_map_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_cartesian_map_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "cartesian_map_struct";
+  }
+};
+
+class CartesianMapProxy : public FortranProxy<CartesianMapProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double field_scale() const; // 0D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+  int master_parameter() const; // 0D_NOT_integer
+  int ele_anchor_pt() const; // 0D_NOT_integer
+  int field_type() const; // 0D_NOT_integer
+  const void* ptr() const; // 0D_PTR_type
+};
+
+extern "C" {
+void* allocate_fortran_cylindrical_map_term1_struct();
+void deallocate_fortran_cylindrical_map_term1_struct(void* ptr) noexcept;
+void copy_fortran_cylindrical_map_term1_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<CylindricalMapTerm1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_cylindrical_map_term1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_cylindrical_map_term1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_cylindrical_map_term1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "cylindrical_map_term1_struct";
+  }
+};
+
+class CylindricalMapTerm1Proxy : public FortranProxy<CylindricalMapTerm1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::complex<double> e_coef() const; // 0D_NOT_complex
+  std::complex<double> b_coef() const; // 0D_NOT_complex
+};
+
+extern "C" {
+void* allocate_fortran_cylindrical_map_term_struct();
+void deallocate_fortran_cylindrical_map_term_struct(void* ptr) noexcept;
+void copy_fortran_cylindrical_map_term_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<CylindricalMapTermProxy> {
+  static void* allocate() {
+    return allocate_fortran_cylindrical_map_term_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_cylindrical_map_term_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_cylindrical_map_term_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "cylindrical_map_term_struct";
+  }
+};
+
+class CylindricalMapTermProxy : public FortranProxy<CylindricalMapTermProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string file() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  int n_link() const; // 0D_NOT_integer
+  FortranTypeArray1D<CylindricalMapTerm1Proxy> term() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_cylindrical_map_struct();
+void deallocate_fortran_cylindrical_map_struct(void* ptr) noexcept;
+void copy_fortran_cylindrical_map_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<CylindricalMapProxy> {
+  static void* allocate() {
+    return allocate_fortran_cylindrical_map_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_cylindrical_map_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_cylindrical_map_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "cylindrical_map_struct";
+  }
+};
+
+class CylindricalMapProxy : public FortranProxy<CylindricalMapProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int m() const; // 0D_NOT_integer
+  int harmonic() const; // 0D_NOT_integer
+  double phi0_fieldmap() const; // 0D_NOT_real
+  double theta0_azimuth() const; // 0D_NOT_real
+  double field_scale() const; // 0D_NOT_real
+  int master_parameter() const; // 0D_NOT_integer
+  int ele_anchor_pt() const; // 0D_NOT_integer
+  double dz() const; // 0D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+  const void* ptr() const; // 0D_PTR_type
+};
+
+extern "C" {
+void* allocate_fortran_bicubic_cmplx_coef_struct();
+void deallocate_fortran_bicubic_cmplx_coef_struct(void* ptr) noexcept;
+void copy_fortran_bicubic_cmplx_coef_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<BicubicCmplxCoefProxy> {
+  static void* allocate() {
+    return allocate_fortran_bicubic_cmplx_coef_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bicubic_cmplx_coef_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bicubic_cmplx_coef_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bicubic_cmplx_coef_struct";
+  }
+};
+
+class BicubicCmplxCoefProxy : public FortranProxy<BicubicCmplxCoefProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<int> i_box() const; // 1D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_tricubic_cmplx_coef_struct();
+void deallocate_fortran_tricubic_cmplx_coef_struct(void* ptr) noexcept;
+void copy_fortran_tricubic_cmplx_coef_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TricubicCmplxCoefProxy> {
+  static void* allocate() {
+    return allocate_fortran_tricubic_cmplx_coef_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tricubic_cmplx_coef_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tricubic_cmplx_coef_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tricubic_cmplx_coef_struct";
+  }
+};
+
+class TricubicCmplxCoefProxy : public FortranProxy<TricubicCmplxCoefProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<int> i_box() const; // 1D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_grid_field_pt1_struct();
+void deallocate_fortran_grid_field_pt1_struct(void* ptr) noexcept;
+void copy_fortran_grid_field_pt1_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<GridFieldPt1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_grid_field_pt1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_grid_field_pt1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_grid_field_pt1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "grid_field_pt1_struct";
+  }
+};
+
+class GridFieldPt1Proxy : public FortranProxy<GridFieldPt1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<std::complex<double>> E() const; // 1D_NOT_complex
+  FortranArray1D<std::complex<double>> B() const; // 1D_NOT_complex
+};
+
+extern "C" {
+void* allocate_fortran_grid_field_pt_struct();
+void deallocate_fortran_grid_field_pt_struct(void* ptr) noexcept;
+void copy_fortran_grid_field_pt_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<GridFieldPtProxy> {
+  static void* allocate() {
+    return allocate_fortran_grid_field_pt_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_grid_field_pt_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_grid_field_pt_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "grid_field_pt_struct";
+  }
+};
+
+class GridFieldPtProxy : public FortranProxy<GridFieldPtProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string file() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  int n_link() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_grid_field_struct();
+void deallocate_fortran_grid_field_struct(void* ptr) noexcept;
+void copy_fortran_grid_field_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<GridFieldProxy> {
+  static void* allocate() {
+    return allocate_fortran_grid_field_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_grid_field_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_grid_field_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "grid_field_struct";
+  }
+};
+
+class GridFieldProxy : public FortranProxy<GridFieldProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int geometry() const; // 0D_NOT_integer
+  int harmonic() const; // 0D_NOT_integer
+  double phi0_fieldmap() const; // 0D_NOT_real
+  double field_scale() const; // 0D_NOT_real
+  int field_type() const; // 0D_NOT_integer
+  int master_parameter() const; // 0D_NOT_integer
+  int ele_anchor_pt() const; // 0D_NOT_integer
+  int interpolation_order() const; // 0D_NOT_integer
+  FortranArray1D<double> dr() const; // 1D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+  bool curved_ref_frame() const; // 0D_NOT_logical
+  const void* ptr() const; // 0D_PTR_type
+};
+
+extern "C" {
+void* allocate_fortran_floor_position_struct();
+void deallocate_fortran_floor_position_struct(void* ptr) noexcept;
+void copy_fortran_floor_position_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<FloorPositionProxy> {
+  static void* allocate() {
+    return allocate_fortran_floor_position_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_floor_position_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_floor_position_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "floor_position_struct";
+  }
+};
+
+class FloorPositionProxy : public FortranProxy<FloorPositionProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> r() const; // 1D_NOT_real
+  double theta() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double psi() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_high_energy_space_charge_struct();
+void deallocate_fortran_high_energy_space_charge_struct(void* ptr) noexcept;
+void copy_fortran_high_energy_space_charge_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<HighEnergySpaceChargeProxy> {
+  static void* allocate() {
+    return allocate_fortran_high_energy_space_charge_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_high_energy_space_charge_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_high_energy_space_charge_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "high_energy_space_charge_struct";
+  }
+};
+
+class HighEnergySpaceChargeProxy
+    : public FortranProxy<HighEnergySpaceChargeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  CoordProxy closed_orb() const; // 0D_NOT_type
+  double kick_const() const; // 0D_NOT_real
+  double sig_x() const; // 0D_NOT_real
+  double sig_y() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double sin_phi() const; // 0D_NOT_real
+  double cos_phi() const; // 0D_NOT_real
+  double sig_z() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_xy_disp_struct();
+void deallocate_fortran_xy_disp_struct(void* ptr) noexcept;
+void copy_fortran_xy_disp_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<XyDispProxy> {
+  static void* allocate() {
+    return allocate_fortran_xy_disp_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_xy_disp_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_xy_disp_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "xy_disp_struct";
+  }
+};
+
+class XyDispProxy : public FortranProxy<XyDispProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double eta() const; // 0D_NOT_real
+  double etap() const; // 0D_NOT_real
+  double deta_ds() const; // 0D_NOT_real
+  double sigma() const; // 0D_NOT_real
+  double deta_dpz() const; // 0D_NOT_real
+  double detap_dpz() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_twiss_struct();
+void deallocate_fortran_twiss_struct(void* ptr) noexcept;
+void copy_fortran_twiss_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TwissProxy> {
+  static void* allocate() {
+    return allocate_fortran_twiss_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_twiss_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_twiss_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "twiss_struct";
+  }
+};
+
+class TwissProxy : public FortranProxy<TwissProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double beta() const; // 0D_NOT_real
+  double alpha() const; // 0D_NOT_real
+  double gamma() const; // 0D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double eta() const; // 0D_NOT_real
+  double etap() const; // 0D_NOT_real
+  double deta_ds() const; // 0D_NOT_real
+  double sigma() const; // 0D_NOT_real
+  double sigma_p() const; // 0D_NOT_real
+  double emit() const; // 0D_NOT_real
+  double norm_emit() const; // 0D_NOT_real
+  double chrom() const; // 0D_NOT_real
+  double dbeta_dpz() const; // 0D_NOT_real
+  double dalpha_dpz() const; // 0D_NOT_real
+  double deta_dpz() const; // 0D_NOT_real
+  double detap_dpz() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_mode3_struct();
+void deallocate_fortran_mode3_struct(void* ptr) noexcept;
+void copy_fortran_mode3_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<Mode3Proxy> {
+  static void* allocate() {
+    return allocate_fortran_mode3_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_mode3_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_mode3_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "mode3_struct";
+  }
+};
+
+class Mode3Proxy : public FortranProxy<Mode3Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  TwissProxy a() const; // 0D_NOT_type
+  TwissProxy b() const; // 0D_NOT_type
+  TwissProxy c() const; // 0D_NOT_type
+  TwissProxy x() const; // 0D_NOT_type
+  TwissProxy y() const; // 0D_NOT_type
+};
+
+extern "C" {
+void* allocate_fortran_bookkeeping_state_struct();
+void deallocate_fortran_bookkeeping_state_struct(void* ptr) noexcept;
+void copy_fortran_bookkeeping_state_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<BookkeepingStateProxy> {
+  static void* allocate() {
+    return allocate_fortran_bookkeeping_state_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bookkeeping_state_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bookkeeping_state_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bookkeeping_state_struct";
+  }
+};
+
+class BookkeepingStateProxy : public FortranProxy<BookkeepingStateProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int attributes() const; // 0D_NOT_integer
+  int control() const; // 0D_NOT_integer
+  int floor_position() const; // 0D_NOT_integer
+  int s_position() const; // 0D_NOT_integer
+  int ref_energy() const; // 0D_NOT_integer
+  int mat6() const; // 0D_NOT_integer
+  int rad_int() const; // 0D_NOT_integer
+  int ptc() const; // 0D_NOT_integer
+  bool has_misalign() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_rad_map_struct();
+void deallocate_fortran_rad_map_struct(void* ptr) noexcept;
+void copy_fortran_rad_map_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RadMapProxy> {
+  static void* allocate() {
+    return allocate_fortran_rad_map_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rad_map_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rad_map_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rad_map_struct";
+  }
+};
+
+class RadMapProxy : public FortranProxy<RadMapProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> ref_orb() const; // 1D_NOT_real
+  FortranArray1D<double> xfer_damp_vec() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_rad_map_ele_struct();
+void deallocate_fortran_rad_map_ele_struct(void* ptr) noexcept;
+void copy_fortran_rad_map_ele_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RadMapEleProxy> {
+  static void* allocate() {
+    return allocate_fortran_rad_map_ele_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rad_map_ele_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rad_map_ele_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rad_map_ele_struct";
+  }
+};
+
+class RadMapEleProxy : public FortranProxy<RadMapEleProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  RadMapProxy rm0() const; // 0D_NOT_type
+  RadMapProxy rm1() const; // 0D_NOT_type
+  bool stale() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_gen_grad1_struct();
+void deallocate_fortran_gen_grad1_struct(void* ptr) noexcept;
+void copy_fortran_gen_grad1_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<GenGrad1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_gen_grad1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_gen_grad1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_gen_grad1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "gen_grad1_struct";
+  }
+};
+
+class GenGrad1Proxy : public FortranProxy<GenGrad1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int m() const; // 0D_NOT_integer
+  int sincos() const; // 0D_NOT_integer
+  int n_deriv_max() const; // 0D_NOT_integer
+  FortranArray2D<double> deriv() const; // 2D_ALLOC_real
+};
+
+extern "C" {
+void* allocate_fortran_gen_grad_map_struct();
+void deallocate_fortran_gen_grad_map_struct(void* ptr) noexcept;
+void copy_fortran_gen_grad_map_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<GenGradMapProxy> {
+  static void* allocate() {
+    return allocate_fortran_gen_grad_map_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_gen_grad_map_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_gen_grad_map_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "gen_grad_map_struct";
+  }
+};
+
+class GenGradMapProxy : public FortranProxy<GenGradMapProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string file() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
+  FortranTypeArray1D<GenGrad1Proxy> gg() const; // 1D_ALLOC_type
+  int ele_anchor_pt() const; // 0D_NOT_integer
+  int field_type() const; // 0D_NOT_integer
+  int iz0() const; // 0D_NOT_integer
+  int iz1() const; // 0D_NOT_integer
+  double dz() const; // 0D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+  double field_scale() const; // 0D_NOT_real
+  int master_parameter() const; // 0D_NOT_integer
+  bool curved_ref_frame() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_surface_segmented_pt_struct();
+void deallocate_fortran_surface_segmented_pt_struct(void* ptr) noexcept;
+void copy_fortran_surface_segmented_pt_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceSegmentedPtProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_segmented_pt_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_segmented_pt_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_segmented_pt_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_segmented_pt_struct";
+  }
+};
+
+class SurfaceSegmentedPtProxy : public FortranProxy<SurfaceSegmentedPtProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double x0() const; // 0D_NOT_real
+  double y0() const; // 0D_NOT_real
+  double z0() const; // 0D_NOT_real
+  double dz_dx() const; // 0D_NOT_real
+  double dz_dy() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_surface_segmented_struct();
+void deallocate_fortran_surface_segmented_struct(void* ptr) noexcept;
+void copy_fortran_surface_segmented_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceSegmentedProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_segmented_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_segmented_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_segmented_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_segmented_struct";
+  }
+};
+
+class SurfaceSegmentedProxy : public FortranProxy<SurfaceSegmentedProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  bool active() const; // 0D_NOT_logical
+  FortranArray1D<double> dr() const; // 1D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_surface_h_misalign_pt_struct();
+void deallocate_fortran_surface_h_misalign_pt_struct(void* ptr) noexcept;
+void copy_fortran_surface_h_misalign_pt_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceHMisalignPtProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_h_misalign_pt_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_h_misalign_pt_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_h_misalign_pt_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_h_misalign_pt_struct";
+  }
+};
+
+class SurfaceHMisalignPtProxy : public FortranProxy<SurfaceHMisalignPtProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double x0() const; // 0D_NOT_real
+  double y0() const; // 0D_NOT_real
+  double rot_y() const; // 0D_NOT_real
+  double rot_t() const; // 0D_NOT_real
+  double rot_y_rms() const; // 0D_NOT_real
+  double rot_t_rms() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_surface_h_misalign_struct();
+void deallocate_fortran_surface_h_misalign_struct(void* ptr) noexcept;
+void copy_fortran_surface_h_misalign_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceHMisalignProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_h_misalign_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_h_misalign_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_h_misalign_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_h_misalign_struct";
+  }
+};
+
+class SurfaceHMisalignProxy : public FortranProxy<SurfaceHMisalignProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  bool active() const; // 0D_NOT_logical
+  FortranArray1D<double> dr() const; // 1D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_surface_displacement_pt_struct();
+void deallocate_fortran_surface_displacement_pt_struct(void* ptr) noexcept;
+void copy_fortran_surface_displacement_pt_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceDisplacementPtProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_displacement_pt_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_displacement_pt_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_displacement_pt_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_displacement_pt_struct";
+  }
+};
+
+class SurfaceDisplacementPtProxy
+    : public FortranProxy<SurfaceDisplacementPtProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double x0() const; // 0D_NOT_real
+  double y0() const; // 0D_NOT_real
+  double z0() const; // 0D_NOT_real
+  double dz_dx() const; // 0D_NOT_real
+  double dz_dy() const; // 0D_NOT_real
+  double d2z_dxdy() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_surface_displacement_struct();
+void deallocate_fortran_surface_displacement_struct(void* ptr) noexcept;
+void copy_fortran_surface_displacement_struct_struct(
+    const void* src,
+    void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceDisplacementProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_displacement_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_displacement_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_displacement_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_displacement_struct";
+  }
+};
+
+class SurfaceDisplacementProxy : public FortranProxy<SurfaceDisplacementProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  bool active() const; // 0D_NOT_logical
+  FortranArray1D<double> dr() const; // 1D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_target_point_struct();
+void deallocate_fortran_target_point_struct(void* ptr) noexcept;
+void copy_fortran_target_point_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TargetPointProxy> {
+  static void* allocate() {
+    return allocate_fortran_target_point_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_target_point_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_target_point_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "target_point_struct";
+  }
+};
+
+class TargetPointProxy : public FortranProxy<TargetPointProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> r() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_surface_curvature_struct();
+void deallocate_fortran_surface_curvature_struct(void* ptr) noexcept;
+void copy_fortran_surface_curvature_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<SurfaceCurvatureProxy> {
+  static void* allocate() {
+    return allocate_fortran_surface_curvature_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_surface_curvature_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_surface_curvature_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "surface_curvature_struct";
+  }
+};
+
+class SurfaceCurvatureProxy : public FortranProxy<SurfaceCurvatureProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double spherical() const; // 0D_NOT_real
+  FortranArray1D<double> elliptical() const; // 1D_NOT_real
+  bool has_curvature() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_photon_target_struct();
+void deallocate_fortran_photon_target_struct(void* ptr) noexcept;
+void copy_fortran_photon_target_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<PhotonTargetProxy> {
+  static void* allocate() {
+    return allocate_fortran_photon_target_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_photon_target_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_photon_target_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "photon_target_struct";
+  }
+};
+
+class PhotonTargetProxy : public FortranProxy<PhotonTargetProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int type() const; // 0D_NOT_integer
+  int n_corner() const; // 0D_NOT_integer
+  LatEleLocProxy ele_loc() const; // 0D_NOT_type
+  FortranTypeArray1D<TargetPointProxy> corner() const; // 1D_NOT_type
+  TargetPointProxy center() const; // 0D_NOT_type
+};
+
+extern "C" {
+void* allocate_fortran_photon_material_struct();
+void deallocate_fortran_photon_material_struct(void* ptr) noexcept;
+void copy_fortran_photon_material_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<PhotonMaterialProxy> {
+  static void* allocate() {
+    return allocate_fortran_photon_material_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_photon_material_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_photon_material_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "photon_material_struct";
+  }
+};
+
+class PhotonMaterialProxy : public FortranProxy<PhotonMaterialProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::complex<double> f0_m1() const; // 0D_NOT_complex
+  std::complex<double> f0_m2() const; // 0D_NOT_complex
+  std::complex<double> f_0() const; // 0D_NOT_complex
+  std::complex<double> f_h() const; // 0D_NOT_complex
+  std::complex<double> f_hbar() const; // 0D_NOT_complex
+  std::complex<double> f_hkl() const; // 0D_NOT_complex
+  FortranArray1D<double> h_norm() const; // 1D_NOT_real
+  FortranArray1D<double> l_ref() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_pixel_pt_struct();
+void deallocate_fortran_pixel_pt_struct(void* ptr) noexcept;
+void copy_fortran_pixel_pt_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<PixelPtProxy> {
+  static void* allocate() {
+    return allocate_fortran_pixel_pt_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_pixel_pt_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_pixel_pt_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "pixel_pt_struct";
+  }
+};
+
+class PixelPtProxy : public FortranProxy<PixelPtProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  long long n_photon() const; // 0D_NOT_integer8
+  std::complex<double> E_x() const; // 0D_NOT_complex
+  std::complex<double> E_y() const; // 0D_NOT_complex
+  double intensity_x() const; // 0D_NOT_real
+  double intensity_y() const; // 0D_NOT_real
+  double intensity() const; // 0D_NOT_real
+  FortranArray1D<double> orbit() const; // 1D_NOT_real
+  FortranArray1D<double> orbit_rms() const; // 1D_NOT_real
+  FortranArray1D<double> init_orbit() const; // 1D_NOT_real
+  FortranArray1D<double> init_orbit_rms() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_pixel_detec_struct();
+void deallocate_fortran_pixel_detec_struct(void* ptr) noexcept;
+void copy_fortran_pixel_detec_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<PixelDetecProxy> {
+  static void* allocate() {
+    return allocate_fortran_pixel_detec_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_pixel_detec_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_pixel_detec_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "pixel_detec_struct";
+  }
+};
+
+class PixelDetecProxy : public FortranProxy<PixelDetecProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> dr() const; // 1D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+  long long n_track_tot() const; // 0D_NOT_integer8
+  long long n_hit_detec() const; // 0D_NOT_integer8
+  long long n_hit_pixel() const; // 0D_NOT_integer8
+};
+
+extern "C" {
+void* allocate_fortran_photon_element_struct();
+void deallocate_fortran_photon_element_struct(void* ptr) noexcept;
+void copy_fortran_photon_element_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<PhotonElementProxy> {
+  static void* allocate() {
+    return allocate_fortran_photon_element_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_photon_element_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_photon_element_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "photon_element_struct";
+  }
+};
+
+class PhotonElementProxy : public FortranProxy<PhotonElementProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  SurfaceCurvatureProxy curvature() const; // 0D_NOT_type
+  PhotonTargetProxy target() const; // 0D_NOT_type
+  PhotonMaterialProxy material() const; // 0D_NOT_type
+  SurfaceSegmentedProxy segmented() const; // 0D_NOT_type
+  SurfaceHMisalignProxy h_misalign() const; // 0D_NOT_type
+  SurfaceDisplacementProxy displacement() const; // 0D_NOT_type
+  PixelDetecProxy pixel() const; // 0D_NOT_type
+  int reflectivity_table_type() const; // 0D_NOT_integer
+  PhotonReflectTableProxy reflectivity_table_sigma() const; // 0D_NOT_type
+  PhotonReflectTableProxy reflectivity_table_pi() const; // 0D_NOT_type
+  FortranTypeArray1D<SplineProxy> init_energy_prob() const; // 1D_ALLOC_type
+  FortranArray1D<double> integrated_init_energy_prob() const; // 1D_ALLOC_real
+};
+
+extern "C" {
+void* allocate_fortran_wall3d_vertex_struct();
+void deallocate_fortran_wall3d_vertex_struct(void* ptr) noexcept;
+void copy_fortran_wall3d_vertex_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<Wall3dVertexProxy> {
+  static void* allocate() {
+    return allocate_fortran_wall3d_vertex_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wall3d_vertex_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wall3d_vertex_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wall3d_vertex_struct";
+  }
+};
+
+class Wall3dVertexProxy : public FortranProxy<Wall3dVertexProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double x() const; // 0D_NOT_real
+  double y() const; // 0D_NOT_real
+  double radius_x() const; // 0D_NOT_real
+  double radius_y() const; // 0D_NOT_real
+  double tilt() const; // 0D_NOT_real
+  double angle() const; // 0D_NOT_real
+  double x0() const; // 0D_NOT_real
+  double y0() const; // 0D_NOT_real
+  int type() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_wall3d_section_struct();
+void deallocate_fortran_wall3d_section_struct(void* ptr) noexcept;
+void copy_fortran_wall3d_section_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<Wall3dSectionProxy> {
+  static void* allocate() {
+    return allocate_fortran_wall3d_section_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wall3d_section_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wall3d_section_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wall3d_section_struct";
+  }
+};
+
+class Wall3dSectionProxy : public FortranProxy<Wall3dSectionProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string name() const; // 0D_NOT_character
+  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  std::string material() const; // 0D_NOT_character
+  FortranArray1D<char> get_material_chars() const; // 0D_NOT_character
+  FortranTypeArray1D<Wall3dVertexProxy> v() const; // 1D_ALLOC_type
+  const void* surface() const; // 0D_PTR_type
+  int type() const; // 0D_NOT_integer
+  int n_vertex_input() const; // 0D_NOT_integer
+  int ix_ele() const; // 0D_NOT_integer
+  int ix_branch() const; // 0D_NOT_integer
+  int vertices_state() const; // 0D_NOT_integer
+  bool patch_in_region() const; // 0D_NOT_logical
+  double thickness() const; // 0D_NOT_real
+  double s() const; // 0D_NOT_real
+  FortranArray1D<double> r0() const; // 1D_NOT_real
+  double dx0_ds() const; // 0D_NOT_real
+  double dy0_ds() const; // 0D_NOT_real
+  FortranArray1D<double> x0_coef() const; // 1D_NOT_real
+  FortranArray1D<double> y0_coef() const; // 1D_NOT_real
+  double dr_ds() const; // 0D_NOT_real
+  FortranArray1D<double> p1_coef() const; // 1D_NOT_real
+  FortranArray1D<double> p2_coef() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_wall3d_struct();
+void deallocate_fortran_wall3d_struct(void* ptr) noexcept;
+void copy_fortran_wall3d_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<Wall3dProxy> {
+  static void* allocate() {
+    return allocate_fortran_wall3d_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_wall3d_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_wall3d_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "wall3d_struct";
+  }
+};
+
+class Wall3dProxy : public FortranProxy<Wall3dProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string name() const; // 0D_NOT_character
+  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  int type() const; // 0D_NOT_integer
+  int ix_wall3d() const; // 0D_NOT_integer
+  int n_link() const; // 0D_NOT_integer
+  double thickness() const; // 0D_NOT_real
+  std::string clear_material() const; // 0D_NOT_character
+  FortranArray1D<char> get_clear_material_chars() const; // 0D_NOT_character
+  std::string opaque_material() const; // 0D_NOT_character
+  FortranArray1D<char> get_opaque_material_chars() const; // 0D_NOT_character
+  bool superimpose() const; // 0D_NOT_logical
+  int ele_anchor_pt() const; // 0D_NOT_integer
+  FortranTypeArray1D<Wall3dSectionProxy> section() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_ramper_lord_struct();
+void deallocate_fortran_ramper_lord_struct(void* ptr) noexcept;
+void copy_fortran_ramper_lord_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RamperLordProxy> {
+  static void* allocate() {
+    return allocate_fortran_ramper_lord_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ramper_lord_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ramper_lord_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ramper_lord_struct";
+  }
+};
+
+class RamperLordProxy : public FortranProxy<RamperLordProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int ix_ele() const; // 0D_NOT_integer
+  int ix_con() const; // 0D_NOT_integer
+  double* attrib_ptr() const; // 0D_PTR_real
+};
+
+extern "C" {
+void* allocate_fortran_control_struct();
+void deallocate_fortran_control_struct(void* ptr) noexcept;
+void copy_fortran_control_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<ControlProxy> {
+  static void* allocate() {
+    return allocate_fortran_control_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_control_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_control_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "control_struct";
+  }
+};
+
+class ControlProxy : public FortranProxy<ControlProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double value() const; // 0D_NOT_real
+  FortranArray1D<double> y_knot() const; // 1D_ALLOC_real
+  FortranTypeArray1D<ExpressionAtomProxy> stack() const; // 1D_ALLOC_type
+  LatEleLocProxy slave() const; // 0D_NOT_type
+  LatEleLocProxy lord() const; // 0D_NOT_type
+  std::string slave_name() const; // 0D_NOT_character
+  FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
+  std::string attribute() const; // 0D_NOT_character
+  FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
+  int ix_attrib() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_control_var1_struct();
+void deallocate_fortran_control_var1_struct(void* ptr) noexcept;
+void copy_fortran_control_var1_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<ControlVar1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_control_var1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_control_var1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_control_var1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "control_var1_struct";
+  }
+};
+
+class ControlVar1Proxy : public FortranProxy<ControlVar1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string name() const; // 0D_NOT_character
+  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  double value() const; // 0D_NOT_real
+  double old_value() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_control_ramp1_struct();
+void deallocate_fortran_control_ramp1_struct(void* ptr) noexcept;
+void copy_fortran_control_ramp1_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<ControlRamp1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_control_ramp1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_control_ramp1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_control_ramp1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "control_ramp1_struct";
+  }
+};
+
+class ControlRamp1Proxy : public FortranProxy<ControlRamp1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> y_knot() const; // 1D_ALLOC_real
+  FortranTypeArray1D<ExpressionAtomProxy> stack() const; // 1D_ALLOC_type
+  std::string attribute() const; // 0D_NOT_character
+  FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
+  std::string slave_name() const; // 0D_NOT_character
+  FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
+  bool is_controller() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_controller_struct();
+void deallocate_fortran_controller_struct(void* ptr) noexcept;
+void copy_fortran_controller_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<ControllerProxy> {
+  static void* allocate() {
+    return allocate_fortran_controller_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_controller_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_controller_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "controller_struct";
+  }
+};
+
+class ControllerProxy : public FortranProxy<ControllerProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<ControlVar1Proxy> var() const; // 1D_ALLOC_type
+  FortranTypeArray1D<ControlRamp1Proxy> ramp() const; // 1D_ALLOC_type
+  FortranTypeArray1D<RamperLordProxy> ramper_lord() const; // 1D_ALLOC_type
+  FortranArray1D<double> x_knot() const; // 1D_ALLOC_real
+};
+
+extern "C" {
+void* allocate_fortran_ellipse_beam_init_struct();
+void deallocate_fortran_ellipse_beam_init_struct(void* ptr) noexcept;
+void copy_fortran_ellipse_beam_init_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<EllipseBeamInitProxy> {
+  static void* allocate() {
+    return allocate_fortran_ellipse_beam_init_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ellipse_beam_init_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ellipse_beam_init_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ellipse_beam_init_struct";
+  }
+};
+
+class EllipseBeamInitProxy : public FortranProxy<EllipseBeamInitProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int part_per_ellipse() const; // 0D_NOT_integer
+  int n_ellipse() const; // 0D_NOT_integer
+  double sigma_cutoff() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_kv_beam_init_struct();
+void deallocate_fortran_kv_beam_init_struct(void* ptr) noexcept;
+void copy_fortran_kv_beam_init_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<KvBeamInitProxy> {
+  static void* allocate() {
+    return allocate_fortran_kv_beam_init_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_kv_beam_init_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_kv_beam_init_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "kv_beam_init_struct";
+  }
+};
+
+class KvBeamInitProxy : public FortranProxy<KvBeamInitProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<int> part_per_phi() const; // 1D_NOT_integer
+  int n_I2() const; // 0D_NOT_integer
+  double A() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_grid_beam_init_struct();
+void deallocate_fortran_grid_beam_init_struct(void* ptr) noexcept;
+void copy_fortran_grid_beam_init_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<GridBeamInitProxy> {
+  static void* allocate() {
+    return allocate_fortran_grid_beam_init_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_grid_beam_init_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_grid_beam_init_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "grid_beam_init_struct";
+  }
+};
+
+class GridBeamInitProxy : public FortranProxy<GridBeamInitProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int n_x() const; // 0D_NOT_integer
+  int n_px() const; // 0D_NOT_integer
+  double x_min() const; // 0D_NOT_real
+  double x_max() const; // 0D_NOT_real
+  double px_min() const; // 0D_NOT_real
+  double px_max() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_beam_init_struct();
+void deallocate_fortran_beam_init_struct(void* ptr) noexcept;
+void copy_fortran_beam_init_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<BeamInitProxy> {
+  static void* allocate() {
+    return allocate_fortran_beam_init_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_beam_init_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_beam_init_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "beam_init_struct";
+  }
+};
+
+class BeamInitProxy : public FortranProxy<BeamInitProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::string position_file() const; // 0D_NOT_character
+  FortranArray1D<char> get_position_file_chars() const; // 0D_NOT_character
+  FortranArray1D<double> spin() const; // 1D_NOT_real
+  FortranTypeArray1D<EllipseBeamInitProxy> ellipse() const; // 1D_NOT_type
+  KvBeamInitProxy KV() const; // 0D_NOT_type
+  FortranTypeArray1D<GridBeamInitProxy> grid() const; // 1D_NOT_type
+  FortranArray1D<double> center_jitter() const; // 1D_NOT_real
+  FortranArray1D<double> emit_jitter() const; // 1D_NOT_real
+  double sig_z_jitter() const; // 0D_NOT_real
+  double sig_pz_jitter() const; // 0D_NOT_real
+  int n_particle() const; // 0D_NOT_integer
+  bool renorm_center() const; // 0D_NOT_logical
+  bool renorm_sigma() const; // 0D_NOT_logical
+  std::string random_engine() const; // 0D_NOT_character
+  FortranArray1D<char> get_random_engine_chars() const; // 0D_NOT_character
+  std::string random_gauss_converter() const; // 0D_NOT_character
+  FortranArray1D<char> get_random_gauss_converter_chars()
+      const; // 0D_NOT_character
+  double random_sigma_cutoff() const; // 0D_NOT_real
+  double a_norm_emit() const; // 0D_NOT_real
+  double b_norm_emit() const; // 0D_NOT_real
+  double a_emit() const; // 0D_NOT_real
+  double b_emit() const; // 0D_NOT_real
+  double dPz_dz() const; // 0D_NOT_real
+  FortranArray1D<double> center() const; // 1D_NOT_real
+  double t_offset() const; // 0D_NOT_real
+  double dt_bunch() const; // 0D_NOT_real
+  double sig_z() const; // 0D_NOT_real
+  double sig_pz() const; // 0D_NOT_real
+  double bunch_charge() const; // 0D_NOT_real
+  int n_bunch() const; // 0D_NOT_integer
+  int ix_turn() const; // 0D_NOT_integer
+  std::string species() const; // 0D_NOT_character
+  FortranArray1D<char> get_species_chars() const; // 0D_NOT_character
+  bool full_6D_coupling_calc() const; // 0D_NOT_logical
+  bool use_particle_start() const; // 0D_NOT_logical
+  bool use_t_coords() const; // 0D_NOT_logical
+  bool use_z_as_t() const; // 0D_NOT_logical
+  std::string file_name() const; // 0D_NOT_character
+  FortranArray1D<char> get_file_name_chars() const; // 0D_NOT_character
+};
+
+extern "C" {
+void* allocate_fortran_lat_param_struct();
+void deallocate_fortran_lat_param_struct(void* ptr) noexcept;
+void copy_fortran_lat_param_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<LatParamProxy> {
+  static void* allocate() {
+    return allocate_fortran_lat_param_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_lat_param_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_lat_param_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "lat_param_struct";
+  }
+};
+
+class LatParamProxy : public FortranProxy<LatParamProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double n_part() const; // 0D_NOT_real
+  double total_length() const; // 0D_NOT_real
+  double unstable_factor() const; // 0D_NOT_real
+  double spin_tune() const; // 0D_NOT_real
+  int particle() const; // 0D_NOT_integer
+  int default_tracking_species() const; // 0D_NOT_integer
+  int geometry() const; // 0D_NOT_integer
+  int ixx() const; // 0D_NOT_integer
+  bool stable() const; // 0D_NOT_logical
+  bool live_branch() const; // 0D_NOT_logical
+  double g1_integral() const; // 0D_NOT_real
+  double g2_integral() const; // 0D_NOT_real
+  double g3_integral() const; // 0D_NOT_real
+  BookkeepingStateProxy bookkeeping_state() const; // 0D_NOT_type
+  BeamInitProxy beam_init() const; // 0D_NOT_type
+};
+
+extern "C" {
+void* allocate_fortran_mode_info_struct();
+void deallocate_fortran_mode_info_struct(void* ptr) noexcept;
+void copy_fortran_mode_info_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<ModeInfoProxy> {
+  static void* allocate() {
+    return allocate_fortran_mode_info_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_mode_info_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_mode_info_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "mode_info_struct";
+  }
+};
+
+class ModeInfoProxy : public FortranProxy<ModeInfoProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  bool stable() const; // 0D_NOT_logical
+  double tune() const; // 0D_NOT_real
+  double emit() const; // 0D_NOT_real
+  double chrom() const; // 0D_NOT_real
+  double sigma() const; // 0D_NOT_real
+  double sigmap() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_pre_tracker_struct();
+void deallocate_fortran_pre_tracker_struct(void* ptr) noexcept;
+void copy_fortran_pre_tracker_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<PreTrackerProxy> {
+  static void* allocate() {
+    return allocate_fortran_pre_tracker_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_pre_tracker_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_pre_tracker_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "pre_tracker_struct";
+  }
+};
+
+class PreTrackerProxy : public FortranProxy<PreTrackerProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int who() const; // 0D_NOT_integer
+  int ix_ele_start() const; // 0D_NOT_integer
+  int ix_ele_end() const; // 0D_NOT_integer
+  std::string input_file() const; // 0D_NOT_character
+  FortranArray1D<char> get_input_file_chars() const; // 0D_NOT_character
+};
+
+extern "C" {
+void* allocate_fortran_anormal_mode_struct();
+void deallocate_fortran_anormal_mode_struct(void* ptr) noexcept;
+void copy_fortran_anormal_mode_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<AnormalModeProxy> {
+  static void* allocate() {
+    return allocate_fortran_anormal_mode_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_anormal_mode_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_anormal_mode_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "anormal_mode_struct";
+  }
+};
+
+class AnormalModeProxy : public FortranProxy<AnormalModeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double emittance() const; // 0D_NOT_real
+  double emittance_no_vert() const; // 0D_NOT_real
+  FortranArray1D<double> synch_int() const; // 1D_NOT_real
+  double j_damp() const; // 0D_NOT_real
+  double alpha_damp() const; // 0D_NOT_real
+  double chrom() const; // 0D_NOT_real
+  double tune() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_linac_normal_mode_struct();
+void deallocate_fortran_linac_normal_mode_struct(void* ptr) noexcept;
+void copy_fortran_linac_normal_mode_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<LinacNormalModeProxy> {
+  static void* allocate() {
+    return allocate_fortran_linac_normal_mode_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_linac_normal_mode_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_linac_normal_mode_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "linac_normal_mode_struct";
+  }
+};
+
+class LinacNormalModeProxy : public FortranProxy<LinacNormalModeProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double i2_E4() const; // 0D_NOT_real
+  double i3_E7() const; // 0D_NOT_real
+  double i5a_E6() const; // 0D_NOT_real
+  double i5b_E6() const; // 0D_NOT_real
+  double sig_E1() const; // 0D_NOT_real
+  double a_emittance_end() const; // 0D_NOT_real
+  double b_emittance_end() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_normal_modes_struct();
+void deallocate_fortran_normal_modes_struct(void* ptr) noexcept;
+void copy_fortran_normal_modes_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<NormalModesProxy> {
+  static void* allocate() {
+    return allocate_fortran_normal_modes_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_normal_modes_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_normal_modes_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "normal_modes_struct";
+  }
+};
+
+class NormalModesProxy : public FortranProxy<NormalModesProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> synch_int() const; // 1D_NOT_real
+  double sigE_E() const; // 0D_NOT_real
+  double sig_z() const; // 0D_NOT_real
+  double e_loss() const; // 0D_NOT_real
+  double rf_voltage() const; // 0D_NOT_real
+  double pz_aperture() const; // 0D_NOT_real
+  double pz_average() const; // 0D_NOT_real
+  double momentum_compaction() const; // 0D_NOT_real
+  double dpz_damp() const; // 0D_NOT_real
+  AnormalModeProxy a() const; // 0D_NOT_type
+  AnormalModeProxy b() const; // 0D_NOT_type
+  AnormalModeProxy z() const; // 0D_NOT_type
+  LinacNormalModeProxy lin() const; // 0D_NOT_type
+};
+
+extern "C" {
+void* allocate_fortran_em_field_struct();
+void deallocate_fortran_em_field_struct(void* ptr) noexcept;
+void copy_fortran_em_field_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<EmFieldProxy> {
+  static void* allocate() {
+    return allocate_fortran_em_field_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_em_field_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_em_field_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "em_field_struct";
+  }
+};
+
+class EmFieldProxy : public FortranProxy<EmFieldProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranArray1D<double> E() const; // 1D_NOT_real
+  FortranArray1D<double> B() const; // 1D_NOT_real
+  double phi() const; // 0D_NOT_real
+  double phi_B() const; // 0D_NOT_real
+  FortranArray1D<double> A() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_strong_beam_struct();
+void deallocate_fortran_strong_beam_struct(void* ptr) noexcept;
+void copy_fortran_strong_beam_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<StrongBeamProxy> {
+  static void* allocate() {
+    return allocate_fortran_strong_beam_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_strong_beam_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_strong_beam_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "strong_beam_struct";
+  }
+};
+
+class StrongBeamProxy : public FortranProxy<StrongBeamProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  int ix_slice() const; // 0D_NOT_integer
+  double x_center() const; // 0D_NOT_real
+  double y_center() const; // 0D_NOT_real
+  double x_sigma() const; // 0D_NOT_real
+  double y_sigma() const; // 0D_NOT_real
+  double dx() const; // 0D_NOT_real
+  double dy() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_track_point_struct();
+void deallocate_fortran_track_point_struct(void* ptr) noexcept;
+void copy_fortran_track_point_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TrackPointProxy> {
+  static void* allocate() {
+    return allocate_fortran_track_point_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_track_point_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_track_point_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "track_point_struct";
+  }
+};
+
+class TrackPointProxy : public FortranProxy<TrackPointProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double s_lab() const; // 0D_NOT_real
+  double s_body() const; // 0D_NOT_real
+  CoordProxy orb() const; // 0D_NOT_type
+  EmFieldProxy field() const; // 0D_NOT_type
+  StrongBeamProxy strong_beam() const; // 0D_NOT_type
+  FortranArray1D<double> vec0() const; // 1D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_track_struct();
+void deallocate_fortran_track_struct(void* ptr) noexcept;
+void copy_fortran_track_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TrackProxy> {
+  static void* allocate() {
+    return allocate_fortran_track_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_track_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_track_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "track_struct";
+  }
+};
+
+class TrackProxy : public FortranProxy<TrackProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<TrackPointProxy> pt() const; // 1D_ALLOC_type
+  double ds_save() const; // 0D_NOT_real
+  int n_pt() const; // 0D_NOT_integer
+  int n_bad() const; // 0D_NOT_integer
+  int n_ok() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_space_charge_common_struct();
+void deallocate_fortran_space_charge_common_struct(void* ptr) noexcept;
+void copy_fortran_space_charge_common_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<SpaceChargeCommonProxy> {
+  static void* allocate() {
+    return allocate_fortran_space_charge_common_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_space_charge_common_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_space_charge_common_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "space_charge_common_struct";
+  }
+};
+
+class SpaceChargeCommonProxy : public FortranProxy<SpaceChargeCommonProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double ds_track_step() const; // 0D_NOT_real
+  double dt_track_step() const; // 0D_NOT_real
+  double cathode_strength_cutoff() const; // 0D_NOT_real
+  double rel_tol_tracking() const; // 0D_NOT_real
+  double abs_tol_tracking() const; // 0D_NOT_real
+  double beam_chamber_height() const; // 0D_NOT_real
+  double lsc_sigma_cutoff() const; // 0D_NOT_real
+  double particle_sigma_cutoff() const; // 0D_NOT_real
+  FortranArray1D<int> space_charge_mesh_size() const; // 1D_NOT_integer
+  FortranArray1D<int> csr3d_mesh_size() const; // 1D_NOT_integer
+  int n_bin() const; // 0D_NOT_integer
+  int particle_bin_span() const; // 0D_NOT_integer
+  int n_shield_images() const; // 0D_NOT_integer
+  int sc_min_in_bin() const; // 0D_NOT_integer
+  bool lsc_kick_transverse_dependence() const; // 0D_NOT_logical
+  bool debug() const; // 0D_NOT_logical
+  std::string diagnostic_output_file() const; // 0D_NOT_character
+  FortranArray1D<char> get_diagnostic_output_file_chars()
+      const; // 0D_NOT_character
+};
+
+extern "C" {
+void* allocate_fortran_bmad_common_struct();
+void deallocate_fortran_bmad_common_struct(void* ptr) noexcept;
+void copy_fortran_bmad_common_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<BmadCommonProxy> {
+  static void* allocate() {
+    return allocate_fortran_bmad_common_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bmad_common_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bmad_common_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bmad_common_struct";
+  }
+};
+
+class BmadCommonProxy : public FortranProxy<BmadCommonProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double max_aperture_limit() const; // 0D_NOT_real
+  FortranArray1D<double> d_orb() const; // 1D_NOT_real
+  double default_ds_step() const; // 0D_NOT_real
+  double significant_length() const; // 0D_NOT_real
+  double rel_tol_tracking() const; // 0D_NOT_real
+  double abs_tol_tracking() const; // 0D_NOT_real
+  double rel_tol_adaptive_tracking() const; // 0D_NOT_real
+  double abs_tol_adaptive_tracking() const; // 0D_NOT_real
+  double init_ds_adaptive_tracking() const; // 0D_NOT_real
+  double min_ds_adaptive_tracking() const; // 0D_NOT_real
+  double fatal_ds_adaptive_tracking() const; // 0D_NOT_real
+  double autoscale_amp_abs_tol() const; // 0D_NOT_real
+  double autoscale_amp_rel_tol() const; // 0D_NOT_real
+  double autoscale_phase_tol() const; // 0D_NOT_real
+  double electric_dipole_moment() const; // 0D_NOT_real
+  double synch_rad_scale() const; // 0D_NOT_real
+  double sad_eps_scale() const; // 0D_NOT_real
+  double sad_amp_max() const; // 0D_NOT_real
+  int sad_n_div_max() const; // 0D_NOT_integer
+  int taylor_order() const; // 0D_NOT_integer
+  int runge_kutta_order() const; // 0D_NOT_integer
+  int default_integ_order() const; // 0D_NOT_integer
+  int max_num_runge_kutta_step() const; // 0D_NOT_integer
+  bool rf_phase_below_transition_ref() const; // 0D_NOT_logical
+  bool sr_wakes_on() const; // 0D_NOT_logical
+  bool lr_wakes_on() const; // 0D_NOT_logical
+  bool auto_bookkeeper() const; // 0D_NOT_logical
+  bool high_energy_space_charge_on() const; // 0D_NOT_logical
+  bool csr_and_space_charge_on() const; // 0D_NOT_logical
+  bool spin_tracking_on() const; // 0D_NOT_logical
+  bool spin_sokolov_ternov_flipping_on() const; // 0D_NOT_logical
+  bool radiation_damping_on() const; // 0D_NOT_logical
+  bool radiation_zero_average() const; // 0D_NOT_logical
+  bool radiation_fluctuations_on() const; // 0D_NOT_logical
+  bool conserve_taylor_maps() const; // 0D_NOT_logical
+  bool absolute_time_tracking() const; // 0D_NOT_logical
+  bool absolute_time_ref_shift() const; // 0D_NOT_logical
+  bool convert_to_kinetic_momentum() const; // 0D_NOT_logical
+  bool normalize_twiss() const; // 0D_NOT_logical
+  bool aperture_limit_on() const; // 0D_NOT_logical
+  bool spin_n0_direction_user_set() const; // 0D_NOT_logical
+  bool debug() const; // 0D_NOT_logical
+};
+
+extern "C" {
+void* allocate_fortran_rad_int1_struct();
+void deallocate_fortran_rad_int1_struct(void* ptr) noexcept;
+void copy_fortran_rad_int1_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RadInt1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_rad_int1_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rad_int1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rad_int1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rad_int1_struct";
+  }
+};
+
+class RadInt1Proxy : public FortranProxy<RadInt1Proxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double i0() const; // 0D_NOT_real
+  double i1() const; // 0D_NOT_real
+  double i2() const; // 0D_NOT_real
+  double i3() const; // 0D_NOT_real
+  double i4a() const; // 0D_NOT_real
+  double i4b() const; // 0D_NOT_real
+  double i4z() const; // 0D_NOT_real
+  double i5a() const; // 0D_NOT_real
+  double i5b() const; // 0D_NOT_real
+  double i6b() const; // 0D_NOT_real
+  double lin_i2_E4() const; // 0D_NOT_real
+  double lin_i3_E7() const; // 0D_NOT_real
+  double lin_i5a_E6() const; // 0D_NOT_real
+  double lin_i5b_E6() const; // 0D_NOT_real
+  double lin_norm_emit_a() const; // 0D_NOT_real
+  double lin_norm_emit_b() const; // 0D_NOT_real
+  double lin_sig_E() const; // 0D_NOT_real
+  double n_steps() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_rad_int_branch_struct();
+void deallocate_fortran_rad_int_branch_struct(void* ptr) noexcept;
+void copy_fortran_rad_int_branch_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RadIntBranchProxy> {
+  static void* allocate() {
+    return allocate_fortran_rad_int_branch_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rad_int_branch_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rad_int_branch_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rad_int_branch_struct";
+  }
+};
+
+class RadIntBranchProxy : public FortranProxy<RadIntBranchProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<RadInt1Proxy> ele() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_rad_int_all_ele_struct();
+void deallocate_fortran_rad_int_all_ele_struct(void* ptr) noexcept;
+void copy_fortran_rad_int_all_ele_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RadIntAllEleProxy> {
+  static void* allocate() {
+    return allocate_fortran_rad_int_all_ele_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rad_int_all_ele_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rad_int_all_ele_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rad_int_all_ele_struct";
+  }
+};
+
+class RadIntAllEleProxy : public FortranProxy<RadIntAllEleProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<RadIntBranchProxy> branch() const; // 1D_ALLOC_type
+};
+
+extern "C" {
+void* allocate_fortran_rf_stair_step_struct();
+void deallocate_fortran_rf_stair_step_struct(void* ptr) noexcept;
+void copy_fortran_rf_stair_step_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RfStairStepProxy> {
+  static void* allocate() {
+    return allocate_fortran_rf_stair_step_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rf_stair_step_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rf_stair_step_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rf_stair_step_struct";
+  }
+};
+
+class RfStairStepProxy : public FortranProxy<RfStairStepProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  double E_tot0() const; // 0D_NOT_real
+  double E_tot1() const; // 0D_NOT_real
+  double p0c() const; // 0D_NOT_real
+  double p1c() const; // 0D_NOT_real
+  double dE_amp() const; // 0D_NOT_real
+  double scale() const; // 0D_NOT_real
+  double time() const; // 0D_NOT_real
+  double s() const; // 0D_NOT_real
+  int ix_step() const; // 0D_NOT_integer
+};
+
+extern "C" {
+void* allocate_fortran_rf_ele_struct();
+void deallocate_fortran_rf_ele_struct(void* ptr) noexcept;
+void copy_fortran_rf_ele_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<RfEleProxy> {
+  static void* allocate() {
+    return allocate_fortran_rf_ele_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_rf_ele_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_rf_ele_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "rf_ele_struct";
+  }
+};
+
+class RfEleProxy : public FortranProxy<RfEleProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  FortranTypeArray1D<RfStairStepProxy> steps() const; // 1D_ALLOC_type
+  double ds_step() const; // 0D_NOT_real
+};
+
+extern "C" {
+void* allocate_fortran_ele_struct();
+void deallocate_fortran_ele_struct(void* ptr) noexcept;
+void copy_fortran_ele_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<EleProxy> {
+  static void* allocate() {
+    return allocate_fortran_ele_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ele_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ele_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ele_struct";
+  }
+};
+
+class EleProxy : public FortranProxy<EleProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
@@ -4236,45 +7354,94 @@ class EleProxy {
   bool offset_moves_aperture() const; // 0D_NOT_logical
 };
 
-class BranchProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_complex_taylor_term_struct();
+void deallocate_fortran_complex_taylor_term_struct(void* ptr) noexcept;
+void copy_fortran_complex_taylor_term_struct_struct(const void* src, void* dst);
+}
 
-  void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<ComplexTaylorTermProxy> {
+  static void* allocate() {
+    return allocate_fortran_complex_taylor_term_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_complex_taylor_term_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_complex_taylor_term_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "complex_taylor_term_struct";
+  }
+};
 
+class ComplexTaylorTermProxy : public FortranProxy<ComplexTaylorTermProxy> {
  public:
-  explicit BranchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BranchProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
-  EleProxy get_element(int ix_ele) const {
-    int n_elements = tao_branch_get_n_elements(fortran_ptr_);
-    if (n_elements < 0) {
-      throw TaoException("Failed to get number of elements from branch");
-    }
-    if (ix_ele < 0 || ix_ele >= n_elements) {
-      throw InvalidIndexException("element", ix_ele, n_elements);
-    }
+  std::complex<double> coef() const; // 0D_NOT_complex
+  FortranArray1D<int> expn() const; // 1D_NOT_integer
+};
 
-    void* ele_ptr = tao_branch_get_element_ptr(fortran_ptr_, ix_ele);
-    if (!ele_ptr) {
-      throw NullPointerException(
-          "get_element for index " + std::to_string(ix_ele));
-    }
-    return EleProxy(ele_ptr);
-  }
+extern "C" {
+void* allocate_fortran_complex_taylor_struct();
+void deallocate_fortran_complex_taylor_struct(void* ptr) noexcept;
+void copy_fortran_complex_taylor_struct_struct(const void* src, void* dst);
+}
 
-  int get_n_elements() const {
-    int n = tao_branch_get_n_elements(fortran_ptr_);
-    if (n < 0) {
-      throw TaoException("Failed to get number of elements from branch");
-    }
-    return n;
+template <>
+struct FortranTraits<ComplexTaylorProxy> {
+  static void* allocate() {
+    return allocate_fortran_complex_taylor_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_complex_taylor_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_complex_taylor_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "complex_taylor_struct";
+  }
+};
+
+class ComplexTaylorProxy : public FortranProxy<ComplexTaylorProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+
+  std::complex<double> ref() const; // 0D_NOT_complex
+  FortranTypeArray1D<ComplexTaylorTermProxy> term() const; // 1D_PTR_type
+};
+
+extern "C" {
+void* allocate_fortran_branch_struct();
+void deallocate_fortran_branch_struct(void* ptr) noexcept;
+void copy_fortran_branch_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<BranchProxy> {
+  static void* allocate() {
+    return allocate_fortran_branch_struct();
+  }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_branch_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_branch_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "branch_struct";
+  }
+};
+
+class BranchProxy : public FortranProxy<BranchProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
@@ -4295,45 +7462,32 @@ class BranchProxy {
   FortranTypeArray1D<Wall3dProxy> wall3d() const; // 1D_PTR_type
 };
 
-class LatticeProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_lat_struct();
+void deallocate_fortran_lat_struct(void* ptr) noexcept;
+void copy_fortran_lat_struct_struct(const void* src, void* dst);
+}
 
-  void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<LatProxy> {
+  static void* allocate() {
+    return allocate_fortran_lat_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_lat_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_lat_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "lat_struct";
+  }
+};
 
+class LatProxy : public FortranProxy<LatProxy> {
  public:
-  explicit LatticeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatticeProxy constructor");
-    }
-  }
-
-  BranchProxy get_branch(int ix_branch) const {
-    int n_branches = tao_lat_get_n_branches(fortran_ptr_);
-    if (n_branches < 0) {
-      throw TaoException("Failed to get number of branches from lattice");
-    }
-    if (ix_branch < 0 || ix_branch >= n_branches) {
-      throw InvalidIndexException("branch", ix_branch, n_branches);
-    }
-
-    void* branch_ptr = tao_lat_get_branch_ptr(fortran_ptr_, ix_branch);
-    if (!branch_ptr) {
-      throw NullPointerException(
-          "get_branch for index " + std::to_string(ix_branch));
-    }
-    return BranchProxy(branch_ptr);
-  }
-
-  int get_n_branches() const {
-    int n = tao_lat_get_n_branches(fortran_ptr_);
-    if (n < 0) {
-      throw TaoException("Failed to get number of branches from lattice");
-    }
-    return n;
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string use_name() const; // 0D_NOT_character
   FortranArray1D<char> get_use_name_chars() const; // 0D_NOT_character
@@ -4370,2188 +7524,32 @@ class LatticeProxy {
   int ramper_slave_bookkeeping() const; // 0D_NOT_integer
 };
 
-class SplineProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_bunch_struct();
+void deallocate_fortran_bunch_struct(void* ptr) noexcept;
+void copy_fortran_bunch_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<BunchProxy> {
+  static void* allocate() {
+    return allocate_fortran_bunch_struct();
   }
-
- public:
-  explicit SplineProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SplineProxy constructor");
-    }
-  }
-
-  double x0() const; // 0D_NOT_real
-  double y0() const; // 0D_NOT_real
-  double x1() const; // 0D_NOT_real
-  FortranArray1D<double> coef() const; // 1D_NOT_real
-};
-
-class SpinPolarProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SpinPolarProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SpinPolarProxy constructor");
-    }
-  }
-
-  double polarization() const; // 0D_NOT_real
-  double theta() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double xi() const; // 0D_NOT_real
-};
-
-class AcKickerTimeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit AcKickerTimeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("AcKickerTimeProxy constructor");
-    }
-  }
-
-  double amp() const; // 0D_NOT_real
-  double time() const; // 0D_NOT_real
-  SplineProxy spline() const; // 0D_NOT_type
-};
-
-class AcKickerFreqProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit AcKickerFreqProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("AcKickerFreqProxy constructor");
-    }
-  }
-
-  double f() const; // 0D_NOT_real
-  double amp() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  int rf_clock_harmonic() const; // 0D_NOT_integer
-};
-
-class AcKickerProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit AcKickerProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("AcKickerProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<AcKickerTimeProxy> amp_vs_time() const; // 1D_ALLOC_type
-  FortranTypeArray1D<AcKickerFreqProxy> frequency() const; // 1D_ALLOC_type
-};
-
-class Interval1CoefProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit Interval1CoefProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("Interval1CoefProxy constructor");
-    }
-  }
-
-  double c0() const; // 0D_NOT_real
-  double c1() const; // 0D_NOT_real
-  double n_exp() const; // 0D_NOT_real
-};
-
-class PhotonReflectTableProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PhotonReflectTableProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PhotonReflectTableProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> angle() const; // 1D_ALLOC_real
-  FortranArray1D<double> energy() const; // 1D_ALLOC_real
-  FortranTypeArray1D<Interval1CoefProxy> int1() const; // 1D_ALLOC_type
-  FortranArray2D<double> p_reflect() const; // 2D_ALLOC_real
-  double max_energy() const; // 0D_NOT_real
-  FortranArray1D<double> p_reflect_scratch() const; // 1D_ALLOC_real
-  FortranArray1D<double> bragg_angle() const; // 1D_ALLOC_real
-};
-
-class PhotonReflectSurfaceProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PhotonReflectSurfaceProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PhotonReflectSurfaceProxy constructor");
-    }
-  }
-
-  std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
-  std::string description() const; // 0D_NOT_character
-  FortranArray1D<char> get_description_chars() const; // 0D_NOT_character
-  std::string reflectivity_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_reflectivity_file_chars() const; // 0D_NOT_character
-  FortranTypeArray1D<PhotonReflectTableProxy> table() const; // 1D_ALLOC_type
-  double surface_roughness_rms() const; // 0D_NOT_real
-  double roughness_correlation_len() const; // 0D_NOT_real
-  int ix_surface() const; // 0D_NOT_integer
-};
-
-class CoordProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CoordProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CoordProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> vec() const; // 1D_NOT_real
-  double s() const; // 0D_NOT_real
-  long double t() const; // 0D_NOT_real16
-  FortranArray1D<double> spin() const; // 1D_NOT_real
-  FortranArray1D<double> field() const; // 1D_NOT_real
-  FortranArray1D<double> phase() const; // 1D_NOT_real
-  double charge() const; // 0D_NOT_real
-  double dt_ref() const; // 0D_NOT_real
-  double r() const; // 0D_NOT_real
-  double p0c() const; // 0D_NOT_real
-  double E_potential() const; // 0D_NOT_real
-  double beta() const; // 0D_NOT_real
-  int ix_ele() const; // 0D_NOT_integer
-  int ix_branch() const; // 0D_NOT_integer
-  int ix_turn() const; // 0D_NOT_integer
-  int ix_user() const; // 0D_NOT_integer
-  int state() const; // 0D_NOT_integer
-  int direction() const; // 0D_NOT_integer
-  int time_dir() const; // 0D_NOT_integer
-  int species() const; // 0D_NOT_integer
-  int location() const; // 0D_NOT_integer
-};
-
-class CoordArrayProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CoordArrayProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CoordArrayProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<CoordProxy> orbit() const; // 1D_ALLOC_type
-};
-
-class BpmPhaseCouplingProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit BpmPhaseCouplingProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BpmPhaseCouplingProxy constructor");
-    }
-  }
-
-  double K_22a() const; // 0D_NOT_real
-  double K_12a() const; // 0D_NOT_real
-  double K_11b() const; // 0D_NOT_real
-  double K_12b() const; // 0D_NOT_real
-  double Cbar22_a() const; // 0D_NOT_real
-  double Cbar12_a() const; // 0D_NOT_real
-  double Cbar11_b() const; // 0D_NOT_real
-  double Cbar12_b() const; // 0D_NOT_real
-  double phi_a() const; // 0D_NOT_real
-  double phi_b() const; // 0D_NOT_real
-};
-
-class ExpressionAtomProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ExpressionAtomProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ExpressionAtomProxy constructor");
-    }
-  }
-
-  std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
-  int type() const; // 0D_NOT_integer
-  double value() const; // 0D_NOT_real
-};
-
-class WakeSrZLongProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit WakeSrZLongProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("WakeSrZLongProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> w() const; // 1D_ALLOC_real
-  double dz() const; // 0D_NOT_real
-  double z0() const; // 0D_NOT_real
-  double smoothing_sigma() const; // 0D_NOT_real
-  int position_dependence() const; // 0D_NOT_integer
-  bool time_based() const; // 0D_NOT_logical
-};
-
-class WakeSrModeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit WakeSrModeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("WakeSrModeProxy constructor");
-    }
-  }
-
-  double amp() const; // 0D_NOT_real
-  double damp() const; // 0D_NOT_real
-  double k() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double b_sin() const; // 0D_NOT_real
-  double b_cos() const; // 0D_NOT_real
-  double a_sin() const; // 0D_NOT_real
-  double a_cos() const; // 0D_NOT_real
-  int polarization() const; // 0D_NOT_integer
-  int position_dependence() const; // 0D_NOT_integer
-};
-
-class WakeSrProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit WakeSrProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("WakeSrProxy constructor");
-    }
-  }
-
-  std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
-  WakeSrZLongProxy z_long() const; // 0D_NOT_type
-  FortranTypeArray1D<WakeSrModeProxy> long_() const; // 1D_ALLOC_type
-  FortranTypeArray1D<WakeSrModeProxy> trans() const; // 1D_ALLOC_type
-  double z_ref_long() const; // 0D_NOT_real
-  double z_ref_trans() const; // 0D_NOT_real
-  double z_max() const; // 0D_NOT_real
-  double amp_scale() const; // 0D_NOT_real
-  double z_scale() const; // 0D_NOT_real
-  bool scale_with_length() const; // 0D_NOT_logical
-};
-
-class WakeLrModeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit WakeLrModeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("WakeLrModeProxy constructor");
-    }
-  }
-
-  double freq() const; // 0D_NOT_real
-  double freq_in() const; // 0D_NOT_real
-  double R_over_Q() const; // 0D_NOT_real
-  double Q() const; // 0D_NOT_real
-  double damp() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double angle() const; // 0D_NOT_real
-  double b_sin() const; // 0D_NOT_real
-  double b_cos() const; // 0D_NOT_real
-  double a_sin() const; // 0D_NOT_real
-  double a_cos() const; // 0D_NOT_real
-  int m() const; // 0D_NOT_integer
-  bool polarized() const; // 0D_NOT_logical
-};
-
-class WakeLrProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit WakeLrProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("WakeLrProxy constructor");
-    }
-  }
-
-  std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
-  FortranTypeArray1D<WakeLrModeProxy> mode() const; // 1D_ALLOC_type
-  double t_ref() const; // 0D_NOT_real
-  double freq_spread() const; // 0D_NOT_real
-  double amp_scale() const; // 0D_NOT_real
-  double time_scale() const; // 0D_NOT_real
-  bool self_wake_on() const; // 0D_NOT_logical
-};
-
-class LatEleLocProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit LatEleLocProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatEleLocProxy constructor");
-    }
-  }
-
-  int ix_ele() const; // 0D_NOT_integer
-  int ix_branch() const; // 0D_NOT_integer
-};
-
-class WakeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit WakeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("WakeProxy constructor");
-    }
-  }
-
-  WakeSrProxy sr() const; // 0D_NOT_type
-  WakeLrProxy lr() const; // 0D_NOT_type
-};
-
-class TaylorTermProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TaylorTermProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaylorTermProxy constructor");
-    }
-  }
-
-  double coef() const; // 0D_NOT_real
-  FortranArray1D<int> expn() const; // 1D_NOT_integer
-};
-
-class TaylorProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TaylorProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaylorProxy constructor");
-    }
-  }
-
-  double ref() const; // 0D_NOT_real
-  FortranTypeArray1D<TaylorTermProxy> term() const; // 1D_PTR_type
-};
-
-class EmTaylorTermProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit EmTaylorTermProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("EmTaylorTermProxy constructor");
-    }
-  }
-
-  double coef() const; // 0D_NOT_real
-  FortranArray1D<int> expn() const; // 1D_NOT_integer
-};
-
-class EmTaylorProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit EmTaylorProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("EmTaylorProxy constructor");
-    }
-  }
-
-  double ref() const; // 0D_NOT_real
-  FortranTypeArray1D<EmTaylorTermProxy> term() const; // 1D_ALLOC_type
-};
-
-class CartesianMapTerm1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CartesianMapTerm1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CartesianMapTerm1Proxy constructor");
-    }
-  }
-
-  double coef() const; // 0D_NOT_real
-  double kx() const; // 0D_NOT_real
-  double ky() const; // 0D_NOT_real
-  double kz() const; // 0D_NOT_real
-  double x0() const; // 0D_NOT_real
-  double y0() const; // 0D_NOT_real
-  double phi_z() const; // 0D_NOT_real
-  int family() const; // 0D_NOT_integer
-  int form() const; // 0D_NOT_integer
-};
-
-class CartesianMapTermProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CartesianMapTermProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CartesianMapTermProxy constructor");
-    }
-  }
-
-  std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
-  int n_link() const; // 0D_NOT_integer
-  FortranTypeArray1D<CartesianMapTerm1Proxy> term() const; // 1D_ALLOC_type
-};
-
-class CartesianMapProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CartesianMapProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CartesianMapProxy constructor");
-    }
-  }
-
-  double field_scale() const; // 0D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-  int master_parameter() const; // 0D_NOT_integer
-  int ele_anchor_pt() const; // 0D_NOT_integer
-  int field_type() const; // 0D_NOT_integer
-  const void* ptr() const; // 0D_PTR_type
-};
-
-class CylindricalMapTerm1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CylindricalMapTerm1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CylindricalMapTerm1Proxy constructor");
-    }
-  }
-
-  std::complex<double> e_coef() const; // 0D_NOT_complex
-  std::complex<double> b_coef() const; // 0D_NOT_complex
-};
-
-class CylindricalMapTermProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CylindricalMapTermProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CylindricalMapTermProxy constructor");
-    }
-  }
-
-  std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
-  int n_link() const; // 0D_NOT_integer
-  FortranTypeArray1D<CylindricalMapTerm1Proxy> term() const; // 1D_ALLOC_type
-};
-
-class CylindricalMapProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit CylindricalMapProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("CylindricalMapProxy constructor");
-    }
-  }
-
-  int m() const; // 0D_NOT_integer
-  int harmonic() const; // 0D_NOT_integer
-  double phi0_fieldmap() const; // 0D_NOT_real
-  double theta0_azimuth() const; // 0D_NOT_real
-  double field_scale() const; // 0D_NOT_real
-  int master_parameter() const; // 0D_NOT_integer
-  int ele_anchor_pt() const; // 0D_NOT_integer
-  double dz() const; // 0D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-  const void* ptr() const; // 0D_PTR_type
-};
-
-class BicubicCmplxCoefProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit BicubicCmplxCoefProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BicubicCmplxCoefProxy constructor");
-    }
-  }
-
-  FortranArray1D<int> i_box() const; // 1D_NOT_integer
-};
-
-class TricubicCmplxCoefProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TricubicCmplxCoefProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TricubicCmplxCoefProxy constructor");
-    }
-  }
-
-  FortranArray1D<int> i_box() const; // 1D_NOT_integer
-};
-
-class GridFieldPt1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit GridFieldPt1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("GridFieldPt1Proxy constructor");
-    }
-  }
-
-  FortranArray1D<std::complex<double>> E() const; // 1D_NOT_complex
-  FortranArray1D<std::complex<double>> B() const; // 1D_NOT_complex
-};
-
-class GridFieldPtProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit GridFieldPtProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("GridFieldPtProxy constructor");
-    }
-  }
-
-  std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
-  int n_link() const; // 0D_NOT_integer
-};
-
-class GridFieldProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit GridFieldProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("GridFieldProxy constructor");
-    }
-  }
-
-  int geometry() const; // 0D_NOT_integer
-  int harmonic() const; // 0D_NOT_integer
-  double phi0_fieldmap() const; // 0D_NOT_real
-  double field_scale() const; // 0D_NOT_real
-  int field_type() const; // 0D_NOT_integer
-  int master_parameter() const; // 0D_NOT_integer
-  int ele_anchor_pt() const; // 0D_NOT_integer
-  int interpolation_order() const; // 0D_NOT_integer
-  FortranArray1D<double> dr() const; // 1D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-  bool curved_ref_frame() const; // 0D_NOT_logical
-  const void* ptr() const; // 0D_PTR_type
-};
-
-class FloorPositionProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit FloorPositionProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("FloorPositionProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> r() const; // 1D_NOT_real
-  double theta() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double psi() const; // 0D_NOT_real
-};
-
-class HighEnergySpaceChargeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit HighEnergySpaceChargeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("HighEnergySpaceChargeProxy constructor");
-    }
-  }
-
-  CoordProxy closed_orb() const; // 0D_NOT_type
-  double kick_const() const; // 0D_NOT_real
-  double sig_x() const; // 0D_NOT_real
-  double sig_y() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double sin_phi() const; // 0D_NOT_real
-  double cos_phi() const; // 0D_NOT_real
-  double sig_z() const; // 0D_NOT_real
-};
-
-class XyDispProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit XyDispProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("XyDispProxy constructor");
-    }
-  }
-
-  double eta() const; // 0D_NOT_real
-  double etap() const; // 0D_NOT_real
-  double deta_ds() const; // 0D_NOT_real
-  double sigma() const; // 0D_NOT_real
-  double deta_dpz() const; // 0D_NOT_real
-  double detap_dpz() const; // 0D_NOT_real
-};
-
-class TwissProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TwissProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TwissProxy constructor");
-    }
-  }
-
-  double beta() const; // 0D_NOT_real
-  double alpha() const; // 0D_NOT_real
-  double gamma() const; // 0D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double eta() const; // 0D_NOT_real
-  double etap() const; // 0D_NOT_real
-  double deta_ds() const; // 0D_NOT_real
-  double sigma() const; // 0D_NOT_real
-  double sigma_p() const; // 0D_NOT_real
-  double emit() const; // 0D_NOT_real
-  double norm_emit() const; // 0D_NOT_real
-  double chrom() const; // 0D_NOT_real
-  double dbeta_dpz() const; // 0D_NOT_real
-  double dalpha_dpz() const; // 0D_NOT_real
-  double deta_dpz() const; // 0D_NOT_real
-  double detap_dpz() const; // 0D_NOT_real
-};
-
-class Mode3Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit Mode3Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("Mode3Proxy constructor");
-    }
-  }
-
-  TwissProxy a() const; // 0D_NOT_type
-  TwissProxy b() const; // 0D_NOT_type
-  TwissProxy c() const; // 0D_NOT_type
-  TwissProxy x() const; // 0D_NOT_type
-  TwissProxy y() const; // 0D_NOT_type
-};
-
-class BookkeepingStateProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit BookkeepingStateProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BookkeepingStateProxy constructor");
-    }
-  }
-
-  int attributes() const; // 0D_NOT_integer
-  int control() const; // 0D_NOT_integer
-  int floor_position() const; // 0D_NOT_integer
-  int s_position() const; // 0D_NOT_integer
-  int ref_energy() const; // 0D_NOT_integer
-  int mat6() const; // 0D_NOT_integer
-  int rad_int() const; // 0D_NOT_integer
-  int ptc() const; // 0D_NOT_integer
-  bool has_misalign() const; // 0D_NOT_logical
-};
-
-class RadMapProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RadMapProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RadMapProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> ref_orb() const; // 1D_NOT_real
-  FortranArray1D<double> xfer_damp_vec() const; // 1D_NOT_real
-};
-
-class RadMapEleProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RadMapEleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RadMapEleProxy constructor");
-    }
-  }
-
-  RadMapProxy rm0() const; // 0D_NOT_type
-  RadMapProxy rm1() const; // 0D_NOT_type
-  bool stale() const; // 0D_NOT_logical
-};
-
-class GenGrad1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit GenGrad1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("GenGrad1Proxy constructor");
-    }
-  }
-
-  int m() const; // 0D_NOT_integer
-  int sincos() const; // 0D_NOT_integer
-  int n_deriv_max() const; // 0D_NOT_integer
-  FortranArray2D<double> deriv() const; // 2D_ALLOC_real
-};
-
-class GenGradMapProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit GenGradMapProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("GenGradMapProxy constructor");
-    }
-  }
-
-  std::string file() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
-  FortranTypeArray1D<GenGrad1Proxy> gg() const; // 1D_ALLOC_type
-  int ele_anchor_pt() const; // 0D_NOT_integer
-  int field_type() const; // 0D_NOT_integer
-  int iz0() const; // 0D_NOT_integer
-  int iz1() const; // 0D_NOT_integer
-  double dz() const; // 0D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-  double field_scale() const; // 0D_NOT_real
-  int master_parameter() const; // 0D_NOT_integer
-  bool curved_ref_frame() const; // 0D_NOT_logical
-};
-
-class SurfaceSegmentedPtProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceSegmentedPtProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceSegmentedPtProxy constructor");
-    }
-  }
-
-  double x0() const; // 0D_NOT_real
-  double y0() const; // 0D_NOT_real
-  double z0() const; // 0D_NOT_real
-  double dz_dx() const; // 0D_NOT_real
-  double dz_dy() const; // 0D_NOT_real
-};
-
-class SurfaceSegmentedProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceSegmentedProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceSegmentedProxy constructor");
-    }
-  }
-
-  bool active() const; // 0D_NOT_logical
-  FortranArray1D<double> dr() const; // 1D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-};
-
-class SurfaceHMisalignPtProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceHMisalignPtProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceHMisalignPtProxy constructor");
-    }
-  }
-
-  double x0() const; // 0D_NOT_real
-  double y0() const; // 0D_NOT_real
-  double rot_y() const; // 0D_NOT_real
-  double rot_t() const; // 0D_NOT_real
-  double rot_y_rms() const; // 0D_NOT_real
-  double rot_t_rms() const; // 0D_NOT_real
-};
-
-class SurfaceHMisalignProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceHMisalignProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceHMisalignProxy constructor");
-    }
-  }
-
-  bool active() const; // 0D_NOT_logical
-  FortranArray1D<double> dr() const; // 1D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-};
-
-class SurfaceDisplacementPtProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceDisplacementPtProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceDisplacementPtProxy constructor");
-    }
-  }
-
-  double x0() const; // 0D_NOT_real
-  double y0() const; // 0D_NOT_real
-  double z0() const; // 0D_NOT_real
-  double dz_dx() const; // 0D_NOT_real
-  double dz_dy() const; // 0D_NOT_real
-  double d2z_dxdy() const; // 0D_NOT_real
-};
-
-class SurfaceDisplacementProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceDisplacementProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceDisplacementProxy constructor");
-    }
-  }
-
-  bool active() const; // 0D_NOT_logical
-  FortranArray1D<double> dr() const; // 1D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-};
-
-class TargetPointProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TargetPointProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TargetPointProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> r() const; // 1D_NOT_real
-};
-
-class SurfaceCurvatureProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SurfaceCurvatureProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SurfaceCurvatureProxy constructor");
-    }
-  }
-
-  double spherical() const; // 0D_NOT_real
-  FortranArray1D<double> elliptical() const; // 1D_NOT_real
-  bool has_curvature() const; // 0D_NOT_logical
-};
-
-class PhotonTargetProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PhotonTargetProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PhotonTargetProxy constructor");
-    }
-  }
-
-  int type() const; // 0D_NOT_integer
-  int n_corner() const; // 0D_NOT_integer
-  LatEleLocProxy ele_loc() const; // 0D_NOT_type
-  FortranTypeArray1D<TargetPointProxy> corner() const; // 1D_NOT_type
-  TargetPointProxy center() const; // 0D_NOT_type
-};
-
-class PhotonMaterialProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PhotonMaterialProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PhotonMaterialProxy constructor");
-    }
-  }
-
-  std::complex<double> f0_m1() const; // 0D_NOT_complex
-  std::complex<double> f0_m2() const; // 0D_NOT_complex
-  std::complex<double> f_0() const; // 0D_NOT_complex
-  std::complex<double> f_h() const; // 0D_NOT_complex
-  std::complex<double> f_hbar() const; // 0D_NOT_complex
-  std::complex<double> f_hkl() const; // 0D_NOT_complex
-  FortranArray1D<double> h_norm() const; // 1D_NOT_real
-  FortranArray1D<double> l_ref() const; // 1D_NOT_real
-};
-
-class PixelPtProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PixelPtProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PixelPtProxy constructor");
-    }
-  }
-
-  long long n_photon() const; // 0D_NOT_integer8
-  std::complex<double> E_x() const; // 0D_NOT_complex
-  std::complex<double> E_y() const; // 0D_NOT_complex
-  double intensity_x() const; // 0D_NOT_real
-  double intensity_y() const; // 0D_NOT_real
-  double intensity() const; // 0D_NOT_real
-  FortranArray1D<double> orbit() const; // 1D_NOT_real
-  FortranArray1D<double> orbit_rms() const; // 1D_NOT_real
-  FortranArray1D<double> init_orbit() const; // 1D_NOT_real
-  FortranArray1D<double> init_orbit_rms() const; // 1D_NOT_real
-};
-
-class PixelDetecProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PixelDetecProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PixelDetecProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> dr() const; // 1D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-  long long n_track_tot() const; // 0D_NOT_integer8
-  long long n_hit_detec() const; // 0D_NOT_integer8
-  long long n_hit_pixel() const; // 0D_NOT_integer8
-};
-
-class PhotonElementProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PhotonElementProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PhotonElementProxy constructor");
-    }
-  }
-
-  SurfaceCurvatureProxy curvature() const; // 0D_NOT_type
-  PhotonTargetProxy target() const; // 0D_NOT_type
-  PhotonMaterialProxy material() const; // 0D_NOT_type
-  SurfaceSegmentedProxy segmented() const; // 0D_NOT_type
-  SurfaceHMisalignProxy h_misalign() const; // 0D_NOT_type
-  SurfaceDisplacementProxy displacement() const; // 0D_NOT_type
-  PixelDetecProxy pixel() const; // 0D_NOT_type
-  int reflectivity_table_type() const; // 0D_NOT_integer
-  PhotonReflectTableProxy reflectivity_table_sigma() const; // 0D_NOT_type
-  PhotonReflectTableProxy reflectivity_table_pi() const; // 0D_NOT_type
-  FortranTypeArray1D<SplineProxy> init_energy_prob() const; // 1D_ALLOC_type
-  FortranArray1D<double> integrated_init_energy_prob() const; // 1D_ALLOC_real
-};
-
-class Wall3dVertexProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit Wall3dVertexProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("Wall3dVertexProxy constructor");
-    }
-  }
-
-  double x() const; // 0D_NOT_real
-  double y() const; // 0D_NOT_real
-  double radius_x() const; // 0D_NOT_real
-  double radius_y() const; // 0D_NOT_real
-  double tilt() const; // 0D_NOT_real
-  double angle() const; // 0D_NOT_real
-  double x0() const; // 0D_NOT_real
-  double y0() const; // 0D_NOT_real
-  int type() const; // 0D_NOT_integer
-};
-
-class Wall3dSectionProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit Wall3dSectionProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("Wall3dSectionProxy constructor");
-    }
-  }
-
-  std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
-  std::string material() const; // 0D_NOT_character
-  FortranArray1D<char> get_material_chars() const; // 0D_NOT_character
-  FortranTypeArray1D<Wall3dVertexProxy> v() const; // 1D_ALLOC_type
-  const void* surface() const; // 0D_PTR_type
-  int type() const; // 0D_NOT_integer
-  int n_vertex_input() const; // 0D_NOT_integer
-  int ix_ele() const; // 0D_NOT_integer
-  int ix_branch() const; // 0D_NOT_integer
-  int vertices_state() const; // 0D_NOT_integer
-  bool patch_in_region() const; // 0D_NOT_logical
-  double thickness() const; // 0D_NOT_real
-  double s() const; // 0D_NOT_real
-  FortranArray1D<double> r0() const; // 1D_NOT_real
-  double dx0_ds() const; // 0D_NOT_real
-  double dy0_ds() const; // 0D_NOT_real
-  FortranArray1D<double> x0_coef() const; // 1D_NOT_real
-  FortranArray1D<double> y0_coef() const; // 1D_NOT_real
-  double dr_ds() const; // 0D_NOT_real
-  FortranArray1D<double> p1_coef() const; // 1D_NOT_real
-  FortranArray1D<double> p2_coef() const; // 1D_NOT_real
-};
-
-class Wall3dProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit Wall3dProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("Wall3dProxy constructor");
-    }
-  }
-
-  std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
-  int type() const; // 0D_NOT_integer
-  int ix_wall3d() const; // 0D_NOT_integer
-  int n_link() const; // 0D_NOT_integer
-  double thickness() const; // 0D_NOT_real
-  std::string clear_material() const; // 0D_NOT_character
-  FortranArray1D<char> get_clear_material_chars() const; // 0D_NOT_character
-  std::string opaque_material() const; // 0D_NOT_character
-  FortranArray1D<char> get_opaque_material_chars() const; // 0D_NOT_character
-  bool superimpose() const; // 0D_NOT_logical
-  int ele_anchor_pt() const; // 0D_NOT_integer
-  FortranTypeArray1D<Wall3dSectionProxy> section() const; // 1D_ALLOC_type
-};
-
-class RamperLordProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RamperLordProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RamperLordProxy constructor");
-    }
-  }
-
-  int ix_ele() const; // 0D_NOT_integer
-  int ix_con() const; // 0D_NOT_integer
-  double* attrib_ptr() const; // 0D_PTR_real
-};
-
-class ControlProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ControlProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ControlProxy constructor");
-    }
-  }
-
-  double value() const; // 0D_NOT_real
-  FortranArray1D<double> y_knot() const; // 1D_ALLOC_real
-  FortranTypeArray1D<ExpressionAtomProxy> stack() const; // 1D_ALLOC_type
-  LatEleLocProxy slave() const; // 0D_NOT_type
-  LatEleLocProxy lord() const; // 0D_NOT_type
-  std::string slave_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
-  std::string attribute() const; // 0D_NOT_character
-  FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
-  int ix_attrib() const; // 0D_NOT_integer
-};
-
-class ControlVar1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ControlVar1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ControlVar1Proxy constructor");
-    }
-  }
-
-  std::string name() const; // 0D_NOT_character
-  FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
-  double value() const; // 0D_NOT_real
-  double old_value() const; // 0D_NOT_real
-};
-
-class ControlRamp1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ControlRamp1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ControlRamp1Proxy constructor");
-    }
-  }
-
-  FortranArray1D<double> y_knot() const; // 1D_ALLOC_real
-  FortranTypeArray1D<ExpressionAtomProxy> stack() const; // 1D_ALLOC_type
-  std::string attribute() const; // 0D_NOT_character
-  FortranArray1D<char> get_attribute_chars() const; // 0D_NOT_character
-  std::string slave_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_slave_name_chars() const; // 0D_NOT_character
-  bool is_controller() const; // 0D_NOT_logical
-};
-
-class ControllerProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ControllerProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ControllerProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<ControlVar1Proxy> var() const; // 1D_ALLOC_type
-  FortranTypeArray1D<ControlRamp1Proxy> ramp() const; // 1D_ALLOC_type
-  FortranTypeArray1D<RamperLordProxy> ramper_lord() const; // 1D_ALLOC_type
-  FortranArray1D<double> x_knot() const; // 1D_ALLOC_real
-};
-
-class EllipseBeamInitProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit EllipseBeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("EllipseBeamInitProxy constructor");
-    }
-  }
-
-  int part_per_ellipse() const; // 0D_NOT_integer
-  int n_ellipse() const; // 0D_NOT_integer
-  double sigma_cutoff() const; // 0D_NOT_real
-};
-
-class KvBeamInitProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit KvBeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("KvBeamInitProxy constructor");
-    }
-  }
-
-  FortranArray1D<int> part_per_phi() const; // 1D_NOT_integer
-  int n_I2() const; // 0D_NOT_integer
-  double A() const; // 0D_NOT_real
-};
-
-class GridBeamInitProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit GridBeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("GridBeamInitProxy constructor");
-    }
-  }
-
-  int n_x() const; // 0D_NOT_integer
-  int n_px() const; // 0D_NOT_integer
-  double x_min() const; // 0D_NOT_real
-  double x_max() const; // 0D_NOT_real
-  double px_min() const; // 0D_NOT_real
-  double px_max() const; // 0D_NOT_real
-};
-
-class BeamInitProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit BeamInitProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BeamInitProxy constructor");
-    }
-  }
-
-  std::string position_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_position_file_chars() const; // 0D_NOT_character
-  FortranArray1D<double> spin() const; // 1D_NOT_real
-  FortranTypeArray1D<EllipseBeamInitProxy> ellipse() const; // 1D_NOT_type
-  KvBeamInitProxy KV() const; // 0D_NOT_type
-  FortranTypeArray1D<GridBeamInitProxy> grid() const; // 1D_NOT_type
-  FortranArray1D<double> center_jitter() const; // 1D_NOT_real
-  FortranArray1D<double> emit_jitter() const; // 1D_NOT_real
-  double sig_z_jitter() const; // 0D_NOT_real
-  double sig_pz_jitter() const; // 0D_NOT_real
-  int n_particle() const; // 0D_NOT_integer
-  bool renorm_center() const; // 0D_NOT_logical
-  bool renorm_sigma() const; // 0D_NOT_logical
-  std::string random_engine() const; // 0D_NOT_character
-  FortranArray1D<char> get_random_engine_chars() const; // 0D_NOT_character
-  std::string random_gauss_converter() const; // 0D_NOT_character
-  FortranArray1D<char> get_random_gauss_converter_chars()
-      const; // 0D_NOT_character
-  double random_sigma_cutoff() const; // 0D_NOT_real
-  double a_norm_emit() const; // 0D_NOT_real
-  double b_norm_emit() const; // 0D_NOT_real
-  double a_emit() const; // 0D_NOT_real
-  double b_emit() const; // 0D_NOT_real
-  double dPz_dz() const; // 0D_NOT_real
-  FortranArray1D<double> center() const; // 1D_NOT_real
-  double t_offset() const; // 0D_NOT_real
-  double dt_bunch() const; // 0D_NOT_real
-  double sig_z() const; // 0D_NOT_real
-  double sig_pz() const; // 0D_NOT_real
-  double bunch_charge() const; // 0D_NOT_real
-  int n_bunch() const; // 0D_NOT_integer
-  int ix_turn() const; // 0D_NOT_integer
-  std::string species() const; // 0D_NOT_character
-  FortranArray1D<char> get_species_chars() const; // 0D_NOT_character
-  bool full_6D_coupling_calc() const; // 0D_NOT_logical
-  bool use_particle_start() const; // 0D_NOT_logical
-  bool use_t_coords() const; // 0D_NOT_logical
-  bool use_z_as_t() const; // 0D_NOT_logical
-  std::string file_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_file_name_chars() const; // 0D_NOT_character
-};
-
-class LatParamProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit LatParamProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatParamProxy constructor");
-    }
-  }
-
-  double n_part() const; // 0D_NOT_real
-  double total_length() const; // 0D_NOT_real
-  double unstable_factor() const; // 0D_NOT_real
-  double spin_tune() const; // 0D_NOT_real
-  int particle() const; // 0D_NOT_integer
-  int default_tracking_species() const; // 0D_NOT_integer
-  int geometry() const; // 0D_NOT_integer
-  int ixx() const; // 0D_NOT_integer
-  bool stable() const; // 0D_NOT_logical
-  bool live_branch() const; // 0D_NOT_logical
-  double g1_integral() const; // 0D_NOT_real
-  double g2_integral() const; // 0D_NOT_real
-  double g3_integral() const; // 0D_NOT_real
-  BookkeepingStateProxy bookkeeping_state() const; // 0D_NOT_type
-  BeamInitProxy beam_init() const; // 0D_NOT_type
-};
-
-class ModeInfoProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ModeInfoProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ModeInfoProxy constructor");
-    }
-  }
-
-  bool stable() const; // 0D_NOT_logical
-  double tune() const; // 0D_NOT_real
-  double emit() const; // 0D_NOT_real
-  double chrom() const; // 0D_NOT_real
-  double sigma() const; // 0D_NOT_real
-  double sigmap() const; // 0D_NOT_real
-};
-
-class PreTrackerProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit PreTrackerProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PreTrackerProxy constructor");
-    }
-  }
-
-  int who() const; // 0D_NOT_integer
-  int ix_ele_start() const; // 0D_NOT_integer
-  int ix_ele_end() const; // 0D_NOT_integer
-  std::string input_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_input_file_chars() const; // 0D_NOT_character
-};
-
-class AnormalModeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit AnormalModeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("AnormalModeProxy constructor");
-    }
-  }
-
-  double emittance() const; // 0D_NOT_real
-  double emittance_no_vert() const; // 0D_NOT_real
-  FortranArray1D<double> synch_int() const; // 1D_NOT_real
-  double j_damp() const; // 0D_NOT_real
-  double alpha_damp() const; // 0D_NOT_real
-  double chrom() const; // 0D_NOT_real
-  double tune() const; // 0D_NOT_real
-};
-
-class LinacNormalModeProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit LinacNormalModeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LinacNormalModeProxy constructor");
-    }
-  }
-
-  double i2_E4() const; // 0D_NOT_real
-  double i3_E7() const; // 0D_NOT_real
-  double i5a_E6() const; // 0D_NOT_real
-  double i5b_E6() const; // 0D_NOT_real
-  double sig_E1() const; // 0D_NOT_real
-  double a_emittance_end() const; // 0D_NOT_real
-  double b_emittance_end() const; // 0D_NOT_real
-};
-
-class NormalModesProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit NormalModesProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("NormalModesProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> synch_int() const; // 1D_NOT_real
-  double sigE_E() const; // 0D_NOT_real
-  double sig_z() const; // 0D_NOT_real
-  double e_loss() const; // 0D_NOT_real
-  double rf_voltage() const; // 0D_NOT_real
-  double pz_aperture() const; // 0D_NOT_real
-  double pz_average() const; // 0D_NOT_real
-  double momentum_compaction() const; // 0D_NOT_real
-  double dpz_damp() const; // 0D_NOT_real
-  AnormalModeProxy a() const; // 0D_NOT_type
-  AnormalModeProxy b() const; // 0D_NOT_type
-  AnormalModeProxy z() const; // 0D_NOT_type
-  LinacNormalModeProxy lin() const; // 0D_NOT_type
-};
-
-class EmFieldProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit EmFieldProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("EmFieldProxy constructor");
-    }
-  }
-
-  FortranArray1D<double> E() const; // 1D_NOT_real
-  FortranArray1D<double> B() const; // 1D_NOT_real
-  double phi() const; // 0D_NOT_real
-  double phi_B() const; // 0D_NOT_real
-  FortranArray1D<double> A() const; // 1D_NOT_real
-};
-
-class StrongBeamProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit StrongBeamProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("StrongBeamProxy constructor");
-    }
-  }
-
-  int ix_slice() const; // 0D_NOT_integer
-  double x_center() const; // 0D_NOT_real
-  double y_center() const; // 0D_NOT_real
-  double x_sigma() const; // 0D_NOT_real
-  double y_sigma() const; // 0D_NOT_real
-  double dx() const; // 0D_NOT_real
-  double dy() const; // 0D_NOT_real
-};
-
-class TrackPointProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TrackPointProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TrackPointProxy constructor");
-    }
-  }
-
-  double s_lab() const; // 0D_NOT_real
-  double s_body() const; // 0D_NOT_real
-  CoordProxy orb() const; // 0D_NOT_type
-  EmFieldProxy field() const; // 0D_NOT_type
-  StrongBeamProxy strong_beam() const; // 0D_NOT_type
-  FortranArray1D<double> vec0() const; // 1D_NOT_real
-};
-
-class TrackProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit TrackProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TrackProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<TrackPointProxy> pt() const; // 1D_ALLOC_type
-  double ds_save() const; // 0D_NOT_real
-  int n_pt() const; // 0D_NOT_integer
-  int n_bad() const; // 0D_NOT_integer
-  int n_ok() const; // 0D_NOT_integer
-};
-
-class SpaceChargeCommonProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit SpaceChargeCommonProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SpaceChargeCommonProxy constructor");
-    }
-  }
-
-  double ds_track_step() const; // 0D_NOT_real
-  double dt_track_step() const; // 0D_NOT_real
-  double cathode_strength_cutoff() const; // 0D_NOT_real
-  double rel_tol_tracking() const; // 0D_NOT_real
-  double abs_tol_tracking() const; // 0D_NOT_real
-  double beam_chamber_height() const; // 0D_NOT_real
-  double lsc_sigma_cutoff() const; // 0D_NOT_real
-  double particle_sigma_cutoff() const; // 0D_NOT_real
-  FortranArray1D<int> space_charge_mesh_size() const; // 1D_NOT_integer
-  FortranArray1D<int> csr3d_mesh_size() const; // 1D_NOT_integer
-  int n_bin() const; // 0D_NOT_integer
-  int particle_bin_span() const; // 0D_NOT_integer
-  int n_shield_images() const; // 0D_NOT_integer
-  int sc_min_in_bin() const; // 0D_NOT_integer
-  bool lsc_kick_transverse_dependence() const; // 0D_NOT_logical
-  bool debug() const; // 0D_NOT_logical
-  std::string diagnostic_output_file() const; // 0D_NOT_character
-  FortranArray1D<char> get_diagnostic_output_file_chars()
-      const; // 0D_NOT_character
-};
-
-class BmadCommonProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit BmadCommonProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BmadCommonProxy constructor");
-    }
-  }
-
-  double max_aperture_limit() const; // 0D_NOT_real
-  FortranArray1D<double> d_orb() const; // 1D_NOT_real
-  double default_ds_step() const; // 0D_NOT_real
-  double significant_length() const; // 0D_NOT_real
-  double rel_tol_tracking() const; // 0D_NOT_real
-  double abs_tol_tracking() const; // 0D_NOT_real
-  double rel_tol_adaptive_tracking() const; // 0D_NOT_real
-  double abs_tol_adaptive_tracking() const; // 0D_NOT_real
-  double init_ds_adaptive_tracking() const; // 0D_NOT_real
-  double min_ds_adaptive_tracking() const; // 0D_NOT_real
-  double fatal_ds_adaptive_tracking() const; // 0D_NOT_real
-  double autoscale_amp_abs_tol() const; // 0D_NOT_real
-  double autoscale_amp_rel_tol() const; // 0D_NOT_real
-  double autoscale_phase_tol() const; // 0D_NOT_real
-  double electric_dipole_moment() const; // 0D_NOT_real
-  double synch_rad_scale() const; // 0D_NOT_real
-  double sad_eps_scale() const; // 0D_NOT_real
-  double sad_amp_max() const; // 0D_NOT_real
-  int sad_n_div_max() const; // 0D_NOT_integer
-  int taylor_order() const; // 0D_NOT_integer
-  int runge_kutta_order() const; // 0D_NOT_integer
-  int default_integ_order() const; // 0D_NOT_integer
-  int max_num_runge_kutta_step() const; // 0D_NOT_integer
-  bool rf_phase_below_transition_ref() const; // 0D_NOT_logical
-  bool sr_wakes_on() const; // 0D_NOT_logical
-  bool lr_wakes_on() const; // 0D_NOT_logical
-  bool auto_bookkeeper() const; // 0D_NOT_logical
-  bool high_energy_space_charge_on() const; // 0D_NOT_logical
-  bool csr_and_space_charge_on() const; // 0D_NOT_logical
-  bool spin_tracking_on() const; // 0D_NOT_logical
-  bool spin_sokolov_ternov_flipping_on() const; // 0D_NOT_logical
-  bool radiation_damping_on() const; // 0D_NOT_logical
-  bool radiation_zero_average() const; // 0D_NOT_logical
-  bool radiation_fluctuations_on() const; // 0D_NOT_logical
-  bool conserve_taylor_maps() const; // 0D_NOT_logical
-  bool absolute_time_tracking() const; // 0D_NOT_logical
-  bool absolute_time_ref_shift() const; // 0D_NOT_logical
-  bool convert_to_kinetic_momentum() const; // 0D_NOT_logical
-  bool normalize_twiss() const; // 0D_NOT_logical
-  bool aperture_limit_on() const; // 0D_NOT_logical
-  bool spin_n0_direction_user_set() const; // 0D_NOT_logical
-  bool debug() const; // 0D_NOT_logical
-};
-
-class RadInt1Proxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RadInt1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RadInt1Proxy constructor");
-    }
-  }
-
-  double i0() const; // 0D_NOT_real
-  double i1() const; // 0D_NOT_real
-  double i2() const; // 0D_NOT_real
-  double i3() const; // 0D_NOT_real
-  double i4a() const; // 0D_NOT_real
-  double i4b() const; // 0D_NOT_real
-  double i4z() const; // 0D_NOT_real
-  double i5a() const; // 0D_NOT_real
-  double i5b() const; // 0D_NOT_real
-  double i6b() const; // 0D_NOT_real
-  double lin_i2_E4() const; // 0D_NOT_real
-  double lin_i3_E7() const; // 0D_NOT_real
-  double lin_i5a_E6() const; // 0D_NOT_real
-  double lin_i5b_E6() const; // 0D_NOT_real
-  double lin_norm_emit_a() const; // 0D_NOT_real
-  double lin_norm_emit_b() const; // 0D_NOT_real
-  double lin_sig_E() const; // 0D_NOT_real
-  double n_steps() const; // 0D_NOT_real
-};
-
-class RadIntBranchProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RadIntBranchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RadIntBranchProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<RadInt1Proxy> ele() const; // 1D_ALLOC_type
-};
-
-class RadIntAllEleProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RadIntAllEleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RadIntAllEleProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<RadIntBranchProxy> branch() const; // 1D_ALLOC_type
-};
-
-class RfStairStepProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RfStairStepProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RfStairStepProxy constructor");
-    }
-  }
-
-  double E_tot0() const; // 0D_NOT_real
-  double E_tot1() const; // 0D_NOT_real
-  double p0c() const; // 0D_NOT_real
-  double p1c() const; // 0D_NOT_real
-  double dE_amp() const; // 0D_NOT_real
-  double scale() const; // 0D_NOT_real
-  double time() const; // 0D_NOT_real
-  double s() const; // 0D_NOT_real
-  int ix_step() const; // 0D_NOT_integer
-};
-
-class RfEleProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit RfEleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("RfEleProxy constructor");
-    }
-  }
-
-  FortranTypeArray1D<RfStairStepProxy> steps() const; // 1D_ALLOC_type
-  double ds_step() const; // 0D_NOT_real
-};
-
-class ComplexTaylorTermProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ComplexTaylorTermProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ComplexTaylorTermProxy constructor");
-    }
-  }
-
-  std::complex<double> coef() const; // 0D_NOT_complex
-  FortranArray1D<int> expn() const; // 1D_NOT_integer
-};
-
-class ComplexTaylorProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
- public:
-  explicit ComplexTaylorProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ComplexTaylorProxy constructor");
-    }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bunch_struct(ptr);
   }
-
-  std::complex<double> ref() const; // 0D_NOT_complex
-  FortranTypeArray1D<ComplexTaylorTermProxy> term() const; // 1D_PTR_type
-};
-
-class LatProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bunch_struct_struct(src, dst);
   }
-
- public:
-  explicit LatProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatProxy constructor");
-    }
+  static constexpr std::string_view type_name() {
+    return "bunch_struct";
   }
-
-  std::string use_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_use_name_chars() const; // 0D_NOT_character
-  std::string lattice() const; // 0D_NOT_character
-  FortranArray1D<char> get_lattice_chars() const; // 0D_NOT_character
-  std::string machine() const; // 0D_NOT_character
-  FortranArray1D<char> get_machine_chars() const; // 0D_NOT_character
-  std::string input_file_name() const; // 0D_NOT_character
-  FortranArray1D<char> get_input_file_name_chars() const; // 0D_NOT_character
-  std::string title() const; // 0D_NOT_character
-  FortranArray1D<char> get_title_chars() const; // 0D_NOT_character
-  FortranTypeArray1D<ExpressionAtomProxy> constant() const; // 1D_ALLOC_type
-  const void* a() const; // 0D_PTR_type
-  const void* b() const; // 0D_PTR_type
-  const void* z() const; // 0D_PTR_type
-  const void* param() const; // 0D_PTR_type
-  BookkeepingStateProxy lord_state() const; // 0D_NOT_type
-  EleProxy ele_init() const; // 0D_NOT_type
-  FortranTypeArray1D<BranchProxy> branch() const; // 1D_ALLOC_type
-  FortranTypeArray1D<ControlProxy> control() const; // 1D_ALLOC_type
-  const void* particle_start() const; // 0D_PTR_type
-  BeamInitProxy beam_init() const; // 0D_NOT_type
-  PreTrackerProxy pre_tracker() const; // 0D_NOT_type
-  FortranArray1D<double> custom() const; // 1D_ALLOC_real
-  int version() const; // 0D_NOT_integer
-  int* n_ele_track() const; // 0D_PTR_integer
-  int* n_ele_max() const; // 0D_PTR_integer
-  int n_control_max() const; // 0D_NOT_integer
-  int n_ic_max() const; // 0D_NOT_integer
-  int input_taylor_order() const; // 0D_NOT_integer
-  FortranArray1D<int> ic() const; // 1D_ALLOC_integer
-  int photon_type() const; // 0D_NOT_integer
-  int creation_hash() const; // 0D_NOT_integer
-  int ramper_slave_bookkeeping() const; // 0D_NOT_integer
 };
-
-class BunchProxy {
- private:
-  void* fortran_ptr_;
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
+class BunchProxy : public FortranProxy<BunchProxy> {
  public:
-  explicit BunchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BunchProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<CoordProxy> particle() const; // 1D_ALLOC_type
   FortranArray1D<int> ix_z() const; // 1D_ALLOC_integer
@@ -6569,20 +7567,32 @@ class BunchProxy {
   int n_bad() const; // 0D_NOT_integer
 };
 
-class BunchParamsProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_bunch_params_struct();
+void deallocate_fortran_bunch_params_struct(void* ptr) noexcept;
+void copy_fortran_bunch_params_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<BunchParamsProxy> {
+  static void* allocate() {
+    return allocate_fortran_bunch_params_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bunch_params_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bunch_params_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bunch_params_struct";
+  }
+};
 
+class BunchParamsProxy : public FortranProxy<BunchParamsProxy> {
  public:
-  explicit BunchParamsProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BunchParamsProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   CoordProxy centroid() const; // 0D_NOT_type
   TwissProxy x() const; // 0D_NOT_type
@@ -6608,38 +7618,62 @@ class BunchParamsProxy {
   bool twiss_valid() const; // 0D_NOT_logical
 };
 
-class BeamProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_beam_struct();
+void deallocate_fortran_beam_struct(void* ptr) noexcept;
+void copy_fortran_beam_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<BeamProxy> {
+  static void* allocate() {
+    return allocate_fortran_beam_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_beam_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_beam_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "beam_struct";
+  }
+};
 
+class BeamProxy : public FortranProxy<BeamProxy> {
  public:
-  explicit BeamProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BeamProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<BunchProxy> bunch() const; // 1D_ALLOC_type
 };
 
-class AperturePointProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_aperture_point_struct();
+void deallocate_fortran_aperture_point_struct(void* ptr) noexcept;
+void copy_fortran_aperture_point_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<AperturePointProxy> {
+  static void* allocate() {
+    return allocate_fortran_aperture_point_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_aperture_point_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_aperture_point_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "aperture_point_struct";
+  }
+};
 
+class AperturePointProxy : public FortranProxy<AperturePointProxy> {
  public:
-  explicit AperturePointProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("AperturePointProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   double x() const; // 0D_NOT_real
   double y() const; // 0D_NOT_real
@@ -6648,20 +7682,32 @@ class AperturePointProxy {
   int i_turn() const; // 0D_NOT_integer
 };
 
-class ApertureParamProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_aperture_param_struct();
+void deallocate_fortran_aperture_param_struct(void* ptr) noexcept;
+void copy_fortran_aperture_param_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<ApertureParamProxy> {
+  static void* allocate() {
+    return allocate_fortran_aperture_param_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_aperture_param_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_aperture_param_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "aperture_param_struct";
+  }
+};
 
+class ApertureParamProxy : public FortranProxy<ApertureParamProxy> {
  public:
-  explicit ApertureParamProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ApertureParamProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   double min_angle() const; // 0D_NOT_real
   double max_angle() const; // 0D_NOT_real
@@ -6675,136 +7721,220 @@ class ApertureParamProxy {
   FortranArray1D<char> get_start_ele_chars() const; // 0D_NOT_character
 };
 
-class ApertureScanProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_aperture_scan_struct();
+void deallocate_fortran_aperture_scan_struct(void* ptr) noexcept;
+void copy_fortran_aperture_scan_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<ApertureScanProxy> {
+  static void* allocate() {
+    return allocate_fortran_aperture_scan_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_aperture_scan_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_aperture_scan_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "aperture_scan_struct";
+  }
+};
 
+class ApertureScanProxy : public FortranProxy<ApertureScanProxy> {
  public:
-  explicit ApertureScanProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ApertureScanProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<AperturePointProxy> point() const; // 1D_ALLOC_type
   CoordProxy ref_orb() const; // 0D_NOT_type
   double pz_start() const; // 0D_NOT_real
 };
 
-class TaoSpinDnDpzProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_spin_dn_dpz_struct();
+void deallocate_fortran_tao_spin_dn_dpz_struct(void* ptr) noexcept;
+void copy_fortran_tao_spin_dn_dpz_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoSpinDnDpzProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_spin_dn_dpz_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_spin_dn_dpz_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_spin_dn_dpz_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_spin_dn_dpz_struct";
+  }
+};
 
+class TaoSpinDnDpzProxy : public FortranProxy<TaoSpinDnDpzProxy> {
  public:
-  explicit TaoSpinDnDpzProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoSpinDnDpzProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranArray1D<double> vec() const; // 1D_NOT_real
 };
 
-class ResonanceHProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_resonance_h_struct();
+void deallocate_fortran_resonance_h_struct(void* ptr) noexcept;
+void copy_fortran_resonance_h_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<ResonanceHProxy> {
+  static void* allocate() {
+    return allocate_fortran_resonance_h_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_resonance_h_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_resonance_h_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "resonance_h_struct";
+  }
+};
 
+class ResonanceHProxy : public FortranProxy<ResonanceHProxy> {
  public:
-  explicit ResonanceHProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("ResonanceHProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string id() const; // 0D_NOT_character
   FortranArray1D<char> get_id_chars() const; // 0D_NOT_character
   std::complex<double> c_val() const; // 0D_NOT_complex
 };
 
-class SpinOrbitMap1Proxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_spin_orbit_map1_struct();
+void deallocate_fortran_spin_orbit_map1_struct(void* ptr) noexcept;
+void copy_fortran_spin_orbit_map1_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<SpinOrbitMap1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_spin_orbit_map1_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_spin_orbit_map1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_spin_orbit_map1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "spin_orbit_map1_struct";
+  }
+};
 
+class SpinOrbitMap1Proxy : public FortranProxy<SpinOrbitMap1Proxy> {
  public:
-  explicit SpinOrbitMap1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SpinOrbitMap1Proxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranArray1D<double> vec0() const; // 1D_NOT_real
 };
 
-class SpinAxisProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_spin_axis_struct();
+void deallocate_fortran_spin_axis_struct(void* ptr) noexcept;
+void copy_fortran_spin_axis_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<SpinAxisProxy> {
+  static void* allocate() {
+    return allocate_fortran_spin_axis_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_spin_axis_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_spin_axis_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "spin_axis_struct";
+  }
+};
 
+class SpinAxisProxy : public FortranProxy<SpinAxisProxy> {
  public:
-  explicit SpinAxisProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SpinAxisProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranArray1D<double> l() const; // 1D_NOT_real
   FortranArray1D<double> n0() const; // 1D_NOT_real
   FortranArray1D<double> m() const; // 1D_NOT_real
 };
 
-class PtcNormalFormProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_ptc_normal_form_struct();
+void deallocate_fortran_ptc_normal_form_struct(void* ptr) noexcept;
+void copy_fortran_ptc_normal_form_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<PtcNormalFormProxy> {
+  static void* allocate() {
+    return allocate_fortran_ptc_normal_form_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_ptc_normal_form_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_ptc_normal_form_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "ptc_normal_form_struct";
+  }
+};
 
+class PtcNormalFormProxy : public FortranProxy<PtcNormalFormProxy> {
  public:
-  explicit PtcNormalFormProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("PtcNormalFormProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   const void* ele_origin() const; // 0D_PTR_type
   FortranArray1D<double> orb0() const; // 1D_NOT_real
   bool valid_map() const; // 0D_NOT_logical
 };
 
-class BmadNormalFormProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_bmad_normal_form_struct();
+void deallocate_fortran_bmad_normal_form_struct(void* ptr) noexcept;
+void copy_fortran_bmad_normal_form_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<BmadNormalFormProxy> {
+  static void* allocate() {
+    return allocate_fortran_bmad_normal_form_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bmad_normal_form_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bmad_normal_form_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bmad_normal_form_struct";
+  }
+};
 
+class BmadNormalFormProxy : public FortranProxy<BmadNormalFormProxy> {
  public:
-  explicit BmadNormalFormProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BmadNormalFormProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   const void* ele_origin() const; // 0D_PTR_type
   FortranTypeArray1D<TaylorProxy> M() const; // 1D_NOT_type
@@ -6816,40 +7946,64 @@ class BmadNormalFormProxy {
   FortranTypeArray1D<ResonanceHProxy> h() const; // 1D_ALLOC_type
 };
 
-class BunchTrackProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_bunch_track_struct();
+void deallocate_fortran_bunch_track_struct(void* ptr) noexcept;
+void copy_fortran_bunch_track_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<BunchTrackProxy> {
+  static void* allocate() {
+    return allocate_fortran_bunch_track_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_bunch_track_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_bunch_track_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "bunch_track_struct";
+  }
+};
 
+class BunchTrackProxy : public FortranProxy<BunchTrackProxy> {
  public:
-  explicit BunchTrackProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("BunchTrackProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<BunchParamsProxy> pt() const; // 1D_ALLOC_type
   double ds_save() const; // 0D_NOT_real
   int n_pt() const; // 0D_NOT_integer
 };
 
-class SummationRdtProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_summation_rdt_struct();
+void deallocate_fortran_summation_rdt_struct(void* ptr) noexcept;
+void copy_fortran_summation_rdt_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<SummationRdtProxy> {
+  static void* allocate() {
+    return allocate_fortran_summation_rdt_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_summation_rdt_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_summation_rdt_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "summation_rdt_struct";
+  }
+};
 
+class SummationRdtProxy : public FortranProxy<SummationRdtProxy> {
  public:
-  explicit SummationRdtProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("SummationRdtProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::complex<double> h11001() const; // 0D_NOT_complex
   std::complex<double> h00111() const; // 0D_NOT_complex
@@ -6874,113 +8028,187 @@ class SummationRdtProxy {
   std::complex<double> h11110() const; // 0D_NOT_complex
 };
 
-class LatEleOrder1Proxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_lat_ele_order1_struct();
+void deallocate_fortran_lat_ele_order1_struct(void* ptr) noexcept;
+void copy_fortran_lat_ele_order1_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<LatEleOrder1Proxy> {
+  static void* allocate() {
+    return allocate_fortran_lat_ele_order1_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_lat_ele_order1_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_lat_ele_order1_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "lat_ele_order1_struct";
+  }
+};
 
+class LatEleOrder1Proxy : public FortranProxy<LatEleOrder1Proxy> {
  public:
-  explicit LatEleOrder1Proxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatEleOrder1Proxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   int ix_branch() const; // 0D_NOT_integer
   int ix_order() const; // 0D_NOT_integer
 };
 
-class LatEleOrderArrayProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_lat_ele_order_array_struct();
+void deallocate_fortran_lat_ele_order_array_struct(void* ptr) noexcept;
+void copy_fortran_lat_ele_order_array_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<LatEleOrderArrayProxy> {
+  static void* allocate() {
+    return allocate_fortran_lat_ele_order_array_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_lat_ele_order_array_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_lat_ele_order_array_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "lat_ele_order_array_struct";
+  }
+};
 
+class LatEleOrderArrayProxy : public FortranProxy<LatEleOrderArrayProxy> {
  public:
-  explicit LatEleOrderArrayProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatEleOrderArrayProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<LatEleOrder1Proxy> ele() const; // 1D_ALLOC_type
 };
 
-class TaoLatSigmaProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_lat_sigma_struct();
+void deallocate_fortran_tao_lat_sigma_struct(void* ptr) noexcept;
+void copy_fortran_tao_lat_sigma_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoLatSigmaProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_lat_sigma_struct();
   }
-
- public:
-  explicit TaoLatSigmaProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoLatSigmaProxy constructor");
-    }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_lat_sigma_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_lat_sigma_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_lat_sigma_struct";
   }
 };
 
-class TaoSpinEleProxy {
- private:
-  void* fortran_ptr_;
-
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
-  }
-
+class TaoLatSigmaProxy : public FortranProxy<TaoLatSigmaProxy> {
  public:
-  explicit TaoSpinEleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoSpinEleProxy constructor");
-    }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
+};
+
+extern "C" {
+void* allocate_fortran_tao_spin_ele_struct();
+void deallocate_fortran_tao_spin_ele_struct(void* ptr) noexcept;
+void copy_fortran_tao_spin_ele_struct_struct(const void* src, void* dst);
+}
+
+template <>
+struct FortranTraits<TaoSpinEleProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_spin_ele_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_spin_ele_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_spin_ele_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_spin_ele_struct";
+  }
+};
+
+class TaoSpinEleProxy : public FortranProxy<TaoSpinEleProxy> {
+ public:
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   TaoSpinDnDpzProxy dn_dpz() const; // 0D_NOT_type
   FortranArray1D<double> orb_eigen_val() const; // 1D_NOT_real
   bool valid() const; // 0D_NOT_logical
 };
 
-class TaoPlotCacheProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_plot_cache_struct();
+void deallocate_fortran_tao_plot_cache_struct(void* ptr) noexcept;
+void copy_fortran_tao_plot_cache_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoPlotCacheProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_plot_cache_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_plot_cache_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_plot_cache_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_plot_cache_struct";
+  }
+};
 
+class TaoPlotCacheProxy : public FortranProxy<TaoPlotCacheProxy> {
  public:
-  explicit TaoPlotCacheProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoPlotCacheProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   EleProxy ele_to_s() const; // 0D_NOT_type
   CoordProxy orbit() const; // 0D_NOT_type
   bool err() const; // 0D_NOT_logical
 };
 
-class TaoSpinPolarizationProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_spin_polarization_struct();
+void deallocate_fortran_tao_spin_polarization_struct(void* ptr) noexcept;
+void copy_fortran_tao_spin_polarization_struct_struct(
+    const void* src,
+    void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoSpinPolarizationProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_spin_polarization_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_spin_polarization_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_spin_polarization_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_spin_polarization_struct";
+  }
+};
 
+class TaoSpinPolarizationProxy : public FortranProxy<TaoSpinPolarizationProxy> {
  public:
-  explicit TaoSpinPolarizationProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoSpinPolarizationProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   double tune() const; // 0D_NOT_real
   double pol_limit_st() const; // 0D_NOT_real
@@ -7000,20 +8228,32 @@ class TaoSpinPolarizationProxy {
   FortranTypeArray1D<SpinOrbitMap1Proxy> q_ele() const; // 1D_ALLOC_type
 };
 
-class TaoLatticeBranchProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_lattice_branch_struct();
+void deallocate_fortran_tao_lattice_branch_struct(void* ptr) noexcept;
+void copy_fortran_tao_lattice_branch_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoLatticeBranchProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_lattice_branch_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_lattice_branch_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_lattice_branch_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_lattice_branch_struct";
+  }
+};
 
+class TaoLatticeBranchProxy : public FortranProxy<TaoLatticeBranchProxy> {
  public:
-  explicit TaoLatticeBranchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoLatticeBranchProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<TaoLatSigmaProxy> lat_sigma() const; // 1D_ALLOC_type
   FortranTypeArray1D<TaoSpinEleProxy> spin_ele() const; // 1D_ALLOC_type
@@ -7048,40 +8288,64 @@ class TaoLatticeBranchProxy {
   bool sigma_track_ok() const; // 0D_NOT_logical
 };
 
-class TaoModelElementProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_model_element_struct();
+void deallocate_fortran_tao_model_element_struct(void* ptr) noexcept;
+void copy_fortran_tao_model_element_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoModelElementProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_model_element_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_model_element_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_model_element_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_model_element_struct";
+  }
+};
 
+class TaoModelElementProxy : public FortranProxy<TaoModelElementProxy> {
  public:
-  explicit TaoModelElementProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoModelElementProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   BeamProxy beam() const; // 0D_NOT_type
   bool save_beam_internally() const; // 0D_NOT_logical
   bool save_beam_to_file() const; // 0D_NOT_logical
 };
 
-class TaoBeamBranchProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_beam_branch_struct();
+void deallocate_fortran_tao_beam_branch_struct(void* ptr) noexcept;
+void copy_fortran_tao_beam_branch_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoBeamBranchProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_beam_branch_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_beam_branch_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_beam_branch_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_beam_branch_struct";
+  }
+};
 
+class TaoBeamBranchProxy : public FortranProxy<TaoBeamBranchProxy> {
  public:
-  explicit TaoBeamBranchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoBeamBranchProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   BeamProxy beam_at_start() const; // 0D_NOT_type
   BeamInitProxy beam_init() const; // 0D_NOT_type
@@ -7096,39 +8360,63 @@ class TaoBeamBranchProxy {
   int ix_track_end() const; // 0D_NOT_integer
 };
 
-class TaoD1DataProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_d1_data_struct();
+void deallocate_fortran_tao_d1_data_struct(void* ptr) noexcept;
+void copy_fortran_tao_d1_data_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoD1DataProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_d1_data_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_d1_data_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_d1_data_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_d1_data_struct";
+  }
+};
 
+class TaoD1DataProxy : public FortranProxy<TaoD1DataProxy> {
  public:
-  explicit TaoD1DataProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoD1DataProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
 };
 
-class TaoLatticeProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_lattice_struct();
+void deallocate_fortran_tao_lattice_struct(void* ptr) noexcept;
+void copy_fortran_tao_lattice_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoLatticeProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_lattice_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_lattice_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_lattice_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_lattice_struct";
+  }
+};
 
+class TaoLatticeProxy : public FortranProxy<TaoLatticeProxy> {
  public:
-  explicit TaoLatticeProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoLatticeProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
@@ -7140,20 +8428,32 @@ class TaoLatticeProxy {
   FortranTypeArray1D<TaoLatticeBranchProxy> tao_branch() const; // 1D_ALLOC_type
 };
 
-class TaoBeamUniProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_beam_uni_struct();
+void deallocate_fortran_tao_beam_uni_struct(void* ptr) noexcept;
+void copy_fortran_tao_beam_uni_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoBeamUniProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_beam_uni_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_beam_uni_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_beam_uni_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_beam_uni_struct";
+  }
+};
 
+class TaoBeamUniProxy : public FortranProxy<TaoBeamUniProxy> {
  public:
-  explicit TaoBeamUniProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoBeamUniProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string saved_at() const; // 0D_NOT_character
   FortranArray1D<char> get_saved_at_chars() const; // 0D_NOT_character
@@ -7165,20 +8465,34 @@ class TaoBeamUniProxy {
   bool always_reinit() const; // 0D_NOT_logical
 };
 
-class TaoDynamicApertureProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_dynamic_aperture_struct();
+void deallocate_fortran_tao_dynamic_aperture_struct(void* ptr) noexcept;
+void copy_fortran_tao_dynamic_aperture_struct_struct(
+    const void* src,
+    void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoDynamicApertureProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_dynamic_aperture_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_dynamic_aperture_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_dynamic_aperture_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_dynamic_aperture_struct";
+  }
+};
 
+class TaoDynamicApertureProxy : public FortranProxy<TaoDynamicApertureProxy> {
  public:
-  explicit TaoDynamicApertureProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoDynamicApertureProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   ApertureParamProxy param() const; // 0D_NOT_type
   FortranTypeArray1D<ApertureScanProxy> scan() const; // 1D_ALLOC_type
@@ -7188,39 +8502,63 @@ class TaoDynamicApertureProxy {
   double b_emit() const; // 0D_NOT_real
 };
 
-class TaoModelBranchProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_model_branch_struct();
+void deallocate_fortran_tao_model_branch_struct(void* ptr) noexcept;
+void copy_fortran_tao_model_branch_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoModelBranchProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_model_branch_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_model_branch_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_model_branch_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_model_branch_struct";
+  }
+};
 
+class TaoModelBranchProxy : public FortranProxy<TaoModelBranchProxy> {
  public:
-  explicit TaoModelBranchProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoModelBranchProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<TaoModelElementProxy> ele() const; // 1D_ALLOC_type
   TaoBeamBranchProxy beam() const; // 0D_NOT_type
 };
 
-class TaoD2DataProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_d2_data_struct();
+void deallocate_fortran_tao_d2_data_struct(void* ptr) noexcept;
+void copy_fortran_tao_d2_data_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoD2DataProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_d2_data_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_d2_data_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_d2_data_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_d2_data_struct";
+  }
+};
 
+class TaoD2DataProxy : public FortranProxy<TaoD2DataProxy> {
  public:
-  explicit TaoD2DataProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoD2DataProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
@@ -7240,20 +8578,32 @@ class TaoD2DataProxy {
   bool ref_read_in() const; // 0D_NOT_logical
 };
 
-class TaoSpinMapProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_spin_map_struct();
+void deallocate_fortran_tao_spin_map_struct(void* ptr) noexcept;
+void copy_fortran_tao_spin_map_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoSpinMapProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_spin_map_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_spin_map_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_spin_map_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_spin_map_struct";
+  }
+};
 
+class TaoSpinMapProxy : public FortranProxy<TaoSpinMapProxy> {
  public:
-  explicit TaoSpinMapProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoSpinMapProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   bool valid() const; // 0D_NOT_logical
   SpinOrbitMap1Proxy map1() const; // 0D_NOT_type
@@ -7266,20 +8616,32 @@ class TaoSpinMapProxy {
   int ix_branch() const; // 0D_NOT_integer
 };
 
-class TaoDataProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_data_struct();
+void deallocate_fortran_tao_data_struct(void* ptr) noexcept;
+void copy_fortran_tao_data_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoDataProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_data_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_data_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_data_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_data_struct";
+  }
+};
 
+class TaoDataProxy : public FortranProxy<TaoDataProxy> {
  public:
-  explicit TaoDataProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoDataProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   std::string ele_name() const; // 0D_NOT_character
   FortranArray1D<char> get_ele_name_chars() const; // 0D_NOT_character
@@ -7335,20 +8697,32 @@ class TaoDataProxy {
   const void* d1() const; // 0D_PTR_type
 };
 
-class TaoPingScaleProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_ping_scale_struct();
+void deallocate_fortran_tao_ping_scale_struct(void* ptr) noexcept;
+void copy_fortran_tao_ping_scale_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoPingScaleProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_ping_scale_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_ping_scale_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_ping_scale_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_ping_scale_struct";
+  }
+};
 
+class TaoPingScaleProxy : public FortranProxy<TaoPingScaleProxy> {
  public:
-  explicit TaoPingScaleProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoPingScaleProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   double a_mode_meas() const; // 0D_NOT_real
   double a_mode_ref() const; // 0D_NOT_real
@@ -7356,20 +8730,32 @@ class TaoPingScaleProxy {
   double b_mode_ref() const; // 0D_NOT_real
 };
 
-class TaoUniverseCalcProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_universe_calc_struct();
+void deallocate_fortran_tao_universe_calc_struct(void* ptr) noexcept;
+void copy_fortran_tao_universe_calc_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoUniverseCalcProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_universe_calc_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_universe_calc_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_universe_calc_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_universe_calc_struct";
+  }
+};
 
+class TaoUniverseCalcProxy : public FortranProxy<TaoUniverseCalcProxy> {
  public:
-  explicit TaoUniverseCalcProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoUniverseCalcProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   int srdt_for_data() const; // 0D_NOT_integer
   bool rad_int_for_data() const; // 0D_NOT_logical
@@ -7386,38 +8772,62 @@ class TaoUniverseCalcProxy {
   bool spin_matrices() const; // 0D_NOT_logical
 };
 
-class LatEleOrderProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_lat_ele_order_struct();
+void deallocate_fortran_lat_ele_order_struct(void* ptr) noexcept;
+void copy_fortran_lat_ele_order_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<LatEleOrderProxy> {
+  static void* allocate() {
+    return allocate_fortran_lat_ele_order_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_lat_ele_order_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_lat_ele_order_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "lat_ele_order_struct";
+  }
+};
 
+class LatEleOrderProxy : public FortranProxy<LatEleOrderProxy> {
  public:
-  explicit LatEleOrderProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("LatEleOrderProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   FortranTypeArray1D<LatEleOrderArrayProxy> branch() const; // 1D_ALLOC_type
 };
 
-class TaoUniverseProxy {
- private:
-  void* fortran_ptr_;
+extern "C" {
+void* allocate_fortran_tao_universe_struct();
+void deallocate_fortran_tao_universe_struct(void* ptr) noexcept;
+void copy_fortran_tao_universe_struct_struct(const void* src, void* dst);
+}
 
-  inline void* get_fortran_ptr_() const {
-    return fortran_ptr_;
+template <>
+struct FortranTraits<TaoUniverseProxy> {
+  static void* allocate() {
+    return allocate_fortran_tao_universe_struct();
   }
+  static void deallocate(void* ptr) noexcept {
+    deallocate_fortran_tao_universe_struct(ptr);
+  }
+  static void copy(const void* src, void* dst) {
+    copy_fortran_tao_universe_struct_struct(src, dst);
+  }
+  static constexpr std::string_view type_name() {
+    return "tao_universe_struct";
+  }
+};
 
+class TaoUniverseProxy : public FortranProxy<TaoUniverseProxy> {
  public:
-  explicit TaoUniverseProxy(void* ptr) : fortran_ptr_(ptr) {
-    if (!ptr) {
-      throw NullPointerException("TaoUniverseProxy constructor");
-    }
-  }
+  using FortranProxy::FortranProxy;
+  using FortranProxy::operator=;
 
   const void* model() const; // 0D_PTR_type
   const void* design() const; // 0D_PTR_type
