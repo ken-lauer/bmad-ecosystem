@@ -67,7 +67,7 @@ double AcKickerTimeProxy::time() const {
 SplineProxy AcKickerTimeProxy::spline() const {
   void* ptr;
   ac_kicker_time_struct_get_spline(get_fortran_ptr(), &ptr);
-  return SplineProxy(get_fortran_ptr());
+  return SplineProxy(ptr);
 }
 double AcKickerFreqProxy::f() const {
   double value;
@@ -663,7 +663,7 @@ FortranArray1D<char> WakeSrProxy::get_file_chars() const {
 WakeSrZLongProxy WakeSrProxy::z_long() const {
   void* ptr;
   wake_sr_struct_get_z_long(get_fortran_ptr(), &ptr);
-  return WakeSrZLongProxy(get_fortran_ptr());
+  return WakeSrZLongProxy(ptr);
 }
 FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::long_wake() const {
   void* data_ptr;
@@ -866,12 +866,12 @@ int LatEleLocProxy::ix_branch() const {
 WakeSrProxy WakeProxy::sr() const {
   void* ptr;
   wake_struct_get_sr(get_fortran_ptr(), &ptr);
-  return WakeSrProxy(get_fortran_ptr());
+  return WakeSrProxy(ptr);
 }
 WakeLrProxy WakeProxy::lr() const {
   void* ptr;
   wake_struct_get_lr(get_fortran_ptr(), &ptr);
-  return WakeLrProxy(get_fortran_ptr());
+  return WakeLrProxy(ptr);
 }
 double TaylorTermProxy::coef() const {
   double value;
@@ -1334,7 +1334,7 @@ double FloorPositionProxy::psi() const {
 CoordProxy HighEnergySpaceChargeProxy::closed_orb() const {
   void* ptr;
   high_energy_space_charge_struct_get_closed_orb(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 double HighEnergySpaceChargeProxy::kick_const() const {
   double value;
@@ -1484,27 +1484,27 @@ double TwissProxy::detap_dpz() const {
 TwissProxy Mode3Proxy::a() const {
   void* ptr;
   mode3_struct_get_a(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy Mode3Proxy::b() const {
   void* ptr;
   mode3_struct_get_b(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy Mode3Proxy::c() const {
   void* ptr;
   mode3_struct_get_c(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy Mode3Proxy::x() const {
   void* ptr;
   mode3_struct_get_x(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy Mode3Proxy::y() const {
   void* ptr;
   mode3_struct_get_y(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 int BookkeepingStateProxy::attributes() const {
   int value;
@@ -1574,12 +1574,12 @@ FortranArray1D<double> RadMapProxy::xfer_damp_vec() const {
 RadMapProxy RadMapEleProxy::rm0() const {
   void* ptr;
   rad_map_ele_struct_get_rm0(get_fortran_ptr(), &ptr);
-  return RadMapProxy(get_fortran_ptr());
+  return RadMapProxy(ptr);
 }
 RadMapProxy RadMapEleProxy::rm1() const {
   void* ptr;
   rad_map_ele_struct_get_rm1(get_fortran_ptr(), &ptr);
-  return RadMapProxy(get_fortran_ptr());
+  return RadMapProxy(ptr);
 }
 bool RadMapEleProxy::stale() const {
   bool value;
@@ -1918,7 +1918,7 @@ int PhotonTargetProxy::n_corner() const {
 LatEleLocProxy PhotonTargetProxy::ele_loc() const {
   void* ptr;
   photon_target_struct_get_ele_loc(get_fortran_ptr(), &ptr);
-  return LatEleLocProxy(get_fortran_ptr());
+  return LatEleLocProxy(ptr);
 }
 FortranTypeArray1D<TargetPointProxy> PhotonTargetProxy::corner() const {
   void* data_ptr;
@@ -1939,7 +1939,7 @@ FortranTypeArray1D<TargetPointProxy> PhotonTargetProxy::corner() const {
 TargetPointProxy PhotonTargetProxy::center() const {
   void* ptr;
   photon_target_struct_get_center(get_fortran_ptr(), &ptr);
-  return TargetPointProxy(get_fortran_ptr());
+  return TargetPointProxy(ptr);
 }
 std::complex<double> PhotonMaterialProxy::f0_m1() const {
   std::complex<double> c_value;
@@ -2099,37 +2099,37 @@ long long PixelDetecProxy::n_hit_pixel() const {
 SurfaceCurvatureProxy PhotonElementProxy::curvature() const {
   void* ptr;
   photon_element_struct_get_curvature(get_fortran_ptr(), &ptr);
-  return SurfaceCurvatureProxy(get_fortran_ptr());
+  return SurfaceCurvatureProxy(ptr);
 }
 PhotonTargetProxy PhotonElementProxy::target() const {
   void* ptr;
   photon_element_struct_get_target(get_fortran_ptr(), &ptr);
-  return PhotonTargetProxy(get_fortran_ptr());
+  return PhotonTargetProxy(ptr);
 }
 PhotonMaterialProxy PhotonElementProxy::material() const {
   void* ptr;
   photon_element_struct_get_material(get_fortran_ptr(), &ptr);
-  return PhotonMaterialProxy(get_fortran_ptr());
+  return PhotonMaterialProxy(ptr);
 }
 SurfaceSegmentedProxy PhotonElementProxy::segmented() const {
   void* ptr;
   photon_element_struct_get_segmented(get_fortran_ptr(), &ptr);
-  return SurfaceSegmentedProxy(get_fortran_ptr());
+  return SurfaceSegmentedProxy(ptr);
 }
 SurfaceHMisalignProxy PhotonElementProxy::h_misalign() const {
   void* ptr;
   photon_element_struct_get_h_misalign(get_fortran_ptr(), &ptr);
-  return SurfaceHMisalignProxy(get_fortran_ptr());
+  return SurfaceHMisalignProxy(ptr);
 }
 SurfaceDisplacementProxy PhotonElementProxy::displacement() const {
   void* ptr;
   photon_element_struct_get_displacement(get_fortran_ptr(), &ptr);
-  return SurfaceDisplacementProxy(get_fortran_ptr());
+  return SurfaceDisplacementProxy(ptr);
 }
 PixelDetecProxy PhotonElementProxy::pixel() const {
   void* ptr;
   photon_element_struct_get_pixel(get_fortran_ptr(), &ptr);
-  return PixelDetecProxy(get_fortran_ptr());
+  return PixelDetecProxy(ptr);
 }
 int PhotonElementProxy::reflectivity_table_type() const {
   int value;
@@ -2139,12 +2139,12 @@ int PhotonElementProxy::reflectivity_table_type() const {
 PhotonReflectTableProxy PhotonElementProxy::reflectivity_table_sigma() const {
   void* ptr;
   photon_element_struct_get_reflectivity_table_sigma(get_fortran_ptr(), &ptr);
-  return PhotonReflectTableProxy(get_fortran_ptr());
+  return PhotonReflectTableProxy(ptr);
 }
 PhotonReflectTableProxy PhotonElementProxy::reflectivity_table_pi() const {
   void* ptr;
   photon_element_struct_get_reflectivity_table_pi(get_fortran_ptr(), &ptr);
-  return PhotonReflectTableProxy(get_fortran_ptr());
+  return PhotonReflectTableProxy(ptr);
 }
 FortranTypeArray1D<SplineProxy> PhotonElementProxy::init_energy_prob() const {
   void* data_ptr;
@@ -2528,12 +2528,12 @@ FortranTypeArray1D<ExpressionAtomProxy> ControlProxy::stack() const {
 LatEleLocProxy ControlProxy::slave() const {
   void* ptr;
   control_struct_get_slave(get_fortran_ptr(), &ptr);
-  return LatEleLocProxy(get_fortran_ptr());
+  return LatEleLocProxy(ptr);
 }
 LatEleLocProxy ControlProxy::lord() const {
   void* ptr;
   control_struct_get_lord(get_fortran_ptr(), &ptr);
-  return LatEleLocProxy(get_fortran_ptr());
+  return LatEleLocProxy(ptr);
 }
 std::string ControlProxy::slave_name() const {
   auto char_array = get_slave_name_chars();
@@ -2837,7 +2837,7 @@ FortranTypeArray1D<EllipseBeamInitProxy> BeamInitProxy::ellipse() const {
 KvBeamInitProxy BeamInitProxy::KV() const {
   void* ptr;
   beam_init_struct_get_KV(get_fortran_ptr(), &ptr);
-  return KvBeamInitProxy(get_fortran_ptr());
+  return KvBeamInitProxy(ptr);
 }
 FortranTypeArray1D<GridBeamInitProxy> BeamInitProxy::grid() const {
   void* data_ptr;
@@ -3119,12 +3119,12 @@ double LatParamProxy::g3_integral() const {
 BookkeepingStateProxy LatParamProxy::bookkeeping_state() const {
   void* ptr;
   lat_param_struct_get_bookkeeping_state(get_fortran_ptr(), &ptr);
-  return BookkeepingStateProxy(get_fortran_ptr());
+  return BookkeepingStateProxy(ptr);
 }
 BeamInitProxy LatParamProxy::beam_init() const {
   void* ptr;
   lat_param_struct_get_beam_init(get_fortran_ptr(), &ptr);
-  return BeamInitProxy(get_fortran_ptr());
+  return BeamInitProxy(ptr);
 }
 bool ModeInfoProxy::stable() const {
   bool value;
@@ -3313,22 +3313,22 @@ double NormalModesProxy::dpz_damp() const {
 AnormalModeProxy NormalModesProxy::a() const {
   void* ptr;
   normal_modes_struct_get_a(get_fortran_ptr(), &ptr);
-  return AnormalModeProxy(get_fortran_ptr());
+  return AnormalModeProxy(ptr);
 }
 AnormalModeProxy NormalModesProxy::b() const {
   void* ptr;
   normal_modes_struct_get_b(get_fortran_ptr(), &ptr);
-  return AnormalModeProxy(get_fortran_ptr());
+  return AnormalModeProxy(ptr);
 }
 AnormalModeProxy NormalModesProxy::z() const {
   void* ptr;
   normal_modes_struct_get_z(get_fortran_ptr(), &ptr);
-  return AnormalModeProxy(get_fortran_ptr());
+  return AnormalModeProxy(ptr);
 }
 LinacNormalModeProxy NormalModesProxy::lin() const {
   void* ptr;
   normal_modes_struct_get_lin(get_fortran_ptr(), &ptr);
-  return LinacNormalModeProxy(get_fortran_ptr());
+  return LinacNormalModeProxy(ptr);
 }
 FortranArray1D<double> EmFieldProxy::E() const {
   double* data_ptr;
@@ -3418,17 +3418,17 @@ double TrackPointProxy::s_body() const {
 CoordProxy TrackPointProxy::orb() const {
   void* ptr;
   track_point_struct_get_orb(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 EmFieldProxy TrackPointProxy::field() const {
   void* ptr;
   track_point_struct_get_field(get_fortran_ptr(), &ptr);
-  return EmFieldProxy(get_fortran_ptr());
+  return EmFieldProxy(ptr);
 }
 StrongBeamProxy TrackPointProxy::strong_beam() const {
   void* ptr;
   track_point_struct_get_strong_beam(get_fortran_ptr(), &ptr);
-  return StrongBeamProxy(get_fortran_ptr());
+  return StrongBeamProxy(ptr);
 }
 FortranArray1D<double> TrackPointProxy::vec0() const {
   double* data_ptr;
@@ -4091,27 +4091,27 @@ FortranArray1D<char> EleProxy::get_descrip_chars() const {
 TwissProxy EleProxy::a() const {
   void* ptr;
   ele_struct_get_a(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy EleProxy::b() const {
   void* ptr;
   ele_struct_get_b(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy EleProxy::z() const {
   void* ptr;
   ele_struct_get_z(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 XyDispProxy EleProxy::x() const {
   void* ptr;
   ele_struct_get_x(get_fortran_ptr(), &ptr);
-  return XyDispProxy(get_fortran_ptr());
+  return XyDispProxy(ptr);
 }
 XyDispProxy EleProxy::y() const {
   void* ptr;
   ele_struct_get_y(get_fortran_ptr(), &ptr);
-  return XyDispProxy(get_fortran_ptr());
+  return XyDispProxy(ptr);
 }
 const void* EleProxy::ac_kick() const {
   void* ptr;
@@ -4121,7 +4121,7 @@ const void* EleProxy::ac_kick() const {
 BookkeepingStateProxy EleProxy::bookkeeping_state() const {
   void* ptr;
   ele_struct_get_bookkeeping_state(get_fortran_ptr(), &ptr);
-  return BookkeepingStateProxy(get_fortran_ptr());
+  return BookkeepingStateProxy(ptr);
 }
 const void* EleProxy::branch() const {
   void* ptr;
@@ -4146,7 +4146,7 @@ const void* EleProxy::lord() const {
 FloorPositionProxy EleProxy::floor() const {
   void* ptr;
   ele_struct_get_floor(get_fortran_ptr(), &ptr);
-  return FloorPositionProxy(get_fortran_ptr());
+  return FloorPositionProxy(ptr);
 }
 const void* EleProxy::high_energy_space_charge() const {
   void* ptr;
@@ -4308,22 +4308,22 @@ FortranTypeArray1D<GridFieldProxy> EleProxy::grid_field() const {
 CoordProxy EleProxy::map_ref_orb_in() const {
   void* ptr;
   ele_struct_get_map_ref_orb_in(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 CoordProxy EleProxy::map_ref_orb_out() const {
   void* ptr;
   ele_struct_get_map_ref_orb_out(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 CoordProxy EleProxy::time_ref_orb_in() const {
   void* ptr;
   ele_struct_get_time_ref_orb_in(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 CoordProxy EleProxy::time_ref_orb_out() const {
   void* ptr;
   ele_struct_get_time_ref_orb_out(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 FortranArray1D<double> EleProxy::value() const {
   double* data_ptr;
@@ -4665,17 +4665,17 @@ const void* BranchProxy::lat() const {
 ModeInfoProxy BranchProxy::a() const {
   void* ptr;
   branch_struct_get_a(get_fortran_ptr(), &ptr);
-  return ModeInfoProxy(get_fortran_ptr());
+  return ModeInfoProxy(ptr);
 }
 ModeInfoProxy BranchProxy::b() const {
   void* ptr;
   branch_struct_get_b(get_fortran_ptr(), &ptr);
-  return ModeInfoProxy(get_fortran_ptr());
+  return ModeInfoProxy(ptr);
 }
 ModeInfoProxy BranchProxy::z() const {
   void* ptr;
   branch_struct_get_z(get_fortran_ptr(), &ptr);
-  return ModeInfoProxy(get_fortran_ptr());
+  return ModeInfoProxy(ptr);
 }
 FortranTypeArray1D<EleProxy> BranchProxy::ele() const {
   void* data_ptr;
@@ -4698,12 +4698,12 @@ FortranTypeArray1D<EleProxy> BranchProxy::ele() const {
 LatParamProxy BranchProxy::param() const {
   void* ptr;
   branch_struct_get_param(get_fortran_ptr(), &ptr);
-  return LatParamProxy(get_fortran_ptr());
+  return LatParamProxy(ptr);
 }
 CoordProxy BranchProxy::particle_start() const {
   void* ptr;
   branch_struct_get_particle_start(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 FortranTypeArray1D<Wall3dProxy> BranchProxy::wall3d() const {
   void* data_ptr;
@@ -4834,12 +4834,12 @@ const void* LatProxy::param() const {
 BookkeepingStateProxy LatProxy::lord_state() const {
   void* ptr;
   lat_struct_get_lord_state(get_fortran_ptr(), &ptr);
-  return BookkeepingStateProxy(get_fortran_ptr());
+  return BookkeepingStateProxy(ptr);
 }
 EleProxy LatProxy::ele_init() const {
   void* ptr;
   lat_struct_get_ele_init(get_fortran_ptr(), &ptr);
-  return EleProxy(get_fortran_ptr());
+  return EleProxy(ptr);
 }
 FortranTypeArray1D<BranchProxy> LatProxy::branch() const {
   void* data_ptr;
@@ -4885,12 +4885,12 @@ const void* LatProxy::particle_start() const {
 BeamInitProxy LatProxy::beam_init() const {
   void* ptr;
   lat_struct_get_beam_init(get_fortran_ptr(), &ptr);
-  return BeamInitProxy(get_fortran_ptr());
+  return BeamInitProxy(ptr);
 }
 PreTrackerProxy LatProxy::pre_tracker() const {
   void* ptr;
   lat_struct_get_pre_tracker(get_fortran_ptr(), &ptr);
-  return PreTrackerProxy(get_fortran_ptr());
+  return PreTrackerProxy(ptr);
 }
 FortranArray1D<double> LatProxy::custom() const {
   double* data_ptr;
@@ -5066,37 +5066,37 @@ int BunchProxy::n_bad() const {
 CoordProxy BunchParamsProxy::centroid() const {
   void* ptr;
   bunch_params_struct_get_centroid(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 TwissProxy BunchParamsProxy::x() const {
   void* ptr;
   bunch_params_struct_get_x(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy BunchParamsProxy::y() const {
   void* ptr;
   bunch_params_struct_get_y(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy BunchParamsProxy::z() const {
   void* ptr;
   bunch_params_struct_get_z(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy BunchParamsProxy::a() const {
   void* ptr;
   bunch_params_struct_get_a(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy BunchParamsProxy::b() const {
   void* ptr;
   bunch_params_struct_get_b(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 TwissProxy BunchParamsProxy::c() const {
   void* ptr;
   bunch_params_struct_get_c(get_fortran_ptr(), &ptr);
-  return TwissProxy(get_fortran_ptr());
+  return TwissProxy(ptr);
 }
 FortranArray1D<double> BunchParamsProxy::rel_max() const {
   double* data_ptr;
@@ -5301,7 +5301,7 @@ FortranTypeArray1D<AperturePointProxy> ApertureScanProxy::point() const {
 CoordProxy ApertureScanProxy::ref_orb() const {
   void* ptr;
   aperture_scan_struct_get_ref_orb(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 double ApertureScanProxy::pz_start() const {
   double value;
@@ -5680,7 +5680,7 @@ FortranTypeArray1D<LatEleOrder1Proxy> LatEleOrderArrayProxy::ele() const {
 TaoSpinDnDpzProxy TaoSpinEleProxy::dn_dpz() const {
   void* ptr;
   tao_spin_ele_struct_get_dn_dpz(get_fortran_ptr(), &ptr);
-  return TaoSpinDnDpzProxy(get_fortran_ptr());
+  return TaoSpinDnDpzProxy(ptr);
 }
 FortranArray1D<double> TaoSpinEleProxy::orb_eigen_val() const {
   double* data_ptr;
@@ -5700,12 +5700,12 @@ bool TaoSpinEleProxy::valid() const {
 EleProxy TaoPlotCacheProxy::ele_to_s() const {
   void* ptr;
   tao_plot_cache_struct_get_ele_to_s(get_fortran_ptr(), &ptr);
-  return EleProxy(get_fortran_ptr());
+  return EleProxy(ptr);
 }
 CoordProxy TaoPlotCacheProxy::orbit() const {
   void* ptr;
   tao_plot_cache_struct_get_orbit(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 bool TaoPlotCacheProxy::err() const {
   bool value;
@@ -5805,7 +5805,7 @@ bool TaoSpinPolarizationProxy::valid() const {
 SpinOrbitMap1Proxy TaoSpinPolarizationProxy::q_1turn() const {
   void* ptr;
   tao_spin_polarization_struct_get_q_1turn(get_fortran_ptr(), &ptr);
-  return SpinOrbitMap1Proxy(get_fortran_ptr());
+  return SpinOrbitMap1Proxy(ptr);
 }
 FortranTypeArray1D<SpinOrbitMap1Proxy> TaoSpinPolarizationProxy::q_ele() const {
   void* data_ptr;
@@ -5939,37 +5939,37 @@ FortranTypeArray1D<TaoPlotCacheProxy> TaoLatticeBranchProxy::plot_cache()
 TaoSpinPolarizationProxy TaoLatticeBranchProxy::spin() const {
   void* ptr;
   tao_lattice_branch_struct_get_spin(get_fortran_ptr(), &ptr);
-  return TaoSpinPolarizationProxy(get_fortran_ptr());
+  return TaoSpinPolarizationProxy(ptr);
 }
 SummationRdtProxy TaoLatticeBranchProxy::srdt() const {
   void* ptr;
   tao_lattice_branch_struct_get_srdt(get_fortran_ptr(), &ptr);
-  return SummationRdtProxy(get_fortran_ptr());
+  return SummationRdtProxy(ptr);
 }
 CoordProxy TaoLatticeBranchProxy::orb0() const {
   void* ptr;
   tao_lattice_branch_struct_get_orb0(get_fortran_ptr(), &ptr);
-  return CoordProxy(get_fortran_ptr());
+  return CoordProxy(ptr);
 }
 NormalModesProxy TaoLatticeBranchProxy::modes_ri() const {
   void* ptr;
   tao_lattice_branch_struct_get_modes_ri(get_fortran_ptr(), &ptr);
-  return NormalModesProxy(get_fortran_ptr());
+  return NormalModesProxy(ptr);
 }
 NormalModesProxy TaoLatticeBranchProxy::modes_6d() const {
   void* ptr;
   tao_lattice_branch_struct_get_modes_6d(get_fortran_ptr(), &ptr);
-  return NormalModesProxy(get_fortran_ptr());
+  return NormalModesProxy(ptr);
 }
 PtcNormalFormProxy TaoLatticeBranchProxy::ptc_normal_form() const {
   void* ptr;
   tao_lattice_branch_struct_get_ptc_normal_form(get_fortran_ptr(), &ptr);
-  return PtcNormalFormProxy(get_fortran_ptr());
+  return PtcNormalFormProxy(ptr);
 }
 BmadNormalFormProxy TaoLatticeBranchProxy::bmad_normal_form() const {
   void* ptr;
   tao_lattice_branch_struct_get_bmad_normal_form(get_fortran_ptr(), &ptr);
-  return BmadNormalFormProxy(get_fortran_ptr());
+  return BmadNormalFormProxy(ptr);
 }
 FortranTypeArray1D<CoordProxy> TaoLatticeBranchProxy::high_E_orb() const {
   void* data_ptr;
@@ -6086,7 +6086,7 @@ bool TaoLatticeBranchProxy::sigma_track_ok() const {
 BeamProxy TaoModelElementProxy::beam() const {
   void* ptr;
   tao_model_element_struct_get_beam(get_fortran_ptr(), &ptr);
-  return BeamProxy(get_fortran_ptr());
+  return BeamProxy(ptr);
 }
 bool TaoModelElementProxy::save_beam_internally() const {
   bool value;
@@ -6101,17 +6101,17 @@ bool TaoModelElementProxy::save_beam_to_file() const {
 BeamProxy TaoBeamBranchProxy::beam_at_start() const {
   void* ptr;
   tao_beam_branch_struct_get_beam_at_start(get_fortran_ptr(), &ptr);
-  return BeamProxy(get_fortran_ptr());
+  return BeamProxy(ptr);
 }
 BeamInitProxy TaoBeamBranchProxy::beam_init() const {
   void* ptr;
   tao_beam_branch_struct_get_beam_init(get_fortran_ptr(), &ptr);
-  return BeamInitProxy(get_fortran_ptr());
+  return BeamInitProxy(ptr);
 }
 BeamInitProxy TaoBeamBranchProxy::beam_init_used() const {
   void* ptr;
   tao_beam_branch_struct_get_beam_init_used(get_fortran_ptr(), &ptr);
-  return BeamInitProxy(get_fortran_ptr());
+  return BeamInitProxy(ptr);
 }
 bool TaoBeamBranchProxy::init_starting_distribution() const {
   bool value;
@@ -6193,27 +6193,27 @@ FortranArray1D<char> TaoLatticeProxy::get_name_chars() const {
 LatProxy TaoLatticeProxy::lat() const {
   void* ptr;
   tao_lattice_struct_get_lat(get_fortran_ptr(), &ptr);
-  return LatProxy(get_fortran_ptr());
+  return LatProxy(ptr);
 }
 LatProxy TaoLatticeProxy::high_E_lat() const {
   void* ptr;
   tao_lattice_struct_get_high_E_lat(get_fortran_ptr(), &ptr);
-  return LatProxy(get_fortran_ptr());
+  return LatProxy(ptr);
 }
 LatProxy TaoLatticeProxy::low_E_lat() const {
   void* ptr;
   tao_lattice_struct_get_low_E_lat(get_fortran_ptr(), &ptr);
-  return LatProxy(get_fortran_ptr());
+  return LatProxy(ptr);
 }
 RadIntAllEleProxy TaoLatticeProxy::rad_int_by_ele_ri() const {
   void* ptr;
   tao_lattice_struct_get_rad_int_by_ele_ri(get_fortran_ptr(), &ptr);
-  return RadIntAllEleProxy(get_fortran_ptr());
+  return RadIntAllEleProxy(ptr);
 }
 RadIntAllEleProxy TaoLatticeProxy::rad_int_by_ele_6d() const {
   void* ptr;
   tao_lattice_struct_get_rad_int_by_ele_6d(get_fortran_ptr(), &ptr);
-  return RadIntAllEleProxy(get_fortran_ptr());
+  return RadIntAllEleProxy(ptr);
 }
 FortranTypeArray1D<TaoLatticeBranchProxy> TaoLatticeProxy::tao_branch() const {
   void* data_ptr;
@@ -6288,7 +6288,7 @@ bool TaoBeamUniProxy::always_reinit() const {
 ApertureParamProxy TaoDynamicApertureProxy::param() const {
   void* ptr;
   tao_dynamic_aperture_struct_get_param(get_fortran_ptr(), &ptr);
-  return ApertureParamProxy(get_fortran_ptr());
+  return ApertureParamProxy(ptr);
 }
 FortranTypeArray1D<ApertureScanProxy> TaoDynamicApertureProxy::scan() const {
   void* data_ptr;
@@ -6360,7 +6360,7 @@ FortranTypeArray1D<TaoModelElementProxy> TaoModelBranchProxy::ele() const {
 TaoBeamBranchProxy TaoModelBranchProxy::beam() const {
   void* ptr;
   tao_model_branch_struct_get_beam(get_fortran_ptr(), &ptr);
-  return TaoBeamBranchProxy(get_fortran_ptr());
+  return TaoBeamBranchProxy(ptr);
 }
 std::string TaoD2DataProxy::name() const {
   auto char_array = get_name_chars();
@@ -6483,22 +6483,22 @@ bool TaoSpinMapProxy::valid() const {
 SpinOrbitMap1Proxy TaoSpinMapProxy::map1() const {
   void* ptr;
   tao_spin_map_struct_get_map1(get_fortran_ptr(), &ptr);
-  return SpinOrbitMap1Proxy(get_fortran_ptr());
+  return SpinOrbitMap1Proxy(ptr);
 }
 SpinAxisProxy TaoSpinMapProxy::axis_input() const {
   void* ptr;
   tao_spin_map_struct_get_axis_input(get_fortran_ptr(), &ptr);
-  return SpinAxisProxy(get_fortran_ptr());
+  return SpinAxisProxy(ptr);
 }
 SpinAxisProxy TaoSpinMapProxy::axis0() const {
   void* ptr;
   tao_spin_map_struct_get_axis0(get_fortran_ptr(), &ptr);
-  return SpinAxisProxy(get_fortran_ptr());
+  return SpinAxisProxy(ptr);
 }
 SpinAxisProxy TaoSpinMapProxy::axis1() const {
   void* ptr;
   tao_spin_map_struct_get_axis1(get_fortran_ptr(), &ptr);
-  return SpinAxisProxy(get_fortran_ptr());
+  return SpinAxisProxy(ptr);
 }
 int TaoSpinMapProxy::ix_ele() const {
   int value;
@@ -6801,7 +6801,7 @@ bool TaoDataProxy::useit_opt() const {
 TaoSpinMapProxy TaoDataProxy::spin_map() const {
   void* ptr;
   tao_data_struct_get_spin_map(get_fortran_ptr(), &ptr);
-  return TaoSpinMapProxy(get_fortran_ptr());
+  return TaoSpinMapProxy(ptr);
 }
 const void* TaoDataProxy::d1() const {
   void* ptr;
@@ -6930,12 +6930,12 @@ const void* TaoUniverseProxy::base() const {
 TaoBeamUniProxy TaoUniverseProxy::beam() const {
   void* ptr;
   tao_universe_struct_get_beam(get_fortran_ptr(), &ptr);
-  return TaoBeamUniProxy(get_fortran_ptr());
+  return TaoBeamUniProxy(ptr);
 }
 TaoDynamicApertureProxy TaoUniverseProxy::dynamic_aperture() const {
   void* ptr;
   tao_universe_struct_get_dynamic_aperture(get_fortran_ptr(), &ptr);
-  return TaoDynamicApertureProxy(get_fortran_ptr());
+  return TaoDynamicApertureProxy(ptr);
 }
 FortranTypeArray1D<TaoModelBranchProxy> TaoUniverseProxy::model_branch() const {
   void* data_ptr;
@@ -6994,27 +6994,27 @@ FortranTypeArray1D<TaoDataProxy> TaoUniverseProxy::data() const {
 TaoPingScaleProxy TaoUniverseProxy::ping_scale() const {
   void* ptr;
   tao_universe_struct_get_ping_scale(get_fortran_ptr(), &ptr);
-  return TaoPingScaleProxy(get_fortran_ptr());
+  return TaoPingScaleProxy(ptr);
 }
 LatProxy TaoUniverseProxy::scratch_lat() const {
   void* ptr;
   tao_universe_struct_get_scratch_lat(get_fortran_ptr(), &ptr);
-  return LatProxy(get_fortran_ptr());
+  return LatProxy(ptr);
 }
 TaoUniverseCalcProxy TaoUniverseProxy::calc() const {
   void* ptr;
   tao_universe_struct_get_calc(get_fortran_ptr(), &ptr);
-  return TaoUniverseCalcProxy(get_fortran_ptr());
+  return TaoUniverseCalcProxy(ptr);
 }
 LatEleOrderProxy TaoUniverseProxy::ele_order() const {
   void* ptr;
   tao_universe_struct_get_ele_order(get_fortran_ptr(), &ptr);
-  return LatEleOrderProxy(get_fortran_ptr());
+  return LatEleOrderProxy(ptr);
 }
 TaoSpinMapProxy TaoUniverseProxy::spin_map() const {
   void* ptr;
   tao_universe_struct_get_spin_map(get_fortran_ptr(), &ptr);
-  return TaoSpinMapProxy(get_fortran_ptr());
+  return TaoSpinMapProxy(ptr);
 }
 FortranArray2D<double> TaoUniverseProxy::dModel_dVar() const {
   double* data_ptr;

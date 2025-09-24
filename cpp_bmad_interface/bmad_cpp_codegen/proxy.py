@@ -1022,7 +1022,7 @@ cpp_templates = {
     ${return_proxy_name} CATTRNAME() const {
         void* ptr;
         STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
-        return ${return_proxy_name}(get_fortran_ptr());
+        return ${return_proxy_name}(ptr);
     }
 """
         ],
@@ -1248,7 +1248,7 @@ def get_proxy_header_and_code(
 extern "C" {
   void* allocate_fortran_${struct_name}();
   void deallocate_fortran_${struct_name}(void* ptr) noexcept;
-  void copy_fortran_${struct_name}_struct(const void* src, void* dst);
+  void copy_fortran_${struct_name}(const void* src, void* dst);
 }
 
 template <>
@@ -1260,7 +1260,7 @@ struct FortranTraits<${class_name}> {
     deallocate_fortran_${struct_name}(ptr);
   }
   static void copy(const void* src, void* dst) {
-    copy_fortran_${struct_name}_struct(src, dst);
+    copy_fortran_${struct_name}(src, dst);
   }
   static constexpr std::string_view type_name() {
     return "${struct_name}";

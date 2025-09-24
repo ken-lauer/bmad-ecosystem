@@ -64,7 +64,7 @@ class FortranProxy {
       has_fortran_traits_v<T>,
       "Type T must have specialized FortranTraits");
 
- private:
+ protected:
   void* fortran_ptr_;
   bool owns_memory_;
 
@@ -123,6 +123,7 @@ class FortranProxy {
     cleanup();
   }
 
+  // TODO: pointer-to-a-pointer for fortran-side `type(c_ptr), value`
   void* get_fortran_ptr() const noexcept {
     return fortran_ptr_;
   }
