@@ -37,7 +37,12 @@ from .paths import (
     CPP_INTERFACE_ROOT,
     TEMPLATES_PATH,
 )
-from .proxy import create_cpp_proxy_header, create_cpp_proxy_impl, create_fortran_proxy_code
+from .proxy import (
+    create_cpp_proxy_header,
+    create_cpp_proxy_impl,
+    create_fortran_proxy_code,
+    struct_to_proxy_class_name,
+)
 from .types import (
     ALLOC,
     CHAR,
@@ -390,6 +395,7 @@ class Argument:
             raise RuntimeError("Kind is empty?")
         self.f_side.replace_all("KIND", kind)
         self.c_side.replace_all("KIND", kind)
+        self.c_side.replace_all("PROXYCLS", struct_to_proxy_class_name(kind))
 
     def _handle_init_values(self) -> None:
         """
@@ -622,7 +628,7 @@ def match_structure_definition(
 
     struct.f_name = fstruct.name
     struct.short_name = fstruct.name.removesuffix("_struct")
-    struct.cpp_class = "CPP_" + struct.short_name
+    struct.cpp_class = struct_to_proxy_class_name(fstruct.name)
     struct.arg = [Argument.from_fstruct(fstruct, member) for member in fstruct.members.values()]
     struct.module = fstruct.module
     struct.parsed = fstruct
@@ -1321,7 +1327,6 @@ def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
             #include <memory>
             #include <optional>
             
-            #include "cpp_bmad_classes.h"
             #include "converter_templates.h"
             #include "json.hpp"
             ${include_headers}
@@ -1597,7 +1602,6 @@ def write_cpp_test(file, structs: list[CodegenStructure]):
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
-#include "cpp_bmad_classes.h"
 
 using namespace std;
 using namespace Bmad;
@@ -1795,48 +1799,6 @@ def write_output(structs: list[CodegenStructure]) -> None:
         structs,
     )
 
-    # write_if_differs(
-    #     write_tests_main,
-    #     CPP_INTERFACE_ROOT / "interface_test" / "main.f90",
-    #     structs,
-    # )
-    # write_if_differs(
-    #     write_tests_mod,
-    #     CPP_INTERFACE_ROOT / "interface_test" / "bmad_cpp_test_mod.f90",
-    #     structs,
-    # )
-    # write_if_differs(
-    #     write_cpp_classes,
-    #     CPP_INTERFACE_ROOT / "include" / "cpp_bmad_classes.h",
-    #     structs,
-    # )
-    # write_if_differs(
-    #     write_cpp_json_source,
-    #     CPP_INTERFACE_ROOT / "code" / "cpp_classes_json.cpp",
-    #     structs,
-    # )
-    # convert_header = (CODEGEN_ROOT / "convert_header.cpp").read_text()
-
-    # write_if_differs(
-    #     write_cpp_convert,
-    #     CPP_INTERFACE_ROOT / "code" / "cpp_bmad_convert.cpp",
-    #     convert_header,
-    #     structs,
-    # )
-    #
-    equality_header = (CODEGEN_ROOT / "equality_header.cpp").read_text()
-    write_if_differs(
-        write_cpp_equality,
-        CPP_INTERFACE_ROOT / "code" / "cpp_equality.cpp",
-        equality_header,
-        structs,
-    )
-    # write_if_differs(
-    #     write_cpp_test,
-    #     CPP_INTERFACE_ROOT / "interface_test" / "cpp_bmad_test.cpp",
-    #     structs,
-    # )
-
 
 def get_c_type(type_val: str) -> str:
     """Get the C++ type string for a given type value"""
@@ -1849,7 +1811,7 @@ def get_c_type(type_val: str) -> str:
         LOGIC: "Bool",
         CHAR: "string",
         SIZE: "Int",
-        STRUCT: "CPP_KIND",
+        STRUCT: "PROXYCLS",
     }
 
     if type_val in type_mapping:

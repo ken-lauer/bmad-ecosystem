@@ -1,6 +1,5 @@
 #pragma once
 
-#include "cpp_bmad_classes.h"
 #include "fortran_arrays.hpp"
 #include "proxy_base.hpp"
 
@@ -4636,8 +4635,8 @@ class WakeSrProxy : public FortranProxy<WakeSrProxy> {
   std::string file() const; // 0D_NOT_character
   FortranArray1D<char> get_file_chars() const; // 0D_NOT_character
   WakeSrZLongProxy z_long() const; // 0D_NOT_type
-  FortranTypeArray1D<WakeSrModeProxy> long_() const; // 1D_ALLOC_type
-  FortranTypeArray1D<WakeSrModeProxy> trans() const; // 1D_ALLOC_type
+  FortranTypeArray1D<WakeSrModeProxy> long_wake() const; // 1D_ALLOC_type
+  FortranTypeArray1D<WakeSrModeProxy> trans_wake() const; // 1D_ALLOC_type
   double z_ref_long() const; // 0D_NOT_real
   double z_ref_trans() const; // 0D_NOT_real
   double z_max() const; // 0D_NOT_real

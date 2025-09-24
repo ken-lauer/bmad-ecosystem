@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "bmad_std_typedef.h"
-#include "cpp_bmad_classes.h"
 
 using namespace std;
 
@@ -21,8 +20,9 @@ using std::vector, std::string;
 //---------------------------------------------------
 
 template <class T>
-bool is_all_equal(const VariableArray1D<T> &vec1,
-                  const VariableArray1D<T> &vec2) {
+bool is_all_equal(
+    const VariableArray1D<T>& vec1,
+    const VariableArray1D<T>& vec2) {
   if (vec1.size() != vec2.size())
     return false;
   for (size_t i = 0; i < vec1.size(); i++) {
@@ -33,8 +33,9 @@ bool is_all_equal(const VariableArray1D<T> &vec1,
 }
 
 template <class T>
-bool is_all_equal(const vector<vector<T>> &mat1,
-                  const vector<vector<T>> &mat2) {
+bool is_all_equal(
+    const vector<vector<T>>& mat1,
+    const vector<vector<T>>& mat2) {
   if (mat1.size() != mat2.size())
     return false;
   for (size_t i = 0; i < mat1.size(); i++) {
@@ -49,8 +50,9 @@ bool is_all_equal(const vector<vector<T>> &mat1,
 }
 
 template <class T>
-bool is_all_equal(const vector<vector<vector<T>>> &tensor1,
-                  const vector<vector<vector<T>>> &tensor2) {
+bool is_all_equal(
+    const vector<vector<vector<T>>>& tensor1,
+    const vector<vector<vector<T>>>& tensor2) {
   if (tensor1.size() != tensor2.size())
     return false;
   for (size_t i = 0; i < tensor1.size(); i++) {
@@ -69,8 +71,9 @@ bool is_all_equal(const vector<vector<vector<T>>> &tensor1,
 }
 
 template <typename T, std::size_t DIM1>
-bool is_all_equal(const FixedArray1D<T, DIM1> &arr1,
-                  const FixedArray1D<T, DIM1> &arr2) {
+bool is_all_equal(
+    const FixedArray1D<T, DIM1>& arr1,
+    const FixedArray1D<T, DIM1>& arr2) {
   // No need to check sizes since they're fixed at compile time
   for (std::size_t i = 0; i < DIM1; i++) {
     if (!(arr1[i] == arr2[i]))
@@ -80,8 +83,9 @@ bool is_all_equal(const FixedArray1D<T, DIM1> &arr1,
 }
 
 template <typename T, std::size_t DIM1, std::size_t DIM2>
-bool is_all_equal(const FixedArray2D<T, DIM1, DIM2> &arr1,
-                  const FixedArray2D<T, DIM1, DIM2> &arr2) {
+bool is_all_equal(
+    const FixedArray2D<T, DIM1, DIM2>& arr1,
+    const FixedArray2D<T, DIM1, DIM2>& arr2) {
   // No need to check sizes since they're fixed at compile time
   for (std::size_t i = 0; i < DIM1; i++) {
     for (std::size_t j = 0; j < DIM2; j++) {
@@ -93,8 +97,9 @@ bool is_all_equal(const FixedArray2D<T, DIM1, DIM2> &arr1,
 }
 
 template <typename T, std::size_t DIM1, std::size_t DIM2, std::size_t DIM3>
-bool is_all_equal(const FixedArray3D<T, DIM1, DIM2, DIM3> &arr1,
-                  const FixedArray3D<T, DIM1, DIM2, DIM3> &arr2) {
+bool is_all_equal(
+    const FixedArray3D<T, DIM1, DIM2, DIM3>& arr1,
+    const FixedArray3D<T, DIM1, DIM2, DIM3>& arr2) {
   // No need to check sizes since they're fixed at compile time
   for (std::size_t i = 0; i < DIM1; i++) {
     for (std::size_t j = 0; j < DIM2; j++) {

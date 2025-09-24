@@ -10,7 +10,6 @@
 #include <iostream>
 #include <sstream>
 #include "converter_templates.h"
-#include "cpp_bmad_classes.h"
 
 using namespace Bmad;
 

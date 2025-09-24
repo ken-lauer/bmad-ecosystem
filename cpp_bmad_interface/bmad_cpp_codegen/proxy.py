@@ -4,6 +4,7 @@ import logging
 from string import Template
 from typing import TYPE_CHECKING
 
+from bmad_cpp_codegen.interface_input_params import c_side_name_translation
 from bmad_cpp_codegen.util import snake_to_camel
 
 from .types import FullType
@@ -1144,11 +1145,6 @@ cpp_templates = {
 }
 
 
-cpp_renames = {
-    "long": "long_",
-}
-
-
 def generate_accessor_code(struct_name: str, attr_name: str, full_type: FullType):
     """
     Generate Fortran and C++ accessor code for a given struct/attribute/type combination.
@@ -1160,7 +1156,7 @@ def generate_accessor_code(struct_name: str, attr_name: str, full_type: FullType
     except KeyError as ex:
         raise ValueError(f"Unsupported type: {full_type}") from ex
 
-    cattr_name = cpp_renames.get(attr_name, attr_name)
+    cattr_name = c_side_name_translation.get(f"{struct_name}%{attr_name}", attr_name)
 
     def replace_all(s: str) -> str:
         return (

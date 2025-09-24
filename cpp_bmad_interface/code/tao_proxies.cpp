@@ -665,7 +665,7 @@ WakeSrZLongProxy WakeSrProxy::z_long() const {
   wake_sr_struct_get_z_long(get_fortran_ptr(), &ptr);
   return WakeSrZLongProxy(get_fortran_ptr());
 }
-FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::long_() const {
+FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::long_wake() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;
@@ -683,7 +683,7 @@ FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::long_() const {
   return FortranTypeArray1D<WakeSrModeProxy>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
-FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::trans() const {
+FortranTypeArray1D<WakeSrModeProxy> WakeSrProxy::trans_wake() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
   bool is_allocated;

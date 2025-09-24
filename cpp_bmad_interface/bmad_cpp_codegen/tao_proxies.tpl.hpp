@@ -1,6 +1,5 @@
 #pragma once
 
-#include "cpp_bmad_classes.h"
 #include "fortran_arrays.hpp"
 #include "proxy_base.hpp"
 
