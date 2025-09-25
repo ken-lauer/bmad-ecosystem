@@ -166,4 +166,5 @@ template <typename T>
 auto make_fortran_owned_copy(void* ptr) {
   return T{ptr, true};
 }
+
 } // namespace tao

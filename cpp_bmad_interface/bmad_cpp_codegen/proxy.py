@@ -570,7 +570,7 @@ cpp_templates = {
             """
     double CATTRNAME() const {
         double value;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &value);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
         return value;
     }
 """
@@ -584,7 +584,7 @@ cpp_templates = {
             """
     double* CATTRNAME() const {
         double* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
 """
@@ -607,7 +607,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
         );
         
         return FortranArray1D<double>(data_ptr, size_out, lower_bound, upper_bound, true);
@@ -632,7 +632,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
         );
         
         return FortranArray1D<std::complex<double>>(
@@ -660,7 +660,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
         );
         
         return FortranArray1D<int>(data_ptr, size_out, lower_bound, upper_bound, true);
@@ -687,7 +687,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
         
         return FortranArray1D<double>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
@@ -716,7 +716,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, 
+            fortran_ptr_, &data_ptr, 
             &dim1_size, &dim1_lower, &dim1_upper,
             &dim2_size, &dim2_lower, &dim2_upper,
             &stride1, &stride2, &is_allocated
@@ -739,7 +739,7 @@ cpp_templates = {
             """
     long double CATTRNAME() const {
         long double value;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &value);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
         return value;
     }
 """
@@ -753,7 +753,7 @@ cpp_templates = {
             """
     long double* CATTRNAME() const {
         long double* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
 """
@@ -768,7 +768,7 @@ cpp_templates = {
             """
     int CATTRNAME() const {
         int value;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &value);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
         return value;
     }
 """
@@ -782,7 +782,7 @@ cpp_templates = {
             """
     int* CATTRNAME() const {
         int* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
 """
@@ -807,7 +807,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
         
         return FortranArray1D<int>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
@@ -836,7 +836,7 @@ cpp_templates = {
         bool is_allocated;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, 
+            fortran_ptr_, &data_ptr, 
             &dim1_size, &dim1_lower, &dim1_upper,
             &dim2_size, &dim2_lower, &dim2_upper,
             &stride1, &stride2, &is_allocated
@@ -858,7 +858,7 @@ cpp_templates = {
             """
     long long CATTRNAME() const {
         long long value;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &value);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
         return value;
     }
 """
@@ -872,7 +872,7 @@ cpp_templates = {
             """
     long long* CATTRNAME() const {
         long long* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
 """
@@ -887,7 +887,7 @@ cpp_templates = {
             """
     std::complex<double> CATTRNAME() const {
         std::complex<double> c_value;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &c_value);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &c_value);
         return c_value;
     }
 """
@@ -901,7 +901,7 @@ cpp_templates = {
             """
     std::complex<double>* CATTRNAME() const {
         std::complex<double>* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return reinterpret_cast<std::complex<double>*>(ptr);
     }
 """
@@ -916,7 +916,7 @@ cpp_templates = {
             """
     bool CATTRNAME() const {
         bool value;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &value);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &value);
         return value;
     }
 """
@@ -930,7 +930,7 @@ cpp_templates = {
             """
     bool* CATTRNAME() const {
         bool* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
 """
@@ -960,7 +960,7 @@ cpp_templates = {
         int size_out, lower_bound, upper_bound;
 
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound
         );
 
         return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, true);
@@ -987,7 +987,7 @@ cpp_templates = {
         bool is_allocated;
 
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
 
         if (!is_allocated || size_out == 0) {
@@ -1004,7 +1004,7 @@ cpp_templates = {
         bool is_allocated;
 
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated
         );
 
         return FortranArray1D<char>(data_ptr, size_out, lower_bound, upper_bound, is_allocated);
@@ -1021,7 +1021,7 @@ cpp_templates = {
             """
     ${return_proxy_name} CATTRNAME() const {
         void* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ${return_proxy_name}(ptr);
     }
 """
@@ -1035,7 +1035,7 @@ cpp_templates = {
             """
     const void* CATTRNAME() const {
         void* ptr;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), &ptr);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, &ptr);
         return ptr;
     }
 """
@@ -1061,7 +1061,7 @@ cpp_templates = {
         size_t element_size;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &element_size
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &element_size
         );
         
         return FortranTypeArray1D<${return_proxy_name}>(data_ptr, size_out, lower_bound, upper_bound, true, element_size);
@@ -1090,7 +1090,7 @@ cpp_templates = {
         size_t element_size;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated, &element_size
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated, &element_size
         );
         
         return FortranTypeArray1D<${return_proxy_name}>(data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
@@ -1119,7 +1119,7 @@ cpp_templates = {
         size_t element_size;
         
         STRUCTNAME_get_FATTRNAME_info(
-            get_fortran_ptr(), &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated, &element_size
+            fortran_ptr_, &data_ptr, &size_out, &lower_bound, &upper_bound, &is_allocated, &element_size
         );
         
         return FortranTypeArray1D<${return_proxy_name}>(data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
@@ -1136,7 +1136,7 @@ cpp_templates = {
             """
     int CATTRNAME(int dim = 1) const {
         int size_out;
-        STRUCTNAME_get_FATTRNAME(get_fortran_ptr(), dim, &size_out);
+        STRUCTNAME_get_FATTRNAME(fortran_ptr_, dim, &size_out);
         return size_out;
     }
 """

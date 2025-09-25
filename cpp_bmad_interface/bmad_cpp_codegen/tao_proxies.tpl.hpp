@@ -140,7 +140,7 @@ class TaoLatticeIndexProxy {
   }
 
   TaoLatticeProxy operator*() const {
-    void* lat_ptr = tao_c_get_lattice_ptr(ix_uni_, ix_lat_);
+    void* lat_ptr = tao_c_get_tao_lattice_ptr(ix_uni_, ix_lat_);
     if (!lat_ptr) {
       throw NullPointerException(
           "TaoLatticeProxy dereference for [" + std::to_string(ix_uni_) + "," +

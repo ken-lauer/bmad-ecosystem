@@ -41,6 +41,19 @@ contains
     endif
   end function
 
+  function c_get_tao_lattice_ptr(ix_uni, ix_lat) result(ptr) bind(c, name='tao_c_get_tao_lattice_ptr')
+    integer(c_int), intent(in), value :: ix_uni, ix_lat
+    type(c_ptr) :: ptr
+    type(tao_lattice_struct), pointer :: lat_ptr
+    
+    lat_ptr => get_tao_lattice_ptr(ix_uni, ix_lat)
+    if (associated(lat_ptr)) then
+      ptr = c_loc(lat_ptr)
+    else
+      ptr = c_null_ptr
+    endif
+  end function
+
   function c_get_lattice_ptr(ix_uni, ix_lat) result(ptr) bind(c, name='tao_c_get_lattice_ptr')
     integer(c_int), intent(in), value :: ix_uni, ix_lat
     type(c_ptr) :: ptr
