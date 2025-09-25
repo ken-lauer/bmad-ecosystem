@@ -1000,6 +1000,7 @@ const int COMPOUND = 69;
 const int FUNCTION = 70;
 const int VERTICAL_BAR = 71;
 const int BLANK = 72;
+const int AMPERSAND = 73;
 enum class EleAttribute : size_t {
   // Assumed unique. Do not assign 1 to another attribute.
   L = 1,
