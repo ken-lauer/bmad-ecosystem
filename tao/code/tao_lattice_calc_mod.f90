@@ -199,7 +199,7 @@ if (u%calc%twiss .and. branch%param%particle /= photon$) then
   if (tao_branch%track_state == moving_forward$) then
     mode_flip = any(branch%ele(1:branch%n_ele_track)%mode_flip)
     if (mode_flip .and. .not. tao_branch%mode_flip_here .and. .not. s%com%optimizer_running) then
-      call out_io(s_warn$, r_name, '*Mode flip* detected! Care must be used in interpreting Twiss parameter!', &
+      call out_io(s_warn$, r_name, '*Mode flip* detected! Care must be used in interpreting Twiss parameters!', &
                                    'See the Bmad manual on linear optics for more information.')
     endif
     tao_branch%mode_flip_here = mode_flip
@@ -505,13 +505,9 @@ tao_branch%bunch_params(:)%n_particle_live = 0
 tao_branch%bunch_params(:)%n_particle_live = 0
 tao_branch%bunch_params(:)%twiss_valid = .false.
 
-if (tao_branch%comb_ds_save > 0) then
-  ds_save = tao_branch%comb_ds_save
-else
-  ds_save = max(branch%param%total_length / s%plot_page%n_curve_pts, 10*bmad_com%significant_length)
-endif
+ds_save = tao_branch%comb_ds_save
 
-comb_calc_on = (ds_save >= 0)
+comb_calc_on = (ds_save > 0)
 bunch_params_comb => tao_branch%bunch_params_comb
 bunch_params_comb%ds_save = ds_save
 bunch_params_comb%n_pt = -1  ! Reset tracks
