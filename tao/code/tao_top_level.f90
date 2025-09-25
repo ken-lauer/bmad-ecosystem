@@ -37,7 +37,6 @@ character(16) :: r_name = 'tao_top_level'
 logical found, err, need_input, err_is_fatal
 
 ! init
-print *, "tao_top_level", command
 
 s_ptr => s       ! Used for debugging
 if (present(errcode)) errcode = 1   ! Assume error
