@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -135,13 +136,6 @@ class FortranArray1D {
   const T* end() const {
     return valid_ ? data_ + size_ : nullptr;
   }
-  const T* cbegin() const {
-    return begin();
-  }
-  const T* cend() const {
-    return end();
-  }
-
   // Convert to std::vector (copies data)
   std::vector<T> to_vector() const {
     if (!valid_)
@@ -376,17 +370,25 @@ class FortranArray2D {
 template <typename ProxyType>
 class FortranTypeArray1D {
  private:
-  void* data_;           // Base pointer (could point to array of pointers OR array of structs)
+  void*
+      data_; // Base pointer (could point to array of pointers OR array of structs)
   int size_;
   int lower_bound_;
   int upper_bound_;
   bool valid_;
-  bool is_pointer_array_; // true for pointer arrays, false for contiguous struct arrays
-  size_t element_size_;   // size of each element (only used for contiguous arrays)
+  bool
+      is_pointer_array_; // true for pointer arrays, false for contiguous struct arrays
+  size_t
+      element_size_; // size of each element (only used for contiguous arrays)
 
  public:
   // Constructor for pointer arrays (like cartesian_map)
-  FortranTypeArray1D(void** pointer_array, int size, int lower, int upper, bool valid)
+  FortranTypeArray1D(
+      void** pointer_array,
+      int size,
+      int lower,
+      int upper,
+      bool valid)
       : data_(pointer_array),
         size_(size),
         lower_bound_(lower),
@@ -396,7 +398,13 @@ class FortranTypeArray1D {
         element_size_(0) {}
 
   // Constructor for contiguous struct arrays (like m_u_layout, taylor)
-  FortranTypeArray1D(void* struct_array, int size, int lower, int upper, bool valid, size_t element_size)
+  FortranTypeArray1D(
+      void* struct_array,
+      int size,
+      int lower,
+      int upper,
+      bool valid,
+      size_t element_size)
       : data_(struct_array),
         size_(size),
         lower_bound_(lower),
@@ -427,52 +435,52 @@ class FortranTypeArray1D {
     }
   }
 
+  void check_validity() const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+  }
+
+  void check_fortran_bounds(int i) const {
+    if (i < lower_bound_ || i > upper_bound_) {
+      throw std::out_of_range(
+          "Fortran array index out of bounds: " + std::to_string(i) +
+          " not in [" + std::to_string(lower_bound_) + "," +
+          std::to_string(upper_bound_) + "]");
+    }
+  }
+
+  void check_c_bounds(int i) const {
+    if (i < 0 || i >= size_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
+          std::to_string(size_ - 1) + "]");
+    }
+  }
+
  public:
   // Fortran-style indexing (using bounds) - returns Proxy object
   ProxyType operator()(int i) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < lower_bound_ || i > upper_bound_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
-          "]");
-    }
+    check_validity();
+    check_fortran_bounds(i);
     return ProxyType(get_element_ptr(i - lower_bound_));
   }
 
   const ProxyType operator()(int i) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < lower_bound_ || i > upper_bound_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
-          "]");
-    }
+    check_validity();
+    check_fortran_bounds(i);
     return ProxyType(get_element_ptr(i - lower_bound_));
   }
 
   // C-style indexing (0-based)
   ProxyType operator[](int i) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= size_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
-          std::to_string(size_ - 1) + "]");
-    }
+    check_validity();
+    check_c_bounds(i);
     return ProxyType(get_element_ptr(i));
   }
 
   const ProxyType operator[](int i) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= size_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
-          std::to_string(size_ - 1) + "]");
-    }
+    check_validity();
+    check_c_bounds(i);
     return ProxyType(get_element_ptr(i));
   }
 
@@ -550,26 +558,79 @@ class FortranTypeArray1D {
    private:
     const FortranTypeArray1D* array_;
     int index_;
+
    public:
-    iterator(const FortranTypeArray1D* array, int index) : array_(array), index_(index) {}
-    ProxyType operator*() { return ProxyType(array_->get_element_ptr(index_)); }
-    iterator& operator++() { ++index_; return *this; }
-    iterator operator++(int) { iterator tmp = *this; ++index_; return tmp; }
-    bool operator==(const iterator& other) const { return index_ == other.index_; }
-    bool operator!=(const iterator& other) const { return index_ != other.index_; }
+    iterator(const FortranTypeArray1D* array, int index)
+        : array_(array), index_(index) {}
+
+    ProxyType operator*() {
+      if (index_ >= array_->size_) {
+        // This should never happen in correct usage, but pybind11 might try it
+        throw std::runtime_error("Iterator dereferenced at end position");
+      }
+      if (!array_->valid_) {
+        throw std::runtime_error("Array not allocated");
+      }
+      return ProxyType(array_->get_element_ptr(index_));
+    }
+
+    iterator& operator++() {
+      ++index_;
+      return *this;
+    }
+
+    iterator operator++(int) {
+      iterator tmp = *this;
+      ++index_;
+      return tmp;
+    }
+
+    bool operator==(const iterator& other) const {
+      return array_ == other.array_ && index_ == other.index_;
+    }
+
+    bool operator!=(const iterator& other) const {
+      return !(*this == other);
+    }
   };
 
   class const_iterator {
    private:
     const FortranTypeArray1D* array_;
     int index_;
+
    public:
-    const_iterator(const FortranTypeArray1D* array, int index) : array_(array), index_(index) {}
-    const ProxyType operator*() const { return ProxyType(array_->get_element_ptr(index_)); }
-    const_iterator& operator++() { ++index_; return *this; }
-    const_iterator operator++(int) { const_iterator tmp = *this; ++index_; return tmp; }
-    bool operator==(const const_iterator& other) const { return index_ == other.index_; }
-    bool operator!=(const const_iterator& other) const { return index_ != other.index_; }
+    const_iterator(const FortranTypeArray1D* array, int index)
+        : array_(array), index_(index) {}
+
+    const ProxyType operator*() const {
+      if (index_ >= array_->size_) {
+        throw std::runtime_error("Iterator dereferenced at end position");
+      }
+      if (!array_->valid_) {
+        throw std::runtime_error("Array not allocated");
+      }
+      return ProxyType(array_->get_element_ptr(index_));
+    }
+
+    const_iterator& operator++() {
+      ++index_;
+      return *this;
+    }
+
+    const_iterator operator++(int) {
+      const_iterator tmp = *this;
+      ++index_;
+      return tmp;
+    }
+
+    bool operator==(const const_iterator& other) const {
+      return array_ == other.array_ && index_ == other.index_;
+    }
+
+    bool operator!=(const const_iterator& other) const {
+      return !(*this == other);
+    }
   };
 
   iterator begin() {
@@ -584,18 +645,12 @@ class FortranTypeArray1D {
   const_iterator end() const {
     return const_iterator(this, size_);
   }
-  const_iterator cbegin() const {
-    return begin();
-  }
-  const_iterator cend() const {
-    return end();
-  }
 
   // Convert to std::vector of Proxy objects
   std::vector<ProxyType> to_vector() const {
     if (!valid_)
       return std::vector<ProxyType>();
-    
+
     std::vector<ProxyType> result;
     result.reserve(size_);
     for (int i = 0; i < size_; ++i) {

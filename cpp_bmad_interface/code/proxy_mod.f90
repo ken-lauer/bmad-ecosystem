@@ -12200,6 +12200,34 @@ contains
     ptr_out = c_loc(struct_obj%ele_init)
   end subroutine
 
+  ! lat_struct%ele: 1D_PTR_type
+
+  subroutine lat_struct_get_ele_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_struct_get_ele_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(lat_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%ele)) then
+      data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
+      lower_bound = int(lbound(struct_obj%ele, 1), c_int)
+      upper_bound = int(ubound(struct_obj%ele, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%ele(lbound(struct_obj%ele, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
+  end subroutine
+
   ! lat_struct%branch: 1D_ALLOC_type
 
   subroutine lat_struct_get_branch_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='lat_struct_get_branch_info')
@@ -14761,6 +14789,21 @@ contains
   end subroutine
 
         
+  ! tao_lattice_branch_struct%tao_lat: 0D_PTR_type
+
+  subroutine tao_lattice_branch_struct_get_tao_lat(struct_obj_ptr, ptr_out) bind(c, name='tao_lattice_branch_struct_get_tao_lat')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: ptr_out
+    type(tao_lattice_branch_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%tao_lat)) then
+      ptr_out = c_loc(struct_obj%tao_lat)
+    else
+      ptr_out = c_null_ptr
+    endif
+  end subroutine
+
   ! tao_lattice_branch_struct%lat_sigma: 1D_ALLOC_type
 
   subroutine tao_lattice_branch_struct_get_lat_sigma_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_lattice_branch_struct_get_lat_sigma_info')
@@ -15485,6 +15528,49 @@ contains
     lower_bound = 1_c_int
     upper_bound = int(len_trim(struct_obj%name), c_int)
     size_out = upper_bound - lower_bound + 1
+  end subroutine
+
+  ! tao_d1_data_struct%d2: 0D_PTR_type
+
+  subroutine tao_d1_data_struct_get_d2(struct_obj_ptr, ptr_out) bind(c, name='tao_d1_data_struct_get_d2')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: ptr_out
+    type(tao_d1_data_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%d2)) then
+      ptr_out = c_loc(struct_obj%d2)
+    else
+      ptr_out = c_null_ptr
+    endif
+  end subroutine
+
+  ! tao_d1_data_struct%d: 1D_PTR_type
+
+  subroutine tao_d1_data_struct_get_d_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size) bind(c, name='tao_d1_data_struct_get_d_info')
+    type(c_ptr), intent(in), value :: struct_obj_ptr
+    type(c_ptr), intent(out) :: data_ptr
+    integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
+    logical(c_bool), intent(out) :: is_allocated
+    integer(c_size_t), intent(out) :: element_size
+    type(tao_d1_data_struct), pointer :: struct_obj
+    
+    call c_f_pointer(struct_obj_ptr, struct_obj)
+    if (associated(struct_obj%d)) then
+      data_ptr = c_loc(struct_obj%d(lbound(struct_obj%d, 1)))
+      lower_bound = int(lbound(struct_obj%d, 1), c_int)
+      upper_bound = int(ubound(struct_obj%d, 1), c_int)
+      size_out = upper_bound - lower_bound + 1
+      element_size = int(storage_size(struct_obj%d(lbound(struct_obj%d, 1))) / 8, c_size_t)
+      is_allocated = .true.
+    else
+      data_ptr = c_null_ptr
+      lower_bound = 0_c_int
+      upper_bound = -1_c_int
+      size_out = 0_c_int
+      element_size = 0_c_size_t
+      is_allocated = .false.
+    endif
   end subroutine
 
   !! tao_lattice_struct
@@ -16337,6 +16423,7 @@ contains
     size_out = upper_bound - lower_bound + 1
   end subroutine
 
+  ! skipped tao_data_struct%data_type: Unsupported type: 0D_ALLOC_character
   ! tao_data_struct%merit_type: 0D_NOT_character
 
   subroutine tao_data_struct_get_merit_type_info(struct_obj_ptr, data_ptr, size_out, lower_bound, upper_bound) bind(c, name='tao_data_struct_get_merit_type_info')

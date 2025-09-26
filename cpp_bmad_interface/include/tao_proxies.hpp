@@ -2694,6 +2694,15 @@ void lat_struct_get_lord_state(const void* struct_obj, void** ptr_out);
 
 void lat_struct_get_ele_init(const void* struct_obj, void** ptr_out);
 
+void lat_struct_get_ele_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated,
+    size_t* element_size);
+
 void lat_struct_get_branch_info(
     const void* struct_obj,
     void** data_ptr,
@@ -3268,6 +3277,10 @@ void tao_spin_polarization_struct_get_q_ele_info(
     bool* is_allocated,
     size_t* element_size);
 
+void tao_lattice_branch_struct_get_tao_lat(
+    const void* struct_obj,
+    void** ptr_out);
+
 void tao_lattice_branch_struct_get_lat_sigma_info(
     const void* struct_obj,
     void** data_ptr,
@@ -3480,6 +3493,17 @@ void tao_d1_data_struct_get_name_info(
     int* size_out,
     int* lower_bound,
     int* upper_bound);
+
+void tao_d1_data_struct_get_d2(const void* struct_obj, void** ptr_out);
+
+void tao_d1_data_struct_get_d_info(
+    const void* struct_obj,
+    void** data_ptr,
+    int* size_out,
+    int* lower_bound,
+    int* upper_bound,
+    bool* is_allocated,
+    size_t* element_size);
 
 void tao_lattice_struct_get_name_info(
     const void* struct_obj,
@@ -7487,6 +7511,7 @@ class LatProxy : public FortranProxy<LatProxy> {
   const void* param() const; // 0D_PTR_type
   BookkeepingStateProxy lord_state() const; // 0D_NOT_type
   EleProxy ele_init() const; // 0D_NOT_type
+  FortranTypeArray1D<EleProxy> ele() const; // 1D_PTR_type
   FortranTypeArray1D<BranchProxy> branch() const; // 1D_ALLOC_type
   FortranTypeArray1D<ControlProxy> control() const; // 1D_ALLOC_type
   const void* particle_start() const; // 0D_PTR_type
@@ -8234,6 +8259,7 @@ class TaoLatticeBranchProxy : public FortranProxy<TaoLatticeBranchProxy> {
   using FortranProxy::FortranProxy;
   using FortranProxy::operator=;
 
+  const void* tao_lat() const; // 0D_PTR_type
   FortranTypeArray1D<TaoLatSigmaProxy> lat_sigma() const; // 1D_ALLOC_type
   FortranTypeArray1D<TaoSpinEleProxy> spin_ele() const; // 1D_ALLOC_type
   FortranTypeArray1D<BunchParamsProxy> bunch_params() const; // 1D_ALLOC_type
@@ -8368,6 +8394,8 @@ class TaoD1DataProxy : public FortranProxy<TaoD1DataProxy> {
 
   std::string name() const; // 0D_NOT_character
   FortranArray1D<char> get_name_chars() const; // 0D_NOT_character
+  const void* d2() const; // 0D_PTR_type
+  FortranTypeArray1D<TaoDataProxy> d() const; // 1D_PTR_type
 };
 
 extern "C" {

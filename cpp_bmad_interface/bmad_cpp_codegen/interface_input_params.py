@@ -198,7 +198,7 @@ component_no_translate_list = {
     "lat_struct%nametable",
     "normal_form_struct",
     # This is merely a reference to lat_struct%branch(0). Avoid copying unnecessarily.
-    "lat_struct%ele",
+    # "lat_struct%ele",
     # TODO: this copies information unnecessarily; we need a reference type
     # "branch_struct%lat",
     # "ele_struct%lord",
@@ -206,13 +206,13 @@ component_no_translate_list = {
     # TODO: we need some sort workaround for grid field data:
     # "grid_field_pt_struct%pt",
     # tao
-    "tao_data_struct%data_type",  # TODO: 0D_ALLOC_character
+    # "tao_data_struct%data_type",  # TODO: 0D_ALLOC_character
     # TODO parent ref
-    "tao_lattice_branch_struct%tao_lat",
-    "tao_d1_data_struct%d2",
+    # "tao_lattice_branch_struct%tao_lat",
+    # "tao_d1_data_struct%d2",
     "tao_lattice_struct%u",
     # TODO test pattern debugging
-    "tao_d1_data_struct%d",
+    # "tao_d1_data_struct%d",
     # end tao
 }
 
@@ -222,13 +222,13 @@ component_no_translate_list = {
 #   2) Do not create a test pattern in interface test code.
 
 interface_ignore_list = {
-    "ele_struct%branch",
-    "branch_struct%lat",
+    # "ele_struct%branch",
+    # "branch_struct%lat",
     # TODO pointers in the test suite
-    "tao_universe_struct%base",
-    "tao_universe_struct%model",
-    "tao_universe_struct%design",
-    "tao_universe_struct%model_branch",
+    # "tao_universe_struct%base",
+    # "tao_universe_struct%model",
+    # "tao_universe_struct%design",
+    # "tao_universe_struct%model_branch",
 }
 
 # List of structure components that are structures and are defined externally.

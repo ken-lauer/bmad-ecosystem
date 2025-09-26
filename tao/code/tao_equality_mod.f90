@@ -188,6 +188,10 @@ logical is_eq
 !
 
 is_eq = .true.
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%tao_lat) .eqv. associated(f2%tao_lat))
+if (.not. is_eq) return
+if (associated(f1%tao_lat)) is_eq = (f1%tao_lat == f2%tao_lat)
 !! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%lat_sigma) .eqv. allocated(f2%lat_sigma))
 if (.not. is_eq) return
@@ -360,6 +364,16 @@ logical is_eq
 is_eq = .true.
 !! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%name == f2%name)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%d2) .eqv. associated(f2%d2))
+if (.not. is_eq) return
+if (associated(f1%d2)) is_eq = (f1%d2 == f2%d2)
+!! f_side.equality_test[1D_PTR_type]
+is_eq = is_eq .and. (associated(f1%d) .eqv. associated(f2%d))
+if (.not. is_eq) return
+if (associated(f1%d)) is_eq = all(shape(f1%d) == shape(f2%d))
+if (.not. is_eq) return
+if (associated(f1%d)) is_eq = all(f1%d == f2%d)
 
 end function eq_tao_d1_data
 
@@ -596,6 +610,10 @@ is_eq = is_eq .and. (f1%ele_name == f2%ele_name)
 is_eq = is_eq .and. (f1%ele_start_name == f2%ele_start_name)
 !! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%ele_ref_name == f2%ele_ref_name)
+!! f_side.equality_test[0D_ALLOC_character]
+is_eq = is_eq .and. (allocated(f1%data_type) .eqv. allocated(f2%data_type))
+if (.not. is_eq) return
+if (allocated(f1%data_type)) is_eq = (f1%data_type == f2%data_type)
 !! f_side.equality_test[0D_NOT_character]
 is_eq = is_eq .and. (f1%merit_type == f2%merit_type)
 !! f_side.equality_test[0D_NOT_character]
@@ -770,10 +788,28 @@ logical is_eq
 !
 
 is_eq = .true.
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%model) .eqv. associated(f2%model))
+if (.not. is_eq) return
+if (associated(f1%model)) is_eq = (f1%model == f2%model)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%design) .eqv. associated(f2%design))
+if (.not. is_eq) return
+if (associated(f1%design)) is_eq = (f1%design == f2%design)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%base) .eqv. associated(f2%base))
+if (.not. is_eq) return
+if (associated(f1%base)) is_eq = (f1%base == f2%base)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%beam == f2%beam)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%dynamic_aperture == f2%dynamic_aperture)
+!! f_side.equality_test[1D_PTR_type]
+is_eq = is_eq .and. (associated(f1%model_branch) .eqv. associated(f2%model_branch))
+if (.not. is_eq) return
+if (associated(f1%model_branch)) is_eq = all(shape(f1%model_branch) == shape(f2%model_branch))
+if (.not. is_eq) return
+if (associated(f1%model_branch)) is_eq = all(f1%model_branch == f2%model_branch)
 !! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%d2_data) .eqv. allocated(f2%d2_data))
 if (.not. is_eq) return

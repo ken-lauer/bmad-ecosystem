@@ -4836,6 +4836,24 @@ EleProxy LatProxy::ele_init() const {
   lat_struct_get_ele_init(fortran_ptr_, &ptr);
   return EleProxy(ptr);
 }
+FortranTypeArray1D<EleProxy> LatProxy::ele() const {
+  void* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  size_t element_size;
+
+  lat_struct_get_ele_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated,
+      &element_size);
+
+  return FortranTypeArray1D<EleProxy>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
+}
 FortranTypeArray1D<BranchProxy> LatProxy::branch() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -5820,6 +5838,11 @@ FortranTypeArray1D<SpinOrbitMap1Proxy> TaoSpinPolarizationProxy::q_ele() const {
   return FortranTypeArray1D<SpinOrbitMap1Proxy>(
       data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
+const void* TaoLatticeBranchProxy::tao_lat() const {
+  void* ptr;
+  tao_lattice_branch_struct_get_tao_lat(fortran_ptr_, &ptr);
+  return ptr;
+}
 FortranTypeArray1D<TaoLatSigmaProxy> TaoLatticeBranchProxy::lat_sigma() const {
   void* data_ptr;
   int size_out, lower_bound, upper_bound;
@@ -6168,6 +6191,29 @@ FortranArray1D<char> TaoD1DataProxy::get_name_chars() const {
 
   return FortranArray1D<char>(
       data_ptr, size_out, lower_bound, upper_bound, true);
+}
+const void* TaoD1DataProxy::d2() const {
+  void* ptr;
+  tao_d1_data_struct_get_d2(fortran_ptr_, &ptr);
+  return ptr;
+}
+FortranTypeArray1D<TaoDataProxy> TaoD1DataProxy::d() const {
+  void* data_ptr;
+  int size_out, lower_bound, upper_bound;
+  bool is_allocated;
+  size_t element_size;
+
+  tao_d1_data_struct_get_d_info(
+      fortran_ptr_,
+      &data_ptr,
+      &size_out,
+      &lower_bound,
+      &upper_bound,
+      &is_allocated,
+      &element_size);
+
+  return FortranTypeArray1D<TaoDataProxy>(
+      data_ptr, size_out, lower_bound, upper_bound, is_allocated, element_size);
 }
 std::string TaoLatticeProxy::name() const {
   auto char_array = get_name_chars();

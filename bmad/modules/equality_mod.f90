@@ -3044,6 +3044,10 @@ if (associated(f1%ac_kick)) is_eq = (f1%ac_kick == f2%ac_kick)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%bookkeeping_state == f2%bookkeeping_state)
 !! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%branch) .eqv. associated(f2%branch))
+if (.not. is_eq) return
+if (associated(f1%branch)) is_eq = (f1%branch == f2%branch)
+!! f_side.equality_test[0D_PTR_type]
 is_eq = is_eq .and. (associated(f1%control) .eqv. associated(f2%control))
 if (.not. is_eq) return
 if (associated(f1%control)) is_eq = (f1%control == f2%control)
@@ -3052,9 +3056,9 @@ is_eq = is_eq .and. (associated(f1%rf) .eqv. associated(f2%rf))
 if (.not. is_eq) return
 if (associated(f1%rf)) is_eq = (f1%rf == f2%rf)
 !! f_side.equality_test[0D_PTR_type]
-  is_eq = is_eq .and. (associated(f1%lord) .eqv. associated(f2%lord))
-  if (.not. is_eq) return
-  if (associated(f1%lord)) is_eq = (f1%lord%ix_ele == f2%lord%ix_ele .and. f1%lord%ix_branch == f2%lord%ix_branch)
+is_eq = is_eq .and. (associated(f1%lord) .eqv. associated(f2%lord))
+if (.not. is_eq) return
+if (associated(f1%lord)) is_eq = (f1%lord == f2%lord)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%floor == f2%floor)
 !! f_side.equality_test[0D_PTR_type]
@@ -3337,6 +3341,10 @@ is_eq = is_eq .and. (f1%ix_fixer == f2%ix_fixer)
 is_eq = is_eq .and. (f1%n_ele_track == f2%n_ele_track)
 !! f_side.equality_test[0D_NOT_integer]
 is_eq = is_eq .and. (f1%n_ele_max == f2%n_ele_max)
+!! f_side.equality_test[0D_PTR_type]
+is_eq = is_eq .and. (associated(f1%lat) .eqv. associated(f2%lat))
+if (.not. is_eq) return
+if (associated(f1%lat)) is_eq = (f1%lat == f2%lat)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%a == f2%a)
 !! f_side.equality_test[0D_NOT_type]
@@ -3419,6 +3427,12 @@ if (associated(f1%param)) is_eq = (f1%param == f2%param)
 is_eq = is_eq .and. (f1%lord_state == f2%lord_state)
 !! f_side.equality_test[0D_NOT_type]
 is_eq = is_eq .and. (f1%ele_init == f2%ele_init)
+!! f_side.equality_test[1D_PTR_type]
+is_eq = is_eq .and. (associated(f1%ele) .eqv. associated(f2%ele))
+if (.not. is_eq) return
+if (associated(f1%ele)) is_eq = all(shape(f1%ele) == shape(f2%ele))
+if (.not. is_eq) return
+if (associated(f1%ele)) is_eq = all(f1%ele == f2%ele)
 !! f_side.equality_test[1D_ALLOC_type]
 is_eq = is_eq .and. (allocated(f1%branch) .eqv. allocated(f2%branch))
 if (.not. is_eq) return
