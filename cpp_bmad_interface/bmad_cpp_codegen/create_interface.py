@@ -20,7 +20,6 @@ import dataclasses
 import logging
 import pathlib
 import re
-import string
 import sys
 import textwrap
 from dataclasses import dataclass, field, fields
@@ -60,7 +59,7 @@ from .types import (
     FullType,
     PointerType,
 )
-from .util import is_number, wrap_line, write_if_differs
+from .util import write_if_differs
 
 logger = logging.getLogger(__name__)
 
@@ -105,21 +104,6 @@ class CSideTransform:
     to_c2_arg: str = ""
     # C2 function: how to set the value on the new instance
     to_c2_set: str = "  C.NAME = z_NAME;"
-
-    # C++ class class_initializer initializer list item
-    class_initializer: str = "{ VALUE }"
-    # C++ class class_initializer initializer value ("VALUE" gets replaced with this)
-    construct_value: str = "0"
-    # C++ class destructor code
-    destructor: str = ""
-
-    # How to compare instances of this type
-    equality_test: str = "  is_eq = is_eq && (x.NAME == y.NAME);\n"
-    # The pattern to be used in the test suite to fill this instance
-    test_pat: str = "  rhs = ARGIDX + offset; C.NAME = TEST_VALUE;\n"
-    # The pattern to be used in the test suite to fill this instance
-    # "TEST_VALUE" in "test_pat" gets replaced with this.
-    test_value: str = ""
 
     def replace_all(self, old: str, new: str) -> None:
         for fld in fields(self):
@@ -169,8 +153,6 @@ class FortranSideTransform:
     to_f2_post: list[str] = field(default_factory=list)
 
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
-    test_pat: str = "rhs = ARGIDX + offset; F%NAME = TEST_VALUE\n"
-    test_value: str = ""
 
     @property
     def to_c2_f2_sub_arg(self) -> str:
@@ -397,43 +379,6 @@ class Argument:
         self.c_side.replace_all("KIND", kind)
         self.c_side.replace_all("PROXYCLS", struct_to_proxy_class_name(kind))
 
-    def _handle_init_values(self) -> None:
-        """
-        Process initialization values for the argument.
-
-        Handles Fortran to C++ initialization value conversion.
-        """
-        # On Fortran side "complex abc(2) = 0" is allowed but on C++ side want "0.0" for init value.
-        # Therefore, ignore "0" as an init value.
-
-        if not self.init_value or self.init_value == "0" or self.init_value[0] == ">":
-            pass
-        elif "_rp" in self.init_value:
-            self.init_value = self.init_value.replace("_rp", "")
-        elif self.init_value == ".true.":
-            self.c_side.construct_value = "true"
-        elif self.init_value == ".false.":
-            self.c_side.construct_value = "false"
-        elif self.init_value.startswith("'"):
-            self.c_side.construct_value = self.init_value.replace("'", '"')
-        elif self.init_value == "pi":
-            self.c_side.construct_value = "Bmad::pi"
-        elif "$" in self.init_value:
-            self.c_side.construct_value = "Bmad::" + self.init_value[:-1].upper()
-        elif ("d" in self.init_value or "D" in self.init_value) and is_number(self.init_value):
-            self.c_side.construct_value = self.init_value.replace("d", "e").replace("D", "e")
-        else:
-            self.c_side.construct_value = self.init_value
-
-        # If there is an array of values, just use first one.
-        if len(self.c_side.construct_value) > 0 and self.c_side.construct_value[0] == "[":
-            self.c_side.construct_value = self.c_side.construct_value[1:].split(",")[0]
-
-        # Replace class_initializer value and CPP_KIND placeholders
-        self.c_side.class_initializer = self.c_side.class_initializer.replace(
-            "VALUE", self.c_side.construct_value
-        ).replace("CPP_KIND", self.c_side.c_class)
-
     def fix_struct_arg_placeholders(self, struct: CodegenStructure) -> None:
         """
         Substitute placeholder names in argument patterns with actual values.
@@ -447,7 +392,6 @@ class Argument:
             The structure definition containing the argument
         """
         print_debug("self: " + str(self))
-        self.c_side.test_pat = self.c_side.test_pat.replace("STR_LEN", self.kind)
         self.f_side.to_c_var = [var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var]
 
         self._handle_lbound(struct)
@@ -475,7 +419,6 @@ class Argument:
 
         self.f_side.replace_all("NAME", self.f_name)
         self.c_side.replace_all("NAME", self.c_name)
-        self._handle_init_values()
 
     def original_repr(self) -> str:
         return f'["{self.type}({self.kind})", "{self.pointer_type}", "{self.f_name}", {self.array}, {self.lbound} {self.ubound} "{self.init_value}"]'
@@ -801,201 +744,6 @@ def filter_structs(
     ]
 
 
-def create_fortran_conversion_interface(f_face, header: str, structs: list[CodegenStructure]):
-    """Create the Fortran side of the interface."""
-
-    ##############
-    # ZZZ_to_f interface
-
-    interfaces = [
-        f"""
-!--------------------------------------------------------------------------
-
-interface 
-  subroutine {struct.short_name}_to_f (C, Fp) bind(c)
-    import c_ptr
-    type(c_ptr), value :: C, Fp
-  end subroutine
-end interface
-"""
-        for struct in structs
-    ]
-
-    ##############
-    # ZZZ_to_c definitions
-    subroutines: list[str] = []
-
-    for struct in structs:
-        s_name = struct.short_name
-
-        to_c_subroutine = f"""
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine {s_name}_to_c (Fp, C) bind(c)
-!
-! Routine to convert a Bmad {s_name}_struct to a C++ CPP_{s_name} structure
-!
-! Input:
-!   Fp -- type(c_ptr), value :: Input Bmad {s_name}_struct structure.
-!
-! Output:
-!   C -- type(c_ptr), value :: Output C++ CPP_{s_name} struct.
-!-
-
-subroutine {s_name}_to_c (Fp, C) bind(c)
-
-implicit none
-
-interface
-"""
-
-        to_c2_call_def = {}
-
-        for arg in struct.args_to_convert:
-            if arg.f_side.to_c2_type not in to_c2_call_def:
-                to_c2_call_def[arg.f_side.to_c2_type] = []
-            to_c2_call_def[arg.f_side.to_c2_type].append(arg.f_side.to_c2_name)
-
-        line = f"subroutine {s_name}_to_c2 (C"
-        for arg in struct.args_to_convert:
-            line += f", {arg.f_side.to_c2_f2_sub_arg}"
-        line += ") bind(c)\n"
-
-        to_c_subroutine += "  !! f_side.to_c2_f2_sub_arg\n"
-        to_c_subroutine += wrap_line(line, "  ", " &")
-        to_c_subroutine += "    import c_bool, c_double, c_ptr, c_char, c_int, c_long, c_double_complex\n"
-        to_c_subroutine += "    !! f_side.to_c2_type :: f_side.to_c2_name\n"
-        to_c_subroutine += "    type(c_ptr), value :: C\n"
-        for arg_type, args in list(to_c2_call_def.items()):
-            if not arg_type:
-                raise RuntimeError("No argument type?")
-            for i in range(1 + (len(args) - 1) // 7):
-                to_c_subroutine += f"    {arg_type} :: {', '.join(args[i * 7 : i * 7 + 7])}\n"
-
-        to_c_subroutine += f"""\
-end subroutine
-end interface
-
-type(c_ptr), value :: Fp
-type(c_ptr), value :: C
-type({s_name}_struct), pointer :: F
-integer jd, jd1, jd2, jd3, lb1, lb2, lb3
-"""
-
-        to_c_subroutine += "!! f_side.to_c_var\n"
-        for arg in struct.args_to_convert:
-            for var in arg.f_side.to_c_var:
-                to_c_subroutine += f"{var}\n"
-
-        to_c_subroutine += """
-!
-
-call c_f_pointer (Fp, F)
-
-"""
-
-        for arg in struct.args_to_convert:
-            if arg.f_side.to_c_trans:
-                to_c_subroutine += f"!! f_side.to_c_trans[{arg.full_type}]\n"
-                to_c_subroutine += arg.f_side.to_c_trans + "\n"
-
-        to_c_subroutine += "\n" + "!! f_side.to_c2_call\n"
-
-        line = f"call {s_name}_to_c2 (C"
-        for arg in struct.args_to_convert:
-            line += f", {arg.f_side.to_c2_call.strip()}"
-        line += ")"
-        to_c_subroutine += wrap_line(line, "", " &")
-
-        to_c_subroutine += f"""
-end subroutine {s_name}_to_c
-"""
-
-        to_f2_subroutine = f"""
-!--------------------------------------------------------------------------
-!--------------------------------------------------------------------------
-!+
-! Subroutine {s_name}_to_f2 (Fp, ...etc...) bind(c)
-!
-! Routine used in converting a C++ CPP_{s_name} structure to a Bmad {s_name}_struct structure.
-! This routine is called by {s_name}_to_c and is not meant to be called directly.
-!
-! Input:
-!   ...etc... -- Components of the structure. See the {s_name}_to_f2 code for more details.
-!
-! Output:
-!   Fp -- type(c_ptr), value :: Bmad {s_name}_struct structure.
-!-
-
-"""
-
-        to_f2_subroutine += "!! f_side.to_c2_f2_sub_arg\n"
-        line = f"subroutine {struct.short_name}_to_f2 (Fp"
-        for arg in struct.args_to_convert:
-            line += f", {arg.f_side.to_c2_f2_sub_arg}"
-        line += ") bind(c)"
-        to_f2_subroutine += wrap_line(line, "", " &")
-
-        to_f2_subroutine += f"""
-
-implicit none
-
-type(c_ptr), value :: Fp
-type({struct.short_name}_struct), pointer :: F
-integer jd, jd1, jd2, jd3, lb1, lb2, lb3
-"""
-
-        # Collect arguments by type for cleaner output
-        f2_arg_list = {}
-        for arg in struct.args_to_convert:
-            if arg.f_side.to_f2_type not in f2_arg_list:
-                f2_arg_list[arg.f_side.to_f2_type] = []
-            f2_arg_list[arg.f_side.to_f2_type].append(arg.f_side.to_f2_name)
-
-            # Process additional variables
-            for var in arg.f_side.to_f2_var:
-                var_type, var_name = [x.strip() for x in var.split("::", 1)]
-                if var_type not in f2_arg_list:
-                    f2_arg_list[var_type] = []
-                f2_arg_list[var_type].append(var_name)
-
-        to_f2_subroutine += "!! f_side.to_f2_var && f_side.to_f2_type :: f_side.to_f2_name\n"
-        for arg_type, arg_list in f2_arg_list.items():
-            # Write at most 7 variables per line
-            for i in range(0, len(arg_list), 7):
-                to_f2_subroutine += f"{arg_type} :: {', '.join(arg_list[i : i + 7])}\n"
-
-        to_f2_subroutine += """
-call c_f_pointer (Fp, F)
-
-"""
-
-        for arg in struct.args_to_convert:
-            if not arg.f_side.to_f2_trans:
-                continue
-            to_f2_subroutine += f"!! f_side.to_f2_trans[{arg.full_type}]\n"
-            to_f2_subroutine += f"{arg.f_side.to_f2_trans}\n"
-
-        if struct.to_f2_post:
-            to_f2_subroutine += f"  !! {struct.f_name}.to_f2_post\n"
-            to_f2_subroutine += struct.to_f2_post + "\n"
-
-        to_f2_subroutine += f"""
-end subroutine {s_name}_to_f2
-"""
-
-        subroutines.append(to_c_subroutine)
-        subroutines.append(to_f2_subroutine)
-
-    tpl = string.Template(header.replace("! ${", "${"))
-    contents = tpl.substitute(interfaces="\n".join(interfaces), contains="\n".join(subroutines))
-
-    f_face.write(contents)
-    return contents
-
-
 def create_fortran_equality_check_code(f_equ, structs: list[CodegenStructure], module_name: str):
     f_equ.write(
         textwrap.dedent(f"""\
@@ -1071,630 +819,89 @@ contains
     f_equ.write("end module\n")
 
 
-def write_tests_main(f_test, structs: list[CodegenStructure]):
-    f_test.write(
-        textwrap.dedent(
-            """\
-            program cpp_bmad_interface_test
-
-            use bmad_cpp_test_mod
-
-            logical ok, all_ok
-
-            !
-
-            all_ok = .true.
-            """
-        )
-    )
-
-    for struct in structs:
-        f_test.write("call test1_f_" + struct.short_name + "(ok); if (.not. ok) all_ok = .false.\n")
-
-    f_test.write(
-        textwrap.dedent(
-            """\
-            print *
-            if (all_ok) then
-              print *, 'Bottom Line: Everything OK!'
-              call exit(0)
-            else
-              print *, 'BOTTOM LINE: PROBLEMS FOUND!'
-              call exit(1)
-            endif
-
-            end program
-            """
-        )
-    )
-
-
-def write_tests_mod(f_test, structs: list[CodegenStructure]):
-    f_test.write(
-        textwrap.dedent(
-            """\
-            module bmad_cpp_test_mod
-
-            use json_module, only: json_core, json_value
-
-            use bmad_cpp_convert_mod
-            use equality_mod
-            use tao_equality_mod
-            """
-        )
-    )
-
-    f_test.write("\n".join(params.test_use_statements) + "\n\n")
-
-    f_test.write("contains\n\n")
-
-    for struct in structs:
-        code = textwrap.dedent(
-            f"""\
-                !---------------------------------------------------------------------------------
-                !---------------------------------------------------------------------------------
-                !---------------------------------------------------------------------------------
-
-                subroutine test1_f_{struct.short_name} (ok)
-
-                implicit none
-
-                type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
-
-                type(json_core) :: json
-                type(json_value), pointer :: json_root
-
-                logical(c_bool) c_ok
-                logical ok
-
-                interface
-                subroutine test_c_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
-                    import c_ptr, c_bool
-                    type(c_ptr), value :: c_{struct.short_name}
-                    logical(c_bool) c_ok
-                end subroutine
-                end interface
-
-                !
-
-                ok = .true.
-                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 1)
-
-                call test_c_{struct.short_name}(c_loc(f2_{struct.short_name}), c_ok)
-                if (.not. f_logic(c_ok)) ok = .false.
-
-                call set_{struct.short_name}_test_pattern (f_{struct.short_name}, 4)
-                if (f_{struct.short_name} == f2_{struct.short_name}) then
-                  print *, '[4] {struct.short_name}: C side convert C->F: Good'
-                else
-                  print *, '[4] {struct.short_name}: C SIDE CONVERT C->F: FAILED!'
-                  ok = .false.
-
-                  nullify(json_root)
-                  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
-                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_expected_f.json')
-                  call json%destroy(json_root)
-
-                  nullify(json_root)
-                  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
-                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_4_actual_f2cpp.json')
-                  call json%destroy(json_root)
-                  print *, '    Wrote JSON files for comparison (test_f_{struct.short_name}_pattern_4_*.json)'
-    
-                endif
-
-                ! clean up test pattern data - < 3 deallocates arrays and such
-                call set_{struct.short_name}_test_pattern (f_{struct.short_name}, -1)
-                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, -1)
-
-                end subroutine test1_f_{struct.short_name}
-
-                !---------------------------------------------------------------------------------
-                !---------------------------------------------------------------------------------
-
-                subroutine test2_f_{struct.short_name} (c_{struct.short_name}, c_ok) bind(c)
-
-                implicit none
-
-                type(json_core) :: json
-                type(json_value), pointer :: json_root
-
-                type(c_ptr), value :: c_{struct.short_name}
-                type({struct.short_name}_struct), target :: f_{struct.short_name}, f2_{struct.short_name}
-                logical(c_bool) c_ok
-
-                !
-
-                c_ok = c_logic(.true.)
-                call {struct.short_name}_to_f (c_{struct.short_name}, c_loc(f_{struct.short_name}))
-
-                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 2)
-                if (f_{struct.short_name} == f2_{struct.short_name}) then
-                  print *, '[2] {struct.short_name}: F side convert C->F: Good'
-                else
-                  print *, '[2] {struct.short_name}: F SIDE CONVERT C->F: FAILED!'
-                  c_ok = c_logic(.false.)
-
-                  nullify(json_root)
-                  call {struct.f_name}_to_json(f_{struct.short_name}, json_root)
-                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_actual_fcpp.json')
-                  call json%destroy(json_root)
-
-                  nullify(json_root)
-                  call {struct.f_name}_to_json(f2_{struct.short_name}, json_root)
-                  call json%print(json_root, 'test_f_{struct.short_name}_pattern_2_expected_f2.json')
-                  call json%destroy(json_root)
-                  print *, '    Wrote JSON files for comparison (test_f_{struct.short_name}_pattern_2_*.json)'
-
-                endif
-
-                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, 3)
-                call {struct.short_name}_to_c (c_loc(f2_{struct.short_name}), c_{struct.short_name})
-
-                ! clean up test pattern data - < 3 deallocates arrays and such
-                call set_{struct.short_name}_test_pattern (f_{struct.short_name}, -1)
-                call set_{struct.short_name}_test_pattern (f2_{struct.short_name}, -1)
-
-                end subroutine test2_f_{struct.short_name}
-
-                !---------------------------------------------------------------------------------
-                !---------------------------------------------------------------------------------
-
-                subroutine set_{struct.short_name}_test_pattern (F, ix_patt)
-
-                implicit none
-
-                type({struct.short_name}_struct) F
-                integer ix_patt, offset, jd, jd1, jd2, jd3, lb1, lb2, lb3, rhs
-
-                !
-
-                offset = 100 * ix_patt
-
-                """
-        )
-        if struct.recursive:
-            code = code.replace("subroutine set_", "recursive subroutine set_")
-
-        f_test.write(code)
-
-        for i, arg in enumerate(struct.args_to_convert, 1):
-            if not arg.is_component:
-                continue
-            f_test.write(f"!! f_side.test_pat[{arg.full_type}] {arg.c_side.c_class}\n")
-
-            print(arg.f_side.test_pat.replace("ARGIDX", str(i)), file=f_test)
-
-        f_test.write(
-            f"""
-end subroutine set_{struct.short_name}_test_pattern
-"""
-        )
-
-    f_test.write("""
-end module
-""")
-
-
-def get_to_json_source(struct: CodegenStructure) -> list[str]:
-    args = [arg for arg in struct.args_to_convert if arg.is_component and arg.member is not None]
-
-    name_to_value = {arg.c_name: f"obj.{arg.c_name}" for arg in args}
-    # if struct.cpp_class == "CPP_ele":
-    #     name_to_value.pop("lord")
-    #     fixup_lines = [
-    #         "if (obj.lord.has_value()) {",
-    #         '    j["lord"] = json{*obj.lord.value()};',
-    #         "}",
-    #     ]
-    # else:
-    fixup_lines = []
-
-    members = ", ".join("{" + f'"{name}", {value}' + "}" for name, value in name_to_value.items())
-
-    return [
-        f"void to_json(json &j, const {struct.cpp_class} &obj) {{",
-        f"j = json {{ {members} }};",
-        *fixup_lines,
-        "}",
-        f"""
-        ostream &operator<<(ostream &os, const {struct.cpp_class} &obj) {{
-          json j;
-          to_json(j, obj);
-          std::string str = nlohmann::to_string(j);
-          os << str;
-          return os;
-        }}
-        """,
-    ]
-
-
-def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
-    """Write C++ JSON serialization code."""
-    header_template = string.Template(
-        textwrap.dedent(
-            """\
-            //+
-            // C++ JSON helpers for Bmad / C++ structure interface.
-            //
-            // This file is generated as part of the Bmad/C++ interface code generation.
-            // The code generation files can be found in cpp_bmad_interface.
-            //
-            // DO NOT EDIT THIS FILE DIRECTLY! 
-            //-
-            
-            #include <iostream>
-            #include <memory>
-            #include <optional>
-            
-            #include "converter_templates.h"
-            #include "json.hpp"
-            ${include_headers}
-            
-            using namespace Bmad;
-            using std::ostream;
-            using std::size_t;
-            using json = nlohmann::json;
-           
-            namespace std {
-            template<typename T>
-            void to_json(json& j, const complex<T>& d) {
-                j = {d.real(), d.imag()};
-            }
-            void from_json(const json& j, Complex &d) {
-                d.real(j.at(0).get<double>());
-                d.imag(j.at(1).get<double>());
-            }
-            } // namespace: std
-
-            namespace Bmad {
-            //--------------------------------------------------------------------
-            ${json_helpers}
-            //--------------------------------------------------------------------
-            } // namespace Bmad
-            """
-        )
-    )
-
-    include_headers = "\n".join(params.include_header_files)
-    json_helpers = "\n".join("\n".join(get_to_json_source(struct)) for struct in structs)
-    file.write(header_template.substitute(include_headers=include_headers, json_helpers=json_helpers))
-
-
-def get_class_lines(struct: CodegenStructure) -> list[str]:
-    member_vars = []
-    for arg in struct.arg:  # not args_to_convert
-        if not arg.is_component:
-            continue
-        class_initializer = (
-            "{" + arg.c_side.class_initializer.strip() + "}" if arg.c_side.class_initializer.strip() else ""
-        )
-        member_vars.append(f"  {arg.c_side.c_class} {arg.c_name}{class_initializer.strip()};")
-
-    constructor_body = struct.c_constructor_body
-    destructor_body = ""
-    if DEBUG_INSTANTIATION:
-        constructor_body = f'{constructor_body}\nstd::cout << "{struct.cpp_class}(): " << this << std::endl;'
-        destructor_body = f'{destructor_body}\nstd::cout << "~{struct.cpp_class}(): " << this << std::endl;'
-
-    template = string.Template(
-        textwrap.dedent(r"""\
-        //--------------------------------------------------------------------
-        // ${cpp_class}
-        
-        class Opaque_${short_name}_class {};  // Opaque class for pointers to corresponding fortran structs.
-        
-        class ${cpp_class}: public std::enable_shared_from_this<${cpp_class}> {
-        public:
-        ${member_vars}
-        ${c_extra_methods}
-          ${cpp_class}(${c_constructor_arg_list}) {
-          ${constructor_body}
-          }
-
-        virtual ~${cpp_class}() {
-            ${destructor_body}
-        }
-        std::shared_ptr<${cpp_class}> getptr() { return shared_from_this(); }
-        friend ostream& operator<<(ostream &os, const ${cpp_class} &obj);
-        };
-
-        extern "C" void ${short_name}_to_c (const Opaque_${short_name}_class*, ${cpp_class}&);
-        extern "C" void ${short_name}_to_f (const ${cpp_class}&, Opaque_${short_name}_class*);
-        
-        bool operator== (const ${cpp_class}&, const ${cpp_class}&);
-        void to_json(json &, const ${cpp_class} &);
-        """)
-    )
-    return template.substitute(
-        cpp_class=struct.cpp_class,
-        short_name=struct.short_name,
-        member_vars="\n".join(member_vars),
-        c_extra_methods=struct.c_extra_methods,
-        c_constructor_arg_list=struct.c_constructor_arg_list,
-        constructor_body=constructor_body,
-        destructor_body=destructor_body,
-    ).splitlines()
-
-
-def write_cpp_classes(file, structs: list[CodegenStructure]) -> None:
-    """Write C++ classes definitions for Bmad / C++ structure interface."""
-    header_template = string.Template(
-        textwrap.dedent(
-            """\
-            //+
-            // C++ classes definitions for Bmad / C++ structure interface.
-            //
-            // This file is generated as part of the Bmad/C++ interface code generation.
-            // The code generation files can be found in cpp_bmad_interface.
-            //
-            // DO NOT EDIT THIS FILE DIRECTLY! 
-            //-
-            
-            #ifndef CPP_BMAD_CLASSES
-            #define CPP_BMAD_CLASSES
-            
-            #include <iostream>
-            #include <memory>
-            #include <optional>
-            
-            #include "converter_templates.h"
-            #include "json.hpp"
-            ${include_headers}
-            
-            using namespace Bmad;
-            using std::shared_ptr, std::make_shared;
-            using std::ostream;
-            using std::size_t;
-            using json = nlohmann::json;
-
-            namespace std {
-            template<typename T>
-            void to_json(json&, const complex<T>&);
-            template<typename T>
-            void from_json(const json&, complex<T> &);
-            } // namespace: std
-
-            namespace Bmad {
-
-            ${class_forward_decls}
-
-            //--------------------------------------------------------------------
-            ${class_definitions}
-            //--------------------------------------------------------------------
-
-            }
-
-            #endif
-            """
-        )
-    )
-
-    include_headers = "\n".join(params.include_header_files)
-    class_definitions = "\n".join("\n".join(get_class_lines(struct)) for struct in structs)
-    class_forward_decls = "\n".join(f"class {struct.cpp_class};" for struct in structs)
-    file.write(
-        header_template.substitute(
-            include_headers=include_headers,
-            class_definitions=class_definitions,
-            class_forward_decls=class_forward_decls,
-        )
-    )
-
-
-def write_cpp_convert(file, header: str, structs: list[CodegenStructure]):
-    """Write C++ classes definitions for Bmad / C++ structure interface."""
-    file.write(header)
-
-    for struct in structs:
-        # ZZZ_to_f2
-        file.write(f"""
-//--------------------------------------------------------------------
-//--------------------------------------------------------------------
-// {struct.cpp_class}
-
-extern "C" void {struct.short_name}_to_c (const Opaque_{struct.short_name}_class*, {struct.cpp_class}&);
-
-""")
-
-        file.write("// c_side.to_f2_arg\n")
-
-        line = f'extern "C" void {struct.short_name}_to_f2 (Opaque_{struct.short_name}_class*'
-        for arg in struct.args_to_convert:
-            line += f", {arg.c_side.to_f2_arg.strip()}"
-        line += ");"
-
-        file.write(wrap_line(line, "", ""))
-
-        # ZZZ_to_f
-        file.write("\n")
-        file.write(
-            f'extern "C" void {struct.short_name}_to_f (const {struct.cpp_class}& C, Opaque_{struct.short_name}_class* F) {{\n'
-        )
-
-        for arg in struct.args_to_convert:
-            if arg.c_side.to_f_setup == "":
-                continue
-            file.write(f"  // c_side.to_f_setup[{arg.full_type}] {arg.c_side.c_class}\n")
-            print(arg.c_side.to_f_setup, file=file)
-
-        file.write("\n")
-        file.write("  // c_side.to_f2_call\n")
-
-        if DEBUG:
-            for arg in struct.args_to_convert:
-                file.write(f"  // {arg.c_side.to_f2_call} == {arg.c_name}: {arg.full_type}\n")
-
-        line = f"{struct.short_name}_to_f2 (F"
-        for arg in struct.args_to_convert:
-            line += f", {arg.c_side.to_f2_call.strip()}"
-        line += ");"
-        file.write(wrap_line(line, "  ", ""))
-
-        file.write("\n")
-
-        for arg in struct.args_to_convert:
-            if arg.c_side.to_f_cleanup == "":
-                continue
-            file.write(f"  // c_side.to_f_cleanup[{arg.full_type}]\n")
-            print(arg.c_side.to_f_cleanup, file=file)
-
-        file.write("}\n")
-
-        # ZZZ_to_c2
-        file.write("\n")
-        file.write("// c_side.to_c2_arg\n")
-
-        line = f'extern "C" void {struct.short_name}_to_c2 ({struct.cpp_class}& C'
-        for arg in struct.args_to_convert:
-            line += f", {arg.c_side.to_c2_arg.strip()}"
-        line += ") {"
-        file.write(wrap_line(line, "", ""))
-
-        file.write("\n")
-        for arg in struct.args_to_convert:
-            if not arg.is_component:
-                continue
-            file.write(f"  // c_side.to_c2_set[{arg.full_type}] {arg.c_side.c_class}\n")
-            file.write(f"{arg.c_side.to_c2_set}\n")
-
-        if struct.to_c2_post:
-            print("  // c_side.to_c2_post", file=file)
-            print(struct.to_c2_post, file=file)
-
-        file.write("}\n")
-
-
-def write_cpp_equality(file, header: str, structs: list[CodegenStructure]):
-    file.write(header)
-
-    print("namespace Bmad {", file=file)
-    for struct in structs:
-        file.write("\n//--------------------------------------------------------------\n\n")
-        file.write(f"bool operator== (const {struct.cpp_class}& x, const {struct.cpp_class}& y) {{\n")
-        file.write("  bool is_eq = true;\n")
-
-        for arg in struct.args_to_convert:
-            if not arg.is_component:
-                continue
-            print(arg.c_side.equality_test, file=file)
-            if DEBUG_EQUALITY:
-                file.write(
-                    f'  if (!is_eq) {{ std::cout << "not equal: {struct.cpp_class}.{arg.c_name}" << "\\n"; }}\n'
-                )
-
-        file.write("  return is_eq;\n")
-        file.write("};\n\n")
-    print("} // namespace Bmad", file=file)
-
-
-def write_cpp_test(file, structs: list[CodegenStructure]):
-    file.write("""
-//+
-// C++ classes definitions for Bmad / C++ structure interface.
-//
-// This file is generated as part of the Bmad/C++ interface code generation.
-// The code generation files can be found in cpp_bmad_interface.
-//
-// DO NOT EDIT THIS FILE DIRECTLY! 
-//-
-
-#include <stdio.h>
-#include <fstream>
-#include <iostream>
-
-using namespace std;
-using namespace Bmad;
-""")
-
-    for struct in params.structs_defined_externally:
-        head = struct.replace("_struct", "")
-        file.write(f"void set_CPP_{head}_test_pattern (CPP_{head}& C, int ix_patt);\n")
-
-    for struct in structs:
-        file.write(f"""
-//--------------------------------------------------------------
-//--------------------------------------------------------------
-
-extern "C" void test2_f_{struct.short_name} ({struct.cpp_class}&, bool&);
-
-void set_{struct.cpp_class}_test_pattern ({struct.cpp_class}& C, int ix_patt) {{
-
-  auto rhs = 0;
-  auto offset = 100 * ix_patt;
-
-""")
-
-        for i, arg in enumerate(struct.args_to_convert, 1):
-            if not arg.is_component:
-                continue
-            file.write(f"  // c_side.test_pat[{arg.full_type}]\n")
-            file.write(arg.c_side.test_pat.replace("ARGIDX", str(i)) + "\n")
-
-        file.write(f"""
-}}
-
-//--------------------------------------------------------------
-
-extern "C" void test_c_{struct.short_name} (Opaque_{struct.short_name}_class* F, bool& c_ok) {{
-
-  {struct.cpp_class} C, C2;
-
-  c_ok = true;
-
-  {struct.short_name}_to_c (F, C);
-  set_{struct.cpp_class}_test_pattern (C2, 1);
-
-  cout << "" << endl;
-  if (C == C2) {{
-    cout << " [1] {struct.short_name}: C side convert F->C: Good" << endl;
-  }} else {{
-    cout << " [1] {struct.short_name}: C SIDE CONVERT F->C: FAILED!" << endl;
-
-    {{
-        std::ofstream c_file("{struct.short_name}.pat1.c.actual.json");
-        c_file << C;
-    }}
-    
-    {{
-        std::ofstream c2_file("{struct.short_name}.pat1.c2.expected.json");
-        c2_file << C2;
-    }}
-    
-    cout << "     C written to {struct.short_name}.pat1.c.actual.json" << endl;
-    cout << "     C2 written to {struct.short_name}.pat1.c2.expected.json" << endl;
-    c_ok = false;
-  }}
-
-  set_{struct.cpp_class}_test_pattern (C2, 2);
-  bool c_ok2;
-  test2_f_{struct.short_name} (C2, c_ok2);
-  if (!c_ok2) c_ok = false;
-
-  set_{struct.cpp_class}_test_pattern (C, 3);
-  if (C == C2) {{
-    cout << " [3] {struct.short_name}: F side convert F->C: Good" << endl;
-  }} else {{
-    cout << " [3] {struct.short_name}: F SIDE CONVERT F->C: FAILED!" << endl;
-    {{
-        std::ofstream c_file("{struct.short_name}.pat3.c.expected.json");
-        c_file << C;
-    }}
-    
-    {{
-        std::ofstream c2_file("{struct.short_name}.pat3.c2.actual.json");
-        c2_file << C2;
-    }}
-   
-    cout << "     C written to {struct.short_name}.pat3.c.expected.json" << endl;
-    cout << "     C2 written to {struct.short_name}.pat3.c2.actual.json" << endl;
-    c_ok = false;
-  }}
-
-  set_{struct.cpp_class}_test_pattern (C2, 4);
-  {struct.short_name}_to_f (C2, F);
-}}
-""")
+# def get_to_json_source(struct: CodegenStructure) -> list[str]:
+#     args = [arg for arg in struct.args_to_convert if arg.is_component and arg.member is not None]
+#
+#     name_to_value = {arg.c_name: f"obj.{arg.c_name}" for arg in args}
+#     # if struct.cpp_class == "CPP_ele":
+#     #     name_to_value.pop("lord")
+#     #     fixup_lines = [
+#     #         "if (obj.lord.has_value()) {",
+#     #         '    j["lord"] = json{*obj.lord.value()};',
+#     #         "}",
+#     #     ]
+#     # else:
+#     fixup_lines = []
+#
+#     members = ", ".join("{" + f'"{name}", {value}' + "}" for name, value in name_to_value.items())
+#
+#     return [
+#         f"void to_json(json &j, const {struct.cpp_class} &obj) {{",
+#         f"j = json {{ {members} }};",
+#         *fixup_lines,
+#         "}",
+#         f"""
+#         ostream &operator<<(ostream &os, const {struct.cpp_class} &obj) {{
+#           json j;
+#           to_json(j, obj);
+#           std::string str = nlohmann::to_string(j);
+#           os << str;
+#           return os;
+#         }}
+#         """,
+#     ]
+#
+#
+# def write_cpp_json_source(file, structs: list[CodegenStructure]) -> None:
+#     """Write C++ JSON serialization code."""
+#     header_template = string.Template(
+#         textwrap.dedent(
+#             """\
+#             //+
+#             // C++ JSON helpers for Bmad / C++ structure interface.
+#             //
+#             // This file is generated as part of the Bmad/C++ interface code generation.
+#             // The code generation files can be found in cpp_bmad_interface.
+#             //
+#             // DO NOT EDIT THIS FILE DIRECTLY!
+#             //-
+#
+#             #include <iostream>
+#             #include <memory>
+#             #include <optional>
+#
+#             #include "converter_templates.h"
+#             #include "json.hpp"
+#             ${include_headers}
+#
+#             using namespace Bmad;
+#             using std::ostream;
+#             using std::size_t;
+#             using json = nlohmann::json;
+#
+#             namespace std {
+#             template<typename T>
+#             void to_json(json& j, const complex<T>& d) {
+#                 j = {d.real(), d.imag()};
+#             }
+#             void from_json(const json& j, Complex &d) {
+#                 d.real(j.at(0).get<double>());
+#                 d.imag(j.at(1).get<double>());
+#             }
+#             } // namespace: std
+#
+#             namespace Bmad {
+#             //--------------------------------------------------------------------
+#             ${json_helpers}
+#             //--------------------------------------------------------------------
+#             } // namespace Bmad
+#             """
+#         )
+#     )
+#
+#     include_headers = "\n".join(params.include_header_files)
+#     json_helpers = "\n".join("\n".join(get_to_json_source(struct)) for struct in structs)
+#     file.write(header_template.substitute(include_headers=include_headers, json_helpers=json_helpers))
 
 
 def get_parsed_files() -> list[CodegenStructure]:
@@ -1755,13 +962,6 @@ def write_output(structs: list[CodegenStructure]) -> None:
     if DEBUG:
         write_parsed_structures(structs, "f_structs.parsed")
 
-    # convert_fortran_header = (CODEGEN_ROOT / "convert_header.f90").read_text()
-    # write_if_differs(
-    #     create_fortran_conversion_interface,
-    #     CPP_INTERFACE_ROOT / "code" / "bmad_cpp_convert_mod.f90",
-    #     convert_fortran_header,
-    #     structs,
-    # )
     bmad_structs = [struct for struct in structs if struct.parsed.filename.parts[1].lower() not in {"tao"}]
     tao_structs = [struct for struct in structs if struct.parsed.filename.parts[1].lower() == "tao"]
 
@@ -1843,13 +1043,11 @@ def load_transforms():
             transform.replace_all("associated_or_allocated(", "allocated(")
         else:
             transform.replace_all("associated_or_allocated(", "associated(")
-        transform.replace_all("TEST_VALUE", transform.test_value)
 
     for type_, transform in c_transforms.items():
         transform.c_class = transform.c_class.strip()
         transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
         transform.to_f2_call = transform.to_f2_call.rstrip(", ")
-        transform.replace_all("TEST_VALUE", transform.test_value.rstrip(" ;"))
         transform.replace_all("CTYPE", get_c_type(type_.type))
 
 
