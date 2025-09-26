@@ -18,6 +18,27 @@ class FortranArray1D {
   int upper_bound_;
   bool valid_;
 
+  void check_fortran_bounds(int i) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < lower_bound_ || i > upper_bound_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [" +
+          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
+          "]");
+    }
+  }
+
+  void check_c_bounds(int i) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < 0 || i >= size_) {
+      throw std::out_of_range(
+          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
+          std::to_string(size_ - 1) + "]");
+    }
+  }
+
  public:
   // Constructor
   FortranArray1D(T* data, int size, int lower, int upper, bool valid)
@@ -37,49 +58,23 @@ class FortranArray1D {
 
   // Fortran-style indexing (using bounds)
   T& operator()(int i) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < lower_bound_ || i > upper_bound_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
-          "]");
-    }
+    check_fortran_bounds(i);
     return data_[i - lower_bound_];
   }
 
   const T& operator()(int i) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < lower_bound_ || i > upper_bound_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(lower_bound_) + "," + std::to_string(upper_bound_) +
-          "]");
-    }
+    check_fortran_bounds(i);
     return data_[i - lower_bound_];
   }
 
   // C-style indexing (0-based)
   T& operator[](int i) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= size_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
-          std::to_string(size_ - 1) + "]");
-    }
+    check_c_bounds(i);
     return data_[i];
   }
 
   const T& operator[](int i) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= size_) {
-      throw std::out_of_range(
-          "Array index out of bounds: " + std::to_string(i) + " not in [0," +
-          std::to_string(size_ - 1) + "]");
-    }
+    check_c_bounds(i);
     return data_[i];
   }
 
@@ -164,6 +159,38 @@ class FortranArray2D {
     return (i - dim1_lower_) * stride1_ + (j - dim2_lower_) * stride2_;
   }
 
+  void check_fortran_bounds(int i, int j) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < dim1_lower_ || i > dim1_upper_) {
+      throw std::out_of_range(
+          "Array dim1 index out of bounds: " + std::to_string(i) + " not in [" +
+          std::to_string(dim1_lower_) + "," + std::to_string(dim1_upper_) +
+          "]");
+    }
+    if (j < dim2_lower_ || j > dim2_upper_) {
+      throw std::out_of_range(
+          "Array dim2 index out of bounds: " + std::to_string(j) + " not in [" +
+          std::to_string(dim2_lower_) + "," + std::to_string(dim2_upper_) +
+          "]");
+    }
+  }
+
+  void check_c_bounds(int i, int j) const {
+    if (!valid_)
+      throw std::runtime_error("Array not allocated");
+    if (i < 0 || i >= dim1_size_) {
+      throw std::out_of_range(
+          "Array dim1 index out of bounds: " + std::to_string(i) +
+          " not in [0," + std::to_string(dim1_size_ - 1) + "]");
+    }
+    if (j < 0 || j >= dim2_size_) {
+      throw std::out_of_range(
+          "Array dim2 index out of bounds: " + std::to_string(j) +
+          " not in [0," + std::to_string(dim2_size_ - 1) + "]");
+    }
+  }
+
  public:
   // Constructor
   FortranArray2D(
@@ -203,71 +230,23 @@ class FortranArray2D {
 
   // Fortran-style indexing (using bounds)
   T& operator()(int i, int j) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < dim1_lower_ || i > dim1_upper_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(dim1_lower_) + "," + std::to_string(dim1_upper_) +
-          "]");
-    }
-    if (j < dim2_lower_ || j > dim2_upper_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) + " not in [" +
-          std::to_string(dim2_lower_) + "," + std::to_string(dim2_upper_) +
-          "]");
-    }
+    check_fortran_bounds(i, j);
     return data_[linear_index(i, j)];
   }
 
   const T& operator()(int i, int j) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < dim1_lower_ || i > dim1_upper_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) + " not in [" +
-          std::to_string(dim1_lower_) + "," + std::to_string(dim1_upper_) +
-          "]");
-    }
-    if (j < dim2_lower_ || j > dim2_upper_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) + " not in [" +
-          std::to_string(dim2_lower_) + "," + std::to_string(dim2_upper_) +
-          "]");
-    }
+    check_fortran_bounds(i, j);
     return data_[linear_index(i, j)];
   }
 
   // C-style indexing (0-based) - treats as row-major
   T& at(int i, int j) {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= dim1_size_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) +
-          " not in [0," + std::to_string(dim1_size_ - 1) + "]");
-    }
-    if (j < 0 || j >= dim2_size_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) +
-          " not in [0," + std::to_string(dim2_size_ - 1) + "]");
-    }
+    check_c_bounds(i, j);
     return data_[i * stride1_ + j * stride2_];
   }
 
   const T& at(int i, int j) const {
-    if (!valid_)
-      throw std::runtime_error("Array not allocated");
-    if (i < 0 || i >= dim1_size_) {
-      throw std::out_of_range(
-          "Array dim1 index out of bounds: " + std::to_string(i) +
-          " not in [0," + std::to_string(dim1_size_ - 1) + "]");
-    }
-    if (j < 0 || j >= dim2_size_) {
-      throw std::out_of_range(
-          "Array dim2 index out of bounds: " + std::to_string(j) +
-          " not in [0," + std::to_string(dim2_size_ - 1) + "]");
-    }
+    check_c_bounds(i, j);
     return data_[i * stride1_ + j * stride2_];
   }
 
