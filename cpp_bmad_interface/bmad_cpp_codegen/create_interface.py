@@ -84,14 +84,8 @@ class CSideTransform:
     # (C) handles obj_to_f()  - picks out class members
     # (F) handles obj_to_f2() - takes flattened class members to reconstruct a new Fortran structure
 
-    # C -> F setup code:
-    to_f_setup: str = ""
-    # C -> F cleanup code:
-    to_f_cleanup: str = ""
     # C -> F2 argument type:
     to_f2_arg: str = ""
-    # C -> F2 how to pass the argument when calling f2 (F) from C
-    to_f2_call: str = ""
 
     # Fortran --> C++
     # | Fortran   |  C++       |
@@ -102,8 +96,6 @@ class CSideTransform:
 
     # C2 function: parameter type
     to_c2_arg: str = ""
-    # C2 function: how to set the value on the new instance
-    to_c2_set: str = "  C.NAME = z_NAME;"
 
     def replace_all(self, old: str, new: str) -> None:
         for fld in fields(self):
@@ -115,7 +107,7 @@ class CSideTransform:
                 setattr(self, fld.name, [v.replace(old, new) for v in value])
 
     def __str__(self):
-        return f"{self.c_class},  {self.to_f2_arg},  {self.to_f2_call},  {self.to_c2_arg}"
+        return f"{self.c_class},  {self.to_f2_arg},  {self.to_c2_arg}"
 
 
 @dataclass
@@ -128,10 +120,6 @@ class FortranSideTransform:
     # (F) handles obj_to_c()  - picks out structure members
     # (C) handles obj_to_c2() - takes flattened class members to reconstruct a new C++ class instance
     #
-    # F -> C: variable list: defines for the obj_to_c function
-    to_c_var: list[str] = field(default_factory=list)
-    # F -> C: how to translate the Fortran value to C
-    to_c_trans: str = ""
     # F -> C2: how to call obj_to_c2() from fortran with the argument
     to_c2_call: str = ""
     # F -> C2: how to define the local variable in to_c to call to_c2:
@@ -150,7 +138,6 @@ class FortranSideTransform:
     to_f2_name: str = ""
     to_f2_trans: str = "F%NAME = z_NAME"
     to_f2_var: list[str] = field(default_factory=list)
-    to_f2_post: list[str] = field(default_factory=list)
 
     equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
 
@@ -392,7 +379,6 @@ class Argument:
             The structure definition containing the argument
         """
         print_debug("self: " + str(self))
-        self.f_side.to_c_var = [var.replace("STR_LEN", self.kind) for var in self.f_side.to_c_var]
 
         self._handle_lbound(struct)
         if self.type == "type":
@@ -435,9 +421,6 @@ class CodegenStructure:
     c_constructor_arg_list: str = ""
     c_constructor_body: str = ""  # Body of the C++ class_initializer
     c_extra_methods: str = ""  # Additional custom methods
-
-    to_c2_post: str = ""
-    to_f2_post: str = ""
 
     module: str = "unknown_module"
     parsed: ParsedStructure | None = None
@@ -633,53 +616,6 @@ def set_translations(
 
         apply_arg_overrides(c_overrides, arg.c_side, strip_chars=" \n;")
         apply_arg_overrides(f_overrides, arg.f_side)
-
-
-def add_array_bound_info_for_pointer_structures(struct: CodegenStructure) -> None:
-    idx_argument = 0
-    while idx_argument < len(struct.arg):
-        arg = struct.arg[idx_argument]
-        idx_argument += 1  # Increment early since we'll be inserting elements
-
-        # Skip non-pointer types
-        if arg.pointer_type == NOT:
-            continue
-        if f"{struct.f_name}%{arg.f_name}" in params.interface_ignore_list:
-            continue
-
-        # Handle scalar pointers
-        if len(arg.array) == 0:
-            if "n_" in arg.c_side.to_f_setup:
-                full_type = FullType(SIZE, 1, NOT)
-                # Insert size parameter for the scalar pointer
-                size_arg = Argument(
-                    is_component=False,
-                    type="integer",
-                    f_side=copy.deepcopy(f_transforms[full_type]),
-                    c_side=copy.deepcopy(c_transforms[full_type]),
-                    f_name="n_" + arg.f_name,
-                    c_name="n_" + arg.c_name,
-                )
-                struct.arg.insert(idx_argument, size_arg)
-                idx_argument += 1
-            continue
-
-        # Handle array pointers
-        if len(arg.array) >= 1 and "n1_" in arg.c_side.to_f_setup:
-            # Create and insert size parameters for all dimensions
-            for dim in range(1, min(len(arg.array) + 1, 4)):  # Support up to 3 dimensions
-                full_type = FullType(SIZE, dim, NOT)
-                size_arg = Argument(
-                    is_component=False,
-                    type="integer",
-                    f_side=copy.deepcopy(f_transforms[full_type]),
-                    c_side=copy.deepcopy(c_transforms[full_type]),
-                    f_name=f"n{dim}_" + arg.f_name,
-                    c_name=f"n{dim}_" + arg.c_name,
-                )
-
-                struct.arg.insert(idx_argument, size_arg)
-                idx_argument += 1
 
 
 # ******************************************************************************
@@ -922,7 +858,6 @@ def get_structure_definitions() -> list[CodegenStructure]:
         match_structure_definition(parsed_structures, struct)
         set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
 
-        add_array_bound_info_for_pointer_structures(struct)
         print_debug("\nStruct: " + str(struct))
         for arg in struct.arg:
             arg.fix_struct_arg_placeholders(struct)
@@ -1037,8 +972,6 @@ def load_transforms():
     for type_, transform in f_transforms.items():
         if isinstance(transform.to_f2_var, str):
             transform.to_f2_var = transform.to_f2_var.splitlines()
-        if isinstance(transform.to_c_var, str):
-            transform.to_c_var = transform.to_c_var.splitlines()
         if type_.ptr == ALLOC:
             transform.replace_all("associated_or_allocated(", "allocated(")
         else:
@@ -1047,7 +980,6 @@ def load_transforms():
     for type_, transform in c_transforms.items():
         transform.c_class = transform.c_class.strip()
         transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
-        transform.to_f2_call = transform.to_f2_call.rstrip(", ")
         transform.replace_all("CTYPE", get_c_type(type_.type))
 
 

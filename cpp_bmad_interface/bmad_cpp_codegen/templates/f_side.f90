@@ -126,13 +126,6 @@ subroutine to_c (Fp, C) bind(C)
   character(STR_LEN+1), target :: f_NAME
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n_NAME = 0
-  if (associated_or_allocated(F%NAME)) then
-    n_NAME = 1
-    f_NAME = trim(F%NAME) // c_null_char
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   f_NAME
@@ -148,10 +141,6 @@ subroutine to_c (Fp, C) bind(C)
   logical(c_bool) :: z_NAME
   !!!! end:to_c2_type_and_name
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n_NAME = 0
-  if (associated_or_allocated(F%NAME)) n_NAME = 1
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   fscalar2scalar(F%NAME, n_NAME)
@@ -192,10 +181,6 @@ subroutine to_c (Fp, C) bind(C)
   !!!! case:0D_PTR_size:to_c2_type_and_name
   integer(c_int), value :: z_NAME
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n_NAME = 0
-  if (associated_or_allocated(F%NAME)) n_NAME = 1
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   F%NAME
@@ -211,10 +196,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr), value :: z_NAME
   !!!! end:to_c2_type_and_name
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n_NAME = 0
-  if (associated_or_allocated(F%NAME)) n_NAME = 1
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   c_loc(F%NAME)
@@ -233,12 +214,6 @@ subroutine to_c (Fp, C) bind(C)
   character(STR_LEN+1), target :: a_NAME(DIM1)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  a_NAME(jd1) = trim(F%NAME(jd1+lb1)) // c_null_char
-  z_NAME(jd1) = c_loc(a_NAME(jd1))
-  enddo
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -281,11 +256,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr) :: z_NAME(DIM1)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))
-  enddo
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -305,18 +275,6 @@ subroutine to_c (Fp, C) bind(C)
   character(STR_LEN+1), allocatable, target :: a_NAME(:)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n1_NAME = 0
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME); lb1 = lbound(F%NAME, 1) - 1
-    allocate (a_NAME(n1_NAME))
-    allocate (z_NAME(n1_NAME))
-    do jd1 = 1, n1_NAME
-    a_NAME(jd1) = trim(F%NAME(jd1+lb1)) // c_null_char
-    z_NAME(jd1) = c_loc(a_NAME(jd1))
-    enddo
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -363,12 +321,6 @@ subroutine to_c (Fp, C) bind(C)
   !!!! case:1D_PTR_size:to_c2_type_and_name
   integer(c_int), value :: z_NAME(*)
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n1_NAME = 0
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME, 1)
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   fvec2vec(F%NAME, n1_NAME)
@@ -387,17 +339,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr), allocatable :: z_NAME(:)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  n1_NAME = 0
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME)
-    lb1 = lbound(F%NAME, 1) - 1
-    allocate (z_NAME(n1_NAME))
-    do jd1 = 1, n1_NAME
-      z_NAME(jd1) = c_loc(F%NAME(jd1+lb1))
-    enddo
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -440,12 +381,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr) :: z_NAME(DIM1*DIM2)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-  z_NAME(DIM2*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1,jd2+lb2))
-  enddo; enddo
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -492,14 +427,6 @@ subroutine to_c (Fp, C) bind(C)
   !!!! case:2D_PTR_size:to_c2_type_and_name
   integer(c_int), value :: z_NAME(*)
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME, 1)
-    n2_NAME = size(F%NAME, 2)
-  else
-    n1_NAME = 0; n2_NAME = 0
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   mat2vec(F%NAME, n1_NAME*n2_NAME)
@@ -518,18 +445,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr), allocatable :: z_NAME(:)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME, 1); lb1 = lbound(F%NAME, 1) - 1
-    n2_NAME = size(F%NAME, 2); lb2 = lbound(F%NAME, 2) - 1
-    allocate (z_NAME(n1_NAME * n2_NAME))
-    do jd1 = 1, n1_NAME; do jd2 = 1, n2_NAME
-    z_NAME(n2_NAME*(jd1-1) + jd2) = c_loc(F%NAME(jd1+lb1, jd2+lb2))
-    enddo;  enddo
-  else
-    n1_NAME = 0; n2_NAME = 0
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -572,13 +487,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr) :: z_NAME(DIM1*DIM2*DIM3)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  do jd1 = 1, size(F%NAME,1); lb1 = lbound(F%NAME,1) - 1
-  do jd2 = 1, size(F%NAME,2); lb2 = lbound(F%NAME,2) - 1
-  do jd3 = 1, size(F%NAME,3); lb3 = lbound(F%NAME,3) - 1
-  z_NAME(DIM3*DIM2*(jd1-1) + DIM3*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1,jd2+lb2,jd3+lb3))
-  enddo; enddo; enddo
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
@@ -625,15 +533,6 @@ subroutine to_c (Fp, C) bind(C)
   !!!! case:3D_PTR_size:to_c2_type_and_name
   integer(c_int), value :: z_NAME(*)
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME, 1)
-    n2_NAME = size(F%NAME, 2)
-    n3_NAME = size(F%NAME, 3)
-  else
-    n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   tensor2vec(F%NAME, n1_NAME*n2_NAME*n3_NAME)
@@ -652,19 +551,6 @@ subroutine to_c (Fp, C) bind(C)
   type(c_ptr), allocatable :: z_NAME(:)
   !!!! end:to_c_var
   call c_f_pointer (Fp, F)
-  !!!! begin:to_c_trans
-  if (associated_or_allocated(F%NAME)) then
-    n1_NAME = size(F%NAME, 1); lb1 = lbound(F%NAME, 1) - 1
-    n2_NAME = size(F%NAME, 2); lb2 = lbound(F%NAME, 2) - 1
-    n3_NAME = size(F%NAME, 3); lb3 = lbound(F%NAME, 3) - 1
-    allocate (z_NAME(n1_NAME * n2_NAME * n3_NAME))
-    do jd1 = 1, n1_NAME; do jd2 = 1, n2_NAME; do jd3 = 1, n3_NAME
-    z_NAME(n3_NAME*n2_NAME*(jd1-1) + n3_NAME*(jd2-1) + jd3) = c_loc(F%NAME(jd1+lb1, jd2+lb2, jd3+lb3))
-    enddo;  enddo; enddo
-  else
-    n1_NAME = 0; n2_NAME = 0; n3_NAME = 0
-  endif
-  !!!! end:to_c_trans
   call to_c2 (C, 
   !!!! begin:to_c2_call
   z_NAME
