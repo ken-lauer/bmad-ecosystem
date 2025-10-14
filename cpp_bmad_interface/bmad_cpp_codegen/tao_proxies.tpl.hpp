@@ -4,12 +4,8 @@
 #include "proxy_base.hpp"
 
 #include <complex>
-#include <iterator>
 #include <memory>
-#include <stdexcept>
 #include <string>
-#include <utility>
-#include <vector>
 
 extern "C" {
 // Forward declarations for Fortran interface
