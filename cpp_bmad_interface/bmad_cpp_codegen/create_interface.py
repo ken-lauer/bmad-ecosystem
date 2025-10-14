@@ -16,25 +16,23 @@ is nullified and whose length is 1 otherwise.
 from __future__ import annotations
 
 import copy
-import dataclasses
 import logging
 import pathlib
-import re
 import sys
 import textwrap
-from dataclasses import dataclass, field, fields
+from dataclasses import dataclass, field
 
 import bmad_struct_parser
 from bmad_struct_parser import Structure as ParsedStructure
 from bmad_struct_parser.parser import StructureMember
 
 from . import interface_input_params as params
+from . import transforms
 from .enums import ENUM_FILENAME, write_enums
 from .paths import (
     ACC_ROOT_DIR,
     CODEGEN_ROOT,
     CPP_INTERFACE_ROOT,
-    TEMPLATES_PATH,
 )
 from .proxy import (
     create_cpp_proxy_header,
@@ -42,6 +40,7 @@ from .proxy import (
     create_fortran_proxy_code,
     struct_to_proxy_class_name,
 )
+from .transforms import CSideTransform, FortranSideTransform
 from .types import (
     ALLOC,
     CHAR,
@@ -71,110 +70,6 @@ DEBUG_INSTANTIATION = False
 def print_debug(line):
     if DEBUG:
         logger.warning(line)
-
-
-@dataclass
-class CSideTransform:
-    c_class: str = ""  # EG: 'CPP_ele_Array'
-
-    # C++ --> Fortran
-    # |   C++     |    Fortran |
-    # obj_to_f() -> obj_to_f2()
-    #
-    # (C) handles obj_to_f()  - picks out class members
-    # (F) handles obj_to_f2() - takes flattened class members to reconstruct a new Fortran structure
-
-    # C -> F2 argument type:
-    to_f2_arg: str = ""
-
-    # Fortran --> C++
-    # | Fortran   |  C++       |
-    # obj_to_c() -> obj_to_c2()
-    #
-    # (F) handles obj_to_c()  - picks out structure members
-    # (C) handles obj_to_c2() - takes flattened class members to reconstruct a new C++ class instance
-
-    # C2 function: parameter type
-    to_c2_arg: str = ""
-
-    def replace_all(self, old: str, new: str) -> None:
-        for fld in fields(self):
-            value = getattr(self, fld.name)
-
-            if isinstance(value, str):
-                setattr(self, fld.name, value.replace(old, new))
-            else:
-                setattr(self, fld.name, [v.replace(old, new) for v in value])
-
-    def __str__(self):
-        return f"{self.c_class},  {self.to_f2_arg},  {self.to_c2_arg}"
-
-
-@dataclass
-class FortranSideTransform:
-    # Fortran -> C++:
-    #
-    # | Fortran   |  C++       |
-    # obj_to_c() -> obj_to_c2()
-    #
-    # (F) handles obj_to_c()  - picks out structure members
-    # (C) handles obj_to_c2() - takes flattened class members to reconstruct a new C++ class instance
-    #
-    # F -> C2: how to call obj_to_c2() from fortran with the argument
-    to_c2_call: str = ""
-    # F -> C2: how to define the local variable in to_c to call to_c2:
-    to_c2_type: str = ""
-    # F -> C2: the name for the fortran variable in to_c:
-    to_c2_name: str = ""
-
-    # C++ -> Fortran:
-    #
-    # |   C++     |    Fortran |
-    # obj_to_f() -> obj_to_f2()
-    #
-    # (C) handles obj_to_f()  - picks out class members
-    # (F) handles obj_to_f2() - takes flattened class members to reconstruct a new Fortran structure
-    to_f2_type: str = ""
-    to_f2_name: str = ""
-    to_f2_trans: str = "F%NAME = z_NAME"
-    to_f2_var: list[str] = field(default_factory=list)
-
-    equality_test: str = "is_eq = is_eq .and. all(f1%NAME == f2%NAME)\n"
-
-    @property
-    def to_c2_f2_sub_arg(self) -> str:
-        if "(" in self.to_f2_name:
-            return self.to_f2_name.split("(")[0].strip()
-        return self.to_f2_name.strip()
-
-    def replace_all(self, old: str, new: str) -> None:
-        for fld in fields(self):
-            value = getattr(self, fld.name)
-
-            if isinstance(value, str):
-                setattr(self, fld.name, value.replace(old, new))
-            else:
-                setattr(self, fld.name, [v.replace(old, new) for v in value])
-
-    @property
-    def to_c2_type_and_name(self):
-        return f"{self.to_c2_type} :: {self.to_c2_name}"
-
-    @to_c2_type_and_name.setter
-    def to_c2_type_and_name(self, value):
-        type, name = value.split("::")
-        self.to_c2_type = type.strip()
-        self.to_c2_name = name.strip()
-
-    @property
-    def to_f2_type_and_name(self):
-        return f"{self.to_f2_type} :: {self.to_f2_name}"
-
-    @to_f2_type_and_name.setter
-    def to_f2_type_and_name(self, value):
-        type, name = value.split("::")
-        self.to_f2_type = type.strip()
-        self.to_f2_name = name.strip()
 
 
 @dataclass
@@ -345,12 +240,6 @@ class Argument:
             and f"{struct_name}%{self.f_name}" not in params.component_no_translate_list
         )
 
-    def _handle_lbound(self, struct: CodegenStructure) -> None:
-        """Handle the lower bound replacement."""
-        id_name = struct.short_name + "%" + self.f_name
-        lbound = params.f_side_lbound(id_name)
-        self.f_side.to_f2_trans = self.f_side.to_f2_trans.replace("LBOUND", lbound)
-
     def _handle_type_argument(self) -> None:
         """Process 'type' arguments by replacing KIND placeholders."""
         if self.type.lower() != "type":
@@ -366,21 +255,15 @@ class Argument:
         self.c_side.replace_all("KIND", kind)
         self.c_side.replace_all("PROXYCLS", struct_to_proxy_class_name(kind))
 
-    def fix_struct_arg_placeholders(self, struct: CodegenStructure) -> None:
+    def _fix_struct_arg_placeholders(self) -> None:
         """
         Substitute placeholder names in argument patterns with actual values.
 
         This function processes an argument object, replacing placeholders like "NAME", "DIM1", etc.,
         with the actual values relevant to the structure and argument.
-
-        Parameters
-        ----------
-        struct : Structure
-            The structure definition containing the argument
         """
         print_debug("self: " + str(self))
 
-        self._handle_lbound(struct)
         if self.type == "type":
             self._handle_type_argument()
 
@@ -392,14 +275,10 @@ class Argument:
                 self.c_side.replace_all("DIM1", self.c_dim1)
 
             if len(self.array) >= 2:
-                self.f_side.to_c2_call = self.f_side.to_c2_call.replace("DIM2", f"{self.f_dim1}*{self.dim2}")
                 self.f_side.replace_all("DIM2", str(self.dim2))
                 self.c_side.replace_all("DIM2", str(self.dim2))
 
             if len(self.array) >= 3:
-                self.f_side.to_c2_call = self.f_side.to_c2_call.replace(
-                    "DIM3", f"{self.f_dim1}*{self.dim2}*{self.dim3}"
-                )
                 self.f_side.replace_all("DIM3", str(self.dim3))
                 self.c_side.replace_all("DIM3", str(self.dim3))
 
@@ -443,103 +322,6 @@ class CodegenStructure:
         return f"[name: {self.short_name}, #arg: {len(self.arg)}]"
 
 
-@dataclasses.dataclass
-class TemplateImporter:
-    section: re.Pattern
-    type: re.Pattern
-    begin: re.Pattern
-    end: re.Pattern
-    special_case: re.Pattern
-
-    @classmethod
-    def from_prefix(cls, prefix: str) -> TemplateImporter:
-        return TemplateImporter(
-            # These must be on their own line:
-            section=re.compile(rf"^\s*{prefix}\s*section:.*\s*$", flags=re.MULTILINE),
-            special_case=re.compile(rf"^\s*{prefix}\s*case:(.*):(.*)$\n^(.*)$", flags=re.MULTILINE),
-            type=re.compile(rf"^\s*{prefix}\s*type:(.*)\s*$", flags=re.MULTILINE),
-            # This may appear anywhere in a line
-            begin=re.compile(rf"^.*{prefix}\s*begin:(.*).*\s*$", flags=re.MULTILINE),
-            end=re.compile(rf"{prefix}\s*end:(.*)\s*$", flags=re.MULTILINE),
-        )
-
-    def split_sections(self, contents: str) -> list[str]:
-        sections = self.section.split(contents)[1:]
-        for section in sections:
-            assert "section:" not in section
-        return sections
-
-    def get_special_cases(self, section: str) -> dict[FullType, dict[str, str]]:
-        res = {}
-        for type_str, tag, value in self.special_case.findall(section):
-            full_type = FullType.from_template(type_str)
-            res.setdefault(full_type, {})
-            res[full_type][tag] = value
-        return res
-
-    def split_tags(self, section: str) -> dict[str, str]:
-        by_tag = {}
-        for begin in self.begin.finditer(section):
-            tag = begin.group(1).lower()
-
-            tag_contents = section[begin.span()[1] :].lstrip("\n\r")
-            end = self.end.search(tag_contents)
-            if end is None:
-                raise RuntimeError(f"begin:{tag} without end:{tag}. Context:\n{tag_contents}")
-            if end.group(1).lower() != tag:
-                end_tag = end.group(1)
-                raise RuntimeError(
-                    f"begin:{tag} has a mismatched end tag end:{end_tag}  Context:\n{tag_contents}"
-                )
-
-            by_tag[tag] = tag_contents[: end.span()[0]].rstrip()
-        return by_tag
-
-    def get_types(self, contents: str) -> list[FullType]:
-        return [FullType.from_template(type_str) for type_str in self.type.findall(contents)]
-
-    @classmethod
-    def from_file(cls, transform_cls, template_contents: str):
-        transforms = {}
-        custom_overrides = {}
-
-        if transform_cls is CSideTransform:
-            importer = TemplateImporter.from_prefix("////")
-        elif transform_cls is FortranSideTransform:
-            importer = TemplateImporter.from_prefix("!!!!")
-        else:
-            raise NotImplementedError(transform_cls)
-
-        def set_tag(full_type: FullType, tag: str, value: str) -> None:
-            if tag not in valid_fields and not hasattr(transform_cls, tag):
-                raise ValueError(f"Unexpected special case tag: {tag!r} found in section:\n{section}")
-            if full_type not in transforms:
-                transforms[full_type] = transform_cls()
-
-            if "!!!! " in value or "//// " in value:
-                raise ValueError(f"Special characters found in value: {value=}. Section:\n{section}")
-            setattr(transforms[full_type], tag, value)
-
-        valid_fields = {fld.name for fld in fields(transform_cls)}
-        for section in importer.split_sections(template_contents):
-            types = importer.get_types(section)
-            tags = importer.split_tags(section)
-            special_cases = importer.get_special_cases(section)
-            for full_type in types:
-                for tag, value in tags.items():
-                    set_tag(full_type, tag, value)
-
-            for full_type, tag_to_value in special_cases.items():
-                for tag, value in tag_to_value.items():
-                    set_tag(full_type, tag, value)
-
-            for tag, value in tags.items():
-                if "%" in tag:
-                    custom_overrides[tag] = value
-
-        return transforms, custom_overrides
-
-
 ##################################################################################
 ##################################################################################
 def match_structure_definition(
@@ -560,69 +342,21 @@ def match_structure_definition(
     struct.parsed = fstruct
 
 
-def set_translations(
-    struct: CodegenStructure, c_overrides: dict[str, str], f_overrides: dict[str, str]
-) -> None:
+def set_translations(struct: CodegenStructure) -> None:
     # Throw out any sub-structures that are not to be translated
     struct.arg = [arg for arg in struct.arg if arg.should_translate(struct.f_name)]
 
-    def apply_struct_overrides(
-        overrides: dict[str, str],
-        strip_chars: str | None = None,
-    ) -> None:
-        for key, value in overrides.items():
-            override_arg, attr = key.split(".", 1)
-            if override_arg == f"{struct.f_name}%":
-                assert hasattr(struct, attr), (attr, key)
-                if isinstance(getattr(struct, attr), list):
-                    setattr(struct, attr, value.splitlines())
-                else:
-                    if strip_chars:
-                        value = value.rstrip(strip_chars)
-                    setattr(struct, attr, value)
-
-    apply_struct_overrides(c_overrides, strip_chars=" \n;")
-    apply_struct_overrides(f_overrides)
-
-    # Add translation info to each argument
     for arg in struct.arg:
-        # Skip arguments without translation definitions
-        if arg.full_type not in f_transforms:
+        if arg.full_type not in transforms.f_transforms:
             logger.error(
                 f"NO TRANSLATION FOR: {struct.short_name}%{arg.f_name} [{arg.full_type}]",
             )
             continue
 
-        arg_full_name = f"{struct.f_name}%{arg.f_name}"
-        arg.f_side = copy.deepcopy(f_transforms[arg.full_type])
-        arg.c_side = copy.deepcopy(c_transforms[arg.full_type])
-
-        def apply_arg_overrides(
-            overrides: dict[str, str],
-            side: CSideTransform | FortranSideTransform,
-            strip_chars: str | None = None,
-            arg_full_name: str = arg_full_name,
-        ) -> None:
-            for key, value in overrides.items():
-                override_arg, attr = key.split(".", 1)
-                if arg_full_name == override_arg:
-                    assert hasattr(side, attr), (attr, key)
-                    if isinstance(getattr(side, attr), list):
-                        setattr(side, attr, value.splitlines())
-                    else:
-                        if strip_chars:
-                            value = value.rstrip(strip_chars)
-                        setattr(side, attr, value)
-
-        apply_arg_overrides(c_overrides, arg.c_side, strip_chars=" \n;")
-        apply_arg_overrides(f_overrides, arg.f_side)
+        arg.f_side = copy.deepcopy(transforms.f_transforms[arg.full_type])
+        arg.c_side = copy.deepcopy(transforms.c_transforms[arg.full_type])
 
 
-# ******************************************************************************
-# ******************************************************************************
-# ******************************************************************************
-# Output portion
-#
 def write_parsed_structures(structs, fn):
     """
     Write parsed structure definitions to a file.
@@ -856,11 +590,11 @@ def get_structure_definitions() -> list[CodegenStructure]:
     for name in params.struct_list:
         struct = CodegenStructure(name)
         match_structure_definition(parsed_structures, struct)
-        set_translations(struct, c_overrides=c_overrides, f_overrides=f_overrides)
+        set_translations(struct)
 
         print_debug("\nStruct: " + str(struct))
         for arg in struct.arg:
-            arg.fix_struct_arg_placeholders(struct)
+            arg._fix_struct_arg_placeholders()
 
         structs.append(struct)
     return structs
@@ -954,41 +688,6 @@ def get_c_type(type_val: str) -> str:
 
     raise NotImplementedError(f"Unknown type: {type_val}")
 
-
-def load_transforms():
-    # TODO: refactor globals
-    global c_transforms
-    global f_transforms
-    global c_overrides
-    global f_overrides
-
-    c_transforms, c_overrides = TemplateImporter.from_file(
-        CSideTransform, (TEMPLATES_PATH / "c_side.cpp").read_text()
-    )
-    f_transforms, f_overrides = TemplateImporter.from_file(
-        FortranSideTransform, (TEMPLATES_PATH / "f_side.f90").read_text()
-    )
-
-    for type_, transform in f_transforms.items():
-        if isinstance(transform.to_f2_var, str):
-            transform.to_f2_var = transform.to_f2_var.splitlines()
-        if type_.ptr == ALLOC:
-            transform.replace_all("associated_or_allocated(", "allocated(")
-        else:
-            transform.replace_all("associated_or_allocated(", "associated(")
-
-    for type_, transform in c_transforms.items():
-        transform.c_class = transform.c_class.strip()
-        transform.to_c2_arg = transform.to_c2_arg.rstrip(", ")
-        transform.replace_all("CTYPE", get_c_type(type_.type))
-
-
-c_transforms: dict[FullType, CSideTransform]
-f_transforms: dict[FullType, FortranSideTransform]
-c_overrides: dict[str, str]
-f_overrides: dict[str, str]
-
-load_transforms()
 
 if __name__ == "__main__":
     generate()
