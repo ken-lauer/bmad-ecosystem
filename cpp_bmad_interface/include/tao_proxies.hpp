@@ -9,11 +9,8 @@
 
 extern "C" {
 // Forward declarations for Fortran interface
-
 void spline_struct_get_x0(const void* struct_obj, double* value_out);
-
 void spline_struct_get_y0(const void* struct_obj, double* value_out);
-
 void spline_struct_get_x1(const void* struct_obj, double* value_out);
 
 void spline_struct_get_coef_info(
@@ -26,25 +23,15 @@ void spline_struct_get_coef_info(
 void spin_polar_struct_get_polarization(
     const void* struct_obj,
     double* value_out);
-
 void spin_polar_struct_get_theta(const void* struct_obj, double* value_out);
-
 void spin_polar_struct_get_phi(const void* struct_obj, double* value_out);
-
 void spin_polar_struct_get_xi(const void* struct_obj, double* value_out);
-
 void ac_kicker_time_struct_get_amp(const void* struct_obj, double* value_out);
-
 void ac_kicker_time_struct_get_time(const void* struct_obj, double* value_out);
-
 void ac_kicker_time_struct_get_spline(const void* struct_obj, void** ptr_out);
-
 void ac_kicker_freq_struct_get_f(const void* struct_obj, double* value_out);
-
 void ac_kicker_freq_struct_get_amp(const void* struct_obj, double* value_out);
-
 void ac_kicker_freq_struct_get_phi(const void* struct_obj, double* value_out);
-
 void ac_kicker_freq_struct_get_rf_clock_harmonic(
     const void* struct_obj,
     int* value_out);
@@ -68,9 +55,7 @@ void ac_kicker_struct_get_frequency_info(
     size_t* element_size);
 
 void interval1_coef_struct_get_c0(const void* struct_obj, double* value_out);
-
 void interval1_coef_struct_get_c1(const void* struct_obj, double* value_out);
-
 void interval1_coef_struct_get_n_exp(const void* struct_obj, double* value_out);
 
 void photon_reflect_table_struct_get_angle_info(
@@ -164,11 +149,9 @@ void photon_reflect_surface_struct_get_table_info(
 void photon_reflect_surface_struct_get_surface_roughness_rms(
     const void* struct_obj,
     double* value_out);
-
 void photon_reflect_surface_struct_get_roughness_correlation_len(
     const void* struct_obj,
     double* value_out);
-
 void photon_reflect_surface_struct_get_ix_surface(
     const void* struct_obj,
     int* value_out);
@@ -181,7 +164,6 @@ void coord_struct_get_vec_info(
     int* upper_bound);
 
 void coord_struct_get_s(const void* struct_obj, double* value_out);
-
 void coord_struct_get_t(const void* struct_obj, long double* value_out);
 
 void coord_struct_get_spin_info(
@@ -206,33 +188,19 @@ void coord_struct_get_phase_info(
     int* upper_bound);
 
 void coord_struct_get_charge(const void* struct_obj, double* value_out);
-
 void coord_struct_get_dt_ref(const void* struct_obj, double* value_out);
-
 void coord_struct_get_r(const void* struct_obj, double* value_out);
-
 void coord_struct_get_p0c(const void* struct_obj, double* value_out);
-
 void coord_struct_get_E_potential(const void* struct_obj, double* value_out);
-
 void coord_struct_get_beta(const void* struct_obj, double* value_out);
-
 void coord_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void coord_struct_get_ix_branch(const void* struct_obj, int* value_out);
-
 void coord_struct_get_ix_turn(const void* struct_obj, int* value_out);
-
 void coord_struct_get_ix_user(const void* struct_obj, int* value_out);
-
 void coord_struct_get_state(const void* struct_obj, int* value_out);
-
 void coord_struct_get_direction(const void* struct_obj, int* value_out);
-
 void coord_struct_get_time_dir(const void* struct_obj, int* value_out);
-
 void coord_struct_get_species(const void* struct_obj, int* value_out);
-
 void coord_struct_get_location(const void* struct_obj, int* value_out);
 
 void coord_array_struct_get_orbit_info(
@@ -247,39 +215,30 @@ void coord_array_struct_get_orbit_info(
 void bpm_phase_coupling_struct_get_K_22a(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_K_12a(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_K_11b(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_K_12b(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_Cbar22_a(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_Cbar12_a(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_Cbar11_b(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_Cbar12_b(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_phi_a(
     const void* struct_obj,
     double* value_out);
-
 void bpm_phase_coupling_struct_get_phi_b(
     const void* struct_obj,
     double* value_out);
@@ -292,7 +251,6 @@ void expression_atom_struct_get_name_info(
     int* upper_bound);
 
 void expression_atom_struct_get_type(const void* struct_obj, int* value_out);
-
 void expression_atom_struct_get_value(
     const void* struct_obj,
     double* value_out);
@@ -306,41 +264,27 @@ void wake_sr_z_long_struct_get_w_info(
     bool* is_allocated);
 
 void wake_sr_z_long_struct_get_dz(const void* struct_obj, double* value_out);
-
 void wake_sr_z_long_struct_get_z0(const void* struct_obj, double* value_out);
-
 void wake_sr_z_long_struct_get_smoothing_sigma(
     const void* struct_obj,
     double* value_out);
-
 void wake_sr_z_long_struct_get_position_dependence(
     const void* struct_obj,
     int* value_out);
-
 void wake_sr_z_long_struct_get_time_based(
     const void* struct_obj,
     bool* value_out);
-
 void wake_sr_mode_struct_get_amp(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_damp(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_k(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_phi(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_b_sin(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_b_cos(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_a_sin(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_a_cos(const void* struct_obj, double* value_out);
-
 void wake_sr_mode_struct_get_polarization(
     const void* struct_obj,
     int* value_out);
-
 void wake_sr_mode_struct_get_position_dependence(
     const void* struct_obj,
     int* value_out);
@@ -373,45 +317,27 @@ void wake_sr_struct_get_trans_info(
     size_t* element_size);
 
 void wake_sr_struct_get_z_ref_long(const void* struct_obj, double* value_out);
-
 void wake_sr_struct_get_z_ref_trans(const void* struct_obj, double* value_out);
-
 void wake_sr_struct_get_z_max(const void* struct_obj, double* value_out);
-
 void wake_sr_struct_get_amp_scale(const void* struct_obj, double* value_out);
-
 void wake_sr_struct_get_z_scale(const void* struct_obj, double* value_out);
-
 void wake_sr_struct_get_scale_with_length(
     const void* struct_obj,
     bool* value_out);
-
 void wake_lr_mode_struct_get_freq(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_freq_in(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_R_over_Q(
     const void* struct_obj,
     double* value_out);
-
 void wake_lr_mode_struct_get_Q(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_damp(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_phi(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_angle(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_b_sin(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_b_cos(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_a_sin(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_a_cos(const void* struct_obj, double* value_out);
-
 void wake_lr_mode_struct_get_m(const void* struct_obj, int* value_out);
-
 void wake_lr_mode_struct_get_polarized(const void* struct_obj, bool* value_out);
 
 void wake_lr_struct_get_file_info(
@@ -431,23 +357,14 @@ void wake_lr_struct_get_mode_info(
     size_t* element_size);
 
 void wake_lr_struct_get_t_ref(const void* struct_obj, double* value_out);
-
 void wake_lr_struct_get_freq_spread(const void* struct_obj, double* value_out);
-
 void wake_lr_struct_get_amp_scale(const void* struct_obj, double* value_out);
-
 void wake_lr_struct_get_time_scale(const void* struct_obj, double* value_out);
-
 void wake_lr_struct_get_self_wake_on(const void* struct_obj, bool* value_out);
-
 void lat_ele_loc_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void lat_ele_loc_struct_get_ix_branch(const void* struct_obj, int* value_out);
-
 void wake_struct_get_sr(const void* struct_obj, void** ptr_out);
-
 void wake_struct_get_lr(const void* struct_obj, void** ptr_out);
-
 void taylor_term_struct_get_coef(const void* struct_obj, double* value_out);
 
 void taylor_term_struct_get_expn_info(
@@ -491,35 +408,27 @@ void em_taylor_struct_get_term_info(
 void cartesian_map_term1_struct_get_coef(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_kx(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_ky(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_kz(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_x0(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_y0(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_phi_z(
     const void* struct_obj,
     double* value_out);
-
 void cartesian_map_term1_struct_get_family(
     const void* struct_obj,
     int* value_out);
-
 void cartesian_map_term1_struct_get_form(
     const void* struct_obj,
     int* value_out);
@@ -558,21 +467,16 @@ void cartesian_map_struct_get_r0_info(
 void cartesian_map_struct_get_master_parameter(
     const void* struct_obj,
     int* value_out);
-
 void cartesian_map_struct_get_ele_anchor_pt(
     const void* struct_obj,
     int* value_out);
-
 void cartesian_map_struct_get_field_type(
     const void* struct_obj,
     int* value_out);
-
 void cartesian_map_struct_get_ptr(const void* struct_obj, void** ptr_out);
-
 void cylindrical_map_term1_struct_get_e_coef(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void cylindrical_map_term1_struct_get_b_coef(
     const void* struct_obj,
     std::complex<double>* value_out);
@@ -598,31 +502,24 @@ void cylindrical_map_term_struct_get_term_info(
     size_t* element_size);
 
 void cylindrical_map_struct_get_m(const void* struct_obj, int* value_out);
-
 void cylindrical_map_struct_get_harmonic(
     const void* struct_obj,
     int* value_out);
-
 void cylindrical_map_struct_get_phi0_fieldmap(
     const void* struct_obj,
     double* value_out);
-
 void cylindrical_map_struct_get_theta0_azimuth(
     const void* struct_obj,
     double* value_out);
-
 void cylindrical_map_struct_get_field_scale(
     const void* struct_obj,
     double* value_out);
-
 void cylindrical_map_struct_get_master_parameter(
     const void* struct_obj,
     int* value_out);
-
 void cylindrical_map_struct_get_ele_anchor_pt(
     const void* struct_obj,
     int* value_out);
-
 void cylindrical_map_struct_get_dz(const void* struct_obj, double* value_out);
 
 void cylindrical_map_struct_get_r0_info(
@@ -670,29 +567,21 @@ void grid_field_pt_struct_get_file_info(
     int* upper_bound);
 
 void grid_field_pt_struct_get_n_link(const void* struct_obj, int* value_out);
-
 void grid_field_struct_get_geometry(const void* struct_obj, int* value_out);
-
 void grid_field_struct_get_harmonic(const void* struct_obj, int* value_out);
-
 void grid_field_struct_get_phi0_fieldmap(
     const void* struct_obj,
     double* value_out);
-
 void grid_field_struct_get_field_scale(
     const void* struct_obj,
     double* value_out);
-
 void grid_field_struct_get_field_type(const void* struct_obj, int* value_out);
-
 void grid_field_struct_get_master_parameter(
     const void* struct_obj,
     int* value_out);
-
 void grid_field_struct_get_ele_anchor_pt(
     const void* struct_obj,
     int* value_out);
-
 void grid_field_struct_get_interpolation_order(
     const void* struct_obj,
     int* value_out);
@@ -714,7 +603,6 @@ void grid_field_struct_get_r0_info(
 void grid_field_struct_get_curved_ref_frame(
     const void* struct_obj,
     bool* value_out);
-
 void grid_field_struct_get_ptr(const void* struct_obj, void** ptr_out);
 
 void floor_position_struct_get_r_info(
@@ -725,125 +613,79 @@ void floor_position_struct_get_r_info(
     int* upper_bound);
 
 void floor_position_struct_get_theta(const void* struct_obj, double* value_out);
-
 void floor_position_struct_get_phi(const void* struct_obj, double* value_out);
-
 void floor_position_struct_get_psi(const void* struct_obj, double* value_out);
-
 void high_energy_space_charge_struct_get_closed_orb(
     const void* struct_obj,
     void** ptr_out);
-
 void high_energy_space_charge_struct_get_kick_const(
     const void* struct_obj,
     double* value_out);
-
 void high_energy_space_charge_struct_get_sig_x(
     const void* struct_obj,
     double* value_out);
-
 void high_energy_space_charge_struct_get_sig_y(
     const void* struct_obj,
     double* value_out);
-
 void high_energy_space_charge_struct_get_phi(
     const void* struct_obj,
     double* value_out);
-
 void high_energy_space_charge_struct_get_sin_phi(
     const void* struct_obj,
     double* value_out);
-
 void high_energy_space_charge_struct_get_cos_phi(
     const void* struct_obj,
     double* value_out);
-
 void high_energy_space_charge_struct_get_sig_z(
     const void* struct_obj,
     double* value_out);
-
 void xy_disp_struct_get_eta(const void* struct_obj, double* value_out);
-
 void xy_disp_struct_get_etap(const void* struct_obj, double* value_out);
-
 void xy_disp_struct_get_deta_ds(const void* struct_obj, double* value_out);
-
 void xy_disp_struct_get_sigma(const void* struct_obj, double* value_out);
-
 void xy_disp_struct_get_deta_dpz(const void* struct_obj, double* value_out);
-
 void xy_disp_struct_get_detap_dpz(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_beta(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_alpha(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_gamma(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_phi(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_eta(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_etap(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_deta_ds(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_sigma(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_sigma_p(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_emit(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_norm_emit(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_chrom(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_dbeta_dpz(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_dalpha_dpz(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_deta_dpz(const void* struct_obj, double* value_out);
-
 void twiss_struct_get_detap_dpz(const void* struct_obj, double* value_out);
-
 void mode3_struct_get_a(const void* struct_obj, void** ptr_out);
-
 void mode3_struct_get_b(const void* struct_obj, void** ptr_out);
-
 void mode3_struct_get_c(const void* struct_obj, void** ptr_out);
-
 void mode3_struct_get_x(const void* struct_obj, void** ptr_out);
-
 void mode3_struct_get_y(const void* struct_obj, void** ptr_out);
-
 void bookkeeping_state_struct_get_attributes(
     const void* struct_obj,
     int* value_out);
-
 void bookkeeping_state_struct_get_control(
     const void* struct_obj,
     int* value_out);
-
 void bookkeeping_state_struct_get_floor_position(
     const void* struct_obj,
     int* value_out);
-
 void bookkeeping_state_struct_get_s_position(
     const void* struct_obj,
     int* value_out);
-
 void bookkeeping_state_struct_get_ref_energy(
     const void* struct_obj,
     int* value_out);
-
 void bookkeeping_state_struct_get_mat6(const void* struct_obj, int* value_out);
-
 void bookkeeping_state_struct_get_rad_int(
     const void* struct_obj,
     int* value_out);
-
 void bookkeeping_state_struct_get_ptc(const void* struct_obj, int* value_out);
-
 void bookkeeping_state_struct_get_has_misalign(
     const void* struct_obj,
     bool* value_out);
@@ -863,15 +705,10 @@ void rad_map_struct_get_xfer_damp_vec_info(
     int* upper_bound);
 
 void rad_map_ele_struct_get_rm0(const void* struct_obj, void** ptr_out);
-
 void rad_map_ele_struct_get_rm1(const void* struct_obj, void** ptr_out);
-
 void rad_map_ele_struct_get_stale(const void* struct_obj, bool* value_out);
-
 void gen_grad1_struct_get_m(const void* struct_obj, int* value_out);
-
 void gen_grad1_struct_get_sincos(const void* struct_obj, int* value_out);
-
 void gen_grad1_struct_get_n_deriv_max(const void* struct_obj, int* value_out);
 
 void gen_grad1_struct_get_deriv_info(
@@ -906,13 +743,9 @@ void gen_grad_map_struct_get_gg_info(
 void gen_grad_map_struct_get_ele_anchor_pt(
     const void* struct_obj,
     int* value_out);
-
 void gen_grad_map_struct_get_field_type(const void* struct_obj, int* value_out);
-
 void gen_grad_map_struct_get_iz0(const void* struct_obj, int* value_out);
-
 void gen_grad_map_struct_get_iz1(const void* struct_obj, int* value_out);
-
 void gen_grad_map_struct_get_dz(const void* struct_obj, double* value_out);
 
 void gen_grad_map_struct_get_r0_info(
@@ -925,35 +758,27 @@ void gen_grad_map_struct_get_r0_info(
 void gen_grad_map_struct_get_field_scale(
     const void* struct_obj,
     double* value_out);
-
 void gen_grad_map_struct_get_master_parameter(
     const void* struct_obj,
     int* value_out);
-
 void gen_grad_map_struct_get_curved_ref_frame(
     const void* struct_obj,
     bool* value_out);
-
 void surface_segmented_pt_struct_get_x0(
     const void* struct_obj,
     double* value_out);
-
 void surface_segmented_pt_struct_get_y0(
     const void* struct_obj,
     double* value_out);
-
 void surface_segmented_pt_struct_get_z0(
     const void* struct_obj,
     double* value_out);
-
 void surface_segmented_pt_struct_get_dz_dx(
     const void* struct_obj,
     double* value_out);
-
 void surface_segmented_pt_struct_get_dz_dy(
     const void* struct_obj,
     double* value_out);
-
 void surface_segmented_struct_get_active(
     const void* struct_obj,
     bool* value_out);
@@ -975,27 +800,21 @@ void surface_segmented_struct_get_r0_info(
 void surface_h_misalign_pt_struct_get_x0(
     const void* struct_obj,
     double* value_out);
-
 void surface_h_misalign_pt_struct_get_y0(
     const void* struct_obj,
     double* value_out);
-
 void surface_h_misalign_pt_struct_get_rot_y(
     const void* struct_obj,
     double* value_out);
-
 void surface_h_misalign_pt_struct_get_rot_t(
     const void* struct_obj,
     double* value_out);
-
 void surface_h_misalign_pt_struct_get_rot_y_rms(
     const void* struct_obj,
     double* value_out);
-
 void surface_h_misalign_pt_struct_get_rot_t_rms(
     const void* struct_obj,
     double* value_out);
-
 void surface_h_misalign_struct_get_active(
     const void* struct_obj,
     bool* value_out);
@@ -1017,27 +836,21 @@ void surface_h_misalign_struct_get_r0_info(
 void surface_displacement_pt_struct_get_x0(
     const void* struct_obj,
     double* value_out);
-
 void surface_displacement_pt_struct_get_y0(
     const void* struct_obj,
     double* value_out);
-
 void surface_displacement_pt_struct_get_z0(
     const void* struct_obj,
     double* value_out);
-
 void surface_displacement_pt_struct_get_dz_dx(
     const void* struct_obj,
     double* value_out);
-
 void surface_displacement_pt_struct_get_dz_dy(
     const void* struct_obj,
     double* value_out);
-
 void surface_displacement_pt_struct_get_d2z_dxdy(
     const void* struct_obj,
     double* value_out);
-
 void surface_displacement_struct_get_active(
     const void* struct_obj,
     bool* value_out);
@@ -1077,11 +890,8 @@ void surface_curvature_struct_get_elliptical_info(
 void surface_curvature_struct_get_has_curvature(
     const void* struct_obj,
     bool* value_out);
-
 void photon_target_struct_get_type(const void* struct_obj, int* value_out);
-
 void photon_target_struct_get_n_corner(const void* struct_obj, int* value_out);
-
 void photon_target_struct_get_ele_loc(const void* struct_obj, void** ptr_out);
 
 void photon_target_struct_get_corner_info(
@@ -1093,27 +903,21 @@ void photon_target_struct_get_corner_info(
     size_t* element_size);
 
 void photon_target_struct_get_center(const void* struct_obj, void** ptr_out);
-
 void photon_material_struct_get_f0_m1(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void photon_material_struct_get_f0_m2(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void photon_material_struct_get_f_0(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void photon_material_struct_get_f_h(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void photon_material_struct_get_f_hbar(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void photon_material_struct_get_f_hkl(
     const void* struct_obj,
     std::complex<double>* value_out);
@@ -1133,19 +937,14 @@ void photon_material_struct_get_l_ref_info(
     int* upper_bound);
 
 void pixel_pt_struct_get_n_photon(const void* struct_obj, long long* value_out);
-
 void pixel_pt_struct_get_E_x(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void pixel_pt_struct_get_E_y(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void pixel_pt_struct_get_intensity_x(const void* struct_obj, double* value_out);
-
 void pixel_pt_struct_get_intensity_y(const void* struct_obj, double* value_out);
-
 void pixel_pt_struct_get_intensity(const void* struct_obj, double* value_out);
 
 void pixel_pt_struct_get_orbit_info(
@@ -1193,45 +992,33 @@ void pixel_detec_struct_get_r0_info(
 void pixel_detec_struct_get_n_track_tot(
     const void* struct_obj,
     long long* value_out);
-
 void pixel_detec_struct_get_n_hit_detec(
     const void* struct_obj,
     long long* value_out);
-
 void pixel_detec_struct_get_n_hit_pixel(
     const void* struct_obj,
     long long* value_out);
-
 void photon_element_struct_get_curvature(
     const void* struct_obj,
     void** ptr_out);
-
 void photon_element_struct_get_target(const void* struct_obj, void** ptr_out);
-
 void photon_element_struct_get_material(const void* struct_obj, void** ptr_out);
-
 void photon_element_struct_get_segmented(
     const void* struct_obj,
     void** ptr_out);
-
 void photon_element_struct_get_h_misalign(
     const void* struct_obj,
     void** ptr_out);
-
 void photon_element_struct_get_displacement(
     const void* struct_obj,
     void** ptr_out);
-
 void photon_element_struct_get_pixel(const void* struct_obj, void** ptr_out);
-
 void photon_element_struct_get_reflectivity_table_type(
     const void* struct_obj,
     int* value_out);
-
 void photon_element_struct_get_reflectivity_table_sigma(
     const void* struct_obj,
     void** ptr_out);
-
 void photon_element_struct_get_reflectivity_table_pi(
     const void* struct_obj,
     void** ptr_out);
@@ -1254,25 +1041,17 @@ void photon_element_struct_get_integrated_init_energy_prob_info(
     bool* is_allocated);
 
 void wall3d_vertex_struct_get_x(const void* struct_obj, double* value_out);
-
 void wall3d_vertex_struct_get_y(const void* struct_obj, double* value_out);
-
 void wall3d_vertex_struct_get_radius_x(
     const void* struct_obj,
     double* value_out);
-
 void wall3d_vertex_struct_get_radius_y(
     const void* struct_obj,
     double* value_out);
-
 void wall3d_vertex_struct_get_tilt(const void* struct_obj, double* value_out);
-
 void wall3d_vertex_struct_get_angle(const void* struct_obj, double* value_out);
-
 void wall3d_vertex_struct_get_x0(const void* struct_obj, double* value_out);
-
 void wall3d_vertex_struct_get_y0(const void* struct_obj, double* value_out);
-
 void wall3d_vertex_struct_get_type(const void* struct_obj, int* value_out);
 
 void wall3d_section_struct_get_name_info(
@@ -1299,31 +1078,23 @@ void wall3d_section_struct_get_v_info(
     size_t* element_size);
 
 void wall3d_section_struct_get_surface(const void* struct_obj, void** ptr_out);
-
 void wall3d_section_struct_get_type(const void* struct_obj, int* value_out);
-
 void wall3d_section_struct_get_n_vertex_input(
     const void* struct_obj,
     int* value_out);
-
 void wall3d_section_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void wall3d_section_struct_get_ix_branch(
     const void* struct_obj,
     int* value_out);
-
 void wall3d_section_struct_get_vertices_state(
     const void* struct_obj,
     int* value_out);
-
 void wall3d_section_struct_get_patch_in_region(
     const void* struct_obj,
     bool* value_out);
-
 void wall3d_section_struct_get_thickness(
     const void* struct_obj,
     double* value_out);
-
 void wall3d_section_struct_get_s(const void* struct_obj, double* value_out);
 
 void wall3d_section_struct_get_r0_info(
@@ -1336,7 +1107,6 @@ void wall3d_section_struct_get_r0_info(
 void wall3d_section_struct_get_dx0_ds(
     const void* struct_obj,
     double* value_out);
-
 void wall3d_section_struct_get_dy0_ds(
     const void* struct_obj,
     double* value_out);
@@ -1379,11 +1149,8 @@ void wall3d_struct_get_name_info(
     int* upper_bound);
 
 void wall3d_struct_get_type(const void* struct_obj, int* value_out);
-
 void wall3d_struct_get_ix_wall3d(const void* struct_obj, int* value_out);
-
 void wall3d_struct_get_n_link(const void* struct_obj, int* value_out);
-
 void wall3d_struct_get_thickness(const void* struct_obj, double* value_out);
 
 void wall3d_struct_get_clear_material_info(
@@ -1401,7 +1168,6 @@ void wall3d_struct_get_opaque_material_info(
     int* upper_bound);
 
 void wall3d_struct_get_superimpose(const void* struct_obj, bool* value_out);
-
 void wall3d_struct_get_ele_anchor_pt(const void* struct_obj, int* value_out);
 
 void wall3d_struct_get_section_info(
@@ -1414,13 +1180,10 @@ void wall3d_struct_get_section_info(
     size_t* element_size);
 
 void ramper_lord_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void ramper_lord_struct_get_ix_con(const void* struct_obj, int* value_out);
-
 void ramper_lord_struct_get_attrib_ptr(
     const void* struct_obj,
     double** ptr_out);
-
 void control_struct_get_value(const void* struct_obj, double* value_out);
 
 void control_struct_get_y_knot_info(
@@ -1441,7 +1204,6 @@ void control_struct_get_stack_info(
     size_t* element_size);
 
 void control_struct_get_slave(const void* struct_obj, void** ptr_out);
-
 void control_struct_get_lord(const void* struct_obj, void** ptr_out);
 
 void control_struct_get_slave_name_info(
@@ -1468,7 +1230,6 @@ void control_var1_struct_get_name_info(
     int* upper_bound);
 
 void control_var1_struct_get_value(const void* struct_obj, double* value_out);
-
 void control_var1_struct_get_old_value(
     const void* struct_obj,
     double* value_out);
@@ -1546,11 +1307,9 @@ void controller_struct_get_x_knot_info(
 void ellipse_beam_init_struct_get_part_per_ellipse(
     const void* struct_obj,
     int* value_out);
-
 void ellipse_beam_init_struct_get_n_ellipse(
     const void* struct_obj,
     int* value_out);
-
 void ellipse_beam_init_struct_get_sigma_cutoff(
     const void* struct_obj,
     double* value_out);
@@ -1563,21 +1322,14 @@ void kv_beam_init_struct_get_part_per_phi_info(
     int* upper_bound);
 
 void kv_beam_init_struct_get_n_I2(const void* struct_obj, int* value_out);
-
 void kv_beam_init_struct_get_A(const void* struct_obj, double* value_out);
-
 void grid_beam_init_struct_get_n_x(const void* struct_obj, int* value_out);
-
 void grid_beam_init_struct_get_n_px(const void* struct_obj, int* value_out);
-
 void grid_beam_init_struct_get_x_min(const void* struct_obj, double* value_out);
-
 void grid_beam_init_struct_get_x_max(const void* struct_obj, double* value_out);
-
 void grid_beam_init_struct_get_px_min(
     const void* struct_obj,
     double* value_out);
-
 void grid_beam_init_struct_get_px_max(
     const void* struct_obj,
     double* value_out);
@@ -1631,17 +1383,13 @@ void beam_init_struct_get_emit_jitter_info(
 void beam_init_struct_get_sig_z_jitter(
     const void* struct_obj,
     double* value_out);
-
 void beam_init_struct_get_sig_pz_jitter(
     const void* struct_obj,
     double* value_out);
-
 void beam_init_struct_get_n_particle(const void* struct_obj, int* value_out);
-
 void beam_init_struct_get_renorm_center(
     const void* struct_obj,
     bool* value_out);
-
 void beam_init_struct_get_renorm_sigma(const void* struct_obj, bool* value_out);
 
 void beam_init_struct_get_random_engine_info(
@@ -1661,19 +1409,14 @@ void beam_init_struct_get_random_gauss_converter_info(
 void beam_init_struct_get_random_sigma_cutoff(
     const void* struct_obj,
     double* value_out);
-
 void beam_init_struct_get_a_norm_emit(
     const void* struct_obj,
     double* value_out);
-
 void beam_init_struct_get_b_norm_emit(
     const void* struct_obj,
     double* value_out);
-
 void beam_init_struct_get_a_emit(const void* struct_obj, double* value_out);
-
 void beam_init_struct_get_b_emit(const void* struct_obj, double* value_out);
-
 void beam_init_struct_get_dPz_dz(const void* struct_obj, double* value_out);
 
 void beam_init_struct_get_center_info(
@@ -1684,19 +1427,13 @@ void beam_init_struct_get_center_info(
     int* upper_bound);
 
 void beam_init_struct_get_t_offset(const void* struct_obj, double* value_out);
-
 void beam_init_struct_get_dt_bunch(const void* struct_obj, double* value_out);
-
 void beam_init_struct_get_sig_z(const void* struct_obj, double* value_out);
-
 void beam_init_struct_get_sig_pz(const void* struct_obj, double* value_out);
-
 void beam_init_struct_get_bunch_charge(
     const void* struct_obj,
     double* value_out);
-
 void beam_init_struct_get_n_bunch(const void* struct_obj, int* value_out);
-
 void beam_init_struct_get_ix_turn(const void* struct_obj, int* value_out);
 
 void beam_init_struct_get_species_info(
@@ -1709,13 +1446,10 @@ void beam_init_struct_get_species_info(
 void beam_init_struct_get_full_6D_coupling_calc(
     const void* struct_obj,
     bool* value_out);
-
 void beam_init_struct_get_use_particle_start(
     const void* struct_obj,
     bool* value_out);
-
 void beam_init_struct_get_use_t_coords(const void* struct_obj, bool* value_out);
-
 void beam_init_struct_get_use_z_as_t(const void* struct_obj, bool* value_out);
 
 void beam_init_struct_get_file_name_info(
@@ -1726,67 +1460,44 @@ void beam_init_struct_get_file_name_info(
     int* upper_bound);
 
 void lat_param_struct_get_n_part(const void* struct_obj, double* value_out);
-
 void lat_param_struct_get_total_length(
     const void* struct_obj,
     double* value_out);
-
 void lat_param_struct_get_unstable_factor(
     const void* struct_obj,
     double* value_out);
-
 void lat_param_struct_get_spin_tune(const void* struct_obj, double* value_out);
-
 void lat_param_struct_get_particle(const void* struct_obj, int* value_out);
-
 void lat_param_struct_get_default_tracking_species(
     const void* struct_obj,
     int* value_out);
-
 void lat_param_struct_get_geometry(const void* struct_obj, int* value_out);
-
 void lat_param_struct_get_ixx(const void* struct_obj, int* value_out);
-
 void lat_param_struct_get_stable(const void* struct_obj, bool* value_out);
-
 void lat_param_struct_get_live_branch(const void* struct_obj, bool* value_out);
-
 void lat_param_struct_get_g1_integral(
     const void* struct_obj,
     double* value_out);
-
 void lat_param_struct_get_g2_integral(
     const void* struct_obj,
     double* value_out);
-
 void lat_param_struct_get_g3_integral(
     const void* struct_obj,
     double* value_out);
-
 void lat_param_struct_get_bookkeeping_state(
     const void* struct_obj,
     void** ptr_out);
-
 void lat_param_struct_get_beam_init(const void* struct_obj, void** ptr_out);
-
 void mode_info_struct_get_stable(const void* struct_obj, bool* value_out);
-
 void mode_info_struct_get_tune(const void* struct_obj, double* value_out);
-
 void mode_info_struct_get_emit(const void* struct_obj, double* value_out);
-
 void mode_info_struct_get_chrom(const void* struct_obj, double* value_out);
-
 void mode_info_struct_get_sigma(const void* struct_obj, double* value_out);
-
 void mode_info_struct_get_sigmap(const void* struct_obj, double* value_out);
-
 void pre_tracker_struct_get_who(const void* struct_obj, int* value_out);
-
 void pre_tracker_struct_get_ix_ele_start(
     const void* struct_obj,
     int* value_out);
-
 void pre_tracker_struct_get_ix_ele_end(const void* struct_obj, int* value_out);
 
 void pre_tracker_struct_get_input_file_info(
@@ -1799,7 +1510,6 @@ void pre_tracker_struct_get_input_file_info(
 void anormal_mode_struct_get_emittance(
     const void* struct_obj,
     double* value_out);
-
 void anormal_mode_struct_get_emittance_no_vert(
     const void* struct_obj,
     double* value_out);
@@ -1812,39 +1522,29 @@ void anormal_mode_struct_get_synch_int_info(
     int* upper_bound);
 
 void anormal_mode_struct_get_j_damp(const void* struct_obj, double* value_out);
-
 void anormal_mode_struct_get_alpha_damp(
     const void* struct_obj,
     double* value_out);
-
 void anormal_mode_struct_get_chrom(const void* struct_obj, double* value_out);
-
 void anormal_mode_struct_get_tune(const void* struct_obj, double* value_out);
-
 void linac_normal_mode_struct_get_i2_E4(
     const void* struct_obj,
     double* value_out);
-
 void linac_normal_mode_struct_get_i3_E7(
     const void* struct_obj,
     double* value_out);
-
 void linac_normal_mode_struct_get_i5a_E6(
     const void* struct_obj,
     double* value_out);
-
 void linac_normal_mode_struct_get_i5b_E6(
     const void* struct_obj,
     double* value_out);
-
 void linac_normal_mode_struct_get_sig_E1(
     const void* struct_obj,
     double* value_out);
-
 void linac_normal_mode_struct_get_a_emittance_end(
     const void* struct_obj,
     double* value_out);
-
 void linac_normal_mode_struct_get_b_emittance_end(
     const void* struct_obj,
     double* value_out);
@@ -1857,37 +1557,26 @@ void normal_modes_struct_get_synch_int_info(
     int* upper_bound);
 
 void normal_modes_struct_get_sigE_E(const void* struct_obj, double* value_out);
-
 void normal_modes_struct_get_sig_z(const void* struct_obj, double* value_out);
-
 void normal_modes_struct_get_e_loss(const void* struct_obj, double* value_out);
-
 void normal_modes_struct_get_rf_voltage(
     const void* struct_obj,
     double* value_out);
-
 void normal_modes_struct_get_pz_aperture(
     const void* struct_obj,
     double* value_out);
-
 void normal_modes_struct_get_pz_average(
     const void* struct_obj,
     double* value_out);
-
 void normal_modes_struct_get_momentum_compaction(
     const void* struct_obj,
     double* value_out);
-
 void normal_modes_struct_get_dpz_damp(
     const void* struct_obj,
     double* value_out);
-
 void normal_modes_struct_get_a(const void* struct_obj, void** ptr_out);
-
 void normal_modes_struct_get_b(const void* struct_obj, void** ptr_out);
-
 void normal_modes_struct_get_z(const void* struct_obj, void** ptr_out);
-
 void normal_modes_struct_get_lin(const void* struct_obj, void** ptr_out);
 
 void em_field_struct_get_E_info(
@@ -1905,7 +1594,6 @@ void em_field_struct_get_B_info(
     int* upper_bound);
 
 void em_field_struct_get_phi(const void* struct_obj, double* value_out);
-
 void em_field_struct_get_phi_B(const void* struct_obj, double* value_out);
 
 void em_field_struct_get_A_info(
@@ -1916,27 +1604,16 @@ void em_field_struct_get_A_info(
     int* upper_bound);
 
 void strong_beam_struct_get_ix_slice(const void* struct_obj, int* value_out);
-
 void strong_beam_struct_get_x_center(const void* struct_obj, double* value_out);
-
 void strong_beam_struct_get_y_center(const void* struct_obj, double* value_out);
-
 void strong_beam_struct_get_x_sigma(const void* struct_obj, double* value_out);
-
 void strong_beam_struct_get_y_sigma(const void* struct_obj, double* value_out);
-
 void strong_beam_struct_get_dx(const void* struct_obj, double* value_out);
-
 void strong_beam_struct_get_dy(const void* struct_obj, double* value_out);
-
 void track_point_struct_get_s_lab(const void* struct_obj, double* value_out);
-
 void track_point_struct_get_s_body(const void* struct_obj, double* value_out);
-
 void track_point_struct_get_orb(const void* struct_obj, void** ptr_out);
-
 void track_point_struct_get_field(const void* struct_obj, void** ptr_out);
-
 void track_point_struct_get_strong_beam(const void* struct_obj, void** ptr_out);
 
 void track_point_struct_get_vec0_info(
@@ -1956,41 +1633,30 @@ void track_struct_get_pt_info(
     size_t* element_size);
 
 void track_struct_get_ds_save(const void* struct_obj, double* value_out);
-
 void track_struct_get_n_pt(const void* struct_obj, int* value_out);
-
 void track_struct_get_n_bad(const void* struct_obj, int* value_out);
-
 void track_struct_get_n_ok(const void* struct_obj, int* value_out);
-
 void space_charge_common_struct_get_ds_track_step(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_dt_track_step(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_cathode_strength_cutoff(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_rel_tol_tracking(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_abs_tol_tracking(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_beam_chamber_height(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_lsc_sigma_cutoff(
     const void* struct_obj,
     double* value_out);
-
 void space_charge_common_struct_get_particle_sigma_cutoff(
     const void* struct_obj,
     double* value_out);
@@ -2012,23 +1678,18 @@ void space_charge_common_struct_get_csr3d_mesh_size_info(
 void space_charge_common_struct_get_n_bin(
     const void* struct_obj,
     int* value_out);
-
 void space_charge_common_struct_get_particle_bin_span(
     const void* struct_obj,
     int* value_out);
-
 void space_charge_common_struct_get_n_shield_images(
     const void* struct_obj,
     int* value_out);
-
 void space_charge_common_struct_get_sc_min_in_bin(
     const void* struct_obj,
     int* value_out);
-
 void space_charge_common_struct_get_lsc_kick_transverse_dependence(
     const void* struct_obj,
     bool* value_out);
-
 void space_charge_common_struct_get_debug(
     const void* struct_obj,
     bool* value_out);
@@ -2054,199 +1715,142 @@ void bmad_common_struct_get_d_orb_info(
 void bmad_common_struct_get_default_ds_step(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_significant_length(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_rel_tol_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_abs_tol_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_rel_tol_adaptive_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_abs_tol_adaptive_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_init_ds_adaptive_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_min_ds_adaptive_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_fatal_ds_adaptive_tracking(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_autoscale_amp_abs_tol(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_autoscale_amp_rel_tol(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_autoscale_phase_tol(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_electric_dipole_moment(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_synch_rad_scale(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_sad_eps_scale(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_sad_amp_max(
     const void* struct_obj,
     double* value_out);
-
 void bmad_common_struct_get_sad_n_div_max(
     const void* struct_obj,
     int* value_out);
-
 void bmad_common_struct_get_taylor_order(
     const void* struct_obj,
     int* value_out);
-
 void bmad_common_struct_get_runge_kutta_order(
     const void* struct_obj,
     int* value_out);
-
 void bmad_common_struct_get_default_integ_order(
     const void* struct_obj,
     int* value_out);
-
 void bmad_common_struct_get_max_num_runge_kutta_step(
     const void* struct_obj,
     int* value_out);
-
 void bmad_common_struct_get_rf_phase_below_transition_ref(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_sr_wakes_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_lr_wakes_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_auto_bookkeeper(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_high_energy_space_charge_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_csr_and_space_charge_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_spin_tracking_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_spin_sokolov_ternov_flipping_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_radiation_damping_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_radiation_zero_average(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_radiation_fluctuations_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_conserve_taylor_maps(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_absolute_time_tracking(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_absolute_time_ref_shift(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_convert_to_kinetic_momentum(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_normalize_twiss(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_aperture_limit_on(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_spin_n0_direction_user_set(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_common_struct_get_debug(const void* struct_obj, bool* value_out);
-
 void rad_int1_struct_get_i0(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i1(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i2(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i3(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i4a(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i4b(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i4z(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i5a(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i5b(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_i6b(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_lin_i2_E4(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_lin_i3_E7(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_lin_i5a_E6(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_lin_i5b_E6(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_lin_norm_emit_a(
     const void* struct_obj,
     double* value_out);
-
 void rad_int1_struct_get_lin_norm_emit_b(
     const void* struct_obj,
     double* value_out);
-
 void rad_int1_struct_get_lin_sig_E(const void* struct_obj, double* value_out);
-
 void rad_int1_struct_get_n_steps(const void* struct_obj, double* value_out);
 
 void rad_int_branch_struct_get_ele_info(
@@ -2268,21 +1872,13 @@ void rad_int_all_ele_struct_get_branch_info(
     size_t* element_size);
 
 void rf_stair_step_struct_get_E_tot0(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_E_tot1(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_p0c(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_p1c(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_dE_amp(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_scale(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_time(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_s(const void* struct_obj, double* value_out);
-
 void rf_stair_step_struct_get_ix_step(const void* struct_obj, int* value_out);
 
 void rf_ele_struct_get_steps_info(
@@ -2333,37 +1929,22 @@ void ele_struct_get_descrip_info(
     bool* is_allocated);
 
 void ele_struct_get_a(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_b(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_z(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_x(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_y(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_ac_kick(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_bookkeeping_state(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_branch(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_control(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_rf(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_lord(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_floor(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_high_energy_space_charge(
     const void* struct_obj,
     void** ptr_out);
-
 void ele_struct_get_mode3(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_photon(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_rad_map(const void* struct_obj, void** ptr_out);
 
 void ele_struct_get_taylor_info(
@@ -2437,11 +2018,8 @@ void ele_struct_get_grid_field_info(
     size_t* element_size);
 
 void ele_struct_get_map_ref_orb_in(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_map_ref_orb_out(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_time_ref_orb_in(const void* struct_obj, void** ptr_out);
-
 void ele_struct_get_time_ref_orb_out(const void* struct_obj, void** ptr_out);
 
 void ele_struct_get_value_info(
@@ -2466,99 +2044,56 @@ void ele_struct_get_vec0_info(
     int* upper_bound);
 
 void ele_struct_get_gamma_c(const void* struct_obj, double* value_out);
-
 void ele_struct_get_s_start(const void* struct_obj, double* value_out);
-
 void ele_struct_get_s(const void* struct_obj, double* value_out);
-
 void ele_struct_get_ref_time(const void* struct_obj, double* value_out);
-
 void ele_struct_get_key(const void* struct_obj, int* value_out);
-
 void ele_struct_get_sub_key(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ix_branch(const void* struct_obj, int* value_out);
-
 void ele_struct_get_lord_status(const void* struct_obj, int* value_out);
-
 void ele_struct_get_n_slave(const void* struct_obj, int* value_out);
-
 void ele_struct_get_n_slave_field(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ix1_slave(const void* struct_obj, int* value_out);
-
 void ele_struct_get_slave_status(const void* struct_obj, int* value_out);
-
 void ele_struct_get_n_lord(const void* struct_obj, int* value_out);
-
 void ele_struct_get_n_lord_field(const void* struct_obj, int* value_out);
-
 void ele_struct_get_n_lord_ramper(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ic1_lord(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ix_pointer(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ixx(const void* struct_obj, int* value_out);
-
 void ele_struct_get_iyy(const void* struct_obj, int* value_out);
-
 void ele_struct_get_izz(const void* struct_obj, int* value_out);
-
 void ele_struct_get_mat6_calc_method(const void* struct_obj, int* value_out);
-
 void ele_struct_get_tracking_method(const void* struct_obj, int* value_out);
-
 void ele_struct_get_spin_tracking_method(
     const void* struct_obj,
     int* value_out);
-
 void ele_struct_get_csr_method(const void* struct_obj, int* value_out);
-
 void ele_struct_get_space_charge_method(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ptc_integration_type(
     const void* struct_obj,
     int* value_out);
-
 void ele_struct_get_field_calc(const void* struct_obj, int* value_out);
-
 void ele_struct_get_aperture_at(const void* struct_obj, int* value_out);
-
 void ele_struct_get_aperture_type(const void* struct_obj, int* value_out);
-
 void ele_struct_get_ref_species(const void* struct_obj, int* value_out);
-
 void ele_struct_get_orientation(const void* struct_obj, int* value_out);
-
 void ele_struct_get_symplectify(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_mode_flip(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_multipoles_on(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_scale_multipoles(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_taylor_map_includes_offsets(
     const void* struct_obj,
     bool* value_out);
-
 void ele_struct_get_field_master(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_is_on(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_logic(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_bmad_logic(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_select(const void* struct_obj, bool* value_out);
-
 void ele_struct_get_offset_moves_aperture(
     const void* struct_obj,
     bool* value_out);
-
 void complex_taylor_term_struct_get_coef(
     const void* struct_obj,
     std::complex<double>* value_out);
@@ -2591,25 +2126,15 @@ void branch_struct_get_name_info(
     int* upper_bound);
 
 void branch_struct_get_ix_branch(const void* struct_obj, int* value_out);
-
 void branch_struct_get_ix_from_branch(const void* struct_obj, int* value_out);
-
 void branch_struct_get_ix_from_ele(const void* struct_obj, int* value_out);
-
 void branch_struct_get_ix_to_ele(const void* struct_obj, int* value_out);
-
 void branch_struct_get_ix_fixer(const void* struct_obj, int* value_out);
-
 void branch_struct_get_n_ele_track(const void* struct_obj, int* value_out);
-
 void branch_struct_get_n_ele_max(const void* struct_obj, int* value_out);
-
 void branch_struct_get_lat(const void* struct_obj, void** ptr_out);
-
 void branch_struct_get_a(const void* struct_obj, void** ptr_out);
-
 void branch_struct_get_b(const void* struct_obj, void** ptr_out);
-
 void branch_struct_get_z(const void* struct_obj, void** ptr_out);
 
 void branch_struct_get_ele_info(
@@ -2622,7 +2147,6 @@ void branch_struct_get_ele_info(
     size_t* element_size);
 
 void branch_struct_get_param(const void* struct_obj, void** ptr_out);
-
 void branch_struct_get_particle_start(const void* struct_obj, void** ptr_out);
 
 void branch_struct_get_wall3d_info(
@@ -2679,15 +2203,10 @@ void lat_struct_get_constant_info(
     size_t* element_size);
 
 void lat_struct_get_a(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_b(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_z(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_param(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_lord_state(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_ele_init(const void* struct_obj, void** ptr_out);
 
 void lat_struct_get_ele_info(
@@ -2718,9 +2237,7 @@ void lat_struct_get_control_info(
     size_t* element_size);
 
 void lat_struct_get_particle_start(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_beam_init(const void* struct_obj, void** ptr_out);
-
 void lat_struct_get_pre_tracker(const void* struct_obj, void** ptr_out);
 
 void lat_struct_get_custom_info(
@@ -2732,15 +2249,10 @@ void lat_struct_get_custom_info(
     bool* is_allocated);
 
 void lat_struct_get_version(const void* struct_obj, int* value_out);
-
 void lat_struct_get_n_ele_track(const void* struct_obj, int** ptr_out);
-
 void lat_struct_get_n_ele_max(const void* struct_obj, int** ptr_out);
-
 void lat_struct_get_n_control_max(const void* struct_obj, int* value_out);
-
 void lat_struct_get_n_ic_max(const void* struct_obj, int* value_out);
-
 void lat_struct_get_input_taylor_order(const void* struct_obj, int* value_out);
 
 void lat_struct_get_ic_info(
@@ -2752,9 +2264,7 @@ void lat_struct_get_ic_info(
     bool* is_allocated);
 
 void lat_struct_get_photon_type(const void* struct_obj, int* value_out);
-
 void lat_struct_get_creation_hash(const void* struct_obj, int* value_out);
-
 void lat_struct_get_ramper_slave_bookkeeping(
     const void* struct_obj,
     int* value_out);
@@ -2777,43 +2287,25 @@ void bunch_struct_get_ix_z_info(
     bool* is_allocated);
 
 void bunch_struct_get_charge_tot(const void* struct_obj, double* value_out);
-
 void bunch_struct_get_charge_live(const void* struct_obj, double* value_out);
-
 void bunch_struct_get_z_center(const void* struct_obj, double* value_out);
-
 void bunch_struct_get_t_center(const void* struct_obj, double* value_out);
-
 void bunch_struct_get_t0(const void* struct_obj, double* value_out);
-
 void bunch_struct_get_drift_between_t_and_s(
     const void* struct_obj,
     bool* value_out);
-
 void bunch_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void bunch_struct_get_ix_bunch(const void* struct_obj, int* value_out);
-
 void bunch_struct_get_ix_turn(const void* struct_obj, int* value_out);
-
 void bunch_struct_get_n_live(const void* struct_obj, int* value_out);
-
 void bunch_struct_get_n_good(const void* struct_obj, int* value_out);
-
 void bunch_struct_get_n_bad(const void* struct_obj, int* value_out);
-
 void bunch_params_struct_get_centroid(const void* struct_obj, void** ptr_out);
-
 void bunch_params_struct_get_x(const void* struct_obj, void** ptr_out);
-
 void bunch_params_struct_get_y(const void* struct_obj, void** ptr_out);
-
 void bunch_params_struct_get_z(const void* struct_obj, void** ptr_out);
-
 void bunch_params_struct_get_a(const void* struct_obj, void** ptr_out);
-
 void bunch_params_struct_get_b(const void* struct_obj, void** ptr_out);
-
 void bunch_params_struct_get_c(const void* struct_obj, void** ptr_out);
 
 void bunch_params_struct_get_rel_max_info(
@@ -2831,43 +2323,31 @@ void bunch_params_struct_get_rel_min_info(
     int* upper_bound);
 
 void bunch_params_struct_get_s(const void* struct_obj, double* value_out);
-
 void bunch_params_struct_get_t(const void* struct_obj, double* value_out);
-
 void bunch_params_struct_get_sigma_t(const void* struct_obj, double* value_out);
-
 void bunch_params_struct_get_charge_live(
     const void* struct_obj,
     double* value_out);
-
 void bunch_params_struct_get_charge_tot(
     const void* struct_obj,
     double* value_out);
-
 void bunch_params_struct_get_n_particle_tot(
     const void* struct_obj,
     int* value_out);
-
 void bunch_params_struct_get_n_particle_live(
     const void* struct_obj,
     int* value_out);
-
 void bunch_params_struct_get_n_particle_lost_in_ele(
     const void* struct_obj,
     int* value_out);
-
 void bunch_params_struct_get_n_good_steps(
     const void* struct_obj,
     int* value_out);
-
 void bunch_params_struct_get_n_bad_steps(
     const void* struct_obj,
     int* value_out);
-
 void bunch_params_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void bunch_params_struct_get_location(const void* struct_obj, int* value_out);
-
 void bunch_params_struct_get_twiss_valid(
     const void* struct_obj,
     bool* value_out);
@@ -2882,39 +2362,27 @@ void beam_struct_get_bunch_info(
     size_t* element_size);
 
 void aperture_point_struct_get_x(const void* struct_obj, double* value_out);
-
 void aperture_point_struct_get_y(const void* struct_obj, double* value_out);
-
 void aperture_point_struct_get_plane(const void* struct_obj, int* value_out);
-
 void aperture_point_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void aperture_point_struct_get_i_turn(const void* struct_obj, int* value_out);
-
 void aperture_param_struct_get_min_angle(
     const void* struct_obj,
     double* value_out);
-
 void aperture_param_struct_get_max_angle(
     const void* struct_obj,
     double* value_out);
-
 void aperture_param_struct_get_n_angle(const void* struct_obj, int* value_out);
-
 void aperture_param_struct_get_n_turn(const void* struct_obj, int* value_out);
-
 void aperture_param_struct_get_x_init(
     const void* struct_obj,
     double* value_out);
-
 void aperture_param_struct_get_y_init(
     const void* struct_obj,
     double* value_out);
-
 void aperture_param_struct_get_rel_accuracy(
     const void* struct_obj,
     double* value_out);
-
 void aperture_param_struct_get_abs_accuracy(
     const void* struct_obj,
     double* value_out);
@@ -2936,7 +2404,6 @@ void aperture_scan_struct_get_point_info(
     size_t* element_size);
 
 void aperture_scan_struct_get_ref_orb(const void* struct_obj, void** ptr_out);
-
 void aperture_scan_struct_get_pz_start(
     const void* struct_obj,
     double* value_out);
@@ -3001,7 +2468,6 @@ void ptc_normal_form_struct_get_orb0_info(
 void ptc_normal_form_struct_get_valid_map(
     const void* struct_obj,
     bool* value_out);
-
 void bmad_normal_form_struct_get_ele_origin(
     const void* struct_obj,
     void** ptr_out);
@@ -3073,97 +2539,73 @@ void bunch_track_struct_get_pt_info(
     size_t* element_size);
 
 void bunch_track_struct_get_ds_save(const void* struct_obj, double* value_out);
-
 void bunch_track_struct_get_n_pt(const void* struct_obj, int* value_out);
-
 void summation_rdt_struct_get_h11001(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h00111(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h20001(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h00201(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h10002(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h21000(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h30000(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h10110(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h10020(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h10200(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h31000(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h40000(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h20110(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h11200(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h20020(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h20200(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h00310(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h00400(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h22000(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h00220(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void summation_rdt_struct_get_h11110(
     const void* struct_obj,
     std::complex<double>* value_out);
-
 void lat_ele_order1_struct_get_ix_branch(
     const void* struct_obj,
     int* value_out);
-
 void lat_ele_order1_struct_get_ix_order(const void* struct_obj, int* value_out);
 
 void lat_ele_order_array_struct_get_ele_info(
@@ -3185,21 +2627,15 @@ void tao_spin_ele_struct_get_orb_eigen_val_info(
     int* upper_bound);
 
 void tao_spin_ele_struct_get_valid(const void* struct_obj, bool* value_out);
-
 void tao_plot_cache_struct_get_ele_to_s(const void* struct_obj, void** ptr_out);
-
 void tao_plot_cache_struct_get_orbit(const void* struct_obj, void** ptr_out);
-
 void tao_plot_cache_struct_get_err(const void* struct_obj, bool* value_out);
-
 void tao_spin_polarization_struct_get_tune(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_pol_limit_st(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_pol_limit_dk(
     const void* struct_obj,
     double* value_out);
@@ -3221,7 +2657,6 @@ void tao_spin_polarization_struct_get_pol_limit_dk_partial2_info(
 void tao_spin_polarization_struct_get_pol_rate_bks(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_depol_rate(
     const void* struct_obj,
     double* value_out);
@@ -3243,23 +2678,18 @@ void tao_spin_polarization_struct_get_depol_rate_partial2_info(
 void tao_spin_polarization_struct_get_integral_bn(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_integral_bdn(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_integral_1ns(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_integral_dn2(
     const void* struct_obj,
     double* value_out);
-
 void tao_spin_polarization_struct_get_valid(
     const void* struct_obj,
     bool* value_out);
-
 void tao_spin_polarization_struct_get_q_1turn(
     const void* struct_obj,
     void** ptr_out);
@@ -3332,23 +2762,17 @@ void tao_lattice_branch_struct_get_plot_cache_info(
     size_t* element_size);
 
 void tao_lattice_branch_struct_get_spin(const void* struct_obj, void** ptr_out);
-
 void tao_lattice_branch_struct_get_srdt(const void* struct_obj, void** ptr_out);
-
 void tao_lattice_branch_struct_get_orb0(const void* struct_obj, void** ptr_out);
-
 void tao_lattice_branch_struct_get_modes_ri(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_lattice_branch_struct_get_modes_6d(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_lattice_branch_struct_get_ptc_normal_form(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_lattice_branch_struct_get_bmad_normal_form(
     const void* struct_obj,
     void** ptr_out);
@@ -3374,85 +2798,64 @@ void tao_lattice_branch_struct_get_low_E_orb_info(
 void tao_lattice_branch_struct_get_cache_x_min(
     const void* struct_obj,
     double* value_out);
-
 void tao_lattice_branch_struct_get_cache_x_max(
     const void* struct_obj,
     double* value_out);
-
 void tao_lattice_branch_struct_get_comb_ds_save(
     const void* struct_obj,
     double* value_out);
-
 void tao_lattice_branch_struct_get_track_state(
     const void* struct_obj,
     int* value_out);
-
 void tao_lattice_branch_struct_get_cache_n_pts(
     const void* struct_obj,
     int* value_out);
-
 void tao_lattice_branch_struct_get_ix_rad_int_cache(
     const void* struct_obj,
     int* value_out);
-
 void tao_lattice_branch_struct_get_has_open_match_element(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_plot_cache_valid(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_spin_map_valid(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_twiss_valid(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_mode_flip_here(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_chrom_calc_ok(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_rad_int_calc_ok(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_emit_6d_calc_ok(
     const void* struct_obj,
     bool* value_out);
-
 void tao_lattice_branch_struct_get_sigma_track_ok(
     const void* struct_obj,
     bool* value_out);
-
 void tao_model_element_struct_get_beam(const void* struct_obj, void** ptr_out);
-
 void tao_model_element_struct_get_save_beam_internally(
     const void* struct_obj,
     bool* value_out);
-
 void tao_model_element_struct_get_save_beam_to_file(
     const void* struct_obj,
     bool* value_out);
-
 void tao_beam_branch_struct_get_beam_at_start(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_beam_branch_struct_get_beam_init(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_beam_branch_struct_get_beam_init_used(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_beam_branch_struct_get_init_starting_distribution(
     const void* struct_obj,
     bool* value_out);
@@ -3474,11 +2877,9 @@ void tao_beam_branch_struct_get_track_end_info(
 void tao_beam_branch_struct_get_ix_branch(
     const void* struct_obj,
     int* value_out);
-
 void tao_beam_branch_struct_get_ix_track_start(
     const void* struct_obj,
     int* value_out);
-
 void tao_beam_branch_struct_get_ix_track_end(
     const void* struct_obj,
     int* value_out);
@@ -3509,15 +2910,11 @@ void tao_lattice_struct_get_name_info(
     int* upper_bound);
 
 void tao_lattice_struct_get_lat(const void* struct_obj, void** ptr_out);
-
 void tao_lattice_struct_get_high_E_lat(const void* struct_obj, void** ptr_out);
-
 void tao_lattice_struct_get_low_E_lat(const void* struct_obj, void** ptr_out);
-
 void tao_lattice_struct_get_rad_int_by_ele_ri(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_lattice_struct_get_rad_int_by_ele_6d(
     const void* struct_obj,
     void** ptr_out);
@@ -3555,11 +2952,9 @@ void tao_beam_uni_struct_get_dump_at_info(
 void tao_beam_uni_struct_get_track_beam_in_universe(
     const void* struct_obj,
     bool* value_out);
-
 void tao_beam_uni_struct_get_always_reinit(
     const void* struct_obj,
     bool* value_out);
-
 void tao_dynamic_aperture_struct_get_param(
     const void* struct_obj,
     void** ptr_out);
@@ -3584,11 +2979,9 @@ void tao_dynamic_aperture_struct_get_pz_info(
 void tao_dynamic_aperture_struct_get_ellipse_scale(
     const void* struct_obj,
     double* value_out);
-
 void tao_dynamic_aperture_struct_get_a_emit(
     const void* struct_obj,
     double* value_out);
-
 void tao_dynamic_aperture_struct_get_b_emit(
     const void* struct_obj,
     double* value_out);
@@ -3649,35 +3042,22 @@ void tao_d2_data_struct_get_d1_info(
     size_t* element_size);
 
 void tao_d2_data_struct_get_ix_universe(const void* struct_obj, int* value_out);
-
 void tao_d2_data_struct_get_ix_d2_data(const void* struct_obj, int* value_out);
-
 void tao_d2_data_struct_get_ix_ref(const void* struct_obj, int* value_out);
-
 void tao_d2_data_struct_get_data_read_in(
     const void* struct_obj,
     bool* value_out);
-
 void tao_d2_data_struct_get_ref_read_in(
     const void* struct_obj,
     bool* value_out);
-
 void tao_spin_map_struct_get_valid(const void* struct_obj, bool* value_out);
-
 void tao_spin_map_struct_get_map1(const void* struct_obj, void** ptr_out);
-
 void tao_spin_map_struct_get_axis_input(const void* struct_obj, void** ptr_out);
-
 void tao_spin_map_struct_get_axis0(const void* struct_obj, void** ptr_out);
-
 void tao_spin_map_struct_get_axis1(const void* struct_obj, void** ptr_out);
-
 void tao_spin_map_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void tao_spin_map_struct_get_ix_ref(const void* struct_obj, int* value_out);
-
 void tao_spin_map_struct_get_ix_uni(const void* struct_obj, int* value_out);
-
 void tao_spin_map_struct_get_ix_branch(const void* struct_obj, int* value_out);
 
 void tao_data_struct_get_ele_name_info(
@@ -3730,151 +3110,97 @@ void tao_data_struct_get_why_invalid_info(
     int* upper_bound);
 
 void tao_data_struct_get_ix_uni(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_bunch(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_branch(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_ele(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_ele_start(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_ele_ref(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_ele_merit(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_d1(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_data(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_ix_dModel(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_eval_point(const void* struct_obj, int* value_out);
-
 void tao_data_struct_get_meas_value(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_ref_value(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_model_value(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_design_value(
     const void* struct_obj,
     double* value_out);
-
 void tao_data_struct_get_old_value(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_base_value(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_error_rms(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_delta_merit(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_weight(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_invalid_value(
     const void* struct_obj,
     double* value_out);
-
 void tao_data_struct_get_merit(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_s(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_s_offset(const void* struct_obj, double* value_out);
-
 void tao_data_struct_get_err_message_printed(
     const void* struct_obj,
     bool* value_out);
-
 void tao_data_struct_get_exists(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_model(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_base(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_design(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_meas(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_ref(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_user(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_opt(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_good_plot(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_useit_plot(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_useit_opt(const void* struct_obj, bool* value_out);
-
 void tao_data_struct_get_spin_map(const void* struct_obj, void** ptr_out);
-
 void tao_data_struct_get_d1(const void* struct_obj, void** ptr_out);
-
 void tao_ping_scale_struct_get_a_mode_meas(
     const void* struct_obj,
     double* value_out);
-
 void tao_ping_scale_struct_get_a_mode_ref(
     const void* struct_obj,
     double* value_out);
-
 void tao_ping_scale_struct_get_b_mode_meas(
     const void* struct_obj,
     double* value_out);
-
 void tao_ping_scale_struct_get_b_mode_ref(
     const void* struct_obj,
     double* value_out);
-
 void tao_universe_calc_struct_get_srdt_for_data(
     const void* struct_obj,
     int* value_out);
-
 void tao_universe_calc_struct_get_rad_int_for_data(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_rad_int_for_plotting(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_chrom_for_data(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_chrom_for_plotting(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_lat_sigma_for_data(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_lat_sigma_for_plotting(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_dynamic_aperture(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_one_turn_map(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_lattice(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_twiss(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_track(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_calc_struct_get_spin_matrices(
     const void* struct_obj,
     bool* value_out);
@@ -3889,13 +3215,9 @@ void lat_ele_order_struct_get_branch_info(
     size_t* element_size);
 
 void tao_universe_struct_get_model(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_design(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_base(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_beam(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_dynamic_aperture(
     const void* struct_obj,
     void** ptr_out);
@@ -3928,15 +3250,11 @@ void tao_universe_struct_get_data_info(
     size_t* element_size);
 
 void tao_universe_struct_get_ping_scale(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_scratch_lat(
     const void* struct_obj,
     void** ptr_out);
-
 void tao_universe_struct_get_calc(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_ele_order(const void* struct_obj, void** ptr_out);
-
 void tao_universe_struct_get_spin_map(const void* struct_obj, void** ptr_out);
 
 void tao_universe_struct_get_dModel_dVar_info(
@@ -3953,21 +3271,16 @@ void tao_universe_struct_get_dModel_dVar_info(
     bool* is_allocated);
 
 void tao_universe_struct_get_ix_uni(const void* struct_obj, int* value_out);
-
 void tao_universe_struct_get_n_d2_data_used(
     const void* struct_obj,
     int* value_out);
-
 void tao_universe_struct_get_n_data_used(
     const void* struct_obj,
     int* value_out);
-
 void tao_universe_struct_get_is_on(const void* struct_obj, bool* value_out);
-
 void tao_universe_struct_get_design_same_as_previous(
     const void* struct_obj,
     bool* value_out);
-
 void tao_universe_struct_get_picked_uni(
     const void* struct_obj,
     bool* value_out);

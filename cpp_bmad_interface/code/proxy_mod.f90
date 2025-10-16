@@ -45,7 +45,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spline_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x0
   end subroutine
@@ -56,7 +55,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spline_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
   end subroutine
@@ -67,7 +65,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spline_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x1
   end subroutine
@@ -79,7 +76,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(spline_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%coef(lbound(struct_obj%coef, 1)))
     lower_bound = int(lbound(struct_obj%coef, 1), c_int)
@@ -128,7 +124,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spin_polar_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%polarization
   end subroutine
@@ -139,7 +134,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spin_polar_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%theta
   end subroutine
@@ -150,7 +144,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spin_polar_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -161,7 +154,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(spin_polar_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%xi
   end subroutine
@@ -207,7 +199,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ac_kicker_time_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp
   end subroutine
@@ -218,7 +209,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ac_kicker_time_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%time
   end subroutine
@@ -229,7 +219,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ac_kicker_time_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spline)
   end subroutine
@@ -275,7 +264,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ac_kicker_freq_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f
   end subroutine
@@ -286,7 +274,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ac_kicker_freq_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp
   end subroutine
@@ -297,7 +284,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ac_kicker_freq_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -308,7 +294,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ac_kicker_freq_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rf_clock_harmonic
   end subroutine
@@ -357,7 +342,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ac_kicker_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%amp_vs_time)) then
       data_ptr = c_loc(struct_obj%amp_vs_time(lbound(struct_obj%amp_vs_time, 1)))
@@ -385,7 +369,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ac_kicker_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%frequency)) then
       data_ptr = c_loc(struct_obj%frequency(lbound(struct_obj%frequency, 1)))
@@ -445,7 +428,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(interval1_coef_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%c0
   end subroutine
@@ -456,7 +438,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(interval1_coef_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%c1
   end subroutine
@@ -467,7 +448,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(interval1_coef_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_exp
   end subroutine
@@ -515,7 +495,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%angle)) then
       data_ptr = c_loc(struct_obj%angle(lbound(struct_obj%angle, 1)))
@@ -540,7 +519,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%energy)) then
       data_ptr = c_loc(struct_obj%energy(lbound(struct_obj%energy, 1)))
@@ -566,7 +544,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%int1)) then
       data_ptr = c_loc(struct_obj%int1(lbound(struct_obj%int1, 1)))
@@ -598,19 +575,15 @@ contains
     integer(c_int), intent(out) :: stride1, stride2
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%p_reflect)) then
       data_ptr = c_loc(struct_obj%p_reflect(lbound(struct_obj%p_reflect,1), lbound(struct_obj%p_reflect,2)))
-      
       dim1_lower = int(lbound(struct_obj%p_reflect, 1), c_int)
       dim1_upper = int(ubound(struct_obj%p_reflect, 1), c_int)
       dim1_size = dim1_upper - dim1_lower + 1
-      
       dim2_lower = int(lbound(struct_obj%p_reflect, 2), c_int)
       dim2_upper = int(ubound(struct_obj%p_reflect, 2), c_int)
       dim2_size = dim2_upper - dim2_lower + 1
-      
       stride1 = 1_c_int
       stride2 = dim1_size
       is_allocated = .true.
@@ -629,7 +602,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%max_energy
   end subroutine
@@ -642,7 +614,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%p_reflect_scratch)) then
       data_ptr = c_loc(struct_obj%p_reflect_scratch(lbound(struct_obj%p_reflect_scratch, 1)))
@@ -667,7 +638,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(photon_reflect_table_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%bragg_angle)) then
       data_ptr = c_loc(struct_obj%bragg_angle(lbound(struct_obj%bragg_angle, 1)))
@@ -726,7 +696,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_reflect_surface_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -741,7 +710,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_reflect_surface_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%description)
     lower_bound = 1_c_int
@@ -756,7 +724,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_reflect_surface_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%reflectivity_file)
     lower_bound = 1_c_int
@@ -773,7 +740,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%table)) then
       data_ptr = c_loc(struct_obj%table(lbound(struct_obj%table, 1)))
@@ -798,7 +764,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%surface_roughness_rms
   end subroutine
@@ -809,7 +774,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%roughness_correlation_len
   end subroutine
@@ -820,7 +784,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(photon_reflect_surface_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_surface
   end subroutine
@@ -867,7 +830,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%vec(lbound(struct_obj%vec, 1)))
     lower_bound = int(lbound(struct_obj%vec, 1), c_int)
@@ -881,7 +843,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
   end subroutine
@@ -892,7 +853,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_long_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t
   end subroutine
@@ -904,7 +864,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%spin(lbound(struct_obj%spin, 1)))
     lower_bound = int(lbound(struct_obj%spin, 1), c_int)
@@ -919,7 +878,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%field(lbound(struct_obj%field, 1)))
     lower_bound = int(lbound(struct_obj%field, 1), c_int)
@@ -934,7 +892,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%phase(lbound(struct_obj%phase, 1)))
     lower_bound = int(lbound(struct_obj%phase, 1), c_int)
@@ -948,7 +905,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge
   end subroutine
@@ -959,7 +915,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dt_ref
   end subroutine
@@ -970,7 +925,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%r
   end subroutine
@@ -981,7 +935,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%p0c
   end subroutine
@@ -992,7 +945,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_potential
   end subroutine
@@ -1003,7 +955,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%beta
   end subroutine
@@ -1014,7 +965,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -1025,7 +975,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -1036,7 +985,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_turn
   end subroutine
@@ -1047,7 +995,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_user
   end subroutine
@@ -1058,7 +1005,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%state
   end subroutine
@@ -1069,7 +1015,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%direction
   end subroutine
@@ -1080,7 +1025,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%time_dir
   end subroutine
@@ -1091,7 +1035,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%species
   end subroutine
@@ -1102,7 +1045,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(coord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%location
   end subroutine
@@ -1151,7 +1093,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(coord_array_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%orbit)) then
       data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
@@ -1211,7 +1152,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%K_22a
   end subroutine
@@ -1222,7 +1162,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%K_12a
   end subroutine
@@ -1233,7 +1172,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%K_11b
   end subroutine
@@ -1244,7 +1182,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%K_12b
   end subroutine
@@ -1255,7 +1192,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Cbar22_a
   end subroutine
@@ -1266,7 +1202,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Cbar12_a
   end subroutine
@@ -1277,7 +1212,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Cbar11_b
   end subroutine
@@ -1288,7 +1222,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Cbar12_b
   end subroutine
@@ -1299,7 +1232,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi_a
   end subroutine
@@ -1310,7 +1242,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bpm_phase_coupling_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi_b
   end subroutine
@@ -1357,7 +1288,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(expression_atom_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -1371,7 +1301,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(expression_atom_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
   end subroutine
@@ -1382,7 +1311,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(expression_atom_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%value
   end subroutine
@@ -1430,7 +1358,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(wake_sr_z_long_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%w)) then
       data_ptr = c_loc(struct_obj%w(lbound(struct_obj%w, 1)))
@@ -1456,7 +1383,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_z_long_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz
   end subroutine
@@ -1467,7 +1393,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_z_long_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z0
   end subroutine
@@ -1478,7 +1403,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_z_long_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%smoothing_sigma
   end subroutine
@@ -1489,7 +1413,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wake_sr_z_long_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%position_dependence
   end subroutine
@@ -1500,7 +1423,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(wake_sr_z_long_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%time_based
   end subroutine
@@ -1546,7 +1468,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp
   end subroutine
@@ -1557,7 +1478,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%damp
   end subroutine
@@ -1568,7 +1488,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%k
   end subroutine
@@ -1579,7 +1498,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -1590,7 +1508,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_sin
   end subroutine
@@ -1601,7 +1518,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_cos
   end subroutine
@@ -1612,7 +1528,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_sin
   end subroutine
@@ -1623,7 +1538,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_cos
   end subroutine
@@ -1634,7 +1548,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%polarization
   end subroutine
@@ -1645,7 +1558,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wake_sr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%position_dependence
   end subroutine
@@ -1692,7 +1604,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wake_sr_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file)
     lower_bound = 1_c_int
@@ -1706,7 +1617,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z_long)
   end subroutine
@@ -1720,7 +1630,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%long)) then
       data_ptr = c_loc(struct_obj%long(lbound(struct_obj%long, 1)))
@@ -1748,7 +1657,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%trans)) then
       data_ptr = c_loc(struct_obj%trans(lbound(struct_obj%trans, 1)))
@@ -1773,7 +1681,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z_ref_long
   end subroutine
@@ -1784,7 +1691,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z_ref_trans
   end subroutine
@@ -1795,7 +1701,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z_max
   end subroutine
@@ -1806,7 +1711,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp_scale
   end subroutine
@@ -1817,7 +1721,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z_scale
   end subroutine
@@ -1828,7 +1731,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(wake_sr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%scale_with_length
   end subroutine
@@ -1874,7 +1776,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%freq
   end subroutine
@@ -1885,7 +1786,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%freq_in
   end subroutine
@@ -1896,7 +1796,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%R_over_Q
   end subroutine
@@ -1907,7 +1806,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%Q
   end subroutine
@@ -1918,7 +1816,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%damp
   end subroutine
@@ -1929,7 +1826,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -1940,7 +1836,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%angle
   end subroutine
@@ -1951,7 +1846,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_sin
   end subroutine
@@ -1962,7 +1856,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_cos
   end subroutine
@@ -1973,7 +1866,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_sin
   end subroutine
@@ -1984,7 +1876,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_cos
   end subroutine
@@ -1995,7 +1886,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%m
   end subroutine
@@ -2006,7 +1896,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(wake_lr_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%polarized
   end subroutine
@@ -2053,7 +1942,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wake_lr_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file)
     lower_bound = 1_c_int
@@ -2070,7 +1958,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(wake_lr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%mode)) then
       data_ptr = c_loc(struct_obj%mode(lbound(struct_obj%mode, 1)))
@@ -2095,7 +1982,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t_ref
   end subroutine
@@ -2106,7 +1992,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%freq_spread
   end subroutine
@@ -2117,7 +2002,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%amp_scale
   end subroutine
@@ -2128,7 +2012,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wake_lr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%time_scale
   end subroutine
@@ -2139,7 +2022,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(wake_lr_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%self_wake_on
   end subroutine
@@ -2185,7 +2067,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_ele_loc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -2196,7 +2077,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_ele_loc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -2242,7 +2122,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(wake_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%sr)
   end subroutine
@@ -2253,7 +2132,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(wake_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lr)
   end subroutine
@@ -2299,7 +2177,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(taylor_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%coef
   end subroutine
@@ -2311,7 +2188,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(taylor_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%expn(lbound(struct_obj%expn, 1)))
     lower_bound = int(lbound(struct_obj%expn, 1), c_int)
@@ -2360,7 +2236,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(taylor_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref
   end subroutine
@@ -2374,7 +2249,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(taylor_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%term)) then
       data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
@@ -2434,7 +2308,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(em_taylor_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%coef
   end subroutine
@@ -2446,7 +2319,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(em_taylor_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%expn(lbound(struct_obj%expn, 1)))
     lower_bound = int(lbound(struct_obj%expn, 1), c_int)
@@ -2495,7 +2367,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(em_taylor_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref
   end subroutine
@@ -2509,7 +2380,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(em_taylor_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%term)) then
       data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
@@ -2569,7 +2439,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%coef
   end subroutine
@@ -2580,7 +2449,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%kx
   end subroutine
@@ -2591,7 +2459,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ky
   end subroutine
@@ -2602,7 +2469,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%kz
   end subroutine
@@ -2613,7 +2479,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x0
   end subroutine
@@ -2624,7 +2489,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
   end subroutine
@@ -2635,7 +2499,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi_z
   end subroutine
@@ -2646,7 +2509,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%family
   end subroutine
@@ -2657,7 +2519,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cartesian_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%form
   end subroutine
@@ -2704,7 +2565,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(cartesian_map_term_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file)
     lower_bound = 1_c_int
@@ -2718,7 +2578,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cartesian_map_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_link
   end subroutine
@@ -2732,7 +2591,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(cartesian_map_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%term)) then
       data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
@@ -2792,7 +2650,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cartesian_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_scale
   end subroutine
@@ -2804,7 +2661,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(cartesian_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -2818,7 +2674,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cartesian_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%master_parameter
   end subroutine
@@ -2829,7 +2684,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cartesian_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ele_anchor_pt
   end subroutine
@@ -2840,7 +2694,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cartesian_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_type
   end subroutine
@@ -2851,7 +2704,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(cartesian_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ptr)) then
       ptr_out = c_loc(struct_obj%ptr)
@@ -2901,7 +2753,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(cylindrical_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%e_coef
   end subroutine
@@ -2912,7 +2763,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(cylindrical_map_term1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_coef
   end subroutine
@@ -2959,7 +2809,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(cylindrical_map_term_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file)
     lower_bound = 1_c_int
@@ -2973,7 +2822,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cylindrical_map_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_link
   end subroutine
@@ -2987,7 +2835,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(cylindrical_map_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%term)) then
       data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
@@ -3047,7 +2894,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%m
   end subroutine
@@ -3058,7 +2904,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%harmonic
   end subroutine
@@ -3069,7 +2914,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi0_fieldmap
   end subroutine
@@ -3080,7 +2924,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%theta0_azimuth
   end subroutine
@@ -3091,7 +2934,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_scale
   end subroutine
@@ -3102,7 +2944,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%master_parameter
   end subroutine
@@ -3113,7 +2954,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ele_anchor_pt
   end subroutine
@@ -3124,7 +2964,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz
   end subroutine
@@ -3136,7 +2975,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -3150,7 +2988,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(cylindrical_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ptr)) then
       ptr_out = c_loc(struct_obj%ptr)
@@ -3202,7 +3039,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(bicubic_cmplx_coef_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%i_box(lbound(struct_obj%i_box, 1)))
     lower_bound = int(lbound(struct_obj%i_box, 1), c_int)
@@ -3253,7 +3089,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tricubic_cmplx_coef_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%i_box(lbound(struct_obj%i_box, 1)))
     lower_bound = int(lbound(struct_obj%i_box, 1), c_int)
@@ -3303,7 +3138,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(grid_field_pt1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%E(lbound(struct_obj%E, 1)))
     lower_bound = int(lbound(struct_obj%E, 1), c_int)
@@ -3318,7 +3152,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(grid_field_pt1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%B(lbound(struct_obj%B, 1)))
     lower_bound = int(lbound(struct_obj%B, 1), c_int)
@@ -3368,7 +3201,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(grid_field_pt_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file)
     lower_bound = 1_c_int
@@ -3382,7 +3214,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_link
   end subroutine
@@ -3429,7 +3260,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%geometry
   end subroutine
@@ -3440,7 +3270,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%harmonic
   end subroutine
@@ -3451,7 +3280,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi0_fieldmap
   end subroutine
@@ -3462,7 +3290,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_scale
   end subroutine
@@ -3473,7 +3300,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_type
   end subroutine
@@ -3484,7 +3310,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%master_parameter
   end subroutine
@@ -3495,7 +3320,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ele_anchor_pt
   end subroutine
@@ -3506,7 +3330,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%interpolation_order
   end subroutine
@@ -3518,7 +3341,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
     lower_bound = int(lbound(struct_obj%dr, 1), c_int)
@@ -3533,7 +3355,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -3547,7 +3368,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%curved_ref_frame
   end subroutine
@@ -3558,7 +3378,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(grid_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ptr)) then
       ptr_out = c_loc(struct_obj%ptr)
@@ -3611,7 +3430,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(floor_position_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r(lbound(struct_obj%r, 1)))
     lower_bound = int(lbound(struct_obj%r, 1), c_int)
@@ -3626,7 +3444,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(floor_position_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%theta
   end subroutine
@@ -3637,7 +3454,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(floor_position_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -3648,7 +3464,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(floor_position_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%psi
   end subroutine
@@ -3694,7 +3509,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%closed_orb)
   end subroutine
@@ -3705,7 +3519,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%kick_const
   end subroutine
@@ -3716,7 +3529,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_x
   end subroutine
@@ -3727,7 +3539,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_y
   end subroutine
@@ -3738,7 +3549,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -3749,7 +3559,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sin_phi
   end subroutine
@@ -3760,7 +3569,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%cos_phi
   end subroutine
@@ -3771,7 +3579,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(high_energy_space_charge_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_z
   end subroutine
@@ -3817,7 +3624,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(xy_disp_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%eta
   end subroutine
@@ -3828,7 +3634,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(xy_disp_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%etap
   end subroutine
@@ -3839,7 +3644,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(xy_disp_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%deta_ds
   end subroutine
@@ -3850,7 +3654,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(xy_disp_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma
   end subroutine
@@ -3861,7 +3664,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(xy_disp_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%deta_dpz
   end subroutine
@@ -3872,7 +3674,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(xy_disp_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%detap_dpz
   end subroutine
@@ -3918,7 +3719,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%beta
   end subroutine
@@ -3929,7 +3729,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%alpha
   end subroutine
@@ -3940,7 +3739,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%gamma
   end subroutine
@@ -3951,7 +3749,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -3962,7 +3759,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%eta
   end subroutine
@@ -3973,7 +3769,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%etap
   end subroutine
@@ -3984,7 +3779,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%deta_ds
   end subroutine
@@ -3995,7 +3789,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma
   end subroutine
@@ -4006,7 +3799,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma_p
   end subroutine
@@ -4017,7 +3809,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emit
   end subroutine
@@ -4028,7 +3819,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%norm_emit
   end subroutine
@@ -4039,7 +3829,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom
   end subroutine
@@ -4050,7 +3839,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dbeta_dpz
   end subroutine
@@ -4061,7 +3849,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dalpha_dpz
   end subroutine
@@ -4072,7 +3859,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%deta_dpz
   end subroutine
@@ -4083,7 +3869,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(twiss_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%detap_dpz
   end subroutine
@@ -4130,7 +3915,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(mode3_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%a)
   end subroutine
@@ -4141,7 +3925,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(mode3_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
   end subroutine
@@ -4152,7 +3935,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(mode3_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%c)
   end subroutine
@@ -4163,7 +3945,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(mode3_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%x)
   end subroutine
@@ -4174,7 +3955,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(mode3_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%y)
   end subroutine
@@ -4220,7 +4000,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%attributes
   end subroutine
@@ -4231,7 +4010,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%control
   end subroutine
@@ -4242,7 +4020,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%floor_position
   end subroutine
@@ -4253,7 +4030,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_position
   end subroutine
@@ -4264,7 +4040,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_energy
   end subroutine
@@ -4275,7 +4050,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mat6
   end subroutine
@@ -4286,7 +4060,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rad_int
   end subroutine
@@ -4297,7 +4070,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ptc
   end subroutine
@@ -4308,7 +4080,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bookkeeping_state_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%has_misalign
   end subroutine
@@ -4355,7 +4126,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(rad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ref_orb(lbound(struct_obj%ref_orb, 1)))
     lower_bound = int(lbound(struct_obj%ref_orb, 1), c_int)
@@ -4371,7 +4141,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(rad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%xfer_damp_vec(lbound(struct_obj%xfer_damp_vec, 1)))
     lower_bound = int(lbound(struct_obj%xfer_damp_vec, 1), c_int)
@@ -4422,7 +4191,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(rad_map_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%rm0)
   end subroutine
@@ -4433,7 +4201,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(rad_map_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%rm1)
   end subroutine
@@ -4444,7 +4211,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(rad_map_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%stale
   end subroutine
@@ -4490,7 +4256,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%m
   end subroutine
@@ -4501,7 +4266,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sincos
   end subroutine
@@ -4512,7 +4276,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_deriv_max
   end subroutine
@@ -4530,19 +4293,15 @@ contains
     integer(c_int), intent(out) :: stride1, stride2
     logical(c_bool), intent(out) :: is_allocated
     type(gen_grad1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%deriv)) then
       data_ptr = c_loc(struct_obj%deriv(lbound(struct_obj%deriv,1), lbound(struct_obj%deriv,2)))
-      
       dim1_lower = int(lbound(struct_obj%deriv, 1), c_int)
       dim1_upper = int(ubound(struct_obj%deriv, 1), c_int)
       dim1_size = dim1_upper - dim1_lower + 1
-      
       dim2_lower = int(lbound(struct_obj%deriv, 2), c_int)
       dim2_upper = int(ubound(struct_obj%deriv, 2), c_int)
       dim2_size = dim2_upper - dim2_lower + 1
-      
       stride1 = 1_c_int
       stride2 = dim1_size
       is_allocated = .true.
@@ -4597,7 +4356,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(gen_grad_map_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file)
     lower_bound = 1_c_int
@@ -4614,7 +4372,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%gg)) then
       data_ptr = c_loc(struct_obj%gg(lbound(struct_obj%gg, 1)))
@@ -4639,7 +4396,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ele_anchor_pt
   end subroutine
@@ -4650,7 +4406,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_type
   end subroutine
@@ -4661,7 +4416,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%iz0
   end subroutine
@@ -4672,7 +4426,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%iz1
   end subroutine
@@ -4683,7 +4436,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz
   end subroutine
@@ -4695,7 +4447,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -4709,7 +4460,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_scale
   end subroutine
@@ -4720,7 +4470,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%master_parameter
   end subroutine
@@ -4731,7 +4480,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(gen_grad_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%curved_ref_frame
   end subroutine
@@ -4777,7 +4525,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_segmented_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x0
   end subroutine
@@ -4788,7 +4535,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_segmented_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
   end subroutine
@@ -4799,7 +4545,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_segmented_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z0
   end subroutine
@@ -4810,7 +4555,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_segmented_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz_dx
   end subroutine
@@ -4821,7 +4565,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_segmented_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz_dy
   end subroutine
@@ -4867,7 +4610,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(surface_segmented_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%active
   end subroutine
@@ -4879,7 +4621,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_segmented_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
     lower_bound = int(lbound(struct_obj%dr, 1), c_int)
@@ -4894,7 +4635,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_segmented_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -4944,7 +4684,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x0
   end subroutine
@@ -4955,7 +4694,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
   end subroutine
@@ -4966,7 +4704,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rot_y
   end subroutine
@@ -4977,7 +4714,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rot_t
   end subroutine
@@ -4988,7 +4724,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rot_y_rms
   end subroutine
@@ -4999,7 +4734,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_h_misalign_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rot_t_rms
   end subroutine
@@ -5045,7 +4779,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(surface_h_misalign_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%active
   end subroutine
@@ -5057,7 +4790,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_h_misalign_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
     lower_bound = int(lbound(struct_obj%dr, 1), c_int)
@@ -5072,7 +4804,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_h_misalign_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -5122,7 +4853,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_displacement_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x0
   end subroutine
@@ -5133,7 +4863,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_displacement_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
   end subroutine
@@ -5144,7 +4873,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_displacement_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z0
   end subroutine
@@ -5155,7 +4883,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_displacement_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz_dx
   end subroutine
@@ -5166,7 +4893,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_displacement_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dz_dy
   end subroutine
@@ -5177,7 +4903,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_displacement_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%d2z_dxdy
   end subroutine
@@ -5223,7 +4948,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(surface_displacement_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%active
   end subroutine
@@ -5235,7 +4959,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_displacement_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
     lower_bound = int(lbound(struct_obj%dr, 1), c_int)
@@ -5250,7 +4973,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_displacement_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -5301,7 +5023,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(target_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r(lbound(struct_obj%r, 1)))
     lower_bound = int(lbound(struct_obj%r, 1), c_int)
@@ -5351,7 +5072,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(surface_curvature_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spherical
   end subroutine
@@ -5363,7 +5083,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(surface_curvature_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%elliptical(lbound(struct_obj%elliptical, 1)))
     lower_bound = int(lbound(struct_obj%elliptical, 1), c_int)
@@ -5377,7 +5096,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(surface_curvature_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%has_curvature
   end subroutine
@@ -5423,7 +5141,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(photon_target_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
   end subroutine
@@ -5434,7 +5151,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(photon_target_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_corner
   end subroutine
@@ -5445,7 +5161,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_target_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ele_loc)
   end subroutine
@@ -5458,7 +5173,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(photon_target_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%corner(lbound(struct_obj%corner, 1)))
     lower_bound = int(lbound(struct_obj%corner, 1), c_int)
@@ -5473,7 +5187,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_target_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%center)
   end subroutine
@@ -5519,7 +5232,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f0_m1
   end subroutine
@@ -5530,7 +5242,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f0_m2
   end subroutine
@@ -5541,7 +5252,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f_0
   end subroutine
@@ -5552,7 +5262,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f_h
   end subroutine
@@ -5563,7 +5272,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f_hbar
   end subroutine
@@ -5574,7 +5282,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%f_hkl
   end subroutine
@@ -5586,7 +5293,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%h_norm(lbound(struct_obj%h_norm, 1)))
     lower_bound = int(lbound(struct_obj%h_norm, 1), c_int)
@@ -5601,7 +5307,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(photon_material_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%l_ref(lbound(struct_obj%l_ref, 1)))
     lower_bound = int(lbound(struct_obj%l_ref, 1), c_int)
@@ -5650,7 +5355,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_long_long), intent(out) :: value_out
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_photon
   end subroutine
@@ -5661,7 +5365,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_x
   end subroutine
@@ -5672,7 +5375,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_y
   end subroutine
@@ -5683,7 +5385,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%intensity_x
   end subroutine
@@ -5694,7 +5395,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%intensity_y
   end subroutine
@@ -5705,7 +5405,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%intensity
   end subroutine
@@ -5717,7 +5416,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
     lower_bound = int(lbound(struct_obj%orbit, 1), c_int)
@@ -5732,7 +5430,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%orbit_rms(lbound(struct_obj%orbit_rms, 1)))
     lower_bound = int(lbound(struct_obj%orbit_rms, 1), c_int)
@@ -5747,7 +5444,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%init_orbit(lbound(struct_obj%init_orbit, 1)))
     lower_bound = int(lbound(struct_obj%init_orbit, 1), c_int)
@@ -5762,7 +5458,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pixel_pt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%init_orbit_rms(lbound(struct_obj%init_orbit_rms, 1)))
     lower_bound = int(lbound(struct_obj%init_orbit_rms, 1), c_int)
@@ -5812,7 +5507,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pixel_detec_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dr(lbound(struct_obj%dr, 1)))
     lower_bound = int(lbound(struct_obj%dr, 1), c_int)
@@ -5827,7 +5521,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pixel_detec_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -5841,7 +5534,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_long_long), intent(out) :: value_out
     type(pixel_detec_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_track_tot
   end subroutine
@@ -5852,7 +5544,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_long_long), intent(out) :: value_out
     type(pixel_detec_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_hit_detec
   end subroutine
@@ -5863,7 +5554,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_long_long), intent(out) :: value_out
     type(pixel_detec_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_hit_pixel
   end subroutine
@@ -5910,7 +5600,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%curvature)
   end subroutine
@@ -5921,7 +5610,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%target)
   end subroutine
@@ -5932,7 +5620,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%material)
   end subroutine
@@ -5943,7 +5630,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%segmented)
   end subroutine
@@ -5954,7 +5640,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%h_misalign)
   end subroutine
@@ -5965,7 +5650,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%displacement)
   end subroutine
@@ -5976,7 +5660,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%pixel)
   end subroutine
@@ -5987,7 +5670,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%reflectivity_table_type
   end subroutine
@@ -5998,7 +5680,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%reflectivity_table_sigma)
   end subroutine
@@ -6009,7 +5690,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%reflectivity_table_pi)
   end subroutine
@@ -6023,7 +5703,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%init_energy_prob)) then
       data_ptr = c_loc(struct_obj%init_energy_prob(lbound(struct_obj%init_energy_prob, 1)))
@@ -6050,7 +5729,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(photon_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%integrated_init_energy_prob)) then
       data_ptr = c_loc(struct_obj%integrated_init_energy_prob(lbound(struct_obj%integrated_init_energy_prob, 1)))
@@ -6108,7 +5786,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x
   end subroutine
@@ -6119,7 +5796,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y
   end subroutine
@@ -6130,7 +5806,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radius_x
   end subroutine
@@ -6141,7 +5816,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radius_y
   end subroutine
@@ -6152,7 +5826,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tilt
   end subroutine
@@ -6163,7 +5836,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%angle
   end subroutine
@@ -6174,7 +5846,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x0
   end subroutine
@@ -6185,7 +5856,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y0
   end subroutine
@@ -6196,7 +5866,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_vertex_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
   end subroutine
@@ -6243,7 +5912,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -6258,7 +5926,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%material)
     lower_bound = 1_c_int
@@ -6275,7 +5942,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%v)) then
       data_ptr = c_loc(struct_obj%v(lbound(struct_obj%v, 1)))
@@ -6300,7 +5966,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%surface)) then
       ptr_out = c_loc(struct_obj%surface)
@@ -6315,7 +5980,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
   end subroutine
@@ -6326,7 +5990,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_vertex_input
   end subroutine
@@ -6337,7 +6000,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -6348,7 +6010,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -6359,7 +6020,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%vertices_state
   end subroutine
@@ -6370,7 +6030,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%patch_in_region
   end subroutine
@@ -6381,7 +6040,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%thickness
   end subroutine
@@ -6392,7 +6050,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
   end subroutine
@@ -6404,7 +6061,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%r0(lbound(struct_obj%r0, 1)))
     lower_bound = int(lbound(struct_obj%r0, 1), c_int)
@@ -6418,7 +6074,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dx0_ds
   end subroutine
@@ -6429,7 +6084,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dy0_ds
   end subroutine
@@ -6441,7 +6095,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%x0_coef(lbound(struct_obj%x0_coef, 1)))
     lower_bound = int(lbound(struct_obj%x0_coef, 1), c_int)
@@ -6456,7 +6109,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%y0_coef(lbound(struct_obj%y0_coef, 1)))
     lower_bound = int(lbound(struct_obj%y0_coef, 1), c_int)
@@ -6470,7 +6122,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dr_ds
   end subroutine
@@ -6482,7 +6133,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%p1_coef(lbound(struct_obj%p1_coef, 1)))
     lower_bound = int(lbound(struct_obj%p1_coef, 1), c_int)
@@ -6497,7 +6147,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_section_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%p2_coef(lbound(struct_obj%p2_coef, 1)))
     lower_bound = int(lbound(struct_obj%p2_coef, 1), c_int)
@@ -6547,7 +6196,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -6561,7 +6209,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%type
   end subroutine
@@ -6572,7 +6219,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_wall3d
   end subroutine
@@ -6583,7 +6229,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_link
   end subroutine
@@ -6594,7 +6239,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%thickness
   end subroutine
@@ -6606,7 +6250,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%clear_material)
     lower_bound = 1_c_int
@@ -6621,7 +6264,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(wall3d_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%opaque_material)
     lower_bound = 1_c_int
@@ -6635,7 +6277,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%superimpose
   end subroutine
@@ -6646,7 +6287,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ele_anchor_pt
   end subroutine
@@ -6660,7 +6300,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(wall3d_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%section)) then
       data_ptr = c_loc(struct_obj%section(lbound(struct_obj%section, 1)))
@@ -6720,7 +6359,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ramper_lord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -6731,7 +6369,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ramper_lord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_con
   end subroutine
@@ -6742,7 +6379,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ramper_lord_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%attrib_ptr)) then
       ptr_out = c_loc(struct_obj%attrib_ptr)
@@ -6792,7 +6428,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(control_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%value
   end subroutine
@@ -6805,7 +6440,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(control_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%y_knot)) then
       data_ptr = c_loc(struct_obj%y_knot(lbound(struct_obj%y_knot, 1)))
@@ -6831,7 +6465,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(control_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%stack)) then
       data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
@@ -6856,7 +6489,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(control_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%slave)
   end subroutine
@@ -6867,7 +6499,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(control_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lord)
   end subroutine
@@ -6879,7 +6510,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%slave_name)
     lower_bound = 1_c_int
@@ -6894,7 +6524,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%attribute)
     lower_bound = 1_c_int
@@ -6908,7 +6537,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(control_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_attrib
   end subroutine
@@ -6955,7 +6583,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_var1_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -6969,7 +6596,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(control_var1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%value
   end subroutine
@@ -6980,7 +6606,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(control_var1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%old_value
   end subroutine
@@ -7028,7 +6653,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(control_ramp1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%y_knot)) then
       data_ptr = c_loc(struct_obj%y_knot(lbound(struct_obj%y_knot, 1)))
@@ -7054,7 +6678,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(control_ramp1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%stack)) then
       data_ptr = c_loc(struct_obj%stack(lbound(struct_obj%stack, 1)))
@@ -7080,7 +6703,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_ramp1_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%attribute)
     lower_bound = 1_c_int
@@ -7095,7 +6717,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(control_ramp1_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%slave_name)
     lower_bound = 1_c_int
@@ -7109,7 +6730,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(control_ramp1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%is_controller
   end subroutine
@@ -7158,7 +6778,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(controller_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%var)) then
       data_ptr = c_loc(struct_obj%var(lbound(struct_obj%var, 1)))
@@ -7186,7 +6805,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(controller_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ramp)) then
       data_ptr = c_loc(struct_obj%ramp(lbound(struct_obj%ramp, 1)))
@@ -7214,7 +6832,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(controller_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ramper_lord)) then
       data_ptr = c_loc(struct_obj%ramper_lord(lbound(struct_obj%ramper_lord, 1)))
@@ -7241,7 +6858,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(controller_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%x_knot)) then
       data_ptr = c_loc(struct_obj%x_knot(lbound(struct_obj%x_knot, 1)))
@@ -7299,7 +6915,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ellipse_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%part_per_ellipse
   end subroutine
@@ -7310,7 +6925,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ellipse_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ellipse
   end subroutine
@@ -7321,7 +6935,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ellipse_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma_cutoff
   end subroutine
@@ -7368,7 +6981,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(kv_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%part_per_phi(lbound(struct_obj%part_per_phi, 1)))
     lower_bound = int(lbound(struct_obj%part_per_phi, 1), c_int)
@@ -7382,7 +6994,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(kv_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_I2
   end subroutine
@@ -7393,7 +7004,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(kv_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%A
   end subroutine
@@ -7439,7 +7049,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_x
   end subroutine
@@ -7450,7 +7059,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(grid_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_px
   end subroutine
@@ -7461,7 +7069,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(grid_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_min
   end subroutine
@@ -7472,7 +7079,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(grid_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_max
   end subroutine
@@ -7483,7 +7089,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(grid_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%px_min
   end subroutine
@@ -7494,7 +7099,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(grid_beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%px_max
   end subroutine
@@ -7541,7 +7145,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%position_file)
     lower_bound = 1_c_int
@@ -7557,7 +7160,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%spin(lbound(struct_obj%spin, 1)))
     lower_bound = int(lbound(struct_obj%spin, 1), c_int)
@@ -7573,7 +7175,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ellipse(lbound(struct_obj%ellipse, 1)))
     lower_bound = int(lbound(struct_obj%ellipse, 1), c_int)
@@ -7588,7 +7189,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%KV)
   end subroutine
@@ -7601,7 +7201,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%grid(lbound(struct_obj%grid, 1)))
     lower_bound = int(lbound(struct_obj%grid, 1), c_int)
@@ -7617,7 +7216,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%center_jitter(lbound(struct_obj%center_jitter, 1)))
     lower_bound = int(lbound(struct_obj%center_jitter, 1), c_int)
@@ -7632,7 +7230,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%emit_jitter(lbound(struct_obj%emit_jitter, 1)))
     lower_bound = int(lbound(struct_obj%emit_jitter, 1), c_int)
@@ -7646,7 +7243,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_z_jitter
   end subroutine
@@ -7657,7 +7253,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_pz_jitter
   end subroutine
@@ -7668,7 +7263,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_particle
   end subroutine
@@ -7679,7 +7273,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%renorm_center
   end subroutine
@@ -7690,7 +7283,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%renorm_sigma
   end subroutine
@@ -7702,7 +7294,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%random_engine)
     lower_bound = 1_c_int
@@ -7717,7 +7308,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%random_gauss_converter)
     lower_bound = 1_c_int
@@ -7731,7 +7321,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%random_sigma_cutoff
   end subroutine
@@ -7742,7 +7331,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_norm_emit
   end subroutine
@@ -7753,7 +7341,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_norm_emit
   end subroutine
@@ -7764,7 +7351,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_emit
   end subroutine
@@ -7775,7 +7361,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_emit
   end subroutine
@@ -7786,7 +7371,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dPz_dz
   end subroutine
@@ -7798,7 +7382,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%center(lbound(struct_obj%center, 1)))
     lower_bound = int(lbound(struct_obj%center, 1), c_int)
@@ -7812,7 +7395,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t_offset
   end subroutine
@@ -7823,7 +7405,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dt_bunch
   end subroutine
@@ -7834,7 +7415,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_z
   end subroutine
@@ -7845,7 +7425,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_pz
   end subroutine
@@ -7856,7 +7435,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%bunch_charge
   end subroutine
@@ -7867,7 +7445,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bunch
   end subroutine
@@ -7878,7 +7455,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_turn
   end subroutine
@@ -7890,7 +7466,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%species)
     lower_bound = 1_c_int
@@ -7904,7 +7479,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%full_6D_coupling_calc
   end subroutine
@@ -7915,7 +7489,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%use_particle_start
   end subroutine
@@ -7926,7 +7499,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%use_t_coords
   end subroutine
@@ -7937,7 +7509,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(beam_init_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%use_z_as_t
   end subroutine
@@ -7949,7 +7520,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(beam_init_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%file_name)
     lower_bound = 1_c_int
@@ -7998,7 +7568,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_part
   end subroutine
@@ -8009,7 +7578,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%total_length
   end subroutine
@@ -8020,7 +7588,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%unstable_factor
   end subroutine
@@ -8033,7 +7600,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_tune
   end subroutine
@@ -8044,7 +7610,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%particle
   end subroutine
@@ -8055,7 +7620,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%default_tracking_species
   end subroutine
@@ -8066,7 +7630,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%geometry
   end subroutine
@@ -8077,7 +7640,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ixx
   end subroutine
@@ -8088,7 +7650,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%stable
   end subroutine
@@ -8099,7 +7660,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%live_branch
   end subroutine
@@ -8110,7 +7670,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%g1_integral
   end subroutine
@@ -8121,7 +7680,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%g2_integral
   end subroutine
@@ -8132,7 +7690,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%g3_integral
   end subroutine
@@ -8143,7 +7700,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%bookkeeping_state)
   end subroutine
@@ -8154,7 +7710,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_init)
   end subroutine
@@ -8200,7 +7755,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(mode_info_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%stable
   end subroutine
@@ -8211,7 +7765,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(mode_info_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tune
   end subroutine
@@ -8222,7 +7775,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(mode_info_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emit
   end subroutine
@@ -8233,7 +7785,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(mode_info_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom
   end subroutine
@@ -8244,7 +7795,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(mode_info_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma
   end subroutine
@@ -8255,7 +7805,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(mode_info_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigmap
   end subroutine
@@ -8301,7 +7850,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(pre_tracker_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%who
   end subroutine
@@ -8312,7 +7860,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(pre_tracker_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_start
   end subroutine
@@ -8323,7 +7870,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(pre_tracker_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_end
   end subroutine
@@ -8335,7 +7881,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(pre_tracker_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%input_file)
     lower_bound = 1_c_int
@@ -8384,7 +7929,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emittance
   end subroutine
@@ -8395,7 +7939,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emittance_no_vert
   end subroutine
@@ -8407,7 +7950,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%synch_int(lbound(struct_obj%synch_int, 1)))
     lower_bound = int(lbound(struct_obj%synch_int, 1), c_int)
@@ -8421,7 +7963,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%j_damp
   end subroutine
@@ -8432,7 +7973,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%alpha_damp
   end subroutine
@@ -8443,7 +7983,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom
   end subroutine
@@ -8454,7 +7993,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(anormal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tune
   end subroutine
@@ -8500,7 +8038,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i2_E4
   end subroutine
@@ -8511,7 +8048,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i3_E7
   end subroutine
@@ -8522,7 +8058,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i5a_E6
   end subroutine
@@ -8533,7 +8068,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i5b_E6
   end subroutine
@@ -8544,7 +8078,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_E1
   end subroutine
@@ -8555,7 +8088,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_emittance_end
   end subroutine
@@ -8566,7 +8098,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(linac_normal_mode_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_emittance_end
   end subroutine
@@ -8613,7 +8144,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%synch_int(lbound(struct_obj%synch_int, 1)))
     lower_bound = int(lbound(struct_obj%synch_int, 1), c_int)
@@ -8627,7 +8157,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigE_E
   end subroutine
@@ -8638,7 +8167,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sig_z
   end subroutine
@@ -8649,7 +8177,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%e_loss
   end subroutine
@@ -8660,7 +8187,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rf_voltage
   end subroutine
@@ -8671,7 +8197,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pz_aperture
   end subroutine
@@ -8682,7 +8207,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pz_average
   end subroutine
@@ -8693,7 +8217,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%momentum_compaction
   end subroutine
@@ -8704,7 +8227,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dpz_damp
   end subroutine
@@ -8715,7 +8237,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%a)
   end subroutine
@@ -8726,7 +8247,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
   end subroutine
@@ -8737,7 +8257,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z)
   end subroutine
@@ -8748,7 +8267,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(normal_modes_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lin)
   end subroutine
@@ -8795,7 +8313,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(em_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%E(lbound(struct_obj%E, 1)))
     lower_bound = int(lbound(struct_obj%E, 1), c_int)
@@ -8810,7 +8327,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(em_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%B(lbound(struct_obj%B, 1)))
     lower_bound = int(lbound(struct_obj%B, 1), c_int)
@@ -8826,7 +8342,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(em_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi
   end subroutine
@@ -8837,7 +8352,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(em_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%phi_B
   end subroutine
@@ -8849,7 +8363,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(em_field_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%A(lbound(struct_obj%A, 1)))
     lower_bound = int(lbound(struct_obj%A, 1), c_int)
@@ -8898,7 +8411,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_slice
   end subroutine
@@ -8909,7 +8421,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_center
   end subroutine
@@ -8920,7 +8431,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y_center
   end subroutine
@@ -8931,7 +8441,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_sigma
   end subroutine
@@ -8942,7 +8451,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y_sigma
   end subroutine
@@ -8953,7 +8461,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dx
   end subroutine
@@ -8964,7 +8471,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(strong_beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dy
   end subroutine
@@ -9010,7 +8516,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(track_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_lab
   end subroutine
@@ -9021,7 +8526,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(track_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_body
   end subroutine
@@ -9032,7 +8536,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(track_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%orb)
   end subroutine
@@ -9043,7 +8546,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(track_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%field)
   end subroutine
@@ -9054,7 +8556,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(track_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%strong_beam)
   end subroutine
@@ -9066,7 +8567,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(track_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%vec0(lbound(struct_obj%vec0, 1)))
     lower_bound = int(lbound(struct_obj%vec0, 1), c_int)
@@ -9119,7 +8619,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%pt)) then
       data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
@@ -9144,7 +8643,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ds_save
   end subroutine
@@ -9155,7 +8653,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_pt
   end subroutine
@@ -9166,7 +8663,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bad
   end subroutine
@@ -9177,7 +8673,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ok
   end subroutine
@@ -9223,7 +8718,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ds_track_step
   end subroutine
@@ -9234,7 +8728,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dt_track_step
   end subroutine
@@ -9245,7 +8738,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%cathode_strength_cutoff
   end subroutine
@@ -9256,7 +8748,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rel_tol_tracking
   end subroutine
@@ -9267,7 +8758,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_tol_tracking
   end subroutine
@@ -9278,7 +8768,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%beam_chamber_height
   end subroutine
@@ -9289,7 +8778,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lsc_sigma_cutoff
   end subroutine
@@ -9300,7 +8788,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%particle_sigma_cutoff
   end subroutine
@@ -9312,7 +8799,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%space_charge_mesh_size(lbound(struct_obj%space_charge_mesh_size, 1)))
     lower_bound = int(lbound(struct_obj%space_charge_mesh_size, 1), c_int)
@@ -9327,7 +8813,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%csr3d_mesh_size(lbound(struct_obj%csr3d_mesh_size, 1)))
     lower_bound = int(lbound(struct_obj%csr3d_mesh_size, 1), c_int)
@@ -9341,7 +8826,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bin
   end subroutine
@@ -9352,7 +8836,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%particle_bin_span
   end subroutine
@@ -9363,7 +8846,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_shield_images
   end subroutine
@@ -9374,7 +8856,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sc_min_in_bin
   end subroutine
@@ -9385,7 +8866,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lsc_kick_transverse_dependence
   end subroutine
@@ -9396,7 +8876,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(space_charge_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%debug
   end subroutine
@@ -9408,7 +8887,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(space_charge_common_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%diagnostic_output_file)
     lower_bound = 1_c_int
@@ -9457,7 +8935,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%max_aperture_limit
   end subroutine
@@ -9469,7 +8946,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%d_orb(lbound(struct_obj%d_orb, 1)))
     lower_bound = int(lbound(struct_obj%d_orb, 1), c_int)
@@ -9483,7 +8959,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%default_ds_step
   end subroutine
@@ -9494,7 +8969,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%significant_length
   end subroutine
@@ -9505,7 +8979,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rel_tol_tracking
   end subroutine
@@ -9516,7 +8989,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_tol_tracking
   end subroutine
@@ -9527,7 +8999,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rel_tol_adaptive_tracking
   end subroutine
@@ -9538,7 +9009,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_tol_adaptive_tracking
   end subroutine
@@ -9549,7 +9019,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%init_ds_adaptive_tracking
   end subroutine
@@ -9560,7 +9029,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%min_ds_adaptive_tracking
   end subroutine
@@ -9571,7 +9039,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%fatal_ds_adaptive_tracking
   end subroutine
@@ -9582,7 +9049,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%autoscale_amp_abs_tol
   end subroutine
@@ -9593,7 +9059,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%autoscale_amp_rel_tol
   end subroutine
@@ -9604,7 +9069,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%autoscale_phase_tol
   end subroutine
@@ -9615,7 +9079,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%electric_dipole_moment
   end subroutine
@@ -9626,7 +9089,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%synch_rad_scale
   end subroutine
@@ -9637,7 +9099,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sad_eps_scale
   end subroutine
@@ -9648,7 +9109,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sad_amp_max
   end subroutine
@@ -9659,7 +9119,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sad_n_div_max
   end subroutine
@@ -9670,7 +9129,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%taylor_order
   end subroutine
@@ -9681,7 +9139,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%runge_kutta_order
   end subroutine
@@ -9692,7 +9149,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%default_integ_order
   end subroutine
@@ -9703,7 +9159,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%max_num_runge_kutta_step
   end subroutine
@@ -9714,7 +9169,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rf_phase_below_transition_ref
   end subroutine
@@ -9725,7 +9179,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sr_wakes_on
   end subroutine
@@ -9736,7 +9189,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lr_wakes_on
   end subroutine
@@ -9747,7 +9199,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%auto_bookkeeper
   end subroutine
@@ -9758,7 +9209,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%high_energy_space_charge_on
   end subroutine
@@ -9769,7 +9219,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%csr_and_space_charge_on
   end subroutine
@@ -9780,7 +9229,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_tracking_on
   end subroutine
@@ -9791,7 +9239,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_sokolov_ternov_flipping_on
   end subroutine
@@ -9802,7 +9249,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radiation_damping_on
   end subroutine
@@ -9813,7 +9259,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radiation_zero_average
   end subroutine
@@ -9824,7 +9269,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%radiation_fluctuations_on
   end subroutine
@@ -9835,7 +9279,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%conserve_taylor_maps
   end subroutine
@@ -9846,7 +9289,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%absolute_time_tracking
   end subroutine
@@ -9857,7 +9299,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%absolute_time_ref_shift
   end subroutine
@@ -9868,7 +9309,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%convert_to_kinetic_momentum
   end subroutine
@@ -9879,7 +9319,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%normalize_twiss
   end subroutine
@@ -9890,7 +9329,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%aperture_limit_on
   end subroutine
@@ -9901,7 +9339,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_n0_direction_user_set
   end subroutine
@@ -9912,7 +9349,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bmad_common_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%debug
   end subroutine
@@ -9958,7 +9394,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i0
   end subroutine
@@ -9969,7 +9404,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i1
   end subroutine
@@ -9980,7 +9414,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i2
   end subroutine
@@ -9991,7 +9424,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i3
   end subroutine
@@ -10002,7 +9434,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i4a
   end subroutine
@@ -10013,7 +9444,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i4b
   end subroutine
@@ -10024,7 +9454,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i4z
   end subroutine
@@ -10035,7 +9464,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i5a
   end subroutine
@@ -10046,7 +9474,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i5b
   end subroutine
@@ -10057,7 +9484,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i6b
   end subroutine
@@ -10068,7 +9494,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_i2_E4
   end subroutine
@@ -10079,7 +9504,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_i3_E7
   end subroutine
@@ -10090,7 +9514,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_i5a_E6
   end subroutine
@@ -10101,7 +9524,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_i5b_E6
   end subroutine
@@ -10112,7 +9534,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_norm_emit_a
   end subroutine
@@ -10123,7 +9544,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_norm_emit_b
   end subroutine
@@ -10134,7 +9554,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lin_sig_E
   end subroutine
@@ -10145,7 +9564,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rad_int1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_steps
   end subroutine
@@ -10194,7 +9612,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(rad_int_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ele)) then
       data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
@@ -10257,7 +9674,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(rad_int_all_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%branch)) then
       data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
@@ -10317,7 +9733,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_tot0
   end subroutine
@@ -10328,7 +9743,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%E_tot1
   end subroutine
@@ -10339,7 +9753,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%p0c
   end subroutine
@@ -10350,7 +9763,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%p1c
   end subroutine
@@ -10361,7 +9773,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dE_amp
   end subroutine
@@ -10372,7 +9783,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%scale
   end subroutine
@@ -10383,7 +9793,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%time
   end subroutine
@@ -10394,7 +9803,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
   end subroutine
@@ -10405,7 +9813,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(rf_stair_step_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_step
   end subroutine
@@ -10454,7 +9861,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(rf_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%steps)) then
       data_ptr = c_loc(struct_obj%steps(lbound(struct_obj%steps, 1)))
@@ -10479,7 +9885,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(rf_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ds_step
   end subroutine
@@ -10526,7 +9931,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -10541,7 +9945,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%type)
     lower_bound = 1_c_int
@@ -10556,7 +9959,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%alias)
     lower_bound = 1_c_int
@@ -10571,7 +9973,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%component_name)
     lower_bound = 1_c_int
@@ -10587,7 +9988,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(ele_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%descrip)) then
       data_ptr = c_loc(struct_obj%descrip)
@@ -10610,7 +10010,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%a)
   end subroutine
@@ -10621,7 +10020,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
   end subroutine
@@ -10632,7 +10030,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z)
   end subroutine
@@ -10643,7 +10040,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%x)
   end subroutine
@@ -10654,7 +10050,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%y)
   end subroutine
@@ -10665,7 +10060,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ac_kick)) then
       ptr_out = c_loc(struct_obj%ac_kick)
@@ -10680,7 +10074,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%bookkeeping_state)
   end subroutine
@@ -10691,7 +10084,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%branch)) then
       ptr_out = c_loc(struct_obj%branch)
@@ -10706,7 +10098,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%control)) then
       ptr_out = c_loc(struct_obj%control)
@@ -10721,7 +10112,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%rf)) then
       ptr_out = c_loc(struct_obj%rf)
@@ -10736,7 +10126,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%lord)) then
       ptr_out = c_loc(struct_obj%lord)
@@ -10751,7 +10140,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%floor)
   end subroutine
@@ -10762,7 +10150,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%high_energy_space_charge)) then
       ptr_out = c_loc(struct_obj%high_energy_space_charge)
@@ -10777,7 +10164,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%mode3)) then
       ptr_out = c_loc(struct_obj%mode3)
@@ -10792,7 +10178,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%photon)) then
       ptr_out = c_loc(struct_obj%photon)
@@ -10807,7 +10192,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%rad_map)) then
       ptr_out = c_loc(struct_obj%rad_map)
@@ -10824,7 +10208,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%taylor(lbound(struct_obj%taylor, 1)))
     lower_bound = int(lbound(struct_obj%taylor, 1), c_int)
@@ -10840,7 +10223,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%spin_taylor_ref_orb_in(lbound(struct_obj%spin_taylor_ref_orb_in, 1)))
     lower_bound = int(lbound(struct_obj%spin_taylor_ref_orb_in, 1), c_int)
@@ -10856,7 +10238,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%spin_taylor(lbound(struct_obj%spin_taylor, 1)))
     lower_bound = int(lbound(struct_obj%spin_taylor, 1), c_int)
@@ -10871,7 +10252,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%wake)) then
       ptr_out = c_loc(struct_obj%wake)
@@ -10889,7 +10269,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%wall3d)) then
       data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
@@ -10917,7 +10296,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%cartesian_map)) then
       data_ptr = c_loc(struct_obj%cartesian_map(lbound(struct_obj%cartesian_map, 1)))
@@ -10945,7 +10323,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%cylindrical_map)) then
       data_ptr = c_loc(struct_obj%cylindrical_map(lbound(struct_obj%cylindrical_map, 1)))
@@ -10973,7 +10350,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%gen_grad_map)) then
       data_ptr = c_loc(struct_obj%gen_grad_map(lbound(struct_obj%gen_grad_map, 1)))
@@ -11001,7 +10377,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%grid_field)) then
       data_ptr = c_loc(struct_obj%grid_field(lbound(struct_obj%grid_field, 1)))
@@ -11026,7 +10401,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%map_ref_orb_in)
   end subroutine
@@ -11037,7 +10411,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%map_ref_orb_out)
   end subroutine
@@ -11048,7 +10421,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%time_ref_orb_in)
   end subroutine
@@ -11059,7 +10431,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%time_ref_orb_out)
   end subroutine
@@ -11071,7 +10442,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%value(lbound(struct_obj%value, 1)))
     lower_bound = int(lbound(struct_obj%value, 1), c_int)
@@ -11086,7 +10456,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%old_value(lbound(struct_obj%old_value, 1)))
     lower_bound = int(lbound(struct_obj%old_value, 1), c_int)
@@ -11102,7 +10471,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%vec0(lbound(struct_obj%vec0, 1)))
     lower_bound = int(lbound(struct_obj%vec0, 1), c_int)
@@ -11118,7 +10486,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%gamma_c
   end subroutine
@@ -11129,7 +10496,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_start
   end subroutine
@@ -11140,7 +10506,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
   end subroutine
@@ -11151,7 +10516,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_time
   end subroutine
@@ -11168,7 +10532,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%key
   end subroutine
@@ -11179,7 +10542,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sub_key
   end subroutine
@@ -11190,7 +10552,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -11201,7 +10562,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -11212,7 +10572,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lord_status
   end subroutine
@@ -11223,7 +10582,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_slave
   end subroutine
@@ -11234,7 +10592,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_slave_field
   end subroutine
@@ -11245,7 +10602,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix1_slave
   end subroutine
@@ -11256,7 +10612,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%slave_status
   end subroutine
@@ -11267,7 +10622,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_lord
   end subroutine
@@ -11278,7 +10632,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_lord_field
   end subroutine
@@ -11289,7 +10642,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_lord_ramper
   end subroutine
@@ -11300,7 +10652,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ic1_lord
   end subroutine
@@ -11311,7 +10662,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_pointer
   end subroutine
@@ -11322,7 +10672,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ixx
   end subroutine
@@ -11333,7 +10682,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%iyy
   end subroutine
@@ -11344,7 +10692,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%izz
   end subroutine
@@ -11355,7 +10702,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mat6_calc_method
   end subroutine
@@ -11366,7 +10712,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tracking_method
   end subroutine
@@ -11377,7 +10722,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_tracking_method
   end subroutine
@@ -11388,7 +10732,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%csr_method
   end subroutine
@@ -11399,7 +10742,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%space_charge_method
   end subroutine
@@ -11410,7 +10752,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ptc_integration_type
   end subroutine
@@ -11421,7 +10762,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_calc
   end subroutine
@@ -11432,7 +10772,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%aperture_at
   end subroutine
@@ -11443,7 +10782,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%aperture_type
   end subroutine
@@ -11454,7 +10792,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_species
   end subroutine
@@ -11465,7 +10802,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%orientation
   end subroutine
@@ -11476,7 +10812,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%symplectify
   end subroutine
@@ -11487,7 +10822,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mode_flip
   end subroutine
@@ -11498,7 +10832,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%multipoles_on
   end subroutine
@@ -11509,7 +10842,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%scale_multipoles
   end subroutine
@@ -11520,7 +10852,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%taylor_map_includes_offsets
   end subroutine
@@ -11531,7 +10862,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%field_master
   end subroutine
@@ -11542,7 +10872,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%is_on
   end subroutine
@@ -11553,7 +10882,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%logic
   end subroutine
@@ -11564,7 +10892,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%bmad_logic
   end subroutine
@@ -11575,7 +10902,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%select
   end subroutine
@@ -11586,7 +10912,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%offset_moves_aperture
   end subroutine
@@ -11632,7 +10957,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(complex_taylor_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%coef
   end subroutine
@@ -11644,7 +10968,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(complex_taylor_term_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%expn(lbound(struct_obj%expn, 1)))
     lower_bound = int(lbound(struct_obj%expn, 1), c_int)
@@ -11693,7 +11016,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(complex_taylor_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref
   end subroutine
@@ -11707,7 +11029,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(complex_taylor_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%term)) then
       data_ptr = c_loc(struct_obj%term(lbound(struct_obj%term, 1)))
@@ -11768,7 +11089,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(branch_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -11782,7 +11102,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -11793,7 +11112,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_from_branch
   end subroutine
@@ -11804,7 +11122,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_from_ele
   end subroutine
@@ -11815,7 +11132,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_to_ele
   end subroutine
@@ -11826,7 +11142,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_fixer
   end subroutine
@@ -11837,7 +11152,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ele_track
   end subroutine
@@ -11848,7 +11162,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ele_max
   end subroutine
@@ -11859,7 +11172,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%lat)) then
       ptr_out = c_loc(struct_obj%lat)
@@ -11874,7 +11186,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%a)
   end subroutine
@@ -11885,7 +11196,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
   end subroutine
@@ -11896,7 +11206,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z)
   end subroutine
@@ -11910,7 +11219,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ele)) then
       data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
@@ -11935,7 +11243,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%param)
   end subroutine
@@ -11946,7 +11253,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%particle_start)
   end subroutine
@@ -11960,7 +11266,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%wall3d)) then
       data_ptr = c_loc(struct_obj%wall3d(lbound(struct_obj%wall3d, 1)))
@@ -12021,7 +11326,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%use_name)
     lower_bound = 1_c_int
@@ -12036,7 +11340,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%lattice)
     lower_bound = 1_c_int
@@ -12051,7 +11354,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%machine)
     lower_bound = 1_c_int
@@ -12066,7 +11368,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%input_file_name)
     lower_bound = 1_c_int
@@ -12081,7 +11382,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(lat_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%title)
     lower_bound = 1_c_int
@@ -12099,7 +11399,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%constant)) then
       data_ptr = c_loc(struct_obj%constant(lbound(struct_obj%constant, 1)))
@@ -12124,7 +11423,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%a)) then
       ptr_out = c_loc(struct_obj%a)
@@ -12139,7 +11437,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%b)) then
       ptr_out = c_loc(struct_obj%b)
@@ -12154,7 +11451,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%z)) then
       ptr_out = c_loc(struct_obj%z)
@@ -12169,7 +11465,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%param)) then
       ptr_out = c_loc(struct_obj%param)
@@ -12184,7 +11479,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lord_state)
   end subroutine
@@ -12195,7 +11489,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ele_init)
   end subroutine
@@ -12209,7 +11502,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ele)) then
       data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
@@ -12237,7 +11529,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%branch)) then
       data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
@@ -12265,7 +11556,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%control)) then
       data_ptr = c_loc(struct_obj%control(lbound(struct_obj%control, 1)))
@@ -12290,7 +11580,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%particle_start)) then
       ptr_out = c_loc(struct_obj%particle_start)
@@ -12305,7 +11594,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_init)
   end subroutine
@@ -12316,7 +11604,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%pre_tracker)
   end subroutine
@@ -12329,7 +11616,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%custom)) then
       data_ptr = c_loc(struct_obj%custom(lbound(struct_obj%custom, 1)))
@@ -12352,7 +11638,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%version
   end subroutine
@@ -12363,7 +11648,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%n_ele_track)) then
       ptr_out = c_loc(struct_obj%n_ele_track)
@@ -12378,7 +11662,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%n_ele_max)) then
       ptr_out = c_loc(struct_obj%n_ele_max)
@@ -12393,7 +11676,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_control_max
   end subroutine
@@ -12404,7 +11686,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_ic_max
   end subroutine
@@ -12415,7 +11696,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%input_taylor_order
   end subroutine
@@ -12428,7 +11708,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ic)) then
       data_ptr = c_loc(struct_obj%ic(lbound(struct_obj%ic, 1)))
@@ -12451,7 +11730,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%photon_type
   end subroutine
@@ -12462,7 +11740,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%creation_hash
   end subroutine
@@ -12473,7 +11750,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ramper_slave_bookkeeping
   end subroutine
@@ -12522,7 +11798,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%particle)) then
       data_ptr = c_loc(struct_obj%particle(lbound(struct_obj%particle, 1)))
@@ -12549,7 +11824,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ix_z)) then
       data_ptr = c_loc(struct_obj%ix_z(lbound(struct_obj%ix_z, 1)))
@@ -12572,7 +11846,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge_tot
   end subroutine
@@ -12583,7 +11856,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge_live
   end subroutine
@@ -12594,7 +11866,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%z_center
   end subroutine
@@ -12605,7 +11876,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t_center
   end subroutine
@@ -12616,7 +11886,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t0
   end subroutine
@@ -12627,7 +11896,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%drift_between_t_and_s
   end subroutine
@@ -12638,7 +11906,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -12649,7 +11916,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_bunch
   end subroutine
@@ -12660,7 +11926,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_turn
   end subroutine
@@ -12671,7 +11936,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_live
   end subroutine
@@ -12682,7 +11946,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_good
   end subroutine
@@ -12693,7 +11956,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bad
   end subroutine
@@ -12739,7 +12001,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%centroid)
   end subroutine
@@ -12750,7 +12011,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%x)
   end subroutine
@@ -12761,7 +12021,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%y)
   end subroutine
@@ -12772,7 +12031,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%z)
   end subroutine
@@ -12783,7 +12041,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%a)
   end subroutine
@@ -12794,7 +12051,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%b)
   end subroutine
@@ -12805,7 +12061,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%c)
   end subroutine
@@ -12818,7 +12073,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%rel_max(lbound(struct_obj%rel_max, 1)))
     lower_bound = int(lbound(struct_obj%rel_max, 1), c_int)
@@ -12833,7 +12087,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%rel_min(lbound(struct_obj%rel_min, 1)))
     lower_bound = int(lbound(struct_obj%rel_min, 1), c_int)
@@ -12847,7 +12100,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
   end subroutine
@@ -12858,7 +12110,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%t
   end subroutine
@@ -12869,7 +12120,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma_t
   end subroutine
@@ -12880,7 +12130,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge_live
   end subroutine
@@ -12891,7 +12140,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%charge_tot
   end subroutine
@@ -12902,7 +12150,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_particle_tot
   end subroutine
@@ -12913,7 +12160,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_particle_live
   end subroutine
@@ -12924,7 +12170,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_particle_lost_in_ele
   end subroutine
@@ -12935,7 +12180,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_good_steps
   end subroutine
@@ -12946,7 +12190,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_bad_steps
   end subroutine
@@ -12957,7 +12200,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -12968,7 +12210,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%location
   end subroutine
@@ -12979,7 +12220,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(bunch_params_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%twiss_valid
   end subroutine
@@ -13028,7 +12268,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(beam_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%bunch)) then
       data_ptr = c_loc(struct_obj%bunch(lbound(struct_obj%bunch, 1)))
@@ -13088,7 +12327,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x
   end subroutine
@@ -13099,7 +12337,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y
   end subroutine
@@ -13110,7 +12347,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(aperture_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%plane
   end subroutine
@@ -13121,7 +12357,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(aperture_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -13132,7 +12367,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(aperture_point_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%i_turn
   end subroutine
@@ -13178,7 +12412,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%min_angle
   end subroutine
@@ -13189,7 +12422,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%max_angle
   end subroutine
@@ -13200,7 +12432,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_angle
   end subroutine
@@ -13211,7 +12442,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_turn
   end subroutine
@@ -13222,7 +12452,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%x_init
   end subroutine
@@ -13233,7 +12462,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%y_init
   end subroutine
@@ -13244,7 +12472,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rel_accuracy
   end subroutine
@@ -13255,7 +12482,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_param_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%abs_accuracy
   end subroutine
@@ -13267,7 +12493,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(aperture_param_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%start_ele)
     lower_bound = 1_c_int
@@ -13319,7 +12544,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(aperture_scan_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%point)) then
       data_ptr = c_loc(struct_obj%point(lbound(struct_obj%point, 1)))
@@ -13344,7 +12568,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(aperture_scan_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ref_orb)
   end subroutine
@@ -13355,7 +12578,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(aperture_scan_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pz_start
   end subroutine
@@ -13402,7 +12624,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_spin_dn_dpz_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%vec(lbound(struct_obj%vec, 1)))
     lower_bound = int(lbound(struct_obj%vec, 1), c_int)
@@ -13454,7 +12675,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(resonance_h_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%id)
     lower_bound = 1_c_int
@@ -13468,7 +12688,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(resonance_h_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%c_val
   end subroutine
@@ -13516,7 +12735,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(spin_orbit_map1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%vec0(lbound(struct_obj%vec0, 1)))
     lower_bound = int(lbound(struct_obj%vec0, 1), c_int)
@@ -13567,7 +12785,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(spin_axis_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%l(lbound(struct_obj%l, 1)))
     lower_bound = int(lbound(struct_obj%l, 1), c_int)
@@ -13582,7 +12799,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(spin_axis_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%n0(lbound(struct_obj%n0, 1)))
     lower_bound = int(lbound(struct_obj%n0, 1), c_int)
@@ -13597,7 +12813,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(spin_axis_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%m(lbound(struct_obj%m, 1)))
     lower_bound = int(lbound(struct_obj%m, 1), c_int)
@@ -13646,7 +12861,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(ptc_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ele_origin)) then
       ptr_out = c_loc(struct_obj%ele_origin)
@@ -13662,7 +12876,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(ptc_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%orb0(lbound(struct_obj%orb0, 1)))
     lower_bound = int(lbound(struct_obj%orb0, 1), c_int)
@@ -13676,7 +12889,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(ptc_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%valid_map
   end subroutine
@@ -13722,7 +12934,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%ele_origin)) then
       ptr_out = c_loc(struct_obj%ele_origin)
@@ -13739,7 +12950,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%M(lbound(struct_obj%M, 1)))
     lower_bound = int(lbound(struct_obj%M, 1), c_int)
@@ -13756,7 +12966,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%A(lbound(struct_obj%A, 1)))
     lower_bound = int(lbound(struct_obj%A, 1), c_int)
@@ -13773,7 +12982,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%A_inv(lbound(struct_obj%A_inv, 1)))
     lower_bound = int(lbound(struct_obj%A_inv, 1), c_int)
@@ -13790,7 +12998,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dhdj(lbound(struct_obj%dhdj, 1)))
     lower_bound = int(lbound(struct_obj%dhdj, 1), c_int)
@@ -13807,7 +13014,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%F(lbound(struct_obj%F, 1)))
     lower_bound = int(lbound(struct_obj%F, 1), c_int)
@@ -13824,7 +13030,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%L(lbound(struct_obj%L, 1)))
     lower_bound = int(lbound(struct_obj%L, 1), c_int)
@@ -13842,7 +13047,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(bmad_normal_form_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%h)) then
       data_ptr = c_loc(struct_obj%h(lbound(struct_obj%h, 1)))
@@ -13905,7 +13109,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(bunch_track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%pt)) then
       data_ptr = c_loc(struct_obj%pt(lbound(struct_obj%pt, 1)))
@@ -13930,7 +13133,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(bunch_track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ds_save
   end subroutine
@@ -13941,7 +13143,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(bunch_track_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_pt
   end subroutine
@@ -13987,7 +13188,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h11001
   end subroutine
@@ -13998,7 +13198,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00111
   end subroutine
@@ -14009,7 +13208,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h20001
   end subroutine
@@ -14020,7 +13218,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00201
   end subroutine
@@ -14031,7 +13228,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h10002
   end subroutine
@@ -14042,7 +13238,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h21000
   end subroutine
@@ -14053,7 +13248,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h30000
   end subroutine
@@ -14064,7 +13258,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h10110
   end subroutine
@@ -14075,7 +13268,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h10020
   end subroutine
@@ -14086,7 +13278,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h10200
   end subroutine
@@ -14097,7 +13288,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h31000
   end subroutine
@@ -14108,7 +13298,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h40000
   end subroutine
@@ -14119,7 +13308,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h20110
   end subroutine
@@ -14130,7 +13318,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h11200
   end subroutine
@@ -14141,7 +13328,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h20020
   end subroutine
@@ -14152,7 +13338,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h20200
   end subroutine
@@ -14163,7 +13348,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00310
   end subroutine
@@ -14174,7 +13358,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00400
   end subroutine
@@ -14185,7 +13368,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h22000
   end subroutine
@@ -14196,7 +13378,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h00220
   end subroutine
@@ -14207,7 +13388,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     complex(c_double_complex), intent(out) :: value_out
     type(summation_rdt_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%h11110
   end subroutine
@@ -14253,7 +13433,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_ele_order1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -14264,7 +13443,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(lat_ele_order1_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_order
   end subroutine
@@ -14313,7 +13491,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(lat_ele_order_array_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ele)) then
       data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
@@ -14409,7 +13586,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_spin_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%dn_dpz)
   end subroutine
@@ -14421,7 +13597,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_spin_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%orb_eigen_val(lbound(struct_obj%orb_eigen_val, 1)))
     lower_bound = int(lbound(struct_obj%orb_eigen_val, 1), c_int)
@@ -14437,7 +13612,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_spin_ele_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%valid
   end subroutine
@@ -14483,7 +13657,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_plot_cache_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ele_to_s)
   end subroutine
@@ -14494,7 +13667,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_plot_cache_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%orbit)
   end subroutine
@@ -14505,7 +13677,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_plot_cache_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%err
   end subroutine
@@ -14551,7 +13722,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%tune
   end subroutine
@@ -14562,7 +13732,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pol_limit_st
   end subroutine
@@ -14573,7 +13742,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pol_limit_dk
   end subroutine
@@ -14585,7 +13753,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%pol_limit_dk_partial(lbound(struct_obj%pol_limit_dk_partial, 1)))
     lower_bound = int(lbound(struct_obj%pol_limit_dk_partial, 1), c_int)
@@ -14600,7 +13767,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%pol_limit_dk_partial2(lbound(struct_obj%pol_limit_dk_partial2, 1)))
     lower_bound = int(lbound(struct_obj%pol_limit_dk_partial2, 1), c_int)
@@ -14614,7 +13780,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%pol_rate_bks
   end subroutine
@@ -14625,7 +13790,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%depol_rate
   end subroutine
@@ -14637,7 +13801,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%depol_rate_partial(lbound(struct_obj%depol_rate_partial, 1)))
     lower_bound = int(lbound(struct_obj%depol_rate_partial, 1), c_int)
@@ -14652,7 +13815,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%depol_rate_partial2(lbound(struct_obj%depol_rate_partial2, 1)))
     lower_bound = int(lbound(struct_obj%depol_rate_partial2, 1), c_int)
@@ -14666,7 +13828,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%integral_bn
   end subroutine
@@ -14677,7 +13838,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%integral_bdn
   end subroutine
@@ -14688,7 +13848,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%integral_1ns
   end subroutine
@@ -14699,7 +13858,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%integral_dn2
   end subroutine
@@ -14710,7 +13868,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%valid
   end subroutine
@@ -14721,7 +13878,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%q_1turn)
   end subroutine
@@ -14735,7 +13891,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_spin_polarization_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%q_ele)) then
       data_ptr = c_loc(struct_obj%q_ele(lbound(struct_obj%q_ele, 1)))
@@ -14795,7 +13950,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%tao_lat)) then
       ptr_out = c_loc(struct_obj%tao_lat)
@@ -14813,7 +13967,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%lat_sigma)) then
       data_ptr = c_loc(struct_obj%lat_sigma(lbound(struct_obj%lat_sigma, 1)))
@@ -14841,7 +13994,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%spin_ele)) then
       data_ptr = c_loc(struct_obj%spin_ele(lbound(struct_obj%spin_ele, 1)))
@@ -14869,7 +14021,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%bunch_params)) then
       data_ptr = c_loc(struct_obj%bunch_params(lbound(struct_obj%bunch_params, 1)))
@@ -14897,7 +14048,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%bunch_params_comb)) then
       data_ptr = c_loc(struct_obj%bunch_params_comb(lbound(struct_obj%bunch_params_comb, 1)))
@@ -14925,7 +14075,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%orbit)) then
       data_ptr = c_loc(struct_obj%orbit(lbound(struct_obj%orbit, 1)))
@@ -14953,7 +14102,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%plot_cache)) then
       data_ptr = c_loc(struct_obj%plot_cache(lbound(struct_obj%plot_cache, 1)))
@@ -14978,7 +14126,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spin)
   end subroutine
@@ -14989,7 +14136,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%srdt)
   end subroutine
@@ -15000,7 +14146,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%orb0)
   end subroutine
@@ -15011,7 +14156,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%modes_ri)
   end subroutine
@@ -15022,7 +14166,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%modes_6d)
   end subroutine
@@ -15033,7 +14176,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ptc_normal_form)
   end subroutine
@@ -15044,7 +14186,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%bmad_normal_form)
   end subroutine
@@ -15058,7 +14199,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%high_E_orb)) then
       data_ptr = c_loc(struct_obj%high_E_orb(lbound(struct_obj%high_E_orb, 1)))
@@ -15086,7 +14226,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%low_E_orb)) then
       data_ptr = c_loc(struct_obj%low_E_orb(lbound(struct_obj%low_E_orb, 1)))
@@ -15111,7 +14250,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%cache_x_min
   end subroutine
@@ -15122,7 +14260,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%cache_x_max
   end subroutine
@@ -15133,7 +14270,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%comb_ds_save
   end subroutine
@@ -15144,7 +14280,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%track_state
   end subroutine
@@ -15155,7 +14290,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%cache_n_pts
   end subroutine
@@ -15166,7 +14300,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_rad_int_cache
   end subroutine
@@ -15177,7 +14310,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%has_open_match_element
   end subroutine
@@ -15188,7 +14320,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%plot_cache_valid
   end subroutine
@@ -15199,7 +14330,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_map_valid
   end subroutine
@@ -15210,7 +14340,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%twiss_valid
   end subroutine
@@ -15221,7 +14350,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%mode_flip_here
   end subroutine
@@ -15232,7 +14360,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom_calc_ok
   end subroutine
@@ -15243,7 +14370,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rad_int_calc_ok
   end subroutine
@@ -15254,7 +14380,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%emit_6d_calc_ok
   end subroutine
@@ -15265,7 +14390,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_lattice_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%sigma_track_ok
   end subroutine
@@ -15311,7 +14435,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_model_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam)
   end subroutine
@@ -15322,7 +14445,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_model_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%save_beam_internally
   end subroutine
@@ -15333,7 +14455,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_model_element_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%save_beam_to_file
   end subroutine
@@ -15379,7 +14500,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_at_start)
   end subroutine
@@ -15390,7 +14510,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_init)
   end subroutine
@@ -15401,7 +14520,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam_init_used)
   end subroutine
@@ -15412,7 +14530,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%init_starting_distribution
   end subroutine
@@ -15424,7 +14541,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_beam_branch_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%track_start)
     lower_bound = 1_c_int
@@ -15439,7 +14555,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_beam_branch_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%track_end)
     lower_bound = 1_c_int
@@ -15453,7 +14568,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -15464,7 +14578,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_track_start
   end subroutine
@@ -15475,7 +14588,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_beam_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_track_end
   end subroutine
@@ -15522,7 +14634,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_d1_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -15536,7 +14647,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_d1_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%d2)) then
       ptr_out = c_loc(struct_obj%d2)
@@ -15554,7 +14664,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_d1_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%d)) then
       data_ptr = c_loc(struct_obj%d(lbound(struct_obj%d, 1)))
@@ -15615,7 +14724,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_lattice_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -15629,7 +14737,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%lat)
   end subroutine
@@ -15640,7 +14747,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%high_E_lat)
   end subroutine
@@ -15651,7 +14757,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%low_E_lat)
   end subroutine
@@ -15662,7 +14767,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%rad_int_by_ele_ri)
   end subroutine
@@ -15673,7 +14777,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_lattice_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%rad_int_by_ele_6d)
   end subroutine
@@ -15687,7 +14790,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_lattice_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%tao_branch)) then
       data_ptr = c_loc(struct_obj%tao_branch(lbound(struct_obj%tao_branch, 1)))
@@ -15748,7 +14850,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_beam_uni_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%saved_at)
     lower_bound = 1_c_int
@@ -15763,7 +14864,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_beam_uni_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dump_file)
     lower_bound = 1_c_int
@@ -15778,7 +14878,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_beam_uni_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%dump_at)
     lower_bound = 1_c_int
@@ -15792,7 +14891,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_beam_uni_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%track_beam_in_universe
   end subroutine
@@ -15803,7 +14901,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_beam_uni_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%always_reinit
   end subroutine
@@ -15849,7 +14946,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%param)
   end subroutine
@@ -15863,7 +14959,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%scan)) then
       data_ptr = c_loc(struct_obj%scan(lbound(struct_obj%scan, 1)))
@@ -15890,7 +14985,6 @@ contains
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     logical(c_bool), intent(out) :: is_allocated
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%pz)) then
       data_ptr = c_loc(struct_obj%pz(lbound(struct_obj%pz, 1)))
@@ -15913,7 +15007,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ellipse_scale
   end subroutine
@@ -15924,7 +15017,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_emit
   end subroutine
@@ -15935,7 +15027,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_dynamic_aperture_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_emit
   end subroutine
@@ -15984,7 +15075,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_model_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%ele)) then
       data_ptr = c_loc(struct_obj%ele(lbound(struct_obj%ele, 1)))
@@ -16009,7 +15099,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_model_branch_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam)
   end subroutine
@@ -16056,7 +15145,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_d2_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%name)
     lower_bound = 1_c_int
@@ -16071,7 +15159,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_d2_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%data_file_name)
     lower_bound = 1_c_int
@@ -16086,7 +15173,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_d2_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ref_file_name)
     lower_bound = 1_c_int
@@ -16101,7 +15187,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_d2_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%data_date)
     lower_bound = 1_c_int
@@ -16116,7 +15201,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_d2_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ref_date)
     lower_bound = 1_c_int
@@ -16134,7 +15218,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_d2_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%d1)) then
       data_ptr = c_loc(struct_obj%d1(lbound(struct_obj%d1, 1)))
@@ -16159,7 +15242,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_d2_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_universe
   end subroutine
@@ -16170,7 +15252,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_d2_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_d2_data
   end subroutine
@@ -16181,7 +15262,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_d2_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ref
   end subroutine
@@ -16192,7 +15272,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_d2_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%data_read_in
   end subroutine
@@ -16203,7 +15282,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_d2_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_read_in
   end subroutine
@@ -16249,7 +15327,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%valid
   end subroutine
@@ -16260,7 +15337,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%map1)
   end subroutine
@@ -16271,7 +15347,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%axis_input)
   end subroutine
@@ -16282,7 +15357,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%axis0)
   end subroutine
@@ -16293,7 +15367,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%axis1)
   end subroutine
@@ -16304,7 +15377,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -16315,7 +15387,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ref
   end subroutine
@@ -16326,7 +15397,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_uni
   end subroutine
@@ -16337,7 +15407,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_spin_map_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -16385,7 +15454,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ele_name)
     lower_bound = 1_c_int
@@ -16400,7 +15468,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ele_start_name)
     lower_bound = 1_c_int
@@ -16415,7 +15482,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%ele_ref_name)
     lower_bound = 1_c_int
@@ -16431,7 +15497,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%merit_type)
     lower_bound = 1_c_int
@@ -16446,7 +15511,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%id)
     lower_bound = 1_c_int
@@ -16461,7 +15525,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%data_source)
     lower_bound = 1_c_int
@@ -16476,7 +15539,6 @@ contains
     type(c_ptr), intent(out) :: data_ptr
     integer(c_int), intent(out) :: size_out, lower_bound, upper_bound
     type(tao_data_struct), pointer :: struct_obj
-
     call c_f_pointer(struct_obj_ptr, struct_obj)
     data_ptr = c_loc(struct_obj%why_invalid)
     lower_bound = 1_c_int
@@ -16490,7 +15552,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_uni
   end subroutine
@@ -16501,7 +15562,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_bunch
   end subroutine
@@ -16512,7 +15572,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_branch
   end subroutine
@@ -16523,7 +15582,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele
   end subroutine
@@ -16534,7 +15592,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_start
   end subroutine
@@ -16545,7 +15602,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_ref
   end subroutine
@@ -16556,7 +15612,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_ele_merit
   end subroutine
@@ -16567,7 +15622,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_d1
   end subroutine
@@ -16578,7 +15632,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_data
   end subroutine
@@ -16589,7 +15642,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_dModel
   end subroutine
@@ -16600,7 +15652,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%eval_point
   end subroutine
@@ -16611,7 +15662,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%meas_value
   end subroutine
@@ -16622,7 +15672,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ref_value
   end subroutine
@@ -16633,7 +15682,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%model_value
   end subroutine
@@ -16644,7 +15692,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%design_value
   end subroutine
@@ -16655,7 +15702,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%old_value
   end subroutine
@@ -16666,7 +15712,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%base_value
   end subroutine
@@ -16677,7 +15722,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%error_rms
   end subroutine
@@ -16688,7 +15732,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%delta_merit
   end subroutine
@@ -16699,7 +15742,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%weight
   end subroutine
@@ -16710,7 +15752,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%invalid_value
   end subroutine
@@ -16721,7 +15762,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%merit
   end subroutine
@@ -16732,7 +15772,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s
   end subroutine
@@ -16743,7 +15782,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%s_offset
   end subroutine
@@ -16754,7 +15792,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%err_message_printed
   end subroutine
@@ -16765,7 +15802,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%exists
   end subroutine
@@ -16776,7 +15812,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_model
   end subroutine
@@ -16787,7 +15822,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_base
   end subroutine
@@ -16798,7 +15832,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_design
   end subroutine
@@ -16809,7 +15842,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_meas
   end subroutine
@@ -16820,7 +15852,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_ref
   end subroutine
@@ -16831,7 +15862,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_user
   end subroutine
@@ -16842,7 +15872,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_opt
   end subroutine
@@ -16853,7 +15882,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%good_plot
   end subroutine
@@ -16864,7 +15892,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%useit_plot
   end subroutine
@@ -16875,7 +15902,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%useit_opt
   end subroutine
@@ -16886,7 +15912,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spin_map)
   end subroutine
@@ -16897,7 +15922,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_data_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%d1)) then
       ptr_out = c_loc(struct_obj%d1)
@@ -16947,7 +15971,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_ping_scale_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_mode_meas
   end subroutine
@@ -16958,7 +15981,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_ping_scale_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%a_mode_ref
   end subroutine
@@ -16969,7 +15991,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_ping_scale_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_mode_meas
   end subroutine
@@ -16980,7 +16001,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     real(c_double), intent(out) :: value_out
     type(tao_ping_scale_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%b_mode_ref
   end subroutine
@@ -17026,7 +16046,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%srdt_for_data
   end subroutine
@@ -17037,7 +16056,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rad_int_for_data
   end subroutine
@@ -17048,7 +16066,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%rad_int_for_plotting
   end subroutine
@@ -17059,7 +16076,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom_for_data
   end subroutine
@@ -17070,7 +16086,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%chrom_for_plotting
   end subroutine
@@ -17081,7 +16096,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lat_sigma_for_data
   end subroutine
@@ -17092,7 +16106,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lat_sigma_for_plotting
   end subroutine
@@ -17103,7 +16116,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%dynamic_aperture
   end subroutine
@@ -17114,7 +16126,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%one_turn_map
   end subroutine
@@ -17125,7 +16136,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%lattice
   end subroutine
@@ -17136,7 +16146,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%twiss
   end subroutine
@@ -17147,7 +16156,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%track
   end subroutine
@@ -17158,7 +16166,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_calc_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%spin_matrices
   end subroutine
@@ -17207,7 +16214,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(lat_ele_order_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%branch)) then
       data_ptr = c_loc(struct_obj%branch(lbound(struct_obj%branch, 1)))
@@ -17267,7 +16273,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%model)) then
       ptr_out = c_loc(struct_obj%model)
@@ -17282,7 +16287,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%design)) then
       ptr_out = c_loc(struct_obj%design)
@@ -17297,7 +16301,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%base)) then
       ptr_out = c_loc(struct_obj%base)
@@ -17312,7 +16315,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%beam)
   end subroutine
@@ -17323,7 +16325,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%dynamic_aperture)
   end subroutine
@@ -17337,7 +16338,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (associated(struct_obj%model_branch)) then
       data_ptr = c_loc(struct_obj%model_branch(lbound(struct_obj%model_branch, 1)))
@@ -17365,7 +16365,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%d2_data)) then
       data_ptr = c_loc(struct_obj%d2_data(lbound(struct_obj%d2_data, 1)))
@@ -17393,7 +16392,6 @@ contains
     logical(c_bool), intent(out) :: is_allocated
     integer(c_size_t), intent(out) :: element_size
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%data)) then
       data_ptr = c_loc(struct_obj%data(lbound(struct_obj%data, 1)))
@@ -17418,7 +16416,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ping_scale)
   end subroutine
@@ -17429,7 +16426,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%scratch_lat)
   end subroutine
@@ -17440,7 +16436,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%calc)
   end subroutine
@@ -17451,7 +16446,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%ele_order)
   end subroutine
@@ -17462,7 +16456,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     type(c_ptr), intent(out) :: ptr_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     ptr_out = c_loc(struct_obj%spin_map)
   end subroutine
@@ -17480,19 +16473,15 @@ contains
     integer(c_int), intent(out) :: stride1, stride2
     logical(c_bool), intent(out) :: is_allocated
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     if (allocated(struct_obj%dModel_dVar)) then
       data_ptr = c_loc(struct_obj%dModel_dVar(lbound(struct_obj%dModel_dVar,1), lbound(struct_obj%dModel_dVar,2)))
-      
       dim1_lower = int(lbound(struct_obj%dModel_dVar, 1), c_int)
       dim1_upper = int(ubound(struct_obj%dModel_dVar, 1), c_int)
       dim1_size = dim1_upper - dim1_lower + 1
-      
       dim2_lower = int(lbound(struct_obj%dModel_dVar, 2), c_int)
       dim2_upper = int(ubound(struct_obj%dModel_dVar, 2), c_int)
       dim2_size = dim2_upper - dim2_lower + 1
-      
       stride1 = 1_c_int
       stride2 = dim1_size
       is_allocated = .true.
@@ -17511,7 +16500,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%ix_uni
   end subroutine
@@ -17522,7 +16510,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_d2_data_used
   end subroutine
@@ -17533,7 +16520,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     integer(c_int), intent(out) :: value_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%n_data_used
   end subroutine
@@ -17544,7 +16530,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%is_on
   end subroutine
@@ -17555,7 +16540,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%design_same_as_previous
   end subroutine
@@ -17566,7 +16550,6 @@ contains
     type(c_ptr), intent(in), value :: struct_obj_ptr
     logical(c_bool), intent(out) :: value_out
     type(tao_universe_struct), pointer :: struct_obj
-    
     call c_f_pointer(struct_obj_ptr, struct_obj)
     value_out = struct_obj%picked_uni
   end subroutine
